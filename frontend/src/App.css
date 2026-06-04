@@ -168,7 +168,50 @@ button { cursor: pointer; font-family: inherit; }
 /* ══════════════════════════════════════════════════════════════════════════════
    LOGIN PAGE
 ══════════════════════════════════════════════════════════════════════════════ */
-.login-page {
+/* ── Active topbar button ────────────────────────────────────────────────── */
+.admin-btn-ghost.active { background: #EEF8FF; border-color: #0099CC; color: #0099CC; }
+
+/* ── Live dot ────────────────────────────────────────────────────────────── */
+.preview-live-dot {
+  display: inline-block; width: 7px; height: 7px; background: #22c55e;
+  border-radius: 50%; animation: pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: .4 } }
+
+/* ── Split view ──────────────────────────────────────────────────────────── */
+.admin-layout.split { display: grid !important; grid-template-columns: 200px 420px 1fr; }
+.admin-split-preview { display: flex; flex-direction: column; border-left: 1px solid #e4e4e4; overflow: hidden; }
+.admin-split-bar {
+  flex-shrink: 0; height: 38px; background: #f9f9f9; border-bottom: 1px solid #e4e4e4;
+  display: flex; align-items: center; gap: 8px; padding: 0 16px;
+  font-size: 12px; font-weight: 600; color: #555;
+}
+.admin-split-body { flex: 1; overflow-y: auto; }
+.admin-split-body .site-nav { position: sticky; top: 0; }
+
+/* ── Modal preview ───────────────────────────────────────────────────────── */
+.preview-modal {
+  position: fixed; inset: 0; z-index: 500;
+  display: flex; flex-direction: column;
+  background: #fff;
+}
+.preview-modal-bar {
+  flex-shrink: 0; height: 48px; background: #111;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+}
+.preview-modal-label { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: #fff; }
+.preview-modal-close {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+  color: #fff; font-size: 13px; font-weight: 600;
+  padding: 7px 16px; border-radius: 6px; cursor: pointer; transition: .2s;
+}
+.preview-modal-close:hover { background: rgba(255,255,255,.2); }
+.preview-modal-body { flex: 1; overflow-y: auto; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LOGIN PAGE
   height: 100vh; display: flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg, #f0f4f8 0%, #e8eef4 100%);
 }

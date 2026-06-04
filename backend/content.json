@@ -1,0 +1,105 @@
+{
+  "contact": {
+    "address": "",
+    "email": "info@example.at",
+    "phone": "",
+    "title": "Kontakt"
+  },
+  "features": {
+    "items": [
+      {
+        "description": "Schnelle Lieferung österreichweit.",
+        "id": "f1",
+        "title": "Schnell"
+      },
+      {
+        "description": "Faire Preise, direkt vom Hersteller.",
+        "id": "f2",
+        "title": "Günstig"
+      },
+      {
+        "description": "2 Jahre Garantie auf alle Produkte.",
+        "id": "f3",
+        "title": "Sicher"
+      }
+    ],
+    "title": "Unsere Leistungen"
+  },
+  "footer": {
+    "brand": "My Business",
+    "copyright": "© 2024 My Business",
+    "links": [
+      {
+        "href": "/agb",
+        "label": "AGB"
+      },
+      {
+        "href": "/datenschutz",
+        "label": "Datenschutz"
+      },
+      {
+        "href": "/impressum",
+        "label": "Impressum"
+      }
+    ],
+    "tagline": "Ihre erste Wahl"
+  },
+  "hero": {
+    "ctaHref": "#products",
+    "ctaLabel": "Mehr erfahren",
+    "headline": "Willkommen bei uns",
+    "image": "",
+    "subheadline": "Wir bieten Ihnen beste Qualität zu fairen Preisen."
+  },
+  "meta": {
+    "accentColor": "#B3E600",
+    "description": "Welcome to our website",
+    "font": "system-ui, -apple-system, sans-serif",
+    "primaryColor": "#0099CC",
+    "title": "My Business"
+  },
+  "nav": {
+    "brand": "My Business",
+    "links": [
+      {
+        "href": "#products",
+        "label": "Produkte"
+      },
+      {
+        "href": "#about",
+        "label": "Über uns"
+      },
+      {
+        "href": "#contact",
+        "label": "Kontakt"
+      }
+    ],
+    "logo": ""
+  },
+  "products": {
+    "items": [
+      {
+        "description": "Kurze Beschreibung.",
+        "id": "p1",
+        "image": "",
+        "name": "Produkt 1",
+        "price": "€99"
+      },
+      {
+        "description": "Kurze Beschreibung.",
+        "id": "p2",
+        "image": "",
+        "name": "Produkt 2",
+        "price": "€149"
+      },
+      {
+        "description": "Kurze Beschreibung.",
+        "id": "p3",
+        "image": "",
+        "name": "Produkt 3",
+        "price": "€199"
+      }
+    ],
+    "title": "Unsere Produkte"
+  }
+}

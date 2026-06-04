@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import type { SiteContent, FeatureItem, ProductItem, NavLink } from '../types/content'
 import type { User } from '../hooks/useAuth'
+import { PublicSite } from './PublicSite'
 
 interface Props {
   content: SiteContent
@@ -12,11 +13,13 @@ interface Props {
 }
 
 type Section = 'meta' | 'nav' | 'hero' | 'features' | 'products' | 'contact' | 'footer'
+type PreviewMode = 'none' | 'split' | 'modal'
 
 export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }: Props) {
   const [draft, setDraft] = useState<SiteContent>(content)
   const [active, setActive] = useState<Section>('hero')
   const [saved, setSaved] = useState(false)
+  const [preview, setPreview] = useState<PreviewMode>('none')
   const fileRef = useRef<HTMLInputElement>(null)
   const [uploadTarget, setUploadTarget] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
@@ -75,13 +78,45 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
           <span className="admin-site-name">{draft.nav.brand}</span>
         </div>
         <div className="admin-topbar-right">
-          <a href="/" target="_blank" className="admin-btn-ghost">View Site</a>
+          <button
+            className={`admin-btn-ghost ${preview === 'split' ? 'active' : ''}`}
+            onClick={() => setPreview(p => p === 'split' ? 'none' : 'split')}
+            title="Side-by-side live preview"
+          >
+            {preview === 'split' ? 'Close Split' : 'Split View'}
+          </button>
+          <button
+            className="admin-btn-ghost"
+            onClick={() => setPreview(p => p === 'modal' ? 'none' : 'modal')}
+            title="Full-screen live preview"
+          >
+            Preview
+          </button>
           <span className="admin-user">{user.name || user.email}</span>
           <button className="admin-btn-ghost" onClick={onLogout}>Logout</button>
         </div>
       </div>
 
-      <div className="admin-layout">
+      {/* MODAL PREVIEW */}
+      {preview === 'modal' && (
+        <div className="preview-modal">
+          <div className="preview-modal-bar">
+            <div className="preview-modal-label">
+              <span className="preview-live-dot" />
+              Live Preview
+            </div>
+            <button className="preview-modal-close" onClick={() => setPreview('none')}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Close
+            </button>
+          </div>
+          <div className="preview-modal-body">
+            <PublicSite content={draft} />
+          </div>
+        </div>
+      )}
+
+      <div className={`admin-layout ${preview === 'split' ? 'split' : ''}`}>
         {/* SIDEBAR */}
         <aside className="admin-sidebar">
           {navItems.map(n => (
@@ -250,6 +285,19 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
             </Section>
           )}
         </main>
+
+        {/* SPLIT PREVIEW PANE */}
+        {preview === 'split' && (
+          <div className="admin-split-preview">
+            <div className="admin-split-bar">
+              <span className="preview-live-dot" />
+              Live Preview — updates as you edit
+            </div>
+            <div className="admin-split-body">
+              <PublicSite content={draft} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
