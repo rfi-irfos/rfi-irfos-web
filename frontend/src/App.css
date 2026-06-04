@@ -224,6 +224,16 @@ button { cursor: pointer; font-family: inherit; }
 .panel-add-link-btn { background: none; border: 1.5px dashed #ddd; border-radius: 5px; padding: 6px 10px; font-size: 12px; color: #888; margin-top: 3px; transition: .2s; }
 .panel-add-link-btn:hover { border-color: #0099CC; color: #0099CC; }
 
+/* Preview modal */
+.preview-live-dot { display: inline-block; width: 7px; height: 7px; background: #22c55e; border-radius: 50%; animation: pulse 1.8s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: .4 } }
+.preview-modal { position: fixed; inset: 0; z-index: 500; display: flex; flex-direction: column; background: #fff; }
+.preview-modal-bar { flex-shrink: 0; height: 48px; background: #111; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+.preview-modal-label { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: #fff; }
+.preview-modal-close { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: #fff; font-size: 13px; font-weight: 600; padding: 7px 16px; border-radius: 6px; cursor: pointer; transition: .2s; }
+.preview-modal-close:hover { background: rgba(255,255,255,.2); }
+.preview-modal-body { flex: 1; overflow-y: auto; }
+
 /* Save */
 .builder-panel-foot { flex-shrink: 0; padding: 12px 16px; border-top: 1px solid #e4e4e4; }
 .builder-save-btn {

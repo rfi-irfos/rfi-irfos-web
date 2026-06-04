@@ -18,6 +18,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
   const [draft, setDraft] = useState<SiteContent>(content)
   const [active, setActive] = useState<Section>('style')
   const [saved, setSaved] = useState(false)
+  const [previewOpen, setPreviewOpen] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
   const [uploadTarget, setUploadTarget] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
@@ -75,10 +76,33 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
         </div>
         <div className="builder-topbar-hint">Click any text or image to edit it directly</div>
         <div className="builder-topbar-right">
+          <button className="builder-btn-ghost" onClick={() => setPreviewOpen(true)}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: 5}}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Preview
+          </button>
           <span className="builder-user">{user.name || user.email}</span>
           <button className="builder-btn-ghost" onClick={onLogout}>Logout</button>
         </div>
       </div>
+
+      {/* PREVIEW MODAL */}
+      {previewOpen && (
+        <div className="preview-modal">
+          <div className="preview-modal-bar">
+            <div className="preview-modal-label">
+              <span className="preview-live-dot" />
+              Live Preview
+            </div>
+            <button className="preview-modal-close" onClick={() => setPreviewOpen(false)}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Close
+            </button>
+          </div>
+          <div className="preview-modal-body">
+            <PublicSite content={draft} />
+          </div>
+        </div>
+      )}
 
       {/* BODY */}
       <div className="builder-body">
