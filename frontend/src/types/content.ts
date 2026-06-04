@@ -5,8 +5,11 @@ export interface ProductItem { id: string; name: string; description: string; pr
 export type SectionId = 'hero' | 'about' | 'products' | 'contact'
 export const DEFAULT_SECTION_ORDER: SectionId[] = ['hero', 'about', 'products', 'contact']
 
+export interface CanvasPos { x: number; y: number }
+
 export interface SiteContent {
   sectionOrder?: SectionId[]
+  positions?: Record<string, CanvasPos>
   meta: {
     title: string
     description: string

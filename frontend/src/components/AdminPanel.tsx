@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import type { SiteContent, NavLink } from '../types/content'
+import type { SiteContent, NavLink, CanvasPos } from '../types/content'
 import type { User } from '../hooks/useAuth'
 import { PublicSite } from './PublicSite'
 
@@ -20,7 +20,9 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
   const [saved, setSaved] = useState(false)
   const [previewOpen, setPreviewOpen] = useState(false)
   const [rearrangeMode, setRearrangeMode] = useState(false)
+  const [initPositions, setInitPositions] = useState<Record<string, CanvasPos>>({})
   const fileRef = useRef<HTMLInputElement>(null)
+  const previewRef = useRef<HTMLDivElement>(null)
   const [uploadTarget, setUploadTarget] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
 
@@ -28,7 +30,23 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
     const handler = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
         e.preventDefault()
-        setRearrangeMode(m => !m)
+        setRearrangeMode(prev => {
+          if (!prev && previewRef.current) {
+            // Snapshot DOM positions of all canvas elements before switching to canvas mode
+            const container = previewRef.current.getBoundingClientRect()
+            const snap: Record<string, CanvasPos> = {}
+            previewRef.current.querySelectorAll<HTMLElement>('[data-cid]').forEach(el => {
+              const cid = el.getAttribute('data-cid')!
+              const rect = el.getBoundingClientRect()
+              snap[cid] = {
+                x: rect.left - container.left,
+                y: rect.top - container.top + previewRef.current!.scrollTop,
+              }
+            })
+            setInitPositions(snap)
+          }
+          return !prev
+        })
       }
       if (e.key === 'Escape') setRearrangeMode(false)
     }
@@ -124,12 +142,13 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
       <div className="builder-body">
 
         {/* LEFT: live editable preview */}
-        <div className="builder-preview">
+        <div className="builder-preview" ref={previewRef}>
           <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
           <PublicSite
             content={draft}
             editMode={true}
             rearrangeMode={rearrangeMode}
+            initPositions={initPositions}
             onTextChange={(field, value) => update(field, value)}
             onImageClick={handleImageClick}
             onUpdate={(field, value) => update(field, value)}
