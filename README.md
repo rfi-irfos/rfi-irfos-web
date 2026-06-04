@@ -34,7 +34,7 @@ cd backend && cargo run
 cd frontend && npm run dev
 ```
 
-Then open: **http://localhost:5173**
+Then open: **[👉 Click here to view the app](http://localhost:5173)** (Vite dev server)
 
 ## Project Structure
 
