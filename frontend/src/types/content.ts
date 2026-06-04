@@ -2,7 +2,11 @@ export interface NavLink { label: string; href: string }
 export interface FeatureItem { id: string; title: string; description: string }
 export interface ProductItem { id: string; name: string; description: string; price: string; image: string }
 
+export type SectionId = 'hero' | 'about' | 'products' | 'contact'
+export const DEFAULT_SECTION_ORDER: SectionId[] = ['hero', 'about', 'products', 'contact']
+
 export interface SiteContent {
+  sectionOrder?: SectionId[]
   meta: {
     title: string
     description: string

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react'
-import type { SiteContent } from '../types/content'
+import type { SiteContent, SectionId } from '../types/content'
+import { DEFAULT_SECTION_ORDER } from '../types/content'
 
 // ── Edit context ─────────────────────────────────────────────────────────────
 
@@ -139,16 +140,20 @@ function EImg({ field, src, alt = '', className, style }: EImgProps) {
 interface Props {
   content: SiteContent
   editMode?: boolean
+  rearrangeMode?: boolean
   onTextChange?: (field: string, value: string) => void
   onImageClick?: (field: string) => void
   onUpdate?: (field: string, value: unknown) => void
+  onSectionReorder?: (order: SectionId[]) => void
 }
 
-export function PublicSite({ content, editMode = false, onTextChange, onImageClick, onUpdate }: Props) {
+export function PublicSite({ content, editMode = false, rearrangeMode = false, onTextChange, onImageClick, onUpdate, onSectionReorder }: Props) {
   const { meta, nav, hero, features, products, contact, footer } = content
 
   const [focusedEl, setFocusedEl] = useState<HTMLElement | null>(null)
   const [bgMoveMode, setBgMoveMode] = useState(false)
+  const [sectionOrder, setSectionOrder] = useState<SectionId[]>(content.sectionOrder ?? DEFAULT_SECTION_ORDER)
+  const [dragSection, setDragSection] = useState<SectionId | null>(null)
   const [heroBgPos, setHeroBgPos] = useState({ x: hero.bgX ?? 50, y: hero.bgY ?? 50 })
   const [heroHeight, setHeroHeight] = useState(hero.minHeight ?? 520)
   const dragRef = useRef<{ startX: number; startY: number; startBgX: number; startBgY: number } | null>(null)
@@ -168,6 +173,9 @@ export function PublicSite({ content, editMode = false, onTextChange, onImageCli
     onUpdate: onUpdate ?? (() => {}),
     setFocusedEl,
   }
+
+  // Sync bgMoveMode with rearrangeMode
+  useEffect(() => { setBgMoveMode(rearrangeMode) }, [rearrangeMode])
 
   // Hero background drag
   useEffect(() => {
@@ -263,22 +271,16 @@ export function PublicSite({ content, editMode = false, onTextChange, onImageCli
             dragRef.current = { startX: e.clientX, startY: e.clientY, startBgX: heroBgPos.x, startBgY: heroBgPos.y }
           } : undefined}
         >
-          {editMode && (
+          {editMode && !rearrangeMode && (
             <div className="site-hero-controls">
               <button className="site-hero-swap-btn" onClick={() => onImageClick?.('hero.image')}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 Image
               </button>
-              {hero.image && (
-                <button
-                  className={`site-hero-swap-btn${bgMoveMode ? ' active' : ''}`}
-                  onClick={() => setBgMoveMode(m => !m)}
-                >
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/></svg>
-                  {bgMoveMode ? 'Done' : 'Move'}
-                </button>
-              )}
             </div>
+          )}
+          {rearrangeMode && hero.image && (
+            <div className="rearrange-hero-hint">Drag to reposition background</div>
           )}
           <div className={`site-hero-overlay${bgMoveMode ? ' no-pointer' : ''}`}>
             <E field="hero.headline" value={hero.headline} as="h1" />
@@ -297,45 +299,82 @@ export function PublicSite({ content, editMode = false, onTextChange, onImageCli
           )}
         </section>
 
-        {/* FEATURES */}
-        <section className="site-section" id="about">
-          <E field="features.title" value={features.title} as="h2" className="site-section-title" />
-          <div className="site-grid-3">
-            {features.items.map((f, i) => (
-              <div key={f.id} className="site-card">
-                <E field={`features.items.${i}.title`} value={f.title} as="h3" />
-                <E field={`features.items.${i}.description`} value={f.description} as="p" />
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* ORDERED SECTIONS */}
+        {sectionOrder.filter(id => id !== 'hero').map(sectionId => {
+          const isDragging = dragSection === sectionId
 
-        {/* PRODUCTS */}
-        <section className="site-section site-section-alt" id="products">
-          <E field="products.title" value={products.title} as="h2" className="site-section-title" />
-          <div className="site-grid-3">
-            {products.items.map((p, i) => (
-              <div key={p.id} className="site-product-card">
-                <EImg field={`products.items.${i}.image`} src={p.image} alt={p.name} />
-                <div className="site-product-body">
-                  <E field={`products.items.${i}.name`} value={p.name} as="h3" />
-                  <E field={`products.items.${i}.description`} value={p.description} as="p" />
-                  <E field={`products.items.${i}.price`} value={p.price} as="div" className="site-product-price" />
-                </div>
+          const wrapSection = (id: SectionId, el: React.ReactNode) => rearrangeMode ? (
+            <div
+              key={id}
+              className={`section-drag-wrapper${isDragging ? ' dragging' : ''}`}
+              draggable
+              onDragStart={() => setDragSection(id)}
+              onDragEnd={() => setDragSection(null)}
+              onDragOver={e => { e.preventDefault() }}
+              onDrop={() => {
+                if (!dragSection || dragSection === id) return
+                const next = [...sectionOrder]
+                const fromIdx = next.indexOf(dragSection)
+                const toIdx = next.indexOf(id)
+                next.splice(fromIdx, 1)
+                next.splice(toIdx, 0, dragSection)
+                setSectionOrder(next)
+                onSectionReorder?.(next)
+                setDragSection(null)
+              }}
+            >
+              <div className="section-drag-handle" title="Drag to reorder">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="9" cy="5" r="1" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="9" cy="19" r="1" fill="currentColor"/><circle cx="15" cy="5" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="19" r="1" fill="currentColor"/></svg>
               </div>
-            ))}
-          </div>
-        </section>
+              {el}
+            </div>
+          ) : <React.Fragment key={id}>{el}</React.Fragment>
 
-        {/* CONTACT */}
-        <section className="site-contact" id="contact">
-          <E field="contact.title" value={contact.title} as="h2" />
-          <div className="site-contact-info">
-            {contact.email && <a href={`mailto:${contact.email}`}>{contact.email}</a>}
-            {contact.phone && <span>{contact.phone}</span>}
-            {contact.address && <span>{contact.address}</span>}
-          </div>
-        </section>
+          if (sectionId === 'about') return wrapSection('about', (
+            <section className="site-section" id="about">
+              <E field="features.title" value={features.title} as="h2" className="site-section-title" />
+              <div className="site-grid-3">
+                {features.items.map((f, i) => (
+                  <div key={f.id} className="site-card">
+                    <E field={`features.items.${i}.title`} value={f.title} as="h3" />
+                    <E field={`features.items.${i}.description`} value={f.description} as="p" />
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))
+
+          if (sectionId === 'products') return wrapSection('products', (
+            <section className="site-section site-section-alt" id="products">
+              <E field="products.title" value={products.title} as="h2" className="site-section-title" />
+              <div className="site-grid-3">
+                {products.items.map((p, i) => (
+                  <div key={p.id} className="site-product-card">
+                    <EImg field={`products.items.${i}.image`} src={p.image} alt={p.name} />
+                    <div className="site-product-body">
+                      <E field={`products.items.${i}.name`} value={p.name} as="h3" />
+                      <E field={`products.items.${i}.description`} value={p.description} as="p" />
+                      <E field={`products.items.${i}.price`} value={p.price} as="div" className="site-product-price" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))
+
+          if (sectionId === 'contact') return wrapSection('contact', (
+            <section className="site-contact" id="contact">
+              <E field="contact.title" value={contact.title} as="h2" />
+              <div className="site-contact-info">
+                {contact.email && <a href={`mailto:${contact.email}`}>{contact.email}</a>}
+                {contact.phone && <span>{contact.phone}</span>}
+                {contact.address && <span>{contact.address}</span>}
+              </div>
+            </section>
+          ))
+
+          return null
+        })}
 
         {/* FOOTER */}
         <footer className="site-footer">

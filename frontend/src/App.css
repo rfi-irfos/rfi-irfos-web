@@ -272,6 +272,25 @@ button { cursor: pointer; font-family: inherit; }
 .panel-add-link-btn { background: none; border: 1.5px dashed #ddd; border-radius: 5px; padding: 6px 10px; font-size: 12px; color: #888; margin-top: 3px; transition: .2s; }
 .panel-add-link-btn:hover { border-color: #0099CC; color: #0099CC; }
 
+/* Rearrange mode */
+.builder-topbar-hint.rearrange-active { color: #f59e0b; font-weight: 600; }
+.section-drag-wrapper { position: relative; }
+.section-drag-wrapper.dragging { opacity: .4; }
+.section-drag-wrapper:hover { outline: 2px dashed rgba(0,153,204,.4); outline-offset: -2px; }
+.section-drag-handle {
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  width: 28px; height: 40px; background: rgba(0,153,204,.12); border-radius: 0 6px 6px 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #0099CC; cursor: grab; z-index: 20; transition: background .15s;
+}
+.section-drag-handle:hover { background: rgba(0,153,204,.25); }
+.rearrange-hero-hint {
+  position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,.6); color: #fff; font-size: 12px; font-weight: 600;
+  padding: 6px 14px; border-radius: 20px; pointer-events: none; z-index: 10;
+  letter-spacing: .03em;
+}
+
 /* Preview modal */
 .preview-live-dot { display: inline-block; width: 7px; height: 7px; background: #22c55e; border-radius: 50%; animation: pulse 1.8s ease-in-out infinite; }
 @keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: .4 } }

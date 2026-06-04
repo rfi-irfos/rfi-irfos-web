@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import type { SiteContent, NavLink } from '../types/content'
 import type { User } from '../hooks/useAuth'
 import { PublicSite } from './PublicSite'
@@ -19,9 +19,22 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
   const [active, setActive] = useState<Section>('style')
   const [saved, setSaved] = useState(false)
   const [previewOpen, setPreviewOpen] = useState(false)
+  const [rearrangeMode, setRearrangeMode] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
   const [uploadTarget, setUploadTarget] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+        e.preventDefault()
+        setRearrangeMode(m => !m)
+      }
+      if (e.key === 'Escape') setRearrangeMode(false)
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [])
 
   const update = (path: string, value: unknown) => {
     const keys = path.split('.')
@@ -74,7 +87,10 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
           <span className="builder-brand-dot" />
           <strong>{draft.nav.brand || 'My Site'}</strong>
         </div>
-        <div className="builder-topbar-hint">Click any text or image to edit it directly</div>
+        {rearrangeMode
+          ? <div className="builder-topbar-hint rearrange-active">Rearrange mode — drag sections, move bg &nbsp;·&nbsp; Esc to exit</div>
+          : <div className="builder-topbar-hint">Click to edit text or images &nbsp;·&nbsp; Ctrl+R to rearrange</div>
+        }
         <div className="builder-topbar-right">
           <button className="builder-btn-ghost" onClick={() => setPreviewOpen(true)}>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: 5}}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -113,9 +129,11 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
           <PublicSite
             content={draft}
             editMode={true}
+            rearrangeMode={rearrangeMode}
             onTextChange={(field, value) => update(field, value)}
             onImageClick={handleImageClick}
             onUpdate={(field, value) => update(field, value)}
+            onSectionReorder={order => update('sectionOrder', order)}
           />
         </div>
 
