@@ -168,10 +168,21 @@ button { cursor: pointer; font-family: inherit; }
 /* ══════════════════════════════════════════════════════════════════════════════
    LOGIN PAGE
 ══════════════════════════════════════════════════════════════════════════════ */
-.login-page { height: 100vh; display: flex; align-items: center; justify-content: center; background: #F4F5F7; }
-.login-card { background: #fff; border: 1px solid #e4e4e4; border-radius: 16px; padding: 48px 40px; width: 380px; text-align: center; box-shadow: 0 8px 40px rgba(0,0,0,.06); }
-.login-logo { margin: 0 auto 24px; display: inline-flex; }
-.login-card h1 { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
-.login-card p { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 32px; }
-.login-google-btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 13px 24px; border: 1.5px solid #e4e4e4; border-radius: 8px; background: #fff; font-size: 15px; font-weight: 600; color: #333; transition: border-color .2s, box-shadow .2s; }
-.login-google-btn:hover { border-color: #aaa; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.login-page {
+  height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #f0f4f8 0%, #e8eef4 100%);
+}
+.login-card {
+  background: #fff; border-radius: 20px; padding: 52px 44px; width: 400px;
+  text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.1);
+}
+.login-logo { margin: 0 auto 28px; display: inline-flex; }
+.login-title { font-size: 26px; font-weight: 800; color: #111; margin-bottom: 10px; }
+.login-sub { font-size: 15px; color: #666; line-height: 1.6; margin-bottom: 36px; }
+.login-google-btn {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  width: 100%; padding: 14px 24px; border: 1.5px solid #e0e0e0; border-radius: 10px;
+  background: #fff; font-size: 15px; font-weight: 600; color: #222;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.login-google-btn:hover { border-color: #0099CC; box-shadow: 0 4px 16px rgba(0,153,204,.15); background: #f7fbff; }
