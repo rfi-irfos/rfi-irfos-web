@@ -46,8 +46,8 @@ cd backend && cargo run
 cd frontend && npm run dev
 ```
 
-Open: **http://localhost:5173** — public site  
-Admin: **http://localhost:5173/admin** — login and edit
+Open: **[http://localhost:5173](http://localhost:5173)** — public site  
+Admin: **[http://localhost:5173/admin](http://localhost:5173/admin)** — login and edit
 
 ---
 
