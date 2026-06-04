@@ -11,11 +11,15 @@ export function useContent() {
     try {
       setLoading(true)
       const res = await fetch('/api/content')
-      if (!res.ok) throw new Error('Failed to load content')
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
       setContent(await res.json())
       setError(null)
     } catch (e) {
-      setError(String(e))
+      // Backend not running yet — fall back to defaults so the site still renders
+      console.warn('[rfi-template] Backend unreachable, using default content.', e)
+      const { defaultContent } = await import('../types/defaultContent')
+      setContent(defaultContent)
+      setError(null)
     } finally {
       setLoading(false)
     }
