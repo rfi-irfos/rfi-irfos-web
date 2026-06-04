@@ -4,6 +4,9 @@ A minimalist, high-performance website builder kit. Fast. No bloat. No subscript
 
 **The product:** Clone this repo for any client. They get a fully-built website on their domain. If they want Tier 3, they also get a Gmail-authenticated admin panel to edit everything themselves — texts, images, products — live, no deployments needed.
 
+**[http://localhost:5173](http://localhost:5173)** — public site  
+**[http://localhost:5173/admin](http://localhost:5173/admin)** — admin panel
+
 ---
 
 ## Pricing
