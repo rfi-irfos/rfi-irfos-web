@@ -21,6 +21,9 @@ export interface SiteContent {
     ctaLabel: string
     ctaHref: string
     image: string
+    bgX?: number
+    bgY?: number
+    minHeight?: number
   }
   features: {
     title: string

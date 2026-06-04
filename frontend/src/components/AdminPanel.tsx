@@ -115,6 +115,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
             editMode={true}
             onTextChange={(field, value) => update(field, value)}
             onImageClick={handleImageClick}
+            onUpdate={(field, value) => update(field, value)}
           />
         </div>
 
