@@ -47,8 +47,8 @@
   "hero": {
     "ctaHref": "#products",
     "ctaLabel": "Mehr erfahren",
-    "headline": "Willkommen bei uns",
-    "image": "",
+    "headline": "Hallo Zabih!",
+    "image": "/uploads/b1619156-e6d8-43f6-b6c8-351f764d394e.png",
     "subheadline": "Wir bieten Ihnen beste Qualität zu fairen Preisen."
   },
   "meta": {
@@ -86,18 +86,18 @@
         "price": "€99"
       },
       {
-        "description": "Kurze Beschreibung.",
+        "description": "Kurze Beschreibung",
         "id": "p2",
         "image": "",
         "name": "Produkt 2",
         "price": "€149"
       },
       {
-        "description": "Kurze Beschreibung.",
+        "description": "das st ein kuchen",
         "id": "p3",
-        "image": "",
-        "name": "Produkt 3",
-        "price": "€199"
+        "image": "/uploads/cb977904-be4f-473a-bb60-a5937e13892b.png",
+        "name": "Kuchen",
+        "price": "€19921651545"
       }
     ],
     "title": "Unsere Produkte"
