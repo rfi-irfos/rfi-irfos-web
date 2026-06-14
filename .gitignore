@@ -34,3 +34,7 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# Runtime data (not source)
+backend/contacts.jsonl
+backend/uploads/

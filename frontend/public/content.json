@@ -7,7 +7,7 @@
     "font": "system-ui, -apple-system, 'Segoe UI', sans-serif"
   },
   "nav": {
-    "logo": "/uploads/etb-logo.jpg",
+    "logo": "uploads/etb-logo.jpg",
     "brand": "e-techbike.at",
     "links": [
       { "label": "Kategorien", "href": "#categories" },
@@ -28,7 +28,7 @@
     "ctaHref": "#products",
     "ctaSecLabel": "Beratung anfragen",
     "ctaSecHref": "#location",
-    "image": "/uploads/etb-rks-mx25.jpg",
+    "image": "uploads/etb-rks-mx25.jpg",
     "bgX": 50,
     "bgY": 40,
     "minHeight": 680
@@ -45,12 +45,12 @@
     "eyebrow": "Sortiment",
     "title": "Für jeden das richtige Fahrzeug",
     "items": [
-      { "id": "c1", "name": "E-Bikes", "sub": "City · Faltrad · Mountain", "image": "/uploads/etb-rks-faltbike.jpg" },
-      { "id": "c2", "name": "E-Mopeds", "sub": "25 km/h · 45 km/h", "image": "/uploads/etb-tailg-runner.png" },
-      { "id": "c3", "name": "E-Scooter", "sub": "Führerscheinfrei", "image": "/uploads/etb-escooter.png" },
-      { "id": "c4", "name": "Seniorenmobile", "sub": "Komfort & Sicherheit", "image": "/uploads/etb-kuba-grape.png" },
-      { "id": "c5", "name": "Batterien & Akkus", "sub": "Lithium · Bleigel", "image": "/uploads/etb-akku-48v.jpg" },
-      { "id": "c6", "name": "Neue Modelle", "sub": "Jetzt verfügbar", "image": "/uploads/etb-ebike2.jpg" }
+      { "id": "c1", "name": "E-Bikes", "sub": "City · Faltrad · Mountain", "image": "uploads/etb-rks-faltbike.jpg" },
+      { "id": "c2", "name": "E-Mopeds", "sub": "25 km/h · 45 km/h", "image": "uploads/etb-tailg-runner.png" },
+      { "id": "c3", "name": "E-Scooter", "sub": "Führerscheinfrei", "image": "uploads/etb-escooter.png" },
+      { "id": "c4", "name": "Seniorenmobile", "sub": "Komfort & Sicherheit", "image": "uploads/etb-kuba-grape.png" },
+      { "id": "c5", "name": "Batterien & Akkus", "sub": "Lithium · Bleigel", "image": "uploads/etb-akku-48v.jpg" },
+      { "id": "c6", "name": "Neue Modelle", "sub": "Jetzt verfügbar", "image": "uploads/etb-ebike2.jpg" }
     ]
   },
   "products": {
@@ -60,37 +60,37 @@
       {
         "id": "p1", "name": "RKS Falt-E-Bike Pro", "badge": "Bestseller",
         "category": "E-Bikes", "description": "Kompaktes Falt-E-Bike für Stadt und Alltag.",
-        "price": "ab €899", "image": "/uploads/etb-rks-faltbike.jpg",
+        "price": "ab €899", "image": "uploads/etb-rks-faltbike.jpg",
         "specs": ["48V", "20Ah", "80 km", "Shimano 7G"]
       },
       {
         "id": "p2", "name": "RKS MX25 PRO Faltrad", "badge": "",
         "category": "E-Bikes", "description": "Führerscheinfreies 25 km/h Faltrad mit 250W Motor.",
-        "price": "ab €799", "image": "/uploads/etb-rks-mx25.jpg",
+        "price": "ab €799", "image": "uploads/etb-rks-mx25.jpg",
         "specs": ["25 km/h", "250W", "35–45 km", "führerscheinfrei"]
       },
       {
         "id": "p3", "name": "TailG E-Moped Runner", "badge": "Beliebt",
         "category": "E-Mopeds", "description": "Straßenzugelassenes E-Moped mit Topcase inklusive.",
-        "price": "ab €1.290", "image": "/uploads/etb-tailg-runner.png",
+        "price": "ab €1.290", "image": "uploads/etb-tailg-runner.png",
         "specs": ["45 km/h", "60 km", "Topcase", "StVO"]
       },
       {
         "id": "p4", "name": "Bikely ZL9 E-Scooter", "badge": "",
         "category": "E-Scooter", "description": "Kompakter Stadtscooter, führerscheinfrei.",
-        "price": "ab €690", "image": "/uploads/etb-bikely-zl9.jpg",
+        "price": "ab €690", "image": "uploads/etb-bikely-zl9.jpg",
         "specs": ["25 km/h", "45 km", "kompakt", "führerscheinfrei"]
       },
       {
         "id": "p5", "name": "Lithium Akku 48V 25Ah", "badge": "",
         "category": "Batterien", "description": "Hochleistungs-Akku mit BMS-Schutz und 5 Jahren Garantie.",
-        "price": "ab €599", "image": "/uploads/etb-akku-48v.jpg",
+        "price": "ab €599", "image": "uploads/etb-akku-48v.jpg",
         "specs": ["48V", "25Ah", "BMS", "3.000+ Zyklen"]
       },
       {
         "id": "p6", "name": "KUBA Grape 25 MAX", "badge": "",
         "category": "Senioren", "description": "Überdachtes 3-rädriges Seniorenmobil mit CE/EEC-Zulassung.",
-        "price": "ab €1.890", "image": "/uploads/etb-kuba-grape.png",
+        "price": "ab €1.890", "image": "uploads/etb-kuba-grape.png",
         "specs": ["25 km/h", "3-rädrig", "Überdachung", "CE/EEC"]
       }
     ]

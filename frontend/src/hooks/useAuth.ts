@@ -1,30 +1,28 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
-export interface User {
-  email: string
-  name: string
-  picture: string
-}
+export interface User { name: string; email: string; picture: string }
+
+const SESSION_KEY = 'rfi_admin_ok'
+const ADMIN_PW = import.meta.env.VITE_ADMIN_PASSWORD as string | undefined
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(() =>
+    sessionStorage.getItem(SESSION_KEY) ? { name: 'Admin', email: '', picture: '' } : null
+  )
 
-  useEffect(() => {
-    fetch('/api/me')
-      .then(r => r.ok ? r.json() : null)
-      .then(data => setUser(data))
-      .catch(() => setUser(null))
-      .finally(() => setLoading(false))
-  }, [])
+  const login = (password: string): boolean => {
+    if (!ADMIN_PW || password !== ADMIN_PW) return false
+    sessionStorage.setItem(SESSION_KEY, '1')
+    setUser({ name: 'Admin', email: '', picture: '' })
+    return true
+  }
 
-  const login = () => { window.location.href = '/auth/google' }
-
-  const logout = async () => {
-    await fetch('/auth/logout', { method: 'POST' })
+  const logout = () => {
+    sessionStorage.removeItem(SESSION_KEY)
     setUser(null)
+    window.location.hash = ''
     window.location.href = '/'
   }
 
-  return { user, loading, login, logout }
+  return { user, loading: false, login, logout }
 }

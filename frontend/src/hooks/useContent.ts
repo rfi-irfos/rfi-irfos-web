@@ -1,58 +1,76 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import type { SiteContent } from '../types/content'
+import { ghRead, ghWrite, b64Encode, CONTENT_PATH, UPLOADS_DIR } from '../lib/github'
 
 export function useContent() {
-  const [content, setContent] = useState<SiteContent | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [saving, setSaving] = useState(false)
+  const [content, setContent]   = useState<SiteContent | null>(null)
+  const [loading, setLoading]   = useState(true)
+  const [saving, setSaving]     = useState(false)
+  const shaRef = useRef<string | null>(null)
 
-  const load = useCallback(async () => {
-    try {
-      setLoading(true)
-      const res = await fetch('/api/content')
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      setContent(await res.json())
-      setError(null)
-    } catch (e) {
-      // Backend not running yet — fall back to defaults so the site still renders
-      console.warn('[rfi-template] Backend unreachable, using default content.', e)
-      const { defaultContent } = await import('../types/defaultContent')
-      setContent(defaultContent)
-      setError(null)
-    } finally {
-      setLoading(false)
-    }
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const res = await fetch(`${import.meta.env.BASE_URL}content.json`)
+        if (!res.ok) throw new Error('missing')
+        setContent(await res.json())
+      } catch {
+        const { defaultContent } = await import('../types/defaultContent')
+        setContent(defaultContent)
+      } finally {
+        setLoading(false)
+      }
+    })()
   }, [])
 
-  useEffect(() => { load() }, [load])
+  // Lazily prime the SHA so we can update (not just create) the file
+  const ensureSha = useCallback(async () => {
+    if (shaRef.current) return shaRef.current
+    try {
+      const file = await ghRead(CONTENT_PATH)
+      shaRef.current = file.sha
+    } catch {
+      shaRef.current = null  // file doesn't exist yet — first save creates it
+    }
+    return shaRef.current
+  }, [])
 
   const save = useCallback(async (updated: SiteContent): Promise<boolean> => {
     setSaving(true)
     try {
-      const res = await fetch('/api/content', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updated),
-      })
-      if (res.ok) {
-        setContent(updated)
-        return true
-      }
+      const sha = await ensureSha()
+      const b64 = b64Encode(JSON.stringify(updated, null, 2))
+      const file = await ghWrite(CONTENT_PATH, b64, sha, 'content: update via admin panel')
+      shaRef.current = file?.sha ?? null
+      setContent(updated)
+      return true
+    } catch (e) {
+      console.error('Save failed:', e)
       return false
     } finally {
       setSaving(false)
     }
-  }, [])
+  }, [ensureSha])
 
   const uploadImage = useCallback(async (file: File): Promise<string | null> => {
-    const form = new FormData()
-    form.append('file', file)
-    const res = await fetch('/api/upload', { method: 'POST', body: form })
-    if (!res.ok) return null
-    const { url } = await res.json()
-    return url
+    return new Promise(resolve => {
+      const reader = new FileReader()
+      reader.onload = async () => {
+        try {
+          const b64 = (reader.result as string).split(',')[1]
+          const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, '-').toLowerCase()
+          const filename = `${Date.now()}-${safe}`
+          const path = `${UPLOADS_DIR}/${filename}`
+          await ghWrite(path, b64, null, `upload: ${filename}`)
+          resolve(`uploads/${filename}`)
+        } catch (e) {
+          console.error('Upload failed:', e)
+          resolve(null)
+        }
+      }
+      reader.readAsDataURL(file)
+    })
   }, [])
 
-  return { content, loading, error, saving, save, uploadImage, reload: load }
+  return { content, loading, saving, save, uploadImage }
 }

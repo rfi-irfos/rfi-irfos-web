@@ -1,4 +1,5 @@
 mod auth;
+mod contact;
 mod content;
 mod upload;
 
@@ -55,7 +56,6 @@ async fn main() {
         tracing::warn!("DEV_MODE=true — auth is bypassed, do not use in production");
     }
 
-    // SPA fallback: serve index.html for unknown paths
     let index_html = static_dir.join("index.html");
     let spa_fallback = ServeDir::new(&static_dir)
         .not_found_service(ServeFile::new(&index_html));
@@ -69,9 +69,10 @@ async fn main() {
         .route("/api/me", get(auth::get_me))
         .route("/api/content", get(content::get_content).put(content::update_content))
         .route("/api/upload", post(upload::upload_file))
-        // Uploads (user-uploaded images)
+        .route("/api/contact", post(contact::submit_contact))
+        // Uploads
         .nest_service("/uploads", ServeDir::new(&uploads_dir))
-        // React SPA (all other paths)
+        // React SPA
         .fallback_service(spa_fallback)
         .with_state(state)
         .layer(CorsLayer::permissive());
