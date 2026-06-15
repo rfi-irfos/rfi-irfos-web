@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react'
-import type { SiteContent, SectionId, CanvasPos } from '../types/content'
+import type { SiteContent, SectionId, CanvasPos, ProductItem } from '../types/content'
 import { useTheme, type Theme } from '../hooks/useTheme'
+import { useLang, type Lang } from '../hooks/useLang'
 
 // ── Edit context ─────────────────────────────────────────────────────────────
 
@@ -93,7 +94,12 @@ function FormatToolbar({ anchorEl }: { anchorEl: HTMLElement | null }) {
   const tbW = 308
   const left = Math.max(8, Math.min(rect.left + rect.width / 2 - tbW / 2, window.innerWidth - tbW - 8))
   const top = rect.top < 56 ? rect.bottom + 6 : rect.top - 46
-  const exec = (cmd: string, val?: string) => { document.execCommand(cmd, false, val); anchorEl.focus() }
+  const exec = (cmd: string, val?: string) => {
+    anchorEl.focus()
+    // produce CSS spans (not legacy <font>) so colour/size actually render
+    if (cmd === 'foreColor' || cmd === 'fontSize') { try { document.execCommand('styleWithCSS', false, 'true') } catch { /* noop */ } }
+    document.execCommand(cmd, false, val)
+  }
   return (
     <div className="format-toolbar" style={{ position: 'fixed', top, left, width: tbW, zIndex: 9999 }} onMouseDown={e => e.preventDefault()}>
       <button className="fmt-btn fmt-b" onClick={() => exec('bold')}>B</button>
@@ -207,19 +213,21 @@ function TrustIcon({ icon }: { icon: string }) {
 
 // ── Contact form ──────────────────────────────────────────────────────────────
 
-function ContactForm() {
+function ContactForm({ email }: { email: string }) {
+  const { t } = useLang()
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
   const [status, setStatus] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
 
   const set = (k: string, v: string) => setForm(p => ({ ...p, [k]: v }))
+  const to = email || ''
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     const key = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
     if (!key) {
       // Fallback: open mailto pre-filled
-      const body = encodeURIComponent(`Name: ${form.name}\nTelefon: ${form.phone}\n\n${form.message}`)
-      window.location.href = `mailto:graz@bikelyshop.at?subject=Kontaktanfrage von ${encodeURIComponent(form.name)}&body=${body}`
+      const body = encodeURIComponent(`Name: ${form.name}\nPhone: ${form.phone}\n\n${form.message}`)
+      window.location.href = `mailto:${to}?subject=${encodeURIComponent(`${t.mailSubject} ${form.name}`)}&body=${body}`
       return
     }
     setStatus('sending')
@@ -229,7 +237,7 @@ function ContactForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           access_key: key,
-          subject: `Kontaktanfrage von ${form.name}`,
+          subject: `${t.mailSubject} ${form.name}`,
           ...form,
         }),
       })
@@ -244,7 +252,7 @@ function ContactForm() {
     return (
       <div className="site-contact-form-success">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        <p>Danke! Wir melden uns bald bei Ihnen.</p>
+        <p>{t.success}</p>
       </div>
     )
   }
@@ -252,15 +260,15 @@ function ContactForm() {
   return (
     <form className="site-contact-form" onSubmit={submit}>
       <div className="site-contact-form-row">
-        <input placeholder="Ihr Name" required value={form.name} onChange={e => set('name', e.target.value)} />
-        <input placeholder="E-Mail-Adresse" type="email" required value={form.email} onChange={e => set('email', e.target.value)} />
+        <input placeholder={t.namePlaceholder} required value={form.name} onChange={e => set('name', e.target.value)} />
+        <input placeholder={t.emailPlaceholder} type="email" required value={form.email} onChange={e => set('email', e.target.value)} />
       </div>
-      <input placeholder="Telefon (optional)" value={form.phone} onChange={e => set('phone', e.target.value)} />
-      <textarea placeholder="Ihre Nachricht …" rows={4} required value={form.message} onChange={e => set('message', e.target.value)} />
+      <input placeholder={t.phonePlaceholder} value={form.phone} onChange={e => set('phone', e.target.value)} />
+      <textarea placeholder={t.messagePlaceholder} rows={4} required value={form.message} onChange={e => set('message', e.target.value)} />
       <button type="submit" disabled={status === 'sending'} className="site-contact-form-btn">
-        {status === 'sending' ? 'Wird gesendet…' : 'Nachricht senden'}
+        {status === 'sending' ? `${t.sending}…` : t.send}
       </button>
-      {status === 'err' && <p className="site-contact-form-err">Fehler beim Senden. Bitte versuchen Sie es erneut.</p>}
+      {status === 'err' && <p className="site-contact-form-err">{t.error}</p>}
     </form>
   )
 }
@@ -297,26 +305,55 @@ function IconClose() {
   return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 }
 
-const THEME_OPTS: { id: Theme; label: string; icon: React.ReactNode }[] = [
-  { id: 'light', label: 'Helles Design', icon: <IconSun /> },
-  { id: 'dark', label: 'Dunkles Design', icon: <IconMoon /> },
-  { id: 'hc', label: 'Hoher Kontrast', icon: <IconContrast /> },
+const THEME_OPTS: { id: Theme; icon: React.ReactNode }[] = [
+  { id: 'light', icon: <IconSun /> },
+  { id: 'dark', icon: <IconMoon /> },
+  { id: 'hc', icon: <IconContrast /> },
 ]
 
 function ThemeToggle({ theme, setTheme }: { theme: Theme; setTheme: (t: Theme) => void }) {
+  const { t } = useLang()
+  const labels: Record<Theme, string> = { light: t.themeLight, dark: t.themeDark, hc: t.themeContrast }
   return (
-    <div className="theme-toggle" role="group" aria-label="Farbschema wählen">
+    <div className="theme-toggle" role="group" aria-label={t.colorScheme}>
       {THEME_OPTS.map(o => (
         <button
           key={o.id}
           type="button"
           className={`theme-toggle-btn ${theme === o.id ? 'active' : ''}`}
           aria-pressed={theme === o.id}
-          aria-label={o.label}
-          title={o.label}
+          aria-label={labels[o.id]}
+          title={labels[o.id]}
           onClick={() => setTheme(o.id)}
         >
           {o.icon}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+// ── Language toggle (EN / DE) ─────────────────────────────────────────────────
+
+const LANG_OPTS: { id: Lang; label: string }[] = [
+  { id: 'en', label: 'EN' },
+  { id: 'de', label: 'DE' },
+  { id: 'hu', label: 'HU' },
+]
+
+function LanguageToggle() {
+  const { lang, setLang, t } = useLang()
+  return (
+    <div className="lang-toggle" role="group" aria-label={t.language}>
+      {LANG_OPTS.map(o => (
+        <button
+          key={o.id}
+          type="button"
+          className={`lang-toggle-btn ${lang === o.id ? 'active' : ''}`}
+          aria-pressed={lang === o.id}
+          onClick={() => setLang(o.id)}
+        >
+          {o.label}
         </button>
       ))}
     </div>
@@ -343,9 +380,27 @@ export function PublicSite({
   const { meta, nav, hero, trust, categories, products, usp, news, contact, whatsapp, footer } = content
 
   const [focusedEl, setFocusedEl] = useState<HTMLElement | null>(null)
-  const [activeTab, setActiveTab] = useState('Alle')
+  const [activeTab, setActiveTab] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
+  const [modalProduct, setModalProduct] = useState<ProductItem | null>(null)
+  const [browseCatIdx, setBrowseCatIdx] = useState<number | null>(null)
   const { theme, setTheme } = useTheme()
+  const { t } = useLang()
+
+  // Keep the product filter valid when the language (and its tab labels) changes
+  useEffect(() => {
+    const tabs = content.products?.tabs ?? []
+    if (tabs.length && !tabs.includes(activeTab)) setActiveTab(tabs[0])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [content.products?.tabs])
+
+  // Close the session detail modal on Escape
+  useEffect(() => {
+    if (!modalProduct) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setModalProduct(null) }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [modalProduct])
   const [heroBgPos, setHeroBgPos] = useState({ x: hero.bgX ?? 50, y: hero.bgY ?? 50 })
   const [heroHeight, setHeroHeight] = useState(hero.minHeight ?? 680)
   const heroDragRef  = useRef<{ startX: number; startY: number; startBgX: number; startBgY: number } | null>(null)
@@ -587,7 +642,9 @@ export function PublicSite({
 
   // ── Normal / Edit render ─────────────────────────────────────────────────────
 
-  const filteredProducts = activeTab === 'Alle'
+  // First tab is always the "show all" tab, whatever its localized label is.
+  const allTab = products?.tabs?.[0] ?? ''
+  const filteredProducts = (activeTab === '' || activeTab === allTab)
     ? (products?.items ?? [])
     : (products?.items ?? []).filter(p => p.category === activeTab)
 
@@ -615,6 +672,7 @@ export function PublicSite({
             </nav>
             <div className="site-nav-right">
               <div className="site-nav-desktop">
+                <LanguageToggle />
                 <ThemeToggle theme={theme} setTheme={setTheme} />
                 {nav.phone && (
                   <a href={`tel:${nav.phone}`} className="site-nav-phone">
@@ -626,7 +684,7 @@ export function PublicSite({
                   <E field="nav.ctaLabel" value={nav.ctaLabel} as="a" href={nav.ctaHref ?? '#'} className="site-nav-cta" />
                 )}
               </div>
-              <button className="site-nav-burger" aria-label="Menü öffnen" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
+              <button className="site-nav-burger" aria-label={t.openMenu} aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
                 <IconMenu />
               </button>
             </div>
@@ -638,7 +696,7 @@ export function PublicSite({
         <aside className={`site-mobile-drawer ${menuOpen ? 'open' : ''}`} aria-hidden={!menuOpen}>
           <div className="site-mobile-drawer-top">
             <span className="site-mobile-drawer-brand">{nav.brand}</span>
-            <button className="site-mobile-close" aria-label="Menü schließen" onClick={() => setMenuOpen(false)}>
+            <button className="site-mobile-close" aria-label={t.closeMenu} onClick={() => setMenuOpen(false)}>
               <IconClose />
             </button>
           </div>
@@ -649,7 +707,13 @@ export function PublicSite({
           </nav>
           <div className="site-mobile-actions">
             <div>
-              <div className="site-mobile-theme-label">Farbschema</div>
+              <div className="site-mobile-theme-label">{t.language}</div>
+              <div className="site-mobile-theme-row">
+                <LanguageToggle />
+              </div>
+            </div>
+            <div>
+              <div className="site-mobile-theme-label">{t.colorScheme}</div>
               <div className="site-mobile-theme-row">
                 <ThemeToggle theme={theme} setTheme={setTheme} />
               </div>
@@ -673,6 +737,10 @@ export function PublicSite({
           ref={heroRef as React.RefObject<HTMLElement>}
           onMouseDown={e => {
             if (!editMode) return
+            // don't hijack the drag when the user is selecting/clicking editable
+            // text, buttons or links — only drag from the bare hero background
+            const el = e.target as HTMLElement
+            if (el.isContentEditable || el.closest('.editable-text, .editable-img-wrap, button, a')) return
             heroDragRef.current = { startX: e.clientX, startY: e.clientY, startBgX: heroBgPos.x, startBgY: heroBgPos.y }
           }}
         >
@@ -717,24 +785,86 @@ export function PublicSite({
           </div>
         )}
 
-        {/* ── CATEGORIES ───────────────────────────────────────────────── */}
-        {(categories?.items?.length ?? 0) > 0 && (
-          <section className="site-section site-categories" id="categories">
-            {categories.eyebrow && <div className="site-eyebrow">{categories.eyebrow}</div>}
-            <E field="categories.title" value={categories.title} as="h2" className="site-section-title" />
-            <div className="site-cat-grid">
-              {categories.items.map((c, i) => (
-                <div key={c.id} className="site-cat-card">
-                  <EImg field={`categories.items.${i}.image`} src={c.image} alt={c.name} className="site-cat-img" />
-                  <div className="site-cat-overlay">
-                    <E field={`categories.items.${i}.name`} value={c.name} as="div" className="site-cat-name" />
-                    <E field={`categories.items.${i}.sub`} value={c.sub} as="div" className="site-cat-sub" />
+        {/* ── CATEGORIES / DRILL-DOWN BROWSER ──────────────────────────── */}
+        {(categories?.items?.length ?? 0) > 0 && (() => {
+          // editMode: plain editable grid. Live: tier1 audiences -> tier2 that
+          // audience's sessions (back + breadcrumb) -> tier3 detail modal.
+          const browseCat = browseCatIdx != null ? categories.items[browseCatIdx] : null
+          const browseSessions = browseCat
+            ? (products?.items ?? []).filter(p => !browseCat.tab || p.category === browseCat.tab)
+            : []
+          return (
+            <section className="site-section site-categories site-browser" id="categories">
+              {(editMode || browseCatIdx == null) ? (
+                <>
+                  {categories.eyebrow && <div className="site-eyebrow">{categories.eyebrow}</div>}
+                  <E field="categories.title" value={categories.title} as="h2" className="site-section-title" />
+                  <div className="site-cat-grid">
+                    {categories.items.map((c, i) => (
+                      <div
+                        key={c.id}
+                        className={`site-cat-card ${!editMode ? 'clickable' : ''}`}
+                        {...(!editMode ? {
+                          role: 'button',
+                          tabIndex: 0,
+                          onClick: () => setBrowseCatIdx(i),
+                          onKeyDown: (e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setBrowseCatIdx(i) } },
+                        } : {})}
+                      >
+                        <EImg field={`categories.items.${i}.image`} src={c.image} alt={c.name} className="site-cat-img" />
+                        <div className="site-cat-overlay">
+                          <E field={`categories.items.${i}.name`} value={c.name} as="div" className="site-cat-name" />
+                          <E field={`categories.items.${i}.sub`} value={c.sub} as="div" className="site-cat-sub" />
+                          {!editMode && <span className="site-cat-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+                </>
+              ) : (
+                <>
+                  <div className="site-browser-header">
+                    <button className="site-browser-back" onClick={() => setBrowseCatIdx(null)}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                      {t.back}
+                    </button>
+                    <h2 className="site-browser-title">{browseCat?.name}</h2>
+                    <nav className="site-browser-breadcrumb" aria-label="Breadcrumb">
+                      <button onClick={() => setBrowseCatIdx(null)}>{categories.title}</button>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                      <span>{browseCat?.name}</span>
+                    </nav>
+                  </div>
+                  <div className="site-product-grid">
+                    {browseSessions.map(p => (
+                      <div key={p.id} className="site-pcard clickable" role="button" tabIndex={0}
+                        onClick={() => setModalProduct(p)}
+                        onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setModalProduct(p) } }}>
+                        <div className="site-pcard-img">
+                          {p.badge && <div className="site-pcard-badge">{p.badge}</div>}
+                          {p.image ? <img src={p.image} alt={p.name} className="site-pcard-photo" /> : null}
+                        </div>
+                        <div className="site-pcard-body">
+                          <div className="site-pcard-brand">{p.category}</div>
+                          <div className="site-pcard-name" dangerouslySetInnerHTML={{ __html: p.name }} />
+                          {(p.specs?.length ?? 0) > 0 && (
+                            <div className="site-pcard-specs">{p.specs!.slice(0, 3).map((s, si) => <span key={si} className="site-spec">{s}</span>)}</div>
+                          )}
+                          <div className="site-pcard-desc" dangerouslySetInnerHTML={{ __html: p.description }} />
+                          <div className="site-pcard-foot">
+                            <div className="site-pcard-price" dangerouslySetInnerHTML={{ __html: p.price }} />
+                            <a href={`mailto:${contact?.email ?? ''}`} className="site-pcard-cta" onClick={e => e.stopPropagation()}>{t.book}</a>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {browseSessions.length === 0 && <p className="site-browser-empty">—</p>}
+                  </div>
+                </>
+              )}
+            </section>
+          )
+        })()}
 
         {/* ── PRODUCTS ─────────────────────────────────────────────────── */}
         {(products?.items?.length ?? 0) > 0 && (
@@ -743,10 +873,10 @@ export function PublicSite({
               <E field="products.title" value={products.title} as="h2" className="site-products-h2" />
               {!editMode && (products?.tabs?.length ?? 0) > 1 && (
                 <div className="site-tabs">
-                  {products.tabs.map(tab => (
+                  {products.tabs.map((tab, ti) => (
                     <button
                       key={tab}
-                      className={`site-tab-btn ${activeTab === tab ? 'active' : ''}`}
+                      className={`site-tab-btn ${activeTab === tab || (activeTab === '' && ti === 0) ? 'active' : ''}`}
                       onClick={() => setActiveTab(tab)}
                     >{tab}</button>
                   ))}
@@ -755,7 +885,16 @@ export function PublicSite({
             </div>
             <div className="site-product-grid">
               {(editMode ? products.items : filteredProducts).map((p, i) => (
-                <div key={p.id} className="site-pcard">
+                <div
+                  key={p.id}
+                  className={`site-pcard ${!editMode ? 'clickable' : ''}`}
+                  {...(!editMode ? {
+                    role: 'button',
+                    tabIndex: 0,
+                    onClick: () => setModalProduct(p),
+                    onKeyDown: (e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setModalProduct(p) } },
+                  } : {})}
+                >
                   <div className="site-pcard-img">
                     {p.badge && <div className="site-pcard-badge">{p.badge}</div>}
                     <EImg field={`products.items.${i}.image`} src={p.image} alt={p.name} className="site-pcard-photo" />
@@ -771,7 +910,7 @@ export function PublicSite({
                     <E field={`products.items.${i}.description`} value={p.description} as="div" className="site-pcard-desc" />
                     <div className="site-pcard-foot">
                       <E field={`products.items.${i}.price`} value={p.price} as="div" className="site-pcard-price" />
-                      <a href={`mailto:${contact?.email ?? ''}`} className="site-pcard-cta">Anfragen</a>
+                      <a href={`mailto:${contact?.email ?? ''}`} className="site-pcard-cta" onClick={e => e.stopPropagation()}>{t.book}</a>
                     </div>
                   </div>
                 </div>
@@ -824,6 +963,11 @@ export function PublicSite({
             </div>
           )}
           <div className="site-location-info">
+            {contact?.photo && (
+              <div className="site-contact-photo">
+                <EImg field="contact.photo" src={contact.photo} alt="Niki" />
+              </div>
+            )}
             <E field="contact.title" value={contact?.title ?? ''} as="h2" className="site-location-h2" />
             {contact?.subtitle && <E field="contact.subtitle" value={contact.subtitle} as="p" className="site-location-sub" />}
             <div className="site-cinfo-list">
@@ -847,9 +991,9 @@ export function PublicSite({
               )}
             </div>
             {contact?.formEnabled && !editMode ? (
-              <ContactForm />
+              <ContactForm email={contact?.email ?? ''} />
             ) : (
-              <a href={`mailto:${contact?.email ?? ''}`} className="site-btn-lime-solid">Nachricht senden</a>
+              <a href={`mailto:${contact?.email ?? ''}`} className="site-btn-lime-solid">{t.send}</a>
             )}
           </div>
         </section>
@@ -880,6 +1024,35 @@ export function PublicSite({
             </div>
           </div>
         </footer>
+
+        {/* ── SESSION DETAIL MODAL (tier 3) ────────────────────────────── */}
+        {modalProduct && !editMode && (
+          <div className="site-modal-scrim" onClick={() => setModalProduct(null)} role="dialog" aria-modal="true" aria-label={modalProduct.name}>
+            <div className="site-modal" onClick={e => e.stopPropagation()}>
+              <button className="site-modal-close" aria-label={t.close} onClick={() => setModalProduct(null)}><IconClose /></button>
+              {modalProduct.image && (
+                <div className="site-modal-img"><img src={modalProduct.image} alt={modalProduct.name} /></div>
+              )}
+              <div className="site-modal-body">
+                {modalProduct.category && <div className="site-modal-brand">{modalProduct.category}</div>}
+                <h3 className="site-modal-title" dangerouslySetInnerHTML={{ __html: modalProduct.name }} />
+                {(modalProduct.specs?.length ?? 0) > 0 && (
+                  <>
+                    <div className="site-modal-label">{t.whatsIncluded}</div>
+                    <div className="site-modal-specs">
+                      {modalProduct.specs!.map((s, si) => <span key={si} className="site-spec">{s}</span>)}
+                    </div>
+                  </>
+                )}
+                <p className="site-modal-desc" dangerouslySetInnerHTML={{ __html: modalProduct.description }} />
+                <div className="site-modal-foot">
+                  <div className="site-modal-price" dangerouslySetInnerHTML={{ __html: modalProduct.price }} />
+                  <a href={`mailto:${contact?.email ?? ''}?subject=${encodeURIComponent(`${t.mailSubject}`)}`} className="site-btn-lime-lg" onClick={() => setModalProduct(null)}>{t.bookTrial}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* ── WHATSAPP FLOAT ───────────────────────────────────────────── */}
         {whatsapp?.enabled && !editMode && (
