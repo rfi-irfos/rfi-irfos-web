@@ -6,10 +6,23 @@ export interface ProductItem {
   name: string
   description: string
   price: string
+  regularPrice?: string   // crossed-out original price for sales/discounts
   image: string
+  images?: string[]       // additional gallery images
   badge?: string
   category: string
+  subcategory?: string
   specs?: string[]
+  specsTable?: { label: string; value: string }[]
+  details?: string        // long-form HTML detail text
+  delivery?: string       // delivery/availability info
+}
+
+export interface SubCategoryItem {
+  id: string
+  name: string
+  image: string
+  description?: string
 }
 
 export interface CategoryItem {
@@ -18,7 +31,8 @@ export interface CategoryItem {
   sub: string
   image: string
   href?: string
-  tab?: string   // which Sessions filter tab this audience drills into
+  tab?: string              // which Sessions filter tab this audience drills into
+  subcategories?: SubCategoryItem[]
 }
 
 export interface NewsItem {
@@ -36,6 +50,15 @@ export interface TrustItem {
   text: string
 }
 
+export interface PageItem {
+  id: string
+  title: string
+  slug: string          // used as `#p/:slug` hash route
+  body: string          // HTML content
+  showInNav?: boolean
+  metaTitle?: string
+}
+
 export type SectionId = 'trust' | 'categories' | 'products' | 'usp' | 'news' | 'location'
 export const DEFAULT_SECTION_ORDER: SectionId[] = ['trust', 'categories', 'products', 'usp', 'news', 'location']
 
@@ -43,7 +66,9 @@ export interface CanvasPos { x: number; y: number }
 
 export interface SiteContent {
   sectionOrder?: SectionId[]
+  hiddenSections?: SectionId[]
   positions?: Record<string, CanvasPos>
+  pages?: PageItem[]
   meta: {
     title: string
     description: string
@@ -85,6 +110,8 @@ export interface SiteContent {
     phone: string
     address: string
     whatsapp?: string
+    facebook?: string
+    instagram?: string
     mapSrc?: string
     formEnabled?: boolean
   }

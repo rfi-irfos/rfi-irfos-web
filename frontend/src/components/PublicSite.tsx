@@ -88,34 +88,49 @@ function EImg({ field, src, alt = '', className, style }: EImgProps) {
 
 // ── Format toolbar ────────────────────────────────────────────────────────────
 
+// Module-level saved range — survives re-renders between mousedown and click
+let _fmtSavedRange: Range | null = null
+
 function FormatToolbar({ anchorEl }: { anchorEl: HTMLElement | null }) {
   if (!anchorEl) return null
   const rect = anchorEl.getBoundingClientRect()
-  const tbW = 308
+  const tbW = 330
   const left = Math.max(8, Math.min(rect.left + rect.width / 2 - tbW / 2, window.innerWidth - tbW - 8))
-  const top = rect.top < 56 ? rect.bottom + 6 : rect.top - 46
+  const top = rect.top < 56 ? rect.bottom + 6 : rect.top - 48
+
   const exec = (cmd: string, val?: string) => {
     anchorEl.focus()
-    // produce CSS spans (not legacy <font>) so colour/size actually render
+    if (_fmtSavedRange) {
+      const sel = window.getSelection()
+      if (sel) { sel.removeAllRanges(); sel.addRange(_fmtSavedRange) }
+    }
     if (cmd === 'foreColor' || cmd === 'fontSize') { try { document.execCommand('styleWithCSS', false, 'true') } catch { /* noop */ } }
     document.execCommand(cmd, false, val)
   }
+
+  const onTbMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault()
+    const sel = window.getSelection()
+    if (sel && sel.rangeCount > 0) _fmtSavedRange = sel.getRangeAt(0).cloneRange()
+  }
+
   return (
-    <div className="format-toolbar" style={{ position: 'fixed', top, left, width: tbW, zIndex: 9999 }} onMouseDown={e => e.preventDefault()}>
-      <button className="fmt-btn fmt-b" onClick={() => exec('bold')}>B</button>
-      <button className="fmt-btn fmt-i" onClick={() => exec('italic')}>I</button>
-      <button className="fmt-btn fmt-u" onClick={() => exec('underline')}>U</button>
+    <div className="format-toolbar" style={{ position: 'fixed', top, left, width: tbW, zIndex: 9999 }} onMouseDown={onTbMouseDown}>
+      <button type="button" className="fmt-btn fmt-b" onClick={() => exec('bold')}>B</button>
+      <button type="button" className="fmt-btn fmt-i" onClick={() => exec('italic')}>I</button>
+      <button type="button" className="fmt-btn fmt-u" onClick={() => exec('underline')}>U</button>
+      <button type="button" className="fmt-btn fmt-s" onClick={() => exec('strikeThrough')}>S</button>
       <div className="fmt-sep" />
-      <button className="fmt-btn" onClick={() => exec('justifyLeft')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg></button>
-      <button className="fmt-btn" onClick={() => exec('justifyCenter')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+      <button type="button" className="fmt-btn" onClick={() => exec('justifyLeft')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg></button>
+      <button type="button" className="fmt-btn" onClick={() => exec('justifyCenter')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
       <div className="fmt-sep" />
-      <button className="fmt-btn fmt-size-s" onClick={() => exec('fontSize', '2')}>S</button>
-      <button className="fmt-btn" onClick={() => exec('fontSize', '4')}>M</button>
-      <button className="fmt-btn fmt-size-l" onClick={() => exec('fontSize', '5')}>L</button>
+      <button type="button" className="fmt-btn fmt-size-s" onClick={() => exec('fontSize', '2')}>S</button>
+      <button type="button" className="fmt-btn" onClick={() => exec('fontSize', '4')}>M</button>
+      <button type="button" className="fmt-btn fmt-size-l" onClick={() => exec('fontSize', '5')}>L</button>
       <div className="fmt-sep" />
-      <label className="fmt-color-btn">
+      <label className="fmt-color-btn" onMouseDown={e => e.stopPropagation()}>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
-        <input type="color" defaultValue="#111111" onChange={e => exec('foreColor', e.target.value)} onMouseDown={e => e.stopPropagation()} className="fmt-color-input" />
+        <input type="color" defaultValue="#111111" onChange={e => exec('foreColor', e.target.value)} className="fmt-color-input" />
       </label>
     </div>
   )
