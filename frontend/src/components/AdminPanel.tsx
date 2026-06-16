@@ -85,7 +85,9 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
   // ── Canvas click → sidebar auto-navigate ─────────────────────────────────
 
   const handleCanvasClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = (e.target as HTMLElement).closest('[data-cid]') as HTMLElement | null
+    const target = e.target as HTMLElement
+    if (target.isContentEditable || target.closest('.editable-text')) return
+    const el = target.closest('[data-cid]') as HTMLElement | null
     if (!el) return
     const cid = el.dataset.cid ?? ''
     if (cid.startsWith('hero.') || cid.startsWith('nav.')) {
