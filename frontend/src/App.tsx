@@ -6,19 +6,22 @@ import { useLang } from './hooks/useLang'
 import { PublicSite } from './components/PublicSite'
 import { AdminPanel } from './components/AdminPanel'
 import { LoginPage } from './components/LoginPage'
+import { LegalPage } from './components/LegalPage'
 
-function isAdminHash(hash: string) {
-  return hash === '#admin' || hash.startsWith('#admin/')
+function getRoute(hash: string) {
+  if (hash === '#admin' || hash.startsWith('#admin/')) return { isAdmin: true, legalSlug: null }
+  if (hash.startsWith('#p/')) return { isAdmin: false, legalSlug: hash.slice(3) }
+  return { isAdmin: false, legalSlug: null }
 }
 
 export default function App() {
   const { lang } = useLang()
   const { content, loading, saving, save, uploadImage } = useContent(lang)
   const { user, login, logout } = useAuth()
-  const [admin, setAdmin] = useState(() => isAdminHash(window.location.hash))
+  const [route, setRoute] = useState(() => getRoute(window.location.hash))
 
   useEffect(() => {
-    const onHash = () => setAdmin(isAdminHash(window.location.hash))
+    const onHash = () => setRoute(getRoute(window.location.hash))
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
@@ -35,7 +38,7 @@ export default function App() {
     return <div className="error-screen">Content could not be loaded.</div>
   }
 
-  if (admin) {
+  if (route.isAdmin) {
     if (!user) return <LoginPage onLogin={login} />
     return (
       <AdminPanel
@@ -45,6 +48,18 @@ export default function App() {
         onSave={save}
         onUpload={uploadImage}
         onLogout={logout}
+      />
+    )
+  }
+
+  if (route.legalSlug) {
+    return (
+      <LegalPage
+        slug={route.legalSlug}
+        brand={content.nav?.brand}
+        phone={content.contact?.phone}
+        email={content.contact?.email}
+        address={content.contact?.address}
       />
     )
   }

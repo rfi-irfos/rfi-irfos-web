@@ -3,6 +3,11 @@ import type { SiteContent, SectionId, CanvasPos, ProductItem, NewsItem } from '.
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { useLang, type Lang } from '../hooks/useLang'
 
+// Convert server-side paths to hash routing so GitHub Pages never 404s on legal links
+function safeHref(href: string): string {
+  return href.startsWith('/') && !href.startsWith('//') ? `#p${href}` : href
+}
+
 // ── Edit context ─────────────────────────────────────────────────────────────
 
 interface EditCtx {
@@ -670,7 +675,7 @@ export function PublicSite({
             <div className="site-footer-bottom">
               <span>{footer?.brand} — {footer?.tagline}</span>
               <div className="site-footer-links">
-                {(footer?.links ?? []).map((l, i) => <a key={i} href={l.href}>{l.label}</a>)}
+                {(footer?.links ?? []).map((l, i) => <a key={i} href={safeHref(l.href)}>{l.label}</a>)}
               </div>
               <span>{footer?.copyright}</span>
             </div>
@@ -1058,7 +1063,7 @@ export function PublicSite({
               {footer.cols.map((col, ci) => (
                 <div key={ci} className="site-footer-col">
                   <h4>{col.title}</h4>
-                  {col.links.map((l, li) => <a key={li} href={l.href}>{l.label}</a>)}
+                  {col.links.map((l, li) => <a key={li} href={safeHref(l.href)}>{l.label}</a>)}
                 </div>
               ))}
             </div>
@@ -1067,7 +1072,7 @@ export function PublicSite({
             <E field="footer.copyright" value={footer?.copyright ?? ''} as="span" />
             <div className="site-footer-links">
               {(footer?.links ?? []).map((l, i) => (
-                <E key={i} field={`footer.links.${i}.label`} value={l.label} as="a" href={l.href} />
+                <E key={i} field={`footer.links.${i}.label`} value={l.label} as="a" href={safeHref(l.href)} />
               ))}
             </div>
           </div>
