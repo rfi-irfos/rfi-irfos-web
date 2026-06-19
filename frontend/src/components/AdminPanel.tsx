@@ -15,7 +15,7 @@ interface Props {
   onLogout: () => void
 }
 
-type PanelTab = 'products' | 'hero' | 'news' | 'contact' | 'style' | 'students'
+type PanelTab = 'products' | 'hero' | 'news' | 'contact' | 'style' | 'students' | 'ssp'
 type DeviceView = 'edit' | 'desktop' | 'tablet' | 'mobile'
 
 // ── Device preview switch (Edit / Desktop / Tablet / Mobile) ──────────────────
@@ -102,6 +102,8 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
       if (item) { setActiveTab('news'); setEditingNews(item.id) }
     } else if (cid.startsWith('contact.') || cid.startsWith('whatsapp.')) {
       setActiveTab('contact')
+    } else if (cid.startsWith('ssp.')) {
+      setActiveTab('ssp')
     } else if (cid.startsWith('meta.') || cid.startsWith('footer.')) {
       setActiveTab('style')
     }
@@ -229,6 +231,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
     { id: 'products', label: 'Sessions' },
     { id: 'hero',     label: 'Hero' },
     { id: 'news',     label: 'Blog' },
+    { id: 'ssp',      label: 'Member Portal' },
     { id: 'contact',  label: 'Contact' },
     { id: 'style',    label: 'Style' },
   ]
@@ -408,6 +411,29 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                   Blogbeitrag hinzufügen
                 </button>
               </div>
+            )}
+
+            {/* ── MEMBER PORTAL / SSP TAB ─────────────────────────────── */}
+            {activeTab === 'ssp' && (
+              <>
+                <PanelSection title="Member Portal Section">
+                  <Field label="Badge text">
+                    <input data-cid="ssp.badge" value={draft.ssp?.badge ?? ''} onChange={e => update('ssp.badge', e.target.value)} placeholder="Research Portal" />
+                  </Field>
+                  <Field label="Title">
+                    <input data-cid="ssp.title" value={draft.ssp?.title ?? ''} onChange={e => update('ssp.title', e.target.value)} placeholder="Your Member Portal" />
+                  </Field>
+                  <Field label="Description">
+                    <textarea rows={4} data-cid="ssp.sub" value={draft.ssp?.sub ?? ''} onChange={e => update('ssp.sub', e.target.value)} placeholder="Describe what members get access to..." style={{ resize: 'vertical' }} />
+                  </Field>
+                  <Field label="Button label">
+                    <input data-cid="ssp.button" value={draft.ssp?.button ?? ''} onChange={e => update('ssp.button', e.target.value)} placeholder="Member login →" />
+                  </Field>
+                  <div style={{ marginTop: 8, padding: '8px 10px', background: '#F8F5F0', borderRadius: 6, fontSize: 11, color: '#888', lineHeight: 1.5 }}>
+                    Leave Title empty to hide this section entirely.
+                  </div>
+                </PanelSection>
+              </>
             )}
 
             {/* ── CONTACT TAB ───────────────────────────────────────────── */}

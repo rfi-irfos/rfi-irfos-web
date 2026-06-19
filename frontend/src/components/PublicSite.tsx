@@ -1052,6 +1052,22 @@ export function PublicSite({
         </section>
 
         {/* ── FOOTER ───────────────────────────────────────────────────── */}
+        {/* ── MEMBER PORTAL / SSP CTA (optional section) ──────────────── */}
+        {content.ssp?.title && (
+          <section className="site-ssp-cta" data-cid="ssp.title">
+            <div className="site-ssp-inner">
+              {content.ssp.badge && <span className="site-ssp-badge" data-cid="ssp.badge">{content.ssp.badge}</span>}
+              <h2 className="site-ssp-title" data-cid="ssp.title">{content.ssp.title}</h2>
+              {content.ssp.sub && <p className="site-ssp-sub" data-cid="ssp.sub">{content.ssp.sub}</p>}
+              {content.ssp.button && (
+                <button className="site-btn-ssp" data-cid="ssp.button" onClick={() => {}}>
+                  {content.ssp.button}
+                </button>
+              )}
+            </div>
+          </section>
+        )}
+
         <footer className="site-footer">
           {(footer?.cols?.length ?? 0) > 0 && (
             <div className="site-footer-grid">

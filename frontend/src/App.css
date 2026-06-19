@@ -438,6 +438,17 @@ button { cursor: pointer; font-family: inherit; }
 .site[data-theme="hc"] .site-contact-form textarea::placeholder { color: #fff; opacity: .7; }
 .site[data-theme="hc"] .site-contact-form-btn { background: #ffd400; color: #000; }
 
+/* ── MEMBER PORTAL / SSP CTA ───────────────────────────────────────────────── */
+.site-ssp-cta { background: #2C3830; padding: 72px 60px; position: relative; text-align: center; }
+.site-ssp-cta::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #B8975A; }
+.site-ssp-inner { max-width: 640px; margin: 0 auto; }
+.site-ssp-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; background: #B8975A; color: #fff; padding: 5px 14px; border-radius: 3px; margin-bottom: 22px; }
+.site-ssp-title { font-family: 'Playfair Display', 'Georgia', serif; font-size: clamp(24px, 4vw, 34px); font-weight: 600; color: #fff; margin-bottom: 14px; line-height: 1.2; }
+.site-ssp-sub { font-size: 15px; color: rgba(255,255,255,.65); font-weight: 300; line-height: 1.7; margin-bottom: 28px; }
+.site-btn-ssp { display: inline-block; font-size: 15px; font-weight: 600; background: #B8975A; color: #fff; border: none; border-radius: 8px; padding: 14px 40px; cursor: pointer; transition: all .2s; font-family: inherit; box-shadow: 0 4px 16px rgba(184,151,90,.3); }
+.site-btn-ssp:hover { background: #A0833A; transform: translateY(-2px); }
+@media (max-width: 600px) { .site-ssp-cta { padding: 52px 24px; } }
+
 /* ── FOOTER (warm deep sage, readable light text — no grey) ───────────────── */
 .site-footer { background: #353F37; padding: 56px 60px 30px; }
 .site-footer-grid {

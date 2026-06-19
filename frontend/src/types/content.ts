@@ -124,4 +124,10 @@ export interface SiteContent {
     links: NavLink[]
     copyright: string
   }
+  ssp?: {
+    badge?: string
+    title?: string
+    sub?: string
+    button?: string
+  }
 }
