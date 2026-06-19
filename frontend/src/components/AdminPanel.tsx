@@ -15,7 +15,15 @@ interface Props {
   onLogout: () => void
 }
 
-type PanelTab = 'products' | 'hero' | 'news' | 'contact' | 'style' | 'students' | 'ssp' | 'pages' | 'inbox'
+type PanelTab = 'products' | 'hero' | 'news' | 'contact' | 'style' | 'students' | 'ssp' | 'pages' | 'inbox' | 'analytics'
+
+interface AnalyticsData {
+  total_views: number
+  unique_visitors: number
+  views_by_day: { day: string; views: number }[]
+  top_sources: { label: string; count: number }[]
+  top_paths: { label: string; count: number }[]
+}
 
 interface ContactInboxItem { name: string; email: string; phone: string; message: string; ts: string }
 function loadInbox(): ContactInboxItem[] { try { return JSON.parse(localStorage.getItem('rfi_contact_inbox') || '[]') } catch { return [] } }
@@ -65,6 +73,17 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
   const [contactInbox, setContactInbox] = useState<ContactInboxItem[]>(() => loadInbox())
   const [specsInput, setSpecsInput] = useState('')
   const [panelWidth, setPanelWidth] = useState(380)
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null)
+  const [analyticsLoading, setAnalyticsLoading] = useState(false)
+
+  useEffect(() => {
+    if (activeTab !== 'analytics') return
+    setAnalyticsLoading(true)
+    fetch('/api/analytics')
+      .then(r => r.json())
+      .then(d => { setAnalyticsData(d); setAnalyticsLoading(false) })
+      .catch(() => setAnalyticsLoading(false))
+  }, [activeTab])
   const [device, setDevice] = useState<DeviceView>('edit')
   const fileRef = useRef<HTMLInputElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
@@ -264,8 +283,9 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
     { id: 'pages',    label: 'Pages' },
     { id: 'contact',  label: 'Contact' },
     { id: 'style',    label: 'Style' },
-    { id: 'students', label: 'Students' },
-    { id: 'ssp',      label: 'Member Portal' },
+    { id: 'students',  label: 'Students' },
+    { id: 'ssp',       label: 'Member Portal' },
+    { id: 'analytics', label: 'Analytics' },
   ]
 
   const editingProd = editingProduct ? draft.products?.items?.find(p => p.id === editingProduct) : null
@@ -770,6 +790,75 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                     )}
                   </div>
                 ))}
+              </div>
+            )}
+
+            {/* ── ANALYTICS TAB ──────────────────────────────────────────── */}
+            {activeTab === 'analytics' && (
+              <div style={{ padding: 14 }}>
+                {analyticsLoading && (
+                  <div style={{ textAlign: 'center', color: '#aaa', padding: '40px 0', fontSize: 13 }}>Lade Daten…</div>
+                )}
+                {!analyticsLoading && !analyticsData && (
+                  <div style={{ textAlign: 'center', color: '#aaa', padding: '40px 0', fontSize: 13 }}>Noch keine Besucher-Daten.</div>
+                )}
+                {analyticsData && (() => {
+                  const maxDay = Math.max(...analyticsData.views_by_day.map(d => d.views), 1)
+                  const maxSrc = Math.max(...analyticsData.top_sources.map(s => s.count), 1)
+                  return (
+                    <>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 18 }}>
+                        <div style={{ background: 'var(--panel-surface,#f8f8f8)', borderRadius: 10, padding: '14px 16px', border: '1px solid var(--panel-border,#e8e8e8)', textAlign: 'center' }}>
+                          <div style={{ fontSize: 28, fontWeight: 800, color: '#0099CC' }}>{analyticsData.total_views}</div>
+                          <div style={{ fontSize: 11, color: '#888', marginTop: 2 }}>Seitenaufrufe (30 T.)</div>
+                        </div>
+                        <div style={{ background: 'var(--panel-surface,#f8f8f8)', borderRadius: 10, padding: '14px 16px', border: '1px solid var(--panel-border,#e8e8e8)', textAlign: 'center' }}>
+                          <div style={{ fontSize: 28, fontWeight: 800, color: '#38A169' }}>{analyticsData.unique_visitors}</div>
+                          <div style={{ fontSize: 11, color: '#888', marginTop: 2 }}>Unique Besucher (30 T.)</div>
+                        </div>
+                      </div>
+                      {analyticsData.views_by_day.length > 0 && (
+                        <div style={{ marginBottom: 18 }}>
+                          <div style={{ fontSize: 11, fontWeight: 700, color: '#555', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Letzte 14 Tage</div>
+                          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 60 }}>
+                            {analyticsData.views_by_day.map(d => (
+                              <div key={d.day} title={`${d.day}: ${d.views}`} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, height: '100%', justifyContent: 'flex-end' }}>
+                                <div style={{ width: '100%', height: `${Math.max((d.views / maxDay) * 50, 2)}px`, background: '#0099CC', borderRadius: '3px 3px 0 0' }} />
+                                <span style={{ fontSize: 7, color: '#aaa' }}>{d.day.slice(5)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {analyticsData.top_sources.length > 0 && (
+                        <div style={{ marginBottom: 18 }}>
+                          <div style={{ fontSize: 11, fontWeight: 700, color: '#555', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Quellen (30 T.)</div>
+                          {analyticsData.top_sources.map(s => (
+                            <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
+                              <span style={{ width: 68, fontSize: 11, color: '#555', fontWeight: 500, flexShrink: 0 }}>{s.label}</span>
+                              <div style={{ flex: 1, background: '#f0f0f0', borderRadius: 4, height: 8 }}>
+                                <div style={{ width: `${(s.count / maxSrc) * 100}%`, height: '100%', background: '#0099CC', borderRadius: 4 }} />
+                              </div>
+                              <span style={{ fontSize: 11, fontWeight: 700, color: '#0099CC', minWidth: 24, textAlign: 'right' }}>{s.count}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {analyticsData.top_paths.length > 0 && (
+                        <div>
+                          <div style={{ fontSize: 11, fontWeight: 700, color: '#555', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Beliebteste Seiten</div>
+                          {analyticsData.top_paths.map((p, i) => (
+                            <div key={p.label} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
+                              <span style={{ width: 18, fontSize: 10, color: '#aaa', fontWeight: 700 }}>#{i + 1}</span>
+                              <span style={{ flex: 1, fontSize: 11, color: '#444', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.label || '/'}</span>
+                              <span style={{ fontSize: 11, fontWeight: 700, color: '#555', flexShrink: 0 }}>{p.count}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )
+                })()}
               </div>
             )}
 

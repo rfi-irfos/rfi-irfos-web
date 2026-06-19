@@ -435,6 +435,19 @@ export function PublicSite({
   const { theme, setTheme } = useTheme()
   const { t } = useLang()
 
+  // Tracking pixel — fires once per page load in production (skipped in edit mode).
+  useEffect(() => {
+    if (editMode) return
+    const px = new URL('/api/track/pixel.gif', window.location.origin)
+    px.searchParams.set('p', window.location.pathname)
+    px.searchParams.set('r', document.referrer)
+    const s = new URLSearchParams(window.location.search)
+    if (s.get('utm_source'))   px.searchParams.set('utm_source',   s.get('utm_source')!)
+    if (s.get('utm_medium'))   px.searchParams.set('utm_medium',   s.get('utm_medium')!)
+    if (s.get('utm_campaign')) px.searchParams.set('utm_campaign', s.get('utm_campaign')!)
+    new Image().src = px.toString()
+  }, [editMode])
+
   // Keep the product filter valid when the language (and its tab labels) changes
   useEffect(() => {
     const tabs = content.products?.tabs ?? []

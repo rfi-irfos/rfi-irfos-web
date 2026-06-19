@@ -1,9 +1,12 @@
+mod analytics;
 mod auth;
 mod contact;
 mod content;
+mod track;
 mod upload;
 
 use axum::{routing::{get, post}, Router};
+use sqlx::SqlitePool;
 use std::{collections::HashMap, path::PathBuf, sync::{Arc, RwLock}};
 use tower_http::{cors::CorsLayer, services::{ServeDir, ServeFile}};
 use serde::{Deserialize, Serialize};
@@ -19,6 +22,7 @@ pub struct AppState {
     pub google_client_secret: String,
     pub redirect_uri: String,
     pub dev_mode: bool,
+    pub db: SqlitePool,
 }
 
 #[derive(Clone, Serialize, Deserialize)]
@@ -39,6 +43,16 @@ async fn main() {
 
     tokio::fs::create_dir_all(&uploads_dir).await.ok();
 
+    let db_path = std::env::var("DB_PATH").unwrap_or("visits.db".into());
+    let db = SqlitePool::connect(&format!("sqlite://{}?mode=rwc", db_path))
+        .await.expect("open visits.db");
+    sqlx::query("CREATE TABLE IF NOT EXISTS web_visits (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL DEFAULT '/', source TEXT NOT NULL DEFAULT 'direct', referrer TEXT NOT NULL DEFAULT '', utm_source TEXT NOT NULL DEFAULT '', utm_medium TEXT NOT NULL DEFAULT '', utm_campaign TEXT NOT NULL DEFAULT '', visitor TEXT NOT NULL DEFAULT '', created_at DATETIME NOT NULL DEFAULT (datetime('now')))")
+        .execute(&db).await.expect("create web_visits");
+    sqlx::query("CREATE INDEX IF NOT EXISTS idx_wv_created ON web_visits(created_at)")
+        .execute(&db).await.ok();
+    sqlx::query("CREATE INDEX IF NOT EXISTS idx_wv_source ON web_visits(source, created_at)")
+        .execute(&db).await.ok();
+
     let state = AppState {
         sessions: Arc::new(RwLock::new(HashMap::new())),
         content_path: PathBuf::from(std::env::var("CONTENT_PATH").unwrap_or("content.json".into())),
@@ -50,6 +64,7 @@ async fn main() {
         redirect_uri: std::env::var("REDIRECT_URI")
             .unwrap_or("http://localhost:3000/auth/callback".into()),
         dev_mode,
+        db,
     };
 
     if dev_mode {
@@ -70,6 +85,10 @@ async fn main() {
         .route("/api/content", get(content::get_content).put(content::update_content))
         .route("/api/upload", post(upload::upload_file))
         .route("/api/contact", post(contact::submit_contact))
+        .route("/api/analytics", get(analytics::stats))
+        // Tracking pixel (public, no auth)
+        .route("/api/track/pixel.gif", get(track::pixel))
+        .route("/api/track", post(track::beacon))
         // Uploads
         .nest_service("/uploads", ServeDir::new(&uploads_dir))
         // React SPA
