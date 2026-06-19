@@ -53,6 +53,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
   // content. Re-seed the local draft so the panel edits the right document.
   useEffect(() => { setDraft(content) }, [content])
   const [saved, setSaved] = useState(false)
+  const [saveErr, setSaveErr] = useState(false)
   const [uploadTarget, setUploadTarget] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
   const [editingProduct, setEditingProduct] = useState<string | null>(null)
@@ -127,6 +128,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
   const handleSave = async () => {
     const ok = await onSave(draft)
     if (ok) { setSaved(true); setTimeout(() => setSaved(false), 2500) }
+    else { setSaveErr(true); setTimeout(() => setSaveErr(false), 5000) }
   }
 
   const handleImageClick = (field: string) => {
@@ -272,12 +274,17 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
         <div className="builder-topbar-right">
           <span className="builder-user">{user.name || user.email}</span>
           <button
-            className={`builder-save-btn-top ${saving ? 'loading' : ''} ${saved ? 'done' : ''}`}
+            className={`builder-save-btn-top ${saving ? 'loading' : ''} ${saved ? 'done' : ''} ${saveErr ? 'err' : ''}`}
             onClick={handleSave}
             disabled={saving}
           >
-            {saving ? 'Speichern…' : saved ? 'Gespeichert' : 'Speichern'}
+            {saving ? 'Speichern…' : saved ? 'Gespeichert' : saveErr ? 'Fehler beim Speichern' : 'Speichern'}
           </button>
+          {saveErr && (
+            <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#c53030', color: '#fff', borderRadius: 10, padding: '12px 18px', fontSize: 13, fontWeight: 600, boxShadow: '0 4px 20px rgba(0,0,0,.25)', zIndex: 9999, maxWidth: 320, lineHeight: 1.5 }}>
+              Speichern fehlgeschlagen. Bitte prüfe, ob der GitHub-Token noch gültig ist.
+            </div>
+          )}
           <button className="builder-btn-ghost" onClick={onLogout}>Logout</button>
         </div>
       </div>
