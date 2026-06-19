@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import type { SiteContent, ProductItem, NewsItem } from '../types/content'
+import type { SiteContent, ProductItem, NewsItem, PageItem, SectionId } from '../types/content'
 import type { User } from '../hooks/useAuth'
 import { PublicSite } from './PublicSite'
 import { useStudents } from '../lib/useStudents'
@@ -15,7 +15,10 @@ interface Props {
   onLogout: () => void
 }
 
-type PanelTab = 'products' | 'hero' | 'news' | 'contact' | 'style' | 'students' | 'ssp'
+type PanelTab = 'products' | 'hero' | 'news' | 'contact' | 'style' | 'students' | 'ssp' | 'pages' | 'inbox'
+
+interface ContactInboxItem { name: string; email: string; phone: string; message: string; ts: string }
+function loadInbox(): ContactInboxItem[] { try { return JSON.parse(localStorage.getItem('rfi_contact_inbox') || '[]') } catch { return [] } }
 type DeviceView = 'edit' | 'desktop' | 'tablet' | 'mobile'
 
 // ── Device preview switch (Edit / Desktop / Tablet / Mobile) ──────────────────
@@ -58,6 +61,8 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
   const [uploading, setUploading] = useState(false)
   const [editingProduct, setEditingProduct] = useState<string | null>(null)
   const [editingNews, setEditingNews] = useState<string | null>(null)
+  const [editingPage, setEditingPage] = useState<string | null>(null)
+  const [contactInbox, setContactInbox] = useState<ContactInboxItem[]>(() => loadInbox())
   const [specsInput, setSpecsInput] = useState('')
   const [panelWidth, setPanelWidth] = useState(380)
   const [device, setDevice] = useState<DeviceView>('edit')
@@ -228,14 +233,39 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
     fileRef.current?.click()
   }
 
-  const tabs: Array<{ id: PanelTab; label: string }> = [
-    { id: 'students', label: 'Students' },
-    { id: 'products', label: 'Sessions' },
+  // ── Page helpers ──────────────────────────────────────────────────────────
+  const addPage = () => {
+    const id = `pg${Date.now()}`
+    const newPage: PageItem = { id, title: 'Neue Seite', slug: `neue-seite-${id.slice(-4)}`, body: '<p>Seiteninhalt hier eingeben.</p>', showInNav: false }
+    update('pages', [...(draft.pages ?? []), newPage])
+    setEditingPage(id)
+    setActiveTab('pages')
+  }
+  const deletePage = (id: string) => {
+    update('pages', (draft.pages ?? []).filter(p => p.id !== id))
+    if (editingPage === id) setEditingPage(null)
+  }
+  const updatePage = (id: string, field: keyof PageItem, value: unknown) => {
+    update('pages', (draft.pages ?? []).map(p => p.id === id ? { ...p, [field]: value } : p))
+  }
+
+  // ── Inbox helpers ─────────────────────────────────────────────────────────
+  const dismissInboxItem = (ts: string) => {
+    const next = contactInbox.filter(i => i.ts !== ts)
+    setContactInbox(next)
+    localStorage.setItem('rfi_contact_inbox', JSON.stringify(next))
+  }
+
+  const tabs: Array<{ id: PanelTab; label: string; badge?: number }> = [
+    { id: 'inbox',    label: 'Inbox', badge: contactInbox.length },
+    { id: 'products', label: 'Products' },
     { id: 'hero',     label: 'Hero' },
     { id: 'news',     label: 'Blog' },
-    { id: 'ssp',      label: 'Member Portal' },
+    { id: 'pages',    label: 'Pages' },
     { id: 'contact',  label: 'Contact' },
     { id: 'style',    label: 'Style' },
+    { id: 'students', label: 'Students' },
+    { id: 'ssp',      label: 'Member Portal' },
   ]
 
   const editingProd = editingProduct ? draft.products?.items?.find(p => p.id === editingProduct) : null
@@ -325,8 +355,11 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
           {/* Tab bar */}
           <div className="builder-tabs">
             {tabs.map(t => (
-              <button key={t.id} className={`builder-tab ${activeTab === t.id ? 'active' : ''}`} onClick={() => setActiveTab(t.id)}>
+              <button key={t.id} className={`builder-tab ${activeTab === t.id ? 'active' : ''}`} onClick={() => setActiveTab(t.id)} style={{ position: 'relative' }}>
                 {t.label}
+                {(t.badge ?? 0) > 0 && (
+                  <span style={{ position: 'absolute', top: 2, right: 2, background: '#c53030', color: '#fff', borderRadius: '50%', fontSize: 9, fontWeight: 700, minWidth: 14, height: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 2px' }}>{t.badge}</span>
+                )}
               </button>
             ))}
           </div>
@@ -506,6 +539,31 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                     </select>
                   </div>
                 </PanelSection>
+                <PanelSection title="Sektionen ein-/ausblenden">
+                  {([
+                    { id: 'trust' as SectionId, label: 'Vertrauensleiste' },
+                    { id: 'categories' as SectionId, label: 'Kategorien' },
+                    { id: 'products' as SectionId, label: 'Produkte' },
+                    { id: 'usp' as SectionId, label: 'Vorteile (USPs)' },
+                    { id: 'news' as SectionId, label: 'Blog / News' },
+                    { id: 'location' as SectionId, label: 'Standort & Kontakt' },
+                  ]).map(s => {
+                    const hidden = (draft.hiddenSections ?? []).includes(s.id)
+                    return (
+                      <label key={s.id} className="panel-checkbox" style={{ justifyContent: 'space-between' }}>
+                        <span>{s.label}</span>
+                        <input
+                          type="checkbox"
+                          checked={!hidden}
+                          onChange={e => {
+                            const cur = draft.hiddenSections ?? []
+                            update('hiddenSections', e.target.checked ? cur.filter(x => x !== s.id) : [...cur, s.id])
+                          }}
+                        />
+                      </label>
+                    )
+                  })}
+                </PanelSection>
                 <PanelSection title="SEO / Meta">
                   <Field label="Seitentitel">
                     <input value={draft.meta?.title ?? ''} onChange={e => update('meta.title', e.target.value)} />
@@ -523,6 +581,109 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                   </Field>
                 </PanelSection>
               </>
+            )}
+
+            {/* ── PAGES TAB ─────────────────────────────────────────────── */}
+            {activeTab === 'pages' && (() => {
+              const editingPageItem = editingPage ? (draft.pages ?? []).find(p => p.id === editingPage) : null
+              return (
+                <div className="panel-products">
+                  <div style={{ padding: '8px 14px' }}>
+                    <button className="panel-add-btn" onClick={addPage}>+ Neue Seite</button>
+                  </div>
+                  {editingPageItem ? (
+                    <div className="panel-product-form" style={{ padding: 14 }}>
+                      <button className="panel-back-btn" onClick={() => setEditingPage(null)}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        Zur Liste
+                      </button>
+                      <Field label="Titel">
+                        <input value={editingPageItem.title} onChange={e => updatePage(editingPageItem.id, 'title', e.target.value)} />
+                      </Field>
+                      <Field label="URL (nach #p/)">
+                        <input value={editingPageItem.slug} onChange={e => updatePage(editingPageItem.id, 'slug', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))} placeholder="meine-seite" />
+                      </Field>
+                      <Field label="">
+                        <div style={{ padding: '6px 10px', background: '#f0f7ff', borderRadius: 6, fontSize: 12, color: '#0099CC', fontFamily: 'monospace' }}>
+                          Link: <strong>#p/{editingPageItem.slug}</strong>
+                        </div>
+                      </Field>
+                      <Field label="">
+                        <label className="panel-checkbox">
+                          <input type="checkbox" checked={editingPageItem.showInNav ?? false} onChange={e => updatePage(editingPageItem.id, 'showInNav', e.target.checked)} />
+                          In Navigation anzeigen
+                        </label>
+                      </Field>
+                      <Field label="Seiteninhalt">
+                        <div className="rte-wrap">
+                          <div className="rte-toolbar">
+                            {[{ cmd: 'bold', label: 'B' }, { cmd: 'italic', label: 'I' }, { cmd: 'insertUnorderedList', label: '• Liste' }].map(({ cmd, label }) => (
+                              <button key={cmd} type="button" onMouseDown={e => { e.preventDefault(); document.execCommand(cmd, false) }}>{label}</button>
+                            ))}
+                          </div>
+                          <div
+                            className="rte-body"
+                            contentEditable
+                            suppressContentEditableWarning
+                            dangerouslySetInnerHTML={{ __html: editingPageItem.body }}
+                            onBlur={e => updatePage(editingPageItem.id, 'body', e.currentTarget.innerHTML)}
+                          />
+                        </div>
+                      </Field>
+                      <button className="panel-delete-btn" style={{ marginTop: 12 }} onClick={() => deletePage(editingPageItem.id)}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                        Seite löschen
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="panel-product-list">
+                      {(draft.pages ?? []).length === 0 && (
+                        <div style={{ padding: '20px 16px', color: '#aaa', fontSize: 13, textAlign: 'center' }}>
+                          Noch keine Seiten. Klicke auf "+ Neue Seite".
+                        </div>
+                      )}
+                      {(draft.pages ?? []).map(p => (
+                        <div key={p.id} className="panel-product-row" onClick={() => setEditingPage(p.id)}>
+                          <div style={{ flex: 1, padding: '8px 12px' }}>
+                            <div style={{ fontWeight: 600, fontSize: 13 }}>{p.title}</div>
+                            <div style={{ fontSize: 11, color: '#888', fontFamily: 'monospace' }}>#p/{p.slug}</div>
+                          </div>
+                          {p.showInNav && <span style={{ fontSize: 10, background: '#e8f4ff', color: '#0099CC', borderRadius: 4, padding: '2px 6px', margin: '0 8px', fontWeight: 700 }}>NAV</span>}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )
+            })()}
+
+            {/* ── INBOX TAB ─────────────────────────────────────────────── */}
+            {activeTab === 'inbox' && (
+              <div style={{ padding: 14 }}>
+                {contactInbox.length === 0 ? (
+                  <div style={{ padding: '24px 0', textAlign: 'center', color: '#aaa', fontSize: 13 }}>
+                    Keine neuen Anfragen.
+                  </div>
+                ) : (
+                  contactInbox.map(item => (
+                    <div key={item.ts} style={{ background: 'var(--panel-surface, #f8f8f8)', borderRadius: 10, padding: 14, marginBottom: 12, border: '1px solid var(--panel-border, #e8e8e8)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
+                        <div>
+                          <div style={{ fontWeight: 700, fontSize: 13 }}>{item.name}</div>
+                          <a href={`mailto:${item.email}`} style={{ fontSize: 12, color: '#0099CC' }}>{item.email}</a>
+                          {item.phone && <div style={{ fontSize: 12, color: '#666' }}>{item.phone}</div>}
+                        </div>
+                        <div style={{ fontSize: 10, color: '#aaa', whiteSpace: 'nowrap' }}>{new Date(item.ts).toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</div>
+                      </div>
+                      {item.message && <p style={{ fontSize: 12, margin: '8px 0 10px', color: '#444', lineHeight: 1.5 }}>{item.message}</p>}
+                      <div style={{ display: 'flex', gap: 8 }}>
+                        <a href={`mailto:${item.email}?subject=Re: Ihre Anfrage`} className="panel-add-btn" style={{ fontSize: 11, padding: '4px 10px', textDecoration: 'none' }}>Antworten</a>
+                        <button className="panel-delete-btn" style={{ fontSize: 11, padding: '4px 10px' }} onClick={() => dismissInboxItem(item.ts)}>Erledigt</button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             )}
 
             {/* ── STUDENTS TAB ──────────────────────────────────────────── */}

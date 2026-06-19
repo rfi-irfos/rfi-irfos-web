@@ -12,20 +12,20 @@ async function sha256(str: string): Promise<string> {
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(() =>
-    sessionStorage.getItem(SESSION_KEY) ? { name: 'Admin', email: '', picture: '' } : null
+    localStorage.getItem(SESSION_KEY) ? { name: 'Admin', email: '', picture: '' } : null
   )
 
   const login = async (password: string): Promise<boolean> => {
     if (!ADMIN_HASH) return false
     const hash = await sha256(password)
     if (hash !== ADMIN_HASH) return false
-    sessionStorage.setItem(SESSION_KEY, '1')
+    localStorage.setItem(SESSION_KEY, '1')
     setUser({ name: 'Admin', email: '', picture: '' })
     return true
   }
 
   const logout = () => {
-    sessionStorage.removeItem(SESSION_KEY)
+    localStorage.removeItem(SESSION_KEY)
     setUser(null)
     window.location.hash = ''
     window.location.href = import.meta.env.BASE_URL || '/'

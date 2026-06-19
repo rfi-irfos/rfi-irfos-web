@@ -262,6 +262,13 @@ function ContactForm({ email }: { email: string }) {
         }),
       })
       const data = await res.json()
+      if (data.success) {
+        try {
+          const inbox = JSON.parse(localStorage.getItem('rfi_contact_inbox') || '[]')
+          inbox.unshift({ ...form, ts: new Date().toISOString() })
+          localStorage.setItem('rfi_contact_inbox', JSON.stringify(inbox))
+        } catch { /* non-critical */ }
+      }
       setStatus(data.success ? 'ok' : 'err')
     } catch {
       setStatus('err')
@@ -416,11 +423,13 @@ export function PublicSite({
   onTextChange, onImageClick, onUpdate,
 }: Props) {
   const { meta, nav, hero, trust, categories, products, usp, news, contact, whatsapp, footer } = content
+  const hiddenSections = content.hiddenSections ?? []
 
   const [focusedEl, setFocusedEl] = useState<HTMLElement | null>(null)
   const [activeTab, setActiveTab] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const [modalProduct, setModalProduct] = useState<ProductItem | null>(null)
+  const [modalGalleryIdx, setModalGalleryIdx] = useState(0)
   const [modalArticle, setModalArticle] = useState<NewsItem | null>(null)
   const [browseCatIdx, setBrowseCatIdx] = useState<number | null>(null)
   const { theme, setTheme } = useTheme()
@@ -433,8 +442,9 @@ export function PublicSite({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content.products?.tabs])
 
-  // Close the session detail modal on Escape
+  // Close the session detail modal on Escape; reset gallery index on open
   useEffect(() => {
+    setModalGalleryIdx(0)
     if (!modalProduct) return
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setModalProduct(null) }
     document.addEventListener('keydown', onKey)
@@ -814,7 +824,7 @@ export function PublicSite({
         </section>
 
         {/* ── TRUST STRIP ──────────────────────────────────────────────── */}
-        {(trust?.items?.length ?? 0) > 0 && (
+        {!hiddenSections.includes('trust') && (trust?.items?.length ?? 0) > 0 && (
           <div className="site-trust" id="trust">
             {trust.items.map((t, ti) => (
               <div key={t.id} className="site-trust-item">
@@ -829,7 +839,7 @@ export function PublicSite({
         )}
 
         {/* ── CATEGORIES / DRILL-DOWN BROWSER ──────────────────────────── */}
-        {(categories?.items?.length ?? 0) > 0 && (() => {
+        {!hiddenSections.includes('categories') && (categories?.items?.length ?? 0) > 0 && (() => {
           // editMode: plain editable grid. Live: tier1 audiences -> tier2 that
           // audience's sessions (back + breadcrumb) -> tier3 detail modal.
           const browseCat = browseCatIdx != null ? categories.items[browseCatIdx] : null
@@ -910,7 +920,7 @@ export function PublicSite({
         })()}
 
         {/* ── PRODUCTS ─────────────────────────────────────────────────── */}
-        {(products?.items?.length ?? 0) > 0 && (
+        {!hiddenSections.includes('products') && (products?.items?.length ?? 0) > 0 && (
           <section className="site-section site-products" id="products">
             <div className="site-products-top">
               <E field="products.title" value={products.title} as="h2" className="site-products-h2" />
@@ -963,7 +973,7 @@ export function PublicSite({
         )}
 
         {/* ── USP ──────────────────────────────────────────────────────── */}
-        {(usp?.items?.length ?? 0) > 0 && (
+        {!hiddenSections.includes('usp') && (usp?.items?.length ?? 0) > 0 && (
           <section className="site-section site-section-alt site-usp" id="usp">
             {usp.eyebrow && <div className="site-eyebrow">{usp.eyebrow}</div>}
             <E field="usp.title" value={usp.title} as="h2" className="site-section-title" />
@@ -979,7 +989,7 @@ export function PublicSite({
         )}
 
         {/* ── NEWS ─────────────────────────────────────────────────────── */}
-        {(news?.items?.length ?? 0) > 0 && (
+        {!hiddenSections.includes('news') && (news?.items?.length ?? 0) > 0 && (
           <section className="site-section site-news" id="news">
             {news.eyebrow && <div className="site-eyebrow">{news.eyebrow}</div>}
             <E field="news.title" value={news.title} as="h2" className="site-section-title" />
@@ -1009,6 +1019,7 @@ export function PublicSite({
         )}
 
         {/* ── LOCATION ─────────────────────────────────────────────────── */}
+        {!hiddenSections.includes('location') && (
         <section className="site-location" id="location">
           {contact?.mapSrc && (
             <div className="site-map">
@@ -1050,6 +1061,7 @@ export function PublicSite({
             )}
           </div>
         </section>
+        )}
 
         {/* ── FOOTER ───────────────────────────────────────────────────── */}
         {/* ── MEMBER PORTAL / SSP CTA (optional section) ──────────────── */}
@@ -1099,9 +1111,24 @@ export function PublicSite({
           <div className="site-modal-scrim" onClick={() => setModalProduct(null)} role="dialog" aria-modal="true" aria-label={modalProduct.name}>
             <div className="site-modal" onClick={e => e.stopPropagation()}>
               <button className="site-modal-close" aria-label={t.close} onClick={() => setModalProduct(null)}><IconClose /></button>
-              {modalProduct.image && (
-                <div className="site-modal-img"><img src={modalProduct.image} alt={modalProduct.name} /></div>
-              )}
+              {(() => {
+                const allImages = [modalProduct.image, ...(modalProduct.images ?? [])].filter(Boolean) as string[]
+                const idx = Math.min(modalGalleryIdx, allImages.length - 1)
+                return allImages.length > 0 ? (
+                  <div className="site-modal-gallery">
+                    <div className="site-modal-img"><img src={allImages[idx]} alt={modalProduct.name} /></div>
+                    {allImages.length > 1 && (
+                      <div className="site-modal-thumbs">
+                        {allImages.map((src, gi) => (
+                          <button key={gi} className={`site-modal-thumb ${idx === gi ? 'active' : ''}`} onClick={() => setModalGalleryIdx(gi)}>
+                            <img src={src} alt="" />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : null
+              })()}
               <div className="site-modal-body">
                 {modalProduct.category && <div className="site-modal-brand">{modalProduct.category}</div>}
                 <h3 className="site-modal-title" dangerouslySetInnerHTML={{ __html: modalProduct.name }} />
