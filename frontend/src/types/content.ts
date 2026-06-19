@@ -59,6 +59,15 @@ export interface PageItem {
   metaTitle?: string
 }
 
+export interface AboutStat { value: string; label: string }
+
+export interface CertificateItem {
+  id: string
+  title: string
+  subtitle: string
+  file: string
+}
+
 export type SectionId = 'trust' | 'categories' | 'products' | 'usp' | 'news' | 'location'
 export const DEFAULT_SECTION_ORDER: SectionId[] = ['trust', 'categories', 'products', 'usp', 'news', 'location']
 
@@ -129,5 +138,20 @@ export interface SiteContent {
     title?: string
     sub?: string
     button?: string
+  }
+  about?: {
+    eyebrow?: string
+    headline: string
+    bio: string
+    photo?: string
+    stats?: AboutStat[]
+  }
+  pricing?: {
+    title: string
+    body: string
+  }
+  certificates?: {
+    title?: string
+    items: CertificateItem[]
   }
 }

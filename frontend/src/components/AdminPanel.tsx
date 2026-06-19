@@ -4,6 +4,8 @@ import type { User } from '../hooks/useAuth'
 import { PublicSite } from './PublicSite'
 import { useStudents } from '../lib/useStudents'
 import type { Student } from '../types/students'
+import { useTestimonials } from '../lib/useTestimonials'
+import type { Testimonial } from '../types/testimonials'
 import { useLang } from '../hooks/useLang'
 
 interface Props {
@@ -15,7 +17,7 @@ interface Props {
   onLogout: () => void
 }
 
-type PanelTab = 'products' | 'hero' | 'news' | 'contact' | 'style' | 'students' | 'ssp' | 'pages' | 'inbox' | 'analytics'
+type PanelTab = 'products' | 'hero' | 'news' | 'contact' | 'style' | 'students' | 'ssp' | 'pages' | 'inbox' | 'analytics' | 'about' | 'pricing' | 'reviews'
 
 interface AnalyticsData {
   total_views: number
@@ -58,6 +60,10 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
   const [newStudentForm, setNewStudentForm] = useState(false)
   const [studentDraft, setStudentDraft] = useState<Partial<Student>>({})
+  const { testimonials, saving: testimonialsSaving, add: addTestimonial, update: updateTestimonial, remove: removeTestimonial } = useTestimonials()
+  const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null)
+  const [newTestimonialForm, setNewTestimonialForm] = useState(false)
+  const [testimonialDraft, setTestimonialDraft] = useState<Partial<Testimonial>>({})
   const { lang, setLang } = useLang()
 
   // When the editing language switches, the parent refetches that language's
@@ -279,9 +285,12 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
     { id: 'inbox',    label: 'Inbox', badge: contactInbox.length },
     { id: 'products', label: 'Products' },
     { id: 'hero',     label: 'Hero' },
+    { id: 'about',    label: 'About' },
     { id: 'news',     label: 'Blog' },
     { id: 'pages',    label: 'Pages' },
     { id: 'contact',  label: 'Contact' },
+    { id: 'pricing',  label: 'Pricing' },
+    { id: 'reviews',  label: 'Reviews', badge: testimonials.length },
     { id: 'style',    label: 'Style' },
     { id: 'students',  label: 'Students' },
     { id: 'ssp',       label: 'Member Portal' },
@@ -859,6 +868,142 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                     </>
                   )
                 })()}
+              </div>
+            )}
+
+            {/* ── ABOUT TAB ──────────────────────────────────────────────── */}
+            {activeTab === 'about' && (
+              <>
+                <PanelSection title="Text">
+                  <Field label="Eyebrow (small, top)">
+                    <input value={draft.about?.eyebrow ?? ''} onChange={e => update('about.eyebrow', e.target.value)} placeholder="About us" />
+                  </Field>
+                  <Field label="Headline">
+                    <input value={draft.about?.headline ?? ''} onChange={e => update('about.headline', e.target.value)} placeholder="Hello, we're..." />
+                  </Field>
+                  <Field label="Bio text">
+                    <textarea rows={5} value={draft.about?.bio ?? ''} onChange={e => update('about.bio', e.target.value)} placeholder="A few warm sentences about who you are..." />
+                  </Field>
+                </PanelSection>
+                <PanelSection title="Photo">
+                  <UploadRow
+                    src={draft.about?.photo ?? ''}
+                    onUpload={() => handleImageClick('about.photo')}
+                    uploading={uploading && uploadTarget === 'about.photo'}
+                  />
+                </PanelSection>
+                <PanelSection title="Stats">
+                  {(draft.about?.stats ?? []).map((s, i) => (
+                    <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
+                      <input style={{ width: 80, flexShrink: 0 }} value={s.value} placeholder="10+" onChange={e => {
+                        const stats = [...(draft.about?.stats ?? [])]
+                        stats[i] = { ...stats[i], value: e.target.value }
+                        update('about.stats', stats)
+                      }} />
+                      <input style={{ flex: 1 }} value={s.label} placeholder="years active" onChange={e => {
+                        const stats = [...(draft.about?.stats ?? [])]
+                        stats[i] = { ...stats[i], label: e.target.value }
+                        update('about.stats', stats)
+                      }} />
+                      <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#d44', padding: '0 4px', fontSize: 18, lineHeight: 1 }}
+                        onClick={() => update('about.stats', (draft.about?.stats ?? []).filter((_, j) => j !== i))}>×</button>
+                    </div>
+                  ))}
+                  <button className="panel-add-big-btn" onClick={() => update('about.stats', [...(draft.about?.stats ?? []), { value: '', label: '' }])}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add stat
+                  </button>
+                </PanelSection>
+              </>
+            )}
+
+            {/* ── PRICING TAB ────────────────────────────────────────────── */}
+            {activeTab === 'pricing' && (
+              <>
+                <PanelSection title="Pricing">
+                  <Field label="Section title">
+                    <input value={(draft as any).pricing?.title ?? ''} onChange={e => update('pricing.title', e.target.value)} placeholder="Pricing" />
+                  </Field>
+                  <Field label="Text (separate paragraphs with blank line)">
+                    <textarea rows={8} value={(draft as any).pricing?.body ?? ''} onChange={e => update('pricing.body', e.target.value)} style={{ resize: 'vertical' }} />
+                  </Field>
+                </PanelSection>
+                <PanelSection title="Certificates">
+                  {((draft as any).certificates?.items ?? []).map((cert: { id: string; title: string; subtitle: string; file: string }, i: number) => (
+                    <div key={cert.id} className="panel-cert-row">
+                      <Field label={`Certificate ${i + 1} — Title`}>
+                        <input value={cert.title} onChange={e => update('certificates.items', (draft as any).certificates.items.map((c: { id: string }) => c.id === cert.id ? { ...c, title: e.target.value } : c))} />
+                      </Field>
+                      <Field label="Subtitle">
+                        <input value={cert.subtitle} onChange={e => update('certificates.items', (draft as any).certificates.items.map((c: { id: string }) => c.id === cert.id ? { ...c, subtitle: e.target.value } : c))} />
+                      </Field>
+                    </div>
+                  ))}
+                  <button className="panel-add-big-btn" onClick={() => {
+                    const items = (draft as any).certificates?.items ?? []
+                    update('certificates.items', [...items, { id: crypto.randomUUID(), title: '', subtitle: '', file: '' }])
+                  }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add certificate
+                  </button>
+                </PanelSection>
+              </>
+            )}
+
+            {/* ── REVIEWS TAB ────────────────────────────────────────────── */}
+            {activeTab === 'reviews' && (
+              <div style={{ padding: 14 }}>
+                {testimonialsSaving && <div style={{ fontSize: 11, color: '#0099CC', marginBottom: 8 }}>Saving…</div>}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 14 }}>
+                  {testimonials.map(r => (
+                    <div key={r.id} style={{ background: 'var(--panel-surface,#f8f8f8)', border: '1px solid var(--panel-border,#e8e8e8)', borderRadius: 8, padding: '10px 12px' }}>
+                      {editingTestimonial?.id === r.id ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                          <input style={{ fontSize: 12 }} value={editingTestimonial.name} onChange={e => setEditingTestimonial(t => t ? { ...t, name: e.target.value } : t)} placeholder="Name" />
+                          <input style={{ fontSize: 12 }} type="number" min={1} max={5} value={editingTestimonial.rating} onChange={e => setEditingTestimonial(t => t ? { ...t, rating: Number(e.target.value) } : t)} placeholder="Rating (1-5)" />
+                          <input style={{ fontSize: 12 }} value={editingTestimonial.date} onChange={e => setEditingTestimonial(t => t ? { ...t, date: e.target.value } : t)} placeholder="Date (e.g. 2026-01)" />
+                          <textarea style={{ fontSize: 12, resize: 'vertical' }} rows={3} value={editingTestimonial.text} onChange={e => setEditingTestimonial(t => t ? { ...t, text: e.target.value } : t)} placeholder="Review text" />
+                          <div style={{ display: 'flex', gap: 6 }}>
+                            <button style={{ flex: 1, fontSize: 11, padding: '4px 0', background: '#0099CC', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }} onClick={() => { updateTestimonial(editingTestimonial); setEditingTestimonial(null) }}>Save</button>
+                            <button style={{ flex: 1, fontSize: 11, padding: '4px 0', background: 'none', border: '1px solid #ccc', borderRadius: 5, cursor: 'pointer' }} onClick={() => setEditingTestimonial(null)}>Cancel</button>
+                            <button style={{ fontSize: 11, padding: '4px 8px', background: '#c53030', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }} onClick={() => { removeTestimonial(r.id); setEditingTestimonial(null) }}>Delete</button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text,#333)' }}>{r.name} <span style={{ color: '#f59e0b' }}>{'★'.repeat(r.rating)}</span></div>
+                            <div style={{ fontSize: 11, color: 'var(--text-soft,#777)', marginTop: 2, lineHeight: 1.4, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{r.text}</div>
+                          </div>
+                          <button style={{ fontSize: 11, padding: '3px 8px', background: 'none', border: '1px solid #ddd', borderRadius: 5, cursor: 'pointer', flexShrink: 0 }} onClick={() => setEditingTestimonial(r)}>Edit</button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {newTestimonialForm ? (
+                  <div style={{ background: 'var(--panel-surface,#f8f8f8)', border: '1px solid var(--panel-border,#e8e8e8)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    <input style={{ fontSize: 12 }} value={testimonialDraft.name ?? ''} onChange={e => setTestimonialDraft(d => ({ ...d, name: e.target.value }))} placeholder="Name" />
+                    <input style={{ fontSize: 12 }} type="number" min={1} max={5} value={testimonialDraft.rating ?? 5} onChange={e => setTestimonialDraft(d => ({ ...d, rating: Number(e.target.value) }))} placeholder="Rating (1-5)" />
+                    <input style={{ fontSize: 12 }} value={testimonialDraft.date ?? ''} onChange={e => setTestimonialDraft(d => ({ ...d, date: e.target.value }))} placeholder="Date (e.g. 2026-01)" />
+                    <textarea style={{ fontSize: 12, resize: 'vertical' }} rows={3} value={testimonialDraft.text ?? ''} onChange={e => setTestimonialDraft(d => ({ ...d, text: e.target.value }))} placeholder="Review text" />
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      <button style={{ flex: 1, fontSize: 11, padding: '4px 0', background: '#0099CC', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }} onClick={() => {
+                        if (testimonialDraft.name && testimonialDraft.text) {
+                          addTestimonial({ name: testimonialDraft.name, rating: testimonialDraft.rating ?? 5, text: testimonialDraft.text, date: testimonialDraft.date ?? '', language: testimonialDraft.language })
+                          setTestimonialDraft({})
+                          setNewTestimonialForm(false)
+                        }
+                      }}>Add</button>
+                      <button style={{ flex: 1, fontSize: 11, padding: '4px 0', background: 'none', border: '1px solid #ccc', borderRadius: 5, cursor: 'pointer' }} onClick={() => { setNewTestimonialForm(false); setTestimonialDraft({}) }}>Cancel</button>
+                    </div>
+                  </div>
+                ) : (
+                  <button className="panel-add-big-btn" onClick={() => setNewTestimonialForm(true)}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add review
+                  </button>
+                )}
               </div>
             )}
 

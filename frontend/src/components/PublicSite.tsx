@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react'
-import type { SiteContent, SectionId, CanvasPos, ProductItem, NewsItem } from '../types/content'
+import type { SiteContent, SectionId, CanvasPos, ProductItem, NewsItem, CertificateItem } from '../types/content'
+import type { Testimonial } from '../types/testimonials'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { useLang, type Lang } from '../hooks/useLang'
 
@@ -405,6 +406,62 @@ function CategoryIcon({ category }: { category: string }) {
   return <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
 }
 
+// ── Star rating display ───────────────────────────────────────────────────────
+
+function Stars({ rating }: { rating: number }) {
+  return (
+    <div className="site-review-stars" aria-label={`${rating} out of 5 stars`}>
+      {[1, 2, 3, 4, 5].map(n => (
+        <svg key={n} className={`site-review-star ${n <= rating ? 'filled' : ''}`}
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      ))}
+    </div>
+  )
+}
+
+// ── Reviews section ───────────────────────────────────────────────────────────
+
+function ReviewsSection({ editMode }: { editMode: boolean }) {
+  const [reviews, setReviews] = useState<Testimonial[]>([])
+
+  useEffect(() => {
+    fetch(`/testimonials.json?t=${Date.now()}`, { cache: 'no-store' })
+      .then(r => r.ok ? r.json() : [])
+      .then((d: Testimonial[]) => setReviews(Array.isArray(d) ? d : []))
+      .catch(() => {})
+  }, [])
+
+  if (reviews.length === 0) {
+    if (!editMode) return null
+    return (
+      <section className="site-section site-reviews" id="reviews">
+        <h2 className="site-section-title">Reviews</h2>
+        <p style={{ textAlign: 'center', color: 'var(--text-soft)', fontSize: 14 }}>No reviews yet — add them in the Reviews tab.</p>
+      </section>
+    )
+  }
+
+  return (
+    <section className="site-section site-reviews" id="reviews">
+      <h2 className="site-section-title">Reviews</h2>
+      <div className="site-reviews-grid">
+        {reviews.map(r => (
+          <div key={r.id} className="site-review-card">
+            <Stars rating={r.rating} />
+            <p className="site-review-text">"{r.text}"</p>
+            <div className="site-review-footer">
+              <span className="site-review-name">{r.name}</span>
+              {r.date && <span className="site-review-date">{r.date}</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 // ── Public Site ───────────────────────────────────────────────────────────────
 
 interface Props {
@@ -422,7 +479,7 @@ export function PublicSite({
   content, editMode = false, rearrangeMode = false, initPositions = {},
   onTextChange, onImageClick, onUpdate,
 }: Props) {
-  const { meta, nav, hero, trust, categories, products, usp, news, contact, whatsapp, footer } = content
+  const { meta, nav, hero, trust, categories, products, usp, news, contact, whatsapp, footer, pricing, certificates } = content
   const hiddenSections = content.hiddenSections ?? []
 
   const [focusedEl, setFocusedEl] = useState<HTMLElement | null>(null)
@@ -851,6 +908,34 @@ export function PublicSite({
           </div>
         )}
 
+        {/* ── ABOUT ────────────────────────────────────────────────────── */}
+        {content.about && (
+          <section className="site-about" id="about">
+            <div className={`site-about-inner${content.about.photo ? '' : ' site-about-inner--no-photo'}`}>
+              {content.about.photo && (
+                <div className="site-about-photo-wrap">
+                  <EImg field="about.photo" src={content.about.photo} alt={content.about.headline} className="site-about-photo" />
+                </div>
+              )}
+              <div className="site-about-content">
+                {content.about.eyebrow && <div className="site-about-eyebrow" data-cid="about.eyebrow">{content.about.eyebrow}</div>}
+                <E field="about.headline" value={content.about.headline} as="h2" className="site-about-headline" />
+                <E field="about.bio" value={content.about.bio} as="p" className="site-about-bio" />
+                {(content.about.stats?.length ?? 0) > 0 && (
+                  <div className="site-about-stats">
+                    {content.about.stats!.map((s, i) => (
+                      <div key={i} className="site-about-stat">
+                        <strong data-cid={`about.stats.${i}.value`}>{s.value}</strong>
+                        <span data-cid={`about.stats.${i}.label`}>{s.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* ── CATEGORIES / DRILL-DOWN BROWSER ──────────────────────────── */}
         {!hiddenSections.includes('categories') && (categories?.items?.length ?? 0) > 0 && (() => {
           // editMode: plain editable grid. Live: tier1 audiences -> tier2 that
@@ -1001,6 +1086,9 @@ export function PublicSite({
           </section>
         )}
 
+        {/* ── REVIEWS ──────────────────────────────────────────────────── */}
+        <ReviewsSection editMode={editMode} />
+
         {/* ── NEWS ─────────────────────────────────────────────────────── */}
         {!hiddenSections.includes('news') && (news?.items?.length ?? 0) > 0 && (
           <section className="site-section site-news" id="news">
@@ -1076,10 +1164,47 @@ export function PublicSite({
         </section>
         )}
 
+        {/* ── PRICING ──────────────────────────────────────────────────── */}
+        {pricing?.body && (
+          <section className="site-section site-pricing" id="pricing" data-cid="pricing.title">
+            <h2 className="site-section-title">{pricing.title}</h2>
+            <div className="site-pricing-body">
+              {pricing.body.split('\n\n').map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── CERTIFICATES ─────────────────────────────────────────────── */}
+        {(certificates?.items?.length ?? 0) > 0 && (
+          <section className="site-section site-certificates" id="certificates">
+            {certificates!.title && <h2 className="site-section-title">{certificates!.title}</h2>}
+            <div className="site-cert-grid">
+              {certificates!.items.map((cert: CertificateItem) => (
+                <div key={cert.id} className="site-cert-card">
+                  <div className="site-cert-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14 2 14 8 20 8"/>
+                      <circle cx="12" cy="14" r="3"/>
+                      <path d="M9.5 17.5 9 20l3-1 3 1-.5-2.5"/>
+                    </svg>
+                  </div>
+                  <div className="site-cert-info">
+                    <strong className="site-cert-title">{cert.title}</strong>
+                    {cert.subtitle && <span className="site-cert-subtitle">{cert.subtitle}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* ── FOOTER ───────────────────────────────────────────────────── */}
         {/* ── MEMBER PORTAL / SSP CTA (optional section) ──────────────── */}
         {content.ssp?.title && (
-          <section className="site-ssp-cta" data-cid="ssp.title">
+          <section className="site-ssp-cta" id="ssp" data-cid="ssp.title">
             <div className="site-ssp-inner">
               {content.ssp.badge && <span className="site-ssp-badge" data-cid="ssp.badge">{content.ssp.badge}</span>}
               <h2 className="site-ssp-title" data-cid="ssp.title">{content.ssp.title}</h2>
