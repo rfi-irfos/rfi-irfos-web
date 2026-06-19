@@ -28,7 +28,7 @@ export function useAuth() {
     sessionStorage.removeItem(SESSION_KEY)
     setUser(null)
     window.location.hash = ''
-    window.location.href = '/'
+    window.location.href = import.meta.env.BASE_URL || '/'
   }
 
   return { user, loading: false, login, logout }

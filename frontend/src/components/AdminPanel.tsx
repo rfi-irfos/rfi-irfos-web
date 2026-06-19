@@ -43,7 +43,7 @@ const DEVICE_OPTS: { id: DeviceView; label: string; icon: React.ReactNode }[] = 
 export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }: Props) {
   const [draft, setDraft] = useState<SiteContent>(content)
   const [activeTab, setActiveTab] = useState<PanelTab>('products')
-  const { students, saving: studentsSaving, add: addStudent, update: updateStudent, remove: removeStudent } = useStudents()
+  const { students, saving: studentsSaving, saveError: studentsSaveError, add: addStudent, update: updateStudent, remove: removeStudent } = useStudents()
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
   const [newStudentForm, setNewStudentForm] = useState(false)
   const [studentDraft, setStudentDraft] = useState<Partial<Student>>({})
@@ -528,6 +528,11 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
             {/* ── STUDENTS TAB ──────────────────────────────────────────── */}
             {activeTab === 'students' && (
               <div className="panel-students">
+                {studentsSaveError && (
+                  <div style={{ color: '#c53030', fontSize: 12, fontWeight: 600, padding: '8px 12px', background: '#fff5f5', borderRadius: 8, border: '1px solid #feb2b2', marginBottom: 12 }}>
+                    Save failed. Please reload the page and try again.
+                  </div>
+                )}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
                   <span style={{ fontSize: 12, color: 'var(--panel-muted, #888)', fontWeight: 600 }}>{students.length} students</span>
                   <button className="panel-add-btn" onClick={() => { setNewStudentForm(true); setStudentDraft({ status: 'active', language: 'English', level: 'B1', sessions: 0, goal: '', notes: '' }) }}>
