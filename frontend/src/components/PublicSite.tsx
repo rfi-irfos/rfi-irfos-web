@@ -21,7 +21,7 @@ const RESEARCH_AREAS = [
   {
     icon: '⬡',
     title: 'Security & Privacy',
-    desc: 'Static APK analysis, GDPR enforcement, coordinated responsible disclosure at scale. ISO/IEC 29147 framework.',
+    desc: 'Decompilation and root-level comparison of code files. GDPR enforcement, coordinated responsible disclosure at scale. ISO/IEC 29147 framework.',
   },
   {
     icon: '⊕',
