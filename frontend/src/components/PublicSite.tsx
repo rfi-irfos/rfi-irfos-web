@@ -1,4 +1,48 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+
+// ── Scroll-scrubbing reveal: progress directly drives opacity+transform via RAF ──
+function Reveal({
+  children, delay = 0, from = 'bottom', style: extra,
+}: {
+  children: React.ReactNode
+  delay?: number        // stagger index (0,1,2…) — shifts reveal start lower in viewport
+  from?: 'bottom' | 'left' | 'right' | 'scale'
+  style?: React.CSSProperties
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = ref.current; if (!el) return
+    let rafId = 0
+    const update = () => {
+      const rect = el.getBoundingClientRect(), vh = window.innerHeight
+      const startFrac = 0.94 - delay * 0.06  // stagger: each index shifts 6% of vh
+      const raw = (vh * startFrac - rect.top) / (vh * 0.58)
+      const p = Math.max(0, Math.min(1, raw))
+      el.style.opacity = String(p)
+      const d = (1 - p) * 30
+      el.style.transform = from === 'left'  ? `translateX(${-d}px)` :
+                           from === 'right' ? `translateX(${d}px)`  :
+                           from === 'scale' ? `scale(${0.88 + p * 0.12})` :
+                           `translateY(${d}px)`
+    }
+    const onScroll = () => { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(update) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    update()
+    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(rafId) }
+  }, [delay, from])
+  return <div ref={ref} style={{ opacity: 0, willChange: 'transform, opacity', ...extra }}>{children}</div>
+}
+
+// ── Mobile breakpoint hook ──
+function useMobile(bp = 768) {
+  const [m, setM] = useState(() => typeof window !== 'undefined' && window.innerWidth < bp)
+  useEffect(() => {
+    const check = () => setM(window.innerWidth < bp)
+    window.addEventListener('resize', check, { passive: true })
+    return () => window.removeEventListener('resize', check)
+  }, [bp])
+  return m
+}
 
 const ACCENT = 'var(--accent)'
 
@@ -86,17 +130,43 @@ const PROJECTS = [
 const PUBLICATIONS = [
   {
     year: '2025',
-    title: 'Ternary Intelligence Stack - Architecture Whitepaper',
-    sub:   'albert. · ternlang · @sparseskip',
-    tag:   'preprint',
+    title: 'Ternary Intelligence Stack — Architecture Whitepaper',
+    sub:   'albert. · ternlang · @sparseskip · patent A50296/2026',
+    tag:   'whitepaper',
     href:  'https://osf.io/rzvyg/',
+    venue: 'OSF Preprints',
+  },
+  {
+    year: '2026',
+    title: 'Earth Is Not Full. We Regulate It That Way.',
+    sub:   'Sufficiency proof · manufactured scarcity · policy implications',
+    tag:   'article',
+    href:  'https://www.linkedin.com/pulse/earth-full-we-regulate-way-simeon-kepp/',
+    venue: 'LinkedIn',
+  },
+  {
+    year: '2026',
+    title: 'Android Security Audit 2026 — Coordinated Disclosure',
+    sub:   '103 apps · 81 companies · 200+ critical findings · NYSE/NASDAQ targets',
+    tag:   'ongoing',
+    href:  'https://github.com/rfi-irfos/android-security-audit-2026',
+    venue: 'GitHub · Disclosure 2026-09-19',
   },
   {
     year: '2024',
-    title: 'Earth Is Not Full. We Regulate It That Way.',
-    sub:   'Sufficiency, scarcity, and the cost of manufactured limits',
-    tag:   'article',
-    href:  'https://www.linkedin.com/in/simeon-kepp/',
+    title: '@sparseskip — Sparse Ternary Execution',
+    sub:   'Skip null branches at compile time · 83 tok/s on T4 · patent pending',
+    tag:   'patent',
+    href:  'https://osf.io/rzvyg/',
+    venue: 'OSF · A50296/2026',
+  },
+  {
+    year: '2022',
+    title: 'Research Archive — 119 OSF Projects',
+    sub:   'Ternary computing · digital rights · ecocentric infrastructure',
+    tag:   'archive',
+    href:  'https://osf.io/rzvyg/',
+    venue: 'OSF · 119 projects',
   },
 ]
 
@@ -249,9 +319,12 @@ export function PublicSite() {
     try { return (localStorage.getItem('rfi-theme') as Theme) ?? 'dark' } catch { return 'dark' }
   })
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [formState, setFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
   const pixelRef = useRef<HTMLImageElement>(null)
+  const mobile = useMobile()
+  const closeMenu = useCallback(() => setMenuOpen(false), [])
 
   function setTheme(t: Theme) {
     setThemeState(t)
@@ -311,47 +384,108 @@ export function PublicSite() {
   }
 
   return (
-    <div data-theme={theme} style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh' }}>
+    <div data-theme={theme} className="rfi-public" style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh' }}>
 
       {/* NAV */}
       <nav style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: scrolled ? 'var(--nav-bg)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        borderBottom: scrolled ? '1px solid var(--nav-border)' : 'none',
-        transition: 'all 0.3s',
-        padding: '0 2rem',
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
+        background: scrolled || menuOpen ? 'var(--nav-bg)' : 'transparent',
+        backdropFilter: scrolled || menuOpen ? 'blur(16px)' : 'none',
+        borderBottom: scrolled || menuOpen ? '1px solid var(--nav-border)' : 'none',
+        transition: 'background 0.3s, backdrop-filter 0.3s, border-color 0.3s',
+        padding: '0 1.4rem',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px',
       }}>
         <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
           <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 34, height: 34, objectFit: 'contain' }} />
           <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: 'var(--text)' }}>RFI-IRFOS</span>
         </a>
-        <div style={{ display: 'flex', gap: '1.6rem', alignItems: 'center' }}>
-          {NAV_LINKS.map(n => (
-            <a key={n.href} href={n.href} style={{
-              color: 'var(--text3)', fontSize: 12, fontWeight: 600,
-              textDecoration: 'none', letterSpacing: '0.04em', transition: 'color 0.2s',
-            }}
-              onMouseEnter={e => (e.currentTarget.style.color = ACCENT)}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text3)')}>
+
+        {mobile ? (
+          /* ── HAMBURGER (mobile) ── */
+          <button onClick={() => setMenuOpen(o => !o)} aria-label="Toggle menu" style={{
+            background: 'none', border: 'none', cursor: 'pointer', padding: '10px 6px',
+            display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-end',
+          }}>
+            <span style={{
+              display: 'block', width: 22, height: 2, background: 'var(--text)',
+              transition: 'transform 0.28s, opacity 0.28s',
+              transform: menuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none',
+            }} />
+            <span style={{
+              display: 'block', height: 2, background: 'var(--text)',
+              transition: 'width 0.28s, opacity 0.28s',
+              width: menuOpen ? 0 : 14, opacity: menuOpen ? 0 : 1,
+            }} />
+            <span style={{
+              display: 'block', width: 22, height: 2, background: 'var(--text)',
+              transition: 'transform 0.28s',
+              transform: menuOpen ? 'rotate(-45deg) translate(5px, -5px)' : 'none',
+            }} />
+          </button>
+        ) : (
+          /* ── DESKTOP NAV ── */
+          <div style={{ display: 'flex', gap: '1.6rem', alignItems: 'center' }}>
+            {NAV_LINKS.map(n => (
+              <a key={n.href} href={n.href} style={{
+                color: 'var(--text3)', fontSize: 12, fontWeight: 600,
+                textDecoration: 'none', letterSpacing: '0.04em', transition: 'color 0.2s',
+              }}
+                onMouseEnter={e => (e.currentTarget.style.color = ACCENT)}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--text3)')}>
+                {n.label}
+              </a>
+            ))}
+            <ThemeToggle theme={theme} setTheme={setTheme} />
+            <a href="mailto:contact@ternlang.com" style={{
+              background: 'var(--accent)', color: 'var(--bg)',
+              padding: '7px 16px', borderRadius: 4,
+              fontWeight: 800, fontSize: 11, textDecoration: 'none', letterSpacing: '0.07em',
+            }}>Contact</a>
+          </div>
+        )}
+      </nav>
+
+      {/* ── MOBILE MENU DRAWER ── */}
+      {mobile && menuOpen && (
+        <div style={{
+          position: 'fixed', inset: 0, top: 64, zIndex: 199,
+          background: 'var(--nav-bg)', backdropFilter: 'blur(20px)',
+          display: 'flex', flexDirection: 'column',
+          padding: '2rem 1.6rem 3rem',
+          overflowY: 'auto',
+          animation: 'mobileMenuIn 0.22s ease',
+        }}>
+          <style>{`@keyframes mobileMenuIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}`}</style>
+          {NAV_LINKS.map((n, i) => (
+            <a key={n.href} href={n.href} onClick={closeMenu} style={{
+              color: 'var(--text)', fontSize: 26, fontWeight: 800,
+              textDecoration: 'none', padding: '18px 0',
+              borderBottom: '1px solid var(--border)',
+              display: 'block',
+              animationDelay: `${i * 0.04}s`,
+              letterSpacing: '-0.01em',
+            }}>
               {n.label}
             </a>
           ))}
-          <ThemeToggle theme={theme} setTheme={setTheme} />
-          <a href="mailto:contact@ternlang.com" style={{
-            background: 'var(--accent)', color: 'var(--bg)',
-            padding: '7px 16px', borderRadius: 4,
-            fontWeight: 800, fontSize: 11, textDecoration: 'none', letterSpacing: '0.07em',
+          <div style={{ marginTop: 32, display: 'flex', gap: 14, alignItems: 'center' }}>
+            <ThemeToggle theme={theme} setTheme={setTheme} />
+          </div>
+          <a href="mailto:contact@ternlang.com" onClick={closeMenu} style={{
+            marginTop: 24, background: 'var(--accent)', color: 'var(--bg)',
+            padding: '15px 30px', borderRadius: 4, textAlign: 'center',
+            fontWeight: 800, fontSize: 14, textDecoration: 'none', letterSpacing: '0.06em',
+            display: 'block',
           }}>Contact</a>
         </div>
-      </nav>
+      )}
 
       {/* HERO */}
-      <section style={{
+      <section className="rfi-hero" style={{
         minHeight: '100vh', display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center', textAlign: 'center',
-        padding: '120px 2rem 80px',
+        padding: mobile ? '96px 1.1rem 56px' : '120px 2rem 80px',
         background: 'var(--hero-grad)',
       }}>
         <p style={{
@@ -371,16 +505,22 @@ export function PublicSite() {
           An independent Austrian research institute working at the intersection of ternary AI, security and privacy, governance, and ecocentric technology.
           One team. No silos. Everything in-house.
         </p>
-        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div style={{
+          display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center',
+          flexDirection: mobile ? 'column' : 'row',
+          width: mobile ? '100%' : 'auto',
+        }}>
           <a href="#research" style={{
             background: 'var(--accent)', color: 'var(--bg)',
             padding: '13px 30px', borderRadius: 4,
             fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
+            textAlign: 'center',
           }}>Explore our research</a>
           <a href="#track-record" style={{
             border: '1px solid var(--accent-border)', color: 'var(--accent-text)',
             padding: '13px 30px', borderRadius: 4,
             fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.04em',
+            textAlign: 'center',
           }}>2026 audit series</a>
         </div>
 
@@ -388,14 +528,16 @@ export function PublicSite() {
           {[
             { n: '103',  label: 'apps audited' },
             { n: '81',   label: 'companies notified' },
-            { n: '150+', label: 'critical findings' },
+            { n: '200+', label: 'critical findings' },
             { n: '10+',  label: 'regulators notified' },
             { n: '6',    label: 'years of research' },
-          ].map(s => (
-            <div key={s.label} style={{ textAlign: 'center' }}>
+          ].map((s, i) => (
+            <Reveal key={s.label} delay={i} from="scale">
+            <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 30, fontWeight: 900, color: 'var(--accent)', fontFamily: 'monospace' }}>{s.n}</div>
               <div style={{ fontSize: 10, color: 'var(--text3)', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.12em', marginTop: 5 }}>{s.label}</div>
             </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -410,22 +552,27 @@ export function PublicSite() {
             One team. Not multiple departments coordinating across silos.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
-            {RESEARCH_AREAS.map(a => (
-              <div key={a.title} style={{
+            {RESEARCH_AREAS.map((a, i) => (
+              <Reveal key={a.title} delay={i} from="bottom">
+              <div style={{
                 background: 'var(--bg)', border: '1px solid var(--border)',
-                borderRadius: 6, padding: '26px 22px',
+                borderRadius: 6, padding: '26px 22px', height: '100%',
               }}>
                 <div style={{ fontSize: 22, color: 'var(--accent)', marginBottom: 14, lineHeight: 1 }}>{a.icon}</div>
                 <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 10, color: 'var(--text)' }}>{a.title}</div>
                 <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.75 }}>{a.desc}</div>
               </div>
+              </Reveal>
             ))}
           </div>
           <div style={{ marginTop: 60 }}>
-            <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 18, color: 'var(--text)' }}>Publications - OSF archive</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              {PUBLICATIONS.map(p => (
-                <a key={p.title} href={p.href} target="_blank" rel="noopener noreferrer"
+            <Reveal from="left">
+            <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 18, color: 'var(--text)' }}>Publications &amp; Research</h3>
+            </Reveal>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {PUBLICATIONS.map((p, i) => (
+                <Reveal key={p.title} delay={i * 0.5} from="left">
+                <a href={p.href} target="_blank" rel="noopener noreferrer"
                   style={{
                     display: 'flex', alignItems: 'center', gap: 16,
                     padding: '14px 18px', borderRadius: 6, textDecoration: 'none',
@@ -436,11 +583,13 @@ export function PublicSite() {
                   <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', minWidth: 32 }}>{p.year}</span>
                   <span style={{ flex: 1 }}>
                     <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--text)' }}>{p.title}</span>
-                    <span style={{ color: 'var(--text3)', fontSize: 12, display: 'block', marginTop: 2 }}>{p.sub}</span>
+                    <span style={{ color: 'var(--text3)', fontSize: 11, display: 'block', marginTop: 2 }}>{p.sub}</span>
+                    <span style={{ color: 'var(--text4)', fontSize: 10, fontFamily: 'monospace', display: 'block', marginTop: 1 }}>{p.venue}</span>
                   </span>
                   <span style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.12em', padding: '3px 8px', borderRadius: 20, border: '1px solid var(--accent-border)', color: 'var(--accent)', whiteSpace: 'nowrap' }}>{p.tag}</span>
                   <span style={{ color: 'var(--text4)', fontSize: 12 }}>&#8599;</span>
                 </a>
+                </Reveal>
               ))}
             </div>
             <p style={{ marginTop: 14, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
@@ -460,10 +609,12 @@ export function PublicSite() {
             All of them run on the same stack.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
-            {PROJECTS.map(p => (
-              <div key={p.name} style={{
+            {PROJECTS.map((p, i) => (
+              <Reveal key={p.name} delay={i * 0.4} from={i % 2 === 0 ? 'left' : 'right'}>
+              <div style={{
                 background: 'var(--bg2)', border: '1px solid var(--border)',
                 borderRadius: 6, padding: '26px 22px', display: 'flex', flexDirection: 'column', gap: 10,
+                height: '100%',
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div>
@@ -480,6 +631,7 @@ export function PublicSite() {
                   </a>
                 )}
               </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -498,16 +650,18 @@ export function PublicSite() {
             {[
               { n: '103',  label: 'Apps audited' },
               { n: '81',   label: 'Companies notified' },
-              { n: '150+', label: 'Critical findings' },
+              { n: '200+', label: 'Critical findings' },
               { n: '10+',  label: 'Regulators notified' },
-            ].map(s => (
-              <div key={s.label} style={{
+            ].map((s, i) => (
+              <Reveal key={s.label} delay={i} from="scale">
+              <div style={{
                 background: 'var(--bg-accent)', border: '1px solid var(--accent-border)',
                 borderRadius: 6, padding: '22px', textAlign: 'center',
               }}>
                 <div style={{ fontSize: 34, fontWeight: 900, color: 'var(--accent)', fontFamily: 'monospace' }}>{s.n}</div>
                 <div style={{ fontSize: 10, color: 'var(--text3)', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.12em', marginTop: 6 }}>{s.label}</div>
               </div>
+              </Reveal>
             ))}
           </div>
           <div style={{
@@ -520,19 +674,20 @@ export function PublicSite() {
           </div>
 
           <h3 style={{ fontSize: 14, fontWeight: 800, marginBottom: 16, color: 'var(--text)' }}>Selected findings</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {AUDIT_HIGHLIGHTS.map((a, i) => (
-              <div key={i} style={{
-                display: 'grid', gridTemplateColumns: '160px 72px 72px 1fr',
-                gap: 14, alignItems: 'start',
+              <Reveal key={i} delay={i * 0.3} from="left">
+              <div style={{
+                display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'flex-start',
                 padding: '14px 18px', borderRadius: 6,
                 background: 'var(--bg)', border: '1px solid var(--border2)',
               }}>
-                <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--text)' }}>{a.target}</span>
-                <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', paddingTop: 2 }}>{a.market}</span>
-                <span style={{ fontFamily: 'monospace', fontSize: 10, fontWeight: 700, color: SEV_COLOR[a.sev] ?? ACCENT, paddingTop: 2 }}>{a.sev}</span>
-                <span style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.65 }}>{a.finding}</span>
+                <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--text)', minWidth: 140, flex: '0 0 auto' }}>{a.target}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', flex: '0 0 auto', paddingTop: 2 }}>{a.market}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 10, fontWeight: 700, color: SEV_COLOR[a.sev] ?? ACCENT, flex: '0 0 auto', paddingTop: 2 }}>{a.sev}</span>
+                <span style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.65, flex: '1 1 260px' }}>{a.finding}</span>
               </div>
+              </Reveal>
             ))}
           </div>
           <p style={{ marginTop: 16, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
