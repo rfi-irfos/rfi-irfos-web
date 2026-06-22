@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <script>
+      if (location.protocol === 'http:' && location.hostname !== 'localhost') {
+        location.replace('https:' + location.href.slice(5));
+      }
+    </script>
+    <script>
       (function() {
         var q = window.location.search;
         if (q && q[1] === 'p') {
