@@ -102,6 +102,30 @@ const MILESTONES: { date: string; label: string; side: 'left' | 'right' }[] = [
   { date: 'June 2026', label: 'aladdin-mini — open-source disclosure impact engine released', side: 'right' },
 ]
 
+const PUBLICATIONS = [
+  { year: '2026', title: 'The Ternary Intelligence Stack', sub: 'vertically integrated post-binary AI platform', href: 'https://osf.io/cyn28/', tag: 'AI · Systems' },
+  { year: '2026', title: 'Myco-Styria', sub: 'polystyrene replacement via mycelium + Austrian lignocellulose residues', href: 'https://osf.io/ek8rm/', tag: 'Ecocentric' },
+  { year: '2025', title: 'A Ternary Logic Mixture-of-Experts Model', sub: 'sparse ternary MoE architecture with autonomous Net2Net surgery', href: 'https://osf.io/tz7dc/', tag: 'AI · Model' },
+  { year: '2025', title: 'The Ternlang Architecture', sub: 'post-binary logic framework for ethical autonomous AI', href: 'https://osf.io/zwnyr/', tag: 'AI · Governance' },
+  { year: '2025', title: 'Policy Mirror Protocol', sub: 'embedding transparency and traceability into AI refusal boundaries', href: 'https://osf.io/d2k4x/', tag: 'AI · Policy' },
+  { year: '2025', title: 'From Waste to Wild', sub: 'circular ecocentric model for riverine plastic interception', href: 'https://osf.io/4w5g6/', tag: 'Ecocentric' },
+  { year: '2025', title: 'PedalGate v1.0', sub: '101-day investigation into systemic inequities on Austrian delivery platforms', href: 'https://osf.io/h5u8f/', tag: 'Security · Accountability' },
+  { year: '2025', title: 'A1ERF — EU Regulation Proposal', sub: 'AI-first emergency relay framework for autonomous cardiac arrest detection', href: 'https://osf.io/ueac8/', tag: 'Policy · EU' },
+]
+
+const AUDIT_HIGHLIGHTS = [
+  { target: 'Snapchat', market: 'NASDAQ', sev: 'CRITICAL', finding: 'Fidelius private keys stored at Google — "disappearing" messages provably don\'t disappear' },
+  { target: 'Glovo', market: 'Private', sev: 'CRITICAL', finding: 'Meta SDK active as undisclosed joint controller; user data shared without legal basis' },
+  { target: 'myNFP', market: 'Private', sev: 'CRITICAL', finding: 'Art. 9 menstrual cycle data transferred to Google (USA) via Auto Backup; privacy policy says "local only"' },
+  { target: 'A-Trust / ID Austria', market: 'eIDAS', sev: 'HIGH', finding: 'Same certificate library as national ID system; eIDAS compliance gap; 5 findings' },
+  { target: 'Roblox', market: 'NYSE', sev: 'HIGH', finding: 'COPPA + GDPR violations; child health data processed without adequate safeguards' },
+  { target: 'Wolt', market: 'Private', sev: 'HIGH', finding: '13 findings; company confirmed; structured remediation initiated' },
+  { target: 'Foodora', market: 'Private', sev: 'HIGH', finding: '7 critical findings + algorithmic wage suppression signal; BCC: Finanzpolizei' },
+  { target: 'Marionnaud', market: 'Private', sev: 'HIGH', finding: 'ModiFace AR try-on (Art. 9 biometric) + ContentSquare on AR screen; no consent layer' },
+]
+
+const SEV_COLOR: Record<string, string> = { CRITICAL: '#ef4444', HIGH: '#f97316', MEDIUM: '#eab308' }
+
 const CREDENTIALS = [
   { label: 'ZVR', value: '1015608684', sub: 'Association register' },
   { label: 'GISA', value: '39261441', sub: 'Trade register' },
@@ -314,6 +338,28 @@ export function PublicSite() {
               </div>
             ))}
           </div>
+          <div style={{ marginTop: 64 }}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 24, color: '#e8e8f0' }}>publications on OSF</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {PUBLICATIONS.map(p => (
+                <a key={p.title} href={p.href} target="_blank" rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 18px', borderRadius: 10, textDecoration: 'none', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', transition: 'border-color 0.2s' }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.25)')}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)')}>
+                  <span style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', minWidth: 32 }}>{p.year}</span>
+                  <span style={{ flex: 1 }}>
+                    <span style={{ fontWeight: 700, fontSize: 13, color: '#e8e8f0' }}>{p.title}</span>
+                    <span style={{ color: '#606080', fontSize: 12, display: 'block', marginTop: 2 }}>{p.sub}</span>
+                  </span>
+                  <span style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '3px 8px', borderRadius: 20, border: '1px solid rgba(0,245,196,0.25)', color: TEAL, whiteSpace: 'nowrap' }}>{p.tag}</span>
+                  <span style={{ color: '#404058', fontSize: 12 }}>↗</span>
+                </a>
+              ))}
+            </div>
+            <p style={{ marginTop: 16, fontFamily: 'monospace', fontSize: 10, color: '#404058' }}>
+              119 projects on OSF &nbsp;·&nbsp; <a href="https://osf.io/rzvyg/" target="_blank" rel="noopener noreferrer" style={{ color: '#606080', textDecoration: 'none' }}>osf.io/rzvyg</a>
+            </p>
+          </div>
         </div>
       </section>
 
@@ -387,12 +433,32 @@ export function PublicSite() {
           </div>
           <div style={{
             background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 12, padding: '20px 24px',
+            borderRadius: 12, padding: '20px 24px', marginBottom: 48,
             fontFamily: 'monospace', fontSize: 12, color: '#a0a0b8', lineHeight: 1.8,
           }}>
             <span style={{ color: TEAL, fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
             {' '}listed targets · GDPR Art. 5/8/9/13/25/32/44 · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at
           </div>
+
+          <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 20, color: '#e8e8f0' }}>selected findings</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {AUDIT_HIGHLIGHTS.map((a, i) => (
+              <div key={i} style={{
+                display: 'grid', gridTemplateColumns: '160px 80px 80px 1fr',
+                gap: 16, alignItems: 'center',
+                padding: '14px 18px', borderRadius: 10,
+                background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)',
+              }}>
+                <span style={{ fontWeight: 700, fontSize: 13 }}>{a.target}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase' }}>{a.market}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 10, fontWeight: 700, color: SEV_COLOR[a.sev] ?? TEAL }}>{a.sev}</span>
+                <span style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.5 }}>{a.finding}</span>
+              </div>
+            ))}
+          </div>
+          <p style={{ marginTop: 20, fontFamily: 'monospace', fontSize: 10, color: '#404058' }}>
+            full audit archive · <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: '#606080', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
+          </p>
         </div>
       </section>
 
