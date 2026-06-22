@@ -81,8 +81,8 @@ const PROJECTS = [
   {
     name: 'albert-cli',
     sub: 'ternary AI terminal client',
-    desc: 'Multi-provider CLI for albert. and other LLMs. Native SSE streaming, reasoning effort control, OpenAI/Anthropic/NVIDIA NIM/Google compatible. Part of TIS — standalone release planned.',
-    link: 'https://github.com/rfi-irfos/ternary-intelligence-stack',
+    desc: 'Multi-provider CLI for albert. and other LLMs. Native SSE streaming, reasoning effort control, OpenAI/Anthropic/NVIDIA NIM/Google compatible. Extracted from TIS into its own standalone repo.',
+    link: 'https://github.com/rfi-irfos/agent-albert-cli',
     tag: 'CLI · crates.io',
   },
 ]
@@ -252,13 +252,14 @@ export function PublicSite() {
         }}>
           RFI-IRFOS &nbsp;·&nbsp; ZVR 1015608684 &nbsp;·&nbsp; GISA 39261441 &nbsp;·&nbsp; Graz, Austria &nbsp;·&nbsp; est. 2020
         </p>
+        <p style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em' }}>
+          Rethink the Obvious.
+        </p>
         <h1 style={{
-          fontSize: 'clamp(2.4rem, 7vw, 5.5rem)', fontWeight: 900, lineHeight: 1.05,
-          marginBottom: 24, letterSpacing: '-0.02em',
+          fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,
+          marginBottom: 24, letterSpacing: '0.01em', color: '#a0a0b8',
         }}>
-          Rethink the Obvious.<br />
-          <span style={{ color: TEAL }}>Interdisciplinary</span> Research<br />
-          Facility for Open Sciences.
+          <span style={{ color: TEAL }}>Interdisciplinary</span> Research Facility for Open Sciences
         </h1>
         <p style={{ fontSize: 18, color: '#a0a0b8', maxWidth: 600, lineHeight: 1.7, marginBottom: 48 }}>
           an independent Austrian research institute at the intersection of ternary AI,
