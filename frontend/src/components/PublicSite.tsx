@@ -78,6 +78,13 @@ const PROJECTS = [
     link: 'https://github.com/rfi-irfos/aladdin-mini',
     tag: 'open source',
   },
+  {
+    name: 'albert-cli',
+    sub: 'ternary AI terminal client',
+    desc: 'Multi-provider CLI for albert. and other LLMs. Native SSE streaming, reasoning effort control, OpenAI/Anthropic/NVIDIA NIM/Google compatible. Part of TIS — standalone release planned.',
+    link: 'https://github.com/rfi-irfos/ternary-intelligence-stack',
+    tag: 'CLI · crates.io',
+  },
 ]
 
 const MILESTONES: { date: string; label: string; side: 'left' | 'right' }[] = [
@@ -109,6 +116,46 @@ const CONTACT_CARDS = [
   { label: 'GitHub', value: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
   { label: 'LinkedIn', value: 'RFI-IRFOS', href: 'https://linkedin.com/company/rfi-irfos' },
 ]
+
+function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect() } }, { threshold: 0.2 })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+  return (
+    <div ref={ref} style={{
+      display: 'flex',
+      justifyContent: m.side === 'left' ? 'flex-start' : 'flex-end',
+      position: 'relative',
+      opacity: visible ? 1 : 0,
+      transform: visible ? 'translateY(0)' : `translateY(24px)`,
+      transition: `opacity 0.5s ease ${i * 0.06}s, transform 0.5s ease ${i * 0.06}s`,
+    }}>
+      <div style={{
+        position: 'absolute', left: '50%', top: 20,
+        transform: 'translate(-50%, -50%)',
+        width: 12, height: 12, borderRadius: '50%',
+        background: visible ? TEAL : 'rgba(0,245,196,0.2)',
+        boxShadow: visible ? `0 0 12px ${TEAL}` : 'none',
+        transition: `background 0.3s ease ${i * 0.06 + 0.2}s, box-shadow 0.3s ease ${i * 0.06 + 0.2}s`,
+        zIndex: 2,
+      }} />
+      <div style={{
+        width: '44%',
+        background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: 12, padding: '16px 20px',
+      }}>
+        <div style={{ fontFamily: 'monospace', fontSize: 10, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 6 }}>{m.date}</div>
+        <div style={{ fontWeight: 700, fontSize: 14 }}>{m.label}</div>
+      </div>
+    </div>
+  )
+}
 
 export function PublicSite() {
   const [scrolled, setScrolled] = useState(false)
@@ -234,6 +281,7 @@ export function PublicSite() {
             { n: '100', label: 'apps audited' },
             { n: '150+', label: 'critical findings' },
             { n: '74', label: 'companies notified' },
+            { n: '10+', label: 'regulators notified' },
             { n: '6', label: 'years of research' },
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center' }}>
@@ -364,26 +412,7 @@ export function PublicSite() {
             }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
               {MILESTONES.map((m, i) => (
-                <div key={i} style={{
-                  display: 'flex',
-                  justifyContent: m.side === 'left' ? 'flex-start' : 'flex-end',
-                  position: 'relative',
-                }}>
-                  <div style={{
-                    position: 'absolute', left: '50%', top: 20,
-                    transform: 'translate(-50%, -50%)',
-                    width: 12, height: 12, borderRadius: '50%',
-                    background: TEAL, boxShadow: `0 0 12px ${TEAL}`, zIndex: 2,
-                  }} />
-                  <div style={{
-                    width: '44%',
-                    background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
-                    borderRadius: 12, padding: '16px 20px',
-                  }}>
-                    <div style={{ fontFamily: 'monospace', fontSize: 10, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 6 }}>{m.date}</div>
-                    <div style={{ fontWeight: 700, fontSize: 14 }}>{m.label}</div>
-                  </div>
-                </div>
+                <TimelineItem key={i} m={m} i={i} />
               ))}
             </div>
           </div>
@@ -401,7 +430,7 @@ export function PublicSite() {
 
           {/* Security Audit tiers */}
           <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 48 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 48 }}>
             {[
               { tier: 'Public', price: 'free', desc: 'Full public disclosure. Findings published after 90-day coordinated embargo. No NDA.', highlight: false },
               { tier: 'Remediation Advisory', price: '€4,500', desc: 'Full report + remediation guidance. 30-day follow-up. GDPR compliance mapping included.', highlight: false },
@@ -599,11 +628,25 @@ export function PublicSite() {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '32px 2rem', textAlign: 'center' }}>
-        <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.1em' }}>
-          &copy; 2026 RFI-IRFOS · Graz, Austria · ZVR 1015608684 · GISA 39261441 ·{' '}
-          <a href="https://ternlang.com" style={{ color: '#606080', textDecoration: 'none' }}>ternlang.com</a>{' '}
-          · <a href="/impressum" style={{ color: '#606080', textDecoration: 'none' }}>Impressum</a>
+      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '40px 2rem', textAlign: 'center' }}>
+        <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
+          {[
+            { label: 'Impressum', href: '#p/impressum' },
+            { label: 'Datenschutz', href: '#p/datenschutz' },
+            { label: 'AGB', href: '#p/agb' },
+            { label: 'Security Policy', href: '#p/security' },
+            { label: 'ternlang.com', href: 'https://ternlang.com' },
+            { label: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
+          ].map(l => (
+            <a key={l.label} href={l.href} style={{ color: '#606080', fontSize: 12, textDecoration: 'none' }}
+              onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+              onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+              {l.label}
+            </a>
+          ))}
+        </div>
+        <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em' }}>
+          &copy; 2026 RFI-IRFOS &nbsp;&middot;&nbsp; ZVR 1015608684 &nbsp;&middot;&nbsp; GISA 39261441 &nbsp;&middot;&nbsp; Steuernummer 68 028/0989 &nbsp;&middot;&nbsp; Graz, Austria
         </p>
       </footer>
     </div>
