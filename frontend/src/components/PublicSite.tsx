@@ -246,7 +246,7 @@ function ThemeToggle({ theme, setTheme }: { theme: Theme; setTheme: (t: Theme) =
 
 export function PublicSite() {
   const [theme, setThemeState] = useState<Theme>(() => {
-    try { return (localStorage.getItem('rfi-theme') as Theme) ?? 'light' } catch { return 'light' }
+    try { return (localStorage.getItem('rfi-theme') as Theme) ?? 'dark' } catch { return 'dark' }
   })
   const [scrolled, setScrolled] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })

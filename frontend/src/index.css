@@ -3,34 +3,9 @@ body { margin: 0; -webkit-font-smoothing: antialiased; }
 #root { width: 100%; min-height: 100svh; }
 
 /* ── Theme variables ──────────────────────────────────────────── */
-:root, [data-theme="light"] {
-  --bg:           #ffffff;
-  --bg2:          #f4f4f5;
-  --bg3:          #e9e9eb;
-  --bg-accent:    rgba(0,168,132,0.05);
-  --text:         #0a0a0a;
-  --text2:        #444444;
-  --text3:        #888888;
-  --text4:        #bbbbbb;
-  --border:       rgba(0,0,0,0.10);
-  --border2:      rgba(0,0,0,0.06);
-  --accent:       #009e7a;
-  --accent-text:  #007a5c;
-  --accent-dim:   rgba(0,158,122,0.12);
-  --accent-border:rgba(0,158,122,0.25);
-  --nav-bg:       rgba(255,255,255,0.96);
-  --nav-border:   rgba(0,0,0,0.08);
-  --sev-crit:     #c0392b;
-  --sev-high:     #c0600a;
-  --sev-med:      #8b6914;
-  --hero-grad:    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,158,122,0.04) 0%, transparent 70%);
-  --input-bg:     #f4f4f5;
-  --input-border: rgba(0,0,0,0.12);
-  --input-text:   #0a0a0a;
-  --input-ph:     #999999;
-  --timeline-line:rgba(0,0,0,0.12);
-}
 
+/* dark = default (also :root fallback) */
+:root,
 [data-theme="dark"] {
   --bg:           #070711;
   --bg2:          rgba(255,255,255,0.03);
@@ -57,6 +32,34 @@ body { margin: 0; -webkit-font-smoothing: antialiased; }
   --input-text:   #e8e8f0;
   --input-ph:     #606080;
   --timeline-line:rgba(0,245,196,0.2);
+}
+
+[data-theme="light"] {
+  --bg:           #ffffff;
+  --bg2:          #f4f4f5;
+  --bg3:          #e9e9eb;
+  --bg-accent:    rgba(0,168,132,0.05);
+  --text:         #0a0a0a;
+  --text2:        #444444;
+  --text3:        #888888;
+  --text4:        #bbbbbb;
+  --border:       rgba(0,0,0,0.10);
+  --border2:      rgba(0,0,0,0.06);
+  --accent:       #009e7a;
+  --accent-text:  #007a5c;
+  --accent-dim:   rgba(0,158,122,0.12);
+  --accent-border:rgba(0,158,122,0.25);
+  --nav-bg:       rgba(255,255,255,0.96);
+  --nav-border:   rgba(0,0,0,0.08);
+  --sev-crit:     #c0392b;
+  --sev-high:     #c0600a;
+  --sev-med:      #8b6914;
+  --hero-grad:    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,158,122,0.04) 0%, transparent 70%);
+  --input-bg:     #f4f4f5;
+  --input-border: rgba(0,0,0,0.12);
+  --input-text:   #0a0a0a;
+  --input-ph:     #999999;
+  --timeline-line:rgba(0,0,0,0.12);
 }
 
 [data-theme="hc"] {
