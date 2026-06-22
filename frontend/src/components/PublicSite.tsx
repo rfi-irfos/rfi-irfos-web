@@ -1,149 +1,146 @@
 import { useState, useEffect, useRef } from 'react'
 
-const TEAL = '#00f5c4'
-const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
+const ACCENT = 'var(--accent)'
+
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
+const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
+
+type Theme = 'light' | 'dark' | 'hc'
 
 const NAV_LINKS = [
-  { label: 'Research', href: '#research' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Track Record', href: '#track-record' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Services', href: '#services' },
+  { href: '#research',     label: 'Research' },
+  { href: '#projects',     label: 'Projects' },
+  { href: '#track-record', label: 'Track Record' },
+  { href: '#pricing',      label: 'Pricing' },
+  { href: '#contact',      label: 'Contact' },
 ]
 
 const RESEARCH_AREAS = [
   {
-    icon: '◈',
-    title: 'Ternary AI & Computing',
-    desc: 'Post-binary arithmetic as the foundation for language models, compilers, and operating systems. Patent pending A50296/2026.',
+    icon: '◎',
+    title: 'Security & Privacy',
+    desc:  'Decompilation and root-level comparison of code files. GDPR enforcement, coordinated responsible disclosure at scale. ISO/IEC 29147 framework.',
+  },
+  {
+    icon: '△',
+    title: 'Ternary AI',
+    desc:  'Training and evaluating models on ternary arithmetic. The ternlang runtime. albert. - a ternary-native language model built in-house from scratch.',
   },
   {
     icon: '⬡',
-    title: 'Security & Privacy',
-    desc: 'Decompilation and root-level comparison of code files. GDPR enforcement, coordinated responsible disclosure at scale. ISO/IEC 29147 framework.',
+    title: 'Governance & Policy',
+    desc:  'Regulatory analysis under GDPR, EU AI Act, eIDAS. Direct submissions to DSB, EDPB, BfDI, ICO. Human oversight of automated systems.',
   },
   {
     icon: '⊕',
-    title: 'AI Governance & Ethics',
-    desc: 'Constitutional AI design, model welfare research, EU AI Act compliance. Immutable governance by construction.',
-  },
-  {
-    icon: '◉',
     title: 'Ecocentric Technology',
-    desc: 'Technology in service of ecological and social systems. Sufficiency over growth. Research into manufactured scarcity.',
+    desc:  'Low-footprint infrastructure. Surplus reinvested into open research. Land and compute sovereignty as design constraints, not afterthoughts.',
   },
 ]
 
 const PROJECTS = [
   {
-    name: 'Ternary Intelligence Stack',
-    sub: 'TIS monorepo',
-    desc: 'Full-stack post-binary AI platform. Language, compiler, ISA, virtual machine, linear algebra, API, and model — built on balanced ternary {-1, 0, +1}.',
-    link: 'https://github.com/rfi-irfos/ternary-intelligence-stack',
-    tag: 'core platform',
-  },
-  {
     name: 'albert.',
-    sub: 'ternary MoE language model',
-    desc: 'Language model trained from scratch on ternary arithmetic. Grows its own architecture via autonomous plateau-gated Net2Net surgery. No human layer additions ever.',
-    link: 'https://github.com/rfi-irfos/ternary-intelligence-stack',
-    tag: 'AI model',
+    sub:  'ternary language model',
+    tag:  'ACTIVE',
+    desc: 'A ternary-native language model trained in-house. Not a fork. Not a fine-tune. Built from the weight matrix up in Rust, trained on Modal GPU infrastructure.',
+    link: 'https://github.com/rfi-irfos',
   },
   {
-    name: 'Rusty Penguin',
-    sub: 'pure-Rust OS',
-    desc: 'Operating system written from scratch in Rust. Own kernel, GUI desktop, from-scratch TCP/IP stack, Linux ABI compatibility layer. Ubuntu replacement roadmap active.',
-    link: 'https://github.com/rfi-irfos/rusty-penguin',
-    tag: 'systems',
+    name: 'ternlang',
+    sub:  'ternary runtime + compiler',
+    tag:  'ACTIVE',
+    desc: '@sparseskip - patent pending A50296/2026. Sparse execution: skip null ternary branches at compile time, pay in dense compute only. 83 tok/s on T4.',
+    link: 'https://ternlang.com',
   },
   {
     name: 'Lighthouse',
-    sub: 'sovereign workplace OS',
-    desc: 'One self-hosted Rust + React binary running the entire institute — comms, CRM, finance, payroll, HR, governance, and live training telemetry. Append-only 50-year audit trail.',
+    sub:  'workplace operating system',
+    tag:  'LIVE',
+    desc: 'Internal governance + task management OS. Append-only audit trail. Unanimous quorum on destructive actions. Built on Axum + React. Live at ternlang.com/lighthouse.',
     link: null,
-    tag: 'internal · live',
   },
   {
-    name: 'Android Security Audit 2026',
-    sub: '100 apps · 74 companies',
-    desc: '150+ critical findings across NYSE, NASDAQ, LSE, and XETRA listed companies. Static APK analysis. Coordinated disclosure 2026-09-19. Regulators BCC\'d on every submission.',
+    name: 'Rusty Penguin',
+    sub:  'pure-Rust operating system',
+    tag:  'ACTIVE',
+    desc: 'A from-scratch OS written in Rust. No Linux kernel. No GNU. Boots DOOM. Fetches web pages via a hand-written TCP/IP stack. Daily-drivability as the target.',
+    link: 'https://github.com/rfi-irfos',
+  },
+  {
+    name: 'Android Audit 2026',
+    sub:  '103 apps · 81 companies',
+    tag:  'DISCLOSURE 2026-09-19',
+    desc: 'Mass coordinated disclosure across European and global app markets. Every R1 sent. Regulators in BCC on every submission. Full archive on GitHub.',
     link: 'https://github.com/rfi-irfos/android-security-audit-2026',
-    tag: 'security research',
   },
   {
-    name: 'aladdin-mini',
-    sub: 'disclosure impact engine',
-    desc: '50-parameter causality chain mapping security disclosures to market signals. Includes Simeon Hedge System (SHS). Named after BlackRock\'s Aladdin ($21T AUM). Smaller. Free.',
-    link: 'https://github.com/rfi-irfos/aladdin-mini',
-    tag: 'open source',
+    name: 'rfi-irfos-web-template',
+    sub:  'open source web kit',
+    tag:  'OPEN SOURCE',
+    desc: 'The React + Rust component template behind every client site we deliver. MIT licensed. Used for e-techbike.at and others.',
+    link: 'https://github.com/rfi-irfos',
   },
-  {
-    name: 'albert-cli',
-    sub: 'ternary AI terminal client',
-    desc: 'Multi-provider CLI for albert. and other LLMs. Native SSE streaming, reasoning effort control, OpenAI/Anthropic/NVIDIA NIM/Google compatible. Extracted from TIS into its own standalone repo.',
-    link: 'https://github.com/rfi-irfos/agent-albert-cli',
-    tag: 'CLI · crates.io',
-  },
-]
-
-const MILESTONES: { date: string; label: string; side: 'left' | 'right'; link?: string; tag?: string }[] = [
-  { date: 'June 2020', label: 'RFI-IRFOS Founded', side: 'left' },
-  { date: 'June 2020', label: 'OSF Research Repository launched', side: 'right', link: 'https://osf.io/rzvyg/', tag: 'publication' },
-  { date: 'March 2021', label: 'Ternary Logic Framework', side: 'left', tag: 'milestone' },
-  { date: 'May 2023', label: 'Ecocentric AI Framework', side: 'right', tag: 'milestone' },
-  { date: 'March 2024', label: 'The Art of Questioning — whitepaper', side: 'left', tag: 'publication' },
-  { date: 'June 2024', label: 'albert. — first ternary MoE model born', side: 'right', tag: 'milestone' },
-  { date: 'July 2025', label: 'The Ternlang Architecture — post-binary logic framework for ethical AI', side: 'left', link: 'https://osf.io/zwnyr/', tag: 'publication' },
-  { date: 'August 2025', label: 'A Ternary Logic Mixture-of-Experts Model — albert. architecture paper', side: 'right', link: 'https://osf.io/tz7dc/', tag: 'publication' },
-  { date: 'August 2025', label: 'Policy Mirror Protocol — AI transparency & refusal traceability', side: 'left', link: 'https://osf.io/d2k4x/', tag: 'publication' },
-  { date: 'Jan 2025', label: 'Rusty Penguin — pure-Rust OS boots', side: 'right', tag: 'milestone' },
-  { date: 'March 2025', label: 'Lighthouse — workplace OS goes live', side: 'left', tag: 'milestone' },
-  { date: 'Feb 2026', label: 'Myco-Styria — mycelium-based polystyrene replacement', side: 'right', link: 'https://osf.io/ek8rm/', tag: 'publication' },
-  { date: 'April 2026', label: 'The Ternary Intelligence Stack — system paper', side: 'left', link: 'https://osf.io/cyn28/', tag: 'publication' },
-  { date: 'May 2026', label: 'SPRIND pitch submitted — €26.5M ceiling', side: 'right', tag: 'milestone' },
-  { date: 'May 2026', label: 'DOOM boots on bare-metal Rust kernel', side: 'left', tag: 'milestone' },
-  { date: 'June 2026', label: '100 Android apps audited — 74 companies · NYSE · NASDAQ · LSE · XETRA', side: 'right', link: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'milestone' },
-  { date: 'June 2026', label: 'aladdin-mini — open-source disclosure impact engine', side: 'left', link: 'https://github.com/rfi-irfos/aladdin-mini', tag: 'milestone' },
 ]
 
 const PUBLICATIONS = [
-  { year: '2026', title: 'The Ternary Intelligence Stack', sub: 'vertically integrated post-binary AI platform', href: 'https://osf.io/cyn28/', tag: 'AI · Systems' },
-  { year: '2026', title: 'Myco-Styria', sub: 'polystyrene replacement via mycelium + Austrian lignocellulose residues', href: 'https://osf.io/ek8rm/', tag: 'Ecocentric' },
-  { year: '2025', title: 'A Ternary Logic Mixture-of-Experts Model', sub: 'sparse ternary MoE architecture with autonomous Net2Net surgery', href: 'https://osf.io/tz7dc/', tag: 'AI · Model' },
-  { year: '2025', title: 'The Ternlang Architecture', sub: 'post-binary logic framework for ethical autonomous AI', href: 'https://osf.io/zwnyr/', tag: 'AI · Governance' },
-  { year: '2025', title: 'Policy Mirror Protocol', sub: 'embedding transparency and traceability into AI refusal boundaries', href: 'https://osf.io/d2k4x/', tag: 'AI · Policy' },
-  { year: '2025', title: 'From Waste to Wild', sub: 'circular ecocentric model for riverine plastic interception', href: 'https://osf.io/4w5g6/', tag: 'Ecocentric' },
-  { year: '2025', title: 'PedalGate v1.0', sub: '101-day investigation into systemic inequities on Austrian delivery platforms', href: 'https://osf.io/h5u8f/', tag: 'Security · Accountability' },
-  { year: '2025', title: 'A1ERF — EU Regulation Proposal', sub: 'AI-first emergency relay framework for autonomous cardiac arrest detection', href: 'https://osf.io/ueac8/', tag: 'Policy · EU' },
+  {
+    year: '2025',
+    title: 'Ternary Intelligence Stack - Architecture Whitepaper',
+    sub:   'albert. · ternlang · @sparseskip',
+    tag:   'preprint',
+    href:  'https://osf.io/rzvyg/',
+  },
+  {
+    year: '2024',
+    title: 'Earth Is Not Full. We Regulate It That Way.',
+    sub:   'Sufficiency, scarcity, and the cost of manufactured limits',
+    tag:   'article',
+    href:  'https://www.linkedin.com/in/simeon-kepp/',
+  },
 ]
 
 const AUDIT_HIGHLIGHTS = [
-  { target: 'Snapchat', market: 'NASDAQ', sev: 'CRITICAL', finding: 'Fidelius private keys stored at Google — "disappearing" messages provably don\'t disappear' },
-  { target: 'Glovo', market: 'Private', sev: 'CRITICAL', finding: 'Meta SDK active as undisclosed joint controller; user data shared without legal basis' },
-  { target: 'myNFP', market: 'Private', sev: 'CRITICAL', finding: 'Art. 9 menstrual cycle data transferred to Google (USA) via Auto Backup; privacy policy says "local only"' },
-  { target: 'A-Trust / ID Austria', market: 'eIDAS', sev: 'HIGH', finding: 'Same certificate library as national ID system; eIDAS compliance gap; 5 findings' },
-  { target: 'Roblox', market: 'NYSE', sev: 'HIGH', finding: 'COPPA + GDPR violations; child health data processed without adequate safeguards' },
-  { target: 'Wolt', market: 'Private', sev: 'HIGH', finding: '13 findings; company confirmed; structured remediation initiated' },
-  { target: 'Foodora', market: 'Private', sev: 'HIGH', finding: '7 critical findings + algorithmic wage suppression signal; BCC: Finanzpolizei' },
-  { target: 'Marionnaud', market: 'Private', sev: 'HIGH', finding: 'ModiFace AR try-on (Art. 9 biometric) + ContentSquare on AR screen; no consent layer' },
+  { target: 'Pokemon GO',     market: 'NYSE',    sev: 'CRITICAL', finding: 'Photogrammetric 3D map data from civilian gameplay licensed to Vantor (US defense contractor, NGA contract). Art. 5(1)(b) purpose limitation breach.' },
+  { target: 'Tinder',         market: 'NASDAQ',  sev: 'CRITICAL', finding: 'FaceTec 3D liveness biometric to api.facetec.com US. FaceUnity biometric SDK (China). LiveRamp identity resolution on sex-preference data. GDPR Art. 9.' },
+  { target: 'Disneyland EU',  market: 'NYSE',    sev: 'CRITICAL', finding: 'Facial recognition of children at EU theme park. ContentSquare session replay. MagicBand RFID. IoB pricing applies.' },
+  { target: 'Snapchat',       market: 'NYSE',    sev: 'CRITICAL', finding: 'Fidelius encryption keys stored at Google. Disappearing messages can be retained. Core product claim invalidated.' },
+  { target: 'Lovoo',          market: 'PRIVATE', sev: 'CRITICAL', finding: 'Chucker HTTP interceptor in production: all API calls logged in plaintext. FaceUnity + Mintegral (Chinese SDKs). Broken NSC syntax bypasses pinning.' },
+  { target: 'Strava',         market: 'PRIVATE', sev: 'CRITICAL', finding: 'Firebase API key hardcoded. NSC present but empty: 120M users, no certificate pinning. privacy@strava.com bounced (finding H4).' },
+  { target: 'Marionnaud',     market: 'NYSE',    sev: 'CRITICAL', finding: 'ModiFace 65-point facial geometry AR try-on. ContentSquare session replay during AR face scanning. GDPR Art. 9 without explicit basis.' },
+  { target: 'AliExpress',     market: 'NYSE',    sev: 'CRITICAL', finding: 'ByteDance shadowhook + TikTok assets + WhiteScreenRecorder full-screen capture = triple NSL pipeline on EU user devices.' },
 ]
 
-const SEV_COLOR: Record<string, string> = { CRITICAL: '#ef4444', HIGH: '#f97316', MEDIUM: '#eab308' }
+const SEV_COLOR: Record<string, string> = {
+  CRITICAL: 'var(--sev-crit)',
+  HIGH:     'var(--sev-high)',
+  MEDIUM:   'var(--sev-med)',
+}
+
+const MILESTONES = [
+  { year: '2020', tag: 'founding',     title: 'Founded in Graz',              body: 'Registered as a regulated not-for-profit research institute. ZVR 1015608684. WKO member. Research agenda: ternary computation and digital rights.' },
+  { year: '2022', tag: 'research',     title: 'First OSF publications',        body: '119 projects archived on OSF. Public record of research outputs, methodologies, and findings from the first research cycle.' },
+  { year: '2024', tag: 'development',  title: 'ternlang + albert. initiated',  body: 'Development of the ternary runtime and language model started in-house. First @sparseskip prototype. albert. training begins.' },
+  { year: '2025', tag: 'milestone',    title: '@sparseskip patent filed',      body: 'Patent application A50296/2026 filed. Sparse ternary execution: 83 tok/s on T4. Whitepaper published on OSF.' },
+  { year: '2026', tag: 'audit-series', title: '103 apps. 81 companies.',       body: 'The 2026 Android audit series. Mass coordinated disclosure across European and global markets. Pokemon GO, Tinder, Strava, Snapchat, Disneyland EU - all notified. Disclosure: 2026-09-19.' },
+  { year: '2026', tag: 'live',         title: 'Lighthouse OS live',            body: 'Internal governance OS deployed. Append-only audit trail. Unanimous quorum on destructive operations. A production system for a team that does not trust defaults.' },
+]
 
 const CREDENTIALS = [
-  { label: 'ZVR', value: '1015608684', sub: 'Association register' },
-  { label: 'GISA', value: '39261441', sub: 'Trade register' },
-  { label: 'Gewerbe', value: 'Automatische Datenverarbeitung', sub: 'WKO · GewO § 32' },
+  { label: 'ZVR',          value: '1015608684',  sub: 'Vereinsregister Austria' },
+  { label: 'GISA',         value: '39261441',    sub: 'Gewerbeinformationssystem' },
   { label: 'Steuernummer', value: '68 028/0989', sub: 'Finanzamt Graz' },
-  { label: 'Seat', value: 'Elisabethinergasse 25', sub: '8020 Graz, Austria' },
+  { label: 'WKO',          value: 'GewO § 32',   sub: 'Automatische Datenverarbeitung' },
+  { label: 'ISO/IEC',      value: '29147',       sub: 'Disclosure framework' },
+  { label: 'GDPR',         value: 'Art. 5/9/32', sub: 'Applicable articles' },
 ]
 
 const CONTACT_CARDS = [
-  { label: 'Email', value: 'contact@ternlang.com', href: 'mailto:contact@ternlang.com' },
-  { label: 'Research on OSF', value: 'osf.io/rzvyg', href: 'https://osf.io/rzvyg' },
-  { label: 'GitHub', value: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
-  { label: 'LinkedIn', value: 'RFI-IRFOS', href: 'https://linkedin.com/company/rfi-irfos' },
+  { label: 'Security Disclosures',    href: 'mailto:contact@ternlang.com',   value: 'contact@ternlang.com' },
+  { label: 'Research + Partnerships', href: 'mailto:rfi.irfos@gmail.com',    value: 'rfi.irfos@gmail.com' },
+  { label: 'GitHub',                  href: 'https://github.com/rfi-irfos', value: 'github.com/rfi-irfos' },
+  { label: 'OSF Research Archive',    href: 'https://osf.io/rzvyg/',         value: 'osf.io/rzvyg' },
+  { label: 'Security Policy',         href: '/.well-known/security.txt',     value: 'security.txt' },
 ]
 
 function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
@@ -152,72 +149,141 @@ function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    const obs = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect() } }, { threshold: 0.2 })
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setVisible(true)
+      else if (entry.boundingClientRect.top > 0) setVisible(false)
+    }, { threshold: 0.15 })
     obs.observe(el)
     return () => obs.disconnect()
   }, [])
-  const isPublication = m.tag === 'publication'
-  const innerStyle: React.CSSProperties = {
-    background: isPublication ? 'rgba(0,245,196,0.04)' : 'rgba(255,255,255,0.03)',
-    border: `1px solid ${isPublication ? 'rgba(0,245,196,0.18)' : 'rgba(255,255,255,0.08)'}`,
-    borderRadius: 12, padding: '16px 20px',
-    textDecoration: 'none', color: 'inherit', display: 'block',
-    transition: 'border-color 0.2s', width: '100%', boxSizing: 'border-box',
+
+  const isLeft = i % 2 === 0
+  const tagStyle: React.CSSProperties = {
+    fontFamily: 'monospace', fontSize: 9, textTransform: 'uppercase',
+    letterSpacing: '0.12em', padding: '3px 8px', borderRadius: 20,
+    border: '1px solid var(--accent-border)', color: 'var(--accent)', whiteSpace: 'nowrap',
   }
-  const innerContent = (
-    <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-        <div style={{ fontFamily: 'monospace', fontSize: 10, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{m.date}</div>
-        {isPublication && <span style={{ fontFamily: 'monospace', fontSize: 9, color: TEAL, border: '1px solid rgba(0,245,196,0.3)', borderRadius: 10, padding: '2px 7px', letterSpacing: '0.08em' }}>OSF ↗</span>}
-      </div>
-      <div style={{ fontWeight: 700, fontSize: 14 }}>{m.label}</div>
-    </>
-  )
-  const card = m.link
-    ? <a href={m.link} target="_blank" rel="noopener noreferrer" style={innerStyle}
-        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,245,196,0.45)' }}
-        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = isPublication ? 'rgba(0,245,196,0.18)' : 'rgba(255,255,255,0.08)' }}
-      >{innerContent}</a>
-    : <div style={innerStyle}>{innerContent}</div>
+  const cardStyle: React.CSSProperties = {
+    flex: 1,
+    background: 'var(--bg2)', border: '1px solid var(--border)',
+    borderLeft: visible ? '3px solid var(--accent)' : '3px solid transparent',
+    borderRadius: 8, padding: '20px 22px',
+    opacity: visible ? 1 : 0,
+    transform: visible ? 'translateX(0)' : isLeft ? 'translateX(-28px)' : 'translateX(28px)',
+    transition: 'opacity 0.5s ease, transform 0.5s ease, border-left-color 0.5s ease',
+  }
+
   return (
-    <div ref={ref} style={{
-      display: 'flex',
-      justifyContent: m.side === 'left' ? 'flex-start' : 'flex-end',
-      position: 'relative',
-      opacity: visible ? 1 : 0,
-      transform: visible ? 'translateY(0)' : `translateY(24px)`,
-      transition: `opacity 0.5s ease ${i * 0.06}s, transform 0.5s ease ${i * 0.06}s`,
-    }}>
-      <div style={{
-        position: 'absolute', left: '50%', top: 20,
-        transform: 'translate(-50%, -50%)',
-        width: isPublication ? 14 : 12, height: isPublication ? 14 : 12, borderRadius: '50%',
-        background: visible ? TEAL : 'rgba(0,245,196,0.2)',
-        boxShadow: visible ? `0 0 ${isPublication ? 16 : 12}px ${TEAL}` : 'none',
-        transition: `background 0.3s ease ${i * 0.06 + 0.2}s, box-shadow 0.3s ease ${i * 0.06 + 0.2}s`,
-        zIndex: 2,
-      }} />
-      <div style={{ width: '44%' }}>{card}</div>
+    <div ref={ref} style={{ display: 'grid', gridTemplateColumns: '1fr 48px 1fr', alignItems: 'start' }}>
+      {isLeft ? (
+        <>
+          <div style={cardStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10, flexWrap: 'wrap', gap: 8 }}>
+              <span style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)' }}>{m.year}</span>
+              <span style={tagStyle}>{m.tag}</span>
+            </div>
+            <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 8, color: 'var(--text)' }}>{m.title}</div>
+            <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.75 }}>{m.body}</div>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 20 }}>
+            <div style={{
+              width: 12, height: 12, borderRadius: '50%',
+              background: visible ? 'var(--accent)' : 'var(--text4)',
+              border: '2px solid var(--bg)',
+              boxShadow: visible ? '0 0 0 3px var(--accent-border)' : 'none',
+              transition: 'all 0.4s ease', zIndex: 1,
+            }} />
+          </div>
+          <div />
+        </>
+      ) : (
+        <>
+          <div />
+          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 20 }}>
+            <div style={{
+              width: 12, height: 12, borderRadius: '50%',
+              background: visible ? 'var(--accent)' : 'var(--text4)',
+              border: '2px solid var(--bg)',
+              boxShadow: visible ? '0 0 0 3px var(--accent-border)' : 'none',
+              transition: 'all 0.4s ease', zIndex: 1,
+            }} />
+          </div>
+          <div style={cardStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10, flexWrap: 'wrap', gap: 8 }}>
+              <span style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)' }}>{m.year}</span>
+              <span style={tagStyle}>{m.tag}</span>
+            </div>
+            <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 8, color: 'var(--text)' }}>{m.title}</div>
+            <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.75 }}>{m.body}</div>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+function ThemeToggle({ theme, setTheme }: { theme: Theme; setTheme: (t: Theme) => void }) {
+  const opts: { key: Theme; label: string }[] = [
+    { key: 'light', label: 'LIGHT' },
+    { key: 'dark',  label: 'DARK'  },
+    { key: 'hc',    label: 'HC'    },
+  ]
+  return (
+    <div style={{ display: 'flex' }}>
+      {opts.map(o => (
+        <button
+          key={o.key}
+          onClick={() => setTheme(o.key)}
+          className={`theme-btn${theme === o.key ? ' active' : ''}`}
+          aria-pressed={theme === o.key}
+        >
+          {o.label}
+        </button>
+      ))}
     </div>
   )
 }
 
 export function PublicSite() {
+  const [theme, setThemeState] = useState<Theme>(() => {
+    try { return (localStorage.getItem('rfi-theme') as Theme) ?? 'light' } catch { return 'light' }
+  })
   const [scrolled, setScrolled] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [formState, setFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
   const pixelRef = useRef<HTMLImageElement>(null)
 
+  function setTheme(t: Theme) {
+    setThemeState(t)
+    try { localStorage.setItem('rfi-theme', t) } catch {}
+  }
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll)
-    // beacon on page load
     fetch('https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ path: '/', referrer: document.referrer, utm_source: new URLSearchParams(location.search).get('utm_source') ?? '' }),
     }).catch(() => {})
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('rfi-visible')
+          } else if (entry.boundingClientRect.top > 0) {
+            entry.target.classList.remove('rfi-visible')
+          }
+        })
+      },
+      { threshold: 0.08 },
+    )
+    document.querySelectorAll('.rfi-animate').forEach(el => observer.observe(el))
+    return () => observer.disconnect()
   }, [])
 
   async function submitForm(e: React.FormEvent) {
@@ -230,12 +296,9 @@ export function PublicSite() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             access_key: WEB3FORMS_KEY,
-            subject: `[rfi-irfos.at] ${form.subject || 'New inquiry'} — ${form.name}`,
-            name: form.name,
-            email: form.email,
-            replyto: form.email,
-            subject_interest: form.subject,
-            message: form.message,
+            subject: `[rfi-irfos.com] ${form.subject || 'New inquiry'} -- ${form.name}`,
+            name: form.name, email: form.email, replyto: form.email,
+            subject_interest: form.subject, message: form.message,
           }),
         })
         if (!res.ok) throw new Error()
@@ -248,37 +311,38 @@ export function PublicSite() {
   }
 
   return (
-    <div style={{ background: '#070711', color: '#e8e8f0', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh' }}>
+    <div data-theme={theme} style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh' }}>
 
       {/* NAV */}
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: scrolled ? 'rgba(7,7,17,0.95)' : 'transparent',
+        background: scrolled ? 'var(--nav-bg)' : 'transparent',
         backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none',
+        borderBottom: scrolled ? '1px solid var(--nav-border)' : 'none',
         transition: 'all 0.3s',
         padding: '0 2rem',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px',
       }}>
         <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 36, height: 36, objectFit: 'contain' }} />
-          <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: '0.05em', color: '#e8e8f0' }}>RFI-IRFOS</span>
+          <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 34, height: 34, objectFit: 'contain' }} />
+          <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: 'var(--text)' }}>RFI-IRFOS</span>
         </a>
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '1.6rem', alignItems: 'center' }}>
           {NAV_LINKS.map(n => (
             <a key={n.href} href={n.href} style={{
-              color: '#a0a0b8', fontSize: 13, fontWeight: 600,
-              textDecoration: 'none', letterSpacing: '0.04em',
-              transition: 'color 0.2s',
+              color: 'var(--text3)', fontSize: 12, fontWeight: 600,
+              textDecoration: 'none', letterSpacing: '0.04em', transition: 'color 0.2s',
             }}
-              onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-              onMouseLeave={e => (e.currentTarget.style.color = '#a0a0b8')}>
+              onMouseEnter={e => (e.currentTarget.style.color = ACCENT)}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text3)')}>
               {n.label}
             </a>
           ))}
+          <ThemeToggle theme={theme} setTheme={setTheme} />
           <a href="mailto:contact@ternlang.com" style={{
-            background: TEAL, color: '#070711', padding: '7px 18px', borderRadius: 6,
-            fontWeight: 800, fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em',
+            background: 'var(--accent)', color: 'var(--bg)',
+            padding: '7px 16px', borderRadius: 4,
+            fontWeight: 800, fontSize: 11, textDecoration: 'none', letterSpacing: '0.07em',
           }}>Contact</a>
         </div>
       </nav>
@@ -288,136 +352,130 @@ export function PublicSite() {
         minHeight: '100vh', display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center', textAlign: 'center',
         padding: '120px 2rem 80px',
-        background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.06) 0%, transparent 70%)',
+        background: 'var(--hero-grad)',
       }}>
         <p style={{
-          fontFamily: 'monospace', fontSize: 11, color: TEAL, letterSpacing: '0.2em',
-          textTransform: 'uppercase', marginBottom: 32,
-          border: '1px solid rgba(0,245,196,0.3)', padding: '6px 16px', borderRadius: 20,
+          fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', letterSpacing: '0.22em',
+          textTransform: 'uppercase', marginBottom: 36,
+          border: '1px solid var(--border)', padding: '5px 14px', borderRadius: 2, display: 'inline-block',
         }}>
           RFI-IRFOS &nbsp;·&nbsp; ZVR 1015608684 &nbsp;·&nbsp; GISA 39261441 &nbsp;·&nbsp; Graz, Austria &nbsp;·&nbsp; est. 2020
         </p>
-        <p style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em' }}>
-          Rethink the Obvious.
+        <p style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4.4rem)', fontWeight: 900, lineHeight: 1.06, marginBottom: 8, letterSpacing: '-0.02em', color: 'var(--text)' }}>
+          We read your code.
         </p>
-        <h1 style={{
-          fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,
-          marginBottom: 24, letterSpacing: '0.01em', color: '#a0a0b8',
-        }}>
-          <span style={{ color: TEAL }}>Interdisciplinary</span> Research Facility for Open Sciences
-        </h1>
-        <p style={{ fontSize: 18, color: '#a0a0b8', maxWidth: 600, lineHeight: 1.7, marginBottom: 48 }}>
-          an independent Austrian research institute at the intersection of ternary AI,
-          security &amp; privacy, governance, and ecocentric technology.
-          everything in-house. everything interdisciplinary.
+        <p style={{ fontSize: 'clamp(1.2rem, 2.8vw, 2.2rem)', fontWeight: 300, lineHeight: 1.2, marginBottom: 28, letterSpacing: '-0.01em', color: 'var(--text2)' }}>
+          Not your documentation. Your code.
         </p>
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
+        <p style={{ fontSize: 16, color: 'var(--text2)', maxWidth: 560, lineHeight: 1.85, marginBottom: 48, fontWeight: 400 }}>
+          An independent Austrian research institute working at the intersection of ternary AI, security and privacy, governance, and ecocentric technology.
+          One team. No silos. Everything in-house.
+        </p>
+        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center' }}>
           <a href="#research" style={{
-            background: TEAL, color: '#070711', padding: '14px 32px', borderRadius: 8,
-            fontWeight: 800, fontSize: 14, textDecoration: 'none', letterSpacing: '0.06em',
+            background: 'var(--accent)', color: 'var(--bg)',
+            padding: '13px 30px', borderRadius: 4,
+            fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
           }}>Explore our research</a>
-          <a href="#projects" style={{
-            border: '1px solid rgba(0,245,196,0.4)', color: TEAL, padding: '14px 32px', borderRadius: 8,
-            fontWeight: 700, fontSize: 14, textDecoration: 'none', letterSpacing: '0.04em',
-          }}>What we build</a>
+          <a href="#track-record" style={{
+            border: '1px solid var(--accent-border)', color: 'var(--accent-text)',
+            padding: '13px 30px', borderRadius: 4,
+            fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.04em',
+          }}>2026 audit series</a>
         </div>
 
         <div style={{ display: 'flex', gap: '3rem', marginTop: 80, flexWrap: 'wrap', justifyContent: 'center' }}>
           {[
-            { n: '100', label: 'apps audited' },
+            { n: '103',  label: 'apps audited' },
+            { n: '81',   label: 'companies notified' },
             { n: '150+', label: 'critical findings' },
-            { n: '74', label: 'companies notified' },
-            { n: '10+', label: 'regulators notified' },
-            { n: '6', label: 'years of research' },
+            { n: '10+',  label: 'regulators notified' },
+            { n: '6',    label: 'years of research' },
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 32, fontWeight: 900, color: TEAL }}>{s.n}</div>
-              <div style={{ fontSize: 11, color: '#606080', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{s.label}</div>
+              <div style={{ fontSize: 30, fontWeight: 900, color: 'var(--accent)', fontFamily: 'monospace' }}>{s.n}</div>
+              <div style={{ fontSize: 10, color: 'var(--text3)', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.12em', marginTop: 5 }}>{s.label}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* RESEARCH AREAS */}
-      <section id="research" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 — Research Areas</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we investigate</h2>
-          <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
-            not multiple faculties coordinating across silos. one team where the same people
-            who train the model write the regulatory analysis.
+      <section id="research" style={{ padding: '100px 2rem', background: 'var(--bg2)', borderTop: '1px solid var(--border2)' }}>
+        <div className="rfi-animate rfi-from-left" style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>01 - Research Areas</p>
+          <h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Areas of investigation</h2>
+          <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
+            The same people who train the model write the regulatory analysis.
+            One team. Not multiple departments coordinating across silos.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
             {RESEARCH_AREAS.map(a => (
               <div key={a.title} style={{
-                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                borderRadius: 16, padding: '28px 24px',
+                background: 'var(--bg)', border: '1px solid var(--border)',
+                borderRadius: 6, padding: '26px 22px',
               }}>
-                <div style={{ fontSize: 28, color: TEAL, marginBottom: 16 }}>{a.icon}</div>
-                <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{a.title}</div>
-                <div style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7 }}>{a.desc}</div>
+                <div style={{ fontSize: 22, color: 'var(--accent)', marginBottom: 14, lineHeight: 1 }}>{a.icon}</div>
+                <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 10, color: 'var(--text)' }}>{a.title}</div>
+                <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.75 }}>{a.desc}</div>
               </div>
             ))}
           </div>
-          <div style={{ marginTop: 64 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 24, color: '#e8e8f0' }}>publications on OSF</h3>
+          <div style={{ marginTop: 60 }}>
+            <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 18, color: 'var(--text)' }}>Publications - OSF archive</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {PUBLICATIONS.map(p => (
                 <a key={p.title} href={p.href} target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 18px', borderRadius: 10, textDecoration: 'none', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', transition: 'border-color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.25)')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)')}>
-                  <span style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', minWidth: 32 }}>{p.year}</span>
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 16,
+                    padding: '14px 18px', borderRadius: 6, textDecoration: 'none',
+                    background: 'var(--bg)', border: '1px solid var(--border2)', transition: 'border-color 0.2s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--accent-border)')}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border2)')}>
+                  <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', minWidth: 32 }}>{p.year}</span>
                   <span style={{ flex: 1 }}>
-                    <span style={{ fontWeight: 700, fontSize: 13, color: '#e8e8f0' }}>{p.title}</span>
-                    <span style={{ color: '#606080', fontSize: 12, display: 'block', marginTop: 2 }}>{p.sub}</span>
+                    <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--text)' }}>{p.title}</span>
+                    <span style={{ color: 'var(--text3)', fontSize: 12, display: 'block', marginTop: 2 }}>{p.sub}</span>
                   </span>
-                  <span style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '3px 8px', borderRadius: 20, border: '1px solid rgba(0,245,196,0.25)', color: TEAL, whiteSpace: 'nowrap' }}>{p.tag}</span>
-                  <span style={{ color: '#404058', fontSize: 12 }}>↗</span>
+                  <span style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.12em', padding: '3px 8px', borderRadius: 20, border: '1px solid var(--accent-border)', color: 'var(--accent)', whiteSpace: 'nowrap' }}>{p.tag}</span>
+                  <span style={{ color: 'var(--text4)', fontSize: 12 }}>&#8599;</span>
                 </a>
               ))}
             </div>
-            <p style={{ marginTop: 16, fontFamily: 'monospace', fontSize: 10, color: '#404058' }}>
-              119 projects on OSF &nbsp;·&nbsp; <a href="https://osf.io/rzvyg/" target="_blank" rel="noopener noreferrer" style={{ color: '#606080', textDecoration: 'none' }}>osf.io/rzvyg</a>
+            <p style={{ marginTop: 14, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
+              119 projects on OSF &nbsp;·&nbsp; <a href="https://osf.io/rzvyg/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>osf.io/rzvyg</a>
             </p>
           </div>
         </div>
       </section>
 
       {/* PROJECTS */}
-      <section id="projects" style={{
-        padding: '100px 2rem',
-        background: 'rgba(0,245,196,0.02)',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-      }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 — Projects</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
-          <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
-            every project is a proof of concept for a different research question. they all run on the same stack.
+      <section id="projects" style={{ padding: '100px 2rem', background: 'var(--bg)', borderTop: '1px solid var(--border2)' }}>
+        <div className="rfi-animate rfi-from-right" style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>02 - Projects</p>
+          <h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>What we build</h2>
+          <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
+            Each project is a proof of concept for a different research question.
+            All of them run on the same stack.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
             {PROJECTS.map(p => (
               <div key={p.name} style={{
-                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12,
+                background: 'var(--bg2)', border: '1px solid var(--border)',
+                borderRadius: 6, padding: '26px 22px', display: 'flex', flexDirection: 'column', gap: 10,
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div>
-                    <div style={{ fontWeight: 900, fontSize: 17 }}>{p.name}</div>
-                    <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
+                    <div style={{ fontWeight: 900, fontSize: 17, color: 'var(--text)' }}>{p.name}</div>
+                    <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.12em', marginTop: 3 }}>{p.sub}</div>
                   </div>
-                  <span style={{
-                    fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em',
-                    padding: '3px 8px', borderRadius: 20,
-                    border: '1px solid rgba(0,245,196,0.3)', color: TEAL, whiteSpace: 'nowrap',
-                  }}>{p.tag}</span>
+                  <span style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '3px 8px', borderRadius: 20, border: '1px solid var(--accent-border)', color: 'var(--accent)', whiteSpace: 'nowrap' }}>{p.tag}</span>
                 </div>
-                <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
+                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.75, flex: 1 }}>{p.desc}</p>
                 {p.link && (
                   <a href={p.link} target="_blank" rel="noopener noreferrer"
-                    style={{ color: TEAL, fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
+                    style={{ color: 'var(--accent-text)', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
                     View on GitHub &rarr;
                   </a>
                 )}
@@ -428,77 +486,72 @@ export function PublicSite() {
       </section>
 
       {/* TRACK RECORD */}
-      <section id="track-record" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 — Track Record</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>security research at scale</h2>
-          <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
-            static APK analysis. regulators BCC'd on every submission.
-            90-day coordinated disclosure. our framework, our timeline.
+      <section id="track-record" style={{ padding: '100px 2rem', background: 'var(--bg2)', borderTop: '1px solid var(--border2)' }}>
+        <div className="rfi-animate rfi-from-left" style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>03 - Track Record</p>
+          <h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Security research at scale</h2>
+          <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
+            Decompilation and root-level comparison of code files. Regulators in BCC on every submission.
+            90-day coordinated disclosure. Our framework, our timeline.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 28 }}>
             {[
-              { n: '100', label: 'Apps audited' },
-              { n: '74', label: 'Companies notified' },
+              { n: '103',  label: 'Apps audited' },
+              { n: '81',   label: 'Companies notified' },
               { n: '150+', label: 'Critical findings' },
-              { n: '10+', label: 'Regulators notified' },
+              { n: '10+',  label: 'Regulators notified' },
             ].map(s => (
               <div key={s.label} style={{
-                background: 'rgba(0,245,196,0.05)', border: '1px solid rgba(0,245,196,0.15)',
-                borderRadius: 12, padding: '24px', textAlign: 'center',
+                background: 'var(--bg-accent)', border: '1px solid var(--accent-border)',
+                borderRadius: 6, padding: '22px', textAlign: 'center',
               }}>
-                <div style={{ fontSize: 36, fontWeight: 900, color: TEAL }}>{s.n}</div>
-                <div style={{ fontSize: 11, color: '#606080', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 6 }}>{s.label}</div>
+                <div style={{ fontSize: 34, fontWeight: 900, color: 'var(--accent)', fontFamily: 'monospace' }}>{s.n}</div>
+                <div style={{ fontSize: 10, color: 'var(--text3)', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.12em', marginTop: 6 }}>{s.label}</div>
               </div>
             ))}
           </div>
           <div style={{
-            background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 12, padding: '20px 24px', marginBottom: 48,
-            fontFamily: 'monospace', fontSize: 12, color: '#a0a0b8', lineHeight: 1.8,
+            background: 'var(--bg)', border: '1px solid var(--border)',
+            borderRadius: 6, padding: '14px 20px', marginBottom: 44,
+            fontFamily: 'monospace', fontSize: 11, color: 'var(--text2)', lineHeight: 2,
           }}>
-            <span style={{ color: TEAL, fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
-            {' '}listed targets · GDPR Art. 5/8/9/13/25/32/44 · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at
+            <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
+            {' '}listed targets &nbsp;·&nbsp; GDPR Art. 5/8/9/13/25/32/44 &nbsp;·&nbsp; ISO/IEC 29147 &nbsp;·&nbsp; coordinated disclosure 2026-09-19 &nbsp;·&nbsp; DSB · EDPB · ICO · BfDI · DPC · CERT.at
           </div>
 
-          <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 20, color: '#e8e8f0' }}>selected findings</h3>
+          <h3 style={{ fontSize: 14, fontWeight: 800, marginBottom: 16, color: 'var(--text)' }}>Selected findings</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {AUDIT_HIGHLIGHTS.map((a, i) => (
               <div key={i} style={{
-                display: 'grid', gridTemplateColumns: '160px 80px 80px 1fr',
-                gap: 16, alignItems: 'center',
-                padding: '14px 18px', borderRadius: 10,
-                background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)',
+                display: 'grid', gridTemplateColumns: '160px 72px 72px 1fr',
+                gap: 14, alignItems: 'start',
+                padding: '14px 18px', borderRadius: 6,
+                background: 'var(--bg)', border: '1px solid var(--border2)',
               }}>
-                <span style={{ fontWeight: 700, fontSize: 13 }}>{a.target}</span>
-                <span style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase' }}>{a.market}</span>
-                <span style={{ fontFamily: 'monospace', fontSize: 10, fontWeight: 700, color: SEV_COLOR[a.sev] ?? TEAL }}>{a.sev}</span>
-                <span style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.5 }}>{a.finding}</span>
+                <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--text)' }}>{a.target}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', paddingTop: 2 }}>{a.market}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 10, fontWeight: 700, color: SEV_COLOR[a.sev] ?? ACCENT, paddingTop: 2 }}>{a.sev}</span>
+                <span style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.65 }}>{a.finding}</span>
               </div>
             ))}
           </div>
-          <p style={{ marginTop: 20, fontFamily: 'monospace', fontSize: 10, color: '#404058' }}>
-            full audit archive · <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: '#606080', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
+          <p style={{ marginTop: 16, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
+            Full audit archive &nbsp;·&nbsp; <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
           </p>
         </div>
       </section>
 
       {/* TIMELINE */}
-      <section id="timeline" style={{
-        padding: '100px 2rem',
-        background: 'rgba(255,255,255,0.01)',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-      }}>
+      <section id="timeline" style={{ padding: '100px 2rem', background: 'var(--bg)', borderTop: '1px solid var(--border2)' }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 — Timeline</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 64, textAlign: 'center' }}>our journey</h2>
+          <p className="rfi-animate rfi-from-up" style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10, textAlign: 'center' }}>04 - Timeline</p>
+          <h2 className="rfi-animate rfi-from-up" style={{ fontSize: 34, fontWeight: 900, marginBottom: 64, textAlign: 'center', color: 'var(--text)' }}>2020 to now</h2>
           <div style={{ position: 'relative' }}>
             <div style={{
-              position: 'absolute', left: '50%', top: 0, bottom: 0, width: 2,
-              background: 'rgba(0,245,196,0.2)', transform: 'translateX(-50%)',
+              position: 'absolute', left: '50%', top: 0, bottom: 0, width: 1,
+              background: 'var(--timeline-line)', transform: 'translateX(-50%)',
             }} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
               {MILESTONES.map((m, i) => (
                 <TimelineItem key={i} m={m} i={i} />
               ))}
@@ -508,66 +561,62 @@ export function PublicSite() {
       </section>
 
       {/* PRICING */}
-      <section id="pricing" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 — Pricing</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>transparent pricing</h2>
-          <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
-            fixed rates. no retainer lock-in unless you want one. scope determines tier, not company size.
+      <section id="pricing" style={{ padding: '100px 2rem', background: 'var(--bg2)', borderTop: '1px solid var(--border2)' }}>
+        <div className="rfi-animate rfi-from-right" style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>05 - Pricing</p>
+          <h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Transparent pricing</h2>
+          <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
+            Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.
           </p>
 
-          {/* Security Audit tiers */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 48 }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 16 }}>Security Audits &amp; Responsible Disclosure</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 44 }}>
             {[
-              { tier: 'Public', price: 'free', desc: 'Full public disclosure. Findings published after 90-day coordinated embargo. No NDA.', highlight: false },
-              { tier: 'Remediation Advisory', price: '€4,500', desc: 'Full report + remediation guidance. 30-day follow-up. GDPR compliance mapping included.', highlight: false },
-              { tier: 'Confidential', price: '€9,000', desc: 'NDA-protected disclosure. Private report + patch validation. Regulators still notified.', highlight: false },
-              { tier: 'Enterprise NDA', price: '€18,000', desc: 'Extended embargo + dedicated remediation support + legal evidence package.', highlight: false },
-              { tier: 'Critical Infrastructure', price: '€75,000', desc: 'NDA + legal + PR containment strategy + regulator liaison. Fullscope package.', highlight: true },
-              { tier: 'IoB / Art. 9', price: '€150,000', desc: 'Internet of Bodies / wearables with health data (Art. 9 GDPR). Elevated risk premium.', highlight: true },
+              { tier: 'Public',                price: 'free',     desc: 'Full public disclosure. Findings published after 90-day coordinated embargo. No NDA.', highlight: false },
+              { tier: 'Remediation Advisory',  price: '4,500',    desc: 'Full report + remediation guidance. 30-day follow-up. GDPR compliance mapping included.', highlight: false },
+              { tier: 'Confidential',          price: '9,000',    desc: 'NDA-protected disclosure. Private report + patch validation. Regulators still notified.', highlight: false },
+              { tier: 'Enterprise NDA',        price: '18,000',   desc: 'Extended embargo + dedicated remediation support + legal evidence package.', highlight: false },
+              { tier: 'Critical Infrastructure', price: '75,000', desc: 'NDA + legal + PR containment strategy + regulator liaison. Full-scope package.', highlight: true },
+              { tier: 'IoB / Art. 9',          price: '150,000',  desc: 'Internet of Bodies / wearables with Art. 9 GDPR health data. Elevated risk premium.', highlight: true },
             ].map(t => (
               <div key={t.tier} style={{
-                background: t.highlight ? 'rgba(0,245,196,0.06)' : 'rgba(255,255,255,0.03)',
-                border: `1px solid ${t.highlight ? 'rgba(0,245,196,0.25)' : 'rgba(255,255,255,0.07)'}`,
-                borderRadius: 14, padding: '24px 20px',
+                background: t.highlight ? 'var(--bg-accent)' : 'var(--bg)',
+                border: `1px solid ${t.highlight ? 'var(--accent-border)' : 'var(--border)'}`,
+                borderRadius: 6, padding: '22px 18px',
               }}>
-                <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
-                <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7 }}>{t.desc}</div>
+                <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
+                <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--accent)', marginBottom: 10, fontFamily: 'monospace' }}>{t.price === 'free' ? 'free' : `€${t.price}`}</div>
+                <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.75 }}>{t.desc}</div>
               </div>
             ))}
           </div>
 
-          {/* Retainer */}
           <div style={{
-            background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 14, padding: '24px 28px', marginBottom: 48,
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16,
+            background: 'var(--bg)', border: '1px solid var(--border)',
+            borderRadius: 6, padding: '20px 26px', marginBottom: 44,
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14,
           }}>
             <div>
-              <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>Security Retainer</div>
-              <div style={{ color: '#a0a0b8', fontSize: 13 }}>continuous monitoring · quarterly audits · priority response · dedicated contact</div>
+              <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 5, color: 'var(--text)' }}>Security Retainer</div>
+              <div style={{ color: 'var(--text2)', fontSize: 13 }}>continuous monitoring · quarterly audits · priority response · dedicated contact</div>
             </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>€1,500 / mo</div>
+            <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--accent)', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>&#8364;1,500 / mo</div>
           </div>
 
-          {/* Web & Research tiers */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Web Development &amp; Research</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 16 }}>Web Development &amp; Research</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
             {[
-              { tier: 'Web · Landing Page', price: '€1,500', desc: 'Single-page site. React + our template. Delivered in 48h.' },
-              { tier: 'Web · Full Site', price: '€4,500', desc: 'Multi-page + CMS admin + contact form + analytics. 2-week delivery.' },
-              { tier: 'Web · Enterprise', price: '€18,000', desc: 'Custom Rust backend + auth + integrations. Full scope.' },
-              { tier: 'Research Report', price: '€2,500', desc: 'Market analysis / policy brief / stakeholder interviews. 10-page minimum.' },
+              { tier: 'Landing Page',    price: '1,500',  desc: 'Single-page site. React + our template. Delivered in 48h.' },
+              { tier: 'Full Site',       price: '4,500',  desc: 'Multi-page + CMS admin + contact form + analytics. 2-week delivery.' },
+              { tier: 'Enterprise',      price: '18,000', desc: 'Custom Rust backend + auth + integrations. Full scope.' },
+              { tier: 'Research Report', price: '2,500',  desc: 'Market analysis / policy brief / stakeholder interviews. 10-page minimum.' },
             ].map(t => (
               <div key={t.tier} style={{
-                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                borderRadius: 14, padding: '24px 20px',
+                background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, padding: '22px 18px',
               }}>
-                <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
-                <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7 }}>{t.desc}</div>
+                <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
+                <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--accent)', marginBottom: 10, fontFamily: 'monospace' }}>&#8364;{t.price}</div>
+                <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.75 }}>{t.desc}</div>
               </div>
             ))}
           </div>
@@ -575,93 +624,80 @@ export function PublicSite() {
       </section>
 
       {/* SERVICES */}
-      <section id="services" style={{ padding: '100px 2rem', background: 'rgba(255,255,255,0.01)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>06 — Services</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>work with us</h2>
-          <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
-            we are not a charitable institution. we are a regulated research institute that earns revenue.
-            full pricing at{' '}
-            <a href="https://ternlang.com/about" style={{ color: TEAL, textDecoration: 'none' }}>ternlang.com/about</a>.
+      <section id="services" style={{ padding: '100px 2rem', background: 'var(--bg)', borderTop: '1px solid var(--border2)' }}>
+        <div className="rfi-animate rfi-from-left" style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>06 - Services</p>
+          <h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Work with us</h2>
+          <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
+            We are a regulated research institute that earns revenue.
+            Not a charitable institution. Not a bug bounty shop.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20, marginBottom: 28 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, marginBottom: 24 }}>
             {[
-              { title: 'Security Audits & Disclosure', desc: 'static APK analysis · GDPR compliance · coordinated disclosure · regulatory filings · from €4,500', teal: true },
-              { title: 'Send us your APK', desc: 'we tear it apart. you get the full report before anyone else does. any Android APK, any company size.', teal: true },
-              { title: 'Web & App Development', desc: 'React + Rust backends · mobile · enterprise · built on our own stack · from €1,500', teal: false },
-              { title: 'Interdisciplinary Research', desc: 'market analysis · policy briefs · stakeholder interviews · AI governance consulting · from €2,500', teal: false },
+              { title: 'Security Audits',  desc: 'Root-level comparison of your code files. GDPR compliance review. Coordinated disclosure with regulators in BCC. From EUR 4,500.', accent: true },
+              { title: 'Send us your APK', desc: 'We tear it apart. You get the full report before anyone else does. Any Android APK, any company size. First R1 always free.', accent: true },
+              { title: 'Web Development', desc: 'React + Rust backends. Mobile. Enterprise. Built on our own stack. From EUR 1,500.', accent: false },
+              { title: 'Research Reports', desc: 'Market analysis, policy briefs, stakeholder interviews, AI governance consulting. From EUR 2,500.', accent: false },
             ].map(s => (
               <div key={s.title} style={{
-                background: s.teal ? 'rgba(0,245,196,0.05)' : 'rgba(255,255,255,0.03)',
-                border: `1px solid ${s.teal ? 'rgba(0,245,196,0.2)' : 'rgba(255,255,255,0.07)'}`,
-                borderRadius: 16, padding: '28px 24px',
+                background: s.accent ? 'var(--bg-accent)' : 'var(--bg2)',
+                border: `1px solid ${s.accent ? 'var(--accent-border)' : 'var(--border)'}`,
+                borderRadius: 6, padding: '24px 22px',
               }}>
-                <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 12 }}>{s.title}</div>
-                <div style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7 }}>{s.desc}</div>
+                <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 12, color: 'var(--text)' }}>{s.title}</div>
+                <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.75 }}>{s.desc}</div>
               </div>
             ))}
           </div>
-          <a href="https://ternlang.com/about" style={{
+          <a href="mailto:contact@ternlang.com" style={{
             display: 'inline-block',
-            border: '1px solid rgba(0,245,196,0.4)', color: TEAL,
-            padding: '12px 28px', borderRadius: 8, fontWeight: 700, fontSize: 13,
+            border: '1px solid var(--accent-border)', color: 'var(--accent-text)',
+            padding: '11px 24px', borderRadius: 4, fontWeight: 700, fontSize: 13,
             textDecoration: 'none', letterSpacing: '0.04em',
-          }}>Full pricing &amp; scope &rarr; ternlang.com/about</a>
+          }}>Get in touch &rarr;</a>
         </div>
       </section>
 
       {/* CREDENTIALS */}
-      <section style={{
-        padding: '60px 2rem',
-        background: 'rgba(255,255,255,0.02)',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-      }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', textAlign: 'center', marginBottom: 28 }}>
+      <section style={{ padding: '60px 2rem', background: 'var(--bg2)', borderTop: '1px solid var(--border2)' }}>
+        <div className="rfi-animate rfi-from-up" style={{ maxWidth: 900, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', textAlign: 'center', marginBottom: 28 }}>
             Regulated · Licensed · Registered
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 10 }}>
             {CREDENTIALS.map(c => (
               <div key={c.label} style={{
-                background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
-                borderRadius: 10, padding: '16px', textAlign: 'center',
+                background: 'var(--bg)', border: '1px solid var(--border)',
+                borderRadius: 6, padding: '16px', textAlign: 'center',
               }}>
-                <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
-                <div style={{ fontFamily: 'monospace', fontSize: 12, fontWeight: 700, color: '#e8e8f0', marginBottom: 4 }}>{c.value}</div>
-                <div style={{ fontSize: 10, color: '#505068' }}>{c.sub}</div>
+                <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
+                <div style={{ fontFamily: 'monospace', fontSize: 12, fontWeight: 700, color: 'var(--text)', marginBottom: 4 }}>{c.value}</div>
+                <div style={{ fontSize: 10, color: 'var(--text3)' }}>{c.sub}</div>
               </div>
             ))}
           </div>
-          <p style={{ textAlign: 'center', fontSize: 12, color: '#505068', fontFamily: 'monospace', marginTop: 24 }}>
-            regulated not-for-profit · ≥90% surplus reinvested into research · surplus not distributed to members
+          <p style={{ textAlign: 'center', fontSize: 11, color: 'var(--text3)', fontFamily: 'monospace', marginTop: 22 }}>
+            regulated not-for-profit · 90%+ surplus reinvested into research · surplus not distributed to members
           </p>
         </div>
       </section>
 
       {/* CONTACT */}
-      <section id="contact" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 860, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 — Contact</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>connect</h2>
-          <p style={{ color: '#a0a0b8', marginBottom: 48 }}>reach us for research collaboration, security disclosures, or service inquiries.</p>
+      <section id="contact" style={{ padding: '100px 2rem', background: 'var(--bg)', borderTop: '1px solid var(--border2)' }}>
+        <div className="rfi-animate rfi-from-up" style={{ maxWidth: 860, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>07 - Contact</p>
+          <h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Connect</h2>
+          <p style={{ color: 'var(--text2)', marginBottom: 48, fontSize: 15, lineHeight: 1.75 }}>Research collaboration, security disclosures, service inquiries.</p>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
-            {/* left: form */}
-            <form onSubmit={submitForm} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <form onSubmit={submitForm} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {(['name', 'email'] as const).map(f => (
                 <input key={f} type={f === 'email' ? 'email' : 'text'} required placeholder={f === 'name' ? 'Name' : 'Email'}
                   value={form[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))}
-                  style={{
-                    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-                    borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14, outline: 'none',
-                    fontFamily: 'inherit',
-                  }} />
+                  className="rfi-input" />
               ))}
-              <select value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} style={{
-                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-                borderRadius: 8, padding: '12px 16px', color: form.subject ? '#e8e8f0' : '#606080',
-                fontSize: 14, outline: 'none', fontFamily: 'inherit',
-              }}>
+              <select value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} className="rfi-input"
+                style={{ color: form.subject ? 'var(--input-text)' : 'var(--input-ph)' }}>
                 <option value="">Topic (optional)</option>
                 <option value="Security Audit">Security Audit</option>
                 <option value="Send APK">Send us your APK</option>
@@ -671,71 +707,66 @@ export function PublicSite() {
               </select>
               <textarea required placeholder="Message" value={form.message}
                 onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
-                rows={5} style={{
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14,
-                  outline: 'none', resize: 'vertical', fontFamily: 'inherit',
-                }} />
+                rows={5} className="rfi-input" style={{ resize: 'vertical' }} />
               <button type="submit" disabled={formState === 'sending'} style={{
-                background: formState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
-                color: formState === 'ok' ? TEAL : '#070711',
-                border: formState === 'ok' ? `1px solid ${TEAL}` : 'none',
-                padding: '13px 24px', borderRadius: 8, fontWeight: 800, fontSize: 14,
+                background: formState === 'ok' ? 'var(--bg-accent)' : 'var(--accent)',
+                color: formState === 'ok' ? 'var(--accent-text)' : 'var(--bg)',
+                border: formState === 'ok' ? '1px solid var(--accent-border)' : 'none',
+                padding: '12px 22px', borderRadius: 4, fontWeight: 800, fontSize: 13,
                 cursor: formState === 'sending' ? 'wait' : 'pointer', fontFamily: 'inherit',
+                letterSpacing: '0.04em',
               }}>
                 {formState === 'sending' ? 'Sending...' : formState === 'ok' ? 'Message received.' : 'Send message'}
               </button>
               {formState === 'err' && (
-                <p style={{ color: '#f87171', fontSize: 12 }}>Something went wrong — email us directly at contact@ternlang.com</p>
+                <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>Something went wrong. Email us directly at contact@ternlang.com</p>
               )}
             </form>
 
-            {/* right: links */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {CONTACT_CARDS.map(c => (
                 <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 12, padding: '18px 20px', textDecoration: 'none', display: 'block',
+                  background: 'var(--bg2)', border: '1px solid var(--border)',
+                  borderRadius: 6, padding: '16px 18px', textDecoration: 'none', display: 'block',
                   transition: 'border-color 0.2s',
                 }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}>
-                  <div style={{ fontSize: 10, fontFamily: 'monospace', color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
-                  <div style={{ color: TEAL, fontWeight: 600, fontSize: 13 }}>{c.value}</div>
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--accent-border)')}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
+                  <div style={{ fontSize: 9, fontFamily: 'monospace', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 5 }}>{c.label}</div>
+                  <div style={{ color: 'var(--accent-text)', fontWeight: 600, fontSize: 13 }}>{c.value}</div>
                 </a>
               ))}
-              <p style={{ fontSize: 11, color: '#505068', fontFamily: 'monospace', marginTop: 8, lineHeight: 1.8 }}>
+              <p style={{ fontSize: 11, color: 'var(--text3)', fontFamily: 'monospace', marginTop: 6, lineHeight: 1.9 }}>
                 Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
               </p>
             </div>
           </div>
         </div>
-        {/* Lighthouse tracking pixel */}
         <img ref={pixelRef} src={`${LIGHTHOUSE_PIXEL}?utm_source=rfi-irfos-web`}
           alt="" width="1" height="1" style={{ display: 'none' }} />
       </section>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '40px 2rem', textAlign: 'center' }}>
-        <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
+      <footer style={{ borderTop: '1px solid var(--border)', padding: '40px 2rem', textAlign: 'center', background: 'var(--bg2)' }}>
+        <div style={{ display: 'flex', gap: '1.8rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
           {[
-            { label: 'Impressum', href: '#p/impressum' },
-            { label: 'Datenschutz', href: '#p/datenschutz' },
-            { label: 'AGB', href: '#p/agb' },
-            { label: 'Security Policy', href: '#p/security' },
-            { label: 'ternlang.com', href: 'https://ternlang.com' },
+            { label: 'Impressum',            href: '#p/impressum' },
+            { label: 'Datenschutz',          href: '#p/datenschutz' },
+            { label: 'AGB',                  href: '#p/agb' },
+            { label: 'Security Policy',      href: '#p/security' },
+            { label: 'ternlang.com',         href: 'https://ternlang.com' },
             { label: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
           ].map(l => (
-            <a key={l.label} href={l.href} style={{ color: '#606080', fontSize: 12, textDecoration: 'none' }}
-              onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-              onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+            <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color = ACCENT)}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text3)')}>
               {l.label}
             </a>
           ))}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
-          <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied — Wirtschaftskammer Österreich" style={{ display: 'inline-block', opacity: 0.85 }}>
-            <svg viewBox="0 0 420 100" width="168" height="40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO — Wirtschaftskammer Österreich" style={{ display: 'block' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
+          <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.85 }}>
+            <svg viewBox="0 0 420 100" width="168" height="40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
               <rect x="0"   y="0" width="100" height="100" fill="#CC0000"/>
               <text x="50"  y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">W</text>
               <rect x="105" y="0" width="100" height="100" fill="#CC0000"/>
@@ -748,20 +779,18 @@ export function PublicSite() {
             </svg>
           </a>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: 16 }}>
-          {/* WKO member badge */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, padding: '6px 12px', background: 'rgba(255,255,255,0.03)' }}>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: '#a0a0c0', letterSpacing: '0.06em' }}>WKO MEMBER &nbsp;·&nbsp; GewO § 32 &nbsp;·&nbsp; Automatische Datenverarbeitung</span>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: 16 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg)' }}>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>WKO MEMBER &nbsp;·&nbsp; GewO § 32 &nbsp;·&nbsp; Automatische Datenverarbeitung</span>
           </div>
-          {/* NOT-FOR-PROFIT badge */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, padding: '6px 12px', background: 'rgba(255,255,255,0.03)' }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg)' }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
             </svg>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: '#a0a0c0', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT &nbsp;·&nbsp; ZVR 1015608684 &nbsp;·&nbsp; GISA 39261441</span>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT &nbsp;·&nbsp; ZVR 1015608684 &nbsp;·&nbsp; GISA 39261441</span>
           </div>
         </div>
-        <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em' }}>
+        <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em' }}>
           &copy; 2026 RFI-IRFOS &nbsp;&middot;&nbsp; Steuernummer 68 028/0989 &nbsp;&middot;&nbsp; Graz, Austria
         </p>
       </footer>

@@ -1,4 +1,139 @@
-/* Global reset — App.css handles all site/builder styles */
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; -webkit-font-smoothing: antialiased; }
 #root { width: 100%; min-height: 100svh; }
+
+/* ── Theme variables ──────────────────────────────────────────── */
+:root, [data-theme="light"] {
+  --bg:           #ffffff;
+  --bg2:          #f4f4f5;
+  --bg3:          #e9e9eb;
+  --bg-accent:    rgba(0,168,132,0.05);
+  --text:         #0a0a0a;
+  --text2:        #444444;
+  --text3:        #888888;
+  --text4:        #bbbbbb;
+  --border:       rgba(0,0,0,0.10);
+  --border2:      rgba(0,0,0,0.06);
+  --accent:       #009e7a;
+  --accent-text:  #007a5c;
+  --accent-dim:   rgba(0,158,122,0.12);
+  --accent-border:rgba(0,158,122,0.25);
+  --nav-bg:       rgba(255,255,255,0.96);
+  --nav-border:   rgba(0,0,0,0.08);
+  --sev-crit:     #c0392b;
+  --sev-high:     #c0600a;
+  --sev-med:      #8b6914;
+  --hero-grad:    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,158,122,0.04) 0%, transparent 70%);
+  --input-bg:     #f4f4f5;
+  --input-border: rgba(0,0,0,0.12);
+  --input-text:   #0a0a0a;
+  --input-ph:     #999999;
+  --timeline-line:rgba(0,0,0,0.12);
+}
+
+[data-theme="dark"] {
+  --bg:           #070711;
+  --bg2:          rgba(255,255,255,0.03);
+  --bg3:          rgba(255,255,255,0.06);
+  --bg-accent:    rgba(0,245,196,0.02);
+  --text:         #e8e8f0;
+  --text2:        #a0a0b8;
+  --text3:        #606080;
+  --text4:        #404058;
+  --border:       rgba(255,255,255,0.07);
+  --border2:      rgba(255,255,255,0.04);
+  --accent:       #00f5c4;
+  --accent-text:  #00f5c4;
+  --accent-dim:   rgba(0,245,196,0.08);
+  --accent-border:rgba(0,245,196,0.25);
+  --nav-bg:       rgba(7,7,17,0.95);
+  --nav-border:   rgba(255,255,255,0.06);
+  --sev-crit:     #ef4444;
+  --sev-high:     #f97316;
+  --sev-med:      #eab308;
+  --hero-grad:    radial-gradient(ellipse 80% 50% at 50% 40%, rgba(0,245,196,0.05) 0%, transparent 70%);
+  --input-bg:     rgba(255,255,255,0.04);
+  --input-border: rgba(255,255,255,0.10);
+  --input-text:   #e8e8f0;
+  --input-ph:     #606080;
+  --timeline-line:rgba(0,245,196,0.2);
+}
+
+[data-theme="hc"] {
+  --bg:           #ffffff;
+  --bg2:          #f0f0f0;
+  --bg3:          #e0e0e0;
+  --bg-accent:    #e6f4ef;
+  --text:         #000000;
+  --text2:        #111111;
+  --text3:        #333333;
+  --text4:        #555555;
+  --border:       rgba(0,0,0,0.28);
+  --border2:      rgba(0,0,0,0.16);
+  --accent:       #005a3c;
+  --accent-text:  #005a3c;
+  --accent-dim:   rgba(0,90,60,0.12);
+  --accent-border:rgba(0,90,60,0.40);
+  --nav-bg:       rgba(255,255,255,0.99);
+  --nav-border:   rgba(0,0,0,0.22);
+  --sev-crit:     #8b0000;
+  --sev-high:     #7a3200;
+  --sev-med:      #5a4000;
+  --hero-grad:    none;
+  --input-bg:     #f0f0f0;
+  --input-border: rgba(0,0,0,0.28);
+  --input-text:   #000000;
+  --input-ph:     #555555;
+  --timeline-line:rgba(0,0,0,0.25);
+}
+
+/* ── Scroll animations ───────────────────────────────────────── */
+.rfi-animate {
+  opacity: 0;
+  transition: opacity 0.55s cubic-bezier(0.4,0,0.2,1),
+              transform 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+.rfi-from-left  { transform: translateX(-36px); }
+.rfi-from-right { transform: translateX(36px); }
+.rfi-from-up    { transform: translateY(28px); }
+.rfi-animate.rfi-visible {
+  opacity: 1;
+  transform: translate(0,0);
+}
+
+/* ── Form elements ───────────────────────────────────────────── */
+.rfi-input {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  padding: 11px 14px;
+  color: var(--input-text);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+.rfi-input::placeholder { color: var(--input-ph); }
+.rfi-input:focus { border-color: var(--accent); }
+
+/* ── Theme toggle ────────────────────────────────────────────── */
+.theme-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text3);
+  font-family: monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.theme-btn:first-child { border-radius: 4px 0 0 4px; border-right: none; }
+.theme-btn:last-child  { border-radius: 0 4px 4px 0; border-left: none; }
+.theme-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+[data-theme="hc"] .theme-btn.active { color: #fff; }
