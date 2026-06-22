@@ -87,19 +87,24 @@ const PROJECTS = [
   },
 ]
 
-const MILESTONES: { date: string; label: string; side: 'left' | 'right' }[] = [
+const MILESTONES: { date: string; label: string; side: 'left' | 'right'; link?: string; tag?: string }[] = [
   { date: 'June 2020', label: 'RFI-IRFOS Founded', side: 'left' },
-  { date: 'June 2020', label: 'OSF Repository launched', side: 'right' },
-  { date: 'March 2021', label: 'Ternary Logic Framework', side: 'left' },
-  { date: 'May 2023', label: 'Ecocentric AI Framework', side: 'right' },
-  { date: 'March 2024', label: 'The Art of Questioning — whitepaper', side: 'left' },
-  { date: 'June 2024', label: 'albert. — first ternary MoE model born', side: 'right' },
-  { date: 'Jan 2025', label: 'Rusty Penguin — pure-Rust OS boots', side: 'left' },
-  { date: 'March 2025', label: 'Lighthouse — workplace OS goes live', side: 'right' },
-  { date: 'May 2026', label: 'SPRIND pitch submitted — €26.5M ceiling', side: 'left' },
-  { date: 'May 2026', label: 'DOOM boots on bare-metal Rust kernel', side: 'right' },
-  { date: 'June 2026', label: '100 Android apps audited — 74 companies · NYSE · NASDAQ · LSE · XETRA', side: 'left' },
-  { date: 'June 2026', label: 'aladdin-mini — open-source disclosure impact engine released', side: 'right' },
+  { date: 'June 2020', label: 'OSF Research Repository launched', side: 'right', link: 'https://osf.io/rzvyg/', tag: 'publication' },
+  { date: 'March 2021', label: 'Ternary Logic Framework', side: 'left', tag: 'milestone' },
+  { date: 'May 2023', label: 'Ecocentric AI Framework', side: 'right', tag: 'milestone' },
+  { date: 'March 2024', label: 'The Art of Questioning — whitepaper', side: 'left', tag: 'publication' },
+  { date: 'June 2024', label: 'albert. — first ternary MoE model born', side: 'right', tag: 'milestone' },
+  { date: 'July 2025', label: 'The Ternlang Architecture — post-binary logic framework for ethical AI', side: 'left', link: 'https://osf.io/zwnyr/', tag: 'publication' },
+  { date: 'August 2025', label: 'A Ternary Logic Mixture-of-Experts Model — albert. architecture paper', side: 'right', link: 'https://osf.io/tz7dc/', tag: 'publication' },
+  { date: 'August 2025', label: 'Policy Mirror Protocol — AI transparency & refusal traceability', side: 'left', link: 'https://osf.io/d2k4x/', tag: 'publication' },
+  { date: 'Jan 2025', label: 'Rusty Penguin — pure-Rust OS boots', side: 'right', tag: 'milestone' },
+  { date: 'March 2025', label: 'Lighthouse — workplace OS goes live', side: 'left', tag: 'milestone' },
+  { date: 'Feb 2026', label: 'Myco-Styria — mycelium-based polystyrene replacement', side: 'right', link: 'https://osf.io/ek8rm/', tag: 'publication' },
+  { date: 'April 2026', label: 'The Ternary Intelligence Stack — system paper', side: 'left', link: 'https://osf.io/cyn28/', tag: 'publication' },
+  { date: 'May 2026', label: 'SPRIND pitch submitted — €26.5M ceiling', side: 'right', tag: 'milestone' },
+  { date: 'May 2026', label: 'DOOM boots on bare-metal Rust kernel', side: 'left', tag: 'milestone' },
+  { date: 'June 2026', label: '100 Android apps audited — 74 companies · NYSE · NASDAQ · LSE · XETRA', side: 'right', link: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'milestone' },
+  { date: 'June 2026', label: 'aladdin-mini — open-source disclosure impact engine', side: 'left', link: 'https://github.com/rfi-irfos/aladdin-mini', tag: 'milestone' },
 ]
 
 const PUBLICATIONS = [
@@ -151,6 +156,29 @@ function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
     obs.observe(el)
     return () => obs.disconnect()
   }, [])
+  const isPublication = m.tag === 'publication'
+  const innerStyle: React.CSSProperties = {
+    background: isPublication ? 'rgba(0,245,196,0.04)' : 'rgba(255,255,255,0.03)',
+    border: `1px solid ${isPublication ? 'rgba(0,245,196,0.18)' : 'rgba(255,255,255,0.08)'}`,
+    borderRadius: 12, padding: '16px 20px',
+    textDecoration: 'none', color: 'inherit', display: 'block',
+    transition: 'border-color 0.2s', width: '100%', boxSizing: 'border-box',
+  }
+  const innerContent = (
+    <>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+        <div style={{ fontFamily: 'monospace', fontSize: 10, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{m.date}</div>
+        {isPublication && <span style={{ fontFamily: 'monospace', fontSize: 9, color: TEAL, border: '1px solid rgba(0,245,196,0.3)', borderRadius: 10, padding: '2px 7px', letterSpacing: '0.08em' }}>OSF ↗</span>}
+      </div>
+      <div style={{ fontWeight: 700, fontSize: 14 }}>{m.label}</div>
+    </>
+  )
+  const card = m.link
+    ? <a href={m.link} target="_blank" rel="noopener noreferrer" style={innerStyle}
+        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,245,196,0.45)' }}
+        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = isPublication ? 'rgba(0,245,196,0.18)' : 'rgba(255,255,255,0.08)' }}
+      >{innerContent}</a>
+    : <div style={innerStyle}>{innerContent}</div>
   return (
     <div ref={ref} style={{
       display: 'flex',
@@ -163,20 +191,13 @@ function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
       <div style={{
         position: 'absolute', left: '50%', top: 20,
         transform: 'translate(-50%, -50%)',
-        width: 12, height: 12, borderRadius: '50%',
+        width: isPublication ? 14 : 12, height: isPublication ? 14 : 12, borderRadius: '50%',
         background: visible ? TEAL : 'rgba(0,245,196,0.2)',
-        boxShadow: visible ? `0 0 12px ${TEAL}` : 'none',
+        boxShadow: visible ? `0 0 ${isPublication ? 16 : 12}px ${TEAL}` : 'none',
         transition: `background 0.3s ease ${i * 0.06 + 0.2}s, box-shadow 0.3s ease ${i * 0.06 + 0.2}s`,
         zIndex: 2,
       }} />
-      <div style={{
-        width: '44%',
-        background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
-        borderRadius: 12, padding: '16px 20px',
-      }}>
-        <div style={{ fontFamily: 'monospace', fontSize: 10, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 6 }}>{m.date}</div>
-        <div style={{ fontWeight: 700, fontSize: 14 }}>{m.label}</div>
-      </div>
+      <div style={{ width: '44%' }}>{card}</div>
     </div>
   )
 }
