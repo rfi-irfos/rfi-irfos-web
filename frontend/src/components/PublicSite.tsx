@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const TEAL = '#00f5c4'
+const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
+const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
 
 const NAV_LINKS = [
   { label: 'Research', href: '#research' },
@@ -111,12 +113,48 @@ const CONTACT_CARDS = [
 
 export function PublicSite() {
   const [scrolled, setScrolled] = useState(false)
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
+  const [formState, setFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
+  const pixelRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll)
+    // beacon on page load
+    fetch('https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: '/', referrer: document.referrer, utm_source: new URLSearchParams(location.search).get('utm_source') ?? '' }),
+    }).catch(() => {})
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  async function submitForm(e: React.FormEvent) {
+    e.preventDefault()
+    setFormState('sending')
+    try {
+      if (WEB3FORMS_KEY) {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: `[rfi-irfos.at] ${form.subject || 'New inquiry'} — ${form.name}`,
+            name: form.name,
+            email: form.email,
+            replyto: form.email,
+            subject_interest: form.subject,
+            message: form.message,
+          }),
+        })
+        if (!res.ok) throw new Error()
+      }
+      setFormState('ok')
+      setForm({ name: '', email: '', subject: '', message: '' })
+    } catch {
+      setFormState('err')
+    }
+  }
 
   return (
     <div style={{ background: '#070711', color: '#e8e8f0', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh' }}>
@@ -424,28 +462,79 @@ export function PublicSite() {
 
       {/* CONTACT */}
       <section id="contact" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
+        <div style={{ maxWidth: 860, margin: '0 auto' }}>
           <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>06 — Contact</p>
           <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>connect</h2>
           <p style={{ color: '#a0a0b8', marginBottom: 48 }}>reach us for research collaboration, security disclosures, or service inquiries.</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 48 }}>
-            {CONTACT_CARDS.map(c => (
-              <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
-                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                borderRadius: 12, padding: '24px 20px', textDecoration: 'none', display: 'block',
-                transition: 'border-color 0.2s',
-              }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}>
-                <div style={{ fontSize: 10, fontFamily: 'monospace', color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{c.label}</div>
-                <div style={{ color: TEAL, fontWeight: 600, fontSize: 13 }}>{c.value}</div>
-              </a>
-            ))}
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
+            {/* left: form */}
+            <form onSubmit={submitForm} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {(['name', 'email'] as const).map(f => (
+                <input key={f} type={f === 'email' ? 'email' : 'text'} required placeholder={f === 'name' ? 'Name' : 'Email'}
+                  value={form[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))}
+                  style={{
+                    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14, outline: 'none',
+                    fontFamily: 'inherit',
+                  }} />
+              ))}
+              <select value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} style={{
+                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: 8, padding: '12px 16px', color: form.subject ? '#e8e8f0' : '#606080',
+                fontSize: 14, outline: 'none', fontFamily: 'inherit',
+              }}>
+                <option value="">Topic (optional)</option>
+                <option value="Security Audit">Security Audit</option>
+                <option value="Send APK">Send us your APK</option>
+                <option value="Research Collaboration">Research Collaboration</option>
+                <option value="Web Development">Web Development</option>
+                <option value="Other">Other</option>
+              </select>
+              <textarea required placeholder="Message" value={form.message}
+                onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
+                rows={5} style={{
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+                  borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14,
+                  outline: 'none', resize: 'vertical', fontFamily: 'inherit',
+                }} />
+              <button type="submit" disabled={formState === 'sending'} style={{
+                background: formState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
+                color: formState === 'ok' ? TEAL : '#070711',
+                border: formState === 'ok' ? `1px solid ${TEAL}` : 'none',
+                padding: '13px 24px', borderRadius: 8, fontWeight: 800, fontSize: 14,
+                cursor: formState === 'sending' ? 'wait' : 'pointer', fontFamily: 'inherit',
+              }}>
+                {formState === 'sending' ? 'Sending...' : formState === 'ok' ? 'Message received.' : 'Send message'}
+              </button>
+              {formState === 'err' && (
+                <p style={{ color: '#f87171', fontSize: 12 }}>Something went wrong — email us directly at contact@ternlang.com</p>
+              )}
+            </form>
+
+            {/* right: links */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {CONTACT_CARDS.map(c => (
+                <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
+                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+                  borderRadius: 12, padding: '18px 20px', textDecoration: 'none', display: 'block',
+                  transition: 'border-color 0.2s',
+                }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}>
+                  <div style={{ fontSize: 10, fontFamily: 'monospace', color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
+                  <div style={{ color: TEAL, fontWeight: 600, fontSize: 13 }}>{c.value}</div>
+                </a>
+              ))}
+              <p style={{ fontSize: 11, color: '#505068', fontFamily: 'monospace', marginTop: 8, lineHeight: 1.8 }}>
+                Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
+              </p>
+            </div>
           </div>
-          <p style={{ fontSize: 12, color: '#505068', fontFamily: 'monospace' }}>
-            Elisabethinergasse 25 · 8020 Graz · Austria · rfi-irfos.com · rfi-irfos.at
-          </p>
         </div>
+        {/* Lighthouse tracking pixel */}
+        <img ref={pixelRef} src={`${LIGHTHOUSE_PIXEL}?utm_source=rfi-irfos-web`}
+          alt="" width="1" height="1" style={{ display: 'none' }} />
       </section>
 
       {/* FOOTER */}
