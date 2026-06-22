@@ -171,20 +171,73 @@ const PUBLICATIONS = [
 ]
 
 const AUDIT_HIGHLIGHTS = [
-  { target: 'Pokemon GO',     market: 'NYSE',    sev: 'CRITICAL', finding: 'Photogrammetric 3D map data from civilian gameplay licensed to Vantor (US defense contractor, NGA contract). Art. 5(1)(b) purpose limitation breach.' },
-  { target: 'Tinder',         market: 'NASDAQ',  sev: 'CRITICAL', finding: 'FaceTec 3D liveness biometric to api.facetec.com US. FaceUnity biometric SDK (China). LiveRamp identity resolution on sex-preference data. GDPR Art. 9.' },
-  { target: 'Disneyland EU',  market: 'NYSE',    sev: 'CRITICAL', finding: 'Facial recognition of children at EU theme park. ContentSquare session replay. MagicBand RFID. IoB pricing applies.' },
-  { target: 'Snapchat',       market: 'NYSE',    sev: 'CRITICAL', finding: 'Fidelius encryption keys stored at Google. Disappearing messages can be retained. Core product claim invalidated.' },
-  { target: 'Lovoo',          market: 'PRIVATE', sev: 'CRITICAL', finding: 'Chucker HTTP interceptor in production: all API calls logged in plaintext. FaceUnity + Mintegral (Chinese SDKs). Broken NSC syntax bypasses pinning.' },
-  { target: 'Strava',         market: 'PRIVATE', sev: 'CRITICAL', finding: 'Firebase API key hardcoded. NSC present but empty: 120M users, no certificate pinning. privacy@strava.com bounced (finding H4).' },
-  { target: 'Marionnaud',     market: 'NYSE',    sev: 'CRITICAL', finding: 'ModiFace 65-point facial geometry AR try-on. ContentSquare session replay during AR face scanning. GDPR Art. 9 without explicit basis.' },
-  { target: 'AliExpress',     market: 'NYSE',    sev: 'CRITICAL', finding: 'ByteDance shadowhook + TikTok assets + WhiteScreenRecorder full-screen capture = triple NSL pipeline on EU user devices.' },
+  { target: 'Pokemon GO',        market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Civilian gameplay photogrammetry licensed to Vantor (US defense contractor, NGA contract) for military drone navigation. Art. 5(1)(b) purpose limitation. Most consequential finding in the 2026 series.' },
+  { target: 'Disneyland EU',     market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Facial recognition of children at EU theme parks without Art. 9 explicit consent. MagicBand RFID child tracking. EU AI Act biometric prohibition. IoB €250k — 100% SOS Kinderdorf.' },
+  { target: 'EY Ecosystem',      market: 'PRIVATE', sev: 'CRITICAL', status: 'ACK',         finding: '7 apps audited. 5/7 deliver live Firebase API keys in Play Store binaries — including eyipnov2024 (salary data). Payroll app: dead cert pinning + deprecated OAuth2 implicit grant. EY sells GDPR compliance to clients.' },
+  { target: 'Samsung Health',    market: 'KRX',     sev: 'CRITICAL', status: 'WAITING',     finding: '16 Art.9 health categories READ+WRITE. 926 smali: Rubin AI behavioral persona fed by health data, undisclosed. CONTROL_CARE: children\'s health settings. NFC blood glucose receiver (MDR 2017/745). China NAL permission in global binary.' },
+  { target: 'Meta (4 apps)',     market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'WhatsApp, Facebook, Instagram, Messenger — 5 criticals across the stack. Single coordinated disclosure.' },
+  { target: 'Tinder',            market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'FaceTec 3D liveness biometric to US third party. FaceUnity biometric SDK (China). LiveRamp identity resolution on sex-preference data. GDPR Art. 9 triple breach.' },
+  { target: 'TikTok',            market: 'PRIVATE', sev: 'CRITICAL', status: 'CS-DEFLECT',  finding: 'National Security Law data pipeline on EU user devices. HackerOne deflect received — escalated to DPO.' },
+  { target: 'AliExpress',        market: 'HKEx',    sev: 'CRITICAL', status: 'WAITING',     finding: 'WhiteScreenRecorder (full-screen capture) + ByteDance shadowhook SDK + TikTok assets = triple NSL pipeline. Cert pins EXPIRED 20+ months, silently disabled.' },
+  { target: 'Alibaba.com',       market: 'HKEx',    sev: 'CRITICAL', status: 'WAITING',     finding: 'User CA trusted in base-config. Chinese police .gov.cn domains cleartext-whitelisted in production NSC.' },
+  { target: 'Snapchat',          market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Fidelius encryption keys stored at Google. "Disappearing" messages can be retained server-side. Core product privacy claim invalidated.' },
+  { target: 'Apple Music',       market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'Dev NSC (cleartextTrafficPermitted=true) in production Play Store APK. Crash data sent to Google Crashlytics. "Privacy. That\'s iPhone." — not on Android.' },
+  { target: 'YouTube Kids',      market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'RECORD_AUDIO from children, no verified parental consent. IS_CHILD_ACCOUNT_OVER_13 flag — EU requires age 16/14, not 13. COPPA violation.' },
+  { target: 'TOGGO',             market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Google Topics API + CleverPush behavioral marketing on children\'s TV platform. COPPA § 312.2 per-download violation. Super RTL, Germany.' },
+  { target: 'Netflix',           market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'Decade-old Firebase API key still active in production (300M+ subscribers). RECORD_AUDIO declared in Kids Profile. Braze geofencing.' },
+  { target: 'Disney+',           market: 'NYSE',    sev: 'CRITICAL', status: 'ESCALATED',   finding: 'Braze geofencing NOT disabled for Kids Profiles. Darkwing internal build references in production APK. Escalated to DPO within 5 min.' },
+  { target: 'TeamViewer',        market: 'XETRA',   sev: 'CRITICAL', status: 'WAITING',     finding: 'Sentry Session Replay (RRWeb, 744 classes) active in production enterprise remote access tool. Proprietary APK installer bypasses Play Store review. No NSC.' },
+  { target: 'SoundCloud',        market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: '7 hardcoded production API credentials in one APK. Telescope screen capture tool active in production.' },
+  { target: 'Lovoo',             market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Chucker HTTP debug interceptor in production: all API calls (incl. auth) logged in plaintext on device. FaceUnity + Mintegral (Chinese SDKs). Broken NSC bypasses pinning.' },
+  { target: 'Marionnaud',        market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'ModiFace 65-point facial landmark model (Art. 9 biometric) + ContentSquare session replay running simultaneously during AR face try-on. 2,348 smali — largest ContentSquare integration in the 2026 series.' },
+  { target: 'Nike',              market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Airship push SDK with inProduction=false in Play Store APK: dev + prod credentials both hardcoded. Anyone can send push notifications to all Nike users. Forter cross-merchant device fingerprinting Art. 22.' },
+  { target: 'ZARA',              market: 'BME',     sev: 'CRITICAL', status: 'WAITING',     finding: 'Microsoft Clarity dual-layer (711 smali native + clarity.js WebView = session recordings → Microsoft US). AR body try-on uploads body geometry server-side (potential Art. 9). 20 domains cleartext.' },
+  { target: 'Microsoft Edge',    market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'Adjust attribution SDK (214 smali) inside a browser marketed for tracker-blocking. Intune MAM (583 smali): employer can remote-wipe personal browser data without user notification.' },
+  { target: 'Amazon Music',      market: 'NASDAQ',  sev: 'CRITICAL', status: 'ACK',         finding: 'CUSTOMER_ATTRIBUTE_SERVICE: music listening behaviour feeds Amazon\'s $47B DSP advertising profile. Alexa sends all playback events. DETECT_SCREEN_CAPTURE + BLE advertising.' },
+  { target: 'Amazon Business',   market: 'NASDAQ',  sev: 'CRITICAL', status: 'ACK',         finding: 'WhisperJoin (1,587 smali): ultrasound provisioning in conference rooms. A9 Visual Search: workplace camera images to A9 servers. B2B procurement data feeds commerce+DSP profile.' },
+  { target: 'Nintendo',          market: 'TYO',     sev: 'CRITICAL', status: 'WAITING',     finding: 'VoiceChatService RECORD_AUDIO declared on a platform used by minors. Salesforce MC LocationReceiver + children\'s QR check-in. No NSC on either app.' },
+  { target: 'Max / HBO Max',     market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'Apptentive usesCleartextTraffic=true overrides NSC — active on subscriber sessions. Braze 814 smali without confirmed Kids Mode gating. Paramount acquisition Q3 2026 = controller change for 100M+ subscribers, no Art. 14 disclosure.' },
+  { target: 'Tipico',            market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'IDnow NFC passport + FaceTec 3D liveness = triple Art. 9 legal basis gap on gambling platform. XS2A live bank credential flow. Maltese gambling licence, IDPC BCC.' },
+  { target: 'Grokio',            market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: '6 adult/kink communities (Grommr, Feabie, PupSpace, Ferzu, Chasable, Grokio) co-mingled on one Firebase project. Art. 9 data shared across communities without disclosure. _disease profile field.' },
+  { target: 'Strava',            market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Firebase API key hardcoded in production. NSC present but empty: 120M users, zero certificate pinning. privacy@strava.com bounced.' },
+  { target: 'adidas Running',    market: 'XETRA',   sev: 'CRITICAL', status: 'WAITING',     finding: '3 Firebase API keys (dev/staging/prod) all active in production APK. Health + GPS data. Acquired as Runtastic AT (€220M), all Austrian offices closed 2024.' },
+  { target: 'Raiffeisen',        market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING',     finding: 'Börse app: allowBackup=true + empty backup_rules.xml → full investment portfolio ADB-extractable. No NSC. ELBA: best NSC in the series but Firebase key hardcoded + Ad Services on banking app.' },
+  { target: 'Revolut',           market: 'PRIVATE', sev: 'HIGH',     status: 'ACK',         finding: 'Case #12973-74394-83287. DPO support initially claimed findings "out of scope" — pushed back twice. Substantive path now open.' },
+  { target: 'Plus500',           market: 'LSE',     sev: 'CRITICAL', status: 'WAITING',     finding: 'NSC exposes 16 internal dev/staging servers. ContentSquare screen recording on trading platform. Seychelles jurisdiction 1:300 leverage — ESMA limit bypass. €150k tier.' },
+  { target: 'flatex Austria',    market: 'XETRA',   sev: 'CRITICAL', status: 'WAITING',     finding: 'IDnow KYC (1,433 smali) — Art. 9 biometric on BaFin/FMA-regulated bank, no NSC. Braze 2,661 smali tracking trading behaviour.' },
+  { target: 'win2day',           market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'GlassBox session replay + Salesforce Marketing Cloud on Austrian state lottery platform. Data sovereignty question for nationally licensed gambling.' },
+  { target: 'VOL.at',            market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Pushwoosh BootReceiver (Belarus/Singapore — US Army removed apps for this SDK). Global cleartext NSC base-config. Russmedia DebugConsole OverlayService in production. Facebook client token hardcoded.' },
+  { target: 'Canva',             market: 'PRIVATE', sev: 'CRITICAL', status: 'ACK',         finding: 'Sentry Session Replay on design tool: pitch decks and confidential documents captured and sent to Sentry US. ACK in 5 minutes. Ticket #16392019.' },
+  { target: 'Tchibo',            market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING',     finding: 'ContentSquare Session Replay autostart + OverlayService in production (292 smali). GTM v28: 22 remotely-deployed tags. Adjust token hardcoded. Emarsys SAP geofencing starts at boot.' },
+  { target: 'heyOBI',            market: 'PRIVATE', sev: 'HIGH',     status: 'ACK',         finding: 'ContentSquare 425 smali + Heap 92 smali = 517 smali dual-layer session capture. GPS + Bluetooth in-store movement profiling. Ticket #1349913.' },
+  { target: 'KFC UAE',           market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Chucker HTTP debug interceptor in production: all API calls including payment logged in plaintext on device. Huawei HMS 1,835 smali (China routing). Foreground GPS + rider tracking.' },
+  { target: 'BILD (Axel Springer)', market: 'PRIVATE', sev: 'HIGH',  status: 'CS-DEFLECT',  finding: '3,354 smali ad-tech stack (Teads+Braze+Sourcepoint+Permutive+AppsFlyer+Xandr). Google Topics API on political news. Dev IP 192.168.1.41 cleartext in NSC. Intigriti deflect received.' },
+  { target: 'DER SPIEGEL',       market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING',     finding: 'Firebase project self-named "spiegel-online-tracking" (developer named it). Cleartext explicitly allowed for spiegel.de + manager-magazin.de. Topics API on political journalism.' },
+  { target: 'George (Erste Bank)', market: 'XETRA', sev: 'CRITICAL', status: 'SUBSTANTIVE', finding: 'Innovatrics biometric SDK (Art. 9) + ThreatFabric device data upload. Austrian NSC gap vs Czech build. Substantive reply from Balázs György, security@erstegroup.com.' },
+  { target: 'Pollen-Radar',      market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: '4 AWS API Gateway keys hardcoded (config.json + config_dev.json identical, both "environment: LIVE"). allowBackup + SQLite unencrypted Art.9 allergy data in Google Cloud.' },
+  { target: 'Wolt',              market: 'PRIVATE', sev: 'CRITICAL', status: 'ENGAGED',     finding: '13 findings including hardcoded credentials and broken pinning. R2 sent. Ticket #INC-1994788. Active engagement in progress.' },
+  { target: 'Foodora',           market: 'PRIVATE', sev: 'CRITICAL', status: 'ACK',         finding: '7 critical findings + algorithmic wage discrimination finding. AK Wien complaint filed 2026-06-22. Ack received.' },
+  { target: 'willhaben',         market: 'PRIVATE', sev: 'HIGH',     status: 'ACK',         finding: 'Ticket #2570977 "in Bearbeitung". Austria\'s largest classifieds platform. R1 sent 2026-06-19.' },
+  { target: 'RunBuddy / Runna',  market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: '6 hardcoded credentials including a Sentry AUTH TOKEN (org:runna, read access to all error logs). AppsFlyer + Facebook + Mixpanel on Health Connect heart rate data. No NSC.' },
+  { target: 'Taxefy',            market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Facebook Login on Austrian tax app. Privacy Sandbox allowAllToAccess="true" — broadest possible advertising data sharing on an app processing income and tax data. Veriff Art.9 video.' },
+  { target: 'Coca-Cola CEE',     market: 'NYSE',    sev: 'HIGH',     status: 'WAITING',     finding: 'Scratch cards, lotto mechanics, loot chests, shake-to-win targeting minors. LeakCanary memory profiler + Charles proxy debug cert + Adobe Assurance WebSocket active in production.' },
 ]
 
 const SEV_COLOR: Record<string, string> = {
   CRITICAL: 'var(--sev-crit)',
   HIGH:     'var(--sev-high)',
   MEDIUM:   'var(--sev-med)',
+}
+
+const STATUS_META: Record<string, { label: string; bg: string; color: string }> = {
+  WAITING:     { label: 'WAITING',     bg: 'rgba(150,150,150,0.12)', color: '#999' },
+  ACK:         { label: 'ACK',         bg: 'rgba(59,130,246,0.15)',  color: '#60a5fa' },
+  'CS-DEFLECT':{ label: 'CS-DEFLECT', bg: 'rgba(234,88,12,0.15)',   color: '#fb923c' },
+  ESCALATED:   { label: 'ESCALATED',  bg: 'rgba(234,179,8,0.15)',   color: '#facc15' },
+  SUBSTANTIVE: { label: 'SUBSTANTIVE',bg: 'rgba(34,197,94,0.18)',   color: '#4ade80' },
+  ENGAGED:     { label: 'ENGAGED',    bg: 'rgba(20,184,166,0.18)',  color: '#2dd4bf' },
+  PAID:        { label: 'PAID',       bg: 'rgba(234,179,8,0.25)',   color: '#fbbf24' },
+  SILENT:      { label: 'SILENT',     bg: 'rgba(220,38,38,0.15)',   color: '#f87171' },
 }
 
 const MILESTONES = [
@@ -673,25 +726,37 @@ export function PublicSite() {
             {' '}listed targets &nbsp;·&nbsp; GDPR Art. 5/8/9/13/25/32/44 &nbsp;·&nbsp; ISO/IEC 29147 &nbsp;·&nbsp; coordinated disclosure 2026-09-19 &nbsp;·&nbsp; DSB · EDPB · ICO · BfDI · DPC · CERT.at
           </div>
 
-          <h3 style={{ fontSize: 14, fontWeight: 800, marginBottom: 16, color: 'var(--text)' }}>Selected findings</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {AUDIT_HIGHLIGHTS.map((a, i) => (
-              <Reveal key={i} delay={i * 0.3} from="left">
-              <div style={{
-                display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'flex-start',
-                padding: '14px 18px', borderRadius: 6,
-                background: 'var(--bg)', border: '1px solid var(--border2)',
-              }}>
-                <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--text)', minWidth: 140, flex: '0 0 auto' }}>{a.target}</span>
-                <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', flex: '0 0 auto', paddingTop: 2 }}>{a.market}</span>
-                <span style={{ fontFamily: 'monospace', fontSize: 10, fontWeight: 700, color: SEV_COLOR[a.sev] ?? ACCENT, flex: '0 0 auto', paddingTop: 2 }}>{a.sev}</span>
-                <span style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.65, flex: '1 1 260px' }}>{a.finding}</span>
-              </div>
-              </Reveal>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
+            <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', margin: 0 }}>Permanent disclosure ledger</h3>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)' }}>50 targets · live response tracking · disclosure 2026-09-19</span>
+          </div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
+            {Object.entries(STATUS_META).map(([k, v]) => (
+              <span key={k} style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 3, background: v.bg, color: v.color, letterSpacing: '0.08em' }}>{v.label}</span>
             ))}
           </div>
-          <p style={{ marginTop: 16, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
-            Full audit archive &nbsp;·&nbsp; <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {AUDIT_HIGHLIGHTS.map((a, i) => {
+              const sm = STATUS_META[a.status] ?? STATUS_META['WAITING']
+              return (
+              <Reveal key={i} delay={Math.min(i * 0.15, 3)} from="left">
+              <div style={{
+                display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'flex-start',
+                padding: '11px 14px', borderRadius: 5,
+                background: 'var(--bg)', border: '1px solid var(--border2)',
+              }}>
+                <span style={{ fontWeight: 700, fontSize: 12, color: 'var(--text)', minWidth: 130, flex: '0 0 auto' }}>{a.target}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', flex: '0 0 auto', paddingTop: 2 }}>{a.market}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, color: SEV_COLOR[a.sev] ?? ACCENT, flex: '0 0 auto', paddingTop: 2 }}>{a.sev}</span>
+                <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 3, background: sm.bg, color: sm.color, flex: '0 0 auto', paddingTop: 2 }}>{sm.label}</span>
+                <span style={{ color: 'var(--text2)', fontSize: 11, lineHeight: 1.6, flex: '1 1 220px' }}>{a.finding}</span>
+              </div>
+              </Reveal>
+              )
+            })}
+          </div>
+          <p style={{ marginTop: 12, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
+            this ledger is updated in real time as companies respond. silence is public. &nbsp;·&nbsp; <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
           </p>
         </div>
       </section>
