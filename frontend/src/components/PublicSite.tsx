@@ -1,1315 +1,461 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react'
-import type { SiteContent, SectionId, CanvasPos, ProductItem, NewsItem, CertificateItem } from '../types/content'
-import type { Testimonial } from '../types/testimonials'
-import { useTheme, type Theme } from '../hooks/useTheme'
-import { useLang, type Lang } from '../hooks/useLang'
+import { useState, useEffect } from 'react'
 
-// Convert server-side paths to hash routing so GitHub Pages never 404s on legal links
-function safeHref(href: string): string {
-  return href.startsWith('/') && !href.startsWith('//') ? `#p${href}` : href
-}
+const TEAL = '#00f5c4'
 
-// ── Edit context ─────────────────────────────────────────────────────────────
-
-interface EditCtx {
-  editMode: boolean
-  onTextChange: (field: string, value: string) => void
-  onImageClick: (field: string) => void
-  onUpdate: (field: string, value: unknown) => void
-  setFocusedEl: (el: HTMLElement | null) => void
-}
-const Ctx = createContext<EditCtx>({
-  editMode: false,
-  onTextChange: () => {},
-  onImageClick: () => {},
-  onUpdate: () => {},
-  setFocusedEl: () => {},
-})
-
-// ── Inline-edit primitives ────────────────────────────────────────────────────
-
-type TagName = keyof React.JSX.IntrinsicElements
-
-interface EProps {
-  field: string
-  value: string
-  as?: TagName
-  className?: string
-  style?: React.CSSProperties
-  href?: string
-  title?: string
-}
-
-function E({ field, value, as, className, style, href, title }: EProps) {
-  const { editMode, onTextChange, setFocusedEl } = useContext(Ctx)
-  const Tag = (as ?? 'span') as TagName
-
-  if (!editMode) {
-    const props: Record<string, unknown> = { className, style, dangerouslySetInnerHTML: { __html: value }, 'data-cid': field }
-    if (href) props.href = href
-    if (title) props.title = title
-    return <Tag {...props} />
-  }
-
-  const editProps: Record<string, unknown> = {
-    className: `${className ?? ''} editable-text`,
-    style,
-    'data-cid': field,
-    contentEditable: true,
-    suppressContentEditableWarning: true,
-    dangerouslySetInnerHTML: { __html: value },
-    onFocus: (e: React.FocusEvent<HTMLElement>) => setFocusedEl(e.currentTarget),
-    onBlur: (e: React.FocusEvent<HTMLElement>) => {
-      setFocusedEl(null)
-      onTextChange(field, e.currentTarget.innerHTML)
-    },
-  }
-  if (href) editProps.href = href
-  return <Tag {...editProps} />
-}
-
-interface EImgProps {
-  field: string
-  src: string
-  alt?: string
-  className?: string
-  style?: React.CSSProperties
-}
-
-function EImg({ field, src, alt = '', className, style }: EImgProps) {
-  const { editMode, onImageClick } = useContext(Ctx)
-  if (!src && !editMode) return null
-  if (!editMode) return <img src={src} alt={alt} className={className} style={style} data-cid={field} />
-  return (
-    <div className="editable-img-wrap" style={{ display: 'contents' }} onClick={() => onImageClick(field)} data-cid={field}>
-      {src
-        ? <img src={src} alt={alt} className={`${className ?? ''} editable-img`} style={style} />
-        : <div className={`editable-img-placeholder ${className ?? ''}`} style={style}>Bild hochladen</div>}
-      <div className="editable-img-badge">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      </div>
-    </div>
-  )
-}
-
-// ── Format toolbar ────────────────────────────────────────────────────────────
-
-// Module-level saved range — survives re-renders between mousedown and click
-let _fmtSavedRange: Range | null = null
-
-function FormatToolbar({ anchorEl }: { anchorEl: HTMLElement | null }) {
-  if (!anchorEl) return null
-  const rect = anchorEl.getBoundingClientRect()
-  const tbW = 330
-  const left = Math.max(8, Math.min(rect.left + rect.width / 2 - tbW / 2, window.innerWidth - tbW - 8))
-  const top = rect.top < 56 ? rect.bottom + 6 : rect.top - 48
-
-  const exec = (cmd: string, val?: string) => {
-    anchorEl.focus()
-    if (_fmtSavedRange) {
-      const sel = window.getSelection()
-      if (sel) { sel.removeAllRanges(); sel.addRange(_fmtSavedRange) }
-    }
-    if (cmd === 'foreColor' || cmd === 'fontSize') { try { document.execCommand('styleWithCSS', false, 'true') } catch { /* noop */ } }
-    document.execCommand(cmd, false, val)
-  }
-
-  const onTbMouseDown = (e: React.MouseEvent) => {
-    e.preventDefault()
-    const sel = window.getSelection()
-    if (sel && sel.rangeCount > 0) _fmtSavedRange = sel.getRangeAt(0).cloneRange()
-  }
-
-  return (
-    <div className="format-toolbar" style={{ position: 'fixed', top, left, width: tbW, zIndex: 9999 }} onMouseDown={onTbMouseDown}>
-      <button type="button" className="fmt-btn fmt-b" onClick={() => exec('bold')}>B</button>
-      <button type="button" className="fmt-btn fmt-i" onClick={() => exec('italic')}>I</button>
-      <button type="button" className="fmt-btn fmt-u" onClick={() => exec('underline')}>U</button>
-      <button type="button" className="fmt-btn fmt-s" onClick={() => exec('strikeThrough')}>S</button>
-      <div className="fmt-sep" />
-      <button type="button" className="fmt-btn" onClick={() => exec('justifyLeft')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg></button>
-      <button type="button" className="fmt-btn" onClick={() => exec('justifyCenter')}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
-      <div className="fmt-sep" />
-      <button type="button" className="fmt-btn fmt-size-s" onClick={() => exec('fontSize', '2')}>S</button>
-      <button type="button" className="fmt-btn" onClick={() => exec('fontSize', '4')}>M</button>
-      <button type="button" className="fmt-btn fmt-size-l" onClick={() => exec('fontSize', '5')}>L</button>
-      <div className="fmt-sep" />
-      <label className="fmt-color-btn" onMouseDown={e => e.stopPropagation()}>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
-        <input type="color" defaultValue="#111111" onChange={e => exec('foreColor', e.target.value)} className="fmt-color-input" />
-      </label>
-    </div>
-  )
-}
-
-// ── Canvas element (drag wrapper) ─────────────────────────────────────────────
-
-interface CanvasElProps {
-  id: string
-  pos: CanvasPos
-  onMove: (p: CanvasPos) => void
-  children: React.ReactNode
-  minWidth?: number
-  noPad?: boolean
-  label?: string
-}
-
-function CanvasEl({ id, pos, onMove, children, minWidth = 160, noPad, label }: CanvasElProps) {
-  const elRef = useRef<HTMLDivElement>(null)
-  const dragState = useRef<{ mx: number; my: number; sx: number; sy: number } | null>(null)
-
-  const startDrag = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    dragState.current = { mx: e.clientX, my: e.clientY, sx: pos.x, sy: pos.y }
-
-    const onMouseMove = (ev: MouseEvent) => {
-      if (!dragState.current || !elRef.current) return
-      elRef.current.style.left = `${dragState.current.sx + ev.clientX - dragState.current.mx}px`
-      elRef.current.style.top  = `${dragState.current.sy + ev.clientY - dragState.current.my}px`
-    }
-    const onMouseUp = (ev: MouseEvent) => {
-      if (!dragState.current) return
-      const nx = dragState.current.sx + ev.clientX - dragState.current.mx
-      const ny = dragState.current.sy + ev.clientY - dragState.current.my
-      dragState.current = null
-      onMove({ x: nx, y: ny })
-      document.removeEventListener('mousemove', onMouseMove)
-      document.removeEventListener('mouseup', onMouseUp)
-    }
-    document.addEventListener('mousemove', onMouseMove)
-    document.addEventListener('mouseup', onMouseUp)
-  }
-
-  return (
-    <div
-      ref={elRef}
-      data-cid={id}
-      className={`canvas-el${noPad ? ' canvas-el-nopad' : ''}`}
-      style={{ position: 'absolute', left: pos.x, top: pos.y, minWidth }}
-    >
-      {label && <div className="canvas-el-label">{label}</div>}
-      <div className="canvas-el-grip" onMouseDown={startDrag} title="Ziehen zum Verschieben">
-        <svg width="10" height="16" viewBox="0 0 10 24" fill="currentColor">
-          <circle cx="3" cy="4"  r="1.8"/><circle cx="7" cy="4"  r="1.8"/>
-          <circle cx="3" cy="12" r="1.8"/><circle cx="7" cy="12" r="1.8"/>
-          <circle cx="3" cy="20" r="1.8"/><circle cx="7" cy="20" r="1.8"/>
-        </svg>
-      </div>
-      {children}
-    </div>
-  )
-}
-
-// ── SVG icons ─────────────────────────────────────────────────────────────────
-
-function IconDelivery() {
-  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-}
-function IconShield() {
-  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-}
-function IconTag() {
-  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7" strokeWidth="2.5"/></svg>
-}
-function IconLocation() {
-  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-}
-function IconPhone() {
-  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6.29 6.29l.95-.96a2 2 0 0 1 2.1-.45c.908.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-}
-function IconMail() {
-  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-}
-
-function TrustIcon({ icon }: { icon: string }) {
-  switch (icon) {
-    case 'delivery': return <IconDelivery />
-    case 'shield':   return <IconShield />
-    case 'tag':      return <IconTag />
-    case 'location': return <IconLocation />
-    default:         return <IconShield />
-  }
-}
-
-// ── Contact form ──────────────────────────────────────────────────────────────
-
-function ContactForm({ email }: { email: string }) {
-  const { t } = useLang()
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
-  const [status, setStatus] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
-
-  const set = (k: string, v: string) => setForm(p => ({ ...p, [k]: v }))
-  const to = email || ''
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const key = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
-    if (!key) {
-      // Fallback: open mailto pre-filled
-      const body = encodeURIComponent(`Name: ${form.name}\nPhone: ${form.phone}\n\n${form.message}`)
-      window.location.href = `mailto:${to}?subject=${encodeURIComponent(`${t.mailSubject} ${form.name}`)}&body=${body}`
-      return
-    }
-    setStatus('sending')
-    try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          access_key: key,
-          subject: `${t.mailSubject} ${form.name}`,
-          ...form,
-        }),
-      })
-      const data = await res.json()
-      if (data.success) {
-        try {
-          const inbox = JSON.parse(localStorage.getItem('rfi_contact_inbox') || '[]')
-          inbox.unshift({ ...form, ts: new Date().toISOString() })
-          localStorage.setItem('rfi_contact_inbox', JSON.stringify(inbox))
-        } catch { /* non-critical */ }
-      }
-      setStatus(data.success ? 'ok' : 'err')
-    } catch {
-      setStatus('err')
-    }
-  }
-
-  if (status === 'ok') {
-    return (
-      <div className="site-contact-form-success">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        <p>{t.success}</p>
-      </div>
-    )
-  }
-
-  return (
-    <form className="site-contact-form" onSubmit={submit}>
-      <div className="site-contact-form-row">
-        <input placeholder={t.namePlaceholder} required value={form.name} onChange={e => set('name', e.target.value)} />
-        <input placeholder={t.emailPlaceholder} type="email" required value={form.email} onChange={e => set('email', e.target.value)} />
-      </div>
-      <input placeholder={t.phonePlaceholder} value={form.phone} onChange={e => set('phone', e.target.value)} />
-      <textarea placeholder={t.messagePlaceholder} rows={4} required value={form.message} onChange={e => set('message', e.target.value)} />
-      <button type="submit" disabled={status === 'sending'} className="site-contact-form-btn">
-        {status === 'sending' ? `${t.sending}…` : t.send}
-      </button>
-      {status === 'err' && <p className="site-contact-form-err">{t.error}</p>}
-    </form>
-  )
-}
-
-// ── WhatsApp button ───────────────────────────────────────────────────────────
-
-function WhatsAppButton({ number, message }: { number: string; message: string }) {
-  const href = `https://wa.me/${number.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`
-  return (
-    <a className="site-whatsapp-btn" href={href} target="_blank" rel="noopener noreferrer" title="WhatsApp">
-      <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/>
-        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.118 1.533 5.851L0 24l6.335-1.513A11.954 11.954 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.843 0-3.57-.49-5.062-1.346L2.5 21.5l.854-3.375A9.944 9.944 0 0 1 2 12c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10z"/>
-      </svg>
-    </a>
-  )
-}
-
-// ── Theme toggle (light / dark / high-contrast) ───────────────────────────────
-
-function IconSun() {
-  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-}
-function IconMoon() {
-  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-}
-function IconContrast() {
-  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18z" fill="currentColor"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>
-}
-function IconMenu() {
-  return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-}
-function IconClose() {
-  return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-}
-
-const THEME_OPTS: { id: Theme; icon: React.ReactNode }[] = [
-  { id: 'light', icon: <IconSun /> },
-  { id: 'dark', icon: <IconMoon /> },
-  { id: 'hc', icon: <IconContrast /> },
+const NAV_LINKS = [
+  { label: 'Research', href: '#research' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Track Record', href: '#track-record' },
+  { label: 'Timeline', href: '#timeline' },
+  { label: 'Services', href: '#services' },
+  { label: 'Contact', href: '#contact' },
 ]
 
-function ThemeToggle({ theme, setTheme }: { theme: Theme; setTheme: (t: Theme) => void }) {
-  const { t } = useLang()
-  const labels: Record<Theme, string> = { light: t.themeLight, dark: t.themeDark, hc: t.themeContrast }
-  return (
-    <div className="theme-toggle" role="group" aria-label={t.colorScheme}>
-      {THEME_OPTS.map(o => (
-        <button
-          key={o.id}
-          type="button"
-          className={`theme-toggle-btn ${theme === o.id ? 'active' : ''}`}
-          aria-pressed={theme === o.id}
-          aria-label={labels[o.id]}
-          title={labels[o.id]}
-          onClick={() => setTheme(o.id)}
-        >
-          {o.icon}
-        </button>
-      ))}
-    </div>
-  )
-}
-
-// ── Language toggle (EN / DE) ─────────────────────────────────────────────────
-
-const LANG_OPTS: { id: Lang; label: string }[] = [
-  { id: 'en', label: 'EN' },
-  { id: 'de', label: 'DE' },
-  { id: 'hu', label: 'HU' },
+const RESEARCH_AREAS = [
+  {
+    icon: '◈',
+    title: 'Ternary AI & Computing',
+    desc: 'Post-binary arithmetic as the foundation for language models, compilers, and operating systems. Patent pending A50296/2026.',
+  },
+  {
+    icon: '⬡',
+    title: 'Security & Privacy',
+    desc: 'Static APK analysis, GDPR enforcement, coordinated responsible disclosure at scale. ISO/IEC 29147 framework.',
+  },
+  {
+    icon: '⊕',
+    title: 'AI Governance & Ethics',
+    desc: 'Constitutional AI design, model welfare research, EU AI Act compliance. Immutable governance by construction.',
+  },
+  {
+    icon: '◉',
+    title: 'Ecocentric Technology',
+    desc: 'Technology in service of ecological and social systems. Sufficiency over growth. Research into manufactured scarcity.',
+  },
 ]
 
-function LanguageToggle() {
-  const { lang, setLang, t } = useLang()
-  return (
-    <div className="lang-toggle" role="group" aria-label={t.language}>
-      {LANG_OPTS.map(o => (
-        <button
-          key={o.id}
-          type="button"
-          className={`lang-toggle-btn ${lang === o.id ? 'active' : ''}`}
-          aria-pressed={lang === o.id}
-          onClick={() => setLang(o.id)}
-        >
-          {o.label}
-        </button>
-      ))}
-    </div>
-  )
-}
+const PROJECTS = [
+  {
+    name: 'Ternary Intelligence Stack',
+    sub: 'TIS monorepo',
+    desc: 'Full-stack post-binary AI platform. Language, compiler, ISA, virtual machine, linear algebra, API, and model — built on balanced ternary {-1, 0, +1}.',
+    link: 'https://github.com/rfi-irfos/ternary-intelligence-stack',
+    tag: 'core platform',
+  },
+  {
+    name: 'albert.',
+    sub: 'ternary MoE language model',
+    desc: 'Language model trained from scratch on ternary arithmetic. Grows its own architecture via autonomous plateau-gated Net2Net surgery. No human layer additions ever.',
+    link: 'https://github.com/rfi-irfos/ternary-intelligence-stack',
+    tag: 'AI model',
+  },
+  {
+    name: 'Rusty Penguin',
+    sub: 'pure-Rust OS',
+    desc: 'Operating system written from scratch in Rust. Own kernel, GUI desktop, from-scratch TCP/IP stack, Linux ABI compatibility layer. Ubuntu replacement roadmap active.',
+    link: 'https://github.com/rfi-irfos/rusty-penguin',
+    tag: 'systems',
+  },
+  {
+    name: 'Lighthouse',
+    sub: 'sovereign workplace OS',
+    desc: 'One self-hosted Rust + React binary running the entire institute — comms, CRM, finance, payroll, HR, governance, and live training telemetry. Append-only 50-year audit trail.',
+    link: null,
+    tag: 'internal · live',
+  },
+  {
+    name: 'Android Security Audit 2026',
+    sub: '100 apps · 74 companies',
+    desc: '150+ critical findings across NYSE, NASDAQ, LSE, and XETRA listed companies. Static APK analysis. Coordinated disclosure 2026-09-19. Regulators BCC\'d on every submission.',
+    link: 'https://github.com/rfi-irfos/android-security-audit-2026',
+    tag: 'security research',
+  },
+  {
+    name: 'aladdin-mini',
+    sub: 'disclosure impact engine',
+    desc: '50-parameter causality chain mapping security disclosures to market signals. Includes Simeon Hedge System (SHS). Named after BlackRock\'s Aladdin ($21T AUM). Smaller. Free.',
+    link: 'https://github.com/rfi-irfos/aladdin-mini',
+    tag: 'open source',
+  },
+]
 
-// ── Category icons ────────────────────────────────────────────────────────────
+const MILESTONES: { date: string; label: string; side: 'left' | 'right' }[] = [
+  { date: 'June 2020', label: 'RFI-IRFOS Founded', side: 'left' },
+  { date: 'June 2020', label: 'OSF Repository launched', side: 'right' },
+  { date: 'March 2021', label: 'Ternary Logic Framework', side: 'left' },
+  { date: 'May 2023', label: 'Ecocentric AI Framework', side: 'right' },
+  { date: 'March 2024', label: 'The Art of Questioning — whitepaper', side: 'left' },
+  { date: 'June 2024', label: 'albert. — first ternary MoE model born', side: 'right' },
+  { date: 'Jan 2025', label: 'Rusty Penguin — pure-Rust OS boots', side: 'left' },
+  { date: 'March 2025', label: 'Lighthouse — workplace OS goes live', side: 'right' },
+  { date: 'May 2026', label: 'SPRIND pitch submitted — €26.5M ceiling', side: 'left' },
+  { date: 'May 2026', label: 'DOOM boots on bare-metal Rust kernel', side: 'right' },
+  { date: 'June 2026', label: '100 Android apps audited — 74 companies · NYSE · NASDAQ · LSE · XETRA', side: 'left' },
+  { date: 'June 2026', label: 'aladdin-mini — open-source disclosure impact engine released', side: 'right' },
+]
 
-function CategoryIcon({ category }: { category: string }) {
-  const c = (category ?? '').toLowerCase()
-  const cls = "site-cat-icon"
-  if (c === 'english')
-    return <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-  if (c === 'german' || c === 'deutsch')
-    return <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-  if (c === 'exam prep' || c === 'prüfung' || c === 'vizsga')
-    return <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-  if (c === 'hungarian' || c === 'ungarisch' || c === 'magyar' || c === 'gyerekek')
-    return <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-  if (c === 'kids' || c === 'kinder' || c === 'kinder & jugendliche')
-    return <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-  return <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-}
+const CREDENTIALS = [
+  { label: 'ZVR', value: '1015608684', sub: 'Association register' },
+  { label: 'GISA', value: '39261441', sub: 'Trade register' },
+  { label: 'Gewerbe', value: 'Automatische Datenverarbeitung', sub: 'WKO · GewO § 32' },
+  { label: 'Steuernummer', value: '68 028/0989', sub: 'Finanzamt Graz' },
+  { label: 'Seat', value: 'Elisabethinergasse 25', sub: '8020 Graz, Austria' },
+]
 
-// ── Star rating display ───────────────────────────────────────────────────────
+const CONTACT_CARDS = [
+  { label: 'Email', value: 'contact@ternlang.com', href: 'mailto:contact@ternlang.com' },
+  { label: 'Research on OSF', value: 'osf.io/rzvyg', href: 'https://osf.io/rzvyg' },
+  { label: 'GitHub', value: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
+  { label: 'LinkedIn', value: 'RFI-IRFOS', href: 'https://linkedin.com/company/rfi-irfos' },
+]
 
-function Stars({ rating }: { rating: number }) {
-  return (
-    <div className="site-review-stars" aria-label={`${rating} out of 5 stars`}>
-      {[1, 2, 3, 4, 5].map(n => (
-        <svg key={n} className={`site-review-star ${n <= rating ? 'filled' : ''}`}
-          viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-        </svg>
-      ))}
-    </div>
-  )
-}
-
-// ── Reviews section ───────────────────────────────────────────────────────────
-
-function ReviewsSection({ editMode }: { editMode: boolean }) {
-  const [reviews, setReviews] = useState<Testimonial[]>([])
+export function PublicSite() {
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    fetch(`/testimonials.json?t=${Date.now()}`, { cache: 'no-store' })
-      .then(r => r.ok ? r.json() : [])
-      .then((d: Testimonial[]) => setReviews(Array.isArray(d) ? d : []))
-      .catch(() => {})
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  if (reviews.length === 0) {
-    if (!editMode) return null
-    return (
-      <section className="site-section site-reviews" id="reviews">
-        <h2 className="site-section-title">Reviews</h2>
-        <p style={{ textAlign: 'center', color: 'var(--text-soft)', fontSize: 14 }}>No reviews yet — add them in the Reviews tab.</p>
-      </section>
-    )
-  }
-
   return (
-    <section className="site-section site-reviews" id="reviews">
-      <h2 className="site-section-title">Reviews</h2>
-      <div className="site-reviews-grid">
-        {reviews.map(r => (
-          <div key={r.id} className="site-review-card">
-            <Stars rating={r.rating} />
-            <p className="site-review-text">"{r.text}"</p>
-            <div className="site-review-footer">
-              <span className="site-review-name">{r.name}</span>
-              {r.date && <span className="site-review-date">{r.date}</span>}
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  )
-}
+    <div style={{ background: '#070711', color: '#e8e8f0', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh' }}>
 
-// ── Public Site ───────────────────────────────────────────────────────────────
-
-interface Props {
-  content: SiteContent
-  editMode?: boolean
-  rearrangeMode?: boolean
-  initPositions?: Record<string, CanvasPos>
-  onTextChange?: (field: string, value: string) => void
-  onImageClick?: (field: string) => void
-  onUpdate?: (field: string, value: unknown) => void
-  onSectionReorder?: (order: SectionId[]) => void
-}
-
-export function PublicSite({
-  content, editMode = false, rearrangeMode = false, initPositions = {},
-  onTextChange, onImageClick, onUpdate,
-}: Props) {
-  const { meta, nav, hero, trust, categories, products, usp, news, contact, whatsapp, footer, pricing, certificates } = content
-  const hiddenSections = content.hiddenSections ?? []
-
-  const [focusedEl, setFocusedEl] = useState<HTMLElement | null>(null)
-  const [activeTab, setActiveTab] = useState('')
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [modalProduct, setModalProduct] = useState<ProductItem | null>(null)
-  const [modalGalleryIdx, setModalGalleryIdx] = useState(0)
-  const [modalArticle, setModalArticle] = useState<NewsItem | null>(null)
-  const [browseCatIdx, setBrowseCatIdx] = useState<number | null>(null)
-  const { theme, setTheme } = useTheme()
-  const { t } = useLang()
-
-  // Tracking pixel — fires once per page load in production (skipped in edit mode).
-  useEffect(() => {
-    if (editMode) return
-    const px = new URL('/api/track/pixel.gif', window.location.origin)
-    px.searchParams.set('p', window.location.pathname)
-    px.searchParams.set('r', document.referrer)
-    const s = new URLSearchParams(window.location.search)
-    if (s.get('utm_source'))   px.searchParams.set('utm_source',   s.get('utm_source')!)
-    if (s.get('utm_medium'))   px.searchParams.set('utm_medium',   s.get('utm_medium')!)
-    if (s.get('utm_campaign')) px.searchParams.set('utm_campaign', s.get('utm_campaign')!)
-    new Image().src = px.toString()
-  }, [editMode])
-
-  // Keep the product filter valid when the language (and its tab labels) changes
-  useEffect(() => {
-    const tabs = content.products?.tabs ?? []
-    if (tabs.length && !tabs.includes(activeTab)) setActiveTab(tabs[0])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [content.products?.tabs])
-
-  // Close the session detail modal on Escape; reset gallery index on open
-  useEffect(() => {
-    setModalGalleryIdx(0)
-    if (!modalProduct) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setModalProduct(null) }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [modalProduct])
-  useEffect(() => {
-    if (!modalArticle) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setModalArticle(null) }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [modalArticle])
-  const [heroBgPos, setHeroBgPos] = useState({ x: hero.bgX ?? 50, y: hero.bgY ?? 50 })
-  const [heroHeight, setHeroHeight] = useState(hero.minHeight ?? 680)
-  const heroDragRef  = useRef<{ startX: number; startY: number; startBgX: number; startBgY: number } | null>(null)
-  const heightDragRef = useRef<{ startY: number; startH: number } | null>(null)
-  const heroRef = useRef<HTMLElement | null>(null)
-
-  const vars = { '--primary': meta.primaryColor, '--accent': meta.accentColor, fontFamily: meta.font } as React.CSSProperties
-
-  const ctx: EditCtx = {
-    editMode,
-    onTextChange: onTextChange ?? (() => {}),
-    onImageClick: onImageClick ?? (() => {}),
-    onUpdate:     onUpdate     ?? (() => {}),
-    setFocusedEl,
-  }
-
-  // Hero bg drag
-  useEffect(() => {
-    if (rearrangeMode) return
-    const onMove = (e: MouseEvent) => {
-      if (!heroDragRef.current || !heroRef.current) return
-      const rect = heroRef.current.getBoundingClientRect()
-      setHeroBgPos({
-        x: Math.max(0, Math.min(100, heroDragRef.current.startBgX - (e.clientX - heroDragRef.current.startX) / rect.width * 100)),
-        y: Math.max(0, Math.min(100, heroDragRef.current.startBgY - (e.clientY - heroDragRef.current.startY) / rect.height * 100)),
-      })
-    }
-    const onUp = () => {
-      heroDragRef.current = null
-      setHeroBgPos(p => { onUpdate?.('hero.bgX', p.x); onUpdate?.('hero.bgY', p.y); return p })
-    }
-    document.addEventListener('mousemove', onMove)
-    document.addEventListener('mouseup', onUp)
-    return () => { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp) }
-  }, [rearrangeMode, onUpdate])
-
-  // Hero height drag
-  useEffect(() => {
-    if (!heightDragRef.current) return
-    const onMove = (e: MouseEvent) => {
-      if (!heightDragRef.current) return
-      setHeroHeight(Math.max(300, heightDragRef.current.startH + e.clientY - heightDragRef.current.startY))
-    }
-    const onUp = () => {
-      heightDragRef.current = null
-      setHeroHeight(h => { onUpdate?.('hero.minHeight', h); return h })
-    }
-    document.addEventListener('mousemove', onMove)
-    document.addEventListener('mouseup', onUp)
-    return () => { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp) }
-  })
-
-  // ── Canvas position helpers ─────────────────────────────────────────────────
-
-  const savedPos = (content.positions ?? {}) as Record<string, CanvasPos>
-  const pos = (id: string, fallback: CanvasPos): CanvasPos => savedPos[id] ?? initPositions[id] ?? fallback
-  const moveEl = (id: string, p: CanvasPos) => onUpdate?.('positions', { ...savedPos, [id]: p })
-
-  // ── Canvas render ────────────────────────────────────────────────────────────
-
-  if (rearrangeMode) {
-    const H = heroHeight
-    const canvasBg: React.CSSProperties = {
-      position: 'absolute', inset: 0, top: 0, left: 0, right: 0, height: H,
-      background: hero.image
-        ? `url(${hero.image}) ${heroBgPos.x}% ${heroBgPos.y}% / cover no-repeat`
-        : meta.primaryColor,
-      zIndex: 0,
-    }
-
-    // Section zone markers
-    const zone = (label: string, y: number, h: number, color: string) => (
-      <div style={{
-        position: 'absolute', left: 0, right: 0, top: y, height: h,
-        background: color, borderTop: '1px dashed #d0d0d0', pointerEvents: 'none',
-        display: 'flex', alignItems: 'flex-start', paddingLeft: 8, paddingTop: 4,
+      {/* NAV */}
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+        background: scrolled ? 'rgba(7,7,17,0.95)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(12px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none',
+        transition: 'all 0.3s',
+        padding: '0 2rem',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px',
       }}>
-        <span style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.08em', color: '#aaa', background: '#f8f9fa', padding: '2px 6px', borderRadius: 4 }}>{label}</span>
-      </div>
-    )
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{
+            width: 32, height: 32, background: TEAL, borderRadius: 6,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <span style={{ color: '#070711', fontWeight: 900, fontSize: 16 }}>R</span>
+          </div>
+          <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: '0.05em' }}>RFI-IRFOS</span>
+        </div>
+        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+          {NAV_LINKS.map(n => (
+            <a key={n.href} href={n.href} style={{
+              color: '#a0a0b8', fontSize: 13, fontWeight: 600,
+              textDecoration: 'none', letterSpacing: '0.04em',
+              transition: 'color 0.2s',
+            }}
+              onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+              onMouseLeave={e => (e.currentTarget.style.color = '#a0a0b8')}>
+              {n.label}
+            </a>
+          ))}
+          <a href="mailto:contact@ternlang.com" style={{
+            background: TEAL, color: '#070711', padding: '7px 18px', borderRadius: 6,
+            fontWeight: 800, fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em',
+          }}>Contact</a>
+        </div>
+      </nav>
 
-    return (
-      <div style={vars} className="site-canvas">
-        {/* Hero bg */}
-        <div className="canvas-bg-band" style={canvasBg}
-          onMouseDown={e => {
-            e.preventDefault()
-            heroDragRef.current = { startX: e.clientX, startY: e.clientY, startBgX: heroBgPos.x, startBgY: heroBgPos.y }
-          }}
-        >
-          <div className="canvas-bg-hint">Hero-Bild ziehen um Position anzupassen</div>
+      {/* HERO */}
+      <section style={{
+        minHeight: '100vh', display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center', textAlign: 'center',
+        padding: '120px 2rem 80px',
+        background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.06) 0%, transparent 70%)',
+      }}>
+        <p style={{
+          fontFamily: 'monospace', fontSize: 11, color: TEAL, letterSpacing: '0.2em',
+          textTransform: 'uppercase', marginBottom: 32,
+          border: '1px solid rgba(0,245,196,0.3)', padding: '6px 16px', borderRadius: 20,
+        }}>
+          RFI-IRFOS &nbsp;·&nbsp; ZVR 1015608684 &nbsp;·&nbsp; GISA 39261441 &nbsp;·&nbsp; Graz, Austria &nbsp;·&nbsp; est. 2020
+        </p>
+        <h1 style={{
+          fontSize: 'clamp(2.4rem, 7vw, 5.5rem)', fontWeight: 900, lineHeight: 1.05,
+          marginBottom: 24, letterSpacing: '-0.02em',
+        }}>
+          Rethink the Obvious.<br />
+          <span style={{ color: TEAL }}>Interdisciplinary</span> Research<br />
+          Facility for Open Sciences.
+        </h1>
+        <p style={{ fontSize: 18, color: '#a0a0b8', maxWidth: 600, lineHeight: 1.7, marginBottom: 48 }}>
+          an independent Austrian research institute at the intersection of ternary AI,
+          security &amp; privacy, governance, and ecocentric technology.
+          everything in-house. everything interdisciplinary.
+        </p>
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
+          <a href="#research" style={{
+            background: TEAL, color: '#070711', padding: '14px 32px', borderRadius: 8,
+            fontWeight: 800, fontSize: 14, textDecoration: 'none', letterSpacing: '0.06em',
+          }}>Explore our research</a>
+          <a href="#projects" style={{
+            border: '1px solid rgba(0,245,196,0.4)', color: TEAL, padding: '14px 32px', borderRadius: 8,
+            fontWeight: 700, fontSize: 14, textDecoration: 'none', letterSpacing: '0.04em',
+          }}>What we build</a>
         </div>
 
-        {/* Zone markers */}
-        {zone('Hero', 0, H, 'transparent')}
-        {zone('Trust Strip', H, 90, 'rgba(17,17,17,.04)')}
-        {zone('Kategorien', H + 90, 720, 'rgba(0,153,204,.02)')}
-        {zone('Produkte', H + 810, 830, 'rgba(179,230,0,.03)')}
-        {zone('Vorteile', H + 1640, 740, 'rgba(0,153,204,.02)')}
-        {zone('Neuigkeiten', H + 2380, 580, 'rgba(179,230,0,.03)')}
-        {zone('Standort', H + 2960, 500, 'rgba(0,0,0,.02)')}
-        {zone('Footer', H + 3460, 250, 'rgba(17,17,17,.04)')}
-
-        {/* NAV */}
-        <header className="site-nav" style={{ position: 'sticky', top: 0, zIndex: 200 }}>
-          <div className="site-nav-inner">
-            {nav.logo ? <img src={nav.logo} alt={nav.brand} className="site-logo-img" /> : <span className="site-logo-text">{nav.brand}</span>}
-            <nav className="site-main-nav">{nav.links.map((l, i) => <a key={i} href={l.href}>{l.label}</a>)}</nav>
-            <div className="site-nav-right">
-              {nav.phone && <span className="site-nav-phone">{nav.phone}</span>}
-              {nav.ctaLabel && <a href={nav.ctaHref ?? '#'} className="site-nav-cta">{nav.ctaLabel}</a>}
+        <div style={{ display: 'flex', gap: '3rem', marginTop: 80, flexWrap: 'wrap', justifyContent: 'center' }}>
+          {[
+            { n: '100', label: 'apps audited' },
+            { n: '150+', label: 'critical findings' },
+            { n: '74', label: 'companies notified' },
+            { n: '6', label: 'years of research' },
+          ].map(s => (
+            <div key={s.label} style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: 32, fontWeight: 900, color: TEAL }}>{s.n}</div>
+              <div style={{ fontSize: 11, color: '#606080', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{s.label}</div>
             </div>
-          </div>
-        </header>
+          ))}
+        </div>
+      </section>
 
-        {/* HERO ELEMENTS */}
-        {hero.tag && (
-          <CanvasEl id="hero.tag" pos={pos('hero.tag', { x: 80, y: 200 })} onMove={p => moveEl('hero.tag', p)} minWidth={300} noPad label="Hero Tag">
-            <div className="site-hero-tag" dangerouslySetInnerHTML={{ __html: hero.tag }} />
-          </CanvasEl>
-        )}
-        <CanvasEl id="hero.headline" pos={pos('hero.headline', { x: 80, y: 260 })} onMove={p => moveEl('hero.headline', p)} minWidth={400} noPad label="Überschrift">
-          <h1 className="site-hero-h1" dangerouslySetInnerHTML={{ __html: hero.headline }} />
-        </CanvasEl>
-        <CanvasEl id="hero.subheadline" pos={pos('hero.subheadline', { x: 80, y: 390 })} onMove={p => moveEl('hero.subheadline', p)} minWidth={400} noPad label="Unterüberschrift">
-          <p className="site-hero-sub" dangerouslySetInnerHTML={{ __html: hero.subheadline }} />
-        </CanvasEl>
-        <CanvasEl id="hero.cta" pos={pos('hero.cta', { x: 80, y: 490 })} onMove={p => moveEl('hero.cta', p)} minWidth={280} label="Buttons">
-          <div className="site-hero-btns">
-            <a className="site-btn-lime-lg" dangerouslySetInnerHTML={{ __html: hero.ctaLabel }} />
-            {hero.ctaSecLabel && <a className="site-btn-ghost-lg" dangerouslySetInnerHTML={{ __html: hero.ctaSecLabel }} />}
-          </div>
-        </CanvasEl>
-
-        {/* TRUST ITEMS */}
-        {(trust?.items ?? []).map((t, i) => (
-          <CanvasEl key={t.id} id={`trust.items.${i}`} pos={pos(`trust.items.${i}`, { x: 60 + i * 290, y: H + 20 })} onMove={p => moveEl(`trust.items.${i}`, p)} minWidth={240} label={`Trust ${i+1}`}>
-            <div className="canvas-trust-item">
-              <TrustIcon icon={t.icon} />
-              <span><strong>{t.bold}</strong> {t.text}</span>
-            </div>
-          </CanvasEl>
-        ))}
-
-        {/* CATEGORIES TITLE */}
-        <CanvasEl id="categories.title" pos={pos('categories.title', { x: 80, y: H + 140 })} onMove={p => moveEl('categories.title', p)} minWidth={300} noPad label="Kategorien Titel">
-          <h2 className="canvas-section-h2" dangerouslySetInnerHTML={{ __html: categories?.title ?? '' }} />
-        </CanvasEl>
-
-        {/* CATEGORY CARDS */}
-        {(categories?.items ?? []).map((c, i) => (
-          <CanvasEl key={c.id} id={`categories.items.${i}`} pos={pos(`categories.items.${i}`, { x: 40 + (i % 3) * 388, y: H + 230 + Math.floor(i / 3) * 270 })} onMove={p => moveEl(`categories.items.${i}`, p)} minWidth={360} label={c.name}>
-            <div className="canvas-cat-card">
-              {c.image && <img src={c.image} alt={c.name} style={{ width: '100%', height: 120, objectFit: 'contain', background: '#f0f4f0', borderRadius: 6, padding: 8 }} />}
-              <div style={{ padding: '8px 12px' }}>
-                <div className="canvas-cat-name">{c.name}</div>
-                <div className="canvas-cat-sub">{c.sub}</div>
+      {/* RESEARCH AREAS */}
+      <section id="research" style={{ padding: '100px 2rem' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 — Research Areas</p>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we investigate</h2>
+          <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
+            not multiple faculties coordinating across silos. one team where the same people
+            who train the model write the regulatory analysis.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
+            {RESEARCH_AREAS.map(a => (
+              <div key={a.title} style={{
+                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+                borderRadius: 16, padding: '28px 24px',
+              }}>
+                <div style={{ fontSize: 28, color: TEAL, marginBottom: 16 }}>{a.icon}</div>
+                <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{a.title}</div>
+                <div style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7 }}>{a.desc}</div>
               </div>
-            </div>
-          </CanvasEl>
-        ))}
-
-        {/* PRODUCTS TITLE */}
-        <CanvasEl id="products.title" pos={pos('products.title', { x: 80, y: H + 870 })} onMove={p => moveEl('products.title', p)} minWidth={300} noPad label="Produkte Titel">
-          <h2 className="canvas-section-h2" dangerouslySetInnerHTML={{ __html: products?.title ?? '' }} />
-        </CanvasEl>
-
-        {/* PRODUCT CARDS */}
-        {(products?.items ?? []).map((p, i) => (
-          <CanvasEl key={p.id} id={`products.items.${i}`} pos={pos(`products.items.${i}`, { x: 40 + (i % 3) * 388, y: H + 960 + Math.floor(i / 3) * 390 })} onMove={pp => moveEl(`products.items.${i}`, pp)} minWidth={360} label={p.name}>
-            <div className="canvas-product-card">
-              {p.image ? <img src={p.image} alt={p.name} style={{ width: '100%', height: 140, objectFit: 'contain', background: '#f7f7f7', borderRadius: 6, padding: 12 }} /> : <div style={{ height: 80, background: '#f0f0f0', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaa', fontSize: 12 }}>Kein Bild</div>}
-              <div style={{ padding: '10px 12px' }}>
-                {p.badge && <div className="canvas-pcard-badge">{p.badge}</div>}
-                <div className="canvas-pcard-brand">{p.category}</div>
-                <div className="canvas-pcard-name">{p.name}</div>
-                <div className="canvas-pcard-price">{p.price}</div>
-              </div>
-            </div>
-          </CanvasEl>
-        ))}
-
-        {/* USP TITLE */}
-        <CanvasEl id="usp.title" pos={pos('usp.title', { x: 80, y: H + 1700 })} onMove={p => moveEl('usp.title', p)} minWidth={300} noPad label="Vorteile Titel">
-          <h2 className="canvas-section-h2" dangerouslySetInnerHTML={{ __html: usp?.title ?? '' }} />
-        </CanvasEl>
-
-        {/* USP CARDS */}
-        {(usp?.items ?? []).map((u, i) => (
-          <CanvasEl key={u.id} id={`usp.items.${i}`} pos={pos(`usp.items.${i}`, { x: 40 + (i % 3) * 388, y: H + 1780 + Math.floor(i / 3) * 190 })} onMove={p => moveEl(`usp.items.${i}`, p)} minWidth={360} label={u.title}>
-            <div className="canvas-usp-card">
-              <h3>{u.title}</h3>
-              <p>{u.description}</p>
-            </div>
-          </CanvasEl>
-        ))}
-
-        {/* NEWS TITLE */}
-        <CanvasEl id="news.title" pos={pos('news.title', { x: 80, y: H + 2440 })} onMove={p => moveEl('news.title', p)} minWidth={300} noPad label="Neuigkeiten Titel">
-          <h2 className="canvas-section-h2" dangerouslySetInnerHTML={{ __html: news?.title ?? '' }} />
-        </CanvasEl>
-
-        {/* NEWS CARDS */}
-        {(news?.items ?? []).map((n, i) => (
-          <CanvasEl key={n.id} id={`news.items.${i}`} pos={pos(`news.items.${i}`, { x: 40 + i * 388, y: H + 2520 })} onMove={p => moveEl(`news.items.${i}`, p)} minWidth={360} label={n.title}>
-            <div className="canvas-news-card">
-              <div className="canvas-news-date">{n.date}</div>
-              <h3>{n.title}</h3>
-              <p>{n.body}</p>
-            </div>
-          </CanvasEl>
-        ))}
-
-        {/* CONTACT BLOCK */}
-        <CanvasEl id="contact.block" pos={pos('contact.block', { x: 640, y: H + 3010 })} onMove={p => moveEl('contact.block', p)} minWidth={520} label="Kontakt">
-          <div className="canvas-contact-block">
-            <h2>{contact?.title}</h2>
-            {contact?.phone && <div className="canvas-citem"><IconPhone /> <a href={`tel:${contact.phone}`}>{contact.phone}</a></div>}
-            {contact?.email && <div className="canvas-citem"><IconMail /> <a href={`mailto:${contact.email}`}>{contact.email}</a></div>}
-            {contact?.address && <div className="canvas-citem"><IconLocation /> <span>{contact.address}</span></div>}
+            ))}
           </div>
-        </CanvasEl>
+        </div>
+      </section>
 
-        {/* FOOTER */}
-        <CanvasEl id="footer.block" pos={pos('footer.block', { x: 0, y: H + 3520 })} onMove={p => moveEl('footer.block', p)} minWidth={900} noPad label="Footer">
-          <footer className="site-footer" style={{ position: 'static', borderRadius: 8 }}>
-            <div className="site-footer-bottom">
-              <span>{footer?.brand} — {footer?.tagline}</span>
-              <div className="site-footer-links">
-                {(footer?.links ?? []).map((l, i) => <a key={i} href={safeHref(l.href)}>{l.label}</a>)}
-              </div>
-              <span>{footer?.copyright}</span>
-            </div>
-          </footer>
-        </CanvasEl>
-      </div>
-    )
-  }
-
-  // ── Normal / Edit render ─────────────────────────────────────────────────────
-
-  // First tab is always the "show all" tab, whatever its localized label is.
-  const allTab = products?.tabs?.[0] ?? ''
-  const filteredProducts = (activeTab === '' || activeTab === allTab)
-    ? (products?.items ?? [])
-    : (products?.items ?? []).filter(p => p.category === activeTab)
-
-  const heroStyle: React.CSSProperties = {
-    minHeight: heroHeight,
-    ...(hero.image ? { backgroundImage: `url(${hero.image})`, backgroundPosition: `${heroBgPos.x}% ${heroBgPos.y}%` } : {}),
-  }
-
-  return (
-    <Ctx.Provider value={ctx}>
-      <div style={vars} className="site" data-theme={theme}>
-        {editMode && <FormatToolbar anchorEl={focusedEl} />}
-
-        {/* ── NAV ──────────────────────────────────────────────────────── */}
-        <header className="site-nav">
-          <div className="site-nav-inner">
-            {nav.logo
-              ? <EImg field="nav.logo" src={nav.logo} alt={nav.brand} className="site-logo-img" />
-              : <E field="nav.brand" value={nav.brand} as="span" className="site-logo-text" />
-            }
-            <nav className="site-main-nav">
-              {nav.links.map((l, i) => (
-                <E key={i} field={`nav.links.${i}.label`} value={l.label} as="a" href={l.href} />
-              ))}
-            </nav>
-            <div className="site-nav-right">
-              <div className="site-nav-desktop">
-                <LanguageToggle />
-                <ThemeToggle theme={theme} setTheme={setTheme} />
-                {nav.phone && (
-                  <a href={`tel:${nav.phone}`} className="site-nav-phone">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6.29 6.29l.95-.96a2 2 0 0 1 2.1-.45c.908.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                    <E field="nav.phone" value={nav.phone} as="span" />
+      {/* PROJECTS */}
+      <section id="projects" style={{
+        padding: '100px 2rem',
+        background: 'rgba(0,245,196,0.02)',
+        borderTop: '1px solid rgba(255,255,255,0.05)',
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+      }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 — Projects</p>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
+          <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
+            every project is a proof of concept for a different research question. they all run on the same stack.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
+            {PROJECTS.map(p => (
+              <div key={p.name} style={{
+                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+                borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12,
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <div style={{ fontWeight: 900, fontSize: 17 }}>{p.name}</div>
+                    <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
+                  </div>
+                  <span style={{
+                    fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em',
+                    padding: '3px 8px', borderRadius: 20,
+                    border: '1px solid rgba(0,245,196,0.3)', color: TEAL, whiteSpace: 'nowrap',
+                  }}>{p.tag}</span>
+                </div>
+                <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
+                {p.link && (
+                  <a href={p.link} target="_blank" rel="noopener noreferrer"
+                    style={{ color: TEAL, fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
+                    View on GitHub &rarr;
                   </a>
                 )}
-                {nav.ctaLabel && (
-                  <E field="nav.ctaLabel" value={nav.ctaLabel} as="a" href={nav.ctaHref ?? '#'} className="site-nav-cta" />
-                )}
               </div>
-              {/* compact lang toggle — always visible on mobile, hidden on desktop */}
-              <div className="site-nav-lang-topbar">
-                <LanguageToggle />
-              </div>
-              <button className="site-nav-burger" aria-label={t.openMenu} aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
-                <IconMenu />
-              </button>
-            </div>
-          </div>
-        </header>
-
-        {/* ── MOBILE DRAWER (hamburger menu) ───────────────────────────── */}
-        <div className={`site-mobile-scrim ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(false)} />
-        <aside className={`site-mobile-drawer ${menuOpen ? 'open' : ''}`} aria-hidden={!menuOpen}>
-          <div className="site-mobile-drawer-top">
-            <span className="site-mobile-drawer-brand">{nav.brand}</span>
-            <button className="site-mobile-close" aria-label={t.closeMenu} onClick={() => setMenuOpen(false)}>
-              <IconClose />
-            </button>
-          </div>
-          <nav className="site-mobile-links">
-            {nav.links.map((l, i) => (
-              <a key={i} href={l.href} onClick={() => setMenuOpen(false)}>{l.label}</a>
             ))}
-          </nav>
-          <div className="site-mobile-actions">
-            <div>
-              <div className="site-mobile-theme-label">{t.colorScheme}</div>
-              <div className="site-mobile-theme-row">
-                <ThemeToggle theme={theme} setTheme={setTheme} />
+          </div>
+        </div>
+      </section>
+
+      {/* TRACK RECORD */}
+      <section id="track-record" style={{ padding: '100px 2rem' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 — Track Record</p>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>security research at scale</h2>
+          <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
+            static APK analysis. regulators BCC'd on every submission.
+            90-day coordinated disclosure. our framework, our timeline.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
+            {[
+              { n: '100', label: 'Apps audited' },
+              { n: '74', label: 'Companies notified' },
+              { n: '150+', label: 'Critical findings' },
+              { n: '10+', label: 'Regulators notified' },
+            ].map(s => (
+              <div key={s.label} style={{
+                background: 'rgba(0,245,196,0.05)', border: '1px solid rgba(0,245,196,0.15)',
+                borderRadius: 12, padding: '24px', textAlign: 'center',
+              }}>
+                <div style={{ fontSize: 36, fontWeight: 900, color: TEAL }}>{s.n}</div>
+                <div style={{ fontSize: 11, color: '#606080', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 6 }}>{s.label}</div>
               </div>
+            ))}
+          </div>
+          <div style={{
+            background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
+            borderRadius: 12, padding: '20px 24px',
+            fontFamily: 'monospace', fontSize: 12, color: '#a0a0b8', lineHeight: 1.8,
+          }}>
+            <span style={{ color: TEAL, fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
+            {' '}listed targets · GDPR Art. 5/8/9/13/25/32/44 · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at
+          </div>
+        </div>
+      </section>
+
+      {/* TIMELINE */}
+      <section id="timeline" style={{
+        padding: '100px 2rem',
+        background: 'rgba(255,255,255,0.01)',
+        borderTop: '1px solid rgba(255,255,255,0.05)',
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+      }}>
+        <div style={{ maxWidth: 900, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 — Timeline</p>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 64, textAlign: 'center' }}>our journey</h2>
+          <div style={{ position: 'relative' }}>
+            <div style={{
+              position: 'absolute', left: '50%', top: 0, bottom: 0, width: 2,
+              background: 'rgba(0,245,196,0.2)', transform: 'translateX(-50%)',
+            }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
+              {MILESTONES.map((m, i) => (
+                <div key={i} style={{
+                  display: 'flex',
+                  justifyContent: m.side === 'left' ? 'flex-start' : 'flex-end',
+                  position: 'relative',
+                }}>
+                  <div style={{
+                    position: 'absolute', left: '50%', top: 20,
+                    transform: 'translate(-50%, -50%)',
+                    width: 12, height: 12, borderRadius: '50%',
+                    background: TEAL, boxShadow: `0 0 12px ${TEAL}`, zIndex: 2,
+                  }} />
+                  <div style={{
+                    width: '44%',
+                    background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
+                    borderRadius: 12, padding: '16px 20px',
+                  }}>
+                    <div style={{ fontFamily: 'monospace', fontSize: 10, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 6 }}>{m.date}</div>
+                    <div style={{ fontWeight: 700, fontSize: 14 }}>{m.label}</div>
+                  </div>
+                </div>
+              ))}
             </div>
-            {nav.phone && (
-              <a href={`tel:${nav.phone}`} className="site-mobile-phone" onClick={() => setMenuOpen(false)}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6.29 6.29l.95-.96a2 2 0 0 1 2.1-.45c.908.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                {nav.phone}
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES */}
+      <section id="services" style={{ padding: '100px 2rem' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 — Services</p>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>work with us</h2>
+          <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
+            we are not a charitable institution. we are a regulated research institute that earns revenue.
+            full pricing at{' '}
+            <a href="https://ternlang.com/about" style={{ color: TEAL, textDecoration: 'none' }}>ternlang.com/about</a>.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20, marginBottom: 28 }}>
+            {[
+              { title: 'Security Audits & Disclosure', desc: 'static APK analysis · GDPR compliance · coordinated disclosure · regulatory filings · from €4,500', teal: true },
+              { title: 'Send us your APK', desc: 'we tear it apart. you get the full report before anyone else does. any Android APK, any company size.', teal: true },
+              { title: 'Web & App Development', desc: 'React + Rust backends · mobile · enterprise · built on our own stack · from €1,500', teal: false },
+              { title: 'Interdisciplinary Research', desc: 'market analysis · policy briefs · stakeholder interviews · AI governance consulting · from €2,500', teal: false },
+            ].map(s => (
+              <div key={s.title} style={{
+                background: s.teal ? 'rgba(0,245,196,0.05)' : 'rgba(255,255,255,0.03)',
+                border: `1px solid ${s.teal ? 'rgba(0,245,196,0.2)' : 'rgba(255,255,255,0.07)'}`,
+                borderRadius: 16, padding: '28px 24px',
+              }}>
+                <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 12 }}>{s.title}</div>
+                <div style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7 }}>{s.desc}</div>
+              </div>
+            ))}
+          </div>
+          <a href="https://ternlang.com/about" style={{
+            display: 'inline-block',
+            border: '1px solid rgba(0,245,196,0.4)', color: TEAL,
+            padding: '12px 28px', borderRadius: 8, fontWeight: 700, fontSize: 13,
+            textDecoration: 'none', letterSpacing: '0.04em',
+          }}>Full pricing &amp; scope &rarr; ternlang.com/about</a>
+        </div>
+      </section>
+
+      {/* CREDENTIALS */}
+      <section style={{
+        padding: '60px 2rem',
+        background: 'rgba(255,255,255,0.02)',
+        borderTop: '1px solid rgba(255,255,255,0.05)',
+      }}>
+        <div style={{ maxWidth: 900, margin: '0 auto' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', textAlign: 'center', marginBottom: 28 }}>
+            Regulated · Licensed · Registered
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14 }}>
+            {CREDENTIALS.map(c => (
+              <div key={c.label} style={{
+                background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+                borderRadius: 10, padding: '16px', textAlign: 'center',
+              }}>
+                <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
+                <div style={{ fontFamily: 'monospace', fontSize: 12, fontWeight: 700, color: '#e8e8f0', marginBottom: 4 }}>{c.value}</div>
+                <div style={{ fontSize: 10, color: '#505068' }}>{c.sub}</div>
+              </div>
+            ))}
+          </div>
+          <p style={{ textAlign: 'center', fontSize: 12, color: '#505068', fontFamily: 'monospace', marginTop: 24 }}>
+            regulated not-for-profit · ≥90% surplus reinvested into research · surplus not distributed to members
+          </p>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section id="contact" style={{ padding: '100px 2rem' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>06 — Contact</p>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>connect</h2>
+          <p style={{ color: '#a0a0b8', marginBottom: 48 }}>reach us for research collaboration, security disclosures, or service inquiries.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 48 }}>
+            {CONTACT_CARDS.map(c => (
+              <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
+                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+                borderRadius: 12, padding: '24px 20px', textDecoration: 'none', display: 'block',
+                transition: 'border-color 0.2s',
+              }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}>
+                <div style={{ fontSize: 10, fontFamily: 'monospace', color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{c.label}</div>
+                <div style={{ color: TEAL, fontWeight: 600, fontSize: 13 }}>{c.value}</div>
               </a>
-            )}
-            {nav.ctaLabel && (
-              <a href={nav.ctaHref ?? '#'} className="site-mobile-cta" onClick={() => setMenuOpen(false)}>{nav.ctaLabel}</a>
-            )}
-          </div>
-        </aside>
-
-        {/* ── HERO ─────────────────────────────────────────────────────── */}
-        <section
-          className="site-hero"
-          style={heroStyle}
-          ref={heroRef as React.RefObject<HTMLElement>}
-          onMouseDown={e => {
-            if (!editMode) return
-            // don't hijack the drag when the user is selecting/clicking editable
-            // text, buttons or links — only drag from the bare hero background
-            const el = e.target as HTMLElement
-            if (el.isContentEditable || el.closest('.editable-text, .editable-img-wrap, button, a')) return
-            heroDragRef.current = { startX: e.clientX, startY: e.clientY, startBgX: heroBgPos.x, startBgY: heroBgPos.y }
-          }}
-        >
-          {editMode && (
-            <div className="site-hero-controls">
-              <button className="site-hero-swap-btn" onClick={() => onImageClick?.('hero.image')}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Bild ändern
-              </button>
-            </div>
-          )}
-          <div className="site-hero-inner">
-            {hero.tag && (
-              <div className="site-hero-tag-wrap">
-                <E field="hero.tag" value={hero.tag} as="div" className="site-hero-tag" />
-              </div>
-            )}
-            <E field="hero.headline" value={hero.headline} as="h1" className="site-hero-h1" />
-            <E field="hero.subheadline" value={hero.subheadline} as="p" className="site-hero-sub" />
-            <div className="site-hero-btns">
-              <E field="hero.ctaLabel" value={hero.ctaLabel} as="a" href={hero.ctaHref} className="site-btn-lime-lg" />
-              {hero.ctaSecLabel && <E field="hero.ctaSecLabel" value={hero.ctaSecLabel} as="a" href={hero.ctaSecHref ?? '#'} className="site-btn-ghost-lg" />}
-            </div>
-          </div>
-          {editMode && (
-            <div className="hero-resize-handle" onMouseDown={e => { e.preventDefault(); heightDragRef.current = { startY: e.clientY, startH: heroHeight } }} />
-          )}
-        </section>
-
-        {/* ── TRUST STRIP ──────────────────────────────────────────────── */}
-        {!hiddenSections.includes('trust') && (trust?.items?.length ?? 0) > 0 && (
-          <div className="site-trust" id="trust">
-            {trust.items.map((t, ti) => (
-              <div key={t.id} className="site-trust-item">
-                <TrustIcon icon={t.icon} />
-                <span>
-                  <E field={`trust.items.${ti}.bold`} value={t.bold} as="strong" />
-                  {' '}<E field={`trust.items.${ti}.text`} value={t.text} as="span" />
-                </span>
-              </div>
             ))}
           </div>
-        )}
+          <p style={{ fontSize: 12, color: '#505068', fontFamily: 'monospace' }}>
+            Elisabethinergasse 25 · 8020 Graz · Austria · rfi-irfos.com · rfi-irfos.at
+          </p>
+        </div>
+      </section>
 
-        {/* ── ABOUT ────────────────────────────────────────────────────── */}
-        {content.about && (
-          <section className="site-about" id="about">
-            <div className={`site-about-inner${content.about.photo ? '' : ' site-about-inner--no-photo'}`}>
-              {content.about.photo && (
-                <div className="site-about-photo-wrap">
-                  <EImg field="about.photo" src={content.about.photo} alt={content.about.headline} className="site-about-photo" />
-                </div>
-              )}
-              <div className="site-about-content">
-                {content.about.eyebrow && <div className="site-about-eyebrow" data-cid="about.eyebrow">{content.about.eyebrow}</div>}
-                <E field="about.headline" value={content.about.headline} as="h2" className="site-about-headline" />
-                <E field="about.bio" value={content.about.bio} as="p" className="site-about-bio" />
-                {(content.about.stats?.length ?? 0) > 0 && (
-                  <div className="site-about-stats">
-                    {content.about.stats!.map((s, i) => (
-                      <div key={i} className="site-about-stat">
-                        <strong data-cid={`about.stats.${i}.value`}>{s.value}</strong>
-                        <span data-cid={`about.stats.${i}.label`}>{s.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* ── CATEGORIES / DRILL-DOWN BROWSER ──────────────────────────── */}
-        {!hiddenSections.includes('categories') && (categories?.items?.length ?? 0) > 0 && (() => {
-          // editMode: plain editable grid. Live: tier1 audiences -> tier2 that
-          // audience's sessions (back + breadcrumb) -> tier3 detail modal.
-          const browseCat = browseCatIdx != null ? categories.items[browseCatIdx] : null
-          const browseSessions = browseCat
-            ? (products?.items ?? []).filter(p => !browseCat.tab || p.category === browseCat.tab)
-            : []
-          return (
-            <section className="site-section site-categories site-browser" id="categories">
-              {(editMode || browseCatIdx == null) ? (
-                <>
-                  {categories.eyebrow && <div className="site-eyebrow">{categories.eyebrow}</div>}
-                  <E field="categories.title" value={categories.title} as="h2" className="site-section-title" />
-                  <div className="site-cat-grid">
-                    {categories.items.map((c, i) => (
-                      <div
-                        key={c.id}
-                        className={`site-cat-card ${!editMode ? 'clickable' : ''}`}
-                        {...(!editMode ? {
-                          role: 'button',
-                          tabIndex: 0,
-                          onClick: () => setBrowseCatIdx(i),
-                          onKeyDown: (e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setBrowseCatIdx(i) } },
-                        } : {})}
-                      >
-                        <EImg field={`categories.items.${i}.image`} src={c.image} alt={c.name} className="site-cat-img" />
-                        <div className="site-cat-overlay">
-                          <E field={`categories.items.${i}.name`} value={c.name} as="div" className="site-cat-name" />
-                          <E field={`categories.items.${i}.sub`} value={c.sub} as="div" className="site-cat-sub" />
-                          {!editMode && <span className="site-cat-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="site-browser-header">
-                    <button className="site-browser-back" onClick={() => setBrowseCatIdx(null)}>
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-                      {t.back}
-                    </button>
-                    <h2 className="site-browser-title">{browseCat?.name}</h2>
-                    <nav className="site-browser-breadcrumb" aria-label="Breadcrumb">
-                      <button onClick={() => setBrowseCatIdx(null)}>{categories.title}</button>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                      <span>{browseCat?.name}</span>
-                    </nav>
-                  </div>
-                  <div className="site-product-grid">
-                    {browseSessions.map(p => (
-                      <div key={p.id} className="site-pcard clickable" role="button" tabIndex={0}
-                        onClick={() => setModalProduct(p)}
-                        onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setModalProduct(p) } }}>
-                        <div className="site-pcard-img">
-                          {p.badge && <div className="site-pcard-badge">{p.badge}</div>}
-                          {p.image ? <img src={p.image} alt={p.name} className="site-pcard-photo" /> : null}
-                        </div>
-                        <div className="site-pcard-body">
-                          <div className="site-pcard-brand">{!editMode && <CategoryIcon category={p.category} />}{p.category}</div>
-                          <div className="site-pcard-name" dangerouslySetInnerHTML={{ __html: p.name }} />
-                          {(p.specs?.length ?? 0) > 0 && (
-                            <div className="site-pcard-specs">{p.specs!.slice(0, 3).map((s, si) => <span key={si} className="site-spec">{s}</span>)}</div>
-                          )}
-                          <div className="site-pcard-desc" dangerouslySetInnerHTML={{ __html: p.description }} />
-                          <div className="site-pcard-foot">
-                            <div className="site-pcard-price" dangerouslySetInnerHTML={{ __html: p.price }} />
-                            <a href={`mailto:${contact?.email ?? ''}`} className="site-pcard-cta" onClick={e => e.stopPropagation()}>{t.book}</a>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                    {browseSessions.length === 0 && <p className="site-browser-empty">—</p>}
-                  </div>
-                </>
-              )}
-            </section>
-          )
-        })()}
-
-        {/* ── PRODUCTS ─────────────────────────────────────────────────── */}
-        {!hiddenSections.includes('products') && (products?.items?.length ?? 0) > 0 && (
-          <section className="site-section site-products" id="products">
-            <div className="site-products-top">
-              <E field="products.title" value={products.title} as="h2" className="site-products-h2" />
-              {!editMode && (products?.tabs?.length ?? 0) > 1 && (
-                <div className="site-tabs">
-                  {products.tabs.map((tab, ti) => (
-                    <button
-                      key={tab}
-                      className={`site-tab-btn ${activeTab === tab || (activeTab === '' && ti === 0) ? 'active' : ''}`}
-                      onClick={() => setActiveTab(tab)}
-                    >{tab}</button>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="site-product-grid">
-              {(editMode ? products.items : filteredProducts).map((p, i) => (
-                <div
-                  key={p.id}
-                  className={`site-pcard ${!editMode ? 'clickable' : ''}`}
-                  {...(!editMode ? {
-                    role: 'button',
-                    tabIndex: 0,
-                    onClick: () => setModalProduct(p),
-                    onKeyDown: (e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setModalProduct(p) } },
-                  } : {})}
-                >
-                  <div className="site-pcard-img">
-                    {p.badge && <div className="site-pcard-badge">{p.badge}</div>}
-                    <EImg field={`products.items.${i}.image`} src={p.image} alt={p.name} className="site-pcard-photo" />
-                  </div>
-                  <div className="site-pcard-body">
-                    <div className="site-pcard-brand">{!editMode && <CategoryIcon category={p.category} />}{p.category}</div>
-                    <E field={`products.items.${i}.name`} value={p.name} as="div" className="site-pcard-name" />
-                    {(p.specs?.length ?? 0) > 0 && (
-                      <div className="site-pcard-specs">
-                        {p.specs!.map((s, si) => <span key={si} className="site-spec">{s}</span>)}
-                      </div>
-                    )}
-                    <E field={`products.items.${i}.description`} value={p.description} as="div" className="site-pcard-desc" />
-                    <div className="site-pcard-foot">
-                      <E field={`products.items.${i}.price`} value={p.price} as="div" className="site-pcard-price" />
-                      <a href={`mailto:${contact?.email ?? ''}`} className="site-pcard-cta" onClick={e => e.stopPropagation()}>{t.book}</a>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ── USP ──────────────────────────────────────────────────────── */}
-        {!hiddenSections.includes('usp') && (usp?.items?.length ?? 0) > 0 && (
-          <section className="site-section site-section-alt site-usp" id="usp">
-            {usp.eyebrow && <div className="site-eyebrow">{usp.eyebrow}</div>}
-            <E field="usp.title" value={usp.title} as="h2" className="site-section-title" />
-            <div className="site-usp-grid">
-              {usp.items.map((u, i) => (
-                <div key={u.id} className={`site-usp-card ${i % 2 === 1 ? 'accent' : ''}`}>
-                  <E field={`usp.items.${i}.title`} value={u.title} as="h3" />
-                  <E field={`usp.items.${i}.description`} value={u.description} as="p" />
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ── REVIEWS ──────────────────────────────────────────────────── */}
-        <ReviewsSection editMode={editMode} />
-
-        {/* ── NEWS ─────────────────────────────────────────────────────── */}
-        {!hiddenSections.includes('news') && (news?.items?.length ?? 0) > 0 && (
-          <section className="site-section site-news" id="news">
-            {news.eyebrow && <div className="site-eyebrow">{news.eyebrow}</div>}
-            <E field="news.title" value={news.title} as="h2" className="site-section-title" />
-            <div className="site-news-grid">
-              {news.items.map((n, i) => (
-                <div
-                  key={n.id}
-                  className={`site-news-card ${!editMode ? 'clickable' : ''}`}
-                  {...(!editMode ? {
-                    role: 'button',
-                    tabIndex: 0,
-                    onClick: () => setModalArticle(n),
-                    onKeyDown: (e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setModalArticle(n) } },
-                  } : {})}
-                >
-                  {n.image && <img src={n.image} alt={n.title} className="site-news-img" />}
-                  <div className="site-news-body">
-                    <div className="site-news-date">{new Date(n.date).toLocaleDateString('de-AT', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
-                    <E field={`news.items.${i}.title`} value={n.title} as="h3" className="site-news-title" />
-                    <E field={`news.items.${i}.body`} value={n.body} as="p" className="site-news-text" />
-                    {!editMode && <span className="site-news-read-more">{t.readMore} →</span>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ── LOCATION ─────────────────────────────────────────────────── */}
-        {!hiddenSections.includes('location') && (
-        <section className="site-location" id="location">
-          {contact?.mapSrc && (
-            <div className="site-map">
-              <iframe src={contact.mapSrc} allowFullScreen loading="lazy" title="Standort" />
-            </div>
-          )}
-          <div className="site-location-info">
-            {contact?.photo && (
-              <div className="site-contact-photo">
-                <EImg field="contact.photo" src={contact.photo} alt="Niki" />
-              </div>
-            )}
-            <E field="contact.title" value={contact?.title ?? ''} as="h2" className="site-location-h2" />
-            {contact?.subtitle && <E field="contact.subtitle" value={contact.subtitle} as="p" className="site-location-sub" />}
-            <div className="site-cinfo-list">
-              {contact?.phone && (
-                <div className="site-cinfo-item">
-                  <IconPhone />
-                  <E field="contact.phone" value={contact.phone} as="a" href={`tel:${contact.phone}`} />
-                </div>
-              )}
-              {contact?.email && (
-                <div className="site-cinfo-item">
-                  <IconMail />
-                  <E field="contact.email" value={contact.email} as="a" href={`mailto:${contact.email}`} />
-                </div>
-              )}
-              {contact?.address && (
-                <div className="site-cinfo-item">
-                  <IconLocation />
-                  <E field="contact.address" value={contact.address} as="span" />
-                </div>
-              )}
-            </div>
-            {contact?.formEnabled && !editMode ? (
-              <ContactForm email={contact?.email ?? ''} />
-            ) : (
-              <a href={`mailto:${contact?.email ?? ''}`} className="site-btn-lime-solid">{t.send}</a>
-            )}
-          </div>
-        </section>
-        )}
-
-        {/* ── PRICING ──────────────────────────────────────────────────── */}
-        {pricing?.body && (
-          <section className="site-section site-pricing" id="pricing" data-cid="pricing.title">
-            <h2 className="site-section-title">{pricing.title}</h2>
-            <div className="site-pricing-body">
-              {pricing.body.split('\n\n').map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ── CERTIFICATES ─────────────────────────────────────────────── */}
-        {(certificates?.items?.length ?? 0) > 0 && (
-          <section className="site-section site-certificates" id="certificates">
-            {certificates!.title && <h2 className="site-section-title">{certificates!.title}</h2>}
-            <div className="site-cert-grid">
-              {certificates!.items.map((cert: CertificateItem) => (
-                <div key={cert.id} className="site-cert-card">
-                  <div className="site-cert-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                      <polyline points="14 2 14 8 20 8"/>
-                      <circle cx="12" cy="14" r="3"/>
-                      <path d="M9.5 17.5 9 20l3-1 3 1-.5-2.5"/>
-                    </svg>
-                  </div>
-                  <div className="site-cert-info">
-                    <strong className="site-cert-title">{cert.title}</strong>
-                    {cert.subtitle && <span className="site-cert-subtitle">{cert.subtitle}</span>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ── FOOTER ───────────────────────────────────────────────────── */}
-        {/* ── MEMBER PORTAL / SSP CTA (optional section) ──────────────── */}
-        {content.ssp?.title && (
-          <section className="site-ssp-cta" id="ssp" data-cid="ssp.title">
-            <div className="site-ssp-inner">
-              {content.ssp.badge && <span className="site-ssp-badge" data-cid="ssp.badge">{content.ssp.badge}</span>}
-              <h2 className="site-ssp-title" data-cid="ssp.title">{content.ssp.title}</h2>
-              {content.ssp.sub && <p className="site-ssp-sub" data-cid="ssp.sub">{content.ssp.sub}</p>}
-              {content.ssp.button && (
-                <button className="site-btn-ssp" data-cid="ssp.button" onClick={() => {}}>
-                  {content.ssp.button}
-                </button>
-              )}
-            </div>
-          </section>
-        )}
-
-        <footer className="site-footer">
-          {(footer?.cols?.length ?? 0) > 0 && (
-            <div className="site-footer-grid">
-              <div className="site-footer-brand">
-                {nav.logo && <img src={nav.logo} alt={footer?.brand} className="site-footer-logo" />}
-                <E field="footer.brand" value={footer?.brand ?? ''} as="strong" className="site-footer-brand-name" />
-                {footer?.description && <E field="footer.description" value={footer.description} as="p" className="site-footer-brand-desc" />}
-              </div>
-              {footer.cols.map((col, ci) => (
-                <div key={ci} className="site-footer-col">
-                  <h4>{col.title}</h4>
-                  {col.links.map((l, li) => <a key={li} href={safeHref(l.href)}>{l.label}</a>)}
-                </div>
-              ))}
-            </div>
-          )}
-          <div className="site-footer-bottom">
-            <E field="footer.copyright" value={footer?.copyright ?? ''} as="span" />
-            <div className="site-footer-links">
-              {(footer?.links ?? []).map((l, i) => (
-                <E key={i} field={`footer.links.${i}.label`} value={l.label} as="a" href={safeHref(l.href)} />
-              ))}
-            </div>
-          </div>
-        </footer>
-
-        {/* ── SESSION DETAIL MODAL (tier 3) ────────────────────────────── */}
-        {modalProduct && !editMode && (
-          <div className="site-modal-scrim" onClick={() => setModalProduct(null)} role="dialog" aria-modal="true" aria-label={modalProduct.name}>
-            <div className="site-modal" onClick={e => e.stopPropagation()}>
-              <button className="site-modal-close" aria-label={t.close} onClick={() => setModalProduct(null)}><IconClose /></button>
-              {(() => {
-                const allImages = [modalProduct.image, ...(modalProduct.images ?? [])].filter(Boolean) as string[]
-                const idx = Math.min(modalGalleryIdx, allImages.length - 1)
-                return allImages.length > 0 ? (
-                  <div className="site-modal-gallery">
-                    <div className="site-modal-img"><img src={allImages[idx]} alt={modalProduct.name} /></div>
-                    {allImages.length > 1 && (
-                      <div className="site-modal-thumbs">
-                        {allImages.map((src, gi) => (
-                          <button key={gi} className={`site-modal-thumb ${idx === gi ? 'active' : ''}`} onClick={() => setModalGalleryIdx(gi)}>
-                            <img src={src} alt="" />
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : null
-              })()}
-              <div className="site-modal-body">
-                {modalProduct.category && <div className="site-modal-brand">{modalProduct.category}</div>}
-                <h3 className="site-modal-title" dangerouslySetInnerHTML={{ __html: modalProduct.name }} />
-                {(modalProduct.specs?.length ?? 0) > 0 && (
-                  <>
-                    <div className="site-modal-label">{t.whatsIncluded}</div>
-                    <div className="site-modal-specs">
-                      {modalProduct.specs!.map((s, si) => <span key={si} className="site-spec">{s}</span>)}
-                    </div>
-                  </>
-                )}
-                <p className="site-modal-desc" dangerouslySetInnerHTML={{ __html: modalProduct.description }} />
-                <div className="site-modal-foot">
-                  <div className="site-modal-price" dangerouslySetInnerHTML={{ __html: modalProduct.price }} />
-                  <a href={`mailto:${contact?.email ?? ''}?subject=${encodeURIComponent(`${t.mailSubject}`)}`} className="site-btn-lime-lg" onClick={() => setModalProduct(null)}>{t.bookTrial}</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── ARTICLE MODAL ────────────────────────────────────────────── */}
-        {modalArticle && !editMode && (
-          <div className="site-modal-scrim" onClick={() => setModalArticle(null)} role="dialog" aria-modal="true" aria-label={modalArticle.title}>
-            <div className="site-modal site-modal-article" onClick={e => e.stopPropagation()}>
-              <button className="site-modal-close" aria-label={t.close} onClick={() => setModalArticle(null)}><IconClose /></button>
-              {modalArticle.image && (
-                <div className="site-modal-img"><img src={modalArticle.image} alt={modalArticle.title} /></div>
-              )}
-              <div className="site-modal-body">
-                <div className="site-news-date">{new Date(modalArticle.date).toLocaleDateString('de-AT', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
-                <h3 className="site-modal-title" dangerouslySetInnerHTML={{ __html: modalArticle.title }} />
-                <div className="site-modal-article-body" dangerouslySetInnerHTML={{ __html: modalArticle.body }} />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── WHATSAPP FLOAT ───────────────────────────────────────────── */}
-        {whatsapp?.enabled && !editMode && (
-          <WhatsAppButton number={whatsapp.number} message={whatsapp.message} />
-        )}
-      </div>
-    </Ctx.Provider>
+      {/* FOOTER */}
+      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '32px 2rem', textAlign: 'center' }}>
+        <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.1em' }}>
+          &copy; 2026 RFI-IRFOS · Graz, Austria · ZVR 1015608684 · GISA 39261441 ·{' '}
+          <a href="https://ternlang.com" style={{ color: '#606080', textDecoration: 'none' }}>ternlang.com</a>{' '}
+          · <a href="/impressum" style={{ color: '#606080', textDecoration: 'none' }}>Impressum</a>
+        </p>
+      </footer>
+    </div>
   )
 }
