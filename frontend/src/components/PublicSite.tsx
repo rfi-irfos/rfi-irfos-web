@@ -406,23 +406,6 @@ export function PublicSite() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('rfi-visible')
-          } else if (entry.boundingClientRect.top > 0) {
-            entry.target.classList.remove('rfi-visible')
-          }
-        })
-      },
-      { threshold: 0.08 },
-    )
-    document.querySelectorAll('.rfi-animate').forEach(el => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
-
   async function submitForm(e: React.FormEvent) {
     e.preventDefault()
     setFormState('sending')
@@ -608,13 +591,13 @@ export function PublicSite() {
 
       {/* RESEARCH AREAS */}
       <section id="research" style={{ padding: '100px 2rem', background: 'var(--bg2)', borderTop: '1px solid var(--border2)' }}>
-        <div className="rfi-animate rfi-from-left" style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>01 - Research Areas</p>
-          <h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Areas of investigation</h2>
-          <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <Reveal from="left"><p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>01 - Research Areas</p></Reveal>
+          <Reveal from="bottom"><h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Areas of investigation</h2></Reveal>
+          <Reveal from="right"><p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
             The same people who train the model write the regulatory analysis.
             One team. Not multiple departments coordinating across silos.
-          </p>
+          </p></Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
             {RESEARCH_AREAS.map((a, i) => (
               <Reveal key={a.title} delay={i} from="bottom">
@@ -665,13 +648,13 @@ export function PublicSite() {
 
       {/* PROJECTS */}
       <section id="projects" style={{ padding: '100px 2rem', background: 'var(--bg)', borderTop: '1px solid var(--border2)' }}>
-        <div className="rfi-animate rfi-from-right" style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>02 - Projects</p>
-          <h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>What we build</h2>
-          <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <Reveal from="right"><p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>02 - Projects</p></Reveal>
+          <Reveal from="bottom"><h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>What we build</h2></Reveal>
+          <Reveal from="left"><p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
             Each project is a proof of concept for a different research question.
             All of them run on the same stack.
-          </p>
+          </p></Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
             {PROJECTS.map((p, i) => (
               <Reveal key={p.name} delay={i * 0.4} from={i % 2 === 0 ? 'left' : 'right'}>
@@ -703,13 +686,13 @@ export function PublicSite() {
 
       {/* TRACK RECORD */}
       <section id="track-record" style={{ padding: '100px 2rem', background: 'var(--bg2)', borderTop: '1px solid var(--border2)' }}>
-        <div className="rfi-animate rfi-from-left" style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>03 - Track Record</p>
-          <h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Security research at scale</h2>
-          <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <Reveal from="left"><p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>03 - Track Record</p></Reveal>
+          <Reveal from="bottom"><h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Security research at scale</h2></Reveal>
+          <Reveal from="right"><p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
             Decompilation and root-level comparison of code files. Regulators in BCC on every submission.
             90-day coordinated disclosure. Our framework, our timeline.
-          </p>
+          </p></Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 28 }}>
             {[
               { n: '103',  label: 'Apps audited' },
@@ -777,8 +760,8 @@ export function PublicSite() {
       {/* TIMELINE */}
       <section id="timeline" style={{ padding: '100px 2rem', background: 'var(--bg)', borderTop: '1px solid var(--border2)' }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <p className="rfi-animate rfi-from-up" style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10, textAlign: 'center' }}>04 - Timeline</p>
-          <h2 className="rfi-animate rfi-from-up" style={{ fontSize: 34, fontWeight: 900, marginBottom: 64, textAlign: 'center', color: 'var(--text)' }}>2020 to now</h2>
+          <Reveal from="bottom"><p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10, textAlign: 'center' }}>04 - Timeline</p></Reveal>
+          <Reveal from="bottom"><h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 64, textAlign: 'center', color: 'var(--text)' }}>2020 to now</h2></Reveal>
           <div style={{ position: 'relative' }}>
             <div style={{
               position: 'absolute', left: '50%', top: 0, bottom: 0, width: 1,
@@ -795,14 +778,14 @@ export function PublicSite() {
 
       {/* PRICING */}
       <section id="pricing" style={{ padding: '100px 2rem', background: 'var(--bg2)', borderTop: '1px solid var(--border2)' }}>
-        <div className="rfi-animate rfi-from-right" style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>05 - Pricing</p>
-          <h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Transparent pricing</h2>
-          <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <Reveal from="right"><p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>05 - Pricing</p></Reveal>
+          <Reveal from="bottom"><h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Transparent pricing</h2></Reveal>
+          <Reveal from="left"><p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
             Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.
-          </p>
+          </p></Reveal>
 
-          <p style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 16 }}>Security Audits &amp; Responsible Disclosure</p>
+          <Reveal from="bottom"><p style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 16 }}>Security Audits &amp; Responsible Disclosure</p></Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 44 }}>
             {[
               { tier: 'Public',                price: 'free',     desc: 'Full public disclosure. Findings published after 90-day coordinated embargo. No NDA.', highlight: false },
@@ -811,19 +794,22 @@ export function PublicSite() {
               { tier: 'Enterprise NDA',        price: '18,000',   desc: 'Extended embargo + dedicated remediation support + legal evidence package.', highlight: false },
               { tier: 'Critical Infrastructure', price: '75,000', desc: 'NDA + legal + PR containment strategy + regulator liaison. Full-scope package.', highlight: true },
               { tier: 'IoB / Art. 9',          price: '150,000',  desc: 'Internet of Bodies / wearables with Art. 9 GDPR health data. Elevated risk premium.', highlight: true },
-            ].map(t => (
-              <div key={t.tier} style={{
+            ].map((t, i) => (
+              <Reveal key={t.tier} delay={i * 0.25} from={i % 3 === 0 ? 'left' : i % 3 === 1 ? 'bottom' : 'right'}>
+              <div style={{
                 background: t.highlight ? 'var(--bg-accent)' : 'var(--bg)',
                 border: `1px solid ${t.highlight ? 'var(--accent-border)' : 'var(--border)'}`,
-                borderRadius: 6, padding: '22px 18px',
+                borderRadius: 6, padding: '22px 18px', height: '100%',
               }}>
                 <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
                 <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--accent)', marginBottom: 10, fontFamily: 'monospace' }}>{t.price === 'free' ? 'free' : `€${t.price}`}</div>
                 <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.75 }}>{t.desc}</div>
               </div>
+              </Reveal>
             ))}
           </div>
 
+          <Reveal from="scale">
           <div style={{
             background: 'var(--bg)', border: '1px solid var(--border)',
             borderRadius: 6, padding: '20px 26px', marginBottom: 44,
@@ -835,22 +821,25 @@ export function PublicSite() {
             </div>
             <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--accent)', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>&#8364;1,500 / mo</div>
           </div>
+          </Reveal>
 
-          <p style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 16 }}>Web Development &amp; Research</p>
+          <Reveal from="bottom"><p style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 16 }}>Web Development &amp; Research</p></Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
             {[
               { tier: 'Landing Page',    price: '1,500',  desc: 'Single-page site. React + our template. Delivered in 48h.' },
               { tier: 'Full Site',       price: '4,500',  desc: 'Multi-page + CMS admin + contact form + analytics. 2-week delivery.' },
               { tier: 'Enterprise',      price: '18,000', desc: 'Custom Rust backend + auth + integrations. Full scope.' },
               { tier: 'Research Report', price: '2,500',  desc: 'Market analysis / policy brief / stakeholder interviews. 10-page minimum.' },
-            ].map(t => (
-              <div key={t.tier} style={{
-                background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, padding: '22px 18px',
+            ].map((t, i) => (
+              <Reveal key={t.tier} delay={i * 0.25} from={i % 2 === 0 ? 'left' : 'right'}>
+              <div style={{
+                background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, padding: '22px 18px', height: '100%',
               }}>
                 <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
                 <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--accent)', marginBottom: 10, fontFamily: 'monospace' }}>&#8364;{t.price}</div>
                 <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.75 }}>{t.desc}</div>
               </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -858,72 +847,78 @@ export function PublicSite() {
 
       {/* SERVICES */}
       <section id="services" style={{ padding: '100px 2rem', background: 'var(--bg)', borderTop: '1px solid var(--border2)' }}>
-        <div className="rfi-animate rfi-from-left" style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>06 - Services</p>
-          <h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Work with us</h2>
-          <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <Reveal from="left"><p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>06 - Services</p></Reveal>
+          <Reveal from="bottom"><h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Work with us</h2></Reveal>
+          <Reveal from="right"><p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 520, lineHeight: 1.75, fontSize: 15 }}>
             We are a regulated research institute that earns revenue.
             Not a charitable institution. Not a bug bounty shop.
-          </p>
+          </p></Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, marginBottom: 24 }}>
             {[
               { title: 'Security Audits',  desc: 'Root-level comparison of your code files. GDPR compliance review. Coordinated disclosure with regulators in BCC. From EUR 4,500.', accent: true },
               { title: 'Send us your APK', desc: 'We tear it apart. You get the full report before anyone else does. Any Android APK, any company size. First R1 always free.', accent: true },
               { title: 'Web Development', desc: 'React + Rust backends. Mobile. Enterprise. Built on our own stack. From EUR 1,500.', accent: false },
               { title: 'Research Reports', desc: 'Market analysis, policy briefs, stakeholder interviews, AI governance consulting. From EUR 2,500.', accent: false },
-            ].map(s => (
-              <div key={s.title} style={{
+            ].map((s, i) => (
+              <Reveal key={s.title} delay={i * 0.3} from={i % 2 === 0 ? 'left' : 'right'}>
+              <div style={{
                 background: s.accent ? 'var(--bg-accent)' : 'var(--bg2)',
                 border: `1px solid ${s.accent ? 'var(--accent-border)' : 'var(--border)'}`,
-                borderRadius: 6, padding: '24px 22px',
+                borderRadius: 6, padding: '24px 22px', height: '100%',
               }}>
                 <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 12, color: 'var(--text)' }}>{s.title}</div>
                 <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.75 }}>{s.desc}</div>
               </div>
+              </Reveal>
             ))}
           </div>
+          <Reveal from="bottom">
           <a href="mailto:contact@ternlang.com" style={{
             display: 'inline-block',
             border: '1px solid var(--accent-border)', color: 'var(--accent-text)',
             padding: '11px 24px', borderRadius: 4, fontWeight: 700, fontSize: 13,
             textDecoration: 'none', letterSpacing: '0.04em',
           }}>Get in touch &rarr;</a>
+          </Reveal>
         </div>
       </section>
 
       {/* CREDENTIALS */}
       <section style={{ padding: '60px 2rem', background: 'var(--bg2)', borderTop: '1px solid var(--border2)' }}>
-        <div className="rfi-animate rfi-from-up" style={{ maxWidth: 900, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', textAlign: 'center', marginBottom: 28 }}>
+        <div style={{ maxWidth: 900, margin: '0 auto' }}>
+          <Reveal from="bottom"><p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', textAlign: 'center', marginBottom: 28 }}>
             Regulated · Licensed · Registered
-          </p>
+          </p></Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 10 }}>
-            {CREDENTIALS.map(c => (
-              <div key={c.label} style={{
+            {CREDENTIALS.map((c, i) => (
+              <Reveal key={c.label} delay={i * 0.2} from={i % 2 === 0 ? 'left' : 'right'}>
+              <div style={{
                 background: 'var(--bg)', border: '1px solid var(--border)',
-                borderRadius: 6, padding: '16px', textAlign: 'center',
+                borderRadius: 6, padding: '16px', textAlign: 'center', height: '100%',
               }}>
                 <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
                 <div style={{ fontFamily: 'monospace', fontSize: 12, fontWeight: 700, color: 'var(--text)', marginBottom: 4 }}>{c.value}</div>
                 <div style={{ fontSize: 10, color: 'var(--text3)' }}>{c.sub}</div>
               </div>
+              </Reveal>
             ))}
           </div>
-          <p style={{ textAlign: 'center', fontSize: 11, color: 'var(--text3)', fontFamily: 'monospace', marginTop: 22 }}>
+          <Reveal from="bottom"><p style={{ textAlign: 'center', fontSize: 11, color: 'var(--text3)', fontFamily: 'monospace', marginTop: 22 }}>
             regulated not-for-profit · 90%+ surplus reinvested into research · surplus not distributed to members
-          </p>
+          </p></Reveal>
         </div>
       </section>
 
       {/* CONTACT */}
       <section id="contact" style={{ padding: '100px 2rem', background: 'var(--bg)', borderTop: '1px solid var(--border2)' }}>
-        <div className="rfi-animate rfi-from-up" style={{ maxWidth: 860, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>07 - Contact</p>
-          <h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Connect</h2>
-          <p style={{ color: 'var(--text2)', marginBottom: 48, fontSize: 15, lineHeight: 1.75 }}>Research collaboration, security disclosures, service inquiries.</p>
+        <div style={{ maxWidth: 860, margin: '0 auto' }}>
+          <Reveal from="bottom"><p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 10 }}>07 - Contact</p></Reveal>
+          <Reveal from="bottom"><h2 style={{ fontSize: 34, fontWeight: 900, marginBottom: 14, color: 'var(--text)' }}>Connect</h2></Reveal>
+          <Reveal from="bottom"><p style={{ color: 'var(--text2)', marginBottom: 48, fontSize: 15, lineHeight: 1.75 }}>Research collaboration, security disclosures, service inquiries.</p></Reveal>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
-            <form onSubmit={submitForm} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <Reveal from="left"><form onSubmit={submitForm} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {(['name', 'email'] as const).map(f => (
                 <input key={f} type={f === 'email' ? 'email' : 'text'} required placeholder={f === 'name' ? 'Name' : 'Email'}
                   value={form[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))}
@@ -954,9 +949,9 @@ export function PublicSite() {
               {formState === 'err' && (
                 <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>Something went wrong. Email us directly at contact@ternlang.com</p>
               )}
-            </form>
+            </form></Reveal>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <Reveal from="right"><div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {CONTACT_CARDS.map(c => (
                 <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
                   background: 'var(--bg2)', border: '1px solid var(--border)',
@@ -972,7 +967,7 @@ export function PublicSite() {
               <p style={{ fontSize: 11, color: 'var(--text3)', fontFamily: 'monospace', marginTop: 6, lineHeight: 1.9 }}>
                 Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
               </p>
-            </div>
+            </div></Reveal>
           </div>
         </div>
         <img ref={pixelRef} src={`${LIGHTHOUSE_PIXEL}?utm_source=rfi-irfos-web`}
