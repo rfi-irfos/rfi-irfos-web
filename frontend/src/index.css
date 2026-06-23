@@ -1,5 +1,6 @@
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; -webkit-font-smoothing: antialiased; }
+html { scroll-padding-top: 72px; }
 #root { width: 100%; min-height: 100svh; }
 
 /* ── Theme variables ──────────────────────────────────────────── */

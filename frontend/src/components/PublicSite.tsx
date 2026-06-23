@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+// nav-jump suppressor: set true during anchor-link scroll → all Reveal elements snap to p=1
+let _revealSuppressed = false
+
 // ── Scroll-scrubbing reveal: progress directly drives opacity+transform via RAF ──
 function Reveal({
   children, delay = 0, from = 'bottom', style: extra,
@@ -14,12 +17,15 @@ function Reveal({
     const el = ref.current; if (!el) return
     let rafId = 0
     const update = () => {
+      if (_revealSuppressed) { el.style.opacity = '1'; el.style.transform = 'none'; return }
       const rect = el.getBoundingClientRect(), vh = window.innerHeight
-      const startFrac = 0.94 - delay * 0.06  // stagger: each index shifts 6% of vh
-      const raw = (vh * startFrac - rect.top) / (vh * 0.58)
+      // animation window: element enters at startFrac of vh, fully visible at (startFrac - 0.22)
+      // → any fully-in-viewport card is guaranteed p=1
+      const startFrac = 0.96 - delay * 0.05
+      const raw = (vh * startFrac - rect.top) / (vh * 0.22)
       const p = Math.max(0, Math.min(1, raw))
       el.style.opacity = String(p)
-      const d = (1 - p) * 30
+      const d = (1 - p) * 28
       el.style.transform = from === 'left'  ? `translateX(${-d}px)` :
                            from === 'right' ? `translateX(${d}px)`  :
                            from === 'scale' ? `scale(${0.88 + p * 0.12})` :
@@ -393,6 +399,28 @@ export function PublicSite() {
     }, { threshold: 0.04 })
     obs.observe(el)
     return () => obs.disconnect()
+  }, [])
+
+  // intercept all anchor-link clicks → instant jump + suppress reveal so sections
+  // are fully rendered at destination, never caught mid-animation
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#"]')
+      if (!a) return
+      const href = a.getAttribute('href')!
+      const target = document.querySelector(href)
+      if (!target) return
+      e.preventDefault()
+      _revealSuppressed = true
+      const y = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - 72
+      window.scrollTo({ top: y, behavior: 'auto' })
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        _revealSuppressed = false
+        window.dispatchEvent(new Event('scroll'))
+      }))
+    }
+    document.addEventListener('click', handler)
+    return () => document.removeEventListener('click', handler)
   }, [])
 
   useEffect(() => {
