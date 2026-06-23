@@ -247,12 +247,90 @@ const STATUS_META: Record<string, { label: string; bg: string; color: string }> 
 }
 
 const MILESTONES = [
-  { year: '2020', tag: 'founding',     title: 'Founded in Graz',              body: 'Registered as a regulated not-for-profit research institute. ZVR 1015608684. WKO member. Research agenda: ternary computation and digital rights.' },
-  { year: '2022', tag: 'research',     title: 'First OSF publications',        body: '119 projects archived on OSF. Public record of research outputs, methodologies, and findings from the first research cycle.' },
-  { year: '2024', tag: 'development',  title: 'ternlang + albert. initiated',  body: 'Development of the ternary runtime and language model started in-house. First @sparseskip prototype. albert. training begins.' },
-  { year: '2025', tag: 'milestone',    title: '@sparseskip patent filed',      body: 'Patent application A50296/2026 filed. Sparse ternary execution: 83 tok/s on T4. Whitepaper published on OSF.' },
-  { year: '2026', tag: 'audit-series', title: '103 apps. 81 companies.',       body: 'The 2026 Android audit series. Mass coordinated disclosure across European and global markets. Pokemon GO, Tinder, Strava, Snapchat, Disneyland EU - all notified. Disclosure: 2026-09-19.' },
-  { year: '2026', tag: 'live',         title: 'Lighthouse OS live',            body: 'Internal governance OS deployed. Append-only audit trail. Unanimous quorum on destructive operations. A production system for a team that does not trust defaults.' },
+  {
+    year: '2020',
+    tag: 'founding',
+    title: 'Founded in Graz',
+    body: 'Registered as a regulated not-for-profit research institute. ZVR 1015608684 · GISA 39261441 · Steuernummer 68 028/0989. WKO member. Research agenda: ternary computation, digital rights, ecocentric technology. ≥90% of surplus reinvested into research.',
+  },
+  {
+    year: '2022',
+    tag: 'research',
+    title: 'OSF archive — 119 projects',
+    body: 'First full research cycle complete and archived on OSF (osf.io/rzvyg). 119 projects spanning ternary systems theory, digital rights landscape analysis, and ecocentric infrastructure models. All methodology public.',
+  },
+  {
+    year: '2024',
+    tag: 'development',
+    title: 'ternlang + albert. initiated',
+    body: 'Development of the ternary programming language and albert. language model starts in-house. MoE-13 architecture. First @sparseskip prototype: skip null (0) branches at compile time. No outsourced training — full stack ownership from day one.',
+  },
+  {
+    year: '2025',
+    tag: 'patent',
+    title: '@sparseskip — patent A50296/2026',
+    body: 'Sparse ternary execution patent filed with the Austrian Patent Office. 83 tok/s on T4. Pays in dense compute, not AST traversal. Ternary Intelligence Stack whitepaper published on OSF. TIS stack 1.5.0 shipped to crates.io.',
+  },
+  {
+    year: '2025',
+    tag: 'milestone',
+    title: 'albert. Read B — language geometry stable',
+    body: 'PLN-CMP-INT-ABS benchmarks stable across 5 consecutive surgeries. Cross-lingual semantic broadcasting confirmed. Ternary token-space geometry validated. Surgery governor: plateau gate withholds growth on descent, fires on plateau. First evidence of emergent structure.',
+  },
+  {
+    year: '2025',
+    tag: 'upstream',
+    title: 'TernaryDense merged into Keras',
+    body: 'Pull request #22960 — TernaryDense layer implementation — shipped into the official Keras codebase. Ternary arithmetic in the world\'s most widely used deep learning library. Contributed upstream, no corporate backing.',
+  },
+  {
+    year: '2026-Q1',
+    tag: 'live',
+    title: 'Lighthouse OS — production deploy',
+    body: 'Internal workplace OS deployed to production at ternlang.com/lighthouse. Append-only audit trail enforced by DB triggers that block superuser writes. Unanimous quorum required for destructive operations. The OS protects itself from its own CEO.',
+  },
+  {
+    year: '2026-05-28',
+    tag: 'os',
+    title: 'Rusty Penguin — 1920×1080 bare metal',
+    body: 'Pure-Rust operating system boots to a 1920×1080 desktop on real hardware. No Linux kernel. No GNU. Hand-written bootloader, memory manager, and framebuffer driver. A daily-drivable OS as a research platform — not a demo.',
+  },
+  {
+    year: '2026-05-30',
+    tag: 'os',
+    title: 'Rusty Penguin — DOOM + TCP/IP',
+    body: 'id Software\'s fbDOOM boots and renders on the pure-Rust kernel via a Linux ABI compatibility shim. Separately: from-scratch TCP/IP stack successfully fetches a live web page. Two from-scratch network and binary-compat layers in 48 hours.',
+  },
+  {
+    year: '2026-05-25',
+    tag: 'security',
+    title: 'First security audit — Wolt R1',
+    body: 'R1 sent from Vienna: 13 findings including hardcoded production credentials and broken certificate pinning. First email from rfi.irfos@gmail.com. Ticket #INC-1994788. The security research programme goes operational.',
+  },
+  {
+    year: '2026-05-31',
+    tag: 'sprind',
+    title: 'SPRIND pitch — €3M–€26.5M',
+    body: 'Pitch submitted to the German Federal Agency for Disruptive Innovation. albert. ATL 8.1835 at time of submission. Confirmed 2026-06-02. SPRIND funds breakthrough technologies that serve the public — not shareholders.',
+  },
+  {
+    year: '2026-06',
+    tag: 'team',
+    title: 'Three continents. One team.',
+    body: 'Ana Diez joins as Head of Research & Wellbeing (Mendoza, Argentina). Brennan Bell — Head of Model Safety & Welfare — Graz. Mariano Sosa — Head of Trust & Public Perception — remote. Fully distributed, flat structure, no middle management.',
+  },
+  {
+    year: '2026-06-14',
+    tag: 'publish',
+    title: '"Earth Is Not Full. We Regulate It That Way."',
+    body: 'LinkedIn article: sufficiency proof and manufactured-scarcity argument published. The planet has enough. The constraints are political, not physical. Linked to ongoing governance and ecocentric research track.',
+  },
+  {
+    year: '2026-06-21',
+    tag: 'audit-series',
+    title: '103 apps. 81 companies. 200+ findings.',
+    body: 'Mass coordinated disclosure: Pokemon GO, Samsung Health, Tinder, Snapchat, Disneyland EU, Meta (4 apps), TikTok, AliExpress, Netflix, YouTube Kids — all notified. NYSE, NASDAQ, XETRA, LSE, KRX, HKEx targets. Regulators in BCC on every submission. Disclosure: 2026-09-19.',
+  },
 ]
 
 const CREDENTIALS = [
