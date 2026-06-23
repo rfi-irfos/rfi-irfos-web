@@ -38,3 +38,10 @@ Thumbs.db
 # Runtime data (not source)
 backend/contacts.jsonl
 backend/uploads/
+
+# Non-frontend (Fly.io backend lives separately)
+backend/
+Dockerfile
+fly.toml
+nginx.conf
+.env.example
