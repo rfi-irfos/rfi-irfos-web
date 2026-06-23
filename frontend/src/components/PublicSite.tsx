@@ -376,6 +376,8 @@ export function PublicSite() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [formState, setFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
   const pixelRef = useRef<HTMLImageElement>(null)
+  const ledgerRef = useRef<HTMLDivElement>(null)
+  const [ledgerFired, setLedgerFired] = useState(false)
   const mobile = useMobile()
   const closeMenu = useCallback(() => setMenuOpen(false), [])
 
@@ -383,6 +385,15 @@ export function PublicSite() {
     setThemeState(t)
     try { localStorage.setItem('rfi-theme', t) } catch {}
   }
+
+  useEffect(() => {
+    const el = ledgerRef.current; if (!el) return
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setLedgerFired(true); obs.disconnect() }
+    }, { threshold: 0.04 })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -735,15 +746,18 @@ export function PublicSite() {
               <span key={k} style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 3, background: v.bg, color: v.color, letterSpacing: '0.08em' }}>{v.label}</span>
             ))}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <div ref={ledgerRef} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}`}</style>
             {AUDIT_HIGHLIGHTS.map((a, i) => {
               const sm = STATUS_META[a.status] ?? STATUS_META['WAITING']
+              const delay = Math.min(i * 38, 1900)
               return (
-              <Reveal key={i} delay={Math.min(i * 0.15, 3)} from="left">
-              <div style={{
+              <div key={i} style={{
                 display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'flex-start',
                 padding: '11px 14px', borderRadius: 5,
                 background: 'var(--bg)', border: '1px solid var(--border2)',
+                opacity: ledgerFired ? undefined : 0,
+                animation: ledgerFired ? `ledgerRowIn 0.42s cubic-bezier(0.22,1,0.36,1) ${delay}ms both` : 'none',
               }}>
                 <span style={{ fontWeight: 700, fontSize: 12, color: 'var(--text)', minWidth: 130, flex: '0 0 auto' }}>{a.target}</span>
                 <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', flex: '0 0 auto', paddingTop: 2 }}>{a.market}</span>
@@ -751,7 +765,6 @@ export function PublicSite() {
                 <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 3, background: sm.bg, color: sm.color, flex: '0 0 auto', paddingTop: 2 }}>{sm.label}</span>
                 <span style={{ color: 'var(--text2)', fontSize: 11, lineHeight: 1.6, flex: '1 1 220px' }}>{a.finding}</span>
               </div>
-              </Reveal>
               )
             })}
           </div>
