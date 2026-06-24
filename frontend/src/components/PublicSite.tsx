@@ -993,20 +993,30 @@ export function PublicSite() {
             </a>
           ))}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: 16 }}>
-          {/* WKO member badge */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, padding: '6px 12px', background: 'rgba(255,255,255,0.03)' }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
+          <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.85 }}>
+            <svg viewBox="0 0 420 100" width="168" height="40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
+              <rect x="0"   y="0" width="100" height="100" fill="#CC0000"/>
+              <text x="50"  y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">W</text>
+              <rect x="105" y="0" width="100" height="100" fill="#CC0000"/>
+              <text x="155" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">K</text>
+              <rect x="210" y="0" width="100" height="100" fill="#CC0000"/>
+              <text x="260" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">O</text>
+              <rect x="320" y="0"  width="100" height="33" fill="#CC0000"/>
+              <rect x="320" y="33" width="100" height="34" fill="#fff"/>
+              <rect x="320" y="67" width="100" height="33" fill="#CC0000"/>
             </svg>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: '#a0a0c0', letterSpacing: '0.06em' }}>WKO MEMBER &nbsp;·&nbsp; GewO § 32 &nbsp;·&nbsp; Automatische Datenverarbeitung</span>
+          </a>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: 16 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)' }}>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>WKO MEMBER &nbsp;·&nbsp; GewO § 32 &nbsp;·&nbsp; Automatische Datenverarbeitung</span>
           </div>
-          {/* NOT-FOR-PROFIT badge */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, padding: '6px 12px', background: 'rgba(255,255,255,0.03)' }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)' }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
             </svg>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: '#a0a0c0', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT &nbsp;·&nbsp; ZVR 1015608684 &nbsp;·&nbsp; GISA 39261441</span>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT &nbsp;·&nbsp; ZVR 1015608684 &nbsp;·&nbsp; GISA 39261441</span>
           </div>
         </div>
         <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em' }}>
