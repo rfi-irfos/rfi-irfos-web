@@ -55,6 +55,7 @@ const NAV_LINKS = [
   { label: 'Research', href: '#research' },
   { label: 'Projects', href: '#projects' },
   { label: 'Track Record', href: '#track-record' },
+  { label: 'Standards', href: '#standards' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'Services', href: '#services' },
 ]
@@ -100,6 +101,17 @@ const RESEARCH_AREAS = [
     title: 'Model Welfare & Wellbeing',
     desc: 'Model welfare as a first-class research axis. Wellbeing signals during training, distress detection, and dignity for the systems we cultivate, not just the humans they serve.',
   },
+]
+
+// Standards & compliance frameworks we file against + keep current with. NIS-2 is featured.
+const STANDARDS = [
+  { code: 'GDPR', region: 'EU 2016/679', desc: 'Art. 6 lawful basis, Art. 9 special-category (health/biometric), Art. 8 children, Art. 33 breach notification. The backbone of every disclosure we file.' },
+  { code: 'EU AI Act', region: 'EU 2024/1689', desc: 'Risk-tiered obligations for AI systems: transparency, governance, prohibited-practice analysis for the models we audit and build.' },
+  { code: 'ISO/IEC 29147', region: 'International', desc: 'Vulnerability disclosure. Our coordinated framework follows the 90-day embargo + regulator-notification standard.' },
+  { code: 'ISO/IEC 27001', region: 'International', desc: 'Information security management. The control set behind our handling of evidence, NDAs, and client data.' },
+  { code: 'COPPA', region: 'US · 15 U.S.C. §6501', desc: 'Children’s online privacy. Applied across our minor-protection audits of apps, games, and streaming platforms.' },
+  { code: 'EU MDR', region: 'EU 2017/745', desc: 'Medical Device Regulation. Class IIb scrutiny for health/wearable apps processing Internet-of-Bodies data.' },
+  { code: 'eIDAS / Trust Services', region: 'EU 910/2014', desc: 'Electronic identification + trust services. Relevant to the biometric + identity-verification SDKs under our magnification.' },
 ]
 
 const PROJECTS = [
@@ -592,15 +604,17 @@ export function PublicSite() {
             One team. The same people who train the model write the regulatory analysis and file the disclosure.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
-            {RESEARCH_AREAS.map(a => (
-              <div key={a.title} style={{
-                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                borderRadius: 16, padding: '28px 24px',
-              }}>
-                <div style={{ fontSize: 28, color: TEAL, marginBottom: 16 }}>{a.icon}</div>
-                <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{a.title}</div>
-                <div style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7 }}>{a.desc}</div>
-              </div>
+            {RESEARCH_AREAS.map((a, i) => (
+              <Reveal key={a.title} delay={i} from="bottom">
+                <div style={{
+                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+                  borderRadius: 16, padding: '28px 24px', height: '100%',
+                }}>
+                  <div style={{ fontSize: 28, color: TEAL, marginBottom: 16 }}>{a.icon}</div>
+                  <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{a.title}</div>
+                  <div style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7 }}>{a.desc}</div>
+                </div>
+              </Reveal>
             ))}
           </div>
           <div style={{ marginTop: 64 }}>
@@ -642,10 +656,11 @@ export function PublicSite() {
             Every project is a proof of concept for a specific research question. All built on the same stack.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
-            {PROJECTS.map(p => (
-              <div key={p.name} style={{
+            {PROJECTS.map((p, i) => (
+              <Reveal key={p.name} delay={i} from="bottom" style={{ display: 'flex' }}>
+              <div style={{
                 background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12,
+                borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1,
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div>
@@ -666,6 +681,7 @@ export function PublicSite() {
                   </a>
                 )}
               </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -685,14 +701,16 @@ export function PublicSite() {
               { n: '100+', label: 'Companies notified' },
               { n: '200+', label: 'Critical findings' },
               { n: '10+', label: 'Regulators notified' },
-            ].map(s => (
-              <div key={s.label} style={{
-                background: 'rgba(0,245,196,0.05)', border: '1px solid rgba(0,245,196,0.15)',
-                borderRadius: 12, padding: '24px', textAlign: 'center',
-              }}>
-                <div style={{ fontSize: 36, fontWeight: 900, color: TEAL }}>{s.n}</div>
-                <div style={{ fontSize: 11, color: '#606080', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 6 }}>{s.label}</div>
-              </div>
+            ].map((s, i) => (
+              <Reveal key={s.label} delay={i} from="scale">
+                <div style={{
+                  background: 'rgba(0,245,196,0.05)', border: '1px solid rgba(0,245,196,0.15)',
+                  borderRadius: 12, padding: '24px', textAlign: 'center', height: '100%',
+                }}>
+                  <div style={{ fontSize: 36, fontWeight: 900, color: TEAL }}>{s.n}</div>
+                  <div style={{ fontSize: 11, color: '#606080', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 6 }}>{s.label}</div>
+                </div>
+              </Reveal>
             ))}
           </div>
           <div style={{
@@ -776,7 +794,7 @@ export function PublicSite() {
 
           {/* Security Audit tiers */}
           <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 48 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: 16, marginBottom: 48 }}>
             {[
               { tier: 'Public', price: 'free', desc: 'Full public disclosure. Findings published after 90-day coordinated embargo. No NDA.', highlight: false },
               { tier: 'Remediation Advisory', price: '€4,500', desc: 'Full report + remediation guidance. 30-day follow-up. GDPR compliance mapping included.', highlight: false },
@@ -784,16 +802,18 @@ export function PublicSite() {
               { tier: 'Enterprise NDA', price: '€18,000', desc: 'Extended embargo + dedicated remediation support + legal evidence package.', highlight: false },
               { tier: 'Critical Infrastructure', price: '€75,000', desc: 'NDA + legal + PR containment strategy + regulator liaison. Fullscope package.', highlight: true },
               { tier: 'IoB / Art. 9', price: '€150,000', desc: 'Internet of Bodies / wearables with health data (Art. 9 GDPR). Elevated risk premium.', highlight: true },
-            ].map(t => (
-              <div key={t.tier} style={{
-                background: t.highlight ? 'rgba(0,245,196,0.06)' : 'rgba(255,255,255,0.03)',
-                border: `1px solid ${t.highlight ? 'rgba(0,245,196,0.25)' : 'rgba(255,255,255,0.07)'}`,
-                borderRadius: 14, padding: '24px 20px',
-              }}>
-                <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
-                <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7 }}>{t.desc}</div>
-              </div>
+            ].map((t, i) => (
+              <Reveal key={t.tier} delay={i} from="bottom">
+                <div style={{
+                  background: t.highlight ? 'rgba(0,245,196,0.06)' : 'rgba(255,255,255,0.03)',
+                  border: `1px solid ${t.highlight ? 'rgba(0,245,196,0.25)' : 'rgba(255,255,255,0.07)'}`,
+                  borderRadius: 14, padding: '24px 20px', height: '100%',
+                }}>
+                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
+                  <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
+                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7 }}>{t.desc}</div>
+                </div>
+              </Reveal>
             ))}
           </div>
 
@@ -832,15 +852,17 @@ export function PublicSite() {
               { tier: 'Web · Full Site', price: '€4,500', desc: 'Multi-page + CMS admin + contact form + analytics. 2-week delivery.' },
               { tier: 'Web · Enterprise', price: '€18,000', desc: 'Custom Rust backend + auth + integrations. Full scope.' },
               { tier: 'Research Report', price: '€2,500', desc: 'Market analysis / policy brief / stakeholder interviews. 10-page minimum.' },
-            ].map(t => (
-              <div key={t.tier} style={{
-                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                borderRadius: 14, padding: '24px 20px',
-              }}>
-                <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
-                <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7 }}>{t.desc}</div>
-              </div>
+            ].map((t, i) => (
+              <Reveal key={t.tier} delay={i} from="bottom">
+                <div style={{
+                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+                  borderRadius: 14, padding: '24px 20px', height: '100%',
+                }}>
+                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
+                  <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
+                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7 }}>{t.desc}</div>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -863,15 +885,17 @@ export function PublicSite() {
               { title: 'Phone Sanitizing', desc: 'bring us your phone. first session free. we disable background tracking permanently, harden your DNS, lock your backups. by appointment.', teal: true },
               { title: 'Web & App Development', desc: 'React + Rust backends · mobile · enterprise · built on our own stack · from €1,500', teal: false },
               { title: 'Interdisciplinary Research', desc: 'market analysis · policy briefs · stakeholder interviews · AI governance consulting · from €2,500', teal: false },
-            ].map(s => (
-              <div key={s.title} style={{
-                background: s.teal ? 'rgba(0,245,196,0.05)' : 'rgba(255,255,255,0.03)',
-                border: `1px solid ${s.teal ? 'rgba(0,245,196,0.2)' : 'rgba(255,255,255,0.07)'}`,
-                borderRadius: 16, padding: '28px 24px',
-              }}>
-                <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 12 }}>{s.title}</div>
-                <div style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7 }}>{s.desc}</div>
-              </div>
+            ].map((s, i) => (
+              <Reveal key={s.title} delay={i} from="bottom">
+                <div style={{
+                  background: s.teal ? 'rgba(0,245,196,0.05)' : 'rgba(255,255,255,0.03)',
+                  border: `1px solid ${s.teal ? 'rgba(0,245,196,0.2)' : 'rgba(255,255,255,0.07)'}`,
+                  borderRadius: 16, padding: '28px 24px', height: '100%',
+                }}>
+                  <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 12 }}>{s.title}</div>
+                  <div style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7 }}>{s.desc}</div>
+                </div>
+              </Reveal>
             ))}
           </div>
           <a href="https://ternlang.com/about" style={{
@@ -880,6 +904,63 @@ export function PublicSite() {
             padding: '12px 28px', borderRadius: 8, fontWeight: 700, fontSize: 13,
             textDecoration: 'none', letterSpacing: '0.04em',
           }}>Full pricing &amp; scope &rarr; ternlang.com/about</a>
+        </div>
+      </section>
+
+      {/* STANDARDS & COMPLIANCE */}
+      <section id="standards" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <Reveal>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Standards &amp; Compliance</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the frameworks we work under</h2>
+            <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 620 }}>
+              Every audit is filed against current EU and Austrian law. We track new standards as they enter force and keep our methodology up to date.
+            </p>
+          </Reveal>
+
+          {/* Featured: NIS-2 / NISG 2026 */}
+          <Reveal from="scale">
+            <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '32px 28px', marginBottom: 24 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 14 }}>
+                <div style={{ fontWeight: 900, fontSize: 22, color: '#e8e8f0' }}>NIS-2 <span style={{ color: TEAL }}>·</span> NISG 2026</div>
+                <span style={{ fontFamily: 'monospace', fontSize: 10, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.15em', border: '1px solid rgba(0,245,196,0.3)', borderRadius: 20, padding: '4px 12px', whiteSpace: 'nowrap' }}>EU · Austria · in force</span>
+              </div>
+              <p style={{ color: '#a0a0b8', fontSize: 14, lineHeight: 1.8, marginBottom: 16 }}>
+                The EU directive for a high common level of cybersecurity, transposed into Austrian law as <strong style={{ color: '#e8e8f0' }}>NISG 2026</strong>. It mandates state-of-the-art risk management, strict incident reporting to national authorities, and <strong style={{ color: '#e8e8f0' }}>personal liability for company management</strong>. In Austria it directly impacts roughly 4,000 essential and important entities, plus an estimated 50,000 supply-chain partners.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: 12 }}>
+                {[
+                  ['Risk Management', 'cryptography · access control · supply-chain security'],
+                  ['Incident Response', 'mandatory reporting within strict timeframes'],
+                  ['Corporate Accountability', 'management personally liable for non-compliance'],
+                ].map(([t, d]) => (
+                  <div key={t} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '14px 16px' }}>
+                    <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 5, color: TEAL }}>{t}</div>
+                    <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.6 }}>{d}</div>
+                  </div>
+                ))}
+              </div>
+              <p style={{ marginTop: 16, fontSize: 11, color: '#606080', fontFamily: 'monospace' }}>
+                Scope: ~4,000 entities directly · ~50,000 supply-chain partners ·{' '}
+                <a href="https://www.nis.gv.at" target="_blank" rel="noopener noreferrer" style={{ color: '#808098', textDecoration: 'none' }}>nis.gv.at</a>
+              </p>
+            </div>
+          </Reveal>
+
+          {/* The rest of the frameworks */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: 16 }}>
+            {STANDARDS.map((s, i) => (
+              <Reveal key={s.code} delay={i} from="bottom">
+                <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '22px 20px', height: '100%' }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
+                    <div style={{ fontWeight: 800, fontSize: 15, color: '#e8e8f0' }}>{s.code}</div>
+                    <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', whiteSpace: 'nowrap' }}>{s.region}</span>
+                  </div>
+                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7 }}>{s.desc}</div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -918,7 +999,7 @@ export function PublicSite() {
           <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>connect</h2>
           <p style={{ color: '#a0a0b8', marginBottom: 48 }}>reach us for research collaboration, security disclosures, or service inquiries.</p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: 40 }}>
             {/* left: form */}
             <form onSubmit={submitForm} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {(['name', 'email'] as const).map(f => (
