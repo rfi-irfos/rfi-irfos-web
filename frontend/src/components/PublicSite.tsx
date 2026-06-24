@@ -68,7 +68,7 @@ const RESEARCH_AREAS = [
   {
     icon: '⬡',
     title: 'Security & Privacy',
-    desc: 'Static APK analysis, GDPR enforcement, coordinated responsible disclosure at scale. ISO/IEC 29147 framework.',
+    desc: 'Root level code analysis, GDPR enforcement, coordinated responsible disclosure at scale. ISO/IEC 29147 framework.',
   },
   {
     icon: '⊕',
@@ -134,7 +134,7 @@ const PROJECTS = [
   {
     name: 'Android Security Audit 2026',
     sub: '131 apps · 100+ companies',
-    desc: '200+ critical findings across NYSE, NASDAQ, LSE, and XETRA listed companies. Includes children\'s app wave with COPPA + GDPR Art. 8 scope. Static APK analysis. Coordinated disclosure 2026-09-19. Regulators BCC\'d on every submission.',
+    desc: '200+ critical findings across NYSE, NASDAQ, LSE, and XETRA listed companies. Includes children\'s app wave with COPPA + GDPR Art. 8 scope. Root level code analysis. Coordinated disclosure 2026-09-19. Regulators BCC\'d on every submission.',
     link: 'https://github.com/rfi-irfos/android-security-audit-2026',
     tag: 'security research',
   },
@@ -677,7 +677,7 @@ export function PublicSite() {
           <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
           <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>security research at scale</h2>
           <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
-            Static APK analysis. Regulators BCC'd on every submission. 90-day coordinated disclosure. Our framework. Our timeline.
+            Root level code analysis. Regulators BCC'd on every submission. 90-day coordinated disclosure. Our framework. Our timeline.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
             {[
@@ -858,7 +858,7 @@ export function PublicSite() {
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20, marginBottom: 28 }}>
             {[
-              { title: 'Security Audits & Disclosure', desc: 'static APK analysis · GDPR compliance · coordinated disclosure · regulatory filings · from €4,500', teal: true },
+              { title: 'Security Audits & Disclosure', desc: 'root level code analysis · GDPR compliance · coordinated disclosure · regulatory filings · from €4,500', teal: true },
               { title: 'Send us your APK', desc: 'we tear it apart. you get the full report before anyone else does. any Android APK, any company size.', teal: true },
               { title: 'Phone Sanitizing', desc: 'bring us your phone. first session free. we disable background tracking permanently, harden your DNS, lock your backups. by appointment.', teal: true },
               { title: 'Web & App Development', desc: 'React + Rust backends · mobile · enterprise · built on our own stack · from €1,500', teal: false },
