@@ -85,6 +85,21 @@ const RESEARCH_AREAS = [
     title: 'Minor & Youth Protection',
     desc: 'COPPA compliance, GDPR Art. 8, EU AI Act provisions for minors. Audit of children\'s apps, games, and streaming platforms. Biometric and behavioural data of minors under magnification.',
   },
+  {
+    icon: '⊘',
+    title: 'Prompt Injection & Adversarial Robustness',
+    desc: 'Red-teaming prompt injection, jailbreak resistance, and adversarial robustness. Mapping where instruction-following breaks under pressure, and hardening against it.',
+  },
+  {
+    icon: '⬢',
+    title: 'AI Alignment Research',
+    desc: 'Intent and value alignment via constitutional cores. Plateau-gated self-cultivation: models that grow their own architecture from evidence, never with forced layers.',
+  },
+  {
+    icon: '◍',
+    title: 'Model Welfare & Wellbeing',
+    desc: 'Model welfare as a first-class research axis. Wellbeing signals during training, distress detection, and dignity for the systems we cultivate, not just the humans they serve.',
+  },
 ]
 
 const PROJECTS = [
@@ -399,7 +414,7 @@ export function PublicSite() {
   }
 
   return (
-    <div style={{ background: '#070711', color: '#e8e8f0', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh' }}>
+    <div style={{ background: '#070711', color: '#e8e8f0', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
 
       {/* NAV */}
       <nav style={{
@@ -416,8 +431,8 @@ export function PublicSite() {
           <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: '#e8e8f0' }}>RFI-IRFOS</span>
         </a>
 
-        {/* Desktop nav */}
-        <div style={{ display: 'flex', gap: '1.75rem', alignItems: 'center', '@media (max-width: 768px)': { display: 'none' } } as React.CSSProperties}>
+        {/* Desktop nav — React inline styles can't do media queries, so gate on the useMobile() hook */}
+        <div style={{ display: mobile ? 'none' : 'flex', gap: '1.75rem', alignItems: 'center' }}>
           {NAV_LINKS.map(n => (
             <a key={n.href} href={n.href} style={{
               color: '#808098', fontSize: 13, fontWeight: 600,
@@ -453,13 +468,12 @@ export function PublicSite() {
             onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Contact</a>
         </div>
 
-        {/* Hamburger */}
+        {/* Hamburger — shown only on mobile (media queries don't work in inline styles) */}
         <button onClick={() => setMobileOpen(o => !o)} style={{
-          display: 'none',
+          display: mobile ? 'flex' : 'none',
           background: 'none', border: 'none', cursor: 'pointer',
           padding: '8px', color: '#e8e8f0',
-          '@media (max-width: 768px)': { display: 'flex' },
-        } as React.CSSProperties} aria-label="Menu">
+        }} aria-label="Menu">
           {mobileOpen ? (
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           ) : (
