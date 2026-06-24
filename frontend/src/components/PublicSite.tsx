@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useTheme } from '../hooks/useTheme'
 
 const TEAL = '#00f5c4'
 const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
@@ -44,7 +45,7 @@ const PROJECTS = [
   {
     name: 'Ternary Intelligence Stack',
     sub: 'TIS monorepo',
-    desc: 'Full-stack post-binary AI platform. Language, compiler, ISA, virtual machine, linear algebra, API, and model — built on balanced ternary {-1, 0, +1}.',
+    desc: 'Full-stack post-binary AI platform. Language, compiler, ISA, virtual machine, linear algebra, API, and model. Built on balanced ternary {-1, 0, +1}.',
     link: 'https://github.com/rfi-irfos/ternary-intelligence-stack',
     tag: 'core platform',
   },
@@ -65,7 +66,7 @@ const PROJECTS = [
   {
     name: 'Lighthouse',
     sub: 'sovereign workplace OS',
-    desc: 'One self-hosted Rust + React binary running the entire institute — comms, CRM, finance, payroll, HR, governance, and live training telemetry. Append-only 50-year audit trail.',
+    desc: 'One self-hosted Rust + React binary running the entire institute: comms, CRM, finance, payroll, HR, governance, and live training telemetry. Append-only 50-year audit trail.',
     link: null,
     tag: 'internal · live',
   },
@@ -97,23 +98,23 @@ const MILESTONES: { date: string; label: string; side: 'left' | 'right'; link?: 
   { date: 'June 2020', label: 'OSF Research Repository launched', side: 'right', link: 'https://osf.io/rzvyg/', tag: 'publication' },
   { date: 'March 2021', label: 'Ternary Logic Framework', side: 'left', tag: 'milestone' },
   { date: 'May 2023', label: 'Ecocentric AI Framework', side: 'right', tag: 'milestone' },
-  { date: 'March 2024', label: 'The Art of Questioning — whitepaper', side: 'left', tag: 'publication' },
-  { date: 'June 2024', label: 'albert. — first ternary MoE model born', side: 'right', tag: 'milestone' },
-  { date: 'July 2025', label: 'The Ternlang Architecture — post-binary logic framework for ethical AI', side: 'left', link: 'https://osf.io/zwnyr/', tag: 'publication' },
-  { date: 'August 2025', label: 'A Ternary Logic Mixture-of-Experts Model — albert. architecture paper', side: 'right', link: 'https://osf.io/tz7dc/', tag: 'publication' },
-  { date: 'August 2025', label: 'Policy Mirror Protocol — AI transparency & refusal traceability', side: 'left', link: 'https://osf.io/d2k4x/', tag: 'publication' },
-  { date: 'Jan 2025', label: 'Rusty Penguin — pure-Rust OS boots', side: 'right', tag: 'milestone' },
-  { date: 'March 2025', label: 'Lighthouse — workplace OS goes live', side: 'left', tag: 'milestone' },
-  { date: 'Feb 2026', label: 'Myco-Styria — mycelium-based polystyrene replacement', side: 'right', link: 'https://osf.io/ek8rm/', tag: 'publication' },
-  { date: 'April 2026', label: 'The Ternary Intelligence Stack — system paper', side: 'left', link: 'https://osf.io/cyn28/', tag: 'publication' },
-  { date: 'May 2026', label: 'SPRIND pitch submitted — €26.5M ceiling', side: 'right', tag: 'milestone' },
+  { date: 'March 2024', label: 'The Art of Questioning: whitepaper', side: 'left', tag: 'publication' },
+  { date: 'June 2024', label: 'albert. first ternary MoE model born', side: 'right', tag: 'milestone' },
+  { date: 'July 2025', label: 'The Ternlang Architecture: post-binary logic framework for ethical AI', side: 'left', link: 'https://osf.io/zwnyr/', tag: 'publication' },
+  { date: 'August 2025', label: 'A Ternary Logic Mixture-of-Experts Model: albert. architecture paper', side: 'right', link: 'https://osf.io/tz7dc/', tag: 'publication' },
+  { date: 'August 2025', label: 'Policy Mirror Protocol: AI transparency + refusal traceability', side: 'left', link: 'https://osf.io/d2k4x/', tag: 'publication' },
+  { date: 'Jan 2025', label: 'Rusty Penguin: pure-Rust OS boots', side: 'right', tag: 'milestone' },
+  { date: 'March 2025', label: 'Lighthouse: workplace OS goes live', side: 'left', tag: 'milestone' },
+  { date: 'Feb 2026', label: 'Myco-Styria: mycelium-based polystyrene replacement', side: 'right', link: 'https://osf.io/ek8rm/', tag: 'publication' },
+  { date: 'April 2026', label: 'The Ternary Intelligence Stack: system paper', side: 'left', link: 'https://osf.io/cyn28/', tag: 'publication' },
+  { date: 'May 2026', label: 'SPRIND pitch submitted. EUR 26.5M ceiling.', side: 'right', tag: 'milestone' },
   { date: 'May 2026', label: 'DOOM boots on bare-metal Rust kernel', side: 'left', tag: 'milestone' },
-  { date: 'June 2026', label: '131 Android apps audited — 100+ companies · NYSE · NASDAQ · LSE · XETRA · COPPA + GDPR Art. 8 child protection scope', side: 'right', link: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'milestone' },
-  { date: 'June 2026', label: 'aladdin-mini — open-source disclosure impact engine', side: 'left', link: 'https://github.com/rfi-irfos/aladdin-mini', tag: 'milestone' },
+  { date: 'June 2026', label: '131 Android apps audited. 100+ companies. NYSE / NASDAQ / LSE / XETRA. COPPA + GDPR Art. 8 child protection scope.', side: 'right', link: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'milestone' },
+  { date: 'June 2026', label: 'aladdin-mini: open-source disclosure impact engine', side: 'left', link: 'https://github.com/rfi-irfos/aladdin-mini', tag: 'milestone' },
 ]
 
 const PUBLICATIONS = [
-  { year: '2026', title: 'Android Security Audit 2026 — Coordinated Disclosure', sub: '131 apps · 100+ companies · 200+ critical findings · NYSE/NASDAQ/LSE/XETRA · disclosure 2026-09-19', href: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'Security · Ongoing' },
+  { year: '2026', title: 'Android Security Audit 2026: Coordinated Disclosure', sub: '131 apps · 100+ companies · 200+ critical findings · NYSE/NASDAQ/LSE/XETRA · disclosure 2026-09-19', href: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'Security · Ongoing' },
   { year: '2026', title: 'The Ternary Intelligence Stack', sub: 'vertically integrated post-binary AI platform', href: 'https://osf.io/cyn28/', tag: 'AI · Systems' },
   { year: '2026', title: 'Myco-Styria', sub: 'polystyrene replacement via mycelium + Austrian lignocellulose residues', href: 'https://osf.io/ek8rm/', tag: 'Ecocentric' },
   { year: '2025', title: 'A Ternary Logic Mixture-of-Experts Model', sub: 'sparse ternary MoE architecture with autonomous Net2Net surgery', href: 'https://osf.io/tz7dc/', tag: 'AI · Model' },
@@ -121,16 +122,16 @@ const PUBLICATIONS = [
   { year: '2025', title: 'Policy Mirror Protocol', sub: 'embedding transparency and traceability into AI refusal boundaries', href: 'https://osf.io/d2k4x/', tag: 'AI · Policy' },
   { year: '2025', title: 'From Waste to Wild', sub: 'circular ecocentric model for riverine plastic interception', href: 'https://osf.io/4w5g6/', tag: 'Ecocentric' },
   { year: '2025', title: 'PedalGate v1.0', sub: '101-day investigation into systemic inequities on Austrian delivery platforms', href: 'https://osf.io/h5u8f/', tag: 'Security · Accountability' },
-  { year: '2025', title: 'A1ERF — EU Regulation Proposal', sub: 'AI-first emergency relay framework for autonomous cardiac arrest detection', href: 'https://osf.io/ueac8/', tag: 'Policy · EU' },
+  { year: '2025', title: 'A1ERF: EU Regulation Proposal', sub: 'AI-first emergency relay framework for autonomous cardiac arrest detection', href: 'https://osf.io/ueac8/', tag: 'Policy · EU' },
 ]
 
 const AUDIT_HIGHLIGHTS = [
-  { target: 'Snapchat', market: 'NASDAQ', sev: 'CRITICAL', finding: 'Fidelius private keys stored at Google — "disappearing" messages provably don\'t disappear' },
+  { target: 'Snapchat', market: 'NASDAQ', sev: 'CRITICAL', finding: 'Fidelius private keys stored at Google. "Disappearing" messages do not disappear.' },
   { target: 'Glovo', market: 'Private', sev: 'CRITICAL', finding: 'Meta SDK active as undisclosed joint controller; user data shared without legal basis' },
   { target: 'myNFP', market: 'Private', sev: 'CRITICAL', finding: 'Art. 9 menstrual cycle data transferred to Google (USA) via Auto Backup; privacy policy says "local only"' },
   { target: 'A-Trust / ID Austria', market: 'eIDAS', sev: 'HIGH', finding: 'Same certificate library as national ID system; eIDAS compliance gap; 5 findings' },
   { target: 'Roblox', market: 'NYSE', sev: 'CRITICAL', finding: 'COPPA + GDPR Art. 8 violations; child health data + RECORD_AUDIO processed without adequate safeguards; no age gate enforcement' },
-  { target: 'Vlad & Nikita', market: 'Private', sev: 'CRITICAL', finding: 'children\'s app: RECORD_AUDIO permission + AppLovin ads SDK + BOOT_COMPLETED tracking — pre-consent firing on a toddler app' },
+  { target: 'Vlad & Nikita', market: 'Private', sev: 'CRITICAL', finding: 'children\'s app with RECORD_AUDIO + AppLovin ads SDK + BOOT_COMPLETED. Tracking fires before consent screen on a toddler app.' },
   { target: 'Wolt', market: 'Private', sev: 'HIGH', finding: '13 findings; company confirmed; structured remediation initiated' },
   { target: 'Foodora', market: 'Private', sev: 'HIGH', finding: '7 critical findings + algorithmic wage suppression signal; BCC: Finanzpolizei' },
   { target: 'Marionnaud', market: 'Private', sev: 'HIGH', finding: 'ModiFace AR try-on (Art. 9 biometric) + ContentSquare on AR screen; no consent layer' },
@@ -211,9 +212,11 @@ function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
 
 export function PublicSite() {
   const [scrolled, setScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [formState, setFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
   const pixelRef = useRef<HTMLImageElement>(null)
+  const { theme, setTheme } = useTheme()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -268,35 +271,103 @@ export function PublicSite() {
       {/* NAV */}
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: scrolled ? 'rgba(7,7,17,0.95)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none',
-        transition: 'all 0.3s',
-        padding: '0 2rem',
+        background: scrolled ? 'rgba(7,7,17,0.96)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(16px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.07)' : 'none',
+        transition: 'background 0.3s, backdrop-filter 0.3s, border-color 0.3s',
+        padding: '0 1.5rem',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px',
       }}>
-        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 36, height: 36, objectFit: 'contain' }} />
-          <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: '0.05em', color: '#e8e8f0' }}>RFI-IRFOS</span>
+        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
+          <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 34, height: 34, objectFit: 'contain' }} />
+          <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: '#e8e8f0' }}>RFI-IRFOS</span>
         </a>
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+
+        {/* Desktop nav */}
+        <div style={{ display: 'flex', gap: '1.75rem', alignItems: 'center', '@media (max-width: 768px)': { display: 'none' } } as React.CSSProperties}>
           {NAV_LINKS.map(n => (
             <a key={n.href} href={n.href} style={{
-              color: '#a0a0b8', fontSize: 13, fontWeight: 600,
+              color: '#808098', fontSize: 13, fontWeight: 600,
               textDecoration: 'none', letterSpacing: '0.04em',
-              transition: 'color 0.2s',
+              transition: 'color 0.18s',
             }}
-              onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-              onMouseLeave={e => (e.currentTarget.style.color = '#a0a0b8')}>
+              onMouseEnter={e => (e.currentTarget.style.color = '#e8e8f0')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#808098')}>
               {n.label}
             </a>
           ))}
+
+          {/* Theme toggle */}
+          <div style={{ display: 'flex', background: 'rgba(255,255,255,0.06)', borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+            {(['light', 'dark', 'hc'] as const).map(t => (
+              <button key={t} onClick={() => setTheme(t)} style={{
+                background: theme === t ? 'rgba(0,245,196,0.18)' : 'transparent',
+                color: theme === t ? TEAL : '#606080',
+                border: 'none', cursor: 'pointer',
+                padding: '5px 10px', fontSize: 10, fontWeight: 700,
+                fontFamily: 'monospace', letterSpacing: '0.06em', textTransform: 'uppercase',
+                transition: 'background 0.15s, color 0.15s',
+              }}>{t === 'hc' ? 'HC' : t.toUpperCase()}</button>
+            ))}
+          </div>
+
           <a href="mailto:contact@ternlang.com" style={{
-            background: TEAL, color: '#070711', padding: '7px 18px', borderRadius: 6,
-            fontWeight: 800, fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em',
+            background: TEAL, color: '#070711', padding: '8px 20px', borderRadius: 7,
+            fontWeight: 800, fontSize: 12, textDecoration: 'none', letterSpacing: '0.07em',
+            textTransform: 'uppercase', transition: 'opacity 0.15s',
+          }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Contact</a>
+        </div>
+
+        {/* Hamburger */}
+        <button onClick={() => setMobileOpen(o => !o)} style={{
+          display: 'none',
+          background: 'none', border: 'none', cursor: 'pointer',
+          padding: '8px', color: '#e8e8f0',
+          '@media (max-width: 768px)': { display: 'flex' },
+        } as React.CSSProperties} aria-label="Menu">
+          {mobileOpen ? (
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          ) : (
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="16" x2="21" y2="16"/></svg>
+          )}
+        </button>
+      </nav>
+
+      {/* Mobile menu overlay */}
+      {mobileOpen && (
+        <div style={{
+          position: 'fixed', top: 64, left: 0, right: 0, bottom: 0, zIndex: 99,
+          background: 'rgba(7,7,17,0.98)', backdropFilter: 'blur(16px)',
+          display: 'flex', flexDirection: 'column', padding: '2rem 1.5rem', gap: 4,
+        }}>
+          {NAV_LINKS.map(n => (
+            <a key={n.href} href={n.href} onClick={() => setMobileOpen(false)} style={{
+              color: '#e8e8f0', fontSize: 20, fontWeight: 700, textDecoration: 'none',
+              padding: '16px 0', borderBottom: '1px solid rgba(255,255,255,0.06)',
+            }}>{n.label}</a>
+          ))}
+          <div style={{ display: 'flex', gap: 8, marginTop: 24 }}>
+            {(['light', 'dark', 'hc'] as const).map(t => (
+              <button key={t} onClick={() => setTheme(t)} style={{
+                background: theme === t ? 'rgba(0,245,196,0.18)' : 'rgba(255,255,255,0.06)',
+                color: theme === t ? TEAL : '#606080',
+                border: theme === t ? `1px solid ${TEAL}` : '1px solid rgba(255,255,255,0.1)',
+                borderRadius: 6, cursor: 'pointer',
+                padding: '8px 16px', fontSize: 11, fontWeight: 700,
+                fontFamily: 'monospace', letterSpacing: '0.06em', textTransform: 'uppercase',
+              }}>{t === 'hc' ? 'HC' : t.toUpperCase()}</button>
+            ))}
+          </div>
+          <a href="mailto:contact@ternlang.com" style={{
+            marginTop: 24, background: TEAL, color: '#070711',
+            padding: '16px 24px', borderRadius: 8,
+            fontWeight: 800, fontSize: 14, textDecoration: 'none',
+            textAlign: 'center', letterSpacing: '0.07em', textTransform: 'uppercase',
           }}>Contact</a>
         </div>
-      </nav>
+      )}
 
       {/* HERO */}
       <section style={{
@@ -321,27 +392,39 @@ export function PublicSite() {
         }}>
           <span style={{ color: TEAL }}>Interdisciplinary</span> Research Facility for Open Sciences
         </h1>
-        <p style={{ fontSize: 18, color: '#a0a0b8', maxWidth: 600, lineHeight: 1.7, marginBottom: 48 }}>
-          an independent Austrian research institute at the intersection of ternary AI,
-          security &amp; privacy, governance, and ecocentric technology.
-          everything in-house. everything interdisciplinary.
+        <p style={{ fontSize: 17, color: '#a0a0b8', maxWidth: 580, lineHeight: 1.75, marginBottom: 48 }}>
+          Independent Austrian research institute. Ternary AI, security, governance, minor protection, and ecocentric technology.
+          One team. Everything built in-house.
         </p>
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
           <a href="#research" style={{
-            background: TEAL, color: '#070711', padding: '14px 32px', borderRadius: 8,
-            fontWeight: 800, fontSize: 14, textDecoration: 'none', letterSpacing: '0.06em',
-          }}>Explore our research</a>
-          <a href="#projects" style={{
-            border: '1px solid rgba(0,245,196,0.4)', color: TEAL, padding: '14px 32px', borderRadius: 8,
-            fontWeight: 700, fontSize: 14, textDecoration: 'none', letterSpacing: '0.04em',
-          }}>What we build</a>
+            background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
+            fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
+            textTransform: 'uppercase', transition: 'opacity 0.15s',
+          }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Research</a>
+          <a href="#track-record" style={{
+            border: '1px solid rgba(0,245,196,0.35)', color: TEAL, padding: '13px 30px', borderRadius: 8,
+            fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
+            textTransform: 'uppercase', transition: 'border-color 0.15s',
+          }}
+            onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
+            onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Track Record</a>
+          <a href="#pricing" style={{
+            border: '1px solid rgba(255,255,255,0.12)', color: '#a0a0b8', padding: '13px 30px', borderRadius: 8,
+            fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
+            textTransform: 'uppercase', transition: 'border-color 0.15s, color 0.15s',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.28)'; e.currentTarget.style.color = '#e8e8f0' }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = '#a0a0b8' }}>Pricing</a>
         </div>
 
         <div style={{ display: 'flex', gap: '3rem', marginTop: 80, flexWrap: 'wrap', justifyContent: 'center' }}>
           {[
-            { n: '100', label: 'apps audited' },
-            { n: '150+', label: 'critical findings' },
-            { n: '74', label: 'companies notified' },
+            { n: '131', label: 'apps audited' },
+            { n: '200+', label: 'critical findings' },
+            { n: '100+', label: 'companies notified' },
             { n: '10+', label: 'regulators notified' },
             { n: '6', label: 'years of research' },
           ].map(s => (
@@ -356,11 +439,10 @@ export function PublicSite() {
       {/* RESEARCH AREAS */}
       <section id="research" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 — Research Areas</p>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Research Areas</p>
           <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we investigate</h2>
           <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
-            not multiple faculties coordinating across silos. one team where the same people
-            who train the model write the regulatory analysis.
+            One team. The same people who train the model write the regulatory analysis and file the disclosure.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
             {RESEARCH_AREAS.map(a => (
@@ -407,10 +489,10 @@ export function PublicSite() {
         borderBottom: '1px solid rgba(255,255,255,0.05)',
       }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 — Projects</p>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Projects</p>
           <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
           <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
-            every project is a proof of concept for a different research question. they all run on the same stack.
+            Every project is a proof of concept for a specific research question. All built on the same stack.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
             {PROJECTS.map(p => (
@@ -445,11 +527,10 @@ export function PublicSite() {
       {/* TRACK RECORD */}
       <section id="track-record" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 — Track Record</p>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
           <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>security research at scale</h2>
           <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
-            static APK analysis. regulators BCC'd on every submission.
-            90-day coordinated disclosure. our framework, our timeline.
+            Static APK analysis. Regulators BCC'd on every submission. 90-day coordinated disclosure. Our framework. Our timeline.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
             {[
@@ -506,7 +587,7 @@ export function PublicSite() {
         borderBottom: '1px solid rgba(255,255,255,0.05)',
       }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 — Timeline</p>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 / Timeline</p>
           <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 64, textAlign: 'center' }}>our journey</h2>
           <div style={{ position: 'relative' }}>
             <div style={{
@@ -525,10 +606,10 @@ export function PublicSite() {
       {/* PRICING */}
       <section id="pricing" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 — Pricing</p>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
           <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>transparent pricing</h2>
           <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
-            fixed rates. no retainer lock-in unless you want one. scope determines tier, not company size.
+            Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.
           </p>
 
           {/* Security Audit tiers */}
@@ -575,7 +656,7 @@ export function PublicSite() {
             display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16,
           }}>
             <div>
-              <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>Phone Sanitizing — first session free</div>
+              <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>Phone Sanitizing: first session free</div>
               <div style={{ color: '#a0a0b8', fontSize: 13 }}>we disable background tracking scripts permanently · DNS-over-HTTPS · backup hardening · full before/after audit report · by appointment</div>
             </div>
             <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>free</div>
@@ -606,7 +687,7 @@ export function PublicSite() {
       {/* SERVICES */}
       <section id="services" style={{ padding: '100px 2rem', background: 'rgba(255,255,255,0.01)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>06 — Services</p>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>06 / Services</p>
           <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>work with us</h2>
           <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
             we are not a charitable institution. we are a regulated research institute that earns revenue.
@@ -671,7 +752,7 @@ export function PublicSite() {
       {/* CONTACT */}
       <section id="contact" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 860, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 — Contact</p>
+          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Contact</p>
           <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>connect</h2>
           <p style={{ color: '#a0a0b8', marginBottom: 48 }}>reach us for research collaboration, security disclosures, or service inquiries.</p>
 
@@ -716,7 +797,7 @@ export function PublicSite() {
                 {formState === 'sending' ? 'Sending...' : formState === 'ok' ? 'Message received.' : 'Send message'}
               </button>
               {formState === 'err' && (
-                <p style={{ color: '#f87171', fontSize: 12 }}>Something went wrong — email us directly at contact@ternlang.com</p>
+                <p style={{ color: '#f87171', fontSize: 12 }}>Something went wrong. Email us directly at contact@ternlang.com</p>
               )}
             </form>
 
