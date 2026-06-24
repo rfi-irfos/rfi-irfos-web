@@ -598,11 +598,13 @@ export function PublicSite() {
       {/* RESEARCH AREAS */}
       <section id="research" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Research Areas</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we investigate</h2>
-          <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
-            One team. The same people who train the model write the regulatory analysis and file the disclosure.
-          </p>
+          <Reveal>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Research Areas</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we investigate</h2>
+            <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
+              One team. The same people who train the model write the regulatory analysis and file the disclosure.
+            </p>
+          </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
             {RESEARCH_AREAS.map((a, i) => (
               <Reveal key={a.title} delay={i} from="bottom">
@@ -650,11 +652,13 @@ export function PublicSite() {
         borderBottom: '1px solid rgba(255,255,255,0.05)',
       }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Projects</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
-          <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
-            Every project is a proof of concept for a specific research question. All built on the same stack.
-          </p>
+          <Reveal>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Projects</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
+            <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
+              Every project is a proof of concept for a specific research question. All built on the same stack.
+            </p>
+          </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
             {PROJECTS.map((p, i) => (
               <Reveal key={p.name} delay={i} from="bottom" style={{ display: 'flex' }}>
@@ -690,11 +694,13 @@ export function PublicSite() {
       {/* TRACK RECORD */}
       <section id="track-record" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>security research at scale</h2>
-          <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
-            Root level code analysis. Regulators BCC'd on every submission. 90-day coordinated disclosure. Our framework. Our timeline.
-          </p>
+          <Reveal>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>security research at scale</h2>
+            <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
+              Root level code analysis. Regulators BCC'd on every submission. 90-day coordinated disclosure. Our framework. Our timeline.
+            </p>
+          </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
             {[
               { n: '131', label: 'Apps audited' },
@@ -767,8 +773,10 @@ export function PublicSite() {
         borderBottom: '1px solid rgba(255,255,255,0.05)',
       }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 / Timeline</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 64, textAlign: 'center' }}>our journey</h2>
+          <Reveal>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 / Timeline</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 64, textAlign: 'center' }}>our journey</h2>
+          </Reveal>
           <div style={{ position: 'relative' }}>
             <div style={{
               position: 'absolute', left: '50%', top: 0, bottom: 0, width: 2,
@@ -786,11 +794,13 @@ export function PublicSite() {
       {/* PRICING */}
       <section id="pricing" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>transparent pricing</h2>
-          <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
-            Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.
-          </p>
+          <Reveal>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>transparent pricing</h2>
+            <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
+              Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.
+            </p>
+          </Reveal>
 
           {/* Security Audit tiers */}
           <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
@@ -871,13 +881,15 @@ export function PublicSite() {
       {/* SERVICES */}
       <section id="services" style={{ padding: '100px 2rem', background: 'rgba(255,255,255,0.01)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>06 / Services</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>work with us</h2>
-          <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
-            we are not a charitable institution. we are a regulated research institute that earns revenue.
-            full pricing at{' '}
-            <a href="https://ternlang.com/about" style={{ color: TEAL, textDecoration: 'none' }}>ternlang.com/about</a>.
-          </p>
+          <Reveal>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>06 / Services</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>work with us</h2>
+            <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
+              we are not a charitable institution. we are a regulated research institute that earns revenue.
+              full pricing at{' '}
+              <a href="https://ternlang.com/about" style={{ color: TEAL, textDecoration: 'none' }}>ternlang.com/about</a>.
+            </p>
+          </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20, marginBottom: 28 }}>
             {[
               { title: 'Security Audits & Disclosure', desc: 'root level code analysis · GDPR compliance · coordinated disclosure · regulatory filings · from €4,500', teal: true },
@@ -971,19 +983,23 @@ export function PublicSite() {
         borderTop: '1px solid rgba(255,255,255,0.05)',
       }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', textAlign: 'center', marginBottom: 28 }}>
-            Regulated · Licensed · Registered
-          </p>
+          <Reveal>
+            <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', textAlign: 'center', marginBottom: 28 }}>
+              Regulated · Licensed · Registered
+            </p>
+          </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14 }}>
-            {CREDENTIALS.map(c => (
-              <div key={c.label} style={{
-                background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
-                borderRadius: 10, padding: '16px', textAlign: 'center',
-              }}>
-                <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
-                <div style={{ fontFamily: 'monospace', fontSize: 12, fontWeight: 700, color: '#e8e8f0', marginBottom: 4 }}>{c.value}</div>
-                <div style={{ fontSize: 10, color: '#505068' }}>{c.sub}</div>
-              </div>
+            {CREDENTIALS.map((c, i) => (
+              <Reveal key={c.label} delay={i} from="bottom">
+                <div style={{
+                  background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+                  borderRadius: 10, padding: '16px', textAlign: 'center', height: '100%',
+                }}>
+                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
+                  <div style={{ fontFamily: 'monospace', fontSize: 12, fontWeight: 700, color: '#e8e8f0', marginBottom: 4 }}>{c.value}</div>
+                  <div style={{ fontSize: 10, color: '#505068' }}>{c.sub}</div>
+                </div>
+              </Reveal>
             ))}
           </div>
           <p style={{ textAlign: 'center', fontSize: 12, color: '#505068', fontFamily: 'monospace', marginTop: 24 }}>
@@ -995,12 +1011,15 @@ export function PublicSite() {
       {/* CONTACT */}
       <section id="contact" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 860, margin: '0 auto' }}>
-          <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Contact</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>connect</h2>
-          <p style={{ color: '#a0a0b8', marginBottom: 48 }}>reach us for research collaboration, security disclosures, or service inquiries.</p>
+          <Reveal>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Contact</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>connect</h2>
+            <p style={{ color: '#a0a0b8', marginBottom: 48 }}>reach us for research collaboration, security disclosures, or service inquiries.</p>
+          </Reveal>
 
           <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: 40 }}>
             {/* left: form */}
+            <Reveal from="left" style={{ display: 'flex', flexDirection: 'column' }}>
             <form onSubmit={submitForm} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {(['name', 'email'] as const).map(f => (
                 <input key={f} type={f === 'email' ? 'email' : 'text'} required placeholder={f === 'name' ? 'Name' : 'Email'}
@@ -1043,8 +1062,10 @@ export function PublicSite() {
                 <p style={{ color: '#f87171', fontSize: 12 }}>Something went wrong. Email us directly at contact@ternlang.com</p>
               )}
             </form>
+            </Reveal>
 
             {/* right: links */}
+            <Reveal from="right">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {CONTACT_CARDS.map(c => (
                 <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
@@ -1062,6 +1083,7 @@ export function PublicSite() {
                 Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
               </p>
             </div>
+            </Reveal>
           </div>
         </div>
         {/* Lighthouse tracking pixel — site=rfi-irfos, real channel from UTM/referrer */}
