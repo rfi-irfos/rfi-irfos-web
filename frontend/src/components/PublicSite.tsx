@@ -145,8 +145,8 @@ const PROJECTS = [
   },
   {
     name: 'Android Security Audit 2026',
-    sub: '131 apps · 100+ companies',
-    desc: '200+ critical findings across NYSE, NASDAQ, LSE, and XETRA listed companies. Includes children\'s app wave with COPPA + GDPR Art. 8 scope. Root level code analysis. Coordinated disclosure 2026-09-19. Regulators BCC\'d on every submission.',
+    sub: '139 apps · 100+ companies',
+    desc: '250+ critical findings across NYSE, NASDAQ, LSE, and XETRA listed companies. Includes children\'s app wave with COPPA + GDPR Art. 8 scope. Root level code analysis. Coordinated disclosure 2026-09-19. Regulators BCC\'d on every submission.',
     link: 'https://github.com/rfi-irfos/android-security-audit-2026',
     tag: 'security research',
   },
@@ -163,6 +163,20 @@ const PROJECTS = [
     desc: 'Multi-provider CLI for albert. and other LLMs. Native SSE streaming, reasoning effort control, OpenAI/Anthropic/NVIDIA NIM/Google compatible. Extracted from TIS into its own standalone repo.',
     link: 'https://github.com/rfi-irfos/agent-albert-cli',
     tag: 'CLI · crates.io',
+  },
+  {
+    name: 'invisible layer',
+    sub: '44 sensor experiments',
+    desc: '44 browser-based experiments that use your phone\'s built-in sensors and APIs to reveal what has been running silently. No install. No account. No server. One profile page that shows exactly how you look to the systems watching.',
+    link: 'https://github.com/rfi-irfos/invisible-layer',
+    tag: 'open source · privacy',
+  },
+  {
+    name: 'Neurobiological-Fitness Consequence Separation',
+    sub: 'ecocentric research',
+    desc: 'Agent-based model proving the global food system produces 1.64x the calories needed to feed every person on Earth. The scarcity is not thermodynamic — it is organizational. Manufactured, not physical.',
+    link: 'https://github.com/rfi-irfos/foodchain-analysis',
+    tag: 'ecocentric research',
   },
 ]
 
@@ -279,7 +293,7 @@ const CREDENTIALS = [
 ]
 
 const CONTACT_CARDS = [
-  { label: 'Email', value: 'contact@ternlang.com', href: 'mailto:contact@ternlang.com' },
+  { label: 'Email', value: 'contact@rfi-irfos.com', href: 'mailto:contact@rfi-irfos.com' },
   { label: 'Research on OSF', value: 'osf.io/rzvyg', href: 'https://osf.io/rzvyg' },
   { label: 'GitHub', value: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
   { label: 'LinkedIn', value: 'RFI-IRFOS', href: 'https://linkedin.com/company/rfi-irfos' },
@@ -471,7 +485,7 @@ export function PublicSite() {
             ))}
           </div>
 
-          <a href="mailto:contact@ternlang.com" style={{
+          <a href="mailto:contact@rfi-irfos.com" style={{
             background: TEAL, color: '#070711', padding: '8px 20px', borderRadius: 7,
             fontWeight: 800, fontSize: 12, textDecoration: 'none', letterSpacing: '0.07em',
             textTransform: 'uppercase', transition: 'opacity 0.15s',
@@ -519,7 +533,7 @@ export function PublicSite() {
               }}>{t === 'hc' ? 'HC' : t.toUpperCase()}</button>
             ))}
           </div>
-          <a href="mailto:contact@ternlang.com" style={{
+          <a href="mailto:contact@rfi-irfos.com" style={{
             marginTop: 24, background: TEAL, color: '#070711',
             padding: '16px 24px', borderRadius: 8,
             fontWeight: 800, fontSize: 14, textDecoration: 'none',
@@ -581,10 +595,10 @@ export function PublicSite() {
 
         <div style={{ display: 'flex', gap: '3rem', marginTop: 80, flexWrap: 'wrap', justifyContent: 'center' }}>
           {[
-            { n: '131', label: 'apps audited' },
-            { n: '200+', label: 'critical findings' },
+            { n: '139', label: 'apps audited' },
+            { n: '250+', label: 'critical findings' },
             { n: '100+', label: 'companies notified' },
-            { n: '10+', label: 'regulators notified' },
+            { n: '15+', label: 'regulators notified' },
             { n: '6', label: 'years of research' },
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center' }}>
@@ -1059,7 +1073,7 @@ export function PublicSite() {
                 {formState === 'sending' ? 'Sending...' : formState === 'ok' ? 'Message received.' : 'Send message'}
               </button>
               {formState === 'err' && (
-                <p style={{ color: '#f87171', fontSize: 12 }}>Something went wrong. Email us directly at contact@ternlang.com</p>
+                <p style={{ color: '#f87171', fontSize: 12 }}>Something went wrong. Email us directly at contact@rfi-irfos.com</p>
               )}
             </form>
             </Reveal>
