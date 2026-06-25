@@ -1,8 +1,27 @@
-use axum::{extract::State, http::StatusCode, response::IntoResponse, Json};
+use axum::{extract::State, http::{HeaderMap, StatusCode}, response::IntoResponse, Json};
 use serde::{Deserialize, Serialize};
 use tokio::io::AsyncWriteExt;
+use std::{collections::HashMap, sync::{Mutex, OnceLock}, time::Instant};
 
 use crate::AppState;
+
+static CONTACT_RATE_LIMITER: OnceLock<Mutex<HashMap<String, Vec<Instant>>>> = OnceLock::new();
+
+fn contact_rate_limiter() -> &'static Mutex<HashMap<String, Vec<Instant>>> {
+    CONTACT_RATE_LIMITER.get_or_init(|| Mutex::new(HashMap::new()))
+}
+
+fn contact_rate_limited(ip: &str) -> bool {
+    const MAX: usize = 5;
+    const WINDOW: std::time::Duration = std::time::Duration::from_secs(60);
+    let now = Instant::now();
+    let mut map = contact_rate_limiter().lock().unwrap_or_else(|e| e.into_inner());
+    let ts = map.entry(ip.to_string()).or_default();
+    ts.retain(|t| now.duration_since(*t) < WINDOW);
+    if ts.len() >= MAX { return true; }
+    ts.push(now);
+    false
+}
 
 #[derive(Deserialize)]
 pub struct ContactRequest {
@@ -23,8 +42,24 @@ struct ContactEntry {
 
 pub async fn submit_contact(
     State(state): State<AppState>,
+    headers: HeaderMap,
     Json(body): Json<ContactRequest>,
 ) -> impl IntoResponse {
+    let ip = headers
+        .get("fly-client-ip")
+        .or_else(|| headers.get("x-forwarded-for"))
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("unknown")
+        .split(',')
+        .next()
+        .unwrap_or("unknown")
+        .trim()
+        .to_string();
+
+    if contact_rate_limited(&ip) {
+        return (StatusCode::TOO_MANY_REQUESTS, "rate limit exceeded — 5 submissions per minute per IP\n").into_response();
+    }
+
     if body.name.trim().is_empty() || body.email.trim().is_empty() || body.message.trim().is_empty() {
         return (StatusCode::BAD_REQUEST, "Pflichtfelder fehlen.").into_response();
     }

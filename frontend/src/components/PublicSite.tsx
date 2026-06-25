@@ -614,7 +614,10 @@ const CREDENTIALS = [
 ]
 
 const CONTACT_CARDS = [
-  { label: 'Email', value: 'contact@rfi-irfos.com', href: 'mailto:contact@rfi-irfos.com' },
+  { label: 'General inquiries', value: 'contact@rfi-irfos.com', href: 'mailto:contact@rfi-irfos.com' },
+  { label: 'Security disclosures', value: 'security@rfi-irfos.com', href: 'mailto:security@rfi-irfos.com' },
+  { label: 'Research collaboration', value: 'research@rfi-irfos.com', href: 'mailto:research@rfi-irfos.com' },
+  { label: 'Careers', value: 'career@rfi-irfos.com', href: 'mailto:career@rfi-irfos.com' },
   { label: 'Research on OSF', value: 'osf.io/rzvyg', href: 'https://osf.io/rzvyg' },
   { label: 'GitHub', value: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
   { label: 'LinkedIn', value: 'RFI-IRFOS', href: 'https://linkedin.com/company/rfi-irfos' },
