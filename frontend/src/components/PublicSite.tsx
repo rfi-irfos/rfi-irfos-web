@@ -114,6 +114,7 @@ const STANDARDS = [
   { code: 'COPPA', region: 'US · 15 U.S.C. §6501', desc: 'Children’s online privacy. Applied across our minor-protection audits of apps, games, and streaming platforms.' },
   { code: 'EU MDR', region: 'EU 2017/745', desc: 'Medical Device Regulation. Class IIb scrutiny for health/wearable apps processing Internet-of-Bodies data.' },
   { code: 'eIDAS / Trust Services', region: 'EU 910/2014', desc: 'Electronic identification + trust services. Relevant to the biometric + identity-verification SDKs under our magnification.' },
+  { code: 'ePrivacy Directive', region: 'EU 2002/58/EC', desc: 'Consent for tracking, access to terminal equipment, electronic communications confidentiality. Art. 5(3) is the legal backbone of every SDK-consent finding we publish.' },
 ]
 
 const PROJECTS = [
@@ -945,47 +946,6 @@ export function PublicSite() {
             </p>
           </div>
           </Reveal>
-        </div>
-      </section>
-
-      {/* SERVICES */}
-      <section id="services" style={{ padding: '100px 2rem', background: 'rgba(255,255,255,0.01)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>06 / Services</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>work with us</h2>
-            <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
-              we are not a charitable institution. we are a regulated research institute that earns revenue.
-              full pricing at{' '}
-              <a href="https://ternlang.com/about" style={{ color: TEAL, textDecoration: 'none' }}>ternlang.com/about</a>.
-            </p>
-          </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20, marginBottom: 28 }}>
-            {[
-              { title: 'Security Audits & Disclosure', desc: 'root level code analysis · GDPR compliance · coordinated disclosure · regulatory filings · from €4,500', teal: true },
-              { title: 'Send us your APK', desc: 'we tear it apart. you get the full report before anyone else does. any Android APK, any company size.', teal: true },
-              { title: 'Phone Sanitizing', desc: 'bring us your phone. first session free. we disable background tracking permanently, harden your DNS, lock your backups. by appointment.', teal: true },
-              { title: 'Web & App Development', desc: 'React + Rust backends · mobile · enterprise · built on our own stack · from €1,500', teal: false },
-              { title: 'Interdisciplinary Research', desc: 'market analysis · policy briefs · stakeholder interviews · AI governance consulting · from €2,500', teal: false },
-            ].map((s, i) => (
-              <Reveal key={s.title} delay={i} from="bottom">
-                <div style={{
-                  background: s.teal ? 'rgba(0,245,196,0.05)' : 'rgba(255,255,255,0.03)',
-                  border: `1px solid ${s.teal ? 'rgba(0,245,196,0.2)' : 'rgba(255,255,255,0.07)'}`,
-                  borderRadius: 16, padding: '28px 24px', height: '100%',
-                }}>
-                  <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 12 }}>{s.title}</div>
-                  <div style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7 }}>{s.desc}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <a href="https://ternlang.com/about" style={{
-            display: 'inline-block',
-            border: '1px solid rgba(0,245,196,0.4)', color: TEAL,
-            padding: '12px 28px', borderRadius: 8, fontWeight: 700, fontSize: 13,
-            textDecoration: 'none', letterSpacing: '0.04em',
-          }}>Full pricing &amp; scope &rarr; ternlang.com/about</a>
         </div>
       </section>
 
