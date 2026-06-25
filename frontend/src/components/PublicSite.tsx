@@ -5,11 +5,12 @@ import { useTheme } from '../hooks/useTheme'
 let _revealSuppressed = false
 
 function Reveal({
-  children, delay = 0, from = 'bottom', style: extra,
+  children, delay = 0, from = 'bottom', dist = 32, style: extra,
 }: {
   children: React.ReactNode
   delay?: number
-  from?: 'bottom' | 'left' | 'right' | 'scale'
+  from?: 'bottom' | 'top' | 'left' | 'right' | 'scale'
+  dist?: number
   style?: React.CSSProperties
 }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -19,21 +20,22 @@ function Reveal({
     const update = () => {
       if (_revealSuppressed) { el.style.opacity = '1'; el.style.transform = 'none'; return }
       const rect = el.getBoundingClientRect(), vh = window.innerHeight
-      const startFrac = 0.96 - delay * 0.05
-      const raw = (vh * startFrac - rect.top) / (vh * 0.22)
+      const startFrac = 0.97 - delay * 0.04
+      const raw = (vh * startFrac - rect.top) / (vh * 0.26)
       const p = Math.max(0, Math.min(1, raw))
       el.style.opacity = String(p)
-      const d = (1 - p) * 28
+      const d = (1 - p) * dist
       el.style.transform = from === 'left'  ? `translateX(${-d}px)` :
                            from === 'right' ? `translateX(${d}px)`  :
-                           from === 'scale' ? `scale(${0.88 + p * 0.12})` :
+                           from === 'top'   ? `translateY(${-d}px)` :
+                           from === 'scale' ? `scale(${0.84 + p * 0.16})` :
                            `translateY(${d}px)`
     }
     const onScroll = () => { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(update) }
     window.addEventListener('scroll', onScroll, { passive: true })
     update()
     return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(rafId) }
-  }, [delay, from])
+  }, [delay, from, dist])
   return <div ref={ref} style={{ opacity: 0, willChange: 'transform, opacity', ...extra }}>{children}</div>
 }
 
@@ -594,17 +596,19 @@ export function PublicSite() {
         </div>
 
         <div style={{ display: 'flex', gap: '3rem', marginTop: 80, flexWrap: 'wrap', justifyContent: 'center' }}>
-          {[
-            { n: '139', label: 'apps audited' },
-            { n: '250+', label: 'critical findings' },
-            { n: '100+', label: 'companies notified' },
-            { n: '15+', label: 'regulators notified' },
-            { n: '6', label: 'years of research' },
-          ].map(s => (
-            <div key={s.label} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 32, fontWeight: 900, color: TEAL }}>{s.n}</div>
-              <div style={{ fontSize: 11, color: '#606080', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{s.label}</div>
-            </div>
+          {([
+            { n: '139',  label: 'apps audited',        from: 'left'   },
+            { n: '250+', label: 'critical findings',   from: 'bottom' },
+            { n: '100+', label: 'companies notified',  from: 'scale'  },
+            { n: '15+',  label: 'regulators notified', from: 'bottom' },
+            { n: '6',    label: 'years of research',   from: 'right'  },
+          ] as const).map((s, i) => (
+            <Reveal key={s.label} delay={i} from={s.from}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 32, fontWeight: 900, color: TEAL }}>{s.n}</div>
+                <div style={{ fontSize: 11, color: '#606080', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{s.label}</div>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -612,16 +616,18 @@ export function PublicSite() {
       {/* RESEARCH AREAS */}
       <section id="research" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <Reveal>
+          <Reveal from="left">
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Research Areas</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we investigate</h2>
+          </Reveal>
+          <Reveal from="right" delay={1}>
             <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
               One team. The same people who train the model write the regulatory analysis and file the disclosure.
             </p>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
             {RESEARCH_AREAS.map((a, i) => (
-              <Reveal key={a.title} delay={i} from="bottom">
+              <Reveal key={a.title} delay={i} from={(['left', 'bottom', 'right', 'scale'] as const)[i % 4]}>
                 <div style={{
                   background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
                   borderRadius: 16, padding: '28px 24px', height: '100%',
@@ -666,16 +672,18 @@ export function PublicSite() {
         borderBottom: '1px solid rgba(255,255,255,0.05)',
       }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <Reveal>
+          <Reveal from="right">
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Projects</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
+          </Reveal>
+          <Reveal from="left" delay={1}>
             <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
               Every project is a proof of concept for a specific research question. All built on the same stack.
             </p>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
             {PROJECTS.map((p, i) => (
-              <Reveal key={p.name} delay={i} from="bottom" style={{ display: 'flex' }}>
+              <Reveal key={p.name} delay={i % 4} from={(['bottom', 'right', 'bottom', 'left'] as const)[i % 4]} style={{ display: 'flex' }}>
               <div style={{
                 background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
                 borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1,
@@ -708,21 +716,23 @@ export function PublicSite() {
       {/* TRACK RECORD */}
       <section id="track-record" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <Reveal>
+          <Reveal from="left">
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>security research at scale</h2>
+          </Reveal>
+          <Reveal from="right" delay={1}>
             <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
               Root level code analysis. Regulators BCC'd on every submission. 90-day coordinated disclosure. Our framework. Our timeline.
             </p>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
             {[
-              { n: '131', label: 'Apps audited' },
-              { n: '100+', label: 'Companies notified' },
-              { n: '200+', label: 'Critical findings' },
-              { n: '10+', label: 'Regulators notified' },
+              { n: '139',  label: 'Apps audited',        from: 'left'   },
+              { n: '100+', label: 'Companies notified',  from: 'bottom' },
+              { n: '250+', label: 'Critical findings',   from: 'top'    },
+              { n: '15+',  label: 'Regulators notified', from: 'right'  },
             ].map((s, i) => (
-              <Reveal key={s.label} delay={i} from="scale">
+              <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
                 <div style={{
                   background: 'rgba(0,245,196,0.05)', border: '1px solid rgba(0,245,196,0.15)',
                   borderRadius: 12, padding: '24px', textAlign: 'center', height: '100%',
@@ -751,6 +761,7 @@ export function PublicSite() {
               <span key={k} style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 3, background: v.bg, color: v.color, letterSpacing: '0.08em' }}>{v.label}</span>
             ))}
           </div>
+          <div style={{ maxHeight: 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent' }}>
           <div ref={ledgerRef} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
             <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}`}</style>
             {AUDIT_HIGHLIGHTS.map((a, i) => {
@@ -772,6 +783,7 @@ export function PublicSite() {
                 </div>
               )
             })}
+          </div>
           </div>
           <p style={{ marginTop: 12, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
             this ledger is updated in real time as companies respond. silence is public. · <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
