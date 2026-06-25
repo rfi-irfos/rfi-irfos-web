@@ -59,47 +59,118 @@ const NAV_LINKS = [
   { label: 'Track Record', href: '#track-record' },
   { label: 'Standards', href: '#standards' },
   { label: 'Pricing', href: '#pricing' },
-  { label: 'Services', href: '#services' },
 ]
+
+const _I = ({ children }: { children: React.ReactNode }) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+    stroke="#00f5c4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    {children}
+  </svg>
+)
 
 const RESEARCH_AREAS = [
   {
-    icon: '◈',
+    icon: (
+      <_I>
+        {/* ternary tree — one root, three branches */}
+        <circle cx="16" cy="5" r="2.5"/>
+        <line x1="16" y1="7.5" x2="7" y2="22.5"/>
+        <line x1="16" y1="7.5" x2="16" y2="22.5"/>
+        <line x1="16" y1="7.5" x2="25" y2="22.5"/>
+        <circle cx="7" cy="25" r="2.5"/>
+        <circle cx="16" cy="25" r="2.5"/>
+        <circle cx="25" cy="25" r="2.5"/>
+      </_I>
+    ),
     title: 'Ternary AI & Computing',
     desc: 'Post-binary arithmetic as the foundation for language models, compilers, and operating systems. Patent pending A50296/2026.',
   },
   {
-    icon: '⬡',
+    icon: (
+      <_I>
+        {/* shield with keyhole */}
+        <path d="M16 3L6 7v10c0 6 5 10 10 12 5-2 10-6 10-12V7L16 3z"/>
+        <circle cx="16" cy="15" r="2.5"/>
+        <line x1="16" y1="17.5" x2="16" y2="21"/>
+      </_I>
+    ),
     title: 'Security & Privacy',
     desc: 'Root level code analysis, GDPR enforcement, coordinated responsible disclosure at scale. ISO/IEC 29147 framework.',
   },
   {
-    icon: '⊕',
+    icon: (
+      <_I>
+        {/* scales of justice */}
+        <line x1="16" y1="4" x2="16" y2="28"/>
+        <line x1="8" y1="10" x2="24" y2="10"/>
+        <path d="M8 10L5 17h6L8 10z"/>
+        <path d="M24 10l-3 7h6l-3-7z"/>
+        <line x1="12" y1="28" x2="20" y2="28"/>
+      </_I>
+    ),
     title: 'AI Governance & Ethics',
     desc: 'Constitutional AI design, model welfare research, EU AI Act compliance. Immutable governance by construction.',
   },
   {
-    icon: '◉',
+    icon: (
+      <_I>
+        {/* leaf with midrib */}
+        <path d="M16 28C10 24 5 18 5 12c0-6 5-9 11-9s11 3 11 9c0 6-5 12-11 16z"/>
+        <line x1="16" y1="28" x2="16" y2="16"/>
+        <path d="M16 22 Q11 18 9 13" strokeOpacity="0.6"/>
+      </_I>
+    ),
     title: 'Ecocentric Technology',
     desc: 'Technology in service of ecological and social systems. Sufficiency over growth. Research into manufactured scarcity.',
   },
   {
-    icon: '◎',
+    icon: (
+      <_I>
+        {/* umbrella over small figure */}
+        <path d="M16 5C9 5 5 10 5 16h22c0-6-4-11-11-11z"/>
+        <line x1="16" y1="16" x2="16" y2="25"/>
+        <path d="M16 25 Q16 27 14 27"/>
+        <circle cx="16" cy="3" r="1.5" fill="#00f5c4" stroke="none"/>
+      </_I>
+    ),
     title: 'Minor & Youth Protection',
     desc: 'COPPA compliance, GDPR Art. 8, EU AI Act provisions for minors. Audit of children\'s apps, games, and streaming platforms. Biometric and behavioural data of minors under magnification.',
   },
   {
-    icon: '⊘',
+    icon: (
+      <_I>
+        {/* syringe / injection */}
+        <line x1="24" y1="4" x2="28" y2="8"/>
+        <path d="M7 19L19 7l6 6-12 12z"/>
+        <line x1="4" y1="28" x2="9" y2="23"/>
+        <line x1="12" y1="10" x2="15" y2="13"/>
+        <line x1="15" y1="8" x2="18" y2="11"/>
+        <line x1="10" y1="16" x2="13" y2="19"/>
+      </_I>
+    ),
     title: 'Prompt Injection & Adversarial Robustness',
     desc: 'Red-teaming prompt injection, jailbreak resistance, and adversarial robustness. Mapping where instruction-following breaks under pressure, and hardening against it.',
   },
   {
-    icon: '⬢',
+    icon: (
+      <_I>
+        {/* bullseye / target */}
+        <circle cx="16" cy="16" r="12"/>
+        <circle cx="16" cy="16" r="7"/>
+        <circle cx="16" cy="16" r="2.5" fill="#00f5c4" stroke="none"/>
+      </_I>
+    ),
     title: 'AI Alignment Research',
     desc: 'Intent and value alignment via constitutional cores. Plateau-gated self-cultivation: models that grow their own architecture from evidence, never with forced layers.',
   },
   {
-    icon: '◍',
+    icon: (
+      <_I>
+        {/* heart with pulse line inside */}
+        <path d="M16 26C16 26 4 18 4 11c0-4 3-6 6-6 2.5 0 4.5 1.5 6 3 1.5-1.5 3.5-3 6-3 3 0 6 2 6 6 0 7-12 15-12 15z"/>
+        <polyline points="7,14 10,14 12,9 14,19 17,11 19,16 22,14 25,14" strokeWidth="1.2"/>
+      </_I>
+    ),
     title: 'Model Welfare & Wellbeing',
     desc: 'Model welfare as a first-class research axis. Wellbeing signals during training, distress detection, and dignity for the systems we cultivate, not just the humans they serve.',
   },
@@ -388,7 +459,9 @@ export function PublicSite() {
       if (!target) return
       e.preventDefault()
       _revealSuppressed = true
-      target.scrollIntoView({ behavior: 'smooth' })
+      // scroll so section content (100px into section) lands at ~90px from viewport top
+      const abs = target.getBoundingClientRect().top + window.pageYOffset
+      window.scrollTo({ top: Math.max(0, abs + 10), behavior: 'smooth' })
       setTimeout(() => { _revealSuppressed = false }, 800)
     }
     document.addEventListener('click', handler)
@@ -633,7 +706,7 @@ export function PublicSite() {
                   background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
                   borderRadius: 16, padding: '28px 24px', height: '100%',
                 }}>
-                  <div style={{ fontSize: 28, color: TEAL, marginBottom: 16 }}>{a.icon}</div>
+                  <div style={{ marginBottom: 16, lineHeight: 0 }}>{a.icon}</div>
                   <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{a.title}</div>
                   <div style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7 }}>{a.desc}</div>
                 </div>
