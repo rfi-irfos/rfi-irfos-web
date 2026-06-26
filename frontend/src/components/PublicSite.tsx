@@ -649,9 +649,19 @@ export function PublicSite() {
   const [activeSev, setActiveSev] = useState<string | null>(null)
   const [now, setNow] = useState(() => Date.now())
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
+  const [checkoutModal, setCheckoutModal]     = useState<string | null>(null)
+  const [agbChecked, setAgbChecked]           = useState(false)
+  const [b2bChecked, setB2bChecked]           = useState(false)
   const { theme, setTheme } = useTheme()
 
+  const openCheckoutModal = (tier: string) => {
+    setAgbChecked(false)
+    setB2bChecked(false)
+    setCheckoutModal(tier)
+  }
+
   const handleCheckout = async (tier: string) => {
+    setCheckoutModal(null)
     setCheckoutLoading(tier)
     const apiBase = (import.meta.env.VITE_API_BASE as string) ?? ''
     try {
@@ -752,6 +762,41 @@ export function PublicSite() {
 
   return (
     <div style={{ background: '#070711', color: '#e8e8f0', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
+
+      {/* B2B CHECKOUT CONFIRMATION MODAL */}
+      {checkoutModal && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: 14, padding: '32px 28px', maxWidth: 480, width: '100%' }}>
+            <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>Bestellbestätigung</div>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 20, color: '#e8e8f0' }}>Vor dem Checkout bitte bestätigen</h3>
+            <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16, cursor: 'pointer' }}>
+              <input type="checkbox" checked={b2bChecked} onChange={e => setB2bChecked(e.target.checked)}
+                style={{ marginTop: 3, accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
+              <span style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.6 }}>
+                Ich handle als <strong style={{ color: '#e8e8f0' }}>Unternehmer i.S.d. § 1 Abs. 2 KSchG</strong> und bestätige, dass dieser Kauf im Rahmen meiner gewerblichen oder beruflichen Tätigkeit erfolgt.
+              </span>
+            </label>
+            <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 24, cursor: 'pointer' }}>
+              <input type="checkbox" checked={agbChecked} onChange={e => setAgbChecked(e.target.checked)}
+                style={{ marginTop: 3, accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
+              <span style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.6 }}>
+                Ich stimme den <a href="#p/agb" style={{ color: TEAL }}>AGB</a> zu. Ich bin einverstanden, dass die Leistung <strong style={{ color: '#e8e8f0' }}>sofort nach Zahlung beginnt</strong> und kein Widerrufsrecht besteht (§ 18 Abs. 1 Z 1 FAGG). Rückerstattungen sind ausgeschlossen.
+              </span>
+            </label>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <button onClick={() => setCheckoutModal(null)}
+                style={{ flex: 1, padding: '10px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#606080', fontSize: 12, fontFamily: 'monospace', cursor: 'pointer' }}>
+                Abbrechen
+              </button>
+              <button onClick={() => handleCheckout(checkoutModal)}
+                disabled={!b2bChecked || !agbChecked}
+                style={{ flex: 2, padding: '10px', background: b2bChecked && agbChecked ? 'rgba(0,245,196,0.12)' : 'transparent', border: `1px solid ${b2bChecked && agbChecked ? TEAL : 'rgba(255,255,255,0.08)'}`, borderRadius: 6, color: b2bChecked && agbChecked ? TEAL : '#404058', fontSize: 12, fontFamily: 'monospace', cursor: b2bChecked && agbChecked ? 'pointer' : 'not-allowed', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                Weiter zu Stripe →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* NAV */}
       <nav style={{
@@ -1416,11 +1461,10 @@ export function PublicSite() {
                   <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
                   {t.stripeKey && (
                     <button
-                      onClick={() => handleCheckout(t.stripeKey!)}
-                      disabled={checkoutLoading === t.stripeKey}
-                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: checkoutLoading === t.stripeKey ? 0.5 : 1 }}
+                      onClick={() => openCheckoutModal(t.stripeKey!)}
+                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
                     >
-                      {checkoutLoading === t.stripeKey ? 'loading...' : 'get started →'}
+                      get started →
                     </button>
                   )}
                   {t.contact && (
@@ -1447,11 +1491,10 @@ export function PublicSite() {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10 }}>
               <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>€1,500 / mo</div>
               <button
-                onClick={() => handleCheckout('retainer')}
-                disabled={checkoutLoading === 'retainer'}
-                style={{ padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: checkoutLoading === 'retainer' ? 0.5 : 1 }}
+                onClick={() => openCheckoutModal('retainer')}
+                style={{ padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
               >
-                {checkoutLoading === 'retainer' ? 'loading...' : 'start retainer →'}
+                start retainer →
               </button>
             </div>
           </div>
@@ -1492,11 +1535,10 @@ export function PublicSite() {
                   <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
                   <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
                   <button
-                    onClick={() => handleCheckout(t.stripeKey)}
-                    disabled={checkoutLoading === t.stripeKey}
-                    style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: checkoutLoading === t.stripeKey ? 0.5 : 1 }}
+                    onClick={() => openCheckoutModal(t.stripeKey)}
+                    style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
                   >
-                    {checkoutLoading === t.stripeKey ? 'loading...' : 'get started →'}
+                    get started →
                   </button>
                 </div>
               </Reveal>
@@ -1523,11 +1565,10 @@ export function PublicSite() {
                   <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
                   {t.stripeKey ? (
                     <button
-                      onClick={() => handleCheckout(t.stripeKey!)}
-                      disabled={checkoutLoading === t.stripeKey}
-                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: checkoutLoading === t.stripeKey ? 0.5 : 1 }}
+                      onClick={() => openCheckoutModal(t.stripeKey!)}
+                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
                     >
-                      {checkoutLoading === t.stripeKey ? 'loading...' : 'get started →'}
+                      get started →
                     </button>
                   ) : (
                     <a href="#contact" style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
