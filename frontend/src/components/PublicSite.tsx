@@ -889,7 +889,7 @@ export function PublicSite() {
             onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = '#a0a0b8' }}>Pricing</a>
         </div>
 
-        <div style={{ display: 'flex', gap: '3rem', margin: '80px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
+        <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '80px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
           {([
             { n: '175+', label: 'apps audited',        from: 'left'   },
             { n: '250+', label: 'critical findings',   from: 'bottom' },
@@ -919,7 +919,7 @@ export function PublicSite() {
               One team. The same people who train the model write the regulatory analysis and file the disclosure.
             </p>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: 20 }}>
             {RESEARCH_AREAS.map((a, i) => (
               <Reveal key={a.title} delay={i} from={(['left', 'bottom', 'right', 'scale'] as const)[i % 4]}>
                 <div style={{
@@ -975,7 +975,7 @@ export function PublicSite() {
               Every project is a proof of concept for a specific research question. All built on the same stack.
             </p>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
             {PROJECTS.map((p, i) => (
               <Reveal key={p.name} delay={i % 4} from={(['bottom', 'right', 'bottom', 'left'] as const)[i % 4]} style={{ display: 'flex' }}>
               <div style={{
@@ -1050,11 +1050,11 @@ export function PublicSite() {
             <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', margin: 0 }}>Permanent disclosure ledger</h3>
             <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)' }}>{AUDIT_HIGHLIGHTS.length} clients · live response tracking · disclosure 2026-09-19</span>
           </div>
-          {/* Search + filter dropdowns — single row */}
-          <div style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'stretch' }}>
+          {/* Search + filter dropdowns — single row (stacks on mobile) */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'stretch', flexWrap: mobile ? 'wrap' : 'nowrap' }}>
 
             {/* Search */}
-            <div style={{ position: 'relative', flex: 1, minWidth: 0 }}>
+            <div style={{ position: 'relative', flex: 1, minWidth: 0, ...(mobile ? { flexBasis: '100%' } : {}) }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,245,196,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                 style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -1086,7 +1086,7 @@ export function PublicSite() {
             </div>
 
             {/* Status dropdown */}
-            <div style={{ position: 'relative', flexShrink: 0 }}>
+            <div style={{ position: 'relative', ...(mobile ? { flex: 1 } : { flexShrink: 0 }) }}>
               <select
                 className="ledger-sel"
                 value={activeStatus ?? ''}
@@ -1099,7 +1099,7 @@ export function PublicSite() {
                   borderRadius: 7, padding: '11px 28px 11px 12px',
                   color: activeStatus ? (STATUS_META[activeStatus]?.color ?? TEAL) : 'var(--text3)',
                   fontFamily: 'monospace', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
-                  cursor: 'pointer', outline: 'none', minWidth: 115,
+                  cursor: 'pointer', outline: 'none', ...(mobile ? { width: '100%' } : { minWidth: 115 }),
                 }}
               >
                 <option value="">STATUS</option>
@@ -1116,7 +1116,7 @@ export function PublicSite() {
             </div>
 
             {/* SEV dropdown */}
-            <div style={{ position: 'relative', flexShrink: 0 }}>
+            <div style={{ position: 'relative', ...(mobile ? { flex: 1 } : { flexShrink: 0 }) }}>
               <select
                 className="ledger-sel"
                 value={activeSev ?? ''}
@@ -1129,7 +1129,7 @@ export function PublicSite() {
                   borderRadius: 7, padding: '11px 28px 11px 12px',
                   color: activeSev === 'CRITICAL' ? '#f87171' : activeSev === 'HIGH' ? '#fb923c' : activeSev === 'MEDIUM' ? '#fbbf24' : 'var(--text3)',
                   fontFamily: 'monospace', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
-                  cursor: 'pointer', outline: 'none', minWidth: 88,
+                  cursor: 'pointer', outline: 'none', ...(mobile ? { width: '100%' } : { minWidth: 88 }),
                 }}
               >
                 <option value="">SEV</option>
@@ -1170,14 +1170,14 @@ export function PublicSite() {
           })()}
 
           {/* Table */}
-          <div style={{ maxHeight: 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
+          <div style={{ maxHeight: mobile ? '65vh' : 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
             <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}@keyframes ekgPulse{0%{stroke-dashoffset:90;opacity:0}8%{opacity:1}80%{opacity:1}100%{stroke-dashoffset:-90;opacity:0}}.ekg-line{stroke-dasharray:90;animation:ekgPulse 2.4s linear infinite}`}</style>
 
             {/* Sticky header */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: mobile
-                ? '1fr 95px 82px'
+                ? '1fr 85px 110px'
                 : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 130px 130px',
               gap: '0 6px',
               padding: '7px 14px',
@@ -1305,7 +1305,7 @@ export function PublicSite() {
 
                     {/* Countdown */}
                     <div style={{ paddingTop: 1 }}>
-                      <div style={{ fontFamily: 'monospace', fontSize: 16, fontWeight: 900, color: cdColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
+                      <div style={{ fontFamily: 'monospace', fontSize: mobile ? 12 : 16, fontWeight: 900, color: cdColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
                         {cdStr}
                       </div>
                       <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
@@ -1432,7 +1432,7 @@ export function PublicSite() {
 
           {/* Market Research & Competitor Analysis */}
           <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Market Research &amp; Competitor Analysis</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 48 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 48 }}>
             {[
               { tier: 'Market Overview', price: '€2,500', desc: 'Sector landscape report. Key player mapping. Regulatory environment. 10-page minimum. Delivered in 5 business days.' },
               { tier: 'Competitor Intelligence', price: '€7,500', desc: 'Deep-dive on 3–5 competitors. Technical stack analysis, privacy posture, market positioning, strategic vulnerabilities.' },
@@ -1454,7 +1454,7 @@ export function PublicSite() {
 
           {/* Web Development */}
           <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Web Development</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 64 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
             {[
               { tier: 'Landing Page', price: '€1,500', desc: 'Single-page site. React + our open-source template. Delivered in 48 hours.' },
               { tier: 'Full Site', price: '€4,500', desc: 'Multi-page + CMS admin + contact form + analytics. 2-week delivery.' },
@@ -1590,7 +1590,7 @@ export function PublicSite() {
             <p style={{ color: '#a0a0b8', marginBottom: 48 }}>reach us for research collaboration, security disclosures, or service inquiries.</p>
           </Reveal>
 
-          <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: 40 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: mobile ? 16 : 40 }}>
             {/* left: form */}
             <Reveal from="left" style={{ display: 'flex', flexDirection: 'column' }}>
             <form onSubmit={submitForm} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -1699,14 +1699,14 @@ export function PublicSite() {
           </a>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: 16 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)' }}>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>WKO MEMBER &nbsp;·&nbsp; GewO § 32 &nbsp;·&nbsp; Automatische Datenverarbeitung</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>WKO MEMBER · GewO § 32 · Automatische Datenverarbeitung</span>
           </div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)' }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
               <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
             </svg>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT &nbsp;·&nbsp; ZVR 1015608684 &nbsp;·&nbsp; GISA 39261441</span>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT · ZVR 1015608684 · GISA 39261441</span>
           </div>
         </div>
         <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em' }}>
