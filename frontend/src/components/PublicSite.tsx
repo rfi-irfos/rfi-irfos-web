@@ -841,8 +841,8 @@ export function PublicSite() {
       {/* HERO */}
       <section style={{
         minHeight: '100vh', display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center', textAlign: 'center',
-        padding: '120px 2rem 80px',
+        alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
+        padding: 'calc(72px + 6vh) 2rem 60px',
         background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.06) 0%, transparent 70%)',
       }}>
         <p style={{
@@ -889,7 +889,7 @@ export function PublicSite() {
             onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = '#a0a0b8' }}>Pricing</a>
         </div>
 
-        <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '80px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
+        <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '56px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
           {([
             { n: '175+', label: 'apps audited',        from: 'left'   },
             { n: '250+', label: 'critical findings',   from: 'bottom' },
