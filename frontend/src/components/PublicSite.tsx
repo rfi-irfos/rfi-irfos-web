@@ -571,8 +571,8 @@ function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
   const innerContent = (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-        <div style={{ fontFamily: 'monospace', fontSize: 10, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{m.date}</div>
-        {isPublication && <span style={{ fontFamily: 'monospace', fontSize: 9, color: TEAL, border: '1px solid rgba(0,245,196,0.3)', borderRadius: 10, padding: '2px 7px', letterSpacing: '0.08em' }}>OSF ↗</span>}
+        <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{m.date}</div>
+        {isPublication && <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--accent-text)', border: '1px solid rgba(0,245,196,0.3)', borderRadius: 10, padding: '2px 7px', letterSpacing: '0.08em' }}>OSF ↗</span>}
       </div>
       <div style={{ fontWeight: 700, fontSize: 14 }}>{m.label}</div>
     </>
@@ -784,7 +784,7 @@ export function PublicSite() {
               <input type="checkbox" checked={agbChecked} onChange={e => setAgbChecked(e.target.checked)}
                 style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
               <span style={{ color: '#a0a0b8', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                Ich stimme den <a href="#p/agb" style={{ color: TEAL }}>AGB</a> zu. Ich bin einverstanden, dass die Leistung <strong style={{ color: '#e8e8f0' }}>sofort nach Zahlung beginnt</strong> und kein Widerrufsrecht besteht (§ 18 Abs. 1 Z 1 FAGG). Rückerstattungen sind ausgeschlossen.
+                Ich stimme den <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>AGB</a> zu. Ich bin einverstanden, dass die Leistung <strong style={{ color: '#e8e8f0' }}>sofort nach Zahlung beginnt</strong> und kein Widerrufsrecht besteht (§ 18 Abs. 1 Z 1 FAGG). Rückerstattungen sind ausgeschlossen.
               </span>
             </label>
             <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
@@ -914,7 +914,7 @@ export function PublicSite() {
         background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.06) 0%, transparent 70%)',
       }}>
         <p style={{
-          fontFamily: 'monospace', fontSize: 11, color: TEAL, letterSpacing: '0.2em',
+          fontFamily: 'monospace', fontSize: 11, color: 'var(--accent-text)', letterSpacing: '0.2em',
           textTransform: 'uppercase', marginBottom: 32,
           border: '1px solid rgba(0,245,196,0.3)', padding: '6px 16px', borderRadius: 20,
         }}>
@@ -927,7 +927,7 @@ export function PublicSite() {
           fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,
           marginBottom: 24, letterSpacing: '0.01em', color: '#a0a0b8',
         }}>
-          <span style={{ color: TEAL }}>Interdisciplinary</span> Research Facility for Open Sciences
+          <span style={{ color: 'var(--accent-text)' }}>Interdisciplinary</span> Research Facility for Open Sciences
         </h1>
         <p style={{ fontSize: 17, color: '#a0a0b8', maxWidth: 580, lineHeight: 1.75, marginBottom: 48 }}>
           Independent Austrian research institute. Ternary AI, security, governance, minor protection, and ecocentric technology.
@@ -942,7 +942,7 @@ export function PublicSite() {
             onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
             onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Research</a>
           <a href="#track-record" style={{
-            border: '1px solid rgba(0,245,196,0.35)', color: TEAL, padding: '13px 30px', borderRadius: 8,
+            border: '1px solid rgba(0,245,196,0.35)', color: 'var(--accent-text)', padding: '13px 30px', borderRadius: 8,
             fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
             textTransform: 'uppercase', transition: 'border-color 0.15s',
           }}
@@ -967,7 +967,7 @@ export function PublicSite() {
           ] as const).map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from}>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 32, fontWeight: 900, color: TEAL }}>{s.n}</div>
+                <div style={{ fontSize: 32, fontWeight: 900, color: 'var(--accent-text)' }}>{s.n}</div>
                 <div style={{ fontSize: 11, color: '#606080', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{s.label}</div>
               </div>
             </Reveal>
@@ -1014,7 +1014,7 @@ export function PublicSite() {
                     <span style={{ fontWeight: 700, fontSize: 13, color: '#e8e8f0' }}>{p.title}</span>
                     <span style={{ color: '#606080', fontSize: 12, display: 'block', marginTop: 2 }}>{p.sub}</span>
                   </span>
-                  <span style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '3px 8px', borderRadius: 20, border: '1px solid rgba(0,245,196,0.25)', color: TEAL, whiteSpace: 'nowrap' }}>{p.tag}</span>
+                  <span style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '3px 8px', borderRadius: 20, border: '1px solid rgba(0,245,196,0.25)', color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{p.tag}</span>
                   <span style={{ color: '#404058', fontSize: 12 }}>↗</span>
                 </a>
               ))}
@@ -1058,13 +1058,13 @@ export function PublicSite() {
                   <span style={{
                     fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em',
                     padding: '3px 8px', borderRadius: 20,
-                    border: '1px solid rgba(0,245,196,0.3)', color: TEAL, whiteSpace: 'nowrap',
+                    border: '1px solid rgba(0,245,196,0.3)', color: 'var(--accent-text)', whiteSpace: 'nowrap',
                   }}>{p.tag}</span>
                 </div>
                 <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
                 {p.link && (
                   <a href={p.link} target="_blank" rel="noopener noreferrer"
-                    style={{ color: TEAL, fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
+                    style={{ color: 'var(--accent-text)', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
                     View on GitHub &rarr;
                   </a>
                 )}
@@ -1099,7 +1099,7 @@ export function PublicSite() {
                   background: 'rgba(0,245,196,0.05)', border: '1px solid rgba(0,245,196,0.15)',
                   borderRadius: 12, padding: '24px', textAlign: 'center', height: '100%',
                 }}>
-                  <div style={{ fontSize: 36, fontWeight: 900, color: TEAL }}>{s.n}</div>
+                  <div style={{ fontSize: 36, fontWeight: 900, color: 'var(--accent-text)' }}>{s.n}</div>
                   <div style={{ fontSize: 11, color: '#606080', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 6 }}>{s.label}</div>
                 </div>
               </Reveal>
@@ -1110,7 +1110,7 @@ export function PublicSite() {
             borderRadius: 12, padding: '20px 24px', marginBottom: 48,
             fontFamily: 'monospace', fontSize: 12, color: '#a0a0b8', lineHeight: 1.8,
           }}>
-            <span style={{ color: TEAL, fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
+            <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
             {' '}listed clients · GDPR Art. 5/8/9/13/25/32/44 · COPPA · EU AI Act (minor provisions) · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at · FTC
           </div>
 
@@ -1332,7 +1332,7 @@ export function PublicSite() {
                           {meta?.notified ?? '—'}
                         </div>
                         {notifiedTs && (
-                          <div style={{ fontFamily: 'monospace', fontSize: 9, color: TEAL, marginTop: 2, letterSpacing: '0.04em' }}>
+                          <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--accent-text)', marginTop: 2, letterSpacing: '0.04em' }}>
                             {eDays === 0 ? 'today' : `${eDays}d ago`}
                           </div>
                         )}
@@ -1461,12 +1461,12 @@ export function PublicSite() {
                   display: 'flex', flexDirection: 'column',
                 }}>
                   <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
+                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
                   <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
                   {t.stripeKey && (
                     <button
                       onClick={() => openCheckoutModal(t.stripeKey!)}
-                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
+                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
                     >
                       get started →
                     </button>
@@ -1493,10 +1493,10 @@ export function PublicSite() {
               <div style={{ color: '#a0a0b8', fontSize: 13 }}>continuous monitoring · quarterly audits · priority response · dedicated contact</div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10 }}>
-              <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>€1,500 / mo</div>
+              <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>€1,500 / mo</div>
               <button
                 onClick={() => openCheckoutModal('retainer')}
-                style={{ padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
+                style={{ padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
               >
                 start retainer →
               </button>
@@ -1516,7 +1516,7 @@ export function PublicSite() {
               <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>Phone Sanitizing: first session free</div>
               <div style={{ color: '#a0a0b8', fontSize: 13 }}>send us your phone — we disable background tracking scripts permanently · DNS-over-HTTPS · backup hardening · full before/after audit report · by appointment</div>
             </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>free</div>
+            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>free</div>
           </div>
           </Reveal>
 
@@ -1536,11 +1536,11 @@ export function PublicSite() {
                   display: 'flex', flexDirection: 'column',
                 }}>
                   <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
+                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
                   <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
                   <button
                     onClick={() => openCheckoutModal(t.stripeKey)}
-                    style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
+                    style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
                   >
                     get started →
                   </button>
@@ -1565,12 +1565,12 @@ export function PublicSite() {
                   display: 'flex', flexDirection: 'column',
                 }}>
                   <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
+                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
                   <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
                   {t.stripeKey ? (
                     <button
                       onClick={() => openCheckoutModal(t.stripeKey!)}
-                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
+                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
                     >
                       get started →
                     </button>
@@ -1594,7 +1594,7 @@ export function PublicSite() {
             <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>where the money goes</div>
             <p style={{ color: '#a0a0b8', fontSize: 14, lineHeight: 1.8, maxWidth: 620, margin: '0 auto' }}>
               100% of surplus revenue is reinvested into open science, public research, and infrastructure.{' '}
-              <span style={{ color: TEAL, fontWeight: 700 }}>Zero goes to shareholders — we have none.</span>{' '}
+              <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>Zero goes to shareholders — we have none.</span>{' '}
               RFI-IRFOS is a regulated not-for-profit (ZVR 1015608684). Every euro above operating costs funds the next audit, the next model training run, or the next research publication. That is not a marketing line. It is a legal obligation.
             </p>
           </div>
@@ -1617,8 +1617,8 @@ export function PublicSite() {
           <Reveal from="scale">
             <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '32px 28px', marginBottom: 24 }}>
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 14 }}>
-                <div style={{ fontWeight: 900, fontSize: 22, color: '#e8e8f0' }}>NIS-2 <span style={{ color: TEAL }}>·</span> NISG 2026</div>
-                <span style={{ fontFamily: 'monospace', fontSize: 10, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.15em', border: '1px solid rgba(0,245,196,0.3)', borderRadius: 20, padding: '4px 12px', whiteSpace: 'nowrap' }}>EU · Austria · in force</span>
+                <div style={{ fontWeight: 900, fontSize: 22, color: '#e8e8f0' }}>NIS-2 <span style={{ color: 'var(--accent-text)' }}>·</span> NISG 2026</div>
+                <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.15em', border: '1px solid rgba(0,245,196,0.3)', borderRadius: 20, padding: '4px 12px', whiteSpace: 'nowrap' }}>EU · Austria · in force</span>
               </div>
               <p style={{ color: '#a0a0b8', fontSize: 14, lineHeight: 1.8, marginBottom: 16 }}>
                 The EU directive for a high common level of cybersecurity, transposed into Austrian law as <strong style={{ color: '#e8e8f0' }}>NISG 2026</strong>. It mandates state-of-the-art risk management, strict incident reporting to national authorities, and <strong style={{ color: '#e8e8f0' }}>personal liability for company management</strong>. In Austria it directly impacts roughly 4,000 essential and important entities, plus an estimated 50,000 supply-chain partners.
@@ -1630,7 +1630,7 @@ export function PublicSite() {
                   ['Corporate Accountability', 'management personally liable for non-compliance'],
                 ].map(([t, d]) => (
                   <div key={t} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '14px 16px' }}>
-                    <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 5, color: TEAL }}>{t}</div>
+                    <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 5, color: 'var(--accent-text)' }}>{t}</div>
                     <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.6 }}>{d}</div>
                   </div>
                 ))}
@@ -1759,7 +1759,7 @@ export function PublicSite() {
                   onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
                   onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}>
                   <div style={{ fontSize: 10, fontFamily: 'monospace', color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
-                  <div style={{ color: TEAL, fontWeight: 600, fontSize: 13 }}>{c.value}</div>
+                  <div style={{ color: 'var(--accent-text)', fontWeight: 600, fontSize: 13 }}>{c.value}</div>
                 </a>
               ))}
               <p style={{ fontSize: 11, color: '#505068', fontFamily: 'monospace', marginTop: 8, lineHeight: 1.8 }}>
