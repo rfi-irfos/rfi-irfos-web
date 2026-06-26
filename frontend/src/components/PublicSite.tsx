@@ -219,7 +219,7 @@ const PROJECTS = [
   },
   {
     name: 'Android Security Audit 2026',
-    sub: '139 apps · 100+ companies',
+    sub: '148 apps · 100+ companies',
     desc: '250+ critical findings across NYSE, NASDAQ, LSE, and XETRA listed companies. Includes children\'s app wave with COPPA + GDPR Art. 8 scope. Root level code analysis. Coordinated disclosure 2026-09-19. Regulators BCC\'d on every submission.',
     link: 'https://github.com/rfi-irfos/android-security-audit-2026',
     tag: 'security research',
@@ -270,12 +270,12 @@ const MILESTONES: { date: string; label: string; side: 'left' | 'right'; link?: 
   { date: 'April 2026', label: 'The Ternary Intelligence Stack: system paper', side: 'left', link: 'https://osf.io/cyn28/', tag: 'publication' },
   { date: 'May 2026', label: 'SPRIND pitch submitted. EUR 26.5M ceiling.', side: 'right', tag: 'milestone' },
   { date: 'May 2026', label: 'DOOM boots on bare-metal Rust kernel', side: 'left', tag: 'milestone' },
-  { date: 'June 2026', label: '131 Android apps audited. 100+ companies. NYSE / NASDAQ / LSE / XETRA. COPPA + GDPR Art. 8 child protection scope.', side: 'right', link: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'milestone' },
+  { date: 'June 2026', label: '148 Android apps audited. 100+ companies. NYSE / NASDAQ / LSE / XETRA. COPPA + GDPR Art. 8 child protection scope. StoryToys 9-app children\'s wave.', side: 'right', link: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'milestone' },
   { date: 'June 2026', label: 'aladdin-mini: open-source disclosure impact engine', side: 'left', link: 'https://github.com/rfi-irfos/aladdin-mini', tag: 'milestone' },
 ]
 
 const PUBLICATIONS = [
-  { year: '2026', title: 'Android Security Audit 2026: Coordinated Disclosure', sub: '131 apps · 100+ companies · 200+ critical findings · NYSE/NASDAQ/LSE/XETRA · disclosure 2026-09-19', href: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'Security · Ongoing' },
+  { year: '2026', title: 'Android Security Audit 2026: Coordinated Disclosure', sub: '148 apps · 100+ companies · 250+ critical findings · NYSE/NASDAQ/LSE/XETRA · StoryToys children\'s wave · disclosure Sep 2026', href: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'Security · Ongoing' },
   { year: '2026', title: 'The Ternary Intelligence Stack', sub: 'vertically integrated post-binary AI platform', href: 'https://osf.io/cyn28/', tag: 'AI · Systems' },
   { year: '2026', title: 'Myco-Styria', sub: 'polystyrene replacement via mycelium + Austrian lignocellulose residues', href: 'https://osf.io/ek8rm/', tag: 'Ecocentric' },
   { year: '2025', title: 'A Ternary Logic Mixture-of-Experts Model', sub: 'sparse ternary MoE architecture with autonomous Net2Net surgery', href: 'https://osf.io/tz7dc/', tag: 'AI · Model' },
@@ -363,6 +363,15 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'PSA ich.app (AT)',      market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'Austrian eID + payment app: ServerType enum in production APK exposes full internal infrastructure — AZURE2A http://20.61.119.111:8081 + AZURE2B http://20.61.119.111:8091 (cleartext, no TLS). Hardcoded credentials in ServerType enum. Firebase Analytics + AD_ID on an eID/payment app.' },
   { target: 'running.COACH (AT)',   market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING', finding: 'allowBackup=true with no health data exclusion: training history, heart rate, running sessions backed up to Google Cloud. Privacy policy states no third-party data sharing — allowBackup IS Google sharing. NSC present but empty: zero certificate pinning on a health app. Huawei HMS 412 smali undisclosed. GDPR Art. 13(1)(e) policy contradiction.' },
   { target: 'LEGO Bluey (IE)',      market: 'PRIVATE', sev: 'HIGH',     status: 'ACK',     finding: 'ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION declared in LEGO/BBC Studios licensed children\'s app (under-5s). Google Ads (gms.ads) + Unity + Firebase SDKs bundled. FirebaseInitProvider auto-init before consent screen. R2 sent 2026-06-26: Engineering Review Deflection + Technical Proof Redirect both named. THREE QUESTIONS unanswered.' },
+  { target: 'StoryToys: Peppa Pig (IE)',          market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION + FirebaseInitProvider (initOrder=100, directBootAware=true): advertising identifier + Firebase auto-init before consent on a Peppa Pig licensed app targeting under-5s. StoryToys Entertainment Ltd, Dublin. COPPA §312.7 + GDPR Art. 8.' },
+  { target: 'StoryToys: Thomas & Friends (IE)',   market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION + FirebaseInitProvider (initOrder=100) pre-consent auto-init: advertising tracking on a Mattel/HIT Entertainment licensed toddler app. Firebase transmits to Google US before any parent consent screen is shown.' },
+  { target: 'StoryToys: Sesame St. Mecha (IE)',   market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION + FirebaseInitProvider (initOrder=100) pre-consent: systematic advertising infrastructure on a Sesame Workshop licensed children\'s app. COPPA §312.3 + GDPR Art. 8.' },
+  { target: 'StoryToys: LEGO DUPLO World (IE)',   market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION + FirebaseInitProvider (initOrder=100) pre-consent + Firebase API key hardcoded. Part of 9-app systematic pattern: advertising identifier + pre-consent Firebase across the entire StoryToys licensed children\'s portfolio.' },
+  { target: 'StoryToys: Barbie Coloring (IE)',    market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION + FirebaseInitProvider pre-consent + Amazon IAP (undisclosed US processor). Mattel/Barbie licensed. Three US processors (Google Analytics, Firebase, Amazon) on a children\'s colouring app.' },
+  { target: 'StoryToys: Marvel HQ (IE)',          market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION + FirebaseInitProvider (initOrder=100) pre-consent + Amazon IAP undisclosed US processor. Marvel/Disney licensed. Advertising identifier + pre-consent tracking on a superhero app for children.' },
+  { target: 'StoryToys: Disney Coloring (IE)',    market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION + FirebaseInitProvider (initOrder=100) pre-consent auto-init. Disney/Pixar licensed. Disney paid US FTC $174M COPPA settlement in 2019 — identical advertising identifier pattern documented here.' },
+  { target: 'StoryToys: Hungry Caterpillar (IE)', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'AD_ID + Attribution + FirebaseInitProvider pre-consent + READ_EXTERNAL_STORAGE + WRITE_EXTERNAL_STORAGE (full shared device storage access on a preschool literacy app) + Firebase key AIzaSyBUfwxI0X95gPMWkfsfJHgrEVfK7wtItTU hardcoded + install referrer attribution. Highest-severity in StoryToys wave. Eric Carle licensed.' },
+  { target: 'StoryToys: Mother Goose Club (IE)',  market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'FacebookInitProvider auto-init before consent: Meta SDK fires unconditionally at app startup on a nursery rhymes app for toddlers — Meta Platforms receives device data before any parent consent screen is shown. GCM push channel (Google). DPC Ireland supervises both StoryToys Ltd and Meta Platforms Ireland Ltd.' },
 ]
 
 const SEV_COLOR: Record<string, string> = {
@@ -458,7 +467,16 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'Roma & Diana (ID)':       { notified: '2026-06-24', disclosure: '2026-09-19' },
   'PSA ich.app (AT)':        { notified: '2026-06-24', disclosure: '2026-09-19' },
   'running.COACH (AT)':      { notified: '2026-06-23', disclosure: '2026-09-21' },
-  'LEGO Bluey (IE)':         { notified: '2026-06-25', disclosure: '2026-09-19' },
+  'LEGO Bluey (IE)':                       { notified: '2026-06-25', disclosure: '2026-09-19' },
+  'StoryToys: Peppa Pig (IE)':            { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'StoryToys: Thomas & Friends (IE)':     { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'StoryToys: Sesame St. Mecha (IE)':     { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'StoryToys: LEGO DUPLO World (IE)':     { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'StoryToys: Barbie Coloring (IE)':      { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'StoryToys: Marvel HQ (IE)':            { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'StoryToys: Disney Coloring (IE)':      { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'StoryToys: Hungry Caterpillar (IE)':   { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'StoryToys: Mother Goose Club (IE)':    { notified: '2026-06-26', disclosure: '2026-09-24' },
 }
 
 const CREDENTIALS = [
@@ -643,6 +661,10 @@ export function PublicSite() {
         <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 34, height: 34, objectFit: 'contain' }} />
           <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: '#e8e8f0' }}>RFI-IRFOS</span>
+          <svg width="54" height="18" viewBox="0 0 54 18" fill="none" style={{ marginLeft: 4, flexShrink: 0, overflow: 'visible' }}>
+            <polyline className="ekg-line" points="0,9 12,9 16,2 20,16 24,2 28,9 54,9"
+              stroke="#00f5c4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </a>
 
         {/* Desktop nav — React inline styles can't do media queries, so gate on the useMobile() hook */}
@@ -783,7 +805,7 @@ export function PublicSite() {
 
         <div style={{ display: 'flex', gap: '3rem', margin: '80px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
           {([
-            { n: '139',  label: 'apps audited',        from: 'left'   },
+            { n: '148',  label: 'apps audited',        from: 'left'   },
             { n: '250+', label: 'critical findings',   from: 'bottom' },
             { n: '100+', label: 'companies notified',  from: 'scale'  },
             { n: '15+',  label: 'regulators notified', from: 'bottom' },
@@ -913,7 +935,7 @@ export function PublicSite() {
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
             {[
-              { n: '139',  label: 'Apps audited',        from: 'left'   },
+              { n: '148',  label: 'Apps audited',        from: 'left'   },
               { n: '100+', label: 'Companies notified',  from: 'bottom' },
               { n: '250+', label: 'Critical findings',   from: 'top'    },
               { n: '15+',  label: 'Regulators notified', from: 'right'  },
@@ -935,12 +957,12 @@ export function PublicSite() {
             fontFamily: 'monospace', fontSize: 12, color: '#a0a0b8', lineHeight: 1.8,
           }}>
             <span style={{ color: TEAL, fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
-            {' '}listed targets · GDPR Art. 5/8/9/13/25/32/44 · COPPA · EU AI Act (minor provisions) · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at · FTC
+            {' '}listed clients · GDPR Art. 5/8/9/13/25/32/44 · COPPA · EU AI Act (minor provisions) · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at · FTC
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
             <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', margin: 0 }}>Permanent disclosure ledger</h3>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)' }}>{AUDIT_HIGHLIGHTS.length} targets · live response tracking · disclosure 2026-09-19</span>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)' }}>{AUDIT_HIGHLIGHTS.length} clients · live response tracking · disclosure 2026-09-19</span>
           </div>
           {/* Search + filter dropdowns — single row */}
           <div style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'stretch' }}>
@@ -1058,14 +1080,14 @@ export function PublicSite() {
 
           {/* Table */}
           <div style={{ maxHeight: 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
-            <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}`}</style>
+            <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}@keyframes ekgPulse{0%{stroke-dashoffset:90;opacity:0}8%{opacity:1}80%{opacity:1}100%{stroke-dashoffset:-90;opacity:0}}.ekg-line{stroke-dasharray:90;animation:ekgPulse 2.4s linear infinite}`}</style>
 
             {/* Sticky header */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: mobile
                 ? '1fr 95px 82px'
-                : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 105px',
+                : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 105px 105px',
               gap: '0 6px',
               padding: '7px 14px',
               position: 'sticky', top: 0, zIndex: 2,
@@ -1080,6 +1102,7 @@ export function PublicSite() {
               {!mobile && <span>Intel</span>}
               {!mobile && <span>Resolved</span>}
               <span>Disclosure</span>
+              {!mobile && <span>Elapsed</span>}
             </div>
 
             {/* Rows */}
@@ -1106,12 +1129,20 @@ export function PublicSite() {
                 const cdColor = daysLeft > 60 ? TEAL : daysLeft > 30 ? '#fb923c' : '#f87171'
                 const delay = Math.min(i * 30, 1500)
                 const resolved = meta?.resolved ?? false
+                const notifiedTs = meta?.notified ? new Date(meta.notified).getTime() : null
+                const elapsedMs  = notifiedTs ? Math.max(0, now - notifiedTs) : 0
+                const eDays = Math.floor(elapsedMs / 86400000)
+                const eH    = Math.floor((elapsedMs % 86400000) / 3600000)
+                const eM    = Math.floor((elapsedMs % 3600000)  / 60000)
+                const eS    = Math.floor((elapsedMs % 60000)    / 1000)
+                const eStr  = `${pad(eDays)}:${pad(eH)}:${pad(eM)}:${pad(eS)}`
+                const eColor = resolved ? '#4ade80' : eDays > 60 ? '#f87171' : eDays > 30 ? '#fb923c' : TEAL
                 return (
                   <div key={i} style={{
                     display: 'grid',
                     gridTemplateColumns: mobile
                       ? '1fr 95px 82px'
-                      : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 105px',
+                      : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 105px 105px',
                     gap: '0 6px',
                     padding: '9px 14px',
                     alignItems: 'start',
@@ -1174,6 +1205,18 @@ export function PublicSite() {
                         DD:HH:MM:SS
                       </div>
                     </div>
+
+                    {/* Elapsed */}
+                    {!mobile && (
+                      <div style={{ paddingTop: 1 }}>
+                        <div style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: 800, color: eColor, lineHeight: 1.3, letterSpacing: '0.03em', fontVariantNumeric: 'tabular-nums' }}>
+                          {notifiedTs ? eStr : '—'}
+                        </div>
+                        <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
+                          {resolved ? 'RESPONDED' : 'ELAPSED'}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )
               })}
