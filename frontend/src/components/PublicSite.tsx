@@ -648,7 +648,26 @@ export function PublicSite() {
   const [activeStatus, setActiveStatus] = useState<string | null>(null)
   const [activeSev, setActiveSev] = useState<string | null>(null)
   const [now, setNow] = useState(() => Date.now())
+  const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
   const { theme, setTheme } = useTheme()
+
+  const handleCheckout = async (tier: string) => {
+    setCheckoutLoading(tier)
+    const apiBase = (import.meta.env.VITE_API_BASE as string) ?? ''
+    try {
+      const res = await fetch(`${apiBase}/api/stripe/checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier }),
+      })
+      const { url } = await res.json()
+      window.location.href = url
+    } catch {
+      alert('Checkout nicht verfügbar. Bitte kontaktiere uns direkt.')
+    } finally {
+      setCheckoutLoading(null)
+    }
+  }
 
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 1000)
@@ -1375,25 +1394,40 @@ export function PublicSite() {
           {/* Security Audit tiers */}
           <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: 16, marginBottom: 48 }}>
-            {[
-              { tier: 'Public', price: 'free', desc: 'Full public disclosure. Findings published after 90-day coordinated embargo. No NDA. First phone sanitizing session included.', highlight: false },
-              { tier: 'Remediation Advisory', price: '€4,500', desc: 'Full report + remediation guidance. 30-day follow-up. GDPR compliance mapping included.', highlight: false },
-              { tier: 'Confidential', price: '€9,000', desc: 'NDA-protected disclosure. Private report + patch validation. Regulators still notified.', highlight: false },
-              { tier: 'Enterprise NDA', price: '€18,000', desc: 'Extended embargo + dedicated remediation support + legal evidence package.', highlight: false },
-              { tier: 'Critical Infrastructure', price: '€75,000', desc: 'NDA + legal + PR containment strategy + regulator liaison. Fullscope package.', highlight: true },
-              { tier: 'IoB / Art. 9', price: '€150,000', desc: 'Internet of Bodies / wearables with health data (Art. 9 GDPR). Elevated risk premium.', highlight: true },
-              { tier: 'Annual Intelligence Retainer', price: '€250,000', desc: 'Full-year continuous monitoring of your entire app portfolio. Quarterly deep audits. Dedicated regulatory liaison across AP, DSB, BfDI, ICO. Monthly threat intelligence briefings. Instant breach notification. Market signal mapping via aladdin-mini.', highlight: true },
-              { tier: 'Full Intelligence Package', price: '€750,000', desc: 'Everything in the Annual tier. Unlimited audits across your full vendor and partner ecosystem. Custom business intelligence dashboards. Real-time competitive intelligence. Proactive zero-day hunting. Board-level executive briefings. Custom regulatory strategy. Full-year dedicated research team allocation.', highlight: true },
-            ].map((t, i) => (
+            {([
+              { tier: 'Public',                   price: 'free',      desc: 'Full public disclosure. Findings published after 90-day coordinated embargo. No NDA. First phone sanitizing session included.', highlight: false, stripeKey: null,            contact: false },
+              { tier: 'Remediation Advisory',     price: '€4,500',    desc: 'Full report + remediation guidance. 30-day follow-up. GDPR compliance mapping included.',                                        highlight: false, stripeKey: 'remediation',   contact: false },
+              { tier: 'Confidential',             price: '€9,000',    desc: 'NDA-protected disclosure. Private report + patch validation. Regulators still notified.',                                        highlight: false, stripeKey: 'confidential',  contact: false },
+              { tier: 'Enterprise NDA',           price: '€18,000',   desc: 'Extended embargo + dedicated remediation support + legal evidence package.',                                                     highlight: false, stripeKey: 'enterprise_nda',contact: false },
+              { tier: 'Critical Infrastructure',  price: '€75,000',   desc: 'NDA + legal + PR containment strategy + regulator liaison. Fullscope package.',                                                 highlight: true,  stripeKey: null,            contact: true  },
+              { tier: 'IoB / Art. 9',             price: '€150,000',  desc: 'Internet of Bodies / wearables with health data (Art. 9 GDPR). Elevated risk premium.',                                        highlight: true,  stripeKey: null,            contact: true  },
+              { tier: 'Annual Intelligence Retainer', price: '€250,000', desc: 'Full-year continuous monitoring of your entire app portfolio. Quarterly deep audits. Dedicated regulatory liaison across AP, DSB, BfDI, ICO. Monthly threat intelligence briefings. Instant breach notification. Market signal mapping via aladdin-mini.', highlight: true, stripeKey: null, contact: true },
+              { tier: 'Full Intelligence Package',price: '€750,000',  desc: 'Everything in the Annual tier. Unlimited audits across your full vendor and partner ecosystem. Custom business intelligence dashboards. Real-time competitive intelligence. Proactive zero-day hunting. Board-level executive briefings. Custom regulatory strategy. Full-year dedicated research team allocation.', highlight: true, stripeKey: null, contact: true },
+            ] as const).map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
                 <div style={{
                   background: t.highlight ? 'rgba(0,245,196,0.06)' : 'rgba(255,255,255,0.03)',
                   border: `1px solid ${t.highlight ? 'rgba(0,245,196,0.25)' : 'rgba(255,255,255,0.07)'}`,
                   borderRadius: 14, padding: '24px 20px', height: '100%',
+                  display: 'flex', flexDirection: 'column',
                 }}>
                   <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
                   <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7 }}>{t.desc}</div>
+                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
+                  {t.stripeKey && (
+                    <button
+                      onClick={() => handleCheckout(t.stripeKey!)}
+                      disabled={checkoutLoading === t.stripeKey}
+                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: checkoutLoading === t.stripeKey ? 0.5 : 1 }}
+                    >
+                      {checkoutLoading === t.stripeKey ? 'loading...' : 'get started →'}
+                    </button>
+                  )}
+                  {t.contact && (
+                    <a href="#contact" style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
+                      request proposal →
+                    </a>
+                  )}
                 </div>
               </Reveal>
             ))}
@@ -1410,7 +1444,16 @@ export function PublicSite() {
               <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>Security Retainer</div>
               <div style={{ color: '#a0a0b8', fontSize: 13 }}>continuous monitoring · quarterly audits · priority response · dedicated contact</div>
             </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>€1,500 / mo</div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10 }}>
+              <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>€1,500 / mo</div>
+              <button
+                onClick={() => handleCheckout('retainer')}
+                disabled={checkoutLoading === 'retainer'}
+                style={{ padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: checkoutLoading === 'retainer' ? 0.5 : 1 }}
+              >
+                {checkoutLoading === 'retainer' ? 'loading...' : 'start retainer →'}
+              </button>
+            </div>
           </div>
           </Reveal>
 
@@ -1434,19 +1477,27 @@ export function PublicSite() {
           <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Market Research &amp; Competitor Analysis</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 48 }}>
             {[
-              { tier: 'Market Overview', price: '€2,500', desc: 'Sector landscape report. Key player mapping. Regulatory environment. 10-page minimum. Delivered in 5 business days.' },
-              { tier: 'Competitor Intelligence', price: '€7,500', desc: 'Deep-dive on 3–5 competitors. Technical stack analysis, privacy posture, market positioning, strategic vulnerabilities.' },
-              { tier: 'Sector Intelligence Report', price: '€18,000', desc: 'Full market + regulatory + tech landscape. Quantified risk exposure per player. Quarterly update cycle.' },
-              { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', desc: 'Continuous competitor tracking. Monthly briefings. Ad hoc alerts on significant moves. Dedicated analyst contact.' },
+              { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  desc: 'Sector landscape report. Key player mapping. Regulatory environment. 10-page minimum. Delivered in 5 business days.' },
+              { tier: 'Competitor Intelligence',    price: '€7,500',      stripeKey: 'competitor_intel', desc: 'Deep-dive on 3–5 competitors. Technical stack analysis, privacy posture, market positioning, strategic vulnerabilities.' },
+              { tier: 'Sector Intelligence Report', price: '€18,000',     stripeKey: 'sector_intel',     desc: 'Full market + regulatory + tech landscape. Quantified risk exposure per player. Quarterly update cycle.' },
+              { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', stripeKey: 'ongoing_intel', desc: 'Continuous competitor tracking. Monthly briefings. Ad hoc alerts on significant moves. Dedicated analyst contact.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
                 <div style={{
                   background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
                   borderRadius: 14, padding: '24px 20px', height: '100%',
+                  display: 'flex', flexDirection: 'column',
                 }}>
                   <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
                   <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7 }}>{t.desc}</div>
+                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
+                  <button
+                    onClick={() => handleCheckout(t.stripeKey)}
+                    disabled={checkoutLoading === t.stripeKey}
+                    style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: checkoutLoading === t.stripeKey ? 0.5 : 1 }}
+                  >
+                    {checkoutLoading === t.stripeKey ? 'loading...' : 'get started →'}
+                  </button>
                 </div>
               </Reveal>
             ))}
@@ -1456,19 +1507,33 @@ export function PublicSite() {
           <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Web Development</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
             {[
-              { tier: 'Landing Page', price: '€1,500', desc: 'Single-page site. React + our open-source template. Delivered in 48 hours.' },
-              { tier: 'Full Site', price: '€4,500', desc: 'Multi-page + CMS admin + contact form + analytics. 2-week delivery.' },
-              { tier: 'Enterprise Site', price: '€18,000', desc: 'Custom Rust backend + auth + integrations + full scope. Long-term support included.' },
-              { tier: 'Platform Build', price: '€75,000', desc: 'Full product build. Custom infrastructure, API design, data pipelines, dedicated team. Ongoing engagement.' },
+              { tier: 'Landing Page',   price: '€1,500',  stripeKey: 'web_landing'   as string | null, desc: 'Single-page site. React + our open-source template. Delivered in 48 hours.' },
+              { tier: 'Full Site',      price: '€4,500',  stripeKey: 'web_full'      as string | null, desc: 'Multi-page + CMS admin + contact form + analytics. 2-week delivery.' },
+              { tier: 'Enterprise Site',price: '€18,000', stripeKey: 'web_enterprise' as string | null, desc: 'Custom Rust backend + auth + integrations + full scope. Long-term support included.' },
+              { tier: 'Platform Build', price: '€75,000', stripeKey: null,                              desc: 'Full product build. Custom infrastructure, API design, data pipelines, dedicated team. Ongoing engagement.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
                 <div style={{
                   background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
                   borderRadius: 14, padding: '24px 20px', height: '100%',
+                  display: 'flex', flexDirection: 'column',
                 }}>
                   <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
                   <div style={{ fontSize: 26, fontWeight: 900, color: TEAL, marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7 }}>{t.desc}</div>
+                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
+                  {t.stripeKey ? (
+                    <button
+                      onClick={() => handleCheckout(t.stripeKey!)}
+                      disabled={checkoutLoading === t.stripeKey}
+                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: checkoutLoading === t.stripeKey ? 0.5 : 1 }}
+                    >
+                      {checkoutLoading === t.stripeKey ? 'loading...' : 'get started →'}
+                    </button>
+                  ) : (
+                    <a href="#contact" style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
+                      request proposal →
+                    </a>
+                  )}
                 </div>
               </Reveal>
             ))}
@@ -1709,6 +1774,21 @@ export function PublicSite() {
             <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT · ZVR 1015608684 · GISA 39261441</span>
           </div>
         </div>
+        <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>
+              GEWERBEWORTLAUT · Dienstleistungen in der automatischen Datenverarbeitung und Informationstechnik
+            </span>
+          </div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>
+              ECG-BEHÖRDE · Magistrat der Stadt Graz &nbsp;·&nbsp; Seit 19.03.2026 &nbsp;·&nbsp; GISA 39261441
+            </span>
+          </div>
+        </div>
+        <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em', marginBottom: 4 }}>
+          Gewerberechtliche Geschäftsführung: Simeon-Andreas Johann Manfred Kepp &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz &nbsp;&middot;&nbsp; GLN 9110038490191
+        </p>
         <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em' }}>
           &copy; 2026 RFI-IRFOS &nbsp;&middot;&nbsp; Steuernummer 68 028/0989 &nbsp;&middot;&nbsp; Graz, Austria
         </p>

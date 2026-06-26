@@ -2,6 +2,7 @@ mod analytics;
 mod auth;
 mod contact;
 mod content;
+mod stripe;
 mod track;
 mod upload;
 
@@ -23,6 +24,8 @@ pub struct AppState {
     pub redirect_uri: String,
     pub dev_mode: bool,
     pub db: SqlitePool,
+    pub stripe_secret_key: String,
+    pub stripe_webhook_secret: String,
 }
 
 #[derive(Clone, Serialize, Deserialize)]
@@ -65,6 +68,8 @@ async fn main() {
             .unwrap_or("http://localhost:3000/auth/callback".into()),
         dev_mode,
         db,
+        stripe_secret_key: std::env::var("STRIPE_SECRET_KEY").unwrap_or_default(),
+        stripe_webhook_secret: std::env::var("STRIPE_WEBHOOK_SECRET").unwrap_or_default(),
     };
 
     if dev_mode {
@@ -86,6 +91,8 @@ async fn main() {
         .route("/api/upload", post(upload::upload_file))
         .route("/api/contact", post(contact::submit_contact))
         .route("/api/analytics", get(analytics::stats))
+        .route("/api/stripe/checkout", post(stripe::create_checkout))
+        .route("/api/stripe/webhook", post(stripe::webhook))
         // Tracking pixel (public, no auth)
         .route("/api/track/pixel.gif", get(track::pixel))
         .route("/api/track", post(track::beacon))
