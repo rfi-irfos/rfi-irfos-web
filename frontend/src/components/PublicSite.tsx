@@ -550,6 +550,36 @@ function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
   )
 }
 
+function MoonPhase({ now }: { now: number }) {
+  const KNOWN_NEW_MOON = 947182440000 // 2000-01-06T18:14:00Z
+  const SYNODIC_MS = 29.53059 * 86400 * 1000
+  const phase = ((now - KNOWN_NEW_MOON) % SYNODIC_MS + SYNODIC_MS) % SYNODIC_MS / SYNODIC_MS
+  const r = 9, cx = 11, cy = 11
+  const top = `${cx} ${cy - r}`, bot = `${cx} ${cy + r}`
+  let fill: React.ReactNode = null
+  if (phase >= 0.02 && phase <= 0.98) {
+    if (phase > 0.48 && phase < 0.52) {
+      fill = <circle cx={cx} cy={cy} r={r} fill="#f0ead8" />
+    } else {
+      const waxing = phase < 0.5
+      const np = waxing ? phase : phase - 0.5
+      const theta = np * 2 * Math.PI
+      const rx = Math.max(0.5, Math.abs(Math.cos(theta)) * r)
+      const outerSweep = waxing ? 1 : 0
+      const termSweep = waxing ? (np < 0.25 ? 0 : 1) : (np < 0.25 ? 1 : 0)
+      const d = `M ${top} A ${r} ${r} 0 0 ${outerSweep} ${bot} A ${rx} ${r} 0 0 ${termSweep} ${top}`
+      fill = <path d={d} fill="#f0ead8" />
+    }
+  }
+  return (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style={{ display: 'block' }}>
+      <circle cx={cx} cy={cy} r={r} fill="#06061a" />
+      {fill}
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.13)" strokeWidth="0.5" />
+    </svg>
+  )
+}
+
 export function PublicSite() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -982,8 +1012,8 @@ export function PublicSite() {
                   width: '100%', boxSizing: 'border-box',
                   background: 'rgba(0,245,196,0.04)',
                   border: searchQuery ? '1px solid rgba(0,245,196,0.55)' : '1px solid rgba(0,245,196,0.18)',
-                  borderRadius: 7, padding: '11px 36px 11px 42px',
-                  color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 13,
+                  borderRadius: 7, padding: '9px 36px 9px 42px',
+                  color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 12,
                   outline: 'none', transition: 'border-color 0.15s',
                 }}
                 onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)' }}
@@ -1057,6 +1087,11 @@ export function PublicSite() {
                 style={{ position: 'absolute', right: 9, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
                 <path d="M1.5 3L4.5 6L7.5 3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
+            </div>
+
+            {/* Moon */}
+            <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 10px', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 7, background: 'rgba(255,255,255,0.02)' }}>
+              <MoonPhase now={now} />
             </div>
 
           </div>
