@@ -353,7 +353,15 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'ChatGPT (OpenAI)',  market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Persona SDK (com.withpersona.sdk2): facial liveness + document scan = Art. 9 biometric KYC inside a consumer chat app. Plaid bank account integration — financial account data linked to AI conversation history. Segment (Twilio): full track/screen/identify/group/alias analytics pipeline on conversation data. DETECT_SCREEN_CAPTURE: ChatGPT actively monitors when users screenshot their own conversations (Activity$ScreenCaptureCallback + onScreenCaptured confirmed in smali). FOREGROUND_SERVICE_MEDIA_PROJECTION: background screen capture capability declared. FirebaseInitProvider directBootAware=true + MlKitInitProvider (initOrder=99) pre-consent auto-init. Firebase key AIzaSyB_JJJE1dNu96Lkaz71IEGk82-HPbVvf8g hardcoded. BCC: DSB + CERT.at. IoB/Art.9 tier.' },
   { target: 'a-Trust (AT)',      market: 'PRIVATE', sev: 'HIGH',     status: 'SUBSTANTIVE', finding: 'RootBeer root detection bypass via SharedPreference manipulation — attacker on rooted device intercepts PIN/biometric + modifies signing request hash before reaching remote QSCD: user signs Document A, server signs Document B. eIDAS Art. 26(1)(c) sole control violated. Cert pinning absent — Christoph Klein confirmed in reply (AT-02: implicit admission). Logback FileAppender: qualified signature audit logs written in plaintext to device storage. Firebase key AIzaSyA4FveLgjGzGXXWUnh-UIxS2WQX6r3p3Pw hardcoded. Qualified trust service provider for eIDAS signatures. R3 sent, substantive engagement active.' },
   { target: 'Drei (AT)',         market: 'PRIVATE', sev: 'CRITICAL', status: 'CS-DEFLECT',  finding: 'Firebase API key hardcoded — project tribal-quasar-143512 (auto-generated name = never renamed = never rotated since initial integration). SpeedtestForegroundService + BootReceiver: GPS-precision speed tests start at every device boot before user interaction or consent. Zero NSC on carrier billing portal — WebView loads contract, billing, and payment data with no certificate pinning. DPO replied: "keine Sicherheitslücken, nehmen nicht an entgeltlichen Bountyprogrammen teil." Deflection pattern named. RTR BCC\'d. R2 sent.' },
-  { target: 'Gemini (Google)',   market: 'NASDAQ',  sev: 'MEDIUM',   status: 'WAITING',     finding: 'Cleanest AI app in the 2026 series. Three findings: (1) No NSC / no certificate pinning on conversation traffic — enterprise MDM can silently intercept Art. 9 conversations. (2) Clearcut + usagereporting behavioral telemetry consent gate not verifiable in binary. (3) All conversations mandatorily linked to full Google Account identity graph (Gmail, Maps, YouTube, Drive, Calendar). No third-party tracking SDKs. No hardcoded credentials. No AD_ID. No pre-consent ContentProvider. R1 pending.' },
+  { target: 'Gemini (Google)',   market: 'NASDAQ',  sev: 'MEDIUM',   status: 'WAITING',     finding: 'Cleanest AI app in the 2026 series. Three findings: (1) No NSC / no certificate pinning on conversation traffic — enterprise MDM can silently intercept Art. 9 conversations. (2) Clearcut + usagereporting behavioral telemetry consent gate not verifiable in binary. (3) All conversations mandatorily linked to full Google Account identity graph (Gmail, Maps, YouTube, Drive, Calendar). No third-party tracking SDKs. No hardcoded credentials. No AD_ID. No pre-consent ContentProvider. R1 sent 2026-06-26.' },
+  { target: 'Eustella (AT)',         market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'Launched as "GDPR-sovereign, CLOUD-Act-free European ChatGPT alternative." Backend API hardcoded to AWS CloudFront (US) — directly contradicts sovereignty claim. Firebase pre-consent auto-init (initOrder=100). Test build shipped on launch day: Firebase project eustella-alpha + dev IP 192.168.31.212 in production APK. 4 undisclosed US processors: RevenueCat, Amazon IAP, PairIP, Google OAuth.' },
+  { target: 'WePlay (SG)',           market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'Hardcoded ThinkingData SECRET KEY (PRC analytics master credential) in production APK. WeChat SDK 5,594 classes + RECORD_AUDIO: voice biometric to PRC. Pangle/ByteDance second PRC processor. Firebase key AIzaSyDtb_D_GufJ6AMPi4UhLuNRDHuaG7zZ2mI hardcoded. No Art. 27 EU representative.' },
+  { target: 'Chess Club Pilot (NL)', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'KidoZ self-documents child audience. Pangle 3,782 classes + Mintegral 3,704 classes: dual PRC children\'s data processor. Unity Ads via Chinese CDN (adccache.cn). Firebase key hardcoded. No CMP, no parental consent, 5 ad SDKs on a children\'s chess app. COPPA violation.' },
+  { target: 'Vlad & Nikita (CY)',   market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'RECORD_AUDIO + CAMERA on toddlers\' app (100M YouTube subscribers). 831 IMEI references: persistent device tracking of children. WeChat 396 + Facebook 2,895 classes — dual PRC+US processors. Privacy policy = Gmail address only, no legal entity, no DPO, no Art. 13 compliance.' },
+  { target: 'ChessKid (US)',         market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'Amplitude API key 89e2a8ad36ed610a5b68c94e3ccf4412 hardcoded in strings.xml — full read/write on children\'s behavioural data. Firebase key hardcoded. Amplitude analytics on children\'s chess data with no parental consent. Chess.com LLC platform.' },
+  { target: 'Roma & Diana (ID)',     market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'YouTube API key hardcoded in production request URL + 3× Firebase keys. No Art. 27 EU representative: Indonesian solo dev serving 130M YouTube subscriber audience. reCAPTCHA via PRC CDN (gstatic.cn). No DPO, no parental consent, no Art. 13.' },
+  { target: 'PSA ich.app (AT)',      market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'Austrian eID + payment app: ServerType enum in production APK exposes full internal infrastructure — AZURE2A http://20.61.119.111:8081 + AZURE2B http://20.61.119.111:8091 (cleartext, no TLS). Hardcoded credentials in ServerType enum. Firebase Analytics + AD_ID on an eID/payment app.' },
+  { target: 'running.COACH (AT)',   market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING', finding: 'allowBackup=true with no health data exclusion: training history, heart rate, running sessions backed up to Google Cloud. Privacy policy states no third-party data sharing — allowBackup IS Google sharing. NSC present but empty: zero certificate pinning on a health app. Huawei HMS 412 smali undisclosed. GDPR Art. 13(1)(e) policy contradiction.' },
 ]
 
 const SEV_COLOR: Record<string, string> = {
@@ -437,10 +445,18 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'Mein Magenta (AT)':            { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Meine Allianz (AT)':           { notified: '2026-06-24', disclosure: '2026-09-22' },
   'Bitpanda (AT)':                { notified: '2026-06-24', disclosure: '2026-09-22' },
-  'ChatGPT (OpenAI)':             { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'ChatGPT (OpenAI)':             { notified: '2026-06-26', disclosure: '2026-09-24' },
   'a-Trust (AT)':                 { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Drei (AT)':                    { notified: '2026-06-21', disclosure: '2026-09-19' },
-  'Gemini (Google)':              {                         disclosure: '2026-09-26' },
+  'Gemini (Google)':              { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'Eustella (AT)':           { notified: '2026-06-25', disclosure: '2026-09-19' },
+  'WePlay (SG)':             { notified: '2026-06-24', disclosure: '2026-09-19' },
+  'Chess Club Pilot (NL)':   { notified: '2026-06-24', disclosure: '2026-09-19' },
+  'Vlad & Nikita (CY)':     { notified: '2026-06-24', disclosure: '2026-09-19' },
+  'ChessKid (US)':           { notified: '2026-06-24', disclosure: '2026-09-19' },
+  'Roma & Diana (ID)':       { notified: '2026-06-24', disclosure: '2026-09-19' },
+  'PSA ich.app (AT)':        { notified: '2026-06-24', disclosure: '2026-09-19' },
+  'running.COACH (AT)':      { notified: '2026-06-23', disclosure: '2026-09-21' },
 }
 
 const CREDENTIALS = [
@@ -523,6 +539,8 @@ export function PublicSite() {
   const ledgerRef = useRef<HTMLDivElement>(null)
   const [ledgerFired, setLedgerFired] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [activeStatus, setActiveStatus] = useState<string | null>(null)
+  const [activeSev, setActiveSev] = useState<string | null>(null)
   const [now, setNow] = useState(() => Date.now())
   const { theme, setTheme } = useTheme()
 
@@ -922,10 +940,45 @@ export function PublicSite() {
             <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', margin: 0 }}>Permanent disclosure ledger</h3>
             <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)' }}>{AUDIT_HIGHLIGHTS.length} targets · live response tracking · disclosure 2026-09-19</span>
           </div>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
-            {Object.entries(STATUS_META).map(([k, v]) => (
-              <span key={k} style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 3, background: v.bg, color: v.color, letterSpacing: '0.08em' }}>{v.label}</span>
-            ))}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+              <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginRight: 4 }}>status</span>
+              {Object.entries(STATUS_META).map(([k, v]) => {
+                const count = AUDIT_HIGHLIGHTS.filter(a => a.status === k).length
+                const isActive = activeStatus === k
+                return (
+                  <button key={k} onClick={() => setActiveStatus(isActive ? null : k)} style={{
+                    fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 3,
+                    background: isActive ? v.color : v.bg, color: isActive ? '#000' : v.color,
+                    letterSpacing: '0.08em', border: isActive ? `1px solid ${v.color}` : '1px solid transparent',
+                    cursor: 'pointer', transition: 'all 0.15s',
+                  }}>{v.label} {count}</button>
+                )
+              })}
+              {activeStatus && (
+                <button onClick={() => setActiveStatus(null)} style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', background: 'none', border: '1px solid var(--border2)', borderRadius: 3, padding: '2px 7px', cursor: 'pointer' }}>✕ clear</button>
+              )}
+            </div>
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+              <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginRight: 4 }}>sev</span>
+              {(['CRITICAL', 'HIGH', 'MEDIUM'] as const).map(sev => {
+                const count = AUDIT_HIGHLIGHTS.filter(a => a.sev === sev).length
+                const isActive = activeSev === sev
+                const col = sev === 'CRITICAL' ? '#f87171' : sev === 'HIGH' ? '#fb923c' : '#fbbf24'
+                const bg = sev === 'CRITICAL' ? 'rgba(248,113,113,0.12)' : sev === 'HIGH' ? 'rgba(251,146,60,0.12)' : 'rgba(251,191,36,0.12)'
+                return (
+                  <button key={sev} onClick={() => setActiveSev(isActive ? null : sev)} style={{
+                    fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 3,
+                    background: isActive ? col : bg, color: isActive ? '#000' : col,
+                    letterSpacing: '0.08em', border: isActive ? `1px solid ${col}` : '1px solid transparent',
+                    cursor: 'pointer', transition: 'all 0.15s',
+                  }}>{sev} {count}</button>
+                )
+              })}
+              {activeSev && (
+                <button onClick={() => setActiveSev(null)} style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', background: 'none', border: '1px solid var(--border2)', borderRadius: 3, padding: '2px 7px', cursor: 'pointer' }}>✕ clear</button>
+              )}
+            </div>
           </div>
 
           {/* Search bar */}
@@ -959,15 +1012,20 @@ export function PublicSite() {
               </button>
             )}
           </div>
-          {searchQuery && (() => {
+          {(searchQuery.trim() || activeStatus || activeSev) && (() => {
             const n = AUDIT_HIGHLIGHTS.filter(a =>
-              a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              a.finding.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              a.market.toLowerCase().includes(searchQuery.toLowerCase())
+              (!searchQuery.trim() ||
+                a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                a.finding.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                a.market.toLowerCase().includes(searchQuery.toLowerCase())
+              ) &&
+              (!activeStatus || a.status === activeStatus) &&
+              (!activeSev || a.sev === activeSev)
             ).length
             return (
               <div style={{ fontFamily: 'monospace', fontSize: 10, color: n > 0 ? TEAL : '#f87171', marginBottom: 10, letterSpacing: '0.06em' }}>
-                {n > 0 ? `${n} match${n > 1 ? 'es' : ''} for "${searchQuery}"` : `no matches for "${searchQuery}" — not yet in this wave`}
+                {n > 0 ? `${n} of ${AUDIT_HIGHLIGHTS.length} entries` : `no matches`}
+                {searchQuery.trim() ? ` for "${searchQuery}"` : ''}
               </div>
             )
           })()}
@@ -986,8 +1044,8 @@ export function PublicSite() {
               padding: '7px 14px',
               position: 'sticky', top: 0, zIndex: 2,
               background: 'var(--bg)', borderBottom: '1px solid var(--border2)',
-              fontFamily: 'monospace', fontSize: 9, fontWeight: 700,
-              color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em',
+              fontFamily: 'monospace', fontSize: 10, fontWeight: 700,
+              color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.1em',
             }}>
               <span>Organisation</span>
               {!mobile && <span>Notified</span>}
@@ -1000,13 +1058,14 @@ export function PublicSite() {
 
             {/* Rows */}
             <div ref={ledgerRef}>
-              {(searchQuery.trim()
-                ? AUDIT_HIGHLIGHTS.filter(a =>
-                    a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    a.finding.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    a.market.toLowerCase().includes(searchQuery.toLowerCase())
-                  )
-                : AUDIT_HIGHLIGHTS
+              {AUDIT_HIGHLIGHTS.filter(a =>
+                (!searchQuery.trim() ||
+                  a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  a.finding.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  a.market.toLowerCase().includes(searchQuery.toLowerCase())
+                ) &&
+                (!activeStatus || a.status === activeStatus) &&
+                (!activeSev || a.sev === activeSev)
               ).map((a, i) => {
                 const sm = STATUS_META[a.status] ?? STATUS_META['WAITING']
                 const meta = AUDIT_META[a.target]
