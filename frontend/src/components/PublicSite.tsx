@@ -940,77 +940,101 @@ export function PublicSite() {
             <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', margin: 0 }}>Permanent disclosure ledger</h3>
             <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)' }}>{AUDIT_HIGHLIGHTS.length} targets · live response tracking · disclosure 2026-09-19</span>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginRight: 4 }}>status</span>
-              {Object.entries(STATUS_META).map(([k, v]) => {
-                const count = AUDIT_HIGHLIGHTS.filter(a => a.status === k).length
-                const isActive = activeStatus === k
-                return (
-                  <button key={k} onClick={() => setActiveStatus(isActive ? null : k)} style={{
-                    fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 3,
-                    background: isActive ? v.color : v.bg, color: isActive ? '#000' : v.color,
-                    letterSpacing: '0.08em', border: isActive ? `1px solid ${v.color}` : '1px solid transparent',
-                    cursor: 'pointer', transition: 'all 0.15s',
-                  }}>{v.label} {count}</button>
-                )
-              })}
-              {activeStatus && (
-                <button onClick={() => setActiveStatus(null)} style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', background: 'none', border: '1px solid var(--border2)', borderRadius: 3, padding: '2px 7px', cursor: 'pointer' }}>✕ clear</button>
-              )}
-            </div>
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginRight: 4 }}>sev</span>
-              {(['CRITICAL', 'HIGH', 'MEDIUM'] as const).map(sev => {
-                const count = AUDIT_HIGHLIGHTS.filter(a => a.sev === sev).length
-                const isActive = activeSev === sev
-                const col = sev === 'CRITICAL' ? '#f87171' : sev === 'HIGH' ? '#fb923c' : '#fbbf24'
-                const bg = sev === 'CRITICAL' ? 'rgba(248,113,113,0.12)' : sev === 'HIGH' ? 'rgba(251,146,60,0.12)' : 'rgba(251,191,36,0.12)'
-                return (
-                  <button key={sev} onClick={() => setActiveSev(isActive ? null : sev)} style={{
-                    fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 3,
-                    background: isActive ? col : bg, color: isActive ? '#000' : col,
-                    letterSpacing: '0.08em', border: isActive ? `1px solid ${col}` : '1px solid transparent',
-                    cursor: 'pointer', transition: 'all 0.15s',
-                  }}>{sev} {count}</button>
-                )
-              })}
-              {activeSev && (
-                <button onClick={() => setActiveSev(null)} style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', background: 'none', border: '1px solid var(--border2)', borderRadius: 3, padding: '2px 7px', cursor: 'pointer' }}>✕ clear</button>
-              )}
-            </div>
-          </div>
+          {/* Search + filter dropdowns — single row */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'stretch' }}>
 
-          {/* Search bar */}
-          <div style={{ position: 'relative', marginBottom: 16 }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,245,196,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-              style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
-            <input
-              type="text"
-              placeholder="search your company..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              style={{
-                width: '100%', boxSizing: 'border-box',
-                background: 'rgba(0,245,196,0.04)',
-                border: searchQuery ? '1px solid rgba(0,245,196,0.55)' : '1px solid rgba(0,245,196,0.18)',
-                borderRadius: 7, padding: '11px 14px 11px 42px',
-                color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 13,
-                outline: 'none', transition: 'border-color 0.15s',
-              }}
-              onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)' }}
-              onBlur={e => { if (!searchQuery) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.18)' }}
-            />
-            {searchQuery && (
-              <button onClick={() => setSearchQuery('')} style={{
-                position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                background: 'none', border: 'none', cursor: 'pointer', color: '#606080', padding: 4, lineHeight: 0,
-              }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            )}
+            {/* Search */}
+            <div style={{ position: 'relative', flex: 1, minWidth: 0 }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,245,196,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input
+                type="text"
+                placeholder="search your company..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                style={{
+                  width: '100%', boxSizing: 'border-box',
+                  background: 'rgba(0,245,196,0.04)',
+                  border: searchQuery ? '1px solid rgba(0,245,196,0.55)' : '1px solid rgba(0,245,196,0.18)',
+                  borderRadius: 7, padding: '11px 36px 11px 42px',
+                  color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 13,
+                  outline: 'none', transition: 'border-color 0.15s',
+                }}
+                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)' }}
+                onBlur={e => { if (!searchQuery) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.18)' }}
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} style={{
+                  position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+                  background: 'none', border: 'none', cursor: 'pointer', color: '#606080', padding: 4, lineHeight: 0,
+                }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              )}
+            </div>
+
+            {/* Status dropdown */}
+            <div style={{ position: 'relative', flexShrink: 0 }}>
+              <select
+                className="ledger-sel"
+                value={activeStatus ?? ''}
+                onChange={e => setActiveStatus(e.target.value || null)}
+                style={{
+                  height: '100%', boxSizing: 'border-box',
+                  appearance: 'none' as React.CSSProperties['appearance'],
+                  background: activeStatus ? (STATUS_META[activeStatus]?.bg ?? 'rgba(0,245,196,0.08)') : 'rgba(0,245,196,0.04)',
+                  border: activeStatus ? `1px solid ${STATUS_META[activeStatus]?.color ?? TEAL}` : '1px solid rgba(0,245,196,0.18)',
+                  borderRadius: 7, padding: '11px 28px 11px 12px',
+                  color: activeStatus ? (STATUS_META[activeStatus]?.color ?? TEAL) : 'var(--text3)',
+                  fontFamily: 'monospace', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
+                  cursor: 'pointer', outline: 'none', minWidth: 115,
+                }}
+              >
+                <option value="">STATUS</option>
+                {Object.entries(STATUS_META).map(([k, v]) => {
+                  const count = AUDIT_HIGHLIGHTS.filter(a => a.status === k).length
+                  return <option key={k} value={k}>{v.label} ({count})</option>
+                })}
+              </select>
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="none"
+                stroke={activeStatus ? (STATUS_META[activeStatus]?.color ?? TEAL) : 'rgba(0,245,196,0.5)'}
+                style={{ position: 'absolute', right: 9, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+                <path d="M1.5 3L4.5 6L7.5 3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+
+            {/* SEV dropdown */}
+            <div style={{ position: 'relative', flexShrink: 0 }}>
+              <select
+                className="ledger-sel"
+                value={activeSev ?? ''}
+                onChange={e => setActiveSev(e.target.value || null)}
+                style={{
+                  height: '100%', boxSizing: 'border-box',
+                  appearance: 'none' as React.CSSProperties['appearance'],
+                  background: activeSev === 'CRITICAL' ? 'rgba(248,113,113,0.12)' : activeSev === 'HIGH' ? 'rgba(251,146,60,0.12)' : activeSev === 'MEDIUM' ? 'rgba(251,191,36,0.12)' : 'rgba(0,245,196,0.04)',
+                  border: activeSev ? `1px solid ${activeSev === 'CRITICAL' ? '#f87171' : activeSev === 'HIGH' ? '#fb923c' : '#fbbf24'}` : '1px solid rgba(0,245,196,0.18)',
+                  borderRadius: 7, padding: '11px 28px 11px 12px',
+                  color: activeSev === 'CRITICAL' ? '#f87171' : activeSev === 'HIGH' ? '#fb923c' : activeSev === 'MEDIUM' ? '#fbbf24' : 'var(--text3)',
+                  fontFamily: 'monospace', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
+                  cursor: 'pointer', outline: 'none', minWidth: 88,
+                }}
+              >
+                <option value="">SEV</option>
+                {(['CRITICAL', 'HIGH', 'MEDIUM'] as const).map(sev => {
+                  const count = AUDIT_HIGHLIGHTS.filter(a => a.sev === sev).length
+                  return <option key={sev} value={sev}>{sev} ({count})</option>
+                })}
+              </select>
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="none"
+                stroke={activeSev === 'CRITICAL' ? '#f87171' : activeSev === 'HIGH' ? '#fb923c' : activeSev === 'MEDIUM' ? '#fbbf24' : 'rgba(0,245,196,0.5)'}
+                style={{ position: 'absolute', right: 9, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+                <path d="M1.5 3L4.5 6L7.5 3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+
           </div>
           {(searchQuery.trim() || activeStatus || activeSev) && (() => {
             const n = AUDIT_HIGHLIGHTS.filter(a =>
@@ -1032,14 +1056,14 @@ export function PublicSite() {
 
           {/* Table */}
           <div style={{ maxHeight: 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
-            <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}`}</style>
+            <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}`}</style>
 
             {/* Sticky header */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: mobile
                 ? '1fr 95px 82px'
-                : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 90px',
+                : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 105px',
               gap: '0 6px',
               padding: '7px 14px',
               position: 'sticky', top: 0, zIndex: 2,
@@ -1085,7 +1109,7 @@ export function PublicSite() {
                     display: 'grid',
                     gridTemplateColumns: mobile
                       ? '1fr 95px 82px'
-                      : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 90px',
+                      : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 105px',
                     gap: '0 6px',
                     padding: '9px 14px',
                     alignItems: 'start',
@@ -1141,10 +1165,10 @@ export function PublicSite() {
 
                     {/* Countdown */}
                     <div style={{ paddingTop: 1 }}>
-                      <div style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, color: cdColor, lineHeight: 1.4, letterSpacing: '0.04em' }}>
+                      <div style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: 800, color: cdColor, lineHeight: 1.3, letterSpacing: '0.03em', fontVariantNumeric: 'tabular-nums' }}>
                         {cdStr}
                       </div>
-                      <div style={{ fontFamily: 'monospace', fontSize: 7, color: 'var(--text4)', marginTop: 1, letterSpacing: '0.06em' }}>
+                      <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
                         DD:HH:MM:SS
                       </div>
                     </div>
