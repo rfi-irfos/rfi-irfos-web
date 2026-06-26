@@ -350,6 +350,9 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'Mein Magenta (AT)', market: 'XETRA',   sev: 'CRITICAL', status: 'WAITING',     finding: 'Cobrowse.io DUAL InitProvider (CobrowseInitProvider + CobrowseComposeInitProvider): live screen co-browsing SDK auto-inits at every app start — on app showing bills, call logs, payment methods. Huawei HMS AAID InitProvider (initOrder=500): Chinese advertising ID highest-priority pre-consent auto-init. 3 API keys hardcoded (Firebase, Awareness/Geofencing, Geo). CleverTap + MoEngage dual-analytics on telecom customer data. BOOT_COMPLETED + GPS geofencing + READ_PHONE_STATE (IMEI). §165 TKG 2021. BCC: DSB + RTR.' },
   { target: 'Meine Allianz (AT)', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'CordovaServerTrust noOpTrustManager + noOpVerifier: checkServerTrusted() is empty, verify() always returns true — complete TLS bypass on insurance app. MITM trivial on any shared network (policy docs, FNOL claims with photos, payment methods). usesCleartextTraffic=true + no NSC. Staging/test URLs hardcoded in production JS (allianz-emea-stg1.adobecqms.net dev/hot/test + secure-test.allianz.at). App built on Aztec white-label platform (at.aztec.customer). BCC: DSB + FMA.' },
   { target: 'Bitpanda (AT)',      market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'FirebaseInitProvider directBootAware=true + MlKitInitProvider (initOrder=99): Firebase starts BEFORE device unlock — tracking before any consent possible. Fourthline SDK: NFC passport chip reader + biometric selfie liveness (Art. 9 GDPR) — NfcAuthenticationChecks + NfcData classes confirmed. Dual KYC pipeline (Fourthline + IDnow). Braze (NY) location module on financial/trading data linked to AD_ID. Adjust attribution on MiFID II regulated platform. Datadog RUM ContentProvider (US) auto-init. Firebase key AIzaSyBdQdwgjFgqi6cJFfhVA8jhyRaL2xDYmyQ hardcoded. BCC: DSB + FMA + CERT.at.' },
+  { target: 'ChatGPT (OpenAI)',  market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Persona SDK (com.withpersona.sdk2): facial liveness + document scan = Art. 9 biometric KYC inside a consumer chat app. Plaid bank account integration — financial account data linked to AI conversation history. Segment (Twilio): full track/screen/identify/group/alias analytics pipeline on conversation data. DETECT_SCREEN_CAPTURE: ChatGPT actively monitors when users screenshot their own conversations (Activity$ScreenCaptureCallback + onScreenCaptured confirmed in smali). FOREGROUND_SERVICE_MEDIA_PROJECTION: background screen capture capability declared. FirebaseInitProvider directBootAware=true + MlKitInitProvider (initOrder=99) pre-consent auto-init. Firebase key AIzaSyB_JJJE1dNu96Lkaz71IEGk82-HPbVvf8g hardcoded. BCC: DSB + CERT.at. IoB/Art.9 tier.' },
+  { target: 'a-Trust (AT)',      market: 'PRIVATE', sev: 'HIGH',     status: 'SUBSTANTIVE', finding: 'RootBeer root detection bypass via SharedPreference manipulation — attacker on rooted device intercepts PIN/biometric + modifies signing request hash before reaching remote QSCD: user signs Document A, server signs Document B. eIDAS Art. 26(1)(c) sole control violated. Cert pinning absent — Christoph Klein confirmed in reply (AT-02: implicit admission). Logback FileAppender: qualified signature audit logs written in plaintext to device storage. Firebase key AIzaSyA4FveLgjGzGXXWUnh-UIxS2WQX6r3p3Pw hardcoded. Qualified trust service provider for eIDAS signatures. R3 sent, substantive engagement active.' },
+  { target: 'Drei (AT)',         market: 'PRIVATE', sev: 'CRITICAL', status: 'CS-DEFLECT',  finding: 'Firebase API key hardcoded — project tribal-quasar-143512 (auto-generated name = never renamed = never rotated since initial integration). SpeedtestForegroundService + BootReceiver: GPS-precision speed tests start at every device boot before user interaction or consent. Zero NSC on carrier billing portal — WebView loads contract, billing, and payment data with no certificate pinning. DPO replied: "keine Sicherheitslücken, nehmen nicht an entgeltlichen Bountyprogrammen teil." Deflection pattern named. RTR BCC\'d. R2 sent.' },
 ]
 
 const SEV_COLOR: Record<string, string> = {
@@ -448,6 +451,7 @@ export function PublicSite() {
   const pixelRef = useRef<HTMLImageElement>(null)
   const ledgerRef = useRef<HTMLDivElement>(null)
   const [ledgerFired, setLedgerFired] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const { theme, setTheme } = useTheme()
   const mobile = useMobile()
   const closeMobile = useCallback(() => setMobileOpen(false), [])
@@ -846,10 +850,62 @@ export function PublicSite() {
               <span key={k} style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 3, background: v.bg, color: v.color, letterSpacing: '0.08em' }}>{v.label}</span>
             ))}
           </div>
+
+          {/* Search bar */}
+          <div style={{ position: 'relative', marginBottom: 16 }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,245,196,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+              type="text"
+              placeholder="search your company..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              style={{
+                width: '100%', boxSizing: 'border-box',
+                background: 'rgba(0,245,196,0.04)',
+                border: searchQuery ? '1px solid rgba(0,245,196,0.55)' : '1px solid rgba(0,245,196,0.18)',
+                borderRadius: 7, padding: '11px 14px 11px 42px',
+                color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 13,
+                outline: 'none', transition: 'border-color 0.15s',
+              }}
+              onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)' }}
+              onBlur={e => { if (!searchQuery) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.18)' }}
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery('')} style={{
+                position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+                background: 'none', border: 'none', cursor: 'pointer', color: '#606080', padding: 4, lineHeight: 0,
+              }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            )}
+          </div>
+          {searchQuery && (() => {
+            const n = AUDIT_HIGHLIGHTS.filter(a =>
+              a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              a.finding.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              a.market.toLowerCase().includes(searchQuery.toLowerCase())
+            ).length
+            return (
+              <div style={{ fontFamily: 'monospace', fontSize: 10, color: n > 0 ? TEAL : '#f87171', marginBottom: 10, letterSpacing: '0.06em' }}>
+                {n > 0 ? `${n} match${n > 1 ? 'es' : ''} for "${searchQuery}"` : `no matches for "${searchQuery}" — not yet in this wave`}
+              </div>
+            )
+          })()}
+
           <div style={{ maxHeight: 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent' }}>
           <div ref={ledgerRef} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
             <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}`}</style>
-            {AUDIT_HIGHLIGHTS.map((a, i) => {
+            {(searchQuery.trim()
+              ? AUDIT_HIGHLIGHTS.filter(a =>
+                  a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  a.finding.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  a.market.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+              : AUDIT_HIGHLIGHTS
+            ).map((a, i) => {
               const sm = STATUS_META[a.status] ?? STATUS_META['WAITING']
               const delay = Math.min(i * 38, 1900)
               return (
