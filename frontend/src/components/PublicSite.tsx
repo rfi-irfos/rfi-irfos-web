@@ -362,6 +362,7 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'Roma & Diana (ID)',     market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'YouTube API key hardcoded in production request URL + 3× Firebase keys. No Art. 27 EU representative: Indonesian solo dev serving 130M YouTube subscriber audience. reCAPTCHA via PRC CDN (gstatic.cn). No DPO, no parental consent, no Art. 13.' },
   { target: 'PSA ich.app (AT)',      market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'Austrian eID + payment app: ServerType enum in production APK exposes full internal infrastructure — AZURE2A http://20.61.119.111:8081 + AZURE2B http://20.61.119.111:8091 (cleartext, no TLS). Hardcoded credentials in ServerType enum. Firebase Analytics + AD_ID on an eID/payment app.' },
   { target: 'running.COACH (AT)',   market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING', finding: 'allowBackup=true with no health data exclusion: training history, heart rate, running sessions backed up to Google Cloud. Privacy policy states no third-party data sharing — allowBackup IS Google sharing. NSC present but empty: zero certificate pinning on a health app. Huawei HMS 412 smali undisclosed. GDPR Art. 13(1)(e) policy contradiction.' },
+  { target: 'LEGO Bluey (IE)',      market: 'PRIVATE', sev: 'HIGH',     status: 'ACK',     finding: 'ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION declared in LEGO/BBC Studios licensed children\'s app (under-5s). Google Ads (gms.ads) + Unity + Firebase SDKs bundled. FirebaseInitProvider auto-init before consent screen. R2 sent 2026-06-26: Engineering Review Deflection + Technical Proof Redirect both named. THREE QUESTIONS unanswered.' },
 ]
 
 const SEV_COLOR: Record<string, string> = {
@@ -457,6 +458,7 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'Roma & Diana (ID)':       { notified: '2026-06-24', disclosure: '2026-09-19' },
   'PSA ich.app (AT)':        { notified: '2026-06-24', disclosure: '2026-09-19' },
   'running.COACH (AT)':      { notified: '2026-06-23', disclosure: '2026-09-21' },
+  'LEGO Bluey (IE)':         { notified: '2026-06-25', disclosure: '2026-09-19' },
 }
 
 const CREDENTIALS = [
