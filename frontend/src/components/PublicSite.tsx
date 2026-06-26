@@ -1087,7 +1087,7 @@ export function PublicSite() {
               display: 'grid',
               gridTemplateColumns: mobile
                 ? '1fr 95px 82px'
-                : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 105px 105px',
+                : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 130px 130px',
               gap: '0 6px',
               padding: '7px 14px',
               position: 'sticky', top: 0, zIndex: 2,
@@ -1125,7 +1125,7 @@ export function PublicSite() {
                 const mLeft  = Math.floor((msLeft % 3600000) / 60000)
                 const sLeft  = Math.floor((msLeft % 60000) / 1000)
                 const pad = (n: number) => String(n).padStart(2, '0')
-                const cdStr = `${pad(daysLeft)}:${pad(hLeft)}:${pad(mLeft)}:${pad(sLeft)}`
+                const cdStr = `${daysLeft}d ${pad(hLeft)}h ${pad(mLeft)}m ${pad(sLeft)}s`
                 const cdColor = daysLeft > 60 ? TEAL : daysLeft > 30 ? '#fb923c' : '#f87171'
                 const delay = Math.min(i * 30, 1500)
                 const resolved = meta?.resolved ?? false
@@ -1135,14 +1135,14 @@ export function PublicSite() {
                 const eH    = Math.floor((elapsedMs % 86400000) / 3600000)
                 const eM    = Math.floor((elapsedMs % 3600000)  / 60000)
                 const eS    = Math.floor((elapsedMs % 60000)    / 1000)
-                const eStr  = `${pad(eDays)}:${pad(eH)}:${pad(eM)}:${pad(eS)}`
+                const eStr  = `${eDays}d ${pad(eH)}h ${pad(eM)}m ${pad(eS)}s`
                 const eColor = resolved ? '#4ade80' : eDays > 60 ? '#f87171' : eDays > 30 ? '#fb923c' : TEAL
                 return (
                   <div key={i} style={{
                     display: 'grid',
                     gridTemplateColumns: mobile
                       ? '1fr 95px 82px'
-                      : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 105px 105px',
+                      : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 130px 130px',
                     gap: '0 6px',
                     padding: '9px 14px',
                     alignItems: 'start',
@@ -1198,18 +1198,18 @@ export function PublicSite() {
 
                     {/* Countdown */}
                     <div style={{ paddingTop: 1 }}>
-                      <div style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: 800, color: cdColor, lineHeight: 1.3, letterSpacing: '0.03em', fontVariantNumeric: 'tabular-nums' }}>
+                      <div style={{ fontFamily: 'monospace', fontSize: 16, fontWeight: 900, color: cdColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
                         {cdStr}
                       </div>
                       <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
-                        DD:HH:MM:SS
+                        DISCLOSURE
                       </div>
                     </div>
 
                     {/* Elapsed */}
                     {!mobile && (
                       <div style={{ paddingTop: 1 }}>
-                        <div style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: 800, color: eColor, lineHeight: 1.3, letterSpacing: '0.03em', fontVariantNumeric: 'tabular-nums' }}>
+                        <div style={{ fontFamily: 'monospace', fontSize: 16, fontWeight: 900, color: eColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
                           {notifiedTs ? eStr : '—'}
                         </div>
                         <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
