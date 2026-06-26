@@ -765,7 +765,7 @@ export function PublicSite() {
   }
 
   return (
-    <div style={{ background: '#070711', color: '#e8e8f0', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
+    <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
 
       {/* B2B CHECKOUT CONFIRMATION MODAL */}
       {checkoutModal && (
@@ -805,16 +805,16 @@ export function PublicSite() {
       {/* NAV */}
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: scrolled ? 'rgba(7,7,17,0.96)' : 'transparent',
+        background: scrolled ? 'var(--nav-bg)' : 'transparent',
         backdropFilter: scrolled ? 'blur(16px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.07)' : 'none',
+        borderBottom: scrolled ? '1px solid var(--nav-border)' : 'none',
         transition: 'background 0.3s, backdrop-filter 0.3s, border-color 0.3s',
         padding: '0 1.5rem',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px',
       }}>
         <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 34, height: 34, objectFit: 'contain' }} />
-          <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: '#e8e8f0' }}>RFI-IRFOS</span>
+          <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: 'var(--text)' }}>RFI-IRFOS</span>
           <svg width="54" height="18" viewBox="0 0 54 18" fill="none" style={{ marginLeft: 4, flexShrink: 0, overflow: 'visible' }}>
             <polyline className="ekg-line" points="0,9 12,9 16,2 20,16 24,2 28,9 54,9"
               stroke="#00f5c4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -825,18 +825,18 @@ export function PublicSite() {
         <div style={{ display: mobile ? 'none' : 'flex', gap: '1.75rem', alignItems: 'center' }}>
           {NAV_LINKS.map(n => (
             <a key={n.href} href={n.href} style={{
-              color: '#808098', fontSize: 13, fontWeight: 600,
+              color: 'var(--text2)', fontSize: 13, fontWeight: 600,
               textDecoration: 'none', letterSpacing: '0.04em',
               transition: 'color 0.18s',
             }}
-              onMouseEnter={e => (e.currentTarget.style.color = '#e8e8f0')}
-              onMouseLeave={e => (e.currentTarget.style.color = '#808098')}>
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text2)')}>
               {n.label}
             </a>
           ))}
 
           {/* Theme toggle */}
-          <div style={{ display: 'flex', background: 'rgba(255,255,255,0.06)', borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ display: 'flex', background: 'var(--bg3)', borderRadius: 6, overflow: 'hidden', border: '1px solid var(--border)' }}>
             {(['light', 'dark', 'hc'] as const).map(t => (
               <button key={t} onClick={() => setTheme(t)} style={{
                 background: theme === t ? 'rgba(0,245,196,0.18)' : 'transparent',
@@ -876,21 +876,21 @@ export function PublicSite() {
       {mobileOpen && (
         <div style={{
           position: 'fixed', top: 64, left: 0, right: 0, bottom: 0, zIndex: 99,
-          background: 'rgba(7,7,17,0.98)', backdropFilter: 'blur(16px)',
+          background: 'var(--nav-bg)', backdropFilter: 'blur(16px)',
           display: 'flex', flexDirection: 'column', padding: '2rem 1.5rem', gap: 4,
         }}>
           {NAV_LINKS.map(n => (
             <a key={n.href} href={n.href} onClick={() => setMobileOpen(false)} style={{
-              color: '#e8e8f0', fontSize: 20, fontWeight: 700, textDecoration: 'none',
-              padding: '16px 0', borderBottom: '1px solid rgba(255,255,255,0.06)',
+              color: 'var(--text)', fontSize: 20, fontWeight: 700, textDecoration: 'none',
+              padding: '16px 0', borderBottom: '1px solid var(--border)',
             }}>{n.label}</a>
           ))}
           <div style={{ display: 'flex', gap: 8, marginTop: 24 }}>
             {(['light', 'dark', 'hc'] as const).map(t => (
               <button key={t} onClick={() => setTheme(t)} style={{
-                background: theme === t ? 'rgba(0,245,196,0.18)' : 'rgba(255,255,255,0.06)',
-                color: theme === t ? TEAL : '#606080',
-                border: theme === t ? `1px solid ${TEAL}` : '1px solid rgba(255,255,255,0.1)',
+                background: theme === t ? 'rgba(0,245,196,0.18)' : 'var(--bg3)',
+                color: theme === t ? TEAL : 'var(--text3)',
+                border: theme === t ? `1px solid ${TEAL}` : '1px solid var(--border)',
                 borderRadius: 6, cursor: 'pointer',
                 padding: '8px 16px', fontSize: 11, fontWeight: 700,
                 fontFamily: 'monospace', letterSpacing: '0.06em', textTransform: 'uppercase',
