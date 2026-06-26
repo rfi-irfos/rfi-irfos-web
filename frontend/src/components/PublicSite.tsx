@@ -527,7 +527,7 @@ export function PublicSite() {
   const { theme, setTheme } = useTheme()
 
   useEffect(() => {
-    const t = setInterval(() => setNow(Date.now()), 60000)
+    const t = setInterval(() => setNow(Date.now()), 1000)
     return () => clearInterval(t)
   }, [])
   const mobile = useMobile()
@@ -1011,7 +1011,13 @@ export function PublicSite() {
                 const sm = STATUS_META[a.status] ?? STATUS_META['WAITING']
                 const meta = AUDIT_META[a.target]
                 const disclosureTs = meta ? new Date(meta.disclosure).getTime() : new Date('2026-09-19').getTime()
-                const daysLeft = Math.max(0, Math.ceil((disclosureTs - now) / 86400000))
+                const msLeft = Math.max(0, disclosureTs - now)
+                const daysLeft = Math.floor(msLeft / 86400000)
+                const hLeft  = Math.floor((msLeft % 86400000) / 3600000)
+                const mLeft  = Math.floor((msLeft % 3600000) / 60000)
+                const sLeft  = Math.floor((msLeft % 60000) / 1000)
+                const pad = (n: number) => String(n).padStart(2, '0')
+                const cdStr = `${pad(daysLeft)}:${pad(hLeft)}:${pad(mLeft)}:${pad(sLeft)}`
                 const cdColor = daysLeft > 60 ? TEAL : daysLeft > 30 ? '#fb923c' : '#f87171'
                 const delay = Math.min(i * 30, 1500)
                 const resolved = meta?.resolved ?? false
@@ -1076,11 +1082,11 @@ export function PublicSite() {
 
                     {/* Countdown */}
                     <div style={{ paddingTop: 1 }}>
-                      <div style={{ fontFamily: 'monospace', fontSize: 10, fontWeight: 700, color: cdColor, lineHeight: 1.3 }}>
-                        {daysLeft}d
+                      <div style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, color: cdColor, lineHeight: 1.4, letterSpacing: '0.04em' }}>
+                        {cdStr}
                       </div>
-                      <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 1 }}>
-                        {meta?.disclosure ?? '2026-09-19'}
+                      <div style={{ fontFamily: 'monospace', fontSize: 7, color: 'var(--text4)', marginTop: 1, letterSpacing: '0.06em' }}>
+                        DD:HH:MM:SS
                       </div>
                     </div>
                   </div>
