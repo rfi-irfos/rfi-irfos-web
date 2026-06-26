@@ -353,6 +353,7 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'ChatGPT (OpenAI)',  market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Persona SDK (com.withpersona.sdk2): facial liveness + document scan = Art. 9 biometric KYC inside a consumer chat app. Plaid bank account integration — financial account data linked to AI conversation history. Segment (Twilio): full track/screen/identify/group/alias analytics pipeline on conversation data. DETECT_SCREEN_CAPTURE: ChatGPT actively monitors when users screenshot their own conversations (Activity$ScreenCaptureCallback + onScreenCaptured confirmed in smali). FOREGROUND_SERVICE_MEDIA_PROJECTION: background screen capture capability declared. FirebaseInitProvider directBootAware=true + MlKitInitProvider (initOrder=99) pre-consent auto-init. Firebase key AIzaSyB_JJJE1dNu96Lkaz71IEGk82-HPbVvf8g hardcoded. BCC: DSB + CERT.at. IoB/Art.9 tier.' },
   { target: 'a-Trust (AT)',      market: 'PRIVATE', sev: 'HIGH',     status: 'SUBSTANTIVE', finding: 'RootBeer root detection bypass via SharedPreference manipulation — attacker on rooted device intercepts PIN/biometric + modifies signing request hash before reaching remote QSCD: user signs Document A, server signs Document B. eIDAS Art. 26(1)(c) sole control violated. Cert pinning absent — Christoph Klein confirmed in reply (AT-02: implicit admission). Logback FileAppender: qualified signature audit logs written in plaintext to device storage. Firebase key AIzaSyA4FveLgjGzGXXWUnh-UIxS2WQX6r3p3Pw hardcoded. Qualified trust service provider for eIDAS signatures. R3 sent, substantive engagement active.' },
   { target: 'Drei (AT)',         market: 'PRIVATE', sev: 'CRITICAL', status: 'CS-DEFLECT',  finding: 'Firebase API key hardcoded — project tribal-quasar-143512 (auto-generated name = never renamed = never rotated since initial integration). SpeedtestForegroundService + BootReceiver: GPS-precision speed tests start at every device boot before user interaction or consent. Zero NSC on carrier billing portal — WebView loads contract, billing, and payment data with no certificate pinning. DPO replied: "keine Sicherheitslücken, nehmen nicht an entgeltlichen Bountyprogrammen teil." Deflection pattern named. RTR BCC\'d. R2 sent.' },
+  { target: 'Gemini (Google)',   market: 'NASDAQ',  sev: 'MEDIUM',   status: 'WAITING',     finding: 'Cleanest AI app in the 2026 series. Three findings: (1) No NSC / no certificate pinning on conversation traffic — enterprise MDM can silently intercept Art. 9 conversations. (2) Clearcut + usagereporting behavioral telemetry consent gate not verifiable in binary. (3) All conversations mandatorily linked to full Google Account identity graph (Gmail, Maps, YouTube, Drive, Calendar). No third-party tracking SDKs. No hardcoded credentials. No AD_ID. No pre-consent ContentProvider. R1 pending.' },
 ]
 
 const SEV_COLOR: Record<string, string> = {
@@ -370,6 +371,76 @@ const STATUS_META: Record<string, { label: string; bg: string; color: string }> 
   ENGAGED:      { label: 'ENGAGED',     bg: 'rgba(20,184,166,0.18)',  color: '#2dd4bf' },
   PAID:         { label: 'PAID',        bg: 'rgba(234,179,8,0.25)',   color: '#fbbf24' },
   SILENT:       { label: 'SILENT',      bg: 'rgba(220,38,38,0.15)',   color: '#f87171' },
+}
+
+const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolved?: boolean }> = {
+  'Pokemon GO':                   { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Disneyland EU':                { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Caritas / Carla (AT)':         { notified: '2026-01-14', disclosure: '2026-09-01' },
+  'EY Ecosystem':                 { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Samsung Health':               { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Meta (4 apps)':                { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Tinder':                       { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'TikTok':                       { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'AliExpress':                   { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Alibaba.com':                  { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Snapchat':                     { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Apple Music':                  { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'YouTube Kids':                 { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'TOGGO':                        { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Netflix':                      { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Disney+':                      { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'TeamViewer':                   { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'SoundCloud':                   { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Lovoo':                        { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Marionnaud':                   { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Nike':                         { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'ZARA':                         { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Microsoft Edge':               { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Amazon Music':                 { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Amazon Business':              { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Nintendo':                     { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Max / HBO Max':                { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Tipico':                       { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Grokio':                       { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Strava':                       { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'adidas Running':               { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Raiffeisen':                   { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Revolut':                      { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Plus500':                      { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'flatex Austria':               { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'win2day':                      { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'VOL.at':                       { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Canva':                        { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Tchibo':                       { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'heyOBI':                       { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'KFC UAE':                      { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'BILD (Axel Springer)':         { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'DER SPIEGEL':                  { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'George (Erste Bank)':          { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'Jö Bonus Club':                { notified: '2026-06-14', disclosure: '2026-09-12' },
+  "McDelivery / McDonald's AT":   { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'Pollen-Radar':                 { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'Wolt':                         { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'Foodora':                      { notified: '2026-06-22', disclosure: '2026-09-20' },
+  'willhaben':                    { notified: '2026-06-19', disclosure: '2026-09-17' },
+  'RunBuddy / Runna':             { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'Taxefy':                       { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'Coca-Cola CEE':                { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'VIG KV App (AT)':              { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'Meine ÖGK (AT)':               { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'Bank Austria (AT)':            { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'Chargemap (FR/AT)':            { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'WienMobil (AT)':               { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'OMV (AT)':                     { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'IONITY (DE/EU)':               { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'Mein Magenta (AT)':            { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'Meine Allianz (AT)':           { notified: '2026-06-24', disclosure: '2026-09-22' },
+  'Bitpanda (AT)':                { notified: '2026-06-24', disclosure: '2026-09-22' },
+  'ChatGPT (OpenAI)':             { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'a-Trust (AT)':                 { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'Drei (AT)':                    { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'Gemini (Google)':              {                         disclosure: '2026-09-26' },
 }
 
 const CREDENTIALS = [
@@ -452,7 +523,13 @@ export function PublicSite() {
   const ledgerRef = useRef<HTMLDivElement>(null)
   const [ledgerFired, setLedgerFired] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [now, setNow] = useState(() => Date.now())
   const { theme, setTheme } = useTheme()
+
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 60000)
+    return () => clearInterval(t)
+  }, [])
   const mobile = useMobile()
   const closeMobile = useCallback(() => setMobileOpen(false), [])
 
@@ -684,13 +761,13 @@ export function PublicSite() {
             onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = '#a0a0b8' }}>Pricing</a>
         </div>
 
-        <div style={{ display: 'flex', gap: '3rem', marginTop: 80, flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', gap: '3rem', margin: '80px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
           {([
             { n: '139',  label: 'apps audited',        from: 'left'   },
             { n: '250+', label: 'critical findings',   from: 'bottom' },
             { n: '100+', label: 'companies notified',  from: 'scale'  },
             { n: '15+',  label: 'regulators notified', from: 'bottom' },
-            { n: '6',    label: 'years of research',   from: 'right'  },
+            { n: '6',    label: 'years of research',   from: 'bottom' },
           ] as const).map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from}>
               <div style={{ textAlign: 'center' }}>
@@ -895,36 +972,121 @@ export function PublicSite() {
             )
           })()}
 
-          <div style={{ maxHeight: 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent' }}>
-          <div ref={ledgerRef} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}`}</style>
-            {(searchQuery.trim()
-              ? AUDIT_HIGHLIGHTS.filter(a =>
-                  a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                  a.finding.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                  a.market.toLowerCase().includes(searchQuery.toLowerCase())
+          {/* Table */}
+          <div style={{ maxHeight: 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
+            <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}`}</style>
+
+            {/* Sticky header */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: mobile
+                ? '1fr 95px 82px'
+                : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 90px',
+              gap: '0 6px',
+              padding: '7px 14px',
+              position: 'sticky', top: 0, zIndex: 2,
+              background: 'var(--bg)', borderBottom: '1px solid var(--border2)',
+              fontFamily: 'monospace', fontSize: 9, fontWeight: 700,
+              color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em',
+            }}>
+              <span>Organisation</span>
+              {!mobile && <span>Notified</span>}
+              <span>Status</span>
+              {!mobile && <span>SEV</span>}
+              {!mobile && <span>Intel</span>}
+              {!mobile && <span>Resolved</span>}
+              <span>Disclosure</span>
+            </div>
+
+            {/* Rows */}
+            <div ref={ledgerRef}>
+              {(searchQuery.trim()
+                ? AUDIT_HIGHLIGHTS.filter(a =>
+                    a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    a.finding.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    a.market.toLowerCase().includes(searchQuery.toLowerCase())
+                  )
+                : AUDIT_HIGHLIGHTS
+              ).map((a, i) => {
+                const sm = STATUS_META[a.status] ?? STATUS_META['WAITING']
+                const meta = AUDIT_META[a.target]
+                const disclosureTs = meta ? new Date(meta.disclosure).getTime() : new Date('2026-09-19').getTime()
+                const daysLeft = Math.max(0, Math.ceil((disclosureTs - now) / 86400000))
+                const cdColor = daysLeft > 60 ? TEAL : daysLeft > 30 ? '#fb923c' : '#f87171'
+                const delay = Math.min(i * 30, 1500)
+                const resolved = meta?.resolved ?? false
+                return (
+                  <div key={i} style={{
+                    display: 'grid',
+                    gridTemplateColumns: mobile
+                      ? '1fr 95px 82px'
+                      : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 90px',
+                    gap: '0 6px',
+                    padding: '9px 14px',
+                    alignItems: 'start',
+                    borderBottom: '1px solid var(--border2)',
+                    background: i % 2 === 0 ? 'var(--bg2)' : 'transparent',
+                    opacity: ledgerFired ? undefined : 0,
+                    animation: ledgerFired ? `ledgerRowIn 0.38s cubic-bezier(0.22,1,0.36,1) ${delay}ms both` : 'none',
+                  }}>
+                    {/* Organisation */}
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: 12, color: 'var(--text)', lineHeight: 1.4 }}>{a.target}</div>
+                      <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', marginTop: 2 }}>{a.market}</div>
+                    </div>
+
+                    {/* Notified */}
+                    {!mobile && (
+                      <div style={{ fontFamily: 'monospace', fontSize: 10, color: meta?.notified ? 'var(--text2)' : 'var(--text4)', paddingTop: 1 }}>
+                        {meta?.notified ?? '—'}
+                      </div>
+                    )}
+
+                    {/* Status */}
+                    <div style={{ paddingTop: 1 }}>
+                      <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: sm.bg, color: sm.color, letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>{sm.label}</span>
+                    </div>
+
+                    {/* SEV */}
+                    {!mobile && (
+                      <div style={{ paddingTop: 1 }}>
+                        <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, color: SEV_COLOR[a.sev] ?? TEAL }}>{a.sev}</span>
+                      </div>
+                    )}
+
+                    {/* Intel */}
+                    {!mobile && (
+                      <div style={{ color: 'var(--text2)', fontSize: 11, lineHeight: 1.6,
+                        display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+                      }} title={a.finding}>
+                        {a.finding}
+                      </div>
+                    )}
+
+                    {/* Resolved */}
+                    {!mobile && (
+                      <div style={{ paddingTop: 1 }}>
+                        <span style={{
+                          fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                          background: resolved ? 'rgba(34,197,94,0.15)' : 'rgba(220,38,38,0.12)',
+                          color: resolved ? '#4ade80' : '#f87171', letterSpacing: '0.07em',
+                        }}>{resolved ? 'YES' : 'NO'}</span>
+                      </div>
+                    )}
+
+                    {/* Countdown */}
+                    <div style={{ paddingTop: 1 }}>
+                      <div style={{ fontFamily: 'monospace', fontSize: 10, fontWeight: 700, color: cdColor, lineHeight: 1.3 }}>
+                        {daysLeft}d
+                      </div>
+                      <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 1 }}>
+                        {meta?.disclosure ?? '2026-09-19'}
+                      </div>
+                    </div>
+                  </div>
                 )
-              : AUDIT_HIGHLIGHTS
-            ).map((a, i) => {
-              const sm = STATUS_META[a.status] ?? STATUS_META['WAITING']
-              const delay = Math.min(i * 38, 1900)
-              return (
-                <div key={i} style={{
-                  display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'flex-start',
-                  padding: '11px 14px', borderRadius: 5,
-                  background: 'var(--bg2)', border: '1px solid var(--border2)',
-                  opacity: ledgerFired ? undefined : 0,
-                  animation: ledgerFired ? `ledgerRowIn 0.42s cubic-bezier(0.22,1,0.36,1) ${delay}ms both` : 'none',
-                }}>
-                  <span style={{ fontWeight: 700, fontSize: 12, color: 'var(--text)', minWidth: 130, flex: '0 0 auto' }}>{a.target}</span>
-                  <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', flex: '0 0 auto', paddingTop: 2 }}>{a.market}</span>
-                  <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, color: SEV_COLOR[a.sev] ?? TEAL, flex: '0 0 auto', paddingTop: 2 }}>{a.sev}</span>
-                  <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 3, background: sm.bg, color: sm.color, flex: '0 0 auto' }}>{sm.label}</span>
-                  <span style={{ color: 'var(--text2)', fontSize: 11, lineHeight: 1.6, flex: '1 1 220px' }}>{a.finding}</span>
-                </div>
-              )
-            })}
-          </div>
+              })}
+            </div>
           </div>
           <p style={{ marginTop: 12, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
             this ledger is updated in real time as companies respond. silence is public. · <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
