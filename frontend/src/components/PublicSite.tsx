@@ -393,10 +393,10 @@ const STATUS_META: Record<string, { label: string; bg: string; color: string }> 
 
 const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolved?: boolean }> = {
   'Pokemon GO':                   { notified: '2026-06-01', disclosure: '2026-09-01' },
-  'Disneyland EU':                { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'Disneyland EU':                { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Caritas / Carla (AT)':         { notified: '2026-01-14', disclosure: '2026-09-01' },
-  'EY Ecosystem':                 { notified: '2026-06-01', disclosure: '2026-09-01' },
-  'Samsung Health':               { notified: '2026-06-01', disclosure: '2026-09-01' },
+  'EY Ecosystem':                 { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'Samsung Health':               { notified: '2026-06-22', disclosure: '2026-09-20' },
   'Meta (4 apps)':                { notified: '2026-06-01', disclosure: '2026-09-01' },
   'Tinder':                       { notified: '2026-06-01', disclosure: '2026-09-01' },
   'TikTok':                       { notified: '2026-06-01', disclosure: '2026-09-01' },
@@ -417,15 +417,15 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'Microsoft Edge':               { notified: '2026-06-01', disclosure: '2026-09-01' },
   'Amazon Music':                 { notified: '2026-06-07', disclosure: '2026-09-05' },
   'Amazon Business':              { notified: '2026-06-07', disclosure: '2026-09-05' },
-  'Nintendo':                     { notified: '2026-06-07', disclosure: '2026-09-05' },
-  'Max / HBO Max':                { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Nintendo':                     { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'Max / HBO Max':                { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Tipico':                       { notified: '2026-06-07', disclosure: '2026-09-05' },
   'Grokio':                       { notified: '2026-06-07', disclosure: '2026-09-05' },
   'Strava':                       { notified: '2026-06-07', disclosure: '2026-09-05' },
   'adidas Running':               { notified: '2026-06-07', disclosure: '2026-09-05' },
   'Raiffeisen':                   { notified: '2026-06-07', disclosure: '2026-09-05' },
   'Revolut':                      { notified: '2026-06-07', disclosure: '2026-09-05' },
-  'Plus500':                      { notified: '2026-06-07', disclosure: '2026-09-05' },
+  'Plus500':                      { notified: '2026-06-21', disclosure: '2026-09-19' },
   'flatex Austria':               { notified: '2026-06-07', disclosure: '2026-09-05' },
   'win2day':                      { notified: '2026-06-07', disclosure: '2026-09-05' },
   'VOL.at':                       { notified: '2026-06-07', disclosure: '2026-09-05' },
@@ -433,18 +433,18 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'Tchibo':                       { notified: '2026-06-14', disclosure: '2026-09-12' },
   'heyOBI':                       { notified: '2026-06-14', disclosure: '2026-09-12' },
   'KFC UAE':                      { notified: '2026-06-14', disclosure: '2026-09-12' },
-  'BILD (Axel Springer)':         { notified: '2026-06-14', disclosure: '2026-09-12' },
-  'DER SPIEGEL':                  { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'BILD (Axel Springer)':         { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'DER SPIEGEL':                  { notified: '2026-06-21', disclosure: '2026-09-19' },
   'George (Erste Bank)':          { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Jö Bonus Club':                { notified: '2026-06-14', disclosure: '2026-09-12' },
-  "McDelivery / McDonald's AT":   { notified: '2026-06-14', disclosure: '2026-09-12' },
+  "McDelivery / McDonald's AT":   { notified: '2026-06-23', disclosure: '2026-09-21' },
   'Pollen-Radar':                 { notified: '2026-06-14', disclosure: '2026-09-12' },
   'Wolt':                         { notified: '2026-06-14', disclosure: '2026-09-12' },
   'Foodora':                      { notified: '2026-06-22', disclosure: '2026-09-20' },
   'willhaben':                    { notified: '2026-06-19', disclosure: '2026-09-17' },
   'RunBuddy / Runna':             { notified: '2026-06-14', disclosure: '2026-09-12' },
-  'Taxefy':                       { notified: '2026-06-14', disclosure: '2026-09-12' },
-  'Coca-Cola CEE':                { notified: '2026-06-14', disclosure: '2026-09-12' },
+  'Taxefy':                       { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'Coca-Cola CEE':                { notified: '2026-06-23', disclosure: '2026-09-21' },
   'VIG KV App (AT)':              { notified: '2026-06-14', disclosure: '2026-09-12' },
   'Meine ÖGK (AT)':               { notified: '2026-06-14', disclosure: '2026-09-12' },
   'Bank Austria (AT)':            { notified: '2026-06-14', disclosure: '2026-09-12' },
@@ -453,8 +453,8 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'OMV (AT)':                     { notified: '2026-06-14', disclosure: '2026-09-12' },
   'IONITY (DE/EU)':               { notified: '2026-06-14', disclosure: '2026-09-12' },
   'Mein Magenta (AT)':            { notified: '2026-06-21', disclosure: '2026-09-19' },
-  'Meine Allianz (AT)':           { notified: '2026-06-24', disclosure: '2026-09-22' },
-  'Bitpanda (AT)':                { notified: '2026-06-24', disclosure: '2026-09-22' },
+  'Meine Allianz (AT)':           { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'Bitpanda (AT)':                { notified: '2026-06-26', disclosure: '2026-09-24' },
   'ChatGPT (OpenAI)':             { notified: '2026-06-26', disclosure: '2026-09-24' },
   'a-Trust (AT)':                 { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Drei (AT)':                    { notified: '2026-06-21', disclosure: '2026-09-19' },
@@ -1172,8 +1172,13 @@ export function PublicSite() {
                 const eS    = Math.floor((elapsedMs % 60000)    / 1000)
                 const eStr  = `${eDays}d ${pad(eH)}h ${pad(eM)}m ${pad(eS)}s`
                 const eColor = resolved ? '#4ade80' : eDays > 60 ? '#f87171' : eDays > 30 ? '#fb923c' : TEAL
+                const totalWindowMs = notifiedTs ? disclosureTs - notifiedTs : 90 * 86400000
+                const batteryPct = notifiedTs ? Math.max(0, Math.min(1, (disclosureTs - now) / totalWindowMs)) : 1
+                const batteryColor = batteryPct > 0.66 ? '#4ade80' : batteryPct > 0.33 ? '#fb923c' : '#f87171'
                 return (
                   <div key={i} style={{
+                    position: 'relative',
+                    overflow: 'hidden',
                     display: 'grid',
                     gridTemplateColumns: mobile
                       ? '1fr 95px 82px'
@@ -1186,6 +1191,10 @@ export function PublicSite() {
                     opacity: ledgerFired ? undefined : 0,
                     animation: ledgerFired ? `ledgerRowIn 0.38s cubic-bezier(0.22,1,0.36,1) ${delay}ms both` : 'none',
                   }}>
+                    {/* Battery bar */}
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'rgba(255,255,255,0.05)' }}>
+                      <div style={{ height: '100%', width: `${batteryPct * 100}%`, background: `linear-gradient(90deg, ${batteryColor}55, ${batteryColor})`, borderRadius: '0 2px 0 0', transition: 'width 1s linear' }} />
+                    </div>
                     {/* Organisation */}
                     <div>
                       <div style={{ fontWeight: 700, fontSize: 12, color: 'var(--text)', lineHeight: 1.4 }}>{a.target}</div>
@@ -1194,8 +1203,15 @@ export function PublicSite() {
 
                     {/* Notified */}
                     {!mobile && (
-                      <div style={{ fontFamily: 'monospace', fontSize: 10, color: meta?.notified ? 'var(--text2)' : 'var(--text4)', paddingTop: 1 }}>
-                        {meta?.notified ?? '—'}
+                      <div style={{ paddingTop: 1 }}>
+                        <div style={{ fontFamily: 'monospace', fontSize: 10, color: meta?.notified ? 'var(--text2)' : 'var(--text4)' }}>
+                          {meta?.notified ?? '—'}
+                        </div>
+                        {notifiedTs && (
+                          <div style={{ fontFamily: 'monospace', fontSize: 9, color: TEAL, marginTop: 2, letterSpacing: '0.04em' }}>
+                            {eDays === 0 ? 'today' : `${eDays}d ago`}
+                          </div>
+                        )}
                       </div>
                     )}
 
