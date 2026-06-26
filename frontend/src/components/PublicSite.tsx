@@ -654,6 +654,10 @@ export function PublicSite() {
   const [b2bChecked, setB2bChecked]           = useState(false)
   const { theme, setTheme } = useTheme()
 
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
+
   const openCheckoutModal = (tier: string) => {
     setAgbChecked(false)
     setB2bChecked(false)
