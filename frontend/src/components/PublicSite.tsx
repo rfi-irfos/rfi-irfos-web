@@ -765,32 +765,32 @@ export function PublicSite() {
 
       {/* B2B CHECKOUT CONFIRMATION MODAL */}
       {checkoutModal && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: 14, padding: '32px 28px', maxWidth: 480, width: '100%' }}>
-            <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>Bestellbestätigung</div>
-            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 20, color: '#e8e8f0' }}>Vor dem Checkout bitte bestätigen</h3>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
+          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '24px 20px 32px' : '32px 28px', maxWidth: mobile ? '100%' : 480, width: '100%' }}>
+            <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Bestellbestätigung</div>
+            <h3 style={{ fontSize: mobile ? 16 : 18, fontWeight: 800, marginBottom: 18, color: '#e8e8f0' }}>Vor dem Checkout bitte bestätigen</h3>
             <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16, cursor: 'pointer' }}>
               <input type="checkbox" checked={b2bChecked} onChange={e => setB2bChecked(e.target.checked)}
-                style={{ marginTop: 3, accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
-              <span style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.6 }}>
+                style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
+              <span style={{ color: '#a0a0b8', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
                 Ich handle als <strong style={{ color: '#e8e8f0' }}>Unternehmer i.S.d. § 1 Abs. 2 KSchG</strong> und bestätige, dass dieser Kauf im Rahmen meiner gewerblichen oder beruflichen Tätigkeit erfolgt.
               </span>
             </label>
             <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 24, cursor: 'pointer' }}>
               <input type="checkbox" checked={agbChecked} onChange={e => setAgbChecked(e.target.checked)}
-                style={{ marginTop: 3, accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
-              <span style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.6 }}>
+                style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
+              <span style={{ color: '#a0a0b8', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
                 Ich stimme den <a href="#p/agb" style={{ color: TEAL }}>AGB</a> zu. Ich bin einverstanden, dass die Leistung <strong style={{ color: '#e8e8f0' }}>sofort nach Zahlung beginnt</strong> und kein Widerrufsrecht besteht (§ 18 Abs. 1 Z 1 FAGG). Rückerstattungen sind ausgeschlossen.
               </span>
             </label>
-            <div style={{ display: 'flex', gap: 12 }}>
+            <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
               <button onClick={() => setCheckoutModal(null)}
-                style={{ flex: 1, padding: '10px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#606080', fontSize: 12, fontFamily: 'monospace', cursor: 'pointer' }}>
+                style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#606080', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
                 Abbrechen
               </button>
               <button onClick={() => handleCheckout(checkoutModal)}
                 disabled={!b2bChecked || !agbChecked}
-                style={{ flex: 2, padding: '10px', background: b2bChecked && agbChecked ? 'rgba(0,245,196,0.12)' : 'transparent', border: `1px solid ${b2bChecked && agbChecked ? TEAL : 'rgba(255,255,255,0.08)'}`, borderRadius: 6, color: b2bChecked && agbChecked ? TEAL : '#404058', fontSize: 12, fontFamily: 'monospace', cursor: b2bChecked && agbChecked ? 'pointer' : 'not-allowed', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                style={{ flex: mobile ? undefined : 2, padding: '12px', background: b2bChecked && agbChecked ? 'rgba(0,245,196,0.12)' : 'transparent', border: `1px solid ${b2bChecked && agbChecked ? TEAL : 'rgba(255,255,255,0.08)'}`, borderRadius: 6, color: b2bChecked && agbChecked ? TEAL : '#404058', fontSize: 13, fontFamily: 'monospace', cursor: b2bChecked && agbChecked ? 'pointer' : 'not-allowed', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                 Weiter zu Stripe →
               </button>
             </div>
