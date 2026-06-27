@@ -64,31 +64,69 @@ html { scroll-padding-top: 72px; }
 }
 
 [data-theme="hc"] {
-  --bg:           #ffffff;
-  --bg2:          #f0f0f0;
-  --bg3:          #e0e0e0;
-  --bg-accent:    #e6f4ef;
-  --text:         #000000;
-  --text2:        #111111;
-  --text3:        #333333;
-  --text4:        #555555;
-  --border:       rgba(0,0,0,0.28);
-  --border2:      rgba(0,0,0,0.16);
-  --accent:       #005a3c;
-  --accent-text:  #005a3c;
-  --accent-dim:   rgba(0,90,60,0.12);
-  --accent-border:rgba(0,90,60,0.40);
-  --nav-bg:       rgba(255,255,255,0.99);
-  --nav-border:   rgba(0,0,0,0.22);
-  --sev-crit:     #8b0000;
-  --sev-high:     #7a3200;
-  --sev-med:      #5a4000;
+  /* High contrast — light variant (black on near-white cream).
+     Off-white background avoids glare-induced blur for astigmatism (WCAG AAA). */
+  --bg:           #fafef8;   /* warm near-white — avoids glare; not pure #fff */
+  --bg2:          #edf0eb;
+  --bg3:          #dde2db;
+  --bg-accent:    #e0ece7;
+  --text:         #0a0800;   /* near-black warm, not pure #000 */
+  --text2:        #181410;
+  --text3:        #2e2a24;
+  --text4:        #4a4640;
+  --border:       rgba(0,0,0,0.45);   /* strong borders — cards/tables visible without color */
+  --border2:      rgba(0,0,0,0.28);
+  --accent:       #003c28;   /* deep green, 10:1 on near-white */
+  --accent-text:  #003c28;
+  --accent-dim:   rgba(0,60,40,0.14);
+  --accent-border:rgba(0,60,40,0.55);
+  --nav-bg:       rgba(250,254,248,0.99);
+  --nav-border:   rgba(0,0,0,0.35);
+  --sev-crit:     #7a0000;   /* dark red — 7:1 on --bg */
+  --sev-high:     #6a2c00;
+  --sev-med:      #4a3800;
   --hero-grad:    none;
-  --input-bg:     #f0f0f0;
-  --input-border: rgba(0,0,0,0.28);
-  --input-text:   #000000;
-  --input-ph:     #555555;
-  --timeline-line:rgba(0,0,0,0.25);
+  --input-bg:     #edf0eb;
+  --input-border: rgba(0,0,0,0.45);
+  --input-text:   #0a0800;
+  --input-ph:     #4a4640;
+  --timeline-line:rgba(0,0,0,0.35);
+}
+
+/* ── Forced colors (OS-level high contrast, e.g. Windows Contrast Themes) ── */
+@media (forced-colors: active) {
+  /* Cards, modals, nav: invisible transparent border becomes solid in forced-colors mode */
+  nav, [class*="card"], dialog, section, article, header, footer,
+  .rfi-stat-card, .rfi-card, [role="dialog"], [role="complementary"] {
+    border: 1px solid transparent;
+  }
+  /* Focus indicators: transparent outline appears in forced-colors mode */
+  *:focus-visible {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  /* Suppress decorative gradients and shadows that disappear in forced colors */
+  .rfi-animate, [style*="background: radial"], [style*="background: linear"] {
+    background: Canvas !important;
+  }
+}
+
+/* ── Auto high-contrast when OS requests more contrast ──────── */
+@media (prefers-contrast: more) {
+  :root:not([data-theme="dark"]):not([data-theme="hc"]) {
+    --text:   #000000;
+    --text2:  #111111;
+    --text3:  #222222;
+    --border: rgba(0,0,0,0.5);
+    --border2:rgba(0,0,0,0.35);
+    --accent: #003c28;
+  }
+  [data-theme="dark"] {
+    --text:   #f0f0ec;
+    --text2:  #d0d0cc;
+    --border: rgba(255,255,255,0.3);
+    --accent: #00f5c4;
+  }
 }
 
 /* ── Scroll animations ───────────────────────────────────────── */
