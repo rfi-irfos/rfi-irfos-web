@@ -402,6 +402,13 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'myUNIQA (AT)',        market: 'WBAG',    sev: 'HIGH',     status: 'WAITING',     finding: 'Dynatrace Real User Monitoring active on insurance form sessions: touch/tap session replay captures claim forms, policy documents, leistungsübersichten. Kofax document OCR uploads to US. ATX: UNIQA (UNIQA Insurance Group).' },
   { target: 'GRAWE ID (AT)',       market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING',     finding: 'Firebase API key hardcoded in production binary. Pre-consent ContentProvider auto-init. GRAWE (Grazer Wechselseitige Versicherung AG) — Austrian mutual insurer, 3M+ insured, headquartered Graz.' },
   { target: 'Pinterest',           market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'usesCleartextTraffic=true: global cleartext HTTP permitted across entire app including auth flows. Undisclosed LINE SDK (LINE Corp, owned by SoftBank/NAVER KR/JP) embedded without privacy policy disclosure. 6 total findings. NYSE: PINS.' },
+  { target: 'Raisin SE (DE)',       market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Adjust SDK + Exponea (Bloomreach) CDP + Datadog RUM: 3 pre-consent auto-init ContentProviders fire before consent screen on a €37B AuM savings marketplace. RECORD_AUDIO permission declared on a savings deposit app. INSTALL_PACKAGES sideloading capability. Facebook Custom Audience on financial savings data. Firebase key hardcoded. BCC: BfDI + DSB.' },
+  { target: 'BAWAG Group AG (AT)', market: 'WBAG',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Firebase API key hardcoded (project: bawag-mobile). AD_ID on a banking app. Usabilla/Survicate SDK: screenshot capability embedded in banking sessions — form data and account screens capturable. FaceTec 3D liveness biometric (Art. 9) for KYC without confirmed Art. 9 legal basis. WBAG: BG. BCC: DSB + FMA.' },
+  { target: 'Diagnosia (AT)',      market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Firebase + Facebook SDK + Sentry Session Replay introduced in update June 22 2026: all 3 pre-consent ContentProvider auto-init on a medical drug lookup app. allowBackup=true with no medical data exclusion — drug search history (health condition proxy, Art. 9) ADB-extractable. Viennese healthcare startup. BCC: DSB + BMG.' },
+  { target: 'Uber Technologies (3 apps)', market: 'NYSE', sev: 'CRITICAL', status: 'WAITING', finding: 'Rider + Eats + Driver. ParametersOverrideRequestBroadcastReceiver exported without permission declaration: any installed app can inject arbitrary ride parameters. Uber Rider and Uber Eats share same Firebase project — cross-product behavioral data linking without disclosure. Driver app: foreground camera streaming service active without per-session user notification. NYSE: UBER. BCC: DSB + BfDI. AP NL web form only (meldpunt@ bounces permanently).' },
+  { target: 'BabyBus (CN)',        market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'FTC COPPA $4M settlement repeat offender (2022). 19 ad SDKs in production toddler app. Pangle/ByteDance + Mintegral: dual PRC NSL processors on toddler behavioral data. WeChat SDK 4,000+ classes. No Art. 27 EU representative for a platform with 400M+ registered users globally. COPPA §312.7 + GDPR Art. 8.' },
+  { target: 'IDZ Digital / Timpy (IN)', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'KidloLand + Timpy Kids + Timpy Songs: 3 toddler apps, systematic portfolio pattern. ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION + FirebaseInitProvider pre-consent across full portfolio. Mintegral (PRC) in mediation stack. Indian studio (Idea Door Studio Pvt Ltd) serving EU child audience with no EU representative and no DPO.' },
+  { target: 'Super Four Games (UK)', market: 'PRIVATE', sev: 'HIGH',    status: 'WAITING',     finding: 'Write123 preschool literacy app: AD_ID + FirebaseInitProvider pre-consent on an app targeting pre-readers. UK studio post-Brexit: no GDPR adequacy decision for UK→EU data transfers. ICO has jurisdiction. ACCESS_ADSERVICES_ATTRIBUTION on a children\'s handwriting learning app.' },
 ]
 
 const SEV_COLOR: Record<string, string> = {
@@ -535,6 +542,13 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'myUNIQA (AT)':                 { notified: '2026-06-26', disclosure: '2026-09-24' },
   'GRAWE ID (AT)':                { notified: '2026-06-26', disclosure: '2026-09-24' },
   'Pinterest':                    { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'Raisin SE (DE)':              { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'BAWAG Group AG (AT)':         { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'Diagnosia (AT)':              { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'Uber Technologies (3 apps)':  { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'BabyBus (CN)':                { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'IDZ Digital / Timpy (IN)':    { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'Super Four Games (UK)':       { notified: '2026-06-25', disclosure: '2026-09-23' },
 }
 
 const CREDENTIALS = [
@@ -1091,10 +1105,10 @@ export function PublicSite() {
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
             {[
-              { n: '175+', label: 'Apps audited',        from: 'left'   },
-              { n: '115+', label: 'Companies notified',  from: 'bottom' },
-              { n: '250+', label: 'Critical findings',   from: 'top'    },
-              { n: '15+',  label: 'Regulators notified', from: 'right'  },
+              { n: '200+', label: 'Apps audited',        from: 'left'   },
+              { n: '130+', label: 'Companies notified',  from: 'bottom' },
+              { n: '320+', label: 'Critical findings',   from: 'top'    },
+              { n: '18+',  label: 'Regulators notified', from: 'right'  },
             ].map((s, i) => (
               <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
                 <div style={{
