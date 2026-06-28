@@ -152,6 +152,7 @@ dependencies = [
  "axum-extra",
  "chrono",
  "dotenvy",
+ "hex",
  "hmac",
  "reqwest",
  "serde",
