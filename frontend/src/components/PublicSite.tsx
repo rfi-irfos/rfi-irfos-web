@@ -246,9 +246,9 @@ const PROJECTS = [
     tag: 'open source · privacy',
   },
   {
-    name: 'Neurobiological-Fitness Consequence Separation',
+    name: 'NFCS',
     sub: 'ecocentric research',
-    desc: 'Agent-based model proving the global food system produces 1.64x the calories needed to feed every person on Earth. The scarcity is not thermodynamic — it is organizational. Manufactured, not physical.',
+    desc: 'Neurobiological-Fitness Consequence Separation. Agent-based model proving the global food system produces 1.64x the calories needed to feed every person on Earth. The scarcity is not thermodynamic — it is organizational. Manufactured, not physical.',
     link: 'https://github.com/rfi-irfos/foodchain-analysis',
     tag: 'ecocentric research',
   },
@@ -1187,7 +1187,9 @@ export function PublicSite() {
           </Reveal>
           <Reveal from="right" delay={1}>
             <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
-              Root level code analysis. Regulators BCC'd on every submission. 90-day coordinated disclosure. Our framework. Our timeline.
+              Root level code analysis. Regulators BCC'd on <strong style={{ color: '#e0e0f0' }}>every submission</strong>. 90-day coordinated disclosure. Our framework. Our timeline.
+              <br /><br />
+              We do not operate bug bounty programs, HackerOne, or any third-party vulnerability reward platforms. All findings are published under <strong style={{ color: '#e0e0f0' }}>Forschungsfreiheitsgesetz (Art. 17 StGG)</strong> and constitute free scientific knowledge sharing within the EU research framework — independent of commercial incentive.
             </p>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
