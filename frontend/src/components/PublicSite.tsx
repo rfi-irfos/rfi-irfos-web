@@ -299,7 +299,7 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'TikTok',            market: 'PRIVATE', sev: 'CRITICAL', status: 'CS-DEFLECT',  finding: 'National Security Law data pipeline on EU user devices. HackerOne deflect received — escalated to DPO.' },
   { target: 'AliExpress',        market: 'HKEx',    sev: 'CRITICAL', status: 'WAITING',     finding: 'WhiteScreenRecorder (full-screen capture) + ByteDance shadowhook SDK + TikTok assets = triple NSL pipeline. Cert pins EXPIRED 20+ months, silently disabled.' },
   { target: 'Alibaba.com',       market: 'HKEx',    sev: 'CRITICAL', status: 'WAITING',     finding: 'User CA trusted in base-config. Chinese police .gov.cn domains cleartext-whitelisted in production NSC.' },
-  { target: 'Snapchat',          market: 'NYSE',    sev: 'CRITICAL', status: 'ACK',         finding: 'Fidelius encryption keys stored at Google. "Disappearing" messages can be retained server-side. Core product privacy claim invalidated.' },
+  { target: 'Snapchat',          market: 'NYSE',    sev: 'CRITICAL', status: 'REGULATOR',   finding: 'Fidelius E2E encryption keys (per-contact BLOB) backed up to Google via MushroomBackupAgent — "disappearing" messages technically persist; key material accessible via Google account warrant without Snap\'s transparency report. DSA Art. 16: illegal content reporting wired to ads only (snapads_dsa_illegal_content_report) — zero UGC coverage across 87,316 smali classes. Coimisiún na Meán (DSA coordinator for Snap) opened formal case CAS-09535 on 2026-06-29. Full evidence submission filed same day.' },
   { target: 'Apple Music',       market: 'NASDAQ',  sev: 'CRITICAL', status: 'SUBSTANTIVE', finding: 'Dev NSC (cleartextTrafficPermitted=true) in production Play Store APK. Crash data sent to Google Crashlytics. "Privacy. That\'s iPhone." — not on Android.' },
   { target: 'YouTube Kids',      market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'RECORD_AUDIO from children, no verified parental consent. IS_CHILD_ACCOUNT_OVER_13 flag — EU requires age 16/14, not 13. COPPA violation.' },
   { target: 'TOGGO',             market: 'PRIVATE', sev: 'CRITICAL', status: 'ACK',         finding: 'Google Topics API + CleverPush behavioral marketing on children\'s TV platform. COPPA § 312.2 per-download violation. Super RTL, Germany.' },
@@ -321,12 +321,12 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'Strava',            market: 'PRIVATE', sev: 'CRITICAL', status: 'CS-DEFLECT',  finding: 'Firebase API key hardcoded in production. NSC present but empty: 120M users, zero certificate pinning. privacy@strava.com bounced. kkaoudis@strava.com: HackerOne deflect — Pattern 7 (Scope Deflection) named.' },
   { target: 'adidas Running',    market: 'XETRA',   sev: 'CRITICAL', status: 'ACK',         finding: '3 Firebase API keys (dev/staging/prod) all active in production APK. Health + GPS data. Acquired as Runtastic AT (220M EUR), all Austrian offices closed 2024.' },
   { target: 'Raiffeisen',        market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING',     finding: 'Borsen app: allowBackup=true + empty backup_rules.xml: full investment portfolio ADB-extractable. No NSC. ELBA: best NSC in the series but Firebase key hardcoded + Ad Services on banking app.' },
-  { target: 'Revolut',           market: 'PRIVATE', sev: 'HIGH',     status: 'ACK',         finding: 'Case #12973-74394-83287. DPO support initially claimed findings "out of scope" — pushed back twice. Substantive path now open.' },
+  { target: 'Revolut',           market: 'PRIVATE', sev: 'HIGH',     status: 'SUBSTANTIVE', finding: 'Case #12973-74394-83287. DPO support initially claimed findings "out of scope" — pushed back twice. Technical and legal teams now validating specific items (confirmed 2026-06-29). Mid/low tier findings not yet disclosed — offer open.' },
   { target: 'Plus500',           market: 'LSE',     sev: 'CRITICAL', status: 'WAITING',     finding: 'NSC exposes 16 internal dev/staging servers. ContentSquare screen recording on trading platform. Seychelles jurisdiction 1:300 leverage — ESMA limit bypass.' },
   { target: 'flatex Austria',    market: 'XETRA',   sev: 'CRITICAL', status: 'WAITING',     finding: 'IDnow KYC (1,433 smali) — Art. 9 biometric on BaFin/FMA-regulated bank, no NSC. Braze 2,661 smali tracking trading behaviour.' },
   { target: 'win2day',           market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'GlassBox session replay + Salesforce Marketing Cloud on Austrian state lottery platform. Data sovereignty question for nationally licensed gambling.' },
-  { target: 'VOL.at',            market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Pushwoosh BootReceiver (Belarus/Singapore — US Army removed apps for this SDK). Global cleartext NSC base-config. Russmedia DebugConsole OverlayService in production. Facebook client token hardcoded.' },
-  { target: 'Canva',             market: 'PRIVATE', sev: 'CRITICAL', status: 'ACK',         finding: 'Sentry Session Replay on design tool: pitch decks and confidential documents captured and sent to Sentry US. ACK in 5 minutes. Ticket #16392019.' },
+  { target: 'VOL.at',            market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: '10 findings (4 CRITICAL / 3 HIGH / 3 MEDIUM). C1: Pushwoosh BootReceiver still shipping versionCode 389 — US Army removed apps for this SDK, Russmedia\'s own newsroom reported the Reuters/Pushwoosh story via APA on 2022-11-14 (documented Kenntnis, Art. 83(2)(b)). C2: Firebase API key + global cleartext NSC base-config. C3: Russmedia DebugConsole OverlayService (SYSTEM_ALERT_WINDOW) active in production. C4: Chartbeat SDK with hardcoded AWS Cognito Identity Pool (us-east-1:89109093-5e56-4960-928b-5edc0e63a985) — behavioral data to US-EAST-1, CLOUD Act jurisdiction. H2: StartApp CONSENT_ENABLED=false — consent mechanism programmatically bypassed by Russmedia (Art. 7 intentional violation). R1 sent 2026-06-29. DSB + CERT.at in BCC. Deadline 2026-09-19.' },
+  { target: 'Canva',             market: 'PRIVATE', sev: 'CRITICAL', status: 'ESCALATED',  finding: 'Sentry Session Replay on design tool: pitch decks and confidential documents captured and sent to Sentry US. Ticket #16392019. R2: Cannot-Reproduce Dismissal — "unable to reproduce" static binary findings. R3 2026-06-30: "we do not agree with your assessment — closing this ticket" + Bugcrowd VDP redirect (3rd attempt). Three patterns logged: Cannot-Reproduce Dismissal + Disagreement Without Specifics + VDP Redirect ×3. Escalated to DPO directly. OAIC (Australian Information Commissioner) + DSB Austria now in CC. Deadline 2026-07-14.' },
   { target: 'Tchibo',            market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING',     finding: 'ContentSquare Session Replay autostart + OverlayService in production (292 smali). GTM v28: 22 remotely-deployed tags. Adjust token hardcoded. Emarsys SAP geofencing starts at boot.' },
   { target: 'heyOBI',            market: 'PRIVATE', sev: 'HIGH',     status: 'CS-DEFLECT',  finding: 'ContentSquare 425 smali + Heap 92 smali = 517 smali dual-layer session capture. GPS + Bluetooth in-store movement profiling. datenschutz@obi.de Ticket #1370336 auto-ACK → VDP deflect issued by DPO desk itself ("https://vdp.obi.de/") — Pattern 7 Scope Deflection from DPO, not CS. R2 sent naming pattern.' },
   { target: 'KFC UAE',           market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Chucker HTTP debug interceptor in production: all API calls including payment logged in plaintext on device. Huawei HMS 1,835 smali (China routing). Foreground GPS + rider tracking.' },
@@ -363,7 +363,7 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'ChessKid (US)',         market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'Amplitude API key 89e2a8ad36ed610a5b68c94e3ccf4412 hardcoded in strings.xml — full read/write on children\'s behavioural data. Firebase key hardcoded. Amplitude analytics on children\'s chess data with no parental consent. Chess.com LLC platform.' },
   { target: 'Roma & Diana (ID)',     market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'YouTube API key hardcoded in production request URL + 3× Firebase keys. No Art. 27 EU representative: Indonesian solo dev serving 130M YouTube subscriber audience. reCAPTCHA via PRC CDN (gstatic.cn). No DPO, no parental consent, no Art. 13.' },
   { target: 'PSA ich.app (AT)',      market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'Austrian eID + payment app: ServerType enum in production APK exposes full internal infrastructure — AZURE2A http://20.61.119.111:8081 + AZURE2B http://20.61.119.111:8091 (cleartext, no TLS). Hardcoded credentials in ServerType enum. Firebase Analytics + AD_ID on an eID/payment app.' },
-  { target: 'running.COACH (AT)',   market: 'PRIVATE', sev: 'HIGH',     status: 'CS-DEFLECT', finding: 'allowBackup=true with no health data exclusion: training history, heart rate, running sessions backed up to Google Cloud. Privacy policy states no third-party data sharing — allowBackup IS Google sharing. NSC present but empty: zero certificate pinning on a health app. Huawei HMS 412 smali undisclosed. GDPR Art. 13(1)(e) policy contradiction. Ticket #125226 "Lieber Läufer" — runner user-support queue, not security. Pattern 7 named. R2 deadline 2026-06-29 18:00.' },
+  { target: 'running.COACH (AT)',   market: 'PRIVATE', sev: 'HIGH',     status: 'SILENT',     finding: 'allowBackup=true with no health data exclusion: training history, heart rate, running sessions backed up to Google Cloud. Privacy policy states no third-party data sharing — allowBackup IS Google sharing. NSC present but empty: zero certificate pinning on a health app. Huawei HMS 412 smali undisclosed. GDPR Art. 13(1)(e) policy contradiction. Ticket #125226 "Lieber Läufer" — runner user-support queue, not security. Pattern 7 named. R2 deadline 2026-06-29 18:00 — verstrichen ohne Antwort. SILENT.' },
   { target: 'LEGO Bluey (IE)',      market: 'PRIVATE', sev: 'HIGH',     status: 'ACK',     finding: 'ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION declared in LEGO/BBC Studios licensed children\'s app (under-5s). Google Ads (gms.ads) + Unity + Firebase SDKs bundled. FirebaseInitProvider auto-init before consent screen. R2 sent 2026-06-26: Engineering Review Deflection + Technical Proof Redirect both named. THREE QUESTIONS unanswered.' },
   { target: 'StoryToys: Peppa Pig (IE)',          market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION + FirebaseInitProvider (initOrder=100, directBootAware=true): advertising identifier + Firebase auto-init before consent on a Peppa Pig licensed app targeting under-5s. StoryToys Entertainment Ltd, Dublin. COPPA §312.7 + GDPR Art. 8.' },
   { target: 'StoryToys: Thomas & Friends (IE)',   market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'ACCESS_ADSERVICES_AD_ID + ACCESS_ADSERVICES_ATTRIBUTION + FirebaseInitProvider (initOrder=100) pre-consent auto-init: advertising tracking on a Mattel/HIT Entertainment licensed toddler app. Firebase transmits to Google US before any parent consent screen is shown.' },
@@ -396,7 +396,7 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'Wo gibt\'s was (AT)', market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING',     finding: 'ACCESS_BACKGROUND_LOCATION: location tracked continuously in background in Austrian deals/flyers app. Facebook Codeless Event Logging: shopping behaviour and browsing patterns to Meta. Undabot d.o.o. (HR), serving AT market.' },
   { target: 'MySantander (DE)',    market: 'NYSE',    sev: 'HIGH',     status: 'WAITING',     finding: 'Pre-consent Firebase init + missing NSC on banking app. Firebase key hardcoded. Santander Consumer Bank AG, DE. NYSE: SAN (Banco Santander parent). R1 sent 2026-06-25.' },
   { target: 'iJoysoft Camera',     market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING',     finding: 'Third-country transfers to PRC without adequacy decision, cleartext override, pre-consent ad init in photo filter/camera app. No Art. 27 EU representative. Contact via personal Gmail only.' },
-  { target: 'bank99 (AT)',         market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Login page loaded via unsecured WebView: banking session initiation with insufficient TLS config — MITM trivial on untrusted networks. bank99 GmbH owned by Österreichische Post AG (WBAG: POST).' },
+  { target: 'bank99 (AT)',         market: 'PRIVATE', sev: 'CRITICAL', status: 'SUBSTANTIVE', finding: 'F1: kein Certificate Pinning auf keiner Ebene — Banking-Login-WebView lädt meine.bank99.at ohne NSC/CertificatePinner, MITM trivial. F2: unsafe-eval + unsafe-inline in Banking-WebView CSP. F3: Firebase key AIzaSyD8jtdT06oePLqFohurEF8yjmEopM5Jx_4 hardcoded. F4: Adjust Attribution SDK (obfuskiert) + FirebaseInitProvider pre-consent auf Banking-App. R3 gesendet 2026-06-29: Internal Black Box + Form Attack + Veröffentlichungsgag — alle drei Muster benannt. DSB in BCC seit R1. Deadline 2026-07-09.' },
   { target: 'GunjanApps (IE)',     market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Systematic advertising SDK + advertising identifier across children\'s portfolio (ElePant, Ijjus World, PuzzlEasy): Google Ads + Firebase on apps targeting preschool age groups. GunjanApps Studios LLP, registered Ireland. COPPA + GDPR Art. 8.' },
   { target: 'Zurich Insurance (AT)', market: 'SIX',   sev: 'HIGH',     status: 'WAITING',     finding: 'ZAPP v5.0.0 + ZIO v1.3.2: BOOT_COMPLETED autostart on both insurance apps — background auto-launch at every device boot before user opens app. Urban Airship marketing platform on insurance customer data. SIX: ZURN.' },
   { target: 'myUNIQA (AT)',        market: 'WBAG',    sev: 'HIGH',     status: 'WAITING',     finding: 'Dynatrace Real User Monitoring active on insurance form sessions: touch/tap session replay captures claim forms, policy documents, leistungsübersichten. Kofax document OCR uploads to US. ATX: UNIQA (UNIQA Insurance Group).' },
@@ -444,7 +444,10 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'Flo Health',           market: 'PRIVATE', sev: 'CRITICAL', status: 'ACK',         finding: 'org.iggymedia.periodtracker. 70M+ MAU. Art.9 reproductive health data (cycle, symptoms, pregnancy). dpo@flo.health Ticket #5297922 received — DPO system, not CS. ICO casework@ bounced (indigoffice block). Submit via ico.org.uk/make-a-complaint.' },
   { target: 'King / Candy Crush',   market: 'NASDAQ',  sev: 'CRITICAL', status: 'ACK',         finding: '12 apps audited (com.king.candycrushsaga + 11 titles). 300M+ MAU. Loot mechanics targeting minors. replyto.kcare@king.com rubber stamp loop x2 — Pattern 1 Policy-as-Implementation-Proof. ICO casework@ bounced (indigoffice block). ICO complaint via web form required.' },
   { target: 'Coin Master',          market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.moonactive.coinmaster. Moon Active, Cyprus. 100M+ installs. Slot machine + loot chest mechanics on PEGI 3 children\'s app. Pre-consent ContentProvider stack. ICO casework@ bounced (indigoffice block). Art.8 + COPPA.' },
-  { target: 'UNO! Mobile',          market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'com.mattel163.unomobile. Mattel + NetEase joint venture (CN). NetEase subject to China NatIntelLaw Art. 7 — children\'s card game data routes through Chinese co-controller. Firebase + ad SDKs on children\'s platform. Art.8 + COPPA.' },
+  { target: 'UNO! Mobile',          market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'Mattel163 + NetEase JV. F0: privacy@mattel.com = closed Microsoft 365 group, external senders blocked — Art. 12(1) GDPR violation (designated privacy contact unreachable for parents). C1: Mattel platform secret bfhijpzBIM@%(-+, hardcoded verbatim in strings.xml — anyone with apktool can authenticate as the official app. C2: 2× Firebase API keys hardcoded. H1: AgoraRtcSDK.dll + AWSSDK.CognitoIdentity.dll + AWSSDK.S3.dll — children\'s voice chat via Agora (US/China entity), no Art. 44-49 transfer mechanism. H2: FacebookInitProvider pre-consent on children\'s app. R2 sent 2026-06-30: legal@mattel163.com + net-easelaw@corp.netease.com + legal@mattel.com + mattel@lionheartsquared.eu (Art.27 rep). DSB in BCC. Deadline 2026-07-05.' },
+  { target: 'Tuya Smart',           market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'com.tuya.smart v7.8.6. Hangzhou Tuya Information Technology Co., Ltd. — PRC entity, NatIntelLaw Art.7. C1: THING_SMART_APPKEY 3cxxt3au9x33ytvq3h9j hardcoded in BuildConfig.smali — authenticates to Tuya Cloud API as official app. C2: 27 Android Health Connect permissions (blood pressure, heart rate, O2 saturation, sleep, body fat, biometrics, bone mass) — Art.9 GDPR special-category data, no Art.44-49 transfer mechanism to China. C3: 2× Firebase API keys. + High/Med/Low reserved. 123,495 smali classes. R1 sent 2026-06-30. DSB + BCC. Embargo 2026-09-28.' },
+  { target: 'immowelt',             market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'de.immowelt.android.immobiliensuche v11.45.0. immowelt GmbH / Aviv Group (SeLoger FR, Yad2 IL). C1: Auth0 Client Secret >SE}L>W^#*9hv3O + 3× Auth0 Client ID (Dev/Preview/Prod) hardcoded — enables backend impersonation, JWT issuance as immowelt app, potential Auth0 Management API access. C2: Airship App Key CQXdr0B9RhylF3_SZVGKSw + App Secret NeZf4VdbTZK_s_NhaWai-w both hardcoded — anyone with the APK can send push notifications to all immowelt users and read channel data. C3: Firebase API key hardcoded. H1: Adjust ContentProvider pre-consent auto-init. H2: GetStream API key hardcoded + RECORD_AUDIO on real estate search app. + further High (Urban Airship Analytics, Statsig) · Medium · Low reserved. R1 sent 2026-06-30. DSB in BCC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'IKEA',                 market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.ingka.ikea.app v5.4.0. Ingka Group (Ingka Holding B.V., Netherlands). C1: IndoorAtlas API Key 110b46e2-d68c-4751-a9ad-3b0bfb5e0589 + API Secret (512-bit, base64) both hardcoded in AndroidManifest.xml — exposes IKEA in-store positioning infrastructure (floor plans, magnetic field maps, positioning sessions) in every installed APK. C2: Firebase API key + Production Realtime Database URL ikea-mobile-app-release2.firebaseio.com hardcoded. H1: 2× Optimizely BOOT_COMPLETED receivers + Adjust pre-consent ContentProvider — A/B behavioral tracking starts at device boot before app is opened. H2: DETECT_SCREEN_CAPTURE declared — IKEA monitors when customers screenshot the shopping app. H3: KompassMap in-store behavioral profiling via BLE + WiFi (KompassAnalyticsEvents$DepartmentNames). + Optimizely SDK Key · Afterpay BNPL · Bambuser · AD_ID reserved. R1 sent 2026-06-30. DSB + IMY in BCC. Embargo 2026-09-28. Deadline 2026-07-14.' },
   { target: 'Bolt',                 market: 'PRIVATE', sev: 'CRITICAL', status: 'ACK',         finding: 'ee.mtakso.client. EU-wide ride-hailing + food delivery (80M+ users). Firebase API key + GPS precision data. security+noreply@bolt.eu auto-response received. Substantive engagement pending.' },
   { target: 'Zalando',              market: 'XETRA',   sev: 'CRITICAL', status: 'ACK',         finding: 'com.zalando.android. 50M+ EU shoppers. Sentry Session Replay + Braze + AppsFlyer stack. donotreply@zalando.de auto-ACK. DPO escalation path: datenschutz@zalando.de.' },
   { target: 'DoorDash',             market: 'NYSE',    sev: 'CRITICAL', status: 'ACK',         finding: 'com.dd.doordash. Global food delivery. Firebase API key hardcoded. security+noreply@doordash.com "Global Threat Defense Team" ACK — real security team, not CS. First responder in series from a dedicated threat defense team.' },
@@ -482,9 +485,10 @@ const STATUS_META: Record<string, { label: string; bg: string; color: string }> 
   ENGAGED:      { label: 'ENGAGED',     bg: 'rgba(20,184,166,0.18)',  color: '#2dd4bf' },
   PAID:         { label: 'PAID',        bg: 'rgba(234,179,8,0.25)',   color: '#fbbf24' },
   SILENT:       { label: 'SILENT',      bg: 'rgba(220,38,38,0.15)',   color: '#f87171' },
+  REGULATOR:    { label: 'REGULATOR',   bg: 'rgba(168,85,247,0.20)',  color: '#c084fc' },
 }
 
-const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolved?: boolean }> = {
+const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolved?: boolean; reportUrl?: string }> = {
   'Pokemon GO':                   { notified: '2026-06-20', disclosure: '2026-09-18' },
   'Disneyland EU':                { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Caritas / Carla (AT)':         { notified: '2026-01-14', disclosure: '2026-09-01' },
@@ -521,7 +525,7 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'Plus500':                      { notified: '2026-06-21', disclosure: '2026-09-19' },
   'flatex Austria':               { notified: '2026-06-21', disclosure: '2026-09-19' },
   'win2day':                      { notified: '2026-06-20', disclosure: '2026-09-18' },
-  'VOL.at':                       { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'VOL.at':                       { notified: '2026-06-29', disclosure: '2026-09-19' },
   'Canva':                        { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Tchibo':                       { notified: '2026-06-21', disclosure: '2026-09-19' },
   'heyOBI':                       { notified: '2026-06-21', disclosure: '2026-09-19' },
@@ -753,6 +757,7 @@ export function PublicSite() {
   const [now, setNow] = useState(() => Date.now())
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
   const [checkoutModal, setCheckoutModal]     = useState<string | null>(null)
+  const [reportModal, setReportModal]         = useState<string | null>(null)
   const [agbChecked, setAgbChecked]           = useState(false)
   const [b2bChecked, setB2bChecked]           = useState(false)
   const { theme, setTheme } = useTheme()
@@ -869,6 +874,19 @@ export function PublicSite() {
 
   return (
     <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
+
+      {/* REPORT PDF MODAL */}
+      {reportModal && (
+        <div onClick={() => setReportModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(0,0,0,0.85)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+          <div onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 900, height: '85vh', background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.07)', background: '#0a0a18' }}>
+              <span style={{ fontFamily: 'monospace', fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>report — rfi-irfos</span>
+              <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
+            </div>
+            <iframe src={reportModal} style={{ flex: 1, border: 'none', width: '100%' }} title="Report PDF" />
+          </div>
+        </div>
+      )}
 
       {/* B2B CHECKOUT CONFIRMATION MODAL */}
       {checkoutModal && (
@@ -1351,7 +1369,7 @@ export function PublicSite() {
               display: 'grid',
               gridTemplateColumns: mobile
                 ? '1fr 85px 110px'
-                : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 130px 130px',
+                : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 130px 130px 56px',
               gap: '0 6px',
               padding: '7px 14px',
               position: 'sticky', top: 0, zIndex: 2,
@@ -1367,6 +1385,7 @@ export function PublicSite() {
               {!mobile && <span>Resolved</span>}
               <span>Disclosure</span>
               {!mobile && <span>Elapsed</span>}
+              {!mobile && <span>Report</span>}
             </div>
 
             {/* Rows */}
@@ -1411,7 +1430,7 @@ export function PublicSite() {
                     display: 'grid',
                     gridTemplateColumns: mobile
                       ? '1fr 95px 82px'
-                      : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 130px 130px',
+                      : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 130px 130px 56px',
                     gap: '0 6px',
                     padding: '9px 14px',
                     alignItems: 'start',
@@ -1495,6 +1514,25 @@ export function PublicSite() {
                         <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
                           {resolved ? 'RESPONDED' : 'ELAPSED'}
                         </div>
+                      </div>
+                    )}
+
+                    {/* Report */}
+                    {!mobile && (
+                      <div style={{ paddingTop: 2 }}>
+                        {meta?.reportUrl ? (
+                          <button onClick={() => setReportModal(meta.reportUrl!)} style={{
+                            background: 'rgba(0,245,196,0.10)', border: '1px solid rgba(0,245,196,0.3)',
+                            borderRadius: 4, padding: '4px 8px', cursor: 'pointer', display: 'flex',
+                            alignItems: 'center', gap: 4, color: TEAL, fontSize: 10, fontFamily: 'monospace',
+                            fontWeight: 700, letterSpacing: '0.06em', transition: 'background 0.15s',
+                          }}>
+                            <svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="M1 1h5l3 3v7H1V1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M6 1v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M3 6h4M3 8h3" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>
+                            PDF
+                          </button>
+                        ) : (
+                          <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>—</span>
+                        )}
                       </div>
                     )}
                   </div>
