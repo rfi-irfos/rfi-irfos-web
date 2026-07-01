@@ -829,8 +829,8 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
 const CREDENTIALS = [
   { label: 'ZVR', value: '1015608684', sub: 'Association register' },
   { label: 'GISA', value: '39261441', sub: 'Trade register' },
-  { label: 'Gewerbe', value: 'Automatische Datenverarbeitung', sub: 'WKO · GewO § 32' },
-  { label: 'Steuernummer', value: '68 028/0989', sub: 'Finanzamt Graz' },
+  { label: 'Trade', value: 'Automatic Data Processing', sub: 'WKO · GewO § 32' },
+  { label: 'Tax number', value: '68 028/0989', sub: 'Graz Tax Office' },
   { label: 'Seat', value: 'Elisabethinergasse 25', sub: '8020 Graz, Austria' },
 ]
 
@@ -2166,9 +2166,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <footer style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '40px 2rem', textAlign: 'center' }}>
         <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
           {[
-            { label: 'Impressum', href: '#p/impressum' },
-            { label: 'Datenschutz', href: '#p/datenschutz' },
-            { label: 'AGB', href: '#p/agb' },
+            { label: 'Legal Notice', href: '#p/impressum' },
+            { label: 'Privacy Policy', href: '#p/datenschutz' },
+            { label: 'Terms', href: '#p/agb' },
             { label: 'Security Policy', href: '#p/security' },
             { label: 'ternlang.com', href: 'https://ternlang.com' },
             { label: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
@@ -2197,7 +2197,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: 16 }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>WKO MEMBER · GewO § 32 · Automatische Datenverarbeitung</span>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>WKO MEMBER · GewO § 32 · Automatic Data Processing</span>
           </div>
           <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
@@ -2209,17 +2209,17 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
             <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>
-              GEWERBEWORTLAUT · Dienstleistungen in der automatischen Datenverarbeitung und Informationstechnik
+              TRADE DESCRIPTION · Services in Automatic Data Processing and Information Technology
             </span>
           </div>
           <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
             <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>
-              ECG-BEHÖRDE · Magistrat der Stadt Graz &nbsp;·&nbsp; Seit 19.03.2026 &nbsp;·&nbsp; GISA 39261441
+              ECG AUTHORITY · Magistrate of the City of Graz &nbsp;·&nbsp; Since 2026-03-19 &nbsp;·&nbsp; GISA 39261441
             </span>
           </div>
         </div>
         <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em', marginBottom: 4 }}>
-          Gewerberechtliche Geschäftsführung: Simeon-Andreas Johann Manfred Kepp &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz &nbsp;&middot;&nbsp; GLN 9110038490191
+          Trade-Law Management: Simeon-Andreas Johann Manfred Kepp &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz &nbsp;&middot;&nbsp; GLN 9110038490191
         </p>
         <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em' }}>
           &copy; 2026 RFI-IRFOS &nbsp;&middot;&nbsp; Steuernummer 68 028/0989 &nbsp;&middot;&nbsp; Graz, Austria
