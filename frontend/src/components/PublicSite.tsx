@@ -180,7 +180,9 @@ const RESEARCH_AREAS = [
 const STANDARDS = [
   { code: 'GDPR', region: 'EU 2016/679', desc: 'Art. 6 lawful basis, Art. 9 special-category (health/biometric), Art. 8 children, Art. 33 breach notification. The backbone of every disclosure we file.' },
   { code: 'EU AI Act', region: 'EU 2024/1689', desc: 'Risk-tiered obligations for AI systems: transparency, governance, prohibited-practice analysis for the models we audit and build.' },
+  { code: 'EU DSA', region: 'EU 2022/2065', desc: 'Digital Services Act. Systemic-risk and illegal-content obligations. Filed directly with the Irish Digital Services Coordinator (Coimisiún na Meán) on platform findings.' },
   { code: 'ISO/IEC 29147', region: 'International', desc: 'Vulnerability disclosure. Our coordinated framework follows the 90-day embargo + regulator-notification standard.' },
+  { code: 'ISO/IEC 30111', region: 'International', desc: 'Vulnerability handling processes. The internal triage, validation, and remediation-tracking workflow behind every coordinated disclosure we run.' },
   { code: 'ISO/IEC 27001', region: 'International', desc: 'Information security management. The control set behind our handling of evidence, NDAs, and client data.' },
   { code: 'COPPA', region: 'US · 15 U.S.C. §6501', desc: 'Children’s online privacy. Applied across our minor-protection audits of apps, games, and streaming platforms.' },
   { code: 'EU MDR', region: 'EU 2017/745', desc: 'Medical Device Regulation. Class IIb scrutiny for health/wearable apps processing Internet-of-Bodies data.' },
@@ -219,7 +221,7 @@ const PROJECTS = [
   },
   {
     name: 'Android Security Audit 2026',
-    sub: '148 apps · 100+ companies',
+    sub: '215+ apps · 100+ companies',
     desc: '250+ critical findings across NYSE, NASDAQ, LSE, and XETRA listed companies. Includes children\'s app wave with COPPA + GDPR Art. 8 scope. Root level code analysis. Coordinated disclosure 2026-09-19. Regulators BCC\'d on every submission.',
     link: 'https://github.com/rfi-irfos/android-security-audit-2026',
     tag: 'security research',
@@ -237,6 +239,27 @@ const PROJECTS = [
     desc: 'Multi-provider CLI for albert. and other LLMs. Native SSE streaming, reasoning effort control, OpenAI/Anthropic/NVIDIA NIM/Google compatible. Extracted from TIS into its own standalone repo.',
     link: 'https://github.com/rfi-irfos/agent-albert-cli',
     tag: 'CLI · crates.io',
+  },
+  {
+    name: 'albert-llb',
+    sub: 'last look back protocol',
+    desc: 'Deterministic filesystem containment gate for sovereign AI agents — a hard safety boundary an agent cannot write outside. Published on crates.io. Part of the Ternary Intelligence Stack.',
+    link: 'https://crates.io/crates/albert-llb',
+    tag: 'rust crate · crates.io',
+  },
+  {
+    name: 'ternlang-core',
+    sub: 'ternary compiler + VM',
+    desc: 'Compiler and virtual machine for Ternlang — a balanced-ternary language with affirm/tend/reject trit semantics, @sparseskip codegen and BET bytecode execution. Published on crates.io.',
+    link: 'https://crates.io/crates/ternlang-core',
+    tag: 'rust crate · crates.io',
+  },
+  {
+    name: 'ternlang-moe',
+    sub: 'ternary mixture-of-experts',
+    desc: 'Ternary MoE orchestrator: routes a query through 13 domain experts, synthesises an emergent ternary signal, enforces a hard safety veto, and returns a decision with confidence and temperature. Published on crates.io.',
+    link: 'https://crates.io/crates/ternlang-moe',
+    tag: 'rust crate · crates.io',
   },
   {
     name: 'invisible layer',
@@ -270,12 +293,12 @@ const MILESTONES: { date: string; label: string; side: 'left' | 'right'; link?: 
   { date: 'April 2026', label: 'The Ternary Intelligence Stack: system paper', side: 'left', link: 'https://osf.io/cyn28/', tag: 'publication' },
   { date: 'May 2026', label: 'SPRIND pitch submitted. EUR 26.5M ceiling.', side: 'right', tag: 'milestone' },
   { date: 'May 2026', label: 'DOOM boots on bare-metal Rust kernel', side: 'left', tag: 'milestone' },
-  { date: 'June 2026', label: '148 Android apps audited. 100+ companies. NYSE / NASDAQ / LSE / XETRA. COPPA + GDPR Art. 8 child protection scope. StoryToys 9-app children\'s wave.', side: 'right', link: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'milestone' },
+  { date: 'June 2026', label: '215+ Android apps audited. 100+ companies. NYSE / NASDAQ / LSE / XETRA. COPPA + GDPR Art. 8 child protection scope. StoryToys 9-app children\'s wave.', side: 'right', link: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'milestone' },
   { date: 'June 2026', label: 'aladdin-mini: open-source disclosure impact engine', side: 'left', link: 'https://github.com/rfi-irfos/aladdin-mini', tag: 'milestone' },
 ]
 
 const PUBLICATIONS = [
-  { year: '2026', title: 'Android Security Audit 2026: Coordinated Disclosure', sub: '148 apps · 100+ companies · 250+ critical findings · NYSE/NASDAQ/LSE/XETRA · StoryToys children\'s wave · disclosure Sep 2026', href: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'Security · Ongoing' },
+  { year: '2026', title: 'Android Security Audit 2026: Coordinated Disclosure', sub: '215+ apps · 100+ companies · 250+ critical findings · NYSE/NASDAQ/LSE/XETRA · StoryToys children\'s wave · disclosure Sep 2026', href: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'Security · Ongoing' },
   { year: '2026', title: 'The Ternary Intelligence Stack', sub: 'vertically integrated post-binary AI platform', href: 'https://osf.io/cyn28/', tag: 'AI · Systems' },
   { year: '2026', title: 'Myco-Styria', sub: 'polystyrene replacement via mycelium + Austrian lignocellulose residues', href: 'https://osf.io/ek8rm/', tag: 'Ecocentric' },
   { year: '2025', title: 'A Ternary Logic Mixture-of-Experts Model', sub: 'sparse ternary MoE architecture with autonomous Net2Net surgery', href: 'https://osf.io/tz7dc/', tag: 'AI · Model' },
@@ -338,7 +361,7 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'Pollen-Radar',      market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: '4 AWS API Gateway keys hardcoded (config.json + config_dev.json identical, both "environment: LIVE"). allowBackup + SQLite unencrypted Art.9 allergy data in Google Cloud.' },
   { target: 'Wolt',              market: 'PRIVATE', sev: 'CRITICAL', status: 'ENGAGED',     finding: '13 findings including hardcoded credentials and broken pinning. R2 sent. Ticket #INC-1994788. Active engagement in progress.' },
   { target: 'Foodora',           market: 'PRIVATE', sev: 'CRITICAL', status: 'ACK',         finding: '7 critical findings + algorithmic wage discrimination finding. AK Wien complaint filed 2026-06-22. Ack received.' },
-  { target: 'willhaben',         market: 'PRIVATE', sev: 'HIGH',     status: 'ACK',         finding: 'Ticket #2570977 "in Bearbeitung". Austria\'s largest classifieds platform. R1 sent 2026-06-19.' },
+  { target: 'willhaben',         market: 'PRIVATE', sev: 'HIGH',     status: 'CS-DEFLECT',  finding: '5× Autoresponder (Ticket #2570977 + #2581347). R1 2026-06-19 → R2 2026-06-27 (CC: presse@willhaben.at) → Follow-Up 2026-06-28 → erzeugte neues Ticket #2581347 → 2 weitere Autoreplies. datenschutz@willhaben.at = reines Ticketsystem, kein Mensch. 11 Tage, null menschliche Reaktion. Austria\'s largest classifieds platform. Embargo 2026-09-17.' },
   { target: 'RunBuddy / Runna',  market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: '6 hardcoded credentials including a Sentry AUTH TOKEN (org:runna, read access to all error logs). AppsFlyer + Facebook + Mixpanel on Health Connect heart rate data. No NSC.' },
   { target: 'Taxefy',            market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Facebook Login on Austrian tax app. Privacy Sandbox allowAllToAccess="true" — broadest possible advertising data sharing on an app processing income and tax data. Veriff Art.9 video.' },
   { target: 'Coca-Cola CEE',     market: 'NYSE',    sev: 'HIGH',     status: 'WAITING',     finding: 'Scratch cards, lotto mechanics, loot chests, shake-to-win targeting minors. LeakCanary memory profiler + Charles proxy debug cert + Adobe Assurance WebSocket active in production.' },
@@ -346,7 +369,7 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'Meine ÖGK (AT)',    market: 'PUBLIC',  sev: 'CRITICAL', status: 'WAITING',     finding: 'Firebase key hardcoded (project: meineoegk) — statutory health insurer for 8.5 million Austrians. FirebaseInitProvider (initOrder=100) + MlKitInitProvider (initOrder=99): 2× Google auto-init before consent screen. BOOT_COMPLETED via expo.modules.notifications. Expo Contacts READ+WRITE: no justification for writing to address book on a health insurer. WebRTC telemedicine RECORD_AUDIO: Art.9 video-consultation data flows undisclosed. BCC: DSB + FMA + Sozialministerium.' },
   { target: 'Bank Austria (AT)', market: 'EURONEXT', sev: 'CRITICAL', status: 'WAITING',     finding: 'NSC cleartextTrafficPermitted=true on banking app. Full Capacitor WebView + InAppBrowser + CordovaHTTP: classic MITM JavaScript injection surface on banking sessions. Firebase key + Realtime Database URL hardcoded (project: bank-austria-mobilebanking). ThreatMark behavioral biometrics (keystroke/touch dynamics, CZ) undisclosed — potential Art.9. Huawei AGConnect + HMS in EU banking app (CN routing). BCC: DSB + FMA.' },
   { target: 'Chargemap (FR/AT)', market: 'PRIVATE',  sev: 'CRITICAL', status: 'WAITING',     finding: 'MULTIPLATFORM_CLIENT_SECRET + SINGULAR_SECRET hardcoded in Play Store binary — OAuth2 secret exposed, anyone can impersonate the official app. 4 Google API keys. 4× pre-consent auto-init (Google Ads + Firebase + ML Kit + Facebook) fires BEFORE Didomi CMP — consent is a facade. No NSC. Insider SDK (TR) + Mixpanel on EV charging location data. BCC: DSB + CNIL + BfDI.' },
-  { target: 'WienMobil (AT)',    market: 'PUBLIC',   sev: 'CRITICAL', status: 'WAITING',     finding: 'Regula IDV + Document Reader SDK (Minsk, Belarus): biometric identity verification + passport scanning on Vienna public transit app — Art.9 + Art.44 GDPR (no EU adequacy for Belarus). Chucker HTTP interceptor in production: all API traffic logged in plaintext on device (auth tokens, ticket purchases). Firebase key + Database URL hardcoded, FirebaseInitProvider pre-consent. BCC: DSB + Magistrat Wien.' },
+  { target: 'WienMobil (AT)',    market: 'PUBLIC',   sev: 'CRITICAL', status: 'ESCALATED',     finding: 'Regula IDV + Document Reader SDK (Minsk, Belarus): biometric identity verification + passport scanning on Vienna public transit app — Art.9 + Art.44 GDPR (no EU adequacy for Belarus). Chucker HTTP interceptor in production: all API traffic logged in plaintext on device (auth tokens, ticket purchases). Firebase key + Database URL hardcoded, FirebaseInitProvider pre-consent. Wiener Linien replied 2026-07-01 with a generic acknowledgment only, no substantive response to B1-B3. R2 sent naming the pattern + 3 questions + 48h deadline (2026-07-03). Original Magistrat BCC bounced; corrected to Stadt Wien DPO. BCC: DSB + Stadt Wien DPO.' },
   { target: 'OMV (AT)',          market: 'WBAG',     sev: 'CRITICAL', status: 'WAITING',     finding: 'Facebook App Events + CloudBridge + FacebookInitProvider pre-consent: petrol station purchase behavior flows to Meta via dual pipeline (device + server-side). No NSC. Firebase key + Google Directions API key hardcoded (project: hastobe-omv). App built by hasToBe GmbH (Graz) — same agency as Chargemap. BCC: DSB + FMA.' },
   { target: 'IONITY (DE/EU)',    market: 'JV',       sev: 'CRITICAL', status: 'WAITING',     finding: 'AWS Cognito AppClientSecret hardcoded in res/raw/amplifyconfiguration.json — anyone can compute SECRET_HASH and authenticate as the official IONITY app to the entire Cognito User Pool (eu-central-1). Firebase API key + Storage bucket hardcoded. 2× pre-consent init (Firebase initOrder=100 + ML Kit initOrder=99) + BOOT_COMPLETED. Braze (NY) on payment + charging session data. JV: BMW · Ford · Hyundai · Mercedes-Benz · VW Group. BCC: DSB + BfDI.' },
   { target: 'Mein Magenta (AT)', market: 'XETRA',   sev: 'CRITICAL', status: 'WAITING',     finding: 'Cobrowse.io DUAL InitProvider (CobrowseInitProvider + CobrowseComposeInitProvider): live screen co-browsing SDK auto-inits at every app start — on app showing bills, call logs, payment methods. Huawei HMS AAID InitProvider (initOrder=500): Chinese advertising ID highest-priority pre-consent auto-init. 3 API keys hardcoded (Firebase, Awareness/Geofencing, Geo). CleverTap + MoEngage dual-analytics on telecom customer data. BOOT_COMPLETED + GPS geofencing + READ_PHONE_STATE (IMEI). §165 TKG 2021. BCC: DSB + RTR.' },
@@ -383,7 +406,51 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'Shell',               market: 'LSE',     sev: 'CRITICAL', status: 'WAITING',     finding: 'Chucker HTTP debug interceptor active in payment binary: all payment API calls logged in plaintext on device. Facebook App Events + WeChat Pay SDK: Chinese NSL payment pipeline on EU petrol station transactions. No NSC.' },
   { target: 'Opera Browser',       market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'Majority-owned by Beijing Kunlun Tech (CN): Chinese NSL applies to all browsing data. Dual pre-consent ad init pipeline fires before first launch. Marketed as "privacy browser" with a Chinese controller.' },
   { target: 'Subway Surfers',      market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Moloco fires at Integer.MAX_VALUE initOrder (first ContentProvider at every boot). Mintegral (PRC/NSL) in mediation stack. SuperAwesome child-safe adapter contradicts adult ad targeting stack in same binary. 6 pre-consent ad SDKs.' },
-  { target: 'Merge Chicken',       market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'PEGI 3 ("suitable for all ages") operates a real-money online casino: pre-checked card storage, CVV requested, cleartext HTTP transactions. 6 CRITICAL findings. No KYC. Unlicensed gambling infrastructure disguised as a children\'s game.' },
+  { target: 'Merge Chicken',       market: 'PRIVATE', sev: 'CRITICAL', status: 'RESOLVED',    finding: 'RESOLVED — REMOVED FROM THE PLAY STORE. PEGI 3 ("suitable for all ages") operated a real-money online casino: pre-checked card storage, CVV requested, cleartext HTTP transactions, dynamic gambling payload via Firebase Remote Config to spinwinera.com. 6 CRITICAL findings. No KYC. Reported to Google Play & Android Security 2026-06-25 (com.Merge.o98Chickens, developer HOME ESSENTIALS & HARDWARE LIMITED, London). Google confirmed the app is no longer available on the Play Store on 2026-06-30. First confirmed RFI-IRFOS takedown.' },
+  { target: 'Character.AI',          market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'ai.character.app. Character Technologies (US). A 12-network ad/analytics stack (incl. ByteDance Pangle + Mintegral) auto-inits via ContentProviders BEFORE the age gate fires — the protective architecture is downstream of the tracking, so an advertising identifier is accessed before the user is ever asked their age. Amplitude Session Replay on intimate AI conversations. Persona biometric liveness + behavioural age classifier on (then mostly minor) users = Art. 9/22. Firebase key hardcoded. No EU Art. 27 rep. R1 2026-06-30.' },
+  { target: 'Linky / iChat',         market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'com.aigc.ushow.ichat. Skywork AI Pte (Singapore), publicly tied to Kunlun Tech (China) — an AI-girlfriend app. Ant/Alibaba ZOLOZ-class facial liveness (libtoyger) = Art. 9 biometric, vendor unnamed. Sexual "Passion Mode" gated only by a typed-in birthday (Art. 8/9). Tencent Cloud ASR on intimate voice. ByteDance Pangle + Mintegral + Alibaba OSS pre-consent. Policy names only Firebase/AppsFlyer; China never mentioned (Art. 13(1)(e)/(f)). R1 2026-06-30.' },
+  { target: 'Saylo / Xverse',        market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'com.xverse.aistory. XVERSE Technology (Shenzhen) behind an X Original (Hong Kong) shell. Ships a "Teen Mode" AND an NSFW mode in the same binary; chat routed to asset-sh.xverse.cn (Shanghai) + Sensors Analytics while the policy claims only "aggregated, anonymized data" ever leaves the device. Pangle/Mintegral/BIGO pre-consent auto-init. NSC trusts user-installed CAs in production (MITM-friendly). R1 2026-06-30.' },
+  { target: 'PolyBuzz / Speak Master', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'ai.socialapps.speakmaster. A US-Delaware front (Cloud Whale Interactive) built on Zuoyebang (Beijing) app-factory — Application class com.zuoyebang.appfactory. Recorded voice (RECORD_AUDIO to ASR) + uploaded facial reference image shipped to Chinese infrastructure (apm-volcano / smt-upload.zuoyebang.com). The words China and Zuoyebang appear nowhere in the policy (it says US/Singapore). 18+/NSFW + self-declared age. Pangle/Mintegral/BIGO pre-consent + OAID. R1 2026-06-30.' },
+  { target: 'Smart Life (Tuya)',     market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING', finding: 'com.tuya.smartlife. Hangzhou Thing / Tuya Inc. (PRC, NYSE: TUYA). 27 Android Health Connect permissions — READ blood pressure / heart rate / SpO2 — plus a health-AI module on a smart-home app (Art. 9). Whole-home surveillance: camera/NVR, mic, NFC door lock, geofence + background location. Alibaba/Tencent/ByteDance components; every server address hidden in an encrypted, whitebox-protected region-routing bundle users cannot inspect. Embedded mini-program code engine. Hardcoded Tuya app-secret. Twin of the already-critical Tuya Smart. R1 2026-06-30.' },
+  { target: 'Bosch Smart Home',      market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING', finding: 'com.bosch.sh.ui.android. RFI cleanliness BENCHMARK — the cleanest smart-home binary in the 2026 series. 0 critical: no Chinese SDKs, no ad networks, no analytics brokers, no background location, cleartext disabled, telemetry consent-gated + default-off, allowBackup=false, local-hub architecture, EU establishment (Robert Bosch Smart Home GmbH, Stuttgart). Only finding H1: a hardcoded Firebase key (Art. 32). Collegial R1 — praise plus one fix. The same checklist that gave the Tuya twins three criticals gives Bosch zero. R1 2026-06-30.' },
+  { target: 'ViCare (Viessmann)',    market: 'NYSE',    sev: 'CRITICAL', status: 'ACK',     finding: 'com.viessmann.vicare. Viessmann / Carrier Global (NYSE: CARR). FirebaseInitProvider (directBootAware=true, initOrder=100) initialises Firebase BEFORE any consent screen and before device unlock — the binary structurally contradicts the privacy policy "consent-based Firebase" claim (Art. 7). Firebase key hardcoded. ACCESS_BACKGROUND_LOCATION for the paid Geofencing tier (DSFA?). 10 Firebase subsystems, only 2 disclosed. DPO Daniel Hernstein-von Glahn engaged (sender verification). 2 critical + 3 high. R1 2026-06-30.' },
+  { target: 'Mein HoT (AT)', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'com.austrianapps.ventocom.hofer. Ventocom GmbH (Vienna), the HoT / Hofer Telekom prepaid MVNO. C1: facial-biometric + ID-document KYC via Veridas dasFace (selfie/liveness + passport OCR) = Art. 9 — buying a Hofer/ALDI prepaid SIM scans your ID and face-matches a selfie. H1: hardcoded Firebase key + RTDB hot-at.firebaseio.com. H2: Sentry crash reporting to US ingest, pre-consent. Otherwise notably clean: no ad SDKs, no Chinese SDKs, EU operator. R1 2026-06-30.' },
+  { target: 'Muslim Pro', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'com.bitsmedia.android.muslimpro. Bitsmedia Pte Ltd (Singapore), 100M+ users, prayer/fasting/Quran logs = Art. 9 religious data. ByteDance/Pangle (125 smali) + Tencent IMSDK (80, LocationElement) = two China NSL pipelines. 3x BOOT_COMPLETED + FINE_LOCATION pre-consent. Facebook ContentProvider exported, no permission. Firebase key AIzaSyAINEoY3d4s_PxbyU-4clVZ4IyFg6HdvLU. Prebid RTB (412 smali). DPO+security delivered, PDPC BCC bounced. R1 2026-06-28.' },
+  { target: 'AOK Systems (DE)', market: 'PUBLIC', sev: 'CRITICAL', status: 'WAITING', finding: 'de.aoksystems.amg. AOK Systems GmbH (statutory health insurer, ~26M insured = Art. 9 health data by definition). C1: Firebase key AIzaSyCmnFIJknBUE_C0aY5WEWmKxbCR5n6HDKs hardcoded. H1: Adobe Marketing Mobile SDK profiling health-app navigation to US, not named in privacy policy (Art. 13). Positives: strong cert pinning, allowBackup=false. R1 2026-06-22 (bounced datenschutz@aok-systems.de, undelivered).' },
+  { target: 'Mein A1 (AT)', market: 'WBAG', sev: 'CRITICAL', status: 'SILENT', finding: 'at.mobilkom.android.meina1. A1 Telekom Austria AG carrier self-service app, 5M+ subscribers (billing, MSISDN, IMEI, real-time GPS). C1: Firebase key AIzaSyBYAFbLEHBtxNobOacHrvDskpevjb92A2I + DB mein-a1-prod.firebaseio.com hardcoded. H2: Vodafone NetPerform SDK with BIND_CARRIER_SERVICES + BOOT_COMPLETED. H1: allowBackup=true. Facebook AppEvents on carrier app. R1 2026-06-21, follow-up 2026-06-28, no reply.' },
+  { target: 'Hallow', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'app.hallow.android. Hallow Inc. (Chicago), Catholic prayer/meditation app = Art. 9 religious data by definition. C1: Firebase key AIzaSyAmBvgVgEmXqn6ntqhYsAdO5UWDmKKHpMo hardcoded. C2: Huawei HMS Ads SDK (OAID) routes religious-behavior profiling to China NSL Art. 7, undisclosed (Art. 44, no adequacy). H3: RECORD_AUDIO + READ_CONTACTS no necessity. No cert pinning. R1 2026-06-22.' },
+  { target: 'Dr. Oetker Rezeptideen', market: 'PRIVATE', sev: 'CRITICAL', status: 'SILENT', finding: 'at.oetker.android.rezeptideen. Dr. Oetker GmbH (Oetker-Gruppe, Bielefeld). C1: Firebase key AIzaSyDDwpwHKoGPoRMPRoeFokn8yQOCl_44iuI + project droetker-rezeptideen-phone-at hardcoded. C2: usesCleartextTraffic=true + no NSC on an app with Firebase Auth login (credentials/session tokens over HTTP). H1: allowBackup=true. Facebook App Events. R1 2026-06-21, follow-up 2026-06-27, no reply.' },
+  { target: 'Leap Fitness (5 apps)', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'com.drojian.workout.framework (Arm Workout / Height Increase / Six Pack / Stretching / Splits, Leap Fitness Group / Drojian Soft, ZhengZhou CN). One tracking template across all five. Facebook Audience Network (3,400-3,539 smali each, 17,262 total) + TikTok Pangle/ByteDance (China NSL, Art. 44) on body/health behavior. Firebase keys hardcoded. Adjust attribution. R1 2026-06-22.' },
+  { target: 'Red Bull Mobile eSIM', market: 'WBAG',    sev: 'CRITICAL', status: 'ACK',        finding: 'com.redbull.android.esim. Controller A1 Telekom Austria AG (WNDR white-label build, US backend esim.redbullmobile.us on Azure). C1: four-vendor telemetry (Firebase Analytics + auto-on Crashlytics + Adjust with advertising-ID + Braze) auto-inits with NO consent-management platform — tracking can fire before consent. Firebase key hardcoded. No Art. 27 rep in binary. A1 Legal initially flagged our disclosure as suspected fraud; rebutted (a fraudster does not copy the DSB) — DSB now visible in CC. R1 2026-07-01.' },
+  { target: 'Magenta SmartHome', market: 'XETRA',   sev: 'HIGH',     status: 'WAITING',    finding: 'de.telekom.smarthomeb2c. Deutsche Telekom AG (QIVICON). Self-hosts Countly + Sentry on its own German cloud (Bosch-grade instinct) yet still bolts on MoEngage + Adjust + Usabilla marketing/attribution — on an app that controls cameras, door locks and presence sensors. Global cleartext, no NSC, no pinning. MoEngage data region unverifiable (possible US transfer). Cleaner than Tuya/TCL/Midea, not Bosch-clean. R1 2026-07-01.' },
+  { target: 'Yesim eSIM', market: 'PRIVATE', sev: 'HIGH',     status: 'CS-DEFLECT',  finding: 'com.yesimmobile. Genesis Group AG (Zug, CH). All four Google Consent Mode signals hard-set to "granted" before the user can decline, plus a seven-vendor tracking stack (AppsFlyer, Meta, Amplitude incl. Session Replay, PostHog, Segment, Firebase, Sentry) — no CMP. US transfers, no Art. 27 rep. DEFLECTION BATTLEFIELD: support-bot loop, 3+ auto-replies demanding a "User ID" / "official email" / invoking "security policy" to dodge a coordinated ISO/IEC 29147 disclosure (Art. 12 failure). DSB + EDÖB now visible in CC. R1 2026-07-01.' },
+  { target: 'Logos Bible', market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING',    finding: 'com.logos.androidlogos. Faithlife Corporation (US). A Bible-study app = Art. 9 religious-behaviour data by definition. Ships Amplitude + Firebase Analytics (on by default, auto-init pre-consent) + first-party Logos.UserEvents telemetry with NO CMP, US Amplitude endpoint, no Art. 27 rep. Honest: far cleaner than Hallow / Muslim Pro (zero ad / Meta / Chinese SDKs, no session replay); the gap is un-gated analytics on scripture behaviour. R1 2026-07-01.' },
+  { target: 'FRITZ! Smart Home', market: 'PRIVATE', sev: 'MEDIUM',   status: 'WAITING',    finding: 'de.avm.android.smarthome. FRITZ! GmbH (ex-AVM, Berlin). The FRITZ!Box maker — a brand sold on data staying home — ships Firebase Analytics + Crashlytics on an OPT-OUT basis (preference literally named tracking_opt_out, default off), live to Google US from first launch before consent. Global cleartext, two extractable Google keys. Otherwise disciplined (no ad / attribution / Chinese SDKs, SQLCipher, ad-ID off) — the closest of the smart-home set to the Bosch benchmark. R1 2026-07-01.' },
+  { target: 'ORF TVthek', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'com.nousguide.android.orftvthek. ORF (levy-funded public broadcaster), built by nousguide GmbH. Full ad-tech on a compulsorily-funded broadcaster: AppsFlyer attribution + Google Ad Manager/IMA + INFOnline/ÖWA + GfK Sensic + Bitmovin + Sentry + Didomi CMP; the Google Advertising ID is actively read. The whole at.orf.* family hangs off one shared Firebase orf-push key. Consent gating attempted (Didomi) but pre-consent tracker init unverified (R2). Art. 9 (news). R1 2026-07-01.' },
+  { target: 'ORF Ö3', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.android.oe3. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; shared Firebase orf-push key AIzaSyDDPB… . DELTA: global cleartext NSC + CAMERA / RECORD_AUDIO / FINE_LOCATION permissions beyond the family set. Part of the ORF app family. R1 2026-07-01.' },
+  { target: 'ORF Radio Burgenland', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.android.orfburgenland. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; shared Firebase orf-push key AIzaSyDDPB… + Sentry. One identical APA/ORF regional build across all 9 Landesstudios. R1 2026-07-01.' },
+  { target: 'ORF Radio Kärnten', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.android.orfkaernten. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; shared Firebase orf-push key AIzaSyDDPB… . Identical APA regional build. R1 2026-07-01.' },
+  { target: 'ORF Radio Niederösterreich', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.android.orfniederoesterreich. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; shared Firebase orf-push key AIzaSyDDPB… . Identical APA regional build. R1 2026-07-01.' },
+  { target: 'ORF Radio Oberösterreich', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.android.orfoberoesterreich. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; shared Firebase orf-push key AIzaSyDDPB… . Identical APA regional build. R1 2026-07-01.' },
+  { target: 'ORF Radio Salzburg', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.android.orfsalzburg. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; shared Firebase orf-push key AIzaSyDDPB… . Identical APA regional build. R1 2026-07-01.' },
+  { target: 'ORF Radio Steiermark', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.android.orfsteiermark. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; shared Firebase orf-push key AIzaSyDDPB… . Identical APA regional build. R1 2026-07-01.' },
+  { target: 'ORF Radio Tirol', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.android.orftirol. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; shared Firebase orf-push key AIzaSyDDPB… . Identical APA regional build. R1 2026-07-01.' },
+  { target: 'ORF Radio Vorarlberg', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.android.orfvorarlberg. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; shared Firebase orf-push key AIzaSyDDPB… . Identical APA regional build. R1 2026-07-01.' },
+  { target: 'ORF Radio Wien', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.android.orfwien. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; shared Firebase orf-push key AIzaSyDDPBNDeqG6lkmhV_3koBM0Ey3iOAqebgI (identical across the whole family). Identical APA regional build. R1 2026-07-01.' },
+  { target: 'ORF News', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.news. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; OWN Firebase project news-8d549 (not orf-push) + Bitmovin video; cleartext HTTP + allowBackup=true. Art. 9 political content (news-reading behaviour). R1 2026-07-01.' },
+  { target: 'ORF Ö1', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.oe1. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; Firebase orf-push key + Crashlytics + Sentry; NSC base cleartext=true (APA radio streams); COARSE_LOCATION. R1 2026-07-01.' },
+  { target: 'ORF SOUND', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.sound. ORF (levy-funded public broadcaster). Heaviest audio ad stack: AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; Firebase orf-push + Crashlytics; ACCESS_FINE_LOCATION in an audio app; cleartext; allowBackup=true. R1 2026-07-01.' },
+  { target: 'ORF Sport', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.sport. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; OWN Firebase project sport-9a2eb (not orf-push) + Bitmovin video; cleartext + allowBackup=true. Art. 9-adjacent (reading behaviour). R1 2026-07-01.' },
+  { target: 'ORF Fußball', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.sport.fussball. ORF (levy-funded public broadcaster). Heaviest stack of the family: AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP + GfK Sensic + Bitmovin; GAID read; Firebase orf-push + Crashlytics; cleartext; malformed ANDROID.PERMISSION.READ_PHONE_STATE. Art. 9-adjacent. R1 2026-07-01.' },
+  { target: 'ORF Teletext', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.orf.teletext. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; Firebase orf-push + Crashlytics; NSC cleartext=true + 2 bundled custom CA roots. Art. 9 political content (news-page reading). R1 2026-07-01.' },
+  { target: 'ORF Radio FM4', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'at.zuggabecka.radiofm4. ORF (levy-funded public broadcaster). AppsFlyer + Google Ad Manager + INFOnline/ÖWA + Didomi CMP; GAID read; Firebase orf-push + Crashlytics under a NON-ORF package namespace (at.zuggabecka.* agency build) — processor/joint-controller question; cleartext; allowBackup=true. R1 2026-07-01.' },
+  { target: 'ORF ORFit', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'com.catapult.orf. ORF (levy-funded public broadcaster), third-party Catapult fitness build — the outlier. NO CMP at all (no Didomi/INFOnline) while shipping AppsFlyer + Google AdMob + AppLovin + GAID; Firebase = Catapult project catapult-268006 (AIzaSy…ocB4, not orf-push); Art. 9 HEALTH data (ACTIVITY_RECOGNITION + FINE_LOCATION + Bluetooth Polar heart-rate) + Huawei HMS (China). R1 2026-07-01.' },
+  { target: 'SWIplus (SRG SSR)', market: 'PUBLIC', sev: 'HIGH', status: 'WAITING', finding: 'ch.swissinfo.android. SWI swissinfo.ch / SRG SSR — Switzerland\'s household-levy-funded PUBLIC broadcaster. Ships THREE dedicated attribution SDKs (AppsFlyer + Adjust + Singular) + comScore + Facebook + the full ACCESS_ADSERVICES suite + GAID, with pre-consent FB/Firebase auto-init, on news content (Art. 9 political opinion). Firebase key AIzaSyCrVy… (swissinfo-987ec). Dirtier on ad-tech than the ORF — a public broadcaster out-tracking a commercial publisher. R1 2026-07-01.' },
+  { target: 'Amazon Prime Video', market: 'NASDAQ', sev: 'HIGH', status: 'WAITING', finding: 'com.amazon.avod.thirdpartyclient. Amazon Europe Core Sàrl (LU / US transfer). CUSTOMER_ATTRIBUTE_SERVICE + CustomerAttributeStore (COR/PFM) links what you watch to the unified amazon.com commerce/DSP ad profile via the aax ad-exchange; RECORD_AUDIO (Alexa) + fine location + Kinesis telemetry. Same cross-service bridge found in Amazon Music/Business. R1 2026-07-01.' },
+  { target: 'Müller (helloagain)', market: 'PRIVATE', sev: 'HIGH', status: 'WAITING', finding: 'at.helloagain.muellerde. Müller Handels GmbH / helloagain platform. Global usesCleartextTraffic="true" with NO NSC on a loyalty + Bluecode-PAYMENT client; helloagain purchase profiling + AppsFlyer/Adjust/Facebook over health-inferrable drugstore buys (Art. 9-adjacent); clipboard + calendar + fine-location perms. Keys AIzaSyBlCA… (mueller-de) + Maps. R1 2026-07-01.' },
+  { target: 'LAOLA1', market: 'PRIVATE', sev: 'HIGH', status: 'WAITING', finding: 'at.laola1. LAOLA1 Multimedia GmbH (AT), sport streaming. Pre-consent auto-init (INFOnline IOMB + CleverPush + Blaze) BEFORE the TRUENDO CMP; GAID actively read; extractable Firebase key AIzaSyBi6im7… ; allowBackup=true cloud-backup incl. OAuth tokens. Positive: no gambling/Chinese/Russian SDK. R1 2026-07-01.' },
+  { target: 'kicker', market: 'PRIVATE', sev: 'HIGH', status: 'WAITING', finding: 'com.netbiscuits.kicker. Olympia-Verlag GmbH (Nuremberg, DE; lead SA BayLDA). Germany\'s flagship football outlet ships a RUSSIAN ad SDK (Yandex Mobile Ads adapter) — Art. 44 third-country/supply-chain (footprint small, runtime UNVERIFIED → R2). NSC cleartext for all domains; 15+ ad/attribution SDKs (InMobi/Xandr/Prebid/Taboola/AppsFlyer/Piano/FB AN) pre-consent; extractable keys. Positive: Usercentrics CMP, consent-mode default-deny. R1 2026-07-01.' },
+  { target: 'Krone Sport', market: 'PRIVATE', sev: 'HIGH', status: 'WAITING', finding: 'at.kronesport. Krone Multimedia (Kronen Zeitung, AT), React Native. Application-wide usesCleartextTraffic="true" (no NSC); Sentry rrweb session-replay capability shipped (mitigated: auto-init off, self-hosted sentry.krone.at); pre-consent auto-init (incl. OneSignal BOOT_COMPLETED) before Didomi; extractable Firebase key AIzaSyDRKQ… . Art. 9 (political-opinion inference on a tabloid). R1 2026-07-01.' },
   { target: 'Pokemon Champions',   market: 'TYO',     sev: 'CRITICAL', status: 'WAITING',     finding: 'AdMob + Adjust + Facebook attribution pre-consent init (directBootAware) in a children\'s Pokémon franchise app. BOOT_COMPLETED autostart. Facebook SDK fires before any parental consent. COPPA §312.3 + GDPR Art. 8.' },
   { target: 'FIFA Panini (IT)',     market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING',     finding: 'Firebase + ML Kit pre-consent init: two ContentProviders (directBootAware=true) fire before first user interaction on the licensed FIFA Panini digital sticker collection. Panini S.p.A., Modena.' },
   { target: 'Simplitv (AT)',        market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING',     finding: 'Facebook Codeless Event Logging in paid subscription streaming app: Meta receives viewing behaviour of paying subscribers. ORS Österreichische Rundfunksender GmbH owns 49% stake — national broadcast infrastructure.' },
@@ -445,11 +512,18 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'King / Candy Crush',   market: 'NASDAQ',  sev: 'CRITICAL', status: 'ACK',         finding: '12 apps audited (com.king.candycrushsaga + 11 titles). 300M+ MAU. Loot mechanics targeting minors. replyto.kcare@king.com rubber stamp loop x2 — Pattern 1 Policy-as-Implementation-Proof. ICO casework@ bounced (indigoffice block). ICO complaint via web form required.' },
   { target: 'Coin Master',          market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.moonactive.coinmaster. Moon Active, Cyprus. 100M+ installs. Slot machine + loot chest mechanics on PEGI 3 children\'s app. Pre-consent ContentProvider stack. ICO casework@ bounced (indigoffice block). Art.8 + COPPA.' },
   { target: 'UNO! Mobile',          market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'Mattel163 + NetEase JV. F0: privacy@mattel.com = closed Microsoft 365 group, external senders blocked — Art. 12(1) GDPR violation (designated privacy contact unreachable for parents). C1: Mattel platform secret bfhijpzBIM@%(-+, hardcoded verbatim in strings.xml — anyone with apktool can authenticate as the official app. C2: 2× Firebase API keys hardcoded. H1: AgoraRtcSDK.dll + AWSSDK.CognitoIdentity.dll + AWSSDK.S3.dll — children\'s voice chat via Agora (US/China entity), no Art. 44-49 transfer mechanism. H2: FacebookInitProvider pre-consent on children\'s app. R2 sent 2026-06-30: legal@mattel163.com + net-easelaw@corp.netease.com + legal@mattel.com + mattel@lionheartsquared.eu (Art.27 rep). DSB in BCC. Deadline 2026-07-05.' },
+  { target: 'ViCare (Viessmann)',     market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.viessmann.vicare v3.39.0. Viessmann Group / Carrier Global (NYSE: CARR) — Heizungssteuerung, Millionen EU-Nutzer. C1: 2× Firebase API Keys hardcodiert (AIzaSyCfv8TY2O7dPsWPdU3X4R2LqYj6KtxtrW0 + AIzaSyDgmW4ZMvNblSXqMOgsbY8uRrTnfR3E7pY). H1: GeofencingSystemBootReceiver (BOOT_COMPLETED, exported=true) — Heimanwesenheits-Tracking startet beim Gerätestart, vor App-Öffnung und vor jeglicher Einwilligung. ACCESS_BACKGROUND_LOCATION: kontinuierliche Überwachung ob Nutzer zuhause ist (Schlafmuster, Arbeitszeiten, Urlaubsabwesenheiten inferierbar). Art. 7 — Einwilligung unmöglich nach Tracking-Start. H2: AD_ID + ADSERVICES_ATTRIBUTION auf Heizungssteuerungs-App — Werbeidentifikator kombiniert mit Heimanwesenheitsdaten. Art. 5(1)(c), Art. 6(1). R1 sent 2026-06-30. DSB in BCC. Embargo 2026-09-28.' },
   { target: 'Tuya Smart',           market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'com.tuya.smart v7.8.6. Hangzhou Tuya Information Technology Co., Ltd. — PRC entity, NatIntelLaw Art.7. C1: THING_SMART_APPKEY 3cxxt3au9x33ytvq3h9j hardcoded in BuildConfig.smali — authenticates to Tuya Cloud API as official app. C2: 27 Android Health Connect permissions (blood pressure, heart rate, O2 saturation, sleep, body fat, biometrics, bone mass) — Art.9 GDPR special-category data, no Art.44-49 transfer mechanism to China. C3: 2× Firebase API keys. + High/Med/Low reserved. 123,495 smali classes. R1 sent 2026-06-30. DSB + BCC. Embargo 2026-09-28.' },
   { target: 'immowelt',             market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'de.immowelt.android.immobiliensuche v11.45.0. immowelt GmbH / Aviv Group (SeLoger FR, Yad2 IL). C1: Auth0 Client Secret >SE}L>W^#*9hv3O + 3× Auth0 Client ID (Dev/Preview/Prod) hardcoded — enables backend impersonation, JWT issuance as immowelt app, potential Auth0 Management API access. C2: Airship App Key CQXdr0B9RhylF3_SZVGKSw + App Secret NeZf4VdbTZK_s_NhaWai-w both hardcoded — anyone with the APK can send push notifications to all immowelt users and read channel data. C3: Firebase API key hardcoded. H1: Adjust ContentProvider pre-consent auto-init. H2: GetStream API key hardcoded + RECORD_AUDIO on real estate search app. + further High (Urban Airship Analytics, Statsig) · Medium · Low reserved. R1 sent 2026-06-30. DSB in BCC. Embargo 2026-09-28. Deadline 2026-07-14.' },
   { target: 'idealo',               market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'de.idealo.android. idealo internet GmbH, Berlin (Axel Springer, ~50M MAU). C1: Firebase API Key AIzaSyCEfD1yhX9YFti8P9NhdfnaFk-UMb9EV1c + Produktions-DB api-project-966339893929.firebaseio.com hardcodiert. H1: ACCESS_ADSERVICES_CUSTOM_AUDIENCE — Protected Audiences API baut Interest-Groups aus Suchanfragen (Produkt+Preisrahmen) für cross-app Ad-Retargeting; kombiniert mit Braze CRM + Facebook SDK = vollständiger Behavioral-Ad-Stack auf Kaufabsichtsplattform. H2: FirebaseInitProvider (initOrder=100) + Adjust pre-consent ContentProvider + BOOT_COMPLETED. H3: SendIntentBroadcastReceiver exported=true ohne permission-Schutz — externe Apps können Tracking triggern. + Storyly · Qualtrics · GrowthBook reserviert. R1 sent 2026-06-30. BlnBDI im CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
   { target: 'AutoScout24',          market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.autoscout24. AutoScout24 GmbH München (Hellman & Friedman, ~28M MAU). C1: Klartext-HTTP explizit erlaubt (cleartextTrafficPermitted=true) für rest.autoscout24.com + alle EU-Marktendpunkte (ww2.autoscout24.de/it/es/fr/nl) + api.mediarithmics.com CDP — auf einer Plattform mit Finanzierungsvoranfragen und Kreditintentionsdaten. Art. 32(1)(a). C2: Firebase API Key AIzaSyD2_xPcZgW3T5je0DLSDxCID1CqKeFmJXk + Produktions-DB autoscout24-android.firebaseio.com hardcodiert. H1: FirebaseInitProvider + MobileAdsInitProvider (beide initOrder=100) + Adjust ContentProvider — 3× pre-consent auto-init. H2: 4× BOOT_COMPLETED + READ_PHONE_STATE (IMEI) auf Finanzierungsplattform. + Adobe Experience Platform · Iterable · Mediarithmics · Optimizely SDK Key reserviert. R1 sent 2026-06-30. BayLDA im CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
-  { target: 'IKEA',                 market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.ingka.ikea.app v5.4.0. Ingka Group (Ingka Holding B.V., Netherlands). C1: IndoorAtlas API Key 110b46e2-d68c-4751-a9ad-3b0bfb5e0589 + API Secret (512-bit, base64) both hardcoded in AndroidManifest.xml — exposes IKEA in-store positioning infrastructure (floor plans, magnetic field maps, positioning sessions) in every installed APK. C2: Firebase API key + Production Realtime Database URL ikea-mobile-app-release2.firebaseio.com hardcoded. H1: 2× Optimizely BOOT_COMPLETED receivers + Adjust pre-consent ContentProvider — A/B behavioral tracking starts at device boot before app is opened. H2: DETECT_SCREEN_CAPTURE declared — IKEA monitors when customers screenshot the shopping app. H3: KompassMap in-store behavioral profiling via BLE + WiFi (KompassAnalyticsEvents$DepartmentNames). + Optimizely SDK Key · Afterpay BNPL · Bambuser · AD_ID reserved. R1 sent 2026-06-30. DSB + IMY in BCC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'IKEA',                 market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.ingka.ikea.app v5.4.0. Ingka Group (Ingka Holding B.V., Netherlands). C1: IndoorAtlas API Key 110b46e2-d68c-4751-a9ad-3b0bfb5e0589 + API Secret (512-bit, base64) both hardcoded in AndroidManifest.xml — exposes IKEA in-store positioning infrastructure (floor plans, magnetic field maps, positioning sessions) in every installed APK. C2: Firebase API key + Production Realtime Database URL ikea-mobile-app-release2.firebaseio.com hardcoded. H1: 2× Optimizely BOOT_COMPLETED receivers + Adjust pre-consent ContentProvider — A/B behavioral tracking starts at device boot before app is opened. H2: DETECT_SCREEN_CAPTURE declared — IKEA monitors when customers screenshot the shopping app. H3: KompassMap in-store behavioral profiling via BLE + WiFi (KompassAnalyticsEvents$DepartmentNames). + Optimizely SDK Key · Afterpay BNPL · Bambuser · AD_ID reserved. R1 sent 2026-06-30. DSB + IMY in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'WELT News',            market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'de.cellular.n24hybrid. WeltN24 GmbH / Axel Springer SE, Berlin (XETRA: SPR, ~€3,8B Umsatz) — 2. Axel-Springer-App in dieser Welle. C1: Firebase API Key AIzaSyDoIXY3YnfdV_kZgY5tvWxd0Jy7D2ZdHT8 + DB welt-news-android.firebaseio.com + Braze CRM API Key 6ff42e90-7649-48be-b7f3-fa8537dc9c3c hardcodiert (765 Braze Smali-Klassen — vollständige CRM-Infrastruktur exponiert). H1: ACCESS_ADSERVICES_TOPICS — Googles Topics API erzeugt aus Nachrichtenartikelkategorien (Politik, Gesundheit, Migration) Werbe-Interessenprofile; auf einer Nachrichtenplattform mögliche Art. 9(1) Sonderkategorien-Berührung (politische Meinungen, Gesundheitsinteressen). H2: Tealium TMS + Google Mobile Ads — dual pre-consent (beide initOrder=100) — Marketing-Tag-Stack initialisiert vor Einwilligung. H3: Outbrain Native Ads (9 Klassen) + Braze US-Transfer, kein Art. 44-49 Mechanismus. R1 sent 2026-06-30. BlnBDI + EDPS in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'ARD Mediathek',        market: 'PUBLIC',  sev: 'CRITICAL', status: 'WAITING',     finding: 'de.swr.avp.ard. ARD (Arbeitsgemeinschaft der öffentlich-rechtlichen Rundfunkanstalten), technisch betrieben von SWR (Südwestrundfunk), Stuttgart — Rundfunkbeitrag-finanziert. POSITIV: kein AD_ID, kein Adjust, kein Facebook SDK — ARD hält öffentlich-rechtlichen Standard besser als ZDF. C1: Firebase API Key AIzaSyBkLHWC5WpoYT13NqxlwQU1U4nPcHEm4oE + DB ard-mediathek-mobile.firebaseio.com hardcodiert. H1: Firebase InitProvider pre-consent (initOrder=100) + Firebase Auth (23 Klassen) → Google LLC US-Transfer ohne erkennbaren Art. 44-49 Mechanismus. + allowBackup=true · Piano Analytics (1 Klasse) reserviert. R1 sent 2026-06-30. LfDI BW + EDPS in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'Decathlon',            market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.decathlon.app. Decathlon SE, Villeneuve-d\'Ascq, France (~€17B Umsatz, 1.700+ Filialen, 60 Länder). C1: 2× Firebase/Maps Keys hardcodiert. C2: Luciq (Instabug) APMContentProvider android:initOrder="2147483647" (Integer.MAX_VALUE) — architektonisch als Priorität #1 konfiguriert, bewusste Entscheidung, nicht Tooling-Default; ScreenRecordingService + ScreenshotCaptureService beide mit foregroundServiceType="mediaProjection" — Screen-Recording-SDK startet vor Einwilligung, vor App-Logik, vor allem. H1: AltBeacon BeaconService (foregroundServiceType=location) — BLE-Beacon In-Store-Bewegungstracking in Filialen, verknüpft mit Loyalty-Profil. H2: Salesforce Marketing Cloud (1.859 Smali-Klassen) + MCInitContentProvider — US-Transfer ohne Art. 44-49 Mechanismus. + DETECT_SCREEN_CAPTURE + READ_PHONE_STATE (IMEI) + Medallia 821 Klassen + Adjust + Firebase pre-consent reserviert. R1 sent 2026-06-30. CNIL + DSB + EDPS in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'SPAR Plus',            market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'plus.spar.si. SPAR d.o.o. Ljubljana (SPAR Slovenien / SPAR International Holding, Salzburg). C1: 2× Firebase Keys + Maps Key + DB spar-plus-si.firebaseio.com hardcodiert. C2: SAP Gigya CIAM API Key 4_ABGJQhCXS9xOu0OaOBpYcQ hardcodiert (eu2.gigya.com) — Gigya verwaltet Nutzeridentitäten, Login-Flows und Consent-Records; mit diesem Key direkte Authentifizierung gegen SPAR\'s Identitätsinfrastruktur möglich; kein Analytics-Key, sondern CIAM-Schlüssel. H1: Emarsys RegisterGeofencesOnBootCompletedReceiver — registriert Geofence-Zonen bei System-Boot vor erstem App-Start und vor Einwilligung, permanente Standortüberwachung für filialnahes Push-Marketing. + ReadPhoneContactsTask in SPAR-eigenem Code + ACCESS_ADSERVICES + Firebase pre-consent reserviert. R1 sent 2026-06-30. DSB + EDPS + IP Slovenien in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'ZDF Mediathek',        market: 'PUBLIC',  sev: 'CRITICAL', status: 'WAITING',     finding: 'com.zdf.android.mediathek. Zweites Deutsches Fernsehen, Mainz — öffentlich-rechtlicher Rundfunk, durch Rundfunkbeitrag finanziert (§ 10 RBStV), werbe- und sponsoringfrei (§ 30 MStV). C1: Firebase API Key AIzaSyB6c3Wu1i5XdVQXPuS3481lF7DuBw5lWyE + DB zdfmediathek-74412.firebaseio.com hardcodiert. H1: AD_ID (Advertising Identifier) deklariert — persistente Werbeprofiling-ID auf einer werbefreien Pflichtbeitrags-App; kein erkennbarer öffentlich-rechtlicher Zweck; konfligiert mit § 30 MStV. H2: Adjust Attribution SDK (SystemLifecycleContentProvider vor Einwilligung) — kommerzielles Paid-User-Acquisition-Messung-SDK auf öffentlich-rechtlicher App; welche bezahlten Kampagnen mit Rundfunkbeitragsbudget werden hier gemessen? H3: Firebase InitProvider pre-consent (initOrder=100) + Firebase Auth + Firebase Firestore → Google LLC US-Transfer, kein Art. 44-49 Mechanismus transparent. + Piano Analytics (first-partied mefo1.zdf.de) · Firebase Push reserviert. R1 sent 2026-06-30. DSB + EDPS + LfDI RLP in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'Kaufland',             market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.kaufland.Kaufland. Kaufland GmbH & Co. KG, Neckarsulm (Schwarz Gruppe, €135B Umsatz, 1.500+ Filialen, 8 Länder — Europas größter Einzelhandelskonzern). C1: 2× Firebase API Keys (AIzaSyAXhN77tqu6tBIEqHV-eamJaKcuRDIsB-8) + Google Maps Key (AIzaSyCCAinyDVOzQAAV-YibvAxUAS2yP-he7vw) + Produktions-DB kaufland-app-android.firebaseio.com hardcodiert. C2: LexisNexis ThreatMetrix Device-Fingerprinting — TMXProfilingHandle + TMXStrongAuth: ~200 Geräteparameter aggregiert zu "Digital Identity"-Profil auf einer App mit Self-Scan, Kaufland Pay und Loyalty-Daten; US-Transfer ohne Art. 44-49 Mechanismus, nicht in Datenschutzerklärung benannt. C3: Huawei HMS Location (560 Smali-Klassen) + Huawei Ads + PushReceiver — EU-Kaufverhaltensdaten über chinesische Infrastruktur, Huawei = NatIntelLaw Art. 7, kein Art. 44-49 Transfermechanismus. H1: Chucker HTTP Inspector (ChuckerInterceptor + BodyDecoder) in Production-APK — Debug-Tool loggt Payment-Tokens und Self-Scan-Warenkörbe im Klartext. H2: BlueCodeDisneyPlusManagerImpl — undisclosed Cross-Platform Datenweitergabe: Kaufland Payment-Verhalten verknüpft mit Disney+ Abonnementstatus (The Walt Disney Company, USA), kein Art. 28 AVV erkennbar. + Firebase + Huawei AAID + Adjust + 2× Optimizely pre-consent/BOOT_COMPLETED · READ_CLIPBOARD · Klarna · Storify reserviert. R1 sent 2026-06-30. DSB + EDPS + LfDI BW in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
   { target: 'Bolt',                 market: 'PRIVATE', sev: 'CRITICAL', status: 'ACK',         finding: 'ee.mtakso.client. EU-wide ride-hailing + food delivery (80M+ users). Firebase API key + GPS precision data. security+noreply@bolt.eu auto-response received. Substantive engagement pending.' },
   { target: 'Zalando',              market: 'XETRA',   sev: 'CRITICAL', status: 'ACK',         finding: 'com.zalando.android. 50M+ EU shoppers. Sentry Session Replay + Braze + AppsFlyer stack. donotreply@zalando.de auto-ACK. DPO escalation path: datenschutz@zalando.de.' },
   { target: 'DoorDash',             market: 'NYSE',    sev: 'CRITICAL', status: 'ACK',         finding: 'com.dd.doordash. Global food delivery. Firebase API key hardcoded. security+noreply@doordash.com "Global Threat Defense Team" ACK — real security team, not CS. First responder in series from a dedicated threat defense team.' },
@@ -470,6 +544,19 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'Disney Solitaire',     market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.superplaystudios.disneysolitairedreams. SuperPlay Studios / Disney license. Firebase key hardcoded + ACCESS_ADSERVICES_AD_ID declared. Ad identifier on Disney-licensed children\'s content. R1 sent 2026-06-25.' },
   { target: 'Foodora (Rider)',       market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.foodora.courier. Delivery Hero courier app — gig worker GPS + earnings data. Separate audit from consumer app. R1 to Alexander Gajed (CEO Foodora Austria) + privacy@deliveryhero.com 2026-06-23.' },
   { target: 'Agoda',                market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Booking Holdings subsidiary (Bangkok, Thailand — no EU adequacy). Alipay + Alipay Mobile Security SDK (apmobilesecuritysdk + mobilesecuritysdk, Ant Group CN) — EU payment device telemetry routed through Chinese infrastructure subject to China NatIntelLaw Art. 7. Braze (1384 classes) with location, push, and persistent storage to US infrastructure. AppsFlyer (460 classes) cross-app attribution. 4× pre-consent auto-init: AnalyticsInitProvider (initOrder=9999) + AppStartTimeProvider/com.booking.perfsuite (9999) + FirebaseInitProvider (100) + MobileAdsInitProvider/Google Ads (100). Firebase keys AIzaSyDfFR8B4OUA7qwjbSA6jxbYdOnba-RW6o8 + Maps AIzaSyCoox8MGhZNVHgObAggGuK3GVY1_7OzOos hardcoded. User certificates trusted in base network config — all traffic interceptable by proxy. DETECT_SCREEN_CAPTURE + RECORD_AUDIO + ACTIVITY_RECOGNITION undisclosed. Dual TH+CN third-country transfer without Art. 46 safeguards documented. BCC: DSB + BfDI + CERT.at.' },
+  { target: 'Vignetim',             market: 'PRIVATE', sev: 'HIGH',     status: 'WAITING',     finding: 'com.vignetim.mobile. Privater österreichischer Autobahnvignetten-Reseller (React Native, 71.662 Smali-Klassen). C1: Firebase Key AIzaSyB5QXCSAb7f4ooDGeAwHLz29S3evc3cq5A + Google Maps Key AIzaSyAM2j7FEcMVQj7wGk8mZ4O7V8HjGTV5Kb4 hardcodiert. H1: Stripe Financial Connections (4 Activities, eine exported=true) — Open-Banking-Bankkontoverbindung auf einer Vignetten-Kauf-App (€96,40 Einmalkauf). H2: Facebook SDK 3.244 Smali-Klassen + FacebookInitProvider pre-consent (US-Transfer) — Kauf einer staatlichen Pflichtgebühr ≠ Meta Ad-Conversion-Event. H3: RECORD_AUDIO + ACCESS_FINE_LOCATION (GPS) ohne erkennbaren Zweck. H4: Adjust 306 Klassen + google_analytics_adid_collection=true + 4× BOOT_COMPLETED. R1 sent 2026-06-30. DSB + EDPS in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'ASOS',                 market: 'LSE',     sev: 'CRITICAL', status: 'WAITING',     finding: 'com.asos.app. ASOS plc (LON:ASC, ~£3,5B Umsatz, EU-Markt DE/AT/NL/FR/ES, 61.525 Smali-Klassen). C1: Firebase Key AIzaSyBjDhrCleBF1kfOoCbHggHWRq0HAHDWhPI + DB api-project-498109357888.firebaseio.com + Braze API Key d0bf68d2-1d8d-4c54-bfda-bc49cb303311 hardcodiert (EU-Endpoint fra-02.braze.eu, 523 Braze Klassen). H1: Full Android Privacy Sandbox Stack — TOPICS + CUSTOM_AUDIENCE + ATTRIBUTION + AD_ID ×2 auf Mode-App (Körpermaße, Style-Präferenzen = mögliche Art. 9(1) Inferenz). H2: READ_PHONE_STATE (IMEI) auf Mode-Shopping-App — kein erkennbarer Zweck. H3: ContentSquare CSAutoStart + Google Mobile Ads (initOrder=100) pre-consent TROTZ OneTrust CMP (Consent-Management-Versagen). H4: Klarna 356 Klassen + AppsFlyer + Facebook + 4× BOOT_COMPLETED. R1 sent 2026-06-30. DSB + EDPS in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'Crunchyroll',          market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.crunchyroll.crunchyroid. Crunchyroll LLC / Sony Pictures Entertainment (NYSE: SONY), Anime-Streaming ~100M Nutzer, 50.118 Smali-Klassen. C1: Firebase Key AIzaSyCUI2-54Pmmplk7pR68Rjemy7f59qeSwIo + DB crunchyroll-1268.firebaseio.com + Braze API Key b8df6ed1-27e4-476c-bede-e786ac4cf6c7 hardcodiert — expliziter US-Endpoint sdk.iad-03.braze.com (IAD = Dulles VA). EU-Abonnentendaten explizit in USA geroutet, kein Art. 44-49 Mechanismus. H1: RECORD_AUDIO auf reinem Streaming-Dienst (Minderjährige in Anime-Fanbase). H2: Razorpay 491 Smali-Klassen — indischer Payment-Provider (Bangalore), Indien kein EU-Angemessenheitsbeschluss; EU-Subscriber-Zahlungsdaten ggf. via IN-Infrastruktur. H3: Datadog RUM ContentProvider pre-consent + Braze US-Routing trotz OneTrust CMP. R1 sent 2026-06-30. DSB + EDPS in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'Action',               market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.action.consumerapp. Actionholding B.V. (3i Group Private Equity, \'s-Gravenzande NL, ~€11,4B Umsatz, 2.400+ Filialen, 12 EU-Länder). C1: Firebase Key AIzaSyCfZHuoPYvFc8AOcnpBv4VDeB4BrB9CDes + DB my-action-prd.firebaseio.com hardcodiert. H1: Huawei HMS Push (PushProvider android:exported=true) — Chinesische Infrastruktur (NatIntelLaw Art. 7), kein Art. 44-49 Transfermechanismus. H2: ACCESS_ADSERVICES_TOPICS + ACCESS_ADSERVICES_CUSTOM_AUDIENCE — Full Privacy Sandbox auf Discount-Retailer-App. H3: FacebookInitProvider pre-consent + com/facebook/gamingservices (Gaming-SDK ohne erkennbaren Retail-Zweck). H4: Emarsys + ML Kit + Firebase pre-consent + 3× BOOT_COMPLETED. R1 sent 2026-06-30. DSB + EDPS in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'F1 TV',                market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.formulaone.production. Formula One Management Ltd / Liberty Media Corporation (NYSE: FWONA/FWONK), Premium-Streaming-Abonnementdienst. C1: Firebase Key AIzaSyAZiGqWDG7SfXNZSzzWZ__WvpWhgj6VXo0 + DB formula-1-1236.firebaseio.com hardcodiert. H1: Salesforce Marketing Cloud ×2 — MCInitContentProvider + SFMCSdkInitContentProvider beide als ContentProvider pre-consent; EU-Abonnenten-CRM-Daten fließen in zwei separate US-Salesforce-Instanzen. H2: PingIdentity DaVinci ×2 (CollectorRegistry) — duplizierte Identity-Orchestration-Infrastruktur auf Abonnementplattform, US-Transfer undisclosed. H3: FacebookInitProvider pre-consent + App Events auf Paid-Subscription-Streaming (Motorsport-Subscriber-Profile → Meta). R1 sent 2026-06-30. DSB + EDPS in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'About You / AY Outlet', market: 'PRIVATE', sev: 'HIGH',   status: 'WAITING',     finding: 'de.aboutyou.outlet.app. About You GmbH & Co. KG (Otto Group, Hamburg, ~€2,1B Umsatz, 11M+ aktive Kunden). C1: Firebase Key AIzaSyD8dpNP7DagrYXsMVdXbJXjb8yG_mvw4zg hardcodiert. H1: Adjust pre-consent (exported=true) + FacebookInitProvider pre-consent — Attribution + Konversions-Tracking auf Fashion-App vor Einwilligung (US-Transfer). H2: Datadog RUM DdRumContentProvider — Session-Analytics vor Einwilligung (US-Transfer, San Francisco). H3: Firebase pre-consent (initOrder=100) + Braze CRM-Integration (API-Key vorhanden). R1 sent 2026-06-30. DSB + EDPS in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'yesss!',               market: 'WBAG',    sev: 'HIGH',     status: 'WAITING',     finding: 'at.a1telekom.android.yesss. A1 Telekom Austria AG Budget-Marke (Wiener Börse: A1, ~€4,2B Konzernumsatz). C1: Firebase Key AIzaSyBQcIqLaVs7V_AC3uKLpJj2Rb9wrPVKTnc + DB educom-6e0db.firebaseio.com hardcodiert — Firebase-Projekt unter Marke "Educom", weder A1 noch yesss! — wer ist der Infrastruktur-Betreiber (Art. 28 AVV? Art. 13 Transparenz?). H1: ACCESS_ADSERVICES_ATTRIBUTION + AD_ID — Werbeprofiling auf einer Telekommunikations-Verwaltungsapp (Tarif, Billing, Nutzungsdaten). H2: Firebase InitProvider pre-consent (initOrder=100) → Google LLC US-Transfer. R1 sent 2026-06-30. DSB + EDPS in CC. Embargo 2026-09-28. Deadline 2026-07-14.' },
+  { target: 'OÖNachrichten (AT)',       market: 'PRIVATE', sev: 'CRITICAL', status: 'SUBSTANTIVE', finding: 'OÖNachrichten (Nachrichten Verlags GmbH, Linz). C1: Firebase API Key AIzaSyDGhlIBg3y8IQ7bh5szBm0MwrPGSjddiN0 hardcodiert (project: ooen-app). H1 (kein NSC) + H2 (allowBackup=true) von OÖN schriftlich bestätigt. H2: OÖN hat eigeninitiativ Art. 33 DSGVO Meldung an die DSB erstattet. C1 bestritten: "public by design" — R2 gesendet 2026-06-30 mit 15 konkreten Angriffsszenarien: Quota-DoS, FCM Phishing-Blast an alle Abonnenten, Nutzer-Enumeration via identitytoolkit, Passwort-Reset-Flood, Realtime DB Read+Write, Firestore Dump, Storage-Enumeration, Remote Config Leak, Analytics-Poisoning, App Check fehlt, SHA-1 Restriction Bypass, Session-Token Harvest, Competitive Intelligence, Abonnenten-Profiling. SHA-1 Restriction Bypass nachgewiesen: öffentliche APK + apktool = Restriction bypassed in unter 1h. DSB + EDPS in BCC. Embargo 2026-09-19.' },
+  { target: 'ImmoScout24 AT',           market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'at.is24.android. Scout24 AG (München, MDAX: G24). C1: 2× Firebase API Keys hardcodiert (AIzaSyDQREB4xxlgdzaA6BYVmYVM6bH19FxLBv4 + AIzaSyAcsbZDtn2g8hyXdgOL1zGr1bMscQe_MU0, project: is24-at-apps). H1: AppLovin MAX (1.535 Smali, initOrder=101, höchster Wert der App) — initialisiert VOR Firebase — auf Plattform mit Hypothekenrechner (Einkommensdaten, Eigenkapital, Kreditabsicht) und Bonitätsprüfung. H2: MortgageCalculatorComposeActivity android:exported="true" ohne Permission-Schutz — Hypothekenrechner von jeder installierten App aufrufbar. H3: Topics API + AD_ID + Attribution auf Immobilien-/Finanzplattform (Financial Intent Data). H4: Usercentrics CMP (857 Klassen) vorhanden, aber AppLovin + Google Ads + Firebase alle pre-consent — dokumentierte Kenntnis ohne Compliance. DSB in BCC. R1 sent 2026-06-30. Embargo 2026-09-28.' },
+  { target: 'TCL Smart Home (CN)',      market: 'HKEX',    sev: 'CRITICAL', status: 'WAITING',     finding: 'com.tcl.smarthome. TCL Technology Group (Shenzhen, HKEX: 01070). C1: Firebase Key AIzaSyCAVnfDURKwhjr9ME-PsO_BnN3t6w_oI4A hardcodiert (gleicher Key für 3 Rollen). C2: 49.949 von 110.155 Klassen = com.thingclips — TCL Smart Home ist eine Tuya-App mit TCL-Branding. Amazon Alexa über qin.tuyacn.com (China-Server). Art. 44-49: EU-Smart-Home-Daten ohne dokumentierten Drittlandtransfermechanismus nach Hangzhou, China. NatIntelLaw Art. 7. H1: ByteDance ShadowHook + ByteHook (16 Klassen, TikTok-Mutter) — Native Function Interception in Smart-Home-App ohne deklarierten Zweck. H2: WeChat Login (30 Klassen) + Tencent XGPush — EU Auth-Daten an Tencent China. H3: USE_BIOMETRIC + HIGH_SAMPLING_RATE_SENSORS ×2 + vollständiger Sensor-Stack. H4: Alibaba FastJSON + Umeng Analytics. DSB in BCC. R1 sent 2026-06-30. Embargo 2026-09-28.' },
+  { target: 'Midea Smart Home (CN)',    market: 'SZSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'com.midea.ai.overseas (mSmartLife). Midea Group (SHE: 000333, Foshan, China) — Weltgrößter Haushaltsgerätehersteller, Eigentümer KUKA AG (Augsburg). C1: 2× Firebase Keys + Cleartext HTTP: http://air.midea.com + pgp2p.midea.com:7781 (unverschlüsselt) — Gerätekommandos über Klartext-Kanal (Heizung, Klimaanlage). C2: 122MB VMP-verschlüsselter DEX (apktool: 3 Klassen) — Tencent Mars, Tencent TMF, com.tencent.mm via Binary-String-Extraktion nachweisbar. Art. 5(2) Rechenschaftspflicht strukturell verhindert. H1: 5× BOOT_COMPLETED + ACCESS_BACKGROUND_LOCATION — Standort-Tracking ab Gerätestart. H2: Tencent Mars (WeChat Networking) + TMF in EU-Heimgerät-App. H3: READ_LOGS + QUERY_ALL_PACKAGES + SYSTEM_ALERT_WINDOW + CAMERA required=true. H4: Tencent QBar SDK. BCC: DSB + BayLDA (Midea = KUKA-Eigentümer, Augsburg). R1 sent 2026-06-30. Embargo 2026-09-28.' },
+  { target: 'ORF Kids! (AT)',           market: 'GOV-AT',  sev: 'CRITICAL', status: 'WAITING',     finding: 'at.orf.kids v1.5.0. ORF (Österreichischer Rundfunk) — GIS-finanzierter öffentlich-rechtlicher Rundfunk. C1: Firebase Key AIzaSyDDPBNDeqG6lkmhV_3koBM0Ey3iOAqebgI hardcodiert (project: orf-push — shared ORF-Infrastruktur, FCM-Blast an Kinder-Geräte möglich). C2: INFOnline IVW IOLAdvertisementEvent (59 Klassen) + IOLInitProvider ContentProvider pre-consent — Werbemessung auf gesetzlich werbefreiem Kinderprogramm (ORF-G §18) + Art. 8(1) DSGVO Minderjährige + Art. 13 DSGVO (INFOnline nicht in Datenschutzinfo). C3: allowBackup=true ohne Ausschlussregeln — Schauhistorie von Kindern in Google Cloud. H1: GfK S2S 145 Klassen direkt in Bitmovin Player (streamId+streamStartTime in Echtzeit an private Marktforschungsgesellschaft). H2: SentryNdkPreloadProvider initOrder=2.000.000.000 (US-Profiler startet VOR ALLEM, kein Art. 44-49 Mechanismus). POSITIV: Didomi CMP 1.605 Klassen, keine Kamera/Mikro/Standort-Permissions, keine CN-SDKs. BCC: DSB + RTR/KommAustria + EDPS. R1 sent 2026-06-30. Embargo 2026-09-28.' },
+  { target: 'ID Austria (AT.GOV)',      market: 'GOV-AT',  sev: 'CRITICAL', status: 'WAITING',     finding: 'at.gv.oe.app v5.5.0. Digitales Amt (Bundeskanzleramt Österreich) — offizielle eID-App für Millionen österreichischer Bürger:innen (eIDAS-Signatur, Behördenzugang, ELGA-Gesundheitsdaten, amtliche Bescheide). C1: Firebase Key AIzaSyCLu46GzFY6qxDpR_6MxsDDA_HK30-EVXM hardcodiert (project: digitalesamt) — FCM-Behördenimitation möglich: amtliche Steuerbescheid-Push an alle registrierten Bürger:innen, Quota-DoS, Nutzer-Enumeration, DB-Zugriff. C2: FirebaseInitProvider + MlKitInitProvider beide directBootAware=true (initOrder 100/99) — Google-Infrastruktur initialisiert vor Geräte-Entsperrung auf nationaler eID-App, Datenübermittlung an Google LLC (USA) ohne Nutzerinteraktion (Art. 6(1) DSGVO). H1: Amtliche Behördenkommunikation (Finanzamt/Sozialversicherung/Meldeamt Bescheide) über Firebase Cloud Messaging USA — Art. 44-49 DSGVO Transfermechanismus undokumentiert (eigene Datenschutzerklärung bestätigt FCM). H2: MANAGE_DEVICE_POLICY_LOCK_CREDENTIALS + RECEIVE_BOOT_COMPLETED — sensibles Berechtigungsprofil in Kombination mit directBootAware Firebase. POSITIV: certificate pinning id-austria.gv.at+eid.oesterreich.gv.at, allowBackup=false, keine Werbe-SDKs, keine CN-SDKs, RootBeer root-detection. BCC: DSB + CERT.at + EDPS. R1 sent 2026-06-30. Embargo 2026-09-28.' },
 ]
 
 const SEV_COLOR: Record<string, string> = {
@@ -488,9 +575,10 @@ const STATUS_META: Record<string, { label: string; bg: string; color: string }> 
   PAID:         { label: 'PAID',        bg: 'rgba(234,179,8,0.25)',   color: '#fbbf24' },
   SILENT:       { label: 'SILENT',      bg: 'rgba(220,38,38,0.15)',   color: '#f87171' },
   REGULATOR:    { label: 'REGULATOR',   bg: 'rgba(168,85,247,0.20)',  color: '#c084fc' },
+  RESOLVED:     { label: 'RESOLVED',    bg: 'rgba(0,245,196,0.20)',   color: '#00f5c4' },
 }
 
-const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolved?: boolean; reportUrl?: string }> = {
+const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolved?: boolean; resolvedDate?: string; reportUrl?: string }> = {
   'Pokemon GO':                   { notified: '2026-06-20', disclosure: '2026-09-18' },
   'Disneyland EU':                { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Caritas / Carla (AT)':         { notified: '2026-01-14', disclosure: '2026-09-01' },
@@ -585,7 +673,51 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'Shell':                        { notified: '2026-06-25', disclosure: '2026-09-23' },
   'Opera Browser':                { notified: '2026-06-25', disclosure: '2026-09-23' },
   'Subway Surfers':               { notified: '2026-06-25', disclosure: '2026-09-23' },
-  'Merge Chicken':                { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'Merge Chicken':                { notified: '2026-06-25', disclosure: '2026-09-23', resolved: true, resolvedDate: '2026-06-30', reportUrl: '/reports/merge-chicken-2026.pdf' },
+  'Character.AI':                 { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'Linky / iChat':                { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'Saylo / Xverse':               { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'PolyBuzz / Speak Master':      { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'Smart Life (Tuya)':            { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'Bosch Smart Home':             { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'ViCare (Viessmann)':           { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'Mein HoT (AT)':                { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'Muslim Pro':                   { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'AOK Systems (DE)':             { notified: '2026-06-22', disclosure: '2026-09-19' },
+  'Mein A1 (AT)':                 { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'Hallow':                       { notified: '2026-06-22', disclosure: '2026-09-19' },
+  'Dr. Oetker Rezeptideen':       { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'Leap Fitness (5 apps)':        { notified: '2026-06-22', disclosure: '2026-09-19' },
+  'Red Bull Mobile eSIM':         { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'Magenta SmartHome':            { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'Yesim eSIM':                   { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'Logos Bible':                  { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'FRITZ! Smart Home':            { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF TVthek':                   { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Ö3':                       { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Radio Burgenland':         { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Radio Kärnten':            { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Radio Niederösterreich':   { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Radio Oberösterreich':     { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Radio Salzburg':           { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Radio Steiermark':         { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Radio Tirol':              { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Radio Vorarlberg':         { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Radio Wien':               { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF News':                     { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Ö1':                       { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF SOUND':                    { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Sport':                    { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Fußball':                  { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Teletext':                 { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF Radio FM4':                { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'ORF ORFit':                    { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'SWIplus (SRG SSR)':            { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'Amazon Prime Video':           { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'Müller (helloagain)':          { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'LAOLA1':                       { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'kicker':                       { notified: '2026-07-01', disclosure: '2026-09-29' },
+  'Krone Sport':                  { notified: '2026-07-01', disclosure: '2026-09-29' },
   'Pokemon Champions':            { notified: '2026-06-25', disclosure: '2026-09-23' },
   'FIFA Panini (IT)':             { notified: '2026-06-25', disclosure: '2026-09-23' },
   'Simplitv (AT)':                { notified: '2026-06-25', disclosure: '2026-09-23' },
@@ -639,6 +771,59 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'Amadeus Merci':               { notified: '2026-06-27', disclosure: '2026-09-25' },
   'TripAdvisor':                 { notified: '2026-06-27', disclosure: '2026-09-25' },
   'Priority Pass':               { notified: '2026-06-27', disclosure: '2026-09-25' },
+  'Glovo':                       { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'Calm':                        { notified: '2026-06-22', disclosure: '2026-09-20' },
+  'Natural Cycles':              { notified: '2026-06-22', disclosure: '2026-09-20' },
+  'Flo Health':                  { notified: '2026-06-22', disclosure: '2026-09-20' },
+  'King / Candy Crush':          { notified: '2026-06-22', disclosure: '2026-09-20' },
+  'Freecash':                    { notified: '2026-06-22', disclosure: '2026-09-20' },
+  'Ada Health':                  { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'myNFP':                       { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'FAIRTIQ':                     { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'Foodora (Rider)':             { notified: '2026-06-23', disclosure: '2026-09-21' },
+  'ZAPPN (ProSiebenSat.1)':      { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'Disney Solitaire':            { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'Coin Master':                 { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'BILLA / REWE (AT)':           { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'Roblox':                      { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'Headspace':                   { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'Last War: Survival':          { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'Too Good To Go':              { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'Regain / BetterHelp':         { notified: '2026-06-26', disclosure: '2026-09-24' },
+  'Bolt':                        { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'Zalando':                     { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'DoorDash':                    { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'Activision / CoD':            { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'xAI / Grok':                  { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'PayPal':                      { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'Österr. Lotterien':           { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'Supercell (6 apps)':          { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'bwin / Entain':               { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'Amazon Shopping':             { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'UNO! Mobile':                 { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'idealo':                      { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'AutoScout24':                 { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'IKEA':                        { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'Decathlon':                   { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'SPAR Plus':                   { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'ZDF Mediathek':               { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'Kaufland':                    { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'WELT News':                   { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'ARD Mediathek':               { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'ViCare (Viessmann)':          { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'Vignetim':                    { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'ASOS':                        { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'Crunchyroll':                 { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'Action':                      { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'F1 TV':                       { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'About You / AY Outlet':       { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'yesss!':                      { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'OÖNachrichten (AT)':          { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'ImmoScout24 AT':              { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'TCL Smart Home (CN)':         { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'Midea Smart Home (CN)':       { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'ID Austria (AT.GOV)':        { notified: '2026-06-30', disclosure: '2026-09-28' },
+  'ORF Kids! (AT)':             { notified: '2026-06-30', disclosure: '2026-09-28' },
 }
 
 const CREDENTIALS = [
@@ -720,21 +905,17 @@ function MoonPhase({ now }: { now: number }) {
   const SYNODIC_MS = 29.53059 * 86400 * 1000
   const phase = ((now - KNOWN_NEW_MOON) % SYNODIC_MS + SYNODIC_MS) % SYNODIC_MS / SYNODIC_MS
   const r = 9, cx = 11, cy = 11
-  const top = `${cx} ${cy - r}`, bot = `${cx} ${cy + r}`
   let fill: React.ReactNode = null
   if (phase >= 0.02 && phase <= 0.98) {
-    if (phase > 0.48 && phase < 0.52) {
-      fill = <circle cx={cx} cy={cy} r={r} fill="#f0ead8" />
-    } else {
-      const waxing = phase < 0.5
-      const np = waxing ? phase : phase - 0.5
-      const theta = np * 2 * Math.PI
-      const rx = Math.max(0.5, Math.abs(Math.cos(theta)) * r)
-      const outerSweep = waxing ? 1 : 0
-      const termSweep = waxing ? (np < 0.25 ? 0 : 1) : (np < 0.25 ? 1 : 0)
-      const d = `M ${top} A ${r} ${r} 0 0 ${outerSweep} ${bot} A ${rx} ${r} 0 0 ${termSweep} ${top}`
-      fill = <path d={d} fill="#f0ead8" />
-    }
+    // terminator = half-ellipse; rx shrinks to 0 at the quarters, = r at full.
+    const a = 2 * Math.PI * phase
+    const rx = Math.max(0.01, Math.abs(Math.cos(a)) * r)
+    const waxing = phase < 0.5                       // lit limb on the right while waxing
+    const gibbous = phase > 0.25 && phase < 0.75     // >50% illuminated
+    const outerSweep = waxing ? 1 : 0                // the always-lit semicircle
+    const termSweep = gibbous ? outerSweep : 1 - outerSweep
+    const d = `M ${cx} ${cy - r} A ${r} ${r} 0 0 ${outerSweep} ${cx} ${cy + r} A ${rx} ${r} 0 0 ${termSweep} ${cx} ${cy - r}`
+    fill = <path d={d} fill="#f0ead8" />
   }
   return (
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style={{ display: 'block' }}>
@@ -742,6 +923,71 @@ function MoonPhase({ now }: { now: number }) {
       {fill}
       <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.13)" strokeWidth="0.5" />
     </svg>
+  )
+}
+
+function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, open, onToggle, minWidth, mobile }: {
+  id: string
+  value: string
+  onSelect: (v: string) => void
+  options: { value: string; label: string; color?: string }[]
+  placeholder: string
+  selColor: string | null
+  open: boolean
+  onToggle: (id: string | null) => void
+  minWidth: number
+  mobile: boolean
+}) {
+  const active = !!value && value !== 'default'
+  const accent = active ? (selColor || '#00f5c4') : null
+  const current = options.find(o => o.value === value)
+  return (
+    <div style={{ position: 'relative', ...(mobile ? { flex: 1 } : { flexShrink: 0 }) }}>
+      <button onClick={() => onToggle(open ? null : id)} style={{
+        height: '100%', boxSizing: 'border-box', width: mobile ? '100%' : undefined, minWidth: mobile ? undefined : minWidth,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
+        background: active ? 'rgba(0,245,196,0.07)' : 'rgba(0,245,196,0.04)',
+        border: `1px solid ${active ? (accent as string) : 'rgba(0,245,196,0.18)'}`,
+        borderRadius: 7, padding: '11px 12px',
+        color: active ? (accent as string) : 'var(--text3)',
+        fontFamily: 'monospace', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
+        cursor: 'pointer', outline: 'none',
+      }}>
+        <span style={{ whiteSpace: 'nowrap' }}>{current ? current.label : placeholder}</span>
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke={active ? (accent as string) : 'rgba(0,245,196,0.5)'}
+          style={{ transition: 'transform 0.2s', transform: open ? 'rotate(180deg)' : 'none', flexShrink: 0 }}>
+          <path d="M1.5 3L4.5 6L7.5 3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+      {open && (
+        <>
+          <div onClick={() => onToggle(null)} style={{ position: 'fixed', inset: 0, zIndex: 40 }} />
+          <div className="ledger-dd-panel" style={{
+            position: 'absolute', top: 'calc(100% + 4px)', left: 0, zIndex: 41,
+            minWidth: mobile ? '100%' : Math.max(minWidth, 150), maxHeight: 300, overflowY: 'auto',
+            background: '#0c1120', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 8,
+            boxShadow: '0 12px 32px rgba(0,0,0,0.6)', padding: 4,
+            animation: 'ddIn 0.16s cubic-bezier(0.22,1,0.36,1)',
+          }}>
+            {options.map(o => {
+              const sel = o.value === value
+              return (
+                <div key={o.value || '_'} className="ledger-dd-opt"
+                  onClick={() => { onSelect(o.value); onToggle(null) }}
+                  style={{
+                    padding: '8px 12px', borderRadius: 5, cursor: 'pointer',
+                    fontFamily: 'monospace', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em',
+                    color: sel ? (o.color || '#00f5c4') : 'var(--text2)',
+                    background: sel ? 'rgba(0,245,196,0.10)' : 'transparent',
+                  }}>
+                  {o.label}
+                </div>
+              )
+            })}
+          </div>
+        </>
+      )}
+    </div>
   )
 }
 
@@ -756,6 +1002,8 @@ export function PublicSite() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeStatus, setActiveStatus] = useState<string | null>(null)
   const [activeSev, setActiveSev] = useState<string | null>(null)
+const [sortBy, setSortBy] = useState<string>('elapsed-desc')
+  const [openDD, setOpenDD] = useState<string | null>(null)
   const [now, setNow] = useState(() => Date.now())
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
   const [checkoutModal, setCheckoutModal]     = useState<string | null>(null)
@@ -804,9 +1052,12 @@ export function PublicSite() {
     const el = ledgerRef.current; if (!el) return
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) { setLedgerFired(true); obs.disconnect() }
-    }, { threshold: 0.04 })
+    }, { threshold: 0 })
     obs.observe(el)
-    return () => obs.disconnect()
+    // bulletproof fallback: on a very tall rows container the ratio can never
+    // cross a nonzero threshold, so guarantee rows render even if the observer never fires.
+    const fallback = setTimeout(() => setLedgerFired(true), 800)
+    return () => { obs.disconnect(); clearTimeout(fallback) }
   }, [])
 
   useEffect(() => {
@@ -1082,16 +1333,16 @@ export function PublicSite() {
 
         <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '56px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
           {([
-            { n: '175+', label: 'apps audited',        from: 'left'   },
-            { n: '250+', label: 'critical findings',   from: 'bottom' },
-            { n: '115+', label: 'companies notified',  from: 'scale'  },
-            { n: '15+',  label: 'regulators notified', from: 'bottom' },
+            { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'apps audited',        from: 'left'   },
+            { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: 'critical findings',   from: 'bottom' },
+            { n: '110+', label: 'companies notified',  from: 'scale'  },
+            { n: '18+',  label: 'regulators notified', from: 'bottom' },
             { n: '6',    label: 'years of research',   from: 'bottom' },
           ] as const).map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from}>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: 32, fontWeight: 900, color: 'var(--accent-text)' }}>{s.n}</div>
-                <div style={{ fontSize: 11, color: '#606080', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{s.label}</div>
+                <div style={{ fontSize: 11, color: 'var(--text)', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{s.label}</div>
               </div>
             </Reveal>
           ))}
@@ -1100,7 +1351,7 @@ export function PublicSite() {
 
       {/* RESEARCH AREAS */}
       <section id="research" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Research Areas</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we investigate</h2>
@@ -1110,7 +1361,7 @@ export function PublicSite() {
               One team. The same people who train the model write the regulatory analysis and file the disclosure.
             </p>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
             {RESEARCH_AREAS.map((a, i) => (
               <Reveal key={a.title} delay={i} from={(['left', 'bottom', 'right', 'scale'] as const)[i % 4]}>
                 <div style={{
@@ -1156,7 +1407,7 @@ export function PublicSite() {
         borderTop: '1px solid rgba(255,255,255,0.05)',
         borderBottom: '1px solid rgba(255,255,255,0.05)',
       }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="right">
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Projects</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
@@ -1188,7 +1439,7 @@ export function PublicSite() {
                 {p.link && (
                   <a href={p.link} target="_blank" rel="noopener noreferrer"
                     style={{ color: 'var(--accent-text)', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
-                    View on GitHub &rarr;
+                    {p.link.includes('crates.io') ? 'View on crates.io' : 'View on GitHub'} &rarr;
                   </a>
                 )}
               </div>
@@ -1200,7 +1451,7 @@ export function PublicSite() {
 
       {/* TRACK RECORD */}
       <section id="track-record" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>security research at scale</h2>
@@ -1210,13 +1461,15 @@ export function PublicSite() {
               Root level code analysis. Regulators in <strong style={{ color: '#e0e0f0' }}>CC on every submission</strong> — national DPA + EDPS. 90-day coordinated disclosure. Our framework. Our timeline.
               <br /><br />
               We do not operate bug bounty programs, HackerOne, or any third-party vulnerability reward platforms. All findings are published under <strong style={{ color: '#e0e0f0' }}>Forschungsfreiheitsgesetz (Art. 17 StGG)</strong> and constitute free scientific knowledge sharing within the EU research framework — independent of commercial incentive.
+              <br /><br />
+              <strong style={{ color: '#e0e0f0' }}>Disclosure is unconditional.</strong> Every organization on this ledger receives identical treatment — same embargo, same publication, same regulator notification — whether or not they engage RFI-IRFOS commercially.
             </p>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
             {[
-              { n: '200+', label: 'Apps audited',        from: 'left'   },
-              { n: '130+', label: 'Companies notified',  from: 'bottom' },
-              { n: '320+', label: 'Critical findings',   from: 'top'    },
+              { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'Apps audited',        from: 'left'   },
+              { n: '110+', label: 'Companies notified',  from: 'bottom' },
+              { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: 'Critical findings',   from: 'top'    },
               { n: '18+',  label: 'Regulators notified', from: 'right'  },
             ].map((s, i) => (
               <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
@@ -1225,7 +1478,7 @@ export function PublicSite() {
                   borderRadius: 12, padding: '24px', textAlign: 'center', height: '100%',
                 }}>
                   <div style={{ fontSize: 36, fontWeight: 900, color: 'var(--accent-text)' }}>{s.n}</div>
-                  <div style={{ fontSize: 11, color: '#606080', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 6 }}>{s.label}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text)', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 6 }}>{s.label}</div>
                 </div>
               </Reveal>
             ))}
@@ -1279,64 +1532,35 @@ export function PublicSite() {
             </div>
 
             {/* Status dropdown */}
-            <div style={{ position: 'relative', ...(mobile ? { flex: 1 } : { flexShrink: 0 }) }}>
-              <select
-                className="ledger-sel"
-                value={activeStatus ?? ''}
-                onChange={e => setActiveStatus(e.target.value || null)}
-                style={{
-                  height: '100%', boxSizing: 'border-box',
-                  appearance: 'none' as React.CSSProperties['appearance'],
-                  background: activeStatus ? (STATUS_META[activeStatus]?.bg ?? 'rgba(0,245,196,0.08)') : 'rgba(0,245,196,0.04)',
-                  border: activeStatus ? `1px solid ${STATUS_META[activeStatus]?.color ?? TEAL}` : '1px solid rgba(0,245,196,0.18)',
-                  borderRadius: 7, padding: '11px 28px 11px 12px',
-                  color: activeStatus ? (STATUS_META[activeStatus]?.color ?? TEAL) : 'var(--text3)',
-                  fontFamily: 'monospace', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
-                  cursor: 'pointer', outline: 'none', ...(mobile ? { width: '100%' } : { minWidth: 115 }),
-                }}
-              >
-                <option value="">STATUS</option>
-                {Object.entries(STATUS_META).map(([k, v]) => {
-                  const count = AUDIT_HIGHLIGHTS.filter(a => a.status === k).length
-                  return <option key={k} value={k}>{v.label} ({count})</option>
-                })}
-              </select>
-              <svg width="9" height="9" viewBox="0 0 9 9" fill="none"
-                stroke={activeStatus ? (STATUS_META[activeStatus]?.color ?? TEAL) : 'rgba(0,245,196,0.5)'}
-                style={{ position: 'absolute', right: 9, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-                <path d="M1.5 3L4.5 6L7.5 3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
+            <LedgerDropdown id="status" mobile={mobile} minWidth={115}
+              value={activeStatus ?? ''} onSelect={v => setActiveStatus(v || null)}
+              open={openDD === 'status'} onToggle={setOpenDD} placeholder="STATUS"
+              selColor={activeStatus ? (STATUS_META[activeStatus]?.color ?? TEAL) : null}
+              options={[{ value: '', label: 'STATUS' }, ...Object.entries(STATUS_META).map(([k, v]) => ({ value: k, label: `${v.label} (${AUDIT_HIGHLIGHTS.filter(a => a.status === k).length})`, color: v.color }))]}
+            />
 
             {/* SEV dropdown */}
-            <div style={{ position: 'relative', ...(mobile ? { flex: 1 } : { flexShrink: 0 }) }}>
-              <select
-                className="ledger-sel"
-                value={activeSev ?? ''}
-                onChange={e => setActiveSev(e.target.value || null)}
-                style={{
-                  height: '100%', boxSizing: 'border-box',
-                  appearance: 'none' as React.CSSProperties['appearance'],
-                  background: activeSev === 'CRITICAL' ? 'rgba(248,113,113,0.12)' : activeSev === 'HIGH' ? 'rgba(251,146,60,0.12)' : activeSev === 'MEDIUM' ? 'rgba(251,191,36,0.12)' : 'rgba(0,245,196,0.04)',
-                  border: activeSev ? `1px solid ${activeSev === 'CRITICAL' ? '#f87171' : activeSev === 'HIGH' ? '#fb923c' : '#fbbf24'}` : '1px solid rgba(0,245,196,0.18)',
-                  borderRadius: 7, padding: '11px 28px 11px 12px',
-                  color: activeSev === 'CRITICAL' ? '#f87171' : activeSev === 'HIGH' ? '#fb923c' : activeSev === 'MEDIUM' ? '#fbbf24' : 'var(--text3)',
-                  fontFamily: 'monospace', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
-                  cursor: 'pointer', outline: 'none', ...(mobile ? { width: '100%' } : { minWidth: 88 }),
-                }}
-              >
-                <option value="">SEV</option>
-                {(['CRITICAL', 'HIGH', 'MEDIUM'] as const).map(sev => {
-                  const count = AUDIT_HIGHLIGHTS.filter(a => a.sev === sev).length
-                  return <option key={sev} value={sev}>{sev} ({count})</option>
-                })}
-              </select>
-              <svg width="9" height="9" viewBox="0 0 9 9" fill="none"
-                stroke={activeSev === 'CRITICAL' ? '#f87171' : activeSev === 'HIGH' ? '#fb923c' : activeSev === 'MEDIUM' ? '#fbbf24' : 'rgba(0,245,196,0.5)'}
-                style={{ position: 'absolute', right: 9, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-                <path d="M1.5 3L4.5 6L7.5 3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
+            <LedgerDropdown id="sev" mobile={mobile} minWidth={88}
+              value={activeSev ?? ''} onSelect={v => setActiveSev(v || null)}
+              open={openDD === 'sev'} onToggle={setOpenDD} placeholder="SEV"
+              selColor={activeSev === 'CRITICAL' ? '#f87171' : activeSev === 'HIGH' ? '#fb923c' : activeSev === 'MEDIUM' ? '#fbbf24' : null}
+              options={[{ value: '', label: 'SEV' }, ...(['CRITICAL', 'HIGH', 'MEDIUM'] as const).map(sev => ({ value: sev, label: `${sev} (${AUDIT_HIGHLIGHTS.filter(a => a.sev === sev).length})`, color: sev === 'CRITICAL' ? '#f87171' : sev === 'HIGH' ? '#fb923c' : '#fbbf24' }))]}
+            />
+
+            {/* Sort by dropdown */}
+            <LedgerDropdown id="sort" mobile={mobile} minWidth={130}
+              value={sortBy} onSelect={v => setSortBy(v)}
+              open={openDD === 'sort'} onToggle={setOpenDD} placeholder="SORT"
+              selColor={sortBy !== 'default' ? TEAL : null}
+              options={[
+                { value: 'elapsed-desc', label: 'ELAPSED ↓' },
+                { value: 'notified-desc', label: 'NOTIFIED ↓' },
+                { value: 'notified-asc', label: 'NOTIFIED ↑' },
+                { value: 'sev', label: 'SEV' },
+                { value: 'status', label: 'STATUS' },
+                { value: 'default', label: 'DEFAULT' },
+              ]}
+            />
 
             {/* Moon */}
             <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 10px', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 7, background: 'rgba(255,255,255,0.02)' }}>
@@ -1344,7 +1568,7 @@ export function PublicSite() {
             </div>
 
           </div>
-          {(searchQuery.trim() || activeStatus || activeSev) && (() => {
+          {(searchQuery.trim() || activeStatus || activeSev || sortBy !== 'default') && (() => {
             const n = AUDIT_HIGHLIGHTS.filter(a =>
               (!searchQuery.trim() ||
                 a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1354,17 +1578,19 @@ export function PublicSite() {
               (!activeStatus || a.status === activeStatus) &&
               (!activeSev || a.sev === activeSev)
             ).length
+            const sortLabel: Record<string, string> = { 'elapsed-desc': 'elapsed ↓', 'notified-desc': 'notified ↓', 'notified-asc': 'notified ↑', sev: 'sev', status: 'status' }
             return (
               <div style={{ fontFamily: 'monospace', fontSize: 10, color: n > 0 ? TEAL : '#f87171', marginBottom: 10, letterSpacing: '0.06em' }}>
                 {n > 0 ? `${n} of ${AUDIT_HIGHLIGHTS.length} entries` : `no matches`}
                 {searchQuery.trim() ? ` for "${searchQuery}"` : ''}
+                {sortBy !== 'default' ? ` · sorted by ${sortLabel[sortBy] ?? sortBy}` : ''}
               </div>
             )
           })()}
 
           {/* Table */}
           <div style={{ maxHeight: mobile ? '65vh' : 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
-            <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}@keyframes ekgPulse{0%{stroke-dashoffset:90;opacity:0}8%{opacity:1}80%{opacity:1}100%{stroke-dashoffset:-90;opacity:0}}.ekg-line{stroke-dasharray:90;animation:ekgPulse 2.4s linear infinite}`}</style>
+            <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}@keyframes ekgPulse{0%{stroke-dashoffset:90;opacity:0}8%{opacity:1}80%{opacity:1}100%{stroke-dashoffset:-90;opacity:0}}.ekg-line{stroke-dasharray:90;animation:ekgPulse 2.4s linear infinite}@keyframes ddIn{from{opacity:0;transform:translateY(-6px) scaleY(0.97)}to{opacity:1;transform:none}}.ledger-dd-panel{transform-origin:top}.ledger-dd-opt:hover{background:rgba(0,245,196,0.12)!important;color:#00f5c4!important}`}</style>
 
             {/* Sticky header */}
             <div style={{
@@ -1400,7 +1626,21 @@ export function PublicSite() {
                 ) &&
                 (!activeStatus || a.status === activeStatus) &&
                 (!activeSev || a.sev === activeSev)
-              ).map((a, i) => {
+              ).sort((x, y) => {
+                const SEV_ORDER: Record<string, number> = { CRITICAL: 0, HIGH: 1, MEDIUM: 2 }
+                const STATUS_ORDER: Record<string, number> = { RESOLVED: -1, SILENT: 0, ESCALATED: 1, 'CS-DEFLECT': 2, REGULATOR: 2.5, WAITING: 3, ACK: 4, SUBSTANTIVE: 5, ENGAGED: 6, PAID: 7 }
+                const resolveTs = (a: typeof x) => { const m = AUDIT_META[a.target]; if (m?.notified) return new Date(m.notified).getTime(); const d = a.finding.match(/(\d{4}-\d{2}-\d{2})/); return d ? new Date(d[1]).getTime() : 0 }
+                const notifiedX = resolveTs(x)
+                const notifiedY = resolveTs(y)
+                const elapsedX = notifiedX ? now - notifiedX : 0
+                const elapsedY = notifiedY ? now - notifiedY : 0
+                if (sortBy === 'elapsed-desc') return elapsedY - elapsedX
+                if (sortBy === 'notified-desc') return notifiedY - notifiedX
+                if (sortBy === 'notified-asc') return notifiedX - notifiedY
+                if (sortBy === 'sev') return (SEV_ORDER[x.sev] ?? 9) - (SEV_ORDER[y.sev] ?? 9)
+                if (sortBy === 'status') return (STATUS_ORDER[x.status] ?? 9) - (STATUS_ORDER[y.status] ?? 9)
+                return 0
+              }).map((a, i) => {
                 const sm = STATUS_META[a.status] ?? STATUS_META['WAITING']
                 const meta = AUDIT_META[a.target]
                 const disclosureTs = meta ? new Date(meta.disclosure).getTime() : new Date('2026-09-19').getTime()
@@ -1414,8 +1654,10 @@ export function PublicSite() {
                 const cdColor = daysLeft > 60 ? TEAL : daysLeft > 30 ? '#fb923c' : '#f87171'
                 const delay = Math.min(i * 30, 1500)
                 const resolved = meta?.resolved ?? false
-                const notifiedTs = meta?.notified ? new Date(meta.notified).getTime() : null
-                const elapsedMs  = notifiedTs ? Math.max(0, now - notifiedTs) : 0
+                const notifiedTs = meta?.notified ? new Date(meta.notified).getTime() : (() => { const d = a.finding.match(/(\d{4}-\d{2}-\d{2})/); return d ? new Date(d[1]).getTime() : null })()
+                const resolvedTs = meta?.resolvedDate ? new Date(meta.resolvedDate).getTime() : null
+                const elapsedEnd = (resolved && resolvedTs) ? resolvedTs : now
+                const elapsedMs  = notifiedTs ? Math.max(0, elapsedEnd - notifiedTs) : 0
                 const eDays = Math.floor(elapsedMs / 86400000)
                 const eH    = Math.floor((elapsedMs % 86400000) / 3600000)
                 const eM    = Math.floor((elapsedMs % 3600000)  / 60000)
@@ -1443,7 +1685,7 @@ export function PublicSite() {
                   }}>
                     {/* Battery bar */}
                     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'rgba(255,255,255,0.05)' }}>
-                      <div style={{ height: '100%', width: `${batteryPct * 100}%`, background: `linear-gradient(90deg, ${batteryColor}55, ${batteryColor})`, borderRadius: '0 2px 0 0', transition: 'width 1s linear' }} />
+                      <div style={{ height: '100%', width: resolved ? '100%' : `${batteryPct * 100}%`, background: resolved ? 'linear-gradient(90deg, rgba(0,245,196,0.55), #00f5c4)' : `linear-gradient(90deg, ${batteryColor}55, ${batteryColor})`, borderRadius: '0 2px 0 0', transition: 'width 1s linear' }} />
                     </div>
                     {/* Organisation */}
                     <div>
@@ -1499,8 +1741,8 @@ export function PublicSite() {
 
                     {/* Countdown */}
                     <div style={{ paddingTop: 1 }}>
-                      <div style={{ fontFamily: 'monospace', fontSize: mobile ? 12 : 16, fontWeight: 900, color: cdColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
-                        {cdStr}
+                      <div style={{ fontFamily: 'monospace', fontSize: mobile ? 12 : 16, fontWeight: 900, color: resolved ? '#00f5c4' : cdColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
+                        {resolved ? 'CLOSED' : cdStr}
                       </div>
                       <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
                         DISCLOSURE
@@ -1576,7 +1818,7 @@ export function PublicSite() {
 
       {/* PRICING */}
       <section id="pricing" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal>
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>transparent pricing</h2>
@@ -1587,7 +1829,7 @@ export function PublicSite() {
 
           {/* Security Audit tiers */}
           <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: 16, marginBottom: 48 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: 48 }}>
             {([
               { tier: 'Public',                   price: 'free',      desc: 'Full public disclosure. Findings published after 90-day coordinated embargo. No NDA. First phone sanitizing session included.', highlight: false, stripeKey: null,            contact: false },
               { tier: 'Remediation Advisory',     price: '€4,500',    desc: 'Full report + remediation guidance. 30-day follow-up. GDPR compliance mapping included.',                                        highlight: false, stripeKey: 'remediation',   contact: false },
@@ -1749,7 +1991,7 @@ export function PublicSite() {
 
       {/* STANDARDS & COMPLIANCE */}
       <section id="standards" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal>
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Standards &amp; Compliance</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the frameworks we work under</h2>

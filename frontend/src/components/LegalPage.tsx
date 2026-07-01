@@ -34,138 +34,156 @@ export function LegalPage({ slug }: { slug: string }) {
 
 function Impressum() {
   return <>
-    <h1 style={H1}>Impressum</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>Angaben gemäß § 5 ECG (E-Commerce-Gesetz, Österreich)</p>
+    <h1 style={H1}>Legal Notice</h1>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act)</p>
 
-    <h2 style={H2}>Betreiber</h2>
+    <p style={P}>
+      We publish under our own name, at a real street address, because coordinated disclosure only works if the institute doing it can be found, verified, and held to account — the same standard we hold everyone we audit to.
+    </p>
+
+    <h2 style={H2}>Operator</h2>
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>Research Focus Institute — Interdisciplinary Research Facility for Open Sciences</strong><br />
-      Kurzbezeichnung: RFI-IRFOS<br />
-      Elisabethinergasse 25/10, 8020 Graz, Österreich<br />
+      Short name: RFI-IRFOS<br />
+      Elisabethinergasse 25/10, 8020 Graz, Austria<br />
       E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a><br />
       Website: <a href="https://rfi-irfos.com" style={A}>rfi-irfos.com</a>
     </p>
 
-    <h2 style={H2}>Register &amp; Gewerbedaten</h2>
+    <h2 style={H2}>Register &amp; Trade Data</h2>
     <p style={P}>
-      Rechtsform: Eingetragener Verein (gemeinnützig, reguliertes Not-for-Profit)<br />
-      ZVR-Zahl: 1015608684<br />
-      GISA-Zahl: 39261441<br />
+      Legal form: Registered association (non-profit, regulated not-for-profit)<br />
+      ZVR number (Austrian Central Register of Associations): 1015608684<br />
+      GISA number (Trade Register): 39261441<br />
       GLN: 9110038490191<br />
-      Steuernummer: 68 028/0989<br />
-      Gewerbewortlaut: Dienstleistungen in der automatischen Datenverarbeitung und Informationstechnik<br />
-      Berufsrecht: Gewerbeordnung (GewO) &middot; WKO-Mitglied<br />
-      ECG-Behörde gem. § 5 Abs. 1 Z 5 ECG: Magistrat der Stadt Graz<br />
-      Gewerbeanmeldung: 19.03.2026
+      Tax number: 68 028/0989<br />
+      Trade description: Services in automatic data processing and information technology<br />
+      Governing trade law: Austrian Trade Regulation Act (Gewerbeordnung, GewO) &middot; WKO member (Austrian Federal Economic Chamber)<br />
+      Competent authority pursuant to § 5(1)(5) ECG: Magistrate of the City of Graz<br />
+      Trade registered: 19 March 2026
     </p>
 
-    <h2 style={H2}>Gewerberechtliche Geschäftsführung</h2>
+    <h2 style={H2}>Trade-Law Management</h2>
     <p style={P}>Simeon-Andreas Johann Manfred Kepp</p>
 
-    <h2 style={H2}>Hinweis gemäß EU-VO 524/2013 (ODR)</h2>
+    <h2 style={H2}>Notice Pursuant to EU Regulation 524/2013 (ODR)</h2>
     <p style={P}>
-      Die EU-Kommission stellt eine Plattform zur Online-Streitbeilegung bereit:{' '}
+      The European Commission provides a platform for online dispute resolution:{' '}
       <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" style={A}>ec.europa.eu/consumers/odr</a>.<br />
-      Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen, da wir ausschließlich mit Unternehmern kontrahieren.
+      We are neither obligated nor willing to participate in dispute resolution proceedings before a consumer arbitration board, as we contract exclusively with businesses.
     </p>
 
-    <h2 style={H2}>Haftungsausschluss</h2>
-    <p style={P}>Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität kann keine Gewähr übernommen werden.</p>
+    <h2 style={H2}>Disclaimer</h2>
+    <p style={P}>The content of this website has been prepared with the greatest care. No liability is assumed for its accuracy, completeness, or currency.</p>
 
-    <h2 style={H2}>Urheberrecht</h2>
-    <p style={P}>Alle durch RFI-IRFOS erstellten Inhalte unterliegen dem österreichischen Urheberrecht. Vervielfältigung oder Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung.</p>
+    <h2 style={H2}>Copyright</h2>
+    <p style={P}>All content created by RFI-IRFOS is subject to Austrian copyright law. Reproduction or use beyond the limits of copyright law requires written consent.</p>
 
-    <h2 style={H2}>Anwendbares Recht</h2>
-    <p style={P}>Es gilt das Recht der Republik Österreich sowie das Recht der Europäischen Union.</p>
+    <h2 style={H2}>Governing Law</h2>
+    <p style={P}>The law of the Republic of Austria and the law of the European Union apply.</p>
   </>
 }
 
 function Datenschutz() {
   return <>
-    <h1 style={H1}>Datenschutzerklärung</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>Gemäß DSGVO (EU) 2016/679 · Stand: Juni 2026</p>
+    <h1 style={H1}>Privacy Policy</h1>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>Pursuant to the GDPR (EU) 2016/679 &middot; Last updated: July 2026</p>
 
-    <h2 style={H2}>Verantwortlicher</h2>
+    <h2 style={H2}>Data Controller</h2>
     <p style={P}>
       RFI-IRFOS (Research Focus Institute — Interdisciplinary Research Facility for Open Sciences)<br />
-      Elisabethinergasse 25/10, 8020 Graz, Österreich<br />
+      Elisabethinergasse 25/10, 8020 Graz, Austria<br />
       E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a>
     </p>
 
-    <h2 style={H2}>Erhobene Daten</h2>
+    <h2 style={H2}>Data We Collect</h2>
     <p style={P}>
-      <strong style={{ color: '#e8e8f0' }}>Server-Logs:</strong> IP-Adresse, Zugriffszeitpunkt, URL, HTTP-Statuscode — durch GitHub Pages (GitHub, Inc., USA) sowie Fly.io (Superfly, Inc., USA) erhoben.<br />
-      <strong style={{ color: '#e8e8f0' }}>Kontaktformular:</strong> Name, E-Mail, Betreff, Nachricht — übermittelt über Web3Forms (<a href="https://web3forms.com/privacy" target="_blank" rel="noopener" style={A}>web3forms.com/privacy</a>).<br />
-      <strong style={{ color: '#e8e8f0' }}>Zahlungsdaten:</strong> Bei Käufen über die Website werden Zahlungsdaten (Kartendaten, E-Mail, Name) von <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> (354 Oyster Point Blvd, South San Francisco, CA 94080, USA) verarbeitet. RFI-IRFOS erhält keine Kartendaten. Datenschutzerklärung Stripe: <a href="https://stripe.com/privacy" target="_blank" rel="noopener" style={A}>stripe.com/privacy</a>.<br />
-      <strong style={{ color: '#e8e8f0' }}>Besuchsstatistik:</strong> Anonymisiertes First-Party-Tracking via Lighthouse (selbst gehostet, Graz). Kein Drittanbieter-Tracking. Kein Remarketing.
+      <strong style={{ color: '#e8e8f0' }}>Server logs:</strong> IP address, access timestamp, URL, HTTP status code — collected by GitHub Pages (GitHub, Inc., USA) and Fly.io (Superfly, Inc., USA).<br />
+      <strong style={{ color: '#e8e8f0' }}>Contact form:</strong> name, email, subject, message — submitted via Web3Forms (<a href="https://web3forms.com/privacy" target="_blank" rel="noopener" style={A}>web3forms.com/privacy</a>).<br />
+      <strong style={{ color: '#e8e8f0' }}>Payment data:</strong> for purchases made through the website, payment data (card details, email, name) is processed by <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> (354 Oyster Point Blvd, South San Francisco, CA 94080, USA). RFI-IRFOS never receives or stores your card data. Stripe's privacy policy: <a href="https://stripe.com/privacy" target="_blank" rel="noopener" style={A}>stripe.com/privacy</a>.<br />
+      <strong style={{ color: '#e8e8f0' }}>Visit statistics:</strong> anonymized first-party analytics via Lighthouse (self-hosted, Graz). No third-party tracking. No remarketing.
     </p>
 
-    <h2 style={H2}>Rechtsgrundlage</h2>
+    <h2 style={H2}>Legal Basis</h2>
     <p style={P}>
-      Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO): Zahlungsabwicklung, Kontaktanfragen.<br />
-      Berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO): Server-Logs zur Sicherheit und Fehleranalyse.
+      Performance of a contract (Art. 6(1)(b) GDPR): payment processing, contact inquiries.<br />
+      Legitimate interest (Art. 6(1)(f) GDPR): server logs for security and error analysis.
     </p>
 
-    <h2 style={H2}>Auftragsverarbeiter</h2>
+    <h2 style={H2}>Processors</h2>
     <p style={P}>
-      <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> — Zahlungsabwicklung. Auftragsverarbeitungsvertrag (DPA) gemäß Art. 28 DSGVO abgeschlossen. Datenübermittlung in die USA auf Basis von Standardvertragsklauseln (Art. 46 Abs. 2 lit. c DSGVO).<br />
-      <strong style={{ color: '#e8e8f0' }}>GitHub, Inc.</strong> — Hosting Frontend (GitHub Pages). Datenübermittlung in die USA auf Basis von Standardvertragsklauseln.<br />
-      <strong style={{ color: '#e8e8f0' }}>Superfly, Inc. (Fly.io)</strong> — Hosting Backend API. Datenübermittlung in die USA auf Basis von Standardvertragsklauseln.
+      <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> — payment processing. Data Processing Agreement (DPA) concluded pursuant to Art. 28 GDPR. Data transferred to the USA on the basis of Standard Contractual Clauses (Art. 46(2)(c) GDPR).<br />
+      <strong style={{ color: '#e8e8f0' }}>GitHub, Inc.</strong> — frontend hosting (GitHub Pages). Data transferred to the USA on the basis of Standard Contractual Clauses.<br />
+      <strong style={{ color: '#e8e8f0' }}>Superfly, Inc. (Fly.io)</strong> — backend API hosting. Data transferred to the USA on the basis of Standard Contractual Clauses.
     </p>
 
     <h2 style={H2}>Cookies</h2>
-    <p style={P}>Diese Website verwendet keine Tracking-Cookies von Drittanbietern. Es werden keine Werbe- oder Analytics-Cookies gesetzt.</p>
+    <p style={P}>
+      We don't use cookies. Not tracking cookies, not advertising cookies, not analytics cookies — not even the "essential for platform performance" kind, a phrase that's usually a placeholder for tracking you anyway. This page loaded, the form above submits, and checkout works. None of it needed a cookie to do that. You're looking at the proof right now.
+    </p>
 
-    <h2 style={H2}>Aufbewahrung</h2>
-    <p style={P}>Kontaktanfragen werden nach Abschluss der Kommunikation gelöscht, spätestens nach 7 Jahren gemäß österreichischer Aufbewahrungspflicht. Zahlungsbelege gemäß § 132 BAO 7 Jahre.</p>
+    <h2 style={H2}>Automated Decision-Making</h2>
+    <p style={P}>None. We do not use profiling or automated decision-making that produces legal or similarly significant effects on you.</p>
 
-    <h2 style={H2}>Ihre Rechte (Art. 15–21 DSGVO)</h2>
-    <p style={P}>Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit, Widerspruch: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a></p>
+    <h2 style={H2}>Retention</h2>
+    <p style={P}>Contact inquiries are deleted once communication concludes, at the latest after 7 years per Austrian statutory retention rules. Payment receipts are retained for 7 years pursuant to § 132 BAO (Federal Fiscal Code).</p>
 
-    <h2 style={H2}>Beschwerderecht</h2>
-    <p style={P}>Österreichische Datenschutzbehörde: <a href="https://www.dsb.gv.at" target="_blank" rel="noopener" style={A}>dsb.gv.at</a></p>
+    <h2 style={H2}>Your Rights (Art. 15–21 GDPR)</h2>
+    <p style={P}>Access, rectification, erasure, restriction, data portability, objection: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a></p>
+
+    <h2 style={H2}>Right to Lodge a Complaint</h2>
+    <p style={P}>Austrian Data Protection Authority (Datenschutzbehörde): <a href="https://www.dsb.gv.at" target="_blank" rel="noopener" style={A}>dsb.gv.at</a></p>
+
+    <h2 style={H2}>A Note on Consistency</h2>
+    <p style={P}>We spend our research auditing other companies for exactly this kind of policy. This one describes what actually happens on this site, in the same evidence-first spirit — nothing here is aspirational.</p>
   </>
 }
 
 function AGB() {
   return <>
-    <h1 style={H1}>Allgemeine Geschäftsbedingungen</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>RFI-IRFOS &middot; Stand: Juni 2026</p>
+    <h1 style={H1}>General Terms and Conditions</h1>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>RFI-IRFOS &middot; Last updated: July 2026</p>
 
-    <h2 style={H2}>1. Geltungsbereich — Ausschließlich B2B</h2>
+    <h2 style={H2}>1. Scope — B2B Only</h2>
     <p style={P}>
-      Diese AGB gelten für alle Dienstleistungen von RFI-IRFOS (ZVR 1015608684, Elisabethinergasse 25/10, 8020 Graz) — insbesondere Sicherheitsaudits, Softwareentwicklung und Forschungsleistungen.<br /><br />
-      Dieses Angebot richtet sich <strong style={{ color: '#e8e8f0' }}>ausschließlich an Unternehmer</strong> i.S.d. § 1 Abs. 2 KSchG. Vertragsabschlüsse mit Verbrauchern im Sinne des KSchG sind ausgeschlossen. Mit Bestellung bestätigt der Auftraggeber, im Rahmen seiner gewerblichen oder beruflichen Tätigkeit zu handeln.
+      These Terms apply to all services provided by RFI-IRFOS (ZVR 1015608684, Elisabethinergasse 25/10, 8020 Graz) — in particular security audits, software development, and research services.<br /><br />
+      This offer is directed <strong style={{ color: '#e8e8f0' }}>exclusively at business entities</strong> within the meaning of § 1(2) of the Austrian Consumer Protection Act (KSchG). Contracts with consumers within the meaning of the KSchG are excluded. By placing an order, the client confirms that they are acting within the scope of their commercial or professional activity.
     </p>
 
-    <h2 style={H2}>2. Leistungserbringung</h2>
-    <p style={P}>Umfang und Konditionen werden schriftlich vereinbart. Website-Beschreibungen und Preisangaben sind keine verbindlichen Angebote.</p>
+    <h2 style={H2}>2. Service Delivery</h2>
+    <p style={P}>Scope and terms are agreed in writing. Website descriptions and price listings do not constitute binding offers.</p>
 
-    <h2 style={H2}>3. Preise &amp; Zahlung</h2>
+    <h2 style={H2}>3. Pricing &amp; Payment</h2>
     <p style={P}>
-      Preise in Euro zzgl. gesetzlicher Umsatzsteuer. Zahlung erfolgt <strong style={{ color: '#e8e8f0' }}>vollständig im Voraus (Upfront)</strong> vor Leistungsbeginn — ausschließlich über die auf der Website angebotenen Zahlungsmethoden (Stripe).<br /><br />
-      Mit Zahlungseingang beginnt die Leistungserbringung <strong style={{ color: '#e8e8f0' }}>unmittelbar</strong>. Der Auftraggeber stimmt dem Sofortbeginn ausdrücklich zu. Ein Widerrufsrecht besteht daher nicht (§ 18 Abs. 1 Z 1 FAGG). Eine Stornierung oder Rückerstattung ist nach Zahlungseingang ausgeschlossen.
+      Prices are in Euro, plus statutory VAT. Payment is made <strong style={{ color: '#e8e8f0' }}>in full, upfront</strong>, before work begins — exclusively via the payment methods offered on the website (Stripe).<br /><br />
+      Service delivery begins <strong style={{ color: '#e8e8f0' }}>immediately</strong> upon receipt of payment. The client expressly consents to this immediate commencement. Accordingly, no right of withdrawal exists (§ 18(1)(1) of the Austrian Distance and Off-Premises Contracts Act, FAGG). Cancellation or refund is excluded once payment has been received.
     </p>
 
-    <h2 style={H2}>4. Vertraulichkeit &amp; NDA</h2>
-    <p style={P}>Sicherheitsaudit-Findings unterliegen bis zur koordinierten Offenlegung (90-Tage-Embargo, ISO/IEC 29147) strikter Vertraulichkeit. Regulierungsbehörden werden unabhängig vom NDA-Status im Rahmen unserer gesetzlichen Meldepflichten informiert.</p>
+    <h2 style={H2}>4. Confidentiality &amp; NDA</h2>
+    <p style={P}>Security audit findings are subject to strict confidentiality until coordinated disclosure (90-day embargo, ISO/IEC 29147). Regulatory authorities are notified independently of NDA status, in fulfillment of our statutory reporting obligations.</p>
 
-    <h2 style={H2}>5. Haftung</h2>
-    <p style={P}>Haftung beschränkt sich auf Vorsatz und grobe Fahrlässigkeit. Maximale Haftung: Rechnungswert der jeweiligen Leistung. Folgeschäden sind ausgeschlossen, soweit gesetzlich zulässig.</p>
+    <h2 style={H2}>5. Liability</h2>
+    <p style={P}>Liability is limited to intent and gross negligence. Maximum liability: the invoice value of the respective service. Consequential damages are excluded to the extent permitted by law.</p>
 
-    <h2 style={H2}>6. Geistiges Eigentum</h2>
-    <p style={P}>Berichte, Quellcode und Forschungsoutput bleiben bis zur vollständigen Zahlung Eigentum von RFI-IRFOS. Nach Zahlungseingang erhält der Auftraggeber die vereinbarten Nutzungsrechte.</p>
+    <h2 style={H2}>6. No Warranty of Completeness (Security Research)</h2>
+    <p style={P}>Security and privacy assessments reflect the state of the audited system at the time of testing, within the depth of access and duration of the engagement. RFI-IRFOS does not warrant that all vulnerabilities have been identified.</p>
 
-    <h2 style={H2}>7. Anwendbares Recht &amp; Gerichtsstand</h2>
-    <p style={P}>Österreichisches Recht unter Ausschluss des UN-Kaufrechts (CISG). Gerichtsstand: Graz, Österreich.</p>
+    <h2 style={H2}>7. Intellectual Property</h2>
+    <p style={P}>Reports, source code, and research output remain the property of RFI-IRFOS until payment is received in full. Upon receipt of payment, the client receives the agreed usage rights.</p>
 
-    <h2 style={H2}>8. Online-Streitbeilegung (ODR)</h2>
+    <h2 style={H2}>8. Governing Law &amp; Jurisdiction</h2>
+    <p style={P}>Austrian law applies, excluding the UN Convention on Contracts for the International Sale of Goods (CISG). Place of jurisdiction: Graz, Austria.</p>
+
+    <h2 style={H2}>9. Online Dispute Resolution (ODR)</h2>
     <p style={P}>
-      EU-Plattform zur Online-Streitbeilegung: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" style={A}>ec.europa.eu/consumers/odr</a>.<br />
-      Da wir ausschließlich mit Unternehmern kontrahieren, sind wir nicht zur Teilnahme an Verbraucherschlichtungsverfahren verpflichtet.
+      EU platform for online dispute resolution: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" style={A}>ec.europa.eu/consumers/odr</a>.<br />
+      As we contract exclusively with businesses, we are not obligated to participate in consumer arbitration proceedings.
     </p>
 
-    <h2 style={H2}>9. Kontakt</h2>
+    <h2 style={H2}>10. Severability</h2>
+    <p style={P}>Should any provision of these Terms be or become invalid, the validity of the remaining provisions shall remain unaffected.</p>
+
+    <h2 style={H2}>11. Contact</h2>
     <p style={P}><a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a></p>
   </>
 }
@@ -173,24 +191,36 @@ function AGB() {
 function Security() {
   return <>
     <h1 style={H1}>Security Policy</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>Coordinated Disclosure &middot; ISO/IEC 29147</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>Coordinated Disclosure &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
+
+    <p style={P}>
+      We spend most of our time finding the things other companies didn't want found. Fair's fair — here's how to find one in ours. Real institute, real street address in Graz, Austria, no bug-bounty theater, no chatbot standing between you and the person who actually reads this.
+    </p>
 
     <h2 style={H2}>Reporting a Vulnerability</h2>
     <p style={P}>
       E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a><br />
-      PGP key available on request. We acknowledge all reports within 48 hours.
+      PGP key available on request. We acknowledge all reports within 48 hours — from a human, not a ticket number.
     </p>
 
     <h2 style={H2}>Our Disclosure Framework</h2>
-    <p style={P}>90-day coordinated embargo from initial notification to public disclosure. Regulators (DSB, EDPB, CERT.at) notified in parallel. Extensions considered case-by-case.</p>
+    <p style={P}>90-day coordinated embargo from initial notification to public disclosure. Regulators (DSB, EDPB, CERT.at) notified in parallel — not after the fact, not only "if this goes nowhere." Extensions considered case-by-case, for genuine remediation in progress, never for stalling.</p>
+
+    <h2 style={H2}>How We Handle What You Send Us</h2>
+    <p style={P}>ISO/IEC 30111 triage: reproduce it, scope it, fix it, credit you. No finding gets buried because it's inconvenient — that's the entire complaint we file against everyone else, and we're not exempting ourselves from it.</p>
 
     <h2 style={H2}>Scope</h2>
     <p style={P}>rfi-irfos.com &middot; ternlang.com &middot; lighthouse-rfi-irfos.fly.dev &middot; github.com/rfi-irfos/*</p>
 
     <h2 style={H2}>Out of Scope</h2>
-    <p style={P}>Social engineering, physical attacks, DoS/DDoS. We do not operate a bug bounty program.</p>
+    <p style={P}>Social engineering, physical attacks, DoS/DDoS. We do not operate a bug bounty program — no points, no swag, no leaderboard. This isn't a platform, it's an inbox.</p>
 
     <h2 style={H2}>Hall of Fame</h2>
-    <p style={P}>Responsible reporters credited publicly (with consent) in our disclosure reports.</p>
+    <p style={P}>Responsible reporters credited publicly (with consent) in our disclosure reports. Your name, where it's earned — nothing gamified about it.</p>
+
+    <h2 style={H2}>A Word on Tone</h2>
+    <p style={P}>
+      We work out of Graz, Austria — closer to the Alps than to a glass tower. We follow ISO/IEC 29147 to the letter, we file with regulators before anyone makes us, and we still think most corporate security pages read like they were written by the incident they're supposed to prevent. This one wasn't.
+    </p>
   </>
 }
