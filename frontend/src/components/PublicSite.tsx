@@ -1135,6 +1135,34 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Section-level view counts — plain hit-counter per section, nothing more. The `seen` set
+  // lives only in this component's memory: never written to a cookie, localStorage, or
+  // sessionStorage, so it's gone the moment the page reloads. No visitor id is sent — this
+  // can only ever answer "how many page-loads scrolled past section X today", never "who".
+  useEffect(() => {
+    const seen = new Set<string>()
+    const sectionIds = ['research', 'projects', 'track-record', 'submit', 'pricing', 'standards', 'contact']
+    const els = sectionIds.map(id => document.getElementById(id)).filter((e): e is HTMLElement => !!e)
+    if (!els.length) return
+    const io = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue
+        const id = entry.target.id
+        if (seen.has(id)) continue
+        seen.add(id)
+        // Plain fetch, not sendBeacon — sendBeacon defaults to text/plain and the backend's
+        // Json extractor expects application/json; this matches the proven page-load beacon above.
+        fetch('https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: location.pathname, section: id, site: 'rfi-irfos' }),
+        }).catch(() => {})
+      }
+    }, { threshold: 0.4 })
+    els.forEach(el => io.observe(el))
+    return () => io.disconnect()
+  }, [])
+
   async function submitForm(e: React.FormEvent) {
     e.preventDefault()
     setFormState('sending')
