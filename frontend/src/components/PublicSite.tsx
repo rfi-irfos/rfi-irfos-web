@@ -310,7 +310,7 @@ const PUBLICATIONS = [
   { year: '2025', title: 'A1ERF: EU Regulation Proposal', sub: 'AI-first emergency relay framework for autonomous cardiac arrest detection', href: 'https://osf.io/ueac8/', tag: 'Policy · EU' },
 ]
 
-const AUDIT_HIGHLIGHTS = [
+const AUDIT_HIGHLIGHTS: { target: string; market: string; sev: string; status: string; finding: string; company?: string }[] = [
   { target: 'Pokemon GO',        market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Civilian gameplay photogrammetry licensed to Vantor (US defense contractor, NGA contract) for military drone navigation. Art. 5(1)(b) purpose limitation. Most consequential finding in the 2026 series.' },
   { target: 'Disneyland EU',     market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Facial recognition of children at EU theme parks without Art. 9 explicit consent. MagicBand RFID child tracking. EU AI Act biometric prohibition. IoB €250k — 100% SOS Kinderdorf.' },
   { target: 'Caritas / Carla (AT)', market: 'NON-PROFIT', sev: 'CRITICAL', status: 'ESCALATED', finding: 'Suspected systematic diversion of donated goods: high-value items incl. Apple iMac + garment labeled "Hamid Karzai President 2002–2014" (valued €400–600, sold €300) in carla shops with no provenance documentation. §101 KFG: structural vehicle overloading documented, EXIF-secured. §96 ArbVG: internal surveillance of employees without works council consent. BMF Finanzpolizei tip filed 2026-01-14. 5 unanswered formal enquiries. Escalated to all 9 Caritas Landesdirektionen + Päpstlicher Nuntius + Bischof Graz-Seckau.' },
@@ -318,8 +318,11 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'Geizhals',         market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',      finding: 'FacebookInitProvider + 2× FirebaseInitProvider — SDK auto-init before consent screen (pre-consent tracking). Settings.Secure.ANDROID_ID permanent device fingerprint: read + transmitted as request_fingerprint to api.geizhals.net. Firebase + Google Maps API keys hardcoded verbatim. RECEIVE_BOOT_COMPLETED: background processing after reboot before app opened. All 4 Google Privacy Sandbox APIs declared — TOPICS, CUSTOM_AUDIENCE, AD_ID, ATTRIBUTION. DSB in BCC. Deadline 2026-09-24.' },
   { target: 'EY Ecosystem',      market: 'PRIVATE', sev: 'CRITICAL', status: 'SILENT',      finding: '7 apps audited. 5/7 deliver live Firebase API keys in Play Store binaries — including eyipnov2024 (salary data). Payroll app: dead cert pinning + deprecated OAuth2 implicit grant. EY sells GDPR compliance to clients. R2 2026-06-28: EY confirmed "mitigating controls confirmed which address the observations" — silent patch during active EU disclosure. Implicit validity admission on all 9 findings. Art. 33 (72h notification) + Art. 35 (DPIA for AI chatbot on payroll app) open. Deadline 2026-07-05.' },
   { target: 'Samsung Health',    market: 'KRX',     sev: 'CRITICAL', status: 'WAITING',     finding: '16 Art.9 health categories READ+WRITE. 926 smali: Rubin AI behavioral persona fed by health data, undisclosed. CONTROL_CARE: children\'s health settings. NFC blood glucose receiver (MDR 2017/745). China NAL permission in global binary.' },
-  { target: 'Meta (4 apps)',     market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'WhatsApp, Facebook, Instagram, Messenger — 5 criticals across the stack. Single coordinated disclosure.' },
-  { target: 'Tinder',            market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'FaceTec 3D liveness biometric to US third party. FaceUnity biometric SDK (China). LiveRamp identity resolution on sex-preference data. GDPR Art. 9 triple breach.' },
+  { target: 'WhatsApp',          market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     company: 'Meta', finding: 'Meta AI embedded inside private end-to-end encrypted chats. FAMILY_DEVICE_ID cross-app tracking identifier. An AI participant with access to plaintext undermines the E2E encryption claim itself.' },
+  { target: 'Facebook',          market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     company: 'Meta', finding: 'Internal shadow-profile database schema confirmed for non-users. Custom Audience ad-matching pipeline present in the binary.' },
+  { target: 'Instagram',         market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     company: 'Meta', finding: 'Ray-Ban Meta smart glasses integration declares READ_CALL_LOG. No certificate pinning on the production build.' },
+  { target: 'Messenger',         market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     company: 'Meta', finding: 'Server-side key fetching for "end-to-end encrypted" chats — Meta\'s own infrastructure can serve a substitute key, meaning the E2E claim is not cryptographically enforced.' },
+  { target: 'Tinder',            market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     company: 'Match Group', finding: 'FaceTec 3D liveness biometric to US third party. FaceUnity biometric SDK (China). LiveRamp identity resolution on sex-preference data. GDPR Art. 9 triple breach.' },
   { target: 'TikTok',            market: 'PRIVATE', sev: 'CRITICAL', status: 'CS-DEFLECT',  finding: 'National Security Law data pipeline on EU user devices. HackerOne deflect received — escalated to DPO.' },
   { target: 'AliExpress',        market: 'HKEx',    sev: 'CRITICAL', status: 'WAITING',     finding: 'WhiteScreenRecorder (full-screen capture) + ByteDance shadowhook SDK + TikTok assets = triple NSL pipeline. Cert pins EXPIRED 20+ months, silently disabled.' },
   { target: 'Alibaba.com',       market: 'HKEx',    sev: 'CRITICAL', status: 'WAITING',     finding: 'User CA trusted in base-config. Chinese police .gov.cn domains cleartext-whitelisted in production NSC.' },
@@ -331,7 +334,14 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'Disney+',           market: 'NYSE',    sev: 'CRITICAL', status: 'ESCALATED',   finding: 'Braze geofencing NOT disabled for Kids Profiles. Darkwing internal build references in production APK. Escalated to DPO within 5 min.' },
   { target: 'TeamViewer',        market: 'XETRA',   sev: 'CRITICAL', status: 'WAITING',     finding: 'Sentry Session Replay (RRWeb, 744 classes) active in production enterprise remote access tool. Proprietary APK installer bypasses Play Store review. No NSC.' },
   { target: 'SoundCloud',        market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: '7 hardcoded production API credentials in one APK. Telescope screen capture tool active in production.' },
-  { target: 'Lovoo',             market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Chucker HTTP debug interceptor in production: all API calls (incl. auth) logged in plaintext on device. FaceUnity + Mintegral (Chinese SDKs). Broken NSC bypasses pinning.' },
+  { target: 'Lovoo',             market: 'PRIVATE', sev: 'CRITICAL', status: 'CS-DEFLECT',  company: 'ParshipMeet Group', finding: 'Chucker HTTP debug interceptor in production: all API calls (incl. auth) logged in plaintext on device. FaceUnity + Mintegral (Chinese SDKs). Broken NSC (literal quotation mark in pinned domain string) bypasses pinning entirely. Two disclosures, one automated customer-service ticket, zero substantive reply.' },
+  { target: 'Hinge',             market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     company: 'Match Group', finding: 'FaceTec 3D liveness biometric to US third party. Hardcoded Firebase API key. Same cross-brand Match Group biometric pipeline as Tinder.' },
+  { target: 'OkCupid',           market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     company: 'Match Group', finding: 'Production UI string explicitly names sexual orientation, race, ethnicity, religion and political belief for cross-brand "Match Group Offers" commercial use — most legally significant finding in the entire dating-app series.' },
+  { target: 'POF (Plenty of Fish)', market: 'NASDAQ', sev: 'CRITICAL', status: 'WAITING',    company: 'Match Group', finding: 'FaceTec 3D liveness biometric + hardcoded Firebase API key. Same Match Group biometric/ad pipeline shared with Tinder, Hinge, OkCupid.' },
+  { target: 'BLK',               market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     company: 'Match Group', finding: 'TikTok/ByteDance SDK transmits racial-origin-adjacent profile data to Chinese infrastructure. Hardcoded internal Match Group IP address and corporate hostname (match.corp) shipped in the production binary.' },
+  { target: 'Parship',           market: 'PRIVATE', sev: 'CRITICAL', status: 'CS-DEFLECT',  company: 'ParshipMeet Group', finding: 'ParshipMeet Group sibling to Lovoo. TheMeetGroup facial-detection SDK + hardcoded Firebase API key. Two disclosures, two automated customer-service ticket numbers, zero substantive reply from a person.' },
+  { target: 'Badoo',             market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'Au10tix passport OCR (vendor disclosed a 2020 breach) + Veriff NFC passport chip reading, over zero TLS certificate pinning anywhere in the app — the only app in the series processing government ID documents with no pinning at all.' },
+  { target: 'Fet',               market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'Agora RTC routes live BDSM/kink sessions through infrastructure with mainland China routing capacity. Hardcoded Firebase API key. Both disclosure attempts bounced for two weeks against the developer\'s own outdated published contact domain.' },
   { target: 'Marionnaud',        market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'ModiFace 65-point facial landmark model (Art. 9 biometric) + ContentSquare session replay running simultaneously during AR face try-on. 2,348 smali — largest ContentSquare integration in the 2026 series.' },
   { target: 'Nike',              market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Airship push SDK with inProduction=false in Play Store APK: dev + prod credentials both hardcoded. Anyone can send push notifications to all Nike users. Forter cross-merchant device fingerprinting Art. 22.' },
   { target: 'ZARA',              market: 'BME',     sev: 'CRITICAL', status: 'WAITING',     finding: 'Microsoft Clarity dual-layer (711 smali native + clarity.js WebView = session recordings to Microsoft US). AR body try-on uploads body geometry server-side (potential Art. 9). 20 domains cleartext.' },
@@ -384,7 +394,7 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'WePlay (SG)',           market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'Hardcoded ThinkingData SECRET KEY (PRC analytics master credential) in production APK. WeChat SDK 5,594 classes + RECORD_AUDIO: voice biometric to PRC. Pangle/ByteDance second PRC processor. Firebase key AIzaSyDtb_D_GufJ6AMPi4UhLuNRDHuaG7zZ2mI hardcoded. No Art. 27 EU representative.' },
   { target: 'Chess Club Pilot (NL)', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'KidoZ self-documents child audience. Pangle 3,782 classes + Mintegral 3,704 classes: dual PRC children\'s data processor. Unity Ads via Chinese CDN (adccache.cn). Firebase key hardcoded. No CMP, no parental consent, 5 ad SDKs on a children\'s chess app. COPPA violation.' },
   { target: 'Vlad & Nikita (CY)',   market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'RECORD_AUDIO + CAMERA on toddlers\' app (100M YouTube subscribers). 831 IMEI references: persistent device tracking of children. WeChat 396 + Facebook 2,895 classes — dual PRC+US processors. Privacy policy = Gmail address only, no legal entity, no DPO, no Art. 13 compliance.' },
-  { target: 'ChessKid (US)',         market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'Amplitude API key 89e2a8ad36ed610a5b68c94e3ccf4412 hardcoded in strings.xml — full read/write on children\'s behavioural data. Firebase key hardcoded. Amplitude analytics on children\'s chess data with no parental consent. Chess.com LLC platform.' },
+  { target: 'ChessKid (US)',         market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'A hardcoded Amplitude API key in strings.xml grants full read/write on children\'s behavioural data. A Firebase key is also hardcoded. Amplitude analytics run on children\'s chess data with no parental consent. Chess.com LLC platform.' },
   { target: 'Roma & Diana (ID)',     market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'YouTube API key hardcoded in production request URL + 3× Firebase keys. No Art. 27 EU representative: Indonesian solo dev serving 130M YouTube subscriber audience. reCAPTCHA via PRC CDN (gstatic.cn). No DPO, no parental consent, no Art. 13.' },
   { target: 'PSA ich.app (AT)',      market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'Austrian eID + payment app: ServerType enum in production APK exposes full internal infrastructure — AZURE2A http://20.61.119.111:8081 + AZURE2B http://20.61.119.111:8091 (cleartext, no TLS). Hardcoded credentials in ServerType enum. Firebase Analytics + AD_ID on an eID/payment app.' },
   { target: 'running.COACH (AT)',   market: 'PRIVATE', sev: 'HIGH',     status: 'SILENT',     finding: 'allowBackup=true with no health data exclusion: training history, heart rate, running sessions backed up to Google Cloud. Privacy policy states no third-party data sharing — allowBackup IS Google sharing. NSC present but empty: zero certificate pinning on a health app. Huawei HMS 412 smali undisclosed. GDPR Art. 13(1)(e) policy contradiction. Ticket #125226 "Lieber Läufer" — runner user-support queue, not security. Pattern 7 named. R2 deadline 2026-06-29 18:00 — verstrichen ohne Antwort. SILENT.' },
@@ -559,7 +569,7 @@ const AUDIT_HIGHLIGHTS = [
   { target: 'Midea Smart Home (CN)',    market: 'SZSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'com.midea.ai.overseas (mSmartLife). Midea Group (SHE: 000333, Foshan, China) — Weltgrößter Haushaltsgerätehersteller, Eigentümer KUKA AG (Augsburg). C1: 2× Firebase Keys + Cleartext HTTP: http://air.midea.com + pgp2p.midea.com:7781 (unverschlüsselt) — Gerätekommandos über Klartext-Kanal (Heizung, Klimaanlage). C2: 122MB VMP-verschlüsselter DEX (apktool: 3 Klassen) — Tencent Mars, Tencent TMF, com.tencent.mm via Binary-String-Extraktion nachweisbar. Art. 5(2) Rechenschaftspflicht strukturell verhindert. H1: 5× BOOT_COMPLETED + ACCESS_BACKGROUND_LOCATION — Standort-Tracking ab Gerätestart. H2: Tencent Mars (WeChat Networking) + TMF in EU-Heimgerät-App. H3: READ_LOGS + QUERY_ALL_PACKAGES + SYSTEM_ALERT_WINDOW + CAMERA required=true. H4: Tencent QBar SDK. BCC: DSB + BayLDA (Midea = KUKA-Eigentümer, Augsburg). R1 sent 2026-06-30. Embargo 2026-09-28.' },
   { target: 'ORF Kids! (AT)',           market: 'GOV-AT',  sev: 'CRITICAL', status: 'WAITING',     finding: 'at.orf.kids v1.5.0. ORF (Österreichischer Rundfunk) — GIS-finanzierter öffentlich-rechtlicher Rundfunk. C1: Firebase Key AIzaSyDDPBNDeqG6lkmhV_3koBM0Ey3iOAqebgI hardcodiert (project: orf-push — shared ORF-Infrastruktur, FCM-Blast an Kinder-Geräte möglich). C2: INFOnline IVW IOLAdvertisementEvent (59 Klassen) + IOLInitProvider ContentProvider pre-consent — Werbemessung auf gesetzlich werbefreiem Kinderprogramm (ORF-G §18) + Art. 8(1) DSGVO Minderjährige + Art. 13 DSGVO (INFOnline nicht in Datenschutzinfo). C3: allowBackup=true ohne Ausschlussregeln — Schauhistorie von Kindern in Google Cloud. H1: GfK S2S 145 Klassen direkt in Bitmovin Player (streamId+streamStartTime in Echtzeit an private Marktforschungsgesellschaft). H2: SentryNdkPreloadProvider initOrder=2.000.000.000 (US-Profiler startet VOR ALLEM, kein Art. 44-49 Mechanismus). POSITIV: Didomi CMP 1.605 Klassen, keine Kamera/Mikro/Standort-Permissions, keine CN-SDKs. BCC: DSB + RTR/KommAustria + EDPS. R1 sent 2026-06-30. Embargo 2026-09-28.' },
   { target: 'ID Austria (AT.GOV)',      market: 'GOV-AT',  sev: 'CRITICAL', status: 'WAITING',     finding: 'at.gv.oe.app v5.5.0. Digitales Amt (Bundeskanzleramt Österreich) — offizielle eID-App für Millionen österreichischer Bürger:innen (eIDAS-Signatur, Behördenzugang, ELGA-Gesundheitsdaten, amtliche Bescheide). C1: Firebase Key AIzaSyCLu46GzFY6qxDpR_6MxsDDA_HK30-EVXM hardcodiert (project: digitalesamt) — FCM-Behördenimitation möglich: amtliche Steuerbescheid-Push an alle registrierten Bürger:innen, Quota-DoS, Nutzer-Enumeration, DB-Zugriff. C2: FirebaseInitProvider + MlKitInitProvider beide directBootAware=true (initOrder 100/99) — Google-Infrastruktur initialisiert vor Geräte-Entsperrung auf nationaler eID-App, Datenübermittlung an Google LLC (USA) ohne Nutzerinteraktion (Art. 6(1) DSGVO). H1: Amtliche Behördenkommunikation (Finanzamt/Sozialversicherung/Meldeamt Bescheide) über Firebase Cloud Messaging USA — Art. 44-49 DSGVO Transfermechanismus undokumentiert (eigene Datenschutzerklärung bestätigt FCM). H2: MANAGE_DEVICE_POLICY_LOCK_CREDENTIALS + RECEIVE_BOOT_COMPLETED — sensibles Berechtigungsprofil in Kombination mit directBootAware Firebase. POSITIV: certificate pinning id-austria.gv.at+eid.oesterreich.gv.at, allowBackup=false, keine Werbe-SDKs, keine CN-SDKs, RootBeer root-detection. BCC: DSB + CERT.at + EDPS. R1 sent 2026-06-30. Embargo 2026-09-28.' },
-  { target: 'Talking Tom Cat (CY)',                    market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'com.outfit7.talkingtom v5.1.3.3751, Talking Tom franchise flagship (Outfit7 Limited, Cyprus, PEGI 3). ByteDance/Pangle (3,704 smali classes) + Mintegral/Mobvista (3,268 classes), both PRC, coexist with KidoZ (50) + SuperAwesome (195) — the two COPPA-certified children\'s-network SDKs — proving Outfit7 knew the audience was children before adding the Chinese ad networks. Hardcoded union_imei=702f89a658bd1f189c6e8e24587cd9ce in the Pangle endpoint with lang=zh: device identifier sent to ByteDance in China. RECORD_AUDIO (117 code references): children\'s voice = Art. 9 biometric data, no verified parental consent. Own .cn backends: aas-gapi.talkingtomandfriends.cn + apps2.outfit7.cn. Art. 46: no adequacy decision for China.' },
+  { target: 'Talking Tom Cat (CY)',                    market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'com.outfit7.talkingtom v5.1.3.3751, Talking Tom franchise flagship (Outfit7 Limited, Cyprus, PEGI 3). ByteDance/Pangle (3,704 smali classes) + Mintegral/Mobvista (3,268 classes), both PRC, coexist with KidoZ (50) + SuperAwesome (195) — the two COPPA-certified children\'s-network SDKs — proving Outfit7 knew the audience was children before adding the Chinese ad networks. A hardcoded device identifier is sent in the Pangle endpoint request with lang=zh: device data sent to ByteDance in China. RECORD_AUDIO (117 code references): children\'s voice = Art. 9 biometric data, no verified parental consent. Own .cn backends: aas-gapi.talkingtomandfriends.cn + apps2.outfit7.cn. Art. 46: no adequacy decision for China.' },
   { target: 'Ginger\'s Birthday (CY)',                  market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'com.outfit7.gingersbirthdayfree v3.7.0.548. Same cross-app pattern as the flagship: ByteDance/Pangle (3,829 classes) + Mintegral (3,411 classes), both PRC, embedded alongside KidoZ (440) + SuperAwesome (171) — coexistence with COPPA-certified children\'s-network SDKs proves Outfit7 knew this was a children\'s app before layering in Chinese ad networks. RECORD_AUDIO declared: children\'s voice = Art. 9 biometric data. Hardcoded IMEI leak confirmed in the Pangle endpoint. Own .cn backends (aas-gapi.talkingtomandfriends.cn, apps2.outfit7.cn). Art. 46: no China adequacy decision.' },
   { target: 'My Talking Tom (CY)',                     market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'com.outfit7.mytalkingtomfree v26.3.2.8877 — one of Outfit7\'s highest-install titles. Pangle (3,781 classes) + Mintegral (4,019 classes), both PRC, alongside KidoZ (440) + SuperAwesome (171). RECORD_AUDIO declared: children\'s voice = Art. 9 biometric data. Hardcoded IMEI leak confirmed in the Pangle endpoint. Own .cn backends present. Art. 8: no valid minor-consent mechanism identified for the PRC ad pipeline.' },
   { target: 'My Talking Tom 2 (CY)',                   market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'com.outfit7.mytalkingtom2 v26.2.13.23972. Pangle (3,715 classes) + Mintegral (4,148 classes) — the largest Mintegral footprint of the wave — alongside KidoZ (427) + SuperAwesome (122), the same proof-of-knowledge coexistence documented in the flagship app. RECORD_AUDIO declared. Hardcoded IMEI leak confirmed in the Pangle endpoint. Own .cn backends (aas-gapi.talkingtomandfriends.cn, apps2.outfit7.cn). Art. 9 + Art. 46 GDPR.' },
@@ -603,7 +613,10 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'Caritas / Carla (AT)':         { notified: '2026-01-14', disclosure: '2026-09-01' },
   'EY Ecosystem':                 { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Samsung Health':               { notified: '2026-06-22', disclosure: '2026-09-20' },
-  'Meta (4 apps)':                { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'WhatsApp':                     { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'Facebook':                     { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'Instagram':                    { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'Messenger':                    { notified: '2026-06-20', disclosure: '2026-09-18' },
   'Tinder':                       { notified: '2026-06-20', disclosure: '2026-09-18' },
   'TikTok':                       { notified: '2026-06-20', disclosure: '2026-09-18' },
   'AliExpress':                   { notified: '2026-06-21', disclosure: '2026-09-19' },
@@ -617,6 +630,13 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'TeamViewer':                   { notified: '2026-06-20', disclosure: '2026-09-18' },
   'SoundCloud':                   { notified: '2026-06-20', disclosure: '2026-09-18' },
   'Lovoo':                        { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'Hinge':                        { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'OkCupid':                      { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'POF (Plenty of Fish)':         { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'BLK':                          { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'Parship':                      { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'Badoo':                        { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'Fet':                          { notified: '2026-06-20', disclosure: '2026-09-18' },
   'Marionnaud':                   { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Nike':                         { notified: '2026-06-21', disclosure: '2026-09-19' },
   'ZARA':                         { notified: '2026-06-21', disclosure: '2026-09-19' },
@@ -756,7 +776,7 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'GRAWE ID (AT)':                { notified: '2026-06-26', disclosure: '2026-09-24' },
   'Pinterest':                    { notified: '2026-06-26', disclosure: '2026-09-24' },
   'Raisin SE (DE)':              { notified: '2026-06-25', disclosure: '2026-09-23' },
-  'BAWAG Group AG (AT)':         { notified: '2026-06-25', disclosure: '2026-09-23' },
+  'BAWAG Group AG (AT)':         { notified: '2026-06-25', disclosure: '2026-09-19' },
   'Diagnosia (AT)':              { notified: '2026-06-25', disclosure: '2026-09-23' },
   'Uber Technologies (3 apps)':  { notified: '2026-06-25', disclosure: '2026-09-23' },
   'BabyBus (CN)':                { notified: '2026-06-25', disclosure: '2026-09-23' },
@@ -867,7 +887,8 @@ const CREDENTIALS = [
   { label: 'ZVR', value: '1015608684', sub: 'Association register' },
   { label: 'GISA', value: '39261441', sub: 'Trade register' },
   { label: 'Trade', value: 'Automatic Data Processing', sub: 'WKO · GewO § 32' },
-  { label: 'Tax number', value: '68 028/0989', sub: 'Graz Tax Office' },
+  { label: 'Tax number', value: '68 696/8736', sub: 'Graz Tax Office' },
+  { label: 'VAT ID (UID)', value: 'ATU83405245', sub: 'Finanzamt Österreich' },
   { label: 'Seat', value: 'Elisabethinergasse 25', sub: '8020 Graz, Austria' },
 ]
 
@@ -1389,7 +1410,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           textTransform: 'uppercase', marginBottom: 32,
           border: '1px solid rgba(0,245,196,0.3)', padding: '6px 16px', borderRadius: 20,
         }}>
-          RFI-IRFOS &nbsp;·&nbsp; ZVR 1015608684 &nbsp;·&nbsp; GISA 39261441 &nbsp;·&nbsp; Graz, Austria &nbsp;·&nbsp; est. 2020
+          RFI-IRFOS &nbsp;·&nbsp; ZVR 1015608684 &nbsp;·&nbsp; GISA 39261441 &nbsp;·&nbsp; UID ATU83405245 &nbsp;·&nbsp; Steuernummer 68 696/8736 &nbsp;·&nbsp; Graz, Austria &nbsp;·&nbsp; est. 2020
         </p>
         <p style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em' }}>
           Rethink the Obvious.
@@ -1432,7 +1453,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           {([
             { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'apps audited',        from: 'left'   },
             { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: 'critical findings',   from: 'bottom' },
-            { n: '110+', label: 'companies notified',  from: 'scale'  },
+            { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: 'companies notified',  from: 'scale'  },
             { n: '18+',  label: 'regulators notified', from: 'bottom' },
             { n: '6',    label: 'years of research',   from: 'bottom' },
           ] as const).map((s, i) => (
@@ -1565,7 +1586,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
             {[
               { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'Apps audited',        from: 'left'   },
-              { n: '110+', label: 'Companies notified',  from: 'bottom' },
+              { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: 'Companies notified',  from: 'bottom' },
               { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: 'Critical findings',   from: 'top'    },
               { n: '18+',  label: 'Regulators notified', from: 'right'  },
             ].map((s, i) => (
@@ -2383,7 +2404,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
               <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
             </svg>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT · ZVR 1015608684 · GISA 39261441</span>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT · ZVR 1015608684 · GISA 39261441 · UID ATU83405245</span>
           </div>
         </div>
         <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
@@ -2402,7 +2423,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           Trade-Law Management: Simeon-Andreas Johann Manfred Kepp &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz &nbsp;&middot;&nbsp; GLN 9110038490191
         </p>
         <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em' }}>
-          &copy; 2026 RFI-IRFOS &nbsp;&middot;&nbsp; Steuernummer 68 028/0989 &nbsp;&middot;&nbsp; Graz, Austria
+          &copy; 2026 RFI-IRFOS &nbsp;&middot;&nbsp; UID ATU83405245 &nbsp;&middot;&nbsp; Steuernummer 68 696/8736 &nbsp;&middot;&nbsp; Graz, Austria
         </p>
       </footer>
     </div>

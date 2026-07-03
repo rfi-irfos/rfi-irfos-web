@@ -6,9 +6,38 @@ const H2: React.CSSProperties = { fontSize: 12, fontWeight: 800, marginTop: 32, 
 const P = { color: '#a0a0b8', fontSize: 14, marginBottom: 12 }
 const A = { color: TEAL, textDecoration: 'none' }
 
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+
+const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
+const LIGHTHOUSE_TRACK = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track'
 
 export function LegalPage({ slug }: { slug: string }) {
+  const footerRef = useRef<HTMLDivElement>(null)
+
+  // Same privacy-safe mechanism as the main site's section tracker: an in-memory-only
+  // IntersectionObserver, no cookie/localStorage, no visitor id. This one watches the
+  // footer identity block at the bottom of every legal/security page, so we can see
+  // (in aggregate only, never per-visitor) whether people actually read to the end of
+  // these pages, not just that the page loaded.
+  useEffect(() => {
+    const el = footerRef.current
+    if (!el) return
+    let fired = false
+    const io = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting || fired) continue
+        fired = true
+        fetch(LIGHTHOUSE_TRACK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: location.pathname, section: `legal-${slug}`, site: 'rfi-irfos' }),
+        }).catch(() => {})
+      }
+    }, { threshold: 0.4 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [slug])
+
   return (
     <div style={BASE}>
       <div style={PROSE}>
@@ -24,9 +53,12 @@ export function LegalPage({ slug }: { slug: string }) {
         {!['impressum', 'datenschutz', 'agb', 'security'].includes(slug) && (
           <p style={P}>Seite nicht gefunden.</p>
         )}
-        <div style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 10, color: '#404058' }}>
-          RFI-IRFOS &nbsp;&middot;&nbsp; ZVR 1015608684 &nbsp;&middot;&nbsp; GISA 39261441 &nbsp;&middot;&nbsp; GLN 9110038490191 &nbsp;&middot;&nbsp; Steuernummer 68 028/0989 &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz
+        <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 10, color: '#404058' }}>
+          RFI-IRFOS &nbsp;&middot;&nbsp; ZVR 1015608684 &nbsp;&middot;&nbsp; GISA 39261441 &nbsp;&middot;&nbsp; GLN 9110038490191 &nbsp;&middot;&nbsp; UID ATU83405245 &nbsp;&middot;&nbsp; Steuernummer 68 696/8736 &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz
         </div>
+        {/* Lighthouse tracking pixel — page-view only, same mechanism disclosed in the privacy policy below */}
+        <img src={`${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(`/${slug}`)}&r=${encodeURIComponent(document.referrer)}`}
+          alt="" width="1" height="1" style={{ display: 'none' }} />
       </div>
     </div>
   )
@@ -61,7 +93,8 @@ function Impressum() {
       ZVR number (Austrian Central Register of Associations): 1015608684<br />
       GISA number (Trade Register): 39261441<br />
       GLN: 9110038490191<br />
-      Tax number: 68 028/0989<br />
+      VAT ID (UID): ATU83405245<br />
+      Tax number: 68 696/8736<br />
       Trade description: Services in automatic data processing and information technology<br />
       Governing trade law: Austrian Trade Regulation Act (Gewerbeordnung, GewO) &middot; WKO member (Austrian Federal Economic Chamber)<br />
       Competent authority pursuant to § 5(1)(5) ECG: Magistrate of the City of Graz<br />
@@ -120,7 +153,7 @@ function Datenschutz() {
       <strong style={{ color: '#e8e8f0' }}>Server logs:</strong> IP address, access timestamp, URL, HTTP status code — collected by GitHub Pages (GitHub, Inc., USA) and Fly.io (Superfly, Inc., USA) as an unavoidable side effect of any request reaching a web server anywhere.<br />
       <strong style={{ color: '#e8e8f0' }}>Contact form:</strong> name, email, subject, message — submitted via Web3Forms (<a href="https://web3forms.com/privacy" target="_blank" rel="noopener" style={A}>web3forms.com/privacy</a>), only if you fill it in and press send.<br />
       <strong style={{ color: '#e8e8f0' }}>Payment data:</strong> for purchases made through the website, payment data (card details, email, name) is processed by <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> (354 Oyster Point Blvd, South San Francisco, CA 94080, USA). RFI-IRFOS never receives or stores your card data. Stripe's privacy policy: <a href="https://stripe.com/privacy" target="_blank" rel="noopener" style={A}>stripe.com/privacy</a>.<br />
-      <strong style={{ color: '#e8e8f0' }}>Visit statistics:</strong> one self-hosted tracking pixel (Lighthouse, Graz) that logs a page view and a referrer. No cookie, no device fingerprint, no cross-site identifier. See "Cookies" below for the unglamorous truth about what that pixel actually is.
+      <strong style={{ color: '#e8e8f0' }}>Visit statistics:</strong> one self-hosted tracking pixel (Lighthouse, Graz) that logs a page view and a referrer, on every page including this one. On this legal/security page family specifically, we also log, in aggregate only, whether a visit scrolled all the way to the footer at the bottom of the page, the same in-memory, no-cookie mechanism as the section counters described in "Cookies" below, applied here to answer one question: are these pages actually being read to the end. No cookie, no device fingerprint, no cross-site identifier. See "Cookies" below for the unglamorous truth about what that pixel actually is.
     </p>
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>What we do not collect,</strong> for the avoidance of doubt: no location data, no device fingerprinting, no advertising ID, no biometric data, no cross-site profile, nothing sold or shared with a data broker, nothing handed to an ad network, because there is no ad network on the other end of anything on this site.
