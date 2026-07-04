@@ -896,15 +896,6 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'Talking Tom & Friends: World (CY)':   { notified: '2026-06-24', disclosure: '2026-09-22' },
 }
 
-const CREDENTIALS = [
-  { label: 'ZVR', value: '1015608684', sub: 'Association register' },
-  { label: 'GISA', value: '39261441', sub: 'Trade register' },
-  { label: 'Trade', value: 'Automatic Data Processing', sub: 'WKO · GewO § 32' },
-  { label: 'Tax number', value: '68 696/8736', sub: 'Graz Tax Office' },
-  { label: 'VAT ID (UID)', value: 'ATU83405245', sub: 'Finanzamt Österreich' },
-  { label: 'Seat', value: 'Elisabethinergasse 25', sub: '8020 Graz, Austria' },
-]
-
 const CONTACT_CARDS = [
   { label: 'General inquiries', value: 'contact@rfi-irfos.com', href: 'mailto:contact@rfi-irfos.com' },
   { label: 'Security disclosures', value: 'security@rfi-irfos.com', href: 'mailto:security@rfi-irfos.com' },
@@ -2257,38 +2248,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* CREDENTIALS */}
-      <section style={{
-        padding: '60px 2rem',
-        background: 'rgba(255,255,255,0.02)',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-      }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', textAlign: 'center', marginBottom: 28 }}>
-              Regulated · Licensed · Registered
-            </p>
-          </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14 }}>
-            {CREDENTIALS.map((c, i) => (
-              <Reveal key={c.label} delay={i} from="bottom">
-                <div style={{
-                  background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
-                  borderRadius: 10, padding: '16px', textAlign: 'center', height: '100%',
-                }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
-                  <div style={{ fontFamily: 'monospace', fontSize: 12, fontWeight: 700, color: '#e8e8f0', marginBottom: 4 }}>{c.value}</div>
-                  <div style={{ fontSize: 10, color: '#505068' }}>{c.sub}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <p style={{ textAlign: 'center', fontSize: 12, color: '#505068', fontFamily: 'monospace', marginTop: 24 }}>
-            regulated not-for-profit · ≥90% surplus reinvested into research · surplus not distributed to members
-          </p>
         </div>
       </section>
 
