@@ -60,6 +60,19 @@ const NAV_LINKS = [
   { label: 'Submit', href: '#submit' },
   { label: 'Standards', href: '#standards' },
   { label: 'Pricing', href: '#pricing' },
+  { label: 'Team', href: '#team' },
+]
+
+// The people — mirrors ternlang.com's roster. Kept as data so a departure/new-hire is
+// one array edit, not a hunt through JSX (see the Lisa Scharler removal, 2026-07-04).
+const TEAM = [
+  { name: 'Simeon Kepp',      gh: 'simeon-kepp',   role: 'Founder · ML & Systems' },
+  { name: 'Zabih Karimi',     gh: 'zabih-sudo',     role: 'Cofounder · Engineering' },
+  { name: 'Nikoletta Csonka', gh: 'csonikoletta',   role: 'Cofounder · Education' },
+  { name: 'Louis Ehrig',      gh: 'louisuhr',       role: 'Cofounder' },
+  { name: 'Ana Diez',         gh: 'anadiezmartini', role: 'Head of Research & Wellbeing' },
+  { name: 'Brennan Bell',     gh: '496crows',       role: 'Head of Model Safety & Welfare' },
+  { name: 'Mariano Sosa',     gh: '',               role: 'Head of Trust & Public Perception' },
 ]
 
 const _I = ({ children }: { children: React.ReactNode }) => (
@@ -1164,7 +1177,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   // can only ever answer "how many page-loads scrolled past section X today", never "who".
   useEffect(() => {
     const seen = new Set<string>()
-    const sectionIds = ['research', 'projects', 'track-record', 'submit', 'pricing', 'standards', 'contact']
+    const sectionIds = ['research', 'projects', 'track-record', 'submit', 'pricing', 'standards', 'team', 'contact']
     const els = sectionIds.map(id => document.getElementById(id)).filter((e): e is HTMLElement => !!e)
     if (!els.length) return
     const io = new IntersectionObserver(entries => {
@@ -2276,6 +2289,46 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <p style={{ textAlign: 'center', fontSize: 12, color: '#505068', fontFamily: 'monospace', marginTop: 24 }}>
             regulated not-for-profit · ≥90% surplus reinvested into research · surplus not distributed to members
           </p>
+        </div>
+      </section>
+
+      {/* TEAM */}
+      <section id="team" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <Reveal>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>The people</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 48, textAlign: 'center' }}>one team, everything in-house</h2>
+          </Reveal>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16 }}>
+            {TEAM.map((p, i) => (
+              <Reveal key={p.name} delay={i} from="bottom">
+                <a href={p.gh ? `https://github.com/${p.gh}` : undefined} target="_blank" rel="noopener"
+                   style={{
+                     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+                     background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+                     borderRadius: 14, padding: 20, textAlign: 'center', textDecoration: 'none',
+                     height: '100%', transition: 'border-color 0.15s', cursor: p.gh ? 'pointer' : 'default',
+                   }}
+                   onMouseEnter={e => { if (p.gh) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.4)' }}
+                   onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)' }}>
+                  {p.gh ? (
+                    <img src={`https://github.com/${p.gh}.png?size=80`} alt={p.name} loading="lazy"
+                         style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.08)', objectFit: 'cover' }} />
+                  ) : (
+                    <div style={{
+                      width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.08)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: 20, fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
+                    }}>{p.name[0]}</div>
+                  )}
+                  <div>
+                    <p style={{ fontSize: 14, fontWeight: 800, color: '#e8e8f0' }}>{p.name}</p>
+                    <p style={{ fontSize: 11, color: '#808098', marginTop: 3 }}>{p.role}</p>
+                  </div>
+                </a>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
