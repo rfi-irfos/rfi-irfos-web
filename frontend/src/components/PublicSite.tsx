@@ -1142,6 +1142,32 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     return () => document.removeEventListener('click', handler)
   }, [])
 
+  // A note for whoever opened devtools looking for something to find. Runs once, and
+  // every claim in it is one we can actually back up (see the section-tracking effect
+  // below — in-memory only, no cookie, no localStorage, nothing survives a reload).
+  useEffect(() => {
+    const big = 'font-family:monospace;font-size:32px;font-weight:900;color:#00f5c4'
+    const h = 'font-size:15px;font-weight:700;color:#e8e8f0'
+    const p = 'font-size:12px;color:#a0a0b8;line-height:1.7'
+    const mono = 'font-family:monospace;font-size:11px;color:#606080'
+    const link = 'font-size:12px;color:#00f5c4;font-weight:700'
+
+    console.log('%crfi-irfos', big)
+    console.log('%cso. devtools open, poking through the source.', h)
+    console.log('%clet\'s just name what\'s actually happening here, since we spend our whole day naming exactly this for other people.', p)
+    console.log('%cyou\'re probably one of three people. one: you work at a company that just got an email from us with a severity table and a deadline attached, and someone told you to "check if these guys are legit" before anyone replies. two: you\'re a security researcher who does the same work we do, and you want to see whether the people who roast companies for hardcoded firebase keys are leaving one lying around themselves. three: you\'re just curious, which is honestly the correct default state for anyone on the internet.', p)
+    console.log('%cwhichever one you are: good instinct. checking is exactly what we\'d tell you to do. we read binaries for a living — we\'d be hypocrites if we asked anyone to just take our word for it.', p)
+    console.log('%cso here\'s the audit, root level, on ourselves:', h)
+    console.log('%cC0 — hardcoded api keys: none.\nH0 — third-party analytics: none.\nH0 — cookies for anything beyond a theme toggle: none.\nM0 — fingerprinting: none.', mono)
+    console.log('%csection views live in this tab\'s memory only, and they\'re gone the moment you refresh. that\'s not a policy statement. that\'s the entire mechanism, and you are currently looking directly at all of it, because none of it is hidden anywhere.', p)
+    console.log('%cwe know this isn\'t a bug bounty program. there\'s no hall-of-fame page or branded stickers for finding this message, mostly because there\'s nothing here to find — and also because, as a few companies have learned this year slower than they\'d have liked, we don\'t really do bug bounties. we do disclosure. if you did find something real, actually real, we want to know. not for swag. because unlike some inboxes we\'ve written to this year, we actually read what gets sent to us.', p)
+    console.log('%ceither way: thanks for looking closely enough to end up here. that\'s rarer than you\'d think, and it\'s also, unfortunately for a lot of companies whose apps we\'ve opened this year, the entire job.', p)
+    console.log('%ccontact@rfi-irfos.com — write to us directly', link)
+    console.log('%crfi-irfos.com/#submit — if you want it in writing', link)
+    console.log('%cgithub.com/rfi-irfos — if you want the receipts', link)
+    console.log('%ca regulated austrian not-for-profit. everything built in-house. no bug bounty, no hackerone, no VDP portal — just people who read the source.', mono)
+  }, [])
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll)
