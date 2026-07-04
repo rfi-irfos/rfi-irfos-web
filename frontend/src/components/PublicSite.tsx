@@ -2297,7 +2297,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                    onMouseEnter={e => { if (p.gh) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.4)' }}
                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)' }}>
                   {p.gh ? (
-                    <img src={`https://github.com/${p.gh}.png?size=80`} alt={p.name} loading="lazy"
+                    // Self-hosted, not hotlinked: an <img> pointed straight at github.com/user.png
+                    // triggers GitHub's own Set-Cookie headers on the response, which the browser
+                    // (correctly) rejects as third-party in a cross-site context — harmless, but
+                    // noisy console warnings on every load. A local copy avoids the request entirely.
+                    <img src={`/team/${p.gh}.png`} alt={p.name} loading="lazy"
                          style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.08)', objectFit: 'cover' }} />
                   ) : (
                     <div style={{
