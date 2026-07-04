@@ -1191,6 +1191,33 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     console.log('%ca regulated austrian not-for-profit. everything built in-house. no bug bounty, no hackerone, no VDP portal — just people who read the source.', mono)
   }, [])
 
+  // Who actually opens devtools, not just who we joke to about it. Window-size heuristic —
+  // a docked devtools panel shrinks the inner viewport relative to the outer window past a
+  // clear threshold. Passive, no timing tricks, no debugger statements. Same one-shot,
+  // in-memory-only pattern as the section-view tracker below: fires at most once per
+  // pageview, nothing persisted, gone on refresh. Misses undocked/separate-window devtools,
+  // which is fine — this is curiosity, not a security control.
+  useEffect(() => {
+    let fired = false
+    const threshold = 160
+    const check = () => {
+      if (fired) return
+      const widthGap = window.outerWidth - window.innerWidth
+      const heightGap = window.outerHeight - window.innerHeight
+      if (widthGap > threshold || heightGap > threshold) {
+        fired = true
+        fetch('https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: location.pathname, section: 'devtools-opened', site: 'rfi-irfos' }),
+        }).catch(() => {})
+      }
+    }
+    const id = window.setInterval(check, 1000)
+    check()
+    return () => window.clearInterval(id)
+  }, [])
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll)
