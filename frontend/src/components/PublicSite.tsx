@@ -66,13 +66,13 @@ const NAV_LINKS = [
 // The people — mirrors ternlang.com's roster. Kept as data so a departure/new-hire is
 // one array edit, not a hunt through JSX (see the Lisa Scharler removal, 2026-07-04).
 const TEAM = [
-  { name: 'Simeon Kepp',      gh: 'simeon-kepp',   role: 'Founder · ML & Systems' },
-  { name: 'Zabih Karimi',     gh: 'zabih-sudo',     role: 'Cofounder · Engineering' },
-  { name: 'Nikoletta Csonka', gh: 'csonikoletta',   role: 'Cofounder · Education' },
-  { name: 'Louis Ehrig',      gh: 'louisuhr',       role: 'Cofounder' },
-  { name: 'Ana Diez',         gh: 'anadiezmartini', role: 'Head of Research & Wellbeing' },
-  { name: 'Brennan Bell',     gh: '496crows',       role: 'Head of Model Safety & Welfare' },
-  { name: 'Mariano Sosa',     gh: '',               role: 'Head of Trust & Public Perception' },
+  { name: 'Simeon Kepp',      gh: 'simeon-kepp',   role: 'Founder · ML & Systems', desc: 'architecture, compiler, training — the whole stack in Rust' },
+  { name: 'Zabih Karimi',     gh: 'zabih-sudo',     role: 'Cofounder · Engineering', desc: 'infrastructure, deployment, stress-tests every system before it ships' },
+  { name: 'Nikoletta Csonka', gh: 'csonikoletta',   role: 'Cofounder · Education', desc: 'onboarding, culture, wellbeing — truth over comfort, always' },
+  { name: 'Louis Ehrig',      gh: 'louisuhr',       role: 'Cofounder', desc: 'press, public affairs, keeps training data newsroom-grade' },
+  { name: 'Ana Diez',         gh: 'anadiezmartini', role: 'Head of Research & Wellbeing', desc: 'agent-based wellbeing research, model safety evaluation' },
+  { name: 'Brennan Bell',     gh: '496crows',       role: 'Head of Model Safety & Welfare', desc: 'human & AI welfare, model safety' },
+  { name: 'Mariano Sosa',     gh: '',               role: 'Head of Trust & Public Perception', desc: 'trust, public perception' },
 ]
 
 const _I = ({ children }: { children: React.ReactNode }) => (
@@ -2282,7 +2282,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   )}
                   <div>
                     <p style={{ fontSize: 14, fontWeight: 800, color: '#e8e8f0' }}>{p.name}</p>
-                    <p style={{ fontSize: 11, color: '#808098', marginTop: 3 }}>{p.role}</p>
+                    <p style={{ fontSize: 11, color: 'var(--accent-text)', marginTop: 3, fontWeight: 600 }}>{p.role}</p>
+                    <p style={{ fontSize: 11, color: '#808098', marginTop: 6, lineHeight: 1.5 }}>{p.desc}</p>
                   </div>
                 </a>
               </Reveal>
