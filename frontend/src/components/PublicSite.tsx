@@ -243,7 +243,7 @@ const PROJECTS = [
   {
     name: 'aladdin-mini',
     sub: 'disclosure impact engine',
-    desc: '50-parameter causality chain mapping security disclosures to market signals. Includes Simeon Hedge System (SHS). Named after BlackRock\'s Aladdin ($21T AUM). Smaller. Free.',
+    desc: 'Turns our own vulnerability disclosures into stock trading signals, then a hedge system trades them. Named after BlackRock\'s Aladdin ($21T AUM). Smaller. Free.',
     link: 'https://github.com/rfi-irfos/aladdin-mini',
     tag: 'open source',
   },
