@@ -1125,8 +1125,29 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
+  const fireConfetti = () => {
+    const colors = ['#00f5c4', '#ef4444', '#f97316', '#eab308', '#e8e8f0']
+    for (let i = 0; i < 40; i++) {
+      const el = document.createElement('div')
+      const size = 5 + Math.random() * 5
+      el.style.cssText = `position:fixed;left:${Math.random() * 100}vw;top:-20px;width:${size}px;height:${size}px;background:${colors[i % colors.length]};opacity:0.9;border-radius:${Math.random() > 0.5 ? '50%' : '2px'};pointer-events:none;z-index:300;transition:transform 1.6s cubic-bezier(.2,.6,.4,1), opacity 1.6s ease-out;`
+      document.body.appendChild(el)
+      requestAnimationFrame(() => {
+        el.style.transform = `translate(${(Math.random() - 0.5) * 200}px, ${60 + Math.random() * 40}vh) rotate(${Math.random() * 720}deg)`
+        el.style.opacity = '0'
+      })
+      setTimeout(() => el.remove(), 1700)
+    }
+  }
+
   const dismissCookieBanner = () => {
+    fireConfetti()
+    new Image().src = `${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&s=${encodeURIComponent('Cookie Banner Close')}`
     setCookieBannerOpen(false)
+  }
+
+  const doNothingButFireConfetti = () => {
+    fireConfetti()
   }
 
   const openCheckoutModal = (tier: string) => {
@@ -2562,12 +2583,12 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: 'var(--text2)', lineHeight: 1.5 }}>
             this is a useless cookie banner. it&apos;s just here to look like one — we don&apos;t use cookies, so there&apos;s nothing to consent to. don&apos;t let anyone tell you otherwise.
             <span style={{ display: 'block', fontFamily: 'monospace', fontSize: 10.5, color: 'var(--text3)', letterSpacing: '0.04em', marginTop: 4 }}>
-              so, two buttons: one closes this. the other does literally nothing.
+              two buttons: one closes this and throws some confetti. the other does nothing (it also throws confetti). that&apos;s the most we can afford.
             </span>
           </p>
           <div style={{ display: 'flex', gap: 8, flex: 'none' }}>
             <button
-              onClick={() => {}}
+              onClick={doNothingButFireConfetti}
               style={{
                 background: 'transparent', color: 'var(--text3)', border: '1px solid var(--border)',
                 borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
