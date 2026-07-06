@@ -1119,18 +1119,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   const [agbChecked, setAgbChecked]           = useState(false)
   const [b2bChecked, setB2bChecked]           = useState(false)
   const { theme, setTheme } = useTheme()
-  const [cookieBannerOpen, setCookieBannerOpen] = useState(false)
+  const [cookieBannerOpen, setCookieBannerOpen] = useState(true)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
-  useEffect(() => {
-    if (!localStorage.getItem('rfi_cookie_joke_seen')) setCookieBannerOpen(true)
-  }, [])
-
   const dismissCookieBanner = () => {
-    localStorage.setItem('rfi_cookie_joke_seen', '1')
     setCookieBannerOpen(false)
   }
 
