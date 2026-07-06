@@ -1187,6 +1187,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     const p = 'font-size:12px;color:#a0a0b8;line-height:1.7'
     const mono = 'font-family:monospace;font-size:11px;color:#606080'
     const link = 'font-size:12px;color:#00f5c4;font-weight:700'
+    const crit = 'font-family:monospace;font-size:11px;font-weight:900;color:#ef4444'
+    const high = 'font-family:monospace;font-size:11px;font-weight:900;color:#f97316'
+    const med = 'font-family:monospace;font-size:11px;font-weight:900;color:#eab308'
+    const low = 'font-family:monospace;font-size:11px;font-weight:900;color:#6b7280'
 
     console.log('%crfi-irfos', big)
     console.log('%cso. devtools open, poking through the source.', h)
@@ -1194,9 +1198,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     console.log('%cyou\'re probably one of three people. one: you work at a company that just got an email from us with a severity table and a deadline attached, and someone told you to "check if these guys are legit" before anyone replies. two: you\'re a security researcher who does the same work we do, and you want to see whether the people who roast companies for hardcoded firebase keys are leaving one lying around themselves. three: you\'re just curious, which is honestly the correct default state for anyone on the internet.', p)
     console.log('%cwhichever one you are: good instinct. checking is exactly what we\'d tell you to do. we read binaries for a living — we\'d be hypocrites if we asked anyone to just take our word for it.', p)
     console.log('%cso here\'s the audit, root level, on ourselves:', h)
-    console.log('%cC0 — hardcoded api keys: none.\nH0 — third-party analytics: none.\nH0 — cookies for anything beyond a theme toggle: none.\nM0 — fingerprinting: none.', mono)
+    console.log('%cC0%c — hardcoded api keys: none.\n%cH0%c — third-party analytics: none.\n%cH0%c — cookies for anything beyond a theme toggle: none.\n%cM0%c — fingerprinting: none.\n%cL0%c — third-party fonts, CDNs, or other silent third-party requests: none.',
+      crit, mono, high, mono, high, mono, med, mono, low, mono)
     console.log('%csection views live in this tab\'s memory only, and they\'re gone the moment you refresh. that\'s not a policy statement. that\'s the entire mechanism, and you are currently looking directly at all of it, because none of it is hidden anywhere.', p)
     console.log('%cwe know this isn\'t a bug bounty program. there\'s no hall-of-fame page or branded stickers for finding this message, mostly because there\'s nothing here to find — and also because, as a few companies have learned this year slower than they\'d have liked, we don\'t really do bug bounties. we do disclosure. if you did find something real, actually real, we want to know. not for swag. because unlike some inboxes we\'ve written to this year, we actually read what gets sent to us.', p)
+    console.log('%ca lot more people have been ending up in this exact console tab lately than we expected. we noticed. we\'re not going to pretend we didn\'t, and we\'re not going to start tracking who — that would rather defeat the point of the four zeroes above.', p)
     console.log('%ceither way: thanks for looking closely enough to end up here. that\'s rarer than you\'d think, and it\'s also, unfortunately for a lot of companies whose apps we\'ve opened this year, the entire job.', p)
     console.log('%ccontact@rfi-irfos.com — write to us directly', link)
     console.log('%crfi-irfos.com/#submit — if you want it in writing', link)
