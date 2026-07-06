@@ -243,7 +243,7 @@ const PROJECTS = [
   {
     name: 'aladdin-mini',
     sub: 'disclosure impact engine',
-    desc: 'Turns our own vulnerability disclosures into stock trading signals, then a hedge system trades them. Named after BlackRock\'s Aladdin ($21T AUM). Smaller. Free.',
+    desc: 'Models how markets react to security disclosures once they go public — including our own, only after the 90-day embargo lifts. A hedge system trades the signal. BlackRock\'s version is called Aladdin ($21T AUM). This one\'s free.',
     link: 'https://github.com/rfi-irfos/aladdin-mini',
     tag: 'open source',
   },
