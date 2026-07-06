@@ -1120,34 +1120,38 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   const [b2bChecked, setB2bChecked]           = useState(false)
   const { theme, setTheme } = useTheme()
   const [cookieBannerOpen, setCookieBannerOpen] = useState(true)
+  const [bannerClosing, setBannerClosing] = useState(false)
+  const bannerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
-  const fireConfetti = () => {
+  const fireConfettiFromRect = (rect: DOMRect, count: number) => {
     const colors = ['#00f5c4', '#ef4444', '#f97316', '#eab308', '#e8e8f0']
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < count; i++) {
       const el = document.createElement('div')
-      const size = 5 + Math.random() * 5
-      el.style.cssText = `position:fixed;left:${Math.random() * 100}vw;top:-20px;width:${size}px;height:${size}px;background:${colors[i % colors.length]};opacity:0.9;border-radius:${Math.random() > 0.5 ? '50%' : '2px'};pointer-events:none;z-index:300;transition:transform 1.6s cubic-bezier(.2,.6,.4,1), opacity 1.6s ease-out;`
+      const size = 5 + Math.random() * 6
+      const startX = rect.left + Math.random() * rect.width
+      const startY = rect.top + Math.random() * rect.height
+      el.style.cssText = `position:fixed;left:${startX}px;top:${startY}px;width:${size}px;height:${size}px;background:${colors[i % colors.length]};opacity:0.95;border-radius:${Math.random() > 0.5 ? '50%' : '2px'};pointer-events:none;z-index:300;transition:transform 0.9s cubic-bezier(.15,.7,.3,1), opacity 0.9s ease-in;`
       document.body.appendChild(el)
+      const angle = Math.random() * Math.PI * 2
+      const dist = 60 + Math.random() * 160
       requestAnimationFrame(() => {
-        el.style.transform = `translate(${(Math.random() - 0.5) * 200}px, ${60 + Math.random() * 40}vh) rotate(${Math.random() * 720}deg)`
+        el.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist + 80}px) rotate(${(Math.random() - 0.5) * 720}deg)`
         el.style.opacity = '0'
       })
-      setTimeout(() => el.remove(), 1700)
+      setTimeout(() => el.remove(), 1000)
     }
   }
 
   const dismissCookieBanner = () => {
-    fireConfetti()
+    const el = bannerRef.current
+    if (el) fireConfettiFromRect(el.getBoundingClientRect(), 70)
     new Image().src = `${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&s=${encodeURIComponent('Cookie Banner Close')}`
-    setCookieBannerOpen(false)
-  }
-
-  const doNothingButFireConfetti = () => {
-    fireConfetti()
+    setBannerClosing(true)
+    setTimeout(() => { setCookieBannerOpen(false); setBannerClosing(false) }, 240)
   }
 
   const openCheckoutModal = (tier: string) => {
@@ -1555,7 +1559,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <span style={{ color: 'var(--accent-text)' }}>Interdisciplinary</span> Research Facility for Open Sciences
         </h1>
         <p style={{ fontSize: 17, color: '#a0a0b8', maxWidth: 580, lineHeight: 1.75, marginBottom: 48 }}>
-          Independent Austrian research institute. Ternary AI, security, governance, minor protection, and ecocentric technology.
+          Regulated Austrian research institute. Ternary AI, security, governance, minor protection, and ecocentric technology.
           One team. Everything built in-house.
         </p>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -2573,22 +2577,25 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </p>
       </footer>
       {cookieBannerOpen && (
-        <div style={{
+        <div ref={bannerRef} style={{
           position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
           maxWidth: 560, margin: '0 auto',
           background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 12,
           padding: '16px 20px', boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
           display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+          transform: bannerClosing ? 'scale(0.85)' : 'scale(1)',
+          opacity: bannerClosing ? 0 : 1,
+          transition: 'transform 0.24s ease-in, opacity 0.24s ease-in',
         }}>
           <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: 'var(--text2)', lineHeight: 1.5 }}>
-            this is a useless cookie banner. it&apos;s just here to look like one — we don&apos;t use cookies, so there&apos;s nothing to consent to. don&apos;t let anyone tell you otherwise.
+            this is a useless cookie banner. it&apos;s just here to look like one * we don&apos;t use cookies, so there&apos;s nothing to consent to. don&apos;t let anyone tell you otherwise.
             <span style={{ display: 'block', fontFamily: 'monospace', fontSize: 10.5, color: 'var(--text3)', letterSpacing: '0.04em', marginTop: 4 }}>
-              two buttons: one closes this and throws some confetti. the other does nothing (it also throws confetti). that&apos;s the most we can afford.
+              two buttons, one closes this and throws some confetti. the other literally does nothing. that&apos;s the most we can afford.
             </span>
           </p>
           <div style={{ display: 'flex', gap: 8, flex: 'none' }}>
             <button
-              onClick={doNothingButFireConfetti}
+              onClick={() => {}}
               style={{
                 background: 'transparent', color: 'var(--text3)', border: '1px solid var(--border)',
                 borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
