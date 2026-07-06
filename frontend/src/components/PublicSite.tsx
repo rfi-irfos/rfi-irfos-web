@@ -1119,10 +1119,20 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   const [agbChecked, setAgbChecked]           = useState(false)
   const [b2bChecked, setB2bChecked]           = useState(false)
   const { theme, setTheme } = useTheme()
+  const [cookieBannerOpen, setCookieBannerOpen] = useState(false)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
+
+  useEffect(() => {
+    if (!localStorage.getItem('rfi_cookie_joke_seen')) setCookieBannerOpen(true)
+  }, [])
+
+  const dismissCookieBanner = () => {
+    localStorage.setItem('rfi_cookie_joke_seen', '1')
+    setCookieBannerOpen(false)
+  }
 
   const openCheckoutModal = (tier: string) => {
     setAgbChecked(false)
@@ -2546,6 +2556,42 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           &copy; 2026 RFI-IRFOS &nbsp;&middot;&nbsp; UID ATU83405245 &nbsp;&middot;&nbsp; Steuernummer 68 696/8736 &nbsp;&middot;&nbsp; Graz, Austria
         </p>
       </footer>
+      {cookieBannerOpen && (
+        <div style={{
+          position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
+          maxWidth: 560, margin: '0 auto',
+          background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 12,
+          padding: '16px 20px', boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
+          display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+        }}>
+          <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: 'var(--text2)', lineHeight: 1.5 }}>
+            this is a useless cookie banner. it&apos;s just here to look like one — we don&apos;t use cookies, so there&apos;s nothing to consent to. don&apos;t let anyone tell you otherwise.
+            <span style={{ display: 'block', fontFamily: 'monospace', fontSize: 10.5, color: 'var(--text3)', letterSpacing: '0.04em', marginTop: 4 }}>
+              so, two buttons: one closes this. the other does literally nothing.
+            </span>
+          </p>
+          <div style={{ display: 'flex', gap: 8, flex: 'none' }}>
+            <button
+              onClick={() => {}}
+              style={{
+                background: 'transparent', color: 'var(--text3)', border: '1px solid var(--border)',
+                borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
+              }}
+            >
+              does nothing
+            </button>
+            <button
+              onClick={dismissCookieBanner}
+              style={{
+                background: 'var(--accent)', color: 'var(--bg)', border: 'none',
+                borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 700, cursor: 'pointer',
+              }}
+            >
+              close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
