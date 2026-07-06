@@ -1131,17 +1131,18 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     const colors = ['#00f5c4', '#ef4444', '#f97316', '#eab308', '#e8e8f0']
     for (let i = 0; i < count; i++) {
       const el = document.createElement('div')
-      const size = 5 + Math.random() * 6
+      const size = 6 + Math.random() * 7
       const startX = rect.left + Math.random() * rect.width
       const startY = rect.top + Math.random() * rect.height
-      el.style.cssText = `position:fixed;left:${startX}px;top:${startY}px;width:${size}px;height:${size}px;background:${colors[i % colors.length]};opacity:0.95;border-radius:${Math.random() > 0.5 ? '50%' : '2px'};pointer-events:none;z-index:300;transition:transform 0.9s cubic-bezier(.15,.7,.3,1), opacity 0.9s ease-in;`
+      el.style.cssText = `position:fixed;left:${startX}px;top:${startY}px;width:${size}px;height:${size}px;background:${colors[i % colors.length]};opacity:1;border-radius:${Math.random() > 0.5 ? '50%' : '2px'};pointer-events:none;z-index:99999;transform:translate(0,0) rotate(0deg);transition:transform 0.9s cubic-bezier(.15,.7,.3,1), opacity 0.9s ease-in;`
       document.body.appendChild(el)
+      // force a synchronous layout so the browser commits the starting transform
+      // before we change it — otherwise the transition can silently no-op.
+      void el.offsetHeight
       const angle = Math.random() * Math.PI * 2
       const dist = 60 + Math.random() * 160
-      requestAnimationFrame(() => {
-        el.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist + 80}px) rotate(${(Math.random() - 0.5) * 720}deg)`
-        el.style.opacity = '0'
-      })
+      el.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist + 80}px) rotate(${(Math.random() - 0.5) * 720}deg)`
+      el.style.opacity = '0'
       setTimeout(() => el.remove(), 1000)
     }
   }
