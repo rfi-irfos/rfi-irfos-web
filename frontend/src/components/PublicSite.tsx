@@ -1563,14 +1563,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         padding: 'calc(72px + 6vh) 2rem 60px',
         background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.06) 0%, transparent 70%)',
       }}>
-        <p style={{
-          fontFamily: 'monospace', fontSize: 11, color: 'var(--accent-text)', letterSpacing: '0.2em',
-          textTransform: 'uppercase', marginBottom: 32,
-          border: '1px solid rgba(0,245,196,0.3)', padding: '6px 16px', borderRadius: 20,
-        }}>
-          RFI-IRFOS &nbsp;·&nbsp; ZVR 1015608684 &nbsp;·&nbsp; GISA 39261441 &nbsp;·&nbsp; UID ATU83405245 &nbsp;·&nbsp; Steuernummer 68 696/8736 &nbsp;·&nbsp; Graz, Austria &nbsp;·&nbsp; est. 2020
-        </p>
-        <p style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em' }}>
+        <p style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
           Rethink the Obvious.
         </p>
         <h1 style={{
