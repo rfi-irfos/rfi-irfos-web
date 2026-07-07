@@ -199,6 +199,8 @@ const METHODOLOGY = [
   { title: 'Not-for-profit, by structure', desc: 'RFI-IRFOS is a registered nonprofit association. There are no shareholders extracting profit; surplus is reinvested into research. Paid advisory tiers are optional and separate — never a condition of the free disclosure.' },
   { title: 'Written only', desc: 'Every engagement is conducted in writing, building a complete audit trail on both sides. We do not offer or conduct calls or in-person meetings as part of disclosure work.' },
   { title: 'Research, not extortion', desc: 'Our work is grounded in the freedom of scientific research (Art. 17 Austrian Federal Constitution) and GDPR Art. 89. We report on companies’ own distributed software — never private, stolen, or unauthorized-access data.' },
+  { title: 'No disruption, ever', desc: 'No denial-of-service, no load testing, no attempts to degrade or interrupt a live system. Findings are drawn from static analysis of the software as shipped, never from attacking it in production.' },
+  { title: 'No dynamic testing without an agreement, no social engineering', desc: 'Live calls against a company’s own systems — using a key we found, probing a running endpoint — happen only under a signed engagement, never during free disclosure. We never phish, pretext, or otherwise manipulate a company’s staff to obtain access.' },
 ]
 
 const STANDARDS = [
