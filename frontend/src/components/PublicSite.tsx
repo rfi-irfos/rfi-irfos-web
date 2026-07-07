@@ -953,6 +953,7 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
 const CONTACT_CARDS = [
   { label: 'General inquiries', value: 'contact@rfi-irfos.com', href: 'mailto:contact@rfi-irfos.com' },
   { label: 'Security disclosures', value: 'security@rfi-irfos.com', href: 'mailto:security@rfi-irfos.com' },
+  { label: 'Public disclosures (audit correspondence)', value: 'rfi.irfos@gmail.com', href: 'mailto:rfi.irfos@gmail.com' },
   { label: 'Research collaboration', value: 'research@rfi-irfos.com', href: 'mailto:research@rfi-irfos.com' },
   { label: 'Careers', value: 'career@rfi-irfos.com', href: 'mailto:career@rfi-irfos.com' },
   { label: 'Research on OSF', value: 'osf.io/rzvyg', href: 'https://osf.io/rzvyg' },
