@@ -1632,8 +1632,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="research" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Research Areas</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we investigate</h2>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Areas of Magnification</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>where our attention falls</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
             <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
@@ -1688,7 +1688,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="right">
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Projects</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Undertakings</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
           </Reveal>
           <Reveal from="left" delay={1}>
@@ -1733,7 +1733,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>security research at scale</h2>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the discipline, demonstrated</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
             <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
@@ -2079,8 +2079,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Submit</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? tell us.</h2>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Disclosures</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? say so.</h2>
             <p style={{ color: '#a0a0b8', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
               We run our own intake channel instead of routing you to a third-party bug bounty platform — for the same reason we refuse to be routed to one ourselves when we report a finding. This is a direct line to the same permanent ledger you see above, held to the same standard.
             </p>
@@ -2163,8 +2163,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 / Timeline</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 64, textAlign: 'center' }}>our journey</h2>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 / Chronicle</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 64, textAlign: 'center' }}>how we came to be</h2>
           </Reveal>
           <div style={{ position: 'relative' }}>
             <div style={{
@@ -2185,7 +2185,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal>
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>transparent pricing</h2>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>priced in plain terms</h2>
             <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
               Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.
             </p>
@@ -2438,7 +2438,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="team" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>The people</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>The Institute</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 48, textAlign: 'center' }}>one team, everything in-house</h2>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16 }}>
@@ -2483,9 +2483,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="contact" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 860, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Contact</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>connect</h2>
-            <p style={{ color: '#a0a0b8', marginBottom: 48 }}>reach us for research collaboration, security disclosures, or service inquiries.</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Correspondence</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>write to us</h2>
+            <p style={{ color: '#a0a0b8', marginBottom: 48 }}>for research collaboration, security disclosures, or service inquiries.</p>
           </Reveal>
 
           <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: mobile ? 16 : 40 }}>
