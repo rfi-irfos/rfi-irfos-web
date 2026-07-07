@@ -1770,12 +1770,12 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             fontFamily: 'monospace', fontSize: 12, color: '#a0a0b8', lineHeight: 1.8,
           }}>
             <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
-            {' '}listed clients · GDPR Art. 5/8/9/13/25/32/44 · COPPA · EU AI Act (minor provisions) · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at · FTC
+            {' '}listed companies · GDPR Art. 5/8/9/13/25/32/44 · COPPA · EU AI Act (minor provisions) · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at · FTC
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
             <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', margin: 0 }}>Permanent disclosure ledger</h3>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)' }}>{AUDIT_HIGHLIGHTS.length} clients · live response tracking · disclosure 2026-09-19</span>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)' }}>{AUDIT_HIGHLIGHTS.length} companies · live response tracking · disclosure 2026-09-19</span>
           </div>
           {/* Search + filter dropdowns — single row (stacks on mobile) */}
           <div style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'stretch', flexWrap: mobile ? 'wrap' : 'nowrap' }}>
