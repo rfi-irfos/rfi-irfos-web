@@ -1208,7 +1208,15 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#"]')
       if (!a) return
       const href = a.getAttribute('href')!
-      if (href.length < 2) return
+      if (href.length < 2) {
+        // bare "#" (e.g. the logo) — scroll to top, still suppress Reveal so hero/KPIs
+        // don't get stuck mid-transform from the jump (same fix as named-anchor links below)
+        e.preventDefault()
+        _revealSuppressed = true
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+        setTimeout(() => { _revealSuppressed = false }, 800)
+        return
+      }
       const target = document.querySelector(href)
       if (!target) return
       e.preventDefault()
