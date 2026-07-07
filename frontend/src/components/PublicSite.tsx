@@ -1584,20 +1584,20 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           One team. Everything built in-house.
         </p>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <a href="#research" style={{
+          <a href="#track-record" style={{
             background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
             fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
             textTransform: 'uppercase', transition: 'opacity 0.15s',
           }}
             onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Research</a>
-          <a href="#track-record" style={{
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Track Record</a>
+          <a href="#research" style={{
             border: '1px solid rgba(0,245,196,0.35)', color: 'var(--accent-text)', padding: '13px 30px', borderRadius: 8,
             fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
             textTransform: 'uppercase', transition: 'border-color 0.15s',
           }}
             onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Track Record</a>
+            onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Research</a>
           <a href="#pricing" style={{
             border: '1px solid rgba(255,255,255,0.12)', color: '#a0a0b8', padding: '13px 30px', borderRadius: 8,
             fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
