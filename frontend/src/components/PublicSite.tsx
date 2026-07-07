@@ -760,7 +760,7 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'Opera Browser':                { notified: '2026-06-25', disclosure: '2026-09-23' },
   'Subway Surfers':               { notified: '2026-06-25', disclosure: '2026-09-23' },
   'Merge Chicken':                { notified: '2026-06-25', disclosure: '2026-09-23', resolved: true, resolvedDate: '2026-06-30', reportUrl: '/reports/merge-chicken-2026.pdf' },
-  'Spinwinera app / Spinwinera':  { notified: '2026-07-01', disclosure: '2026-09-29', resolved: true, resolvedDate: '2026-07-07', reportUrl: '/reports/spinwinera-2026.pdf' },
+  'Spinwinera / Roobet / BetOnRed network': { notified: '2026-07-01', disclosure: '2026-09-29', resolved: true, resolvedDate: '2026-07-07', reportUrl: '/reports/spinwinera-2026.pdf' },
   'Character.AI':                 { notified: '2026-06-30', disclosure: '2026-09-28' },
   'Linky / iChat':                { notified: '2026-06-30', disclosure: '2026-09-28' },
   'Saylo / Xverse':               { notified: '2026-06-30', disclosure: '2026-09-28' },
