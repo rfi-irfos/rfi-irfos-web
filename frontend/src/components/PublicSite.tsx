@@ -1365,6 +1365,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     setFormState('sending')
     try {
       if (WEB3FORMS_KEY) {
+        const captchaEl = (e.currentTarget as HTMLFormElement).querySelector<HTMLTextAreaElement>('textarea[name="h-captcha-response"]')
         const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1377,6 +1378,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             subject_interest: form.subject,
             message: form.message,
             botcheck: form.botcheck,
+            'h-captcha-response': captchaEl?.value ?? '',
           }),
         })
         if (!res.ok) throw new Error()
@@ -1395,6 +1397,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     setTipFormState('sending')
     try {
       if (WEB3FORMS_KEY) {
+        const captchaEl = (e.currentTarget as HTMLFormElement).querySelector<HTMLTextAreaElement>('textarea[name="h-captcha-response"]')
         const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1409,6 +1412,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             message: tipForm.finding,
             lawful_confirmed: tipForm.lawful,
             botcheck: tipForm.botcheck,
+            'h-captcha-response': captchaEl?.value ?? '',
           }),
         })
         if (!res.ok) throw new Error()
@@ -2147,6 +2151,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     I confirm this information was obtained through lawful, authorized means — publicly accessible data, my own devices, or software I'm authorized to test.
                   </span>
                 </label>
+                <div className="h-captcha" data-captcha="true" data-theme="dark" data-size="normal" />
                 <button type="submit" disabled={tipFormState === 'sending' || !tipForm.lawful} style={{
                   background: tipFormState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
                   color: tipFormState === 'ok' ? TEAL : '#070711',
@@ -2535,6 +2540,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14,
                   outline: 'none', resize: 'vertical', fontFamily: 'inherit',
                 }} />
+              <div className="h-captcha" data-captcha="true" data-theme="dark" data-size="normal" />
               <button type="submit" disabled={formState === 'sending'} style={{
                 background: formState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
                 color: formState === 'ok' ? TEAL : '#070711',
