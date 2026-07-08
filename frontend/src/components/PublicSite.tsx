@@ -1150,23 +1150,58 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
+  // short synthesized "pop" — no audio file needed, just a quick pitch-dropping
+  // burst via the Web Audio API so this stays fully self-contained.
+  const playPopSound = () => {
+    try {
+      const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+      const ctx = new AC()
+      const now = ctx.currentTime
+      const osc = ctx.createOscillator()
+      const gain = ctx.createGain()
+      osc.type = 'triangle'
+      osc.frequency.setValueAtTime(900, now)
+      osc.frequency.exponentialRampToValueAtTime(120, now + 0.18)
+      gain.gain.setValueAtTime(0.18, now)
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22)
+      osc.connect(gain)
+      gain.connect(ctx.destination)
+      osc.start(now)
+      osc.stop(now + 0.24)
+      osc.onended = () => ctx.close()
+    } catch { /* audio is a nice-to-have, never block the banner over it */ }
+  }
+
   const fireConfettiFromRect = (rect: DOMRect, count: number) => {
     const colors = ['#00f5c4', '#ef4444', '#f97316', '#eab308', '#e8e8f0']
+    playPopSound()
     for (let i = 0; i < count; i++) {
       const el = document.createElement('div')
       const size = 6 + Math.random() * 7
       const startX = rect.left + Math.random() * rect.width
       const startY = rect.top + Math.random() * rect.height
-      el.style.cssText = `position:fixed;left:${startX}px;top:${startY}px;width:${size}px;height:${size}px;background:${colors[i % colors.length]};opacity:1;border-radius:${Math.random() > 0.5 ? '50%' : '2px'};pointer-events:none;z-index:99999;transform:translate(0,0) rotate(0deg);transition:transform 0.9s cubic-bezier(.15,.7,.3,1), opacity 0.9s ease-in;`
+      el.style.cssText = `position:fixed;left:${startX}px;top:${startY}px;width:${size}px;height:${size}px;background:${colors[i % colors.length]};opacity:1;border-radius:${Math.random() > 0.5 ? '50%' : '2px'};pointer-events:none;z-index:99999;transform:translate(0,0) scale(0.4) rotate(0deg);transition:transform 0.22s cubic-bezier(.2,.9,.35,1);`
       document.body.appendChild(el)
       // force a synchronous layout so the browser commits the starting transform
       // before we change it — otherwise the transition can silently no-op.
       void el.offsetHeight
+      // phase 1 — piñata burst: fast, radial, outward.
       const angle = Math.random() * Math.PI * 2
-      const dist = 60 + Math.random() * 160
-      el.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist + 80}px) rotate(${(Math.random() - 0.5) * 720}deg)`
-      el.style.opacity = '0'
-      setTimeout(() => el.remove(), 1000)
+      const burstDist = 40 + Math.random() * 90
+      const burstX = Math.cos(angle) * burstDist
+      const burstY = Math.sin(angle) * burstDist - 20 // slight upward pop before gravity takes over
+      const burstSpin = (Math.random() - 0.5) * 360
+      el.style.transform = `translate(${burstX}px, ${burstY}px) scale(1) rotate(${burstSpin}deg)`
+      setTimeout(() => {
+        // phase 2 — gravity: tumble down past the bottom of the viewport, fading out.
+        const fallX = burstX + (Math.random() - 0.5) * 120
+        const fallY = window.innerHeight - startY + 60 + Math.random() * 80
+        const fallSpin = burstSpin + (Math.random() - 0.5) * 900
+        el.style.transition = `transform ${0.7 + Math.random() * 0.4}s cubic-bezier(.4,0,.7,1), opacity 0.5s ease-in ${0.4 + Math.random() * 0.3}s`
+        el.style.transform = `translate(${fallX}px, ${fallY}px) scale(0.85) rotate(${fallSpin}deg)`
+        el.style.opacity = '0'
+      }, 220)
+      setTimeout(() => el.remove(), 1500)
     }
   }
 
