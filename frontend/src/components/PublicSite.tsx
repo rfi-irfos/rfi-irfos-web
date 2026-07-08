@@ -1304,12 +1304,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     console.log('%cyou\'re probably one of three people. one: you work at a company that just got an email from us with a severity table and a deadline attached, and someone told you to "check if these guys are legit" before anyone replies. two: you\'re a security researcher who does the same work we do, and you want to see whether the people who roast companies for hardcoded firebase keys are leaving one lying around themselves. three: you\'re just curious, which is honestly the correct default state for anyone on the internet.', p)
     console.log('%cwhichever one you are: good instinct. checking is exactly what we\'d tell you to do. we read binaries for a living — we\'d be hypocrites if we asked anyone to just take our word for it.', p)
     console.log('%cso here\'s the audit, root level, on ourselves:', h)
-    console.log('%cC0%c — hardcoded api keys: none.\n%cH0%c — third-party analytics: none.\n%cH1%c — cookies beyond a theme toggle: hcaptcha, third-party, partitioned, only on the two submission forms below, only to stop bot spam.\n%cM1%c — fingerprinting: same one. hcaptcha runs its own bot-detection on those two forms. we don\'t see it, don\'t use it, doesn\'t run anywhere else on this site.\n%cL0%c — third-party fonts, CDNs, or other silent third-party requests: none beyond that.',
+    console.log('%cC0%c — hardcoded api keys: none.\n%cH0%c — third-party analytics: none.\n%cH0%c — cookies for anything beyond a theme toggle: none.\n%cM0%c — fingerprinting: none.\n%cL0%c — third-party fonts, CDNs, or other silent third-party requests: none.',
       crit, mono, high, mono, high, mono, med, mono, low, mono)
-    console.log('%cwe added that one ourselves a few hours ago, after a wave of form-spam bots. read as: an honest line we\'d rather not have needed, not a quiet retreat from the rest of this list.', p)
     console.log('%csection views live in this tab\'s memory only, and they\'re gone the moment you refresh. that\'s not a policy statement. that\'s the entire mechanism, and you are currently looking directly at all of it, because none of it is hidden anywhere.', p)
     console.log('%cwe know this isn\'t a bug bounty program. there\'s no hall-of-fame page or branded stickers for finding this message, mostly because there\'s nothing here to find — and also because, as a few companies have learned this year slower than they\'d have liked, we don\'t really do bug bounties. we do disclosure. if you did find something real, actually real, we want to know. not for swag. because unlike some inboxes we\'ve written to this year, we actually read what gets sent to us.', p)
-    console.log('%ca lot more people have been ending up in this exact console tab lately than we expected. we noticed. we\'re not going to pretend we didn\'t, and we\'re not going to start tracking who — that would rather defeat the point of the list above.', p)
+    console.log('%ca lot more people have been ending up in this exact console tab lately than we expected. we noticed. we\'re not going to pretend we didn\'t, and we\'re not going to start tracking who — that would rather defeat the point of the five zeroes above.', p)
     console.log('%ceither way: thanks for looking closely enough to end up here. that\'s rarer than you\'d think, and it\'s also, unfortunately for a lot of companies whose apps we\'ve opened this year, the entire job.', p)
     console.log('%ccontact@rfi-irfos.com — write to us directly', link)
     console.log('%crfi-irfos.com/#submit — if you want it in writing', link)
@@ -1401,7 +1400,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     setFormState('sending')
     try {
       if (WEB3FORMS_KEY) {
-        const captchaEl = (e.currentTarget as HTMLFormElement).querySelector<HTMLTextAreaElement>('textarea[name="h-captcha-response"]')
         const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1414,7 +1412,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             subject_interest: form.subject,
             message: form.message,
             botcheck: form.botcheck,
-            'h-captcha-response': captchaEl?.value ?? '',
           }),
         })
         if (!res.ok) throw new Error()
@@ -1433,7 +1430,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     setTipFormState('sending')
     try {
       if (WEB3FORMS_KEY) {
-        const captchaEl = (e.currentTarget as HTMLFormElement).querySelector<HTMLTextAreaElement>('textarea[name="h-captcha-response"]')
         const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1448,7 +1444,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             message: tipForm.finding,
             lawful_confirmed: tipForm.lawful,
             botcheck: tipForm.botcheck,
-            'h-captcha-response': captchaEl?.value ?? '',
           }),
         })
         if (!res.ok) throw new Error()
@@ -2187,7 +2182,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     I confirm this information was obtained through lawful, authorized means — publicly accessible data, my own devices, or software I'm authorized to test.
                   </span>
                 </label>
-                <div className="h-captcha" data-captcha="true" data-theme="dark" data-size="normal" />
                 <button type="submit" disabled={tipFormState === 'sending' || !tipForm.lawful} style={{
                   background: tipFormState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
                   color: tipFormState === 'ok' ? TEAL : '#070711',
@@ -2576,7 +2570,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14,
                   outline: 'none', resize: 'vertical', fontFamily: 'inherit',
                 }} />
-              <div className="h-captcha" data-captcha="true" data-theme="dark" data-size="normal" />
               <button type="submit" disabled={formState === 'sending'} style={{
                 background: formState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
                 color: formState === 'ok' ? TEAL : '#070711',
