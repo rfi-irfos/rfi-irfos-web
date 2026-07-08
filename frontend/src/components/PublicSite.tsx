@@ -1123,9 +1123,9 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
 export function PublicSite() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', botcheck: '' })
   const [formState, setFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
-  const [tipForm, setTipForm] = useState({ handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false })
+  const [tipForm, setTipForm] = useState({ handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false, botcheck: '' })
   const [tipFormState, setTipFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
   const pixelRef = useRef<HTMLImageElement>(null)
   const ledgerRef = useRef<HTMLDivElement>(null)
@@ -1358,6 +1358,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
   async function submitForm(e: React.FormEvent) {
     e.preventDefault()
+    // Honeypot — real users never fill a visually hidden field; bots that
+    // blindly fill every input do. A non-empty value here means it's spam,
+    // so we quietly pretend to succeed instead of hitting the API at all.
+    if (form.botcheck) { setFormState('ok'); setForm({ name: '', email: '', subject: '', message: '', botcheck: '' }); return }
     setFormState('sending')
     try {
       if (WEB3FORMS_KEY) {
@@ -1372,12 +1376,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             replyto: form.email,
             subject_interest: form.subject,
             message: form.message,
+            botcheck: form.botcheck,
           }),
         })
         if (!res.ok) throw new Error()
       }
       setFormState('ok')
-      setForm({ name: '', email: '', subject: '', message: '' })
+      setForm({ name: '', email: '', subject: '', message: '', botcheck: '' })
     } catch {
       setFormState('err')
     }
@@ -1386,6 +1391,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   async function submitTip(e: React.FormEvent) {
     e.preventDefault()
     if (!tipForm.lawful) return
+    if (tipForm.botcheck) { setTipFormState('ok'); return }
     setTipFormState('sending')
     try {
       if (WEB3FORMS_KEY) {
@@ -1402,6 +1408,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             credit_preference: tipForm.credit,
             message: tipForm.finding,
             lawful_confirmed: tipForm.lawful,
+            botcheck: tipForm.botcheck,
           }),
         })
         if (!res.ok) throw new Error()
@@ -2109,6 +2116,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             {/* right: form */}
             <Reveal from="right">
               <form onSubmit={submitTip} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
+                  value={tipForm.botcheck} onChange={e => setTipForm(p => ({ ...p, botcheck: e.target.value }))}
+                  style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
                 <input type="text" placeholder="Name or alias (optional — leave blank to stay anonymous)"
                   value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
                   style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
@@ -2494,6 +2504,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             {/* left: form */}
             <Reveal from="left" style={{ display: 'flex', flexDirection: 'column' }}>
             <form onSubmit={submitForm} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
+                value={form.botcheck} onChange={e => setForm(p => ({ ...p, botcheck: e.target.value }))}
+                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
               {(['name', 'email'] as const).map(f => (
                 <input key={f} type={f === 'email' ? 'email' : 'text'} required placeholder={f === 'name' ? 'Name' : 'Email'}
                   value={form[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))}
