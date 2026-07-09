@@ -21,8 +21,8 @@ function Reveal({
       if (_revealSuppressed) { el.style.opacity = '1'; el.style.transform = 'none'; return }
       const rect = el.getBoundingClientRect(), vh = window.innerHeight
       const startFrac = 0.97 - delay * 0.04
-      const raw = (vh * startFrac - rect.top) / (vh * 0.26)
-      const p = Math.max(0, Math.min(1, raw))
+      const lin = Math.max(0, Math.min(1, (vh * startFrac - rect.top) / (vh * 0.16)))
+      const p = lin * lin * (3 - 2 * lin) // smoothstep — snappier assemble than a flat linear ramp
       el.style.opacity = String(p)
       const d = (1 - p) * dist
       el.style.transform = from === 'left'  ? `translateX(${-d}px)` :
@@ -37,6 +37,50 @@ function Reveal({
     return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(rafId) }
   }, [delay, from, dist])
   return <div ref={ref} style={{ opacity: 0, willChange: 'transform, opacity', ...extra }}>{children}</div>
+}
+
+// wheel-driven scroll accelerator: boosts deltaY and lerps toward the target each
+// frame, so the page covers more ground per notch instead of the flat 1:1 native rate.
+// Elements marked [data-native-scroll] (internal overflow panels) are left untouched.
+function useFastScroll(mult = 1.55, ease = 0.16) {
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let target = window.scrollY
+    let current = window.scrollY
+    let rafId = 0
+    const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight
+
+    const tick = () => {
+      current += (target - current) * ease
+      if (Math.abs(target - current) < 0.5) {
+        current = target
+        window.scrollTo(0, current)
+        rafId = 0
+        return
+      }
+      window.scrollTo(0, current)
+      rafId = requestAnimationFrame(tick)
+    }
+
+    const onWheel = (e: WheelEvent) => {
+      if (e.ctrlKey || e.deltaY === 0) return // pinch-zoom / horizontal — leave native
+      if ((e.target as HTMLElement)?.closest?.('[data-native-scroll]')) return
+      e.preventDefault()
+      if (!rafId) { target = window.scrollY; current = window.scrollY } // resync after any native scroll
+      target = Math.max(0, Math.min(maxScroll(), target + e.deltaY * mult))
+      if (!rafId) rafId = requestAnimationFrame(tick)
+    }
+
+    const settle = () => { if (!rafId) { target = window.scrollY; current = window.scrollY } }
+
+    window.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('resize', settle)
+    return () => {
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('resize', settle)
+      cancelAnimationFrame(rafId)
+    }
+  }, [mult, ease])
 }
 
 function useMobile(bp = 768) {
@@ -1091,7 +1135,7 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
       {open && (
         <>
           <div onClick={() => onToggle(null)} style={{ position: 'fixed', inset: 0, zIndex: 40 }} />
-          <div className="ledger-dd-panel" style={{
+          <div className="ledger-dd-panel" data-native-scroll style={{
             position: 'absolute', top: 'calc(100% + 4px)', left: 0, zIndex: 41,
             minWidth: mobile ? '100%' : Math.max(minWidth, 150), maxHeight: 300, overflowY: 'auto',
             background: '#0c1120', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 8,
@@ -1121,6 +1165,7 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
 }
 
 export function PublicSite() {
+  useFastScroll()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', botcheck: '' })
@@ -1180,34 +1225,34 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       const size = 6 + Math.random() * 7
       const startX = rect.left + Math.random() * rect.width
       const startY = rect.top + Math.random() * rect.height
-      el.style.cssText = `position:fixed;left:${startX}px;top:${startY}px;width:${size}px;height:${size}px;background:${colors[i % colors.length]};opacity:1;border-radius:${Math.random() > 0.5 ? '50%' : '2px'};pointer-events:none;z-index:99999;transform:translate(0,0) scale(0.4) rotate(0deg);transition:transform 0.22s cubic-bezier(.2,.9,.35,1);`
+      el.style.cssText = `position:fixed;left:${startX}px;top:${startY}px;width:${size}px;height:${size}px;background:${colors[i % colors.length]};opacity:1;border-radius:${Math.random() > 0.5 ? '50%' : '2px'};pointer-events:none;z-index:99999;transform:translate(0,0) scale(0.4) rotate(0deg);transition:transform 0.14s cubic-bezier(.2,.9,.35,1);`
       document.body.appendChild(el)
       // force a synchronous layout so the browser commits the starting transform
       // before we change it — otherwise the transition can silently no-op.
       void el.offsetHeight
       // phase 1 — piñata burst: fast, radial, outward.
       const angle = Math.random() * Math.PI * 2
-      const burstDist = 40 + Math.random() * 90
+      const burstDist = 65 + Math.random() * 150
       const burstX = Math.cos(angle) * burstDist
-      const burstY = Math.sin(angle) * burstDist - 20 // slight upward pop before gravity takes over
-      const burstSpin = (Math.random() - 0.5) * 360
-      el.style.transform = `translate(${burstX}px, ${burstY}px) scale(1) rotate(${burstSpin}deg)`
+      const burstY = Math.sin(angle) * burstDist - 30 // slight upward pop before gravity takes over
+      const burstSpin = (Math.random() - 0.5) * 520
+      el.style.transform = `translate(${burstX}px, ${burstY}px) scale(1.1) rotate(${burstSpin}deg)`
       setTimeout(() => {
         // phase 2 — gravity: tumble down past the bottom of the viewport, fading out.
-        const fallX = burstX + (Math.random() - 0.5) * 120
+        const fallX = burstX + (Math.random() - 0.5) * 150
         const fallY = window.innerHeight - startY + 60 + Math.random() * 80
         const fallSpin = burstSpin + (Math.random() - 0.5) * 900
-        el.style.transition = `transform ${0.7 + Math.random() * 0.4}s cubic-bezier(.4,0,.7,1), opacity 0.5s ease-in ${0.4 + Math.random() * 0.3}s`
+        el.style.transition = `transform ${0.55 + Math.random() * 0.3}s cubic-bezier(.4,0,.7,1), opacity 0.4s ease-in ${0.3 + Math.random() * 0.25}s`
         el.style.transform = `translate(${fallX}px, ${fallY}px) scale(0.85) rotate(${fallSpin}deg)`
         el.style.opacity = '0'
-      }, 220)
-      setTimeout(() => el.remove(), 1500)
+      }, 140)
+      setTimeout(() => el.remove(), 1200)
     }
   }
 
   const dismissCookieBanner = () => {
     const el = bannerRef.current
-    if (el) fireConfettiFromRect(el.getBoundingClientRect(), 70)
+    if (el) fireConfettiFromRect(el.getBoundingClientRect(), 90)
     new Image().src = `${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&s=${encodeURIComponent('Cookie Banner Close')}`
     setBannerClosing(true)
     setTimeout(() => { setCookieBannerOpen(false); setBannerClosing(false) }, 240)
@@ -1913,7 +1958,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           })()}
 
           {/* Table */}
-          <div style={{ maxHeight: mobile ? '65vh' : 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
+          <div data-native-scroll style={{ maxHeight: mobile ? '65vh' : 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
             <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}@keyframes ekgPulse{0%{stroke-dashoffset:90;opacity:0}8%{opacity:1}80%{opacity:1}100%{stroke-dashoffset:-90;opacity:0}}.ekg-line{stroke-dasharray:90;animation:ekgPulse 2.4s linear infinite}@keyframes ddIn{from{opacity:0;transform:translateY(-6px) scaleY(0.97)}to{opacity:1;transform:none}}.ledger-dd-panel{transform-origin:top}.ledger-dd-opt:hover{background:rgba(0,245,196,0.12)!important;color:#00f5c4!important}`}</style>
 
             {/* Sticky header */}
