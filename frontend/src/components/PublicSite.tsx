@@ -1009,6 +1009,190 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'BetterHelp + TeenCounseling':  { notified: '2026-06-22', disclosure: '2026-09-20' },
 }
 
+type StatuteCitation = { law: string; article?: string; kind: 'fact' | 'reference'; note: string; source: string }
+
+// Pilot batch (2026-07-11) — extracted from full investigation reports (not the one-line `finding` blurb above)
+// by a read-only Zazu-pattern subagent per report, evidence-first: 'fact' = stated as an observed/validated
+// finding in the source report, 'reference' = hedged/contextual/unverified. Missing target = no report matched,
+// renders as em-dash — never inferred from the ledger blurb text. Franchise/positive-finding exclusions noted inline.
+
+const OUTFIT7_STANDARD: StatuteCitation[] = [
+  { law: 'COPPA', kind: 'fact', note: 'Coexistence of heavy ByteDance/Pangle + Mintegral (PRC ad SDKs) alongside KidoZ + SuperAwesome (the two COPPA-certified children\'s-network SDKs) proves Outfit7 knew the audience was children before adding non-compliant trackers', source: 'findings_talkingtom.md#F1' },
+  { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'RECORD_AUDIO declared on a children\'s-brand title — children\'s voice is biometric data, no verified parental consent found', source: 'findings_talkingtom.md#F5' },
+  { law: 'DSG (AT)', article: '§ 27', kind: 'fact', note: 'Cited alongside GDPR Art. 9 for the same undisclosed children\'s-voice capture', source: 'findings_talkingtom.md#F5' },
+  { law: 'GDPR', article: 'Art. 46', kind: 'fact', note: 'Outfit7\'s own aas-gapi.talkingtomandfriends.cn / apps2.outfit7.cn backends receive traffic with no China adequacy decision or documented safeguard', source: 'findings_talkingtom.md#F3' },
+  { law: 'GDPR', article: 'Art. 8', kind: 'reference', note: 'Named as the relevant minors\'-consent article family in the report\'s legal summary, not separately argued with dedicated evidence in this report', source: 'findings_talkingtom.md#RECHTLICHE EINORDNUNG' },
+  { law: 'DSA', kind: 'reference', note: 'Jurisdiction/enforcement-authority note only (DSB Wien named as competent authority) — no substantive DSA violation alleged', source: 'findings_talkingtom.md#RECHTLICHE EINORDNUNG' },
+]
+// Talking Tom Gold Run and Talking Tom Hero Dash: source CSV confirms mic=0 (RECORD_AUDIO not declared) for these
+// two builds specifically — Art. 9 / §27 DSG citations don't apply; COPPA and Art. 46 are unaffected by mic permission.
+const OUTFIT7_NO_MIC: StatuteCitation[] = OUTFIT7_STANDARD.filter(s => !(s.law === 'GDPR' && s.article === 'Art. 9') && s.law !== 'DSG (AT)')
+// Talking Tom & Friends: World (ttfworld): CSV confirms a drastically lighter Pangle/Mintegral footprint (16/45
+// classes vs. thousands elsewhere in the franchise) — the "proof of knowledge via PRC-SDK saturation" argument
+// is materially weaker here (matches why the ledger itself scores this entry HIGH, not CRITICAL, unlike the rest
+// of the franchise). Downgrade COPPA to reference; mic is still declared (1) so Art. 9/§27 DSG stay fact.
+const OUTFIT7_TTFWORLD: StatuteCitation[] = OUTFIT7_STANDARD.map(s =>
+  s.law === 'COPPA'
+    ? { ...s, kind: 'reference' as const, note: 'Same proof-of-knowledge argument as the rest of the franchise, but this build\'s Pangle/Mintegral footprint is only 16/45 classes (vs. thousands elsewhere) — the PRC-SDK-saturation evidence anchoring the fact-tier claim elsewhere is not present here' }
+    : s
+)
+
+const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
+  'Talking Tom Cat (CY)': OUTFIT7_STANDARD,
+  "Ginger's Birthday (CY)": OUTFIT7_STANDARD,
+  'My Talking Tom (CY)': OUTFIT7_STANDARD,
+  'My Talking Tom 2 (CY)': OUTFIT7_STANDARD,
+  'My Talking Angela 2 (CY)': OUTFIT7_STANDARD,
+  'My Talking Angela (CY)': OUTFIT7_STANDARD,
+  'My Talking Hank (CY)': OUTFIT7_STANDARD,
+  'My Talking Tom Friends (CY)': OUTFIT7_STANDARD,
+  'My Talking Tom Friends 2 (CY)': OUTFIT7_STANDARD,
+  'Talking Angela (CY)': OUTFIT7_STANDARD,
+  'Talking Ben the Dog (CY)': OUTFIT7_STANDARD,
+  'Talking Tom News (CY)': OUTFIT7_STANDARD,
+  'Talking Pierre the Parrot (CY)': OUTFIT7_STANDARD,
+  'Talking Tom Cat 2 (CY)': OUTFIT7_STANDARD,
+  'Talking Tom Gold Run (CY)': OUTFIT7_NO_MIC,
+  'Talking Tom Hero Dash (CY)': OUTFIT7_NO_MIC,
+  'Talking Tom & Friends: World (CY)': OUTFIT7_TTFWORLD,
+
+  'Nike': [
+    { law: 'GDPR', article: 'Art. 32(1)', kind: 'fact', note: 'Airship dev + prod push credentials both hardcoded in the Play Store APK, enabling unauthorized push notifications to Nike\'s subscriber base', source: 'NIKE_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 5(1)(f)', kind: 'fact', note: 'Integrity-and-confidentiality principle breached by the same exposed Airship credentials', source: 'NIKE_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 32(2)', kind: 'fact', note: 'Risk to data subjects\' rights from malicious notification campaigns via the exposed credentials', source: 'NIKE_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'Forter Inc. (US) confirmed as an undisclosed named processor for cross-merchant fraud profiling', source: 'NIKE_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'No stated legal basis found for the cross-merchant behavioral profiling performed via Forter', source: 'NIKE_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 22', kind: 'fact', note: 'Forter automated fraud-risk scoring confirmed to affect transaction decisions', source: 'NIKE_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 46', kind: 'fact', note: 'Forter Inc. US transfer with no documented safeguard', source: 'NIKE_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 6(1)(a)', kind: 'fact', note: 'No confirmed consent flow for Airship location-based push targeting (enabledFeatures includes location)', source: 'NIKE_AUDIT_R1.md#H2' },
+    { law: 'GDPR', article: 'Art. 13(1)(c)', kind: 'fact', note: 'Airship location processing not named as a disclosed activity', source: 'NIKE_AUDIT_R1.md#H2' },
+    { law: 'GDPR', article: 'Art. 6(1)(a)', kind: 'fact', note: 'No confirmed consent flow for cross-app advertising attribution via Singular / Privacy Sandbox', source: 'NIKE_AUDIT_R1.md#H3' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'Singular Inc. (US) confirmed as an undisclosed processor', source: 'NIKE_AUDIT_R1.md#H3' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'New Relic Inc. (US) confirmed as an undisclosed processor', source: 'NIKE_AUDIT_R1.md#H4' },
+    { law: 'GDPR', article: 'Art. 46', kind: 'fact', note: 'New Relic Inc. US transfer with no documented safeguard', source: 'NIKE_AUDIT_R1.md#H4' },
+  ],
+
+  'SAP SE (5 apps)': [
+    { law: 'GDPR', article: 'Art. 28', kind: 'fact', note: 'Baidu not named as a sub-processor in FSM (C1); same gap asserted for Dynatrace in H1', source: 'SAP_ECOSYSTEM_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Chapter V', kind: 'fact', note: 'No adequacy decision or SCCs visible for the Baidu (China) data flow', source: 'SAP_ECOSYSTEM_AUDIT_R1.md#C1' },
+    { law: 'PRC NSL', kind: 'fact', note: 'Baidu is subject to China\'s 2017 National Intelligence Law, which compels cooperation with state intelligence activities', source: 'SAP_ECOSYSTEM_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'Data-minimization gap cited for SuccessFactors overlay/audio/contacts permissions (H2) and FSM AD_ID/READ_PHONE_STATE (H3)', source: 'SAP_ECOSYSTEM_AUDIT_R1.md#H2' },
+    { law: 'GDPR', article: 'Art. 13', kind: 'reference', note: 'Listed as a remediation item in the commercial offer, not tied to a validated finding in the report body', source: 'SAP_ECOSYSTEM_AUDIT_R1.md#Offer' },
+  ],
+
+  'Samsung Health': [
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: '16 Health Connect categories declared READ+WRITE, stated plainly as special-category health data; reinforced across children\'s-health, blood-glucose, and medication findings', source: 'REPORT.md#C1' },
+    { law: 'GDPR', kind: 'fact', note: 'South Korea\'s 2021 EU adequacy decision cited as the lawful basis for transfers to Samsung servers (whole-statute reference, no specific article)', source: 'REPORT.md#Context' },
+    { law: 'GDPR', article: 'Art. 22', kind: 'reference', note: 'Explicitly labelled an "implication" — automated health-data profiling by Rubin AI framed as a possible consequence, not a confirmed occurrence', source: 'REPORT.md#C3' },
+    { law: 'GDPR', article: 'Art. 13/14', kind: 'fact', note: 'Gauss GenAI (GENAI_RECLAIM) processes health data with no disclosed consent basis found', source: 'REPORT.md#H3' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'Contacts / phone number / phone state access found with no health-tracking purpose', source: 'REPORT.md#H6' },
+    { law: 'PRC Cybersecurity Law', article: 'Art. 37', kind: 'reference', note: 'Hedged — report only "raises the question of whether" the China permission flow\'s data is subject to localisation rules', source: 'REPORT.md#C6' },
+    { law: 'PRC National Intelligence Law', article: 'Art. 7', kind: 'reference', note: 'Same hedged sentence as the Cybersecurity Law Art. 37 mention — raised as an open question, not a finding', source: 'REPORT.md#C6' },
+  ],
+
+  'Snapchat': [
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'Purpose-limitation violation asserted directly in the GDPR-violations block', source: 'SC_R1_FINDINGS.md#SC-01' },
+    { law: 'GDPR', article: 'Art. 5(1)(e)', kind: 'fact', note: 'Storage-limitation violation asserted directly — "disappearing" messages technically persist via backup', source: 'SC_R1_FINDINGS.md#SC-01' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'Recipient (Google, via MushroomBackupAgent) not disclosed', source: 'SC_R1_FINDINGS.md#SC-01' },
+    { law: 'GDPR', article: 'Art. 48', kind: 'reference', note: 'Hedged law-enforcement bypass scenario — "can request... potentially bypassing"', source: 'SC_R1_FINDINGS.md#SC-01 (law enforcement note)' },
+    { law: 'ECPA', kind: 'reference', note: 'Cited alongside GDPR Art. 48 as a hypothetical law-enforcement data-access route, not a confirmed event', source: 'SC_R1_FINDINGS.md#SC-01 (law enforcement note)' },
+    { law: 'FTC Act', article: '§ 5', kind: 'reference', note: 'Deceptive-practices angle on the "disappearing" messages claim — appears only in the regulatory-frame mapping table, not argued with evidence in the body text', source: 'SC_R1_FINDINGS.md#regulatory frame table' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Asserted directly as "a security control gap"; same article recurs for SC-04 and SC-05', source: 'SC_R1_FINDINGS.md#SC-02' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'Data-minimization violation asserted directly for background location collection', source: 'SC_R1_FINDINGS.md#SC-03' },
+    { law: 'GDPR', article: 'Art. 6(1)(a)', kind: 'fact', note: 'No valid consent flow found for the same background-location collection', source: 'SC_R1_FINDINGS.md#SC-03' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'reference', note: 'Hedged both times it\'s raised — background location only "approaches" special-category sensitivity (SC-03); SC-07\'s own finding title calls the Art. 9(2)(a) legal basis "unclear"', source: 'SC_R1_FINDINGS.md#SC-03, SC-07' },
+    { law: 'COPPA', article: '16 CFR Part 312', kind: 'reference', note: 'Framed as an applicable legal requirement for minors\' location/message data, not asserted as a confirmed breach', source: 'SC_R1_FINDINGS.md#SC-03 (minors note)' },
+    { law: 'GDPR', article: 'Art. 8', kind: 'reference', note: 'Same minors-data context as the COPPA reference, not separately argued', source: 'SC_R1_FINDINGS.md#SC-03 (minors note)' },
+    { law: 'GDPR', article: 'Art. 5(1)(f)', kind: 'reference', note: 'Hedged — "may not be covered by Snapchat\'s privacy policy disclosures"', source: 'SC_R1_FINDINGS.md#SC-04' },
+    { law: 'DSA', article: 'Art. 16', kind: 'fact', note: 'The only in-app illegal_content implementation found across 87,316 classes is ads-only (snapads_ prefix) — no UGC reporting path found in client code', source: 'SC_R1_FINDINGS.md#SC-06' },
+    { law: 'DSA', article: 'Art. 26', kind: 'reference', note: 'Named in a section heading only, not elaborated in body text', source: 'SC_R1_FINDINGS.md#SC-06 (heading)' },
+    { law: 'DSA', article: 'Art. 27', kind: 'reference', note: 'Conditional on VLOP status — "if Snapchat qualifies as a Very Large Online Platform"', source: 'SC_R1_FINDINGS.md#SC-06' },
+    { law: 'DSA', article: 'Art. 33', kind: 'reference', note: 'Same VLOP-conditional hedge as Art. 27', source: 'SC_R1_FINDINGS.md#SC-06' },
+    { law: 'EU AI Act', article: 'Annex III', kind: 'reference', note: 'Applicable-law framing for the My Selfie/Dreams feature; the finding\'s own title flags the legal basis as "unclear" with no evidence of actual non-disclosure cited', source: 'SC_R1_FINDINGS.md#SC-07' },
+  ],
+
+  'Dundle': [
+    { law: 'GDPR', article: 'Art. 25', kind: 'fact', note: 'Consent Mode defaults to granted before any user choice (observed manifest state); session-replay SDKs (Datadog, Microsoft Clarity) bundled on the checkout-flow app', source: 'DUNDLE_R1_FINDINGS.md#H1, H5' },
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'reference', note: 'Hedged — only applies if the measurement pipeline fires before the app\'s own consent logic runs; startup race condition explicitly marked UNVERIFIED, held for R2', source: 'DUNDLE_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 7(1)', kind: 'reference', note: 'Same conditional hedge as Art. 6(1) — consent-timing question not resolvable by static analysis', source: 'DUNDLE_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 5(1)(a)', kind: 'reference', note: 'Listed only in the finding\'s GDPR summary line, not separately argued in body text', source: 'DUNDLE_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'No certificate pinning / no network security config found anywhere, including the checkout flow', source: 'DUNDLE_R1_FINDINGS.md#H2' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'Confirmed absence of cert pinning on the checkout flow; same article recurs (hedged) for the hardcoded Firebase key, Supabase refs, bundled session-replay SDKs, and staging domain', source: 'DUNDLE_R1_FINDINGS.md#H2' },
+    { law: 'GDPR', article: 'Art. 5(2)', kind: 'reference', note: 'Accountability/burden-of-proof framing only — whether Firebase Security Rules and Supabase RLS policies are correctly configured is explicitly "not tested here"', source: 'DUNDLE_R1_FINDINGS.md#H3, H4' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'Bundling two session-replay-capable SDKs (Datadog, Microsoft Clarity) on a payment/checkout-flow app', source: 'DUNDLE_R1_FINDINGS.md#H5' },
+    { law: 'GDPR', article: 'Art. 35', kind: 'reference', note: 'Posed as an open question to the controller — whether a documented DPIA covers fraud-scoring (Sift/Forter) combined with unpinned checkout payment data', source: 'DUNDLE_R1_FINDINGS.md#Drei Unbequeme Fragen Q3' },
+  ],
+
+  'Trade Republic': [
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'No active certificate pinning found on a BaFin-licensed securities/SEPA/crypto-custody app', source: 'TRADEREPUBLIC_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'Stated unhedged for the same unpinned-connection finding; same article recurs hedged/UNVERIFIED elsewhere in the report — collapsed to fact per the stronger claim', source: 'TRADEREPUBLIC_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Recital 83', kind: 'fact', note: 'Security-of-processing recital tied to the same unpinned-connection finding', source: 'TRADEREPUBLIC_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'Lawful basis for the Adjust/Braze tracking-and-attribution stack, confirmed live in the operator\'s own privacy notice', source: 'TRADEREPUBLIC_R1_FINDINGS.md#H2' },
+    { law: 'GDPR', article: 'Art. 7(1)', kind: 'fact', note: 'Consent-validity gap for the same tracking stack — no CMP or Consent Mode v2 mitigation found, unlike a comparable app in this audit series', source: 'TRADEREPUBLIC_R1_FINDINGS.md#H2' },
+    { law: 'GDPR', article: 'Art. 5(1)(a)', kind: 'fact', note: 'Fair/transparent-processing principle tied to the same undisclosed tracking-stack scope', source: 'TRADEREPUBLIC_R1_FINDINGS.md#H2' },
+    { law: 'ePrivacy Directive', article: 'Art. 5(3)', kind: 'fact', note: 'Cookie/tracker consent requirement for the same Adjust/Braze stack', source: 'TRADEREPUBLIC_R1_FINDINGS.md#H2' },
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'Special-category biometric data confirmed via three separate KYC/liveness vendors (Fourthline, WebID Solutions, AWS Rekognition Face Liveness)', source: 'TRADEREPUBLIC_R1_FINDINGS.md#H3' },
+    { law: 'GDPR', article: 'Art. 9(2)(a)/(b)', kind: 'fact', note: 'Legal-basis sub-clauses for the same biometric KYC processing', source: 'TRADEREPUBLIC_R1_FINDINGS.md#H3' },
+    { law: 'GDPR', article: 'Art. 35', kind: 'reference', note: 'DPIA performance explicitly described as "unverified from the binary" for the biometric chain', source: 'TRADEREPUBLIC_R1_FINDINGS.md#H3' },
+    { law: 'GDPR', article: 'Art. 44-49', kind: 'reference', note: 'AWS transfer-mechanism obligations explicitly tagged UNVERIFIED — "could not be confirmed from the binary"', source: 'TRADEREPUBLIC_R1_FINDINGS.md#H3' },
+    { law: 'GDPR', article: 'Art. 25', kind: 'fact', note: 'Hardcoded API key + live RTDB URL stated unhedged; same article recurs hedged/UNVERIFIED elsewhere — collapsed to fact per the stronger claim', source: 'TRADEREPUBLIC_R1_FINDINGS.md#M1' },
+    { law: 'GDPR', article: 'Art. 5(2)', kind: 'fact', note: 'Accountability principle tied to the same hardcoded API key / live RTDB URL finding', source: 'TRADEREPUBLIC_R1_FINDINGS.md#M1' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'reference', note: 'Framed as "invites the controller to justify" necessity, not asserted as a violation', source: 'TRADEREPUBLIC_R1_FINDINGS.md#M2' },
+    { law: 'GDPR', article: 'Art. 13/14', kind: 'reference', note: 'App-specific transparency gating for the marketing stack (M2) and the "Savings Patron" non-customer data flow (M4), both explicitly tagged UNVERIFIED', source: 'TRADEREPUBLIC_R1_FINDINGS.md#M2, M4' },
+    { law: 'GDPR', article: 'Art. 8', kind: 'fact', note: 'A "Junior" minor-account product coexists with the same undisclosed tracking stack', source: 'TRADEREPUBLIC_R1_FINDINGS.md#M4' },
+    { law: 'German Federal Data Protection Act (BDSG)', article: '§ 19', kind: 'fact', note: 'Quoted verbatim from the operator\'s own privacy notice re: right to complain to a supervisory authority', source: 'TRADEREPUBLIC_R1_FINDINGS.md#KONTAKTE' },
+    { law: 'GDPR', article: 'Art. 77', kind: 'fact', note: 'Quoted verbatim from the operator\'s own privacy notice re: right to complain to a supervisory authority', source: 'TRADEREPUBLIC_R1_FINDINGS.md#KONTAKTE' },
+    // Note: the report's OBSERVATIONS (NOT SCORED) section also names Art. 22 for Trade Republic's own disclosed
+    // AML/CTF automated decision-making with a stated right to manual review — a genuinely positive compliance
+    // example, not an exposure/violation, so it's excluded here rather than rendered as a fact-tier (red) chip.
+  ],
+
+  'TeamViewer': [
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'Sentry Inc. session-replay processor not named in the app\'s transparency disclosures', source: 'TEAMVIEWER_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 44-49', kind: 'fact', note: 'Session-replay data transferred to Sentry Inc. (San Francisco, USA)', source: 'TEAMVIEWER_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'No network security config found in a production enterprise remote-access tool', source: 'TEAMVIEWER_AUDIT_R1.md#C1, C2' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'Sentry Session Replay (RRWeb, 744 classes) captures more than a remote-support tool\'s stated purpose requires', source: 'TEAMVIEWER_AUDIT_R1.md#C1, H2, H3' },
+    { law: 'GDPR', article: 'Art. 25(1)', kind: 'fact', note: 'Data-protection-by-design gap tied to the same session-replay finding', source: 'TEAMVIEWER_AUDIT_R1.md#C2' },
+    { law: 'OWASP', article: 'M8', kind: 'fact', note: 'OWASP Mobile Top 10 code-tampering-risk category cited alongside the GDPR Art. 32(1)(b)/25(1) findings', source: 'TEAMVIEWER_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'Missing NSC/pinning on a remote-access tool handling privileged device sessions', source: 'TEAMVIEWER_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 13(1)(c)', kind: 'fact', note: 'Processing purpose not disclosed for the findings underlying H2/H3', source: 'TEAMVIEWER_AUDIT_R1.md#H2, H3' },
+  ],
+
+  'Netflix': [
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'Decade-old Firebase API key/DB URL still hardcoded verbatim in production strings.xml, serving 300M+ subscribers', source: 'NETFLIX_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 25(1)', kind: 'fact', note: 'Hardcoded, unrotated production credential cited as a data-protection-by-design failure', source: 'NETFLIX_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'reference', note: 'Cited in the finding header only, not elaborated in body text; core conclusion hedged ("no confirmed exclusion... was found")', source: 'NETFLIX_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 8(1)', kind: 'reference', note: 'Law\'s definition of children\'s data stated unhedged, but application to Netflix hedged ("may have their voice data collected", "does not appear to obtain verifiable parental consent")', source: 'NETFLIX_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'reference', note: 'Cited in the finding header only, not elaborated in body text', source: 'NETFLIX_AUDIT_R1.md#C2' },
+    { law: 'COPPA', article: '§ 312.2', kind: 'reference', note: 'Statutory definition stated unhedged; Netflix\'s actual practice described only as "does not appear to" obtain consent', source: 'NETFLIX_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 6(1)(a)', kind: 'fact', note: 'POST_PROMOTED_NOTIFICATIONS permission confirmed via verbatim evidence, capability stated as "not disclosed" without hedging', source: 'NETFLIX_AUDIT_R1.md#H1' },
+    { law: 'ePrivacy Directive', article: 'Art. 13(1)', kind: 'fact', note: 'Unsolicited-communication rule tied to the same undisclosed notification capability', source: 'NETFLIX_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 13(1)(c)', kind: 'fact', note: 'CAMERA permission + WebChromeClient confirmed via verbatim smali evidence, use "not disclosed in the Netflix app permissions rationale"', source: 'NETFLIX_AUDIT_R1.md#H2' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'Purpose-limitation principle tied to the same undisclosed CAMERA/WebChromeClient capability', source: 'NETFLIX_AUDIT_R1.md#H2' },
+    { law: 'GDPR', article: 'Art. 44-49', kind: 'fact', note: 'Bugsnag SDK confirmed sending data to US infrastructure; transfer mechanism "not disclosed" without hedging', source: 'NETFLIX_AUDIT_R1.md#H3' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'Bugsnag Inc. recipient not named in the app\'s transparency disclosures', source: 'NETFLIX_AUDIT_R1.md#H3' },
+    { law: 'GDPR', article: 'Art. 8(1)', kind: 'reference', note: 'AD_ID permission confirmed present, but Kids Profile exclusion described only as "no confirmed... was found" — children "may be fingerprinted"', source: 'NETFLIX_AUDIT_R1.md#H4' },
+    { law: 'COPPA', article: '§ 312.2(b)', kind: 'reference', note: 'Same hedge pattern as the C2 finding, applied to AD_ID collection for Kids Profiles', source: 'NETFLIX_AUDIT_R1.md#H4' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'Legacy WRITE_EXTERNAL_STORAGE permission confirmed via verbatim evidence, no scoped-storage modernisation found', source: 'NETFLIX_AUDIT_R1.md#H5' },
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'MANAGE_OWN_CALLS declared "without a defensible streaming service use case", stated directly', source: 'NETFLIX_AUDIT_R1.md#H5' },
+  ],
+
+  'DeepSeek': [
+    { law: 'GDPR', article: 'Art. 44/46', kind: 'fact', note: '8-vendor PRC third-party SDK chain, self-disclosed in DeepSeek\'s own zh-CN compliance document and cross-matched to binary/live infrastructure', source: 'DEEPSEEK_R1_FINDINGS.md#H2' },
+    { law: 'PRC NSL', article: 'Art. 7', kind: 'reference', note: 'Compelled-disclosure obligation framed as a "risk"; whether a Transfer Impact Assessment addresses it is "explicitly unresolved"', source: 'DEEPSEEK_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 6/7', kind: 'fact', note: 'Two ContentProviders auto-init before any consent screen behind a single "Agree" button, no CMP/TCF found; privacy policy confirms opt-out (not opt-in) for training use', source: 'DEEPSEEK_R1_FINDINGS.md#H1, M2' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'network_security_config.xml permits cleartext traffic app-wide, directly contradicting the manifest\'s own usesCleartextTraffic="false" declaration', source: 'DEEPSEEK_R1_FINDINGS.md#H3' },
+    { law: 'GDPR', article: 'Art. 12/13/14', kind: 'reference', note: 'Transparency asymmetry between the zh-CN vendor list and generic en-US language, explicitly framed as "a legal inference," not a settled violation', source: 'DEEPSEEK_R1_FINDINGS.md#M1' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'reference', note: 'Special-category exposure via unfiltered free-text chat explicitly framed as "a legal inference... rather than an established fact"', source: 'DEEPSEEK_R1_FINDINGS.md#M2' },
+    { law: 'GDPR', article: 'Art. 35', kind: 'fact', note: 'No DPIA found or referenced anywhere in the retrieved policy text — a plain observed absence, not an inference', source: 'DEEPSEEK_R1_FINDINGS.md#M2' },
+    { law: 'GDPR', article: 'Art. 5(2)', kind: 'fact', note: 'Hardcoded app secret/app key confirmed verbatim in plaintext in the shipped manifest', source: 'DEEPSEEK_R1_FINDINGS.md#M3' },
+    { law: 'GDPR', article: 'Art. 8', kind: 'fact', note: 'Self-declared, unverified date-of-birth age gate confirmed present (with reject path); effective minimum age 14 per policy', source: 'DEEPSEEK_R1_FINDINGS.md#L1' },
+    { law: 'GDPR', article: 'Art. 45', kind: 'fact', note: 'No EU/PRC adequacy decision exists for the confirmed China data transfer, stated plainly and unhedged', source: 'DEEPSEEK_R1_FINDINGS.md#Priority-Angle Thesis (a)' },
+    // Note: the report also confirms a genuine EU Art. 27 representative (Prighter Group) is in place — a
+    // positive finding, not an exposure/violation, so it's excluded here rather than rendered as a fact-tier chip.
+  ],
+}
+
 const CONTACT_CARDS = [
   { label: 'General inquiries', value: 'contact@rfi-irfos.com', href: 'mailto:contact@rfi-irfos.com' },
   { label: 'Security disclosures', value: 'security@rfi-irfos.com', href: 'mailto:security@rfi-irfos.com' },
@@ -1969,7 +2153,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               display: 'grid',
               gridTemplateColumns: mobile
                 ? '1fr 85px 110px'
-                : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 130px 130px 56px',
+                : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 110px 70px 130px 130px 56px',
               gap: '0 6px',
               padding: '7px 14px',
               position: 'sticky', top: 0, zIndex: 2,
@@ -1982,6 +2166,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               <span>Status</span>
               {!mobile && <span>SEV</span>}
               {!mobile && <span>Intel</span>}
+              {!mobile && <span>Statutes</span>}
               {!mobile && <span>Resolved</span>}
               <span>Disclosure</span>
               {!mobile && <span>Elapsed</span>}
@@ -2047,7 +2232,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     display: 'grid',
                     gridTemplateColumns: mobile
                       ? '1fr 95px 82px'
-                      : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 70px 130px 130px 56px',
+                      : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 110px 70px 130px 130px 56px',
                     gap: '0 6px',
                     padding: '9px 14px',
                     alignItems: 'start',
@@ -2098,6 +2283,25 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                         display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
                       }} title={a.finding}>
                         {a.finding}
+                      </div>
+                    )}
+
+                    {/* Statutes */}
+                    {!mobile && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3, paddingTop: 1 }}>
+                        {(AUDIT_STATUTES[a.target] ?? []).length === 0 ? (
+                          <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>—</span>
+                        ) : AUDIT_STATUTES[a.target].map((s, si) => (
+                          <span key={si} title={`${s.note} (${s.source})`} style={{
+                            fontFamily: 'monospace', fontSize: 8, fontWeight: 700, padding: '2px 5px',
+                            borderRadius: 3, letterSpacing: '0.04em', whiteSpace: 'nowrap', cursor: 'default',
+                            ...(s.kind === 'fact'
+                              ? { background: 'rgba(220,38,38,0.15)', color: '#f87171', border: '1px solid transparent' }
+                              : { background: 'transparent', color: '#999', border: '1px solid rgba(150,150,150,0.35)' }),
+                          }}>
+                            {s.article ? `${s.law} ${s.article}` : s.law}
+                          </span>
+                        ))}
                       </div>
                     )}
 
