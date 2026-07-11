@@ -245,6 +245,7 @@ const METHODOLOGY = [
   { title: 'Research, not extortion', desc: 'Our work is grounded in the freedom of scientific research (Art. 17 Austrian Federal Constitution) and GDPR Art. 89. We report on companies’ own distributed software — never private, stolen, or unauthorized-access data.' },
   { title: 'No disruption, ever', desc: 'No denial-of-service, no load testing, no attempts to degrade or interrupt a live system. Findings are drawn from static analysis of the software as shipped, never from attacking it in production.' },
   { title: 'No dynamic testing without an agreement, no social engineering', desc: 'Live calls against a company’s own systems — using a key we found, probing a running endpoint — happen only under a signed engagement, never during free disclosure. We never phish, pretext, or otherwise manipulate a company’s staff to obtain access.' },
+  { title: 'No fabricated progress, not even from our own tools', desc: 'Every in-house agentic tool we build runs under a written truth policy: never claim a file exists, code ran, or a test passed unless it was actually verified. A truthful "not finished" beats a convincing fiction — the same evidentiary bar we hold every company we audit to.' },
 ]
 
 const STANDARDS = [
