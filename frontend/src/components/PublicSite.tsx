@@ -383,6 +383,12 @@ const PUBLICATIONS = [
 const AUDIT_HIGHLIGHTS: { target: string; market: string; sev: string; status: string; finding: string; company?: string; aliases?: string[] }[] = [
   { target: 'Pokemon GO',        market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Civilian gameplay photogrammetry licensed to Vantor (US defense contractor, NGA contract) for military drone navigation. Art. 5(1)(b) purpose limitation. Most consequential finding in the 2026 series.' },
   { target: 'Disneyland EU',     market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Facial recognition of children at EU theme parks without Art. 9 explicit consent. MagicBand RFID child tracking. EU AI Act biometric prohibition. IoB €250k — 100% SOS Kinderdorf.' },
+  { target: 'Booking.com',       market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'com.booking v32.7.102. 3C 4H. RECORD_AUDIO declared globally with no recoverable implementation (no VOIP, no voice search, no AudioRecord/MediaRecorder calls) on a platform in 500M+ users\' pockets while they sleep in hotels. WeChat Open Platform SDK (Tencent, 181 classes) in the EU-distributed APK — PRC NSL exposure. Firebase OAuth credentials hardcoded. Zero certificate pinning across payment (Braintree/PayPal/Venmo), booking and WeChat traffic. R1 2026-06-20, FOLLOW-UP 2026-06-28, no reply.' },
+  { target: 'mein dm',           market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'de.dm.meindm.android. dm-drogerie markt GmbH & Co. KG. 2C 2H 1M. Firebase key hardcoded (project mein-dm). Three ad networks (incl. Adjust + AD_ID cross-app linkage) on purchase data from which pregnancy/health/sexual-health status is inferable (Art. 9-adjacent) — no DPIA found for this high-risk combination. R1 sent 2026-06-21 to datenschutz@dm.de, real regulator ACK (LfDI BW) received, dm itself silent, FOLLOW-UP 2026-06-28.' },
+  { target: 'VR Banking / Volksbank (DE)', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'de.fiduciagad.banking.vr + 5 sibling apps (Fiducia GAD ecosystem — Volksbanken/Raiffeisenbanken DE). 2C 3H. Play Store Data Safety declares "keine Daten erhoben, keine Daten geteilt" — provably false: AppsFlyer 441 smali + afpurchases.db present. VR SecureGo+ (TAN generator) trusts user-installed CAs in NSC base-config during an active quishing campaign — TAN MITM risk. BehavioSec keystroke/touch biometrics injected via WebView JS. R1 sent 2026-06-21 to datenschutz@fiduciagad.de, CC security@volksbank.at bounced, FOLLOW-UP 2026-06-28.' },
+  { target: 'Starbucks Austria',  market: 'NASDAQ',  sev: 'CRITICAL', status: 'CS-DEFLECT',  finding: 'com.starbucks.at (EMEA) v9.6.6204. 2C 4H. Two Firebase keys hardcoded, one shared verbatim with McDonald\'s Austria (same vendor/agency across competing brands). NSC debug-overrides trusts user CAs on a payment app. Airship (3,622 classes) + cumulative GPS order records build a daily-routine profile. R1 2026-06-20, FOLLOW-UP 2026-06-28 bounced then privacy@starbucks.com redirected us to their HackerOne bug-bounty program 2026-06-29 — replied "we are researchers, not pets."' },
+  { target: 'SHEIN',             market: 'PRIVATE', sev: 'CRITICAL', status: 'CS-DEFLECT',  finding: 'com.zzkko. Roadget Business Pte. Ltd. (Singapore, beneficial owner a Chinese national — PRC NSL Art. 7 exposure). 2C 4H 1M. Certificate pins EXPIRED since October 2024 — 20+ months lapsed — plus cleartext permitted globally. Firebase key hardcoded. Facebook Conversions API + AppsFlyer on fashion purchase data (body-metric/financial inference). READ_CALENDAR/WRITE_CALENDAR. R1 sent 2026-06-21 to privacy@sheingroup.com (privacy@shein.com dead per standing bounce list), FOLLOW-UP 2026-06-28, same dead-channel auto-reply both times.' },
+  { target: 'wo gibt\'s was',    market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',     finding: 'com.undabot.android.wgw v64. wogibtswas.at GmbH (Offerista Group subsidiary, Vienna). 2C 3H 1M. ACCESS_BACKGROUND_LOCATION in a shopping-deals app + RECEIVE_BOOT_COMPLETED = continuous movement profile with no disclosed purpose. Facebook Codeless Event Logging auto-captures every UI interaction to Meta. Three Firebase keys hardcoded. AdMob pre-consent ContentProvider init. R1 sent 2026-06-25 (support@ bounced), follow-ups 2026-06-27 and 2026-07-03/07-07 (12+ days silent, regulator CC\'d from 07-03).' },
   { target: 'Caritas / Carla (AT)', market: 'NON-PROFIT', sev: 'CRITICAL', status: 'ESCALATED', finding: 'Suspected systematic diversion of donated goods: high-value items incl. Apple iMac + garment labeled "Hamid Karzai President 2002–2014" (valued €400–600, sold €300) in carla shops with no provenance documentation. §101 KFG: structural vehicle overloading documented, EXIF-secured. §96 ArbVG: internal surveillance of employees without works council consent. BMF Finanzpolizei tip filed 2026-01-14. 5 unanswered formal enquiries. Escalated to all 9 Caritas Landesdirektionen + Päpstlicher Nuntius + Bischof Graz-Seckau.' },
   { target: 'SAP SE (5 apps)',   market: 'XETRA',   sev: 'CRITICAL', status: 'SUBSTANTIVE', finding: 'FSM, JAM, Asset Manager, Mobile Start, SuccessFactors. C1: Baidu Push SDK (315 smali) in SAP FSM — field engineers on critical infrastructure with background GPS + Chinese National Intelligence Law 2017 persistent channel. C2: Firebase API keys hardcoded across all 5 apps — systemic build pipeline failure. H1: Dynatrace OneAgent (860 smali, no Art.28 DPA). H2: RECORD_AUDIO + WRITE_CONTACTS + SYSTEM_ALERT_WINDOW in HR app. H3: AD_ID in enterprise B2B field service software. 11 tickets registered by SAP PSRT (PSINC0012180–PSINC0012194). BSI CERT-Bund notified. Deadline 2026-09-21.' },
   { target: 'Geizhals',         market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING',      finding: 'FacebookInitProvider + 2× FirebaseInitProvider — SDK auto-init before consent screen (pre-consent tracking). Settings.Secure.ANDROID_ID permanent device fingerprint: read + transmitted as request_fingerprint to api.geizhals.net. Firebase + Google Maps API keys hardcoded verbatim. RECEIVE_BOOT_COMPLETED: background processing after reboot before app opened. All 4 Google Privacy Sandbox APIs declared — TOPICS, CUSTOM_AUDIENCE, AD_ID, ATTRIBUTION. DSB in BCC. Deadline 2026-09-24.' },
@@ -710,6 +716,12 @@ const STATUS_META: Record<string, { label: string; bg: string; color: string }> 
 const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolved?: boolean; resolvedDate?: string; reportUrl?: string }> = {
   'Pokemon GO':                   { notified: '2026-06-20', disclosure: '2026-09-18' },
   'Coinbase':                     { notified: '2026-07-02', disclosure: '2026-09-30' },
+  'Booking.com':                  { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'mein dm':                      { notified: '2026-06-21', disclosure: '2026-09-19' },
+  'VR Banking / Volksbank (DE)':  { notified: '2026-06-21', disclosure: '2026-09-21' },
+  'Starbucks Austria':            { notified: '2026-06-20', disclosure: '2026-09-18' },
+  'SHEIN':                        { notified: '2026-06-21', disclosure: '2026-09-19' },
+  "wo gibt's was":                { notified: '2026-06-25', disclosure: '2026-09-19' },
   'Disneyland EU':                { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Caritas / Carla (AT)':         { notified: '2026-01-14', disclosure: '2026-09-01' },
   'EY Ecosystem':                 { notified: '2026-06-21', disclosure: '2026-09-19' },
@@ -1248,6 +1260,58 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
     { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Same screen-recording finding scored for security-of-processing — recordings route to a third-party endpoint (instabug.com) not named in the DPA/privacy policy', source: 'GL_R1_FINDINGS.md#GL-02' },
     { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Three credentials hardcoded in the release build: Google/Firebase API key + RTDB URL, Braze API key, Facebook client token', source: 'GL_R1_FINDINGS.md#GL-03' },
     { law: 'GDPR', article: 'Art. 6', kind: 'fact', note: 'READ_CONTACTS accesses the full address book including phone numbers of non-Glovo-user third parties with no consent pathway for them', source: 'GL_R1_FINDINGS.md#GL-05' },
+  ],
+
+  'ID Austria (AT.GOV)': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Firebase API key hardcoded (project digitalesamt) on the national eID app — official government notifications (tax, social security, residency) are sent via FCM, so the key enables official-notice impersonation at national scale, not just quota abuse', source: 'AUSTRIA_APP_R1_FINDINGS.md#C1' },
+    { law: 'eIDAS', article: 'Art. 8', kind: 'reference', note: 'Trust-level requirement for authentication means named alongside the Firebase finding, not separately argued', source: 'AUSTRIA_APP_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'FirebaseInitProvider + MlKitInitProvider both directBootAware=true (initOrder 100/99) — Google infrastructure initializes before the citizen unlocks the device, transmitting device data to Google LLC (US) before any interaction', source: 'AUSTRIA_APP_R1_FINDINGS.md#C2' },
+    { law: 'GDPR', article: 'Art. 44-49', kind: 'fact', note: 'App\'s own privacy policy confirms official government correspondence metadata routes through Firebase Cloud Messaging (Google, US) with no documented Art. 44-49 transfer mechanism cited', source: 'AUSTRIA_APP_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 28', kind: 'reference', note: 'Whether a compliant processing agreement exists with Google for this specific official-communication purpose is posed as an open question, not confirmed absent', source: 'AUSTRIA_APP_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 35', kind: 'reference', note: 'MANAGE_DEVICE_POLICY_LOCK_CREDENTIALS + RECEIVE_BOOT_COMPLETED combined with directBootAware Firebase posed as a DSFA question for the central state eID authentication instrument, not confirmed absent', source: 'AUSTRIA_APP_R1_FINDINGS.md#H2' },
+  ],
+
+  'Booking.com': [
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'Firebase OAuth production credentials (project booking-oauth) hardcoded in the APK of a platform processing payment data and travel itineraries for hundreds of millions of users', source: 'BOOKING_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 25(1)', kind: 'fact', note: 'Embedding authentication-system credentials in a publicly distributed binary scored as a data-protection-by-design failure', source: 'BOOKING_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'No network_security_config.xml found anywhere (aapt2-confirmed absence) — zero certificate pinning across payment (Braintree/PayPal/Venmo), booking-API and WeChat traffic, primary risk surface being hotel Wi-Fi', source: 'BOOKING_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'WeChat Open Platform SDK (Tencent, 181 classes) integrated into the globally-distributed, EU-facing APK — Tencent subject to PRC National Security Law, no EU adequacy decision for China', source: 'BOOKING_AUDIT_R1.md#C3' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)(f)', kind: 'fact', note: 'Chinese login/payment/mini-program infrastructure integration not named as a data recipient in transparency disclosures', source: 'BOOKING_AUDIT_R1.md#C3' },
+  ],
+
+  'mein dm': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Firebase API key hardcoded in plaintext (res/values/google-services.xml), project mein-dm, exposing Firestore/Realtime DB/Cloud Storage quota to anonymous abuse', source: 'MEINDM_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 35', kind: 'fact', note: 'Three integrated advertising networks (incl. Adjust) on purchase data spanning baby/infant, health-supplement, sexual-health and Naturheilkunde product categories — health/reproductive-status inference overlapping Art. 9 special-category data, no DPIA found for this high-risk combination', source: 'MEINDM_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'reference', note: 'Purchase-category health inference named as the Art. 9-adjacency rationale for the DPIA question, not asserted as confirmed special-category processing', source: 'MEINDM_AUDIT_R1.md#C2' },
+  ],
+
+  'VR Banking / Volksbank (DE)': [
+    { law: 'GDPR', article: 'Art. 5(2)', kind: 'fact', note: 'VR Banking\'s own Play Store Data Safety section states "keine Daten erhoben, keine Daten geteilt" — directly contradicted by AppsFlyer (441 smali classes) + a persistent afpurchases.db present in the binary', source: 'VOLKSBANK_ECOSYSTEM_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'VR SecureGo+ (the TAN-generator app) trusts user-installed CAs in its NSC base-config, during an active quishing (QR-phishing) campaign targeting the same banking ecosystem — a TAN MITM exposure', source: 'VOLKSBANK_ECOSYSTEM_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'reference', note: 'BehavioSec behavioral-biometrics SDK injected via JavaScript into the banking WebView; classification as special-category biometric processing posed as a question, not asserted as confirmed', source: 'VOLKSBANK_ECOSYSTEM_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 17', kind: 'fact', note: 'Play Store claims "Kontolöschung verfügbar" (account deletion available) but afpurchases.db is not deleted on account closure, contradicting the erasure claim', source: 'VOLKSBANK_ECOSYSTEM_AUDIT_R1.md#H3' },
+  ],
+
+  'Starbucks Austria': [
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'Two Firebase production keys hardcoded, one identical to a key found in the McDonald\'s Austria app audited the same session — a shared vendor/agency credential spanning two competing food/beverage loyalty platforms', source: 'STARBUCKS_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 25(1)', kind: 'fact', note: 'Same cross-app credential-overlap finding scored for privacy-by-design failure', source: 'STARBUCKS_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'NSC debug-overrides trusts user-installed certificates on a payment-capable application', source: 'STARBUCKS_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'Airship (3,622 classes) combined with cumulative GPS-tagged mobile-order records builds a daily movement/routine profile far more granular than the app\'s stated loyalty/ordering purpose', source: 'STARBUCKS_AUDIT_R1.md#H1, H2' },
+  ],
+
+  'SHEIN': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Firebase API key hardcoded in production APK (project shein-3876)', source: 'SHEIN_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'Certificate pins confirmed EXPIRED since October 2024 — over 20 months lapsed at time of audit — combined with cleartext traffic permitted globally', source: 'SHEIN_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'Facebook Conversions API sends fashion purchase data (body-metric/financial-situation inferable) to Meta', source: 'SHEIN_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'Beneficial owner is a Chinese national (Roadget Business Pte. Ltd., Singapore-registered); Chinese supply-chain and data infrastructure named as subject to PRC NSL Art. 7', source: 'SHEIN_AUDIT_R1.md#H4' },
+  ],
+
+  "wo gibt's was": [
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'ACCESS_BACKGROUND_LOCATION declared in an app whose stated purpose is "find nearby offers" — combined with RECEIVE_BOOT_COMPLETED, continuous movement-profile collection can begin at every device boot', source: 'WGW_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'Same background-location finding scored for lawful-basis — no consent flow for continuous tracking is disclosed', source: 'WGW_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 13(1)(c)', kind: 'fact', note: 'Continuous location capability not disclosed as a distinct processing purpose in app transparency text', source: 'WGW_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'Facebook Codeless Event Logging auto-captures UI interactions (deals browsed, offers tapped, categories explored) with the actual server-side event configuration invisible from the static binary', source: 'WGW_R1_FINDINGS.md#C2' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'Meta as an undisclosed recipient of shopping-behavior data via the codeless event pipeline', source: 'WGW_R1_FINDINGS.md#C2' },
   ],
 }
 
