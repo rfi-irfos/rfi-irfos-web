@@ -629,7 +629,7 @@ const AUDIT_HIGHLIGHTS: { target: string; market: string; sev: string; status: s
   { target: 'DoorDash',             market: 'NYSE',    sev: 'CRITICAL', status: 'ACK',         finding: 'com.dd.doordash. Global food delivery. Firebase API key hardcoded. security+noreply@doordash.com "Global Threat Defense Team" ACK — real security team, not CS. First responder in series from a dedicated threat defense team.' },
   { target: 'Activision / CoD',     market: 'NASDAQ',  sev: 'CRITICAL', status: 'ACK',         finding: 'com.activision.callofduty.shooter. Call of Duty Mobile — 500M+ downloads. DPO.DPO@activision.com auto-ACK — DPO mailbox confirmed correct channel. Substantive path open.' },
   { target: 'xAI / Grok',           market: 'PRIVATE', sev: 'CRITICAL', status: 'ACK',         finding: 'ai.x.grok. xAI Inc. (San Francisco). AI assistant with no NSC: conversation data (potentially Art.9 content) over unverified TLS. privacy+noreply@x.ai auto-ACK received. DPO escalation pending.' },
-  { target: 'PayPal',               market: 'NASDAQ',  sev: 'CRITICAL', status: 'ACK',         finding: 'com.paypal.android.p2pmobile. 430M+ users. Financial transaction data. noreply@paypal.com dead channel — "this email address is no longer monitored." Resend to compliance@paypal.com / dpo@paypal.com required.' },
+  { target: 'PayPal',               market: 'NASDAQ',  sev: 'CRITICAL', status: 'ESCALATED',   finding: 'com.paypal.android.p2pmobile. 430M+ users. Chucker HTTP interceptor + 4 biometric SDKs (Art.9) + Firebase key + unexplained RECORD_AUDIO. "Office of Global Customer Complaints and Advocacy" reply (2026-07-12, REF PP-ESC-127612042574605418) denied RECORD_AUDIO against our own manifest evidence and omitted the biometric finding entirely. Escalated 2026-07-13 to Head of Complaints (Fabrice Borsello).' },
   { target: 'Österr. Lotterien',    market: 'PUBLIC',  sev: 'CRITICAL', status: 'ACK',         finding: 'at.lotterien.lotterienat. Austrian state lottery (BGBl. 694/1986). GlassBox/Quantum session replay + behavioral tracking on gambling platform. help@lotterien.at auto-ACK received. DSB BCC\'d.' },
   { target: 'Last War: Survival',   market: 'PRIVATE', sev: 'CRITICAL', status: 'CS-DEFLECT', finding: 'com.fun.lastwar.gp. FunPlus International AG (Beijing/Switzerland). Chinese parent = NatIntelLaw Art. 7 risk. support@lastwar.com rubber stamp loop x2 ("Dear Commander, thank you for your interest in our game") — automated game-support queue, no DPO path. Pattern 1. R2 sent 2026-06-28 to support@lastwar.com + dpo@fun.co, drei unbequeme Fragen.' },
   { target: 'Supercell (6 apps)',   market: 'PRIVATE', sev: 'CRITICAL', status: 'ACK',         finding: 'com.supercell.clashofclans + Clash Royale + Brawl Stars + Boom Beach + Hay Day + Squad Busters. Supercell Oy (Helsinki, FI). 100M+ MAU. Firebase + ad SDK stack. [368801286] helpshift auto-ACK. Substantive path pending.' },
@@ -950,7 +950,7 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'DoorDash':                    { notified: '2026-06-28', disclosure: '2026-09-26' },
   'Activision / CoD':            { notified: '2026-06-28', disclosure: '2026-09-26' },
   'xAI / Grok':                  { notified: '2026-06-28', disclosure: '2026-09-26' },
-  'PayPal':                      { notified: '2026-06-28', disclosure: '2026-09-26' },
+  'PayPal':                      { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Österr. Lotterien':           { notified: '2026-06-28', disclosure: '2026-09-26' },
   'Supercell (6 apps)':          { notified: '2026-06-28', disclosure: '2026-09-26' },
   'bwin / Entain':               { notified: '2026-06-28', disclosure: '2026-09-26' },
@@ -1190,6 +1190,16 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
     { law: 'GDPR', article: 'Art. 45', kind: 'fact', note: 'No EU/PRC adequacy decision exists for the confirmed China data transfer, stated plainly and unhedged', source: 'DEEPSEEK_R1_FINDINGS.md#Priority-Angle Thesis (a)' },
     // Note: the report also confirms a genuine EU Art. 27 representative (Prighter Group) is in place — a
     // positive finding, not an exposure/violation, so it's excluded here rather than rendered as a fact-tier chip.
+  ],
+
+  'PayPal': [
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'Chucker HTTP interceptor (246 smali classes) confirmed present in the production APK — captures all request/response traffic to an on-device SQLite DB and persistent notification', source: 'PAYPAL_AUDIT_R1.md#C1' },
+    { law: 'PSD2', article: 'Art. 95', kind: 'reference', note: 'Payment-service-provider security-measures obligation named alongside the Chucker finding, not separately argued with dedicated PSD2 evidence', source: 'PAYPAL_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'Four independent biometric sub-processors confirmed (FaceTec, MiSnap, BlinkID, Daon DMDS — 4,269 smali classes combined), none visible as Art. 28 DPAs in the published privacy policy. PayPal\'s 2026-07-12 reply did not address this finding', source: 'PAYPAL_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 9(2)(a)', kind: 'reference', note: 'Explicit, unbundled consent requirement named for the same four-SDK biometric stack', source: 'PAYPAL_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Firebase database URL + app ID hardcoded verbatim in production strings.xml, unrotated', source: 'PAYPAL_AUDIT_R1.md#C3' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'RECORD_AUDIO permission declared in AndroidManifest.xml with no corresponding audio feature in the UI. PayPal\'s reply stated this permission "is not requested" — directly contradicts our manifest extraction from the same production build', source: 'PAYPAL_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'AD_ID permission + Adobe Marketing Cloud + Amplitude + iovation confirmed alongside financial transaction flows; PayPal\'s reply addressed only the third vendor (Datadog) named in this finding', source: 'PAYPAL_AUDIT_R1.md#H2' },
   ],
 }
 
@@ -2287,23 +2297,44 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     )}
 
                     {/* Statutes */}
-                    {!mobile && (
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3, paddingTop: 1 }}>
-                        {(AUDIT_STATUTES[a.target] ?? []).length === 0 ? (
-                          <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>—</span>
-                        ) : AUDIT_STATUTES[a.target].map((s, si) => (
-                          <span key={si} title={`${s.note} (${s.source})`} style={{
-                            fontFamily: 'monospace', fontSize: 8, fontWeight: 700, padding: '2px 5px',
-                            borderRadius: 3, letterSpacing: '0.04em', whiteSpace: 'nowrap', cursor: 'default',
-                            ...(s.kind === 'fact'
-                              ? { background: 'rgba(220,38,38,0.15)', color: '#f87171', border: '1px solid transparent' }
-                              : { background: 'transparent', color: '#999', border: '1px solid rgba(150,150,150,0.35)' }),
-                          }}>
-                            {s.article ? `${s.law} ${s.article}` : s.law}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                    {!mobile && (() => {
+                      const statutes = AUDIT_STATUTES[a.target] ?? []
+                      const STATUTE_CAP = 3
+                      const shown = statutes.slice(0, STATUTE_CAP)
+                      const rest = statutes.slice(STATUTE_CAP)
+                      return (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3, paddingTop: 1 }}>
+                          {statutes.length === 0 ? (
+                            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>—</span>
+                          ) : (
+                            <>
+                              {shown.map((s, si) => (
+                                <span key={si} title={`${s.note} (${s.source})`} style={{
+                                  fontFamily: 'monospace', fontSize: 8, fontWeight: 700, padding: '2px 5px',
+                                  borderRadius: 3, letterSpacing: '0.04em', whiteSpace: 'nowrap', cursor: 'default',
+                                  ...(s.kind === 'fact'
+                                    ? { background: 'rgba(220,38,38,0.15)', color: '#f87171', border: '1px solid transparent' }
+                                    : { background: 'transparent', color: '#999', border: '1px solid rgba(150,150,150,0.35)' }),
+                                }}>
+                                  {s.article ? `${s.law} ${s.article}` : s.law}
+                                </span>
+                              ))}
+                              {rest.length > 0 && (
+                                <span
+                                  title={rest.map(s => `${s.article ? `${s.law} ${s.article}` : s.law}: ${s.note} (${s.source})`).join('\n')}
+                                  style={{
+                                    fontFamily: 'monospace', fontSize: 8, fontWeight: 700, padding: '2px 5px',
+                                    borderRadius: 3, letterSpacing: '0.04em', whiteSpace: 'nowrap', cursor: 'default',
+                                    background: 'rgba(255,255,255,0.06)', color: 'var(--text3)', border: '1px solid rgba(150,150,150,0.25)',
+                                  }}>
+                                  +{rest.length}
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      )
+                    })()}
 
                     {/* Resolved */}
                     {!mobile && (
