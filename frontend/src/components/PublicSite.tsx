@@ -106,6 +106,7 @@ const NAV_LINKS = [
   { label: 'Standards', href: '#standards' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'Team', href: '#team' },
+  { label: 'Coop', href: '#coop-partners' },
 ]
 
 // The people — mirrors ternlang.com's roster. Kept as data so a departure/new-hire is
@@ -1723,7 +1724,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   // can only ever answer "how many page-loads scrolled past section X today", never "who".
   useEffect(() => {
     const seen = new Set<string>()
-    const sectionIds = ['research', 'projects', 'track-record', 'submit', 'methodology', 'pricing', 'standards', 'team', 'contact']
+    const sectionIds = ['research', 'projects', 'track-record', 'submit', 'methodology', 'pricing', 'standards', 'team', 'coop-partners', 'contact']
     const els = sectionIds.map(id => document.getElementById(id)).filter((e): e is HTMLElement => !!e)
     if (!els.length) return
     const io = new IntersectionObserver(entries => {
@@ -2777,6 +2778,34 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             ))}
           </div>
 
+          {/* Research Cooperation Products — via our coop partner Laura Serna
+              Gaviria / Emergent Interaction Lab. No Stripe checkout: these are
+              bespoke engagements, always "on request" via #contact. See the
+              COOP PARTNERS section below for who Laura is and the crates. */}
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Research Cooperation — via our coop partner, on request</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 16, marginBottom: 48 }}>
+            {[
+              { tier: 'Lauras Team',       desc: 'Access to the multi-agent system directed by Laura Serna Gaviria — one SWAT lead team directing 15 specialised sub-agents, built on her Emergent Interaction method. Scoped engagement per case.' },
+              { tier: 'Lauras Agents',     desc: 'Licensed access to the private agent stack behind Lauras Team (lauras-team crate, access on request per crates.io). Bespoke licensing and integration scope, agreed case by case.' },
+              { tier: 'Business Consulting Package', desc: 'Applying the Emergent Interaction / Case Intelligence method to your own organization — process reconstruction, framework derivation, agent architecture design, delivered jointly with our coop partner.' },
+            ].map((t, i) => (
+              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right'] as const)[i % 3]}>
+                <div style={{
+                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+                  borderRadius: 14, padding: '24px 20px', height: '100%',
+                  display: 'flex', flexDirection: 'column',
+                }}>
+                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
+                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>on request</div>
+                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
+                  <a href="#contact" style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
+                    request proposal →
+                  </a>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
           {/* Open Science statement */}
           <Reveal from="bottom">
           <div style={{
@@ -2918,6 +2947,62 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* COOP PARTNERS — not team, an external research partner whose method
+          Lauras Team / Call Laura / Jarvis grew out of. Kept deliberately
+          separate from the TEAM grid above (different relationship: Laura
+          directs her own research and agent architecture; RFI-IRFOS builds
+          on her direction, not the reverse). */}
+      <section id="coop-partners" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <Reveal>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>Research Cooperation</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}>built alongside our coop partner</h2>
+            <p style={{ color: '#a0a0b8', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
+              Laura Serna Gaviria directs the Emergent Interaction Lab's own research and agent architecture — Lauras Team, Call Laura, and Jarvis all grew out of her method. RFI-IRFOS builds what she directs, labelled as hers so it stays clear who did what.
+            </p>
+          </Reveal>
+          <Reveal from="bottom" delay={1}>
+            <div style={{
+              display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 20,
+              background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+              borderRadius: 14, padding: '28px 28px',
+            }}>
+              <div>
+                <p style={{ fontSize: 18, fontWeight: 800, color: '#e8e8f0' }}>Laura Serna Gaviria</p>
+                <p style={{ fontSize: 13, color: 'var(--accent-text)', marginTop: 2, fontWeight: 600 }}>Emergent Interaction Lab · Coop Partner</p>
+                <p style={{ fontSize: 13, color: '#a0a0b8', marginTop: 10, lineHeight: 1.6, maxWidth: 560 }}>
+                  Research into human-AI interaction since 2023 — the method behind Lauras Team, a multi-agent system of one SWAT lead team directing 15 specialised sub-agents.
+                </p>
+                <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer"
+                   style={{ display: 'inline-block', marginTop: 14, fontSize: 13, fontWeight: 700, color: 'var(--accent-text)', textDecoration: 'none' }}>
+                  emergent-interaction-lab.fly.dev →
+                </a>
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, maxWidth: 340 }}>
+                {[
+                  { label: 'GitHub · call-laura', href: 'https://github.com/rfi-irfos/call-laura' },
+                  { label: 'lauras-core v0.2.0', href: 'https://crates.io/crates/lauras-core' },
+                  { label: 'lauras-team v0.2.0 (auf Anfrage)', href: 'https://crates.io/crates/lauras-team' },
+                  { label: 'lauras-mcp v0.2.0', href: 'https://crates.io/crates/lauras-mcp' },
+                  { label: 'lauras-api v0.2.0', href: 'https://crates.io/crates/lauras-api' },
+                  { label: 'Live API', href: 'https://laura-api.fly.dev', live: true },
+                ].map((c, i) => (
+                  <a key={i} href={c.href} target="_blank" rel="noopener noreferrer"
+                     style={{
+                       fontSize: 11, fontWeight: 700, padding: '6px 12px', borderRadius: 999,
+                       border: `1px solid ${c.live ? 'rgba(16,185,129,.5)' : 'rgba(255,255,255,0.1)'}`,
+                       color: c.live ? '#10b981' : '#a0a0b8',
+                       textDecoration: 'none', whiteSpace: 'nowrap',
+                     }}>
+                    {c.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
