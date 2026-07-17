@@ -2505,6 +2505,52 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
     { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and INFOnline/ÖWA reach measurement run on this levy-funded regional radio app via the confirmed shared orf-push Firebase project', source: 'orf/at.orf.android.orfwien/AT_ORF_ANDROID_ORFWIEN_FINDINGS.md#Findings' },
     { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Sentry and Firebase Crashlytics both ship as duplicate crash telemetry, and audio streams over cleartext HTTP from APA streaming domains', source: 'orf/at.orf.android.orfwien/AT_ORF_ANDROID_ORFWIEN_FINDINGS.md#Findings' },
   ],
+  'ORF TVthek': [
+    { law: 'GDPR', article: 'Art. 5(1)(a)', kind: 'fact', note: 'A full commercial ad-tech and marketing-attribution stack (AppsFlyer, Google Ad Manager, Google IMA video ads) runs on the flagship app of a levy-funded public broadcaster that every Austrian household is legally compelled to fund', source: 'orftvthek2026/ORFTVTHEK_R1_FINDINGS.md#H-1' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'INFOnline IOMB registers a ContentProvider that Android instantiates at process start, before any consent screen can render, and the Google Advertising ID is actively read via AdvertisingIdClient', source: 'orftvthek2026/ORFTVTHEK_R1_FINDINGS.md#H-2' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'An extractable Firebase API key on the shared "orf-push" project is reused verbatim across the entire ORF app family, widening the blast radius of any quota exhaustion or rules misconfiguration to every app in the portfolio', source: 'orftvthek2026/ORFTVTHEK_R1_FINDINGS.md#M-1' },
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'reference', note: 'AppsFlyer attribution and Google ad targeting run on news/politics content, raising a political-opinion inference question the report frames as requiring an Art. 9(2) exception to be identified', source: 'orftvthek2026/ORFTVTHEK_R1_FINDINGS.md#Drei unbequeme Fragen' },
+  ],
+  'Klarna': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'A production banking APK ships a Chucker HTTP debug interceptor that logs credit applications, payment authorizations, bank-linking data and KYC traffic in plaintext to an on-device database', source: 'klarna2026/report/KLARNA_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 13', kind: 'fact', note: 'FullStory session replay (178 classes) instruments the app\'s core React Native financial screens, capturing taps on IBAN entry, debt/repayment schedules and card-number fields', source: 'klarna2026/report/KLARNA_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'Two Firebase API keys are hardcoded in the production APK of a licensed bank', source: 'klarna2026/report/KLARNA_AUDIT_R1.md#C3' },
+    { law: 'GDPR', article: 'Art. 22', kind: 'fact', note: 'LexisNexis Risk/ThreatMetrix performs behavioral-biometric device fingerprinting that feeds credit and fraud risk decisions, without a disclosed Art. 22(3) human-review path', source: 'klarna2026/report/KLARNA_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'Persona KYC (6,398 classes, the largest SDK in the app) performs facial-recognition liveness checks and government document scanning, run concurrently with a second KYC provider (IDnow) holding the same biometric data', source: 'klarna2026/report/KLARNA_AUDIT_R1.md#H3' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'Rokt injects targeted third-party advertising immediately after a completed BNPL payment, using the transaction context for purposes incompatible with payment processing', source: 'klarna2026/report/KLARNA_AUDIT_R1.md#H4' },
+  ],
+  'Salesforce': [
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'A hardcoded Firebase key on the shared "core-salesforce-android-apps" project sits inside Salesforce Authenticator itself, the MFA app protecting access to Salesforce\'s enterprise CRM suite, with FCM push-based MFA delivery confirmed active', source: 'salesforce2026/REPORT/SALESFORCE_ECOSYSTEM_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'Salesforce Maps requests background location and activity recognition alongside an internal API endpoint, an employee-location surveillance capability bundled into a field-service product', source: 'salesforce2026/REPORT/SALESFORCE_ECOSYSTEM_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 6(1)(a)', kind: 'fact', note: 'The Dreamforce app\'s Pointr indoor-positioning system tracks conference attendees via BLE beacons at the scale of tens of thousands of people', source: 'salesforce2026/REPORT/SALESFORCE_ECOSYSTEM_AUDIT_R1.md#Dreamforce' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'User-CA trust plus cleartext permitted for all non-Salesforce traffic across the audited app set, alongside a systemic key-management failure spanning multiple apps in the ecosystem', source: 'salesforce2026/REPORT/SALESFORCE_ECOSYSTEM_AUDIT_R1.md#Findings' },
+  ],
+  'xAI / Grok': [
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'Firebase production credentials are hardcoded and no network security config exists at all, leaving full conversation history, voice recordings and uploaded images unpinned against MITM interception', source: 'grok2026/report/GROK_XAI_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 22', kind: 'fact', note: 'Users\' full X/Twitter social graph, including posts from privately followed protected accounts, personalizes AI model responses with no individually stated lawful basis - a political and social filter-bubble effect from automated processing', source: 'grok2026/report/GROK_XAI_AUDIT_R1.md#X Social Graph' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'Intercom (3,505 classes) processes all customer-support data on US infrastructure, undisclosed as a named processor', source: 'grok2026/report/GROK_XAI_AUDIT_R1.md#Intercom' },
+    { law: 'GDPR', article: 'Art. 13', kind: 'fact', note: 'A built-in SIP/VoIP stack with MANAGE_OWN_CALLS lets Grok answer real phone calls, and a separate enterprise MDM proxy feature allows corporate IT administrators to intercept all AI conversations routed through it', source: 'grok2026/report/GROK_XAI_AUDIT_R1.md#MDM Enterprise Proxy' },
+  ],
+  'Vignetim': [
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'A Firebase API key and a Google Maps API key are both hardcoded in a simple annual-vignette purchase app whose 71,662-smali-class footprint is architecturally disproportionate to its stated purpose', source: 'vignetim2026/VIGNETIM_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'Stripe Financial Connections (open-banking bank-account linking) ships with four activities, one exported, on an app whose only transaction is a single ~€96 annual toll-vignette purchase, with no disclosed purpose in the privacy policy', source: 'vignetim2026/VIGNETIM_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'reference', note: 'RECORD_AUDIO and ACCESS_FINE_LOCATION are both requested with no discernible purpose for a toll-vignette purchase app', source: 'vignetim2026/VIGNETIM_R1_FINDINGS.md#H3' },
+  ],
+  'Disney Solitaire': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'Four separate ad SDKs (Vungle, AppLovin, Google AdMob, Firebase) all initialize via ContentProvider at process creation, before any consent screen - the most pre-consent initializations found in this audit series - and AppLovin\'s own bundled CMP cannot load before its own ContentProvider has already fired', source: 'disneysolitaire2026/DISNEYSOLITAIRE_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'A Firebase API key and an AppLovin SDK key are both hardcoded in the production APK', source: 'disneysolitaire2026/DISNEYSOLITAIRE_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'All four Android Privacy Sandbox advertising permissions are declared, including the Custom Audience interest-group API, in a Disney-branded card game', source: 'disneysolitaire2026/DISNEYSOLITAIRE_R1_FINDINGS.md#H3' },
+  ],
+  'Easy Voice Recorder (Digipom)': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'AdMob and Firebase ContentProviders both fire at process creation with directBootAware=true - before device unlock and before any consent screen - inside an app whose core function is capturing audio', source: 'easyvoice2026/EASYVOICE_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'allowBackup=true with no backup-exclusion rules makes recorded audio files and their metadata eligible for Android Cloud Backup with no user disclosure', source: 'easyvoice2026/EASYVOICE_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'A Firebase API key is hardcoded and extractable from the production binary', source: 'easyvoice2026/EASYVOICE_R1_FINDINGS.md#H2' },
+  ],
+  'McDelivery / McDonald\'s AT': [
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'Four Firebase production credentials are hardcoded in the Austrian loyalty app (McDonald\'s Werbegesellschaft mbH, Brunn am Gebirge), confirmed as the live EU-region Firebase database', source: 'mcdonalds2026/report/MCDONALDS_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'No certificate pinning exists on a loyalty application that processes payment data', source: 'mcdonalds2026/report/MCDONALDS_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'reference', note: 'Complete meal-ordering history feeds three separate US behavioral-tracking platforms (Kochava, Braze, mParticle), including a confirmed-active Android Protected Audience API call that the report frames as processing health-adjacent dietary inference data', source: 'mcdonalds2026/report/MCDONALDS_AUDIT_R1.md#Meal Ordering History' },
+  ],
 }
 
 const CONTACT_CARDS = [
