@@ -2372,6 +2372,53 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
     { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'Firebase, Facebook (with AdvertiserIDCollectionEnabled=true), Vungle, and Unity Ads all auto-initialize pre-consent with no integrated CMP found anywhere in the binary', source: 'ichat2026/ICHAT_R1_FINDINGS.md#H1' },
     { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'RECORD_AUDIO permissions combined with Tencent Cloud real-time ASR (speech-to-text) suggest voice content from intimate AI conversations may be transcribed by a PRC cloud processor', source: 'ichat2026/ICHAT_R1_FINDINGS.md#H2' },
   ],
+  'Österr. Lotterien': [
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'The state lottery app instructs users to enable Android "install from unknown sources" to sideload a full APK outside the Play Store, bypassing Play Protect security review', source: 'lotto2026_apk/report/LOTTO_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 25(1)', kind: 'fact', note: 'The sideload instruction and its security implications are not disclosed in the app\'s privacy or security documentation', source: 'lotto2026_apk/report/LOTTO_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'A production Firebase API key and database URL (project "gluecksbote-c9560") are hardcoded and extractable from the Play Store APK in under 60 seconds', source: 'lotto2026_apk/report/LOTTO_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'A full Facebook SDK (1,234 classes, including Facebook Gaming Services and a production-shipped Flipper network debugger) processes lottery play data with no lawful-basis or transfer mechanism disclosed', source: 'lotto2026_apk/report/LOTTO_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'All four Android Privacy Sandbox advertising permissions are declared simultaneously on a state lottery platform with no individual lawful basis stated for each pipeline', source: 'lotto2026_apk/report/LOTTO_AUDIT_R1.md#H2' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'Precise GPS location is collected with no disclosed purpose beyond what IP-based jurisdictional checks would already provide for an Austrian-only lottery', source: 'lotto2026_apk/report/LOTTO_AUDIT_R1.md#H3' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'Adjust (Berlin) and Adform (Copenhagen) both run simultaneous, competing attribution tracking with neither individually named as a data processor', source: 'lotto2026_apk/report/LOTTO_AUDIT_R1.md#H4' },
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'Salesforce Marketing Cloud processes lottery play/jackpot-engagement behavioral data on US infrastructure without disclosure, raising a tension with the operator\'s responsible-gambling duties', source: 'lotto2026_apk/report/LOTTO_AUDIT_R1.md#H5' },
+  ],
+  'heyOBI': [
+    { law: 'GDPR', article: 'Art. 32(1)', kind: 'fact', note: 'A production Firebase API key, app ID, storage bucket and Google OAuth client are hardcoded and extractable from the public APK', source: 'heyobi2026/HEYOBI_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'Both ContentSquare (session replay, 425 smali) and Heap (behavioral autocapture, 92 smali) run simultaneously - a 517-smali dual-layer capture of every screen and interaction on a retail loyalty app', source: 'heyobi2026/HEYOBI_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 25', kind: 'fact', note: 'ContentSquare\'s CSQInitializer auto-starts via AndroidX Startup before any screen is shown or consent is given', source: 'heyobi2026/HEYOBI_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 6(1)(a)', kind: 'fact', note: 'Four overlapping ad-tracking mechanisms (Topics API, Advertising ID, ext.adservices, legacy GMS AD_ID) link loyalty purchase history to cross-app device behavior', source: 'heyobi2026/HEYOBI_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'GPS location combined with Bluetooth beacon scanning builds a physical in-store movement profile beyond what in-store navigation alone requires, with no disclosed retention or third-party sharing', source: 'heyobi2026/HEYOBI_AUDIT_R1.md#H2' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'Webtrekk/Mapp Digital feeds loyalty-app behavioral data into INFOnline national audience measurement as an undisclosed secondary purpose', source: 'heyobi2026/HEYOBI_AUDIT_R1.md#H3' },
+  ],
+  'idealo': [
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'A production Firebase API key and database URL are hardcoded in the shipped APK', source: 'idealo2026/IDEALO_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'The Android Privacy Sandbox Custom Audience permission builds persistent interest-groups from shopping search queries (price range, model) for cross-app ad retargeting, combined with Braze and Facebook SDK', source: 'idealo2026/IDEALO_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'Firebase and Adjust both initialize via ContentProvider before any consent screen, and a Firebase measurement receiver fires on BOOT_COMPLETED before first app launch', source: 'idealo2026/IDEALO_R1_FINDINGS.md#H2' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'idealo\'s own tracking broadcast receiver is declared exported=true with no permission protection, letting any other app on the device inject or trigger tracking events', source: 'idealo2026/IDEALO_R1_FINDINGS.md#H3' },
+  ],
+  'immowelt': [
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'A single hardcoded credential serves as both the Firebase and Google Maps API key, and a Firebase Realtime Database URL is exposed - independently confirmed exploitable for quota DoS, FCM phishing, user enumeration and password-reset flooding', source: 'immowelt2026/IMMOWELT_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'FirebaseInitProvider and AdMob\'s MobileAdsInitProvider both initialize before any Activity - and therefore before the app\'s own Usercentrics consent dialog can render', source: 'immowelt2026/IMMOWELT_R1_FINDINGS.md#C2' },
+    { law: 'GDPR', article: 'Art. 44-49', kind: 'fact', note: 'A hardcoded Adjust attribution token orchestrates a 5-platform retargeting stack including TikTok/ByteDance, with no transfer mechanism disclosed for housing-search and income-adjacent data', source: 'immowelt2026/IMMOWELT_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'Household net income (7 brackets), housing-benefit status and employment status collected in landlord contact forms are shared with unnamed "AVIV Group entities and external service providers"', source: 'immowelt2026/IMMOWELT_R1_FINDINGS.md#H2' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'RECORD_AUDIO permission and call-tracking metadata (timing, duration, outcome) from landlord calls are transmitted to the same unnamed external service providers', source: 'immowelt2026/IMMOWELT_R1_FINDINGS.md#H3' },
+  ],
+  'ivie': [
+    { law: 'GDPR', article: 'Art. 13(1)(c)', kind: 'fact', note: 'The app\'s own permission-rationale copy tells users it collects "exact background location data (always)" while the binary confirms an efficient, event-driven geofencing implementation, not continuous polling - a transparency/accuracy mismatch in the description of processing', source: 'ivie2026/IVIE_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 7(1)', kind: 'fact', note: 'FirebaseInitProvider initializes before any Activity can render the app\'s own genuinely-integrated OneTrust consent banner, despite per-vendor consent categories being modeled in the same codebase', source: 'ivie2026/IVIE_R1_FINDINGS.md#H2' },
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'The Vienna City Card table (card number, tickets, booking code, cardholder name) is stored in a plaintext local database, despite the app shipping a working Android-Keystore-backed encryption layer used elsewhere in the same codebase', source: 'ivie2026/IVIE_R1_FINDINGS.md#M1' },
+    { law: 'GDPR', article: 'Art. 12(1)', kind: 'fact', note: 'The published privacy policy states Facebook is used for login only, while the binary bundles Facebook App Events and Install Referrer attribution components plus the app\'s own internal "Facebook Consent" category', source: 'ivie2026/IVIE_R1_FINDINGS.md#M3' },
+  ],
+  'kicker': [
+    { law: 'GDPR', article: 'Art. 44-49', kind: 'fact', note: 'A Russian ad SDK (Yandex Mobile Ads mediation adapter) is bundled in a mainstream German publisher\'s app, routing bid/impression and device-ID signals to a Russian-headquartered vendor', source: 'kicker2026/KICKER_R1_FINDINGS.md#H-1' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'The shipped network security config sets cleartextTrafficPermitted="true" globally for all domains, an explicit opt-in to cleartext on a platform whose targetSdk default is deny', source: 'kicker2026/KICKER_R1_FINDINGS.md#H-2' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'At least 15 monetization/tracking SDKs are bundled, several auto-initializing via ContentProvider at process start ahead of any consent decision', source: 'kicker2026/KICKER_R1_FINDINGS.md#M-1' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Firebase and Google Maps API keys plus a Facebook app ID are extractable in plaintext from the shipped resources', source: 'kicker2026/KICKER_R1_FINDINGS.md#M-2' },
+  ],
+  'Strava': [
+    { law: 'GDPR', article: 'Art. 32(2)', kind: 'fact', note: 'A long-lived, unrotated production Firebase API key and database URL (legacy project-number naming, consistent with being present since Strava\'s initial Firebase integration) are hardcoded in the shipped APK', source: 'strava2026/report/STRAVA_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'reference', note: 'A network security config is present but ships no production certificate-pinning domain entries, leaving all Strava API traffic - including continuous GPS and health-adjacent fitness data - unpinned', source: 'strava2026/report/STRAVA_AUDIT_R1.md#C2' },
+  ],
 }
 
 const CONTACT_CARDS = [
