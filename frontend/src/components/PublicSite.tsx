@@ -3216,6 +3216,28 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 ))}
               </div>
             </div>
+            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10, marginTop: 16 }}>
+              {[
+                { name: 'Case Intake Scan', price: '€700', href: 'https://buy.stripe.com/9B6dRbdd6bU3euxazC7N60i' },
+                { name: 'Systemaudit', price: '€4.500', href: 'https://buy.stripe.com/14AdRbgpi1fpdqt6jm7N60r' },
+                { name: 'Emergent Case Intelligence Sprint', price: '€12.500', href: 'https://buy.stripe.com/bJe9AVc927DNdqtePS7N60m' },
+                { name: 'Multi-Agent System Design', price: '€24.500', href: 'https://buy.stripe.com/00w3cxc92bU30DH2367N60n' },
+                { name: 'System Design & Deployment', price: '€55.000', href: 'https://buy.stripe.com/dRm9AVgpi7DNdqt37a7N60A' },
+              ].map((p, i) => (
+                <a key={i} href={p.href} target="_blank" rel="noopener noreferrer" style={{
+                  display: 'flex', flexDirection: 'column', gap: 4, padding: '14px 16px',
+                  background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: 10, textDecoration: 'none', transition: 'border-color .15s',
+                }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#e8e8f0' }}>{p.name}</span>
+                  <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-text)' }}>{p.price}</span>
+                </a>
+              ))}
+            </div>
+            <p style={{ fontSize: 11, color: '#606080', marginTop: 10 }}>
+              5 of her packages, shown as entry points across engagement phases — the full list depends on where a company is in its process. Full pricing on request via{' '}
+              <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer" style={{ color: '#a0a0b8' }}>emergent-interaction-lab.fly.dev</a>.
+            </p>
           </Reveal>
         </div>
       </section>
