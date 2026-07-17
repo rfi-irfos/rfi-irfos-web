@@ -2563,6 +2563,13 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
     { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'A hardcoded, extractable Firebase API key and a Firebase Realtime Database URL are shipped in the production APK', source: 'hot2026/HOT_R1_FINDINGS.md#H1' },
     { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'Sentry crash reporting is routed to Sentry\'s US ingest endpoint rather than its EU region, and auto-initializes before the app\'s own consent gate', source: 'hot2026/HOT_R1_FINDINGS.md#H2' },
   ],
+  'PolyBuzz / Speak Master': [
+    { law: 'GDPR', article: 'Art. 44-49', kind: 'fact', note: 'The app presents as a US LLC with chat data claimed to be stored in Singapore, but its Application class, file providers and production backend/telemetry/upload endpoints all resolve to Zuoyebang, a Beijing-based operator - the published privacy policy names neither Zuoyebang nor China', source: 'speakmaster2026/SPEAKMASTER_R1_FINDINGS.md#C1' },
+    { law: 'PRC National Intelligence Law', article: 'Art. 7', kind: 'fact', note: 'Zuoyebang, the confirmed real operator behind the US/Singapore front, is a Chinese organization subject to this compelled state-intelligence-assistance provision', source: 'speakmaster2026/SPEAKMASTER_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'Captured voice audio is routed to a Zuoyebang speech-evaluation/pronunciation engine and an ASR backend on Chinese infrastructure - voice as biometric-adjacent personal data', source: 'speakmaster2026/SPEAKMASTER_R1_FINDINGS.md#Voice Pipeline' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'A saturated stack of Chinese and Western ad/analytics SDKs (ByteDance Pangle, Mintegral, BIGO Ads, Tencent Bugly/Mars/KMS/CLS, AppLovin, Unity Ads, ironSource and more) all auto-initialize via ContentProvider at process start, before any consent dialog', source: 'speakmaster2026/SPEAKMASTER_R1_FINDINGS.md#C3' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'An 18+ adult/NSFW companion mode is gated only by a self-declared, edit-once birthday, alongside AI-avatar generation from an uploaded facial reference image with no robust age-assurance step found', source: 'speakmaster2026/SPEAKMASTER_R1_FINDINGS.md#H1' },
+  ],
 }
 
 const CONTACT_CARDS = [
