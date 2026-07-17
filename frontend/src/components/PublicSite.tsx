@@ -715,17 +715,22 @@ const SEV_COLOR: Record<string, string> = {
   MEDIUM:   'var(--sev-med)',
 }
 
+// Status labels are deliberately colorless — black-on-white in light mode,
+// white-on-black in dark mode (both via --text/--surface-sunken, same as
+// body text), no red/orange/green emotional coding by status. High-contrast
+// mode gets its own amber/black treatment via .site-status-badge in App.css,
+// consistent with the site's existing HC token overrides.
 const STATUS_META: Record<string, { label: string; bg: string; color: string }> = {
-  WAITING:      { label: 'WAITING',     bg: 'rgba(150,150,150,0.12)', color: '#999' },
-  ACK:          { label: 'ACK',         bg: 'rgba(59,130,246,0.15)',  color: '#60a5fa' },
-  'CS-DEFLECT': { label: 'CS-DEFLECT',  bg: 'rgba(234,88,12,0.15)',   color: '#fb923c' },
-  ESCALATED:    { label: 'ESCALATED',   bg: 'rgba(234,179,8,0.15)',   color: '#facc15' },
-  SUBSTANTIVE:  { label: 'SUBSTANTIVE', bg: 'rgba(34,197,94,0.18)',   color: '#4ade80' },
-  ENGAGED:      { label: 'ENGAGED',     bg: 'rgba(20,184,166,0.18)',  color: '#2dd4bf' },
-  PAID:         { label: 'PAID',        bg: 'rgba(234,179,8,0.25)',   color: '#fbbf24' },
-  SILENT:       { label: 'SILENT',      bg: 'rgba(220,38,38,0.15)',   color: '#f87171' },
-  REGULATOR:    { label: 'REGULATOR',   bg: 'rgba(168,85,247,0.20)',  color: '#c084fc' },
-  RESOLVED:     { label: 'RESOLVED',    bg: 'rgba(0,245,196,0.20)',   color: '#00f5c4' },
+  WAITING:      { label: 'WAITING',     bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  ACK:          { label: 'ACK',         bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  'CS-DEFLECT': { label: 'CS-DEFLECT',  bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  ESCALATED:    { label: 'ESCALATED',   bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  SUBSTANTIVE:  { label: 'SUBSTANTIVE', bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  ENGAGED:      { label: 'ENGAGED',     bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  PAID:         { label: 'PAID',        bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  SILENT:       { label: 'SILENT',      bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  REGULATOR:    { label: 'REGULATOR',   bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  RESOLVED:     { label: 'RESOLVED',    bg: 'var(--surface-sunken)', color: 'var(--text)' },
 }
 
 const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolved?: boolean; resolvedDate?: string; reportUrl?: string }> = {
@@ -3495,7 +3500,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
                     {/* Status */}
                     <div style={{ paddingTop: 1 }}>
-                      <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: sm.bg, color: sm.color, letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>{sm.label}</span>
+                      <span className="site-status-badge" style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3, border: '1px solid var(--border)', background: sm.bg, color: sm.color, letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>{sm.label}</span>
                     </div>
 
                     {/* SEV */}

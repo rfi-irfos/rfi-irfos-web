@@ -94,6 +94,11 @@ button { cursor: pointer; font-family: inherit; }
 .site[data-theme="hc"] input:focus-visible,
 .site[data-theme="hc"] textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
+/* Ledger status badges: colorless in light/dark (black-on-white / white-on-black,
+   same as body text - no red/orange/green severity coding). HC gets its own
+   amber-on-black treatment, consistent with the rest of the HC token overrides. */
+.site[data-theme="hc"] .site-status-badge { background: #111111 !important; color: #ffd400 !important; border-color: #ffd400 !important; }
+
 /* ── NAV ─────────────────────────────────────────────────────────────────── */
 .site-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 300;
