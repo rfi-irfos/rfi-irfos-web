@@ -2807,6 +2807,64 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
     { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'The identical Facebook SDK (App ID 740224816069682) is active in both BetterHelp and TeenCounseling, post-dating BetterHelp\'s own 2023 $7.8M FTC settlement for sharing therapy data with advertisers', source: 'R1 email REF:BETTERHELP-C1-R1 (2026-06-22)#Findings (no local .md report)' },
     { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Therapy session data belonging to minors (via TeenCounseling) is eligible for Google Cloud Backup', source: 'R1 email REF:BETTERHELP-C1-R1 (2026-06-22)#Findings (no local .md report)' },
   ],
+  'Aidu.de': [
+    { law: 'GDPR', article: 'Art. 6', kind: 'fact', note: 'UXCam (38 classes, including a screenshot module) initializes via UXCamContentProvider immediately on process attach, before the app\'s own Usercentrics consent dialog can render - capturing and transmitting screenshots to US infrastructure before any consent exists', source: 'R1 email REF:AIDU-2026-R1 (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 13(1)(a)', kind: 'fact', note: 'The app\'s Firebase backend project is named "ab-in-den-urlaub-flutter-prod" - a different brand and product than Aidu.de - indicating either an undisclosed controller substitution or undisclosed shared-infrastructure processing', source: 'R1 email REF:AIDU-2026-R1 (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 13', kind: 'fact', note: 'Exponea/Bloomreach (1,016 classes, the largest SDK in the app) runs a full behavioral Customer Data Platform not named as a data processor', source: 'R1 email REF:AIDU-2026-R1 (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'Amadeus Merci': [
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'The app scans physical payment cards via Microblink BlinkCard (capturing card numbers) and processes NuDetect sensor-level behavioral biometrics', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'PRC National Intelligence Law', kind: 'fact', note: 'Both Alipay and Huawei HMS SDKs are present, a dual exposure to China\'s National Intelligence Law Art. 7 compelled-cooperation provision', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'Caritas Wien Intranet': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'The internal intranet app is publicly downloadable via Google Play, and its production, test and dev environments are all publicly exposed', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Authentication uses LM-hash password hashing (a cryptographically broken legacy scheme) and cleartext traffic is permitted', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'KICK': [
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'Biometric data processing is present in a livestreaming application, alongside an Expo pedometer SDK collecting step-count/movement data with no disclosed necessity for a streaming app', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'Firebase initializes before any consent screen, and a hardcoded API key plus personalized-ad tracking are both present', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'VIG KV App (AT)': [
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'Exponea, a full Customer Data Platform, processes health insurance data', source: 'R1 email REF:VIG-KVAPP-2026 (2026-06-26)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'An attribution API endpoint is open to all apps, not restricted to the VIG KV app itself', source: 'R1 email REF:VIG-KVAPP-2026 (2026-06-26)#Findings (no local .md report)' },
+  ],
+  'ZAPPN (ProSiebenSat.1)': [
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'Braze runs with geofencing enabled - a continuously-running location-tracking mechanism - in a TV streaming app (joyn AT) with no disclosed necessity for continuous location tracking of TV viewers', source: 'R1 email REF:#JOYN-001 (2026-06-25)#Findings (no local .md report)' },
+  ],
+  'iJoysoft Camera': [
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'The camera app ships Chinese advertising SDKs with an explicit cleartext-traffic override', source: 'R1 email REF:IJOYSOFT-R1 (2026-06-25)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'Ad SDKs auto-initialize before any consent screen', source: 'R1 email REF:IJOYSOFT-R1 (2026-06-25)#Findings (no local .md report)' },
+  ],
+  'GunjanApps (IE)': [
+    { law: 'GDPR', article: 'Art. 8', kind: 'fact', note: 'The children\'s app portfolio (ElePant/Ijjus World/PuzzlEasy) ships advertising SDKs collecting the Google Advertising ID across all titles, on apps directed at toddlers', source: 'R1 email REF:GUNJAN-R1 (2026-06-25)#Findings (no local .md report)' },
+  ],
+  'Super Four Games (UK)': [
+    { law: 'GDPR', article: 'Art. 8', kind: 'fact', note: 'A preschool number-tracing app (Write 123) runs an advertising SDK that collects the Google Advertising ID from young children', source: 'R1 email REF:SUPER4-R1 (2026-06-25)#Findings (no local .md report)' },
+  ],
+  'IDZ Digital / Timpy (IN)': [
+    { law: 'GDPR', article: 'Art. 8', kind: 'fact', note: 'Three toddler apps under one publisher (Timpy Games/KidloLand/"iz") all ship advertising SDKs collecting the Google Advertising ID from children', source: 'R1 email REF:IDZ-R1 (2026-06-25)#Findings (no local .md report)' },
+  ],
+  'LEGO Bluey (IE)': [
+    { law: 'GDPR', article: 'Art. 8', kind: 'fact', note: 'The LEGO Bluey app collects the Android Advertising Identifier from children, with the StoryToys publisher confirmed as the controller', source: 'R1 email REF:STORYTOYS-R1 (2026-06-25)#Findings (no local .md report)' },
+  ],
+  'BabyBus (CN)': [
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'A toddler app routes children\'s data through nineteen separate advertising networks', source: 'R1 email REF:BABYBUS-R1 (2026-06-25)#Findings (no local .md report)' },
+  ],
+  'Vlad & Nikita (CY)': [
+    { law: 'GDPR', article: 'Art. 8', kind: 'fact', note: 'A children\'s app activates the microphone and camera and contains 831 device-identifier references', source: 'R1 email REF:RFI-2026-MB-001 (2026-06-24)#Findings (no local .md report)' },
+  ],
+  'Roma & Diana (ID)': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Three Firebase credentials and a YouTube API key are embedded in the production binary of a children\'s app, extractable in a network request', source: 'R1 email REF:RFI-2026-EP-001 (2026-06-24)#Findings (no local .md report)' },
+  ],
+  'Last War: Survival': [
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'The app\'s privacy policy states user data is protected, while the binary routes voice audio through Tencent\'s infrastructure - a China National Intelligence Law Art. 7 exposure not disclosed in the policy', source: 'R1 email REF:RFI-2026-LW-001 (2026-06-23)#Findings (no local .md report)' },
+  ],
+  'Supercell (6 apps)': [
+    { law: 'PRC National Intelligence Law', article: 'Art. 7', kind: 'fact', note: 'Tencent\'s GME (Game Multimedia Engine) SDK is confirmed present in all six Supercell titles, combined with cross-game behavioral profiling affecting every European player of the portfolio', source: 'R1 email (2026-06-23)#Findings (no local .md report)' },
+  ],
+  'WePlay (SG)': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'A hardcoded master analytics key is shipped to every user, alongside 5,594 Tencent files bundled into the party-game app', source: 'R1 email REF:RFI-2026-WJ-001 (2026-07-03)#Findings (no local .md report)' },
+  ],
 }
 
 const CONTACT_CARDS = [
