@@ -2760,6 +2760,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   }
 
   const openCheckoutModal = (tier: string) => {
+    // Own-offer click tracking (Lighthouse Finance > Funnels): same first-party
+    // pixel already used for pageviews on this site, tagged so Lighthouse can
+    // break clicks down per tier - "who clicks ours, how many" per tier.
+    new Image().src = `${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&s=${encodeURIComponent('offer_click:' + tier)}`
     setAgbChecked(false)
     setB2bChecked(false)
     setCheckoutModal(tier)
