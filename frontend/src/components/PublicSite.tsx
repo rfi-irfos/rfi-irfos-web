@@ -341,6 +341,13 @@ const PROJECTS = [
     tag: 'open source · privacy',
   },
   {
+    name: 'rfi-irfos port prox',
+    sub: 'offline port-checker PWA',
+    desc: 'Honest, offline-installable port-checker for your phone. Real WebSocket connect-timing probe of localhost — no fake scanning, no fake "close" button. Shows real per-OS terminal commands instead. Sibling to invisible layer.',
+    link: 'https://github.com/rfi-irfos/rfi-irfos-port-prox',
+    tag: 'open source · privacy',
+  },
+  {
     name: 'NFCS',
     sub: 'ecocentric research',
     desc: 'Neurobiological-Fitness Consequence Separation. Agent-based model proving the global food system produces 1.64x the calories needed to feed every person on Earth. The scarcity is not thermodynamic — it is organizational. Manufactured, not physical.',
@@ -3185,11 +3192,17 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, maxWidth: 340 }}>
                 {[
                   { label: 'GitHub · call-laura', href: 'https://github.com/rfi-irfos/call-laura' },
+                  { label: 'GitHub · lauras-agents', href: 'https://github.com/rfi-irfos/lauras-agents' },
+                  { label: 'GitHub · lauras-agents-public', href: 'https://github.com/rfi-irfos/lauras-agents-public' },
+                  { label: 'GitHub · coevolution-factory', href: 'https://github.com/rfi-irfos/coevolution-factory' },
                   { label: 'lauras-core v0.2.0', href: 'https://crates.io/crates/lauras-core' },
                   { label: 'lauras-team v0.2.0 (auf Anfrage)', href: 'https://crates.io/crates/lauras-team' },
                   { label: 'lauras-mcp v0.2.0', href: 'https://crates.io/crates/lauras-mcp' },
                   { label: 'lauras-api v0.2.0', href: 'https://crates.io/crates/lauras-api' },
+                  { label: 'OSF · HC9ZB', href: 'https://doi.org/10.17605/OSF.IO/HC9ZB' },
+                  { label: 'OSF · QCVJB', href: 'https://doi.org/10.17605/OSF.IO/QCVJB' },
                   { label: 'Live API', href: 'https://laura-api.fly.dev', live: true },
+                  { label: 'Coevolution Factory', href: 'https://coevolution-factory-sparkling-mountain-1802.fly.dev', live: true },
                 ].map((c, i) => (
                   <a key={i} href={c.href} target="_blank" rel="noopener noreferrer"
                      style={{
