@@ -2424,6 +2424,87 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
     { law: 'GDPR', article: 'Art. 32(2)', kind: 'fact', note: 'A long-lived, unrotated production Firebase API key and database URL (legacy project-number naming, consistent with being present since Strava\'s initial Firebase integration) are hardcoded in the shipped APK', source: 'strava2026/report/STRAVA_AUDIT_R1.md#C1' },
     { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'reference', note: 'A network security config is present but ships no production certificate-pinning domain entries, leaving all Strava API traffic - including continuous GPS and health-adjacent fitness data - unpinned', source: 'strava2026/report/STRAVA_AUDIT_R1.md#C2' },
   ],
+  'ORF News': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer marketing-attribution, Google Ad Manager and reading of the Google Advertising ID all run on a levy-funded public broadcaster\'s news app', source: 'orf/at.orf.news/AT.ORF.NEWS_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'News-reading behaviour on a political-content app is processed through the same ad-tech/attribution stack, raising political-opinion inference risk', source: 'orf/at.orf.news/AT.ORF.NEWS_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'Ships its own Firebase project ("news-8d549") with an extractable production API key, distinct from the shared orf-push project', source: 'orf/at.orf.news/AT.ORF.NEWS_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'usesCleartextTraffic="true" with no network security config restricting it, and allowBackup="true" - both regressions versus the hardened ORF TVthek baseline', source: 'orf/at.orf.news/AT.ORF.NEWS_FINDINGS.md#Findings' },
+  ],
+  'ORF ORFit': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'No consent-management platform of any kind (no Didomi/OneTrust/Usercentrics/Sourcepoint/UMP) was found, while AppsFlyer, Google AdMob, AppLovin and the Google Advertising ID all still run', source: 'orf/com.catapult.orf/COM.CATAPULT.ORF_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'Activity-recognition, fine/coarse location and a full Bluetooth cluster feed a Polar heart-rate sensor integration - health-adjacent special-category data - with no CMP gating any of it', source: 'orf/com.catapult.orf/COM.CATAPULT.ORF_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 26', kind: 'fact', note: 'ORF user telemetry from this app is routed into a third-party vendor\'s own Firebase project ("catapult-268006"), not ORF\'s shared orf-push project, raising joint-controller and data-location questions', source: 'orf/com.catapult.orf/COM.CATAPULT.ORF_FINDINGS.md#Findings' },
+  ],
+  'ORF Sport': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and the Google Advertising ID run on this levy-funded broadcaster\'s sport app, sharing the same confirmed ad-tech spine as the rest of the ORF family', source: 'orf/at.orf.sport/AT.ORF.SPORT_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'Ships its own Firebase project ("sport-9a2eb") with an extractable production API key, distinct from the shared orf-push project', source: 'orf/at.orf.sport/AT.ORF.SPORT_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'usesCleartextTraffic="true" plus a network security config that also permits cleartext, and allowBackup="true" - regressions versus the hardened ORF TVthek baseline', source: 'orf/at.orf.sport/AT.ORF.SPORT_FINDINGS.md#Findings' },
+  ],
+  'ORF Fußball': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'The heaviest ad-tech/attribution and audience-measurement stack of the whole ORF set - AppsFlyer, Google Ad Manager, GfK Sensic and INFOnline together - runs on this levy-funded broadcaster\'s football app', source: 'orf/at.orf.sport.fussball/AT.ORF.SPORT.FUSSBALL_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'Confirmed on the shared orf-push Firebase project with the same extractable production API key used across the ORF family', source: 'orf/at.orf.sport.fussball/AT.ORF.SPORT.FUSSBALL_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'usesCleartextTraffic="true", and a malformed all-caps ANDROID.PERMISSION.READ_PHONE_STATE declaration consistent with an unreviewed bundled SDK artifact', source: 'orf/at.orf.sport.fussball/AT.ORF.SPORT.FUSSBALL_FINDINGS.md#Findings' },
+  ],
+  'ORF Teletext': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and the Google Advertising ID run on the shared orf-push Firebase project - the same ORF ad-tech spine as the audio family, unusual for a plain-text teletext service', source: 'orf/at.orf.teletext/AT.ORF.TELETEXT_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'Teletext news pages are read through the same tracking stack, raising a political-opinion inference risk from news-consumption behaviour', source: 'orf/at.orf.teletext/AT.ORF.TELETEXT_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Network security config permits cleartext globally and bundles two additional custom CA trust roots beyond the system set, without disclosed justification', source: 'orf/at.orf.teletext/AT.ORF.TELETEXT_FINDINGS.md#Findings' },
+  ],
+  'ORF Ö1': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and the Google Advertising ID run on the confirmed shared orf-push Firebase project, the same ad-tech spine as the rest of the ORF audio family', source: 'orf/at.orf.oe1/AT.ORF.OE1_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Network security config permits cleartext HTTP globally for legacy APA radio-stream domains, exposing listening behaviour to on-path observation', source: 'orf/at.orf.oe1/AT.ORF.OE1_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'reference', note: 'ACCESS_COARSE_LOCATION is requested by a radio-only app with no disclosed purpose', source: 'orf/at.orf.oe1/AT.ORF.OE1_FINDINGS.md#Findings' },
+  ],
+  'ORF Ö3': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and the Google Advertising ID run on the confirmed shared orf-push Firebase project, identical to the rest of the ORF audio family', source: 'orf/at.orf.android.oe3/AT_ORF_ANDROID_OE3_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Network security config permits cleartext HTTP for ALL domains (not just streaming, unlike the regional-radio builds), and requests CAMERA, RECORD_AUDIO, fine location and write-storage beyond the regional set', source: 'orf/at.orf.android.oe3/AT_ORF_ANDROID_OE3_FINDINGS.md#Findings' },
+  ],
+  'ORF SOUND': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer and Google Ad Manager run at their heaviest footprint of the whole ORF audio set on this central audio-hub app, on the confirmed shared orf-push Firebase project', source: 'orf/at.orf.sound/AT.ORF.SOUND_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'Requests both ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION on an audio-streaming app, a notable overreach versus the rest of the family', source: 'orf/at.orf.sound/AT.ORF.SOUND_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'usesCleartextTraffic="true" and allowBackup="true"', source: 'orf/at.orf.sound/AT.ORF.SOUND_FINDINGS.md#Findings' },
+  ],
+  'ORF Radio FM4': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and the Google Advertising ID run on the confirmed shared orf-push Firebase project despite the app shipping under a non-ORF third-party package namespace', source: 'orf/at.zuggabecka.radiofm4/AT.ZUGGABECKA.RADIOFM4_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 26', kind: 'fact', note: 'An external agency build (package at.zuggabecka.radiofm4) has access to ORF\'s own Firebase project, raising a processor/joint-controller mapping question not present on ORF\'s own in-house builds', source: 'orf/at.zuggabecka.radiofm4/AT.ZUGGABECKA.RADIOFM4_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'usesCleartextTraffic="true" (the shipped network security config is present but empty, so it does not actually restrict anything) and allowBackup="true"', source: 'orf/at.zuggabecka.radiofm4/AT.ZUGGABECKA.RADIOFM4_FINDINGS.md#Findings' },
+  ],
+  'ORF Radio Burgenland': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and INFOnline/ÖWA reach measurement run on this levy-funded regional radio app via the confirmed shared orf-push Firebase project', source: 'orf/at.orf.android.orfburgenland/AT_ORF_ANDROID_ORFBURGENLAND_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Sentry and Firebase Crashlytics both ship as duplicate crash telemetry, and audio streams over cleartext HTTP from APA streaming domains', source: 'orf/at.orf.android.orfburgenland/AT_ORF_ANDROID_ORFBURGENLAND_FINDINGS.md#Findings' },
+  ],
+  'ORF Radio Kärnten': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and INFOnline/ÖWA reach measurement run on this levy-funded regional radio app via the confirmed shared orf-push Firebase project', source: 'orf/at.orf.android.orfkaernten/AT_ORF_ANDROID_ORFKAERNTEN_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Sentry and Firebase Crashlytics both ship as duplicate crash telemetry, and audio streams over cleartext HTTP from APA streaming domains', source: 'orf/at.orf.android.orfkaernten/AT_ORF_ANDROID_ORFKAERNTEN_FINDINGS.md#Findings' },
+  ],
+  'ORF Radio Niederösterreich': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and INFOnline/ÖWA reach measurement run on this levy-funded regional radio app via the confirmed shared orf-push Firebase project', source: 'orf/at.orf.android.orfniederoesterreich/AT_ORF_ANDROID_ORFNIEDEROESTERREICH_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Sentry and Firebase Crashlytics both ship as duplicate crash telemetry, and audio streams over cleartext HTTP from APA streaming domains', source: 'orf/at.orf.android.orfniederoesterreich/AT_ORF_ANDROID_ORFNIEDEROESTERREICH_FINDINGS.md#Findings' },
+  ],
+  'ORF Radio Oberösterreich': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and INFOnline/ÖWA reach measurement run on this levy-funded regional radio app via the confirmed shared orf-push Firebase project', source: 'orf/at.orf.android.orfoberoesterreich/AT_ORF_ANDROID_ORFOBEROESTERREICH_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Sentry and Firebase Crashlytics both ship as duplicate crash telemetry, and audio streams over cleartext HTTP from APA streaming domains', source: 'orf/at.orf.android.orfoberoesterreich/AT_ORF_ANDROID_ORFOBEROESTERREICH_FINDINGS.md#Findings' },
+  ],
+  'ORF Radio Salzburg': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and INFOnline/ÖWA reach measurement run on this levy-funded regional radio app via the confirmed shared orf-push Firebase project', source: 'orf/at.orf.android.orfsalzburg/AT_ORF_ANDROID_ORFSALZBURG_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Sentry and Firebase Crashlytics both ship as duplicate crash telemetry, and audio streams over cleartext HTTP from APA streaming domains', source: 'orf/at.orf.android.orfsalzburg/AT_ORF_ANDROID_ORFSALZBURG_FINDINGS.md#Findings' },
+  ],
+  'ORF Radio Steiermark': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and INFOnline/ÖWA reach measurement run on this levy-funded regional radio app via the confirmed shared orf-push Firebase project', source: 'orf/at.orf.android.orfsteiermark/AT_ORF_ANDROID_ORFSTEIERMARK_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Sentry and Firebase Crashlytics both ship as duplicate crash telemetry, and audio streams over cleartext HTTP from APA streaming domains', source: 'orf/at.orf.android.orfsteiermark/AT_ORF_ANDROID_ORFSTEIERMARK_FINDINGS.md#Findings' },
+  ],
+  'ORF Radio Tirol': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and INFOnline/ÖWA reach measurement run on this levy-funded regional radio app via the confirmed shared orf-push Firebase project', source: 'orf/at.orf.android.orftirol/AT_ORF_ANDROID_ORFTIROL_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Sentry and Firebase Crashlytics both ship as duplicate crash telemetry, and audio streams over cleartext HTTP from APA streaming domains', source: 'orf/at.orf.android.orftirol/AT_ORF_ANDROID_ORFTIROL_FINDINGS.md#Findings' },
+  ],
+  'ORF Radio Vorarlberg': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and INFOnline/ÖWA reach measurement run on this levy-funded regional radio app via the confirmed shared orf-push Firebase project', source: 'orf/at.orf.android.orfvorarlberg/AT_ORF_ANDROID_ORFVORARLBERG_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Sentry and Firebase Crashlytics both ship as duplicate crash telemetry, and audio streams over cleartext HTTP from APA streaming domains', source: 'orf/at.orf.android.orfvorarlberg/AT_ORF_ANDROID_ORFVORARLBERG_FINDINGS.md#Findings' },
+  ],
+  'ORF Radio Wien': [
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'AppsFlyer, Google Ad Manager and INFOnline/ÖWA reach measurement run on this levy-funded regional radio app via the confirmed shared orf-push Firebase project', source: 'orf/at.orf.android.orfwien/AT_ORF_ANDROID_ORFWIEN_FINDINGS.md#Findings' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Sentry and Firebase Crashlytics both ship as duplicate crash telemetry, and audio streams over cleartext HTTP from APA streaming domains', source: 'orf/at.orf.android.orfwien/AT_ORF_ANDROID_ORFWIEN_FINDINGS.md#Findings' },
+  ],
 }
 
 const CONTACT_CARDS = [
