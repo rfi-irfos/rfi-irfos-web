@@ -348,6 +348,13 @@ const PROJECTS = [
     tag: 'open source · privacy',
   },
   {
+    name: 'LAURA',
+    sub: 'canary-token honeypot',
+    desc: 'Protects against NFC/Bluetooth proximity phone-data theft — bait photo folders that fire a passive beacon when opened without consent, nothing more. No exploit, no device access, no automatic reporting. A human reviews every hit before anything further happens.',
+    link: 'https://github.com/rfi-irfos/laura',
+    tag: 'open source · privacy',
+  },
+  {
     name: 'NFCS',
     sub: 'ecocentric research',
     desc: 'Neurobiological-Fitness Consequence Separation. Agent-based model proving the global food system produces 1.64x the calories needed to feed every person on Earth. The scarcity is not thermodynamic — it is organizational. Manufactured, not physical.',
