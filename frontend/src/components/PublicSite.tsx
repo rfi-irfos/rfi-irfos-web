@@ -2551,6 +2551,18 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
     { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'No certificate pinning exists on a loyalty application that processes payment data', source: 'mcdonalds2026/report/MCDONALDS_AUDIT_R1.md#C2' },
     { law: 'GDPR', article: 'Art. 9', kind: 'reference', note: 'Complete meal-ordering history feeds three separate US behavioral-tracking platforms (Kochava, Braze, mParticle), including a confirmed-active Android Protected Audience API call that the report frames as processing health-adjacent dietary inference data', source: 'mcdonalds2026/report/MCDONALDS_AUDIT_R1.md#Meal Ordering History' },
   ],
+  'Wolt': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'The courier app runs Iterable (push/in-app messaging) without a JWT auth token (authToken: null) live-confirmed on-device, an identity gap open since the prior round and unchanged across a version bump - message/push spoofing risk', source: 'wolt2026/WOLT_SECURITY_REPORT_2026-06-14.md#C2' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'The courier app logs its internal API surface and the courier\'s user ID in plaintext via logcat in a release build (WoltHeaderInterceptor, IterableRequest)', source: 'wolt2026/WOLT_SECURITY_REPORT_2026-06-14.md#C3' },
+    { law: 'GDPR', article: 'Art. 44-49', kind: 'reference', note: 'The courier app is confirmed, live and by design, to be the DoorDash Dasher platform rebranded, routing EU courier location and delivery data through DoorDash US infrastructure (dashapi.com, doordash.com)', source: 'wolt2026/WOLT_SECURITY_REPORT_2026-06-14.md#C4' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'reference', note: 'The consumer app exports an OTP broadcast receiver for the WhatsApp OTP API without confirmed sender-origin verification, a forged-OTP injection risk if unaddressed', source: 'wolt2026/WOLT_SECURITY_REPORT_2026-06-14.md#N3' },
+  ],
+  'Mein HoT (AT)': [
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'The app bundles the Veridas "dasFace" facial-biometric KYC SDK, matching a live selfie/liveness capture against a scanned ID document to register a prepaid SIM - biometric data processed for unique identification', source: 'hot2026/HOT_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 35', kind: 'reference', note: 'Large-scale special-category biometric processing of this kind requires a documented DPIA; whether the facial template is processed on-device or uploaded to Veridas infrastructure is unconfirmed from static analysis', source: 'hot2026/HOT_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'A hardcoded, extractable Firebase API key and a Firebase Realtime Database URL are shipped in the production APK', source: 'hot2026/HOT_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'Sentry crash reporting is routed to Sentry\'s US ingest endpoint rather than its EU region, and auto-initializes before the app\'s own consent gate', source: 'hot2026/HOT_R1_FINDINGS.md#H2' },
+  ],
 }
 
 const CONTACT_CARDS = [
