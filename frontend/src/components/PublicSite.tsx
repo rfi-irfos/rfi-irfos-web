@@ -2753,6 +2753,60 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
   'Pegasus Airlines': [
     { law: 'GDPR', article: 'Art. 44-46', kind: 'fact', note: 'EU users\' payment card data is processed through three Turkish technology entities (BKM, Cardtek, Monitise MEA) with no confirmed Art. 46 transfer safeguard and no consent-management platform present in the app', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
   ],
+  'Bitpanda (AT)': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'Firebase starts tracking before device unlock (pre-consent auto-init pattern consistent across this audit series)', source: 'R1 email REF:#BPND-2026-001 (2026-06-26)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'Fourthline biometric NFC passport-scanning data is processed alongside Braze and Adjust running on trading behavior data', source: 'R1 email REF:#BPND-2026-001 (2026-06-26)#Findings (no local .md report)' },
+  ],
+  'GRAWE ID (AT)': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'A Firebase API key is hardcoded in the production APK', source: 'R1 email REF:GRAWE-ID-2026 (2026-06-26)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'Pre-consent SDK initialization is confirmed present, the same architectural pattern documented across this audit series', source: 'R1 email REF:GRAWE-ID-2026 (2026-06-26)#Findings (no local .md report)' },
+  ],
+  'Bank Austria (AT)': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Cleartext HTTP is permitted on the banking WebView and a Firebase Database URL is exposed in the Play Store binary', source: 'R1 email REF:BA-MOBILE-2026 (2026-06-26)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'ThreatMark behavioral biometrics processes user interaction patterns as part of the banking app\'s fraud-detection stack, undisclosed as such', source: 'R1 email REF:BA-MOBILE-2026 (2026-06-26)#Findings (no local .md report)' },
+  ],
+  'Mein Magenta (AT)': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'Cobrowse.io live screen-sharing auto-initializes without a confirmed consent gate, letting a support agent view the user\'s screen', source: 'R1 email REF:MAGENTA-MYT-2026 (2026-06-26)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Three API keys are hardcoded in the production binary', source: 'R1 email REF:MAGENTA-MYT-2026 (2026-06-26)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'Huawei advertising auto-initializes alongside dual CleverTap and MoEngage behavioral tracking platforms', source: 'R1 email REF:MAGENTA-MYT-2026 (2026-06-26)#Findings (no local .md report)' },
+  ],
+  'Meine Allianz (AT)': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'TLS certificate validation is disabled in the production build, meaning the app accepts any certificate an attacker presents on the network path', source: 'R1 email REF:#AZTEC-2026-001 (2026-06-26)#Findings (no local .md report)' },
+  ],
+  'Generali AT Mobility': [
+    { law: 'GDPR', article: 'Art. 6(1)(a)', kind: 'fact', note: 'The MOVE telematics SDK detects trips and scores driving behavior with no confirmed consent gate', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 13', kind: 'fact', note: 'The Facebook SDK (4,418 classes) is present inside an insurance app, and an exported ClipboardFileProvider is reachable by any other app on the device', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'IONITY (DE/EU)': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'The production APK contains a hardcoded AWS Cognito AppClientSecret, extractable by anyone who downloads the app', source: 'R1 email REF:IONITY-2026 (2026-06-26)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'A Firebase API key is hardcoded and two separate pre-consent ContentProviders initialize before any consent screen', source: 'R1 email REF:IONITY-2026 (2026-06-26)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 13', kind: 'fact', note: 'Braze processes EV-charging payment-adjacent data as an undisclosed processor, on a joint venture app operated by BMW, Ford, Hyundai, Mercedes-Benz and the VW Group', source: 'R1 email REF:IONITY-2026 (2026-06-26)#Findings (no local .md report)' },
+  ],
+  'Chargemap (FR/AT)': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'The production Play Store binary contains a hardcoded client secret and a separate attribution secret, plus four additional Google API keys', source: 'R1 email REF:CHARGEMAP-2026 (2026-06-26)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'Four separate pre-consent SDK initializations defeat the app\'s own Didomi consent-management platform', source: 'R1 email REF:CHARGEMAP-2026 (2026-06-26)#Findings (no local .md report)' },
+  ],
+  'wo gibt\'s was (Offerista)': [
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'ACCESS_BACKGROUND_LOCATION is declared for continuous GPS tracking on an Austrian deals/catalog app, building a movement profile in the background', source: 'R1 email REF:#WGW-001 (2026-06-25)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'Facebook Codeless Event Logging autonomously instruments UI interactions, sending shopping-behavior signals to Meta with no explicit tracking code written by the developer for each event', source: 'R1 email REF:#WGW-001 (2026-06-25)#Findings (no local .md report)' },
+  ],
+  'MySantander (DE)': [
+    { law: 'GDPR', article: 'Art. 13', kind: 'reference', note: 'The R1 disclosure explicitly notes the build gets security basics right (a rare full-positive acknowledgement in this audit series) while flagging outstanding transparency documentation gaps addressed in the disclosure', source: 'R1 email REF:SANTANDER-R1 (2026-06-25)#Findings (no local .md report)' },
+  ],
+  'BAWAG Group AG (AT)': [
+    { law: 'GDPR', article: 'Art. 6', kind: 'fact', note: 'A regulated bank ships the Google Advertising ID (AD_ID) alongside a US screenshot-detection SDK', source: 'R1 email REF:BAWAG-R1 (2026-06-25)#Findings (no local .md report)' },
+  ],
+  'ChessKid (US)': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'A hardcoded Amplitude master API key is present in the children\'s chess platform\'s production binary, granting read/write access to the analytics project to anyone who extracts it', source: 'R1 email REF:RFI-2026-CC-001 (2026-06-24)#Findings (no local .md report)' },
+  ],
+  'Regain / BetterHelp': [
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'Regain (BetterHelp\'s couples-therapy product, same codebase) ships an active Facebook SDK on couples-therapy session data, active after BetterHelp\'s own 2023 $7.8M FTC settlement for sharing therapy data', source: 'R1 email REF:REGAIN-C1-R1 (2026-06-22)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'allowBackup=true is set, making couples-therapy session data eligible for Android Cloud Backup', source: 'R1 email REF:REGAIN-C1-R1 (2026-06-22)#Findings (no local .md report)' },
+  ],
+  'BetterHelp + TeenCounseling': [
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'The identical Facebook SDK (App ID 740224816069682) is active in both BetterHelp and TeenCounseling, post-dating BetterHelp\'s own 2023 $7.8M FTC settlement for sharing therapy data with advertisers', source: 'R1 email REF:BETTERHELP-C1-R1 (2026-06-22)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Therapy session data belonging to minors (via TeenCounseling) is eligible for Google Cloud Backup', source: 'R1 email REF:BETTERHELP-C1-R1 (2026-06-22)#Findings (no local .md report)' },
+  ],
 }
 
 const CONTACT_CARDS = [
