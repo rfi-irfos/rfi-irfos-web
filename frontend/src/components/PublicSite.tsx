@@ -1850,6 +1850,80 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
     { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'Fyber FairBid (3,146 classes, the largest ad mediation stack in the series) and a second independent offer-wall SDK (Tapjoy, 585 classes, same parent company) both route EU offer-completion data to US infrastructure', source: 'freecash2026/report/FREECASH_AUDIT_R1.md#H2' },
     { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'minSdk 21 (Android 5.0, 2014) permits real-money payout processing (PayPal, bank transfer, cryptocurrency) on 12-year-unpatched devices', source: 'freecash2026/report/FREECASH_AUDIT_R1.md#H5' },
   ],
+
+  'George (Erste Bank)': [
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'Austrian production NSC omits the BFF endpoint (erste-group.net) that the Czech production config correctly pins — AT banking transactions transit less protected than CZ, despite identical infrastructure being available', source: 'george2026/GEORGE_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 9(2)(a)', kind: 'fact', note: 'Innovatrics IDKit (88 classes) performs face liveness detection and NFC biometric-passport-chip reading for KYC onboarding — correctly identified as Art. 9 biometric processing requiring granular, documented explicit consent separate from general T&Cs', source: 'george2026/GEORGE_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 4(14)', kind: 'fact', note: 'ThreatFabric (23 classes) collects and uploads behavioral biometrics (keystroke dynamics, swipe patterns, device motion) to its own EU infrastructure, not named as a processor in the published privacy policy', source: 'george2026/GEORGE_AUDIT_R1.md#H2' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'Azure Communication Services (Microsoft Teams) routes banking support call audio/video/screen-share through Microsoft infrastructure with no discoverable EU-residency configuration in the APK', source: 'george2026/GEORGE_AUDIT_R1.md#H3' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'ACCESS_BACKGROUND_LOCATION for TravelHub border-crossing detection enables continuous location profiling beyond the feature\'s stated purpose', source: 'george2026/GEORGE_AUDIT_R1.md#H4' },
+  ],
+  'Good Calendar (BetterAppTech)': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'AdMob and Firebase both auto-initialize via ContentProvider before any consent dialog, in an app holding calendar and contacts access', source: 'goodcalendar2026/GOODCALENDAR_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'ACCESS_ADSERVICES_CUSTOM_AUDIENCE enables cross-app behavioral cohort targeting derived from scheduling patterns (appointment types, frequency) — a four-network ad stack (AdMob, AppLovin, Smaato, Facebook Audience Network) is present', source: 'goodcalendar2026/GOODCALENDAR_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 13(1)(c)', kind: 'fact', note: 'RECORD_AUDIO declared with no documented purpose in the install-time permission rationale', source: 'goodcalendar2026/GOODCALENDAR_R1_FINDINGS.md#H2' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Firebase API key and AdMob App ID both hardcoded', source: 'goodcalendar2026/GOODCALENDAR_R1_FINDINGS.md#H3' },
+  ],
+  'Good Calendar': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'AdMob and Firebase both auto-initialize via ContentProvider before any consent dialog, in an app holding calendar and contacts access', source: 'goodcalendar2026/GOODCALENDAR_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'ACCESS_ADSERVICES_CUSTOM_AUDIENCE enables cross-app behavioral cohort targeting derived from scheduling patterns (appointment types, frequency) — a four-network ad stack (AdMob, AppLovin, Smaato, Facebook Audience Network) is present', source: 'goodcalendar2026/GOODCALENDAR_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 13(1)(c)', kind: 'fact', note: 'RECORD_AUDIO declared with no documented purpose in the install-time permission rationale', source: 'goodcalendar2026/GOODCALENDAR_R1_FINDINGS.md#H2' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Firebase API key and AdMob App ID both hardcoded', source: 'goodcalendar2026/GOODCALENDAR_R1_FINDINGS.md#H3' },
+  ],
+  'Grokio': [
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'One APK serves six distinct adult/kink community brands (Grokio, Grommr, Feabie, PupSpace, Ferzu, Chasable) sharing one Firebase project, one CCBill account, and one JS bundle — special-category sexual-orientation and fetish data of separate communities co-resides on shared infrastructure with no disclosed joint-controller arrangement', source: 'grokio2026/report/GROKIO_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Firebase API key hardcoded', source: 'grokio2026/report/GROKIO_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'No network_security_config.xml exists at all — zero certificate pinning for traffic including sexual-orientation, kink-preference, and payment-session data across all six communities', source: 'grokio2026/report/GROKIO_AUDIT_R1.md#C3' },
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'Background location permissions combined with the platforms\' subject matter enable inference of visits to partner locations, sex venues, or LGBTQ+ spaces', source: 'grokio2026/report/GROKIO_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'A "_disease" profile field and STI/health-status-pattern strings confirm health data collection as a distinct special category alongside sexual orientation/practice data', source: 'grokio2026/report/GROKIO_AUDIT_R1.md#H2' },
+  ],
+  'Hallow': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Firebase API key hardcoded', source: 'hallow2026/REPORT.md#C1' },
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'Huawei HMS advertising SDK collects the Huawei OAID persistent identifier linked to Catholic prayer/devotional content usage patterns — every user profile in a religious prayer app is Art. 9 religious-belief data by definition', source: 'hallow2026/REPORT.md#C2' },
+    { law: 'PRC National Intelligence Law', article: 'Art. 7', kind: 'fact', note: 'Huawei is directly named as subject to this compelled-cooperation provision, cited alongside the Art. 9 finding for the same HMS SDK', source: 'hallow2026/REPORT.md#C2' },
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'Branch.io (US) collects device fingerprinting for attribution, linking religious-practice behavior to a US-hosted attribution profile', source: 'hallow2026/REPORT.md#H1' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'RECORD_AUDIO and READ_CONTACTS declared with no obvious functional justification for a prayer/meditation app', source: 'hallow2026/REPORT.md#H3' },
+  ],
+  'Hinge': [
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'FaceTec transmits 3D facial geometry to a US API — the same SDK/endpoint confirmed in the sibling Tinder audit, confirming a Match Group-wide architecture decision rather than an isolated app choice', source: 'hinge2026/report/HINGE_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 5(1)(f)', kind: 'fact', note: 'SendBird (76 classes, US) routes all private messages — including intimate dating conversations — through US infrastructure with no visible end-to-end encryption and no disclosed transfer mechanism', source: 'hinge2026/report/HINGE_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'Incognia (2,149 classes) builds persistent behavioral location fingerprints (home, workplace, repeated overnight-stay locations) from GPS history, exceeding what fraud prevention requires and combining with dating-profile data to create an intimate behavioral profile', source: 'hinge2026/report/HINGE_AUDIT_R1.md#C3' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Firebase API key hardcoded (disabled database, credentials still live) — the fourth consecutive dating app in the series with this finding', source: 'hinge2026/report/HINGE_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'No certificate pinning, system CAs only — identical to the Tinder configuration, confirming a Match Group-wide policy gap', source: 'hinge2026/report/HINGE_AUDIT_R1.md#H2' },
+  ],
+  'ImmoScout24 AT': [
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'Two Firebase/Google API keys hardcoded with no certificate-fingerprint binding', source: 'immoscout2026/IMMOSCOUT_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'AppLovin (1,535 classes) initializes at the highest initOrder value in the entire app — ahead of Firebase and Google Mobile Ads — on a platform with a mortgage calculator and solvency-check fields', source: 'immoscout2026/IMMOSCOUT_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'MortgageCalculatorComposeActivity (income, equity, credit-need input fields) is declared exported=true with no permission guard, reachable by any other app on the device', source: 'immoscout2026/IMMOSCOUT_R1_FINDINGS.md#H2' },
+    { law: 'GDPR', article: 'Art. 35', kind: 'fact', note: 'Topics API + AD_ID + Attribution operate on a real-estate/finance platform where search behavior (district, price range, size) constitutes financial-intent data, raising the DPIA threshold', source: 'immoscout2026/IMMOSCOUT_R1_FINDINGS.md#H3' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'Usercentrics CMP (857 classes) is genuinely integrated, but AppLovin, Google Mobile Ads, and Firebase all still initialize before the consent dialog can render — demonstrated awareness without compliance', source: 'immoscout2026/IMMOSCOUT_R1_FINDINGS.md#H4' },
+  ],
+  'Joyn AT': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'FirebaseInitProvider (directBootAware=true) fires before the app\'s own CMP (hosted at s-int.p7s1.io) can load, making the CMP gate ineffective for Firebase processing', source: 'joyn2026/JOYN_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'Braze is configured with an active geofencing foreground location service on a free streaming platform, with no disclosed feature requiring physical-location tracking', source: 'joyn2026/JOYN_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 44-49', kind: 'fact', note: 'Two competing US audience-measurement platforms (Nielsen and Comscore) run simultaneously, both transmitting viewing behavior to US servers', source: 'joyn2026/JOYN_R1_FINDINGS.md#H2' },
+    { law: 'GDPR', article: 'Art. 5(1)(a)', kind: 'fact', note: 'A proprietary "EasyTracking" JavaScript-execution framework can update its active tracking scripts server-side without an app update, creating the same transparency gap as Google Tag Manager', source: 'joyn2026/JOYN_R1_FINDINGS.md#H3' },
+  ],
+  'KFC UAE': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Firebase API key hardcoded', source: 'kfcuae2026/KFCUAE_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Chucker HTTP debug interceptor is present in the production build, logging every network call (auth, orders, payment gateway calls, location pings) to a local device database', source: 'kfcuae2026/KFCUAE_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 6(1)(a)', kind: 'fact', note: 'ACCESS_ADSERVICES_CUSTOM_AUDIENCE (FLEDGE) enables on-device ad auctions based on meal-ordering behavior; CleverTap is explicitly configured to link customer profiles to the Google Advertising ID', source: 'kfcuae2026/KFCUAE_AUDIT_R1.md#C3' },
+    { law: 'GDPR', article: 'Art. 44-49', kind: 'fact', note: 'Huawei HMS (1,835 classes) routes location, maps, and advertising-ID data through Huawei infrastructure for Huawei-device users, with no EU adequacy mechanism for the China exposure', source: 'kfcuae2026/KFCUAE_AUDIT_R1.md#H1' },
+  ],
+  'Lieferando': [
+    { law: 'GDPR', article: 'Art. 32(1)(b)', kind: 'fact', note: 'Three Firebase production credentials hardcoded, with "prod" literally in the deactivated database URL', source: 'lieferando2026/report/LIEFERANDO_AUDIT_R1.md#C1' },
+    { law: 'GDPR', article: 'Art. 32(1)(a)', kind: 'fact', note: 'Empty network_security_config.xml — zero certificate pinning across payment (Braintree/PayPal) and location (Incognia) traffic', source: 'lieferando2026/report/LIEFERANDO_AUDIT_R1.md#C2' },
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'Incognia (2,171 classes, the largest third-party SDK in the app) receives full home delivery addresses and GPS coordinates, explicitly labelling the location "home" in its own data model, transmitted to US infrastructure', source: 'lieferando2026/report/LIEFERANDO_AUDIT_R1.md#H1' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'Rokt (3,452 classes) injects targeted post-order advertising using meal-order context (restaurant, cuisine, order value) — the same SDK confirmed in the sibling Klarna audit', source: 'lieferando2026/report/LIEFERANDO_AUDIT_R1.md#H2' },
+    { law: 'GDPR', article: 'Art. 13(1)(e)', kind: 'fact', note: 'mParticle (387 classes, a US customer data platform) distributes behavioral events to multiple downstream vendors including Braze (867 classes), with the individual downstream recipients not disclosed', source: 'lieferando2026/report/LIEFERANDO_AUDIT_R1.md#H3' },
+  ],
+  'Linky / iChat': [
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'The binary is saturated with Chinese-origin SDKs and cloud endpoints (ByteDance Pangle, Mintegral, Tencent Beacon/COS/TRTC/ASR, Alibaba Cloud OSS/CloudAuth, ZEGO) including Hong Kong and Shanghai regions, while the published privacy policy does not mention China at all', source: 'ichat2026/ICHAT_R1_FINDINGS.md#C1' },
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'An Ant Group/Alibaba "Toyger/ZOLOZ"-class biometric face-liveness stack is compiled in with Hong Kong and EU-central endpoints; the privacy policy names neither the vendor nor its Chinese origin, describing only "a one-time facial image ... deleted immediately"', source: 'ichat2026/ICHAT_R1_FINDINGS.md#C2' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'Sexual/romantic AI companion content ("Passion Mode", NSFW switch) sits behind only a self-declared birthday as an age gate, despite the privacy policy claiming the app "is not directed to minors under 18"', source: 'ichat2026/ICHAT_R1_FINDINGS.md#C3' },
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'Firebase, Facebook (with AdvertiserIDCollectionEnabled=true), Vungle, and Unity Ads all auto-initialize pre-consent with no integrated CMP found anywhere in the binary', source: 'ichat2026/ICHAT_R1_FINDINGS.md#H1' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'RECORD_AUDIO permissions combined with Tencent Cloud real-time ASR (speech-to-text) suggest voice content from intimate AI conversations may be transcribed by a PRC cloud processor', source: 'ichat2026/ICHAT_R1_FINDINGS.md#H2' },
+  ],
 }
 
 const CONTACT_CARDS = [
