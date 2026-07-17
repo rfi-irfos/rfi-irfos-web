@@ -2865,6 +2865,14 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
   'WePlay (SG)': [
     { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'A hardcoded master analytics key is shipped to every user, alongside 5,594 Tencent files bundled into the party-game app', source: 'R1 email REF:RFI-2026-WJ-001 (2026-07-03)#Findings (no local .md report)' },
   ],
+  'Zurich Insurance (AT)': [
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'A BOOT_COMPLETED receiver auto-starts the app after every device reboot, confirmed across two separate Zurich Austria apps (ZAPP and ZIO)', source: 'R1 email REF:ZURICH-AT-2026 (2026-06-26)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 13', kind: 'fact', note: 'Urban Airship, a marketing-automation platform, is present in both apps and processes insurance customer data', source: 'R1 email REF:ZURICH-AT-2026 (2026-06-26)#Findings (no local .md report)' },
+  ],
+  'Raisin SE (DE)': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'The savings/deposit app begins behavioral profiling before the consent screen is ever rendered', source: 'R1 email REF:RAISIN-R1 (2026-06-25)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'A Firebase key is hardcoded, and Adjust, Exponea (Bloomreach) and Datadog RUM all run on a regulated fintech handling EU savings deposits', source: 'R1 email REF:RAISIN-R1 (2026-06-25)#Findings (no local .md report)' },
+  ],
 }
 
 const CONTACT_CARDS = [
