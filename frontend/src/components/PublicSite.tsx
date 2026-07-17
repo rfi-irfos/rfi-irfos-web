@@ -2680,6 +2680,79 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
     { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'The banking WebView\'s Content-Security-Policy permits unsafe-eval and unsafe-inline script execution, materially weakening containment against injected scripts on the same surface that lacks certificate pinning', source: 'R1 email REF:BANK99-R1 (2026-06-25)#H2 (no local .md report)' },
     { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'A Firebase API key is extractable from the production binary with no confirmed key restriction, App Check enforcement, or deny-by-default security rules', source: 'R1 email REF:BANK99-R1 (2026-06-25)#H3 (no local .md report)' },
   ],
+  'Flo Health': [
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'The TikTok Business SDK (ByteDance) runs in the same binary as Health Connect permissions for menstruation, sexual activity, ovulation and cervical mucus data, with an in-app purchase wrapper and automated event manager instrumenting the app - active after a 2021 FTC consent order specifically prohibiting sharing this data with third parties without consent', source: 'R1 email REF:FLO-C1-R1 (2026-06-22)#C1 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 26', kind: 'fact', note: 'The Facebook SDK (214 classes, App ID 2278022672520157) remains active in the 2026 production binary - the same category of third-party sharing the 2021 FTC consent order was specifically about', source: 'R1 email REF:FLO-C1-R1 (2026-06-22)#C2 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'An Oura Ring OAuth integration plus 29 Health Connect permissions aggregate reproductive and biometric health data across multiple wearable/device sources', source: 'R1 email REF:FLO-C1-R1 (2026-06-22)#H1 (no local .md report)' },
+  ],
+  'Natural Cycles': [
+    { law: 'GDPR', article: 'Art. 9(1)', kind: 'fact', note: 'The Adjust attribution SDK (492 classes) reads the Google Advertising ID and transmits app events (subscription conversion, onboarding, cycle-tracking engagement) to a third-party marketing platform, on a CE-certified Class IIb contraceptive medical device', source: 'R1 email REF:NC-C1-R1 (2026-06-22)#C1 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 5(1)(b)', kind: 'fact', note: 'MoEngage (3,434 classes, the single largest third-party SDK in the app) processes cycle phase, temperature-logging frequency and ovulation predictions for push-notification marketing automation - a purpose incompatible with the data\'s contraceptive collection purpose', source: 'R1 email REF:NC-C1-R1 (2026-06-22)#H1 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'ACCESS_FINE_LOCATION is requested with no clear functional necessity for a basal-body-temperature contraception app, and location combined with cycle-phase data can reveal a user\'s location during their fertile window', source: 'R1 email REF:NC-C1-R1 (2026-06-22)#H2 (no local .md report)' },
+  ],
+  'Geizhals': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'FacebookInitProvider fires as a ContentProvider at process start, before any consent dialog, with AutoInitEnabled never set to false as Facebook\'s own documentation requires for pre-consent gating', source: 'R1 email REF:#GEI-2026-001 (2026-06-26)#C1 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32(1)', kind: 'fact', note: 'Two Firebase ContentProviders (including a Flutter Firebase Messaging provider) initialize before any consent dialog; disabling Firebase Analytics collection does not prevent the Firebase Installation ID from being generated and transmitted to Google pre-consent', source: 'R1 email REF:#GEI-2026-001 (2026-06-26)#C2 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'Settings.Secure.ANDROID_ID (a permanent device identifier) is read and transmitted with no established legal basis prior to collection', source: 'R1 email REF:#GEI-2026-001 (2026-06-26)#C3 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Four Google API credentials are hardcoded in the production binary, extractable with a standard decompiler', source: 'R1 email REF:#GEI-2026-001 (2026-06-26)#C4 (no local .md report)' },
+  ],
+  'WienMobil (AT)': [
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'The Regula Document Reader / IDV SDK (Minsk, Belarus) performs passport/ID document scanning and optional facial liveness detection on a public transit ticketing app, with no disclosed purpose for identity verification and no EU adequacy decision covering the Belarus transfer', source: 'R1 email REF:WIENMOBIL-2026 (2026-06-26)#B1 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'A Chucker HTTP interceptor ships in the production build, logging all API traffic - authentication tokens, session keys, ticket-purchase data, personal profile data - in plaintext on-device, the same release-hygiene failure found in Jö Bonus Club and KFC UAE in the same audit series', source: 'R1 email REF:WIENMOBIL-2026 (2026-06-26)#B2 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'A Firebase API key and Realtime Database URL are hardcoded, alongside pre-consent FirebaseInitProvider auto-initialization', source: 'R1 email REF:WIENMOBIL-2026 (2026-06-26)#B3 (no local .md report)' },
+  ],
+  'OMV (AT)': [
+    { law: 'GDPR', article: 'Art. 6', kind: 'fact', note: 'Facebook App Events with Automatic App Matching and CloudBridge (a server-side event-forwarding pipeline that bypasses browser-based tracking blockers entirely) transmit fuel-station search, filtering and route-planning behavior to Meta', source: 'R1 email REF:OMV-APP-2026 (2026-06-26)#B1 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'No network security config exists (cleartext HTTP permitted by default), and a Firebase key plus a Google Directions API key are both hardcoded in the production binary of an ATX-listed energy company\'s app', source: 'R1 email REF:OMV-APP-2026 (2026-06-26)#B2 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'FirebaseInitProvider (initOrder=0) and FacebookInitProvider both auto-initialize before any consent screen', source: 'R1 email REF:OMV-APP-2026 (2026-06-26)#B3 (no local .md report)' },
+  ],
+  'Meine ÖGK (AT)': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'A Firebase API key is hardcoded in the production Play Store binary of Austria\'s statutory health insurer for roughly 8.5 million insured people, with no authentication required to query the associated Firebase project if security rules are misconfigured', source: 'R1 email REF:OEGK-2026 (2026-06-26)#B1 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'FirebaseInitProvider (initOrder=100) and MlKitInitProvider (initOrder=99) both start before the first Activity screen - before any opportunity to consent or decline', source: 'R1 email REF:OEGK-2026 (2026-06-26)#B2 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'A BOOT_COMPLETED receiver starts the app automatically after every device reboot with no user interaction', source: 'R1 email REF:OEGK-2026 (2026-06-26)#B3 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'An Expo Contacts module has full read/write access to the insured person\'s device address book', source: 'R1 email REF:OEGK-2026 (2026-06-26)#B4 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'WebRTC telemedicine (RECORD_AUDIO) is present for video/audio consultations with doctors, with Art. 9 obligations for that health-data-adjacent processing not clearly addressed', source: 'R1 email REF:OEGK-2026 (2026-06-26)#B5 (no local .md report)' },
+  ],
+  'myUNIQA (AT)': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'A Firebase API key is hardcoded and FirebaseInitProvider auto-initializes before the first app screen, before any consent opportunity', source: 'R1 email REF:UNIQA-MYUNIQA-2026 (2026-06-26)#B1 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'Dynatrace OneAgent real-user-monitoring captures screen-level form interaction data - which fields are filled, dwell time, actions taken - on insurance claim forms containing diagnoses, treatment details and pre-existing conditions, transmitted to US infrastructure', source: 'R1 email REF:UNIQA-MYUNIQA-2026 (2026-06-26)#B2 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'The Kofax SDK (2,395 classes) performs document OCR on scanned doctor\'s letters and claim invoices, routing them to third-party servers', source: 'R1 email REF:UNIQA-MYUNIQA-2026 (2026-06-26)#B3 (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'The Unblu SDK (409 classes) streams live audio from advisory consultations to Swiss/US servers', source: 'R1 email REF:UNIQA-MYUNIQA-2026 (2026-06-26)#B4 (no local .md report)' },
+  ],
+  'Etihad Airways': [
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'A Chinese-origin CyberfEnd security SDK runs inside the app\'s passport and payment flow, the same obfuscated pattern documented in the trivago audit (isolated process, native binary, runtime string decryption)', source: 'R1 email REF:ETIHAD-2026-R1 (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'Quantum Metric session recording runs concurrently with passport-scanning functionality, and Adobe dynamic tag loading is present, mirroring the same passport-OCR-plus-session-recording pattern flagged across the Lufthansa Group audits', source: 'R1 email REF:ETIHAD-2026-R1 (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'Fluege.de': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'Microsoft Clarity session recording is active and bypasses the app\'s own Usercentrics consent management platform', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 6', kind: 'fact', note: 'All four Android Privacy Sandbox advertising APIs are declared simultaneously, alongside CALL_PHONE and RECEIVE_BOOT_COMPLETED permissions on a flight booking app', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'Air Canada': [
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'The app implements JMRTD with Extended Access Control Terminal Authentication - the mechanism used to read DG3 (fingerprint) and DG4 (iris) biometric data groups from EU biometric passports via the OARO NFC passport-reading stack', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'LexisNexis ThreatMetrix device fingerprinting and the same CyberfEnd Chinese-origin obfuscated SDK documented across this audit series are both present in the production binary', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'Priority Pass': [
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'Three simultaneous session-recording platforms (ContentSquare at 404 classes, Heap, and a third) run on payment screens, with Heap confirmed initializing twice pre-consent', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'SYSTEM_ALERT_WINDOW and background location permissions are declared with no disclosed necessity for an airport-lounge membership app', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'Momondo': [
+    { law: 'GDPR', article: 'Art. 13', kind: 'fact', note: 'The app contains 32,895 Kayak classes and runs on Kayak\'s own Firebase project, confirming an undisclosed rebrand - Momondo is functionally the Kayak app relabeled, not independently disclosed as such to users', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'fact', note: 'FullStory session recording (implemented via Rust/JNI) captures form field content including email address entry, and a Kayak-internal root CA certificate ships in the production APK', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'Expedia': [
+    { law: 'GDPR', article: 'Art. 7', kind: 'fact', note: 'Salesforce Marketing Cloud (1,780 classes) initializes via two separate pre-consent ContentProviders', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 5(1)(c)', kind: 'fact', note: 'RECEIVE_BOOT_COMPLETED, access to all device accounts, and READ_PRIVILEGED_PHONE_STATE are all declared on a travel booking app with no documented necessity for the privileged phone-state permission', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'Wizz Air': [
+    { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'A Belarusian SDK company (Regula Document Reader) reads the biometric NFC chip of EU passengers\' passports, with the vendor\'s Minsk location raising an EU-sanctions-adjacent third-country transfer question in addition to the Art. 9 biometric processing itself', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+    { law: 'GDPR', article: 'Art. 32', kind: 'reference', note: 'SYSTEM_ALERT_WINDOW is declared with no disclosed purpose', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'CheapAirTickets': [
+    { law: 'GDPR', article: 'Art. 44', kind: 'fact', note: 'The app is operated by an anonymous, unverifiable entity (contact resolves only to a personal Gmail address) and routes EU user data through Russian infrastructure over cleartext HTTP', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+  ],
+  'Pegasus Airlines': [
+    { law: 'GDPR', article: 'Art. 44-46', kind: 'fact', note: 'EU users\' payment card data is processed through three Turkish technology entities (BKM, Cardtek, Monitise MEA) with no confirmed Art. 46 transfer safeguard and no consent-management platform present in the app', source: 'R1 email (2026-06-27)#Findings (no local .md report)' },
+  ],
 }
 
 const CONTACT_CARDS = [
