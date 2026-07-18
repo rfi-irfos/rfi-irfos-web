@@ -1,5 +1,9 @@
 # RFI-IRFOS Web Template
 
+> **Human rights are not subject to negotiation.**
+> — RFI-IRFOS × Emergent Interaction Lab, core doctrine.
+
+
 A minimalist, high-performance website builder kit. Fast. No bloat. No subscription.
 
 **The product:** Clone this repo for any client. They get a fully-built website on their domain. If they want Tier 3, they also get a Gmail-authenticated admin panel to edit everything themselves — texts, images, products — live, no deployments needed.
