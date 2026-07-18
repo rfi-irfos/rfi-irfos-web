@@ -3990,7 +3990,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                       const shown = statutes.slice(0, STATUTE_CAP)
                       const rest = statutes.slice(STATUTE_CAP)
                       return (
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3, paddingTop: 1 }}>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3, paddingTop: 1, minWidth: 0, overflow: 'hidden' }}>
                           {statutes.length === 0 ? (
                             <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>-</span>
                           ) : (
