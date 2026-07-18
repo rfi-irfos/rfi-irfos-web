@@ -4693,6 +4693,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
       {/* FOOTER */}
       <footer style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '40px 2rem', textAlign: 'center' }}>
+        <p style={{ fontFamily: 'monospace', fontSize: 12, color: TEAL, letterSpacing: '0.06em', marginBottom: 24, fontWeight: 600 }}>
+          Human rights are not subject to negotiation.
+          <br />
+          <span style={{ fontSize: 10, color: '#606080', fontWeight: 400 }}>— RFI-IRFOS × Emergent Interaction Lab, core doctrine</span>
+        </p>
         <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
           {[
             { label: 'Legal Notice', href: '#p/impressum' },
