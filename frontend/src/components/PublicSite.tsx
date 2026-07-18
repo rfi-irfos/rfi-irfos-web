@@ -3064,6 +3064,17 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
+  // Lock background scroll while a modal is open. Without this, the custom wheel-driven
+  // scroll accelerator (useFastScroll above) keeps calling window.scrollTo() on the page
+  // BEHIND the modal on every wheel tick — the modal (position: fixed) sits still while
+  // the page visibly scrolls underneath it, which reads as "scrolling is broken."
+  useEffect(() => {
+    if (!checkoutModal && !reportModal) return
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = prevOverflow }
+  }, [checkoutModal, reportModal])
+
   // short synthesized "pop" - no audio file needed, just a quick pitch-dropping
   // burst via the Web Audio API so this stays fully self-contained.
   const playPopSound = () => {
@@ -3895,7 +3906,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 const sLeft  = Math.floor((msLeft % 60000) / 1000)
                 const pad = (n: number) => String(n).padStart(2, '0')
                 const cdStr = `${daysLeft}d ${pad(hLeft)}h ${pad(mLeft)}m ${pad(sLeft)}s`
-                const cdColor = 'var(--text)'
+                const cdColor = daysLeft > 60 ? TEAL : daysLeft > 30 ? '#fb923c' : '#f87171'
                 const delay = Math.min(i * 30, 1500)
                 const resolved = meta?.resolved ?? false
                 const notifiedTs = meta?.notified ? new Date(meta.notified).getTime() : (() => { const d = a.finding.match(/(\d{4}-\d{2}-\d{2})/); return d ? new Date(d[1]).getTime() : null })()
@@ -3907,10 +3918,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 const eM    = Math.floor((elapsedMs % 3600000)  / 60000)
                 const eS    = Math.floor((elapsedMs % 60000)    / 1000)
                 const eStr  = `${eDays}d ${pad(eH)}h ${pad(eM)}m ${pad(eS)}s`
-                const eColor = 'var(--text)'
+                const eColor = resolved ? '#4ade80' : eDays > 60 ? '#f87171' : eDays > 30 ? '#fb923c' : TEAL
                 const totalWindowMs = notifiedTs ? disclosureTs - notifiedTs : 90 * 86400000
                 const batteryPct = notifiedTs ? Math.max(0, Math.min(1, (disclosureTs - now) / totalWindowMs)) : 1
-                const batteryColor = 'var(--text3)'
+                const batteryColor = batteryPct > 0.66 ? '#4ade80' : batteryPct > 0.33 ? '#fb923c' : '#f87171'
                 return (
                   <div key={i} style={{
                     position: 'relative',
@@ -3929,7 +3940,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   }}>
                     {/* Battery bar */}
                     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'rgba(255,255,255,0.05)' }}>
-                      <div style={{ height: '100%', width: resolved ? '100%' : `${batteryPct * 100}%`, background: `linear-gradient(90deg, ${batteryColor}55, ${batteryColor})`, borderRadius: '0 2px 0 0', transition: 'width 1s linear' }} />
+                      <div style={{ height: '100%', width: resolved ? '100%' : `${batteryPct * 100}%`, background: resolved ? 'linear-gradient(90deg, rgba(0,245,196,0.55), #00f5c4)' : `linear-gradient(90deg, ${batteryColor}55, ${batteryColor})`, borderRadius: '0 2px 0 0', transition: 'width 1s linear' }} />
                     </div>
                     {/* Organisation */}
                     <div>
@@ -4022,7 +4033,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
                     {/* Countdown */}
                     <div style={{ paddingTop: 1 }}>
-                      <div style={{ fontFamily: 'monospace', fontSize: mobile ? 12 : 16, fontWeight: 900, color: 'var(--text)', lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
+                      <div style={{ fontFamily: 'monospace', fontSize: mobile ? 12 : 16, fontWeight: 900, color: resolved ? '#00f5c4' : cdColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
                         {resolved ? 'CLOSED' : cdStr}
                       </div>
                       <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
