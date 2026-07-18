@@ -1,7 +1,7 @@
 # RFI-IRFOS Web Template
 
-> **Human rights are not subject to negotiation.**
-> — RFI-IRFOS × Emergent Interaction Lab, core doctrine.
+## Human rights are not subject to negotiation.
+
 
 
 A minimalist, high-performance website builder kit. Fast. No bloat. No subscription.
