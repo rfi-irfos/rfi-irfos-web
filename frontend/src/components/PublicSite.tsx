@@ -4564,6 +4564,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   { label: 'lauras-api v0.2.0', href: 'https://crates.io/crates/lauras-api' },
                   { label: 'OSF · HC9ZB', href: 'https://doi.org/10.17605/OSF.IO/HC9ZB' },
                   { label: 'OSF · QCVJB', href: 'https://doi.org/10.17605/OSF.IO/QCVJB' },
+                  { label: 'OSF · UXCJE', href: 'https://doi.org/10.17605/OSF.IO/UXCJE' },
                   { label: 'Live API', href: 'https://laura-api.fly.dev', live: true },
                   { label: 'Coevolution Factory', href: 'https://coevolution-factory-sparkling-mountain-1802.fly.dev', live: true },
                 ].map((c, i) => (
