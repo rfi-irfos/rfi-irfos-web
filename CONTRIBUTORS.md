@@ -11,7 +11,7 @@ We run flat: equal title, pay, and voice for everyone. No seniority, no hierarch
 | Member | GitHub | Based in |
 |---|---|---|
 | Simeon Kepp | [@simeon-kepp](https://github.com/simeon-kepp) | Graz, Austria |
-| Laura Serna Gaviria | [LinkedIn](https://www.linkedin.com/in/laura-serna-gaviria/) · [@REPLACE_WITH_LAURA_GITHUB_HANDLE](https://github.com/REPLACE_WITH_LAURA_GITHUB_HANDLE) | Research Director & Co-Founder |
+| Laura Serna Gaviria | [LinkedIn](https://www.linkedin.com/in/laura-serna-gaviria/) · [@EmergentInteractionLab](https://github.com/EmergentInteractionLab) | Research Director & Co-Founder |
 | Zabih Karimi | [@zabih-sudo](https://github.com/zabih-sudo) | Graz, Austria |
 | Nikoletta Csonka | [@csonikoletta](https://github.com/csonikoletta) | Graz, Austria |
 | Louis Ehrig | [@louisuhr](https://github.com/louisuhr) | Budapest, Hungary |
