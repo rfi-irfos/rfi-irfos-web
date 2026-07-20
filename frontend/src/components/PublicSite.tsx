@@ -95,7 +95,32 @@ function useMobile(bp = 768) {
 
 const TEAL = '#00f5c4'
 const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
+const LIGHTHOUSE_BEACON = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track'
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
+
+// ── Own-offer funnel telemetry ──────────────────────────────────────────────
+// Every pricing-tier interaction is beamed to the Lighthouse first-party tracker
+// as a tagged `section` value. Lighthouse groups these into a per-tier funnel:
+//   offer_click:<tier>      → user opened the checkout modal (button press)
+//   offer_cancel:<tier>     → user dismissed the modal without continuing
+//   offer_attempt:<tier>    → user hit CONTINUE TO STRIPE (before the redirect)
+//   proposal_request:<tier> → user hit REQUEST PROPOSAL (contact-only tiers)
+// That gives click → cancel → attempt → paid without any cookies or PII — it's a
+// 1x1 beacon on our own infra, not third-party ad tracking.
+function beacon(section: string, extra?: Record<string, string>) {
+  const body: Record<string, string> = {
+    path: location.pathname,
+    referrer: document.referrer,
+    site: 'rfi-irfos',
+    section,
+    ...extra,
+  }
+  fetch(LIGHTHOUSE_BEACON, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).catch(() => {})
+}
 
 const NAV_LINKS = [
   { label: 'Research', href: '#research' },
@@ -3139,16 +3164,30 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   }
 
   const openCheckoutModal = (tier: string) => {
-    // Own-offer click tracking (Lighthouse Finance > Funnels): same first-party
-    // pixel already used for pageviews on this site, tagged so Lighthouse can
-    // break clicks down per tier - "who clicks ours, how many" per tier.
-    new Image().src = `${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&s=${encodeURIComponent('offer_click:' + tier)}`
+    // Funnel step 1: user pressed the tier button → open the checkout modal AND
+    // beam offer_click:<tier> to Lighthouse (same first-party tracker as pageviews).
+    beacon('offer_click:' + tier)
     setAgbChecked(false)
     setB2bChecked(false)
     setCheckoutModal(tier)
   }
 
+  const cancelCheckout = (tier: string) => {
+    // Funnel step 2a: user dismissed the confirmation modal without continuing.
+    beacon('offer_cancel:' + tier)
+    setCheckoutModal(null)
+  }
+
+  const proposalRequest = (tier: string) => {
+    // Contact-only tiers have no Stripe checkout — beam the request so they show
+    // up in the same Lighthouse funnel as the paid tiers.
+    beacon('proposal_request:' + tier)
+  }
+
   const handleCheckout = async (tier: string) => {
+    // Funnel step 2b: user hit CONTINUE TO STRIPE — beam the attempt BEFORE the
+    // redirect so a Stripe-bound click counts even if the tab navigates away.
+    beacon('offer_attempt:' + tier)
     setCheckoutModal(null)
     setCheckoutLoading(tier)
     const apiBase = (import.meta.env.VITE_API_BASE as string) ?? ''
@@ -3421,7 +3460,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               </span>
             </label>
             <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
-              <button onClick={() => setCheckoutModal(null)}
+              <button onClick={() => cancelCheckout(checkoutModal!)}
                 style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#606080', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
                 Cancel
               </button>
@@ -4237,7 +4276,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     </button>
                   )}
                   {t.contact && (
-                    <a href="#contact" style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
+                    <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
                       request proposal →
                     </a>
                   )}
@@ -4340,7 +4379,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                       get started →
                     </button>
                   ) : (
-                    <a href="#contact" style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
+                    <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
                       request proposal →
                     </a>
                   )}
@@ -4369,7 +4408,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
                   <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>on request</div>
                   <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  <a href="#contact" style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
+                  <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
                     request proposal →
                   </a>
                 </div>
