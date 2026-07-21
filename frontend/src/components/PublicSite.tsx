@@ -4813,7 +4813,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: 'var(--text2)', lineHeight: 1.5 }}>
             this is a useless cookie banner. it&apos;s just here to look like one * we don&apos;t use cookies, so there&apos;s nothing to consent to. don&apos;t let anyone tell you otherwise.
             <span style={{ display: 'block', fontFamily: 'monospace', fontSize: 10.5, color: 'var(--text3)', letterSpacing: '0.04em', marginTop: 4 }}>
-              two buttons, one closes this and throws some confetti. the other literally does nothing. that&apos;s the most we can afford.
+              two buttons, one closes this and throws some confetti. the other literally does nothing.
             </span>
           </p>
           <div style={{ display: 'flex', gap: 8, flex: 'none' }}>
