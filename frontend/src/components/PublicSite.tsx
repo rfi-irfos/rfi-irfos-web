@@ -4802,9 +4802,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       {cookieBannerOpen && (
         <div ref={bannerRef} style={{
           position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
-          maxWidth: 560, margin: '0 auto',
+          maxWidth: 640, margin: '0 auto',
           background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 12,
-          padding: '16px 20px', boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
+          padding: '20px 24px', boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
           display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
           transform: bannerClosing ? 'scale(0.85)' : 'scale(1)',
           opacity: bannerClosing ? 0 : 1,

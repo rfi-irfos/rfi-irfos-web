@@ -9,10 +9,10 @@ html { scroll-padding-top: 72px; }
 :root,
 [data-theme="dark"] {
   --bg:           #070711;
-  --bg2:          rgba(255,255,255,0.20);
+  --bg2:          rgba(255,255,255,0.25);
   --bg3:          rgba(255,255,255,0.06);
   --bg-accent:    rgba(0,245,196,0.02);
-  --text:         #e8e8f0;
+  --text:         #e...[truncated]
   --text2:        #a0a0b8;
   --text3:        #606080;
   --text4:        #404058;
