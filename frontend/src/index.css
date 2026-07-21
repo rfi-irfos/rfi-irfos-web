@@ -9,7 +9,7 @@ html { scroll-padding-top: 72px; }
 :root,
 [data-theme="dark"] {
   --bg:           #070711;
-  --bg2:          rgba(255,255,255,0.03);
+  --bg2:          rgba(255,255,255,0.08);
   --bg3:          rgba(255,255,255,0.06);
   --bg-accent:    rgba(0,245,196,0.02);
   --text:         #e8e8f0;
@@ -23,7 +23,6 @@ html { scroll-padding-top: 72px; }
   --accent-dim:   rgba(0,245,196,0.08);
   --accent-border:rgba(0,245,196,0.25);
   --nav-bg:       rgba(7,7,17,0.95);
-  --nav-border:   rgba(255,255,255,0.06);
   --sev-crit:     #ef4444;
   --sev-high:     #f97316;
   --sev-med:      #eab308;
