@@ -4801,42 +4801,42 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       </footer>
       {cookieBannerOpen && (
         <div ref={bannerRef} style={{
-          position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
-          maxWidth: 640, margin: '0 auto',
-          background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 12,
-          padding: '20px 24px', boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
-          display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
-          transform: bannerClosing ? 'scale(0.85)' : 'scale(1)',
-          opacity: bannerClosing ? 0 : 1,
-          transition: 'transform 0.24s ease-in, opacity 0.24s ease-in',
-        }}>
-          <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: '#000000', fontWeight: 'bold', lineHeight: 1.5 }}>
-            this is a useless cookie banner. it&apos;s just here to look like one * we don&apos;t use cookies, so there&apos;s nothing to consent to. don&apos;t let anyone tell you otherwise.
-            <span style={{ display: 'block', fontFamily: 'monospace', fontSize: 10.5, color: '#000000', letterSpacing: '0.04em', marginTop: 4 }}>
-              two buttons, one closes this and throws some confetti. the other literally does nothing.
-            </span>
-          </p>
-          <div style={{ display: 'flex', gap: 8, flex: 'none' }}>
-            <button
-              onClick={() => {}}
-              style={{
-                background: 'transparent', color: '#ffffff', border: '1px solid var(--border)',
-                borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
-              }}
-            >
-              does nothing
-            </button>
-            <button
-              onClick={dismissCookieBanner}
-              style={{
-                background: 'var(--accent)', color: 'var(--bg)', border: 'none',
-                borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 700, cursor: 'pointer',
-              }}
-            >
-              close
-            </button>
-          </div>
-        </div>
+                  position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
+                  maxWidth: 640, margin: '0 auto',
+                  background: 'rgba(255,255,255,0.25)', border: '1px solid var(--border)', borderRadius: 12,
+                  padding: '20px 24px', boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
+                  display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+                  transform: bannerClosing ? 'scale(0.85)' : 'scale(1)',
+                  opacity: bannerClosing ? 0 : 1,
+                  transition: 'transform 0.24s ease-in, opacity 0.24s ease-in',
+                }}>
+                  <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: '#000000', fontWeight: 'bold', lineHeight: 1.5 }}>
+                    this is a useless cookie banner. it&apos;s just here to look like one * we don&apos;t use cookies, so there&apos;s nothing to consent to. don&apos;t let anyone tell you otherwise.
+                    <span style={{ display: 'block', fontFamily: 'monospace', fontSize: 10.5, color: '#000000', letterSpacing: '0.04em', marginTop: 4 }}>
+                      two buttons, one closes this and throws some confetti. the other literally does nothing.
+                    </span>
+                  </p>
+                  <div style={{ display: 'flex', gap: 8, flex: 'none' }}>
+                    <button
+                      onClick={() => {}}
+                      style={{
+                        background: 'transparent', color: '#ffffff', border: '1px solid var(--border)',
+                        borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
+                      }}
+                    >
+                      does nothing
+                    </button>
+                    <button
+                      onClick={dismissCookieBanner}
+                      style={{
+                        background: 'var(--accent)', color: 'var(--bg)', border: 'none',
+                        borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 700, cursor: 'pointer',
+                      }}
+                    >
+                      close
+                    </button>
+                  </div>
+                </div>
       )}
     </div>
   )
