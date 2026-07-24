@@ -57,10 +57,9 @@ a:hover{text-decoration:underline}
 .site-logo-text{color:var(--text);font-size:14px;font-weight:800;letter-spacing:.06em;white-space:nowrap}
 .site-logo-sub{color:var(--text3);font-size:13px;font-weight:500;margin-left:10px;padding-left:12px;
   border-left:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes ekgPulse{0%{stroke-dashoffset:90;opacity:0}8%{opacity:1}80%{opacity:1}100%{stroke-dashoffset:-90;opacity:0}}
+.ekg-line{stroke-dasharray:90;animation:ekgPulse 2.4s linear infinite}
 .site-nav-right{display:flex;align-items:center;gap:18px;flex:none}
-.site-main-nav{display:flex;gap:1.75rem;align-items:center}
-.site-main-nav a{color:var(--text2);font-size:13px;font-weight:600;letter-spacing:.04em;transition:color .18s;text-decoration:none}
-.site-main-nav a:hover{color:var(--accent);text-decoration:none}
 .theme-group{display:flex}
 .theme-group .theme-btn{border:1px solid var(--border);background:0 0;color:var(--text3);letter-spacing:.08em;cursor:pointer;
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;padding:5px 9px;transition:color .15s,border-color .15s,background .15s}
@@ -148,27 +147,11 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
 .confirm{display:none;margin-top:18px;border:1px solid var(--accent-border);background:var(--accent-dim);
   color:var(--accent-text);padding:14px 18px;border-radius:8px;font-size:13px;font-weight:600}
 
-/* ---------------- FOOTER (1:1 from rfi-irfos.com) ---------------- */
-.site-footer{background:#353f37;padding:56px 60px 30px;color:#fff}
-.site-footer-grid{border-bottom:1px solid #ffffff1f;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:24px;padding-bottom:44px;display:grid}
-.site-footer-brand-name{color:#fff;margin-bottom:10px;font-size:17px;font-weight:800;display:block}
-.site-footer-brand-desc{color:#ffffffb8;font-size:13px;line-height:1.8;max-width:320px}
-.site-footer-col h4{color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;font-size:11px;font-weight:700}
-.site-footer-col a{color:#ffffffbd;margin-bottom:10px;font-size:13px;transition:color .2s;display:block}
-.site-footer-col a:hover{color:var(--accent)}
-.site-footer-bottom{color:#ffffff9e;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;font-size:12px;display:flex}
-.site-footer-links{gap:20px;display:flex}
-.site-footer-links a{color:#ffffff9e;transition:color .2s}
-.site-footer-links a:hover{color:#fff}
-.site[data-theme=hc] .site-footer{background:#000;border-top:2px solid #fff}
-.site[data-theme=hc] .site-footer-brand-desc,.site[data-theme=hc] .site-footer-col a,
-.site[data-theme=hc] .site-footer-bottom,.site[data-theme=hc] .site-footer-links a{color:#fff}
+/* ---------------- FOOTER: 1:1 inline from rfi-irfos.com (no extra CSS needed) ---------------- */
 
 @media (max-width:760px){
   .site-nav{padding:0 20px}
   .hero,.section{padding-left:20px;padding-right:20px}
-  .site-footer{padding-left:20px;padding-right:20px}
-  .site-footer-grid{grid-template-columns:1fr 1fr}
   .submit-grid{grid-template-columns:1fr}
   .site-logo-sub{display:none}
   .site-nav-cta{padding:8px 14px;font-size:12px}
@@ -186,17 +169,6 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
       <span class="site-logo-sub">Human Rights Violations Ledger</span>
     </a>
     <div class="site-nav-right">
-      <div class="site-main-nav">
-        <a href="https://rfi-irfos.com/#research">Research</a>
-        <a href="https://rfi-irfos.com/#projects">Projects</a>
-        <a href="https://rfi-irfos.com/#track-record">Track Record</a>
-        <a href="https://rfi-irfos.com/#submit">Submit</a>
-        <a href="https://rfi-irfos.com/#methodology">Methodology</a>
-        <a href="https://rfi-irfos.com/#standards">Standards</a>
-        <a href="https://rfi-irfos.com/#pricing">Pricing</a>
-        <a href="https://rfi-irfos.com/#team">Team</a>
-        <a href="https://rfi-irfos.com/#coop-partners">Coop</a>
-      </div>
       <div class="theme-group" id="themeGroup">
         <button class="theme-btn" data-theme-val="light" onclick="setTheme('light')">LIGHT</button>
         <button class="theme-btn" data-theme-val="dark"  onclick="setTheme('dark')">DARK</button>
@@ -314,40 +286,50 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
   </div>
 </section>
 
-<footer class="site-footer">
-  <div class="site-footer-grid">
-    <div class="site-footer-col" style="grid-column:1">
-      <span class="site-footer-brand-name">RFI-IRFOS</span>
-      <p class="site-footer-brand-desc" data-i18n="footer_org">Interdisciplinary Research Facility for Open Sciences · Graz, Austria</p>
+<footer style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 2rem; text-align: center;">
+  <p style="font-family: monospace; font-size: 12px; color: rgb(0, 245, 196); letter-spacing: 0.06em; margin-bottom: 24px; font-weight: 600;">Human rights are not subject to negotiation.<br><span style="font-size: 10px; color: rgb(96, 96, 128); font-weight: 400;">— RFI-IRFOS × Emergent Interaction Lab, core doctrine</span></p>
+  <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+    <a href="#p/impressum" style="color: rgb(96, 96, 128); font-size: 12px; text-decoration: none;">Legal Notice</a>
+    <a href="#p/datenschutz" style="color: rgb(96, 96, 128); font-size: 12px; text-decoration: none;">Privacy Policy</a>
+    <a href="#p/agb" style="color: rgb(96, 96, 128); font-size: 12px; text-decoration: none;">Terms</a>
+    <a href="#p/security" style="color: rgb(96, 96, 128); font-size: 12px; text-decoration: none;">Security Policy</a>
+    <a href="https://ternlang.com" style="color: rgb(96, 96, 128); font-size: 12px; text-decoration: none;">ternlang.com</a>
+    <a href="https://github.com/rfi-irfos" style="color: rgb(96, 96, 128); font-size: 12px; text-decoration: none;">github.com/rfi-irfos</a>
+  </div>
+  <div style="display: flex; justify-content: center; margin-bottom: 14px;">
+    <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style="display: inline-block; opacity: 0.85;">
+      <svg viewBox="0 0 420 100" width="168" height="40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style="display: block;">
+        <rect x="0" y="0" width="100" height="100" fill="#CC0000"></rect>
+        <text x="50" y="78" font-family="Arial Black,sans-serif" font-size="74" font-weight="900" fill="#fff" text-anchor="middle">W</text>
+        <rect x="105" y="0" width="100" height="100" fill="#CC0000"></rect>
+        <text x="155" y="78" font-family="Arial Black,sans-serif" font-size="74" font-weight="900" fill="#fff" text-anchor="middle">K</text>
+        <rect x="210" y="0" width="100" height="100" fill="#CC0000"></rect>
+        <text x="260" y="78" font-family="Arial Black,sans-serif" font-size="74" font-weight="900" fill="#fff" text-anchor="middle">O</text>
+        <rect x="320" y="0" width="100" height="33" fill="#CC0000"></rect>
+        <rect x="320" y="33" width="100" height="34" fill="#fff"></rect>
+        <rect x="320" y="67" width="100" height="33" fill="#CC0000"></rect>
+      </svg>
+    </a>
+  </div>
+  <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
+    <div style="display: inline-flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 4px; border: 1px solid var(--border); border-radius: 4px; padding: 5px 12px; background: var(--bg2); text-align: center;">
+      <span style="font-family: monospace; font-size: 10px; color: var(--text2); letter-spacing: 0.06em;">WKO MEMBER · GewO § 32 · Automatic Data Processing</span>
     </div>
-    <div class="site-footer-col">
-      <h4 data-i18n="f_about">Ledger</h4>
-      <a href="#" data-i18n="f_about1">About this ledger</a>
-      <a href="#" data-i18n="f_about2">Methodology</a>
-      <a href="mailto:human-rights@rfi-irfos.com" data-i18n="f_about3">Submit a tip</a>
-    </div>
-    <div class="site-footer-col">
-      <h4 data-i18n="f_res">Resources</h4>
-      <a href="#" data-i18n="f_res1">Primary sources</a>
-      <a href="#" data-i18n="f_res2">OSINT pipeline</a>
-      <a href="#" data-i18n="f_res3">Changelog</a>
-    </div>
-    <div class="site-footer-col">
-      <h4 data-i18n="f_legal">Legal</h4>
-      <a href="#" data-i18n="f_legal1">Imprint</a>
-      <a href="#" data-i18n="f_legal2">Privacy Policy</a>
-      <a href="#" data-i18n="f_legal3">Terms</a>
-      <a href="#" data-i18n="f_legal4">Contact</a>
+    <div style="display: inline-flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 4px; border: 1px solid var(--border); border-radius: 4px; padding: 5px 12px; background: var(--bg2); text-align: center;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path></svg>
+      <span style="font-family: monospace; font-size: 10px; color: var(--text2); letter-spacing: 0.06em;">REGULATED NOT-FOR-PROFIT · ZVR 1015608684 · GISA 39261441 · UID ATU83405245</span>
     </div>
   </div>
-  <div class="site-footer-bottom">
-    <span data-i18n="footer_copy">© RFI-IRFOS. Public record. Disclosure is unconditional and identical for every subject.</span>
-    <div class="site-footer-links">
-      <a href="#" data-i18n="f_legal1">Imprint</a>
-      <a href="#" data-i18n="f_legal2">Privacy</a>
-      <a href="#" data-i18n="f_legal3">Terms</a>
+  <div style="margin-bottom: 12px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+    <div style="display: inline-flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 4px; border: 1px solid var(--border); border-radius: 4px; padding: 5px 12px; background: var(--bg2); text-align: center;">
+      <span style="font-family: monospace; font-size: 10px; color: var(--text2); letter-spacing: 0.06em;">TRADE DESCRIPTION · Services in Automatic Data Processing and Information Technology</span>
+    </div>
+    <div style="display: inline-flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 4px; border: 1px solid var(--border); border-radius: 4px; padding: 5px 12px; background: var(--bg2); text-align: center;">
+      <span style="font-family: monospace; font-size: 10px; color: var(--text2); letter-spacing: 0.06em;">ECG AUTHORITY · Magistrate of the City of Graz · Since 2026-03-19 · GISA 39261441</span>
     </div>
   </div>
+  <p style="font-family: monospace; font-size: 10px; color: rgb(64, 64, 88); letter-spacing: 0.08em; margin-bottom: 4px;">Trade-Law Management: Simeon-Andreas Johann Manfred Kepp · Elisabethinergasse 25/10, 8020 Graz · GLN 9110038490191</p>
+  <p style="font-family: monospace; font-size: 10px; color: rgb(64, 64, 88); letter-spacing: 0.08em;">© 2026 RFI-IRFOS · UID ATU83405245 · Steuernummer 68 696/8736 · Graz, Austria</p>
 </footer>
 
 <script>
@@ -437,8 +419,6 @@ function applyI18n(){
   document.querySelectorAll('[data-i18n]').forEach(function(el){
     var k=el.getAttribute('data-i18n'); if(d[k]) el.innerHTML=d[k];
   });
-  document.getElementById('langEn').classList.toggle('active', LANG==='en');
-  document.getElementById('langDe').classList.toggle('active', LANG==='de');
   document.getElementById('searchInput').placeholder = d.search_ph;
   Object.keys(d.ph).forEach(function(id){ var el=document.getElementById(id); if(el) el.placeholder=d.ph[id]; });
   // rebuild selects preserving current value
