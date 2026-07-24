@@ -51,6 +51,7 @@ a:hover{text-decoration:underline}
   border-bottom:1px solid var(--nav-border);display:flex;justify-content:space-between;align-items:center;
   height:64px;padding:0 24px;position:fixed;top:0;left:0;right:0}
 .site-nav-inner{display:flex;justify-content:space-between;align-items:center;width:100%;gap:24px}
+.site-brand-cluster{display:flex;align-items:center;gap:18px;min-width:0;flex-shrink:0}
 .site-brand{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;flex-shrink:0;color:inherit}
 .site-brand:hover{text-decoration:none}
 .site-brand:hover .site-logo-text{color:var(--text)}
@@ -60,6 +61,11 @@ a:hover{text-decoration:underline}
 .site-logo-text{color:var(--text);font-size:14px;font-weight:800;letter-spacing:.06em;white-space:nowrap}
 .site-logo-sub{color:var(--text3);font-size:13px;font-weight:500;margin-left:10px;padding-left:12px;
   border-left:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* ---------------- cards: visible frame so the ledger reads as a surface in dark mode ---------------- */
+.card{border:1px solid var(--border);border-radius:16px;background:var(--surface);overflow:hidden}
+.card-pad{padding:22px}
+.site[data-theme=hc] .card{border-color:#fff}
+
 @keyframes ekgPulse{0%{stroke-dashoffset:90;opacity:0}8%{opacity:1}80%{opacity:1}100%{stroke-dashoffset:-90;opacity:0}}
 .ekg-line{stroke-dasharray:90;animation:ekgPulse 2.4s linear infinite}
 .site-nav-right{display:flex;align-items:center;gap:18px;flex:none}
@@ -98,7 +104,7 @@ a:hover{text-decoration:underline}
 .rfi-select:focus{border-color:var(--accent)}
 .ledger-meta{color:var(--text3);font-size:12px;margin:0 0 14px;font-variant-numeric:tabular-nums}
 
-.ledger-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px}
+.ledger-wrap{overflow-x:auto}
 table.ledger{width:100%;border-collapse:collapse;font-size:13.5px;min-width:780px}
 table.ledger thead th{text-align:left;padding:14px 16px;text-transform:uppercase;
   letter-spacing:.06em;font-size:10.5px;color:var(--text3);border-bottom:1px solid var(--border);font-weight:700;white-space:nowrap}
@@ -140,8 +146,8 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
 .field.full{grid-column:1/-1}
 .field label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);font-weight:600}
 .field .hint{font-size:11px;color:var(--text4)}
-.submit-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:30px}
-.btn-primary{background:var(--accent);color:#04130f;border:none;border-radius:6px;padding:13px 26px;
+.submit-wrap{background:rgba(0,245,196,0.05);border:1px solid rgba(0,245,196,0.22);border-radius:16px;padding:22px}
+.btn-primary{background:var(--accent);color:#04130f;border:none;border-radius:6px;padding:11px 22px;
   font-weight:800;font-size:13px;letter-spacing:.04em;cursor:pointer;transition:opacity .15s,transform .15s}
 .btn-primary:hover{opacity:.9}
 .btn-primary:active{transform:translateY(1px)}
@@ -165,6 +171,7 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
 
 <nav class="site-nav">
   <div class="site-nav-inner">
+    <div class="site-brand-cluster">
     <a class="site-brand" href="https://rfi-irfos.com/">
       <img class="site-logo-img" src="/logo.png" alt="RFI-IRFOS">
       <span class="site-logo-text">RFI-IRFOS</span>
@@ -172,6 +179,7 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
     <div class="site-brand-sub">
       <svg class="ekg" width="54" height="18" viewBox="0 0 54 18" fill="none"><polyline class="ekg-line" points="0,9 12,9 16,2 20,16 24,2 28,9 54,9" stroke="#00f5c4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="site-logo-sub">Human Rights Violations Ledger</span>
+    </div>
     </div>
     <div class="site-nav-right">
       <div class="theme-group" id="themeGroup">
@@ -197,6 +205,7 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
 
 <section class="section">
   <div class="section-inner">
+    <div class="card card-pad">
     <div class="ledger-controls">
       <div class="search-wrap">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
@@ -236,11 +245,13 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
       Automated public-source collection (OSINT) is a planned extension; today the ledger is
       curated and fed by verified community submissions. Click any entry to read the full record.
     </div>
+    </div>
   </div>
 </section>
 
 <section class="section" style="border-bottom:none">
   <div class="section-inner">
+    <div class="card card-pad">
     <h2 class="section-title" data-i18n="submit_title">Submit a Tip</h2>
     <p class="section-desc" data-i18n="submit_desc">
       Know of a publicly documented violation not yet on the ledger? Send it. Tips are reviewed
@@ -287,6 +298,7 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
         <button class="btn-primary" type="submit" data-i18n="t_submit" style="margin-top:20px">Submit Tip for Review</button>
         <div class="confirm" id="tipConfirm"></div>
       </form>
+    </div>
     </div>
   </div>
 </section>
