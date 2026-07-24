@@ -54,11 +54,11 @@ function useFastScroll(mult = 1.55, ease = 0.16) {
       current += (target - current) * ease
       if (Math.abs(target - current) < 0.5) {
         current = target
-        window.scrollTo(0, current)
+        window.scrollTo({ top: current, left: 0, behavior: 'instant' })
         rafId = 0
         return
       }
-      window.scrollTo(0, current)
+      window.scrollTo({ top: current, left: 0, behavior: 'instant' })
       rafId = requestAnimationFrame(tick)
     }
 
@@ -66,8 +66,13 @@ function useFastScroll(mult = 1.55, ease = 0.16) {
       if (e.ctrlKey || e.deltaY === 0) return // pinch-zoom / horizontal - leave native
       if ((e.target as HTMLElement)?.closest?.('[data-native-scroll]')) return
       e.preventDefault()
+      // Normalize deltaY: Firefox/trackpads may report line-mode (1) or page-mode (2),
+      // not pixel-mode (0). Without this the page barely moves on those devices.
+      let dy = e.deltaY
+      if (e.deltaMode === 1) dy *= 16                    // ~16px per line
+      else if (e.deltaMode === 2) dy *= window.innerHeight * 0.9
       if (!rafId) { target = window.scrollY; current = window.scrollY } // resync after any native scroll
-      target = Math.max(0, Math.min(maxScroll(), target + e.deltaY * mult))
+      target = Math.max(0, Math.min(maxScroll(), target + dy * mult))
       if (!rafId) rafId = requestAnimationFrame(tick)
     }
 

@@ -1,6 +1,10 @@
 /* ── Reset ──────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+/* scroll-behavior is not set globally on purpose: the custom wheel scroll
+   accelerator (useFastScroll in PublicSite.tsx) drives window.scrollTo() every
+   frame, and a global `smooth` here would re-animate each of those frames and
+   fight the accelerator (janky / rubber-banding scroll). In-page anchor jumps
+   request `behavior: 'smooth'` explicitly where they want it. */
 body { font-family: var(--font, system-ui, -apple-system, 'Segoe UI', sans-serif); }
 a { text-decoration: none; color: inherit; }
 img { max-width: 100%; display: block; }
