@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HRV Ledger | RFI-IRFOS</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
 <style>
 :root,[data-theme=dark]{color-scheme:dark;
   --bg:#070711;--bg2:#ffffff08;--bg3:#ffffff0f;
@@ -778,15 +780,31 @@ function submitTip(e){
     desc:document.getElementById('t_desc').value,
     contact:document.getElementById('t_contact').value
   };
+  // local backup (visible only to this browser)
   var tips=loadTips(); tips.push(tip);
   try{ localStorage.setItem('hrv_tips',JSON.stringify(tips)); }catch(e){}
+  // open the user's native email client, pre-filled, addressed to contact@rfi-irfos.com
+  var sevLabel={crit:'Critical',high:'High',med:'Medium'}[tip.sev]||tip.sev;
+  var subject='[HRV Ledger Tip] '+tip.subject+' — '+tip.region+' ('+sevLabel+')';
+  var body='Human Rights Violations Ledger — New Tip\n'+
+    '----------------------------------------\n'+
+    'Subject / Entity: '+tip.subject+'\n'+
+    'Region:           '+tip.region+'\n'+
+    'Violation Type:   '+tip.type+'\n'+
+    'Self-Assessed:    '+sevLabel+'\n'+
+    'Date Observed:    '+tip.date+'\n'+
+    'Source URL(s):    '+tip.source+'\n'+
+    'Contact:          '+(tip.contact||'(anonymous)')+'\n\n'+
+    'Description:\n'+tip.desc+'\n\n'+
+    '-- \nSent via the RFI-IRFOS HRV Ledger public tip form.\nThis tip will be reviewed by a human before publication.';
+  var mailto='mailto:contact@rfi-irfos.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+  window.location.href=mailto;
   document.getElementById('tipForm').reset();
   document.getElementById('t_type').innerHTML=TYPE_OPTS[LANG].map(function(v){return '<option>'+v+'</option>';}).join('');
   fillSelect(document.getElementById('t_sev'), SEV_FORM[LANG], 'crit');
   var c=document.getElementById('tipConfirm');
-  c.textContent=I18N[LANG].st_under_review ? 'Thank you. Your tip is queued for human review.' : 'Thank you.';
+  c.textContent=I18N[LANG].st_under_review ? 'Thank you. Your email client should now be open with the tip pre-filled — just press send.' : 'Thank you.';
   c.style.display='block';
-  renderLedger();
   setTimeout(function(){ c.style.display='none'; }, 8000);
   return false;
 }
