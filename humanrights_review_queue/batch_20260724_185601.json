@@ -1,0 +1,302 @@
+[
+  {
+    "id": "osint-demo-entity-from-europea-df7e4082",
+    "date": "2026-07-24",
+    "entity": "Demo Entity from: European Union labour rights v",
+    "type_en": "Labor / Occupational Safety",
+    "type_de": "Arbeit / Arbeitsschutz",
+    "sev": "high",
+    "region_en": "European Union",
+    "region_de": "European Union",
+    "sources": [
+      {
+        "label": "Source",
+        "url": "https://example.com"
+      }
+    ],
+    "article_en": [
+      {
+        "h": "What was reported",
+        "p": "Publicly documented case matching query: European Union labour rights violation fine 2025 documented report"
+      },
+      {
+        "h": "Documented record",
+        "p": "Awaiting human review of primary sources."
+      },
+      {
+        "h": "Open questions / discussion",
+        "p": "To be summarised by reviewer."
+      }
+    ],
+    "article_de": [
+      {
+        "h": "Was berichtet wurde",
+        "p": "Publicly documented case matching query: European Union labour rights violation fine 2025 documented report"
+      },
+      {
+        "h": "Dokumentierte Fakten",
+        "p": "Quellenprüfung durch Menschen ausstehend."
+      },
+      {
+        "h": "Offene Fragen / Diskussion",
+        "p": "Vom Reviewer zu zusammenfassen."
+      }
+    ],
+    "_meta": {
+      "origin": "osint-agent",
+      "captured": "2026-07-24T18:56:01",
+      "query": "European Union labour rights violation fine 2025 documented report",
+      "needs_human_review": true
+    }
+  },
+  {
+    "id": "osint-demo-entity-from-eu-work-4b34a7af",
+    "date": "2026-07-24",
+    "entity": "Demo Entity from: EU workplace safety violation ",
+    "type_en": "Labor / Occupational Safety",
+    "type_de": "Arbeit / Arbeitsschutz",
+    "sev": "high",
+    "region_en": "European Union",
+    "region_de": "European Union",
+    "sources": [
+      {
+        "label": "Source",
+        "url": "https://example.com"
+      }
+    ],
+    "article_en": [
+      {
+        "h": "What was reported",
+        "p": "Publicly documented case matching query: EU workplace safety violation investigation regulator report 2025"
+      },
+      {
+        "h": "Documented record",
+        "p": "Awaiting human review of primary sources."
+      },
+      {
+        "h": "Open questions / discussion",
+        "p": "To be summarised by reviewer."
+      }
+    ],
+    "article_de": [
+      {
+        "h": "Was berichtet wurde",
+        "p": "Publicly documented case matching query: EU workplace safety violation investigation regulator report 2025"
+      },
+      {
+        "h": "Dokumentierte Fakten",
+        "p": "Quellenprüfung durch Menschen ausstehend."
+      },
+      {
+        "h": "Offene Fragen / Diskussion",
+        "p": "Vom Reviewer zu zusammenfassen."
+      }
+    ],
+    "_meta": {
+      "origin": "osint-agent",
+      "captured": "2026-07-24T18:56:01",
+      "query": "EU workplace safety violation investigation regulator report 2025",
+      "needs_human_review": true
+    }
+  },
+  {
+    "id": "osint-demo-entity-from-minor-p-7a699723",
+    "date": "2026-07-24",
+    "entity": "Demo Entity from: minor protection online safety",
+    "type_en": "Labor / Occupational Safety",
+    "type_de": "Arbeit / Arbeitsschutz",
+    "sev": "high",
+    "region_en": "European Union",
+    "region_de": "European Union",
+    "sources": [
+      {
+        "label": "Source",
+        "url": "https://example.com"
+      }
+    ],
+    "article_en": [
+      {
+        "h": "What was reported",
+        "p": "Publicly documented case matching query: minor protection online safety app investigation Europe GDPR 2025"
+      },
+      {
+        "h": "Documented record",
+        "p": "Awaiting human review of primary sources."
+      },
+      {
+        "h": "Open questions / discussion",
+        "p": "To be summarised by reviewer."
+      }
+    ],
+    "article_de": [
+      {
+        "h": "Was berichtet wurde",
+        "p": "Publicly documented case matching query: minor protection online safety app investigation Europe GDPR 2025"
+      },
+      {
+        "h": "Dokumentierte Fakten",
+        "p": "Quellenprüfung durch Menschen ausstehend."
+      },
+      {
+        "h": "Offene Fragen / Diskussion",
+        "p": "Vom Reviewer zu zusammenfassen."
+      }
+    ],
+    "_meta": {
+      "origin": "osint-agent",
+      "captured": "2026-07-24T18:56:01",
+      "query": "minor protection online safety app investigation Europe GDPR 2025",
+      "needs_human_review": true
+    }
+  },
+  {
+    "id": "osint-demo-entity-from-forced--f520c942",
+    "date": "2026-07-24",
+    "entity": "Demo Entity from: forced labor supply chain EU d",
+    "type_en": "Labor / Occupational Safety",
+    "type_de": "Arbeit / Arbeitsschutz",
+    "sev": "high",
+    "region_en": "European Union",
+    "region_de": "European Union",
+    "sources": [
+      {
+        "label": "Source",
+        "url": "https://example.com"
+      }
+    ],
+    "article_en": [
+      {
+        "h": "What was reported",
+        "p": "Publicly documented case matching query: forced labor supply chain EU due diligence violation 2025"
+      },
+      {
+        "h": "Documented record",
+        "p": "Awaiting human review of primary sources."
+      },
+      {
+        "h": "Open questions / discussion",
+        "p": "To be summarised by reviewer."
+      }
+    ],
+    "article_de": [
+      {
+        "h": "Was berichtet wurde",
+        "p": "Publicly documented case matching query: forced labor supply chain EU due diligence violation 2025"
+      },
+      {
+        "h": "Dokumentierte Fakten",
+        "p": "Quellenprüfung durch Menschen ausstehend."
+      },
+      {
+        "h": "Offene Fragen / Diskussion",
+        "p": "Vom Reviewer zu zusammenfassen."
+      }
+    ],
+    "_meta": {
+      "origin": "osint-agent",
+      "captured": "2026-07-24T18:56:01",
+      "query": "forced labor supply chain EU due diligence violation 2025",
+      "needs_human_review": true
+    }
+  },
+  {
+    "id": "osint-demo-entity-from-environ-0177ca6d",
+    "date": "2026-07-24",
+    "entity": "Demo Entity from: environmental community rights",
+    "type_en": "Labor / Occupational Safety",
+    "type_de": "Arbeit / Arbeitsschutz",
+    "sev": "high",
+    "region_en": "European Union",
+    "region_de": "European Union",
+    "sources": [
+      {
+        "label": "Source",
+        "url": "https://example.com"
+      }
+    ],
+    "article_en": [
+      {
+        "h": "What was reported",
+        "p": "Publicly documented case matching query: environmental community rights violation Europe chemical spill 2025"
+      },
+      {
+        "h": "Documented record",
+        "p": "Awaiting human review of primary sources."
+      },
+      {
+        "h": "Open questions / discussion",
+        "p": "To be summarised by reviewer."
+      }
+    ],
+    "article_de": [
+      {
+        "h": "Was berichtet wurde",
+        "p": "Publicly documented case matching query: environmental community rights violation Europe chemical spill 2025"
+      },
+      {
+        "h": "Dokumentierte Fakten",
+        "p": "Quellenprüfung durch Menschen ausstehend."
+      },
+      {
+        "h": "Offene Fragen / Diskussion",
+        "p": "Vom Reviewer zu zusammenfassen."
+      }
+    ],
+    "_meta": {
+      "origin": "osint-agent",
+      "captured": "2026-07-24T18:56:01",
+      "query": "environmental community rights violation Europe chemical spill 2025",
+      "needs_human_review": true
+    }
+  },
+  {
+    "id": "osint-demo-entity-from-platfor-a97e7519",
+    "date": "2026-07-24",
+    "entity": "Demo Entity from: platform worker employment sta",
+    "type_en": "Labor / Occupational Safety",
+    "type_de": "Arbeit / Arbeitsschutz",
+    "sev": "high",
+    "region_en": "European Union",
+    "region_de": "European Union",
+    "sources": [
+      {
+        "label": "Source",
+        "url": "https://example.com"
+      }
+    ],
+    "article_en": [
+      {
+        "h": "What was reported",
+        "p": "Publicly documented case matching query: platform worker employment status court ruling Europe 2025"
+      },
+      {
+        "h": "Documented record",
+        "p": "Awaiting human review of primary sources."
+      },
+      {
+        "h": "Open questions / discussion",
+        "p": "To be summarised by reviewer."
+      }
+    ],
+    "article_de": [
+      {
+        "h": "Was berichtet wurde",
+        "p": "Publicly documented case matching query: platform worker employment status court ruling Europe 2025"
+      },
+      {
+        "h": "Dokumentierte Fakten",
+        "p": "Quellenprüfung durch Menschen ausstehend."
+      },
+      {
+        "h": "Offene Fragen / Diskussion",
+        "p": "Vom Reviewer zu zusammenfassen."
+      }
+    ],
+    "_meta": {
+      "origin": "osint-agent",
+      "captured": "2026-07-24T18:56:01",
+      "query": "platform worker employment status court ruling Europe 2025",
+      "needs_human_review": true
+    }
+  }
+]
