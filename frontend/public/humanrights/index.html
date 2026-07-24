@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Human Rights Violations Ledger | RFI-IRFOS</title>
 <style>
-:root,[data-theme=dark]{color-scheme:dark}
+:root,[data-theme=dark]{color-scheme:dark;
   --bg:#070711;--bg2:#ffffff08;--bg3:#ffffff0f;
   --text:#e8e8f0;--text2:#a0a0b8;--text3:#606080;--text4:#404058;
   --border:#ffffff12;--border2:#ffffff0a;
@@ -56,11 +56,10 @@ a:hover{text-decoration:underline}
 .site-brand:hover{text-decoration:none}
 .site-brand:hover .site-logo-text{color:var(--text)}
 .site-logo-img{height:34px;width:34px;object-fit:contain;flex:none}
-.site-brand-sub{display:flex;align-items:center;min-width:0}
-.ekg{margin-left:10px;flex-shrink:0}
+.ekg{margin-left:12px;flex-shrink:0}
 .site-logo-text{color:var(--text);font-size:14px;font-weight:800;letter-spacing:.06em;white-space:nowrap}
-.site-logo-sub{color:var(--text3);font-size:13px;font-weight:500;margin-left:10px;padding-left:12px;
-  border-left:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.site-logo-sub{color:var(--text3);font-size:13px;font-weight:500;margin-left:10px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* ---------------- cards: bright visible frame so the ledger reads as a surface in dark mode ---------------- */
 .card{border:1px solid rgba(255,255,255,.38);border-radius:16px;background:rgba(255,255,255,.03);overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.4)}
 .card-pad{padding:22px}
@@ -99,7 +98,7 @@ a:hover{text-decoration:underline}
 .rfi-input:focus{border-color:var(--accent)}
 .filter-group{display:flex;flex-direction:column;gap:5px}
 .filter-group label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
-.rfi-select{background:var(--input-bg);border:1px solid var(--input-border);color:var(--input-text);
+.rfi-select{background-color:var(--input-bg);border:1px solid var(--input-border);color:var(--input-text);
   color-scheme:dark;appearance:none;-webkit-appearance:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a0a0b8' stroke-width='2.4'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 11px center;padding-right:32px;
@@ -180,10 +179,8 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
       <img class="site-logo-img" src="/logo.png" alt="RFI-IRFOS">
       <span class="site-logo-text">RFI-IRFOS</span>
     </a>
-    <div class="site-brand-sub">
-      <svg class="ekg" width="54" height="18" viewBox="0 0 54 18" fill="none"><polyline class="ekg-line" points="0,9 12,9 16,2 20,16 24,2 28,9 54,9" stroke="#00f5c4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span class="site-logo-sub">Human Rights Violations Ledger</span>
-    </div>
+    <span class="site-logo-sub">Human Rights Violations Ledger</span>
+    <svg class="ekg" width="54" height="18" viewBox="0 0 54 18" fill="none"><polyline class="ekg-line" points="0,9 12,9 16,2 20,16 24,2 28,9 54,9" stroke="#00f5c4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
     <div class="site-nav-right">
       <div class="theme-group" id="themeGroup">
