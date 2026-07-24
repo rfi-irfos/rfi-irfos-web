@@ -51,9 +51,12 @@ a:hover{text-decoration:underline}
   border-bottom:1px solid var(--nav-border);display:flex;justify-content:space-between;align-items:center;
   height:64px;padding:0 24px;position:fixed;top:0;left:0;right:0}
 .site-nav-inner{display:flex;justify-content:space-between;align-items:center;width:100%;gap:24px}
-.site-brand{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;flex-shrink:0}
+.site-brand{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;flex-shrink:0;color:inherit}
+.site-brand:hover{text-decoration:none}
+.site-brand:hover .site-logo-text{color:var(--text)}
 .site-logo-img{height:34px;width:34px;object-fit:contain;flex:none}
-.ekg{margin-left:4px;flex-shrink:0}
+.site-brand-sub{display:flex;align-items:center;min-width:0}
+.ekg{margin-left:10px;flex-shrink:0}
 .site-logo-text{color:var(--text);font-size:14px;font-weight:800;letter-spacing:.06em;white-space:nowrap}
 .site-logo-sub{color:var(--text3);font-size:13px;font-weight:500;margin-left:10px;padding-left:12px;
   border-left:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -165,9 +168,11 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
     <a class="site-brand" href="https://rfi-irfos.com/">
       <img class="site-logo-img" src="/logo.png" alt="RFI-IRFOS">
       <span class="site-logo-text">RFI-IRFOS</span>
+    </a>
+    <div class="site-brand-sub">
       <svg class="ekg" width="54" height="18" viewBox="0 0 54 18" fill="none"><polyline class="ekg-line" points="0,9 12,9 16,2 20,16 24,2 28,9 54,9" stroke="#00f5c4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="site-logo-sub">Human Rights Violations Ledger</span>
-    </a>
+    </div>
     <div class="site-nav-right">
       <div class="theme-group" id="themeGroup">
         <button class="theme-btn" data-theme-val="light" onclick="setTheme('light')">LIGHT</button>
