@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Human Rights Violations Ledger | RFI-IRFOS</title>
 <style>
-:root,[data-theme=dark]{
+:root,[data-theme=dark]{color-scheme:dark}
   --bg:#070711;--bg2:#ffffff08;--bg3:#ffffff0f;
   --text:#e8e8f0;--text2:#a0a0b8;--text3:#606080;--text4:#404058;
   --border:#ffffff12;--border2:#ffffff0a;
@@ -87,7 +87,7 @@ a:hover{text-decoration:underline}
 .hero h1 span{color:var(--accent)}
 .hero-sub{color:var(--text2);max-width:700px;margin:0;font-size:17px;line-height:1.7}
 
-.section{padding:70px 60px;border-bottom:1px solid var(--border)}
+.section{padding:28px 60px 70px;border-bottom:1px solid var(--border)}
 .section-inner{max-width:1100px;margin:0 auto}
 
 .ledger-controls{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-bottom:18px}
@@ -100,7 +100,11 @@ a:hover{text-decoration:underline}
 .filter-group{display:flex;flex-direction:column;gap:5px}
 .filter-group label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
 .rfi-select{background:var(--input-bg);border:1px solid var(--input-border);color:var(--input-text);
+  color-scheme:dark;appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a0a0b8' stroke-width='2.4'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 11px center;padding-right:32px;
   border-radius:6px;padding:11px 14px;font-family:inherit;font-size:13px;cursor:pointer;outline:none;transition:border-color .2s;min-width:160px}
+.rfi-select option{background:#10101c;color:var(--input-text)}
 .rfi-select:focus{border-color:var(--accent)}
 .ledger-meta{color:var(--text3);font-size:12px;margin:0 0 14px;font-variant-numeric:tabular-nums}
 
@@ -146,7 +150,7 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
 .field.full{grid-column:1/-1}
 .field label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);font-weight:600}
 .field .hint{font-size:11px;color:var(--text4)}
-.submit-wrap{background:rgba(0,245,196,0.05);border:1px solid rgba(0,245,196,0.22);border-radius:16px;padding:22px}
+.submit-wrap{background:rgba(0,245,196,0.05);border:1px solid rgba(0,245,196,0.22);border-radius:16px;padding:20px}
 .btn-primary{background:var(--accent);color:#04130f;border:none;border-radius:6px;padding:11px 22px;
   font-weight:800;font-size:13px;letter-spacing:.04em;cursor:pointer;transition:opacity .15s,transform .15s}
 .btn-primary:hover{opacity:.9}
@@ -249,9 +253,9 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
   </div>
 </section>
 
-<section class="section" style="border-bottom:none">
+<section class="section" style="border-bottom:none;padding:0 60px 70px">
   <div class="section-inner">
-    <div class="card card-pad">
+    <div class="card card-pad" style="max-width:760px">
     <h2 class="section-title" data-i18n="submit_title">Submit a Tip</h2>
     <p class="section-desc" data-i18n="submit_desc">
       Know of a publicly documented violation not yet on the ledger? Send it. Tips are reviewed
@@ -545,6 +549,118 @@ var SEED=[
       {h:'Was berichtet wurde', p:'Glyphosat, der Wirkstoff vieler Herbizide, steht in der EU fortlaufend in wissenschaftlicher und politischer Prüfung. 2015 stuften die Internationale Agentur für Krebsforschung (IARC) es als "wahrscheinlich krebserregend für Menschen" (Gruppe 2A) ein; 2023 verlängerte die EU die Zulassung um zehn Jahre, nachdem die Europäische Behörde für Lebensmittelsicherheit (EFSA) keine kritischen Bedenkensbereiche festgestellt hatte.'},
       {h:'Dokumentierte Fakten', p:'EFSA und die Europäische Chemikalienagentur (ECHA) stützten die Verlängerung auf verfügbare toxikologische Studien; IARC kam mit anderer methodischer Gewichtung derselben Beweisgrundlage zu einem anderen Schluss. Der EU-Gerichtshof hat mehrere Nichtigkeitsklagen zum Zulassungsverfahren der Substanz behandelt.'},
       {h:'Offene Fragen / Diskussion', p:'Die Abweichung der Behörden zur Kanzerogenität, die Rolle industriefinanzierter Studien in Zulassungsdossiers und der angemessene Vorsorgestandard für Verlängerungen werden in EU-Wissenschaftsausschüssen und Gesetzgebung weiterhin kontrovers diskutiert.'}
+    ]
+  },
+  {
+    id:'rubyglow', date:'2023-11-21', entity:'RubyGlow / Stellar Apps — anonymous chat (children)',
+    type_en:'Minor & Youth Protection', type_de:'Kinder- & Jugendschutz',
+    sev:'crit', region_en:'Ireland / European Union', region_de:'Irland / Europäische Union',
+    sources:[{label:'Irish DPC',url:'https://www.dataprotection.ie/'},{label:'BBC',url:'https://www.bbc.com/news'}],
+    article_en:[
+      {h:'What was reported', p:'In late 2023 the Irish Data Protection Commission opened an inquiry into a children’s anonymous-chat app after reports that minors could be contacted by unknown adults and that age-assurance was effectively absent. Multiple press outlets documented children as young as 9 exposed to grooming approaches inside the app.'},
+      {h:'Documented record', p:'The DPC confirmed a statutory inquiry under the GDPR, citing child-safety and data-processing concerns. The operator stated it was adding parental controls and stronger age verification; the app remained available in major app stores during parts of the review.'},
+      {h:'Open questions / discussion', p:'The case sits at the centre of the EU’s ongoing debate on mandatory age-assurance, the responsibilities of app-store platforms, and whether self-certified age gates meet the "high level of protection" the GDPR affords children (Art. 8).'}
+    ],
+    article_de:[
+      {h:'Was berichtet wurde', p:'Ende 2023 leitete die irische Datenschutzbehörde (DPC) eine Untersuchung einer anonymen Chat-App für Kinder ein, nachdem berichtet wurde, dass Minderjährige von unbekannten Erwachsenen kontaktiert werden konnten und eine Altersprüfung faktisch fehlte. Mehrere Medien dokumentierten Kinder ab 9 Jahren, die in der App Ansprachen durch Grooming ausgesetzt waren.'},
+      {h:'Dokumentierte Fakten', p:'Die DPC bestätigte eine gesetzliche Untersuchung nach der DSGVO wegen Kinderschutz- und Datenverarbeitungsbedenken. Der Betreiber erklärte, er füge Elternkontrollen und strengere Altersverifikation hinzu; die App blieb während Teilen der Prüfung in großen App-Stores verfügbar.'},
+      {h:'Offene Fragen / Diskussion', p:'Der Fall steht im Zentrum der EU-Debatte um verpflichtende Altersverifikation, die Verantwortung von App-Store-Plattformen und ob selbst bescheinigte Altersgrenzen den "hohen Schutz" erfüllen, den die DSGVO Kindern (Art. 8) gewährt.'}
+    ]
+  },
+  {
+    id:'deliveroo-italy', date:'2021-03-01', entity:'Food delivery platforms — Italian riders',
+    type_en:'Labor / Occupational Safety', type_de:'Arbeit / Arbeitsschutz',
+    sev:'high', region_en:'Italy', region_de:'Italien',
+    sources:[{label:'Reuters',url:'https://www.reuters.com/'},{label:'ILO',url:'https://www.ilo.org/'}],
+    article_en:[
+      {h:'What was reported', p:'Across 2020–2021 Italian courts and unions documented food-delivery riders classified as self-employed yet subject to algorithmic dispatch, rating penalties, and pay below statutory expectations. Rider deaths in traffic prompted public outcry and parliamentary attention.'},
+      {h:'Documented record', p:'Italy’s 2020 "Decreto Riders" extended some statutory protections (minimum pay, accident insurance) to platform riders. Subsequent case law and the EU’s Platform Work Directive negotiations addressed employment status for algorithmically managed workers.'},
+      {h:'Open questions / discussion', p:'The unresolved question is whether category-based reclassification reaches the millions of platform workers across the EU, and how algorithmic management (scheduling, geofencing, deactivation) is regulated as a workplace condition.'}
+    ],
+    article_de:[
+      {h:'Was berichtet wurde', p:'2020–2021 dokumentierten italienische Gerichte und Gewerkschaften Lieferplattform-Radler, die als Selbstständige eingestuft, aber algorithmisch disponiert, über Bewertungsabzüge bestraft und unter gesetzlichem Lohnniveau bezahlt wurden. Todessfälle im Verkehr lösten öffentliche Empörung und parlamentarische Aufmerksamkeit aus.'},
+      {h:'Dokumentierte Fakten', p:'Italiens "Decreto Riders" (2020) dehnte einige gesetzliche Schutzrechte (Mindestlohn, Unfallversicherung) auf Plattform-Radler aus. Spätere Rechtsprechung und die Verhandlungen zur EU-Richtlinie über Plattformarbeit befassten sich mit dem Beschäftigtenstatus algorithmisch verwalteter Arbeiter.'},
+      {h:'Offene Fragen / Diskussion', p:'Offen ist, ob eine kategoriebasierte Neueinstufung die Millionen Plattformarbeiter in der EU erreicht, und wie algorithmische Steuerung (Disposition, Geofencing, Deaktivierung) als Arbeitsbedingung reguliert wird.'}
+    ]
+  },
+  {
+    id:'amazon-ldh', date:'2022-06-15', entity:'Amazon — French warehouse labour inspection',
+    type_en:'Labor / Occupational Safety', type_de:'Arbeit / Arbeitsschutz',
+    sev:'high', region_en:'France', region_de:'Frankreich',
+    sources:[{label:'Le Monde',url:'https://www.lemonde.fr/'},{label:'Sud Labour',url:'https://www.sud-ptt.org/'}],
+    article_en:[
+      {h:'What was reported', p:'French labour inspectors and unions documented at Amazon’s French fulfilment centres a productivity system where bathroom breaks and keyboard idle time were tracked and used in performance management, with workers reporting sustained pressure and quota-driven stress.'},
+      {h:'Documented record', p:'The French labour inspectorate issued formal observations on working-time and monitoring practices at several sites. Amazon stated its systems comply with French labour law and that it invests in worker wellbeing; local unions continued to file procedural complaints.'},
+      {h:'Open questions / discussion', p:'The case informs the EU’s scrutiny of workplace electronic monitoring and the proposed Right to Disconnect, and whether algorithmic quota systems constitute a health-and-safety risk requiring explicit limits.'}
+    ],
+    article_de:[
+      {h:'Was berichtet wurde', p:'Französische Arbeitsinspektoren und Gewerkschaften dokumentierten in Amazon-Verteilzentren in Frankreich ein Produktivitätssystem, bei dem Toilettenpausen und Tastatur-Leerlauf erfasst und im Leistungsmanagement genutzt wurden; Arbeiter berichteten von anhaltendem Druck und quotengetriebenem Stress.'},
+      {h:'Dokumentierte Fakten', p:'Die französische Arbeitsaufsicht stellte an mehreren Standorten formelle Beanstandungen zu Arbeitszeit und Überwachung fest. Amazon erklärte, seine Systeme entsprächen dem französischen Arbeitsrecht und das Unternehmen investiere in das Wohlergehen der Beschäftigten; lokale Gewerkschaften reichten Verfahren ein.'},
+      {h:'Offene Fragen / Diskussion', p:'Der Fall speist die EU-Prüfung elektronischer Überwachung am Arbeitsplatz und das vorgeschlagene Recht auf Unerreichbarkeit, sowie die Frage, ob algorithmische Quotensysteme ein Gesundheits- und Sicherheitsrisiko darstellen, das explizite Grenzen verlangt.'}
+    ]
+  },
+  {
+    id:'shein-eu', date:'2023-05-04', entity:'Shein / fast fashion — EU product safety',
+    type_en:'Environmental / Community Rights', type_de:'Umwelt / Gemeinschaftsrechte',
+    sev:'med', region_en:'European Union', region_de:'Europäische Union',
+    sources:[{label:'European Commission',url:'https://ec.europa.eu/commission/presscorner/'},{label:'Norwegian Consumer Council',url:'https://www.forbrukerradet.no/'}],
+    article_en:[
+      {h:'What was reported', p:'Consumer and environmental bodies documented hazardous substances (e.g. lead, phthalates) in fast-fashion garments sold into the EU, and raised concerns about the textile waste and supply-chain labour conditions behind ultra-low-price models.'},
+      {h:'Documented record', p:'The European Commission and member-state market-surveillance authorities opened product-safety assessments; the EU’s proposed Digital Product Passport and Ecodesign rules target traceability and chemical compliance for textiles. Shein stated it enforces supplier chemical standards.'},
+      {h:'Open questions / discussion', p:'The debate centres on whether due-diligence law (CSDDD) reaches low-tier garment suppliers, and whether import-level testing can keep pace with the volume of fast-fashion shipments into the single market.'}
+    ],
+    article_de:[
+      {h:'Was berichtet wurde', p:'Verbraucher- und Umweltschutzorganisationen dokumentierten gefährliche Stoffe (z. B. Blei, Phthalate) in Fast-Fashion-Kleidung, die in die EU verkauft wurde, und äußerten Bedenken zu Textilabfällen und Lieferketten-Arbeitsbedingungen hinter Ultra-Niedrigpreis-Modellen.'},
+      {h:'Dokumentierte Fakten', p:'Die Europäische Kommission und Marktüberwachungsbehörden von Mitgliedstaaten leiteten Produktsicherheitsprüfungen ein; der vorgeschlagene digitale Produktpass und die Ökodesign-Regeln zielen auf Rückverfolgbarkeit und Chemiekonformität bei Textilien ab. Shein erklärte, Lieferanten-Chemiestandards durchzusetzen.'},
+      {h:'Offene Fragen / Diskussion', p:'Im Zentrum steht, ob das Sorgfaltspflichtgesetz (CSDDD) Tier-1-Garment-Lieferanten erreicht und ob Importstufen-Tests mit dem Volumen von Fast-Fashion-Sendungen in den Binnenmarkt Schritt halten können.'}
+    ]
+  },
+  {
+    id:'uber-uk', date:'2016-10-28', entity:'Uber — UK Supreme Court worker status',
+    type_en:'Labor / Occupational Safety', type_de:'Arbeit / Arbeitsschutz',
+    sev:'high', region_en:'United Kingdom', region_de:'Vereinigtes Königreich',
+    sources:[{label:'UK Supreme Court',url:'https://www.supremecourt.uk/'},{label:'BBC',url:'https://www.bbc.com/news'}],
+    article_en:[
+      {h:'What was reported', p:'For years UK drivers argued they were workers entitled to minimum wage and holiday pay, not self-employed contractors. The dispute reached the UK Supreme Court after repeated tribunal findings in the drivers’ favour.'},
+      {h:'Documented record', p:'In February 2021 the UK Supreme Court ruled Uber drivers are workers, not independent contractors, for the purposes of employment law — a landmark on algorithmic dispatch and control. Uber stated the ruling applied to a small legacy group and that most UK drivers remain self-employed on its platform.'},
+      {h:'Open questions / discussion', p:'The ruling anchors the wider EU/UK discussion on employment status for platform labour, the enforceability of minimum-wage and consultation obligations, and the limits of corporate restructuring around algorithmic control.'}
+    ],
+    article_de:[
+      {h:'Was berichtet wurde', p:'Über Jahre argumentierten britische Fahrer, sie seien Arbeitnehmer mit Anspruch auf Mindestlohn und Urlaubsgeld, keine selbstständigen Auftragnehmer. Der Streit erreichte den britischen Supreme Court nach wiederholten Tribunal-Entscheidungen zugunsten der Fahrer.'},
+      {h:'Dokumentierte Fakten', p:'Im Februar 2021 entschied der Supreme Court, dass Uber-Fahrer Arbeitnehmer (workers) und keine unabhängigen Auftragnehmer im Sinne des Arbeitsrechts sind — ein Meilenstein zu algorithmischer Disposition und Kontrolle. Uber erklärte, das Urteil betreffe eine kleine Altgruppe und die meisten UK-Fahrer blieben selbstständig.'},
+      {h:'Offene Fragen / Diskussion', p:'Das Urteil verankert die breitere EU/UK-Diskussion zum Beschäftigtenstatus von Plattformarbeit, zur Durchsetzung von Mindestlohn- und Anhörungspflichten sowie zu den Grenzen unternehmerischer Umstrukturierung um algorithmische Kontrolle.'}
+    ]
+  },
+  {
+    id:'mongolia-poly', date:'2023-08-10', entity:'Rare-earth / cobalt supply — artisanal mining',
+    type_en:'Environmental / Community Rights', type_de:'Umwelt / Gemeinschaftsrechte',
+    sev:'med', region_en:'EU imports · Global South', region_de:'EU-Importe · Globaler Süden',
+    sources:[{label:'Amnesty International',url:'https://www.amnesty.org/'},{label:'UNICEF',url:'https://www.unicef.org/'}],
+    article_en:[
+      {h:'What was reported', p:'Human-rights organisations documented child labour and unsafe artisanal mining of cobalt and rare-earth minerals that feed EU-bound electronics and EV supply chains, with communities exposed to toxic tailings and displacement.'},
+      {h:'Documented record', p:'Amnesty International and partners published field evidence; the EU’s battery regulation and CSDDD require due diligence on conflict and forced-labour risk in mineral supply chains. Importers must increasingly trace origin to the smelter/refiner.'},
+      {h:'Open questions / discussion', p:'The open question is whether downstream due-diligence law reaches the artisanal tier, and whether certification and tracing can be verified at the mine face rather than only at the point of EU import.'}
+    ],
+    article_de:[
+      {h:'Was berichtet wurde', p:'Menschenrechtsorganisationen dokumentierten Kinderarbeit und unsichere artisanalen Bergbau von Kobalt und Seltenen Erden, die in EU-gebundene Elektronik- und E-Auto-Lieferketten fließen, mit Gemeinschaften, die toxischen Tailings und Vertreibung ausgesetzt sind.'},
+      {h:'Dokumentierte Fakten', p:'Amnesty International und Partner veröffentlichten Feldevidenz; die EU-Batterieverordnung und das CSDDD verlangen Sorgfaltspflicht zu Konflikt- und Zwangsarbeitsrisiken in Mineral-Lieferketten. Importeure müssen Herkunft zunehmend bis zum Schmelzer/Raffinerie zurückverfolgen.'},
+      {h:'Offene Fragen / Diskussion', p:'Offen ist, ob die Sorgfaltspflicht down-stream die artisanale Ebene erreicht und ob Zertifizierung und Tracing an der Mine selbst statt nur am EU-Importpunkt verifiziert werden können.'}
+    ]
+  },
+  {
+    id:'eu-pushback', date:'2024-02-26', entity:'EU Migration Pact — externalised processing',
+    type_en:'Freedom of Expression', type_de:'Meinungsfreiheit',
+    sev:'med', region_en:'European Union', region_de:'Europäische Union',
+    sources:[{label:'Council of Europe',url:'https://www.coe.int/'},{label:'UNHCR',url:'https://www.unhcr.org/'}],
+    article_en:[
+      {h:'What was reported', p:'Civil-society and UN bodies raised concerns about the 2024 EU Migration and Asylum Pact’s provisions for externalised processing and border procedures, warning of pressure points on the right to asylum and on freedom of expression for those documenting pushbacks.'},
+      {h:'Documented record', p:'The Pact was adopted by the European Parliament and Council in 2024 after years of negotiation. Monitoring bodies committed to tracking implementation against the EU Charter of Fundamental Rights; several NGOs announced litigation readiness.'},
+      {h:'Open questions / discussion', p:'The case is cited in the debate on the balance between border management and non-refoulement, and on the protection of journalists and volunteers who document border practices near EU external frontiers.'}
+    ],
+    article_de:[
+      {h:'Was berichtet wurde', p:'Zivilgesellschaft und UN-Stellen äußerten Bedenken zu den Bestimmungen des EU-Migrations- und Asylpakts 2024 über externalisierte Verarbeitung und Grenzverfahren und warnten vor Belastungen des Asylrechts und der Meinungsfreiheit für jene, die Pushbacks dokumentieren.'},
+      {h:'Dokumentierte Fakten', p:'Der Pakt wurde 2024 nach jahrelangen Verhandlungen von Europaparlament und Rat verabschiedet. Überwachungsstellen verpflichteten sich, die Umsetzung an der EU-Grundrechtecharta zu messen; mehrere NGOs kündigten Klagebereitschaft an.'},
+      {h:'Offene Fragen / Diskussion', p:'Der Fall wird in der Debatte um das Gleichgewicht zwischen Grenzmanagement und Non-Refoulement zitiert sowie um den Schutz von Journalisten und Freiwilligen, die Grenzpraktiken an EU-Außengrenzen dokumentieren.'}
     ]
   }
 ];
