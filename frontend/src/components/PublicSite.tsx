@@ -3526,13 +3526,20 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             ))}
           </div>
 
-          <a href="mailto:contact@rfi-irfos.com" style={{
-            background: TEAL, color: '#070711', padding: '8px 20px', borderRadius: 7,
-            fontWeight: 800, fontSize: 12, textDecoration: 'none', letterSpacing: '0.07em',
-            textTransform: 'uppercase', transition: 'opacity 0.15s',
-          }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Contact</a>
+          <a href="mailto:contact@rfi-irfos.com" title="Contact" aria-label="Contact"
+            style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: 38, height: 38, borderRadius: 8,
+              background: 'transparent', border: `1px solid ${TEAL}`,
+              color: TEAL, textDecoration: 'none', transition: 'background 0.15s, color 0.15s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = TEAL; e.currentTarget.style.color = '#070711' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = TEAL }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="M3 7l9 6 9-6" />
+            </svg>
+          </a>
         </div>
 
         {/* Hamburger - shown only on mobile (media queries don't work in inline styles) */}
@@ -3574,12 +3581,21 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               }}>{t === 'hc' ? 'HC' : t.toUpperCase()}</button>
             ))}
           </div>
-          <a href="mailto:contact@rfi-irfos.com" style={{
-            marginTop: 24, background: TEAL, color: '#070711',
-            padding: '16px 24px', borderRadius: 8,
-            fontWeight: 800, fontSize: 14, textDecoration: 'none',
-            textAlign: 'center', letterSpacing: '0.07em', textTransform: 'uppercase',
-          }}>Contact</a>
+          <a href="mailto:contact@rfi-irfos.com" title="Contact" aria-label="Contact"
+            style={{
+              marginTop: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: 48, height: 48, borderRadius: 8,
+              background: 'transparent', border: `1px solid ${TEAL}`,
+              color: TEAL, textDecoration: 'none', alignSelf: 'flex-start',
+              transition: 'background 0.15s, color 0.15s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = TEAL; e.currentTarget.style.color = '#070711' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = TEAL }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="M3 7l9 6 9-6" />
+            </svg>
+          </a>
         </div>
       )}
 
@@ -3753,12 +3769,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the discipline, demonstrated</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
-            <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 560 }}>
-              Root level code analysis. Regulators in <strong style={{ color: '#e0e0f0' }}>CC on every submission</strong> - national DPA + EDPS. 90-day coordinated disclosure. Our framework. Our timeline.
-              <br /><br />
-              We do not operate bug bounty programs, HackerOne, or any third-party vulnerability reward platforms. All findings are published under <strong style={{ color: '#e0e0f0' }}>Forschungsfreiheitsgesetz (Art. 17 StGG)</strong> and constitute free scientific knowledge sharing within the EU research framework - independent of commercial incentive.
-              <br /><br />
-              <strong style={{ color: '#e0e0f0' }}>Disclosure is unconditional.</strong> Every organization on this ledger receives identical treatment - same embargo, same publication, same regulator notification - whether or not they engage RFI-IRFOS commercially.
+            <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 720, fontSize: 15, lineHeight: 1.9 }}>
+              Root level code analysis. Regulators in <strong style={{ color: '#e0e0f0' }}>CC on every submission</strong> - national DPA + EDPS. 90-day coordinated disclosure. Our framework. Our timeline. Disclosure is unconditional: every organization on this ledger gets identical treatment, whether or not they engage us commercially. The full disclosure framework is in our <a href="#p/security" style={{ color: 'var(--accent-text)', textDecoration: 'none' }}>Security Policy</a>.
             </p>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
@@ -4393,6 +4405,35 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             ))}
           </div>
 
+          {/* Mobile App Development & Fixing */}
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 8 }}>Mobile App Development &amp; Fixing</p>
+          <p style={{ color: '#a0a0b8', marginBottom: 20, maxWidth: 620, fontSize: 13, lineHeight: 1.7 }}>
+            Native Android &amp; iOS — built and fixed in-house. Send us your APK and we run root-level analysis, patch the bugs, or build the product from scratch. One team, no outsourced code.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
+            {[
+              { tier: 'APK Review & Bugfix',  price: 'from €1,500', desc: 'Send us your APK. Root-level code analysis, crash + vulnerability triage, concrete patch guidance. Android & iOS. Fixed-scope, 1-week turnaround.' },
+              { tier: 'App Build',            price: 'from €9,000', desc: 'We build your native app end-to-end — Kotlin/Swift + Rust backend, Play & App Store submission handled. Everything in-house.' },
+              { tier: 'Maintenance Retainer',  price: '€1,200 / mo', desc: 'Ongoing patch cadence, store-compliance monitoring, dependency + SDK hygiene. Priority response, dedicated contact.' },
+              { tier: 'Full Mobile Product',   price: 'on request',  desc: 'Complete mobile product from spec to launch. Custom infrastructure, API design, native apps, dedicated team. Ongoing engagement.' },
+            ].map((t, i) => (
+              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
+                <div style={{
+                  background: 'rgba(0,245,196,0.04)', border: '1px solid rgba(0,245,196,0.18)',
+                  borderRadius: 14, padding: '24px 20px', height: '100%',
+                  display: 'flex', flexDirection: 'column',
+                }}>
+                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
+                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
+                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
+                  <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
+                    request proposal →
+                  </a>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
           {/* Research Cooperation Products - via our coop partner Laura Serna
               Gaviria / Emergent Interaction Lab. No Stripe checkout: these are
               bespoke engagements, always "on request" via #contact. See the
@@ -4782,26 +4823,29 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
               <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
             </svg>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT · ZVR 1015608684 · GISA 39261441 · UID ATU83405245</span>
+            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT · ZVR 1015608684</span>
           </div>
         </div>
         <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
             <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>
-              TRADE DESCRIPTION · Services in Automatic Data Processing and Information Technology
+              UID ATU83405245 &nbsp;·&nbsp; GISA 39261441
             </span>
           </div>
           <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
             <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>
-              ECG AUTHORITY · Magistrate of the City of Graz &nbsp;·&nbsp; Since 2026-03-19 &nbsp;·&nbsp; GISA 39261441
+              ECG AUTHORITY · Magistrate of the City of Graz &nbsp;·&nbsp; Since 2026-03-19
             </span>
           </div>
         </div>
         <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em', marginBottom: 4 }}>
-          Trade-Law Management: Simeon-Andreas Johann Manfred Kepp &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz &nbsp;&middot;&nbsp; GLN 9110038490191
+          Trade Description: Services in Automatic Data Processing and Information Technology &nbsp;·&nbsp; Trade-Law Management: Simeon-Andreas Johann Manfred Kepp
         </p>
         <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em' }}>
-          &copy; 2026 RFI-IRFOS &nbsp;&middot;&nbsp; UID ATU83405245 &nbsp;&middot;&nbsp; Steuernummer 68 696/8736 &nbsp;&middot;&nbsp; Graz, Austria
+          Elisabethinergasse 25/10, 8020 Graz &nbsp;·&nbsp; GLN 9110038490191 &nbsp;·&nbsp; Steuernummer 68 696/8736
+        </p>
+        <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em', marginBottom: 0 }}>
+          &copy; 2026 RFI-IRFOS &nbsp;·&nbsp; Graz, Austria
         </p>
       </footer>
       {cookieBannerOpen && (

@@ -16,6 +16,11 @@ export default function App() {
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
+  // Legal pages are a separate route — when the hash flips to / from a #p/…
+  // route, reset scroll to the top so visitors don't land at the bottom.
+  useEffect(() => {
+    if (slug) window.scrollTo(0, 0)
+  }, [slug])
   if (slug) return <LegalPage slug={slug} />
   return <PublicSite />
 }

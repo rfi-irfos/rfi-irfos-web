@@ -306,6 +306,35 @@ function Security() {
     <h1 style={H1}>Security Policy</h1>
     <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>Coordinated Disclosure &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
 
+    <h2 style={H2}>Our Method</h2>
+    <p style={P}>
+      We are a research institute, not a vendor chasing customers. We perform root level code analysis on publicly distributed software and disclose what we find - to the company, and to the regulator, at the same time. Every engagement is conducted in writing, building a complete audit trail on both sides. We do not offer or conduct calls or in-person meetings as part of our research or disclosure process.
+    </p>
+    <ul style={{ ...P, paddingLeft: 18, marginBottom: 16 }}>
+      <li><strong style={{ color: '#e8e8f0' }}>Free, unconditional disclosure.</strong> Public disclosure is Tier 1. It happens after the 90-day embargo, regardless of payment, regardless of reply. Nothing is held back for money.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>Coordinated, not cold outreach.</strong> We follow ISO/IEC 29147. Supervisory authorities are CC'd from day one - visibly, not blind-copied, not informed only if things go nowhere.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>Evidence, not allegation.</strong> Every finding points to a specific artifact in the software as actually shipped - a declared permission, a compiled SDK class, a hardcoded key. Any competent third party can independently verify it.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>Not-for-profit, by structure.</strong> RFI-IRFOS is a registered nonprofit. There are no shareholders; surplus is reinvested into research. Paid advisory tiers are optional and separate - never a condition of free disclosure.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>Research, not extortion.</strong> Our work is grounded in the freedom of scientific research (Art. 17 Austrian Federal Constitution) and GDPR Art. 89. We report on companies' own distributed software - never private, stolen, or unauthorized-access data.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>No disruption, ever.</strong> No denial-of-service, no load testing. Findings come from static analysis of the software as shipped, never from attacking it in production.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>No dynamic testing without an agreement, no social engineering.</strong> Live calls against a company's own systems happen only under a signed engagement. We never phish, pretext, or manipulate staff to obtain access.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>No fabricated progress, not even from our own tools.</strong> Every in-house agentic tool runs under a written truth policy: never claim a file exists, code ran, or a test passed unless it was actually verified.</li>
+    </ul>
+
+    <h2 style={H2}>Our Disclosure Framework</h2>
+    <p style={P}>
+      Root level code analysis. Regulators in CC on every submission - national DPA + EDPS. 90-day coordinated disclosure. Our framework. Our timeline.
+    </p>
+    <p style={P}>
+      We do not operate bug bounty programs, HackerOne, or any third-party vulnerability reward platforms. All findings are published under <strong style={{ color: '#e8e8f0' }}>Forschungsfreiheitsgesetz (Art. 17 StGG)</strong> and constitute free scientific knowledge sharing within the EU research framework - independent of commercial incentive.
+    </p>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>Disclosure is unconditional.</strong> Every organization on our ledger receives identical treatment - same embargo, same publication, same regulator notification - whether or not they engage RFI-IRFOS commercially.
+    </p>
+    <p style={P}>
+      90-day coordinated embargo from initial notification to public disclosure. Regulators (DSB, EDPB, CERT.at) notified in parallel — not after the fact, not only "if this goes nowhere." Extensions considered case-by-case, for genuine remediation in progress, never for stalling.
+    </p>
+
     <p style={P}>
       We spend most of our time finding the things other companies didn't want found. Fair's fair — here's how to find one in ours. Real institute, real street address in Graz, Austria, no bug-bounty theater, no chatbot standing between you and the person who actually reads this.
     </p>
@@ -315,9 +344,6 @@ function Security() {
       E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a><br />
       PGP key available on request. We acknowledge all reports within 48 hours — from a human, not a ticket number.
     </p>
-
-    <h2 style={H2}>Our Disclosure Framework</h2>
-    <p style={P}>90-day coordinated embargo from initial notification to public disclosure. Regulators (DSB, EDPB, CERT.at) notified in parallel — not after the fact, not only "if this goes nowhere." Extensions considered case-by-case, for genuine remediation in progress, never for stalling.</p>
 
     <h2 style={H2}>How We Handle What You Send Us</h2>
     <p style={P}>ISO/IEC 30111 triage: reproduce it, scope it, fix it, credit you. No finding gets buried because it's inconvenient — that's the entire complaint we file against everyone else, and we're not exempting ourselves from it.</p>
