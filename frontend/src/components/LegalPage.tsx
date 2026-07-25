@@ -129,6 +129,16 @@ function Impressum() {
 
     <h2 style={H2}>Governing Law</h2>
     <p style={P}>The law of the Republic of Austria and the law of the European Union apply.</p>
+
+    <h2 style={H2}>External Profiles</h2>
+    <p style={P}>
+      We publish our research and code openly. You can find us at:
+    </p>
+    <ul style={{ ...P, paddingLeft: 18, marginBottom: 16 }}>
+      <li><strong style={{ color: '#e8e8f0' }}>OSF:</strong> <a href="https://osf.io/rzvyg" target="_blank" rel="noopener" style={A}>osf.io/rzvyg</a> — all research publications and preprints.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>GitHub:</strong> <a href="https://github.com/rfi-irfos" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos</a> — open-source tools, models, and audit repositories.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>LinkedIn:</strong> <a href="https://linkedin.com/company/rfi-irfos" target="_blank" rel="noopener" style={A}>RFI-IRFOS</a> — institute presence and announcements.</li>
+    </ul>
   </>
 }
 
