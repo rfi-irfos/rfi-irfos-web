@@ -3497,29 +3497,47 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           ))}
 
           {/* Theme toggle */}
-          <div style={{ display: 'flex', background: 'var(--bg3)', borderRadius: 6, overflow: 'hidden', border: '1px solid var(--border)' }}>
+          <div style={{
+            display: 'flex', background: 'var(--bg3)', borderRadius: 8, overflow: 'hidden',
+            border: '1px solid var(--border)', padding: 3, gap: 2,
+          }}>
             {(['light', 'dark', 'hc'] as const).map(t => (
               <button key={t} onClick={() => setTheme(t)} style={{
-                background: theme === t ? 'rgba(0,245,196,0.18)' : 'transparent',
-                color: theme === t ? TEAL : '#606080',
-                border: 'none', cursor: 'pointer',
-                padding: '5px 10px', fontSize: 10, fontWeight: 700,
-                fontFamily: 'monospace', letterSpacing: '0.06em', textTransform: 'uppercase',
+                background: theme === t ? 'var(--accent)' : 'transparent',
+                color: theme === t ? 'var(--accent-fg)' : 'var(--text3)',
+                border: 'none', borderRadius: 5, cursor: 'pointer',
+                padding: '6px 12px', fontSize: 10, fontWeight: 700,
+                fontFamily: 'monospace', letterSpacing: '0.07em', textTransform: 'uppercase',
                 transition: 'background 0.15s, color 0.15s',
-              }}>{t === 'hc' ? 'HC' : t.toUpperCase()}</button>
+              }}
+                onMouseEnter={e => { if (theme !== t) e.currentTarget.style.color = 'var(--text)' }}
+                onMouseLeave={e => { if (theme !== t) e.currentTarget.style.color = 'var(--text3)' }}>
+                {t === 'hc' ? 'HC' : t.toUpperCase()}
+              </button>
             ))}
           </div>
 
           <a href="mailto:contact@rfi-irfos.com" title="Contact" aria-label="Contact"
             style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              width: 38, height: 38, borderRadius: 8,
-              background: 'transparent', border: `1px solid ${TEAL}`,
-              color: TEAL, textDecoration: 'none', transition: 'background 0.15s, color 0.15s',
+              width: 40, height: 40, borderRadius: 10, marginLeft: 4,
+              background: 'var(--accent-dim)', border: '1px solid var(--accent-border)',
+              color: 'var(--accent-text)', textDecoration: 'none',
+              transition: 'background 0.15s, color 0.15s, border-color 0.15s, transform 0.15s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = TEAL; e.currentTarget.style.color = '#070711' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = TEAL }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'var(--accent)'
+              e.currentTarget.style.color = 'var(--accent-fg)'
+              e.currentTarget.style.borderColor = 'var(--accent)'
+              e.currentTarget.style.transform = 'translateY(-1px)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'var(--accent-dim)'
+              e.currentTarget.style.color = 'var(--accent-text)'
+              e.currentTarget.style.borderColor = 'var(--accent-border)'
+              e.currentTarget.style.transform = 'translateY(0)'
+            }}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="5" width="18" height="14" rx="2" />
               <path d="M3 7l9 6 9-6" />
             </svg>
@@ -3556,11 +3574,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <div style={{ display: 'flex', gap: 8, marginTop: 24 }}>
             {(['light', 'dark', 'hc'] as const).map(t => (
               <button key={t} onClick={() => setTheme(t)} style={{
-                background: theme === t ? 'rgba(0,245,196,0.18)' : 'var(--bg3)',
-                color: theme === t ? TEAL : 'var(--text3)',
-                border: theme === t ? `1px solid ${TEAL}` : '1px solid var(--border)',
-                borderRadius: 6, cursor: 'pointer',
-                padding: '8px 16px', fontSize: 11, fontWeight: 700,
+                background: theme === t ? 'var(--accent)' : 'var(--bg3)',
+                color: theme === t ? 'var(--accent-fg)' : 'var(--text3)',
+                border: theme === t ? '1px solid var(--accent)' : '1px solid var(--border)',
+                borderRadius: 7, cursor: 'pointer',
+                padding: '9px 17px', fontSize: 11, fontWeight: 700,
                 fontFamily: 'monospace', letterSpacing: '0.06em', textTransform: 'uppercase',
               }}>{t === 'hc' ? 'HC' : t.toUpperCase()}</button>
             ))}
@@ -3568,13 +3586,23 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <a href="mailto:contact@rfi-irfos.com" title="Contact" aria-label="Contact"
             style={{
               marginTop: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              width: 48, height: 48, borderRadius: 8,
-              background: 'transparent', border: `1px solid ${TEAL}`,
-              color: TEAL, textDecoration: 'none', alignSelf: 'flex-start',
-              transition: 'background 0.15s, color 0.15s',
+              width: 48, height: 48, borderRadius: 12,
+              background: 'var(--accent-dim)', border: '1px solid var(--accent-border)',
+              color: 'var(--accent-text)', textDecoration: 'none', alignSelf: 'flex-start',
+              transition: 'background 0.15s, color 0.15s, border-color 0.15s, transform 0.15s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = TEAL; e.currentTarget.style.color = '#070711' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = TEAL }}>
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'var(--accent)'
+              e.currentTarget.style.color = 'var(--accent-fg)'
+              e.currentTarget.style.borderColor = 'var(--accent)'
+              e.currentTarget.style.transform = 'translateY(-1px)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'var(--accent-dim)'
+              e.currentTarget.style.color = 'var(--accent-text)'
+              e.currentTarget.style.borderColor = 'var(--accent-border)'
+              e.currentTarget.style.transform = 'translateY(0)'
+            }}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="5" width="18" height="14" rx="2" />
               <path d="M3 7l9 6 9-6" />
