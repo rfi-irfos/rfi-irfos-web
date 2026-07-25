@@ -1,5 +1,9 @@
-// Placeholder route component — content migration (Task 3) will replace this
-// with the real section JSX extracted from PublicSite.tsx.
+import { PublicSite } from '../PublicSite'
+
 export default function Home() {
-  return <h1 style={{ paddingTop: 96, textAlign: 'center' }}>Home</h1>
+  return (
+    <div className="home-root">
+      <PublicSite />
+    </div>
+  )
 }

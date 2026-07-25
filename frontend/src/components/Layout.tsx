@@ -130,9 +130,9 @@ export function Layout() {
           padding: '8px', color: 'var(--text)',
         }} aria-label="Menu">
           {mobileOpen ? (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
           ) : (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="16" x2="21" y2="16"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="8" x2="21" y2="8" /><line x1="3" y1="16" x2="21" y2="16" /></svg>
           )}
         </button>
       </nav>
@@ -217,15 +217,15 @@ export function Layout() {
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
           <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.85 }}>
             <svg viewBox="0 0 420 100" width="168" height="40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
-              <rect x="0"   y="0" width="100" height="100" fill="#CC0000"/>
-              <text x="50"  y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">W</text>
-              <rect x="105" y="0" width="100" height="100" fill="#CC0000"/>
+              <rect x="0" y="0" width="100" height="100" fill="#CC0000" />
+              <text x="50" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">W</text>
+              <rect x="105" y="0" width="100" height="100" fill="#CC0000" />
               <text x="155" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">K</text>
-              <rect x="210" y="0" width="100" height="100" fill="#CC0000"/>
+              <rect x="210" y="0" width="100" height="100" fill="#CC0000" />
               <text x="260" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">O</text>
-              <rect x="320" y="0"  width="100" height="33" fill="#CC0000"/>
-              <rect x="320" y="33" width="100" height="34" fill="#fff"/>
-              <rect x="320" y="67" width="100" height="33" fill="#CC0000"/>
+              <rect x="320" y="0" width="100" height="33" fill="#CC0000" />
+              <rect x="320" y="33" width="100" height="34" fill="#fff" />
+              <rect x="320" y="67" width="100" height="33" fill="#CC0000" />
             </svg>
           </a>
         </div>
@@ -235,7 +235,7 @@ export function Layout() {
           </div>
           <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-              <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+              <circle cx="12" cy="12" r="10" /><path d="M12 8v4l3 3" />
             </svg>
             <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT · ZVR 1015608684</span>
           </div>
