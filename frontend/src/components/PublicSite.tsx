@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 
 // nav-jump suppressor: set true during anchor-link scroll → all Reveal elements snap to p=1
@@ -128,14 +129,14 @@ function beacon(section: string, extra?: Record<string, string>) {
 }
 
 const NAV_LINKS = [
-  { label: 'Research', href: '#research' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Track Record', href: '#track-record' },
-  { label: 'Submit', href: '#submit' },
-  { label: 'Standards', href: '#standards' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Team', href: '#team' },
-  { label: 'Coop', href: '#coop-partners' },
+  { label: 'Research', to: '/research' },
+  { label: 'Projects', to: '/projects' },
+  { label: 'Track Record', to: '/track-record' },
+  { label: 'Submit', to: '/submit' },
+  { label: 'Standards', to: '/standards' },
+  { label: 'Pricing', to: '/pricing' },
+  { label: 'Team', to: '/team' },
+  { label: 'Coop', to: '/coop' },
 ]
 
 // The people - mirrors ternlang.com's roster. Kept as data so a departure/new-hire is
@@ -3473,19 +3474,19 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         padding: '0 1.5rem',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px',
       }}>
-        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 34, height: 34, objectFit: 'contain' }} />
           <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: 'var(--text)' }}>RFI-IRFOS</span>
           <svg width="54" height="18" viewBox="0 0 54 18" fill="none" style={{ marginLeft: 4, flexShrink: 0, overflow: 'visible' }}>
             <polyline className="ekg-line" points="0,9 12,9 16,2 20,16 24,2 28,9 54,9"
               stroke="#00f5c4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-        </a>
+        </Link>
 
         {/* Desktop nav - React inline styles can't do media queries, so gate on the useMobile() hook */}
         <div style={{ display: mobile ? 'none' : 'flex', gap: '1.75rem', alignItems: 'center' }}>
           {NAV_LINKS.map(n => (
-            <a key={n.href} href={n.href} style={{
+            <Link key={n.to} to={n.to} style={{
               color: 'var(--text2)', fontSize: 13, fontWeight: 600,
               textDecoration: 'none', letterSpacing: '0.04em',
               transition: 'color 0.18s',
@@ -3493,7 +3494,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
               onMouseLeave={e => (e.currentTarget.style.color = 'var(--text2)')}>
               {n.label}
-            </a>
+            </Link>
           ))}
 
           {/* Theme toggle */}
@@ -3548,10 +3549,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           display: 'flex', flexDirection: 'column', padding: '2rem 1.5rem', gap: 4,
         }}>
           {NAV_LINKS.map(n => (
-            <a key={n.href} href={n.href} onClick={() => setMobileOpen(false)} style={{
+            <Link key={n.to} to={n.to} onClick={() => setMobileOpen(false)} style={{
               color: 'var(--text)', fontSize: 20, fontWeight: 700, textDecoration: 'none',
               padding: '16px 0', borderBottom: '1px solid var(--border)',
-            }}>{n.label}</a>
+            }}>{n.label}</Link>
           ))}
           <div style={{ display: 'flex', gap: 8, marginTop: 24 }}>
             {(['light', 'dark', 'hc'] as const).map(t => (
