@@ -1,26 +1,66 @@
-import { useState, useEffect } from 'react'
-import { PublicSite } from './components/PublicSite'
+import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, useParams, useNavigate, useLocation } from 'react-router-dom'
+import { Layout } from './components/Layout'
 import { LegalPage } from './components/LegalPage'
+import Home from './components/routes/Home'
+import Research from './components/routes/Research'
+import Projects from './components/routes/Projects'
+import TrackRecord from './components/routes/TrackRecord'
+import Submit from './components/routes/Submit'
+import Standards from './components/routes/Standards'
+import Pricing from './components/routes/Pricing'
+import Team from './components/routes/Team'
+import Coop from './components/routes/Coop'
+import Contact from './components/routes/Contact'
 import './App.css'
 
-function getSlug() {
-  const h = window.location.hash
-  if (h.startsWith('#p/')) return h.slice(3)
+// Legacy hash routes (#p/security, #research, etc.) → clean paths. The Fly.io
+// backend already serves index.html for unknown paths, so deep links work; this
+// only rewrites the old hash-style URLs still indexed by search engines.
+function HashRedirect() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash && hash.length > 1) {
+      const path = hash.slice(1) // strip leading '#'
+      if (path.startsWith('p/') || path.startsWith('/p/')) {
+        navigate('/' + path.replace(/^\//, ''), { replace: true })
+      } else if (path.startsWith('/')) {
+        navigate(path, { replace: true })
+      } else {
+        navigate('/' + path, { replace: true })
+      }
+    }
+  }, [navigate, location])
   return null
 }
 
+function LegalPageRoute() {
+  const { slug } = useParams<{ slug: string }>()
+  return <LegalPage slug={slug ?? ''} />
+}
+
 export default function App() {
-  const [slug, setSlug] = useState(getSlug)
-  useEffect(() => {
-    const onHash = () => setSlug(getSlug())
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
-  }, [])
-  // Legal pages are a separate route — when the hash flips to / from a #p/…
-  // route, reset scroll to the top so visitors don't land at the bottom.
-  useEffect(() => {
-    if (slug) window.scrollTo(0, 0)
-  }, [slug])
-  if (slug) return <LegalPage slug={slug} />
-  return <PublicSite />
+  return (
+    <BrowserRouter>
+      <HashRedirect />
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/research" element={<Research />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/track-record" element={<TrackRecord />} />
+          <Route path="/submit" element={<Submit />} />
+          <Route path="/standards" element={<Standards />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/team" element={<Team />} />
+          <Route path="/coop" element={<Coop />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/p/:slug" element={<LegalPageRoute />} />
+          <Route path="*" element={<Home />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
 }

@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
-import { Link } from 'react-router-dom'
-import { useTheme } from '../hooks/useTheme'
+// Shared module: helpers + consts + useSiteGlue (extracted from PublicSite.tsx)
+import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useTheme } from '../../hooks/useTheme'
+
 
 // nav-jump suppressor: set true during anchor-link scroll → all Reveal elements snap to p=1
 let _revealSuppressed = false
 
-function Reveal({
+export function Reveal({
   children, delay = 0, from = 'bottom', dist = 32, style: extra,
 }: {
   children: React.ReactNode
@@ -43,7 +44,7 @@ function Reveal({
 // wheel-driven scroll accelerator: boosts deltaY and lerps toward the target each
 // frame, so the page covers more ground per notch instead of the flat 1:1 native rate.
 // Elements marked [data-native-scroll] (internal overflow panels) are left untouched.
-function useFastScroll(mult = 1.55, ease = 0.16) {
+export function useFastScroll(mult = 1.55, ease = 0.16) {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let target = window.scrollY
@@ -89,7 +90,7 @@ function useFastScroll(mult = 1.55, ease = 0.16) {
   }, [mult, ease])
 }
 
-function useMobile(bp = 768) {
+export function useMobile(bp = 768) {
   const [m, setM] = useState(() => typeof window !== 'undefined' && window.innerWidth < bp)
   useEffect(() => {
     const check = () => setM(window.innerWidth < bp)
@@ -99,10 +100,10 @@ function useMobile(bp = 768) {
   return m
 }
 
-const TEAL = '#00f5c4'
-const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
-const LIGHTHOUSE_BEACON = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track'
-const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
+export const TEAL = '#00f5c4'
+export const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
+export const LIGHTHOUSE_BEACON = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track'
+export const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
 
 // ── Own-offer funnel telemetry ──────────────────────────────────────────────
 // Every pricing-tier interaction is beamed to the Lighthouse first-party tracker
@@ -113,7 +114,7 @@ const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
 //   proposal_request:<tier> → user hit REQUEST PROPOSAL (contact-only tiers)
 // That gives click → cancel → attempt → paid without any cookies or PII — it's a
 // 1x1 beacon on our own infra, not third-party ad tracking.
-function beacon(section: string, extra?: Record<string, string>) {
+export function beacon(section: string, extra?: Record<string, string>) {
   const body: Record<string, string> = {
     path: location.pathname,
     referrer: document.referrer,
@@ -128,7 +129,7 @@ function beacon(section: string, extra?: Record<string, string>) {
   }).catch(() => {})
 }
 
-const NAV_LINKS = [
+export const NAV_LINKS = [
   { label: 'Research', to: '/research' },
   { label: 'Projects', to: '/projects' },
   { label: 'Track Record', to: '/track-record' },
@@ -141,7 +142,7 @@ const NAV_LINKS = [
 
 // The people - mirrors ternlang.com's roster. Kept as data so a departure/new-hire is
 // one array edit, not a hunt through JSX (see the Lisa Scharler removal, 2026-07-04).
-const TEAM = [
+export const TEAM = [
   { name: 'Simeon Kepp',      gh: 'simeon-kepp',   role: 'Founder · ML & Systems', desc: 'architecture, compiler, training - the whole stack in Rust' },
   { name: 'Zabih Karimi',     gh: 'zabih-sudo',     role: 'Cofounder · Engineering', desc: 'infrastructure, deployment, stress-tests every system before it ships' },
   { name: 'Nikoletta Csonka', gh: 'csonikoletta',   role: 'Cofounder · Education', desc: 'onboarding, culture, wellbeing - truth over comfort, always' },
@@ -151,14 +152,14 @@ const TEAM = [
   { name: 'Mariano Sosa',     gh: '',               role: 'Head of Trust & Public Perception', desc: 'trust, public perception' },
 ]
 
-const _I = ({ children }: { children: React.ReactNode }) => (
+export const _I = ({ children }: { children: React.ReactNode }) => (
   <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
     stroke="#00f5c4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     {children}
   </svg>
 )
 
-const RESEARCH_AREAS = [
+export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
@@ -267,7 +268,7 @@ const RESEARCH_AREAS = [
 ]
 
 // Standards & compliance frameworks we file against + keep current with. NIS-2 is featured.
-const STANDARDS = [
+export const STANDARDS = [
   { code: 'GDPR', region: 'EU 2016/679', desc: 'Art. 6 lawful basis, Art. 9 special-category (health/biometric), Art. 8 children, Art. 33 breach notification. The backbone of every disclosure we file.' },
   { code: 'EU AI Act', region: 'EU 2024/1689', desc: 'Risk-tiered obligations for AI systems: transparency, governance, prohibited-practice analysis for the models we audit and build.' },
   { code: 'EU DSA', region: 'EU 2022/2065', desc: 'Digital Services Act. Systemic-risk and illegal-content obligations. Filed directly with the Irish Digital Services Coordinator (Coimisiún na Meán) on platform findings.' },
@@ -280,7 +281,7 @@ const STANDARDS = [
   { code: 'ePrivacy Directive', region: 'EU 2002/58/EC', desc: 'Consent for tracking, access to terminal equipment, electronic communications confidentiality. Art. 5(3) is the legal backbone of every SDK-consent finding we publish.' },
 ]
 
-const PROJECTS = [
+export const PROJECTS = [
   {
     name: 'Ternary Intelligence Stack',
     sub: 'TIS monorepo',
@@ -381,7 +382,7 @@ const PROJECTS = [
   },
 ]
 
-const MILESTONES: { date: string; label: string; side: 'left' | 'right'; link?: string; tag?: string }[] = [
+export const MILESTONES: { date: string; label: string; side: 'left' | 'right'; link?: string; tag?: string }[] = [
   { date: 'June 2020', label: 'RFI-IRFOS Founded', side: 'left' },
   { date: 'June 2020', label: 'OSF Research Repository launched', side: 'right', link: 'https://osf.io/rzvyg/', tag: 'publication' },
   { date: 'March 2021', label: 'Ternary Logic Framework', side: 'left', tag: 'milestone' },
@@ -401,7 +402,7 @@ const MILESTONES: { date: string; label: string; side: 'left' | 'right'; link?: 
   { date: 'June 2026', label: 'aladdin-mini: open-source disclosure impact engine', side: 'left', link: 'https://github.com/rfi-irfos/aladdin-mini', tag: 'milestone' },
 ]
 
-const PUBLICATIONS = [
+export const PUBLICATIONS = [
   { year: '2026', title: 'Android Security Audit 2026: Coordinated Disclosure', sub: '215+ apps · 100+ companies · 250+ critical findings · NYSE/NASDAQ/LSE/XETRA · StoryToys children\'s wave · disclosure Sep 2026', href: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'Security · Ongoing' },
   { year: '2026', title: 'The Ternary Intelligence Stack', sub: 'vertically integrated post-binary AI platform', href: 'https://osf.io/cyn28/', tag: 'AI · Systems' },
   { year: '2026', title: 'Myco-Styria', sub: 'polystyrene replacement via mycelium + Austrian lignocellulose residues', href: 'https://osf.io/ek8rm/', tag: 'Ecocentric' },
@@ -413,7 +414,7 @@ const PUBLICATIONS = [
   { year: '2025', title: 'A1ERF: EU Regulation Proposal', sub: 'AI-first emergency relay framework for autonomous cardiac arrest detection', href: 'https://osf.io/ueac8/', tag: 'Policy · EU' },
 ]
 
-const AUDIT_HIGHLIGHTS: { target: string; market: string; sev: string; status: string; finding: string; company?: string; aliases?: string[] }[] = [
+export const AUDIT_HIGHLIGHTS: { target: string; market: string; sev: string; status: string; finding: string; company?: string; aliases?: string[] }[] = [
   { target: 'Pokemon GO',        market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Civilian gameplay photogrammetry licensed to Vantor (US defense contractor, NGA contract) for military drone navigation. Art. 5(1)(b) purpose limitation. Most consequential finding in the 2026 series — meaning 3D scan data players generated by walking around their own neighbourhoods to play a mobile game has been licensed onward into a US military mapping contract, a use nobody agreeing to "play a location game" could have anticipated or consented to — the exact scenario GDPR\'s purpose-limitation principle exists to prevent.' },
   { target: 'Disneyland EU',     market: 'NYSE',    sev: 'CRITICAL', status: 'WAITING',     finding: 'Facial recognition of children at EU theme parks without Art. 9 explicit consent. MagicBand RFID child tracking. EU AI Act biometric prohibition — meaning children\'s faces are scanned and their movement through the park tracked all day via wristband, without the explicit, freely-given consent GDPR requires before processing a child\'s biometric data. The EU AI Act separately bans biometric categorisation systems for this exact use case as an "unacceptable risk" practice, meaning this isn\'t just a GDPR paperwork gap — it sits inside a category of AI use the EU has moved to prohibit outright. Millions of families visit EU Disney parks each year. IoB €250k - 100% SOS Kinderdorf.' },
   { target: 'Booking.com',       market: 'NASDAQ',  sev: 'CRITICAL', status: 'WAITING',     finding: 'com.booking v32.7.102. 3C 4H. RECORD_AUDIO declared globally with no recoverable implementation (no VOIP, no voice search, no AudioRecord/MediaRecorder calls) on a platform in 500M+ users\' pockets while they sleep in hotels. WeChat Open Platform SDK (Tencent, 181 classes) in the EU-distributed APK - PRC NSL exposure. Firebase OAuth credentials hardcoded. Zero certificate pinning across payment (Braintree/PayPal/Venmo), booking and WeChat traffic. R1 2026-06-20, FOLLOW-UP 2026-06-28, no reply — meaning a microphone-access permission with no code path that ever actually uses it sits on hundreds of millions of phones inside hotel rooms overnight, and a Chinese messaging SDK subject to Beijing\'s National Intelligence Law ships inside the EU version of the app, alongside zero certificate pinning across the payment flow — three separate structural gaps in one of the world\'s largest travel apps.' },
@@ -727,7 +728,7 @@ const AUDIT_HIGHLIGHTS: { target: string; market: string; sev: string; status: s
   { target: 'BetterHelp + TeenCounseling', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'com.betterhelp / com.teencounseling. Two Teladoc-owned therapy platforms, disclosed together, distinct from the separately-listed Regain app. Facebook SDK remains active in both apps after the company\'s 2023 $7.8M FTC settlement over disclosing therapy-relevant data to advertisers. Session/backup data for minors (TeenCounseling) is included. — meaning Two therapy platforms owned by Teladoc still run Facebook\'s SDK even after the company paid $7.8 million to US regulators in 2023 for handing therapy data to advertisers, and one of them, TeenCounseling, includes minors\' session and backup data. For people, including children, seeking mental-health help, the exact sensitive data flow that was supposedly settled is still active inside apps meant to be confidential.' },
 ]
 
-const SEV_COLOR: Record<string, string> = {
+export const SEV_COLOR: Record<string, string> = {
   CRITICAL: 'var(--sev-crit)',
   HIGH:     'var(--sev-high)',
   MEDIUM:   'var(--sev-med)',
@@ -738,7 +739,7 @@ const SEV_COLOR: Record<string, string> = {
 // body text), no red/orange/green emotional coding by status. High-contrast
 // mode gets its own amber/black treatment via .site-status-badge in App.css,
 // consistent with the site's existing HC token overrides.
-const STATUS_META: Record<string, { label: string; bg: string; color: string }> = {
+export const STATUS_META: Record<string, { label: string; bg: string; color: string }> = {
   WAITING:      { label: 'WAITING',     bg: 'var(--surface-sunken)', color: 'var(--text)' },
   ACK:          { label: 'ACK',         bg: 'var(--surface-sunken)', color: 'var(--text)' },
   'CS-DEFLECT': { label: 'CS-DEFLECT',  bg: 'var(--surface-sunken)', color: 'var(--text)' },
@@ -751,7 +752,7 @@ const STATUS_META: Record<string, { label: string; bg: string; color: string }> 
   RESOLVED:     { label: 'RESOLVED',    bg: 'var(--surface-sunken)', color: 'var(--text)' },
 }
 
-const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolved?: boolean; resolvedDate?: string; reportUrl?: string }> = {
+export const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolved?: boolean; resolvedDate?: string; reportUrl?: string }> = {
   'Pokemon GO':                   { notified: '2026-06-20', disclosure: '2026-09-18' },
   'Coinbase':                     { notified: '2026-07-02', disclosure: '2026-09-30' },
   'Booking.com':                  { notified: '2026-06-20', disclosure: '2026-09-18' },
@@ -1061,14 +1062,14 @@ const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolv
   'BetterHelp + TeenCounseling':  { notified: '2026-06-22', disclosure: '2026-09-20' },
 }
 
-type StatuteCitation = { law: string; article?: string; kind: 'fact' | 'reference'; note: string; source: string }
+export type StatuteCitation = { law: string; article?: string; kind: 'fact' | 'reference'; note: string; source: string }
 
 // Pilot batch (2026-07-11) - extracted from full investigation reports (not the one-line `finding` blurb above)
 // by a read-only Zazu-pattern subagent per report, evidence-first: 'fact' = stated as an observed/validated
 // finding in the source report, 'reference' = hedged/contextual/unverified. Missing target = no report matched,
 // renders as em-dash - never inferred from the ledger blurb text. Franchise/positive-finding exclusions noted inline.
 
-const OUTFIT7_STANDARD: StatuteCitation[] = [
+export const OUTFIT7_STANDARD: StatuteCitation[] = [
   { law: 'COPPA', kind: 'fact', note: 'Coexistence of heavy ByteDance/Pangle + Mintegral (PRC ad SDKs) alongside KidoZ + SuperAwesome (the two COPPA-certified children\'s-network SDKs) proves Outfit7 knew the audience was children before adding non-compliant trackers', source: 'findings_talkingtom.md#F1' },
   { law: 'GDPR', article: 'Art. 9', kind: 'fact', note: 'RECORD_AUDIO declared on a children\'s-brand title - children\'s voice is biometric data, no verified parental consent found', source: 'findings_talkingtom.md#F5' },
   { law: 'DSG (AT)', article: '§ 27', kind: 'fact', note: 'Cited alongside GDPR Art. 9 for the same undisclosed children\'s-voice capture', source: 'findings_talkingtom.md#F5' },
@@ -1078,18 +1079,18 @@ const OUTFIT7_STANDARD: StatuteCitation[] = [
 ]
 // Talking Tom Gold Run and Talking Tom Hero Dash: source CSV confirms mic=0 (RECORD_AUDIO not declared) for these
 // two builds specifically - Art. 9 / §27 DSG citations don't apply; COPPA and Art. 46 are unaffected by mic permission.
-const OUTFIT7_NO_MIC: StatuteCitation[] = OUTFIT7_STANDARD.filter(s => !(s.law === 'GDPR' && s.article === 'Art. 9') && s.law !== 'DSG (AT)')
+export const OUTFIT7_NO_MIC: StatuteCitation[] = OUTFIT7_STANDARD.filter(s => !(s.law === 'GDPR' && s.article === 'Art. 9') && s.law !== 'DSG (AT)')
 // Talking Tom & Friends: World (ttfworld): CSV confirms a drastically lighter Pangle/Mintegral footprint (16/45
 // classes vs. thousands elsewhere in the franchise) - the "proof of knowledge via PRC-SDK saturation" argument
 // is materially weaker here (matches why the ledger itself scores this entry HIGH, not CRITICAL, unlike the rest
 // of the franchise). Downgrade COPPA to reference; mic is still declared (1) so Art. 9/§27 DSG stay fact.
-const OUTFIT7_TTFWORLD: StatuteCitation[] = OUTFIT7_STANDARD.map(s =>
+export const OUTFIT7_TTFWORLD: StatuteCitation[] = OUTFIT7_STANDARD.map(s =>
   s.law === 'COPPA'
     ? { ...s, kind: 'reference' as const, note: 'Same proof-of-knowledge argument as the rest of the franchise, but this build\'s Pangle/Mintegral footprint is only 16/45 classes (vs. thousands elsewhere) - the PRC-SDK-saturation evidence anchoring the fact-tier claim elsewhere is not present here' }
     : s
 )
 
-const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
+export const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
   'Talking Tom Cat (CY)': OUTFIT7_STANDARD,
   "Ginger's Birthday (CY)": OUTFIT7_STANDARD,
   'My Talking Tom (CY)': OUTFIT7_STANDARD,
@@ -2893,7 +2894,7 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
   ],
 }
 
-const CONTACT_CARDS = [
+export const CONTACT_CARDS = [
   { label: 'General inquiries', value: 'contact@rfi-irfos.com', href: 'mailto:contact@rfi-irfos.com' },
   { label: 'Security disclosures', value: 'security@rfi-irfos.com', href: 'mailto:security@rfi-irfos.com' },
   { label: 'Public disclosures (audit correspondence)', value: 'rfi.irfos@gmail.com', href: 'mailto:rfi.irfos@gmail.com' },
@@ -2901,7 +2902,7 @@ const CONTACT_CARDS = [
   { label: 'Careers', value: 'career@rfi-irfos.com', href: 'mailto:career@rfi-irfos.com' },
 ]
 
-function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
+export function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
   useEffect(() => {
@@ -2957,7 +2958,7 @@ function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
   )
 }
 
-function MoonPhase({ now }: { now: number }) {
+export function MoonPhase({ now }: { now: number }) {
   const KNOWN_NEW_MOON = 947182440000 // 2000-01-06T18:14:00Z
   const SYNODIC_MS = 29.53059 * 86400 * 1000
   const phase = ((now - KNOWN_NEW_MOON) % SYNODIC_MS + SYNODIC_MS) % SYNODIC_MS / SYNODIC_MS
@@ -2983,7 +2984,7 @@ function MoonPhase({ now }: { now: number }) {
   )
 }
 
-function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, open, onToggle, minWidth, mobile }: {
+export function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, open, onToggle, minWidth, mobile }: {
   id: string
   value: string
   onSelect: (v: string) => void
@@ -3048,7 +3049,9 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
   )
 }
 
-export function PublicSite() {
+
+
+export function useSiteGlue() {
   useFastScroll()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -3413,1441 +3416,43 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     }
   }
 
-  return (
-    <div style={{ background: 'var(--bg)', color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
+  return {
+    scrolled, setScrolled,
+    mobileOpen, setMobileOpen,
+    form, setForm,
+    formState, setFormState,
+    tipForm, setTipForm,
+    tipFormState, setTipFormState,
+    pixelRef,
+    ledgerRef,
+    ledgerFired, setLedgerFired,
+    searchQuery, setSearchQuery,
+    activeStatus, setActiveStatus,
+    activeSev, setActiveSev,
+    sortBy, setSortBy,
+    openDD, setOpenDD,
+    now, setNow,
+    checkoutLoading, setCheckoutLoading,
+    checkoutModal, setCheckoutModal,
+    reportModal, setReportModal,
+    agbChecked, setAgbChecked,
+    b2bChecked, setB2bChecked,
+    theme, setTheme,
+    cookieBannerOpen, setCookieBannerOpen,
+    bannerClosing, setBannerClosing,
+    bannerRef,
+    mobile, closeMobile,
+    openCheckoutModal, cancelCheckout, handleCheckout, proposalRequest,
+    submitForm, submitTip,
+    playPopSound, dismissCookieBanner,
+  }
+}
 
-      {/* REPORT PDF MODAL */}
-      {reportModal && (
-        <div onClick={() => setReportModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(0,0,0,0.85)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-          <div onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 900, height: '85vh', background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.07)', background: '#0a0a18' }}>
-              <span style={{ fontFamily: 'monospace', fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>report - rfi-irfos</span>
-              <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
-            </div>
-            <iframe src={reportModal} style={{ flex: 1, border: 'none', width: '100%' }} title="Report PDF" />
-          </div>
-        </div>
-      )}
-
-      {/* B2B CHECKOUT CONFIRMATION MODAL */}
-      {checkoutModal && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
-          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '24px 20px 32px' : '32px 28px', maxWidth: mobile ? '100%' : 480, width: '100%' }}>
-            <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
-            <h3 style={{ fontSize: mobile ? 16 : 18, fontWeight: 800, marginBottom: 18, color: 'var(--text)' }}>Please confirm before checkout</h3>
-            <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16, cursor: 'pointer' }}>
-              <input type="checkbox" checked={b2bChecked} onChange={e => setB2bChecked(e.target.checked)}
-                style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
-              <span style={{ color: 'var(--text2)', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                I am acting as a <strong style={{ color: 'var(--text)' }}>business customer</strong> and confirm that this purchase is made in the course of my commercial or professional activity.
-              </span>
-            </label>
-            <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 24, cursor: 'pointer' }}>
-              <input type="checkbox" checked={agbChecked} onChange={e => setAgbChecked(e.target.checked)}
-                style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
-              <span style={{ color: 'var(--text2)', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                I agree to the <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>Terms of Service</a>. I understand that the service <strong style={{ color: 'var(--text)' }}>begins immediately upon payment</strong> and that no right of withdrawal applies. Refunds are excluded.
-              </span>
-            </label>
-            <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
-              <button onClick={() => cancelCheckout(checkoutModal!)}
-                style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: 'var(--text3)', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
-                Cancel
-              </button>
-              <button onClick={() => handleCheckout(checkoutModal)}
-                disabled={!b2bChecked || !agbChecked}
-                style={{ flex: mobile ? undefined : 2, padding: '12px', background: b2bChecked && agbChecked ? 'rgba(0,245,196,0.12)' : 'transparent', border: `1px solid ${b2bChecked && agbChecked ? TEAL : 'rgba(255,255,255,0.08)'}`, borderRadius: 6, color: b2bChecked && agbChecked ? TEAL : '#404058', fontSize: 13, fontFamily: 'monospace', cursor: b2bChecked && agbChecked ? 'pointer' : 'not-allowed', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                Continue to Stripe →
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* NAV */}
-      <nav style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: scrolled ? 'var(--nav-bg)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(16px)' : 'none',
-        borderBottom: scrolled ? '1px solid var(--nav-border)' : 'none',
-        transition: 'background 0.3s, backdrop-filter 0.3s, border-color 0.3s',
-        padding: '0 1.5rem',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px',
-      }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
-          <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 34, height: 34, objectFit: 'contain' }} />
-          <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: 'var(--text)' }}>RFI-IRFOS</span>
-          <svg width="54" height="18" viewBox="0 0 54 18" fill="none" style={{ marginLeft: 4, flexShrink: 0, overflow: 'visible' }}>
-            <polyline className="ekg-line" points="0,9 12,9 16,2 20,16 24,2 28,9 54,9"
-              stroke="#00f5c4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </Link>
-
-        {/* Desktop nav - React inline styles can't do media queries, so gate on the useMobile() hook */}
-        <div style={{ display: mobile ? 'none' : 'flex', gap: '1.75rem', alignItems: 'center' }}>
-          {NAV_LINKS.map(n => (
-            <Link key={n.to} to={n.to} style={{
-              color: 'var(--text2)', fontSize: 13, fontWeight: 600,
-              textDecoration: 'none', letterSpacing: '0.04em',
-              transition: 'color 0.18s',
-            }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text2)')}>
-              {n.label}
-            </Link>
-          ))}
-
-          {/* Theme toggle */}
-          <div style={{ display: 'flex', background: 'var(--bg3)', borderRadius: 6, overflow: 'hidden', border: '1px solid var(--border)' }}>
-            {(['light', 'dark', 'hc'] as const).map(t => (
-              <button key={t} onClick={() => setTheme(t)} style={{
-                background: theme === t ? 'rgba(0,245,196,0.18)' : 'transparent',
-                color: theme === t ? TEAL : '#606080',
-                border: 'none', cursor: 'pointer',
-                padding: '5px 10px', fontSize: 10, fontWeight: 700,
-                fontFamily: 'monospace', letterSpacing: '0.06em', textTransform: 'uppercase',
-                transition: 'background 0.15s, color 0.15s',
-              }}>{t === 'hc' ? 'HC' : t.toUpperCase()}</button>
-            ))}
-          </div>
-
-          <a href="mailto:contact@rfi-irfos.com" title="Contact" aria-label="Contact"
-            style={{
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              width: 38, height: 38, borderRadius: 8,
-              background: 'transparent', border: `1px solid ${TEAL}`,
-              color: TEAL, textDecoration: 'none', transition: 'background 0.15s, color 0.15s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = TEAL; e.currentTarget.style.color = '#070711' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = TEAL }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="M3 7l9 6 9-6" />
-            </svg>
-          </a>
-        </div>
-
-        {/* Hamburger - shown only on mobile (media queries don't work in inline styles) */}
-        <button onClick={() => setMobileOpen(o => !o)} style={{
-          display: mobile ? 'flex' : 'none',
-          background: 'none', border: 'none', cursor: 'pointer',
-          padding: '8px', color: 'var(--text)',
-        }} aria-label="Menu">
-          {mobileOpen ? (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          ) : (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="16" x2="21" y2="16"/></svg>
-          )}
-        </button>
-      </nav>
-
-      {/* Mobile menu overlay */}
-      {mobileOpen && (
-        <div style={{
-          position: 'fixed', top: 64, left: 0, right: 0, bottom: 0, zIndex: 99,
-          background: 'var(--nav-bg)', backdropFilter: 'blur(16px)',
-          display: 'flex', flexDirection: 'column', padding: '2rem 1.5rem', gap: 4,
-        }}>
-          {NAV_LINKS.map(n => (
-            <Link key={n.to} to={n.to} onClick={() => setMobileOpen(false)} style={{
-              color: 'var(--text)', fontSize: 20, fontWeight: 700, textDecoration: 'none',
-              padding: '16px 0', borderBottom: '1px solid var(--border)',
-            }}>{n.label}</Link>
-          ))}
-          <div style={{ display: 'flex', gap: 8, marginTop: 24 }}>
-            {(['light', 'dark', 'hc'] as const).map(t => (
-              <button key={t} onClick={() => setTheme(t)} style={{
-                background: theme === t ? 'rgba(0,245,196,0.18)' : 'var(--bg3)',
-                color: theme === t ? TEAL : 'var(--text3)',
-                border: theme === t ? `1px solid ${TEAL}` : '1px solid var(--border)',
-                borderRadius: 6, cursor: 'pointer',
-                padding: '8px 16px', fontSize: 11, fontWeight: 700,
-                fontFamily: 'monospace', letterSpacing: '0.06em', textTransform: 'uppercase',
-              }}>{t === 'hc' ? 'HC' : t.toUpperCase()}</button>
-            ))}
-          </div>
-          <a href="mailto:contact@rfi-irfos.com" title="Contact" aria-label="Contact"
-            style={{
-              marginTop: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              width: 48, height: 48, borderRadius: 8,
-              background: 'transparent', border: `1px solid ${TEAL}`,
-              color: TEAL, textDecoration: 'none', alignSelf: 'flex-start',
-              transition: 'background 0.15s, color 0.15s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = TEAL; e.currentTarget.style.color = '#070711' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = TEAL }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="M3 7l9 6 9-6" />
-            </svg>
-          </a>
-        </div>
-      )}
-
-      {/* HERO */}
-      <section style={{
-        minHeight: '100vh', display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
-        padding: 'calc(72px + 6vh) 2rem 60px',
-        background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.06) 0%, transparent 70%)',
-      }}>
-        <p style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
-          Rethink the Obvious.
-        </p>
-        <h1 style={{
-          fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,
-          marginBottom: 24, letterSpacing: '0.01em', color: 'var(--text2)',
-        }}>
-          <span style={{ color: 'var(--accent-text)' }}>Interdisciplinary</span> Research Facility for Open Sciences
-        </h1>
-        <p style={{ fontSize: 17, color: 'var(--text2)', maxWidth: 580, lineHeight: 1.75, marginBottom: 48 }}>
-          Regulated Austrian research institute. Ternary AI, security, governance, minor protection, and ecocentric technology.
-          One team. Everything built in-house.
-        </p>
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <a href="#track-record" style={{
-            background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
-            fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
-            textTransform: 'uppercase', transition: 'opacity 0.15s',
-          }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Track Record</a>
-          <a href="#research" style={{
-            border: '1px solid rgba(0,245,196,0.35)', color: 'var(--accent-text)', padding: '13px 30px', borderRadius: 8,
-            fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
-            textTransform: 'uppercase', transition: 'border-color 0.15s',
-          }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Research</a>
-          <a href="#pricing" style={{
-            border: '1px solid rgba(255,255,255,0.12)', color: 'var(--text2)', padding: '13px 30px', borderRadius: 8,
-            fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
-            textTransform: 'uppercase', transition: 'border-color 0.15s, color 0.15s',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.28)'; e.currentTarget.style.color = '#e8e8f0' }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = '#a0a0b8' }}>Pricing</a>
-        </div>
-
-        <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '56px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
-          {([
-            { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'apps audited',        from: 'left'   },
-            { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: 'critical findings',   from: 'bottom' },
-            { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: 'companies notified',  from: 'scale'  },
-            { n: '18+',  label: 'regulators notified', from: 'bottom' },
-            { n: '6',    label: 'years of research',   from: 'bottom' },
-          ] as const).map((s, i) => (
-            <Reveal key={s.label} delay={i} from={s.from}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 32, fontWeight: 900, color: 'var(--accent-text)' }}>{s.n}</div>
-                <div style={{ fontSize: 11, color: 'var(--text)', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{s.label}</div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* RESEARCH AREAS */}
-      <section id="research" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-          <Reveal from="left">
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Areas of Magnification</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>where our attention falls</h2>
-          </Reveal>
-          <Reveal from="right" delay={1}>
-            <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
-              One team. The same people who train the model write the regulatory analysis and file the disclosure.
-            </p>
-          </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
-            {RESEARCH_AREAS.map((a, i) => (
-              <Reveal key={a.title} delay={i} from={(['left', 'bottom', 'right', 'scale'] as const)[i % 4]}>
-                <div style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 16, padding: '28px 24px', height: '100%',
-                }}>
-                  <div style={{ marginBottom: 16, lineHeight: 0 }}>{a.icon}</div>
-                  <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{a.title}</div>
-                  <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7 }}>{a.desc}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <div style={{ marginTop: 64 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 24, color: 'var(--text)' }}>publications on OSF</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              {PUBLICATIONS.map(p => (
-                <a key={p.title} href={p.href} target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 18px', borderRadius: 10, textDecoration: 'none', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', transition: 'border-color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.25)')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)')}>
-                  <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', minWidth: 32 }}>{p.year}</span>
-                  <span style={{ flex: 1 }}>
-                    <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--text)' }}>{p.title}</span>
-                    <span style={{ color: 'var(--text3)', fontSize: 12, display: 'block', marginTop: 2 }}>{p.sub}</span>
-                  </span>
-                  <span style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '3px 8px', borderRadius: 20, border: '1px solid rgba(0,245,196,0.25)', color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{p.tag}</span>
-                  <span style={{ color: 'var(--text4)', fontSize: 12 }}>↗</span>
-                </a>
-              ))}
-            </div>
-            <p style={{ marginTop: 16, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
-              119 projects on OSF &nbsp;·&nbsp; <a href="https://osf.io/rzvyg/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>osf.io/rzvyg</a>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* PROJECTS */}
-      <section id="projects" style={{
-        padding: '100px 2rem',
-        background: 'rgba(0,245,196,0.02)',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-      }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-          <Reveal from="right">
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Undertakings</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
-          </Reveal>
-          <Reveal from="left" delay={1}>
-            <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
-              Every project is a proof of concept for a specific research question. All built on the same stack.
-            </p>
-          </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
-            {PROJECTS.map((p, i) => (
-              <Reveal key={p.name} delay={i % 4} from={(['bottom', 'right', 'bottom', 'left'] as const)[i % 4]} style={{ display: 'flex' }}>
-              <div style={{
-                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1,
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div>
-                    <div style={{ fontWeight: 900, fontSize: 17 }}>{p.name}</div>
-                    <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
-                  </div>
-                  <span style={{
-                    fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em',
-                    padding: '3px 8px', borderRadius: 20,
-                    border: '1px solid rgba(0,245,196,0.3)', color: 'var(--accent-text)', whiteSpace: 'nowrap',
-                  }}>{p.tag}</span>
-                </div>
-                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
-                {p.link && (
-                  <a href={p.link} target="_blank" rel="noopener noreferrer"
-                    style={{ color: 'var(--accent-text)', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
-                    {p.link.includes('crates.io') ? 'View on crates.io' : 'View on GitHub'} &rarr;
-                  </a>
-                )}
-              </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TRACK RECORD */}
-      <section id="track-record" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-          <Reveal from="left">
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the discipline, demonstrated</h2>
-          </Reveal>
-          <Reveal from="right" delay={1}>
-            <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 720, fontSize: 15, lineHeight: 1.9 }}>
-              Root level code analysis. Regulators in <strong style={{ color: 'var(--text)' }}>CC on every submission</strong> - national DPA + EDPS. 90-day coordinated disclosure. Our framework. Our timeline. Disclosure is unconditional: every organization on this ledger gets identical treatment, whether or not they engage us commercially. The full disclosure framework is in our <a href="#p/security" style={{ color: 'var(--accent-text)', textDecoration: 'none' }}>Security Policy</a>.
-            </p>
-          </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
-            {[
-              { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'Apps audited',        from: 'left'   },
-              { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: 'Companies notified',  from: 'bottom' },
-              { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: 'Critical findings',   from: 'top'    },
-              { n: '18+',  label: 'Regulators notified', from: 'right'  },
-            ].map((s, i) => (
-              <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
-                <div style={{
-                  background: 'rgba(0,245,196,0.05)', border: '1px solid rgba(0,245,196,0.15)',
-                  borderRadius: 12, padding: '24px', textAlign: 'center', height: '100%',
-                }}>
-                  <div style={{ fontSize: 36, fontWeight: 900, color: 'var(--accent-text)' }}>{s.n}</div>
-                  <div style={{ fontSize: 11, color: 'var(--text)', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 6 }}>{s.label}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <div style={{
-            background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 12, padding: '20px 24px', marginBottom: 48,
-            fontFamily: 'monospace', fontSize: 12, color: 'var(--text2)', lineHeight: 1.8,
-          }}>
-            <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
-            {' '}listed companies · GDPR Art. 5/8/9/13/25/32/44 · COPPA · EU AI Act (minor provisions) · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at · FTC
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
-            <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', margin: 0 }}>Permanent disclosure ledger</h3>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)' }}>{AUDIT_HIGHLIGHTS.length} companies · live response tracking · disclosure 2026-09-19</span>
-          </div>
-          {/* Search + filter dropdowns - single row (stacks on mobile) */}
-          <div style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'stretch', flexWrap: mobile ? 'wrap' : 'nowrap' }}>
-
-            {/* Search */}
-            <div style={{ position: 'relative', flex: 1, minWidth: 0, ...(mobile ? { flexBasis: '100%' } : {}) }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(0,245,196,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-              </svg>
-              <input
-                type="text"
-                placeholder="search your company..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                style={{
-                  width: '100%', boxSizing: 'border-box',
-                  background: 'rgba(0,245,196,0.04)',
-                  border: searchQuery ? '1px solid rgba(0,245,196,0.55)' : '1px solid rgba(0,245,196,0.18)',
-                  borderRadius: 7, padding: '9px 36px 9px 42px',
-                  color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 12,
-                  outline: 'none', transition: 'border-color 0.15s',
-                }}
-                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)' }}
-                onBlur={e => { if (!searchQuery) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.18)' }}
-              />
-              {searchQuery && (
-                <button onClick={() => setSearchQuery('')} style={{
-                  position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                  background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)', padding: 4, lineHeight: 0,
-                }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
-              )}
-            </div>
-
-            {/* Status dropdown */}
-            <LedgerDropdown id="status" mobile={mobile} minWidth={115}
-              value={activeStatus ?? ''} onSelect={v => setActiveStatus(v || null)}
-              open={openDD === 'status'} onToggle={setOpenDD} placeholder="STATUS"
-              selColor={activeStatus ? (STATUS_META[activeStatus]?.color ?? TEAL) : null}
-              options={[{ value: '', label: 'STATUS' }, ...Object.entries(STATUS_META).map(([k, v]) => ({ value: k, label: `${v.label} (${AUDIT_HIGHLIGHTS.filter(a => a.status === k).length})`, color: v.color }))]}
-            />
-
-            {/* SEV dropdown */}
-            <LedgerDropdown id="sev" mobile={mobile} minWidth={88}
-              value={activeSev ?? ''} onSelect={v => setActiveSev(v || null)}
-              open={openDD === 'sev'} onToggle={setOpenDD} placeholder="SEV"
-              selColor={activeSev === 'CRITICAL' ? '#f87171' : activeSev === 'HIGH' ? '#fb923c' : activeSev === 'MEDIUM' ? '#fbbf24' : null}
-              options={[{ value: '', label: 'SEV' }, ...(['CRITICAL', 'HIGH', 'MEDIUM'] as const).map(sev => ({ value: sev, label: `${sev} (${AUDIT_HIGHLIGHTS.filter(a => a.sev === sev).length})`, color: sev === 'CRITICAL' ? '#f87171' : sev === 'HIGH' ? '#fb923c' : '#fbbf24' }))]}
-            />
-
-            {/* Sort by dropdown */}
-            <LedgerDropdown id="sort" mobile={mobile} minWidth={130}
-              value={sortBy} onSelect={v => setSortBy(v)}
-              open={openDD === 'sort'} onToggle={setOpenDD} placeholder="SORT"
-              selColor={sortBy !== 'default' ? TEAL : null}
-              options={[
-                { value: 'elapsed-desc', label: 'ELAPSED ↓' },
-                { value: 'notified-desc', label: 'NOTIFIED ↓' },
-                { value: 'notified-asc', label: 'NOTIFIED ↑' },
-                { value: 'sev', label: 'SEV' },
-                { value: 'status', label: 'STATUS' },
-                { value: 'default', label: 'DEFAULT' },
-              ]}
-            />
-
-            {/* Moon */}
-            <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 10px', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 7, background: 'rgba(255,255,255,0.02)' }}>
-              <MoonPhase now={now} />
-            </div>
-
-          </div>
-          {(searchQuery.trim() || activeStatus || activeSev || sortBy !== 'default') && (() => {
-            const n = AUDIT_HIGHLIGHTS.filter(a =>
-              (!searchQuery.trim() ||
-                a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                a.finding.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                a.market.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                (a.aliases ?? []).some(al => al.toLowerCase().includes(searchQuery.toLowerCase()))
-              ) &&
-              (!activeStatus || a.status === activeStatus) &&
-              (!activeSev || a.sev === activeSev)
-            ).length
-            const sortLabel: Record<string, string> = { 'elapsed-desc': 'elapsed ↓', 'notified-desc': 'notified ↓', 'notified-asc': 'notified ↑', sev: 'sev', status: 'status' }
-            return (
-              <div style={{ fontFamily: 'monospace', fontSize: 10, color: n > 0 ? TEAL : '#f87171', marginBottom: 10, letterSpacing: '0.06em' }}>
-                {n > 0 ? `${n} of ${AUDIT_HIGHLIGHTS.length} entries` : `no matches`}
-                {searchQuery.trim() ? ` for "${searchQuery}"` : ''}
-                {sortBy !== 'default' ? ` · sorted by ${sortLabel[sortBy] ?? sortBy}` : ''}
-              </div>
-            )
-          })()}
-
-          {/* Table */}
-          <div data-native-scroll style={{ maxHeight: mobile ? '65vh' : 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
-            <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}@keyframes ekgPulse{0%{stroke-dashoffset:90;opacity:0}8%{opacity:1}80%{opacity:1}100%{stroke-dashoffset:-90;opacity:0}}.ekg-line{stroke-dasharray:90;animation:ekgPulse 2.4s linear infinite}@keyframes ddIn{from{opacity:0;transform:translateY(-6px) scaleY(0.97)}to{opacity:1;transform:none}}.ledger-dd-panel{transform-origin:top}.ledger-dd-opt:hover{background:rgba(0,245,196,0.12)!important;color:#00f5c4!important}`}</style>
-
-            {/* Sticky header */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: mobile
-                ? '1fr 85px 110px'
-                : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 110px 70px 130px 130px 56px',
-              gap: '0 6px',
-              padding: '7px 14px',
-              position: 'sticky', top: 0, zIndex: 2,
-              background: 'var(--bg)', borderBottom: '1px solid var(--border2)',
-              fontFamily: 'monospace', fontSize: 10, fontWeight: 700,
-              color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.1em',
-            }}>
-              <span>Organisation</span>
-              {!mobile && <span>Notified</span>}
-              <span>Status</span>
-              {!mobile && <span>SEV</span>}
-              {!mobile && <span>Intel</span>}
-              {!mobile && <span>Statutes</span>}
-              {!mobile && <span>Resolved</span>}
-              <span>Disclosure</span>
-              {!mobile && <span>Elapsed</span>}
-              {!mobile && <span>Report</span>}
-            </div>
-
-            {/* Rows */}
-            <div ref={ledgerRef}>
-              {AUDIT_HIGHLIGHTS.filter(a =>
-                (!searchQuery.trim() ||
-                  a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                  a.finding.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                  a.market.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                  (a.aliases ?? []).some(al => al.toLowerCase().includes(searchQuery.toLowerCase()))
-                ) &&
-                (!activeStatus || a.status === activeStatus) &&
-                (!activeSev || a.sev === activeSev)
-              ).sort((x, y) => {
-                const SEV_ORDER: Record<string, number> = { CRITICAL: 0, HIGH: 1, MEDIUM: 2 }
-                const STATUS_ORDER: Record<string, number> = { RESOLVED: -1, SILENT: 0, ESCALATED: 1, 'CS-DEFLECT': 2, REGULATOR: 2.5, WAITING: 3, ACK: 4, SUBSTANTIVE: 5, ENGAGED: 6, PAID: 7 }
-                const resolveTs = (a: typeof x) => { const m = AUDIT_META[a.target]; if (m?.notified) return new Date(m.notified).getTime(); const d = a.finding.match(/(\d{4}-\d{2}-\d{2})/); return d ? new Date(d[1]).getTime() : 0 }
-                const notifiedX = resolveTs(x)
-                const notifiedY = resolveTs(y)
-                const elapsedX = notifiedX ? now - notifiedX : 0
-                const elapsedY = notifiedY ? now - notifiedY : 0
-                if (sortBy === 'elapsed-desc') return elapsedY - elapsedX
-                if (sortBy === 'notified-desc') return notifiedY - notifiedX
-                if (sortBy === 'notified-asc') return notifiedX - notifiedY
-                if (sortBy === 'sev') return (SEV_ORDER[x.sev] ?? 9) - (SEV_ORDER[y.sev] ?? 9)
-                if (sortBy === 'status') return (STATUS_ORDER[x.status] ?? 9) - (STATUS_ORDER[y.status] ?? 9)
-                return 0
-              }).map((a, i) => {
-                const sm = STATUS_META[a.status] ?? STATUS_META['WAITING']
-                const meta = AUDIT_META[a.target]
-                const disclosureTs = meta ? new Date(meta.disclosure).getTime() : new Date('2026-09-19').getTime()
-                const msLeft = Math.max(0, disclosureTs - now)
-                const daysLeft = Math.floor(msLeft / 86400000)
-                const hLeft  = Math.floor((msLeft % 86400000) / 3600000)
-                const mLeft  = Math.floor((msLeft % 3600000) / 60000)
-                const sLeft  = Math.floor((msLeft % 60000) / 1000)
-                const pad = (n: number) => String(n).padStart(2, '0')
-                const cdStr = `${daysLeft}d ${pad(hLeft)}h ${pad(mLeft)}m ${pad(sLeft)}s`
-                const cdColor = daysLeft > 60 ? TEAL : daysLeft > 30 ? '#fb923c' : '#f87171'
-                const delay = Math.min(i * 30, 1500)
-                const resolved = meta?.resolved ?? false
-                const notifiedTs = meta?.notified ? new Date(meta.notified).getTime() : (() => { const d = a.finding.match(/(\d{4}-\d{2}-\d{2})/); return d ? new Date(d[1]).getTime() : null })()
-                const resolvedTs = meta?.resolvedDate ? new Date(meta.resolvedDate).getTime() : null
-                const elapsedEnd = (resolved && resolvedTs) ? resolvedTs : now
-                const elapsedMs  = notifiedTs ? Math.max(0, elapsedEnd - notifiedTs) : 0
-                const eDays = Math.floor(elapsedMs / 86400000)
-                const eH    = Math.floor((elapsedMs % 86400000) / 3600000)
-                const eM    = Math.floor((elapsedMs % 3600000)  / 60000)
-                const eS    = Math.floor((elapsedMs % 60000)    / 1000)
-                const eStr  = `${eDays}d ${pad(eH)}h ${pad(eM)}m ${pad(eS)}s`
-                const eColor = resolved ? '#4ade80' : eDays > 60 ? '#f87171' : eDays > 30 ? '#fb923c' : TEAL
-                const totalWindowMs = notifiedTs ? disclosureTs - notifiedTs : 90 * 86400000
-                const batteryPct = notifiedTs ? Math.max(0, Math.min(1, (disclosureTs - now) / totalWindowMs)) : 1
-                const batteryColor = batteryPct > 0.66 ? '#4ade80' : batteryPct > 0.33 ? '#fb923c' : '#f87171'
-                return (
-                  <div key={i} style={{
-                    position: 'relative',
-                    overflow: 'hidden',
-                    display: 'grid',
-                    gridTemplateColumns: mobile
-                      ? '1fr 95px 82px'
-                      : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 110px 70px 130px 130px 56px',
-                    gap: '0 6px',
-                    padding: '9px 14px',
-                    alignItems: 'start',
-                    borderBottom: '1px solid var(--border2)',
-                    background: i % 2 === 0 ? 'var(--bg2)' : 'transparent',
-                    opacity: ledgerFired ? undefined : 0,
-                    animation: ledgerFired ? `ledgerRowIn 0.38s cubic-bezier(0.22,1,0.36,1) ${delay}ms both` : 'none',
-                  }}>
-                    {/* Battery bar */}
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'rgba(255,255,255,0.05)' }}>
-                      <div style={{ height: '100%', width: resolved ? '100%' : `${batteryPct * 100}%`, background: resolved ? 'linear-gradient(90deg, rgba(0,245,196,0.55), #00f5c4)' : `linear-gradient(90deg, ${batteryColor}55, ${batteryColor})`, borderRadius: '0 2px 0 0', transition: 'width 1s linear' }} />
-                    </div>
-                    {/* Organisation */}
-                    <div>
-                      <div style={{ fontWeight: 700, fontSize: 12, color: 'var(--text)', lineHeight: 1.4 }}>{a.target}</div>
-                      <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', marginTop: 2 }}>{a.market}</div>
-                    </div>
-
-                    {/* Notified */}
-                    {!mobile && (
-                      <div style={{ paddingTop: 1 }}>
-                        <div style={{ fontFamily: 'monospace', fontSize: 10, color: meta?.notified ? 'var(--text2)' : 'var(--text4)' }}>
-                          {meta?.notified ?? '-'}
-                        </div>
-                        {notifiedTs && (
-                          <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--accent-text)', marginTop: 2, letterSpacing: '0.04em' }}>
-                            {eDays === 0 ? 'today' : `${eDays}d ago`}
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Status */}
-                    <div style={{ paddingTop: 1 }}>
-                      <span className="site-status-badge" style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3, border: '1px solid var(--border)', background: sm.bg, color: sm.color, letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>{sm.label}</span>
-                    </div>
-
-                    {/* SEV */}
-                    {!mobile && (
-                      <div style={{ paddingTop: 1 }}>
-                        <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, color: SEV_COLOR[a.sev] ?? TEAL }}>{a.sev}</span>
-                      </div>
-                    )}
-
-                    {/* Intel */}
-                    {!mobile && (
-                      <div style={{ color: 'var(--text2)', fontSize: 11, lineHeight: 1.6,
-                        display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-                      }} title={a.finding}>
-                        {a.finding}
-                      </div>
-                    )}
-
-                    {/* Statutes */}
-                    {!mobile && (() => {
-                      const statutes = AUDIT_STATUTES[a.target] ?? []
-                      const STATUTE_CAP = 3
-                      const shown = statutes.slice(0, STATUTE_CAP)
-                      const rest = statutes.slice(STATUTE_CAP)
-                      return (
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3, paddingTop: 1, minWidth: 0, overflow: 'hidden' }}>
-                          {statutes.length === 0 ? (
-                            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>-</span>
-                          ) : (
-                            <>
-                              {shown.map((s, si) => (
-                                <span key={si} title={`${s.note} (${s.source})`} style={{
-                                  fontFamily: 'monospace', fontSize: 8, fontWeight: 700, padding: '2px 5px',
-                                  borderRadius: 3, letterSpacing: '0.04em', whiteSpace: 'nowrap', cursor: 'default',
-                                  ...{ background: 'transparent', color: 'var(--text3)', border: '1px solid rgba(150,150,150,0.35)' },
-                                }}>
-                                  {s.article ? `${s.law} ${s.article}` : s.law}
-                                </span>
-                              ))}
-                              {rest.length > 0 && (
-                                <span
-                                  title={rest.map(s => `${s.article ? `${s.law} ${s.article}` : s.law}: ${s.note} (${s.source})`).join('\n')}
-                                  style={{
-                                    fontFamily: 'monospace', fontSize: 8, fontWeight: 700, padding: '2px 5px',
-                                    borderRadius: 3, letterSpacing: '0.04em', whiteSpace: 'nowrap', cursor: 'default',
-                                    background: 'rgba(255,255,255,0.06)', color: 'var(--text3)', border: '1px solid rgba(150,150,150,0.25)',
-                                  }}>
-                                  +{rest.length}
-                                </span>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      )
-                    })()}
-
-                    {/* Resolved */}
-                    {!mobile && (
-                      <div style={{ paddingTop: 1 }}>
-                        <span style={{
-                          fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3,
-                          background: 'var(--surface-sunken)', color: 'var(--text)', letterSpacing: '0.07em',
-                        }}>{resolved ? 'YES' : 'NO'}</span>
-                      </div>
-                    )}
-
-                    {/* Countdown */}
-                    <div style={{ paddingTop: 1 }}>
-                      <div style={{ fontFamily: 'monospace', fontSize: mobile ? 12 : 16, fontWeight: 900, color: resolved ? '#00f5c4' : cdColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
-                        {resolved ? 'CLOSED' : cdStr}
-                      </div>
-                      <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
-                        DISCLOSURE
-                      </div>
-                    </div>
-
-                    {/* Elapsed */}
-                    {!mobile && (
-                      <div style={{ paddingTop: 1 }}>
-                        <div style={{ fontFamily: 'monospace', fontSize: 16, fontWeight: 900, color: eColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
-                          {notifiedTs ? eStr : '-'}
-                        </div>
-                        <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
-                          {resolved ? 'RESPONDED' : 'ELAPSED'}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Report */}
-                    {!mobile && (
-                      <div style={{ paddingTop: 2 }}>
-                        {meta?.reportUrl ? (
-                          <button onClick={() => setReportModal(meta.reportUrl!)} style={{
-                            background: 'rgba(0,245,196,0.10)', border: '1px solid rgba(0,245,196,0.3)',
-                            borderRadius: 4, padding: '4px 8px', cursor: 'pointer', display: 'flex',
-                            alignItems: 'center', gap: 4, color: TEAL, fontSize: 10, fontFamily: 'monospace',
-                            fontWeight: 700, letterSpacing: '0.06em', transition: 'background 0.15s',
-                          }}>
-                            <svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="M1 1h5l3 3v7H1V1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M6 1v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M3 6h4M3 8h3" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>
-                            PDF
-                          </button>
-                        ) : (
-                          <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>-</span>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-          <p style={{ marginTop: 12, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
-            this ledger is updated in real time as companies respond. silence is public. · <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
-          </p>
-        </div>
-      </section>
-
-      {/* SUBMIT A TIP */}
-      <section id="submit" style={{
-        padding: '100px 2rem',
-        background: 'rgba(255,255,255,0.01)',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-      }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Disclosures</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? say so.</h2>
-            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
-              We run our own intake channel instead of routing you to a third-party bug bounty platform - for the same reason we refuse to be routed to one ourselves when we report a finding. This is a direct line to the same permanent ledger you see above, held to the same standard.
-            </p>
-          </Reveal>
-
-          <div style={{ display: mobile ? 'block' : 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'start' }}>
-            {/* left: policy */}
-            <Reveal from="left">
-              <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '28px 26px', marginBottom: mobile ? 24 : 0 }}>
-                <div style={{ fontWeight: 900, fontSize: 15, color: 'var(--text)', marginBottom: 14 }}>How we handle what you send us</div>
-                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
-                  <strong style={{ color: 'var(--accent-text)' }}>ISO/IEC 30111 triage:</strong> reproduce it, scope it, fix it, credit you. No finding gets buried because it's inconvenient - that's the entire complaint we file against everyone else, and we're not exempting ourselves from it.
-                </p>
-                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
-                  <strong style={{ color: 'var(--text)' }}>Lawful basis only.</strong> We accept findings obtained through publicly accessible information, your own devices, or software you're authorized to test - the same standard our own root level code analysis holds to. If what you send us shows evidence of unauthorized access to a system you don't control, we do not publish or credit it under this program. We report it directly to the relevant authorities, the same way we'd expect to be treated if the roles were reversed.
-                </p>
-                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, margin: 0 }}>
-                  <strong style={{ color: 'var(--text)' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous - exactly as set out in our{' '}
-                  <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>terms</a>. No call, no meeting. Everything stays written, same as every disclosure we send.
-                </p>
-              </div>
-            </Reveal>
-
-            {/* right: form */}
-            <Reveal from="right">
-              <form onSubmit={submitTip} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
-                  value={tipForm.botcheck} onChange={e => setTipForm(p => ({ ...p, botcheck: e.target.value }))}
-                  style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
-                <input type="text" placeholder="Name or alias (optional - leave blank to stay anonymous)"
-                  value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-                <input type="email" placeholder="Email (optional - only if you want follow-up)"
-                  value={tipForm.email} onChange={e => setTipForm(p => ({ ...p, email: e.target.value }))}
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-                <input type="text" required placeholder="Company / app / target"
-                  value={tipForm.target} onChange={e => setTipForm(p => ({ ...p, target: e.target.value }))}
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-                <select value={tipForm.credit} onChange={e => setTipForm(p => ({ ...p, credit: e.target.value }))} style={{
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
-                }}>
-                  <option value="alias">Credit me by alias / name I provide above</option>
-                  <option value="anonymous">Do not credit me - keep this anonymous</option>
-                  <option value="full-name">Credit me by full legal name</option>
-                </select>
-                <textarea required placeholder="What did you find? Include what it is, where you found it, and how to reproduce it."
-                  value={tipForm.finding} onChange={e => setTipForm(p => ({ ...p, finding: e.target.value }))}
-                  rows={6} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
-                <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
-                  <input type="checkbox" required checked={tipForm.lawful}
-                    onChange={e => setTipForm(p => ({ ...p, lawful: e.target.checked }))}
-                    style={{ marginTop: 3, accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
-                  <span style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.6 }}>
-                    I confirm this information was obtained through lawful, authorized means - publicly accessible data, my own devices, or software I'm authorized to test.
-                  </span>
-                </label>
-                <button type="submit" disabled={tipFormState === 'sending' || !tipForm.lawful} style={{
-                  background: tipFormState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
-                  color: tipFormState === 'ok' ? TEAL : '#070711',
-                  border: tipFormState === 'ok' ? `1px solid ${TEAL}` : 'none',
-                  padding: '13px 24px', borderRadius: 8, fontWeight: 800, fontSize: 14,
-                  cursor: tipFormState === 'sending' ? 'wait' : !tipForm.lawful ? 'not-allowed' : 'pointer',
-                  opacity: !tipForm.lawful && tipFormState === 'idle' ? 0.5 : 1, fontFamily: 'inherit',
-                }}>
-                  {tipFormState === 'sending' ? 'Sending...' : tipFormState === 'ok' ? 'Received. Thank you.' : 'Submit tip'}
-                </button>
-                {tipFormState === 'err' && (
-                  <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>Something went wrong. Email us directly at contact@rfi-irfos.com</p>
-                )}
-              </form>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* TIMELINE */}
-      <section id="timeline" style={{
-        padding: '100px 2rem',
-        background: 'rgba(255,255,255,0.01)',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-      }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 / Chronicle</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 64, textAlign: 'center' }}>how we came to be</h2>
-          </Reveal>
-          <div style={{ position: 'relative' }}>
-            <div style={{
-              position: 'absolute', left: '50%', top: 0, bottom: 0, width: 2,
-              background: 'rgba(0,245,196,0.2)', transform: 'translateX(-50%)',
-            }} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
-              {MILESTONES.map((m, i) => (
-                <TimelineItem key={i} m={m} i={i} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PRICING */}
-      <section id="pricing" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>priced in plain terms</h2>
-            <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
-              Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.
-            </p>
-          </Reveal>
-
-          {/* Security Audit tiers */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: 48 }}>
-            {([
-              { tier: 'Public',                   price: 'free',      desc: 'Full public disclosure. Findings published after 90-day coordinated embargo. No NDA. First phone sanitizing session included.', highlight: false, stripeKey: null,            contact: false },
-              { tier: 'Remediation Advisory',     price: '€4,500',    desc: 'Full report + remediation guidance. 30-day follow-up. GDPR compliance mapping included.',                                        highlight: false, stripeKey: 'remediation',   contact: false },
-              { tier: 'Confidential',             price: '€9,000',    desc: 'NDA-protected disclosure. Private report + patch validation. Regulators still notified.',                                        highlight: false, stripeKey: 'confidential',  contact: false },
-              { tier: 'Enterprise NDA',           price: '€18,000',   desc: 'Extended embargo + dedicated remediation support + legal evidence package.',                                                     highlight: false, stripeKey: 'enterprise_nda',contact: false },
-              { tier: 'Critical Infrastructure',  price: '€75,000',   desc: 'NDA + legal + PR containment strategy + regulator liaison. Fullscope package.',                                                 highlight: true,  stripeKey: null,            contact: true  },
-              { tier: 'IoB / Art. 9',             price: '€150,000',  desc: 'Internet of Bodies / wearables with health data (Art. 9 GDPR). Elevated risk premium.',                                        highlight: true,  stripeKey: null,            contact: true  },
-              { tier: 'Annual Intelligence Retainer', price: '€250,000', desc: 'Full-year continuous monitoring of your entire app portfolio. Quarterly deep audits. Dedicated regulatory liaison across AP, DSB, BfDI, ICO. Monthly threat intelligence briefings. Instant breach notification. Market signal mapping via aladdin-mini.', highlight: true, stripeKey: null, contact: true },
-              { tier: 'Full Intelligence Package',price: '€750,000',  desc: 'Everything in the Annual tier. Unlimited audits across your full vendor and partner ecosystem. Custom business intelligence dashboards. Real-time competitive intelligence. Proactive zero-day hunting. Board-level executive briefings. Custom regulatory strategy. Full-year dedicated research team allocation.', highlight: true, stripeKey: null, contact: true },
-            ] as const).map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <div style={{
-                  background: t.highlight ? 'rgba(0,245,196,0.06)' : 'rgba(255,255,255,0.03)',
-                  border: `1px solid ${t.highlight ? 'rgba(0,245,196,0.25)' : 'rgba(255,255,255,0.07)'}`,
-                  borderRadius: 14, padding: '24px 20px', height: '100%',
-                  display: 'flex', flexDirection: 'column',
-                }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  {t.stripeKey && (
-                    <button
-                      onClick={() => openCheckoutModal(t.stripeKey!)}
-                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
-                    >
-                      get started →
-                    </button>
-                  )}
-                  {t.contact && (
-                    <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'var(--text2)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
-                      request proposal →
-                    </a>
-                  )}
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* Retainer */}
-          <Reveal from="left">
-          <div style={{
-            background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 14, padding: '24px 28px', marginBottom: 48,
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16,
-          }}>
-            <div>
-              <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>Security Retainer</div>
-              <div style={{ color: 'var(--text2)', fontSize: 13 }}>continuous monitoring · quarterly audits · priority response · dedicated contact</div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10 }}>
-              <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>€1,500 / mo</div>
-              <button
-                onClick={() => openCheckoutModal('retainer')}
-                style={{ padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
-              >
-                start retainer →
-              </button>
-            </div>
-          </div>
-          </Reveal>
-
-          {/* Device Privacy Hardening */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Device Privacy Hardening - by appointment</p>
-          <Reveal from="right">
-          <div style={{
-            background: 'rgba(0,245,196,0.04)', border: '1px solid rgba(0,245,196,0.18)',
-            borderRadius: 14, padding: '24px 28px', marginBottom: 48,
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16,
-          }}>
-            <div>
-              <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>Phone Sanitizing: first session free</div>
-              <div style={{ color: 'var(--text2)', fontSize: 13 }}>send us your phone - we disable background tracking scripts permanently · DNS-over-HTTPS · backup hardening · full before/after audit report · by appointment</div>
-            </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>free</div>
-          </div>
-          </Reveal>
-
-          {/* Market Research & Competitor Analysis */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Market Research &amp; Competitor Analysis</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 48 }}>
-            {[
-              { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  desc: 'Sector landscape report. Key player mapping. Regulatory environment. 10-page minimum. Delivered in 5 business days.' },
-              { tier: 'Competitor Intelligence',    price: '€7,500',      stripeKey: 'competitor_intel', desc: 'Deep-dive on 3–5 competitors. Technical stack analysis, privacy posture, market positioning, strategic vulnerabilities.' },
-              { tier: 'Sector Intelligence Report', price: '€18,000',     stripeKey: 'sector_intel',     desc: 'Full market + regulatory + tech landscape. Quantified risk exposure per player. Quarterly update cycle.' },
-              { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', stripeKey: 'ongoing_intel', desc: 'Continuous competitor tracking. Monthly briefings. Ad hoc alerts on significant moves. Dedicated analyst contact.' },
-            ].map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <div style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 14, padding: '24px 20px', height: '100%',
-                  display: 'flex', flexDirection: 'column',
-                }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  <button
-                    onClick={() => openCheckoutModal(t.stripeKey)}
-                    style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
-                  >
-                    get started →
-                  </button>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* Web Development */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Web Development</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
-            {[
-              { tier: 'Landing Page',   price: '€1,500',  stripeKey: 'web_landing'   as string | null, desc: 'Single-page site. React + our open-source template. Live in 48 hours.' },
-              { tier: 'Full Site',      price: '€4,500',  stripeKey: 'web_full'      as string | null, desc: 'Multi-page + CMS admin + contact form + analytics. Ships as an installable PWA that runs like a native app on Android & iOS. 2-week delivery.' },
-              { tier: 'Enterprise Site',price: '€18,000', stripeKey: 'web_enterprise' as string | null, desc: 'Custom Rust backend + auth + integrations + full scope. Includes native Android & iOS apps. Long-term support included.' },
-              { tier: 'Platform Build', price: '€75,000', stripeKey: null,                              desc: 'Full product build. Custom infrastructure, API design, data pipelines, native apps, dedicated team. Ongoing engagement.' },
-            ].map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <div style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 14, padding: '24px 20px', height: '100%',
-                  display: 'flex', flexDirection: 'column',
-                }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  {t.stripeKey ? (
-                    <button
-                      onClick={() => openCheckoutModal(t.stripeKey!)}
-                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
-                    >
-                      get started →
-                    </button>
-                  ) : (
-                    <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'var(--text2)', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
-                      request proposal →
-                    </a>
-                  )}
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* Mobile App Development & Fixing */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 8 }}>Mobile App Development &amp; Fixing</p>
-          <p style={{ color: 'var(--text2)', marginBottom: 20, maxWidth: 620, fontSize: 13, lineHeight: 1.7 }}>
-            Native Android &amp; iOS — built and fixed in-house. Send us your APK and we run root-level analysis, patch the bugs, or build the product from scratch. One team, no outsourced code.
-          </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
-            {[
-              { tier: 'APK Review & Bugfix',  price: 'from €1,500', desc: 'Send us your APK. Root-level code analysis, crash + vulnerability triage, concrete patch guidance. Android & iOS. Fixed-scope, 1-week turnaround.' },
-              { tier: 'App Build',            price: 'from €9,000', desc: 'We build your native app end-to-end — Kotlin/Swift + Rust backend, Play & App Store submission handled. Everything in-house.' },
-              { tier: 'Maintenance Retainer',  price: '€1,200 / mo', desc: 'Ongoing patch cadence, store-compliance monitoring, dependency + SDK hygiene. Priority response, dedicated contact.' },
-              { tier: 'Full Mobile Product',   price: 'on request',  desc: 'Complete mobile product from spec to launch. Custom infrastructure, API design, native apps, dedicated team. Ongoing engagement.' },
-            ].map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <div style={{
-                  background: 'rgba(0,245,196,0.04)', border: '1px solid rgba(0,245,196,0.18)',
-                  borderRadius: 14, padding: '24px 20px', height: '100%',
-                  display: 'flex', flexDirection: 'column',
-                }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'var(--text2)', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
-                    request proposal →
-                  </a>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* Research Cooperation Products - via our coop partner Laura Serna
-              Gaviria / Emergent Interaction Lab. No Stripe checkout: these are
-              bespoke engagements, always "on request" via #contact. See the
-              COOP PARTNERS section below for who Laura is and the crates. */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Research Cooperation - via our coop partner, on request</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 16, marginBottom: 48 }}>
-            {[
-              { tier: 'Lauras Team',       desc: 'Access to the multi-agent system directed by Laura Serna Gaviria - one SWAT lead team directing 15 specialised sub-agents, built on her Emergent Interaction method. Scoped engagement per case.' },
-              { tier: 'Lauras Agents',     desc: 'Licensed access to the private agent stack behind Lauras Team (lauras-team crate, access on request per crates.io). Bespoke licensing and integration scope, agreed case by case.' },
-              { tier: 'Business Consulting Package', desc: 'Applying the Emergent Interaction / Case Intelligence method to your own organization - process reconstruction, framework derivation, agent architecture design, delivered jointly with our coop partner.' },
-            ].map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right'] as const)[i % 3]}>
-                <div style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 14, padding: '24px 20px', height: '100%',
-                  display: 'flex', flexDirection: 'column',
-                }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>on request</div>
-                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'var(--text2)', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
-                    request proposal →
-                  </a>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* Open Science statement */}
-          <Reveal from="bottom">
-          <div style={{
-            borderTop: '1px solid rgba(0,245,196,0.15)',
-            paddingTop: 32,
-            textAlign: 'center',
-          }}>
-            <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>where the money goes</div>
-            <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8, maxWidth: 620, margin: '0 auto' }}>
-              100% of surplus revenue is reinvested into open science, public research, and infrastructure.{' '}
-              <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>Zero goes to shareholders - we have none.</span>{' '}
-              RFI-IRFOS is a regulated not-for-profit (ZVR 1015608684). Every euro above operating costs funds the next audit, the next model training run, or the next research publication. That is not a marketing line. It is a legal obligation.
-            </p>
-          </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* STANDARDS & COMPLIANCE */}
-      <section id="standards" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Standards &amp; Compliance</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the frameworks we work under</h2>
-            <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 620 }}>
-              Every audit is filed against current EU and Austrian law. We track new standards as they enter force and keep our methodology up to date.
-            </p>
-          </Reveal>
-
-          {/* Featured: NIS-2 / NISG 2026 */}
-          <Reveal from="scale">
-            <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '32px 28px', marginBottom: 24 }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 14 }}>
-                <div style={{ fontWeight: 900, fontSize: 22, color: 'var(--text)' }}>NIS-2 <span style={{ color: 'var(--accent-text)' }}>·</span> NISG 2026</div>
-                <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.15em', border: '1px solid rgba(0,245,196,0.3)', borderRadius: 20, padding: '4px 12px', whiteSpace: 'nowrap' }}>EU · Austria · in force</span>
-              </div>
-              <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8, marginBottom: 16 }}>
-                The EU directive for a high common level of cybersecurity, transposed into Austrian law as <strong style={{ color: 'var(--text)' }}>NISG 2026</strong>. It mandates state-of-the-art risk management, strict incident reporting to national authorities, and <strong style={{ color: 'var(--text)' }}>personal liability for company management</strong>. In Austria it directly impacts roughly 4,000 essential and important entities, plus an estimated 50,000 supply-chain partners.
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: 12 }}>
-                {[
-                  ['Risk Management', 'cryptography · access control · supply-chain security'],
-                  ['Incident Response', 'mandatory reporting within strict timeframes'],
-                  ['Corporate Accountability', 'management personally liable for non-compliance'],
-                ].map(([t, d]) => (
-                  <div key={t} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '14px 16px' }}>
-                    <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 5, color: 'var(--accent-text)' }}>{t}</div>
-                    <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.6 }}>{d}</div>
-                  </div>
-                ))}
-              </div>
-              <p style={{ marginTop: 16, fontSize: 11, color: 'var(--text3)', fontFamily: 'monospace' }}>
-                Scope: ~4,000 entities directly · ~50,000 supply-chain partners ·{' '}
-                <a href="https://www.nis.gv.at" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>nis.gv.at</a>
-              </p>
-            </div>
-          </Reveal>
-
-          {/* The rest of the frameworks */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: 16 }}>
-            {STANDARDS.map((s, i) => (
-              <Reveal key={s.code} delay={i} from="bottom">
-                <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '22px 20px', height: '100%' }}>
-                  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
-                    <div style={{ fontWeight: 800, fontSize: 15, color: 'var(--text)' }}>{s.code}</div>
-                    <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', whiteSpace: 'nowrap' }}>{s.region}</span>
-                  </div>
-                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7 }}>{s.desc}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TEAM */}
-      <section id="team" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>The Institute</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 48, textAlign: 'center' }}>one team, everything in-house</h2>
-          </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16 }}>
-            {TEAM.map((p, i) => (
-              <Reveal key={p.name} delay={i} from="bottom">
-                <a href={p.gh ? `https://github.com/${p.gh}` : undefined} target="_blank" rel="noopener"
-                   style={{
-                     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
-                     background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
-                     borderRadius: 14, padding: 20, textAlign: 'center', textDecoration: 'none',
-                     height: '100%', transition: 'border-color 0.15s', cursor: p.gh ? 'pointer' : 'default',
-                   }}
-                   onMouseEnter={e => { if (p.gh) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.4)' }}
-                   onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)' }}>
-                  {p.gh ? (
-                    // Self-hosted, not hotlinked: an <img> pointed straight at github.com/user.png
-                    // triggers GitHub's own Set-Cookie headers on the response, which the browser
-                    // (correctly) rejects as third-party in a cross-site context - harmless, but
-                    // noisy console warnings on every load. A local copy avoids the request entirely.
-                    <img src={`/team/${p.gh}.png`} alt={p.name} loading="lazy"
-                         style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.08)', objectFit: 'cover' }} />
-                  ) : (
-                    <div style={{
-                      width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.08)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 20, fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
-                    }}>{p.name[0]}</div>
-                  )}
-                  <div>
-                    <p style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{p.name}</p>
-                    <p style={{ fontSize: 11, color: 'var(--accent-text)', marginTop: 3, fontWeight: 600 }}>{p.role}</p>
-                    <p style={{ fontSize: 11, color: 'var(--text3)', marginTop: 6, lineHeight: 1.5 }}>{p.desc}</p>
-                  </div>
-                </a>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* COOP PARTNERS - not team, an external research partner whose method
-          Lauras Team / Call Laura / Jarvis grew out of. Kept deliberately
-          separate from the TEAM grid above (different relationship: Laura
-          directs her own research and agent architecture; RFI-IRFOS builds
-          on her direction, not the reverse). */}
-      <section id="coop-partners" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>Research Cooperation</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}>built alongside our coop partner</h2>
-            <p style={{ color: 'var(--text2)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
-              Laura Serna Gaviria directs the Emergent Interaction Lab's own research and agent architecture - Lauras Team, Call Laura, and Jarvis all grew out of her method. RFI-IRFOS builds what she directs, labelled as hers so it stays clear who did what.
-            </p>
-          </Reveal>
-          <Reveal from="bottom" delay={1}>
-            <div style={{
-              display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 20,
-              background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
-              borderRadius: 14, padding: '28px 28px',
-            }}>
-              <div>
-                <p style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>Laura Serna Gaviria</p>
-                <p style={{ fontSize: 13, color: 'var(--accent-text)', marginTop: 2, fontWeight: 600 }}>Emergent Interaction Lab · Coop Partner</p>
-                <p style={{ fontSize: 13, color: 'var(--text2)', marginTop: 10, lineHeight: 1.6, maxWidth: 560 }}>
-                  Research into human-AI interaction since 2023 - the method behind Lauras Team, a multi-agent system of one SWAT lead team directing 15 specialised sub-agents.
-                </p>
-                <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer"
-                   style={{ display: 'inline-block', marginTop: 14, fontSize: 13, fontWeight: 700, color: 'var(--accent-text)', textDecoration: 'none' }}>
-                  emergent-interaction-lab.fly.dev →
-                </a>
-              </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, maxWidth: 340 }}>
-                {[
-                  { label: 'GitHub · call-laura', href: 'https://github.com/rfi-irfos/call-laura' },
-                  { label: 'GitHub · lauras-agents', href: 'https://github.com/rfi-irfos/lauras-agents' },
-                  { label: 'GitHub · lauras-agents-public', href: 'https://github.com/rfi-irfos/lauras-agents-public' },
-                  { label: 'GitHub · coevolution-factory', href: 'https://github.com/rfi-irfos/coevolution-factory' },
-                  { label: 'lauras-core v0.2.0', href: 'https://crates.io/crates/lauras-core' },
-                  { label: 'lauras-team v0.2.0 (auf Anfrage)', href: 'https://crates.io/crates/lauras-team' },
-                  { label: 'lauras-mcp v0.2.0', href: 'https://crates.io/crates/lauras-mcp' },
-                  { label: 'lauras-api v0.2.0', href: 'https://crates.io/crates/lauras-api' },
-                  { label: 'OSF · HC9ZB', href: 'https://doi.org/10.17605/OSF.IO/HC9ZB' },
-                  { label: 'OSF · QCVJB', href: 'https://doi.org/10.17605/OSF.IO/QCVJB' },
-                  { label: 'OSF · UXCJE', href: 'https://doi.org/10.17605/OSF.IO/UXCJE' },
-                  { label: 'Live API', href: 'https://laura-api.fly.dev', live: true },
-                  { label: 'Coevolution Factory', href: 'https://coevolution-factory-sparkling-mountain-1802.fly.dev', live: true },
-                ].map((c, i) => (
-                  <a key={i} href={c.href} target="_blank" rel="noopener noreferrer"
-                     style={{
-                       fontSize: 11, fontWeight: 700, padding: '6px 12px', borderRadius: 999,
-                       border: `1px solid ${c.live ? 'rgba(16,185,129,.5)' : 'rgba(255,255,255,0.1)'}`,
-                       color: c.live ? '#10b981' : '#a0a0b8',
-                       textDecoration: 'none', whiteSpace: 'nowrap',
-                     }}>
-                    {c.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10, marginTop: 16 }}>
-              {[
-                { name: 'Systemaudit', price: '€4.500', href: 'https://buy.stripe.com/14AdRbgpi1fpdqt6jm7N60r' },
-                { name: 'Emergent Case Intelligence Sprint', price: '€12.500', href: 'https://buy.stripe.com/bJe9AVc927DNdqtePS7N60m' },
-                { name: 'Multi-Agent System Design', price: '€24.500', href: 'https://buy.stripe.com/00w3cxc92bU30DH2367N60n' },
-                { name: 'System Design & Deployment', price: '€55.000', href: 'https://buy.stripe.com/dRm9AVgpi7DNdqt37a7N60A' },
-              ].map((p, i) => (
-                <a key={i} href={p.href} target="_blank" rel="noopener noreferrer" style={{
-                  display: 'flex', flexDirection: 'column', gap: 4, padding: '14px 16px',
-                  background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)',
-                  borderRadius: 10, textDecoration: 'none', transition: 'border-color .15s',
-                }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{p.name}</span>
-                  <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-text)' }}>{p.price}</span>
-                </a>
-              ))}
-            </div>
-            <p style={{ fontSize: 11, color: 'var(--text3)', marginTop: 10 }}>
-              4 of her packages, shown as entry points across engagement phases - the full list depends on where a company is in its process. Full pricing on request via{' '}
-              <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text2)' }}>emergent-interaction-lab.fly.dev</a>.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 860, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Correspondence</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>write to us</h2>
-            <p style={{ color: 'var(--text2)', marginBottom: 48 }}>for research collaboration, security disclosures, or service inquiries.</p>
-          </Reveal>
-
-          <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: mobile ? 16 : 40 }}>
-            {/* left: form */}
-            <Reveal from="left" style={{ display: 'flex', flexDirection: 'column' }}>
-            <form onSubmit={submitForm} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
-                value={form.botcheck} onChange={e => setForm(p => ({ ...p, botcheck: e.target.value }))}
-                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
-              {(['name', 'email'] as const).map(f => (
-                <input key={f} type={f === 'email' ? 'email' : 'text'} required placeholder={f === 'name' ? 'Name' : 'Email'}
-                  value={form[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))}
-                  style={{
-                    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-                    borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none',
-                    fontFamily: 'inherit',
-                  }} />
-              ))}
-              <select value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} style={{
-                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-                borderRadius: 8, padding: '12px 16px', color: form.subject ? '#e8e8f0' : '#606080',
-                fontSize: 14, outline: 'none', fontFamily: 'inherit',
-              }}>
-                <option value="">Topic (optional)</option>
-                <option value="Security Audit">Security Audit</option>
-                <option value="Send APK">Send us your APK</option>
-                <option value="Research Collaboration">Research Collaboration</option>
-                <option value="Web Development">Web Development</option>
-                <option value="Other">Other</option>
-              </select>
-              <textarea required placeholder="Message" value={form.message}
-                onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
-                rows={5} style={{
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14,
-                  outline: 'none', resize: 'vertical', fontFamily: 'inherit',
-                }} />
-              <button type="submit" disabled={formState === 'sending'} style={{
-                background: formState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
-                color: formState === 'ok' ? TEAL : '#070711',
-                border: formState === 'ok' ? `1px solid ${TEAL}` : 'none',
-                padding: '13px 24px', borderRadius: 8, fontWeight: 800, fontSize: 14,
-                cursor: formState === 'sending' ? 'wait' : 'pointer', fontFamily: 'inherit',
-              }}>
-                {formState === 'sending' ? 'Sending...' : formState === 'ok' ? 'Message received.' : 'Send message'}
-              </button>
-              {formState === 'err' && (
-                <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>Something went wrong. Email us directly at contact@rfi-irfos.com</p>
-              )}
-            </form>
-            </Reveal>
-
-            {/* right: links */}
-            <Reveal from="right">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              {CONTACT_CARDS.map(c => (
-                <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 12, padding: '18px 20px', textDecoration: 'none', display: 'block',
-                  transition: 'border-color 0.2s',
-                }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}>
-                  <div style={{ fontSize: 10, fontFamily: 'monospace', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
-                  <div style={{ color: 'var(--accent-text)', fontWeight: 600, fontSize: 13 }}>{c.value}</div>
-                </a>
-              ))}
-              <p style={{ fontSize: 11, color: 'var(--text3)', fontFamily: 'monospace', marginTop: 8, lineHeight: 1.8 }}>
-                Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
-              </p>
-            </div>
-            </Reveal>
-          </div>
-        </div>
-        {/* Lighthouse tracking pixel - site=rfi-irfos, real channel from UTM/referrer */}
-        <img ref={pixelRef}
-          src={`${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&utm_source=${encodeURIComponent(new URLSearchParams(location.search).get('utm_source') ?? '')}&utm_medium=${encodeURIComponent(new URLSearchParams(location.search).get('utm_medium') ?? '')}&utm_campaign=${encodeURIComponent(new URLSearchParams(location.search).get('utm_campaign') ?? '')}`}
-          alt="" width="1" height="1" style={{ display: 'none' }} />
-      </section>
-
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '40px 2rem', textAlign: 'center' }}>
-        <p style={{ fontFamily: 'monospace', fontSize: 12, color: TEAL, letterSpacing: '0.06em', marginBottom: 24, fontWeight: 600 }}>
-          Human rights are not subject to negotiation.
-          <br />
-          <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>— RFI-IRFOS × Emergent Interaction Lab, core doctrine</span>
-        </p>
-        <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
-          {[
-            { label: 'Legal Notice', href: '#p/impressum' },
-            { label: 'Privacy Policy', href: '#p/datenschutz' },
-            { label: 'Terms', href: '#p/agb' },
-            { label: 'Security Policy', href: '#p/security' },
-            { label: 'ternlang.com', href: 'https://ternlang.com' },
-            { label: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
-          ].map(l => (
-            <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
-              onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-              onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
-              {l.label}
-            </a>
-          ))}
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
-          <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.85 }}>
-            <svg viewBox="0 0 420 100" width="168" height="40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
-              <rect x="0"   y="0" width="100" height="100" fill="#CC0000"/>
-              <text x="50"  y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">W</text>
-              <rect x="105" y="0" width="100" height="100" fill="#CC0000"/>
-              <text x="155" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">K</text>
-              <rect x="210" y="0" width="100" height="100" fill="#CC0000"/>
-              <text x="260" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">O</text>
-              <rect x="320" y="0"  width="100" height="33" fill="#CC0000"/>
-              <rect x="320" y="33" width="100" height="34" fill="#fff"/>
-              <rect x="320" y="67" width="100" height="33" fill="#CC0000"/>
-            </svg>
-          </a>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: 16 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>WKO MEMBER · GewO § 32 · Automatic Data Processing</span>
-          </div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-              <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
-            </svg>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT · ZVR 1015608684</span>
-          </div>
-        </div>
-        <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>
-              UID ATU83405245 &nbsp;·&nbsp; GISA 39261441
-            </span>
-          </div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>
-              ECG AUTHORITY · Magistrate of the City of Graz &nbsp;·&nbsp; Since 2026-03-19
-            </span>
-          </div>
-        </div>
-        <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', marginBottom: 4 }}>
-          Trade Description: Services in Automatic Data Processing and Information Technology &nbsp;·&nbsp; Trade-Law Management: Simeon-Andreas Johann Manfred Kepp
-        </p>
-        <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em' }}>
-          Elisabethinergasse 25/10, 8020 Graz &nbsp;·&nbsp; GLN 9110038490191 &nbsp;·&nbsp; Steuernummer 68 696/8736
-        </p>
-        <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', marginBottom: 0 }}>
-          &copy; 2026 RFI-IRFOS &nbsp;·&nbsp; Graz, Austria
-        </p>
-      </footer>
-      {cookieBannerOpen && (
-        <div ref={bannerRef} style={{
-                  position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
-                  maxWidth: 640, margin: '0 auto',
-                  background: 'rgba(255,255,255,0.25)', border: '1px solid var(--border)', borderRadius: 12,
-                  padding: '20px 24px', boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
-                  display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
-                  transform: bannerClosing ? 'scale(0.85)' : 'scale(1)',
-                  opacity: bannerClosing ? 0 : 1,
-                  transition: 'transform 0.24s ease-in, opacity 0.24s ease-in',
-                }}>
-                  <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: '#000000', fontWeight: 'bold', lineHeight: 1.5 }}>
-                    this is a useless cookie banner. it&apos;s just here to look like one * we don&apos;t use cookies, so there&apos;s nothing to consent to. don&apos;t let anyone tell you otherwise.
-                    <span style={{ display: 'block', fontFamily: 'monospace', fontSize: 10.5, color: '#000000', letterSpacing: '0.04em', marginTop: 4 }}>
-                      two buttons, one closes this and throws some confetti. the other literally does nothing.
-                    </span>
-                  </p>
-                  <div style={{ display: 'flex', gap: 8, flex: 'none' }}>
-                    <button
-                      onClick={() => {}}
-                      style={{
-                        background: 'transparent', color: '#000000', border: '1px solid var(--border)',
-                        borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
-                      }}
-                    >
-                      does nothing
-                    </button>
-                    <button
-                      onClick={dismissCookieBanner}
-                      style={{
-                        background: 'var(--accent)', color: 'var(--bg)', border: 'none',
-                        borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 700, cursor: 'pointer',
-                      }}
-                    >
-                      close
-                    </button>
-                  </div>
-                </div>
-      )}
-    </div>
-  )
+// Per-route document title (replaces react-helmet-async to avoid a dep).
+export function useDocumentTitle(title: string) {
+  useEffect(() => {
+    const prev = document.title
+    document.title = title
+    return () => { document.title = prev }
+  }, [title])
 }

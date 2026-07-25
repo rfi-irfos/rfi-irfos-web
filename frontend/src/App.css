@@ -1262,3 +1262,10 @@ button { cursor: pointer; font-family: inherit; }
   /* timeline center-line becomes left-aligned */
   .rfi-public .rfi-timeline-line { display: none; }
 }
+
+/* Home route wraps PublicSite (kept intact for AdminPanel). Hide PublicSite's
+   own nav + footer here so only Layout's nav/footer show on the public site. */
+.home-root > div > nav,
+.home-root > div > footer {
+  display: none !important;
+}
