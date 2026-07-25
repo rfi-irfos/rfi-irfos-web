@@ -3432,25 +3432,25 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       {checkoutModal && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
           <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '24px 20px 32px' : '32px 28px', maxWidth: mobile ? '100%' : 480, width: '100%' }}>
-            <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
-            <h3 style={{ fontSize: mobile ? 16 : 18, fontWeight: 800, marginBottom: 18, color: '#e8e8f0' }}>Please confirm before checkout</h3>
+            <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
+            <h3 style={{ fontSize: mobile ? 16 : 18, fontWeight: 800, marginBottom: 18, color: 'var(--text)' }}>Please confirm before checkout</h3>
             <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16, cursor: 'pointer' }}>
               <input type="checkbox" checked={b2bChecked} onChange={e => setB2bChecked(e.target.checked)}
                 style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
-              <span style={{ color: '#a0a0b8', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                I am acting as a <strong style={{ color: '#e8e8f0' }}>business customer</strong> and confirm that this purchase is made in the course of my commercial or professional activity.
+              <span style={{ color: 'var(--text2)', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
+                I am acting as a <strong style={{ color: 'var(--text)' }}>business customer</strong> and confirm that this purchase is made in the course of my commercial or professional activity.
               </span>
             </label>
             <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 24, cursor: 'pointer' }}>
               <input type="checkbox" checked={agbChecked} onChange={e => setAgbChecked(e.target.checked)}
                 style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
-              <span style={{ color: '#a0a0b8', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                I agree to the <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>Terms of Service</a>. I understand that the service <strong style={{ color: '#e8e8f0' }}>begins immediately upon payment</strong> and that no right of withdrawal applies. Refunds are excluded.
+              <span style={{ color: 'var(--text2)', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
+                I agree to the <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>Terms of Service</a>. I understand that the service <strong style={{ color: 'var(--text)' }}>begins immediately upon payment</strong> and that no right of withdrawal applies. Refunds are excluded.
               </span>
             </label>
             <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
               <button onClick={() => cancelCheckout(checkoutModal!)}
-                style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#606080', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
+                style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: 'var(--text3)', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
                 Cancel
               </button>
               <button onClick={() => handleCheckout(checkoutModal)}
@@ -3530,7 +3530,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         <button onClick={() => setMobileOpen(o => !o)} style={{
           display: mobile ? 'flex' : 'none',
           background: 'none', border: 'none', cursor: 'pointer',
-          padding: '8px', color: '#e8e8f0',
+          padding: '8px', color: 'var(--text)',
         }} aria-label="Menu">
           {mobileOpen ? (
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -3595,11 +3595,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </p>
         <h1 style={{
           fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,
-          marginBottom: 24, letterSpacing: '0.01em', color: '#a0a0b8',
+          marginBottom: 24, letterSpacing: '0.01em', color: 'var(--text2)',
         }}>
           <span style={{ color: 'var(--accent-text)' }}>Interdisciplinary</span> Research Facility for Open Sciences
         </h1>
-        <p style={{ fontSize: 17, color: '#a0a0b8', maxWidth: 580, lineHeight: 1.75, marginBottom: 48 }}>
+        <p style={{ fontSize: 17, color: 'var(--text2)', maxWidth: 580, lineHeight: 1.75, marginBottom: 48 }}>
           Regulated Austrian research institute. Ternary AI, security, governance, minor protection, and ecocentric technology.
           One team. Everything built in-house.
         </p>
@@ -3619,7 +3619,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
             onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Research</a>
           <a href="#pricing" style={{
-            border: '1px solid rgba(255,255,255,0.12)', color: '#a0a0b8', padding: '13px 30px', borderRadius: 8,
+            border: '1px solid rgba(255,255,255,0.12)', color: 'var(--text2)', padding: '13px 30px', borderRadius: 8,
             fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
             textTransform: 'uppercase', transition: 'border-color 0.15s, color 0.15s',
           }}
@@ -3649,11 +3649,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="research" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Areas of Magnification</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Areas of Magnification</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>where our attention falls</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
-            <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
+            <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
               One team. The same people who train the model write the regulatory analysis and file the disclosure.
             </p>
           </Reveal>
@@ -3666,31 +3666,31 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 }}>
                   <div style={{ marginBottom: 16, lineHeight: 0 }}>{a.icon}</div>
                   <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{a.title}</div>
-                  <div style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7 }}>{a.desc}</div>
+                  <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7 }}>{a.desc}</div>
                 </div>
               </Reveal>
             ))}
           </div>
           <div style={{ marginTop: 64 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 24, color: '#e8e8f0' }}>publications on OSF</h3>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 24, color: 'var(--text)' }}>publications on OSF</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {PUBLICATIONS.map(p => (
                 <a key={p.title} href={p.href} target="_blank" rel="noopener noreferrer"
                   style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 18px', borderRadius: 10, textDecoration: 'none', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', transition: 'border-color 0.2s' }}
                   onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.25)')}
                   onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)')}>
-                  <span style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', minWidth: 32 }}>{p.year}</span>
+                  <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', minWidth: 32 }}>{p.year}</span>
                   <span style={{ flex: 1 }}>
-                    <span style={{ fontWeight: 700, fontSize: 13, color: '#e8e8f0' }}>{p.title}</span>
-                    <span style={{ color: '#606080', fontSize: 12, display: 'block', marginTop: 2 }}>{p.sub}</span>
+                    <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--text)' }}>{p.title}</span>
+                    <span style={{ color: 'var(--text3)', fontSize: 12, display: 'block', marginTop: 2 }}>{p.sub}</span>
                   </span>
                   <span style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '3px 8px', borderRadius: 20, border: '1px solid rgba(0,245,196,0.25)', color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{p.tag}</span>
-                  <span style={{ color: '#404058', fontSize: 12 }}>↗</span>
+                  <span style={{ color: 'var(--text4)', fontSize: 12 }}>↗</span>
                 </a>
               ))}
             </div>
-            <p style={{ marginTop: 16, fontFamily: 'monospace', fontSize: 10, color: '#404058' }}>
-              119 projects on OSF &nbsp;·&nbsp; <a href="https://osf.io/rzvyg/" target="_blank" rel="noopener noreferrer" style={{ color: '#606080', textDecoration: 'none' }}>osf.io/rzvyg</a>
+            <p style={{ marginTop: 16, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
+              119 projects on OSF &nbsp;·&nbsp; <a href="https://osf.io/rzvyg/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>osf.io/rzvyg</a>
             </p>
           </div>
         </div>
@@ -3705,11 +3705,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="right">
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Undertakings</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Undertakings</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
           </Reveal>
           <Reveal from="left" delay={1}>
-            <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
+            <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
               Every project is a proof of concept for a specific research question. All built on the same stack.
             </p>
           </Reveal>
@@ -3723,7 +3723,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div>
                     <div style={{ fontWeight: 900, fontSize: 17 }}>{p.name}</div>
-                    <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
+                    <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
                   </div>
                   <span style={{
                     fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em',
@@ -3731,7 +3731,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     border: '1px solid rgba(0,245,196,0.3)', color: 'var(--accent-text)', whiteSpace: 'nowrap',
                   }}>{p.tag}</span>
                 </div>
-                <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
+                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
                 {p.link && (
                   <a href={p.link} target="_blank" rel="noopener noreferrer"
                     style={{ color: 'var(--accent-text)', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
@@ -3749,12 +3749,12 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="track-record" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the discipline, demonstrated</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
-            <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 720, fontSize: 15, lineHeight: 1.9 }}>
-              Root level code analysis. Regulators in <strong style={{ color: '#e0e0f0' }}>CC on every submission</strong> - national DPA + EDPS. 90-day coordinated disclosure. Our framework. Our timeline. Disclosure is unconditional: every organization on this ledger gets identical treatment, whether or not they engage us commercially. The full disclosure framework is in our <a href="#p/security" style={{ color: 'var(--accent-text)', textDecoration: 'none' }}>Security Policy</a>.
+            <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 720, fontSize: 15, lineHeight: 1.9 }}>
+              Root level code analysis. Regulators in <strong style={{ color: 'var(--text)' }}>CC on every submission</strong> - national DPA + EDPS. 90-day coordinated disclosure. Our framework. Our timeline. Disclosure is unconditional: every organization on this ledger gets identical treatment, whether or not they engage us commercially. The full disclosure framework is in our <a href="#p/security" style={{ color: 'var(--accent-text)', textDecoration: 'none' }}>Security Policy</a>.
             </p>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
@@ -3778,7 +3778,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <div style={{
             background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
             borderRadius: 12, padding: '20px 24px', marginBottom: 48,
-            fontFamily: 'monospace', fontSize: 12, color: '#a0a0b8', lineHeight: 1.8,
+            fontFamily: 'monospace', fontSize: 12, color: 'var(--text2)', lineHeight: 1.8,
           }}>
             <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
             {' '}listed companies · GDPR Art. 5/8/9/13/25/32/44 · COPPA · EU AI Act (minor provisions) · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at · FTC
@@ -3816,7 +3816,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               {searchQuery && (
                 <button onClick={() => setSearchQuery('')} style={{
                   position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                  background: 'none', border: 'none', cursor: 'pointer', color: '#606080', padding: 4, lineHeight: 0,
+                  background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)', padding: 4, lineHeight: 0,
                 }}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
@@ -4039,7 +4039,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                                 <span key={si} title={`${s.note} (${s.source})`} style={{
                                   fontFamily: 'monospace', fontSize: 8, fontWeight: 700, padding: '2px 5px',
                                   borderRadius: 3, letterSpacing: '0.04em', whiteSpace: 'nowrap', cursor: 'default',
-                                  ...{ background: 'transparent', color: '#999', border: '1px solid rgba(150,150,150,0.35)' },
+                                  ...{ background: 'transparent', color: 'var(--text3)', border: '1px solid rgba(150,150,150,0.35)' },
                                 }}>
                                   {s.article ? `${s.law} ${s.article}` : s.law}
                                 </span>
@@ -4130,9 +4130,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Disclosures</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Disclosures</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? say so.</h2>
-            <p style={{ color: '#a0a0b8', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
+            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
               We run our own intake channel instead of routing you to a third-party bug bounty platform - for the same reason we refuse to be routed to one ourselves when we report a finding. This is a direct line to the same permanent ledger you see above, held to the same standard.
             </p>
           </Reveal>
@@ -4141,15 +4141,15 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             {/* left: policy */}
             <Reveal from="left">
               <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '28px 26px', marginBottom: mobile ? 24 : 0 }}>
-                <div style={{ fontWeight: 900, fontSize: 15, color: '#e8e8f0', marginBottom: 14 }}>How we handle what you send us</div>
-                <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
+                <div style={{ fontWeight: 900, fontSize: 15, color: 'var(--text)', marginBottom: 14 }}>How we handle what you send us</div>
+                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
                   <strong style={{ color: 'var(--accent-text)' }}>ISO/IEC 30111 triage:</strong> reproduce it, scope it, fix it, credit you. No finding gets buried because it's inconvenient - that's the entire complaint we file against everyone else, and we're not exempting ourselves from it.
                 </p>
-                <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
-                  <strong style={{ color: '#e8e8f0' }}>Lawful basis only.</strong> We accept findings obtained through publicly accessible information, your own devices, or software you're authorized to test - the same standard our own root level code analysis holds to. If what you send us shows evidence of unauthorized access to a system you don't control, we do not publish or credit it under this program. We report it directly to the relevant authorities, the same way we'd expect to be treated if the roles were reversed.
+                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
+                  <strong style={{ color: 'var(--text)' }}>Lawful basis only.</strong> We accept findings obtained through publicly accessible information, your own devices, or software you're authorized to test - the same standard our own root level code analysis holds to. If what you send us shows evidence of unauthorized access to a system you don't control, we do not publish or credit it under this program. We report it directly to the relevant authorities, the same way we'd expect to be treated if the roles were reversed.
                 </p>
-                <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.85, margin: 0 }}>
-                  <strong style={{ color: '#e8e8f0' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous - exactly as set out in our{' '}
+                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, margin: 0 }}>
+                  <strong style={{ color: 'var(--text)' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous - exactly as set out in our{' '}
                   <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>terms</a>. No call, no meeting. Everything stays written, same as every disclosure we send.
                 </p>
               </div>
@@ -4163,16 +4163,16 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
                 <input type="text" placeholder="Name or alias (optional - leave blank to stay anonymous)"
                   value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
                 <input type="email" placeholder="Email (optional - only if you want follow-up)"
                   value={tipForm.email} onChange={e => setTipForm(p => ({ ...p, email: e.target.value }))}
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
                 <input type="text" required placeholder="Company / app / target"
                   value={tipForm.target} onChange={e => setTipForm(p => ({ ...p, target: e.target.value }))}
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
                 <select value={tipForm.credit} onChange={e => setTipForm(p => ({ ...p, credit: e.target.value }))} style={{
                   background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14, outline: 'none', fontFamily: 'inherit',
+                  borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
                 }}>
                   <option value="alias">Credit me by alias / name I provide above</option>
                   <option value="anonymous">Do not credit me - keep this anonymous</option>
@@ -4180,12 +4180,12 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 </select>
                 <textarea required placeholder="What did you find? Include what it is, where you found it, and how to reproduce it."
                   value={tipForm.finding} onChange={e => setTipForm(p => ({ ...p, finding: e.target.value }))}
-                  rows={6} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
+                  rows={6} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
                 <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
                   <input type="checkbox" required checked={tipForm.lawful}
                     onChange={e => setTipForm(p => ({ ...p, lawful: e.target.checked }))}
                     style={{ marginTop: 3, accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
-                  <span style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.6 }}>
+                  <span style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.6 }}>
                     I confirm this information was obtained through lawful, authorized means - publicly accessible data, my own devices, or software I'm authorized to test.
                   </span>
                 </label>
@@ -4200,7 +4200,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   {tipFormState === 'sending' ? 'Sending...' : tipFormState === 'ok' ? 'Received. Thank you.' : 'Submit tip'}
                 </button>
                 {tipFormState === 'err' && (
-                  <p style={{ color: '#f87171', fontSize: 12 }}>Something went wrong. Email us directly at contact@rfi-irfos.com</p>
+                  <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>Something went wrong. Email us directly at contact@rfi-irfos.com</p>
                 )}
               </form>
             </Reveal>
@@ -4217,7 +4217,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 / Chronicle</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 / Chronicle</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 64, textAlign: 'center' }}>how we came to be</h2>
           </Reveal>
           <div style={{ position: 'relative' }}>
@@ -4238,15 +4238,15 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="pricing" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>priced in plain terms</h2>
-            <p style={{ color: '#a0a0b8', marginBottom: 56, maxWidth: 560 }}>
+            <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
               Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.
             </p>
           </Reveal>
 
           {/* Security Audit tiers */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: 48 }}>
             {([
               { tier: 'Public',                   price: 'free',      desc: 'Full public disclosure. Findings published after 90-day coordinated embargo. No NDA. First phone sanitizing session included.', highlight: false, stripeKey: null,            contact: false },
@@ -4265,9 +4265,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   borderRadius: 14, padding: '24px 20px', height: '100%',
                   display: 'flex', flexDirection: 'column',
                 }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
+                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
                   <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
+                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
                   {t.stripeKey && (
                     <button
                       onClick={() => openCheckoutModal(t.stripeKey!)}
@@ -4277,7 +4277,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     </button>
                   )}
                   {t.contact && (
-                    <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
+                    <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'var(--text2)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
                       request proposal →
                     </a>
                   )}
@@ -4295,7 +4295,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           }}>
             <div>
               <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>Security Retainer</div>
-              <div style={{ color: '#a0a0b8', fontSize: 13 }}>continuous monitoring · quarterly audits · priority response · dedicated contact</div>
+              <div style={{ color: 'var(--text2)', fontSize: 13 }}>continuous monitoring · quarterly audits · priority response · dedicated contact</div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10 }}>
               <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>€1,500 / mo</div>
@@ -4310,7 +4310,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </Reveal>
 
           {/* Device Privacy Hardening */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Device Privacy Hardening - by appointment</p>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Device Privacy Hardening - by appointment</p>
           <Reveal from="right">
           <div style={{
             background: 'rgba(0,245,196,0.04)', border: '1px solid rgba(0,245,196,0.18)',
@@ -4319,14 +4319,14 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           }}>
             <div>
               <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>Phone Sanitizing: first session free</div>
-              <div style={{ color: '#a0a0b8', fontSize: 13 }}>send us your phone - we disable background tracking scripts permanently · DNS-over-HTTPS · backup hardening · full before/after audit report · by appointment</div>
+              <div style={{ color: 'var(--text2)', fontSize: 13 }}>send us your phone - we disable background tracking scripts permanently · DNS-over-HTTPS · backup hardening · full before/after audit report · by appointment</div>
             </div>
             <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>free</div>
           </div>
           </Reveal>
 
           {/* Market Research & Competitor Analysis */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Market Research &amp; Competitor Analysis</p>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Market Research &amp; Competitor Analysis</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 48 }}>
             {[
               { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  desc: 'Sector landscape report. Key player mapping. Regulatory environment. 10-page minimum. Delivered in 5 business days.' },
@@ -4340,9 +4340,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   borderRadius: 14, padding: '24px 20px', height: '100%',
                   display: 'flex', flexDirection: 'column',
                 }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
+                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
                   <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
+                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
                   <button
                     onClick={() => openCheckoutModal(t.stripeKey)}
                     style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
@@ -4355,7 +4355,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </div>
 
           {/* Web Development */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Web Development</p>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Web Development</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
             {[
               { tier: 'Landing Page',   price: '€1,500',  stripeKey: 'web_landing'   as string | null, desc: 'Single-page site. React + our open-source template. Live in 48 hours.' },
@@ -4369,9 +4369,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   borderRadius: 14, padding: '24px 20px', height: '100%',
                   display: 'flex', flexDirection: 'column',
                 }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
+                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
                   <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
+                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
                   {t.stripeKey ? (
                     <button
                       onClick={() => openCheckoutModal(t.stripeKey!)}
@@ -4380,7 +4380,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                       get started →
                     </button>
                   ) : (
-                    <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
+                    <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'var(--text2)', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
                       request proposal →
                     </a>
                   )}
@@ -4390,8 +4390,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </div>
 
           {/* Mobile App Development & Fixing */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 8 }}>Mobile App Development &amp; Fixing</p>
-          <p style={{ color: '#a0a0b8', marginBottom: 20, maxWidth: 620, fontSize: 13, lineHeight: 1.7 }}>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 8 }}>Mobile App Development &amp; Fixing</p>
+          <p style={{ color: 'var(--text2)', marginBottom: 20, maxWidth: 620, fontSize: 13, lineHeight: 1.7 }}>
             Native Android &amp; iOS — built and fixed in-house. Send us your APK and we run root-level analysis, patch the bugs, or build the product from scratch. One team, no outsourced code.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
@@ -4407,10 +4407,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   borderRadius: 14, padding: '24px 20px', height: '100%',
                   display: 'flex', flexDirection: 'column',
                 }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
+                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
                   <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
+                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
+                  <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'var(--text2)', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
                     request proposal →
                   </a>
                 </div>
@@ -4422,7 +4422,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               Gaviria / Emergent Interaction Lab. No Stripe checkout: these are
               bespoke engagements, always "on request" via #contact. See the
               COOP PARTNERS section below for who Laura is and the crates. */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Research Cooperation - via our coop partner, on request</p>
+          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Research Cooperation - via our coop partner, on request</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 16, marginBottom: 48 }}>
             {[
               { tier: 'Lauras Team',       desc: 'Access to the multi-agent system directed by Laura Serna Gaviria - one SWAT lead team directing 15 specialised sub-agents, built on her Emergent Interaction method. Scoped engagement per case.' },
@@ -4435,10 +4435,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   borderRadius: 14, padding: '24px 20px', height: '100%',
                   display: 'flex', flexDirection: 'column',
                 }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
+                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
                   <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>on request</div>
-                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: '#a0a0b8', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
+                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
+                  <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'var(--text2)', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
                     request proposal →
                   </a>
                 </div>
@@ -4453,8 +4453,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             paddingTop: 32,
             textAlign: 'center',
           }}>
-            <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>where the money goes</div>
-            <p style={{ color: '#a0a0b8', fontSize: 14, lineHeight: 1.8, maxWidth: 620, margin: '0 auto' }}>
+            <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>where the money goes</div>
+            <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8, maxWidth: 620, margin: '0 auto' }}>
               100% of surplus revenue is reinvested into open science, public research, and infrastructure.{' '}
               <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>Zero goes to shareholders - we have none.</span>{' '}
               RFI-IRFOS is a regulated not-for-profit (ZVR 1015608684). Every euro above operating costs funds the next audit, the next model training run, or the next research publication. That is not a marketing line. It is a legal obligation.
@@ -4468,9 +4468,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="standards" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Standards &amp; Compliance</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Standards &amp; Compliance</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the frameworks we work under</h2>
-            <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 620 }}>
+            <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 620 }}>
               Every audit is filed against current EU and Austrian law. We track new standards as they enter force and keep our methodology up to date.
             </p>
           </Reveal>
@@ -4479,11 +4479,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <Reveal from="scale">
             <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '32px 28px', marginBottom: 24 }}>
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 14 }}>
-                <div style={{ fontWeight: 900, fontSize: 22, color: '#e8e8f0' }}>NIS-2 <span style={{ color: 'var(--accent-text)' }}>·</span> NISG 2026</div>
+                <div style={{ fontWeight: 900, fontSize: 22, color: 'var(--text)' }}>NIS-2 <span style={{ color: 'var(--accent-text)' }}>·</span> NISG 2026</div>
                 <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.15em', border: '1px solid rgba(0,245,196,0.3)', borderRadius: 20, padding: '4px 12px', whiteSpace: 'nowrap' }}>EU · Austria · in force</span>
               </div>
-              <p style={{ color: '#a0a0b8', fontSize: 14, lineHeight: 1.8, marginBottom: 16 }}>
-                The EU directive for a high common level of cybersecurity, transposed into Austrian law as <strong style={{ color: '#e8e8f0' }}>NISG 2026</strong>. It mandates state-of-the-art risk management, strict incident reporting to national authorities, and <strong style={{ color: '#e8e8f0' }}>personal liability for company management</strong>. In Austria it directly impacts roughly 4,000 essential and important entities, plus an estimated 50,000 supply-chain partners.
+              <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8, marginBottom: 16 }}>
+                The EU directive for a high common level of cybersecurity, transposed into Austrian law as <strong style={{ color: 'var(--text)' }}>NISG 2026</strong>. It mandates state-of-the-art risk management, strict incident reporting to national authorities, and <strong style={{ color: 'var(--text)' }}>personal liability for company management</strong>. In Austria it directly impacts roughly 4,000 essential and important entities, plus an estimated 50,000 supply-chain partners.
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: 12 }}>
                 {[
@@ -4493,13 +4493,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 ].map(([t, d]) => (
                   <div key={t} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '14px 16px' }}>
                     <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 5, color: 'var(--accent-text)' }}>{t}</div>
-                    <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.6 }}>{d}</div>
+                    <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.6 }}>{d}</div>
                   </div>
                 ))}
               </div>
-              <p style={{ marginTop: 16, fontSize: 11, color: '#606080', fontFamily: 'monospace' }}>
+              <p style={{ marginTop: 16, fontSize: 11, color: 'var(--text3)', fontFamily: 'monospace' }}>
                 Scope: ~4,000 entities directly · ~50,000 supply-chain partners ·{' '}
-                <a href="https://www.nis.gv.at" target="_blank" rel="noopener noreferrer" style={{ color: '#808098', textDecoration: 'none' }}>nis.gv.at</a>
+                <a href="https://www.nis.gv.at" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>nis.gv.at</a>
               </p>
             </div>
           </Reveal>
@@ -4510,10 +4510,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               <Reveal key={s.code} delay={i} from="bottom">
                 <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '22px 20px', height: '100%' }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
-                    <div style={{ fontWeight: 800, fontSize: 15, color: '#e8e8f0' }}>{s.code}</div>
-                    <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#606080', whiteSpace: 'nowrap' }}>{s.region}</span>
+                    <div style={{ fontWeight: 800, fontSize: 15, color: 'var(--text)' }}>{s.code}</div>
+                    <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', whiteSpace: 'nowrap' }}>{s.region}</span>
                   </div>
-                  <div style={{ color: '#a0a0b8', fontSize: 12, lineHeight: 1.7 }}>{s.desc}</div>
+                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7 }}>{s.desc}</div>
                 </div>
               </Reveal>
             ))}
@@ -4525,7 +4525,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="team" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>The Institute</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>The Institute</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 48, textAlign: 'center' }}>one team, everything in-house</h2>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16 }}>
@@ -4555,9 +4555,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     }}>{p.name[0]}</div>
                   )}
                   <div>
-                    <p style={{ fontSize: 14, fontWeight: 800, color: '#e8e8f0' }}>{p.name}</p>
+                    <p style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{p.name}</p>
                     <p style={{ fontSize: 11, color: 'var(--accent-text)', marginTop: 3, fontWeight: 600 }}>{p.role}</p>
-                    <p style={{ fontSize: 11, color: '#808098', marginTop: 6, lineHeight: 1.5 }}>{p.desc}</p>
+                    <p style={{ fontSize: 11, color: 'var(--text3)', marginTop: 6, lineHeight: 1.5 }}>{p.desc}</p>
                   </div>
                 </a>
               </Reveal>
@@ -4574,9 +4574,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="coop-partners" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>Research Cooperation</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>Research Cooperation</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}>built alongside our coop partner</h2>
-            <p style={{ color: '#a0a0b8', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
+            <p style={{ color: 'var(--text2)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
               Laura Serna Gaviria directs the Emergent Interaction Lab's own research and agent architecture - Lauras Team, Call Laura, and Jarvis all grew out of her method. RFI-IRFOS builds what she directs, labelled as hers so it stays clear who did what.
             </p>
           </Reveal>
@@ -4587,9 +4587,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               borderRadius: 14, padding: '28px 28px',
             }}>
               <div>
-                <p style={{ fontSize: 18, fontWeight: 800, color: '#e8e8f0' }}>Laura Serna Gaviria</p>
+                <p style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>Laura Serna Gaviria</p>
                 <p style={{ fontSize: 13, color: 'var(--accent-text)', marginTop: 2, fontWeight: 600 }}>Emergent Interaction Lab · Coop Partner</p>
-                <p style={{ fontSize: 13, color: '#a0a0b8', marginTop: 10, lineHeight: 1.6, maxWidth: 560 }}>
+                <p style={{ fontSize: 13, color: 'var(--text2)', marginTop: 10, lineHeight: 1.6, maxWidth: 560 }}>
                   Research into human-AI interaction since 2023 - the method behind Lauras Team, a multi-agent system of one SWAT lead team directing 15 specialised sub-agents.
                 </p>
                 <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer"
@@ -4637,14 +4637,14 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)',
                   borderRadius: 10, textDecoration: 'none', transition: 'border-color .15s',
                 }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#e8e8f0' }}>{p.name}</span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{p.name}</span>
                   <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-text)' }}>{p.price}</span>
                 </a>
               ))}
             </div>
-            <p style={{ fontSize: 11, color: '#606080', marginTop: 10 }}>
+            <p style={{ fontSize: 11, color: 'var(--text3)', marginTop: 10 }}>
               4 of her packages, shown as entry points across engagement phases - the full list depends on where a company is in its process. Full pricing on request via{' '}
-              <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer" style={{ color: '#a0a0b8' }}>emergent-interaction-lab.fly.dev</a>.
+              <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text2)' }}>emergent-interaction-lab.fly.dev</a>.
             </p>
           </Reveal>
         </div>
@@ -4654,9 +4654,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="contact" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 860, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Correspondence</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Correspondence</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>write to us</h2>
-            <p style={{ color: '#a0a0b8', marginBottom: 48 }}>for research collaboration, security disclosures, or service inquiries.</p>
+            <p style={{ color: 'var(--text2)', marginBottom: 48 }}>for research collaboration, security disclosures, or service inquiries.</p>
           </Reveal>
 
           <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: mobile ? 16 : 40 }}>
@@ -4671,7 +4671,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   value={form[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))}
                   style={{
                     background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-                    borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14, outline: 'none',
+                    borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none',
                     fontFamily: 'inherit',
                   }} />
               ))}
@@ -4691,7 +4691,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
                 rows={5} style={{
                   background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 8, padding: '12px 16px', color: '#e8e8f0', fontSize: 14,
+                  borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14,
                   outline: 'none', resize: 'vertical', fontFamily: 'inherit',
                 }} />
               <button type="submit" disabled={formState === 'sending'} style={{
@@ -4704,7 +4704,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 {formState === 'sending' ? 'Sending...' : formState === 'ok' ? 'Message received.' : 'Send message'}
               </button>
               {formState === 'err' && (
-                <p style={{ color: '#f87171', fontSize: 12 }}>Something went wrong. Email us directly at contact@rfi-irfos.com</p>
+                <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>Something went wrong. Email us directly at contact@rfi-irfos.com</p>
               )}
             </form>
             </Reveal>
@@ -4720,11 +4720,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 }}
                   onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
                   onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}>
-                  <div style={{ fontSize: 10, fontFamily: 'monospace', color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
+                  <div style={{ fontSize: 10, fontFamily: 'monospace', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
                   <div style={{ color: 'var(--accent-text)', fontWeight: 600, fontSize: 13 }}>{c.value}</div>
                 </a>
               ))}
-              <p style={{ fontSize: 11, color: '#505068', fontFamily: 'monospace', marginTop: 8, lineHeight: 1.8 }}>
+              <p style={{ fontSize: 11, color: 'var(--text3)', fontFamily: 'monospace', marginTop: 8, lineHeight: 1.8 }}>
                 Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
               </p>
             </div>
@@ -4742,7 +4742,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         <p style={{ fontFamily: 'monospace', fontSize: 12, color: TEAL, letterSpacing: '0.06em', marginBottom: 24, fontWeight: 600 }}>
           Human rights are not subject to negotiation.
           <br />
-          <span style={{ fontSize: 10, color: '#606080', fontWeight: 400 }}>— RFI-IRFOS × Emergent Interaction Lab, core doctrine</span>
+          <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>— RFI-IRFOS × Emergent Interaction Lab, core doctrine</span>
         </p>
         <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
           {[
@@ -4753,7 +4753,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             { label: 'ternlang.com', href: 'https://ternlang.com' },
             { label: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
           ].map(l => (
-            <a key={l.label} href={l.href} style={{ color: '#606080', fontSize: 12, textDecoration: 'none' }}
+            <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
               onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
               onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
               {l.label}
@@ -4798,13 +4798,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </span>
           </div>
         </div>
-        <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em', marginBottom: 4 }}>
+        <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', marginBottom: 4 }}>
           Trade Description: Services in Automatic Data Processing and Information Technology &nbsp;·&nbsp; Trade-Law Management: Simeon-Andreas Johann Manfred Kepp
         </p>
-        <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em' }}>
+        <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em' }}>
           Elisabethinergasse 25/10, 8020 Graz &nbsp;·&nbsp; GLN 9110038490191 &nbsp;·&nbsp; Steuernummer 68 696/8736
         </p>
-        <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#404058', letterSpacing: '0.08em', marginBottom: 0 }}>
+        <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', marginBottom: 0 }}>
           &copy; 2026 RFI-IRFOS &nbsp;·&nbsp; Graz, Austria
         </p>
       </footer>
@@ -4829,7 +4829,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     <button
                       onClick={() => {}}
                       style={{
-                        background: 'transparent', color: '#ffffff', border: '1px solid var(--border)',
+                        background: 'transparent', color: '#000000', border: '1px solid var(--border)',
                         borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
                       }}
                     >

@@ -20,6 +20,7 @@ html { scroll-padding-top: 72px; }
   --border2:      rgba(255,255,255,0.04);
   --accent:       #00f5c4;
   --accent-text:  #00f5c4;
+  --accent-fg:    #070711;   /* text on a solid --accent fill, e.g. active theme-btn */
   --accent-dim:   rgba(0,245,196,0.08);
   --accent-border:rgba(0,245,196,0.25);
   --nav-bg:       rgba(7,7,17,0.95);
@@ -33,6 +34,7 @@ html { scroll-padding-top: 72px; }
   --input-text:   #e8e8f0;
   --input-ph:     #606080;
   --timeline-line:rgba(0,245,196,0.2);
+  --surface-sunken: var(--bg3);
 }
 
 [data-theme="light"] {
@@ -48,6 +50,7 @@ html { scroll-padding-top: 72px; }
   --border2:      rgba(0,0,0,0.06);
   --accent:       #009e7a;
   --accent-text:  #007a5c;
+  --accent-fg:    #000000;   /* text on a solid --accent fill, e.g. active theme-btn */
   --accent-dim:   rgba(0,158,122,0.12);
   --accent-border:rgba(0,158,122,0.25);
   --nav-bg:       rgba(255,255,255,0.96);
@@ -61,36 +64,41 @@ html { scroll-padding-top: 72px; }
   --input-text:   #0a0a0a;
   --input-ph:     #999999;
   --timeline-line:rgba(0,0,0,0.12);
+  --surface-sunken: var(--bg3);
 }
 
 [data-theme="hc"] {
-  /* High contrast — light variant (black on near-white cream).
-     Off-white background avoids glare-induced blur for astigmatism (WCAG AAA). */
-  --bg:           #fafef8;   /* warm near-white — avoids glare; not pure #fff */
-  --bg2:          #edf0eb;
-  --bg3:          #dde2db;
-  --bg-accent:    #e0ece7;
-  --text:         #0a0800;   /* near-black warm, not pure #000 */
-  --text2:        #181410;
-  --text3:        #2e2a24;
-  --text4:        #4a4640;
-  --border:       rgba(0,0,0,0.45);   /* strong borders — cards/tables visible without color */
-  --border2:      rgba(0,0,0,0.28);
-  --accent:       #003c28;   /* deep green, 10:1 on near-white */
-  --accent-text:  #003c28;
-  --accent-dim:   rgba(0,60,40,0.14);
-  --accent-border:rgba(0,60,40,0.55);
-  --nav-bg:       rgba(250,254,248,0.99);
-  --nav-border:   rgba(0,0,0,0.35);
-  --sev-crit:     #7a0000;   /* dark red — 7:1 on --bg */
-  --sev-high:     #6a2c00;
-  --sev-med:      #4a3800;
+  /* High contrast — RFI-IRFOS canonical HC palette: black background, white
+     text, bright amber accent (matches Lighthouse's own documented HC theme,
+     frontend/src/styles.css). EU accessibility mandate: WCAG AAA (7:1+) on
+     every text/background pair, verified below. */
+  --bg:           #000000;
+  --bg2:          #0a0a0a;
+  --bg3:          #141414;
+  --bg-accent:    rgba(255,212,0,0.06);
+  --text:         #ffffff;   /* 21:1 on --bg */
+  --text2:        #ededed;   /* 17.94:1 on --bg */
+  --text3:        #b8b8b8;   /* 10.59:1 on --bg */
+  --text4:        #999999;   /* 7.37:1 on --bg — AAA floor */
+  --border:       #ffffff;   /* full-strength, not low-opacity rgba */
+  --border2:      rgba(255,255,255,0.4);
+  --accent:       #ffd400;   /* bright amber, 14.67:1 on --bg */
+  --accent-text:  #ffd400;
+  --accent-fg:    #000000;   /* text on a solid --accent fill — 14.67:1, white would be 1.43:1 */
+  --accent-dim:   rgba(255,212,0,0.12);
+  --accent-border:rgba(255,212,0,0.55);
+  --nav-bg:       rgba(0,0,0,0.98);
+  --nav-border:   #ffffff;
+  --sev-crit:     #ff6b6b;   /* 7.57:1 on --bg */
+  --sev-high:     #ffa94d;   /* 11.03:1 on --bg */
+  --sev-med:      #e0c200;   /* 11.89:1 on --bg */
   --hero-grad:    none;
-  --input-bg:     #edf0eb;
-  --input-border: rgba(0,0,0,0.45);
-  --input-text:   #0a0800;
-  --input-ph:     #4a4640;
-  --timeline-line:rgba(0,0,0,0.35);
+  --input-bg:     #0a0a0a;
+  --input-border: #ffffff;
+  --input-text:   #ffffff;
+  --input-ph:     #999999;   /* 7.37:1 on --input-bg */
+  --timeline-line:rgba(255,212,0,0.4);
+  --surface-sunken: var(--bg3);
 }
 
 /* ── Forced colors (OS-level high contrast, e.g. Windows Contrast Themes) ── */
@@ -176,6 +184,5 @@ html { scroll-padding-top: 72px; }
 .theme-btn.active {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
 }
-[data-theme="hc"] .theme-btn.active { color: #fff; }
