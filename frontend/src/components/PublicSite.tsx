@@ -132,7 +132,6 @@ const NAV_LINKS = [
   { label: 'Projects', href: '#projects' },
   { label: 'Track Record', href: '#track-record' },
   { label: 'Submit', href: '#submit' },
-  { label: 'Methodology', href: '#methodology' },
   { label: 'Standards', href: '#standards' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'Team', href: '#team' },
@@ -267,18 +266,6 @@ const RESEARCH_AREAS = [
 ]
 
 // Standards & compliance frameworks we file against + keep current with. NIS-2 is featured.
-const METHODOLOGY = [
-  { title: 'Free, unconditional disclosure', desc: 'Public disclosure is Tier 1. It happens after the 90-day embargo, regardless of payment, regardless of reply. Nothing is held back for money - there is no version of "pay us and this goes away."' },
-  { title: 'Coordinated, not cold outreach', desc: 'We follow ISO/IEC 29147, the international coordinated-disclosure standard used industry-wide for security and privacy findings. Supervisory authorities are CC’d from day one - visibly, not blind-copied, not informed only if things go nowhere.' },
-  { title: 'Evidence, not allegation', desc: 'Every finding points to a specific artifact in the software as actually shipped - a declared permission, a compiled SDK class, a hardcoded key. Any competent third party can independently verify it from the same public release we analyzed.' },
-  { title: 'Not-for-profit, by structure', desc: 'RFI-IRFOS is a registered nonprofit association. There are no shareholders extracting profit; surplus is reinvested into research. Paid advisory tiers are optional and separate - never a condition of the free disclosure.' },
-  { title: 'Written only', desc: 'Every engagement is conducted in writing, building a complete audit trail on both sides. We do not offer or conduct calls or in-person meetings as part of disclosure work.' },
-  { title: 'Research, not extortion', desc: 'Our work is grounded in the freedom of scientific research (Art. 17 Austrian Federal Constitution) and GDPR Art. 89. We report on companies’ own distributed software - never private, stolen, or unauthorized-access data.' },
-  { title: 'No disruption, ever', desc: 'No denial-of-service, no load testing, no attempts to degrade or interrupt a live system. Findings are drawn from static analysis of the software as shipped, never from attacking it in production.' },
-  { title: 'No dynamic testing without an agreement, no social engineering', desc: 'Live calls against a company’s own systems - using a key we found, probing a running endpoint - happen only under a signed engagement, never during free disclosure. We never phish, pretext, or otherwise manipulate a company’s staff to obtain access.' },
-  { title: 'No fabricated progress, not even from our own tools', desc: 'Every in-house agentic tool we build runs under a written truth policy: never claim a file exists, code ran, or a test passed unless it was actually verified. A truthful "not finished" beats a convincing fiction - the same evidentiary bar we hold every company we audit to.' },
-]
-
 const STANDARDS = [
   { code: 'GDPR', region: 'EU 2016/679', desc: 'Art. 6 lawful basis, Art. 9 special-category (health/biometric), Art. 8 children, Art. 33 breach notification. The backbone of every disclosure we file.' },
   { code: 'EU AI Act', region: 'EU 2024/1689', desc: 'Risk-tiered obligations for AI systems: transparency, governance, prohibited-practice analysis for the models we audit and build.' },
@@ -4477,30 +4464,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </p>
           </div>
           </Reveal>
-        </div>
-      </section>
-
-      {/* METHODOLOGY */}
-      <section id="methodology" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Methodology</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we do, and why it's legit</h2>
-            <p style={{ color: '#a0a0b8', marginBottom: 48, maxWidth: 680 }}>
-              We are a research institute, not a vendor chasing customers. We perform root level code analysis on publicly distributed software and disclose what we find - to the company, and to the regulator, at the same time. Here is what that means in practice, and why it holds up. We publish what we do; the specific techniques behind any single finding stay in the report we send the company, not on this page.
-            </p>
-          </Reveal>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16 }}>
-            {METHODOLOGY.map((m, i) => (
-              <Reveal key={m.title} delay={i} from="bottom">
-                <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '24px 22px', height: '100%' }}>
-                  <div style={{ fontWeight: 800, fontSize: 15, color: '#e8e8f0', marginBottom: 10 }}>{m.title}</div>
-                  <div style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.75 }}>{m.desc}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 

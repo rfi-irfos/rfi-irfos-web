@@ -308,7 +308,7 @@ function Security() {
 
     <h2 style={H2}>Our Method</h2>
     <p style={P}>
-      We are a research institute, not a vendor chasing customers. We perform root level code analysis on publicly distributed software and disclose what we find - to the company, and to the regulator, at the same time. Every engagement is conducted in writing, building a complete audit trail on both sides. We do not offer or conduct calls or in-person meetings as part of our research or disclosure process.
+      We are a research institute, not a vendor chasing customers. We perform root level code analysis on publicly distributed software and disclose what we find - to the company, and to the regulator, at the same time. Here is what that means in practice, and why it holds up. We publish what we do; the specific techniques behind any single finding stay in the report we send the company, not on this page.
     </p>
     <ul style={{ ...P, paddingLeft: 18, marginBottom: 16 }}>
       <li><strong style={{ color: '#e8e8f0' }}>Free, unconditional disclosure.</strong> Public disclosure is Tier 1. It happens after the 90-day embargo, regardless of payment, regardless of reply. Nothing is held back for money.</li>
