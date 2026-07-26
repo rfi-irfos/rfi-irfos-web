@@ -4403,6 +4403,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               { tier: 'IoB / Art. 9',             price: '€150,000',  desc: 'Internet of Bodies / wearables with health data (Art. 9 GDPR). Elevated risk premium.',                                        highlight: true,  stripeKey: null,            contact: true  },
               { tier: 'Annual Intelligence Retainer', price: '€250,000', desc: 'Full-year continuous monitoring of your entire app portfolio. Quarterly deep audits. Dedicated regulatory liaison across AP, DSB, BfDI, ICO. Monthly threat intelligence briefings. Instant breach notification. Market signal mapping via aladdin-mini.', highlight: true, stripeKey: null, contact: true },
               { tier: 'Full Intelligence Package',price: '€750,000',  desc: 'Everything in the Annual tier. Unlimited audits across your full vendor and partner ecosystem. Custom business intelligence dashboards. Real-time competitive intelligence. Proactive zero-day hunting. Board-level executive briefings. Custom regulatory strategy. Full-year dedicated research team allocation.', highlight: true, stripeKey: null, contact: true },
+              { tier: 'Security Retainer',        price: '€1,500 / mo', desc: 'Continuous monitoring, quarterly audits, priority response, dedicated contact.', highlight: false, stripeKey: 'retainer', contact: false },
             ] as const).map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
                 <PriceTierCard tier={t.tier} price={t.price} desc={t.desc} highlight={t.highlight}
@@ -4411,45 +4412,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               </Reveal>
             ))}
           </div>
-
-          {/* Retainer */}
-          <Reveal from="left">
-          <div style={{
-            background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 14, padding: '24px 28px', marginBottom: 48,
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16,
-          }}>
-            <div>
-              <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>Security Retainer</div>
-              <div style={{ color: 'var(--text2)', fontSize: 13 }}>continuous monitoring · quarterly audits · priority response · dedicated contact</div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10 }}>
-              <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>€1,500 / mo</div>
-              <button
-                onClick={() => openCheckoutModal('retainer')}
-                style={{ padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
-              >
-                start retainer →
-              </button>
-            </div>
-          </div>
-          </Reveal>
-
-          {/* Device Privacy Hardening */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Device Privacy Hardening - by appointment</p>
-          <Reveal from="right">
-          <div style={{
-            background: 'rgba(0,245,196,0.04)', border: '1px solid rgba(0,245,196,0.18)',
-            borderRadius: 14, padding: '24px 28px', marginBottom: 48,
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16,
-          }}>
-            <div>
-              <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 6 }}>Phone Sanitizing: first session free</div>
-              <div style={{ color: 'var(--text2)', fontSize: 13 }}>send us your phone - we disable background tracking scripts permanently · DNS-over-HTTPS · backup hardening · full before/after audit report · by appointment</div>
-            </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>free</div>
-          </div>
-          </Reveal>
 
           {/* Market Research & Competitor Analysis */}
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Market Research &amp; Competitor Analysis</p>
@@ -4518,6 +4480,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   onProposal={() => { proposalRequest(t.tier); location.hash = '#contact' }} />
               </Reveal>
             ))}
+            <Reveal delay={3} from="right">
+              <PriceTierCard tier="Phone Sanitizing" price="free"
+                desc='First session free - send us your phone, we disable background tracking scripts permanently. DNS-over-HTTPS, backup hardening, full before/after audit report. By appointment.' />
+            </Reveal>
           </div>
 
           {/* Open Science statement */}
