@@ -50,7 +50,8 @@ export function LegalPage({ slug }: { slug: string }) {
         {slug === 'datenschutz' && <Datenschutz />}
         {slug === 'agb'         && <AGB />}
         {slug === 'security'    && <Security />}
-        {!['impressum', 'datenschutz', 'agb', 'security'].includes(slug) && (
+        {slug === 'standards'   && <Standards />}
+        {!['impressum', 'datenschutz', 'agb', 'security', 'standards'].includes(slug) && (
           <p style={P}>Seite nicht gefunden.</p>
         )}
         <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 10, color: '#404058' }}>
@@ -381,5 +382,54 @@ function Security() {
     <p style={P}>
       We work out of Graz, Austria — closer to the Alps than to a glass tower. We follow ISO/IEC 29147 to the letter, we file with regulators before anyone makes us, and we still think most corporate security pages read like they were written by the incident they're supposed to prevent. This one wasn't.
     </p>
+  </>
+}
+
+function Standards() {
+  return <>
+    <h1 style={H1}>Standards &amp; Compliance</h1>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>The frameworks we file every audit against &middot; Last updated: July 2026</p>
+
+    <p style={P}>
+      Every audit RFI-IRFOS runs is filed against current EU and Austrian law. We track new standards as they enter force and keep our methodology up to date. This page lists what that actually means in practice — the specific frameworks, not just a claim that we "follow best practice."
+    </p>
+
+    <h2 style={H2}>NIS-2 · NISG 2026</h2>
+    <p style={P}>
+      The EU directive for a high common level of cybersecurity, transposed into Austrian law as <strong style={{ color: '#e8e8f0' }}>NISG 2026</strong>. It mandates state-of-the-art risk management, strict incident reporting to national authorities, and <strong style={{ color: '#e8e8f0' }}>personal liability for company management</strong>. In Austria it directly impacts roughly 4,000 essential and important entities, plus an estimated 50,000 supply-chain partners.
+    </p>
+    <p style={P}>
+      In practice this covers three things: <strong style={{ color: '#e8e8f0' }}>risk management</strong> (cryptography, access control, supply-chain security), <strong style={{ color: '#e8e8f0' }}>incident response</strong> (mandatory reporting within strict timeframes), and <strong style={{ color: '#e8e8f0' }}>corporate accountability</strong> (management personally liable for non-compliance). Scope: ~4,000 entities directly, ~50,000 supply-chain partners — see <a href="https://www.nis.gv.at" target="_blank" rel="noopener" style={A}>nis.gv.at</a>.
+    </p>
+
+    <h2 style={H2}>GDPR &middot; EU 2016/679</h2>
+    <p style={P}>Art. 6 lawful basis, Art. 9 special-category (health/biometric), Art. 8 children, Art. 33 breach notification. The backbone of every disclosure we file.</p>
+
+    <h2 style={H2}>EU AI Act &middot; EU 2024/1689</h2>
+    <p style={P}>Risk-tiered obligations for AI systems: transparency, governance, prohibited-practice analysis for the models we audit and build.</p>
+
+    <h2 style={H2}>EU DSA &middot; EU 2022/2065</h2>
+    <p style={P}>Digital Services Act. Systemic-risk and illegal-content obligations. Filed directly with the Irish Digital Services Coordinator (Coimisiún na Meán) on platform findings.</p>
+
+    <h2 style={H2}>ISO/IEC 29147 &middot; International</h2>
+    <p style={P}>Vulnerability disclosure. Our coordinated framework follows the 90-day embargo + regulator-notification standard — see our <a href="#" onClick={e => { e.preventDefault(); location.hash = '#p/security' }} style={A}>Security Policy</a> for the process itself.</p>
+
+    <h2 style={H2}>ISO/IEC 30111 &middot; International</h2>
+    <p style={P}>Vulnerability handling processes. The internal triage, validation, and remediation-tracking workflow behind every coordinated disclosure we run.</p>
+
+    <h2 style={H2}>ISO/IEC 27001 &middot; International</h2>
+    <p style={P}>Information security management. The control set behind our handling of evidence, NDAs, and client data.</p>
+
+    <h2 style={H2}>COPPA &middot; US · 15 U.S.C. §6501</h2>
+    <p style={P}>Children's online privacy. Applied across our minor-protection audits of apps, games, and streaming platforms.</p>
+
+    <h2 style={H2}>EU MDR &middot; EU 2017/745</h2>
+    <p style={P}>Medical Device Regulation. Class IIb scrutiny for health/wearable apps processing Internet-of-Bodies data.</p>
+
+    <h2 style={H2}>eIDAS / Trust Services &middot; EU 910/2014</h2>
+    <p style={P}>Electronic identification + trust services. Relevant to the biometric + identity-verification SDKs under our magnification.</p>
+
+    <h2 style={H2}>ePrivacy Directive &middot; EU 2002/58/EC</h2>
+    <p style={P}>Consent for tracking, access to terminal equipment, electronic communications confidentiality. Art. 5(3) is the legal backbone of every SDK-consent finding we publish.</p>
   </>
 }

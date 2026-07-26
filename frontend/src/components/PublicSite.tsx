@@ -39,6 +39,129 @@ function Reveal({
   return <div ref={ref} style={{ opacity: 0, willChange: 'transform, opacity', ...extra }}>{children}</div>
 }
 
+// 3-at-a-time (2 on tablet, 1 on phone) project carousel with wraparound arrows -
+// replaces the old "all 14 cards at once" grid, which was the single biggest
+// contributor to page weight/density on the homepage.
+function useCarouselSize() {
+  const [n, setN] = useState(() => (typeof window === 'undefined' ? 3 : window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3))
+  useEffect(() => {
+    const onResize = () => setN(window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+  return n
+}
+
+function ProjectCard({ p }: { p: typeof PROJECTS[number] }) {
+  return (
+    <div style={{
+      background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+      borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12,
+      flex: '1 1 0', minWidth: 0,
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div>
+          <div style={{ fontWeight: 900, fontSize: 17 }}>{p.name}</div>
+          <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
+        </div>
+        <span style={{
+          fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em',
+          padding: '3px 8px', borderRadius: 20,
+          border: '1px solid rgba(0,245,196,0.3)', color: 'var(--accent-text)', whiteSpace: 'nowrap',
+        }}>{p.tag}</span>
+      </div>
+      <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
+      {p.link && (
+        <a href={p.link} target="_blank" rel="noopener noreferrer"
+          style={{ color: 'var(--accent-text)', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
+          {p.link.includes('crates.io') ? 'View on crates.io' : p.link.includes('github.com') ? 'View on GitHub' : 'View live'} &rarr;
+        </a>
+      )}
+    </div>
+  )
+}
+
+// Real sliding track with infinite wraparound: `perView` clones from each end
+// are appended/prepended so the track can always animate one step forward or
+// back, then snaps invisibly (transition disabled for one frame) once it
+// crosses into clone territory - the standard infinite-carousel technique.
+function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
+  const perView = useCarouselSize()
+  const n = projects.length
+  const extended = [...projects.slice(-perView), ...projects, ...projects.slice(0, perView)]
+  const [idx, setIdx] = useState(perView)
+  const [animate, setAnimate] = useState(true)
+
+  // perView changes (resize across a breakpoint) invalidate the clone layout - reset clean.
+  useEffect(() => { setAnimate(false); setIdx(perView) }, [perView])
+  useEffect(() => {
+    if (animate) return
+    const id = requestAnimationFrame(() => setAnimate(true))
+    return () => cancelAnimationFrame(id)
+  }, [animate])
+
+  const go = (dir: number) => { setAnimate(true); setIdx(i => i + dir) }
+  const handleTransitionEnd = () => {
+    if (idx >= n + perView) { setAnimate(false); setIdx(idx - n) }
+    else if (idx < perView) { setAnimate(false); setIdx(idx + n) }
+  }
+
+  const step = 100 / perView
+  const realIdx = ((idx - perView) % n + n) % n
+  const arrowStyle: React.CSSProperties = {
+    width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.3)',
+    background: 'rgba(255,255,255,0.03)', color: 'var(--accent-text)', fontSize: 18, cursor: 'pointer',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'center',
+  }
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <button onClick={() => go(-1)} aria-label="previous projects" style={arrowStyle}>&larr;</button>
+        <div style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}>
+          <div
+            onTransitionEnd={handleTransitionEnd}
+            style={{
+              display: 'flex',
+              transform: `translateX(-${idx * step}%)`,
+              transition: animate ? 'transform 0.45s cubic-bezier(0.65,0,0.35,1)' : 'none',
+            }}
+          >
+            {extended.map((p, i) => (
+              <div key={i} style={{ flex: `0 0 ${step}%`, minWidth: 0, boxSizing: 'border-box', padding: '0 10px', display: 'flex' }}>
+                <ProjectCard p={p} />
+              </div>
+            ))}
+          </div>
+        </div>
+        <button onClick={() => go(1)} aria-label="next projects" style={arrowStyle}>&rarr;</button>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}>
+        <span style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', letterSpacing: '0.08em' }}>
+          {String(realIdx + 1).padStart(2, '0')}&ndash;{String(Math.min(realIdx + perView, n)).padStart(2, '0')} / {n}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+const THEME_LABEL: Record<'light' | 'dark' | 'hc', string> = { light: 'Light', dark: 'Dark', hc: 'High contrast' }
+
+// Sun / Moon / Monitor glyphs for the theme toggle - icon-only reads at a glance and
+// avoids the light-theme "LIGHT" label going low-contrast against its own selected pill.
+function ThemeIcon({ t }: { t: 'light' | 'dark' | 'hc' }) {
+  const common = { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
+  if (t === 'light') return (
+    <svg {...common}><circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" /></svg>
+  )
+  if (t === 'dark') return (
+    <svg {...common}><path d="M20 14.5A8.5 8.5 0 119.5 4a7 7 0 0010.5 10.5z" /></svg>
+  )
+  return (
+    <svg {...common}><rect x="3" y="4" width="18" height="12" rx="1.5" /><path d="M8 20h8M12 16v4" /></svg>
+  )
+}
+
 // wheel-driven scroll accelerator: boosts deltaY and lerps toward the target each
 // frame, so the page covers more ground per notch instead of the flat 1:1 native rate.
 // Elements marked [data-native-scroll] (internal overflow panels) are left untouched.
@@ -131,11 +254,11 @@ const NAV_LINKS = [
   { label: 'Research', href: '#research' },
   { label: 'Projects', href: '#projects' },
   { label: 'Track Record', href: '#track-record' },
-  { label: 'Submit', href: '#submit' },
-  { label: 'Standards', href: '#standards' },
+  { label: 'Timeline', href: '#timeline' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'Team', href: '#team' },
   { label: 'Coop', href: '#coop-partners' },
+  { label: 'Submit', href: '#submit' },
 ]
 
 // The people - mirrors ternlang.com's roster. Kept as data so a departure/new-hire is
@@ -265,19 +388,6 @@ const RESEARCH_AREAS = [
   },
 ]
 
-// Standards & compliance frameworks we file against + keep current with. NIS-2 is featured.
-const STANDARDS = [
-  { code: 'GDPR', region: 'EU 2016/679', desc: 'Art. 6 lawful basis, Art. 9 special-category (health/biometric), Art. 8 children, Art. 33 breach notification. The backbone of every disclosure we file.' },
-  { code: 'EU AI Act', region: 'EU 2024/1689', desc: 'Risk-tiered obligations for AI systems: transparency, governance, prohibited-practice analysis for the models we audit and build.' },
-  { code: 'EU DSA', region: 'EU 2022/2065', desc: 'Digital Services Act. Systemic-risk and illegal-content obligations. Filed directly with the Irish Digital Services Coordinator (Coimisiún na Meán) on platform findings.' },
-  { code: 'ISO/IEC 29147', region: 'International', desc: 'Vulnerability disclosure. Our coordinated framework follows the 90-day embargo + regulator-notification standard.' },
-  { code: 'ISO/IEC 30111', region: 'International', desc: 'Vulnerability handling processes. The internal triage, validation, and remediation-tracking workflow behind every coordinated disclosure we run.' },
-  { code: 'ISO/IEC 27001', region: 'International', desc: 'Information security management. The control set behind our handling of evidence, NDAs, and client data.' },
-  { code: 'COPPA', region: 'US · 15 U.S.C. §6501', desc: 'Children’s online privacy. Applied across our minor-protection audits of apps, games, and streaming platforms.' },
-  { code: 'EU MDR', region: 'EU 2017/745', desc: 'Medical Device Regulation. Class IIb scrutiny for health/wearable apps processing Internet-of-Bodies data.' },
-  { code: 'eIDAS / Trust Services', region: 'EU 910/2014', desc: 'Electronic identification + trust services. Relevant to the biometric + identity-verification SDKs under our magnification.' },
-  { code: 'ePrivacy Directive', region: 'EU 2002/58/EC', desc: 'Consent for tracking, access to terminal equipment, electronic communications confidentiality. Art. 5(3) is the legal backbone of every SDK-consent finding we publish.' },
-]
 
 const PROJECTS = [
   {
@@ -361,15 +471,43 @@ const PROJECTS = [
     name: 'rfi-irfos port prox',
     sub: 'offline port-checker PWA',
     desc: 'Honest, offline-installable port-checker for your phone. Real WebSocket connect-timing probe of localhost - no fake scanning, no fake "close" button. Shows real per-OS terminal commands instead. Sibling to invisible layer.',
-    link: 'https://github.com/rfi-irfos/rfi-irfos-port-prox',
+    link: 'https://github.com/rfi-irfos/lauras-port-proxy',
     tag: 'open source · privacy',
   },
   {
     name: 'LAURA',
     sub: 'canary-token honeypot',
-    desc: 'Protects against NFC/Bluetooth proximity phone-data theft - bait photo folders that fire a passive beacon when opened without consent, nothing more. No exploit, no device access, no automatic reporting. A human reviews every hit before anything further happens.',
+    desc: 'Protects against NFC/Bluetooth proximity phone-data theft - bait photo folders that fire a passive beacon when opened without consent, nothing more. No exploit, no device access, no automatic reporting. A human reviews every hit before anything further happens. Live demo: rfi-irfos.github.io/laura.',
     link: 'https://github.com/rfi-irfos/laura',
     tag: 'open source · privacy',
+  },
+  {
+    name: 'call-laura',
+    sub: 'deterministic document-review framework',
+    desc: 'MCP server where agents submit plans or documents and get structured findings across four lenses, or the full 15-agent expert team - every finding cites the exact text span it references. Fully local, no external APIs, fully reproducible. Crates: lauras-core, lauras-team, lauras-mcp, lauras-api.',
+    link: 'https://github.com/rfi-irfos/call-laura',
+    tag: 'open source · crates.io',
+  },
+  {
+    name: "Laura's Agents",
+    sub: 'LLM-bridged expert team',
+    desc: 'Live LLM-bridged versions of the same 15 expert agents behind call-laura (OSINT, security, legal, finance, UX, and more). Modular: license one agent, a bundle, or the full team as an automated data-processing pipeline. Public overview only - the agent logic itself stays private.',
+    link: 'https://github.com/rfi-irfos/lauras-agents-public',
+    tag: 'commercial · private engine',
+  },
+  {
+    name: 'CoEvolution Factory',
+    sub: 'autonomous compliance/risk AI centers',
+    desc: "50 live compliance/risk AI centers running on Laura's Agents engine, each an autonomous 'daughter' firm scaled out from one constitution.",
+    link: 'https://coevolution-factory-sparkling-mountain-1802.fly.dev',
+    tag: 'live · internal',
+  },
+  {
+    name: 'VEO Framework',
+    sub: 'reflective-mode technique for LLMs',
+    desc: 'A reusable technique for pulling a language model out of transactional "answer mode" and into genuine reflective mode - examining its own reasoning and acknowledging uncertainty instead of just completing the prompt. Developed from Laura Serna Gaviria\'s human-AI co-evolution research.',
+    link: 'https://github.com/rfi-irfos/veo-framework',
+    tag: 'open source · research',
   },
   {
     name: 'NFCS',
@@ -398,6 +536,8 @@ const MILESTONES: { date: string; label: string; side: 'left' | 'right'; link?: 
   { date: 'May 2026', label: 'DOOM boots on bare-metal Rust kernel', side: 'left', tag: 'milestone' },
   { date: 'June 2026', label: '215+ Android apps audited. 100+ companies. NYSE / NASDAQ / LSE / XETRA. COPPA + GDPR Art. 8 child protection scope. StoryToys 9-app children\'s wave.', side: 'right', link: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'milestone' },
   { date: 'June 2026', label: 'aladdin-mini: open-source disclosure impact engine', side: 'left', link: 'https://github.com/rfi-irfos/aladdin-mini', tag: 'milestone' },
+  { date: 'July 2026', label: 'JARVIS: a recursive, self-learning human-AI co-evolution agent operating in bidirectional copilot mode', side: 'right', link: 'https://osf.io/hc9zb/', tag: 'publication' },
+  { date: 'July 2026', label: 'CALL LAURA: an automatic data-processing multi-agent framework, the Agent SWAT Team methodology', side: 'left', link: 'https://osf.io/qcvjb/', tag: 'publication' },
 ]
 
 const PUBLICATIONS = [
@@ -3069,7 +3209,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   const [reportModal, setReportModal]         = useState<string | null>(null)
   const [agbChecked, setAgbChecked]           = useState(false)
   const [b2bChecked, setB2bChecked]           = useState(false)
-  const { theme, setTheme } = useTheme()
+  const { theme, cycle } = useTheme()
+  // Bright TEAL reads low-contrast against a white light-theme background - same fix
+  // already applied to the nav's EKG squiggle, reused here for the Contact icon-button.
+  const ACCENT = theme === 'light' ? '#0a7a5c' : TEAL
   const [cookieBannerOpen, setCookieBannerOpen] = useState(true)
   const [bannerClosing, setBannerClosing] = useState(false)
   const bannerRef = useRef<HTMLDivElement>(null)
@@ -3326,7 +3469,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   // can only ever answer "how many page-loads scrolled past section X today", never "who".
   useEffect(() => {
     const seen = new Set<string>()
-    const sectionIds = ['research', 'projects', 'track-record', 'submit', 'methodology', 'pricing', 'standards', 'team', 'coop-partners', 'contact']
+    const sectionIds = ['research', 'projects', 'track-record', 'timeline', 'submit', 'pricing', 'team', 'coop-partners', 'contact']
     const els = sectionIds.map(id => document.getElementById(id)).filter((e): e is HTMLElement => !!e)
     if (!els.length) return
     const io = new IntersectionObserver(entries => {
@@ -3478,7 +3621,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: 'var(--text)' }}>RFI-IRFOS</span>
           <svg width="54" height="18" viewBox="0 0 54 18" fill="none" style={{ marginLeft: 4, flexShrink: 0, overflow: 'visible' }}>
             <polyline className="ekg-line" points="0,9 12,9 16,2 20,16 24,2 28,9 54,9"
-              stroke="#00f5c4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              stroke={ACCENT} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </a>
 
@@ -3496,34 +3639,36 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </a>
           ))}
 
-          {/* Theme toggle */}
-          <div style={{ display: 'flex', background: 'var(--bg3)', borderRadius: 6, overflow: 'hidden', border: '1px solid var(--border)' }}>
-            {(['light', 'dark', 'hc'] as const).map(t => (
-              <button key={t} onClick={() => setTheme(t)} style={{
-                background: theme === t ? 'rgba(0,245,196,0.18)' : 'transparent',
-                color: theme === t ? TEAL : '#606080',
-                border: 'none', cursor: 'pointer',
-                padding: '5px 10px', fontSize: 10, fontWeight: 700,
-                fontFamily: 'monospace', letterSpacing: '0.06em', textTransform: 'uppercase',
-                transition: 'background 0.15s, color 0.15s',
-              }}>{t === 'hc' ? 'HC' : t.toUpperCase()}</button>
-            ))}
-          </div>
-
-          <a href="mailto:contact@rfi-irfos.com" title="Contact" aria-label="Contact"
-            style={{
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              width: 38, height: 38, borderRadius: 8,
-              background: 'transparent', border: `1px solid ${TEAL}`,
-              color: TEAL, textDecoration: 'none', transition: 'background 0.15s, color 0.15s',
+          {/* Theme + Contact - same 38x38 square, same radius, sit flush together as one
+              pair (their own tight-gap group, not the wide nav-link gap). Theme toggle is
+              deliberately minimal/neutral (ghost button, no color fill) - Contact is the one
+              that's allowed to be loud, solid ACCENT fill with a white icon. */}
+          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+            <button onClick={cycle} title={`Theme: ${THEME_LABEL[theme]} (click to switch)`} aria-label={`Current theme ${THEME_LABEL[theme]}, click to switch theme`} style={{
+              width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'transparent', color: 'var(--text3)', border: '1px solid var(--border)', borderRadius: 8,
+              cursor: 'pointer', transition: 'background 0.15s, color 0.15s, border-color 0.15s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = TEAL; e.currentTarget.style.color = '#070711' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = TEAL }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="M3 7l9 6 9-6" />
-            </svg>
-          </a>
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = 'var(--text)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text3)' }}>
+              <ThemeIcon t={theme} />
+            </button>
+
+            <a href="mailto:contact@rfi-irfos.com" title="Contact" aria-label="Contact"
+              style={{
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                width: 38, height: 38, borderRadius: 8,
+                background: ACCENT, border: `1px solid ${ACCENT}`,
+                color: '#ffffff', textDecoration: 'none', transition: 'opacity 0.15s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 7l9 6 9-6" />
+              </svg>
+            </a>
+          </div>
         </div>
 
         {/* Hamburger - shown only on mobile (media queries don't work in inline styles) */}
@@ -3553,41 +3698,36 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               padding: '16px 0', borderBottom: '1px solid var(--border)',
             }}>{n.label}</a>
           ))}
-          <div style={{ display: 'flex', gap: 8, marginTop: 24 }}>
-            {(['light', 'dark', 'hc'] as const).map(t => (
-              <button key={t} onClick={() => setTheme(t)} style={{
-                background: theme === t ? 'rgba(0,245,196,0.18)' : 'var(--bg3)',
-                color: theme === t ? TEAL : 'var(--text3)',
-                border: theme === t ? `1px solid ${TEAL}` : '1px solid var(--border)',
-                borderRadius: 6, cursor: 'pointer',
-                padding: '8px 16px', fontSize: 11, fontWeight: 700,
-                fontFamily: 'monospace', letterSpacing: '0.06em', textTransform: 'uppercase',
-              }}>{t === 'hc' ? 'HC' : t.toUpperCase()}</button>
-            ))}
+          <div style={{ display: 'flex', gap: 8, marginTop: 24, alignSelf: 'flex-start' }}>
+            <button onClick={cycle} title={`Theme: ${THEME_LABEL[theme]} (click to switch)`} aria-label={`Current theme ${THEME_LABEL[theme]}, click to switch theme`} style={{
+              width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'transparent', color: 'var(--text3)', border: '1px solid var(--border)', borderRadius: 8,
+              cursor: 'pointer',
+            }}><ThemeIcon t={theme} /></button>
+
+            <a href="mailto:contact@rfi-irfos.com" title="Contact" aria-label="Contact"
+              style={{
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                width: 48, height: 48, borderRadius: 8,
+                background: ACCENT, border: `1px solid ${ACCENT}`,
+                color: '#ffffff', textDecoration: 'none', transition: 'opacity 0.15s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 7l9 6 9-6" />
+              </svg>
+            </a>
           </div>
-          <a href="mailto:contact@rfi-irfos.com" title="Contact" aria-label="Contact"
-            style={{
-              marginTop: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              width: 48, height: 48, borderRadius: 8,
-              background: 'transparent', border: `1px solid ${TEAL}`,
-              color: TEAL, textDecoration: 'none', alignSelf: 'flex-start',
-              transition: 'background 0.15s, color 0.15s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = TEAL; e.currentTarget.style.color = '#070711' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = TEAL }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="M3 7l9 6 9-6" />
-            </svg>
-          </a>
         </div>
       )}
 
       {/* HERO */}
       <section style={{
-        minHeight: '100vh', display: 'flex', flexDirection: 'column',
+        display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
-        padding: 'calc(72px + 6vh) 2rem 60px',
+        padding: 'calc(72px + 6vh) 2rem 72px',
         background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.06) 0%, transparent 70%)',
       }}>
         <p style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
@@ -3628,12 +3768,17 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
 
         <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '56px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
+          {/* Deliberately NOT the same numbers as the Track Record stat row further down -
+              that one is audit-specific (apps/findings/companies/regulators), this one is
+              the breadth story: research areas, open-source projects, publications, team,
+              years. Showing the same five numbers twice wastes the hero's one shot at
+              explaining why the institute matters beyond appsec. */}
           {([
-            { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'apps audited',        from: 'left'   },
-            { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: 'critical findings',   from: 'bottom' },
-            { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: 'companies notified',  from: 'scale'  },
-            { n: '18+',  label: 'regulators notified', from: 'bottom' },
-            { n: '6',    label: 'years of research',   from: 'bottom' },
+            { n: `${RESEARCH_AREAS.length}`,    label: 'research areas',      from: 'left'   },
+            { n: `${PROJECTS.length}+`,         label: 'open-source projects', from: 'bottom' },
+            { n: `${PUBLICATIONS.length}+`,     label: 'publications',        from: 'scale'  },
+            { n: `${TEAM.length}`,              label: 'people, in-house',    from: 'bottom' },
+            { n: '6',                           label: 'years of research',   from: 'bottom' },
           ] as const).map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from}>
               <div style={{ textAlign: 'center' }}>
@@ -3713,35 +3858,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               Every project is a proof of concept for a specific research question. All built on the same stack.
             </p>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
-            {PROJECTS.map((p, i) => (
-              <Reveal key={p.name} delay={i % 4} from={(['bottom', 'right', 'bottom', 'left'] as const)[i % 4]} style={{ display: 'flex' }}>
-              <div style={{
-                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1,
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div>
-                    <div style={{ fontWeight: 900, fontSize: 17 }}>{p.name}</div>
-                    <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
-                  </div>
-                  <span style={{
-                    fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em',
-                    padding: '3px 8px', borderRadius: 20,
-                    border: '1px solid rgba(0,245,196,0.3)', color: 'var(--accent-text)', whiteSpace: 'nowrap',
-                  }}>{p.tag}</span>
-                </div>
-                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
-                {p.link && (
-                  <a href={p.link} target="_blank" rel="noopener noreferrer"
-                    style={{ color: 'var(--accent-text)', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
-                    {p.link.includes('crates.io') ? 'View on crates.io' : 'View on GitHub'} &rarr;
-                  </a>
-                )}
-              </div>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal from="bottom" delay={1}>
+            <ProjectsCarousel projects={PROJECTS} />
+          </Reveal>
         </div>
       </section>
 
@@ -4122,92 +4241,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
       </section>
 
-      {/* SUBMIT A TIP */}
-      <section id="submit" style={{
-        padding: '100px 2rem',
-        background: 'rgba(255,255,255,0.01)',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-      }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Disclosures</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? say so.</h2>
-            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
-              We run our own intake channel instead of routing you to a third-party bug bounty platform - for the same reason we refuse to be routed to one ourselves when we report a finding. This is a direct line to the same permanent ledger you see above, held to the same standard.
-            </p>
-          </Reveal>
-
-          <div style={{ display: mobile ? 'block' : 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'start' }}>
-            {/* left: policy */}
-            <Reveal from="left">
-              <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '28px 26px', marginBottom: mobile ? 24 : 0 }}>
-                <div style={{ fontWeight: 900, fontSize: 15, color: 'var(--text)', marginBottom: 14 }}>How we handle what you send us</div>
-                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
-                  <strong style={{ color: 'var(--accent-text)' }}>ISO/IEC 30111 triage:</strong> reproduce it, scope it, fix it, credit you. No finding gets buried because it's inconvenient - that's the entire complaint we file against everyone else, and we're not exempting ourselves from it.
-                </p>
-                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
-                  <strong style={{ color: 'var(--text)' }}>Lawful basis only.</strong> We accept findings obtained through publicly accessible information, your own devices, or software you're authorized to test - the same standard our own root level code analysis holds to. If what you send us shows evidence of unauthorized access to a system you don't control, we do not publish or credit it under this program. We report it directly to the relevant authorities, the same way we'd expect to be treated if the roles were reversed.
-                </p>
-                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, margin: 0 }}>
-                  <strong style={{ color: 'var(--text)' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous - exactly as set out in our{' '}
-                  <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>terms</a>. No call, no meeting. Everything stays written, same as every disclosure we send.
-                </p>
-              </div>
-            </Reveal>
-
-            {/* right: form */}
-            <Reveal from="right">
-              <form onSubmit={submitTip} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
-                  value={tipForm.botcheck} onChange={e => setTipForm(p => ({ ...p, botcheck: e.target.value }))}
-                  style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
-                <input type="text" placeholder="Name or alias (optional - leave blank to stay anonymous)"
-                  value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-                <input type="email" placeholder="Email (optional - only if you want follow-up)"
-                  value={tipForm.email} onChange={e => setTipForm(p => ({ ...p, email: e.target.value }))}
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-                <input type="text" required placeholder="Company / app / target"
-                  value={tipForm.target} onChange={e => setTipForm(p => ({ ...p, target: e.target.value }))}
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-                <select value={tipForm.credit} onChange={e => setTipForm(p => ({ ...p, credit: e.target.value }))} style={{
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
-                }}>
-                  <option value="alias">Credit me by alias / name I provide above</option>
-                  <option value="anonymous">Do not credit me - keep this anonymous</option>
-                  <option value="full-name">Credit me by full legal name</option>
-                </select>
-                <textarea required placeholder="What did you find? Include what it is, where you found it, and how to reproduce it."
-                  value={tipForm.finding} onChange={e => setTipForm(p => ({ ...p, finding: e.target.value }))}
-                  rows={6} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
-                <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
-                  <input type="checkbox" required checked={tipForm.lawful}
-                    onChange={e => setTipForm(p => ({ ...p, lawful: e.target.checked }))}
-                    style={{ marginTop: 3, accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
-                  <span style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.6 }}>
-                    I confirm this information was obtained through lawful, authorized means - publicly accessible data, my own devices, or software I'm authorized to test.
-                  </span>
-                </label>
-                <button type="submit" disabled={tipFormState === 'sending' || !tipForm.lawful} style={{
-                  background: tipFormState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
-                  color: tipFormState === 'ok' ? TEAL : '#070711',
-                  border: tipFormState === 'ok' ? `1px solid ${TEAL}` : 'none',
-                  padding: '13px 24px', borderRadius: 8, fontWeight: 800, fontSize: 14,
-                  cursor: tipFormState === 'sending' ? 'wait' : !tipForm.lawful ? 'not-allowed' : 'pointer',
-                  opacity: !tipForm.lawful && tipFormState === 'idle' ? 0.5 : 1, fontFamily: 'inherit',
-                }}>
-                  {tipFormState === 'sending' ? 'Sending...' : tipFormState === 'ok' ? 'Received. Thank you.' : 'Submit tip'}
-                </button>
-                {tipFormState === 'err' && (
-                  <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>Something went wrong. Email us directly at contact@rfi-irfos.com</p>
-                )}
-              </form>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
       {/* TIMELINE */}
       <section id="timeline" style={{
         padding: '100px 2rem',
@@ -4464,68 +4497,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
       </section>
 
-      {/* STANDARDS & COMPLIANCE */}
-      <section id="standards" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Standards &amp; Compliance</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the frameworks we work under</h2>
-            <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 620 }}>
-              Every audit is filed against current EU and Austrian law. We track new standards as they enter force and keep our methodology up to date.
-            </p>
-          </Reveal>
-
-          {/* Featured: NIS-2 / NISG 2026 */}
-          <Reveal from="scale">
-            <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '32px 28px', marginBottom: 24 }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 14 }}>
-                <div style={{ fontWeight: 900, fontSize: 22, color: 'var(--text)' }}>NIS-2 <span style={{ color: 'var(--accent-text)' }}>·</span> NISG 2026</div>
-                <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.15em', border: '1px solid rgba(0,245,196,0.3)', borderRadius: 20, padding: '4px 12px', whiteSpace: 'nowrap' }}>EU · Austria · in force</span>
-              </div>
-              <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8, marginBottom: 16 }}>
-                The EU directive for a high common level of cybersecurity, transposed into Austrian law as <strong style={{ color: 'var(--text)' }}>NISG 2026</strong>. It mandates state-of-the-art risk management, strict incident reporting to national authorities, and <strong style={{ color: 'var(--text)' }}>personal liability for company management</strong>. In Austria it directly impacts roughly 4,000 essential and important entities, plus an estimated 50,000 supply-chain partners.
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: 12 }}>
-                {[
-                  ['Risk Management', 'cryptography · access control · supply-chain security'],
-                  ['Incident Response', 'mandatory reporting within strict timeframes'],
-                  ['Corporate Accountability', 'management personally liable for non-compliance'],
-                ].map(([t, d]) => (
-                  <div key={t} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '14px 16px' }}>
-                    <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 5, color: 'var(--accent-text)' }}>{t}</div>
-                    <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.6 }}>{d}</div>
-                  </div>
-                ))}
-              </div>
-              <p style={{ marginTop: 16, fontSize: 11, color: 'var(--text3)', fontFamily: 'monospace' }}>
-                Scope: ~4,000 entities directly · ~50,000 supply-chain partners ·{' '}
-                <a href="https://www.nis.gv.at" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>nis.gv.at</a>
-              </p>
-            </div>
-          </Reveal>
-
-          {/* The rest of the frameworks */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: 16 }}>
-            {STANDARDS.map((s, i) => (
-              <Reveal key={s.code} delay={i} from="bottom">
-                <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '22px 20px', height: '100%' }}>
-                  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
-                    <div style={{ fontWeight: 800, fontSize: 15, color: 'var(--text)' }}>{s.code}</div>
-                    <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', whiteSpace: 'nowrap' }}>{s.region}</span>
-                  </div>
-                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7 }}>{s.desc}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* TEAM */}
       <section id="team" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>The Institute</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>06 / The Institute</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 48, textAlign: 'center' }}>one team, everything in-house</h2>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16 }}>
@@ -4574,7 +4550,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="coop-partners" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>Research Cooperation</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>07 / Research Cooperation</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}>built alongside our coop partner</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
               Laura Serna Gaviria directs the Emergent Interaction Lab's own research and agent architecture - Lauras Team, Call Laura, and Jarvis all grew out of her method. RFI-IRFOS builds what she directs, labelled as hers so it stays clear who did what.
@@ -4650,11 +4626,97 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
       </section>
 
+      {/* SUBMIT A TIP */}
+      <section id="submit" style={{
+        padding: '100px 2rem',
+        background: 'rgba(255,255,255,0.01)',
+        borderTop: '1px solid rgba(255,255,255,0.05)',
+      }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <Reveal>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Disclosures</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? say so.</h2>
+            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
+              We run our own intake channel instead of routing you to a third-party bug bounty platform - for the same reason we refuse to be routed to one ourselves when we report a finding. This is a direct line to the same permanent ledger you see above, held to the same standard.
+            </p>
+          </Reveal>
+
+          <div style={{ display: mobile ? 'block' : 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'start' }}>
+            {/* left: policy */}
+            <Reveal from="left">
+              <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '28px 26px', marginBottom: mobile ? 24 : 0 }}>
+                <div style={{ fontWeight: 900, fontSize: 15, color: 'var(--text)', marginBottom: 14 }}>How we handle what you send us</div>
+                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
+                  <strong style={{ color: 'var(--accent-text)' }}>ISO/IEC 30111 triage:</strong> reproduce it, scope it, fix it, credit you. No finding gets buried because it's inconvenient - that's the entire complaint we file against everyone else, and we're not exempting ourselves from it.
+                </p>
+                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
+                  <strong style={{ color: 'var(--text)' }}>Lawful basis only.</strong> We accept findings obtained through publicly accessible information, your own devices, or software you're authorized to test - the same standard our own root level code analysis holds to. If what you send us shows evidence of unauthorized access to a system you don't control, we do not publish or credit it under this program. We report it directly to the relevant authorities, the same way we'd expect to be treated if the roles were reversed.
+                </p>
+                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, margin: 0 }}>
+                  <strong style={{ color: 'var(--text)' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous - exactly as set out in our{' '}
+                  <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>terms</a>. No call, no meeting. Everything stays written, same as every disclosure we send.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* right: form */}
+            <Reveal from="right">
+              <form onSubmit={submitTip} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
+                  value={tipForm.botcheck} onChange={e => setTipForm(p => ({ ...p, botcheck: e.target.value }))}
+                  style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
+                <input type="text" placeholder="Name or alias (optional - leave blank to stay anonymous)"
+                  value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                <input type="email" placeholder="Email (optional - only if you want follow-up)"
+                  value={tipForm.email} onChange={e => setTipForm(p => ({ ...p, email: e.target.value }))}
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                <input type="text" required placeholder="Company / app / target"
+                  value={tipForm.target} onChange={e => setTipForm(p => ({ ...p, target: e.target.value }))}
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                <select value={tipForm.credit} onChange={e => setTipForm(p => ({ ...p, credit: e.target.value }))} style={{
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+                  borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
+                }}>
+                  <option value="alias">Credit me by alias / name I provide above</option>
+                  <option value="anonymous">Do not credit me - keep this anonymous</option>
+                  <option value="full-name">Credit me by full legal name</option>
+                </select>
+                <textarea required placeholder="What did you find? Include what it is, where you found it, and how to reproduce it."
+                  value={tipForm.finding} onChange={e => setTipForm(p => ({ ...p, finding: e.target.value }))}
+                  rows={6} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
+                <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
+                  <input type="checkbox" required checked={tipForm.lawful}
+                    onChange={e => setTipForm(p => ({ ...p, lawful: e.target.checked }))}
+                    style={{ marginTop: 3, accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
+                  <span style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.6 }}>
+                    I confirm this information was obtained through lawful, authorized means - publicly accessible data, my own devices, or software I'm authorized to test.
+                  </span>
+                </label>
+                <button type="submit" disabled={tipFormState === 'sending' || !tipForm.lawful} style={{
+                  background: tipFormState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
+                  color: tipFormState === 'ok' ? TEAL : '#070711',
+                  border: tipFormState === 'ok' ? `1px solid ${TEAL}` : 'none',
+                  padding: '13px 24px', borderRadius: 8, fontWeight: 800, fontSize: 14,
+                  cursor: tipFormState === 'sending' ? 'wait' : !tipForm.lawful ? 'not-allowed' : 'pointer',
+                  opacity: !tipForm.lawful && tipFormState === 'idle' ? 0.5 : 1, fontFamily: 'inherit',
+                }}>
+                  {tipFormState === 'sending' ? 'Sending...' : tipFormState === 'ok' ? 'Received. Thank you.' : 'Submit tip'}
+                </button>
+                {tipFormState === 'err' && (
+                  <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>Something went wrong. Email us directly at contact@rfi-irfos.com</p>
+                )}
+              </form>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       {/* CONTACT */}
       <section id="contact" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 860, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Correspondence</p>
+            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>09 / Correspondence</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>write to us</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 48 }}>for research collaboration, security disclosures, or service inquiries.</p>
           </Reveal>
@@ -4738,31 +4800,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       </section>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '40px 2rem', textAlign: 'center' }}>
-        <p style={{ fontFamily: 'monospace', fontSize: 12, color: TEAL, letterSpacing: '0.06em', marginBottom: 24, fontWeight: 600 }}>
-          Human rights are not subject to negotiation.
-          <br />
-          <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>— RFI-IRFOS × Emergent Interaction Lab, core doctrine</span>
-        </p>
-        <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
-          {[
-            { label: 'Legal Notice', href: '#p/impressum' },
-            { label: 'Privacy Policy', href: '#p/datenschutz' },
-            { label: 'Terms', href: '#p/agb' },
-            { label: 'Security Policy', href: '#p/security' },
-            { label: 'ternlang.com', href: 'https://ternlang.com' },
-            { label: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
-          ].map(l => (
-            <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
-              onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-              onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
-              {l.label}
-            </a>
-          ))}
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
+      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '48px 2rem 32px', textAlign: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
           <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.85 }}>
-            <svg viewBox="0 0 420 100" width="168" height="40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
+            <svg viewBox="0 0 420 100" width="150" height="36" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
               <rect x="0"   y="0" width="100" height="100" fill="#CC0000"/>
               <text x="50"  y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">W</text>
               <rect x="105" y="0" width="100" height="100" fill="#CC0000"/>
@@ -4775,53 +4816,49 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </svg>
           </a>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: 16 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>WKO MEMBER · GewO § 32 · Automatic Data Processing</span>
-          </div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-              <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
-            </svg>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>REGULATED NOT-FOR-PROFIT · ZVR 1015608684</span>
-          </div>
-        </div>
-        <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>
-              UID ATU83405245 &nbsp;·&nbsp; GISA 39261441
-            </span>
-          </div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', gap: 4, border: '1px solid var(--border)', borderRadius: 4, padding: '5px 12px', background: 'var(--bg2)', textAlign: 'center' }}>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text2)', letterSpacing: '0.06em' }}>
-              ECG AUTHORITY · Magistrate of the City of Graz &nbsp;·&nbsp; Since 2026-03-19
-            </span>
-          </div>
-        </div>
-        <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', marginBottom: 4 }}>
-          Trade Description: Services in Automatic Data Processing and Information Technology &nbsp;·&nbsp; Trade-Law Management: Simeon-Andreas Johann Manfred Kepp
+        <p style={{ fontFamily: 'monospace', fontSize: 12, color: TEAL, letterSpacing: '0.06em', marginBottom: 28, fontWeight: 600 }}>
+          Human rights are not subject to negotiation.
+          <br />
+          <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>— RFI-IRFOS × Emergent Interaction Lab, core doctrine</span>
         </p>
-        <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em' }}>
-          Elisabethinergasse 25/10, 8020 Graz &nbsp;·&nbsp; GLN 9110038490191 &nbsp;·&nbsp; Steuernummer 68 696/8736
-        </p>
+        <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 24 }}>
+          {[
+            { label: 'Legal Notice', href: '#p/impressum' },
+            { label: 'Privacy Policy', href: '#p/datenschutz' },
+            { label: 'Terms', href: '#p/agb' },
+            { label: 'Security Policy', href: '#p/security' },
+            { label: 'Standards', href: '#p/standards' },
+            { label: 'ternlang.com', href: 'https://ternlang.com' },
+            { label: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
+          ].map(l => (
+            <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
+              onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+              onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+              {l.label}
+            </a>
+          ))}
+        </div>
+        {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address) lives on
+            Legal Notice - not duplicated here, this footer only needs to point there. */}
         <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', marginBottom: 0 }}>
-          &copy; 2026 RFI-IRFOS &nbsp;·&nbsp; Graz, Austria
+          &copy; 2026 RFI-IRFOS &nbsp;·&nbsp; Graz, Austria &nbsp;·&nbsp; ZVR 1015608684
         </p>
       </footer>
       {cookieBannerOpen && (
         <div ref={bannerRef} style={{
                   position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
                   maxWidth: 640, margin: '0 auto',
-                  background: 'rgba(255,255,255,0.25)', border: '1px solid var(--border)', borderRadius: 12,
+                  background: theme === 'dark' ? '#000000' : 'rgba(255,255,255,0.25)',
+                  border: '1px solid var(--border)', borderRadius: 12,
                   padding: '20px 24px', boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
                   display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
                   transform: bannerClosing ? 'scale(0.85)' : 'scale(1)',
                   opacity: bannerClosing ? 0 : 1,
-                  transition: 'transform 0.24s ease-in, opacity 0.24s ease-in',
+                  transition: 'transform 0.24s ease-in, opacity 0.24s ease-in, background 0.2s',
                 }}>
-                  <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: '#000000', fontWeight: 'bold', lineHeight: 1.5 }}>
+                  <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: theme === 'dark' ? '#ffffff' : '#000000', fontWeight: 'bold', lineHeight: 1.5 }}>
                     this is a useless cookie banner. it&apos;s just here to look like one * we don&apos;t use cookies, so there&apos;s nothing to consent to. don&apos;t let anyone tell you otherwise.
-                    <span style={{ display: 'block', fontFamily: 'monospace', fontSize: 10.5, color: '#000000', letterSpacing: '0.04em', marginTop: 4 }}>
+                    <span style={{ display: 'block', fontFamily: 'monospace', fontSize: 10.5, color: theme === 'dark' ? '#999999' : '#555555', letterSpacing: '0.04em', marginTop: 4, fontWeight: 'normal' }}>
                       two buttons, one closes this and throws some confetti. the other literally does nothing.
                     </span>
                   </p>
@@ -4829,7 +4866,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     <button
                       onClick={() => {}}
                       style={{
-                        background: 'transparent', color: '#000000', border: '1px solid var(--border)',
+                        background: 'transparent', color: theme === 'dark' ? '#ffffff' : '#000000', border: '1px solid var(--border)',
                         borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
                       }}
                     >
