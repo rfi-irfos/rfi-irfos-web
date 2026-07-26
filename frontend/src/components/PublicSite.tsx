@@ -3334,7 +3334,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   // Cards now show only tier/price/CTA - the full breakdown (what this tier actually
   // is) moved into this confirmation modal, shown above the B2B/ToS checkboxes, so
   // nothing gets lost by trimming the card itself.
-  const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string } | null>(null)
+  const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string; directUrl?: string } | null>(null)
   const [proposalModal, setProposalModal]     = useState<{ tier: string; desc: string; price: string } | null>(null)
   const [reportModal, setReportModal]         = useState<string | null>(null)
   const [agbChecked, setAgbChecked]           = useState(false)
@@ -3425,7 +3425,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     setTimeout(() => { setCookieBannerOpen(false); setBannerClosing(false) }, 240)
   }
 
-  const openCheckoutModal = (info: { key: string; tier: string; desc: string; price: string }) => {
+  const openCheckoutModal = (info: { key: string; tier: string; desc: string; price: string; directUrl?: string }) => {
     // Funnel step 1: user pressed the tier button → open the checkout modal AND
     // beam offer_click:<tier> to Lighthouse (same first-party tracker as pageviews).
     beacon('offer_click:' + info.key)
@@ -3477,6 +3477,21 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     } finally {
       setCheckoutLoading(null)
     }
+  }
+
+  // Some tiers use a pre-made Stripe Payment Link (buy.stripe.com) instead of a
+  // backend-generated checkout session - same B2B/ToS-gated modal either way, this
+  // just decides where "Continue to Stripe" actually sends the browser.
+  const confirmCheckout = () => {
+    if (!checkoutModal) return
+    if (checkoutModal.directUrl) {
+      beacon('offer_attempt:' + checkoutModal.key)
+      const url = checkoutModal.directUrl
+      setCheckoutModal(null)
+      window.location.href = url
+      return
+    }
+    handleCheckout(checkoutModal.key)
   }
 
   useEffect(() => {
@@ -3747,7 +3762,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, color: '#606080', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
                   Cancel
                 </button>
-                <button onClick={() => handleCheckout(checkoutModal.key)}
+                <button onClick={confirmCheckout}
                   disabled={!b2bChecked || !agbChecked}
                   style={{ flex: mobile ? undefined : 2, padding: '12px', background: b2bChecked && agbChecked ? 'rgba(0,245,196,0.12)' : 'transparent', border: `1px solid ${b2bChecked && agbChecked ? TEAL : 'rgba(255,255,255,0.08)'}`, borderRadius: 6, color: b2bChecked && agbChecked ? TEAL : '#404058', fontSize: 13, fontFamily: 'monospace', cursor: b2bChecked && agbChecked ? 'pointer' : 'not-allowed', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                   Continue to Stripe →
@@ -3929,28 +3944,26 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           Regulated Austrian research institute. Ternary AI, security, governance, minor protection, and ecocentric technology.
           One team. Everything built in-house.
         </p>
+        {/* Down from 3 co-equal buttons to 2, deliberately unequal: Hire Us is the one
+            real conversion action and gets the solid fill; Track Record is the proof
+            a skeptical visitor wants before that, secondary by design. Research and
+            Pricing dropped as separate hero buttons - both are one scroll or one nav
+            click away already, they don't need to compete with the actual CTA here. */}
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <a href="#track-record" style={{
+          <a href="#contact" style={{
             background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
             fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
             textTransform: 'uppercase', transition: 'opacity 0.15s',
           }}
             onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Track Record</a>
-          <a href="#research" style={{
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Hire Us</a>
+          <a href="#track-record" style={{
             border: '1px solid rgba(0,245,196,0.35)', color: 'var(--accent-text)', padding: '13px 30px', borderRadius: 8,
             fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
             textTransform: 'uppercase', transition: 'border-color 0.15s',
           }}
             onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Research</a>
-          <a href="#pricing" style={{
-            border: '1px solid var(--border)', color: 'var(--text2)', padding: '13px 30px', borderRadius: 8,
-            fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
-            textTransform: 'uppercase', transition: 'border-color 0.15s, color 0.15s',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--text3)'; e.currentTarget.style.color = 'var(--text)' }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text2)' }}>Pricing</a>
+            onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Track Record</a>
         </div>
 
         <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '56px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
@@ -4432,18 +4445,18 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: 48 }}>
             {([
-              { tier: 'Public',                   price: 'free',      desc: 'Full public disclosure. Findings published after a 90-day coordinated embargo, the same standard we hold every organization on our ledger to. No NDA, no strings attached. First phone sanitizing session included at no extra cost.', highlight: false, stripeKey: null,            contact: false },
-              { tier: 'Security Retainer',        price: '€1,500 / mo', desc: 'Continuous monitoring between audits, not a one-off snapshot. Quarterly deep-dive audits, priority response on anything urgent, and one dedicated contact who already knows your stack.', highlight: false, stripeKey: 'retainer', contact: false },
-              { tier: 'Remediation Advisory',     price: '€4,500',    desc: 'Full written report plus hands-on remediation guidance from the engineers who found the issues. A 30-day follow-up confirms fixes actually landed, and GDPR compliance mapping ties every finding to the relevant article.',                                        highlight: false, stripeKey: 'remediation',   contact: false },
-              { tier: 'Confidential',             price: '€9,000',    desc: 'NDA-protected disclosure kept fully private between us and you. Includes a detailed report and hands-on patch validation once fixes ship - regulators are still notified in parallel, as our disclosure framework requires.',                                        highlight: false, stripeKey: 'confidential',  contact: false },
-              { tier: 'Enterprise NDA',           price: '€18,000',   desc: 'Extended embargo beyond our standard 90 days, giving your team real runway to remediate. Dedicated remediation support directly with our engineers, a full legal evidence package for your counsel, and priority turnaround on follow-ups.', highlight: false, stripeKey: 'enterprise_nda',contact: false },
-              { tier: 'Critical Infrastructure',  price: '€75,000',   desc: 'Full-scope engagement for critical infrastructure operators. NDA-protected disclosure, dedicated legal review, and a PR containment strategy built with your comms team. Direct liaison with every relevant authority, plus a standing emergency response protocol.', highlight: true,  stripeKey: null,            contact: true  },
-              { tier: 'IoB / Art. 9',             price: '€150,000',  desc: 'For wearables and Internet-of-Bodies products processing special-category health data under Art. 9 GDPR. The premium reflects deeper scrutiny - biometric flows, retention periods, third-country transfers - with the same NDA and regulator liaison as Enterprise.', highlight: true,  stripeKey: null,            contact: true  },
-              { tier: 'Annual Intelligence Retainer', price: '€250,000', desc: 'Our flagship engagement. Full-year continuous monitoring across your entire app portfolio, quarterly deep audits, dedicated regulatory liaison across AP, DSB, BfDI and ICO, monthly threat briefings, and instant breach notification.', highlight: true, stripeKey: null, contact: true },
+              { tier: 'Public',                   price: 'free',      desc: 'Full public disclosure. Findings published after a 90-day coordinated embargo, the same standard we hold every organization on our ledger to. No NDA, no strings attached. First phone sanitizing session included at no extra cost.', highlight: false, stripeKey: null,            directUrl: null, contact: false },
+              { tier: 'Security Retainer',        price: '€1,500 / mo', desc: 'Continuous monitoring between audits, not a one-off snapshot. Quarterly deep-dive audits, priority response on anything urgent, and one dedicated contact who already knows your stack.', highlight: false, stripeKey: 'retainer', directUrl: null, contact: false },
+              { tier: 'Remediation Advisory',     price: '€4,500',    desc: 'Full written report plus hands-on remediation guidance from the engineers who found the issues. A 30-day follow-up confirms fixes actually landed, and GDPR compliance mapping ties every finding to the relevant article.',                                        highlight: false, stripeKey: 'remediation',   directUrl: null, contact: false },
+              { tier: 'Confidential',             price: '€9,000',    desc: 'NDA-protected disclosure kept fully private between us and you. Includes a detailed report and hands-on patch validation once fixes ship - regulators are still notified in parallel, as our disclosure framework requires.',                                        highlight: false, stripeKey: 'confidential',  directUrl: null, contact: false },
+              { tier: 'Enterprise NDA',           price: '€18,000',   desc: 'Extended embargo beyond our standard 90 days, giving your team real runway to remediate. Dedicated remediation support directly with our engineers, a full legal evidence package for your counsel, and priority turnaround on follow-ups.', highlight: false, stripeKey: 'enterprise_nda', directUrl: null, contact: false },
+              { tier: 'Critical Infrastructure',  price: '€75,000',   desc: 'Full-scope engagement for critical infrastructure operators. NDA-protected disclosure, dedicated legal review, and a PR containment strategy built with your comms team. Direct liaison with every relevant authority, plus a standing emergency response protocol.', highlight: true,  stripeKey: 'critical_infra', directUrl: 'https://buy.stripe.com/9B66oJ6OIbU32LPcHK7N60H', contact: false },
+              { tier: 'IoB / Art. 9',             price: '€150,000',  desc: 'For wearables and Internet-of-Bodies products processing special-category health data under Art. 9 GDPR. The premium reflects deeper scrutiny - biometric flows, retention periods, third-country transfers - with the same NDA and regulator liaison as Enterprise.', highlight: true,  stripeKey: 'iob_art9', directUrl: 'https://buy.stripe.com/4gMcN7ehagaj4TXcHK7N60G', contact: false },
+              { tier: 'Annual Intelligence Retainer', price: '€250,000', desc: 'Our flagship engagement. Full-year continuous monitoring across your entire app portfolio, quarterly deep audits, dedicated regulatory liaison across AP, DSB, BfDI and ICO, monthly threat briefings, and instant breach notification.', highlight: true, stripeKey: 'annual_retainer', directUrl: 'https://buy.stripe.com/00wcN71uo4rBdqt7nq7N60I', contact: false },
             ] as const).map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
                 <PriceTierCard tier={t.tier} price={t.price} highlight={t.highlight}
-                  onBuy={t.stripeKey ? () => openCheckoutModal({ key: t.stripeKey!, tier: t.tier, desc: t.desc, price: t.price }) : undefined}
+                  onBuy={t.stripeKey ? () => openCheckoutModal({ key: t.stripeKey!, tier: t.tier, desc: t.desc, price: t.price, directUrl: t.directUrl ?? undefined }) : undefined}
                   onProposal={t.contact ? () => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price }) : undefined} />
               </Reveal>
             ))}
@@ -4501,19 +4514,14 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               Gaviria / Emergent Interaction Lab. No Stripe checkout: these are
               bespoke engagements, always "on request" via #contact. See the
               COOP PARTNERS section below for who Laura is and the crates. */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Research Cooperation - via our coop partner, on request</p>
+          {/* Research Cooperation used to be duplicated here (3 "on request" tiers
+              under names that didn't match Coop Partners' 4 real-priced ones below,
+              same product line shown two different ways with different framing). Single
+              source of truth now lives in the Coop Partners section - #coop-partners -
+              nothing repeated here. */}
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Device Privacy Hardening - by appointment</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 16, marginBottom: 48 }}>
-            {[
-              { tier: 'Lauras Team',       desc: 'Access to the multi-agent system directed by Laura Serna Gaviria - one SWAT lead team directing 15 specialised sub-agents, built on her Emergent Interaction method. Scoped engagement per case.' },
-              { tier: 'Lauras Agents',     desc: 'Licensed access to the private agent stack behind Lauras Team (lauras-team crate, access on request per crates.io). Bespoke licensing and integration scope, agreed case by case.' },
-              { tier: 'Business Consulting Package', desc: 'Applying the Emergent Interaction / Case Intelligence method to your own organization - process reconstruction, framework derivation, agent architecture design, delivered jointly with our coop partner.' },
-            ].map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right'] as const)[i % 3]}>
-                <PriceTierCard tier={t.tier} price="on request"
-                  onProposal={() => openProposalModal({ tier: t.tier, desc: t.desc, price: 'on request' })} />
-              </Reveal>
-            ))}
-            <Reveal delay={3} from="right">
+            <Reveal from="right">
               <PriceTierCard tier="Phone Sanitizing" price="free"
                 onProposal={() => openProposalModal({ tier: 'Phone Sanitizing', price: 'free', desc: 'First session free - send us your phone, we disable background tracking scripts permanently. DNS-over-HTTPS, backup hardening, full before/after audit report. By appointment.' })} />
             </Reveal>
@@ -4643,19 +4651,21 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10, marginTop: 16 }}>
               {[
-                { name: 'Systemaudit', price: '€4.500', href: 'https://buy.stripe.com/14AdRbgpi1fpdqt6jm7N60r' },
-                { name: 'Emergent Case Intelligence Sprint', price: '€12.500', href: 'https://buy.stripe.com/bJe9AVc927DNdqtePS7N60m' },
-                { name: 'Multi-Agent System Design', price: '€24.500', href: 'https://buy.stripe.com/00w3cxc92bU30DH2367N60n' },
-                { name: 'System Design & Deployment', price: '€55.000', href: 'https://buy.stripe.com/dRm9AVgpi7DNdqt37a7N60A' },
+                { name: 'Systemaudit', price: '€4.500', href: 'https://buy.stripe.com/14AdRbgpi1fpdqt6jm7N60r', desc: 'A focused audit of one system using Laura\'s Emergent Interaction / Case Intelligence method - process reconstruction and findings, scoped to a single system.' },
+                { name: 'Emergent Case Intelligence Sprint', price: '€12.500', href: 'https://buy.stripe.com/bJe9AVc927DNdqtePS7N60m', desc: 'A short, intensive sprint applying Laura\'s Case Intelligence method to a real case or process, end to end.' },
+                { name: 'Multi-Agent System Design', price: '€24.500', href: 'https://buy.stripe.com/00w3cxc92bU30DH2367N60n', desc: 'Architecture and design for a multi-agent system built on Laura\'s Emergent Interaction method, tailored to your organization.' },
+                { name: 'System Design & Deployment', price: '€55.000', href: 'https://buy.stripe.com/dRm9AVgpi7DNdqt37a7N60A', desc: 'Full design-to-deployment engagement: architecture, build, and launch of a multi-agent system on Laura\'s method.' },
               ].map((p, i) => (
-                <a key={i} href={p.href} target="_blank" rel="noopener noreferrer" style={{
-                  display: 'flex', flexDirection: 'column', gap: 4, padding: '14px 16px',
-                  background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
-                  borderRadius: 10, textDecoration: 'none', transition: 'border-color .15s',
-                }}>
+                <button key={i}
+                  onClick={() => openCheckoutModal({ key: `coop_${i}`, tier: p.name, desc: p.desc, price: p.price, directUrl: p.href })}
+                  style={{
+                    display: 'flex', flexDirection: 'column', gap: 4, padding: '14px 16px',
+                    background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
+                    borderRadius: 10, textAlign: 'left', cursor: 'pointer', transition: 'border-color .15s',
+                  }}>
                   <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{p.name}</span>
                   <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-text)' }}>{p.price}</span>
-                </a>
+                </button>
               ))}
             </div>
             <p style={{ fontSize: 11, color: 'var(--text3)', marginTop: 10 }}>
