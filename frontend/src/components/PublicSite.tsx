@@ -55,7 +55,7 @@ function useCarouselSize() {
 function ProjectCard({ p }: { p: typeof PROJECTS[number] }) {
   return (
     <div style={{
-      background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+      background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
       borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12,
       flex: '1 1 0', minWidth: 0,
     }}>
@@ -182,19 +182,18 @@ function ArrowIcon() {
     </svg>
   )
 }
-function PriceTierCard({ tier, price, desc, highlight, onBuy, onProposal }: {
-  tier: string; price: string; desc: string; highlight?: boolean
+function PriceTierCard({ tier, price, highlight, onBuy, onProposal }: {
+  tier: string; price: string; highlight?: boolean
   onBuy?: () => void; onProposal?: () => void
 }) {
   return (
     <div style={{
-      background: highlight ? 'rgba(0,245,196,0.06)' : 'rgba(255,255,255,0.03)',
-      border: `1px solid ${highlight ? 'rgba(0,245,196,0.25)' : 'rgba(255,255,255,0.07)'}`,
+      background: highlight ? 'rgba(0,245,196,0.06)' : 'var(--bg2)',
+      border: `1px solid ${highlight ? 'rgba(0,245,196,0.25)' : 'var(--border)'}`,
       borderRadius: 14, padding: '22px 20px', height: '100%',
-      display: 'flex', flexDirection: 'column',
+      display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 24,
     }}>
-      <div style={{ fontWeight: 800, fontSize: 17, color: 'var(--text)', marginBottom: 10, lineHeight: 1.3 }}>{tier}</div>
-      <div style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.7, flex: 1, marginBottom: 18 }}>{desc}</div>
+      <div style={{ fontWeight: 800, fontSize: 17, color: 'var(--text)', lineHeight: 1.3 }}>{tier}</div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
         <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--accent-text)' }}>{price}</div>
         {(onBuy || onProposal) && (
@@ -206,7 +205,7 @@ function PriceTierCard({ tier, price, desc, highlight, onBuy, onProposal }: {
               width: 34, height: 34, flexShrink: 0, borderRadius: '50%', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               background: onBuy ? 'var(--accent)' : 'transparent',
-              border: onBuy ? 'none' : '1px solid rgba(255,255,255,0.18)',
+              border: onBuy ? 'none' : '1px solid var(--border)',
               color: onBuy ? 'var(--accent-fg)' : 'var(--text2)',
             }}
           >
@@ -3174,8 +3173,8 @@ function TimelineItem({ m }: { m: typeof MILESTONES[0] }) {
   const visible = progress > 0.5
   const isPublication = m.tag === 'publication'
   const innerStyle: React.CSSProperties = {
-    background: isPublication ? 'rgba(0,245,196,0.04)' : 'rgba(255,255,255,0.03)',
-    border: `1px solid ${isPublication ? 'rgba(0,245,196,0.18)' : 'rgba(255,255,255,0.08)'}`,
+    background: isPublication ? 'rgba(0,245,196,0.04)' : 'var(--bg2)',
+    border: `1px solid ${isPublication ? 'rgba(0,245,196,0.18)' : 'var(--border)'}`,
     borderRadius: 12, padding: '16px 20px',
     textDecoration: 'none', color: 'inherit', display: 'block',
     transition: 'border-color 0.2s', width: '100%', boxSizing: 'border-box',
@@ -3192,7 +3191,7 @@ function TimelineItem({ m }: { m: typeof MILESTONES[0] }) {
   const card = m.link
     ? <a href={m.link} target="_blank" rel="noopener noreferrer" style={innerStyle}
         onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,245,196,0.45)' }}
-        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = isPublication ? 'rgba(0,245,196,0.18)' : 'rgba(255,255,255,0.08)' }}
+        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = isPublication ? 'rgba(0,245,196,0.18)' : 'var(--border)' }}
       >{innerContent}</a>
     : <div style={innerStyle}>{innerContent}</div>
   const sideSign = m.side === 'left' ? -1 : 1
@@ -3328,7 +3327,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   const [openDD, setOpenDD] = useState<string | null>(null)
   const [now, setNow] = useState(() => Date.now())
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
-  const [checkoutModal, setCheckoutModal]     = useState<string | null>(null)
+  // Cards now show only tier/price/CTA - the full breakdown (what this tier actually
+  // is) moved into this confirmation modal, shown above the B2B/ToS checkboxes, so
+  // nothing gets lost by trimming the card itself.
+  const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string } | null>(null)
+  const [proposalModal, setProposalModal]     = useState<{ tier: string; desc: string; price: string } | null>(null)
   const [reportModal, setReportModal]         = useState<string | null>(null)
   const [agbChecked, setAgbChecked]           = useState(false)
   const [b2bChecked, setB2bChecked]           = useState(false)
@@ -3349,11 +3352,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   // BEHIND the modal on every wheel tick — the modal (position: fixed) sits still while
   // the page visibly scrolls underneath it, which reads as "scrolling is broken."
   useEffect(() => {
-    if (!checkoutModal && !reportModal) return
+    if (!checkoutModal && !proposalModal && !reportModal) return
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = prevOverflow }
-  }, [checkoutModal, reportModal])
+  }, [checkoutModal, proposalModal, reportModal])
 
   // short synthesized "pop" - no audio file needed, just a quick pitch-dropping
   // burst via the Web Audio API so this stays fully self-contained.
@@ -3418,25 +3421,36 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     setTimeout(() => { setCookieBannerOpen(false); setBannerClosing(false) }, 240)
   }
 
-  const openCheckoutModal = (tier: string) => {
+  const openCheckoutModal = (info: { key: string; tier: string; desc: string; price: string }) => {
     // Funnel step 1: user pressed the tier button → open the checkout modal AND
     // beam offer_click:<tier> to Lighthouse (same first-party tracker as pageviews).
-    beacon('offer_click:' + tier)
+    beacon('offer_click:' + info.key)
     setAgbChecked(false)
     setB2bChecked(false)
-    setCheckoutModal(tier)
+    setCheckoutModal(info)
   }
 
-  const cancelCheckout = (tier: string) => {
+  const cancelCheckout = (key: string) => {
     // Funnel step 2a: user dismissed the confirmation modal without continuing.
-    beacon('offer_cancel:' + tier)
+    beacon('offer_cancel:' + key)
     setCheckoutModal(null)
+  }
+
+  const openProposalModal = (info: { tier: string; desc: string; price: string }) => {
+    setProposalModal(info)
   }
 
   const proposalRequest = (tier: string) => {
     // Contact-only tiers have no Stripe checkout — beam the request so they show
     // up in the same Lighthouse funnel as the paid tiers.
     beacon('proposal_request:' + tier)
+  }
+
+  const confirmProposal = () => {
+    if (!proposalModal) return
+    proposalRequest(proposalModal.tier)
+    setProposalModal(null)
+    location.hash = '#contact'
   }
 
   const handleCheckout = async (tier: string) => {
@@ -3685,7 +3699,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       {reportModal && (
         <div onClick={() => setReportModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(0,0,0,0.85)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
           <div onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 900, height: '85vh', background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.07)', background: '#0a0a18' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid var(--border)', background: '#0a0a18' }}>
               <span style={{ fontFamily: 'monospace', fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>report - rfi-irfos</span>
               <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
             </div>
@@ -3694,36 +3708,72 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
       )}
 
-      {/* B2B CHECKOUT CONFIRMATION MODAL */}
+      {/* B2B CHECKOUT CONFIRMATION MODAL - cards on the page only show tier/price/CTA now;
+          this is where the full breakdown actually lives, right above the terms. */}
       {checkoutModal && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
-          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '24px 20px 32px' : '32px 28px', maxWidth: mobile ? '100%' : 480, width: '100%' }}>
-            <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
-            <h3 style={{ fontSize: mobile ? 16 : 18, fontWeight: 800, marginBottom: 18, color: 'var(--text)' }}>Please confirm before checkout</h3>
-            <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16, cursor: 'pointer' }}>
-              <input type="checkbox" checked={b2bChecked} onChange={e => setB2bChecked(e.target.checked)}
-                style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
-              <span style={{ color: 'var(--text2)', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                I am acting as a <strong style={{ color: 'var(--text)' }}>business customer</strong> and confirm that this purchase is made in the course of my commercial or professional activity.
-              </span>
-            </label>
-            <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 24, cursor: 'pointer' }}>
-              <input type="checkbox" checked={agbChecked} onChange={e => setAgbChecked(e.target.checked)}
-                style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
-              <span style={{ color: 'var(--text2)', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                I agree to the <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>Terms of Service</a>. I understand that the service <strong style={{ color: 'var(--text)' }}>begins immediately upon payment</strong> and that no right of withdrawal applies. Refunds are excluded.
-              </span>
-            </label>
-            <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
-              <button onClick={() => cancelCheckout(checkoutModal!)}
-                style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: 'var(--text3)', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
-                Cancel
-              </button>
-              <button onClick={() => handleCheckout(checkoutModal)}
-                disabled={!b2bChecked || !agbChecked}
-                style={{ flex: mobile ? undefined : 2, padding: '12px', background: b2bChecked && agbChecked ? 'rgba(0,245,196,0.12)' : 'transparent', border: `1px solid ${b2bChecked && agbChecked ? TEAL : 'rgba(255,255,255,0.08)'}`, borderRadius: 6, color: b2bChecked && agbChecked ? TEAL : '#404058', fontSize: 13, fontFamily: 'monospace', cursor: b2bChecked && agbChecked ? 'pointer' : 'not-allowed', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                Continue to Stripe →
-              </button>
+          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '24px 20px 32px' : '32px 28px', maxWidth: mobile ? '100%' : 520, width: '100%', maxHeight: mobile ? '90vh' : '85vh', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 6 }}>
+              <h3 style={{ fontSize: mobile ? 18 : 20, fontWeight: 800, color: 'var(--text)' }}>{checkoutModal.tier}</h3>
+              <div style={{ fontSize: mobile ? 20 : 22, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{checkoutModal.price}</div>
+            </div>
+            <p style={{ color: 'var(--text2)', fontSize: 13.5, lineHeight: 1.7, marginBottom: 24 }}>{checkoutModal.desc}</p>
+            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 20 }}>
+              <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
+              <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16, cursor: 'pointer' }}>
+                <input type="checkbox" checked={b2bChecked} onChange={e => setB2bChecked(e.target.checked)}
+                  style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
+                <span style={{ color: 'var(--text2)', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
+                  I am acting as a <strong style={{ color: 'var(--text)' }}>business customer</strong> and confirm that this purchase is made in the course of my commercial or professional activity.
+                </span>
+              </label>
+              <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 24, cursor: 'pointer' }}>
+                <input type="checkbox" checked={agbChecked} onChange={e => setAgbChecked(e.target.checked)}
+                  style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
+                <span style={{ color: 'var(--text2)', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
+                  I agree to the <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>Terms of Service</a>. I understand that the service <strong style={{ color: 'var(--text)' }}>begins immediately upon payment</strong> and that no right of withdrawal applies. Refunds are excluded.
+                </span>
+              </label>
+              <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
+                <button onClick={() => cancelCheckout(checkoutModal.key)}
+                  style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--text3)', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
+                  Cancel
+                </button>
+                <button onClick={() => handleCheckout(checkoutModal.key)}
+                  disabled={!b2bChecked || !agbChecked}
+                  style={{ flex: mobile ? undefined : 2, padding: '12px', background: b2bChecked && agbChecked ? 'rgba(0,245,196,0.12)' : 'transparent', border: `1px solid ${b2bChecked && agbChecked ? TEAL : 'rgba(255,255,255,0.08)'}`, borderRadius: 6, color: b2bChecked && agbChecked ? TEAL : '#404058', fontSize: 13, fontFamily: 'monospace', cursor: b2bChecked && agbChecked ? 'pointer' : 'not-allowed', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  Continue to Stripe →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PROPOSAL REQUEST MODAL - same "full breakdown before you commit" pattern as the
+          checkout modal above, for tiers that route to Contact instead of Stripe. */}
+      {proposalModal && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
+          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '24px 20px 32px' : '32px 28px', maxWidth: mobile ? '100%' : 520, width: '100%', maxHeight: mobile ? '90vh' : '85vh', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 6 }}>
+              <h3 style={{ fontSize: mobile ? 18 : 20, fontWeight: 800, color: 'var(--text)' }}>{proposalModal.tier}</h3>
+              <div style={{ fontSize: mobile ? 20 : 22, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{proposalModal.price}</div>
+            </div>
+            <p style={{ color: 'var(--text2)', fontSize: 13.5, lineHeight: 1.7, marginBottom: 24 }}>{proposalModal.desc}</p>
+            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 20 }}>
+              <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.6, marginBottom: 20 }}>
+                No payment happens here. This takes you to our contact form with <strong style={{ color: 'var(--text)' }}>{proposalModal.tier}</strong> pre-noted, so we start the conversation with the right context.
+              </p>
+              <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
+                <button onClick={() => setProposalModal(null)}
+                  style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--text3)', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
+                  Cancel
+                </button>
+                <button onClick={confirmProposal}
+                  style={{ flex: mobile ? undefined : 2, padding: '12px', background: 'rgba(0,245,196,0.12)', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 13, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  Continue to Contact →
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -3885,12 +3935,12 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
             onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Research</a>
           <a href="#pricing" style={{
-            border: '1px solid rgba(255,255,255,0.12)', color: 'var(--text2)', padding: '13px 30px', borderRadius: 8,
+            border: '1px solid var(--border)', color: 'var(--text2)', padding: '13px 30px', borderRadius: 8,
             fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
             textTransform: 'uppercase', transition: 'border-color 0.15s, color 0.15s',
           }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.28)'; e.currentTarget.style.color = '#e8e8f0' }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = '#a0a0b8' }}>Pricing</a>
+            onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--text3)'; e.currentTarget.style.color = 'var(--text)' }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text2)' }}>Pricing</a>
         </div>
 
         <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '56px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
@@ -3932,7 +3982,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             {RESEARCH_AREAS.map((a, i) => (
               <Reveal key={a.title} delay={i} from={(['left', 'bottom', 'right', 'scale'] as const)[i % 4]}>
                 <div style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+                  background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
                   borderRadius: 16, padding: '28px 24px', height: '100%',
                 }}>
                   <div style={{ marginBottom: 16, lineHeight: 0 }}>{a.icon}</div>
@@ -3948,9 +3998,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             <div data-native-scroll style={{ display: 'flex', flexDirection: 'column', gap: 2, maxHeight: 186, overflowY: 'auto', paddingRight: 4 }}>
               {PUBLICATIONS.map(p => (
                 <a key={p.title} href={p.href} target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 18px', borderRadius: 10, textDecoration: 'none', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', transition: 'border-color 0.2s' }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 18px', borderRadius: 10, textDecoration: 'none', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)', transition: 'border-color 0.2s' }}
                   onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.25)')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)')}>
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
                   <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', minWidth: 32 }}>{p.year}</span>
                   <span style={{ flex: 1 }}>
                     <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--text)' }}>{p.title}</span>
@@ -4017,7 +4067,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             ))}
           </div>
           <div style={{
-            background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
+            background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
             borderRadius: 12, padding: '20px 24px', marginBottom: 48,
             fontFamily: 'monospace', fontSize: 12, color: 'var(--text2)', lineHeight: 1.8,
           }}>
@@ -4096,7 +4146,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             />
 
             {/* Moon */}
-            <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 10px', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 7, background: 'rgba(255,255,255,0.02)' }}>
+            <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 10px', border: '1px solid var(--border)', borderRadius: 7, background: 'rgba(255,255,255,0.02)' }}>
               <MoonPhase now={now} />
             </div>
 
@@ -4395,19 +4445,19 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: 48 }}>
             {([
-              { tier: 'Public',                   price: 'free',      desc: 'Full public disclosure. Findings published after 90-day coordinated embargo. No NDA. First phone sanitizing session included.', highlight: false, stripeKey: null,            contact: false },
-              { tier: 'Security Retainer',        price: '€1,500 / mo', desc: 'Continuous monitoring, quarterly audits, priority response, dedicated contact.', highlight: false, stripeKey: 'retainer', contact: false },
-              { tier: 'Remediation Advisory',     price: '€4,500',    desc: 'Full report + remediation guidance. 30-day follow-up. GDPR compliance mapping included.',                                        highlight: false, stripeKey: 'remediation',   contact: false },
-              { tier: 'Confidential',             price: '€9,000',    desc: 'NDA-protected disclosure. Private report + patch validation. Regulators still notified.',                                        highlight: false, stripeKey: 'confidential',  contact: false },
-              { tier: 'Enterprise NDA',           price: '€18,000',   desc: 'An extended embargo beyond our standard 90 days, giving your team real runway to remediate before anything goes public. Dedicated remediation support directly with the engineers who found the issue, not a ticket queue. A full legal evidence package documenting every finding for your own counsel, and priority turnaround on any follow-up questions from legal or security.', highlight: false, stripeKey: 'enterprise_nda',contact: false },
-              { tier: 'Critical Infrastructure',  price: '€75,000',   desc: 'Full-scope engagement for operators of critical infrastructure. NDA-protected disclosure, dedicated legal review, and a PR containment strategy built alongside your comms team before anything becomes public. Direct liaison with every relevant supervisory authority on your behalf, plus an emergency response protocol on standby for active incidents and a single named contact for the full engagement.', highlight: true,  stripeKey: null,            contact: true  },
-              { tier: 'IoB / Art. 9',             price: '€150,000',  desc: 'For wearables, medical devices, and Internet-of-Bodies products processing special-category health data under Art. 9 GDPR. The elevated premium reflects the deeper scrutiny this class of finding demands - biometric data flows, health-data retention periods, and third-country transfer analysis - delivered with the same NDA protection and direct regulator liaison as our Enterprise tier.', highlight: true,  stripeKey: null,            contact: true  },
-              { tier: 'Annual Intelligence Retainer', price: '€250,000', desc: 'Our flagship engagement. Full-year continuous monitoring of your entire app portfolio, not a single point-in-time audit. Quarterly deep audits, dedicated regulatory liaison across AP, DSB, BfDI, and ICO, monthly threat intelligence briefings, instant breach notification, and market signal mapping via aladdin-mini - the same infrastructure we run against the companies on our own public ledger, turned toward defending yours instead.', highlight: true, stripeKey: null, contact: true },
+              { tier: 'Public',                   price: 'free',      desc: 'Full public disclosure. Findings published after a 90-day coordinated embargo, the same standard we hold every organization on our ledger to. No NDA, no strings attached. First phone sanitizing session included at no extra cost.', highlight: false, stripeKey: null,            contact: false },
+              { tier: 'Security Retainer',        price: '€1,500 / mo', desc: 'Continuous monitoring between audits, not a one-off snapshot. Quarterly deep-dive audits, priority response on anything urgent, and one dedicated contact who already knows your stack.', highlight: false, stripeKey: 'retainer', contact: false },
+              { tier: 'Remediation Advisory',     price: '€4,500',    desc: 'Full written report plus hands-on remediation guidance from the engineers who found the issues. A 30-day follow-up confirms fixes actually landed, and GDPR compliance mapping ties every finding to the relevant article.',                                        highlight: false, stripeKey: 'remediation',   contact: false },
+              { tier: 'Confidential',             price: '€9,000',    desc: 'NDA-protected disclosure kept fully private between us and you. Includes a detailed report and hands-on patch validation once fixes ship - regulators are still notified in parallel, as our disclosure framework requires.',                                        highlight: false, stripeKey: 'confidential',  contact: false },
+              { tier: 'Enterprise NDA',           price: '€18,000',   desc: 'Extended embargo beyond our standard 90 days, giving your team real runway to remediate. Dedicated remediation support directly with our engineers, a full legal evidence package for your counsel, and priority turnaround on follow-ups.', highlight: false, stripeKey: 'enterprise_nda',contact: false },
+              { tier: 'Critical Infrastructure',  price: '€75,000',   desc: 'Full-scope engagement for critical infrastructure operators. NDA-protected disclosure, dedicated legal review, and a PR containment strategy built with your comms team. Direct liaison with every relevant authority, plus a standing emergency response protocol.', highlight: true,  stripeKey: null,            contact: true  },
+              { tier: 'IoB / Art. 9',             price: '€150,000',  desc: 'For wearables and Internet-of-Bodies products processing special-category health data under Art. 9 GDPR. The premium reflects deeper scrutiny - biometric flows, retention periods, third-country transfers - with the same NDA and regulator liaison as Enterprise.', highlight: true,  stripeKey: null,            contact: true  },
+              { tier: 'Annual Intelligence Retainer', price: '€250,000', desc: 'Our flagship engagement. Full-year continuous monitoring across your entire app portfolio, quarterly deep audits, dedicated regulatory liaison across AP, DSB, BfDI and ICO, monthly threat briefings, and instant breach notification.', highlight: true, stripeKey: null, contact: true },
             ] as const).map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} desc={t.desc} highlight={t.highlight}
-                  onBuy={t.stripeKey ? () => openCheckoutModal(t.stripeKey!) : undefined}
-                  onProposal={t.contact ? () => { proposalRequest(t.tier); location.hash = '#contact' } : undefined} />
+                <PriceTierCard tier={t.tier} price={t.price} highlight={t.highlight}
+                  onBuy={t.stripeKey ? () => openCheckoutModal({ key: t.stripeKey!, tier: t.tier, desc: t.desc, price: t.price }) : undefined}
+                  onProposal={t.contact ? () => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price }) : undefined} />
               </Reveal>
             ))}
           </div>
@@ -4422,7 +4472,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', stripeKey: 'ongoing_intel', desc: 'Continuous competitor tracking. Monthly briefings. Ad hoc alerts on significant moves. Dedicated analyst contact.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} desc={t.desc} onBuy={() => openCheckoutModal(t.stripeKey)} />
+                <PriceTierCard tier={t.tier} price={t.price} onBuy={() => openCheckoutModal({ key: t.stripeKey, tier: t.tier, desc: t.desc, price: t.price })} />
               </Reveal>
             ))}
           </div>
@@ -4437,28 +4487,25 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               { tier: 'Platform Build', price: '€75,000', stripeKey: null,                              desc: 'Full product build. Custom infrastructure, API design, data pipelines, native apps, dedicated team. Ongoing engagement.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} desc={t.desc}
-                  onBuy={t.stripeKey ? () => openCheckoutModal(t.stripeKey!) : undefined}
-                  onProposal={!t.stripeKey ? () => { proposalRequest(t.tier); location.hash = '#contact' } : undefined} />
+                <PriceTierCard tier={t.tier} price={t.price}
+                  onBuy={t.stripeKey ? () => openCheckoutModal({ key: t.stripeKey!, tier: t.tier, desc: t.desc, price: t.price }) : undefined}
+                  onProposal={!t.stripeKey ? () => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price }) : undefined} />
               </Reveal>
             ))}
           </div>
 
           {/* Mobile App Development & Fixing */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>Mobile App Development &amp; Fixing</p>
-          <p style={{ color: 'var(--text2)', marginBottom: 20, maxWidth: 620, fontSize: 13, lineHeight: 1.7 }}>
-            Native Android &amp; iOS — built and fixed in-house. Send us your APK and we run root-level analysis, patch the bugs, or build the product from scratch. One team, no outsourced code.
-          </p>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Mobile App Development &amp; Fixing</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
             {[
+              { tier: 'Maintenance Retainer',  price: '€1,200 / mo', desc: 'Ongoing patch cadence, store-compliance monitoring, dependency + SDK hygiene. Priority response, dedicated contact.' },
               { tier: 'APK Review & Bugfix',  price: 'from €1,500', desc: 'Send us your APK. Root-level code analysis, crash + vulnerability triage, concrete patch guidance. Android & iOS. Fixed-scope, 1-week turnaround.' },
               { tier: 'App Build',            price: 'from €9,000', desc: 'We build your native app end-to-end — Kotlin/Swift + Rust backend, Play & App Store submission handled. Everything in-house.' },
-              { tier: 'Maintenance Retainer',  price: '€1,200 / mo', desc: 'Ongoing patch cadence, store-compliance monitoring, dependency + SDK hygiene. Priority response, dedicated contact.' },
               { tier: 'Full Mobile Product',   price: 'on request',  desc: 'Complete mobile product from spec to launch. Custom infrastructure, API design, native apps, dedicated team. Ongoing engagement.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} desc={t.desc} highlight
-                  onProposal={() => { proposalRequest(t.tier); location.hash = '#contact' }} />
+                <PriceTierCard tier={t.tier} price={t.price} highlight
+                  onProposal={() => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price })} />
               </Reveal>
             ))}
           </div>
@@ -4475,13 +4522,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               { tier: 'Business Consulting Package', desc: 'Applying the Emergent Interaction / Case Intelligence method to your own organization - process reconstruction, framework derivation, agent architecture design, delivered jointly with our coop partner.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right'] as const)[i % 3]}>
-                <PriceTierCard tier={t.tier} price="on request" desc={t.desc}
-                  onProposal={() => { proposalRequest(t.tier); location.hash = '#contact' }} />
+                <PriceTierCard tier={t.tier} price="on request"
+                  onProposal={() => openProposalModal({ tier: t.tier, desc: t.desc, price: 'on request' })} />
               </Reveal>
             ))}
             <Reveal delay={3} from="right">
               <PriceTierCard tier="Phone Sanitizing" price="free"
-                desc='First session free - send us your phone, we disable background tracking scripts permanently. DNS-over-HTTPS, backup hardening, full before/after audit report. By appointment.' />
+                onProposal={() => openProposalModal({ tier: 'Phone Sanitizing', price: 'free', desc: 'First session free - send us your phone, we disable background tracking scripts permanently. DNS-over-HTTPS, backup hardening, full before/after audit report. By appointment.' })} />
             </Reveal>
           </div>
 
@@ -4516,22 +4563,22 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 <a href={p.gh ? `https://github.com/${p.gh}` : undefined} target="_blank" rel="noopener"
                    style={{
                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
-                     background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+                     background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
                      borderRadius: 14, padding: 20, textAlign: 'center', textDecoration: 'none',
                      height: '100%', transition: 'border-color 0.15s', cursor: p.gh ? 'pointer' : 'default',
                    }}
                    onMouseEnter={e => { if (p.gh) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.4)' }}
-                   onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)' }}>
+                   onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)' }}>
                   {p.gh ? (
                     // Self-hosted, not hotlinked: an <img> pointed straight at github.com/user.png
                     // triggers GitHub's own Set-Cookie headers on the response, which the browser
                     // (correctly) rejects as third-party in a cross-site context - harmless, but
                     // noisy console warnings on every load. A local copy avoids the request entirely.
                     <img src={`/team/${p.gh}.png`} alt={p.name} loading="lazy"
-                         style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.08)', objectFit: 'cover' }} />
+                         style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid var(--border)', objectFit: 'cover' }} />
                   ) : (
                     <div style={{
-                      width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.08)',
+                      width: 56, height: 56, borderRadius: '50%', border: '2px solid var(--border)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 20, fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
                     }}>{p.name[0]}</div>
@@ -4565,7 +4612,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <Reveal from="bottom" delay={1}>
             <div style={{
               display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 20,
-              background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+              background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
               borderRadius: 14, padding: '28px 28px',
             }}>
               <div>
@@ -4598,8 +4645,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   <a key={i} href={c.href} target="_blank" rel="noopener noreferrer"
                      style={{
                        fontSize: 11, fontWeight: 700, padding: '6px 12px', borderRadius: 999,
-                       border: `1px solid ${c.live ? 'rgba(16,185,129,.5)' : 'rgba(255,255,255,0.1)'}`,
-                       color: c.live ? '#10b981' : '#a0a0b8',
+                       border: `1px solid ${c.live ? 'rgba(16,185,129,.5)' : 'var(--border)'}`,
+                       color: c.live ? '#10b981' : 'var(--text2)',
                        textDecoration: 'none', whiteSpace: 'nowrap',
                      }}>
                     {c.label}
@@ -4616,7 +4663,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               ].map((p, i) => (
                 <a key={i} href={p.href} target="_blank" rel="noopener noreferrer" style={{
                   display: 'flex', flexDirection: 'column', gap: 4, padding: '14px 16px',
-                  background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
                   borderRadius: 10, textDecoration: 'none', transition: 'border-color .15s',
                 }}>
                   <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{p.name}</span>
@@ -4669,15 +4716,15 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
                 <input type="text" placeholder="Name or alias (optional - leave blank to stay anonymous)"
                   value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
                 <input type="email" placeholder="Email (optional - only if you want follow-up)"
                   value={tipForm.email} onChange={e => setTipForm(p => ({ ...p, email: e.target.value }))}
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
                 <input type="text" required placeholder="Company / app / target"
                   value={tipForm.target} onChange={e => setTipForm(p => ({ ...p, target: e.target.value }))}
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
                 <select value={tipForm.credit} onChange={e => setTipForm(p => ({ ...p, credit: e.target.value }))} style={{
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
                   borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
                 }}>
                   <option value="alias">Credit me by alias / name I provide above</option>
@@ -4686,7 +4733,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 </select>
                 <textarea required placeholder="What did you find? Include what it is, where you found it, and how to reproduce it."
                   value={tipForm.finding} onChange={e => setTipForm(p => ({ ...p, finding: e.target.value }))}
-                  rows={6} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
+                  rows={6} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
                 <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
                   <input type="checkbox" required checked={tipForm.lawful}
                     onChange={e => setTipForm(p => ({ ...p, lawful: e.target.checked }))}
@@ -4734,13 +4781,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 <input key={f} type={f === 'email' ? 'email' : 'text'} required placeholder={f === 'name' ? 'Name' : 'Email'}
                   value={form[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))}
                   style={{
-                    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+                    background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
                     borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none',
                     fontFamily: 'inherit',
                   }} />
               ))}
               <select value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} style={{
-                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+                background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
                 borderRadius: 8, padding: '12px 16px', color: form.subject ? '#e8e8f0' : '#606080',
                 fontSize: 14, outline: 'none', fontFamily: 'inherit',
               }}>
@@ -4754,7 +4801,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               <textarea required placeholder="Message" value={form.message}
                 onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
                 rows={5} style={{
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
                   borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14,
                   outline: 'none', resize: 'vertical', fontFamily: 'inherit',
                 }} />
@@ -4778,12 +4825,12 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {CONTACT_CARDS.map(c => (
                 <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+                  background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
                   borderRadius: 12, padding: '18px 20px', textDecoration: 'none', display: 'block',
                   transition: 'border-color 0.2s',
                 }}
                   onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)')}>
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
                   <div style={{ fontSize: 10, fontFamily: 'monospace', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
                   <div style={{ color: 'var(--accent-text)', fontWeight: 600, fontSize: 13 }}>{c.value}</div>
                 </a>
@@ -4802,7 +4849,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       </section>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '48px 2rem 32px', textAlign: 'center' }}>
+      <footer style={{ borderTop: '1px solid var(--border)', padding: '48px 2rem 32px', textAlign: 'center' }}>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
           <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.85 }}>
             <svg viewBox="0 0 420 100" width="150" height="36" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
