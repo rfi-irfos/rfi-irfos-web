@@ -3096,16 +3096,82 @@ const CONTACT_CARDS = [
   { label: 'Careers', value: 'career@rfi-irfos.com', href: 'mailto:career@rfi-irfos.com' },
 ]
 
-function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
+// Continuous scroll-tied progress (same smoothstep math as Reveal, not a one-shot
+// IntersectionObserver) - each card and dot reveals as it scrolls into range and
+// un-reveals scrolling back past it, same "builds itself in, comes apart going back
+// up" effect the rest of the page uses, tuned slightly snappier for the timeline's
+// left/right alternating cards.
+function useScrollProgress(ref: React.RefObject<HTMLDivElement | null>) {
+  const [progress, setProgress] = useState(0)
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    const obs = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect() } }, { threshold: 0.2 })
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [])
+    let rafId = 0
+    const update = () => {
+      const rect = el.getBoundingClientRect()
+      const vh = window.innerHeight
+      const lin = Math.max(0, Math.min(1, (vh * 0.9 - rect.top) / (vh * 0.3)))
+      setProgress(lin * lin * (3 - 2 * lin))
+    }
+    const onScroll = () => { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(update) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    update()
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(rafId) }
+  }, [ref])
+  return progress
+}
+
+// Fill-line progress for the whole timeline track (distinct from useScrollProgress,
+// which is per-card): 0 when the track's top hasn't reached the activation line yet,
+// 1 once its bottom has passed it - the "scrubber" that grows going down the page and
+// shrinks back going up, same activation fraction (0.55 * viewport height) the cards
+// individually key off so the line and the cards stay visually in sync.
+function useTrackProgress(ref: React.RefObject<HTMLDivElement | null>) {
+  const [progress, setProgress] = useState(0)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    let rafId = 0
+    const update = () => {
+      const rect = el.getBoundingClientRect()
+      const activationY = window.innerHeight * 0.55
+      const p = (activationY - rect.top) / rect.height
+      setProgress(Math.max(0, Math.min(1, p)))
+    }
+    const onScroll = () => { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(update) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    update()
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(rafId) }
+  }, [ref])
+  return progress
+}
+
+function TimelineTrack({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const progress = useTrackProgress(ref)
+  return (
+    <div ref={ref} style={{ position: 'relative' }}>
+      <div style={{
+        position: 'absolute', left: '50%', top: 0, bottom: 0, width: 2,
+        background: 'rgba(0,245,196,0.15)', transform: 'translateX(-50%)',
+      }} />
+      <div style={{
+        position: 'absolute', left: '50%', top: 0, width: 2,
+        height: `${progress * 100}%`,
+        background: TEAL, boxShadow: `0 0 10px ${TEAL}`,
+        transform: 'translateX(-50%)', zIndex: 1, willChange: 'height',
+      }} />
+      {children}
+    </div>
+  )
+}
+
+function TimelineItem({ m }: { m: typeof MILESTONES[0] }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const progress = useScrollProgress(ref)
+  const visible = progress > 0.5
   const isPublication = m.tag === 'publication'
   const innerStyle: React.CSSProperties = {
     background: isPublication ? 'rgba(0,245,196,0.04)' : 'rgba(255,255,255,0.03)',
@@ -3129,22 +3195,23 @@ function TimelineItem({ m, i }: { m: typeof MILESTONES[0]; i: number }) {
         onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = isPublication ? 'rgba(0,245,196,0.18)' : 'rgba(255,255,255,0.08)' }}
       >{innerContent}</a>
     : <div style={innerStyle}>{innerContent}</div>
+  const sideSign = m.side === 'left' ? -1 : 1
   return (
     <div ref={ref} style={{
       display: 'flex',
       justifyContent: m.side === 'left' ? 'flex-start' : 'flex-end',
       position: 'relative',
-      opacity: visible ? 1 : 0,
-      transform: visible ? 'translateY(0)' : `translateY(24px)`,
-      transition: `opacity 0.5s ease ${i * 0.06}s, transform 0.5s ease ${i * 0.06}s`,
+      opacity: progress,
+      transform: `translateY(${(1 - progress) * 16}px) translateX(${sideSign * (1 - progress) * 36}px)`,
+      willChange: 'opacity, transform',
     }}>
       <div style={{
         position: 'absolute', left: '50%', top: 20,
-        transform: 'translate(-50%, -50%)',
+        transform: `translate(-50%, -50%) scale(${0.4 + progress * 0.6})`,
         width: isPublication ? 14 : 12, height: isPublication ? 14 : 12, borderRadius: '50%',
-        background: visible ? TEAL : 'rgba(0,245,196,0.2)',
+        background: TEAL,
+        opacity: 0.3 + progress * 0.7,
         boxShadow: visible ? `0 0 ${isPublication ? 16 : 12}px ${TEAL}` : 'none',
-        transition: `background 0.3s ease ${i * 0.06 + 0.2}s, box-shadow 0.3s ease ${i * 0.06 + 0.2}s`,
         zIndex: 2,
       }} />
       <div style={{ width: '44%' }}>{card}</div>
@@ -4303,17 +4370,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 / Chronicle</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 64, textAlign: 'center' }}>how we came to be</h2>
           </Reveal>
-          <div style={{ position: 'relative' }}>
-            <div style={{
-              position: 'absolute', left: '50%', top: 0, bottom: 0, width: 2,
-              background: 'rgba(0,245,196,0.2)', transform: 'translateX(-50%)',
-            }} />
+          <TimelineTrack>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
               {MILESTONES.map((m, i) => (
-                <TimelineItem key={i} m={m} i={i} />
+                <TimelineItem key={i} m={m} />
               ))}
             </div>
-          </div>
+          </TimelineTrack>
         </div>
       </section>
 
