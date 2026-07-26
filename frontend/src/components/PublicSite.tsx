@@ -3654,7 +3654,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               <ThemeIcon t={theme} />
             </button>
 
-            <a href="mailto:contact@rfi-irfos.com" title="Contact" aria-label="Contact"
+            <a href="mailto:contact@rfi-irfos.com" title="contact@rfi-irfos.com" aria-label="Contact — contact@rfi-irfos.com"
               style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 width: 38, height: 38, borderRadius: 8,
@@ -3705,7 +3705,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               cursor: 'pointer',
             }}><ThemeIcon t={theme} /></button>
 
-            <a href="mailto:contact@rfi-irfos.com" title="Contact" aria-label="Contact"
+            <a href="mailto:contact@rfi-irfos.com" title="contact@rfi-irfos.com" aria-label="Contact — contact@rfi-irfos.com"
               style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 width: 48, height: 48, borderRadius: 8,
