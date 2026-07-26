@@ -73,6 +73,7 @@ function ProjectCard({ p }: { p: typeof PROJECTS[number] }) {
       <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
       {p.link && (
         <a href={p.link} target="_blank" rel="noopener noreferrer"
+          onClick={() => beacon('project_click:' + p.name)}
           style={{ color: 'var(--accent-text)', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
           {p.link.includes('crates.io') ? 'View on crates.io' : p.link.includes('github.com') ? 'View on GitHub' : 'View live'} &rarr;
         </a>
@@ -91,6 +92,7 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
   const extended = [...projects.slice(-perView), ...projects, ...projects.slice(0, perView)]
   const [idx, setIdx] = useState(perView)
   const [animate, setAnimate] = useState(true)
+  const carouselUsed = useRef(false)
 
   // perView changes (resize across a breakpoint) invalidate the clone layout - reset clean.
   useEffect(() => { setAnimate(false); setIdx(perView) }, [perView])
@@ -100,7 +102,12 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
     return () => cancelAnimationFrame(id)
   }, [animate])
 
-  const go = (dir: number) => { setAnimate(true); setIdx(i => i + dir) }
+  const go = (dir: number) => {
+    // One beacon per visit, not per click - the question is "does anyone engage
+    // with the carousel at all", not click-by-click granularity.
+    if (!carouselUsed.current) { carouselUsed.current = true; beacon('projects_carousel_used') }
+    setAnimate(true); setIdx(i => i + dir)
+  }
   const handleTransitionEnd = () => {
     if (idx >= n + perView) { setAnimate(false); setIdx(idx - n) }
     else if (idx < perView) { setAnimate(false); setIdx(idx + n) }
@@ -307,6 +314,76 @@ function beacon(section: string, extra?: Record<string, string>) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   }).catch(() => {})
+}
+
+// Core Web Vitals (LCP, CLS) beamed once per page-load through the same first-party
+// pixel as everything else here - no cookie, no visitor id, just "was this page slow
+// or janky for someone." LCP/CLS both only finalize once the page is hidden/unloaded
+// (the browser can keep painting/shifting content after that point in some cases, but
+// this is the standard capture pattern), so we report on visibilitychange/pagehide,
+// not on mount.
+function useWebVitals() {
+  useEffect(() => {
+    if (typeof PerformanceObserver === 'undefined') return
+    let lcp = 0
+    let cls = 0
+    try {
+      new PerformanceObserver(list => {
+        const entries = list.getEntries()
+        const last = entries[entries.length - 1] as PerformanceEntry & { renderTime?: number; loadTime?: number }
+        lcp = last.renderTime || last.loadTime || last.startTime
+      }).observe({ type: 'largest-contentful-paint', buffered: true })
+    } catch { /* unsupported browser - skip, not critical */ }
+    try {
+      new PerformanceObserver(list => {
+        for (const entry of list.getEntries() as unknown as { value: number; hadRecentInput: boolean }[]) {
+          if (!entry.hadRecentInput) cls += entry.value
+        }
+      }).observe({ type: 'layout-shift', buffered: true })
+    } catch { /* unsupported browser - skip, not critical */ }
+
+    let reported = false
+    const report = () => {
+      if (reported || (lcp === 0 && cls === 0)) return
+      reported = true
+      beacon('web_vitals', { lcp: String(Math.round(lcp)), cls: cls.toFixed(3) })
+    }
+    const onVisibility = () => { if (document.visibilityState === 'hidden') report() }
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pagehide', report)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pagehide', report)
+    }
+  }, [])
+}
+
+// Form-abandonment signal: did someone type into a form and then leave without
+// submitting it. Fires at most once per form per visit, only if the form actually has
+// content in it (never on an untouched, empty form) and was never successfully sent.
+// No field values are sent - just the fact that abandonment happened, on which form.
+function useFormAbandonment(name: string, values: Record<string, unknown>, state: string) {
+  const touchedRef = useRef(false)
+  const reportedRef = useRef(false)
+  useEffect(() => {
+    if (Object.entries(values).some(([k, v]) => k !== 'botcheck' && typeof v === 'string' && v.trim() !== '')) {
+      touchedRef.current = true
+    }
+  })
+  useEffect(() => {
+    const report = () => {
+      if (reportedRef.current || !touchedRef.current || state === 'ok') return
+      reportedRef.current = true
+      beacon('form_abandoned:' + name)
+    }
+    const onVisibility = () => { if (document.visibilityState === 'hidden') report() }
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pagehide', report)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pagehide', report)
+    }
+  }, [name, state])
 }
 
 const NAV_LINKS = [
@@ -923,6 +1000,20 @@ const AUDIT_HIGHLIGHTS: { target: string; market: string; sev: string; status: s
   { target: 'Salesforce',         market: 'NYSE',    sev: 'CRITICAL', status: 'SUBSTANTIVE', finding: 'Seven-app Android ecosystem audit. Hardcoded Firebase key found inside the MFA Authenticator app itself. Employee-location surveillance stack present across the enterprise field-service suite. User-CA trust enabled in production CRM builds. Salesforce security team responded with a real case number (#03754755). — meaning Across Salesforce\'s seven-app Android ecosystem, the multi-factor authenticator app itself hardcodes a Firebase key, the field-service suite can surveil employee locations, and production CRM builds trust user-installed certificate authorities that let network traffic be intercepted. For businesses and their staff relying on Salesforce, the security tool meant to protect logins is itself exposed and the platform enables both worker tracking and man-in-the-middle interception, though Salesforce did open a real case.' },
   { target: 'Generali AT Mobility', market: 'PRIVATE', sev: 'HIGH', status: 'WAITING', finding: 'com.generali.at.mobility. The MOVE telematics SDK scores driving behavior and generates insurance-relevant profiles without a clear consent gate. Facebook SDK present at 4,418 classes inside an insurance app. An exported ClipboardFileProvider component is reachable by any other app on the device. — meaning An Austrian insurance app\'s telematics SDK scores how you drive and builds insurance-relevant profiles with no clear consent gate, packs Facebook\'s SDK at over 4,400 classes, and exposes a clipboard component any other app on the device can reach. For policyholders, that means driving behavior is profiled for insurance purposes, shared with Meta\'s network, and your clipboard is open to other apps, all without an obvious consent step.' },
   { target: 'BetterHelp + TeenCounseling', market: 'PRIVATE', sev: 'CRITICAL', status: 'WAITING', finding: 'com.betterhelp / com.teencounseling. Two Teladoc-owned therapy platforms, disclosed together, distinct from the separately-listed Regain app. Facebook SDK remains active in both apps after the company\'s 2023 $7.8M FTC settlement over disclosing therapy-relevant data to advertisers. Session/backup data for minors (TeenCounseling) is included. — meaning Two therapy platforms owned by Teladoc still run Facebook\'s SDK even after the company paid $7.8 million to US regulators in 2023 for handing therapy data to advertisers, and one of them, TeenCounseling, includes minors\' session and backup data. For people, including children, seeking mental-health help, the exact sensitive data flow that was supposedly settled is still active inside apps meant to be confidential.' },
+]
+
+// A handful of real, notable entries pulled from AUDIT_HIGHLIGHTS - shown by default
+// instead of the full 300+-row search/filter/table, which was the heaviest, most
+// intimidating thing on the page for a first-time visitor still deciding whether to
+// trust the institute. Every meaning line here is the actual verbatim finding text,
+// not paraphrased or invented for this summary view.
+const TRACK_RECORD_HIGHLIGHTS = [
+  { target: 'Pokemon GO', market: 'NYSE', sev: 'CRITICAL', status: 'WAITING', meaning: '3D scan data players generated by walking around their own neighbourhoods to play a mobile game has been licensed onward into a US military mapping contract - a use nobody agreeing to "play a location game" could have anticipated or consented to.' },
+  { target: 'WhatsApp', market: 'NASDAQ', sev: 'CRITICAL', status: 'WAITING', meaning: 'WhatsApp\'s core marketing promise, that not even WhatsApp can read your messages, has an asterisk: the Meta AI assistant embedded in chats can see plaintext content once invoked.' },
+  { target: 'Samsung Health', market: 'KRX', sev: 'CRITICAL', status: 'WAITING', meaning: 'A wristband/phone app that reads 16 categories of Art. 9 special-category health data feeds that data into an undisclosed AI-driven behavioural profiling system, including inside a children\'s-account mode.' },
+  { target: 'TikTok', market: 'PRIVATE', sev: 'CRITICAL', status: 'CS-DEFLECT', meaning: 'Data collected from EU users\' phones flows through infrastructure China\'s National Intelligence Law can compel to hand over to state intelligence. TikTok\'s response was to redirect the formal GDPR disclosure to its bug-bounty program.' },
+  { target: 'Trade Republic', market: 'PRIVATE', sev: 'HIGH', status: 'CS-DEFLECT', meaning: 'A BaFin-licensed bank handling securities trades, SEPA transfers and crypto custody directed five identical automated "use the in-app help center" replies over 19 days to a documented GDPR disclosure, never once looping in the regulators kept in CC.' },
+  { target: 'Wolt', market: 'PRIVATE', sev: 'CRITICAL', status: 'ENGAGED', meaning: '13 findings including hard-coded credentials and a broken certificate-pinning setup on an app handling your orders and payment - the company is actively engaging with a tracked ticket, not deflecting.' },
 ]
 
 const SEV_COLOR: Record<string, string> = {
@@ -3321,9 +3412,16 @@ export function PublicSite() {
   const [formState, setFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
   const [tipForm, setTipForm] = useState({ handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false, botcheck: '' })
   const [tipFormState, setTipFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
+  useFormAbandonment('contact', form, formState)
+  useFormAbandonment('submit_tip', tipForm, tipFormState)
   const pixelRef = useRef<HTMLImageElement>(null)
   const ledgerRef = useRef<HTMLDivElement>(null)
   const [ledgerFired, setLedgerFired] = useState(false)
+  // Track Record used to force every visitor through the full search/filter/sortable
+  // table by default - the heaviest, most intimidating thing on the page for someone
+  // still deciding whether the institute is legitimate. Now it shows a handful of
+  // curated, real entries first; the full ledger is one click away, not the default view.
+  const [ledgerExpanded, setLedgerExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [activeStatus, setActiveStatus] = useState<string | null>(null)
   const [activeSev, setActiveSev] = useState<string | null>(null)
@@ -3500,6 +3598,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   }, [])
   const mobile = useMobile()
   const closeMobile = useCallback(() => setMobileOpen(false), [])
+  useWebVitals()
 
   useEffect(() => {
     const el = ledgerRef.current; if (!el) return
@@ -4075,6 +4174,44 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             {' '}listed companies · GDPR Art. 5/8/9/13/25/32/44 · COPPA · EU AI Act (minor provisions) · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at · FTC
           </div>
 
+          {!ledgerExpanded && (
+            <div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 20, flexWrap: 'wrap' }}>
+                <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', margin: 0 }}>A few from the ledger</h3>
+                <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)' }}>{AUDIT_HIGHLIGHTS.length} companies on file · these six are real, not cherry-picked for softness</span>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: 16, marginBottom: 28 }}>
+                {TRACK_RECORD_HIGHLIGHTS.map((h, i) => (
+                  <Reveal key={h.target} delay={i % 3} from={(['left', 'bottom', 'right'] as const)[i % 3]}>
+                    <div style={{
+                      background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 12,
+                      padding: '18px 20px', height: '100%', display: 'flex', flexDirection: 'column', gap: 10,
+                    }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                        <span style={{ fontWeight: 800, fontSize: 14, color: 'var(--text)' }}>{h.target}</span>
+                        <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+                          <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, letterSpacing: '0.06em', padding: '2px 7px', borderRadius: 10, color: h.sev === 'CRITICAL' ? '#f87171' : '#fb923c', border: `1px solid ${h.sev === 'CRITICAL' ? 'rgba(248,113,113,0.35)' : 'rgba(251,146,60,0.35)'}` }}>{h.sev}</span>
+                          <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, letterSpacing: '0.06em', padding: '2px 7px', borderRadius: 10, color: STATUS_META[h.status]?.color ?? TEAL, border: `1px solid ${STATUS_META[h.status]?.color ?? TEAL}55` }}>{STATUS_META[h.status]?.label ?? h.status}</span>
+                        </div>
+                      </div>
+                      <p style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.7, margin: 0, flex: 1 }}>{h.meaning}</p>
+                      <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>{h.market}</span>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+              <button onClick={() => setLedgerExpanded(true)} style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8, padding: '11px 20px',
+                background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 8,
+                color: 'var(--accent-text)', fontSize: 13, fontFamily: 'monospace', fontWeight: 600,
+                cursor: 'pointer', letterSpacing: '0.04em', marginBottom: 48,
+              }}>
+                explore the full {AUDIT_HIGHLIGHTS.length}-entry ledger →
+              </button>
+            </div>
+          )}
+          {ledgerExpanded && (
+          <>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
             <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', margin: 0 }}>Permanent disclosure ledger</h3>
             <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)' }}>{AUDIT_HIGHLIGHTS.length} companies · live response tracking · disclosure 2026-09-19</span>
@@ -4409,7 +4546,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </div>
           <p style={{ marginTop: 12, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
             this ledger is updated in real time as companies respond. silence is public. · <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
+            {' · '}
+            <button onClick={() => setLedgerExpanded(false)} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--text3)', fontFamily: 'monospace', fontSize: 10, cursor: 'pointer', textDecoration: 'underline' }}>
+              ← back to highlights
+            </button>
           </p>
+          </>
+          )}
         </div>
       </section>
 
@@ -4819,6 +4962,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
             {/* right: links */}
             <Reveal from="right">
+            <p style={{ fontSize: 12.5, color: 'var(--text3)', marginBottom: 14 }}>
+              Not sure which? <strong style={{ color: 'var(--text2)' }}>General inquiries</strong> reaches a human either way.
+            </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {CONTACT_CARDS.map(c => (
                 <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
