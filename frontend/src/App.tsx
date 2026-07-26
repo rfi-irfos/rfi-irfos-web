@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { PublicSite } from './components/PublicSite'
 import { LegalPage } from './components/LegalPage'
 import './App.css'
@@ -11,16 +11,29 @@ function getSlug() {
 
 export default function App() {
   const [slug, setSlug] = useState(getSlug)
+  const homeScrollY = useRef(0)
+
   useEffect(() => {
     const onHash = () => setSlug(getSlug())
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
-  // Legal pages are a separate route — when the hash flips to / from a #p/…
-  // route, reset scroll to the top so visitors don't land at the bottom.
+
+  // Track scroll position on the homepage only, so a visit to a legal page
+  // and back doesn't strand them at the top having to scroll back down.
   useEffect(() => {
-    if (slug) window.scrollTo(0, 0)
+    if (slug) return
+    const onScroll = () => { homeScrollY.current = window.scrollY }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [slug])
+
+  // Legal pages are a separate route — jump to top when entering one, restore
+  // the remembered homepage position when leaving.
+  useEffect(() => {
+    window.scrollTo(0, slug ? 0 : homeScrollY.current)
+  }, [slug])
+
   if (slug) return <LegalPage slug={slug} />
   return <PublicSite />
 }
