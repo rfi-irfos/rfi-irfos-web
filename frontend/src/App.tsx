@@ -14,6 +14,10 @@ export default function App() {
   const homeScrollY = useRef(0)
 
   useEffect(() => {
+    // Take over scroll restoration ourselves so the browser's own (which fires
+    // on popstate, i.e. the real back/forward buttons) can't race the manual
+    // restore below and snap the page to the wrong spot.
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
     const onHash = () => setSlug(getSlug())
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)

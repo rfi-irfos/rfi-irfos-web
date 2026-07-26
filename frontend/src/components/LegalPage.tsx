@@ -42,7 +42,11 @@ export function LegalPage({ slug }: { slug: string }) {
     <div style={BASE}>
       <div style={PROSE}>
         <div style={{ marginBottom: 40 }}>
-          <a href="/" style={{ ...A, fontFamily: 'monospace', fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+          <a
+            href="#"
+            onClick={e => { e.preventDefault(); location.hash = '' }}
+            style={{ ...A, fontFamily: 'monospace', fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase' }}
+          >
             &larr; rfi-irfos.com
           </a>
         </div>
