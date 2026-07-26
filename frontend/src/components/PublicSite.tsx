@@ -4392,7 +4392,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </Reveal>
 
           {/* Security Audit tiers */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: 48 }}>
             {([
               { tier: 'Public',                   price: 'free',      desc: 'Full public disclosure. Findings published after 90-day coordinated embargo. No NDA. First phone sanitizing session included.', highlight: false, stripeKey: null,            contact: false },
@@ -4436,7 +4436,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </Reveal>
 
           {/* Device Privacy Hardening */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Device Privacy Hardening - by appointment</p>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Device Privacy Hardening - by appointment</p>
           <Reveal from="right">
           <div style={{
             background: 'rgba(0,245,196,0.04)', border: '1px solid rgba(0,245,196,0.18)',
@@ -4452,7 +4452,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </Reveal>
 
           {/* Market Research & Competitor Analysis */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Market Research &amp; Competitor Analysis</p>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Market Research &amp; Competitor Analysis</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 48 }}>
             {[
               { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  desc: 'Sector landscape report. Key player mapping. Regulatory environment. 10-page minimum. Delivered in 5 business days.' },
@@ -4467,7 +4467,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </div>
 
           {/* Web Development */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Web Development</p>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Web Development</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
             {[
               { tier: 'Landing Page',   price: '€1,500',  stripeKey: 'web_landing'   as string | null, desc: 'Single-page site. React + our open-source template. Live in 48 hours.' },
@@ -4484,7 +4484,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </div>
 
           {/* Mobile App Development & Fixing */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 8 }}>Mobile App Development &amp; Fixing</p>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>Mobile App Development &amp; Fixing</p>
           <p style={{ color: 'var(--text2)', marginBottom: 20, maxWidth: 620, fontSize: 13, lineHeight: 1.7 }}>
             Native Android &amp; iOS — built and fixed in-house. Send us your APK and we run root-level analysis, patch the bugs, or build the product from scratch. One team, no outsourced code.
           </p>
@@ -4506,7 +4506,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               Gaviria / Emergent Interaction Lab. No Stripe checkout: these are
               bespoke engagements, always "on request" via #contact. See the
               COOP PARTNERS section below for who Laura is and the crates. */}
-          <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>Research Cooperation - via our coop partner, on request</p>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Research Cooperation - via our coop partner, on request</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 16, marginBottom: 48 }}>
             {[
               { tier: 'Lauras Team',       desc: 'Access to the multi-agent system directed by Laura Serna Gaviria - one SWAT lead team directing 15 specialised sub-agents, built on her Emergent Interaction method. Scoped engagement per case.' },
