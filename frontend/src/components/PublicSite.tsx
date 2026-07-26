@@ -4977,9 +4977,16 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         <div ref={bannerRef} style={{
                   position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
                   maxWidth: 640, margin: '0 auto',
-                  background: theme === 'dark' ? '#000000' : 'rgba(255,255,255,0.25)',
-                  border: '1px solid var(--border)', borderRadius: 12,
-                  padding: '20px 24px', boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
+                  background: theme === 'dark'
+                    ? 'linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
+                    : 'rgba(255,255,255,0.25)',
+                  backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
+                  border: theme === 'dark' ? '1px solid rgba(255,255,255,0.09)' : '1px solid var(--border)',
+                  borderRadius: 12,
+                  padding: '20px 24px',
+                  boxShadow: theme === 'dark'
+                    ? 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 40px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.5)'
+                    : '0 8px 32px rgba(0,0,0,0.35)',
                   display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
                   transform: bannerClosing ? 'scale(0.85)' : 'scale(1)',
                   opacity: bannerClosing ? 0 : 1,
@@ -4995,7 +5002,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     <button
                       onClick={() => {}}
                       style={{
-                        background: 'transparent', color: theme === 'dark' ? '#ffffff' : '#000000', border: '1px solid var(--border)',
+                        background: 'transparent', color: theme === 'dark' ? '#ffffff' : '#000000',
+                        border: theme === 'dark' ? '2px solid #ffffff' : '1px solid var(--border)',
                         borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
                       }}
                     >
