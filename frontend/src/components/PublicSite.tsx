@@ -3646,11 +3646,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
             <button onClick={cycle} title={`Theme: ${THEME_LABEL[theme]} (click to switch)`} aria-label={`Current theme ${THEME_LABEL[theme]}, click to switch theme`} style={{
               width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: 'transparent', color: 'var(--text3)', border: '1px solid var(--border)', borderRadius: 8,
+              background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
               cursor: 'pointer', transition: 'background 0.15s, color 0.15s, border-color 0.15s',
             }}
               onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = 'var(--text)' }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text3)' }}>
+              onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg2)'; e.currentTarget.style.color = 'var(--text2)' }}>
               <ThemeIcon t={theme} />
             </button>
 
@@ -3701,7 +3701,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <div style={{ display: 'flex', gap: 8, marginTop: 24, alignSelf: 'flex-start' }}>
             <button onClick={cycle} title={`Theme: ${THEME_LABEL[theme]} (click to switch)`} aria-label={`Current theme ${THEME_LABEL[theme]}, click to switch theme`} style={{
               width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: 'transparent', color: 'var(--text3)', border: '1px solid var(--border)', borderRadius: 8,
+              background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
               cursor: 'pointer',
             }}><ThemeIcon t={theme} /></button>
 

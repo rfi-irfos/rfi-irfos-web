@@ -6,11 +6,13 @@ export const THEMES: Theme[] = ['light', 'dark', 'hc']
 
 const KEY = 'rfi-theme'
 
+// Dark is the site's standard/default theme regardless of OS color-scheme preference -
+// only an explicit accessibility signal (prefers-contrast) or the visitor's own saved
+// choice (localStorage, checked before this ever runs) overrides it.
 function systemTheme(): Theme {
-  if (typeof window === 'undefined' || !window.matchMedia) return 'light'
+  if (typeof window === 'undefined' || !window.matchMedia) return 'dark'
   if (window.matchMedia('(prefers-contrast: more)').matches) return 'hc'
-  if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark'
-  return 'light'
+  return 'dark'
 }
 
 /**
@@ -25,7 +27,7 @@ export function useTheme(): {
   cycle: () => void
 } {
   const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof localStorage === 'undefined') return 'light'
+    if (typeof localStorage === 'undefined') return 'dark'
     const saved = localStorage.getItem(KEY) as Theme | null
     return saved && THEMES.includes(saved) ? saved : systemTheme()
   })
