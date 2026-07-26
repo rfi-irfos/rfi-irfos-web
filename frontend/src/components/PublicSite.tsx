@@ -3659,7 +3659,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 width: 38, height: 38, borderRadius: 8,
                 background: ACCENT, border: `1px solid ${ACCENT}`,
-                color: '#ffffff', textDecoration: 'none', transition: 'opacity 0.15s',
+                // Light mode's ACCENT is a deep green - needs a white icon for contrast.
+                // Dark/hc's ACCENT is bright teal - black reads better there, same
+                // dark-text-on-teal-fill convention already used on the theme toggle.
+                color: theme === 'light' ? '#ffffff' : '#070711', textDecoration: 'none', transition: 'opacity 0.15s',
               }}
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
@@ -3710,7 +3713,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 width: 48, height: 48, borderRadius: 8,
                 background: ACCENT, border: `1px solid ${ACCENT}`,
-                color: '#ffffff', textDecoration: 'none', transition: 'opacity 0.15s',
+                color: theme === 'light' ? '#ffffff' : '#070711', textDecoration: 'none', transition: 'opacity 0.15s',
               }}
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
