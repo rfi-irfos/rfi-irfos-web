@@ -204,9 +204,13 @@ function PriceTierCard({ tier, price, highlight, onBuy, onProposal }: {
             style={{
               width: 34, height: 34, flexShrink: 0, borderRadius: '50%', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: onBuy ? 'var(--accent)' : 'transparent',
+              // Buy = solid teal fill (the "pay now" color used everywhere else on the
+              // page). Request-a-proposal is deliberately NOT a paler version of the same
+              // green - a solid neutral fill instead, so the two read as different KINDS
+              // of action at a glance, not just different intensities of the same one.
+              background: onBuy ? 'var(--accent)' : 'var(--bg3)',
               border: onBuy ? 'none' : '1px solid var(--border)',
-              color: onBuy ? 'var(--accent-fg)' : 'var(--text2)',
+              color: onBuy ? 'var(--accent-fg)' : 'var(--text)',
             }}
           >
             {onBuy ? <CartIcon /> : <ArrowIcon />}
@@ -3997,29 +4001,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 </div>
               </Reveal>
             ))}
-          </div>
-          <div style={{ marginTop: 64 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 8, color: 'var(--text)' }}>publications on OSF</h3>
-            <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', marginBottom: 16 }}>{PUBLICATIONS.length} total &middot; scroll for more &darr;</p>
-            <div data-native-scroll style={{ display: 'flex', flexDirection: 'column', gap: 2, maxHeight: 186, overflowY: 'auto', paddingRight: 4 }}>
-              {PUBLICATIONS.map(p => (
-                <a key={p.title} href={p.href} target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 18px', borderRadius: 10, textDecoration: 'none', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)', transition: 'border-color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.25)')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
-                  <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', minWidth: 32 }}>{p.year}</span>
-                  <span style={{ flex: 1 }}>
-                    <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--text)' }}>{p.title}</span>
-                    <span style={{ color: 'var(--text3)', fontSize: 12, display: 'block', marginTop: 2 }}>{p.sub}</span>
-                  </span>
-                  <span style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '3px 8px', borderRadius: 20, border: '1px solid rgba(0,245,196,0.25)', color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{p.tag}</span>
-                  <span style={{ color: 'var(--text4)', fontSize: 12 }}>↗</span>
-                </a>
-              ))}
-            </div>
-            <p style={{ marginTop: 16, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
-              119 projects on OSF &nbsp;·&nbsp; <a href="https://osf.io/rzvyg/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>osf.io/rzvyg</a>
-            </p>
           </div>
         </div>
       </section>
