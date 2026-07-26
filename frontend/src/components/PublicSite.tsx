@@ -3713,30 +3713,34 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       {checkoutModal && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
           <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '24px 20px 32px' : '32px 28px', maxWidth: mobile ? '100%' : 520, width: '100%', maxHeight: mobile ? '90vh' : '85vh', overflowY: 'auto' }}>
+            {/* This modal's chrome is deliberately always-dark (#0e0e1e), independent of the
+                site theme toggle - so every text color inside it is a fixed light hex, NOT a
+                var(--text*) token, which would resolve to near-black in light mode and read as
+                illegible grey-on-navy. */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 6 }}>
-              <h3 style={{ fontSize: mobile ? 18 : 20, fontWeight: 800, color: 'var(--text)' }}>{checkoutModal.tier}</h3>
-              <div style={{ fontSize: mobile ? 20 : 22, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{checkoutModal.price}</div>
+              <h3 style={{ fontSize: mobile ? 18 : 20, fontWeight: 800, color: '#e8e8f0' }}>{checkoutModal.tier}</h3>
+              <div style={{ fontSize: mobile ? 20 : 22, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>{checkoutModal.price}</div>
             </div>
-            <p style={{ color: 'var(--text2)', fontSize: 13.5, lineHeight: 1.7, marginBottom: 24 }}>{checkoutModal.desc}</p>
-            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 20 }}>
-              <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
+            <p style={{ color: '#a0a0b8', fontSize: 13.5, lineHeight: 1.7, marginBottom: 24 }}>{checkoutModal.desc}</p>
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
+              <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
               <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16, cursor: 'pointer' }}>
                 <input type="checkbox" checked={b2bChecked} onChange={e => setB2bChecked(e.target.checked)}
                   style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
-                <span style={{ color: 'var(--text2)', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                  I am acting as a <strong style={{ color: 'var(--text)' }}>business customer</strong> and confirm that this purchase is made in the course of my commercial or professional activity.
+                <span style={{ color: '#a0a0b8', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
+                  I am acting as a <strong style={{ color: '#e8e8f0' }}>business customer</strong> and confirm that this purchase is made in the course of my commercial or professional activity.
                 </span>
               </label>
               <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 24, cursor: 'pointer' }}>
                 <input type="checkbox" checked={agbChecked} onChange={e => setAgbChecked(e.target.checked)}
                   style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
-                <span style={{ color: 'var(--text2)', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                  I agree to the <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>Terms of Service</a>. I understand that the service <strong style={{ color: 'var(--text)' }}>begins immediately upon payment</strong> and that no right of withdrawal applies. Refunds are excluded.
+                <span style={{ color: '#a0a0b8', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
+                  I agree to the <a href="#p/agb" style={{ color: TEAL }}>Terms of Service</a>. I understand that the service <strong style={{ color: '#e8e8f0' }}>begins immediately upon payment</strong> and that no right of withdrawal applies. Refunds are excluded.
                 </span>
               </label>
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
                 <button onClick={() => cancelCheckout(checkoutModal.key)}
-                  style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--text3)', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
+                  style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, color: '#606080', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
                   Cancel
                 </button>
                 <button onClick={() => handleCheckout(checkoutModal.key)}
@@ -3755,18 +3759,20 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       {proposalModal && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
           <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '24px 20px 32px' : '32px 28px', maxWidth: mobile ? '100%' : 520, width: '100%', maxHeight: mobile ? '90vh' : '85vh', overflowY: 'auto' }}>
+            {/* Same fixed-light-on-dark rule as the checkout modal above - this chrome
+                doesn't follow the site theme either. */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 6 }}>
-              <h3 style={{ fontSize: mobile ? 18 : 20, fontWeight: 800, color: 'var(--text)' }}>{proposalModal.tier}</h3>
-              <div style={{ fontSize: mobile ? 20 : 22, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{proposalModal.price}</div>
+              <h3 style={{ fontSize: mobile ? 18 : 20, fontWeight: 800, color: '#e8e8f0' }}>{proposalModal.tier}</h3>
+              <div style={{ fontSize: mobile ? 20 : 22, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>{proposalModal.price}</div>
             </div>
-            <p style={{ color: 'var(--text2)', fontSize: 13.5, lineHeight: 1.7, marginBottom: 24 }}>{proposalModal.desc}</p>
-            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 20 }}>
-              <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.6, marginBottom: 20 }}>
-                No payment happens here. This takes you to our contact form with <strong style={{ color: 'var(--text)' }}>{proposalModal.tier}</strong> pre-noted, so we start the conversation with the right context.
+            <p style={{ color: '#a0a0b8', fontSize: 13.5, lineHeight: 1.7, marginBottom: 24 }}>{proposalModal.desc}</p>
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
+              <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.6, marginBottom: 20 }}>
+                No payment happens here. This takes you to our contact form with <strong style={{ color: '#e8e8f0' }}>{proposalModal.tier}</strong> pre-noted, so we start the conversation with the right context.
               </p>
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
                 <button onClick={() => setProposalModal(null)}
-                  style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--text3)', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
+                  style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, color: '#606080', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
                   Cancel
                 </button>
                 <button onClick={confirmProposal}
