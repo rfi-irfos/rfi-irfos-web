@@ -231,7 +231,7 @@ function PriceTierCard({ tier, price, highlight, onBuy, onProposal }: {
 // wheel-driven scroll accelerator: boosts deltaY and lerps toward the target each
 // frame, so the page covers more ground per notch instead of the flat 1:1 native rate.
 // Elements marked [data-native-scroll] (internal overflow panels) are left untouched.
-function useFastScroll(mult = 1.55, ease = 0.16) {
+function useFastScroll(mult = 1.1, ease = 0.09) {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let target = window.scrollY
