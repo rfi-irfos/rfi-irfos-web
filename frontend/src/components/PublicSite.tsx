@@ -162,6 +162,62 @@ function ThemeIcon({ t }: { t: 'light' | 'dark' | 'hc' }) {
   )
 }
 
+// Shared pricing-tier card, used by every pricing group (Security Audits, Market
+// Research, Web Development, Mobile, Research Cooperation - previously 5 near-identical
+// copies of this JSX). Tier name is now the loud, bold, white element; price moved to a
+// compact bottom-left readout next to a small icon-only CTA (cart = buy now via Stripe,
+// arrow = request a proposal) instead of a full-width "GET STARTED" button eating space.
+function CartIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+    </svg>
+  )
+}
+function ArrowIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  )
+}
+function PriceTierCard({ tier, price, desc, highlight, onBuy, onProposal }: {
+  tier: string; price: string; desc: string; highlight?: boolean
+  onBuy?: () => void; onProposal?: () => void
+}) {
+  return (
+    <div style={{
+      background: highlight ? 'rgba(0,245,196,0.06)' : 'rgba(255,255,255,0.03)',
+      border: `1px solid ${highlight ? 'rgba(0,245,196,0.25)' : 'rgba(255,255,255,0.07)'}`,
+      borderRadius: 14, padding: '22px 20px', height: '100%',
+      display: 'flex', flexDirection: 'column',
+    }}>
+      <div style={{ fontWeight: 800, fontSize: 17, color: 'var(--text)', marginBottom: 10, lineHeight: 1.3 }}>{tier}</div>
+      <div style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.7, flex: 1, marginBottom: 18 }}>{desc}</div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+        <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--accent-text)' }}>{price}</div>
+        {(onBuy || onProposal) && (
+          <button
+            onClick={onBuy ?? onProposal}
+            title={onBuy ? 'Get started' : 'Request a proposal'}
+            aria-label={onBuy ? 'Get started' : 'Request a proposal'}
+            style={{
+              width: 34, height: 34, flexShrink: 0, borderRadius: '50%', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: onBuy ? 'var(--accent)' : 'transparent',
+              border: onBuy ? 'none' : '1px solid rgba(255,255,255,0.18)',
+              color: onBuy ? 'var(--accent-fg)' : 'var(--text2)',
+            }}
+          >
+            {onBuy ? <CartIcon /> : <ArrowIcon />}
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // wheel-driven scroll accelerator: boosts deltaY and lerps toward the target each
 // frame, so the page covers more ground per notch instead of the flat 1:1 native rate.
 // Elements marked [data-native-scroll] (internal overflow panels) are left untouched.
@@ -3820,8 +3876,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             ))}
           </div>
           <div style={{ marginTop: 64 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 24, color: 'var(--text)' }}>publications on OSF</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 8, color: 'var(--text)' }}>publications on OSF</h3>
+            <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', marginBottom: 16 }}>{PUBLICATIONS.length} total &middot; scroll for more &darr;</p>
+            <div data-native-scroll style={{ display: 'flex', flexDirection: 'column', gap: 2, maxHeight: 186, overflowY: 'auto', paddingRight: 4 }}>
               {PUBLICATIONS.map(p => (
                 <a key={p.title} href={p.href} target="_blank" rel="noopener noreferrer"
                   style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 18px', borderRadius: 10, textDecoration: 'none', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', transition: 'border-color 0.2s' }}
@@ -3845,12 +3902,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       </section>
 
       {/* PROJECTS */}
-      <section id="projects" style={{
-        padding: '100px 2rem',
-        background: 'rgba(0,245,196,0.02)',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-      }}>
+      <section id="projects" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="right">
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Undertakings</p>
@@ -4245,12 +4297,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       </section>
 
       {/* TIMELINE */}
-      <section id="timeline" style={{
-        padding: '100px 2rem',
-        background: 'rgba(255,255,255,0.01)',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-      }}>
+      <section id="timeline" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <Reveal>
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 / Chronicle</p>
@@ -4295,29 +4342,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               { tier: 'Full Intelligence Package',price: '€750,000',  desc: 'Everything in the Annual tier. Unlimited audits across your full vendor and partner ecosystem. Custom business intelligence dashboards. Real-time competitive intelligence. Proactive zero-day hunting. Board-level executive briefings. Custom regulatory strategy. Full-year dedicated research team allocation.', highlight: true, stripeKey: null, contact: true },
             ] as const).map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <div style={{
-                  background: t.highlight ? 'rgba(0,245,196,0.06)' : 'rgba(255,255,255,0.03)',
-                  border: `1px solid ${t.highlight ? 'rgba(0,245,196,0.25)' : 'rgba(255,255,255,0.07)'}`,
-                  borderRadius: 14, padding: '24px 20px', height: '100%',
-                  display: 'flex', flexDirection: 'column',
-                }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  {t.stripeKey && (
-                    <button
-                      onClick={() => openCheckoutModal(t.stripeKey!)}
-                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
-                    >
-                      get started →
-                    </button>
-                  )}
-                  {t.contact && (
-                    <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'var(--text2)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
-                      request proposal →
-                    </a>
-                  )}
-                </div>
+                <PriceTierCard tier={t.tier} price={t.price} desc={t.desc} highlight={t.highlight}
+                  onBuy={t.stripeKey ? () => openCheckoutModal(t.stripeKey!) : undefined}
+                  onProposal={t.contact ? () => { proposalRequest(t.tier); location.hash = '#contact' } : undefined} />
               </Reveal>
             ))}
           </div>
@@ -4371,21 +4398,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', stripeKey: 'ongoing_intel', desc: 'Continuous competitor tracking. Monthly briefings. Ad hoc alerts on significant moves. Dedicated analyst contact.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <div style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 14, padding: '24px 20px', height: '100%',
-                  display: 'flex', flexDirection: 'column',
-                }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  <button
-                    onClick={() => openCheckoutModal(t.stripeKey)}
-                    style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
-                  >
-                    get started →
-                  </button>
-                </div>
+                <PriceTierCard tier={t.tier} price={t.price} desc={t.desc} onBuy={() => openCheckoutModal(t.stripeKey)} />
               </Reveal>
             ))}
           </div>
@@ -4400,27 +4413,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               { tier: 'Platform Build', price: '€75,000', stripeKey: null,                              desc: 'Full product build. Custom infrastructure, API design, data pipelines, native apps, dedicated team. Ongoing engagement.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <div style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 14, padding: '24px 20px', height: '100%',
-                  display: 'flex', flexDirection: 'column',
-                }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  {t.stripeKey ? (
-                    <button
-                      onClick={() => openCheckoutModal(t.stripeKey!)}
-                      style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid var(--accent-border)', borderRadius: 6, color: 'var(--accent-text)', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}
-                    >
-                      get started →
-                    </button>
-                  ) : (
-                    <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'var(--text2)', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
-                      request proposal →
-                    </a>
-                  )}
-                </div>
+                <PriceTierCard tier={t.tier} price={t.price} desc={t.desc}
+                  onBuy={t.stripeKey ? () => openCheckoutModal(t.stripeKey!) : undefined}
+                  onProposal={!t.stripeKey ? () => { proposalRequest(t.tier); location.hash = '#contact' } : undefined} />
               </Reveal>
             ))}
           </div>
@@ -4438,18 +4433,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               { tier: 'Full Mobile Product',   price: 'on request',  desc: 'Complete mobile product from spec to launch. Custom infrastructure, API design, native apps, dedicated team. Ongoing engagement.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <div style={{
-                  background: 'rgba(0,245,196,0.04)', border: '1px solid rgba(0,245,196,0.18)',
-                  borderRadius: 14, padding: '24px 20px', height: '100%',
-                  display: 'flex', flexDirection: 'column',
-                }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>{t.price}</div>
-                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'var(--text2)', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
-                    request proposal →
-                  </a>
-                </div>
+                <PriceTierCard tier={t.tier} price={t.price} desc={t.desc} highlight
+                  onProposal={() => { proposalRequest(t.tier); location.hash = '#contact' }} />
               </Reveal>
             ))}
           </div>
@@ -4466,18 +4451,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               { tier: 'Business Consulting Package', desc: 'Applying the Emergent Interaction / Case Intelligence method to your own organization - process reconstruction, framework derivation, agent architecture design, delivered jointly with our coop partner.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right'] as const)[i % 3]}>
-                <div style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 14, padding: '24px 20px', height: '100%',
-                  display: 'flex', flexDirection: 'column',
-                }}>
-                  <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>{t.tier}</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--accent-text)', marginBottom: 10 }}>on request</div>
-                  <div style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.7, flex: 1 }}>{t.desc}</div>
-                  <a href="#contact" onClick={() => proposalRequest(t.tier)} style={{ marginTop: 16, padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'var(--text2)', fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-block' }}>
-                    request proposal →
-                  </a>
-                </div>
+                <PriceTierCard tier={t.tier} price="on request" desc={t.desc}
+                  onProposal={() => { proposalRequest(t.tier); location.hash = '#contact' }} />
               </Reveal>
             ))}
           </div>
@@ -4501,7 +4476,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       </section>
 
       {/* TEAM */}
-      <section id="team" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <section id="team" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>06 / The Institute</p>
@@ -4550,7 +4525,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           separate from the TEAM grid above (different relationship: Laura
           directs her own research and agent architecture; RFI-IRFOS builds
           on her direction, not the reverse). */}
-      <section id="coop-partners" style={{ padding: '100px 2rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <section id="coop-partners" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>07 / Research Cooperation</p>
@@ -4630,11 +4605,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       </section>
 
       {/* SUBMIT A TIP */}
-      <section id="submit" style={{
-        padding: '100px 2rem',
-        background: 'rgba(255,255,255,0.01)',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-      }}>
+      <section id="submit" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
             <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Disclosures</p>
