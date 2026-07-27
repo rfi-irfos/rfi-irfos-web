@@ -4142,7 +4142,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   borderLeft: mobile ? 'none' : (i === 0 ? 'none' : '1px solid rgba(255,255,255,0.16)'),
                   textAlign: 'center', height: '100%',
                 }}>
-                  <div style={{ fontSize: 34, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}>{s.n}</div>
+                  <div style={{ fontSize: 42, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}>{s.n}</div>
                   <div style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 10 }}>{s.label}</div>
                 </div>
               </Reveal>
