@@ -134,19 +134,27 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--limit", type=int, default=8)
+    ap.add_argument("--demo", action="store_true",
+                    help="Use the tiny demo search_fn instead of the free live backend")
     args = ap.parse_args()
 
-    # When run standalone (no live search_fn), use a tiny demo seed so the
-    # queue format is exercised end-to-end. Replace search_fn with the real
-    # web_search integration under Hermes execute_code.
-    def demo_search(query, limit=8):
-        return [{
-            "entity": "Demo Entity from: " + query[:30],
-            "date": datetime.date.today().isoformat(),
-            "severity": "high",
-            "region_en": "European Union",
-            "sources": [{"label": "Source", "url": "https://example.com"}],
-            "summary": f"Publicly documented case matching query: {query}",
-        }]
+    # Default: use the FREE live search backend (Wikipedia + GitHub).
+    # NO Firecrawl / web_search — that tool is Billing-blocked. See osint_free_search.py.
+    if args.demo:
+        def search_fn(query, limit=args.limit):
+            return [{
+                "entity": "Demo Entity from: " + query[:30],
+                "date": datetime.date.today().isoformat(),
+                "severity": "high",
+                "region_en": "European Union",
+                "sources": [{"label": "Source", "url": "https://example.com"}],
+                "summary": f"Publicly documented case matching query: {query}",
+            }]
+    else:
+        try:
+            from osint_free_search import search_fn  # type: ignore
+        except Exception:
+            def search_fn(query, limit=args.limit):
+                return []
 
-    collect(demo_search, limit=args.limit, dry_run=args.dry_run)
+    collect(search_fn, limit=args.limit, dry_run=args.dry_run)
