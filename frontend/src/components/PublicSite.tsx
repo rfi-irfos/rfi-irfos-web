@@ -4141,21 +4141,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   padding: '18px 24px',
                   borderTop: '2px solid var(--accent-text)',
                   borderLeft: i === 0 ? 'none' : '1px solid rgba(255,255,255,0.07)',
-                  textAlign: 'left', height: '100%',
+                  textAlign: 'center', height: '100%',
                 }}>
                   <div style={{ fontSize: 42, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}>{s.n}</div>
                   <div style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 10 }}>{s.label}</div>
                 </div>
               </Reveal>
             ))}
-          </div>
-          <div style={{
-            background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
-            borderRadius: 12, padding: '20px 24px', marginBottom: 48,
-            fontFamily: 'monospace', fontSize: 12, color: 'var(--text2)', lineHeight: 1.8,
-          }}>
-            <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
-            {' '}listed companies · GDPR Art. 5/8/9/13/25/32/44 · COPPA · EU AI Act (minor provisions) · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at · FTC
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
@@ -4756,6 +4748,15 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text2)' }}>emergent-interaction-lab.fly.dev</a>.
             </p>
           </Reveal>
+        </div>
+
+        <div style={{
+          background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
+          borderRadius: 12, padding: '20px 24px', marginTop: 48,
+          fontFamily: 'monospace', fontSize: 12, color: 'var(--text2)', lineHeight: 1.8,
+        }}>
+          <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
+          {' '}listed companies · GDPR Art. 5/8/9/13/25/32/44 · COPPA · EU AI Act (minor provisions) · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at · FTC
         </div>
       </section>
 
