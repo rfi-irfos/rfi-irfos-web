@@ -3966,43 +3966,46 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </button>
       </nav>
 
-      {/* Mobile menu overlay */}
-      {mobileOpen && (
-        <div style={{
-          position: 'fixed', top: 64, left: 0, right: 0, bottom: 0, zIndex: 99,
-          background: 'var(--nav-bg)', backdropFilter: 'blur(16px)',
-          display: 'flex', flexDirection: 'column', padding: '2rem 1.5rem', gap: 4,
-        }}>
-          {NAV_LINKS.map(n => (
-            <a key={n.href} href={n.href} onClick={() => setMobileOpen(false)} style={{
-              color: 'var(--text)', fontSize: 20, fontWeight: 700, textDecoration: 'none',
-              padding: '16px 0', borderBottom: '1px solid var(--border)',
-            }}>{n.label}</a>
-          ))}
-          <div style={{ display: 'flex', gap: 8, marginTop: 24, alignSelf: 'flex-start' }}>
-            <button onClick={cycle} title={`Theme: ${THEME_LABEL[theme]} (click to switch)`} aria-label={`Current theme ${THEME_LABEL[theme]}, click to switch theme`} style={{
-              width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
-              cursor: 'pointer',
-            }}><ThemeIcon t={theme} /></button>
+      {/* Mobile menu overlay — always mounted, slides in from the left */}
+      <div style={{
+        position: 'fixed', top: 64, left: 0, right: 0, bottom: 0, zIndex: 99,
+        background: 'var(--nav-bg)', backdropFilter: 'blur(16px)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        padding: '2rem 1.5rem', gap: 4,
+        transform: mobileOpen ? 'translateX(0)' : 'translateX(-100%)',
+        transition: 'transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)',
+        pointerEvents: mobileOpen ? 'auto' : 'none',
+        textAlign: 'center',
+      }}>
+        {NAV_LINKS.map(n => (
+          <a key={n.href} href={n.href} onClick={() => setMobileOpen(false)} style={{
+            color: 'var(--text)', fontSize: 20, fontWeight: 700, textDecoration: 'none',
+            padding: '16px 0', borderBottom: '1px solid var(--border)', width: '100%',
+          }}>{n.label}</a>
+        ))}
+        <div style={{ display: 'flex', gap: 8, marginTop: 24, alignSelf: 'center' }}>
+          <button onClick={cycle} title={`Theme: ${THEME_LABEL[theme]} (click to switch)`} aria-label={`Current theme ${THEME_LABEL[theme]}, click to switch theme`} style={{
+            width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
+            cursor: 'pointer',
+          }}><ThemeIcon t={theme} /></button>
 
-            <a href="mailto:contact@rfi-irfos.com" title="contact@rfi-irfos.com" aria-label="Contact — contact@rfi-irfos.com"
-              style={{
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                width: 48, height: 48, borderRadius: 8,
-                background: ACCENT, border: `1px solid ${ACCENT}`,
-                color: theme === 'light' ? '#ffffff' : '#070711', textDecoration: 'none', transition: 'opacity 0.15s',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="5" width="18" height="14" rx="2" />
-                <path d="M3 7l9 6 9-6" />
-              </svg>
-            </a>
-          </div>
+          <a href="mailto:contact@rfi-irfos.com" title="contact@rfi-irfos.com" aria-label="Contact — contact@rfi-irfos.com"
+            style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: 48, height: 48, borderRadius: 8,
+              background: ACCENT, border: `1px solid ${ACCENT}`,
+              color: theme === 'light' ? '#ffffff' : '#070711', textDecoration: 'none', transition: 'opacity 0.15s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="M3 7l9 6 9-6" />
+            </svg>
+          </a>
         </div>
-      )}
+      </div>
 
       {/* HERO */}
       <section style={{
