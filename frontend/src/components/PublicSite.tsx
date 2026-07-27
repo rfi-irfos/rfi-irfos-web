@@ -3969,21 +3969,30 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       {/* Mobile menu overlay — always mounted, slides in from the left */}
       <div style={{
         position: 'fixed', top: 64, left: 0, right: 0, bottom: 0, zIndex: 99,
-        background: 'var(--nav-bg)', backdropFilter: 'blur(16px)',
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        background: theme === 'dark'
+          ? 'linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
+          : 'rgba(255,255,255,0.25)',
+        backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
+        border: theme === 'dark' ? '1px solid rgba(255,255,255,0.09)' : '1px solid var(--border)',
+        borderRadius: 12,
+        boxShadow: theme === 'dark'
+          ? 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 40px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.5)'
+          : '0 8px 32px rgba(0,0,0,0.35)',
+        display: 'flex', flexDirection: 'column', alignItems: 'flex-end',
         padding: '2rem 1.5rem', gap: 4,
         transform: mobileOpen ? 'translateX(0)' : 'translateX(-100%)',
         transition: 'transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)',
         pointerEvents: mobileOpen ? 'auto' : 'none',
-        textAlign: 'center',
+        textAlign: 'right',
       }}>
         {NAV_LINKS.map(n => (
           <a key={n.href} href={n.href} onClick={() => setMobileOpen(false)} style={{
             color: 'var(--text)', fontSize: 20, fontWeight: 700, textDecoration: 'none',
             padding: '16px 0', borderBottom: '1px solid var(--border)', width: '100%',
+            textAlign: 'right',
           }}>{n.label}</a>
         ))}
-        <div style={{ display: 'flex', gap: 8, marginTop: 24, alignSelf: 'center' }}>
+        <div style={{ display: 'flex', gap: 8, marginTop: 24, alignSelf: 'flex-end' }}>
           <button onClick={cycle} title={`Theme: ${THEME_LABEL[theme]} (click to switch)`} aria-label={`Current theme ${THEME_LABEL[theme]}, click to switch theme`} style={{
             width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center',
             background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
