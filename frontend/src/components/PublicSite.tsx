@@ -4189,10 +4189,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               We read apps at the source-code level, not just the outside. On every report we send, the relevant data-protection authorities are copied in directly - the national watchdog for your country plus the European one. We then give the company ninety days to fix the problem before anything becomes public, the same waiting window every time. The rule is simple and non-negotiable: every organization on this ledger is treated exactly the same, whether or not they ever pay us a cent. The full disclosure framework is in our <a href="#p/security" style={{ color: 'var(--accent-text)', textDecoration: 'none' }}>Security Policy</a>.
             </p>
           </Reveal>
-          {/* Permanent disclosure ledger — framed panel (KPIs + search + table) */}
-          <div style={{ border: '1px solid var(--accent-text)', borderRadius: 12, padding: '16px 18px 14px', marginBottom: 32 }}>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 0, marginBottom: 14 }}>
+          {/* Permanent disclosure ledger — framed panel (search + table).
+              KPIs live ABOVE the panel as their own clean row now. */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 28 }}>
             {[
               { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'Apps audited',        from: 'left'   },
               { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: 'Companies notified',  from: 'bottom' },
@@ -4201,19 +4200,17 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             ].map((s, i) => (
               <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
                 <div style={{
-                  position: 'relative',
-                  padding: '14px 20px',
-                  borderLeft: mobile ? 'none' : (i === 0 ? 'none' : '1px solid rgba(255,255,255,0.3)'),
-                  textAlign: 'center', height: '100%',
+                  background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
+                  borderRadius: 12, padding: '26px 20px', textAlign: 'center', height: '100%',
                 }}>
-                  <div style={{ fontSize: 36, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}>{s.n}</div>
-                  <div style={{ fontSize: 9, color: 'var(--text3)', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 10 }}>{s.label}</div>
+                  <div style={{ fontSize: 40, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}>{s.n}</div>
+                  <div style={{ fontSize: 12, color: '#ffffff', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 12 }}>{s.label}</div>
                 </div>
               </Reveal>
             ))}
           </div>
 
-          {/* Search + filter dropdowns - single row (stacks on mobile) */}
+          <div style={{ border: '1px solid var(--accent-text)', borderRadius: 12, padding: '18px 20px 16px', marginBottom: 32 }}>
           <div style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'stretch', flexWrap: mobile ? 'wrap' : 'nowrap' }}>
 
             {/* Search */}
@@ -4231,8 +4228,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   width: '100%', boxSizing: 'border-box',
                   background: 'rgba(0,245,196,0.04)',
                   border: searchQuery ? '1px solid rgba(0,245,196,0.55)' : '1px solid rgba(0,245,196,0.18)',
-                  borderRadius: 7, padding: '9px 36px 9px 42px',
-                  color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 12,
+                  borderRadius: 7, padding: '13px 38px 13px 46px',
+                  color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 13,
                   outline: 'none', transition: 'border-color 0.15s',
                 }}
                 onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)' }}
