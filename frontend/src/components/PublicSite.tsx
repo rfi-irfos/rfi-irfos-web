@@ -4128,7 +4128,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               Root level code analysis. Regulators in <strong style={{ color: 'var(--text)' }}>CC on every submission</strong> - national DPA + EDPS. 90-day coordinated disclosure. Our framework. Our timeline. Disclosure is unconditional: every organization on this ledger gets identical treatment, whether or not they engage us commercially. The full disclosure framework is in our <a href="#p/security" style={{ color: 'var(--accent-text)', textDecoration: 'none' }}>Security Policy</a>.
             </p>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 32 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 0, marginBottom: 32 }}>
             {[
               { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'Apps audited',        from: 'left'   },
               { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: 'Companies notified',  from: 'bottom' },
@@ -4137,11 +4137,14 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             ].map((s, i) => (
               <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
                 <div style={{
-                  background: 'rgba(0,245,196,0.05)', border: '1px solid rgba(0,245,196,0.15)',
-                  borderRadius: 12, padding: '24px', textAlign: 'center', height: '100%',
+                  position: 'relative',
+                  padding: '18px 24px',
+                  borderTop: '2px solid var(--accent-text)',
+                  borderLeft: i === 0 ? 'none' : '1px solid rgba(255,255,255,0.07)',
+                  textAlign: 'left', height: '100%',
                 }}>
-                  <div style={{ fontSize: 36, fontWeight: 900, color: 'var(--accent-text)' }}>{s.n}</div>
-                  <div style={{ fontSize: 11, color: 'var(--text)', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 6 }}>{s.label}</div>
+                  <div style={{ fontSize: 42, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}>{s.n}</div>
+                  <div style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 10 }}>{s.label}</div>
                 </div>
               </Reveal>
             ))}
