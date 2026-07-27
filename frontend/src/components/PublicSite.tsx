@@ -4129,7 +4129,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </p>
           </Reveal>
           {/* Permanent disclosure ledger — framed panel (KPIs + search + table) */}
-          <div style={{ border: '2px solid var(--accent-text)', borderRadius: 12, padding: '24px 20px 20px', marginBottom: 32 }}>
+          <div style={{ border: '1px solid var(--accent-text)', borderRadius: 12, padding: '24px 20px 20px', marginBottom: 32 }}>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 0, marginBottom: 24 }}>
             {[
