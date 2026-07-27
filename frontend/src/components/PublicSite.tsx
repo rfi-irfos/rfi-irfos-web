@@ -3463,6 +3463,34 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     } catch { /* audio is a nice-to-have, never block the banner over it */ }
   }
 
+  // A half-empty room, a few scattered claps — the "yeah, sure, we'll clap
+  // for that" self-roast when dismissing our own useless cookie banner.
+  const playMockClapSound = () => {
+    try {
+      if (typeof window === 'undefined') return
+      const Ctx = (window as any).AudioContext || (window as any).webkitAudioContext
+      if (!Ctx) return
+      const claps = 3 + Math.floor(Math.random() * 3) // 3–5 sad claps
+      for (let i = 0; i < claps; i++) {
+        setTimeout(() => {
+          const ctx = new Ctx()
+          const now = ctx.currentTime
+          const osc = ctx.createOscillator()
+          const gain = ctx.createGain()
+          const f = 900 + Math.random() * 350 // each clap a slightly different pitch
+          osc.type = 'triangle'
+          osc.frequency.setValueAtTime(f, now)
+          osc.frequency.exponentialRampToValueAtTime(f * 0.5, now + 0.05)
+          gain.gain.setValueAtTime(0.05 + Math.random() * 0.04, now) // quiet
+          gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.09)
+          osc.connect(gain); gain.connect(ctx.destination)
+          osc.start(now); osc.stop(now + 0.1)
+          osc.onended = () => ctx.close()
+        }, i * (110 + Math.random() * 130)) // irregular, scattered timing
+      }
+    } catch { /* never block the banner over audio */ }
+  }
+
   const fireConfettiFromRect = (rect: DOMRect, count: number) => {
     const colors = ['#00f5c4', '#ef4444', '#f97316', '#eab308', '#e8e8f0']
     playPopSound()
@@ -3499,6 +3527,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   const dismissCookieBanner = () => {
     const el = bannerRef.current
     if (el) fireConfettiFromRect(el.getBoundingClientRect(), 90)
+    playMockClapSound()
     new Image().src = `${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&s=${encodeURIComponent('Cookie Banner Close')}`
     setBannerClosing(true)
     setTimeout(() => { setCookieBannerOpen(false); setBannerClosing(false) }, 240)
