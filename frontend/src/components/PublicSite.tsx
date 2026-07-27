@@ -3851,16 +3851,16 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           this is where the full breakdown actually lives, right above the terms. */}
       {checkoutModal && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
-          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '24px 20px 32px' : '32px 28px', maxWidth: mobile ? '100%' : 520, width: '100%', maxHeight: mobile ? '90vh' : '85vh', overflowY: 'auto' }}>
+          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '28px 24px 36px' : '40px 36px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
             {/* This modal's chrome is deliberately always-dark (#0e0e1e), independent of the
                 site theme toggle - so every text color inside it is a fixed light hex, NOT a
                 var(--text*) token, which would resolve to near-black in light mode and read as
                 illegible grey-on-navy. */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 6 }}>
-              <h3 style={{ fontSize: mobile ? 18 : 20, fontWeight: 800, color: '#e8e8f0' }}>{checkoutModal.tier}</h3>
-              <div style={{ fontSize: mobile ? 20 : 22, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>{checkoutModal.price}</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 14 }}>
+              <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2 }}>{checkoutModal.tier}</h3>
+              <div style={{ fontSize: mobile ? 22 : 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>{checkoutModal.price}</div>
             </div>
-            <p style={{ color: '#a0a0b8', fontSize: 13.5, lineHeight: 1.7, marginBottom: 24 }}>{checkoutModal.desc}</p>
+            <p style={{ color: '#e8e8f0', fontSize: mobile ? 15.5 : 16.5, lineHeight: 1.85, marginBottom: 28 }}>{checkoutModal.desc}</p>
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
               <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
               <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16, cursor: 'pointer' }}>
@@ -3897,14 +3897,14 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           checkout modal above, for tiers that route to Contact instead of Stripe. */}
       {proposalModal && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
-          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '24px 20px 32px' : '32px 28px', maxWidth: mobile ? '100%' : 520, width: '100%', maxHeight: mobile ? '90vh' : '85vh', overflowY: 'auto' }}>
+          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '28px 24px 36px' : '40px 36px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
             {/* Same fixed-light-on-dark rule as the checkout modal above - this chrome
                 doesn't follow the site theme either. */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 6 }}>
-              <h3 style={{ fontSize: mobile ? 18 : 20, fontWeight: 800, color: '#e8e8f0' }}>{proposalModal.tier}</h3>
-              <div style={{ fontSize: mobile ? 20 : 22, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>{proposalModal.price}</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 14 }}>
+              <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2 }}>{proposalModal.tier}</h3>
+              <div style={{ fontSize: mobile ? 22 : 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>{proposalModal.price}</div>
             </div>
-            <p style={{ color: '#a0a0b8', fontSize: 13.5, lineHeight: 1.7, marginBottom: 24 }}>{proposalModal.desc}</p>
+            <p style={{ color: '#e8e8f0', fontSize: mobile ? 15.5 : 16.5, lineHeight: 1.85, marginBottom: 28 }}>{proposalModal.desc}</p>
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
               <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.6, marginBottom: 20 }}>
                 No payment happens here. This takes you to our contact form with <strong style={{ color: '#e8e8f0' }}>{proposalModal.tier}</strong> pre-noted, so we start the conversation with the right context.
@@ -4084,13 +4084,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             Pricing dropped as separate hero buttons - both are one scroll or one nav
             click away already, they don't need to compete with the actual CTA here. */}
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <a href="#contact" style={{
-            background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
-            fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
-            textTransform: 'uppercase', transition: 'opacity 0.15s',
-          }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Hire Us</a>
+          {/* Swapped order per request: Track Record now leads (proof first), Hire Us follows
+              as the conversion action. Track Record keeps the secondary outline style, Hire Us
+              keeps the solid teal fill. */}
           <a href="#track-record" style={{
             border: '1px solid rgba(0,245,196,0.35)', color: 'var(--accent-text)', padding: '13px 30px', borderRadius: 8,
             fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
@@ -4098,6 +4094,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           }}
             onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
             onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Track Record</a>
+          <a href="#contact" style={{
+            background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
+            fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
+            textTransform: 'uppercase', transition: 'opacity 0.15s',
+          }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Hire Us</a>
         </div>
 
         <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '56px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
@@ -4574,14 +4577,14 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: 48 }}>
             {([
-              { tier: 'Public',                   price: 'free',      desc: 'Full public disclosure. Findings published after a 90-day coordinated embargo, the same standard we hold every organization on our ledger to. No NDA, no strings attached. First phone sanitizing session included at no extra cost.', highlight: false, stripeKey: null,            directUrl: null, contact: false },
-              { tier: 'Security Retainer',        price: '€1,500 / mo', desc: 'Continuous monitoring between audits, not a one-off snapshot. Quarterly deep-dive audits, priority response on anything urgent, and one dedicated contact who already knows your stack.', highlight: false, stripeKey: 'retainer', directUrl: null, contact: false },
-              { tier: 'Remediation Advisory',     price: '€4,500',    desc: 'Full written report plus hands-on remediation guidance from the engineers who found the issues. A 30-day follow-up confirms fixes actually landed, and GDPR compliance mapping ties every finding to the relevant article.',                                        highlight: false, stripeKey: 'remediation',   directUrl: null, contact: false },
-              { tier: 'Confidential',             price: '€9,000',    desc: 'NDA-protected disclosure kept fully private between us and you. Includes a detailed report and hands-on patch validation once fixes ship - regulators are still notified in parallel, as our disclosure framework requires.',                                        highlight: false, stripeKey: 'confidential',  directUrl: null, contact: false },
-              { tier: 'Enterprise NDA',           price: '€18,000',   desc: 'Extended embargo beyond our standard 90 days, giving your team real runway to remediate. Dedicated remediation support directly with our engineers, a full legal evidence package for your counsel, and priority turnaround on follow-ups.', highlight: false, stripeKey: 'enterprise_nda', directUrl: null, contact: false },
-              { tier: 'Critical Infrastructure',  price: '€75,000',   desc: 'Full-scope engagement for critical infrastructure operators. NDA-protected disclosure, dedicated legal review, and a PR containment strategy built with your comms team. Direct liaison with every relevant authority, plus a standing emergency response protocol.', highlight: true,  stripeKey: 'critical_infra', directUrl: 'https://buy.stripe.com/9B66oJ6OIbU32LPcHK7N60H', contact: false },
-              { tier: 'IoB / Art. 9',             price: '€150,000',  desc: 'For wearables and Internet-of-Bodies products processing special-category health data under Art. 9 GDPR. The premium reflects deeper scrutiny - biometric flows, retention periods, third-country transfers - with the same NDA and regulator liaison as Enterprise.', highlight: true,  stripeKey: 'iob_art9', directUrl: 'https://buy.stripe.com/4gMcN7ehagaj4TXcHK7N60G', contact: false },
-              { tier: 'Annual Intelligence Retainer', price: '€250,000', desc: 'Our flagship engagement. Full-year continuous monitoring across your entire app portfolio, quarterly deep audits, dedicated regulatory liaison across AP, DSB, BfDI and ICO, monthly threat briefings, and instant breach notification.', highlight: true, stripeKey: 'annual_retainer', directUrl: 'https://buy.stripe.com/00wcN71uo4rBdqt7nq7N60I', contact: false },
+              { tier: 'Public',                   price: 'free',      desc: 'Completely free, and completely open. When we check an app or a company, we publish what we find after a 90-day heads-up window, so the organization has time to fix the problem before anyone else sees it. We hold every name on our public ledger to that exact same rule, big or small, paying or not. There is no contract, no secrecy agreement, and no hidden catch. As a bonus, your very first phone privacy session is on us: we show you, step by step, how to switch off the hidden trackers running in the background of your own phone. This is our standing promise to the public, not a trial that ends.', highlight: false, stripeKey: null,            directUrl: null, contact: false },
+              { tier: 'Security Retainer',        price: '€1,500 / mo', desc: 'A single audit is like a photo taken on one day. Real security drifts the moment you ship new code, so this is an ongoing watch, not a snapshot. For 1,500 euros a month we keep an eye on your product between audits, run a proper deep-dive every three months, and jump to the front of the line the instant something urgent appears. You also get one named person who already knows how your system is built, so you never have to explain your setup from scratch during a panic call. Think of it as a standing security team you can call any time, without hiring anyone.', highlight: false, stripeKey: 'retainer', directUrl: null, contact: false },
+              { tier: 'Remediation Advisory',     price: '€4,500',    desc: 'You receive the full written report, but the part that matters most is that the very engineers who found the holes walk you through how to actually close them. This is not just a list of problems to hand to someone else. Thirty days later we check back to confirm the fixes genuinely landed, not only that someone claimed they did. And because we are a regulated institute, every finding is tied to the exact privacy law article it breaks, so your legal team gets a clear map instead of a mystery. This is the difference between having a report and being truly fixed.',                                        highlight: false, stripeKey: 'remediation',   directUrl: null, contact: false },
+              { tier: 'Confidential',             price: '€9,000',    desc: 'Everything stays private between you and us under a strict secrecy agreement. Your customers and the public never see the findings. You still get the detailed report, and we check the fixes by hand once you ship them, so you know the repair is real and not just a promise. The one thing we cannot drop: because we are a not-for-profit bound by our own rules, the relevant regulators are told in parallel. So you get discretion where it matters and proof where it counts, without us breaking our duty to the public.',                                        highlight: false, stripeKey: 'confidential',  directUrl: null, contact: false },
+              { tier: 'Enterprise NDA',           price: '€18,000',   desc: 'Same privacy as the Confidential tier, but with a longer runway. We stretch the embargo well past our standard 90 days, so your team has real time to fix things properly instead of rushing a patch over a weekend. You work directly with our engineers on the repair, your lawyers receive a complete evidence package they can hand straight to counsel, and any follow-up jumps the queue. Built for larger organizations where fixing everything in 90 days is simply not realistic.', highlight: false, stripeKey: 'enterprise_nda', directUrl: null, contact: false },
+              { tier: 'Critical Infrastructure',  price: '€75,000',   desc: 'For operators of critical infrastructure, things like energy, water, health care, and transport, a breach is not an IT problem, it is a public-safety event. We go full-scope under a secrecy agreement, bring in our own legal review, and build the public-relations containment plan together with your communications team before anything goes wrong. We talk directly to every relevant authority on your behalf, and you receive a standing emergency-response protocol, so the worst day is rehearsed in advance instead of invented on the spot. This is the tier for situations where failure is simply not an option.', highlight: true,  stripeKey: 'critical_infra', directUrl: 'https://buy.stripe.com/9B66oJ6OIbU32LPcHK7N60H', contact: false },
+              { tier: 'IoB / Art. 9',             price: '€150,000',  desc: 'Internet-of-Bodies products, meaning wearables and implants that handle health data, fall under the strictest privacy category in European law. The 150,000 euros reflects the depth of the work: we trace every flow of biometric data, every period your data is kept, and every transfer across borders, and we keep the same secrecy agreement and regulator contact as the Enterprise tier. Most security shops will not touch this category at all. We specialize in it, because the data here is literally about people bodies.', highlight: true,  stripeKey: 'iob_art9', directUrl: 'https://buy.stripe.com/4gMcN7ehagaj4TXcHK7N60G', contact: false },
+              { tier: 'Annual Intelligence Retainer', price: '€250,000', desc: 'Our flagship engagement. For a full year we watch your entire app portfolio without pause, not a sample but all of it, with deep audits every three months. You get a dedicated contact who speaks directly to the regulators that matter, from the Austrian and German data protection authorities to the UK watchdog, a threat briefing every month so nothing catches you by surprise, and instant notice the moment we see a breach taking shape. This is the tier where we act as your external security and compliance department.', highlight: true, stripeKey: 'annual_retainer', directUrl: 'https://buy.stripe.com/00wcN71uo4rBdqt7nq7N60I', contact: false },
             ] as const).map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
                 <PriceTierCard tier={t.tier} price={t.price} highlight={t.highlight}
@@ -4595,10 +4598,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Market Research &amp; Competitor Analysis</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 48 }}>
             {[
-              { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  desc: 'Sector landscape report. Key player mapping. Regulatory environment. 10-page minimum. Delivered in 5 business days.' },
-              { tier: 'Competitor Intelligence',    price: '€7,500',      stripeKey: 'competitor_intel', desc: 'Deep-dive on 3–5 competitors. Technical stack analysis, privacy posture, market positioning, strategic vulnerabilities.' },
-              { tier: 'Sector Intelligence Report', price: '€18,000',     stripeKey: 'sector_intel',     desc: 'Full market + regulatory + tech landscape. Quantified risk exposure per player. Quarterly update cycle.' },
-              { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', stripeKey: 'ongoing_intel', desc: 'Continuous competitor tracking. Monthly briefings. Ad hoc alerts on significant moves. Dedicated analyst contact.' },
+              { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  desc: 'A clear, plain-language map of your sector: who the key players are, how the rules and regulations actually work for them, and where the real openings sit. At least ten pages, delivered within five business days. No jargon and no two-hundred-slide deck, just the landscape you need to make a decision, written so a founder can read it in one sitting.' },
+              { tier: 'Competitor Intelligence',    price: '€7,500',      stripeKey: 'competitor_intel', desc: 'We take apart three to five of your competitors: what technology they are built on, how they actually treat user privacy, which is often very different from what they claim, how they position themselves in the market, and where they are strategically weak. You receive a realistic picture of the field, including the gaps you can exploit and the ones you need to close. This is the homework most teams skip and later regret.' },
+              { tier: 'Sector Intelligence Report', price: '€18,000',     stripeKey: 'sector_intel',     desc: 'The complete picture: the market, the regulations, and the technology across your whole sector, with each major player risk exposure spelled out in numbers rather than vague claims. And because markets move, this is not a one-off document, you receive a fresh update every three months. By the end you know exactly where the sector is heading and which players are exposed, so your strategy rests on evidence instead of guesswork.' },
+              { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', stripeKey: 'ongoing_intel', desc: 'We keep watching your competitors so you do not have to. Continuous tracking, a proper briefing every month, and an immediate alert the moment one of them makes a significant move, whether that is a funding round, a pivot, a breach, or a key hire. You get one dedicated analyst who knows your space. This is the difference between reading about a competitor big launch after the fact and hearing about it on the day it happens.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
                 <PriceTierCard tier={t.tier} price={t.price} onBuy={() => openCheckoutModal({ key: t.stripeKey, tier: t.tier, desc: t.desc, price: t.price })} />
@@ -4610,10 +4613,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Web Development</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
             {[
-              { tier: 'Landing Page',   price: '€1,500',  stripeKey: 'web_landing'   as string | null, desc: 'Single-page site. React + our open-source template. Live in 48 hours.' },
-              { tier: 'Full Site',      price: '€4,500',  stripeKey: 'web_full'      as string | null, desc: 'Multi-page + CMS admin + contact form + analytics. Ships as an installable PWA that runs like a native app on Android & iOS. 2-week delivery.' },
-              { tier: 'Enterprise Site',price: '€18,000', stripeKey: 'web_enterprise' as string | null, desc: 'Custom Rust backend + auth + integrations + full scope. Includes native Android & iOS apps. Long-term support included.' },
-              { tier: 'Platform Build', price: '€75,000', stripeKey: null,                              desc: 'Full product build. Custom infrastructure, API design, data pipelines, native apps, dedicated team. Ongoing engagement.' },
+              { tier: 'Landing Page',   price: '€1,500',  stripeKey: 'web_landing'   as string | null, desc: 'A sharp single-page site built on React with our own open-source template, fast, clean, and live within forty-eight hours. Perfect for a launch, an event, or a product that only needs one great page. No bloated page builder and no lock-in: you own the code and can take it anywhere.' },
+              { tier: 'Full Site',      price: '€4,500',  stripeKey: 'web_full'      as string | null, desc: 'A proper multi-page site with a content editor your team can actually use, a working contact form, and privacy-respecting analytics built in from the start. It ships as an installable progressive web app, which means it behaves like a native app on phones, both Android and iPhone, without going through an app store. Delivered in about two weeks. Built by the same people who audit apps for a living, so it is clean by default.' },
+              { tier: 'Enterprise Site',price: '€18,000', stripeKey: 'web_enterprise' as string | null, desc: 'A full custom build: a Rust backend, login and authentication, the integrations you need, and whatever scope your operation requires. It includes real native Android and iPhone apps, not a web wrapper dressed up as one. Long-term support is part of the deal, not an extra charge. For organizations where the website is the business itself, not a brochure.' },
+              { tier: 'Platform Build', price: '€75,000', stripeKey: null,                              desc: 'A complete product, not just a site: custom infrastructure, API design, data pipelines, native apps, and a dedicated team that stays with it. This is the engagement for when you are building the actual platform, not only the front door to it. It is ongoing, not a handoff, we build it and keep building it together with you as the product grows.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
                 <PriceTierCard tier={t.tier} price={t.price}
@@ -4627,10 +4630,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Mobile App Development &amp; Fixing</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
             {[
-              { tier: 'Maintenance Retainer',  price: '€1,200 / mo', desc: 'Ongoing patch cadence, store-compliance monitoring, dependency + SDK hygiene. Priority response, dedicated contact.' },
-              { tier: 'APK Review & Bugfix',  price: 'from €1,500', desc: 'Send us your APK. Root-level code analysis, crash + vulnerability triage, concrete patch guidance. Android & iOS. Fixed-scope, 1-week turnaround.' },
-              { tier: 'App Build',            price: 'from €9,000', desc: 'We build your native app end-to-end — Kotlin/Swift + Rust backend, Play & App Store submission handled. Everything in-house.' },
-              { tier: 'Full Mobile Product',   price: 'on request',  desc: 'Complete mobile product from spec to launch. Custom infrastructure, API design, native apps, dedicated team. Ongoing engagement.' },
+              { tier: 'Maintenance Retainer',  price: '€1,200 / mo', desc: 'We keep your app healthy month to month: a steady rhythm of patches, watching the app-store compliance rules so you are not pulled for a policy change you missed, and keeping your code libraries and tracking tools clean so old dependencies do not become tomorrow problem. Priority response and one named contact. Quiet, continuous upkeep so your app does not silently rot.' },
+              { tier: 'APK Review & Bugfix',  price: 'from €1,500', desc: 'Send us your app build and we go to the root level: we read the actual code, not only the marketing. We sort crashes and real weak spots, then hand you concrete guidance on how to fix each one. It works for both Android and iPhone. Fixed scope, one-week turnaround, you get a clear answer fast instead of a six-week audit you were not braced for.' },
+              { tier: 'App Build',            price: 'from €9,000', desc: 'We build your native app from zero to shipped: Kotlin for Android, Swift for iPhone, with a Rust backend underneath. No offshore handoff, everything done in-house by the team you are already talking to. We also handle the Play Store and App Store submission, which is exactly where most builds stall. One team, one codebase, one launch.' },
+              { tier: 'Full Mobile Product',   price: 'on request',  desc: 'The whole mobile product, from a spec on a napkin to a launched app: custom infrastructure, API design, native apps, and a dedicated team that stays on it. Ongoing engagement, because a real product keeps evolving after launch. For when you need a mobile business built, not only an app made.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
                 <PriceTierCard tier={t.tier} price={t.price} highlight
@@ -4652,7 +4655,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 16, marginBottom: 48 }}>
             <Reveal from="right">
               <PriceTierCard tier="Phone Sanitizing" price="free"
-                onProposal={() => openProposalModal({ tier: 'Phone Sanitizing', price: 'free', desc: 'First session free - send us your phone, we disable background tracking scripts permanently. DNS-over-HTTPS, backup hardening, full before/after audit report. By appointment.' })} />
+                onProposal={() => openProposalModal({ tier: 'Phone Sanitizing', price: 'free', desc: 'Your first privacy session is free. Send us your phone and we permanently switch off the background tracking scripts most apps quietly run, move you to encrypted name lookup, and harden your backups. You get a full before-and-after report showing exactly what was talking to whom. By appointment, no charge, this is part of our public mission.' })} />
             </Reveal>
           </div>
 
