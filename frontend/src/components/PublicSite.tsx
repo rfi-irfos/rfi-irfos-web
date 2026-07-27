@@ -3475,18 +3475,25 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         setTimeout(() => {
           const ctx = new Ctx()
           const now = ctx.currentTime
-          const osc = ctx.createOscillator()
+          const dur = 0.07
+          // White-noise burst = the "slap" of a real hand clap.
+          const buf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * dur), ctx.sampleRate)
+          const data = buf.getChannelData(0)
+          for (let n = 0; n < data.length; n++) data[n] = (Math.random() * 2 - 1)
+          const noise = ctx.createBufferSource(); noise.buffer = buf
+          // Bandpass shapes the noise into a clap (body ~1.2kHz, some spread).
+          const bp = ctx.createBiquadFilter()
+          bp.type = 'bandpass'; bp.frequency.value = 1100 + Math.random() * 500
+          bp.Q.value = 0.8
           const gain = ctx.createGain()
-          const f = 900 + Math.random() * 350 // each clap a slightly different pitch
-          osc.type = 'triangle'
-          osc.frequency.setValueAtTime(f, now)
-          osc.frequency.exponentialRampToValueAtTime(f * 0.5, now + 0.05)
-          gain.gain.setValueAtTime(0.05 + Math.random() * 0.04, now) // quiet
-          gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.09)
-          osc.connect(gain); gain.connect(ctx.destination)
-          osc.start(now); osc.stop(now + 0.1)
-          osc.onended = () => ctx.close()
-        }, i * (110 + Math.random() * 130)) // irregular, scattered timing
+          const peak = 0.18 + Math.random() * 0.08 // quiet, scattered
+          gain.gain.setValueAtTime(0.0001, now)
+          gain.gain.exponentialRampToValueAtTime(peak, now + 0.005)
+          gain.gain.exponentialRampToValueAtTime(0.0006, now + dur)
+          noise.connect(bp); bp.connect(gain); gain.connect(ctx.destination)
+          noise.start(now); noise.stop(now + dur + 0.02)
+          noise.onended = () => ctx.close()
+        }, i * (120 + Math.random() * 150)) // irregular, scattered timing
       }
     } catch { /* never block the banner over audio */ }
   }
