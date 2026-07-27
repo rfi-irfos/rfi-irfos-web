@@ -4128,7 +4128,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               Root level code analysis. Regulators in <strong style={{ color: 'var(--text)' }}>CC on every submission</strong> - national DPA + EDPS. 90-day coordinated disclosure. Our framework. Our timeline. Disclosure is unconditional: every organization on this ledger gets identical treatment, whether or not they engage us commercially. The full disclosure framework is in our <a href="#p/security" style={{ color: 'var(--accent-text)', textDecoration: 'none' }}>Security Policy</a>.
             </p>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 0, marginBottom: 32 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 0, marginBottom: 32, borderTop: '2px solid var(--accent-text)', borderLeft: '2px solid var(--accent-text)', borderRight: '2px solid var(--accent-text)' }}>
             {[
               { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'Apps audited',        from: 'left'   },
               { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: 'Companies notified',  from: 'bottom' },
@@ -4139,21 +4139,16 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 <div style={{
                   position: 'relative',
                   padding: '18px 24px',
-                  borderTop: '2px solid var(--accent-text)',
-                  borderLeft: mobile ? 'none' : (i === 0 ? 'none' : '1px solid rgba(255,255,255,0.07)'),
+                  borderLeft: mobile ? 'none' : (i === 0 ? 'none' : '1px solid rgba(255,255,255,0.16)'),
                   textAlign: 'center', height: '100%',
                 }}>
-                  <div style={{ fontSize: 42, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}>{s.n}</div>
+                  <div style={{ fontSize: 34, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}>{s.n}</div>
                   <div style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 10 }}>{s.label}</div>
                 </div>
               </Reveal>
             ))}
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
-            <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', margin: 0 }}>Permanent disclosure ledger</h3>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)' }}>{AUDIT_HIGHLIGHTS.length} companies · live response tracking · disclosure 2026-09-19</span>
-          </div>
           {/* Search + filter dropdowns - single row (stacks on mobile) */}
           <div style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'stretch', flexWrap: mobile ? 'wrap' : 'nowrap' }}>
 
