@@ -4186,7 +4186,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </Reveal>
           <Reveal from="right" delay={1}>
             <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 720, fontSize: 15, lineHeight: 1.9 }}>
-              Root level code analysis. Regulators in <strong style={{ color: 'var(--text)' }}>CC on every submission</strong> - national DPA + EDPS. 90-day coordinated disclosure. Our framework. Our timeline. Disclosure is unconditional: every organization on this ledger gets identical treatment, whether or not they engage us commercially. The full disclosure framework is in our <a href="#p/security" style={{ color: 'var(--accent-text)', textDecoration: 'none' }}>Security Policy</a>.
+              We read apps at the source-code level, not just the outside. On every report we send, the relevant data-protection authorities are copied in directly - the national watchdog for your country plus the European one. We then give the company ninety days to fix the problem before anything becomes public, the same waiting window every time. The rule is simple and non-negotiable: every organization on this ledger is treated exactly the same, whether or not they ever pay us a cent. The full disclosure framework is in our <a href="#p/security" style={{ color: 'var(--accent-text)', textDecoration: 'none' }}>Security Policy</a>.
             </p>
           </Reveal>
           {/* Permanent disclosure ledger — framed panel (KPIs + search + table) */}
