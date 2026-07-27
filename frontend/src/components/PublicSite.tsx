@@ -4129,9 +4129,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </p>
           </Reveal>
           {/* Permanent disclosure ledger — framed panel (KPIs + search + table) */}
-          <div style={{ border: '1px solid var(--accent-text)', borderRadius: 12, padding: '24px 20px 20px', marginBottom: 32 }}>
+          <div style={{ border: '1px solid var(--accent-text)', borderRadius: 12, padding: '16px 18px 14px', marginBottom: 32 }}>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 0, marginBottom: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 0, marginBottom: 14 }}>
             {[
               { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'Apps audited',        from: 'left'   },
               { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: 'Companies notified',  from: 'bottom' },
@@ -4141,7 +4141,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
                 <div style={{
                   position: 'relative',
-                  padding: '18px 24px',
+                  padding: '14px 20px',
                   borderLeft: mobile ? 'none' : (i === 0 ? 'none' : '1px solid rgba(255,255,255,0.3)'),
                   textAlign: 'center', height: '100%',
                 }}>
