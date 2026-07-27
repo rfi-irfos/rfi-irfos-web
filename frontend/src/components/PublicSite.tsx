@@ -3997,7 +3997,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
       {/* Mobile menu overlay — always mounted, drops down from the top (partial height) */}
       <div style={{
-        position: 'fixed', top: 64, left: 0, right: 'auto', bottom: 'auto', zIndex: 99,
+        position: 'fixed', top: 64, left: 'auto', right: 0, bottom: 'auto', zIndex: 99,
         width: 'min(50%, 320px)', height: 'auto',
         background: theme === 'dark'
           ? 'radial-gradient(120% 90% at 50% 0%, rgba(0,245,196,0.12) 0%, transparent 55%), linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.09) 0px, rgba(255,255,255,0.09) 1px, transparent 1px, transparent 3px)'
