@@ -335,11 +335,14 @@ function useWebVitals() {
       }).observe({ type: 'largest-contentful-paint', buffered: true })
     } catch { /* unsupported browser - skip, not critical */ }
     try {
-      new PerformanceObserver(list => {
-        for (const entry of list.getEntries() as unknown as { value: number; hadRecentInput: boolean }[]) {
-          if (!entry.hadRecentInput) cls += entry.value
-        }
-      }).observe({ type: 'layout-shift', buffered: true })
+      const supported = (PerformanceObserver as unknown as { supportedEntryTypes?: string[] }).supportedEntryTypes
+      if (!supported || supported.includes('layout-shift')) {
+        new PerformanceObserver(list => {
+          for (const entry of list.getEntries() as unknown as { value: number; hadRecentInput: boolean }[]) {
+            if (!entry.hadRecentInput) cls += entry.value
+          }
+        }).observe({ type: 'layout-shift', buffered: true })
+      }
     } catch { /* unsupported browser - skip, not critical */ }
 
     let reported = false
@@ -390,6 +393,7 @@ const NAV_LINKS = [
   { label: 'Research', href: '#research' },
   { label: 'Projects', href: '#projects' },
   { label: 'Track Record', href: '#track-record' },
+  { label: 'Human Rights', href: '/humanrights' },
   { label: 'Timeline', href: '#timeline' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'Team', href: '#team' },
@@ -4800,14 +4804,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </Reveal>
         </div>
 
-        <div style={{
-          background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
-          borderRadius: 12, padding: '20px 24px', marginTop: 48,
-          fontFamily: 'monospace', fontSize: 12, color: 'var(--text2)', lineHeight: 1.8,
-        }}>
-          <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>NYSE · NASDAQ · LSE · XETRA</span>
-          {' '}listed companies · GDPR Art. 5/8/9/13/25/32/44 · COPPA · EU AI Act (minor provisions) · ISO/IEC 29147 · coordinated disclosure 2026-09-19 · DSB · EDPB · ICO · BfDI · DPC · CERT.at · FTC
-        </div>
       </section>
 
       {/* SUBMIT A TIP */}

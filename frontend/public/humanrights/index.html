@@ -80,6 +80,8 @@ a:hover{text-decoration:underline}
 .site-nav-cta{background:var(--primary);color:var(--on-primary);border-radius:7px;padding:10px 22px;font-size:13px;
   font-weight:700;transition:filter .2s;cursor:pointer;border:none;letter-spacing:.04em;white-space:nowrap}
 .site-nav-cta:hover{filter:brightness(.9);text-decoration:none}
+.site-nav-link{color:var(--text2);font-size:13px;font-weight:600;letter-spacing:.04em;white-space:nowrap;transition:color .15s;text-decoration:none}
+.site-nav-link:hover{color:var(--accent);text-decoration:none}
 
 .hero{padding:150px 60px 70px;position:relative;overflow:hidden}
 .hero::before{content:"";position:absolute;inset:0;background:var(--hero-grad);pointer-events:none}
@@ -185,6 +187,7 @@ tr.data-row.open .chev{transform:rotate(90deg);color:var(--accent)}
     <svg class="ekg" width="54" height="18" viewBox="0 0 54 18" fill="none"><polyline class="ekg-line" points="0,9 12,9 16,2 20,16 24,2 28,9 54,9" stroke="#00f5c4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
     <div class="site-nav-right">
+      <a class="site-nav-link" href="https://rfi-irfos.com/">HOME</a>
       <div class="theme-group" id="themeGroup">
         <button class="theme-btn" data-theme-val="light" onclick="setTheme('light')">LIGHT</button>
         <button class="theme-btn" data-theme-val="dark"  onclick="setTheme('dark')">DARK</button>
@@ -812,6 +815,26 @@ function submitTip(e){
 setTheme(currentTheme());
 applyI18n();
 renderLedger();
+
+// ── Lighthouse first-party tracker ───────────────────────────────────────────
+// Same 1x1 beacon the main site uses (rfi-irfos-web PublicSite.tsx). No cookies,
+// no PII — just path + a section tag so the HRV page shows up in the same
+// Lighthouse marketing/Control-Tower report as everything else.
+(function () {
+  try {
+    var body = {
+      path: location.pathname,
+      referrer: document.referrer || '',
+      site: 'rfi-irfos-humanrights',
+      section: 'pageview'
+    };
+    fetch('https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).catch(function () {});
+  } catch (e) { /* tracking is best-effort, never block the page */ }
+})();
 </script>
 </body>
 </html>
