@@ -4128,7 +4128,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               Root level code analysis. Regulators in <strong style={{ color: 'var(--text)' }}>CC on every submission</strong> - national DPA + EDPS. 90-day coordinated disclosure. Our framework. Our timeline. Disclosure is unconditional: every organization on this ledger gets identical treatment, whether or not they engage us commercially. The full disclosure framework is in our <a href="#p/security" style={{ color: 'var(--accent-text)', textDecoration: 'none' }}>Security Policy</a>.
             </p>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 0, marginBottom: 32, borderTop: '2px solid var(--accent-text)', borderLeft: '2px solid var(--accent-text)', borderRight: '2px solid var(--accent-text)' }}>
+          {/* Permanent disclosure ledger — framed panel (KPIs + search + table) */}
+          <div style={{ border: '2px solid var(--accent-text)', borderRadius: 12, padding: '24px 20px 20px', marginBottom: 32 }}>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 0, marginBottom: 24 }}>
             {[
               { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'Apps audited',        from: 'left'   },
               { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: 'Companies notified',  from: 'bottom' },
@@ -4477,8 +4480,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               })}
             </div>
           </div>
+          </div>
+
           <p style={{ marginTop: 12, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
-            this ledger is updated in real time as companies respond. silence is public. · <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
+          this ledger is updated in real time as companies respond. silence is public. · <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
           </p>
         </div>
       </section>
