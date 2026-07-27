@@ -3879,7 +3879,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               </label>
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
                 <button onClick={() => cancelCheckout(checkoutModal.key)}
-                  style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, color: '#606080', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
+                  style={{ flex: 1, padding: '12px', background: 'rgba(255,77,79,0.10)', border: '1px solid rgba(255,77,79,0.55)', borderRadius: 6, color: '#ff6b6d', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                   Cancel
                 </button>
                 <button onClick={confirmCheckout}
@@ -3911,7 +3911,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               </p>
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
                 <button onClick={() => setProposalModal(null)}
-                  style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, color: '#606080', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer' }}>
+                  style={{ flex: 1, padding: '12px', background: 'rgba(255,77,79,0.10)', border: '1px solid rgba(255,77,79,0.55)', borderRadius: 6, color: '#ff6b6d', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                   Cancel
                 </button>
                 <button onClick={confirmProposal}
