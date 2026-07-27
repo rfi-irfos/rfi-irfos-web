@@ -3966,22 +3966,23 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </button>
       </nav>
 
-      {/* Mobile menu overlay — always mounted, slides in from the left */}
+      {/* Mobile menu overlay — always mounted, drops down from the top (partial height) */}
       <div style={{
-        position: 'fixed', top: 64, left: 0, right: 0, bottom: 0, zIndex: 99,
+        position: 'fixed', top: 64, left: 0, right: 0, bottom: 'auto', zIndex: 99,
         background: theme === 'dark'
-          ? 'linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
+          ? 'radial-gradient(120% 90% at 50% 0%, rgba(0,245,196,0.12) 0%, transparent 55%), linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.09) 0px, rgba(255,255,255,0.09) 1px, transparent 1px, transparent 3px)'
           : 'rgba(255,255,255,0.25)',
         backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
-        border: theme === 'dark' ? '1px solid rgba(255,255,255,0.09)' : '1px solid var(--border)',
-        borderRadius: 12,
+        border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid var(--border)',
+        borderTop: 'none',
+        borderRadius: '0 0 14px 14px',
         boxShadow: theme === 'dark'
-          ? 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 40px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.5)'
+          ? 'inset 0 1px 0 rgba(255,255,255,0.10), inset 0 0 50px rgba(0,0,0,0.45), 0 12px 40px rgba(0,0,0,0.55)'
           : '0 8px 32px rgba(0,0,0,0.35)',
         display: 'flex', flexDirection: 'column', alignItems: 'flex-end',
-        padding: '2rem 1.5rem', gap: 4,
-        transform: mobileOpen ? 'translateX(0)' : 'translateX(-100%)',
-        transition: 'transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)',
+        padding: '1.5rem 1.5rem 1.75rem', gap: 4,
+        transform: mobileOpen ? 'translateY(0)' : 'translateY(-110%)',
+        transition: 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
         pointerEvents: mobileOpen ? 'auto' : 'none',
         textAlign: 'right',
       }}>
