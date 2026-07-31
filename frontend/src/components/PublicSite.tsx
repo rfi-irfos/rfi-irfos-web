@@ -3882,19 +3882,22 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       // gradient stops resolve against the background positioning AREA - normally that's
       // this element's own box, which on a long scrolling page is several thousand px
       // tall, so the same 5 color stops get stretched over that whole height and any
-      // single screenful only shows a near-flat sliver of the gradient. The cookie banner
-      // looks textured because it's a small ~650px box, so the identical percentage stops
-      // compress into a short, visible distance. backgroundAttachment: 'fixed' makes the
-      // positioning area the VIEWPORT instead of the element box, so the gradient repeats
-      // its full contrast range every screenful - same technique, same visual density as
-      // the banner. Noise-line period tightened back from the blur-era 40-80px (which
-      // would just look like fat stripes without blur to soften it) to a fine 1-3px grain,
-      // matching the banner's actual texture now that nothing is smoothing it out.
+      // single screenful only shows a near-flat sliver of the gradient. backgroundAttachment:
+      // 'fixed' makes the positioning area the VIEWPORT instead of the element box, so the
+      // gradient repeats its full contrast range every screenful.
+      //
+      // THIRD reason it still looked flat: backgroundBlendMode: 'overlay' mathematically
+      // crushes toward black whenever the layer underneath is dark - overlay's formula is
+      // `2 * backdrop * source` when backdrop luminance is under 0.5, and our backdrop here
+      // is already near-black, so overlay math suppressed almost the entire noise layer
+      // regardless of how much its own contrast got tuned. Switched to 'normal' blending
+      // (plain alpha compositing) so the noise layer's own opacity is what actually shows,
+      // and raised that opacity since it's no longer fighting the blend math.
       backgroundColor: theme === 'dark' ? '#000000' : 'var(--bg)',
       backgroundImage: theme === 'dark'
-        ? 'linear-gradient(165deg, #1e1e24 0%, #0a0a0c 30%, #000000 55%, #17171d 80%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
+        ? 'linear-gradient(165deg, #1c1c22 0%, #0a0a0c 35%, #030304 65%, #17171d 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px)'
         : undefined,
-      backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
+      backgroundBlendMode: 'normal',
       backgroundAttachment: theme === 'dark' ? 'fixed' : 'scroll',
       color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
 
