@@ -3851,33 +3851,21 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
   return (
     <div style={{
-      // Solid fallback color only on this element - the actual carbon-gradient texture
-      // lives on a separate fixed pseudo-layer below (see right after this opening tag),
-      // which gets a real filter: blur() so the texture reads as a soft, atmospheric
-      // backdrop instead of a sharp gradient, while all foreground content (cards, text)
-      // stays crisp on top. A `background` shorthand must never be mixed with
-      // backgroundColor/backgroundImage longhands on the SAME element - React writes
-      // `undefined` style values as an empty string, and assigning the shorthand (even '')
-      // resets all of its longhand sub-properties, which silently wiped this out twice
-      // before landing on this split-layer approach. Caught + fixed 2026-07-31.
+      // Plain gradient, no filter: blur() - a blurred position:fixed layer covering the
+      // whole viewport forced the browser to recompute an expensive blur on every scroll
+      // repaint (that's what made the page slow), and Simeon found the blur just read as
+      // flat black anyway rather than a visible texture. Back to a single unblurred
+      // gradient directly on this element - backgroundColor + backgroundImage as separate
+      // longhand properties (never mixed with the `background` shorthand on one element:
+      // React writes `undefined` style values as an empty string, and assigning the
+      // shorthand - even '' - resets all of its longhand sub-properties, which silently
+      // wiped this out twice before landing here). Fixed 2026-07-31.
       backgroundColor: theme === 'dark' ? '#000000' : 'var(--bg)',
+      backgroundImage: theme === 'dark'
+        ? 'linear-gradient(165deg, #1a1a20 0%, #050506 30%, #000000 55%, #16161c 80%, #030304 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 40px, transparent 40px, transparent 80px)'
+        : undefined,
+      backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
       color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
-
-      {theme === 'dark' && (
-        <div aria-hidden="true" style={{
-          position: 'fixed', inset: '-10%', zIndex: -1, pointerEvents: 'none',
-          // First pass was invisible: the gradient stops were all within ~3-4% of each
-          // other in lightness, and the noise texture's 1-4px period cannot survive a
-          // 60px blur at all (high-frequency detail gets averaged straight to nothing) -
-          // widened the gradient contrast and the noise-band period to 40-80px so it
-          // actually reads as soft diagonal light/dark bands after blurring, and dropped
-          // the blur radius so real structure survives instead of washing out flat.
-          backgroundColor: '#000000',
-          backgroundImage: 'linear-gradient(165deg, #1a1a20 0%, #050506 30%, #000000 55%, #16161c 80%, #030304 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 40px, transparent 40px, transparent 80px)',
-          backgroundBlendMode: 'overlay',
-          filter: 'blur(36px)',
-        }} />
-      )}
 
       {/* REPORT PDF MODAL */}
       {reportModal && (
