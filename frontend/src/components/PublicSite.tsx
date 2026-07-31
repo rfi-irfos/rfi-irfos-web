@@ -473,15 +473,17 @@ const RESEARCH_AREAS = [
       </_I>
     ),
     title: 'AI Governance & Ethics',
-    desc: 'Constitutional AI design, model welfare research, EU AI Act compliance. Immutable governance by construction.',
+    desc: 'Constitutional AI design, model welfare research, EU AI Act compliance. Plateau-gated self-cultivation: architecture grown from evidence, never forced. Wellbeing signals during training, dignity for the systems we cultivate. Immutable governance by construction.',
   },
   {
     icon: (
       <_I>
-        {/* leaf with midrib */}
-        <path d="M16 28C10 24 5 18 5 12c0-6 5-9 11-9s11 3 11 9c0 6-5 12-11 16z"/>
-        <line x1="16" y1="28" x2="16" y2="16"/>
-        <path d="M16 22 Q11 18 9 13" strokeOpacity="0.6"/>
+        {/* grape leaf - palmate 3-lobe silhouette with a notched heart-shaped base
+            and a petiole, instead of the previous generic teardrop/almond outline */}
+        <path d="M16 29C13 29 10 27 7 25C4 23 3 19 4 15C5 12 8 12 10 14C11 10 13 7 16 3C19 7 21 10 22 14C24 12 27 12 28 15C29 19 28 23 25 25C22 27 19 29 16 29Z"/>
+        <line x1="16" y1="27" x2="16" y2="7" strokeOpacity="0.6"/>
+        <path d="M16 20 Q11 17 7 15" strokeOpacity="0.5"/>
+        <path d="M16 20 Q21 17 25 15" strokeOpacity="0.5"/>
       </_I>
     ),
     title: 'Ecocentric Technology',
@@ -518,25 +520,18 @@ const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* bullseye / target */}
-        <circle cx="16" cy="16" r="12"/>
-        <circle cx="16" cy="16" r="7"/>
-        <circle cx="16" cy="16" r="2.5" fill="#00f5c4" stroke="none"/>
+        {/* browser window with code brackets - web app dev */}
+        <rect x="4" y="6" width="24" height="20" rx="2"/>
+        <line x1="4" y1="12" x2="28" y2="12"/>
+        <circle cx="8" cy="9" r="0.8" fill="#00f5c4" stroke="none"/>
+        <circle cx="11" cy="9" r="0.8" fill="#00f5c4" stroke="none"/>
+        <circle cx="14" cy="9" r="0.8" fill="#00f5c4" stroke="none"/>
+        <path d="M12 17l-3 3 3 3"/>
+        <path d="M20 17l3 3-3 3"/>
       </_I>
     ),
-    title: 'AI Alignment Research',
-    desc: 'Intent and value alignment via constitutional cores. Plateau-gated self-cultivation: models that grow their own architecture from evidence, never with forced layers.',
-  },
-  {
-    icon: (
-      <_I>
-        {/* heart with pulse line inside */}
-        <path d="M16 26C16 26 4 18 4 11c0-4 3-6 6-6 2.5 0 4.5 1.5 6 3 1.5-1.5 3.5-3 6-3 3 0 6 2 6 6 0 7-12 15-12 15z"/>
-        <polyline points="7,14 10,14 12,9 14,19 17,11 19,16 22,14 25,14" strokeWidth="1.2"/>
-      </_I>
-    ),
-    title: 'Model Welfare & Wellbeing',
-    desc: 'Model welfare as a first-class research axis. Wellbeing signals during training, distress detection, and dignity for the systems we cultivate, not just the humans they serve.',
+    title: 'Web App Development',
+    desc: 'Full-stack builds engineered by the same team that audits for a living. React front ends, Rust backends, installable PWAs. No bloated page builders, no lock-in.',
   },
 ]
 
