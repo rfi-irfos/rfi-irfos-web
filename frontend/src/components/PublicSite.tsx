@@ -3844,9 +3844,18 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       // the cookie banner/modals (layered gradient + repeating diagonal noise line, blended
       // via 'overlay'), fixed attachment so it doesn't visibly repeat/shift while scrolling
       // a long page. Light theme untouched, still the flat var(--bg). Added 2026-07-31.
-      background: theme === 'dark'
-        ? '#000000 linear-gradient(165deg, #0c0c0e 0%, #030303 35%, #000000 60%, #0a0a0c 85%, #000000 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 4px)'
-        : 'var(--bg)',
+      //
+      // backgroundColor + backgroundImage kept as SEPARATE properties, not a combined
+      // 'background' shorthand string - a solid color can only legally appear as the LAST
+      // layer in a comma-separated background shorthand, and putting '#000000' before the
+      // gradient list (as a first attempt did) is invalid CSS: the whole declaration gets
+      // silently dropped by the browser and the page renders plain white. Caught 2026-07-31
+      // after Simeon reported the background wasn't showing at all.
+      backgroundColor: theme === 'dark' ? '#000000' : undefined,
+      backgroundImage: theme === 'dark'
+        ? 'linear-gradient(165deg, #0c0c0e 0%, #030303 35%, #000000 60%, #0a0a0c 85%, #000000 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 4px)'
+        : undefined,
+      background: theme === 'dark' ? undefined : 'var(--bg)',
       backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
       backgroundAttachment: theme === 'dark' ? 'fixed' : 'scroll',
       color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
