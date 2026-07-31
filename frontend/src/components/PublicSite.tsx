@@ -473,7 +473,7 @@ const RESEARCH_AREAS = [
       </_I>
     ),
     title: 'AI Governance & Ethics',
-    desc: 'Constitutional AI design, model welfare research, EU AI Act compliance. Plateau-gated self-cultivation: architecture grown from evidence, never forced. Wellbeing signals during training, dignity for the systems we cultivate. Immutable governance by construction.',
+    desc: 'Constitutional AI design, EU AI Act compliance. Plateau-gated self-cultivation: architecture grown from evidence, never forced. Immutable governance by construction.',
   },
   {
     icon: (
@@ -532,6 +532,17 @@ const RESEARCH_AREAS = [
     ),
     title: 'Web App Development',
     desc: 'Full-stack builds engineered by the same team that audits for a living. React front ends, Rust backends, installable PWAs. No bloated page builders, no lock-in.',
+  },
+  {
+    icon: (
+      <_I>
+        {/* heart with pulse line inside */}
+        <path d="M16 26C16 26 4 18 4 11c0-4 3-6 6-6 2.5 0 4.5 1.5 6 3 1.5-1.5 3.5-3 6-3 3 0 6 2 6 6 0 7-12 15-12 15z"/>
+        <polyline points="7,14 10,14 12,9 14,19 17,11 19,16 22,14 25,14" strokeWidth="1.2"/>
+      </_I>
+    ),
+    title: 'Model Welfare & Wellbeing',
+    desc: 'Model welfare as a first-class research axis. Wellbeing signals during training, distress detection, and dignity for the systems we cultivate, not just the humans they serve.',
   },
 ]
 
@@ -3855,10 +3866,16 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       {theme === 'dark' && (
         <div aria-hidden="true" style={{
           position: 'fixed', inset: '-10%', zIndex: -1, pointerEvents: 'none',
+          // First pass was invisible: the gradient stops were all within ~3-4% of each
+          // other in lightness, and the noise texture's 1-4px period cannot survive a
+          // 60px blur at all (high-frequency detail gets averaged straight to nothing) -
+          // widened the gradient contrast and the noise-band period to 40-80px so it
+          // actually reads as soft diagonal light/dark bands after blurring, and dropped
+          // the blur radius so real structure survives instead of washing out flat.
           backgroundColor: '#000000',
-          backgroundImage: 'linear-gradient(165deg, #0c0c0e 0%, #030303 35%, #000000 60%, #0a0a0c 85%, #000000 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 4px)',
+          backgroundImage: 'linear-gradient(165deg, #1a1a20 0%, #050506 30%, #000000 55%, #16161c 80%, #030304 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 40px, transparent 40px, transparent 80px)',
           backgroundBlendMode: 'overlay',
-          filter: 'blur(60px)',
+          filter: 'blur(36px)',
         }} />
       )}
 
