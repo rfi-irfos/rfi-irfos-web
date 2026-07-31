@@ -3442,6 +3442,17 @@ export function PublicSite() {
   const [activeSev, setActiveSev] = useState<string | null>(null)
 const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   const [openDD, setOpenDD] = useState<string | null>(null)
+  // Restored 2026-07-31: an earlier "performance fix" removed this assuming MoonPhase
+  // was its only consumer - it wasn't. The Track Record ledger's live per-row countdown
+  // timers (disclosure countdown, elapsed-since-notification, embargo progress bar,
+  // elapsed-desc sort) all read `now` too, and removing it left those as a bare
+  // undefined reference - a ReferenceError that crashed the entire render (blank white
+  // page in production). That ledger genuinely needs one shared, synchronized clock
+  // across potentially hundreds of rows computed in the same .map(), so a top-level
+  // ticking state is the right shape for THIS feature - MoonPhase (a single icon with
+  // no reason to share a clock with anything) still correctly ticks on its own, slower,
+  // isolated timer instead of this one.
+  const [now, setNow] = useState(() => Date.now())
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
   // Cards now show only tier/price/CTA - the full breakdown (what this tier actually
   // is) moved into this confirmation modal, shown above the B2B/ToS checkboxes, so
@@ -3642,6 +3653,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     handleCheckout(checkoutModal.key)
   }
 
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(t)
+  }, [])
   const mobile = useMobile()
   const closeMobile = useCallback(() => setMobileOpen(false), [])
   useWebVitals()
