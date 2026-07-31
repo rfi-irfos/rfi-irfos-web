@@ -189,40 +189,61 @@ function ArrowIcon() {
     </svg>
   )
 }
-function PriceTierCard({ tier, price, highlight, onBuy, onProposal }: {
-  tier: string; price: string; highlight?: boolean
+// First sentence of `desc` (up to the first '\n\n' paragraph break) is shown on the
+// card face as a teaser so a visitor has a reason to click before committing to open
+// the modal - previously desc/delivery only ever reached the modal, so the always-
+// visible card was just a name and a price with an unlabeled icon button. Fixed
+// 2026-07-31 (conversion pass - Stripe revenue was ~20 cents for the month).
+function PriceTierCard({ tier, price, desc, delivery, highlight, onBuy, onProposal }: {
+  tier: string; price: string; desc?: string; delivery?: string; highlight?: boolean
   onBuy?: () => void; onProposal?: () => void
 }) {
+  const teaser = desc?.split('\n\n')[0]
   return (
     <div style={{
       background: highlight ? 'rgba(0,245,196,0.06)' : 'var(--bg2)',
       border: `1px solid ${highlight ? 'rgba(0,245,196,0.25)' : 'var(--border)'}`,
       borderRadius: 14, padding: '22px 20px', height: '100%',
-      display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 24,
+      display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 16,
     }}>
-      <div style={{ fontWeight: 800, fontSize: 17, color: 'var(--text)', lineHeight: 1.3 }}>{tier}</div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-        <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--accent-text)' }}>{price}</div>
-        {(onBuy || onProposal) && (
-          <button
-            onClick={onBuy ?? onProposal}
-            title={onBuy ? 'Get started' : 'Request a proposal'}
-            aria-label={onBuy ? 'Get started' : 'Request a proposal'}
-            style={{
-              width: 34, height: 34, flexShrink: 0, borderRadius: '50%', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              // Buy = solid teal fill (the "pay now" color used everywhere else on the
-              // page). Request-a-proposal is deliberately NOT a paler version of the same
-              // green - a solid neutral fill instead, so the two read as different KINDS
-              // of action at a glance, not just different intensities of the same one.
-              background: onBuy ? 'var(--accent)' : 'var(--bg3)',
-              border: onBuy ? 'none' : '1px solid var(--border)',
-              color: onBuy ? 'var(--accent-fg)' : 'var(--text)',
-            }}
-          >
-            {onBuy ? <CartIcon /> : <ArrowIcon />}
-          </button>
+      <div>
+        <div style={{ fontWeight: 800, fontSize: 17, color: 'var(--text)', lineHeight: 1.3, marginBottom: teaser ? 10 : 0 }}>{tier}</div>
+        {teaser && (
+          <div style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.6 }}>{teaser}</div>
         )}
+      </div>
+      <div>
+        {delivery && (
+          <div style={{
+            fontSize: 11, fontWeight: 700, color: 'var(--accent-text)', fontFamily: 'monospace',
+            marginBottom: 14, display: 'flex', alignItems: 'center', gap: 5,
+          }}>
+            <span aria-hidden="true">⏱</span>{delivery}
+          </div>
+        )}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+          <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--accent-text)' }}>{price}</div>
+          {(onBuy || onProposal) && (
+            <button
+              onClick={onBuy ?? onProposal}
+              style={{
+                flexShrink: 0, borderRadius: 8, cursor: 'pointer', padding: '9px 16px',
+                display: 'flex', alignItems: 'center', gap: 7,
+                fontSize: 12.5, fontWeight: 800, letterSpacing: '0.02em',
+                // Buy = solid teal fill (the "pay now" color used everywhere else on the
+                // page). Request-a-proposal is deliberately NOT a paler version of the same
+                // green - a solid neutral fill instead, so the two read as different KINDS
+                // of action at a glance, not just different intensities of the same one.
+                background: onBuy ? 'var(--accent)' : 'var(--bg3)',
+                border: onBuy ? 'none' : '1px solid var(--border)',
+                color: onBuy ? 'var(--accent-fg)' : 'var(--text)',
+              }}
+            >
+              {onBuy ? <CartIcon /> : <ArrowIcon />}
+              {onBuy ? 'Get Started' : 'Request Proposal'}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -3850,9 +3871,18 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       {/* B2B CHECKOUT CONFIRMATION MODAL - cards on the page only show tier/price/CTA now;
           this is where the full breakdown actually lives, right above the terms. */}
       {checkoutModal && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
-          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '28px 24px 36px' : '40px 36px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
-            {/* This modal's chrome is deliberately always-dark (#0e0e1e), independent of the
+        // Backdrop now blurs the page behind it (same idea as the header's scroll blur)
+        // so the modal visually pops forward instead of just dimming - added 2026-07-31
+        // alongside the carbon-gradient panel below, same technique as the cookie banner
+        // but pushed darker for contrast against a blurred page.
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
+          <div style={{
+            background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
+            backgroundBlendMode: 'overlay',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
+            border: '1px solid rgba(255,255,255,0.08)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '28px 24px 36px' : '40px 36px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
+            {/* This modal's chrome is deliberately always-dark (carbon gradient, same family as
+                the cookie banner but darker), independent of the
                 site theme toggle - so every text color inside it is a fixed light hex, NOT a
                 var(--text*) token, which would resolve to near-black in light mode and read as
                 illegible grey-on-navy. */}
@@ -3870,29 +3900,37 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             )}
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
               <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
-              <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16, cursor: 'pointer' }}>
-                <input type="checkbox" checked={b2bChecked} onChange={e => setB2bChecked(e.target.checked)}
-                  style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
-                <span style={{ color: '#a0a0b8', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                  I am acting as a <strong style={{ color: '#e8e8f0' }}>business customer</strong> and confirm that this purchase is made in the course of my commercial or professional activity.
-                </span>
-              </label>
+              {/* Single combined checkbox, not two - the old two-checkbox gate (business-customer
+                  declaration + separate ToS/no-refund consent) meant the Continue button stayed
+                  disabled through two clicks, not one, and funnel data showed most people never
+                  cleared it: 68 clicks this month, cancel rates 50-100% per tier, ATTEMPT stuck
+                  at 0-1, PAID at 0 everywhere. Merged 2026-07-31 - same legal content, one action. */}
               <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 24, cursor: 'pointer' }}>
-                <input type="checkbox" checked={agbChecked} onChange={e => setAgbChecked(e.target.checked)}
+                <input type="checkbox" checked={agbChecked} onChange={e => { setAgbChecked(e.target.checked); setB2bChecked(e.target.checked) }}
                   style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
                 <span style={{ color: '#a0a0b8', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                  I agree to the <a href="#p/agb" style={{ color: TEAL }}>Terms of Service</a>. I understand that the service <strong style={{ color: '#e8e8f0' }}>begins immediately upon payment</strong> and that no right of withdrawal applies. Refunds are excluded.
+                  I'm purchasing as a <strong style={{ color: '#e8e8f0' }}>business customer</strong> and agree to the <a href="#p/agb" style={{ color: TEAL }}>Terms of Service</a>. The service begins immediately upon payment; no right of withdrawal applies and refunds are excluded.
                 </span>
               </label>
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
-                <button onClick={() => cancelCheckout(checkoutModal.key)}
-                  style={{ flex: 1, padding: '12px', background: 'rgba(255,77,79,0.10)', border: '1px solid rgba(255,77,79,0.55)', borderRadius: 6, color: '#ff6b6d', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  Cancel
-                </button>
                 <button onClick={confirmCheckout}
-                  disabled={!b2bChecked || !agbChecked}
-                  style={{ flex: mobile ? undefined : 2, padding: '12px', background: b2bChecked && agbChecked ? 'rgba(0,245,196,0.12)' : 'transparent', border: `1px solid ${b2bChecked && agbChecked ? TEAL : 'rgba(255,255,255,0.08)'}`, borderRadius: 6, color: b2bChecked && agbChecked ? TEAL : '#404058', fontSize: 13, fontFamily: 'monospace', cursor: b2bChecked && agbChecked ? 'pointer' : 'not-allowed', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  disabled={!agbChecked || !b2bChecked}
+                  style={{
+                    flex: mobile ? undefined : 2, padding: '13px', borderRadius: 6, fontSize: 13, fontFamily: 'monospace',
+                    letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 700,
+                    // Always reads as "the real button", checked or not - a fully disabled-looking
+                    // grey-on-transparent button next to a loud red Cancel was the actual conversion
+                    // killer here, not the copy. Unchecked state keeps a visible teal outline instead.
+                    background: agbChecked && b2bChecked ? TEAL : 'rgba(0,245,196,0.08)',
+                    border: `1px solid ${agbChecked && b2bChecked ? TEAL : 'rgba(0,245,196,0.4)'}`,
+                    color: agbChecked && b2bChecked ? '#070711' : 'rgba(0,245,196,0.55)',
+                    cursor: agbChecked && b2bChecked ? 'pointer' : 'not-allowed',
+                  }}>
                   Continue to Stripe →
+                </button>
+                <button onClick={() => cancelCheckout(checkoutModal.key)}
+                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  Cancel
                 </button>
               </div>
             </div>
@@ -3903,8 +3941,12 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       {/* PROPOSAL REQUEST MODAL - same "full breakdown before you commit" pattern as the
           checkout modal above, for tiers that route to Contact instead of Stripe. */}
       {proposalModal && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
-          <div style={{ background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.2)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '28px 24px 36px' : '40px 36px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
+          <div style={{
+            background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
+            backgroundBlendMode: 'overlay',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
+            border: '1px solid rgba(255,255,255,0.08)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '28px 24px 36px' : '40px 36px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
             {/* Same fixed-light-on-dark rule as the checkout modal above - this chrome
                 doesn't follow the site theme either. */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 14 }}>
@@ -3924,13 +3966,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 No payment happens here. This takes you to our contact form with <strong style={{ color: '#e8e8f0' }}>{proposalModal.tier}</strong> pre-noted, so we start the conversation with the right context.
               </p>
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
-                <button onClick={() => setProposalModal(null)}
-                  style={{ flex: 1, padding: '12px', background: 'rgba(255,77,79,0.10)', border: '1px solid rgba(255,77,79,0.55)', borderRadius: 6, color: '#ff6b6d', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  Cancel
-                </button>
                 <button onClick={confirmProposal}
-                  style={{ flex: mobile ? undefined : 2, padding: '12px', background: 'rgba(0,245,196,0.12)', border: `1px solid ${TEAL}`, borderRadius: 6, color: TEAL, fontSize: 13, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  style={{ flex: mobile ? undefined : 2, padding: '13px', background: TEAL, border: `1px solid ${TEAL}`, borderRadius: 6, color: '#070711', fontSize: 13, fontWeight: 700, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                   Continue to Contact →
+                </button>
+                <button onClick={() => setProposalModal(null)}
+                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  Cancel
                 </button>
               </div>
             </div>
@@ -4114,7 +4156,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             textTransform: 'uppercase', transition: 'opacity 0.15s',
           }}
             onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Hire Us</a>
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Book us!</a>
         </div>
 
         <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '56px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
@@ -4597,17 +4639,15 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             {([
               { tier: 'Public',                   price: 'free',      desc: 'Completely free, and completely open. When we check an app or a company, we publish what we find after a 90-day heads-up window, so the organization has time to fix the problem before anyone else sees it.\n\nWe hold every name on our public ledger to that exact same rule, big or small, paying or not. There is no contract, no secrecy agreement, and no hidden catch.\n\nAs a bonus, your very first phone privacy session is on us: we show you, step by step, how to switch off the hidden trackers running in the background of your own phone. This is our standing promise to the public, not a trial that ends.', highlight: false, stripeKey: null,            directUrl: null, delivery: 'Begins immediately after intake; report within 7 calendar days of scope lock.', contact: false },
               { tier: 'Security Retainer',        price: '€1,500 / mo', desc: 'A single audit is like a photo taken on one day. Real security drifts the moment you ship new code, so this is an ongoing watch, not a snapshot. For 1,500 euros a month we keep an eye on your product between audits, run a proper deep-dive every three months, and jump to the front of the line the instant something urgent appears.\n\nYou also get one named person who already knows how your system is built, so you never have to explain your setup from scratch during a panic call.\n\nWe start within a few days of the first payment and your contact is assigned that same week. Think of it as a standing security team you can call any time, without hiring anyone.', highlight: false, stripeKey: 'retainer', directUrl: null, delivery: 'Report within 7 calendar days of audit completion.', contact: false },
-              { tier: 'Remediation Advisory',     price: '€4,500',    desc: 'You get a clean, plain-language report built for your team, not a wall of jargon: exactly how we tested, what we found, every weakness ranked by how serious it is, and a concrete fix for each one. The part that matters most is that the very engineers who found the holes sit down with you and walk you through how to actually close them, so this is never just a list of problems to hand to someone else. We deliver the full report within five business days of payment.\n\nThirty days later we check back to confirm the fixes genuinely landed, not only that someone claimed they did. And because we are a regulated institute, every finding is tied to the exact privacy law article it breaks, so your legal team gets a clear map instead of a mystery.\n\nThis is the difference between having a report and being truly fixed.',                                        highlight: false, stripeKey: 'remediation',   directUrl: null, delivery: 'Report within 7 calendar days of audit completion.', contact: false },
-              { tier: 'Confidential',             price: '€9,000',    desc: 'What you get is a written report that lists every weakness we found, each one ranked by how serious it is and pinned to the exact spot in your code, plus a plain-language version your non-technical leadership can actually read. We deliver it within five business days of payment.\n\nEverything stays private between you and us under a strict secrecy agreement, so your customers and the public never see it. Once you ship the fixes, we re-test by hand to confirm the holes are truly closed, not just patched on paper.\n\nThe one thing we cannot drop: because we are a not-for-profit bound by our own rules, the relevant regulators are told in parallel. So you get discretion where it matters and proof where it counts, without us breaking our duty to the public.',                                        highlight: false, stripeKey: 'confidential',  directUrl: null, delivery: 'Report within 7 calendar days of audit completion.', contact: false },
+              { tier: 'Remediation Advisory',     price: '€4,500',    desc: 'You get a clean, plain-language report built for your team, not a wall of jargon: exactly how we tested, what we found, every weakness ranked by how serious it is, and a concrete fix for each one. The part that matters most is that the very engineers who found the holes sit down with you and walk you through how to actually close them, so this is never just a list of problems to hand to someone else. We deliver the full report within 7 calendar days of payment.\n\nThirty days later we check back to confirm the fixes genuinely landed, not only that someone claimed they did. And because we are a regulated institute, every finding is tied to the exact privacy law article it breaks, so your legal team gets a clear map instead of a mystery.\n\nThis is the difference between having a report and being truly fixed.',                                        highlight: true, stripeKey: 'remediation',   directUrl: null, delivery: 'Report within 7 calendar days of payment.', contact: false },
+              { tier: 'Confidential',             price: '€9,000',    desc: 'What you get is a written report that lists every weakness we found, each one ranked by how serious it is and pinned to the exact spot in your code, plus a plain-language version your non-technical leadership can actually read. We deliver it within 7 calendar days of payment.\n\nEverything stays private between you and us under a strict secrecy agreement, so your customers and the public never see it. Once you ship the fixes, we re-test by hand to confirm the holes are truly closed, not just patched on paper.\n\nThe one thing we cannot drop: because we are a not-for-profit bound by our own rules, the relevant regulators are told in parallel. So you get discretion where it matters and proof where it counts, without us breaking our duty to the public.',                                        highlight: false, stripeKey: 'confidential',  directUrl: null, delivery: 'Report within 7 calendar days of payment.', contact: false },
               { tier: 'Enterprise NDA',           price: '€18,000',   desc: 'You get the same private, ranked report as the Confidential tier, but with a longer runway: we stretch the embargo well past our standard 90 days, so your team has real time to fix things properly instead of rushing a patch over a weekend.\n\nYou work directly with our engineers on the repair, your lawyers receive a complete evidence package they can hand straight to counsel, and any follow-up jumps the queue.\n\nWe kick off within a few days of payment. Built for larger organizations where fixing everything in 90 days is simply not realistic.', highlight: false, stripeKey: 'enterprise_nda', directUrl: null, delivery: 'Begins immediately after intake; full report within 7 calendar days of scope lock.', contact: false },
-              { tier: 'Critical Infrastructure',  price: '€75,000',   desc: 'You get a full-scope review under a secrecy agreement, our own legal review, and a public-relations containment plan built together with your communications team before anything goes wrong. For operators of critical infrastructure, energy, water, health care, transport, a breach is not an IT problem, it is a public-safety event.\n\nWe talk directly to every relevant authority on your behalf, and you receive a standing emergency-response protocol, so the worst day is rehearsed in advance instead of invented on the spot.\n\nWe mobilize within days of payment. This is the tier for situations where failure is simply not an option.', highlight: true,  stripeKey: 'critical_infra', directUrl: 'https://buy.stripe.com/9B66oJ6OIbU32LPcHK7N60H', delivery: 'Begins immediately after intake; full report within 7 calendar days of scope lock.', contact: false },
-              { tier: 'IoB / Art. 9',             price: '€150,000',  desc: 'You get a full trace of every flow of biometric data through your product: every period your data is kept, and every transfer across borders, tied to the strictest privacy category in European law.\n\nThe 150,000 euros reflects the depth of the work, and we keep the same secrecy agreement and regulator contact as the Enterprise tier. Most security shops will not touch this category at all. We specialize in it, because the data here is literally about people bodies.\n\nWe start within days of payment.', highlight: true,  stripeKey: 'iob_art9', directUrl: 'https://buy.stripe.com/4gMcN7ehagaj4TXcHK7N60G', delivery: 'Continuous; first quarterly report within 7 calendar days of kick-off.', contact: false },
-              { tier: 'Annual Intelligence Retainer', price: '€250,000', desc: 'You get a full year of our flagship service: we watch your entire app portfolio without pause, not a sample but all of it, with deep audits every three months.
-
-Your dedicated contact speaks directly to the regulators that matter, from the Austrian and German data-protection authorities to the UK watchdog, you get a threat briefing every month, and instant notice the moment we see a breach taking shape.\\n\\nWe take over within a week of payment and act as your external security and compliance department from day one.', highlight: true, stripeKey: 'annual_retainer', directUrl: 'https://buy.stripe.com/00wcN71uo4rBdqt7nq7N60I', contact: false, delivery: 'Continuous; first quarterly report within 7 calendar days of kick-off.' },
+              { tier: 'Critical Infrastructure',  price: '€75,000',   desc: 'You get a full-scope review under a secrecy agreement, our own legal review, and a public-relations containment plan built together with your communications team before anything goes wrong. For operators of critical infrastructure, energy, water, health care, transport, a breach is not an IT problem, it is a public-safety event.\n\nWe talk directly to every relevant authority on your behalf, and you receive a standing emergency-response protocol, so the worst day is rehearsed in advance instead of invented on the spot.\n\nWe mobilize within days of payment. This is the tier for situations where failure is simply not an option.', highlight: false,  stripeKey: 'critical_infra', directUrl: 'https://buy.stripe.com/9B66oJ6OIbU32LPcHK7N60H', delivery: 'Begins immediately after intake; full report within 7 calendar days of scope lock.', contact: false },
+              { tier: 'IoB / Art. 9',             price: '€150,000',  desc: 'You get a full trace of every flow of biometric data through your product: every period your data is kept, and every transfer across borders, tied to the strictest privacy category in European law.\n\nThe 150,000 euros reflects the depth of the work, and we keep the same secrecy agreement and regulator contact as the Enterprise tier. Most security shops will not touch this category at all. We specialize in it, because the data here is literally about people bodies.\n\nWe start within days of payment.', highlight: false,  stripeKey: 'iob_art9', directUrl: 'https://buy.stripe.com/4gMcN7ehagaj4TXcHK7N60G', delivery: 'Continuous; first quarterly report within 7 calendar days of kick-off.', contact: false },
+              { tier: 'Annual Intelligence Retainer', price: '€250,000', desc: 'You get a full year of our flagship service: we watch your entire app portfolio without pause, not a sample but all of it, with deep audits every three months.\n\nYour dedicated contact speaks directly to the regulators that matter, from the Austrian and German data-protection authorities to the UK watchdog, you get a threat briefing every month, and instant notice the moment we see a breach taking shape.\n\nWe take over within a week of payment and act as your external security and compliance department from day one.', highlight: false, stripeKey: 'annual_retainer', directUrl: 'https://buy.stripe.com/00wcN71uo4rBdqt7nq7N60I', contact: false, delivery: 'Continuous; first quarterly report within 7 calendar days of kick-off.' },
             ] as const).map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} highlight={t.highlight}
+                <PriceTierCard tier={t.tier} price={t.price} desc={t.desc} delivery={t.delivery} highlight={t.highlight}
                   onBuy={t.stripeKey ? () => openCheckoutModal({ key: t.stripeKey!, tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery, directUrl: t.directUrl ?? undefined }) : undefined}
                   onProposal={t.contact ? () => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery }) : undefined} />
               </Reveal>
@@ -4618,13 +4658,13 @@ Your dedicated contact speaks directly to the regulators that matter, from the A
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Market Research &amp; Competitor Analysis</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 48 }}>
             {[
-              { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  delivery: '14 calendar days.', desc: 'You get a clear, plain-language map of your sector delivered within 14 calendar days: who the key players are, how the rules and regulations actually work for them, and where the real openings sit.\n\nIt runs at least ten pages, with no jargon and no two-hundred-slide deck, just the landscape you need to make a decision, written so a founder can read it in one sitting.\n\nWe start the research within a few days of payment and send the finished report inside 14 calendar days.' },
-              { tier: 'Competitor Intelligence',    price: '€7,500',      stripeKey: 'competitor_intel', delivery: '14 calendar days.', desc: 'You get three to five of your competitors taken apart: what technology they are built on, how they actually treat user privacy, which is often very different from what they claim, how they position themselves, and where they are strategically weak.\n\nThe result is a realistic picture of the field, including the gaps you can exploit and the ones you need to close. This is the homework most teams skip and later regret.\n\nWe deliver within 14 calendar days of payment.' },
-              { tier: 'Sector Intelligence Report', price: '€18,000',     stripeKey: 'sector_intel',     delivery: '14 calendar days.', desc: 'You get the complete picture of your sector: the market, the regulations, and the technology, with each major player risk exposure spelled out in numbers rather than vague claims.\n\nBecause markets move, this is not a one-off document, you receive a fresh update every three months, so you always know where the sector is heading and which players are exposed.\n\nWe deliver the first report within 14 calendar days of payment, then refresh it every quarter.' },
-              { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', stripeKey: 'ongoing_intel', delivery: 'First briefing within 14 calendar days, then monthly.', desc: 'You get continuous watching of your competitors so you do not have to: a proper briefing every month, and an immediate alert the moment one of them makes a significant move, whether that is a funding round, a pivot, a breach, or a key hire.\n\nOne dedicated analyst who knows your space handles it, so you hear about a competitor big launch on the day it happens, not after.\n\nWe assign your analyst within a week of payment and the first briefing lands at the end of month one.' },
+              { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  delivery: '14 calendar days.', highlight: true, desc: 'You get a clear, plain-language map of your sector delivered within 14 calendar days: who the key players are, how the rules and regulations actually work for them, and where the real openings sit.\n\nIt runs at least ten pages, with no jargon and no two-hundred-slide deck, just the landscape you need to make a decision, written so a founder can read it in one sitting.\n\nWe start the research within a few days of payment and send the finished report inside 14 calendar days.' },
+              { tier: 'Competitor Intelligence',    price: '€7,500',      stripeKey: 'competitor_intel', delivery: '14 calendar days.', highlight: false, desc: 'You get three to five of your competitors taken apart: what technology they are built on, how they actually treat user privacy, which is often very different from what they claim, how they position themselves, and where they are strategically weak.\n\nThe result is a realistic picture of the field, including the gaps you can exploit and the ones you need to close. This is the homework most teams skip and later regret.\n\nWe deliver within 14 calendar days of payment.' },
+              { tier: 'Sector Intelligence Report', price: '€18,000',     stripeKey: 'sector_intel',     delivery: '14 calendar days.', highlight: false, desc: 'You get the complete picture of your sector: the market, the regulations, and the technology, with each major player risk exposure spelled out in numbers rather than vague claims.\n\nBecause markets move, this is not a one-off document, you receive a fresh update every three months, so you always know where the sector is heading and which players are exposed.\n\nWe deliver the first report within 14 calendar days of payment, then refresh it every quarter.' },
+              { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', stripeKey: 'ongoing_intel', delivery: 'First briefing within 14 calendar days, then monthly.', highlight: false, desc: 'You get continuous watching of your competitors so you do not have to: a proper briefing every month, and an immediate alert the moment one of them makes a significant move, whether that is a funding round, a pivot, a breach, or a key hire.\n\nOne dedicated analyst who knows your space handles it, so you hear about a competitor big launch on the day it happens, not after.\n\nWe assign your analyst within a week of payment and the first briefing lands at the end of month one.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} onBuy={() => openCheckoutModal({ key: t.stripeKey, tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery })} />
+                <PriceTierCard tier={t.tier} price={t.price} desc={t.desc} delivery={t.delivery} highlight={t.highlight} onBuy={() => openCheckoutModal({ key: t.stripeKey, tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery })} />
               </Reveal>
             ))}
           </div>
@@ -4633,13 +4673,13 @@ Your dedicated contact speaks directly to the regulators that matter, from the A
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Web Development</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
             {[
-              { tier: 'Landing Page',   price: '€1,500',  stripeKey: 'web_landing'   as string | null, delivery: '48 hours.', desc: 'You get a sharp single-page site built on our own open-source React template, fast, clean, and live within forty-eight hours of payment.\n\nIt is perfect for a launch, an event, or a product that only needs one great page.\n\nNo bloated page builder and no lock-in: you own the code and can take it anywhere.' },
-              { tier: 'Full Site',      price: '€4,500',  stripeKey: 'web_full'      as string | null, delivery: '14–28 calendar days, depending on scope.', desc: 'You get a proper multi-page site with a content editor your team can actually use, a working contact form, and privacy-respecting analytics built in from the start.\n\nIt ships as an installable progressive web app, which means it behaves like a native app on phones, both Android and iPhone, without going through an app store. We deliver in about two weeks of payment.\n\nBuilt by the same people who audit apps for a living, so it is clean by default.' },
-              { tier: 'Enterprise Site',price: '€18,000', stripeKey: 'web_enterprise' as string | null, delivery: '14–28 calendar days, depending on scope.', desc: 'You get a full custom build: a Rust backend, login and authentication, the integrations you need, and whatever scope your operation requires.\n\nIt includes real native Android and iPhone apps, not a web wrapper dressed up as one, and long-term support is part of the deal, not an extra charge. We scope the build with you in the first week after payment.\n\nFor organizations where the website is the business itself, not a brochure.' },
-              { tier: 'Platform Build', price: '€75,000', stripeKey: null,                              delivery: 'User-specific timeline, aligned after kick-off.', desc: 'You get a complete product, not just a site: custom infrastructure, API design, data pipelines, native apps, and a dedicated team that stays with it.\n\nThis is the engagement for when you are building the actual platform, not only the front door to it.\n\nIt is ongoing, not a handoff: we start within a week of payment and keep building it together with you as the product grows.' },
+              { tier: 'Landing Page',   price: '€1,500',  stripeKey: 'web_landing'   as string | null, delivery: '48 hours.', highlight: true, desc: 'You get a sharp single-page site built on our own open-source React template, fast, clean, and live within forty-eight hours of payment.\n\nIt is perfect for a launch, an event, or a product that only needs one great page.\n\nNo bloated page builder and no lock-in: you own the code and can take it anywhere.' },
+              { tier: 'Full Site',      price: '€4,500',  stripeKey: 'web_full'      as string | null, delivery: '14–28 calendar days, depending on scope.', highlight: false, desc: 'You get a proper multi-page site with a content editor your team can actually use, a working contact form, and privacy-respecting analytics built in from the start.\n\nIt ships as an installable progressive web app, which means it behaves like a native app on phones, both Android and iPhone, without going through an app store. We deliver in about two weeks of payment.\n\nBuilt by the same people who audit apps for a living, so it is clean by default.' },
+              { tier: 'Enterprise Site',price: '€18,000', stripeKey: 'web_enterprise' as string | null, delivery: '14–28 calendar days, depending on scope.', highlight: false, desc: 'You get a full custom build: a Rust backend, login and authentication, the integrations you need, and whatever scope your operation requires.\n\nIt includes real native Android and iPhone apps, not a web wrapper dressed up as one, and long-term support is part of the deal, not an extra charge. We scope the build with you in the first week after payment.\n\nFor organizations where the website is the business itself, not a brochure.' },
+              { tier: 'Platform Build', price: '€75,000', stripeKey: null,                              delivery: 'User-specific timeline, aligned after kick-off.', highlight: false, desc: 'You get a complete product, not just a site: custom infrastructure, API design, data pipelines, native apps, and a dedicated team that stays with it.\n\nThis is the engagement for when you are building the actual platform, not only the front door to it.\n\nIt is ongoing, not a handoff: we start within a week of payment and keep building it together with you as the product grows.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price}
+                <PriceTierCard tier={t.tier} price={t.price} desc={t.desc} delivery={t.delivery} highlight={t.highlight}
                   onBuy={t.stripeKey ? () => openCheckoutModal({ key: t.stripeKey!, tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery }) : undefined}
                   onProposal={!t.stripeKey ? () => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery }) : undefined} />
               </Reveal>
@@ -4650,13 +4690,13 @@ Your dedicated contact speaks directly to the regulators that matter, from the A
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Mobile App Development &amp; Fixing</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
             {[
-              { tier: 'Maintenance Retainer',  price: '€1,200 / mo', delivery: 'Ongoing engagement; first patch within 14 calendar days.', desc: 'You get month-to-month peace of mind: a steady rhythm of patches, watching the app-store compliance rules so you are not pulled for a policy change you missed, and keeping your code libraries and tracking tools clean so old dependencies do not become tomorrow problem.\n\nPriority response and one named contact, with the first review landing within a week of payment.\n\nQuiet, continuous upkeep so your app does not silently rot.' },
-              { tier: 'APK Review & Bugfix',  price: 'from €1,500', delivery: '1 week / 7 calendar days.', desc: 'You send us your app build and we go to the root level: we read the actual code, not only the marketing.\n\nWe sort crashes and real weak spots, then hand you concrete guidance on how to fix each one. It works for both Android and iPhone, fixed scope, one-week turnaround from the day you send the build.\n\nYou get a clear answer fast instead of a six-week audit you were not braced for.' },
-              { tier: 'App Build',            price: 'from €9,000', delivery: '14–28 calendar days, depending on scope.', desc: 'You get your native app built from zero to shipped: Kotlin for Android, Swift for iPhone, with a Rust backend underneath.\n\nNo offshore handoff, everything done in-house by the team you are already talking to, and we also handle the Play Store and App Store submission, which is exactly where most builds stall. We kick off within a week of payment.\n\nOne team, one codebase, one launch.' },
-              { tier: 'Full Mobile Product',   price: 'on request',  delivery: 'User-specific timeline after kick-off.', desc: 'You get the whole mobile product, from a spec on a napkin to a launched app: custom infrastructure, API design, native apps, and a dedicated team that stays on it.\n\nIt is an ongoing engagement, because a real product keeps evolving after launch, so we start within a week of payment and build it together with you as it grows.\n\nFor when you need a mobile business built, not only an app made.' },
+              { tier: 'Maintenance Retainer',  price: '€1,200 / mo', delivery: 'Ongoing engagement; first patch within 14 calendar days.', highlight: false, desc: 'You get month-to-month peace of mind: a steady rhythm of patches, watching the app-store compliance rules so you are not pulled for a policy change you missed, and keeping your code libraries and tracking tools clean so old dependencies do not become tomorrow problem.\n\nPriority response and one named contact, with the first review landing within a week of payment.\n\nQuiet, continuous upkeep so your app does not silently rot.' },
+              { tier: 'APK Review & Bugfix',  price: 'from €1,500', delivery: '1 week / 7 calendar days.', highlight: true, desc: 'You send us your app build and we go to the root level: we read the actual code, not only the marketing.\n\nWe sort crashes and real weak spots, then hand you concrete guidance on how to fix each one. It works for both Android and iPhone, fixed scope, one-week turnaround from the day you send the build.\n\nYou get a clear answer fast instead of a six-week audit you were not braced for.' },
+              { tier: 'App Build',            price: 'from €9,000', delivery: '14–28 calendar days, depending on scope.', highlight: false, desc: 'You get your native app built from zero to shipped: Kotlin for Android, Swift for iPhone, with a Rust backend underneath.\n\nNo offshore handoff, everything done in-house by the team you are already talking to, and we also handle the Play Store and App Store submission, which is exactly where most builds stall. We kick off within a week of payment.\n\nOne team, one codebase, one launch.' },
+              { tier: 'Full Mobile Product',   price: 'on request',  delivery: 'User-specific timeline after kick-off.', highlight: false, desc: 'You get the whole mobile product, from a spec on a napkin to a launched app: custom infrastructure, API design, native apps, and a dedicated team that stays on it.\n\nIt is an ongoing engagement, because a real product keeps evolving after launch, so we start within a week of payment and build it together with you as it grows.\n\nFor when you need a mobile business built, not only an app made.' },
             ].map((t, i) => (
               <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} highlight
+                <PriceTierCard tier={t.tier} price={t.price} desc={t.desc} delivery={t.delivery} highlight={t.highlight}
                   onProposal={() => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery })} />
               </Reveal>
             ))}
