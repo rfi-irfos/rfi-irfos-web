@@ -199,7 +199,7 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
   onBuy?: () => void; onProposal?: () => void
 }) {
   return (
-    <div style={{
+    <div className="rfi-hover-card" style={{
       background: highlight ? 'rgba(0,245,196,0.06)' : 'var(--bg2)',
       border: `1px solid ${highlight ? 'rgba(0,245,196,0.25)' : 'var(--border)'}`,
       borderRadius: 14, padding: '22px 20px', height: '100%',
@@ -3321,7 +3321,19 @@ function TimelineItem({ m }: { m: typeof MILESTONES[0] }) {
   )
 }
 
-function MoonPhase({ now }: { now: number }) {
+// Ticks its own `now` internally instead of taking it as a prop fed by a top-level
+// setInterval - it used to be state on the whole PublicSite component, which meant
+// the ENTIRE page (hundreds of ledger entries, every pricing card, everything)
+// fully re-rendered once a second forever just to redraw this one small icon. Moon
+// phase also doesn't visibly change within an hour, let alone a second, so the tick
+// is slowed to a minute here too - purely a bonus, the isolation is the real fix.
+// Found + fixed 2026-07-31 during a performance audit.
+function MoonPhase() {
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 60_000)
+    return () => clearInterval(t)
+  }, [])
   const KNOWN_NEW_MOON = 947182440000 // 2000-01-06T18:14:00Z
   const SYNODIC_MS = 29.53059 * 86400 * 1000
   const phase = ((now - KNOWN_NEW_MOON) % SYNODIC_MS + SYNODIC_MS) % SYNODIC_MS / SYNODIC_MS
@@ -3430,7 +3442,6 @@ export function PublicSite() {
   const [activeSev, setActiveSev] = useState<string | null>(null)
 const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   const [openDD, setOpenDD] = useState<string | null>(null)
-  const [now, setNow] = useState(() => Date.now())
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
   // Cards now show only tier/price/CTA - the full breakdown (what this tier actually
   // is) moved into this confirmation modal, shown above the B2B/ToS checkboxes, so
@@ -3631,10 +3642,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     handleCheckout(checkoutModal.key)
   }
 
-  useEffect(() => {
-    const t = setInterval(() => setNow(Date.now()), 1000)
-    return () => clearInterval(t)
-  }, [])
   const mobile = useMobile()
   const closeMobile = useCallback(() => setMobileOpen(false), [])
   useWebVitals()
@@ -3854,17 +3861,26 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       // Plain gradient, no filter: blur() - a blurred position:fixed layer covering the
       // whole viewport forced the browser to recompute an expensive blur on every scroll
       // repaint (that's what made the page slow), and Simeon found the blur just read as
-      // flat black anyway rather than a visible texture. Back to a single unblurred
-      // gradient directly on this element - backgroundColor + backgroundImage as separate
-      // longhand properties (never mixed with the `background` shorthand on one element:
-      // React writes `undefined` style values as an empty string, and assigning the
-      // shorthand - even '' - resets all of its longhand sub-properties, which silently
-      // wiped this out twice before landing here). Fixed 2026-07-31.
+      // flat black anyway rather than a visible texture.
+      //
+      // Real reason it STILL looked flat after fixing the contrast: percentage-based
+      // gradient stops resolve against the background positioning AREA - normally that's
+      // this element's own box, which on a long scrolling page is several thousand px
+      // tall, so the same 5 color stops get stretched over that whole height and any
+      // single screenful only shows a near-flat sliver of the gradient. The cookie banner
+      // looks textured because it's a small ~650px box, so the identical percentage stops
+      // compress into a short, visible distance. backgroundAttachment: 'fixed' makes the
+      // positioning area the VIEWPORT instead of the element box, so the gradient repeats
+      // its full contrast range every screenful - same technique, same visual density as
+      // the banner. Noise-line period tightened back from the blur-era 40-80px (which
+      // would just look like fat stripes without blur to soften it) to a fine 1-3px grain,
+      // matching the banner's actual texture now that nothing is smoothing it out.
       backgroundColor: theme === 'dark' ? '#000000' : 'var(--bg)',
       backgroundImage: theme === 'dark'
-        ? 'linear-gradient(165deg, #1a1a20 0%, #050506 30%, #000000 55%, #16161c 80%, #030304 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 40px, transparent 40px, transparent 80px)'
+        ? 'linear-gradient(165deg, #1e1e24 0%, #0a0a0c 30%, #000000 55%, #17171d 80%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
         : undefined,
       backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
+      backgroundAttachment: theme === 'dark' ? 'fixed' : 'scroll',
       color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
 
       {/* REPORT PDF MODAL */}
@@ -4162,7 +4178,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           }}
             onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
             onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Track Record</a>
-          <a href="#contact" style={{
+          <a href="#contact" className="rfi-cta-pulse" style={{
             background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
             fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
             textTransform: 'uppercase', transition: 'opacity 0.15s',
@@ -4209,7 +4225,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
             {RESEARCH_AREAS.map((a, i) => (
               <Reveal key={a.title} delay={i} from={(['left', 'bottom', 'right', 'scale'] as const)[i % 4]}>
-                <div style={{
+                <div className="rfi-hover-card" style={{
                   background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
                   borderRadius: 16, padding: '28px 24px', height: '100%',
                 }}>
@@ -4349,7 +4365,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
             {/* Moon */}
             <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 10px', border: '1px solid var(--border)', borderRadius: 7, background: 'rgba(255,255,255,0.02)' }}>
-              <MoonPhase now={now} />
+              <MoonPhase />
             </div>
 
           </div>
