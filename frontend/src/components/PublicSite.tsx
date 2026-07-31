@@ -3840,25 +3840,27 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
   return (
     <div style={{
-      // Pure-black carbon texture in dark mode instead of flat #070711 - same technique as
-      // the cookie banner/modals (layered gradient + repeating diagonal noise line, blended
-      // via 'overlay'), fixed attachment so it doesn't visibly repeat/shift while scrolling
-      // a long page. Light theme untouched, still the flat var(--bg). Added 2026-07-31.
-      //
-      // backgroundColor + backgroundImage kept as SEPARATE properties, not a combined
-      // 'background' shorthand string - a solid color can only legally appear as the LAST
-      // layer in a comma-separated background shorthand, and putting '#000000' before the
-      // gradient list (as a first attempt did) is invalid CSS: the whole declaration gets
-      // silently dropped by the browser and the page renders plain white. Caught 2026-07-31
-      // after Simeon reported the background wasn't showing at all.
-      backgroundColor: theme === 'dark' ? '#000000' : undefined,
-      backgroundImage: theme === 'dark'
-        ? 'linear-gradient(165deg, #0c0c0e 0%, #030303 35%, #000000 60%, #0a0a0c 85%, #000000 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 4px)'
-        : undefined,
-      background: theme === 'dark' ? undefined : 'var(--bg)',
-      backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
-      backgroundAttachment: theme === 'dark' ? 'fixed' : 'scroll',
+      // Solid fallback color only on this element - the actual carbon-gradient texture
+      // lives on a separate fixed pseudo-layer below (see right after this opening tag),
+      // which gets a real filter: blur() so the texture reads as a soft, atmospheric
+      // backdrop instead of a sharp gradient, while all foreground content (cards, text)
+      // stays crisp on top. A `background` shorthand must never be mixed with
+      // backgroundColor/backgroundImage longhands on the SAME element - React writes
+      // `undefined` style values as an empty string, and assigning the shorthand (even '')
+      // resets all of its longhand sub-properties, which silently wiped this out twice
+      // before landing on this split-layer approach. Caught + fixed 2026-07-31.
+      backgroundColor: theme === 'dark' ? '#000000' : 'var(--bg)',
       color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
+
+      {theme === 'dark' && (
+        <div aria-hidden="true" style={{
+          position: 'fixed', inset: '-10%', zIndex: -1, pointerEvents: 'none',
+          backgroundColor: '#000000',
+          backgroundImage: 'linear-gradient(165deg, #0c0c0e 0%, #030303 35%, #000000 60%, #0a0a0c 85%, #000000 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 4px)',
+          backgroundBlendMode: 'overlay',
+          filter: 'blur(60px)',
+        }} />
+      )}
 
       {/* REPORT PDF MODAL */}
       {reportModal && (
