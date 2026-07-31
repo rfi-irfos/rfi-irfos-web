@@ -3893,9 +3893,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       // regardless of how much its own contrast got tuned. Switched to 'normal' blending
       // (plain alpha compositing) so the noise layer's own opacity is what actually shows,
       // and raised that opacity since it's no longer fighting the blend math.
+      // Two noise layers at slightly different angles/spacing instead of one - a single
+      // uniform stripe reads as a flat repeating pattern, layering a second finer grain
+      // at a shallow angle offset breaks that regularity up into something closer to
+      // actual brushed-metal/carbon-fiber grain. Requested by Simeon 2026-07-31.
       backgroundColor: theme === 'dark' ? '#000000' : 'var(--bg)',
       backgroundImage: theme === 'dark'
-        ? 'linear-gradient(165deg, #1c1c22 0%, #0a0a0c 35%, #030304 65%, #17171d 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px)'
+        ? 'linear-gradient(165deg, #1c1c22 0%, #0a0a0c 35%, #030304 65%, #17171d 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(107deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 2px)'
         : undefined,
       backgroundBlendMode: 'normal',
       backgroundAttachment: theme === 'dark' ? 'fixed' : 'scroll',
