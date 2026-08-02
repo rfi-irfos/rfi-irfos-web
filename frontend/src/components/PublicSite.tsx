@@ -991,48 +991,6 @@ const NAV_LINKS = [
   { label: 'Submit', href: '#submit' },
 ]
 
-// ── "I am a..." persona entry points (stage2, 2026-08-02) ──────────────────────
-// Deliberately light: a single row of anchor chips, not a segmentation flow or new
-// copy blocks. Each persona maps to the ONE existing section that answers their
-// actual question first, using the real term hierarchy above (App Privacy is its
-// own door-opener section; Security/AI Behaviour live inside it; Track Record,
-// Pricing, Evidence and Investigation Principles are all real, already-built
-// sections). No new pages, no new sections beyond this row.
-const PERSONA_ENTRY_POINTS = [
-  { label: 'App Developer', href: '#app-privacy' },
-  { label: 'CEO / Founder', href: '#pricing' },
-  { label: 'Security Lead', href: '#track-record' },
-  { label: 'Researcher', href: '#p/methodology' },
-  { label: 'Journalist', href: '#evidence' },
-] as const
-
-function PersonaEntryPoints() {
-  return (
-    <Reveal from="bottom" delay={1}>
-      <div style={{ margin: '48px auto 0', maxWidth: 720, textAlign: 'center' }}>
-        <p style={{
-          fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: 'var(--text3)',
-          textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 14,
-        }}>I am a...</p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center' }}>
-          {PERSONA_ENTRY_POINTS.map(p => (
-            <a key={p.label} href={p.href} onClick={() => beacon('persona_click:' + p.label)} style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              padding: '9px 18px', borderRadius: 999,
-              border: '1px solid var(--border)', background: 'rgba(255,255,255,0.04)',
-              color: 'var(--text)', textDecoration: 'none', fontSize: 13, fontWeight: 700,
-              transition: 'border-color 0.15s, background 0.15s, color 0.15s',
-            }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.5)'; e.currentTarget.style.background = 'rgba(0,245,196,0.08)'; e.currentTarget.style.color = 'var(--accent-text)' }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = 'var(--text)' }}
-            >{p.label}</a>
-          ))}
-        </div>
-      </div>
-    </Reveal>
-  )
-}
-
 // ── Customer Journey timeline (stage2, 2026-08-02) ─────────────────────────────
 // Post-sale delivery process, distinct from the pre-sale hero/pricing decision
 // flow above it: what actually happens once a client has started, in the order
@@ -4747,12 +4705,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             Pricing dropped as separate hero buttons - both are one scroll or one nav
             click away already, they don't need to compete with the actual CTA here. */}
         <HeroCtaRow />
-
-        {/* "I am a..." persona entry points (stage2, 2026-08-02) - a single light
-            row of anchor chips, not a segmentation flow. Sits at the very end of
-            the hero so it reads as "still deciding where to look? start here"
-            right before Research Areas makes its own case. */}
-        <PersonaEntryPoints />
+        {/* "I am a..." persona chips removed entirely (live feedback: redundant -
+            the nav/CTAs/Research Areas right below already cover the same
+            "where do I look" job without a second, parallel navigation device). */}
       </section>
 
       {/* RESEARCH AREAS - moved directly under the hero (was pushed down by the
@@ -5497,35 +5452,24 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="submit" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>10 / Disclosures &amp; Contact</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? say so. anything else? same form.</h2>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>10 / Contact &amp; Disclosures</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>get in touch</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
-              We run our own intake channel instead of routing security findings to a third-party bug bounty platform - for the same reason we refuse to be routed to one ourselves when we report a finding. This is a direct line to the same permanent ledger you see above, held to the same standard. Research collaboration, service inquiries, and everything else go through the same door.
+              One form, whatever it's about: a general question, a service inquiry, research collaboration - or a security finding. If it's the last one, we run our own intake channel instead of routing it to a third-party bug bounty platform, for the same reason we'd refuse to be routed to one ourselves.
             </p>
           </Reveal>
 
           <div style={{ display: mobile ? 'block' : 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'start' }}>
-            {/* left: policy + quick contact channels (merged from the former
-                standalone Contact section - live feedback: two separate contact
-                forms on one page read as duplicated UI) */}
+            {/* left: quick contact channels first (general-purpose, what most
+                visitors actually want), disclosure policy detail below it - live
+                feedback: leading with the disclosure policy panel made the whole
+                section read as a security-intake-only channel with no obvious
+                "just email someone" option. */}
             <Reveal from="left">
-              <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '28px 26px', marginBottom: 20 }}>
-                <div style={{ fontWeight: 900, fontSize: 15, color: 'var(--text)', marginBottom: 14 }}>How we handle what you send us</div>
-                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
-                  <strong style={{ color: 'var(--accent-text)' }}>ISO/IEC 30111 triage:</strong> reproduce it, scope it, fix it, credit you. No finding gets buried because it's inconvenient - that's the entire complaint we file against everyone else, and we're not exempting ourselves from it.
-                </p>
-                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
-                  <strong style={{ color: 'var(--text)' }}>Lawful basis only.</strong> We accept findings obtained through publicly accessible information, your own devices, or software you're authorized to test - the same standard our own root level code analysis holds to. If what you send us shows evidence of unauthorized access to a system you don't control, we do not publish or credit it under this program. We report it directly to the relevant authorities, the same way we'd expect to be treated if the roles were reversed.
-                </p>
-                <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, margin: 0 }}>
-                  <strong style={{ color: 'var(--text)' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous - exactly as set out in our{' '}
-                  <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>terms</a>. No call, no meeting. Everything stays written, same as every disclosure we send.
-                </p>
-              </div>
               <p style={{ fontSize: 12.5, color: 'var(--text3)', marginBottom: 14 }}>
-                Not sure what to pick above? <strong style={{ color: 'var(--text2)' }}>General inquiries</strong> reaches a human either way - or email one of these directly.
+                Not sure what to pick on the right? <strong style={{ color: 'var(--text2)' }}>General inquiries</strong> reaches a human either way - or email one of these directly.
               </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
                 {CONTACT_CARDS.map(c => (
                   <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
                     background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
@@ -5538,10 +5482,23 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     <div style={{ color: 'var(--accent-text)', fontWeight: 600, fontSize: 13 }}>{c.value}</div>
                   </a>
                 ))}
-                <p style={{ fontSize: 11, color: 'var(--text3)', fontFamily: "'JetBrains Mono', monospace", marginTop: 4, lineHeight: 1.8 }}>
-                  Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
+              </div>
+              <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '24px 24px', marginBottom: 20 }}>
+                <div style={{ fontWeight: 900, fontSize: 14, color: 'var(--text)', marginBottom: 12 }}>Sending a security finding? Here's how we handle it</div>
+                <p style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.8, marginBottom: 12 }}>
+                  <strong style={{ color: 'var(--accent-text)' }}>ISO/IEC 30111 triage:</strong> reproduce it, scope it, fix it, credit you. No finding gets buried because it's inconvenient.
+                </p>
+                <p style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.8, marginBottom: 12 }}>
+                  <strong style={{ color: 'var(--text)' }}>Lawful basis only.</strong> Publicly accessible information, your own devices, or software you're authorized to test. Evidence of unauthorized access to a system you don't control gets reported to the relevant authorities instead, never published or credited under this program.
+                </p>
+                <p style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.8, margin: 0 }}>
+                  <strong style={{ color: 'var(--text)' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous, exactly as set out in our{' '}
+                  <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>terms</a>. No call, no meeting - everything stays written.
                 </p>
               </div>
+              <p style={{ fontSize: 11, color: 'var(--text3)', fontFamily: "'JetBrains Mono', monospace", marginBottom: 0, lineHeight: 1.8 }}>
+                Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
+              </p>
             </Reveal>
 
             {/* right: the one form */}
