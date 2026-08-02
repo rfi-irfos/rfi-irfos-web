@@ -228,8 +228,15 @@ function ProblemSolutionShowcase() {
           <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>{pair.q}</p>
           <p style={{ fontSize: 16, color: TEAL, fontWeight: 600, marginBottom: 10 }}>{pair.a}</p>
           <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.7, marginBottom: 16, maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>{pair.detail}</p>
-          <a href="#pricing-security" style={{ color: 'var(--accent-text)', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
-            See Security Audits &amp; Responsible Disclosure pricing &rarr;
+          {/* Shrunk from a full sentence-length link to a small pill (live
+              feedback: less clutter in the box) - "Pricing" is enough context
+              since the box itself is already about a specific problem/solution. */}
+          <a href="#pricing-security" style={{
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            color: 'var(--accent-text)', fontSize: 11.5, fontWeight: 700, textDecoration: 'none',
+            border: '1px solid rgba(0,245,196,0.3)', borderRadius: 999, padding: '5px 14px',
+          }}>
+            Pricing &rarr;
           </a>
         </motion.div>
       </AnimatePresence>
