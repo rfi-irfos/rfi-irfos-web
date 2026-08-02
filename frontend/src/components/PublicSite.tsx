@@ -159,22 +159,44 @@ function RevealWords({ text, delayStart = 0.2, emphasizeIndices = [] }: { text: 
   )
 }
 
-// Hero problem/solution pairs (website-repositioning plan, Stage 1a). Four concrete
-// "does this sound like you" openers, each paired with the plain answer to it - the
-// carousel that sits between the hero subhead and the "Observe" gold-core line.
+// Problem/solution pairs (website-repositioning plan, Stage 1a) - moved out of
+// the hero into "what we build" (live feedback, 2026-08-02): each pair now
+// carries one enrichment line (concrete, no new facts - just spelling out the
+// same claim already made elsewhere on the page: Investigation Principles'
+// "trace root cause" language, the Evidence section's five-question format,
+// the AI Act risk-tier framing from the pricing scope tags) plus a quicklink
+// to the pricing product line that actually delivers it. All four map to
+// Security Audits & Responsible Disclosure - the "Mobile + Web + AI" scope tag
+// is literally the product that covers AI/software/compliance investigation.
 const PROBLEM_SOLUTION_PAIRS = [
-  { q: "Your AI doesn't behave the way it's supposed to?", a: "We investigate what it actually does, not what the documentation promised." },
-  { q: 'Your software behaves differently in production than it did in testing?', a: 'We observe the system as it really runs, under real conditions.' },
-  { q: "You're worried about the AI Act and don't know where you actually stand?", a: 'We assess where the real risk sits, not just where a checklist points.' },
-  { q: "There's a security issue and nobody can explain how it happened?", a: 'We trace it back through the system until the cause is clear.' },
-]
+  {
+    q: "Your AI doesn't behave the way it's supposed to?",
+    a: "We investigate what it actually does, not what the documentation promised.",
+    detail: 'Root-level testing against real inputs and real users, not a vendor demo or a benchmark score.',
+  },
+  {
+    q: 'Your software behaves differently in production than it did in testing?',
+    a: 'We observe the system as it really runs, under real conditions.',
+    detail: 'The same root-cause tracing discipline behind every finding we publish - stopping at the first symptom isn\'t a finding yet.',
+  },
+  {
+    q: "You're worried about the AI Act and don't know where you actually stand?",
+    a: 'We assess where the real risk sits, not just where a checklist points.',
+    detail: 'Mapped against actual risk tiers and real data flows, not a generic compliance questionnaire.',
+  },
+  {
+    q: "There's a security issue and nobody can explain how it happened?",
+    a: 'We trace it back through the system until the cause is clear.',
+    detail: 'Delivered in the same five-question format as every audit: what we found, what proves it, how we proved it, how sure we are, what to do about it.',
+  },
+] as const
 
-// Auto-rotating problem/solution pair for the hero - reuses the same fade/blur/
+// Auto-rotating problem/solution showcase - reuses the same fade/blur/
 // translateY language as Reveal/RevealWords above rather than a new animation
 // approach or library. Pauses on hover, advances on a timer otherwise, and skips
 // the timer entirely under reduced-motion (renders the first pair, static, forever -
 // no forced motion, no confusing mid-cycle freeze-frame).
-function ProblemSolutionCarousel() {
+function ProblemSolutionShowcase() {
   const pairs = PROBLEM_SOLUTION_PAIRS
   const [i, setI] = useState(0)
   const [paused, setPaused] = useState(false)
@@ -189,7 +211,11 @@ function ProblemSolutionCarousel() {
     <div
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      style={{ maxWidth: 640, margin: '32px auto 40px', minHeight: 96 }}
+      style={{
+        maxWidth: 680, margin: '0 auto', minHeight: 170, textAlign: 'center',
+        background: 'rgba(0,245,196,0.04)', border: '1px solid rgba(0,245,196,0.2)',
+        borderRadius: 16, padding: '32px 36px',
+      }}
     >
       <AnimatePresence mode="wait">
         <motion.div
@@ -200,11 +226,15 @@ function ProblemSolutionCarousel() {
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
         >
           <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>{pair.q}</p>
-          <p style={{ fontSize: 16, color: TEAL, fontWeight: 600 }}>{pair.a}</p>
+          <p style={{ fontSize: 16, color: TEAL, fontWeight: 600, marginBottom: 10 }}>{pair.a}</p>
+          <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.7, marginBottom: 16, maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>{pair.detail}</p>
+          <a href="#pricing-security" style={{ color: 'var(--accent-text)', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
+            See Security Audits &amp; Responsible Disclosure pricing &rarr;
+          </a>
         </motion.div>
       </AnimatePresence>
       {!reduced && (
-        <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginTop: 16 }}>
+        <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginTop: 20 }}>
           {pairs.map((_, idx) => (
             <button
               key={idx}
@@ -4693,11 +4723,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           ))}
         </div>
 
-        {/* Problem/solution carousel (website-repositioning plan, Stage 1a) - now
-            the only pitch line in the hero, cycling slower (7s vs the previous
-            4.6s) since it's no longer paired with a second static teal headline
-            underneath it. */}
-        <ProblemSolutionCarousel />
+        {/* Problem/solution carousel moved out of the hero entirely - live
+            feedback: it works better as content, not decoration, so it now lives
+            under "what we build" (Projects section), enriched with detail and a
+            pricing link per pair - see ProblemSolutionShowcase below. */}
 
         {/* Down from 3 co-equal buttons to 2, deliberately unequal: Hire Us is the one
             real conversion action and gets the solid fill; Track Record is the proof
@@ -4744,6 +4773,15 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </Reveal>
           <Reveal from="bottom" delay={1}>
             <ProjectsCarousel projects={PROJECTS} />
+          </Reveal>
+
+          {/* Problem/solution showcase, moved here from the hero (live feedback,
+              2026-08-02): reads better as content next to the actual work than as
+              hero decoration. */}
+          <Reveal from="bottom" delay={2}>
+            <div style={{ marginTop: 56 }}>
+              <ProblemSolutionShowcase />
+            </div>
           </Reveal>
         </div>
       </section>
@@ -5159,13 +5197,15 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </div>
           </Reveal>
           <Reveal from="bottom" delay={2}>
-            <a href="#submit" className="rfi-cta-pulse" style={{
-              display: 'inline-block', background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
-              fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
-              textTransform: 'uppercase', transition: 'opacity 0.15s', marginBottom: 64,
-            }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Talk to us about your app</a>
+            <div style={{ textAlign: 'center', marginBottom: 64 }}>
+              <a href="#submit" className="rfi-cta-pulse" style={{
+                display: 'inline-block', background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
+                fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
+                textTransform: 'uppercase', transition: 'opacity 0.15s',
+              }}
+                onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+                onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Talk to us about your app</a>
+            </div>
           </Reveal>
           {/* "Beyond app privacy" (OTHER_DOMAINS grid) + the closing "same three
               services" line removed entirely per live feedback - redundant with
@@ -5187,8 +5227,12 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
           {/* Security Audit tiers - featured-tier carousel (Stage 1e, corrected
               2026-08-02): all 8 existing tiers stay, none merged/dropped. One big
-              card + a filmstrip of the rest, per product line - see `TierCarousel`. */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>Security Audits &amp; Responsible Disclosure<ScopeTag label="Mobile + Web + AI" /></p>
+              card + a filmstrip of the rest, per product line - see `TierCarousel`.
+              Each product line now wrapped in its own bordered container (live
+              feedback) so the four lines read as distinct units, not one long
+              unbroken scroll. */}
+          <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginBottom: 48 }}>
+          <p id="pricing-security" style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center', scrollMarginTop: 96 }}>Security Audits &amp; Responsible Disclosure<ScopeTag label="Mobile + Web + AI" /></p>
           {(() => {
             const securityTiers = ([
               { tier: 'Public',                   price: 'free',      hook: 'Free, forever - findings publish after 90 days no matter what.', desc: 'You get the same source-code-level audit we run for paying clients, at no cost. Findings publish on our public ledger after a 90-day heads-up window, giving the organization time to fix the problem before anyone else sees it.\n\nEvery name on that ledger is held to the identical rule, big or small, paying or not. No contract, no secrecy agreement, no quieter treatment for anyone.\n\nYour first phone privacy session is included: we walk you through switching off the hidden trackers running on your own device. That offer does not expire.', highlight: false, stripeKey: null,            directUrl: null, delivery: 'Begins immediately after intake; report within 7 calendar days of scope lock.', contact: false, outputs: ['Investigation Report', 'Technical Findings'] },
@@ -5210,8 +5254,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               }} />
             )
           })()}
+          </div>
 
           {/* Market Research & Competitor Analysis */}
+          <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginBottom: 48 }}>
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>Market Research &amp; Competitor Analysis<ScopeTag label="Desk research + technical analysis" /></p>
           {(() => {
             const marketTiers = [
@@ -5227,8 +5273,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               }} />
             )
           })()}
+          </div>
 
           {/* Web Development */}
+          <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginBottom: 48 }}>
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>Web Development<ScopeTag label="Web only" /></p>
           {(() => {
             const webTiers = [
@@ -5247,8 +5295,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               }} />
             )
           })()}
+          </div>
 
           {/* Mobile App Development & Fixing */}
+          <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginBottom: 48 }}>
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>Mobile App Development &amp; Fixing<ScopeTag label="Mobile only (Android + iOS)" /></p>
           {(() => {
             const mobileTiers = [
@@ -5264,6 +5314,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               }} />
             )
           })()}
+          </div>
 
           {/* Research Cooperation Products - via our coop partner Laura Serna
               Gaviria / Emergent Interaction Lab. No Stripe checkout: these are
