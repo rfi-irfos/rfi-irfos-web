@@ -122,24 +122,41 @@ function HeroCtaRow() {
 
 // Per-word stagger reveal for headline text - splits on spaces, each word its own
 // span animated in on mount via Framer, respects reduced-motion (renders flat/static).
-function RevealWords({ text, delayStart = 0.2 }: { text: string; delayStart?: number }) {
+function RevealWords({ text, delayStart = 0.2, flipIndices = [] }: { text: string; delayStart?: number; flipIndices?: number[] }) {
   const words = text.split(' ')
-  if (prefersReducedMotion()) return <>{text}</>
+  const reduced = prefersReducedMotion()
+  if (reduced) return <>{text}</>
   return (
     <>
-      {words.map((w, i) => (
-        <motion.span
-          key={i}
-          style={{ display: 'inline-block' }}
-          initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          // Slowed down - at 0.6s duration / 0.07s stagger, a 3-word headline finished
-          // in well under a second and was easy to miss entirely during page load.
-          transition={{ duration: 0.95, delay: delayStart + i * 0.16, ease: [0.16, 1, 0.3, 1] }}
-        >
-          {w}{i < words.length - 1 ? ' ' : ''}
-        </motion.span>
-      ))}
+      {words.map((w, i) => {
+        const flipped = flipIndices.includes(i)
+        const wordDelay = delayStart + i * 0.16
+        return (
+          <motion.span
+            key={i}
+            // Rotating the glyphs doesn't preserve the visual gap a reader expects before
+            // the next word - the mirrored letterforms sit flush against it. Extra right
+            // margin restores that breathing room once flipped.
+            style={{ display: 'inline-block', transformOrigin: '50% 50%', marginRight: flipped ? '0.22em' : undefined }}
+            initial={{ opacity: 0, y: 30, filter: 'blur(6px)', rotate: 0 }}
+            // Comes in straight with the rest of the headline, holds a beat once settled,
+            // then flips and rests permanently upside down - core-doctrine detail (Simeon's
+            // call, 2026-08-02): "rethink" flips first, forcing you to reorient before
+            // reading it, mirroring what the tagline is actually asking you to do.
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)', rotate: flipped ? 180 : 0 }}
+            transition={{
+              opacity: { duration: 0.95, delay: wordDelay, ease: [0.16, 1, 0.3, 1] },
+              y: { duration: 0.95, delay: wordDelay, ease: [0.16, 1, 0.3, 1] },
+              filter: { duration: 0.95, delay: wordDelay, ease: [0.16, 1, 0.3, 1] },
+              rotate: flipped
+                ? { duration: 0.65, delay: wordDelay + 0.95 + 0.35, ease: [0.65, 0, 0.35, 1] }
+                : { duration: 0 },
+            }}
+          >
+            {w}{i < words.length - 1 ? ' ' : ''}
+          </motion.span>
+        )
+      })}
     </>
   )
 }
@@ -4196,8 +4213,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 34, height: 34, objectFit: 'contain' }} />
           <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: 'var(--text)' }}>RFI-IRFOS</span>
-          <svg width="54" height="18" viewBox="0 0 54 18" fill="none" style={{ marginLeft: 4, flexShrink: 0, overflow: 'visible' }}>
-            <polyline className="ekg-line" points="0,9 12,9 16,2 20,16 24,2 28,9 54,9"
+          {/* Was one fixed blip shape looping identically every 2.4s - "measuring the same
+              heartbeat forever" per Simeon. Now four differently-shaped beats (small single
+              bump, tall classic spike, irregular double-bump, medium spike) packed into one
+              wider path, so a full loop reads as a run of distinct heartbeats instead of one
+              pulse repeating. stroke-dasharray/dashoffset widened to match the longer path. */}
+          <svg width="90" height="18" viewBox="0 0 90 18" fill="none" style={{ marginLeft: 4, flexShrink: 0, overflow: 'visible' }}>
+            <polyline className="ekg-line" points="0,9 6,9 8,7 10,9 16,9 20,1 22,17 24,9 30,9 33,9 35,5 37,12 39,9 44,9 48,4 50,9 90,9"
               stroke={ACCENT} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </a>
@@ -4333,7 +4355,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       }}>
         <HeroBackground />
         <p className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
-          <RevealWords text="Rethink the Obvious." />
+          <RevealWords text="Rethink the Obvious." flipIndices={[0]} />
         </p>
         <h1 style={{
           fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,
@@ -4544,7 +4566,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
           {/* Table */}
           <div data-native-scroll style={{ maxHeight: mobile ? '65vh' : 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
-            <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}@keyframes ekgPulse{0%{stroke-dashoffset:90;opacity:0}8%{opacity:1}80%{opacity:1}100%{stroke-dashoffset:-90;opacity:0}}.ekg-line{stroke-dasharray:90;animation:ekgPulse 2.4s linear infinite}@keyframes ddIn{from{opacity:0;transform:translateY(-6px) scaleY(0.97)}to{opacity:1;transform:none}}.ledger-dd-panel{transform-origin:top}.ledger-dd-opt:hover{background:rgba(0,245,196,0.12)!important;color:#00f5c4!important}`}</style>
+            <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}@keyframes ekgPulse{0%{stroke-dashoffset:150;opacity:0}5%{opacity:1}85%{opacity:1}100%{stroke-dashoffset:-150;opacity:0}}.ekg-line{stroke-dasharray:150;animation:ekgPulse 3.6s linear infinite}@keyframes ddIn{from{opacity:0;transform:translateY(-6px) scaleY(0.97)}to{opacity:1;transform:none}}.ledger-dd-panel{transform-origin:top}.ledger-dd-opt:hover{background:rgba(0,245,196,0.12)!important;color:#00f5c4!important}`}</style>
 
             {/* Sticky header */}
             <div style={{
