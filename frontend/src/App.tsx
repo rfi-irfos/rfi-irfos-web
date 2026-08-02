@@ -1,7 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { PublicSite } from './components/PublicSite'
-import { LegalPage } from './components/LegalPage'
 import './App.css'
+
+// Lazy-loaded: legal pages are a secondary route homepage visitors never hit, so there's
+// no reason to make them download this bundle too. PublicSite stays a direct import since
+// it's what the overwhelming majority of visits actually need - no extra round-trip for
+// the common case.
+const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ default: m.LegalPage })))
 
 function getSlug() {
   const h = window.location.hash
@@ -38,6 +43,6 @@ export default function App() {
     window.scrollTo(0, slug ? 0 : homeScrollY.current)
   }, [slug])
 
-  if (slug) return <LegalPage slug={slug} />
+  if (slug) return <Suspense fallback={null}><LegalPage slug={slug} /></Suspense>
   return <PublicSite />
 }

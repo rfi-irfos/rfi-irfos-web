@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useTheme } from '../hooks/useTheme'
 
 const prefersReducedMotion = () =>
@@ -313,31 +311,17 @@ function ResearchAreasGrid() {
   )
 }
 
-gsap.registerPlugin(ScrollTrigger)
-
-// Scroll-scrubbed horizontal gallery, replacing the old click-arrow carousel.
-// Desktop/tablet (perView 2-3, motion allowed): GSAP ScrollTrigger pins the section
-// and vertical scroll drives horizontal translateX through the whole project set -
-// cards scale/brighten near center, dim toward the edges. Mobile or reduced-motion:
-// no pinning (bad UX to lock page scroll on a phone) - falls back to a native
-// horizontally-scrollable, scroll-snapped track with the same edge-fade via
-// IntersectionObserver instead of ScrollTrigger. Arrow buttons remain in both modes
-// as the accessible/keyboard fallback. `beacon('projects_carousel_used')` still fires
-// once per visit on first real interaction (scrub progress or arrow/drag), and each
-// ProjectCard's own `project_click` beacon is untouched.
+// Horizontal scroll-scrubbed gallery. A pinned GSAP/ScrollTrigger version was tried and
+// shipped as an overflowing, unpinned mess (all cards dumped in one wide row) -
+// ScrollTrigger almost certainly measured track width before layout/fonts settled.
+// Reverted to this native scroll-snap version, which was never reported broken, and
+// removed the gsap dependency entirely since nothing else in the codebase used it -
+// pure dead weight in the bundle for a feature that was permanently disabled anyway.
 function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
   const perView = useCarouselSize()
   const reduced = prefersReducedMotion()
-  // Pinned GSAP scroll-scrub disabled: shipped live and rendered as an overflowing,
-  // unpinned mess (all cards dumped in one wide row, text cascading past their
-  // cards) - almost certainly ScrollTrigger measuring track width before layout/
-  // fonts settled, degenerate `end` distance, pin never properly engaging. Not
-  // worth re-enabling without a way to actually see it render first. The native
-  // scroll-snap fallback below is simpler and was never reported broken.
-  const pinned = false
   const n = projects.length
 
-  const sectionRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
   const carouselUsed = useRef(false)
@@ -347,50 +331,8 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
     if (!carouselUsed.current) { carouselUsed.current = true; beacon('projects_carousel_used') }
   }
 
-  // Pinned scroll-scrub mode
+  // Edge fade via IntersectionObserver against the track itself.
   useEffect(() => {
-    if (!pinned) return
-    const section = sectionRef.current, track = trackRef.current
-    if (!section || !track) return
-    const ctx = gsap.context(() => {
-      const distance = () => Math.max(0, track.scrollWidth - section.offsetWidth)
-      const tween = gsap.to(track, {
-        x: () => -distance(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: () => `+=${distance()}`,
-          scrub: 0.7,
-          pin: true,
-          invalidateOnRefresh: true,
-          onUpdate: self => {
-            if (self.progress > 0.02) markUsed()
-            const viewportWidth = section.offsetWidth
-            const centerX = viewportWidth / 2
-            const sectionLeft = section.getBoundingClientRect().left
-            let nearest = 0, nearestDist = Infinity
-            cardRefs.current.forEach((card, i) => {
-              if (!card) return
-              const r = card.getBoundingClientRect()
-              const cardCenter = r.left + r.width / 2 - sectionLeft
-              const dist = Math.abs(cardCenter - centerX)
-              if (dist < nearestDist) { nearestDist = dist; nearest = i }
-              const norm = Math.min(1, dist / (viewportWidth * 0.65))
-              gsap.set(card, { scale: 1 - norm * 0.12, opacity: 1 - norm * 0.55 })
-            })
-            setActiveIdx(nearest)
-          },
-        },
-      })
-      return () => { tween.scrollTrigger?.kill(); tween.kill() }
-    }, section)
-    return () => ctx.revert()
-  }, [pinned, n])
-
-  // Native-scroll fallback mode: edge fade via IntersectionObserver against the track itself.
-  useEffect(() => {
-    if (pinned) return
     const track = trackRef.current
     if (!track) return
     const io = new IntersectionObserver(entries => {
@@ -400,8 +342,6 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
         const ratio = entry.intersectionRatio
         card.style.opacity = String(0.45 + ratio * 0.55)
         card.style.transform = `scale(${0.94 + ratio * 0.06})`
-        // "01 / 18" footer counter was frozen at 0 in fallback mode - setActiveIdx was
-        // never called here. Track whichever card in this batch is most visible.
         if (ratio > bestRatio) { bestRatio = ratio; bestIdx = cardRefs.current.indexOf(card as HTMLDivElement) }
       })
       if (bestIdx >= 0) setActiveIdx(bestIdx)
@@ -410,15 +350,11 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
     const onScroll = () => markUsed()
     track.addEventListener('scroll', onScroll, { once: true, passive: true })
     return () => { io.disconnect(); track.removeEventListener('scroll', onScroll) }
-  }, [pinned, n])
+  }, [n])
 
   const go = (dir: number) => {
     markUsed()
-    if (pinned && sectionRef.current) {
-      const distance = Math.max(0, (trackRef.current?.scrollWidth ?? 0) - sectionRef.current.offsetWidth)
-      const cardStep = distance / Math.max(1, n - perView)
-      window.scrollBy({ top: cardStep * dir, behavior: 'smooth' })
-    } else if (trackRef.current) {
+    if (trackRef.current) {
       const cardWidth = trackRef.current.firstElementChild?.clientWidth ?? 300
       trackRef.current.scrollBy({ left: cardWidth * dir, behavior: reduced ? 'auto' : 'smooth' })
     }
@@ -429,18 +365,16 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
     background: 'rgba(255,255,255,0.03)', color: 'var(--accent-text)', fontSize: 18, cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'center',
   }
-  const cardBasis = pinned ? `${Math.min(340, 100 / perView * 3.1)}px` : perView === 1 ? '84%' : '340px'
+  const cardBasis = perView === 1 ? '84%' : '340px'
 
   return (
     <div>
-      <div ref={sectionRef} style={{ display: 'flex', alignItems: 'center', gap: 16, overflow: pinned ? 'hidden' : undefined }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
         <button onClick={() => go(-1)} aria-label="previous projects" style={arrowStyle}>&larr;</button>
-        <div style={{ overflow: pinned ? 'visible' : 'hidden', flex: 1, minWidth: 0 }}>
+        <div style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}>
           <div
             ref={trackRef}
-            style={pinned ? {
-              display: 'flex', gap: 20, willChange: 'transform',
-            } : {
+            style={{
               display: 'flex', gap: 20, overflowX: 'auto', scrollSnapType: 'x mandatory',
               WebkitOverflowScrolling: 'touch', paddingBottom: 4,
             }}
@@ -448,8 +382,7 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
             {projects.map((p, i) => (
               <div key={p.name} ref={el => { cardRefs.current[i] = el }} style={{
                 flex: `0 0 ${cardBasis}`, minWidth: 0, boxSizing: 'border-box', display: 'flex',
-                scrollSnapAlign: pinned ? undefined : 'center',
-                transition: pinned ? undefined : 'opacity 0.2s, transform 0.2s',
+                scrollSnapAlign: 'center', transition: 'opacity 0.2s, transform 0.2s',
               }}>
                 <ProjectCard p={p} />
               </div>
