@@ -581,55 +581,6 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
   )
 }
 
-// wheel-driven scroll accelerator: boosts deltaY and lerps toward the target each
-// frame, so the page covers more ground per notch instead of the flat 1:1 native rate.
-// Elements marked [data-native-scroll] (internal overflow panels) are left untouched.
-function useFastScroll(mult = 1.1, ease = 0.09) {
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let target = window.scrollY
-    let current = window.scrollY
-    let rafId = 0
-    const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight
-
-    const tick = () => {
-      current += (target - current) * ease
-      if (Math.abs(target - current) < 0.5) {
-        current = target
-        window.scrollTo({ top: current, left: 0, behavior: 'instant' })
-        rafId = 0
-        return
-      }
-      window.scrollTo({ top: current, left: 0, behavior: 'instant' })
-      rafId = requestAnimationFrame(tick)
-    }
-
-    const onWheel = (e: WheelEvent) => {
-      if (e.ctrlKey || e.deltaY === 0) return // pinch-zoom / horizontal - leave native
-      if ((e.target as HTMLElement)?.closest?.('[data-native-scroll]')) return
-      e.preventDefault()
-      // Normalize deltaY: Firefox/trackpads may report line-mode (1) or page-mode (2),
-      // not pixel-mode (0). Without this the page barely moves on those devices.
-      let dy = e.deltaY
-      if (e.deltaMode === 1) dy *= 16                    // ~16px per line
-      else if (e.deltaMode === 2) dy *= window.innerHeight * 0.9
-      if (!rafId) { target = window.scrollY; current = window.scrollY } // resync after any native scroll
-      target = Math.max(0, Math.min(maxScroll(), target + dy * mult))
-      if (!rafId) rafId = requestAnimationFrame(tick)
-    }
-
-    const settle = () => { if (!rafId) { target = window.scrollY; current = window.scrollY } }
-
-    window.addEventListener('wheel', onWheel, { passive: false })
-    window.addEventListener('resize', settle)
-    return () => {
-      window.removeEventListener('wheel', onWheel)
-      window.removeEventListener('resize', settle)
-      cancelAnimationFrame(rafId)
-    }
-  }, [mult, ease])
-}
-
 function useMobile(bp = 768) {
   const [m, setM] = useState(() => typeof window !== 'undefined' && window.innerWidth < bp)
   useEffect(() => {
@@ -3621,7 +3572,6 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
 }
 
 export function PublicSite() {
-  useFastScroll()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', botcheck: '' })
@@ -3670,10 +3620,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
-  // Lock background scroll while a modal is open. Without this, the custom wheel-driven
-  // scroll accelerator (useFastScroll above) keeps calling window.scrollTo() on the page
-  // BEHIND the modal on every wheel tick — the modal (position: fixed) sits still while
-  // the page visibly scrolls underneath it, which reads as "scrolling is broken."
+  // Lock background scroll while a modal is open - without this the page behind a
+  // fixed-position modal keeps scrolling under it, which reads as "scrolling is broken."
   useEffect(() => {
     if (!checkoutModal && !proposalModal && !reportModal) return
     const prevOverflow = document.body.style.overflow
@@ -4283,7 +4231,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               <ThemeIcon t={theme} />
             </button>
 
-            <a href="mailto:contact@rfi-irfos.com" title="contact@rfi-irfos.com" aria-label="Contact — contact@rfi-irfos.com"
+            {/* Was a raw mailto: link - popped the visitor's local email client instead
+                of the actual on-page contact form (proper fields, Web3Forms submission),
+                and there's no other "Contact" entry anywhere in NAV_LINKS. Now scrolls to
+                the real form instead. */}
+            <a href="#contact" title="Contact" aria-label="Contact"
               style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 width: 38, height: 38, borderRadius: 8,
@@ -4352,7 +4304,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             cursor: 'pointer',
           }}><ThemeIcon t={theme} /></button>
 
-          <a href="mailto:contact@rfi-irfos.com" title="contact@rfi-irfos.com" aria-label="Contact — contact@rfi-irfos.com"
+          <a href="#contact" title="Contact" aria-label="Contact"
             style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               width: 48, height: 48, borderRadius: 8,
