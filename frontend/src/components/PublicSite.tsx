@@ -223,23 +223,14 @@ function ProjectCard({ p }: { p: typeof PROJECTS[number] }) {
   )
 }
 
-function useBentoCols() {
-  const [cols, setCols] = useState(() => (typeof window === 'undefined' ? 4 : window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 4))
-  useEffect(() => {
-    const onResize = () => setCols(window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 4)
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
-  return cols
-}
-
-// One tile of the Research Areas bento grid. Two "featured" tiles (first + midpoint)
-// span 2 columns on tablet/desktop to break the uniform-card-wall look. Entrance is
-// an ink-bleed: the whole card (bg, border, icon, copy) is clip-path'd to a point at
-// the icon's corner and grows out circularly once scrolled into view - ties the "Areas
-// of Magnification" copy to an actual visual motif instead of a plain fade. One-shot,
-// not scroll-scrubbed, so it stays cheap (single transition, not per-frame JS).
-function BentoTile({ a, i, cols }: { a: typeof RESEARCH_AREAS[number]; i: number; cols: number }) {
+// One tile of the Research Areas grid, uniform sizing (a "featured wide tile" pass
+// shipped and got flagged as worse than the plain even grid - reverted, Simeon
+// preferred the original same-sized cards). Entrance is an ink-bleed: the whole card
+// (bg, border, icon, copy) is clip-path'd to a point at the icon's corner and grows
+// out circularly once scrolled into view - ties the "Areas of Magnification" copy to
+// an actual visual motif instead of a plain fade. One-shot, not scroll-scrubbed, so
+// it stays cheap (single transition, not per-frame JS).
+function BentoTile({ a }: { a: typeof RESEARCH_AREAS[number] }) {
   const [visible, setVisible] = useState(() => prefersReducedMotion())
   const wrapRef = useRef<HTMLDivElement>(null)
   const tiltRef = useRef<HTMLDivElement>(null)
@@ -253,14 +244,8 @@ function BentoTile({ a, i, cols }: { a: typeof RESEARCH_AREAS[number]; i: number
     io.observe(el)
     return () => io.disconnect()
   }, [visible])
-  const featured = cols > 1 && (i === 0 || i === 4)
-  const span = featured ? Math.min(2, cols) : 1
   return (
-    // Row-span-2 on the featured tile (plus vertical-centering) previously shipped as
-    // a tall card with a big dead-space gap before the content, which sits lower than
-    // its siblings once centered in a box roughly 2 rows tall - reads as broken even
-    // though it was "working as coded". Wide-but-not-tall instead: span columns only.
-    <div ref={wrapRef} style={{ gridColumn: `span ${span}` }}>
+    <div ref={wrapRef}>
       <motion.div ref={tiltRef} className="rfi-hover-card" style={{
         ...tilt,
         background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
@@ -302,14 +287,9 @@ function HeroBackground() {
 }
 
 function ResearchAreasGrid() {
-  const cols = useBentoCols()
   return (
-    <div style={{
-      display: 'grid', gap: 20,
-      gridTemplateColumns: `repeat(${cols}, 1fr)`,
-      gridAutoRows: cols > 1 ? 'minmax(160px, auto)' : undefined,
-    }}>
-      {RESEARCH_AREAS.map((a, i) => <BentoTile key={a.title} a={a} i={i} cols={cols} />)}
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
+      {RESEARCH_AREAS.map(a => <BentoTile key={a.title} a={a} />)}
     </div>
   )
 }
@@ -4107,8 +4087,15 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       // at a shallow angle offset breaks that regularity up into something closer to
       // actual brushed-metal/carbon-fiber grain. Requested by Simeon 2026-07-31.
       backgroundColor: theme === 'dark' ? '#000000' : 'var(--bg)',
+      // Three soft teal glows layered on top of the carbon base - "the main background
+      // is still pretty much just black" feedback after the grain/gradient tuning above.
+      // Radial-gradient background-image layers, not blur/filter, so this stays exactly
+      // as cheap as the grain layers below (same backgroundAttachment: 'fixed' trick -
+      // positioned against the viewport, not the page box, so they don't scroll away and
+      // stay full-contrast every screenful instead of being stretched thin over a
+      // multi-thousand-px-tall page).
       backgroundImage: theme === 'dark'
-        ? 'linear-gradient(165deg, #1c1c22 0%, #0a0a0c 35%, #030304 65%, #17171d 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(107deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 2px)'
+        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(165deg, #1c1c22 0%, #0a0a0c 35%, #030304 65%, #17171d 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(107deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 2px)'
         : undefined,
       backgroundBlendMode: 'normal',
       backgroundAttachment: theme === 'dark' ? 'fixed' : 'scroll',
