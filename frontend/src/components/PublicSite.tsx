@@ -755,26 +755,31 @@ function TierCarousel({ tiers, getActions }: {
   const active = tiers[idx]
   const actions = getActions(active)
   const others = tiers.map((t, i) => ({ t, i })).filter(({ i }) => i !== idx)
+  const stripRef = useRef<HTMLDivElement>(null)
+  const scrollStrip = (dir: 1 | -1) => stripRef.current?.scrollBy({ left: dir * 220, behavior: 'smooth' })
 
   return (
     <div style={{ marginBottom: 48 }}>
+      {/* Featured card - shrunk from maxWidth 760 (live feedback: too large relative
+          to the filmstrip below it) so the two halves of the widget read as one
+          balanced unit rather than one oversized card sitting over a thin strip. */}
       <motion.div key={active.tier} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}
         style={{
-          maxWidth: 760, margin: '0 auto 20px', borderRadius: 18, padding: '30px 32px',
+          maxWidth: 560, margin: '0 auto 20px', borderRadius: 18, padding: '24px 26px',
           background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.35)',
           boxShadow: '0 12px 40px rgba(0,245,196,0.1)',
         }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>
           <div>
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>Featured tier</div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
-            {active.hook && <div style={{ fontSize: 14, color: 'var(--text2)', marginTop: 6 }}>{active.hook}</div>}
+            <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
+            {active.hook && <div style={{ fontSize: 13, color: 'var(--text2)', marginTop: 6 }}>{active.hook}</div>}
           </div>
-          <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{active.price}</div>
+          <div style={{ fontSize: 21, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{active.price}</div>
         </div>
-        <div style={{ marginTop: 18 }}>
+        <div style={{ marginTop: 16 }}>
           {active.desc.split('\n\n').map((p, i) => (
-            <p key={i} style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8, marginBottom: 12 }}>{p}</p>
+            <p key={i} style={{ color: 'var(--text2)', fontSize: 13.5, lineHeight: 1.75, marginBottom: 11 }}>{p}</p>
           ))}
         </div>
         <OutputTags outputs={active.outputs} />
@@ -809,19 +814,34 @@ function TierCarousel({ tiers, getActions }: {
         )}
       </motion.div>
 
+      {/* Filmstrip - now with explicit left/right arrows (live feedback: the plain
+          overflow-x row gave no visual hint it was scrollable/circle-able) flanking
+          a horizontally-scrolling strip of the remaining tiers in this product line. */}
       {others.length > 0 && (
-        <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6, maxWidth: 900, margin: '0 auto' }}>
-          {others.map(({ t, i }) => (
-            <button key={t.tier} onClick={() => setIdx(i)} style={{
-              flexShrink: 0, minWidth: 140, textAlign: 'left', cursor: 'pointer',
-              borderRadius: 10, padding: '10px 14px',
-              background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
-              transition: 'border-color .15s, background .15s',
-            }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{t.tier}</div>
-              <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--accent-text)', marginTop: 4 }}>{t.price}</div>
-            </button>
-          ))}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, maxWidth: 640, margin: '0 auto' }}>
+          <button onClick={() => scrollStrip(-1)} aria-label="Scroll tiers left" style={{
+            flexShrink: 0, width: 32, height: 32, borderRadius: '50%', cursor: 'pointer',
+            background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
+            color: 'var(--text2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>&#8592;</button>
+          <div ref={stripRef} style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6, scrollBehavior: 'smooth' }}>
+            {others.map(({ t, i }) => (
+              <button key={t.tier} onClick={() => setIdx(i)} style={{
+                flexShrink: 0, minWidth: 140, textAlign: 'left', cursor: 'pointer',
+                borderRadius: 10, padding: '10px 14px',
+                background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
+                transition: 'border-color .15s, background .15s',
+              }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{t.tier}</div>
+                <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--accent-text)', marginTop: 4 }}>{t.price}</div>
+              </button>
+            ))}
+          </div>
+          <button onClick={() => scrollStrip(1)} aria-label="Scroll tiers right" style={{
+            flexShrink: 0, width: 32, height: 32, borderRadius: '50%', cursor: 'pointer',
+            background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
+            color: 'var(--text2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>&#8594;</button>
         </div>
       )}
     </div>
@@ -950,10 +970,6 @@ const NAV_LINKS = [
   { label: 'Projects', href: '#projects' },
   { label: 'Track Record', href: '#track-record' },
   { label: 'Pricing', href: '#pricing' },
-  { label: 'Journey', href: '#journey' },
-  { label: 'Evidence', href: '#evidence' },
-  { label: 'Principles', href: '#investigation-principles' },
-  { label: 'Coop', href: '#coop-partners' },
   { label: 'Submit', href: '#submit' },
 ]
 
@@ -975,7 +991,7 @@ const PERSONA_ENTRY_POINTS = [
 function PersonaEntryPoints() {
   return (
     <Reveal from="bottom" delay={1}>
-      <div style={{ margin: '8px auto 0', maxWidth: 720, textAlign: 'center' }}>
+      <div style={{ margin: '48px auto 0', maxWidth: 720, textAlign: 'center' }}>
         <p style={{
           fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: 'var(--text3)',
           textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 14,
@@ -4584,8 +4600,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
       )}
 
-      <ScrollProgressBar />
-
       {/* NAV */}
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
@@ -4796,132 +4810,15 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         <PersonaEntryPoints />
       </section>
 
-      {/* APPROACH / DIFFERENTIATION — Stage 1b + part of 1d (website-repositioning
-          plan). Pulled forward from the plan's original "M7" slot: a visitor needs to
-          know what makes this different BEFORE being asked to absorb research areas
-          or pricing. Order follows the plan's standing rule for every section,
-          Problem → Insight → Result → Method: the lead paragraph states the problem
-          (checklists stop at named risks) and the insight (the question starts one
-          step earlier), "RFI doesn't sell more analysis..." is the one-line result,
-          and the table is the concrete comparison backing it up - never a named-
-          competitor comparison, framed as two approaches per the plan's own
-          non-disparagement rule (unchanged since v1/v2). The "what is a system?"
-          clarifier (Stage 1d) sits at the end of this section, near the identity
-          content it belongs next to. */}
-      <section id="approach" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <Reveal from="left">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / How We're Different</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>same category, different question</h2>
-          </Reveal>
-          <Reveal from="right" delay={1}>
-            <p style={{ color: 'var(--text2)', marginBottom: 24, maxWidth: 680, fontSize: 15, lineHeight: 1.9 }}>
-              Most technology work starts from a checklist: does this system meet a known standard, pass a known test, avoid a known risk? That question is necessary, but it stops at whatever has already been named as a risk. Ours starts one step earlier — what is this system actually doing, right now, in practice?
-            </p>
-          </Reveal>
-          <Reveal from="bottom" delay={1}>
-            <p style={{ fontWeight: 800, fontSize: 19, marginBottom: 40 }}>
-              RFI doesn't sell more analysis. RFI sells a different perspective.
-            </p>
-          </Reveal>
-          <Reveal from="bottom" delay={2}>
-            <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 56 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-                <div style={{ padding: '16px 24px', background: 'rgba(255,255,255,0.03)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text3)', borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>Classic approach</div>
-                <div style={{ padding: '16px 24px', background: 'rgba(0,245,196,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)', borderBottom: '1px solid var(--border)' }}>RFI</div>
-                {DIFFERENTIATION_ROWS.map((row, i) => (
-                  <Fragment key={i}>
-                    <div style={{ padding: '18px 24px', fontSize: 14, color: 'var(--text2)', borderRight: '1px solid var(--border)', borderBottom: i < DIFFERENTIATION_ROWS.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.classic}</div>
-                    <div style={{ padding: '18px 24px', fontSize: 14, fontWeight: 700, color: 'var(--text)', borderBottom: i < DIFFERENTIATION_ROWS.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.rfi}</div>
-                  </Fragment>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-          <Reveal from="bottom" delay={2}>
-            <div style={{ padding: '20px 24px', border: '1px solid var(--border)', borderRadius: 12, background: 'rgba(255,255,255,0.03)' }}>
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>What we mean by "system"</p>
-              <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8 }}>
-                When we say "system", we mean anything that behaves and can be observed doing it — a mobile application, an AI model, an API ecosystem, a software architecture, a digital service, a connected device. If it runs and does something in the real world, we can investigate it.
-              </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* APP PRIVACY DOOR-OPENER — Stage 1c (website-repositioning plan). Laura's
-          Round 3 note: a CEO understands "my app might be selling user data" far more
-          readily than "we do Technology Intelligence through System Observation" - so
-          App Privacy gets the most prominent placement of the four domains, directly
-          after the hero/differentiation block, not equal billing with the other
-          three. The other three domains (Stage 1d hierarchy, see OTHER_DOMAINS above
-          and the term-hierarchy comment near RESEARCH_AREAS) get one line each further
-          down in this same section, in human→product→system order, so App Privacy
-          stays the door and the rest stay visibly secondary rather than competing
-          with it for attention. */}
-      <section id="app-privacy" style={{ padding: '100px 2rem', background: 'rgba(0,245,196,0.03)' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <Reveal from="left">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Start Here</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>does your app really protect user data?</h2>
-          </Reveal>
-          <Reveal from="right" delay={1}>
-            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, fontSize: 15, lineHeight: 1.9 }}>
-              Most teams believe the answer is yes, because the app passes whatever checklist it was built against. What it actually does once it's running — which SDKs it talks to, where the data ends up, whether tracking starts before anyone consents — is a separate question, and often a different answer. This is usually the easiest place to start, because the question itself is easy to ask.
-            </p>
-          </Reveal>
-          <Reveal from="bottom" delay={1}>
-            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: 24, marginBottom: 40 }}>
-              <div style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: 16, background: 'rgba(255,255,255,0.03)' }}>
-                <div style={{ fontWeight: 800, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--accent-text)', marginBottom: 14 }}>What we check</div>
-                <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.9 }}>
-                  Permissions actually requested and used, where data flows once it leaves the device, which third-party SDKs are embedded and what they receive, and when tracking behaviour actually starts relative to consent.
-                </p>
-              </div>
-              <div style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: 16, background: 'rgba(255,255,255,0.03)' }}>
-                <div style={{ fontWeight: 800, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--accent-text)', marginBottom: 14 }}>What you get</div>
-                <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.9 }}>
-                  A data flow map of what the app actually does, a risk analysis of what that means for you, and the underlying findings behind both — in plain language first, technical detail available underneath.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-          <Reveal from="bottom" delay={2}>
-            <a href="#contact" className="rfi-cta-pulse" style={{
-              display: 'inline-block', background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
-              fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
-              textTransform: 'uppercase', transition: 'opacity 0.15s', marginBottom: 64,
-            }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Talk to us about your app</a>
-          </Reveal>
-
-          <Reveal from="left" delay={1}>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>Beyond app privacy</p>
-          </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 20, marginBottom: 32 }}>
-            {OTHER_DOMAINS.map((d, i) => (
-              <Reveal key={d.title} from="bottom" delay={i + 1}>
-                <div style={{ padding: '20px', border: '1px solid var(--border)', borderRadius: 14, height: '100%' }}>
-                  <div style={{ fontWeight: 800, fontSize: 14, marginBottom: 8 }}>{d.title}</div>
-                  <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8 }}>{d.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal from="bottom" delay={1}>
-            <p style={{ color: 'var(--text3)', fontSize: 13, lineHeight: 1.8, maxWidth: 680 }}>
-              Each of these runs through the same three services: Investigate to understand what happened, Assess to understand where the risk sits, Monitor to understand how it changes over time.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* RESEARCH AREAS */}
+      {/* RESEARCH AREAS - moved directly under the hero (was pushed down by the
+          since-removed differentiation table + App Privacy door-opener; live
+          feedback was that those made the top of the page too dense/talky before
+          a visitor sees anything concrete). App Privacy now sits after Track
+          Record instead - proof first, then the "start here" pitch. */}
       <section id="research" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Areas of Magnification</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Areas of Magnification</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>where our attention falls</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
@@ -4937,7 +4834,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="projects" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="right">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>04 / Undertakings</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Undertakings</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
           </Reveal>
           <Reveal from="left" delay={1}>
@@ -4955,7 +4852,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="track-record" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Track Record</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the discipline, demonstrated</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
@@ -5327,11 +5224,73 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
       </section>
 
+      {/* APP PRIVACY DOOR-OPENER — Stage 1c (website-repositioning plan), moved
+          here after Track Record per live feedback: the pitch reads better once
+          a visitor has already seen the ledger of real, disclosed findings,
+          rather than immediately after the hero before any proof exists. */}
+      <section id="app-privacy" style={{ padding: '100px 2rem', background: 'rgba(0,245,196,0.03)' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <Reveal from="left">
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>04 / Start Here</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>does your app really protect user data?</h2>
+          </Reveal>
+          <Reveal from="right" delay={1}>
+            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, fontSize: 15, lineHeight: 1.9 }}>
+              Most teams believe the answer is yes, because the app passes whatever checklist it was built against. What it actually does once it's running — which SDKs it talks to, where the data ends up, whether tracking starts before anyone consents — is a separate question, and often a different answer. This is usually the easiest place to start, because the question itself is easy to ask.
+            </p>
+          </Reveal>
+          <Reveal from="bottom" delay={1}>
+            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: 24, marginBottom: 40 }}>
+              <div style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: 16, background: 'rgba(255,255,255,0.03)' }}>
+                <div style={{ fontWeight: 800, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--accent-text)', marginBottom: 14 }}>What we check</div>
+                <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.9 }}>
+                  Permissions actually requested and used, where data flows once it leaves the device, which third-party SDKs are embedded and what they receive, and when tracking behaviour actually starts relative to consent.
+                </p>
+              </div>
+              <div style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: 16, background: 'rgba(255,255,255,0.03)' }}>
+                <div style={{ fontWeight: 800, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--accent-text)', marginBottom: 14 }}>What you get</div>
+                <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.9 }}>
+                  A data flow map of what the app actually does, a risk analysis of what that means for you, and the underlying findings behind both — in plain language first, technical detail available underneath.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+          <Reveal from="bottom" delay={2}>
+            <a href="#contact" className="rfi-cta-pulse" style={{
+              display: 'inline-block', background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
+              fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
+              textTransform: 'uppercase', transition: 'opacity 0.15s', marginBottom: 64,
+            }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Talk to us about your app</a>
+          </Reveal>
+
+          <Reveal from="left" delay={1}>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>Beyond app privacy</p>
+          </Reveal>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 20, marginBottom: 32 }}>
+            {OTHER_DOMAINS.map((d, i) => (
+              <Reveal key={d.title} from="bottom" delay={i + 1}>
+                <div style={{ padding: '20px', border: '1px solid var(--border)', borderRadius: 14, height: '100%' }}>
+                  <div style={{ fontWeight: 800, fontSize: 14, marginBottom: 8 }}>{d.title}</div>
+                  <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8 }}>{d.desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal from="bottom" delay={1}>
+            <p style={{ color: 'var(--text3)', fontSize: 13, lineHeight: 1.8, maxWidth: 680 }}>
+              Each of these runs through the same three services: Investigate to understand what happened, Assess to understand where the risk sits, Monitor to understand how it changes over time.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
       {/* PRICING */}
       <section id="pricing" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>06 / Pricing</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>priced in plain terms</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
               Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.
@@ -5341,7 +5300,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           {/* Security Audit tiers - featured-tier carousel (Stage 1e, corrected
               2026-08-02): all 8 existing tiers stay, none merged/dropped. One big
               card + a filmstrip of the rest, per product line - see `TierCarousel`. */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure<ScopeTag label="Mobile + Web + AI" /></p>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>Security Audits &amp; Responsible Disclosure<ScopeTag label="Mobile + Web + AI" /></p>
           {(() => {
             const securityTiers = ([
               { tier: 'Public',                   price: 'free',      hook: 'Free, forever - findings publish after 90 days no matter what.', desc: 'You get the same source-code-level audit we run for paying clients, at no cost. Findings publish on our public ledger after a 90-day heads-up window, giving the organization time to fix the problem before anyone else sees it.\n\nEvery name on that ledger is held to the identical rule, big or small, paying or not. No contract, no secrecy agreement, no quieter treatment for anyone.\n\nYour first phone privacy session is included: we walk you through switching off the hidden trackers running on your own device. That offer does not expire.', highlight: false, stripeKey: null,            directUrl: null, delivery: 'Begins immediately after intake; report within 7 calendar days of scope lock.', contact: false, outputs: ['Investigation Report', 'Technical Findings'] },
@@ -5365,7 +5324,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           })()}
 
           {/* Market Research & Competitor Analysis */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Market Research &amp; Competitor Analysis<ScopeTag label="Desk research + technical analysis" /></p>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>Market Research &amp; Competitor Analysis<ScopeTag label="Desk research + technical analysis" /></p>
           {(() => {
             const marketTiers = [
               { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  delivery: '14 calendar days.', highlight: true, hook: 'A ten-page, jargon-free map of your sector, in 14 days.', desc: 'You get a plain-language map of your sector: the key players, how regulation actually works for them, and where the real openings sit. Delivered within 14 calendar days.\n\nIt runs at least ten pages, no jargon, no two-hundred-slide deck, written so a founder can read it in one sitting.\n\nResearch starts within days of payment.', outputs: ['Investigation Report'] },
@@ -5382,7 +5341,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           })()}
 
           {/* Web Development */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Web Development<ScopeTag label="Web only" /></p>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>Web Development<ScopeTag label="Web only" /></p>
           {(() => {
             const webTiers = [
               { tier: 'Landing Page',   price: '€1,500',  stripeKey: 'web_landing'   as string | null, delivery: '48 hours.', highlight: true, hook: 'A fast, clean single page, live within 48 hours.', desc: 'You get a sharp single-page site on our own open-source React template: fast, clean, live within 48 hours of payment.\n\nBuilt by the same team that audits apps for security, so it is clean by default, not an afterthought.\n\nNo page-builder lock-in: you own the code and can take it anywhere.' },
@@ -5402,7 +5361,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           })()}
 
           {/* Mobile App Development & Fixing */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Mobile App Development &amp; Fixing<ScopeTag label="Mobile only (Android + iOS)" /></p>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>Mobile App Development &amp; Fixing<ScopeTag label="Mobile only (Android + iOS)" /></p>
           {(() => {
             const mobileTiers = [
               { tier: 'Maintenance Retainer',  price: '€1,200 / mo', delivery: 'Ongoing engagement; first patch within 14 calendar days.', highlight: false, hook: 'Steady patches and dependency upkeep, so your app doesn\'t rot.', desc: 'You get a steady rhythm of patches, app-store compliance monitoring so a policy change never catches you off guard, and clean dependency upkeep so old libraries do not become tomorrow\'s emergency.\n\nOne named contact and priority response; first review lands within a week of payment.\n\nQuiet, continuous upkeep, so your app does not silently rot.' },
@@ -5466,7 +5425,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="journey" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Engagement Journey</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>06 / Engagement Journey</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what happens after you start</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
@@ -5485,7 +5444,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="evidence" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Evidence</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Evidence</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>a claim you can't trace back isn't evidence</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 20, maxWidth: 680, lineHeight: 1.8 }}>
               Most reports stop at a severity label: critical, high, medium. That tells you how worried to be, but not why - and a client's own legal or engineering team can't check work they can't see the steps of.
@@ -5541,7 +5500,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="investigation-principles" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>09 / Investigation Principles</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Investigation Principles</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the same rules, whoever the client is</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
               An investigator who bends the rules for a paying client isn't an investigator anymore - just a vendor with a fancier vocabulary. These four principles govern where we look, how we test, what we do with what we find, and when it becomes public, regardless of who's paying.
@@ -5589,7 +5548,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="coop-partners" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>10 / Research Cooperation</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>09 / Research Cooperation</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}>built alongside our coop partner</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
               Laura Serna Gaviria directs the Emergent Interaction Lab's own research and agent architecture - Lauras Team, Call Laura, and Jarvis all grew out of her method. RFI-IRFOS builds what she directs, labelled as hers so it stays clear who did what.
@@ -5672,7 +5631,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="submit" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>11 / Disclosures</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>10 / Disclosures</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? say so.</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
               We run our own intake channel instead of routing you to a third-party bug bounty platform - for the same reason we refuse to be routed to one ourselves when we report a finding. This is a direct line to the same permanent ledger you see above, held to the same standard.
@@ -5754,7 +5713,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="contact" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 860, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>12 / Correspondence</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>11 / Correspondence</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>write to us</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 48 }}>for research collaboration, security disclosures, or service inquiries.</p>
           </Reveal>
