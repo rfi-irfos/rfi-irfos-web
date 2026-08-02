@@ -256,18 +256,22 @@ function BentoTile({ a, i, cols }: { a: typeof RESEARCH_AREAS[number]; i: number
   const featured = cols > 1 && (i === 0 || i === 4)
   const span = featured ? Math.min(2, cols) : 1
   return (
-    <div ref={wrapRef} style={{ gridColumn: `span ${span}`, gridRow: i === 0 && cols > 1 ? 'span 2' : undefined }}>
+    // Row-span-2 on the featured tile (plus vertical-centering) previously shipped as
+    // a tall card with a big dead-space gap before the content, which sits lower than
+    // its siblings once centered in a box roughly 2 rows tall - reads as broken even
+    // though it was "working as coded". Wide-but-not-tall instead: span columns only.
+    <div ref={wrapRef} style={{ gridColumn: `span ${span}` }}>
       <motion.div ref={tiltRef} className="rfi-hover-card" style={{
         ...tilt,
         background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
-        borderRadius: 16, padding: i === 0 && cols > 1 ? '36px 30px' : '28px 24px',
-        height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: i === 0 && cols > 1 ? 'center' : undefined,
+        borderRadius: 16, padding: '28px 24px',
+        height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column',
         clipPath: visible ? 'circle(150% at 40px 40px)' : 'circle(0% at 40px 40px)',
         transition: 'clip-path 0.9s cubic-bezier(0.16,1,0.3,1)',
       }}>
         <div style={{ marginBottom: 16, lineHeight: 0 }}>{a.icon}</div>
-        <div style={{ fontWeight: 800, fontSize: i === 0 && cols > 1 ? 21 : 16, marginBottom: 10 }}>{a.title}</div>
-        <div style={{ color: 'var(--text2)', fontSize: i === 0 && cols > 1 ? 14.5 : 13, lineHeight: 1.7 }}>{a.desc}</div>
+        <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{a.title}</div>
+        <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7 }}>{a.desc}</div>
       </motion.div>
     </div>
   )
@@ -325,7 +329,13 @@ gsap.registerPlugin(ScrollTrigger)
 function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
   const perView = useCarouselSize()
   const reduced = prefersReducedMotion()
-  const pinned = perView > 1 && !reduced
+  // Pinned GSAP scroll-scrub disabled: shipped live and rendered as an overflowing,
+  // unpinned mess (all cards dumped in one wide row, text cascading past their
+  // cards) - almost certainly ScrollTrigger measuring track width before layout/
+  // fonts settled, degenerate `end` distance, pin never properly engaging. Not
+  // worth re-enabling without a way to actually see it render first. The native
+  // scroll-snap fallback below is simpler and was never reported broken.
+  const pinned = false
   const n = projects.length
 
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -734,7 +744,6 @@ const NAV_LINKS = [
   { label: 'Projects', href: '#projects' },
   { label: 'Track Record', href: '#track-record' },
   { label: 'Human Rights', href: '/humanrights' },
-  { label: 'Timeline', href: '#timeline' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'Team', href: '#team' },
   { label: 'Coop', href: '#coop-partners' },
@@ -1002,28 +1011,6 @@ const PROJECTS = [
     link: 'https://github.com/rfi-irfos/foodchain-analysis',
     tag: 'ecocentric research',
   },
-]
-
-const MILESTONES: { date: string; label: string; side: 'left' | 'right'; link?: string; tag?: string }[] = [
-  { date: 'June 2020', label: 'RFI-IRFOS Founded', side: 'left' },
-  { date: 'June 2020', label: 'OSF Research Repository launched', side: 'right', link: 'https://osf.io/rzvyg/', tag: 'publication' },
-  { date: 'March 2021', label: 'Ternary Logic Framework', side: 'left', tag: 'milestone' },
-  { date: 'May 2023', label: 'Ecocentric AI Framework', side: 'right', tag: 'milestone' },
-  { date: 'March 2024', label: 'The Art of Questioning: whitepaper', side: 'left', tag: 'publication' },
-  { date: 'June 2024', label: 'albert. first ternary MoE model born', side: 'right', tag: 'milestone' },
-  { date: 'July 2025', label: 'The Ternlang Architecture: post-binary logic framework for ethical AI', side: 'left', link: 'https://osf.io/zwnyr/', tag: 'publication' },
-  { date: 'August 2025', label: 'A Ternary Logic Mixture-of-Experts Model: albert. architecture paper', side: 'right', link: 'https://osf.io/tz7dc/', tag: 'publication' },
-  { date: 'August 2025', label: 'Policy Mirror Protocol: AI transparency + refusal traceability', side: 'left', link: 'https://osf.io/d2k4x/', tag: 'publication' },
-  { date: 'Jan 2025', label: 'Rusty Penguin: pure-Rust OS boots', side: 'right', tag: 'milestone' },
-  { date: 'March 2025', label: 'Lighthouse: workplace OS goes live', side: 'left', tag: 'milestone' },
-  { date: 'Feb 2026', label: 'Myco-Styria: mycelium-based polystyrene replacement', side: 'right', link: 'https://osf.io/ek8rm/', tag: 'publication' },
-  { date: 'April 2026', label: 'The Ternary Intelligence Stack: system paper', side: 'left', link: 'https://osf.io/cyn28/', tag: 'publication' },
-  { date: 'May 2026', label: 'SPRIND pitch submitted. EUR 26.5M ceiling.', side: 'right', tag: 'milestone' },
-  { date: 'May 2026', label: 'DOOM boots on bare-metal Rust kernel', side: 'left', tag: 'milestone' },
-  { date: 'June 2026', label: '215+ Android apps audited. 100+ companies. NYSE / NASDAQ / LSE / XETRA. COPPA + GDPR Art. 8 child protection scope. StoryToys 9-app children\'s wave.', side: 'right', link: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'milestone' },
-  { date: 'June 2026', label: 'aladdin-mini: open-source disclosure impact engine', side: 'left', link: 'https://github.com/rfi-irfos/aladdin-mini', tag: 'milestone' },
-  { date: 'July 2026', label: 'JARVIS: a recursive, self-learning human-AI co-evolution agent operating in bidirectional copilot mode', side: 'right', link: 'https://osf.io/hc9zb/', tag: 'publication' },
-  { date: 'July 2026', label: 'CALL LAURA: an automatic data-processing multi-agent framework, the Agent SWAT Team methodology', side: 'left', link: 'https://osf.io/qcvjb/', tag: 'publication' },
 ]
 
 const PUBLICATIONS = [
@@ -3526,128 +3513,6 @@ const CONTACT_CARDS = [
   { label: 'Careers', value: 'career@rfi-irfos.com', href: 'mailto:career@rfi-irfos.com' },
 ]
 
-// Continuous scroll-tied progress (same smoothstep math as Reveal, not a one-shot
-// IntersectionObserver) - each card and dot reveals as it scrolls into range and
-// un-reveals scrolling back past it, same "builds itself in, comes apart going back
-// up" effect the rest of the page uses, tuned slightly snappier for the timeline's
-// left/right alternating cards.
-function useScrollProgress(ref: React.RefObject<HTMLDivElement | null>) {
-  const [progress, setProgress] = useState(0)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    let rafId = 0
-    const update = () => {
-      const rect = el.getBoundingClientRect()
-      const vh = window.innerHeight
-      const lin = Math.max(0, Math.min(1, (vh * 0.9 - rect.top) / (vh * 0.3)))
-      setProgress(lin * lin * (3 - 2 * lin))
-    }
-    const onScroll = () => { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(update) }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    update()
-    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(rafId) }
-  }, [ref])
-  return progress
-}
-
-// Fill-line progress for the whole timeline track (distinct from useScrollProgress,
-// which is per-card): 0 when the track's top hasn't reached the activation line yet,
-// 1 once its bottom has passed it - the "scrubber" that grows going down the page and
-// shrinks back going up, same activation fraction (0.55 * viewport height) the cards
-// individually key off so the line and the cards stay visually in sync.
-function useTrackProgress(ref: React.RefObject<HTMLDivElement | null>) {
-  const [progress, setProgress] = useState(0)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    let rafId = 0
-    const update = () => {
-      const rect = el.getBoundingClientRect()
-      const activationY = window.innerHeight * 0.55
-      const p = (activationY - rect.top) / rect.height
-      setProgress(Math.max(0, Math.min(1, p)))
-    }
-    const onScroll = () => { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(update) }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    update()
-    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(rafId) }
-  }, [ref])
-  return progress
-}
-
-function TimelineTrack({ children }: { children: React.ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const progress = useTrackProgress(ref)
-  return (
-    <div ref={ref} style={{ position: 'relative' }}>
-      <div style={{
-        position: 'absolute', left: '50%', top: 0, bottom: 0, width: 2,
-        background: 'rgba(0,245,196,0.15)', transform: 'translateX(-50%)',
-      }} />
-      <div style={{
-        position: 'absolute', left: '50%', top: 0, width: 2,
-        height: `${progress * 100}%`,
-        background: TEAL, boxShadow: `0 0 10px ${TEAL}`,
-        transform: 'translateX(-50%)', zIndex: 1, willChange: 'height',
-      }} />
-      {children}
-    </div>
-  )
-}
-
-function TimelineItem({ m }: { m: typeof MILESTONES[0] }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const progress = useScrollProgress(ref)
-  const visible = progress > 0.5
-  const isPublication = m.tag === 'publication'
-  const innerStyle: React.CSSProperties = {
-    background: isPublication ? 'rgba(0,245,196,0.04)' : 'var(--bg2)',
-    border: `1px solid ${isPublication ? 'rgba(0,245,196,0.18)' : 'var(--border)'}`,
-    borderRadius: 12, padding: '16px 20px',
-    textDecoration: 'none', color: 'inherit', display: 'block',
-    transition: 'border-color 0.2s', width: '100%', boxSizing: 'border-box',
-  }
-  const innerContent = (
-    <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-        <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{m.date}</div>
-        {isPublication && <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--accent-text)', border: '1px solid rgba(0,245,196,0.3)', borderRadius: 10, padding: '2px 7px', letterSpacing: '0.08em' }}>OSF ↗</span>}
-      </div>
-      <div style={{ fontWeight: 700, fontSize: 14 }}>{m.label}</div>
-    </>
-  )
-  const card = m.link
-    ? <a href={m.link} target="_blank" rel="noopener noreferrer" style={innerStyle}
-        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,245,196,0.45)' }}
-        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = isPublication ? 'rgba(0,245,196,0.18)' : 'var(--border)' }}
-      >{innerContent}</a>
-    : <div style={innerStyle}>{innerContent}</div>
-  const sideSign = m.side === 'left' ? -1 : 1
-  return (
-    <div ref={ref} style={{
-      display: 'flex',
-      justifyContent: m.side === 'left' ? 'flex-start' : 'flex-end',
-      position: 'relative',
-      opacity: progress,
-      transform: `translateY(${(1 - progress) * 16}px) translateX(${sideSign * (1 - progress) * 36}px)`,
-      willChange: 'opacity, transform',
-    }}>
-      <div style={{
-        position: 'absolute', left: '50%', top: 20,
-        transform: `translate(-50%, -50%) scale(${0.4 + progress * 0.6})`,
-        width: isPublication ? 14 : 12, height: isPublication ? 14 : 12, borderRadius: '50%',
-        background: TEAL,
-        opacity: 0.3 + progress * 0.7,
-        boxShadow: visible ? `0 0 ${isPublication ? 16 : 12}px ${TEAL}` : 'none',
-        zIndex: 2,
-      }} />
-      <div style={{ width: '44%' }}>{card}</div>
-    </div>
-  )
-}
 
 // Ticks its own `now` internally instead of taking it as a prop fed by a top-level
 // setInterval - it used to be state on the whole PublicSite component, which meant
@@ -4952,23 +4817,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <p style={{ marginTop: 12, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
           this ledger is updated in real time as companies respond. silence is public. · <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
           </p>
-        </div>
-      </section>
-
-      {/* TIMELINE */}
-      <section id="timeline" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>04 / Chronicle</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 64, textAlign: 'center' }}>how we came to be</h2>
-          </Reveal>
-          <TimelineTrack>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
-              {MILESTONES.map((m, i) => (
-                <TimelineItem key={i} m={m} />
-              ))}
-            </div>
-          </TimelineTrack>
         </div>
       </section>
 
