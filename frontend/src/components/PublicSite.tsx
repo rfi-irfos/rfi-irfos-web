@@ -120,35 +120,35 @@ function HeroCtaRow() {
 
 // Per-word stagger reveal for headline text - splits on spaces, each word its own
 // span animated in on mount via Framer, respects reduced-motion (renders flat/static).
-function RevealWords({ text, delayStart = 0.2, flipIndices = [] }: { text: string; delayStart?: number; flipIndices?: number[] }) {
+function RevealWords({ text, delayStart = 0.2, emphasizeIndices = [] }: { text: string; delayStart?: number; emphasizeIndices?: number[] }) {
   const words = text.split(' ')
   const reduced = prefersReducedMotion()
   if (reduced) return <>{text}</>
   return (
     <>
       {words.map((w, i) => {
-        const flipped = flipIndices.includes(i)
+        const emphasized = emphasizeIndices.includes(i)
         const wordDelay = delayStart + i * 0.16
         return (
           <motion.span
             key={i}
-            // Rotating the glyphs doesn't preserve the visual gap a reader expects before
-            // the next word - the mirrored letterforms sit flush against it. Extra right
-            // margin restores that breathing room once flipped.
-            style={{ display: 'inline-block', transformOrigin: '50% 50%', marginRight: flipped ? '0.22em' : undefined }}
-            initial={{ opacity: 0, y: 30, filter: 'blur(6px)', rotate: 0 }}
-            // Comes in straight with the rest of the headline, holds a beat once settled,
-            // then flips and rests permanently upside down - core-doctrine detail (Simeon's
-            // call, 2026-08-02): "rethink" flips first, forcing you to reorient before
-            // reading it, mirroring what the tagline is actually asking you to do.
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)', rotate: flipped ? 180 : 0 }}
+            style={{ display: 'inline-block', transformOrigin: '50% 50%', color: emphasized ? TEAL : undefined }}
+            initial={{ opacity: 0, y: 30, filter: 'blur(6px)', scale: emphasized ? 0.85 : 1 }}
+            // Reverted (2026-08-02): the emphasized word used to flip permanently upside
+            // down after settling - live reaction was that it reads as disorienting, not
+            // clever ("stresst mein Gehirn"), not worth the reorientation cost it forced on
+            // every reader. Reveal-in motion stays, and is leaned into harder for the
+            // emphasized word specifically (a teal color pop + a slight overshoot scale
+            // instead of the rest of the headline's plain fade/slide-up) - but nothing ends
+            // up flipped anymore.
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
             transition={{
               opacity: { duration: 0.95, delay: wordDelay, ease: [0.16, 1, 0.3, 1] },
               y: { duration: 0.95, delay: wordDelay, ease: [0.16, 1, 0.3, 1] },
               filter: { duration: 0.95, delay: wordDelay, ease: [0.16, 1, 0.3, 1] },
-              rotate: flipped
-                ? { duration: 0.65, delay: wordDelay + 0.95 + 0.35, ease: [0.65, 0, 0.35, 1] }
-                : { duration: 0 },
+              scale: emphasized
+                ? { duration: 0.5, delay: wordDelay, ease: [0.34, 1.56, 0.64, 1] }
+                : { duration: 0.95, delay: wordDelay, ease: [0.16, 1, 0.3, 1] },
             }}
           >
             {w}{i < words.length - 1 ? ' ' : ''}
@@ -729,28 +729,28 @@ function useFormAbandonment(name: string, values: Record<string, unknown>, state
   }, [name, state])
 }
 
+// Human Rights and Team both dropped from primary nav (website-repositioning plan
+// M9 / Stage 0): Human Rights stays reachable via the footer's mission/company
+// framing rather than competing for top-level attention against the actual
+// services; Team moved to its own page (`#p/team`), linked from the footer's
+// Company group - see the removed `<section id="team">` in this file.
 const NAV_LINKS = [
   { label: 'Research', href: '#research' },
   { label: 'Projects', href: '#projects' },
   { label: 'Track Record', href: '#track-record' },
-  { label: 'Human Rights', href: '/humanrights' },
   { label: 'Pricing', href: '#pricing' },
-  { label: 'Team', href: '#team' },
   { label: 'Coop', href: '#coop-partners' },
   { label: 'Submit', href: '#submit' },
 ]
 
-// The people - mirrors ternlang.com's roster. Kept as data so a departure/new-hire is
-// one array edit, not a hunt through JSX (see the Lisa Scharler removal, 2026-07-04).
-const TEAM = [
-  { name: 'Simeon Kepp',      gh: 'simeon-kepp',   role: 'Founder · ML & Systems', desc: 'architecture, compiler, training - the whole stack in Rust' },
-  { name: 'Zabih Karimi',     gh: 'zabih-sudo',     role: 'Cofounder · Engineering', desc: 'infrastructure, deployment, stress-tests every system before it ships' },
-  { name: 'Nikoletta Csonka', gh: 'csonikoletta',   role: 'Cofounder · Education', desc: 'onboarding, culture, wellbeing - truth over comfort, always' },
-  { name: 'Louis Ehrig',      gh: 'louisuhr',       role: 'Cofounder', desc: 'press, public affairs, keeps training data newsroom-grade' },
-  { name: 'Ana Diez',         gh: 'anadiezmartini', role: 'Head of Research & Wellbeing', desc: 'agent-based wellbeing research, model safety evaluation' },
-  { name: 'Brennan Bell',     gh: '496crows',       role: 'Head of Model Safety & Welfare', desc: 'human & AI welfare, model safety' },
-  { name: 'Mariano Sosa',     gh: '',               role: 'Head of Trust & Public Perception', desc: 'trust, public perception' },
-]
+// The full roster (with GitHub handles + focus lines) now lives on its own Team page
+// (LegalPage.tsx's `Team` component, reached via `#p/team`) - moved off the mainpage
+// per the website-repositioning plan (decision space vs. trust space). Only the
+// headcount survives here for the hero stat strip; keep this in sync with
+// LegalPage.tsx's `TEAM` array length by hand when someone joins/leaves - a small,
+// deliberate exception to "one array edit" now that the roster lives in a different
+// (lazily-loaded) file.
+const TEAM_COUNT = 7
 
 const _I = ({ children }: { children: React.ReactNode }) => (
   <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
@@ -4344,7 +4344,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       }}>
         <HeroBackground />
         <p className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
-          <RevealWords text="Rethink the Obvious." flipIndices={[0]} />
+          <RevealWords text="Rethink the Obvious." emphasizeIndices={[2]} />
         </p>
         <h1 style={{
           fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,
@@ -4373,7 +4373,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             { n: `${RESEARCH_AREAS.length}`,    label: 'research areas',      from: 'left'   },
             { n: `${PROJECTS.length}+`,         label: 'open-source projects', from: 'bottom' },
             { n: `${PUBLICATIONS.length}+`,     label: 'publications',        from: 'scale'  },
-            { n: `${TEAM.length}`,              label: 'people, in-house',    from: 'bottom' },
+            { n: `${TEAM_COUNT}`,              label: 'people, in-house',    from: 'bottom' },
             { n: '6',                           label: 'years of research',   from: 'bottom' },
           ] as const).map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from}>
@@ -4911,50 +4911,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
       </section>
 
-      {/* TEAM */}
-      <section id="team" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>06 / The Institute</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 48, textAlign: 'center' }}>one team, everything in-house</h2>
-          </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16 }}>
-            {TEAM.map((p, i) => (
-              <Reveal key={p.name} delay={i} from="bottom">
-                <a href={p.gh ? `https://github.com/${p.gh}` : undefined} target="_blank" rel="noopener"
-                   style={{
-                     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
-                     background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
-                     borderRadius: 14, padding: 20, textAlign: 'center', textDecoration: 'none',
-                     height: '100%', transition: 'border-color 0.15s', cursor: p.gh ? 'pointer' : 'default',
-                   }}
-                   onMouseEnter={e => { if (p.gh) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.4)' }}
-                   onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)' }}>
-                  {p.gh ? (
-                    // Self-hosted, not hotlinked: an <img> pointed straight at github.com/user.png
-                    // triggers GitHub's own Set-Cookie headers on the response, which the browser
-                    // (correctly) rejects as third-party in a cross-site context - harmless, but
-                    // noisy console warnings on every load. A local copy avoids the request entirely.
-                    <img src={`/team/${p.gh}.png`} alt={p.name} loading="lazy"
-                         style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid var(--border)', objectFit: 'cover' }} />
-                  ) : (
-                    <div style={{
-                      width: 56, height: 56, borderRadius: '50%', border: '2px solid var(--border)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 20, fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
-                    }}>{p.name[0]}</div>
-                  )}
-                  <div>
-                    <p style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{p.name}</p>
-                    <p style={{ fontSize: 11, color: 'var(--accent-text)', marginTop: 3, fontWeight: 600 }}>{p.role}</p>
-                    <p style={{ fontSize: 11, color: 'var(--text3)', marginTop: 6, lineHeight: 1.5 }}>{p.desc}</p>
-                  </div>
-                </a>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* TEAM moved off the mainpage - now its own page, `#p/team` (LegalPage.tsx),
+          linked from the footer's Company group. See website-repositioning plan:
+          mainpage is decision space ("what can you do"), Team is trust space
+          ("who are you") - the wrong section to spend mainpage scroll on first. */}
 
       {/* COOP PARTNERS - not team, an external research partner whose method
           Lauras Team / Call Laura / Jarvis grew out of. Kept deliberately
@@ -5245,21 +5205,47 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <br />
           <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>— RFI-IRFOS × Emergent Interaction Lab, core doctrine</span>
         </p>
-        <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 24 }}>
+        {/* Three separate groups, not one flat row: Legal (statutory pages) vs.
+            Company (who we are - Team moved here from the mainpage, see Stage 0
+            of the website-repositioning plan) vs. Research (a core service, not
+            company trivia - Laura's review round 2 specifically flagged folding
+            Research into "Company" as confusing since it's a real service line). */}
+        <div style={{ display: 'flex', gap: '2.5rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 24 }}>
           {[
-            { label: 'Legal Notice', href: '#p/impressum' },
-            { label: 'Privacy Policy', href: '#p/datenschutz' },
-            { label: 'Terms', href: '#p/agb' },
-            { label: 'Security Policy', href: '#p/security' },
-            { label: 'Standards', href: '#p/standards' },
-            { label: 'ternlang.com', href: 'https://ternlang.com' },
-            { label: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
-          ].map(l => (
-            <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
-              onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-              onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
-              {l.label}
-            </a>
+            {
+              heading: 'Legal', links: [
+                { label: 'Legal Notice', href: '#p/impressum' },
+                { label: 'Privacy Policy', href: '#p/datenschutz' },
+                { label: 'Terms', href: '#p/agb' },
+                { label: 'Security Policy', href: '#p/security' },
+                { label: 'Standards', href: '#p/standards' },
+              ],
+            },
+            {
+              heading: 'Company', links: [
+                { label: 'Team', href: '#p/team' },
+                { label: 'Careers', href: 'mailto:career@rfi-irfos.com' },
+                { label: 'ternlang.com', href: 'https://ternlang.com' },
+                { label: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
+              ],
+            },
+            {
+              heading: 'Research', links: [
+                { label: 'Research', href: '#research' },
+                { label: 'Track Record', href: '#track-record' },
+              ],
+            },
+          ].map(group => (
+            <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0 }}>{group.heading}</p>
+              {group.links.map(l => (
+                <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                  onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                  {l.label}
+                </a>
+              ))}
+            </div>
           ))}
         </div>
         {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address) lives on
