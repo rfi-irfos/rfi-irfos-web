@@ -122,7 +122,7 @@ function HeroCtaRow() {
 
 // Per-word stagger reveal for headline text - splits on spaces, each word its own
 // span animated in on mount via Framer, respects reduced-motion (renders flat/static).
-function RevealWords({ text, delayStart = 0 }: { text: string; delayStart?: number }) {
+function RevealWords({ text, delayStart = 0.2 }: { text: string; delayStart?: number }) {
   const words = text.split(' ')
   if (prefersReducedMotion()) return <>{text}</>
   return (
@@ -131,9 +131,11 @@ function RevealWords({ text, delayStart = 0 }: { text: string; delayStart?: numb
         <motion.span
           key={i}
           style={{ display: 'inline-block' }}
-          initial={{ opacity: 0, y: 24, filter: 'blur(4px)' }}
+          initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ duration: 0.6, delay: delayStart + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+          // Slowed down - at 0.6s duration / 0.07s stagger, a 3-word headline finished
+          // in well under a second and was easy to miss entirely during page load.
+          transition={{ duration: 0.95, delay: delayStart + i * 0.16, ease: [0.16, 1, 0.3, 1] }}
         >
           {w}{i < words.length - 1 ? ' ' : ''}
         </motion.span>
