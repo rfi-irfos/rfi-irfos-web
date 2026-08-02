@@ -217,3 +217,52 @@ html { scroll-padding-top: 72px; }
 @media (prefers-reduced-motion: reduce) {
   .rfi-cta-pulse { animation: none; }
 }
+
+/* ── Pricing card border-trace ───────────────────────────────────
+   Money section gets the most craft: a spinning conic-gradient ring, masked down to
+   just the 1px border (standard border-only mask trick), fades in on hover. Pure CSS
+   (rotate transform + opacity, both compositor-only) so it costs nothing idle - the
+   ring only exists/animates while a card is actually hovered. */
+.rfi-pricing-card { position: relative; isolation: isolate; }
+.rfi-pricing-card::before {
+  content: '';
+  position: absolute; inset: -1px; border-radius: inherit; padding: 1px;
+  background: conic-gradient(from 0deg, transparent 0%, rgba(0,245,196,0.95) 10%, transparent 22%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.25s;
+  animation: rfi-border-spin 2.4s linear infinite;
+  animation-play-state: paused;
+  pointer-events: none;
+  z-index: -1;
+}
+.rfi-pricing-card:hover::before { opacity: 1; animation-play-state: running; }
+@keyframes rfi-border-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .rfi-pricing-card::before { animation: none !important; opacity: 0 !important; }
+}
+
+/* ── Modal entrance ───────────────────────────────────────────────
+   CSS-only mount animation (backdrop fade, panel spring-like scale+rise) - no
+   AnimatePresence/JS here on purpose: these modals gate the checkout/proposal flow,
+   and that state logic (checkbox gating, Stripe redirect) is exactly what the
+   overhaul must not touch. Entrance-only, opacity/transform (compositor-only). */
+@keyframes rfi-modal-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rfi-modal-panel-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  60% { opacity: 1; transform: translateY(-2px) scale(1.005); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.rfi-modal-backdrop { animation: rfi-modal-backdrop-in 0.22s ease-out; }
+.rfi-modal-panel { animation: rfi-modal-panel-in 0.4s cubic-bezier(0.16,1,0.3,1); }
+@media (prefers-reduced-motion: reduce) {
+  .rfi-modal-backdrop, .rfi-modal-panel { animation: none; }
+}
+
+/* ── Form submit state icon ──────────────────────────────────────
+   Spinner rotation + checkmark stroke draw-in, both one-off/continuous-but-cheap
+   (transform rotate, stroke-dashoffset), used by FormStateIcon. */
+@keyframes rfi-spin { to { transform: rotate(360deg); } }
+@keyframes rfi-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }

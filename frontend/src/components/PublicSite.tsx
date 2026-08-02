@@ -1,5 +1,230 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useTheme } from '../hooks/useTheme'
+
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+// Whole-page scroll fraction (0-1), for the top progress bar - distinct from
+// useScrollProgress below, which is per-element activation, not total page position.
+function usePageScrollProgress() {
+  const [progress, setProgress] = useState(0)
+  useEffect(() => {
+    let rafId = 0
+    const update = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight
+      setProgress(max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0)
+    }
+    const onScroll = () => { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(update) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    update()
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(rafId) }
+  }, [])
+  return progress
+}
+
+// Pulls an element a few px toward the cursor within a padded hit-box, spring-snaps
+// back on leave. Transform-only (translate), no-ops under prefers-reduced-motion.
+// Takes the target ref rather than creating/returning its own - callers create it via
+// useRef directly, so eslint-plugin-react-hooks can trace it back to a real useRef()
+// call. Returning `{ ref, ... }` from a custom hook obscures that provenance and trips
+// the react-hooks/refs rule (which then can't prove `ref` isn't a stray `.current` read).
+function useMagnetic<T extends HTMLElement>(elRef: React.RefObject<T | null>, strength = 0.35, radius = 80) {
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const springX = useSpring(x, { stiffness: 260, damping: 18, mass: 0.4 })
+  const springY = useSpring(y, { stiffness: 260, damping: 18, mass: 0.4 })
+  useEffect(() => {
+    const el = elRef.current
+    if (!el || prefersReducedMotion()) return
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect()
+      const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2
+      const dx = e.clientX - cx, dy = e.clientY - cy
+      const dist = Math.hypot(dx, dy)
+      if (dist < radius + Math.max(rect.width, rect.height) / 2) {
+        x.set(dx * strength); y.set(dy * strength)
+      } else {
+        x.set(0); y.set(0)
+      }
+    }
+    const onLeave = () => { x.set(0); y.set(0) }
+    window.addEventListener('mousemove', onMove, { passive: true })
+    el.addEventListener('mouseleave', onLeave)
+    return () => { window.removeEventListener('mousemove', onMove); el.removeEventListener('mouseleave', onLeave) }
+  }, [elRef, strength, radius, x, y])
+  return { x: springX, y: springY }
+}
+
+// Subtle pointer-position perspective tilt for cards. Capped small on purpose -
+// this is a polish cue, not a gimmick. transform-only, no-ops under reduced-motion.
+// Same ref-provenance note as useMagnetic above.
+function useTilt<T extends HTMLElement>(elRef: React.RefObject<T | null>, max = 6) {
+  const rotateX = useMotionValue(0)
+  const rotateY = useMotionValue(0)
+  const springRX = useSpring(rotateX, { stiffness: 200, damping: 20 })
+  const springRY = useSpring(rotateY, { stiffness: 200, damping: 20 })
+  useEffect(() => {
+    const el = elRef.current
+    if (!el || prefersReducedMotion()) return
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect()
+      const px = (e.clientX - rect.left) / rect.width - 0.5
+      const py = (e.clientY - rect.top) / rect.height - 0.5
+      rotateY.set(px * max * 2)
+      rotateX.set(-py * max * 2)
+    }
+    const onLeave = () => { rotateX.set(0); rotateY.set(0) }
+    el.addEventListener('mousemove', onMove)
+    el.addEventListener('mouseleave', onLeave)
+    return () => { el.removeEventListener('mousemove', onMove); el.removeEventListener('mouseleave', onLeave) }
+  }, [elRef, max, rotateX, rotateY])
+  return { rotateX: springRX, rotateY: springRY, transformPerspective: 800 }
+}
+
+// Counts up from 0 to the numeric part of `value` (keeping any non-numeric suffix,
+// e.g. "14+") once scrolled into view. Respects reduced-motion (renders final value
+// immediately, no counting).
+function CountUp({ value }: { value: string }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const target = parseInt(value, 10)
+  const suffix = value.replace(/^-?\d+/, '')
+  const [display, setDisplay] = useState(prefersReducedMotion() || isNaN(target) ? target : 0)
+  useEffect(() => {
+    if (prefersReducedMotion() || isNaN(target)) return
+    const el = ref.current; if (!el) return
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      io.disconnect()
+      const start = performance.now(), dur = 1100
+      const tick = (now: number) => {
+        const p = Math.min(1, (now - start) / dur)
+        const eased = 1 - Math.pow(1 - p, 3)
+        setDisplay(Math.round(eased * target))
+        if (p < 1) requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
+    }, { threshold: 0.4 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [target])
+  return <span ref={ref}>{isNaN(target) ? value : `${display}${suffix}`}</span>
+}
+
+// Trailing teal ring cursor accent, desktop/fine-pointer only. Deliberately does NOT
+// hide or replace the native system cursor - this page has a dense data table, search
+// input, dropdowns and forms, and killing precision/native affordances there for a
+// decorative touch would be a real usability regression, not a win. Manual rAF lerp
+// (not React state) so it never triggers a re-render per mousemove; scales up over
+// anything clickable. No-ops on touch/coarse pointers and under reduced-motion.
+function CustomCursorRing() {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (prefersReducedMotion()) return
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)')
+    if (!mq.matches) return
+    const el = ref.current
+    if (!el) return
+    const target = { x: -100, y: -100 }
+    const current = { x: -100, y: -100 }
+    let hovering = false
+    let started = false
+    const onMove = (e: MouseEvent) => {
+      started = true
+      target.x = e.clientX; target.y = e.clientY
+      const hit = (e.target as Element)?.closest?.('a, button, input, textarea, select, [role="button"], .rfi-hover-card, .rfi-pricing-card')
+      hovering = !!hit
+    }
+    window.addEventListener('mousemove', onMove, { passive: true })
+    let rafId = 0
+    const tick = () => {
+      current.x += (target.x - current.x) * 0.2
+      current.y += (target.y - current.y) * 0.2
+      el.style.transform = `translate(${current.x}px, ${current.y}px) translate(-50%, -50%) scale(${hovering ? 1.7 : 1})`
+      el.style.opacity = started ? (hovering ? '0.85' : '0.5') : '0'
+      rafId = requestAnimationFrame(tick)
+    }
+    rafId = requestAnimationFrame(tick)
+    return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(rafId) }
+  }, [])
+  return (
+    <div ref={ref} style={{
+      position: 'fixed', top: 0, left: 0, width: 18, height: 18, borderRadius: '50%',
+      border: `1.5px solid ${TEAL}`, pointerEvents: 'none', zIndex: 9990, opacity: 0,
+      transition: 'opacity 0.2s ease-out',
+    }} />
+  )
+}
+
+// Fixed-top scroll progress bar, teal fill on the nav's carbon background - gives
+// the whole long funnel (research → projects → track record → pricing → contact)
+// a sense of "you're getting somewhere". Fixed 3px strip, transform-only (scaleX).
+function ScrollProgressBar() {
+  const progress = usePageScrollProgress()
+  return (
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 3, zIndex: 101, background: 'rgba(255,255,255,0.04)' }}>
+      <div style={{
+        height: '100%', width: '100%', transformOrigin: '0 50%',
+        transform: `scaleX(${progress})`, background: TEAL,
+        boxShadow: '0 0 8px rgba(0,245,196,0.6)',
+      }} />
+    </div>
+  )
+}
+
+// Hero CTAs, unchanged copy/hierarchy/href (Track Record secondary outline, Book us
+// solid-fill conversion action, rfi-cta-pulse kept) - only addition is magnetic pull.
+function HeroCtaRow() {
+  const ref1 = useRef<HTMLAnchorElement>(null)
+  const ref2 = useRef<HTMLAnchorElement>(null)
+  const m1 = useMagnetic(ref1)
+  const m2 = useMagnetic(ref2)
+  return (
+    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+      <motion.a ref={ref1} href="#track-record" style={{
+        ...m1,
+        border: '1px solid rgba(0,245,196,0.35)', color: 'var(--accent-text)', padding: '13px 30px', borderRadius: 8,
+        fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
+        textTransform: 'uppercase', transition: 'border-color 0.15s',
+      }}
+        onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
+        onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Track Record</motion.a>
+      <motion.a ref={ref2} href="#contact" className="rfi-cta-pulse" style={{
+        ...m2,
+        background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
+        fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
+        textTransform: 'uppercase', transition: 'opacity 0.15s',
+      }}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Book us!</motion.a>
+    </div>
+  )
+}
+
+// Per-word stagger reveal for headline text - splits on spaces, each word its own
+// span animated in on mount via Framer, respects reduced-motion (renders flat/static).
+function RevealWords({ text, delayStart = 0 }: { text: string; delayStart?: number }) {
+  const words = text.split(' ')
+  if (prefersReducedMotion()) return <>{text}</>
+  return (
+    <>
+      {words.map((w, i) => (
+        <motion.span
+          key={i}
+          style={{ display: 'inline-block' }}
+          initial={{ opacity: 0, y: 24, filter: 'blur(4px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.6, delay: delayStart + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {w}{i < words.length - 1 ? ' ' : ''}
+        </motion.span>
+      ))}
+    </>
+  )
+}
 
 // nav-jump suppressor: set true during anchor-link scroll → all Reveal elements snap to p=1
 let _revealSuppressed = false
@@ -82,59 +307,220 @@ function ProjectCard({ p }: { p: typeof PROJECTS[number] }) {
   )
 }
 
-// Real sliding track with infinite wraparound: `perView` clones from each end
-// are appended/prepended so the track can always animate one step forward or
-// back, then snaps invisibly (transition disabled for one frame) once it
-// crosses into clone territory - the standard infinite-carousel technique.
+function useBentoCols() {
+  const [cols, setCols] = useState(() => (typeof window === 'undefined' ? 4 : window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 4))
+  useEffect(() => {
+    const onResize = () => setCols(window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 4)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+  return cols
+}
+
+// One tile of the Research Areas bento grid. Two "featured" tiles (first + midpoint)
+// span 2 columns on tablet/desktop to break the uniform-card-wall look. Entrance is
+// an ink-bleed: the whole card (bg, border, icon, copy) is clip-path'd to a point at
+// the icon's corner and grows out circularly once scrolled into view - ties the "Areas
+// of Magnification" copy to an actual visual motif instead of a plain fade. One-shot,
+// not scroll-scrubbed, so it stays cheap (single transition, not per-frame JS).
+function BentoTile({ a, i, cols }: { a: typeof RESEARCH_AREAS[number]; i: number; cols: number }) {
+  const [visible, setVisible] = useState(() => prefersReducedMotion())
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const tiltRef = useRef<HTMLDivElement>(null)
+  const tilt = useTilt(tiltRef, 5)
+  useEffect(() => {
+    if (visible) return // reduced-motion already satisfied via the lazy initializer above
+    const el = wrapRef.current; if (!el) return
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setVisible(true); io.disconnect() }
+    }, { threshold: 0.2 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [visible])
+  const featured = cols > 1 && (i === 0 || i === 4)
+  const span = featured ? Math.min(2, cols) : 1
+  return (
+    <div ref={wrapRef} style={{ gridColumn: `span ${span}`, gridRow: i === 0 && cols > 1 ? 'span 2' : undefined }}>
+      <motion.div ref={tiltRef} className="rfi-hover-card" style={{
+        ...tilt,
+        background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
+        borderRadius: 16, padding: i === 0 && cols > 1 ? '36px 30px' : '28px 24px',
+        height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: i === 0 && cols > 1 ? 'center' : undefined,
+        clipPath: visible ? 'circle(150% at 40px 40px)' : 'circle(0% at 40px 40px)',
+        transition: 'clip-path 0.9s cubic-bezier(0.16,1,0.3,1)',
+      }}>
+        <div style={{ marginBottom: 16, lineHeight: 0 }}>{a.icon}</div>
+        <div style={{ fontWeight: 800, fontSize: i === 0 && cols > 1 ? 21 : 16, marginBottom: 10 }}>{a.title}</div>
+        <div style={{ color: 'var(--text2)', fontSize: i === 0 && cols > 1 ? 14.5 : 13, lineHeight: 1.7 }}>{a.desc}</div>
+      </motion.div>
+    </div>
+  )
+}
+
+const LazyHeroCanvas = lazy(() => import('./HeroCanvas'))
+
+// Gates the WebGL hero background: skipped outright under prefers-reduced-motion,
+// on narrow/mobile viewports (no room for it to read as ambient depth, just cost),
+// and on low-core-count devices (a cheap, if imperfect, low-end-hardware signal).
+// Lazy-imported so its ~30kb (ogl) never blocks the hero's first paint - the existing
+// CSS radial-gradient (set directly on the hero section) stays as the base layer/
+// no-JS fallback the whole time, this only ever adds on top of it.
+function HeroBackground() {
+  const [enabled] = useState(() => {
+    if (typeof window === 'undefined') return false
+    const cores = navigator.hardwareConcurrency ?? 8
+    return !prefersReducedMotion() && window.innerWidth >= 1024 && cores >= 4
+  })
+  if (!enabled) return null
+  return (
+    <div style={{ position: 'absolute', inset: 0, zIndex: -1 }}>
+      <Suspense fallback={null}>
+        <LazyHeroCanvas />
+      </Suspense>
+    </div>
+  )
+}
+
+function ResearchAreasGrid() {
+  const cols = useBentoCols()
+  return (
+    <div style={{
+      display: 'grid', gap: 20,
+      gridTemplateColumns: `repeat(${cols}, 1fr)`,
+      gridAutoRows: cols > 1 ? 'minmax(160px, auto)' : undefined,
+    }}>
+      {RESEARCH_AREAS.map((a, i) => <BentoTile key={a.title} a={a} i={i} cols={cols} />)}
+    </div>
+  )
+}
+
+gsap.registerPlugin(ScrollTrigger)
+
+// Scroll-scrubbed horizontal gallery, replacing the old click-arrow carousel.
+// Desktop/tablet (perView 2-3, motion allowed): GSAP ScrollTrigger pins the section
+// and vertical scroll drives horizontal translateX through the whole project set -
+// cards scale/brighten near center, dim toward the edges. Mobile or reduced-motion:
+// no pinning (bad UX to lock page scroll on a phone) - falls back to a native
+// horizontally-scrollable, scroll-snapped track with the same edge-fade via
+// IntersectionObserver instead of ScrollTrigger. Arrow buttons remain in both modes
+// as the accessible/keyboard fallback. `beacon('projects_carousel_used')` still fires
+// once per visit on first real interaction (scrub progress or arrow/drag), and each
+// ProjectCard's own `project_click` beacon is untouched.
 function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
   const perView = useCarouselSize()
+  const reduced = prefersReducedMotion()
+  const pinned = perView > 1 && !reduced
   const n = projects.length
-  const extended = [...projects.slice(-perView), ...projects, ...projects.slice(0, perView)]
-  const [idx, setIdx] = useState(perView)
-  const [animate, setAnimate] = useState(true)
-  const carouselUsed = useRef(false)
 
-  // perView changes (resize across a breakpoint) invalidate the clone layout - reset clean.
-  useEffect(() => { setAnimate(false); setIdx(perView) }, [perView])
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const carouselUsed = useRef(false)
+  const [activeIdx, setActiveIdx] = useState(0)
+
+  const markUsed = () => {
+    if (!carouselUsed.current) { carouselUsed.current = true; beacon('projects_carousel_used') }
+  }
+
+  // Pinned scroll-scrub mode
   useEffect(() => {
-    if (animate) return
-    const id = requestAnimationFrame(() => setAnimate(true))
-    return () => cancelAnimationFrame(id)
-  }, [animate])
+    if (!pinned) return
+    const section = sectionRef.current, track = trackRef.current
+    if (!section || !track) return
+    const ctx = gsap.context(() => {
+      const distance = () => Math.max(0, track.scrollWidth - section.offsetWidth)
+      const tween = gsap.to(track, {
+        x: () => -distance(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: () => `+=${distance()}`,
+          scrub: 0.7,
+          pin: true,
+          invalidateOnRefresh: true,
+          onUpdate: self => {
+            if (self.progress > 0.02) markUsed()
+            const viewportWidth = section.offsetWidth
+            const centerX = viewportWidth / 2
+            const sectionLeft = section.getBoundingClientRect().left
+            let nearest = 0, nearestDist = Infinity
+            cardRefs.current.forEach((card, i) => {
+              if (!card) return
+              const r = card.getBoundingClientRect()
+              const cardCenter = r.left + r.width / 2 - sectionLeft
+              const dist = Math.abs(cardCenter - centerX)
+              if (dist < nearestDist) { nearestDist = dist; nearest = i }
+              const norm = Math.min(1, dist / (viewportWidth * 0.65))
+              gsap.set(card, { scale: 1 - norm * 0.12, opacity: 1 - norm * 0.55 })
+            })
+            setActiveIdx(nearest)
+          },
+        },
+      })
+      return () => { tween.scrollTrigger?.kill(); tween.kill() }
+    }, section)
+    return () => ctx.revert()
+  }, [pinned, n])
+
+  // Native-scroll fallback mode: edge fade via IntersectionObserver against the track itself.
+  useEffect(() => {
+    if (pinned) return
+    const track = trackRef.current
+    if (!track) return
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const card = entry.target as HTMLElement
+        const ratio = entry.intersectionRatio
+        card.style.opacity = String(0.45 + ratio * 0.55)
+        card.style.transform = `scale(${0.94 + ratio * 0.06})`
+      })
+    }, { root: track, threshold: [0, 0.25, 0.5, 0.75, 1] })
+    cardRefs.current.forEach(card => card && io.observe(card))
+    const onScroll = () => markUsed()
+    track.addEventListener('scroll', onScroll, { once: true, passive: true })
+    return () => { io.disconnect(); track.removeEventListener('scroll', onScroll) }
+  }, [pinned, n])
 
   const go = (dir: number) => {
-    // One beacon per visit, not per click - the question is "does anyone engage
-    // with the carousel at all", not click-by-click granularity.
-    if (!carouselUsed.current) { carouselUsed.current = true; beacon('projects_carousel_used') }
-    setAnimate(true); setIdx(i => i + dir)
-  }
-  const handleTransitionEnd = () => {
-    if (idx >= n + perView) { setAnimate(false); setIdx(idx - n) }
-    else if (idx < perView) { setAnimate(false); setIdx(idx + n) }
+    markUsed()
+    if (pinned && sectionRef.current) {
+      const distance = Math.max(0, (trackRef.current?.scrollWidth ?? 0) - sectionRef.current.offsetWidth)
+      const cardStep = distance / Math.max(1, n - perView)
+      window.scrollBy({ top: cardStep * dir, behavior: 'smooth' })
+    } else if (trackRef.current) {
+      const cardWidth = trackRef.current.firstElementChild?.clientWidth ?? 300
+      trackRef.current.scrollBy({ left: cardWidth * dir, behavior: reduced ? 'auto' : 'smooth' })
+    }
   }
 
-  const step = 100 / perView
-  const realIdx = ((idx - perView) % n + n) % n
   const arrowStyle: React.CSSProperties = {
     width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.3)',
     background: 'rgba(255,255,255,0.03)', color: 'var(--accent-text)', fontSize: 18, cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'center',
   }
+  const cardBasis = pinned ? `${Math.min(340, 100 / perView * 3.1)}px` : perView === 1 ? '84%' : '340px'
+
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+      <div ref={sectionRef} style={{ display: 'flex', alignItems: 'center', gap: 16, overflow: pinned ? 'hidden' : undefined }}>
         <button onClick={() => go(-1)} aria-label="previous projects" style={arrowStyle}>&larr;</button>
-        <div style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}>
+        <div style={{ overflow: pinned ? 'visible' : 'hidden', flex: 1, minWidth: 0 }}>
           <div
-            onTransitionEnd={handleTransitionEnd}
-            style={{
-              display: 'flex',
-              transform: `translateX(-${idx * step}%)`,
-              transition: animate ? 'transform 0.45s cubic-bezier(0.65,0,0.35,1)' : 'none',
+            ref={trackRef}
+            style={pinned ? {
+              display: 'flex', gap: 20, willChange: 'transform',
+            } : {
+              display: 'flex', gap: 20, overflowX: 'auto', scrollSnapType: 'x mandatory',
+              WebkitOverflowScrolling: 'touch', paddingBottom: 4,
             }}
           >
-            {extended.map((p, i) => (
-              <div key={i} style={{ flex: `0 0 ${step}%`, minWidth: 0, boxSizing: 'border-box', padding: '0 10px', display: 'flex' }}>
+            {projects.map((p, i) => (
+              <div key={p.name} ref={el => { cardRefs.current[i] = el }} style={{
+                flex: `0 0 ${cardBasis}`, minWidth: 0, boxSizing: 'border-box', display: 'flex',
+                scrollSnapAlign: pinned ? undefined : 'center',
+                transition: pinned ? undefined : 'opacity 0.2s, transform 0.2s',
+              }}>
                 <ProjectCard p={p} />
               </div>
             ))}
@@ -144,7 +530,7 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}>
         <span style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', letterSpacing: '0.08em' }}>
-          {String(realIdx + 1).padStart(2, '0')}&ndash;{String(Math.min(realIdx + perView, n)).padStart(2, '0')} / {n}
+          {String(Math.min(activeIdx + 1, n)).padStart(2, '0')} / {n}
         </span>
       </div>
     </div>
@@ -182,6 +568,29 @@ function CartIcon() {
     </svg>
   )
 }
+// Submit button state icon - spinner while sending, checkmark draw-in once accepted,
+// nothing for idle/err (text alone carries those). CSS rotate + stroke-dashoffset,
+// both compositor/paint-cheap one-off animations, no continuous JS.
+function FormStateIcon({ state }: { state: 'idle' | 'sending' | 'ok' | 'err' }) {
+  if (state === 'sending') {
+    return (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style={{ animation: prefersReducedMotion() ? undefined : 'rfi-spin 0.8s linear infinite' }}>
+        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
+        <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+      </svg>
+    )
+  }
+  if (state === 'ok') {
+    return (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+        <path d="M4 12.5l5 5L20 6.5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
+          pathLength={1} style={{ strokeDasharray: 1, strokeDashoffset: 0, animation: 'rfi-draw 0.45s ease-out' }} />
+      </svg>
+    )
+  }
+  return null
+}
+
 function ArrowIcon() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -198,8 +607,13 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
   tier: string; price: string; hook?: string; highlight?: boolean
   onBuy?: () => void; onProposal?: () => void
 }) {
+  const tiltRef = useRef<HTMLDivElement>(null)
+  const magnetRef = useRef<HTMLButtonElement>(null)
+  const tilt = useTilt(tiltRef, 4)
+  const magnet = useMagnetic(magnetRef, 0.25, 50)
   return (
-    <div className="rfi-hover-card" style={{
+    <motion.div ref={tiltRef} className="rfi-hover-card rfi-pricing-card" style={{
+      ...tilt,
       background: highlight ? 'rgba(0,245,196,0.06)' : 'var(--bg2)',
       border: `1px solid ${highlight ? 'rgba(0,245,196,0.25)' : 'var(--border)'}`,
       borderRadius: 14, padding: '22px 20px', height: '100%',
@@ -215,9 +629,11 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
           <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--accent-text)' }}>{price}</div>
           {(onBuy || onProposal) && (
-            <button
+            <motion.button
+              ref={magnetRef}
               onClick={onBuy ?? onProposal}
               style={{
+                ...magnet,
                 flexShrink: 0, borderRadius: 8, cursor: 'pointer', padding: '9px 16px',
                 display: 'flex', alignItems: 'center', gap: 7,
                 fontSize: 12.5, fontWeight: 800, letterSpacing: '0.02em',
@@ -232,11 +648,11 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
             >
               {onBuy ? <CartIcon /> : <ArrowIcon />}
               {onBuy ? 'Get Started' : 'Request Proposal'}
-            </button>
+            </motion.button>
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -3907,8 +4323,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
       {/* REPORT PDF MODAL */}
       {reportModal && (
-        <div onClick={() => setReportModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(0,0,0,0.85)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-          <div onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 900, height: '85vh', background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div className="rfi-modal-backdrop" onClick={() => setReportModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(0,0,0,0.85)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+          <div className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 900, height: '85vh', background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid var(--border)', background: '#0a0a18' }}>
               <span style={{ fontFamily: 'monospace', fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>report - rfi-irfos</span>
               <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
@@ -3925,8 +4341,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         // so the modal visually pops forward instead of just dimming - added 2026-07-31
         // alongside the carbon-gradient panel below, same technique as the cookie banner
         // but pushed darker for contrast against a blurred page.
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
-          <div style={{
+        <div className="rfi-modal-backdrop" style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
+          <div className="rfi-modal-panel" style={{
             background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
             backgroundBlendMode: 'overlay',
             boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
@@ -3991,8 +4407,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       {/* PROPOSAL REQUEST MODAL - same "full breakdown before you commit" pattern as the
           checkout modal above, for tiers that route to Contact instead of Stripe. */}
       {proposalModal && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
-          <div style={{
+        <div className="rfi-modal-backdrop" style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
+          <div className="rfi-modal-panel" style={{
             background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
             backgroundBlendMode: 'overlay',
             boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
@@ -4029,6 +4445,9 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </div>
         </div>
       )}
+
+      <ScrollProgressBar />
+      <CustomCursorRing />
 
       {/* NAV */}
       <nav style={{
@@ -4166,13 +4585,14 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
       {/* HERO */}
       <section style={{
-        display: 'flex', flexDirection: 'column',
+        display: 'flex', flexDirection: 'column', position: 'relative',
         alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
         padding: 'calc(72px + 6vh) 2rem 72px',
         background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.06) 0%, transparent 70%)',
       }}>
+        <HeroBackground />
         <p style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
-          Rethink the Obvious.
+          <RevealWords text="Rethink the Obvious." />
         </p>
         <h1 style={{
           fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,
@@ -4189,25 +4609,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             a skeptical visitor wants before that, secondary by design. Research and
             Pricing dropped as separate hero buttons - both are one scroll or one nav
             click away already, they don't need to compete with the actual CTA here. */}
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-          {/* Swapped order per request: Track Record now leads (proof first), Hire Us follows
-              as the conversion action. Track Record keeps the secondary outline style, Hire Us
-              keeps the solid teal fill. */}
-          <a href="#track-record" style={{
-            border: '1px solid rgba(0,245,196,0.35)', color: 'var(--accent-text)', padding: '13px 30px', borderRadius: 8,
-            fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
-            textTransform: 'uppercase', transition: 'border-color 0.15s',
-          }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Track Record</a>
-          <a href="#contact" className="rfi-cta-pulse" style={{
-            background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
-            fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
-            textTransform: 'uppercase', transition: 'opacity 0.15s',
-          }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Book us!</a>
-        </div>
+        <HeroCtaRow />
 
         <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '56px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
           {/* Deliberately NOT the same numbers as the Track Record stat row further down -
@@ -4224,7 +4626,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           ] as const).map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from}>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 32, fontWeight: 900, color: 'var(--accent-text)' }}>{s.n}</div>
+                <div style={{ fontSize: 32, fontWeight: 900, color: 'var(--accent-text)' }}><CountUp value={s.n} /></div>
                 <div style={{ fontSize: 11, color: 'var(--text)', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{s.label}</div>
               </div>
             </Reveal>
@@ -4244,20 +4646,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               One team. The same people who train the model write the regulatory analysis and file the disclosure.
             </p>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
-            {RESEARCH_AREAS.map((a, i) => (
-              <Reveal key={a.title} delay={i} from={(['left', 'bottom', 'right', 'scale'] as const)[i % 4]}>
-                <div className="rfi-hover-card" style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
-                  borderRadius: 16, padding: '28px 24px', height: '100%',
-                }}>
-                  <div style={{ marginBottom: 16, lineHeight: 0 }}>{a.icon}</div>
-                  <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{a.title}</div>
-                  <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7 }}>{a.desc}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <ResearchAreasGrid />
         </div>
       </section>
 
@@ -4312,7 +4701,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     ? 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 40px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.5)'
                     : '0 8px 32px rgba(0,0,0,0.35)',
                 }}>
-                  <div style={{ fontSize: 40, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}>{s.n}</div>
+                  <div style={{ fontSize: 40, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}><CountUp value={s.n} /></div>
                   <div style={{ fontSize: 12, color: '#ffffff', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 12 }}>{s.label}</div>
                 </div>
               </Reveal>
@@ -5023,14 +5412,18 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   style={{
                     background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
                     borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none',
-                    fontFamily: 'inherit',
-                  }} />
+                    fontFamily: 'inherit', transition: 'border-color 0.2s, box-shadow 0.2s',
+                  }}
+                  onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(0,245,196,0.12)' }}
+                  onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none' }} />
               ))}
               <select value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} style={{
                 background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
                 borderRadius: 8, padding: '12px 16px', color: form.subject ? '#e8e8f0' : '#606080',
-                fontSize: 14, outline: 'none', fontFamily: 'inherit',
-              }}>
+                fontSize: 14, outline: 'none', fontFamily: 'inherit', transition: 'border-color 0.2s, box-shadow 0.2s',
+              }}
+                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(0,245,196,0.12)' }}
+                onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none' }}>
                 <option value="">Topic (optional)</option>
                 <option value="Security Audit">Security Audit</option>
                 <option value="Send APK">Send us your APK</option>
@@ -5043,15 +5436,19 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 rows={5} style={{
                   background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
                   borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14,
-                  outline: 'none', resize: 'vertical', fontFamily: 'inherit',
-                }} />
+                  outline: 'none', resize: 'vertical', fontFamily: 'inherit', transition: 'border-color 0.2s, box-shadow 0.2s',
+                }}
+                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(0,245,196,0.12)' }}
+                onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none' }} />
               <button type="submit" disabled={formState === 'sending'} style={{
                 background: formState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
                 color: formState === 'ok' ? TEAL : '#070711',
                 border: formState === 'ok' ? `1px solid ${TEAL}` : 'none',
                 padding: '13px 24px', borderRadius: 8, fontWeight: 800, fontSize: 14,
                 cursor: formState === 'sending' ? 'wait' : 'pointer', fontFamily: 'inherit',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 9,
               }}>
+                <FormStateIcon state={formState} />
                 {formState === 'sending' ? 'Sending...' : formState === 'ok' ? 'Message received.' : 'Send message'}
               </button>
               {formState === 'err' && (
