@@ -181,7 +181,7 @@ function ProblemSolutionCarousel() {
   const reduced = prefersReducedMotion()
   useEffect(() => {
     if (reduced || paused) return
-    const t = setInterval(() => setI(prev => (prev + 1) % pairs.length), 4600)
+    const t = setInterval(() => setI(prev => (prev + 1) % pairs.length), 7000)
     return () => clearInterval(t)
   }, [reduced, paused, pairs.length])
   const pair = pairs[reduced ? 0 : i]
@@ -189,7 +189,7 @@ function ProblemSolutionCarousel() {
     <div
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      style={{ maxWidth: 640, margin: '0 auto 32px', minHeight: 96 }}
+      style={{ maxWidth: 640, margin: '32px auto 40px', minHeight: 96 }}
     >
       <AnimatePresence mode="wait">
         <motion.div
@@ -755,8 +755,11 @@ function TierCarousel({ tiers, getActions }: {
   const active = tiers[idx]
   const actions = getActions(active)
   const others = tiers.map((t, i) => ({ t, i })).filter(({ i }) => i !== idx)
-  const stripRef = useRef<HTMLDivElement>(null)
-  const scrollStrip = (dir: 1 | -1) => stripRef.current?.scrollBy({ left: dir * 220, behavior: 'smooth' })
+  // Arrows cycle the FEATURED tier itself (wraparound through the full tier list),
+  // not just scroll the filmstrip - live feedback: clicking an arrow should feel
+  // like flipping through the tiers directly, the way a movie-preview carousel
+  // advances the main frame, rather than only revealing more thumbnails to click.
+  const cycle = (dir: 1 | -1) => setIdx(prev => (prev + dir + tiers.length) % tiers.length)
 
   return (
     <div style={{ marginBottom: 48 }}>
@@ -783,23 +786,27 @@ function TierCarousel({ tiers, getActions }: {
           ))}
         </div>
         <OutputTags outputs={active.outputs} />
-        {active.delivery && (
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 16,
-            background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
-            borderRadius: 20, padding: '5px 12px',
-            color: TEAL, fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace",
-            textTransform: 'uppercase', letterSpacing: '0.1em',
-          }}>
-            <ClockIcon /> {active.delivery}
-          </div>
-        )}
-        {(actions.onBuy || actions.onProposal) && (
-          <div>
+        {/* Delivery pill + CTA button now share one row (live feedback: the pill's
+            monospace/uppercase styling read as a mismatched "code" font next to
+            everything else, and the button sitting flush-left under it looked
+            unbalanced) - pill in the normal body font on the left, button pinned
+            bottom-right of the card. */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginTop: 20 }}>
+          {active.delivery ? (
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
+              borderRadius: 20, padding: '5px 12px',
+              color: TEAL, fontSize: 12.5, fontWeight: 600,
+            }}>
+              <ClockIcon /> {active.delivery}
+            </div>
+          ) : <span />}
+          {(actions.onBuy || actions.onProposal) && (
             <button
               onClick={actions.onBuy ?? actions.onProposal}
               style={{
-                marginTop: 20, borderRadius: 8, cursor: 'pointer', padding: '12px 22px',
+                borderRadius: 8, cursor: 'pointer', padding: '12px 22px',
                 display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 800,
                 letterSpacing: '0.02em',
                 background: actions.onBuy ? 'var(--accent)' : 'var(--bg3)',
@@ -810,21 +817,21 @@ function TierCarousel({ tiers, getActions }: {
               {actions.onBuy ? <CartIcon /> : <ArrowIcon />}
               {actions.onBuy ? 'Get Started' : 'Request Proposal'}
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </motion.div>
 
-      {/* Filmstrip - now with explicit left/right arrows (live feedback: the plain
-          overflow-x row gave no visual hint it was scrollable/circle-able) flanking
-          a horizontally-scrolling strip of the remaining tiers in this product line. */}
+      {/* Filmstrip - arrows now cycle the featured tier itself (see `cycle` above);
+          the strip's own tiles are still individually clickable to jump straight
+          to a specific tier, but the arrows no longer just scroll the row. */}
       {others.length > 0 && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, maxWidth: 640, margin: '0 auto' }}>
-          <button onClick={() => scrollStrip(-1)} aria-label="Scroll tiers left" style={{
+          <button onClick={() => cycle(-1)} aria-label="Previous tier" style={{
             flexShrink: 0, width: 32, height: 32, borderRadius: '50%', cursor: 'pointer',
             background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
             color: 'var(--text2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>&#8592;</button>
-          <div ref={stripRef} style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6, scrollBehavior: 'smooth' }}>
+          <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6, scrollBehavior: 'smooth' }}>
             {others.map(({ t, i }) => (
               <button key={t.tier} onClick={() => setIdx(i)} style={{
                 flexShrink: 0, minWidth: 140, textAlign: 'left', cursor: 'pointer',
@@ -837,7 +844,7 @@ function TierCarousel({ tiers, getActions }: {
               </button>
             ))}
           </div>
-          <button onClick={() => scrollStrip(1)} aria-label="Scroll tiers right" style={{
+          <button onClick={() => cycle(1)} aria-label="Next tier" style={{
             flexShrink: 0, width: 32, height: 32, borderRadius: '50%', cursor: 'pointer',
             background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
             color: 'var(--text2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -984,7 +991,7 @@ const PERSONA_ENTRY_POINTS = [
   { label: 'App Developer', href: '#app-privacy' },
   { label: 'CEO / Founder', href: '#pricing' },
   { label: 'Security Lead', href: '#track-record' },
-  { label: 'Researcher', href: '#investigation-principles' },
+  { label: 'Researcher', href: '#research' },
   { label: 'Journalist', href: '#evidence' },
 ] as const
 
@@ -1047,36 +1054,52 @@ const JOURNEY_STEPS = [
   },
 ] as const
 
+// Auto-advances which stage reads as "current" (live feedback: a static timeline
+// permanently pinned on step 1 looked stuck/broken, not like a process that
+// actually flows). Same pattern as ProblemSolutionCarousel - pauses on hover,
+// skips the timer under reduced-motion (stays on step 1, no forced motion).
 function CustomerJourneyTimeline() {
   const mobile = useMobile()
+  const [active, setActive] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const reduced = prefersReducedMotion()
+  useEffect(() => {
+    if (reduced || paused) return
+    const t = setInterval(() => setActive(prev => (prev + 1) % JOURNEY_STEPS.length), 3200)
+    return () => clearInterval(t)
+  }, [reduced, paused])
+  const current = reduced ? 0 : active
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: mobile ? '1fr' : `repeat(${JOURNEY_STEPS.length}, 1fr)`,
-      gap: mobile ? 0 : 4,
-    }}>
+    <div
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: mobile ? '1fr' : `repeat(${JOURNEY_STEPS.length}, 1fr)`,
+        gap: mobile ? 0 : 4,
+      }}>
       {JOURNEY_STEPS.map((s, i) => (
         <Reveal key={s.stage} from={mobile ? 'left' : 'bottom'} delay={i}>
-          <div style={{
+          <div onClick={() => setActive(i)} style={{
             position: 'relative', padding: mobile ? '0 0 28px 40px' : '0 16px',
-            borderLeft: mobile ? `2px solid ${i === 0 ? TEAL : 'var(--border)'}` : 'none',
-            marginLeft: mobile ? 8 : 0,
+            borderLeft: mobile ? `2px solid ${i === current ? TEAL : 'var(--border)'}` : 'none',
+            marginLeft: mobile ? 8 : 0, cursor: 'pointer', transition: 'border-color 0.4s',
           }}>
             {!mobile && (
               <div style={{
                 height: 3, borderRadius: 2, marginBottom: 22,
-                background: i === 0 ? TEAL : 'var(--border)',
+                background: i === current ? TEAL : 'var(--border)', transition: 'background 0.4s',
               }} />
             )}
             <div style={{
               position: mobile ? 'absolute' : 'static', left: mobile ? -21 : undefined, top: mobile ? -2 : undefined,
               width: 30, height: 30, borderRadius: '50%', flexShrink: 0,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: i === 0 ? TEAL : 'rgba(255,255,255,0.06)',
-              border: `1px solid ${i === 0 ? TEAL : 'var(--border)'}`,
-              color: i === 0 ? '#070711' : 'var(--text2)',
+              background: i === current ? TEAL : 'rgba(255,255,255,0.06)',
+              border: `1px solid ${i === current ? TEAL : 'var(--border)'}`,
+              color: i === current ? '#070711' : 'var(--text2)',
               fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: 12.5,
-              marginBottom: mobile ? 0 : 14,
+              marginBottom: mobile ? 0 : 14, transition: 'background 0.4s, border-color 0.4s, color 0.4s',
             }}>{i + 1}</div>
             <div style={{ fontWeight: 800, fontSize: 16, color: 'var(--text)', marginBottom: 8, marginTop: mobile ? 2 : 0 }}>{s.stage}</div>
             <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8, margin: 0 }}>{s.body}</p>
@@ -4760,28 +4783,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           One team. Everything built in-house.
         </p>
 
-        {/* Problem/solution carousel + "Observe" gold-core line (website-repositioning
-            plan, Stage 1a). Laura's Round 3 read: this, not "Hacken"/Security/AI, is
-            the actual gold core - observation of real system states. The carousel
-            gives a visitor four concrete "does this sound like you" openers before
-            the identity line lands, so the abstract sentence below has something to
-            attach to rather than arriving cold. */}
-        <ProblemSolutionCarousel />
-        <p style={{
-          fontSize: 'clamp(1.05rem, 2.3vw, 1.3rem)', fontWeight: 800, color: TEAL,
-          maxWidth: 640, margin: '0 auto 40px', lineHeight: 1.55,
-        }}>
-          Most technology decisions are based on assumptions. We investigate what systems actually do.
-        </p>
-
-        {/* Down from 3 co-equal buttons to 2, deliberately unequal: Hire Us is the one
-            real conversion action and gets the solid fill; Track Record is the proof
-            a skeptical visitor wants before that, secondary by design. Research and
-            Pricing dropped as separate hero buttons - both are one scroll or one nav
-            click away already, they don't need to compete with the actual CTA here. */}
-        <HeroCtaRow />
-
-        <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '56px auto 0', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
+        {/* Stats moved up, directly after the identity paragraph (live feedback:
+            the hero read as a wall of text with too many stacked lines before
+            anything concrete landed). Problem/solution carousel now sits after
+            the stats, as a single slower-cycling line rather than competing with
+            a second static teal headline underneath it (that redundant "Most
+            technology decisions..." line has been removed entirely). */}
+        <div style={{ display: 'flex', gap: mobile ? '1.25rem' : '3rem', margin: '0 auto 48px', flexWrap: 'wrap', justifyContent: 'center', maxWidth: 860 }}>
           {/* Deliberately NOT the same numbers as the Track Record stat row further down -
               that one is audit-specific (apps/findings/companies/regulators), this one is
               the breadth story: research areas, open-source projects, publications, team,
@@ -4803,10 +4811,23 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           ))}
         </div>
 
+        {/* Problem/solution carousel (website-repositioning plan, Stage 1a) - now
+            the only pitch line in the hero, cycling slower (7s vs the previous
+            4.6s) since it's no longer paired with a second static teal headline
+            underneath it. */}
+        <ProblemSolutionCarousel />
+
+        {/* Down from 3 co-equal buttons to 2, deliberately unequal: Hire Us is the one
+            real conversion action and gets the solid fill; Track Record is the proof
+            a skeptical visitor wants before that, secondary by design. Research and
+            Pricing dropped as separate hero buttons - both are one scroll or one nav
+            click away already, they don't need to compete with the actual CTA here. */}
+        <HeroCtaRow />
+
         {/* "I am a..." persona entry points (stage2, 2026-08-02) - a single light
             row of anchor chips, not a segmentation flow. Sits at the very end of
             the hero so it reads as "still deciding where to look? start here"
-            right before the differentiation table makes its own case. */}
+            right before Research Areas makes its own case. */}
         <PersonaEntryPoints />
       </section>
 
@@ -4827,6 +4848,51 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </p>
           </Reveal>
           <ResearchAreasGrid />
+
+          {/* METHODOLOGY - folded in from the former standalone "Investigation
+              Principles" section per live feedback: these four rules (Sources,
+              Methods, Handling results, Disclosure) belong next to the research
+              areas they govern, not as a separate nav destination. */}
+          <div style={{ marginTop: 72 }}>
+            <Reveal>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Methodology</p>
+              <h3 style={{ fontSize: 26, fontWeight: 900, marginBottom: 16 }}>the same rules, whoever the client is</h3>
+              <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
+                An investigator who bends the rules for a paying client isn't an investigator anymore - just a vendor with a fancier vocabulary. These four principles govern where we look, how we test, what we do with what we find, and when it becomes public, regardless of who's paying.
+              </p>
+            </Reveal>
+
+            <Reveal from="bottom" delay={1}>
+              <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+                {[
+                  {
+                    title: 'Sources',
+                    body: 'We only work from what we\'re lawfully entitled to see: publicly accessible information, devices we own or are authorized to test, and software we\'re authorized to analyze. If material crosses into unauthorized access to a system we don\'t control, we don\'t use it - we report it to the relevant authority instead, the same way we\'d want to be treated in reverse.',
+                  },
+                  {
+                    title: 'Methods',
+                    body: 'Investigate first, judge second: we trace root cause instead of stopping at the first symptom, and every step has to be reproducible by someone other than the person who ran it the first time. A finding that only one person can reproduce isn\'t a finding yet.',
+                  },
+                  {
+                    title: 'Handling results',
+                    body: 'Severity gets ranked, not asserted - and every client, paying or not, gets the same triage discipline (ISO/IEC 30111: reproduce it, scope it, fix it, credit the reporter). What changes between tiers is confidentiality and turnaround, never the rigor of the underlying work.',
+                  },
+                  {
+                    title: 'Disclosure',
+                    body: 'A fixed public heads-up window applies before anything goes on the public ledger, giving the organization real time to fix a problem before anyone else sees it. Regulators are told in parallel where our own rules require it, without exposing detail that would put a client at risk before they\'ve had the chance to fix it.',
+                  },
+                ].map(p => (
+                  <div key={p.title} style={{
+                    background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
+                    borderRadius: 14, padding: '22px 22px',
+                  }}>
+                    <div style={{ fontWeight: 800, fontSize: 15, color: 'var(--text)', marginBottom: 10 }}>{p.title}</div>
+                    <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8, margin: 0 }}>{p.body}</p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -5229,7 +5295,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           a visitor has already seen the ledger of real, disclosed findings,
           rather than immediately after the hero before any proof exists. */}
       <section id="app-privacy" style={{ padding: '100px 2rem', background: 'rgba(0,245,196,0.03)' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+        {/* maxWidth matched to the neighboring Track Record/Pricing sections (1320,
+            not 1000) - live feedback: the narrower container made this section's
+            left edge sit further right than the sections directly above/below it. */}
+        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
             <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>04 / Start Here</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>does your app really protect user data?</h2>
@@ -5386,29 +5455,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               same product line shown two different ways with different framing). Single
               source of truth now lives in the Coop Partners section - #coop-partners -
               nothing repeated here. */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Device Privacy Hardening - by appointment</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 16, marginBottom: 48 }}>
-            <Reveal from="right">
-              <PriceTierCard tier="Phone Sanitizing" price="free" hook="Your first privacy session is free, permanently."
-                onProposal={() => openProposalModal({ tier: 'Phone Sanitizing', price: 'free', desc: 'Your first privacy session is free. You send us your phone and we permanently switch off the background tracking scripts most apps quietly run, move you to encrypted name lookup, and harden your backups.\n\nYou get a full before-and-after report showing exactly what was talking to whom.\n\nBy appointment, no charge, this is part of our public mission.' })} />
-            </Reveal>
-          </div>
-
-          {/* Open Science statement */}
-          <Reveal from="bottom">
-          <div style={{
-            borderTop: '1px solid rgba(0,245,196,0.15)',
-            paddingTop: 32,
-            textAlign: 'center',
-          }}>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>where the money goes</div>
-            <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8, maxWidth: 620, margin: '0 auto' }}>
-              100% of surplus revenue is reinvested into open science, public research, and infrastructure.{' '}
-              <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>Zero goes to shareholders - we have none.</span>{' '}
-              RFI-IRFOS is a regulated not-for-profit (ZVR 1015608684). Every euro above operating costs funds the next audit, the next model training run, or the next research publication. That is not a marketing line. It is a legal obligation.
-            </p>
-          </div>
-          </Reveal>
+          {/* Device Privacy Hardening / "Phone Sanitizing" tier removed entirely
+              (live feedback 2026-08-02: never booked, and the free first-session
+              offer already lives inside the Public security tier's description
+              above - this standalone product line was redundant with it). */}
         </div>
       </section>
 
@@ -5491,54 +5541,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
       </section>
 
-      {/* INVESTIGATION PRINCIPLES - website-repositioning plan Stage 1g, renamed
-          from "Data Ethics"/"Intelligence Ethics" per Laura's note that the latter
-          reads like an intelligence agency. Deliberately general/methodology-level:
-          sources, methods, handling of results, disclosure - not specific data-
-          retention/storage claims we'd need to verify against real practice docs
-          before publishing (same no-fabrication gate as Evidence, above). */}
-      <section id="investigation-principles" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Investigation Principles</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the same rules, whoever the client is</h2>
-            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
-              An investigator who bends the rules for a paying client isn't an investigator anymore - just a vendor with a fancier vocabulary. These four principles govern where we look, how we test, what we do with what we find, and when it becomes public, regardless of who's paying.
-            </p>
-          </Reveal>
-
-          <Reveal from="bottom" delay={1}>
-            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
-              {[
-                {
-                  title: 'Sources',
-                  body: 'We only work from what we\'re lawfully entitled to see: publicly accessible information, devices we own or are authorized to test, and software we\'re authorized to analyze. If material crosses into unauthorized access to a system we don\'t control, we don\'t use it - we report it to the relevant authority instead, the same way we\'d want to be treated in reverse.',
-                },
-                {
-                  title: 'Methods',
-                  body: 'Investigate first, judge second: we trace root cause instead of stopping at the first symptom, and every step has to be reproducible by someone other than the person who ran it the first time. A finding that only one person can reproduce isn\'t a finding yet.',
-                },
-                {
-                  title: 'Handling results',
-                  body: 'Severity gets ranked, not asserted - and every client, paying or not, gets the same triage discipline (ISO/IEC 30111: reproduce it, scope it, fix it, credit the reporter). What changes between tiers is confidentiality and turnaround, never the rigor of the underlying work.',
-                },
-                {
-                  title: 'Disclosure',
-                  body: 'A fixed public heads-up window applies before anything goes on the public ledger, giving the organization real time to fix a problem before anyone else sees it. Regulators are told in parallel where our own rules require it, without exposing detail that would put a client at risk before they\'ve had the chance to fix it.',
-                },
-              ].map(p => (
-                <div key={p.title} style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
-                  borderRadius: 14, padding: '22px 22px',
-                }}>
-                  <div style={{ fontWeight: 800, fontSize: 15, color: 'var(--text)', marginBottom: 10 }}>{p.title}</div>
-                  <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8, margin: 0 }}>{p.body}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
 
       {/* COOP PARTNERS - not team, an external research partner whose method
           Lauras Team / Call Laura / Jarvis grew out of. Kept deliberately
@@ -5834,7 +5836,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             of the website-repositioning plan) vs. Research (a core service, not
             company trivia - Laura's review round 2 specifically flagged folding
             Research into "Company" as confusing since it's a real service line). */}
-        <div style={{ display: 'flex', gap: '2.5rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 24 }}>
+        {/* Spread across the full footer width (live feedback: three groups
+            clustered tightly in the center looked cramped against how wide the
+            rest of the page is) - maxWidth + space-between instead of a centered
+            flex cluster with a fixed gap. */}
+        <div style={{ display: 'flex', gap: '2.5rem', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 24, maxWidth: 900, margin: '0 auto 24px' }}>
           {[
             {
               heading: 'Legal', links: [

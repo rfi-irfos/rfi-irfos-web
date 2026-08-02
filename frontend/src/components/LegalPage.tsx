@@ -314,6 +314,11 @@ function AGB() {
 
     <h2 style={H2}>13. Contact</h2>
     <p style={P}><a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a></p>
+
+    <h2 style={H2}>14. Use of Revenue</h2>
+    <p style={P}>
+      100% of surplus revenue is reinvested into open science, public research, and infrastructure. Zero goes to shareholders — we have none. RFI-IRFOS is a regulated not-for-profit (ZVR 1015608684). Every euro above operating costs funds the next audit, the next model training run, or the next research publication. That is not a marketing line. It is a legal obligation.
+    </p>
   </>
 }
 
