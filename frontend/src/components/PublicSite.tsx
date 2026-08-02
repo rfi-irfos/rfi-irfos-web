@@ -542,8 +542,11 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
       // dense grid of near-identical cards. Now a visibly brighter tint, a solid
       // (not low-opacity) border, and a persistent glow (not hover-only) so the
       // recommended tier actually reads as recommended at a glance, plus the badge below.
-      background: highlight ? 'rgba(0,245,196,0.1)' : 'var(--bg2)',
-      border: `1px solid ${highlight ? 'rgba(0,245,196,0.55)' : 'var(--border)'}`,
+      // Regular cards bumped up from var(--bg2) (3% white - nearly invisible against the
+      // near-black page background) to a visibly lighter/whiter surface + brighter border,
+      // so each tier reads as a distinct card instead of blending into the background.
+      background: highlight ? 'rgba(0,245,196,0.1)' : 'rgba(255,255,255,0.06)',
+      border: `1px solid ${highlight ? 'rgba(0,245,196,0.55)' : 'rgba(255,255,255,0.14)'}`,
       boxShadow: highlight ? '0 0 0 1px rgba(0,245,196,0.12), 0 12px 32px rgba(0,245,196,0.14)' : undefined,
       borderRadius: 14, padding: '22px 20px', height: '100%', position: 'relative',
       display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 16,
