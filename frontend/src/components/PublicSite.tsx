@@ -559,6 +559,61 @@ function ArrowIcon() {
     </svg>
   )
 }
+function ClockIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3.5 2" />
+    </svg>
+  )
+}
+// Checkout/proposal modal body, shared between both. Was three same-weight paragraphs in
+// a row - read as "one massive block" (Simeon's words) with no way to tell what's the
+// deliverable vs. the closing pitch. Now: a "WHAT YOU GET" label up front, a divider, and
+// the tier copy's closing sentence (always the strongest line - see the pricing rewrite)
+// pulled out as a distinct highlighted callout instead of blending into the paragraph
+// flow. Delivery line upgraded from floating text to an actual bordered pill.
+function ModalTierBody({ tier, price, desc, delivery, mobile }: {
+  tier: string; price: string; desc: string; delivery?: string; mobile: boolean
+}) {
+  const paras = desc.split('\n\n')
+  const body = paras.slice(0, -1)
+  const punchline = paras[paras.length - 1]
+  return (
+    <>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 14 }}>
+        <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: '#c8c8d8', lineHeight: 1.2 }}>{tier}</h3>
+        <div style={{ fontSize: mobile ? 22 : 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>{price}</div>
+      </div>
+      {body.length > 0 && (
+        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>
+          What you get
+        </div>
+      )}
+      {body.map((para, pi) => (
+        <p key={pi} style={{ color: '#e8e8f0', fontSize: mobile ? 15.5 : 16.5, lineHeight: 1.85, margin: 0, marginBottom: 18 }}>{para}</p>
+      ))}
+      {body.length > 0 && <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', margin: '2px 0 18px' }} />}
+      {punchline && (
+        <p style={{
+          color: TEAL, fontSize: mobile ? 15.5 : 17, fontWeight: 700, lineHeight: 1.6,
+          margin: 0, marginBottom: 20, paddingLeft: 14, borderLeft: `2px solid ${TEAL}`,
+        }}>{punchline}</p>
+      )}
+      {delivery && (
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
+          borderRadius: 20, padding: '5px 12px', marginBottom: 20,
+          color: TEAL, fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace",
+          textTransform: 'uppercase', letterSpacing: '0.1em',
+        }}>
+          <ClockIcon /> {delivery}
+        </div>
+      )}
+    </>
+  )
+}
 // Card face shows tier + ONE plain sentence (first sentence of `desc`, not the whole
 // first paragraph) + price + a labeled button - full desc and the delivery timeline
 // only live in the modal after a click. First pass (2026-07-31) put the whole first
@@ -4135,18 +4190,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 site theme toggle - so every text color inside it is a fixed light hex, NOT a
                 var(--text*) token, which would resolve to near-black in light mode and read as
                 illegible grey-on-navy. */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 14 }}>
-              <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: '#c8c8d8', lineHeight: 1.2 }}>{checkoutModal.tier}</h3>
-              <div style={{ fontSize: mobile ? 22 : 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>{checkoutModal.price}</div>
-            </div>
-            {checkoutModal.desc.split('\n\n').map((para, pi) => (
-              <p key={pi} style={{ color: '#e8e8f0', fontSize: mobile ? 15.5 : 16.5, lineHeight: 1.85, margin: 0, marginBottom: pi === checkoutModal.desc.split('\n\n').length - 1 ? 28 : 18 }}>{para}</p>
-            ))}
-            {checkoutModal.delivery && (
-              <p style={{ color: '#00f5c4', fontSize: 12.5, lineHeight: 1.6, marginBottom: 20, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.12em' }}>
-                ⏱ {checkoutModal.delivery}
-              </p>
-            )}
+            <ModalTierBody tier={checkoutModal.tier} price={checkoutModal.price} desc={checkoutModal.desc} delivery={checkoutModal.delivery} mobile={mobile} />
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
               <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
               {/* Single combined checkbox, not two - the old two-checkbox gate (business-customer
@@ -4198,18 +4242,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             border: '1px solid rgba(255,255,255,0.08)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '28px 24px 36px' : '40px 36px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
             {/* Same fixed-light-on-dark rule as the checkout modal above - this chrome
                 doesn't follow the site theme either. */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 14 }}>
-              <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: '#c8c8d8', lineHeight: 1.2 }}>{proposalModal.tier}</h3>
-              <div style={{ fontSize: mobile ? 22 : 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>{proposalModal.price}</div>
-            </div>
-            {proposalModal.desc.split('\n\n').map((para, pi) => (
-              <p key={pi} style={{ color: '#e8e8f0', fontSize: mobile ? 15.5 : 16.5, lineHeight: 1.85, margin: 0, marginBottom: pi === proposalModal.desc.split('\n\n').length - 1 ? 28 : 18 }}>{para}</p>
-            ))}
-            {proposalModal.delivery && (
-              <p style={{ color: '#00f5c4', fontSize: 12.5, lineHeight: 1.6, marginBottom: 20, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.12em' }}>
-                ⏱ {proposalModal.delivery}
-              </p>
-            )}
+            <ModalTierBody tier={proposalModal.tier} price={proposalModal.price} desc={proposalModal.desc} delivery={proposalModal.delivery} mobile={mobile} />
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
               <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.6, marginBottom: 20 }}>
                 No payment happens here. This takes you to our contact form with <strong style={{ color: '#e8e8f0' }}>{proposalModal.tier}</strong> pre-noted, so we start the conversation with the right context.
