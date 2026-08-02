@@ -680,6 +680,137 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
   )
 }
 
+// ── Output vocabulary (website-repositioning plan, Stage 1e) ───────────────────
+// Shared framework a tier's `outputs` field draws from instead of each product
+// line inventing its own "what you get" language. Not every tier lists all six -
+// only the ones that line's desc copy actually supports (see per-tier `outputs`
+// arrays below, e.g. Security Audits / Market Research). Web/Mobile Dev and Device
+// Privacy tiers deliver a built product or a service session, not a report, so
+// most of them carry no `outputs` tag at all rather than forcing report language
+// onto a non-report deliverable.
+const OUTPUT_VOCABULARY = [
+  'Investigation Report', 'Evidence Map', 'Risk Matrix',
+  'Technical Findings', 'Recommendations', 'Optional Retest',
+] as const
+
+function OutputTags({ outputs }: { outputs?: readonly string[] }) {
+  if (!outputs || outputs.length === 0) return null
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 16 }}>
+      {outputs.map(o => (
+        <span key={o} style={{
+          fontSize: 10.5, fontWeight: 700, letterSpacing: '0.03em', textTransform: 'uppercase',
+          fontFamily: "'JetBrains Mono', monospace", color: 'var(--text3)',
+          border: '1px solid var(--border)', borderRadius: 999, padding: '4px 10px',
+        }}>{o}</span>
+      ))}
+    </div>
+  )
+}
+
+// Shape every product-line tier array conforms to (Security Audits, Market
+// Research, Web Development, Mobile App Dev, Device Privacy Hardening). `outputs`
+// is optional and deliberately omitted where the Output vocabulary doesn't fit.
+type CarouselTier = {
+  tier: string
+  price: string
+  hook?: string
+  desc: string
+  delivery?: string
+  highlight?: boolean
+  outputs?: readonly string[]
+}
+
+// Featured-tier carousel - the display mechanism for Stage 1e's corrected
+// instruction (2026-08-02): all 19+ existing price tiers stay, none get merged
+// or dropped. One large "featured tier" card up top (name, price, the full desc
+// copy inline - no extra click into a modal needed to read it, delivery, output
+// tags, buy/propose button) plus a filmstrip of small clickable tiles for that
+// same product line's REMAINING tiers underneath - click a tile and its content
+// swaps into the big slot. Same interaction as an old HTC BlinkFeed camera-widget
+// carousel. One instance per product line, never mixing tiers across lines.
+function TierCarousel({ tiers, getActions }: {
+  tiers: readonly CarouselTier[]
+  getActions: (t: CarouselTier) => { onBuy?: () => void; onProposal?: () => void }
+}) {
+  const defaultIdx = tiers.findIndex(t => t.highlight)
+  const [idx, setIdx] = useState(defaultIdx === -1 ? 0 : defaultIdx)
+  const active = tiers[idx]
+  const actions = getActions(active)
+  const others = tiers.map((t, i) => ({ t, i })).filter(({ i }) => i !== idx)
+
+  return (
+    <div style={{ marginBottom: 48 }}>
+      <motion.div key={active.tier} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}
+        style={{
+          maxWidth: 760, margin: '0 auto 20px', borderRadius: 18, padding: '30px 32px',
+          background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.35)',
+          boxShadow: '0 12px 40px rgba(0,245,196,0.1)',
+        }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>Featured tier</div>
+            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
+            {active.hook && <div style={{ fontSize: 14, color: 'var(--text2)', marginTop: 6 }}>{active.hook}</div>}
+          </div>
+          <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{active.price}</div>
+        </div>
+        <div style={{ marginTop: 18 }}>
+          {active.desc.split('\n\n').map((p, i) => (
+            <p key={i} style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8, marginBottom: 12 }}>{p}</p>
+          ))}
+        </div>
+        <OutputTags outputs={active.outputs} />
+        {active.delivery && (
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 16,
+            background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
+            borderRadius: 20, padding: '5px 12px',
+            color: TEAL, fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace",
+            textTransform: 'uppercase', letterSpacing: '0.1em',
+          }}>
+            <ClockIcon /> {active.delivery}
+          </div>
+        )}
+        {(actions.onBuy || actions.onProposal) && (
+          <div>
+            <button
+              onClick={actions.onBuy ?? actions.onProposal}
+              style={{
+                marginTop: 20, borderRadius: 8, cursor: 'pointer', padding: '12px 22px',
+                display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 800,
+                letterSpacing: '0.02em',
+                background: actions.onBuy ? 'var(--accent)' : 'var(--bg3)',
+                border: actions.onBuy ? 'none' : '1px solid var(--border)',
+                color: actions.onBuy ? 'var(--accent-fg)' : 'var(--text)',
+              }}
+            >
+              {actions.onBuy ? <CartIcon /> : <ArrowIcon />}
+              {actions.onBuy ? 'Get Started' : 'Request Proposal'}
+            </button>
+          </div>
+        )}
+      </motion.div>
+
+      {others.length > 0 && (
+        <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6, maxWidth: 900, margin: '0 auto' }}>
+          {others.map(({ t, i }) => (
+            <button key={t.tier} onClick={() => setIdx(i)} style={{
+              flexShrink: 0, minWidth: 140, textAlign: 'left', cursor: 'pointer',
+              borderRadius: 10, padding: '10px 14px',
+              background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
+              transition: 'border-color .15s, background .15s',
+            }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{t.tier}</div>
+              <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--accent-text)', marginTop: 4 }}>{t.price}</div>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function useMobile(bp = 768) {
   const [m, setM] = useState(() => typeof window !== 'undefined' && window.innerWidth < bp)
   useEffect(() => {
@@ -802,6 +933,8 @@ const NAV_LINKS = [
   { label: 'Projects', href: '#projects' },
   { label: 'Track Record', href: '#track-record' },
   { label: 'Pricing', href: '#pricing' },
+  { label: 'Evidence', href: '#evidence' },
+  { label: 'Principles', href: '#investigation-principles' },
   { label: 'Coop', href: '#coop-partners' },
   { label: 'Submit', href: '#submit' },
 ]
@@ -958,10 +1091,13 @@ const RESEARCH_AREAS = [
 //                                                 must always appear together,
 //                                                 never sourcing alone)
 //
-// Stage 1e (product-family reduction, 19 price tiers → ~3) and 1f/1g (Evidence,
-// Investigation Principles) are explicitly NOT part of this pass - this hierarchy
-// is introduced here so later work has one fixed vocabulary to build on, not so
-// that pricing/evidence gets touched now.
+// Stage 1e/1f/1g landed in a later pass (2026-08-02): the pricing carousel below
+// (see `TierCarousel`), the Evidence section (#evidence), and Investigation
+// Principles section (#investigation-principles) all use this same Investigate ·
+// Assess · Monitor vocabulary - no new top-level term was introduced for any of
+// them. Note Stage 1e's own correction, same date: Laura's "reduce 19 tiers to
+// ~3" recommendation was explicitly overridden by the user - every existing tier
+// stayed, the carousel is the display mechanism, not a reduction.
 
 // The 4-row approach comparison, Stage 1b - pulled forward from the plan's original
 // "M7" position because a visitor needs to know what's different before being asked
@@ -5064,74 +5200,85 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </p>
           </Reveal>
 
-          {/* Security Audit tiers */}
+          {/* Security Audit tiers - featured-tier carousel (Stage 1e, corrected
+              2026-08-02): all 8 existing tiers stay, none merged/dropped. One big
+              card + a filmstrip of the rest, per product line - see `TierCarousel`. */}
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: 48 }}>
-            {([
-              { tier: 'Public',                   price: 'free',      hook: 'Free, forever - findings publish after 90 days no matter what.', desc: 'You get the same source-code-level audit we run for paying clients, at no cost. Findings publish on our public ledger after a 90-day heads-up window, giving the organization time to fix the problem before anyone else sees it.\n\nEvery name on that ledger is held to the identical rule, big or small, paying or not. No contract, no secrecy agreement, no quieter treatment for anyone.\n\nYour first phone privacy session is included: we walk you through switching off the hidden trackers running on your own device. That offer does not expire.', highlight: false, stripeKey: null,            directUrl: null, delivery: 'Begins immediately after intake; report within 7 calendar days of scope lock.', contact: false },
-              { tier: 'Security Retainer',        price: '€1,500 / mo', hook: 'Ongoing security coverage between audits, not a one-time snapshot.', desc: 'A single audit is a photo taken on one day; real security drifts the moment you ship new code. This retainer replaces the snapshot with ongoing coverage.\n\nFor 1,500 euros a month we monitor your product continuously, run a full deep-dive audit every three months, and move you to the front of the queue the instant something urgent appears.\n\nYou get one named engineer who already knows your system, so a panic call never starts with explaining your setup. Coverage begins within days of your first payment.\n\nThink of it as a standing security team on call, without hiring one.', highlight: false, stripeKey: 'retainer', directUrl: null, delivery: 'Report within 7 calendar days of audit completion.', contact: false },
-              { tier: 'Remediation Advisory',     price: '€4,500',    hook: 'A ranked report, plus a walkthrough with the engineers who found it.', desc: 'You get a ranked report in plain language: exactly how we tested, every weakness found, and a concrete fix for each one, delivered within 7 calendar days of payment.\n\nThe engineers who found the holes walk you through closing them. This is never a list of problems handed off to someone else to interpret.\n\nThirty days later we check back to confirm the fixes actually landed, not that someone claimed they did. Every finding is tied to the exact privacy-law article it breaks, so your legal team gets a map instead of a guess.\n\nThis is the difference between having a report and being truly fixed.',                                        highlight: true, stripeKey: 'remediation',   directUrl: null, delivery: 'Report within 7 calendar days of payment.', contact: false },
-              { tier: 'Confidential',             price: '€9,000',    hook: 'The same ranked report, kept private under a strict secrecy agreement.', desc: 'You get a written report ranking every weakness by severity and pinned to the exact spot in your code, plus a plain-language summary your non-technical leadership can actually read. Delivered within 7 calendar days of payment.\n\nEverything stays private under a strict secrecy agreement; your customers and the public never see it. Once you ship fixes, we re-test by hand to confirm the holes are closed, not just patched on paper.\n\nOne thing does not change: as a not-for-profit bound by our own rules, the relevant regulators are still told, in parallel, without detail that would expose you. Discretion where it matters, proof where it counts.',                                        highlight: false, stripeKey: 'confidential',  directUrl: null, delivery: 'Report within 7 calendar days of payment.', contact: false },
-              { tier: 'Enterprise NDA',           price: '€18,000',   hook: 'Private report, longer embargo, direct engineer access to fix it.', desc: 'You get the same private, ranked report as the Confidential tier, with one difference: the embargo runs well past our standard 90 days, so your team has real time to fix things properly instead of patching over a weekend.\n\nYou work directly with the engineers on the repair. Your lawyers receive a complete evidence package they can hand straight to counsel.\n\nWe kick off within days of payment, and any follow-up work jumps the queue. Built for organizations where fixing everything inside 90 days is not realistic.', highlight: false, stripeKey: 'enterprise_nda', directUrl: null, delivery: 'Begins immediately after intake; full report within 7 calendar days of scope lock.', contact: false },
-              { tier: 'Critical Infrastructure',  price: '€75,000',   hook: 'Full-scope review, legal cover, and a rehearsed emergency-response plan.', desc: 'You get a full-scope review under a secrecy agreement, our own legal review, and a communications-containment plan built with your team before anything goes wrong. For operators of energy, water, health care, or transport infrastructure, a breach is a public-safety event, not an IT ticket.\n\nWe speak directly to every relevant authority on your behalf. You receive a standing emergency-response protocol, so the worst day is rehearsed in advance, not invented on the spot.\n\nWe mobilize within days of payment. This is the tier for situations where failure is not an option.', highlight: false,  stripeKey: 'critical_infra', directUrl: 'https://buy.stripe.com/9B66oJ6OIbU32LPcHK7N60H', delivery: 'Begins immediately after intake; full report within 7 calendar days of scope lock.', contact: false },
-              { tier: 'IoB / Art. 9',             price: '€150,000',  hook: 'A full biometric-data trace - the category most shops won\'t touch.', desc: 'You get a full trace of every flow of biometric data through your product: retention periods, cross-border transfers, and processing purpose, mapped against the strictest category in European privacy law.\n\nThe price reflects the depth of the work. You keep the same secrecy agreement and regulator contact as the Enterprise tier. Most security shops will not touch this category; we specialize in it because the data involved is literally people\'s bodies.\n\nWe start within days of payment.', highlight: false,  stripeKey: 'iob_art9', directUrl: 'https://buy.stripe.com/4gMcN7ehagaj4TXcHK7N60G', delivery: 'Continuous; first quarterly report within 7 calendar days of kick-off.', contact: false },
-              { tier: 'Annual Intelligence Retainer', price: '€250,000', hook: 'A year-round external security and compliance department.', desc: 'You get a full year of our flagship service: continuous coverage of your entire app portfolio, not a sample, with a deep audit every three months.\n\nYour dedicated contact speaks directly to the regulators that matter, from the Austrian and German data-protection authorities to the UK ICO. You get a threat briefing every month and immediate notice the moment we see a breach taking shape.\n\nWe take over within a week of payment and act as your external security and compliance department from day one.', highlight: false, stripeKey: 'annual_retainer', directUrl: 'https://buy.stripe.com/00wcN71uo4rBdqt7nq7N60I', contact: false, delivery: 'Continuous; first quarterly report within 7 calendar days of kick-off.' },
-            ] as const).map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} hook={t.hook} highlight={t.highlight}
-                  onBuy={t.stripeKey ? () => openCheckoutModal({ key: t.stripeKey!, tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery, directUrl: t.directUrl ?? undefined }) : undefined}
-                  onProposal={t.contact ? () => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery }) : undefined} />
-              </Reveal>
-            ))}
-          </div>
+          {(() => {
+            const securityTiers = ([
+              { tier: 'Public',                   price: 'free',      hook: 'Free, forever - findings publish after 90 days no matter what.', desc: 'You get the same source-code-level audit we run for paying clients, at no cost. Findings publish on our public ledger after a 90-day heads-up window, giving the organization time to fix the problem before anyone else sees it.\n\nEvery name on that ledger is held to the identical rule, big or small, paying or not. No contract, no secrecy agreement, no quieter treatment for anyone.\n\nYour first phone privacy session is included: we walk you through switching off the hidden trackers running on your own device. That offer does not expire.', highlight: false, stripeKey: null,            directUrl: null, delivery: 'Begins immediately after intake; report within 7 calendar days of scope lock.', contact: false, outputs: ['Investigation Report', 'Technical Findings'] },
+              { tier: 'Security Retainer',        price: '€1,500 / mo', hook: 'Ongoing security coverage between audits, not a one-time snapshot.', desc: 'A single audit is a photo taken on one day; real security drifts the moment you ship new code. This retainer replaces the snapshot with ongoing coverage.\n\nFor 1,500 euros a month we monitor your product continuously, run a full deep-dive audit every three months, and move you to the front of the queue the instant something urgent appears.\n\nYou get one named engineer who already knows your system, so a panic call never starts with explaining your setup. Coverage begins within days of your first payment.\n\nThink of it as a standing security team on call, without hiring one.', highlight: false, stripeKey: 'retainer', directUrl: null, delivery: 'Report within 7 calendar days of audit completion.', contact: false, outputs: ['Technical Findings', 'Recommendations'] },
+              { tier: 'Remediation Advisory',     price: '€4,500',    hook: 'A ranked report, plus a walkthrough with the engineers who found it.', desc: 'You get a ranked report in plain language: exactly how we tested, every weakness found, and a concrete fix for each one, delivered within 7 calendar days of payment.\n\nThe engineers who found the holes walk you through closing them. This is never a list of problems handed off to someone else to interpret.\n\nThirty days later we check back to confirm the fixes actually landed, not that someone claimed they did. Every finding is tied to the exact privacy-law article it breaks, so your legal team gets a map instead of a guess.\n\nThis is the difference between having a report and being truly fixed.',                                        highlight: true, stripeKey: 'remediation',   directUrl: null, delivery: 'Report within 7 calendar days of payment.', contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Technical Findings', 'Recommendations', 'Optional Retest'] },
+              { tier: 'Confidential',             price: '€9,000',    hook: 'The same ranked report, kept private under a strict secrecy agreement.', desc: 'You get a written report ranking every weakness by severity and pinned to the exact spot in your code, plus a plain-language summary your non-technical leadership can actually read. Delivered within 7 calendar days of payment.\n\nEverything stays private under a strict secrecy agreement; your customers and the public never see it. Once you ship fixes, we re-test by hand to confirm the holes are closed, not just patched on paper.\n\nOne thing does not change: as a not-for-profit bound by our own rules, the relevant regulators are still told, in parallel, without detail that would expose you. Discretion where it matters, proof where it counts.',                                        highlight: false, stripeKey: 'confidential',  directUrl: null, delivery: 'Report within 7 calendar days of payment.', contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Optional Retest'] },
+              { tier: 'Enterprise NDA',           price: '€18,000',   hook: 'Private report, longer embargo, direct engineer access to fix it.', desc: 'You get the same private, ranked report as the Confidential tier, with one difference: the embargo runs well past our standard 90 days, so your team has real time to fix things properly instead of patching over a weekend.\n\nYou work directly with the engineers on the repair. Your lawyers receive a complete evidence package they can hand straight to counsel.\n\nWe kick off within days of payment, and any follow-up work jumps the queue. Built for organizations where fixing everything inside 90 days is not realistic.', highlight: false, stripeKey: 'enterprise_nda', directUrl: null, delivery: 'Begins immediately after intake; full report within 7 calendar days of scope lock.', contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Evidence Map', 'Recommendations'] },
+              { tier: 'Critical Infrastructure',  price: '€75,000',   hook: 'Full-scope review, legal cover, and a rehearsed emergency-response plan.', desc: 'You get a full-scope review under a secrecy agreement, our own legal review, and a communications-containment plan built with your team before anything goes wrong. For operators of energy, water, health care, or transport infrastructure, a breach is a public-safety event, not an IT ticket.\n\nWe speak directly to every relevant authority on your behalf. You receive a standing emergency-response protocol, so the worst day is rehearsed in advance, not invented on the spot.\n\nWe mobilize within days of payment. This is the tier for situations where failure is not an option.', highlight: false,  stripeKey: 'critical_infra', directUrl: 'https://buy.stripe.com/9B66oJ6OIbU32LPcHK7N60H', delivery: 'Begins immediately after intake; full report within 7 calendar days of scope lock.', contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Recommendations'] },
+              { tier: 'IoB / Art. 9',             price: '€150,000',  hook: 'A full biometric-data trace - the category most shops won\'t touch.', desc: 'You get a full trace of every flow of biometric data through your product: retention periods, cross-border transfers, and processing purpose, mapped against the strictest category in European privacy law.\n\nThe price reflects the depth of the work. You keep the same secrecy agreement and regulator contact as the Enterprise tier. Most security shops will not touch this category; we specialize in it because the data involved is literally people\'s bodies.\n\nWe start within days of payment.', highlight: false,  stripeKey: 'iob_art9', directUrl: 'https://buy.stripe.com/4gMcN7ehagaj4TXcHK7N60G', delivery: 'Continuous; first quarterly report within 7 calendar days of kick-off.', contact: false, outputs: ['Investigation Report', 'Evidence Map', 'Technical Findings'] },
+              { tier: 'Annual Intelligence Retainer', price: '€250,000', hook: 'A year-round external security and compliance department.', desc: 'You get a full year of our flagship service: continuous coverage of your entire app portfolio, not a sample, with a deep audit every three months.\n\nYour dedicated contact speaks directly to the regulators that matter, from the Austrian and German data-protection authorities to the UK ICO. You get a threat briefing every month and immediate notice the moment we see a breach taking shape.\n\nWe take over within a week of payment and act as your external security and compliance department from day one.', highlight: false, stripeKey: 'annual_retainer', directUrl: 'https://buy.stripe.com/00wcN71uo4rBdqt7nq7N60I', contact: false, delivery: 'Continuous; first quarterly report within 7 calendar days of kick-off.', outputs: ['Investigation Report', 'Technical Findings', 'Recommendations'] },
+            ] as const)
+            return (
+              <TierCarousel tiers={securityTiers} getActions={t => {
+                const full = securityTiers.find(s => s.tier === t.tier)!
+                return {
+                  onBuy: full.stripeKey ? () => openCheckoutModal({ key: full.stripeKey!, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined }) : undefined,
+                  onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) : undefined,
+                }
+              }} />
+            )
+          })()}
 
           {/* Market Research & Competitor Analysis */}
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Market Research &amp; Competitor Analysis</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 48 }}>
-            {[
-              { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  delivery: '14 calendar days.', highlight: true, hook: 'A ten-page, jargon-free map of your sector, in 14 days.', desc: 'You get a plain-language map of your sector: the key players, how regulation actually works for them, and where the real openings sit. Delivered within 14 calendar days.\n\nIt runs at least ten pages, no jargon, no two-hundred-slide deck, written so a founder can read it in one sitting.\n\nResearch starts within days of payment.' },
-              { tier: 'Competitor Intelligence',    price: '€7,500',      stripeKey: 'competitor_intel', delivery: '14 calendar days.', highlight: false, hook: 'Three to five competitors taken apart: tech, privacy, positioning.', desc: 'You get three to five of your competitors taken apart: what technology they run on, how they actually treat user privacy versus what they claim, how they position themselves, and where they are strategically weak.\n\nThe result is a realistic picture of the field, including gaps you can exploit and ones you need to close. This is the homework most teams skip and later regret.\n\nDelivered within 14 calendar days of payment.' },
-              { tier: 'Sector Intelligence Report', price: '€18,000',     stripeKey: 'sector_intel',     delivery: '14 calendar days.', highlight: false, hook: 'Market, regulation, and technology - refreshed every quarter.', desc: 'You get the complete picture of your sector: market, regulation, and technology, with each major player\'s risk exposure spelled out in numbers, not vague claims.\n\nBecause markets move, this is not a one-off document. You receive a fresh update every three months, so you always know where the sector is heading.\n\nFirst report within 14 calendar days of payment, refreshed every quarter after.' },
-              { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', stripeKey: 'ongoing_intel', delivery: 'First briefing within 14 calendar days, then monthly.', highlight: false, hook: 'A dedicated analyst watching your competitors, month after month.', desc: 'You get continuous watch on your competitors: a proper briefing every month, and an immediate alert the moment one of them makes a significant move, a funding round, a pivot, a breach, or a key hire.\n\nOne dedicated analyst who knows your space handles it, so you hear about a competitor\'s launch the day it happens, not after.\n\nYour analyst is assigned within a week of payment; the first briefing lands at the end of month one.' },
-            ].map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} hook={t.hook} highlight={t.highlight} onBuy={() => openCheckoutModal({ key: t.stripeKey, tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery })} />
-              </Reveal>
-            ))}
-          </div>
+          {(() => {
+            const marketTiers = [
+              { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  delivery: '14 calendar days.', highlight: true, hook: 'A ten-page, jargon-free map of your sector, in 14 days.', desc: 'You get a plain-language map of your sector: the key players, how regulation actually works for them, and where the real openings sit. Delivered within 14 calendar days.\n\nIt runs at least ten pages, no jargon, no two-hundred-slide deck, written so a founder can read it in one sitting.\n\nResearch starts within days of payment.', outputs: ['Investigation Report'] },
+              { tier: 'Competitor Intelligence',    price: '€7,500',      stripeKey: 'competitor_intel', delivery: '14 calendar days.', highlight: false, hook: 'Three to five competitors taken apart: tech, privacy, positioning.', desc: 'You get three to five of your competitors taken apart: what technology they run on, how they actually treat user privacy versus what they claim, how they position themselves, and where they are strategically weak.\n\nThe result is a realistic picture of the field, including gaps you can exploit and ones you need to close. This is the homework most teams skip and later regret.\n\nDelivered within 14 calendar days of payment.', outputs: ['Investigation Report', 'Evidence Map', 'Technical Findings'] },
+              { tier: 'Sector Intelligence Report', price: '€18,000',     stripeKey: 'sector_intel',     delivery: '14 calendar days.', highlight: false, hook: 'Market, regulation, and technology - refreshed every quarter.', desc: 'You get the complete picture of your sector: market, regulation, and technology, with each major player\'s risk exposure spelled out in numbers, not vague claims.\n\nBecause markets move, this is not a one-off document. You receive a fresh update every three months, so you always know where the sector is heading.\n\nFirst report within 14 calendar days of payment, refreshed every quarter after.', outputs: ['Investigation Report', 'Risk Matrix'] },
+              { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', stripeKey: 'ongoing_intel', delivery: 'First briefing within 14 calendar days, then monthly.', highlight: false, hook: 'A dedicated analyst watching your competitors, month after month.', desc: 'You get continuous watch on your competitors: a proper briefing every month, and an immediate alert the moment one of them makes a significant move, a funding round, a pivot, a breach, or a key hire.\n\nOne dedicated analyst who knows your space handles it, so you hear about a competitor\'s launch the day it happens, not after.\n\nYour analyst is assigned within a week of payment; the first briefing lands at the end of month one.', outputs: ['Investigation Report', 'Recommendations'] },
+            ]
+            return (
+              <TierCarousel tiers={marketTiers} getActions={t => {
+                const full = marketTiers.find(s => s.tier === t.tier)!
+                return { onBuy: () => openCheckoutModal({ key: full.stripeKey, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) }
+              }} />
+            )
+          })()}
 
           {/* Web Development */}
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Web Development</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
-            {[
+          {(() => {
+            const webTiers = [
               { tier: 'Landing Page',   price: '€1,500',  stripeKey: 'web_landing'   as string | null, delivery: '48 hours.', highlight: true, hook: 'A fast, clean single page, live within 48 hours.', desc: 'You get a sharp single-page site on our own open-source React template: fast, clean, live within 48 hours of payment.\n\nBuilt by the same team that audits apps for security, so it is clean by default, not an afterthought.\n\nNo page-builder lock-in: you own the code and can take it anywhere.' },
               { tier: 'Full Site',      price: '€4,500',  stripeKey: 'web_full'      as string | null, delivery: '14–28 calendar days, depending on scope.', highlight: false, hook: 'A proper multi-page site with a real content editor, PWA-ready.', desc: 'You get a proper multi-page site with a content editor your team can actually use, a working contact form, and privacy-respecting analytics built in from the start.\n\nIt ships as an installable progressive web app, behaving like a native app on Android and iPhone without an app-store listing. Delivered in about two weeks.\n\nBuilt by the same team that audits apps for security, so it is clean by default.' },
               { tier: 'Enterprise Site',price: '€18,000', stripeKey: 'web_enterprise' as string | null, delivery: '14–28 calendar days, depending on scope.', highlight: false, hook: 'A full custom build: Rust backend, auth, native apps included.', desc: 'You get a full custom build: a Rust backend, authentication, and the specific integrations your operation requires; we scope every one of them with you directly.\n\nReal native Android and iPhone apps are included, not a web wrapper dressed up as one. Long-term support is part of the deal, not a later upsell.\n\nWe scope the build with you in the first week after payment. For organizations where the website is the business, not a brochure.' },
               { tier: 'Platform Build', price: '€75,000', stripeKey: null,                              delivery: 'User-specific timeline, aligned after kick-off.', highlight: false, hook: 'The whole product - infrastructure, API, native apps - built with you.', desc: 'You get a complete product, not just a site: custom infrastructure, API design, data pipelines, and native apps, with a dedicated team that stays on it.\n\nThis is the engagement for building the actual platform, not only the front door to it.\n\nWe start within a week of payment and keep building with you as the product grows; we set scope and timeline together at kickoff, not in advance.' },
-            ].map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} hook={t.hook} highlight={t.highlight}
-                  onBuy={t.stripeKey ? () => openCheckoutModal({ key: t.stripeKey!, tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery }) : undefined}
-                  onProposal={!t.stripeKey ? () => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery }) : undefined} />
-              </Reveal>
-            ))}
-          </div>
+            ]
+            return (
+              <TierCarousel tiers={webTiers} getActions={t => {
+                const full = webTiers.find(s => s.tier === t.tier)!
+                return {
+                  onBuy: full.stripeKey ? () => openCheckoutModal({ key: full.stripeKey!, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) : undefined,
+                  onProposal: !full.stripeKey ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) : undefined,
+                }
+              }} />
+            )
+          })()}
 
           {/* Mobile App Development & Fixing */}
           <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Mobile App Development &amp; Fixing</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
-            {[
+          {(() => {
+            const mobileTiers = [
               { tier: 'Maintenance Retainer',  price: '€1,200 / mo', delivery: 'Ongoing engagement; first patch within 14 calendar days.', highlight: false, hook: 'Steady patches and dependency upkeep, so your app doesn\'t rot.', desc: 'You get a steady rhythm of patches, app-store compliance monitoring so a policy change never catches you off guard, and clean dependency upkeep so old libraries do not become tomorrow\'s emergency.\n\nOne named contact and priority response; first review lands within a week of payment.\n\nQuiet, continuous upkeep, so your app does not silently rot.' },
               { tier: 'APK Review & Bugfix',  price: 'from €1,500', delivery: '1 week / 7 calendar days.', highlight: true, hook: 'Send your build, get root-level answers in one week.', desc: 'You send us your build; we read the actual code, not the marketing. Covers Android and iPhone.\n\nWe identify crashes and real weak spots, then hand you concrete guidance for fixing each one, at a fixed scope with a one-week turnaround from the day you send the build.\n\nA clear answer fast, instead of a six-week audit you were not braced for.' },
               { tier: 'App Build',            price: 'from €9,000', delivery: '14–28 calendar days, depending on scope.', highlight: false, hook: 'Your native app, Kotlin and Swift, built in-house from zero to shipped.', desc: 'You get your native app built from zero to shipped: Kotlin for Android, Swift for iPhone, with a Rust backend underneath.\n\nWe do everything in-house, with the team you are already talking to, not an offshore handoff. We also handle Play Store and App Store submission, exactly where most builds stall.\n\nWe kick off within a week of payment. One team, one codebase, one launch.' },
               { tier: 'Full Mobile Product',   price: 'on request',  delivery: 'User-specific timeline after kick-off.', highlight: false, hook: 'From a napkin sketch to a launched app, built together end to end.', desc: 'You get the whole mobile product, from a spec on a napkin to a launched app: custom infrastructure, API design, native apps, and a dedicated team that stays on it.\n\nThis is an ongoing engagement, because a real product keeps evolving after launch.\n\nWe start within a week of payment and build it with you as it grows. For when you need a mobile business built, not only an app made.' },
-            ].map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} hook={t.hook} highlight={t.highlight}
-                  onProposal={() => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery })} />
-              </Reveal>
-            ))}
-          </div>
+            ]
+            return (
+              <TierCarousel tiers={mobileTiers} getActions={t => {
+                const full = mobileTiers.find(s => s.tier === t.tier)!
+                return { onProposal: () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) }
+              }} />
+            )
+          })()}
 
           {/* Research Cooperation Products - via our coop partner Laura Serna
               Gaviria / Emergent Interaction Lab. No Stripe checkout: these are
@@ -5173,6 +5320,112 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           mainpage is decision space ("what can you do"), Team is trust space
           ("who are you") - the wrong section to spend mainpage scroll on first. */}
 
+      {/* EVIDENCE - website-repositioning plan Stage 1f. Structure is real work;
+          content is intentionally NOT real yet - the plan is explicit that actual
+          findings need real report/case material we don't have (see the plan's
+          "Was ich NICHT erfinden werde" list: C4/M3/M7-details/M10/data-principles
+          all gated the same way). The row below is clearly banner-marked as an
+          illustrative placeholder, not presented as a disclosed finding - do not
+          replace the placeholder banner or the "Example finding" label without
+          real source material to back it, per the plan's no-fabrication rule. */}
+      <section id="evidence" style={{ padding: '100px 2rem' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <Reveal>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Evidence</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>a claim you can't trace back isn't evidence</h2>
+            <p style={{ color: 'var(--text2)', marginBottom: 20, maxWidth: 680, lineHeight: 1.8 }}>
+              Most reports stop at a severity label: critical, high, medium. That tells you how worried to be, but not why - and a client's own legal or engineering team can't check work they can't see the steps of.
+            </p>
+            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
+              So every finding we deliver is required to answer five questions in order, not just the last one: what did we find, what proves it, how did we prove it, how sure are we, and what should you do about it. That order is the actual audit, laid out instead of hidden behind a verdict.
+            </p>
+          </Reveal>
+
+          <Reveal from="bottom" delay={1}>
+            <div style={{
+              background: 'rgba(255,180,0,0.06)', border: '1px solid rgba(255,180,0,0.3)',
+              borderRadius: 12, padding: '14px 18px', marginBottom: 24,
+              display: 'flex', alignItems: 'center', gap: 10,
+            }}>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, color: '#ffb400', textTransform: 'uppercase', letterSpacing: '0.1em', whiteSpace: 'nowrap' }}>Illustrative placeholder</span>
+              <span style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.6 }}>
+                The row below is a made-up example to show the structure, not a real disclosed finding. It gets replaced with an actual case once we have real report material to draw from.
+              </span>
+            </div>
+          </Reveal>
+
+          <Reveal from="bottom" delay={2}>
+            <div style={{
+              display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(5, 1fr)', gap: 1,
+              background: 'var(--border)', borderRadius: 14, overflow: 'hidden',
+              border: '1px solid var(--border)',
+            }}>
+              {[
+                { label: 'Finding', body: 'Example finding: an app sends a device identifier to a third-party analytics domain before the user accepts any consent prompt.' },
+                { label: 'Evidence', body: 'A captured network trace showing the outbound request, timestamped before the consent dialog was dismissed.' },
+                { label: 'Method', body: 'Network trace on a clean install · SDK identification · permission analysis · manual reproduction, 3 of 3 attempts.' },
+                { label: 'Confidence', body: 'High - reproduced on separate devices, on separate days, with a clean install each time.' },
+                { label: 'Recommendation', body: 'Move the SDK initialization call to fire only after consent is granted; re-test to confirm the request no longer fires early.' },
+              ].map(col => (
+                <div key={col.label} style={{ background: 'var(--bg2)', padding: '20px 18px' }}>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 10 }}>{col.label}</div>
+                  <p style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.7, margin: 0 }}>{col.body}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* INVESTIGATION PRINCIPLES - website-repositioning plan Stage 1g, renamed
+          from "Data Ethics"/"Intelligence Ethics" per Laura's note that the latter
+          reads like an intelligence agency. Deliberately general/methodology-level:
+          sources, methods, handling of results, disclosure - not specific data-
+          retention/storage claims we'd need to verify against real practice docs
+          before publishing (same no-fabrication gate as Evidence, above). */}
+      <section id="investigation-principles" style={{ padding: '100px 2rem' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <Reveal>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Investigation Principles</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the same rules, whoever the client is</h2>
+            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
+              An investigator who bends the rules for a paying client isn't an investigator anymore - just a vendor with a fancier vocabulary. These four principles govern where we look, how we test, what we do with what we find, and when it becomes public, regardless of who's paying.
+            </p>
+          </Reveal>
+
+          <Reveal from="bottom" delay={1}>
+            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+              {[
+                {
+                  title: 'Sources',
+                  body: 'We only work from what we\'re lawfully entitled to see: publicly accessible information, devices we own or are authorized to test, and software we\'re authorized to analyze. If material crosses into unauthorized access to a system we don\'t control, we don\'t use it - we report it to the relevant authority instead, the same way we\'d want to be treated in reverse.',
+                },
+                {
+                  title: 'Methods',
+                  body: 'Investigate first, judge second: we trace root cause instead of stopping at the first symptom, and every step has to be reproducible by someone other than the person who ran it the first time. A finding that only one person can reproduce isn\'t a finding yet.',
+                },
+                {
+                  title: 'Handling results',
+                  body: 'Severity gets ranked, not asserted - and every client, paying or not, gets the same triage discipline (ISO/IEC 30111: reproduce it, scope it, fix it, credit the reporter). What changes between tiers is confidentiality and turnaround, never the rigor of the underlying work.',
+                },
+                {
+                  title: 'Disclosure',
+                  body: 'A fixed public heads-up window applies before anything goes on the public ledger, giving the organization real time to fix a problem before anyone else sees it. Regulators are told in parallel where our own rules require it, without exposing detail that would put a client at risk before they\'ve had the chance to fix it.',
+                },
+              ].map(p => (
+                <div key={p.title} style={{
+                  background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
+                  borderRadius: 14, padding: '22px 22px',
+                }}>
+                  <div style={{ fontWeight: 800, fontSize: 15, color: 'var(--text)', marginBottom: 10 }}>{p.title}</div>
+                  <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8, margin: 0 }}>{p.body}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* COOP PARTNERS - not team, an external research partner whose method
           Lauras Team / Call Laura / Jarvis grew out of. Kept deliberately
           separate from the TEAM grid above (different relationship: Laura
@@ -5181,7 +5434,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="coop-partners" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>07 / Research Cooperation</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>09 / Research Cooperation</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}>built alongside our coop partner</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
               Laura Serna Gaviria directs the Emergent Interaction Lab's own research and agent architecture - Lauras Team, Call Laura, and Jarvis all grew out of her method. RFI-IRFOS builds what she directs, labelled as hers so it stays clear who did what.
@@ -5264,7 +5517,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="submit" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Disclosures</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>10 / Disclosures</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? say so.</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
               We run our own intake channel instead of routing you to a third-party bug bounty platform - for the same reason we refuse to be routed to one ourselves when we report a finding. This is a direct line to the same permanent ledger you see above, held to the same standard.
