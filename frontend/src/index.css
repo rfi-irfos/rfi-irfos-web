@@ -218,32 +218,6 @@ html { scroll-padding-top: 72px; }
   .rfi-cta-pulse { animation: none; }
 }
 
-/* ── Pricing card border-trace ───────────────────────────────────
-   Money section gets the most craft: a spinning conic-gradient ring, masked down to
-   just the 1px border (standard border-only mask trick), fades in on hover. Pure CSS
-   (rotate transform + opacity, both compositor-only) so it costs nothing idle - the
-   ring only exists/animates while a card is actually hovered. */
-.rfi-pricing-card { position: relative; isolation: isolate; }
-.rfi-pricing-card::before {
-  content: '';
-  position: absolute; inset: -1px; border-radius: inherit; padding: 1px;
-  background: conic-gradient(from 0deg, transparent 0%, rgba(0,245,196,0.95) 10%, transparent 22%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.25s;
-  animation: rfi-border-spin 2.4s linear infinite;
-  animation-play-state: paused;
-  pointer-events: none;
-  z-index: -1;
-}
-.rfi-pricing-card:hover::before { opacity: 1; animation-play-state: running; }
-@keyframes rfi-border-spin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) {
-  .rfi-pricing-card::before { animation: none !important; opacity: 0 !important; }
-}
-
 /* ── Modal entrance ───────────────────────────────────────────────
    CSS-only mount animation (backdrop fade, panel spring-like scale+rise) - no
    AnimatePresence/JS here on purpose: these modals gate the checkout/proposal flow,

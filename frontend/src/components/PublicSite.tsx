@@ -536,7 +536,7 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
   const tiltRef = useRef<HTMLDivElement>(null)
   const tilt = useTilt(tiltRef, 4)
   return (
-    <motion.div ref={tiltRef} className="rfi-hover-card rfi-pricing-card" style={{
+    <motion.div ref={tiltRef} className="rfi-hover-card" style={{
       ...tilt,
       // Highlight used to be a barely-there 6%-opacity tint - easy to miss scanning a
       // dense grid of near-identical cards. Now a visibly brighter tint, a solid
