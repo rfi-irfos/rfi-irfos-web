@@ -5320,14 +5320,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           mainpage is decision space ("what can you do"), Team is trust space
           ("who are you") - the wrong section to spend mainpage scroll on first. */}
 
-      {/* EVIDENCE - website-repositioning plan Stage 1f. Structure is real work;
-          content is intentionally NOT real yet - the plan is explicit that actual
-          findings need real report/case material we don't have (see the plan's
-          "Was ich NICHT erfinden werde" list: C4/M3/M7-details/M10/data-principles
-          all gated the same way). The row below is clearly banner-marked as an
-          illustrative placeholder, not presented as a disclosed finding - do not
-          replace the placeholder banner or the "Example finding" label without
-          real source material to back it, per the plan's no-fabrication rule. */}
+      {/* EVIDENCE - website-repositioning plan Stage 1f. The row below is a real
+          finding (MC-01) from the "Merge Chicken" disclosure, already public on
+          this site's own Track Record ledger and full report PDF - not fabricated
+          content, per the plan's no-fabrication rule. */}
       <section id="evidence" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
@@ -5343,13 +5339,14 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
           <Reveal from="bottom" delay={1}>
             <div style={{
-              background: 'rgba(255,180,0,0.06)', border: '1px solid rgba(255,180,0,0.3)',
+              background: 'rgba(0,224,193,0.06)', border: '1px solid rgba(0,224,193,0.3)',
               borderRadius: 12, padding: '14px 18px', marginBottom: 24,
-              display: 'flex', alignItems: 'center', gap: 10,
+              display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap',
             }}>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, color: '#ffb400', textTransform: 'uppercase', letterSpacing: '0.1em', whiteSpace: 'nowrap' }}>Illustrative placeholder</span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em', whiteSpace: 'nowrap' }}>Real, disclosed finding</span>
               <span style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.6 }}>
-                The row below is a made-up example to show the structure, not a real disclosed finding. It gets replaced with an actual case once we have real report material to draw from.
+                From "Merge Chicken" (com.Merge.o98Chickens), reported to Google Play & Android Security 2026-06-25, removed from the Play Store 2026-06-30.{' '}
+                <a href="/reports/merge-chicken-2026.pdf" target="_blank" rel="noopener noreferrer" style={{ color: TEAL, textDecoration: 'underline' }}>Full report (PDF)</a>
               </span>
             </div>
           </Reveal>
@@ -5361,11 +5358,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               border: '1px solid var(--border)',
             }}>
               {[
-                { label: 'Finding', body: 'Example finding: an app sends a device identifier to a third-party analytics domain before the user accepts any consent prompt.' },
-                { label: 'Evidence', body: 'A captured network trace showing the outbound request, timestamped before the consent dialog was dismissed.' },
-                { label: 'Method', body: 'Network trace on a clean install · SDK identification · permission analysis · manual reproduction, 3 of 3 attempts.' },
-                { label: 'Confidence', body: 'High - reproduced on separate devices, on separate days, with a clean install each time.' },
-                { label: 'Recommendation', body: 'Move the SDK initialization call to fire only after consent is granted; re-test to confirm the request no longer fires early.' },
+                { label: 'Finding', body: 'A Google Play app rated PEGI 3 ("suitable for all ages") and listed as a casual merge puzzle game functioned as an unlicensed, no-KYC real-money online casino - not present on the face of the submitted build.' },
+                { label: 'Evidence', body: 'The gambling UI and logic were absent from the reviewed binary and gated behind a server-controlled switch (Firebase Remote Config), with the live payload served from separately-controlled infrastructure after install.' },
+                { label: 'Method', body: 'Static root-level analysis of the published release APK: apktool decompilation, dex/string inspection, manifest review, plus open-source corroboration of the developer entity. No production servers or user accounts were probed.' },
+                { label: 'Confidence', body: 'Confirmed - reported directly to Google Play & Android Security as abuse, not negotiated as a vendor disclosure. Google\'s own security team confirmed removal from the Play Store.' },
+                { label: 'Recommendation', body: 'Reported 2026-06-25; app removed from the Play Store 2026-06-30 - 5 days to resolution, the first publicly documented enforcement outcome of the RFI-IRFOS 2026 Android audit programme.' },
               ].map(col => (
                 <div key={col.label} style={{ background: 'var(--bg2)', padding: '20px 18px' }}>
                   <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 10 }}>{col.label}</div>
