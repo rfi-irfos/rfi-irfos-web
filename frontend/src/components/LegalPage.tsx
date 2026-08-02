@@ -369,6 +369,12 @@ function Security() {
 
     <h2 style={H2}>How We Handle What You Send Us</h2>
     <p style={P}>ISO/IEC 30111 triage: reproduce it, scope it, fix it, credit you. No finding gets buried because it's inconvenient — that's the entire complaint we file against everyone else, and we're not exempting ourselves from it.</p>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>Lawful basis only.</strong> We accept findings obtained through publicly accessible information, your own devices, or software you're authorized to test — the same standard our own root-level code analysis holds to. If what you send us shows evidence of unauthorized access to a system you don't control, we do not publish or credit it under this program. We report it directly to the relevant authorities, the same way we'd expect to be treated if the roles were reversed.
+    </p>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous — exactly as set out in our <a href="#p/agb" style={A}>terms</a>. No call, no meeting. Everything stays written, same as every disclosure we send.
+    </p>
 
     <h2 style={H2}>Scope</h2>
     <p style={P}>rfi-irfos.com &middot; ternlang.com &middot; lighthouse-rfi-irfos.fly.dev &middot; github.com/rfi-irfos/*</p>
@@ -538,6 +544,19 @@ const METHODOLOGY_PRINCIPLES = [
   },
 ]
 
+// Moved off the mainpage entirely (previously the "#evidence" section) per
+// live feedback: a real, already-public disclosed finding (MC-01, Merge
+// Chicken) demonstrating the Finding/Evidence/Method/Confidence/
+// Recommendation format - reference material for whoever wants to check how
+// a finding actually gets proven, same reasoning as the four principles above.
+const EVIDENCE_COLUMNS = [
+  { label: 'Finding', body: 'A Google Play app rated PEGI 3 ("suitable for all ages") and listed as a casual merge puzzle game functioned as an unlicensed, no-KYC real-money online casino - not present on the face of the submitted build.' },
+  { label: 'Evidence', body: 'The gambling UI and logic were absent from the reviewed binary and gated behind a server-controlled switch (Firebase Remote Config), with the live payload served from separately-controlled infrastructure after install.' },
+  { label: 'Method', body: 'Static root-level analysis of the published release APK: apktool decompilation, dex/string inspection, manifest review, plus open-source corroboration of the developer entity. No production servers or user accounts were probed.' },
+  { label: 'Confidence', body: 'Confirmed - reported directly to Google Play & Android Security as abuse, not negotiated as a vendor disclosure. Google\'s own security team confirmed removal from the Play Store.' },
+  { label: 'Recommendation', body: 'Reported 2026-06-25; app removed from the Play Store 2026-06-30 - 5 days to resolution, the first publicly documented enforcement outcome of the RFI-IRFOS 2026 Android audit programme.' },
+]
+
 function Methodology() {
   return <>
     <h1 style={H1}>Methodology</h1>
@@ -545,11 +564,33 @@ function Methodology() {
     <p style={P}>
       An investigator who bends the rules for a paying client isn't an investigator anymore - just a vendor with a fancier vocabulary. These four principles govern where we look, how we test, what we do with what we find, and when it becomes public, regardless of who's paying.
     </p>
-    <div style={{ display: 'grid', gap: 24, marginTop: 24 }}>
+    <div style={{ display: 'grid', gap: 24, marginTop: 24, marginBottom: 40 }}>
       {METHODOLOGY_PRINCIPLES.map(p => (
         <div key={p.title}>
           <h2 style={H2}>{p.title}</h2>
           <p style={P}>{p.body}</p>
+        </div>
+      ))}
+    </div>
+
+    <h2 style={H2}>A claim you can't trace back isn't evidence</h2>
+    <p style={P}>
+      Most reports stop at a severity label: critical, high, medium. That tells you how worried to be, but not why - and a client's own legal or engineering team can't check work they can't see the steps of. So every finding we deliver is required to answer five questions in order, not just the last one: what did we find, what proves it, how did we prove it, how sure are we, and what should you do about it.
+    </p>
+    <div style={{
+      background: 'rgba(0,224,193,0.06)', border: '1px solid rgba(0,224,193,0.25)',
+      borderRadius: 10, padding: '12px 16px', margin: '16px 0',
+    }}>
+      <p style={{ ...P, marginBottom: 0, fontSize: 12.5 }}>
+        <strong style={{ color: '#00e0c1' }}>Real, disclosed finding.</strong> From "Merge Chicken" (com.Merge.o98Chickens), reported to Google Play &amp; Android Security 2026-06-25, removed from the Play Store 2026-06-30.{' '}
+        <a href="/reports/merge-chicken-2026.pdf" target="_blank" rel="noopener" style={A}>Full report (PDF)</a>
+      </p>
+    </div>
+    <div style={{ display: 'grid', gap: 20, marginTop: 20 }}>
+      {EVIDENCE_COLUMNS.map(col => (
+        <div key={col.label}>
+          <h2 style={H2}>{col.label}</h2>
+          <p style={P}>{col.body}</p>
         </div>
       ))}
     </div>

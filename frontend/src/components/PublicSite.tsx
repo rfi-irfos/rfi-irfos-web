@@ -1048,7 +1048,7 @@ const JOURNEY_STEPS = [
   },
   {
     stage: 'Review',
-    body: 'Every finding is triaged and ranked by severity before it reaches you, in the same five-part format as the Evidence section above - what we found, what proves it, how we proved it, how sure we are, what to do about it.',
+    body: 'Every finding is triaged and ranked by severity before it reaches you, in the same five-part format documented in our Methodology - what we found, what proves it, how we proved it, how sure we are, what to do about it.',
   },
   {
     stage: 'Delivery',
@@ -5364,59 +5364,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
       </section>
 
-      {/* EVIDENCE - website-repositioning plan Stage 1f. The row below is a real
-          finding (MC-01) from the "Merge Chicken" disclosure, already public on
-          this site's own Track Record ledger and full report PDF - not fabricated
-          content, per the plan's no-fabrication rule. */}
-      <section id="evidence" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Evidence</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>a claim you can't trace back isn't evidence</h2>
-            <p style={{ color: 'var(--text2)', marginBottom: 20, maxWidth: 680, lineHeight: 1.8 }}>
-              Most reports stop at a severity label: critical, high, medium. That tells you how worried to be, but not why - and a client's own legal or engineering team can't check work they can't see the steps of.
-            </p>
-            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
-              So every finding we deliver is required to answer five questions in order, not just the last one: what did we find, what proves it, how did we prove it, how sure are we, and what should you do about it. That order is the actual audit, laid out instead of hidden behind a verdict.
-            </p>
-          </Reveal>
-
-          <Reveal from="bottom" delay={1}>
-            <div style={{
-              background: 'rgba(0,224,193,0.06)', border: '1px solid rgba(0,224,193,0.3)',
-              borderRadius: 12, padding: '14px 18px', marginBottom: 24,
-              display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap',
-            }}>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em', whiteSpace: 'nowrap' }}>Real, disclosed finding</span>
-              <span style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.6 }}>
-                From "Merge Chicken" (com.Merge.o98Chickens), reported to Google Play & Android Security 2026-06-25, removed from the Play Store 2026-06-30.{' '}
-                <a href="/reports/merge-chicken-2026.pdf" target="_blank" rel="noopener noreferrer" style={{ color: TEAL, textDecoration: 'underline' }}>Full report (PDF)</a>
-              </span>
-            </div>
-          </Reveal>
-
-          <Reveal from="bottom" delay={2}>
-            <div style={{
-              display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(5, 1fr)', gap: 1,
-              background: 'var(--border)', borderRadius: 14, overflow: 'hidden',
-              border: '1px solid var(--border)',
-            }}>
-              {[
-                { label: 'Finding', body: 'A Google Play app rated PEGI 3 ("suitable for all ages") and listed as a casual merge puzzle game functioned as an unlicensed, no-KYC real-money online casino - not present on the face of the submitted build.' },
-                { label: 'Evidence', body: 'The gambling UI and logic were absent from the reviewed binary and gated behind a server-controlled switch (Firebase Remote Config), with the live payload served from separately-controlled infrastructure after install.' },
-                { label: 'Method', body: 'Static root-level analysis of the published release APK: apktool decompilation, dex/string inspection, manifest review, plus open-source corroboration of the developer entity. No production servers or user accounts were probed.' },
-                { label: 'Confidence', body: 'Confirmed - reported directly to Google Play & Android Security as abuse, not negotiated as a vendor disclosure. Google\'s own security team confirmed removal from the Play Store.' },
-                { label: 'Recommendation', body: 'Reported 2026-06-25; app removed from the Play Store 2026-06-30 - 5 days to resolution, the first publicly documented enforcement outcome of the RFI-IRFOS 2026 Android audit programme.' },
-              ].map(col => (
-                <div key={col.label} style={{ background: 'var(--bg2)', padding: '20px 18px' }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 10 }}>{col.label}</div>
-                  <p style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.7, margin: 0 }}>{col.body}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* EVIDENCE moved off the mainpage entirely into the Methodology page
+          (#p/methodology, LegalPage.tsx) - live feedback, 2026-08-02: same
+          reasoning as Team and the four Sources/Methods/Handling-results/
+          Disclosure principles before it. */}
 
 
       {/* COOP PARTNERS - not team, an external research partner whose method
@@ -5427,7 +5378,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="coop-partners" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>09 / Research Cooperation</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>07 / Research Cooperation</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}>built alongside our coop partner</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
               Laura Serna Gaviria directs the Emergent Interaction Lab's own research and agent architecture - Lauras Team, Call Laura, and Jarvis all grew out of her method. RFI-IRFOS builds what she directs, labelled as hers so it stays clear who did what.
@@ -5510,7 +5461,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="submit" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>10 / Contact &amp; Disclosures</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Contact &amp; Disclosures</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>get in touch</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
               One form, whatever it's about: a general question, a service inquiry, research collaboration - or a security finding. If it's the last one, we run our own intake channel instead of routing it to a third-party bug bounty platform, for the same reason we'd refuse to be routed to one ourselves.
@@ -5541,19 +5492,15 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   </a>
                 ))}
               </div>
-              <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '24px 24px', marginBottom: 20 }}>
-                <div style={{ fontWeight: 900, fontSize: 14, color: 'var(--text)', marginBottom: 12 }}>Sending a security finding? Here's how we handle it</div>
-                <p style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.8, marginBottom: 12 }}>
-                  <strong style={{ color: 'var(--accent-text)' }}>ISO/IEC 30111 triage:</strong> reproduce it, scope it, fix it, credit you. No finding gets buried because it's inconvenient.
-                </p>
-                <p style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.8, marginBottom: 12 }}>
-                  <strong style={{ color: 'var(--text)' }}>Lawful basis only.</strong> Publicly accessible information, your own devices, or software you're authorized to test. Evidence of unauthorized access to a system you don't control gets reported to the relevant authorities instead, never published or credited under this program.
-                </p>
-                <p style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.8, margin: 0 }}>
-                  <strong style={{ color: 'var(--text)' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous, exactly as set out in our{' '}
-                  <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>terms</a>. No call, no meeting - everything stays written.
-                </p>
-              </div>
+              {/* Full disclosure-handling policy (ISO/IEC 30111 triage, lawful
+                  basis, credit choice) moved to the Security Policy legal page
+                  (#p/security) - live feedback: this panel made the contact
+                  section feel cluttered/security-intake-only rather than one
+                  clean form. */}
+              <p style={{ fontSize: 12, color: 'var(--text3)', marginBottom: 20, lineHeight: 1.7 }}>
+                Sending a security finding? See our{' '}
+                <a href="#p/security" style={{ color: 'var(--accent-text)' }}>full disclosure-handling policy</a> - triage, lawful basis, and your choice of credit.
+              </p>
               <p style={{ fontSize: 11, color: 'var(--text3)', fontFamily: "'JetBrains Mono', monospace", marginBottom: 0, lineHeight: 1.8 }}>
                 Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
               </p>
