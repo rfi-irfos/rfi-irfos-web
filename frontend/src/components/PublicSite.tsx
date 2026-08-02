@@ -377,12 +377,17 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
     const track = trackRef.current
     if (!track) return
     const io = new IntersectionObserver(entries => {
+      let bestRatio = -1, bestIdx = -1
       entries.forEach(entry => {
         const card = entry.target as HTMLElement
         const ratio = entry.intersectionRatio
         card.style.opacity = String(0.45 + ratio * 0.55)
         card.style.transform = `scale(${0.94 + ratio * 0.06})`
+        // "01 / 18" footer counter was frozen at 0 in fallback mode - setActiveIdx was
+        // never called here. Track whichever card in this batch is most visible.
+        if (ratio > bestRatio) { bestRatio = ratio; bestIdx = cardRefs.current.indexOf(card as HTMLDivElement) }
       })
+      if (bestIdx >= 0) setActiveIdx(bestIdx)
     }, { root: track, threshold: [0, 0.25, 0.5, 0.75, 1] })
     cardRefs.current.forEach(card => card && io.observe(card))
     const onScroll = () => markUsed()
