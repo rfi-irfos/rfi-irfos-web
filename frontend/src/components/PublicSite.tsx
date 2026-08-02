@@ -26,39 +26,6 @@ function usePageScrollProgress() {
   return progress
 }
 
-// Pulls an element a few px toward the cursor within a padded hit-box, spring-snaps
-// back on leave. Transform-only (translate), no-ops under prefers-reduced-motion.
-// Takes the target ref rather than creating/returning its own - callers create it via
-// useRef directly, so eslint-plugin-react-hooks can trace it back to a real useRef()
-// call. Returning `{ ref, ... }` from a custom hook obscures that provenance and trips
-// the react-hooks/refs rule (which then can't prove `ref` isn't a stray `.current` read).
-function useMagnetic<T extends HTMLElement>(elRef: React.RefObject<T | null>, strength = 0.35, radius = 80) {
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const springX = useSpring(x, { stiffness: 260, damping: 18, mass: 0.4 })
-  const springY = useSpring(y, { stiffness: 260, damping: 18, mass: 0.4 })
-  useEffect(() => {
-    const el = elRef.current
-    if (!el || prefersReducedMotion()) return
-    const onMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect()
-      const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2
-      const dx = e.clientX - cx, dy = e.clientY - cy
-      const dist = Math.hypot(dx, dy)
-      if (dist < radius + Math.max(rect.width, rect.height) / 2) {
-        x.set(dx * strength); y.set(dy * strength)
-      } else {
-        x.set(0); y.set(0)
-      }
-    }
-    const onLeave = () => { x.set(0); y.set(0) }
-    window.addEventListener('mousemove', onMove, { passive: true })
-    el.addEventListener('mouseleave', onLeave)
-    return () => { window.removeEventListener('mousemove', onMove); el.removeEventListener('mouseleave', onLeave) }
-  }, [elRef, strength, radius, x, y])
-  return { x: springX, y: springY }
-}
-
 // Subtle pointer-position perspective tilt for cards. Capped small on purpose -
 // this is a polish cue, not a gimmick. transform-only, no-ops under reduced-motion.
 // Same ref-provenance note as useMagnetic above.
@@ -114,51 +81,6 @@ function CountUp({ value }: { value: string }) {
   return <span ref={ref}>{isNaN(target) ? value : `${display}${suffix}`}</span>
 }
 
-// Trailing teal ring cursor accent, desktop/fine-pointer only. Deliberately does NOT
-// hide or replace the native system cursor - this page has a dense data table, search
-// input, dropdowns and forms, and killing precision/native affordances there for a
-// decorative touch would be a real usability regression, not a win. Manual rAF lerp
-// (not React state) so it never triggers a re-render per mousemove; scales up over
-// anything clickable. No-ops on touch/coarse pointers and under reduced-motion.
-function CustomCursorRing() {
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    if (prefersReducedMotion()) return
-    const mq = window.matchMedia('(hover: hover) and (pointer: fine)')
-    if (!mq.matches) return
-    const el = ref.current
-    if (!el) return
-    const target = { x: -100, y: -100 }
-    const current = { x: -100, y: -100 }
-    let hovering = false
-    let started = false
-    const onMove = (e: MouseEvent) => {
-      started = true
-      target.x = e.clientX; target.y = e.clientY
-      const hit = (e.target as Element)?.closest?.('a, button, input, textarea, select, [role="button"], .rfi-hover-card, .rfi-pricing-card')
-      hovering = !!hit
-    }
-    window.addEventListener('mousemove', onMove, { passive: true })
-    let rafId = 0
-    const tick = () => {
-      current.x += (target.x - current.x) * 0.2
-      current.y += (target.y - current.y) * 0.2
-      el.style.transform = `translate(${current.x}px, ${current.y}px) translate(-50%, -50%) scale(${hovering ? 1.7 : 1})`
-      el.style.opacity = started ? (hovering ? '0.85' : '0.5') : '0'
-      rafId = requestAnimationFrame(tick)
-    }
-    rafId = requestAnimationFrame(tick)
-    return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(rafId) }
-  }, [])
-  return (
-    <div ref={ref} style={{
-      position: 'fixed', top: 0, left: 0, width: 18, height: 18, borderRadius: '50%',
-      border: `1.5px solid ${TEAL}`, pointerEvents: 'none', zIndex: 9990, opacity: 0,
-      transition: 'opacity 0.2s ease-out',
-    }} />
-  )
-}
-
 // Fixed-top scroll progress bar, teal fill on the nav's carbon background - gives
 // the whole long funnel (research → projects → track record → pricing → contact)
 // a sense of "you're getting somewhere". Fixed 3px strip, transform-only (scaleX).
@@ -178,28 +100,22 @@ function ScrollProgressBar() {
 // Hero CTAs, unchanged copy/hierarchy/href (Track Record secondary outline, Book us
 // solid-fill conversion action, rfi-cta-pulse kept) - only addition is magnetic pull.
 function HeroCtaRow() {
-  const ref1 = useRef<HTMLAnchorElement>(null)
-  const ref2 = useRef<HTMLAnchorElement>(null)
-  const m1 = useMagnetic(ref1)
-  const m2 = useMagnetic(ref2)
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-      <motion.a ref={ref1} href="#track-record" style={{
-        ...m1,
+      <a href="#track-record" style={{
         border: '1px solid rgba(0,245,196,0.35)', color: 'var(--accent-text)', padding: '13px 30px', borderRadius: 8,
         fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
         textTransform: 'uppercase', transition: 'border-color 0.15s',
       }}
         onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
-        onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Track Record</motion.a>
-      <motion.a ref={ref2} href="#contact" className="rfi-cta-pulse" style={{
-        ...m2,
+        onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Track Record</a>
+      <a href="#contact" className="rfi-cta-pulse" style={{
         background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
         fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
         textTransform: 'uppercase', transition: 'opacity 0.15s',
       }}
         onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Book us!</motion.a>
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Book us!</a>
     </div>
   )
 }
@@ -608,9 +524,7 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
   onBuy?: () => void; onProposal?: () => void
 }) {
   const tiltRef = useRef<HTMLDivElement>(null)
-  const magnetRef = useRef<HTMLButtonElement>(null)
   const tilt = useTilt(tiltRef, 4)
-  const magnet = useMagnetic(magnetRef, 0.25, 50)
   return (
     <motion.div ref={tiltRef} className="rfi-hover-card rfi-pricing-card" style={{
       ...tilt,
@@ -629,11 +543,9 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
           <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--accent-text)' }}>{price}</div>
           {(onBuy || onProposal) && (
-            <motion.button
-              ref={magnetRef}
+            <button
               onClick={onBuy ?? onProposal}
               style={{
-                ...magnet,
                 flexShrink: 0, borderRadius: 8, cursor: 'pointer', padding: '9px 16px',
                 display: 'flex', alignItems: 'center', gap: 7,
                 fontSize: 12.5, fontWeight: 800, letterSpacing: '0.02em',
@@ -648,7 +560,7 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
             >
               {onBuy ? <CartIcon /> : <ArrowIcon />}
               {onBuy ? 'Get Started' : 'Request Proposal'}
-            </motion.button>
+            </button>
           )}
         </div>
       </div>
@@ -4447,7 +4359,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       )}
 
       <ScrollProgressBar />
-      <CustomCursorRing />
 
       {/* NAV */}
       <nav style={{
