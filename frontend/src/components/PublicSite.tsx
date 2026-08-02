@@ -4304,7 +4304,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             cursor: 'pointer',
           }}><ThemeIcon t={theme} /></button>
 
-          <a href="#contact" title="Contact" aria-label="Contact"
+          {/* The NAV_LINKS anchors above close the mobile menu on click - this one didn't,
+              so tapping Contact scrolled the page behind the still-open full-screen
+              overlay. Wired to the same closeMobile() the nav links effectively inline. */}
+          <a href="#contact" title="Contact" aria-label="Contact" onClick={closeMobile}
             style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               width: 48, height: 48, borderRadius: 8,
