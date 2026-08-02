@@ -5423,6 +5423,60 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               ))}
             </div>
           </Reveal>
+
+          {/* HUMAN ACCOUNTABILITY MODEL - website-repositioning plan's M10, folded
+              into this section rather than given a whole separate nav-level section:
+              same "how we work, and why you can trust it" theme as the four
+              principles above, so it reads as a direct continuation instead of a
+              second, thinner page. Grounded in the team's own real audit workflow
+              (~/.hermes/skills/devops/appsec-audit/SKILL.md's documented P1-P7
+              phases) rather than a generic AI-ethics statement - P2 is explicitly
+              named "Automated Analysis" in that methodology, P3 (manual reverse
+              engineering) is explicitly called the source of "the strongest, most
+              defensible findings," P6 explicitly rejects auto-scoring severity
+              ("not auto-Critical" for missing cert pinning, e.g.), and P5 requires
+              every finding to be independently reproducible by someone other than
+              whoever ran it first. Described here in our own words, at the same
+              level of abstraction as the Standards page's ISO/IEC references -
+              not a verbatim reproduction of the internal methodology doc, which
+              also covers confidential specifics (exact tool chains, per-case
+              findings) that don't belong in public marketing copy. */}
+          <Reveal from="bottom" delay={2}>
+            <div style={{ marginTop: 48, paddingTop: 40, borderTop: '1px solid var(--border)' }}>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>Where automation ends and a person decides</p>
+              <p style={{ color: 'var(--text2)', marginBottom: 28, maxWidth: 680, fontSize: 14, lineHeight: 1.8 }}>
+                Tooling does the part that's genuinely mechanical - extracting what's there, flagging known patterns. It does not decide what any of it means, and it never signs off on a finding. Four honest answers to the questions that actually matter:
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+                {[
+                  {
+                    q: 'What actually gets automated?',
+                    a: 'The first pass: pulling apart a build, extracting what it contains, matching known patterns against it. Fast, mechanical, and only ever a starting point.',
+                  },
+                  {
+                    q: 'What does a person decide?',
+                    a: 'What it means. Tracing a pattern back to its actual root cause, and separating an observed fact from a legal or technical inference, is manual work by design - it consistently produces the strongest, most defensible findings, which is exactly why it isn\'t handed to a tool.',
+                  },
+                  {
+                    q: 'How is a result checked?',
+                    a: 'It has to be reproducible by someone other than whoever found it first. A result that only one run ever produced isn\'t a finding yet - it\'s a lead.',
+                  },
+                  {
+                    q: 'Who signs off, and who\'s accountable?',
+                    a: 'A named analyst, against a fixed severity scale that refuses to auto-escalate - a missing safeguard doesn\'t become "critical" just because a scanner flagged it. RFI-IRFOS, a registered institute, stands behind every report that goes out under its name.',
+                  },
+                ].map(item => (
+                  <div key={item.q} style={{
+                    background: 'rgba(0,245,196,0.03)', border: '1px solid var(--border)',
+                    borderRadius: 14, padding: '20px 22px',
+                  }}>
+                    <div style={{ fontWeight: 800, fontSize: 14, color: 'var(--accent-text)', marginBottom: 8 }}>{item.q}</div>
+                    <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8, margin: 0 }}>{item.a}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
