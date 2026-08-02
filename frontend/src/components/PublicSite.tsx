@@ -205,10 +205,10 @@ function ProjectCard({ p }: { p: typeof PROJECTS[number] }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
           <div style={{ fontWeight: 900, fontSize: 17 }}>{p.name}</div>
-          <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
+          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
         </div>
         <span style={{
-          fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em',
+          fontSize: 9, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em',
           padding: '3px 8px', borderRadius: 20,
           border: '1px solid rgba(0,245,196,0.3)', color: 'var(--accent-text)', whiteSpace: 'nowrap',
         }}>{p.tag}</span>
@@ -442,7 +442,7 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
         <button onClick={() => go(1)} aria-label="next projects" style={arrowStyle}>&rarr;</button>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}>
-        <span style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', letterSpacing: '0.08em' }}>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', letterSpacing: '0.08em' }}>
           {String(Math.min(activeIdx + 1, n)).padStart(2, '0')} / {n}
         </span>
       </div>
@@ -542,7 +542,7 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
         <span style={{
           position: 'absolute', top: -11, left: 20,
           background: TEAL, color: '#070711', fontSize: 9.5, fontWeight: 800,
-          fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase',
+          fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.1em', textTransform: 'uppercase',
           padding: '3px 9px', borderRadius: 20,
         }}>Recommended</span>
       )}
@@ -3579,7 +3579,7 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
         border: `1px solid ${active ? (accent as string) : 'rgba(0,245,196,0.18)'}`,
         borderRadius: 7, padding: '11px 12px',
         color: active ? (accent as string) : 'var(--text3)',
-        fontFamily: 'monospace', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
+        fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
         cursor: 'pointer', outline: 'none',
       }}>
         <span style={{ whiteSpace: 'nowrap' }}>{current ? current.label : placeholder}</span>
@@ -3605,7 +3605,7 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
                   onClick={() => { onSelect(o.value); onToggle(null) }}
                   style={{
                     padding: '8px 12px', borderRadius: 5, cursor: 'pointer',
-                    fontFamily: 'monospace', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em',
+                    fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 700, letterSpacing: '0.06em',
                     color: sel ? (o.color || '#00f5c4') : 'var(--text2)',
                     background: sel ? 'rgba(0,245,196,0.10)' : 'transparent',
                   }}>
@@ -4113,7 +4113,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         <div className="rfi-modal-backdrop" onClick={() => setReportModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(0,0,0,0.85)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
           <div className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 900, height: '85vh', background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid var(--border)', background: '#0a0a18' }}>
-              <span style={{ fontFamily: 'monospace', fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>report - rfi-irfos</span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>report - rfi-irfos</span>
               <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
             </div>
             <iframe src={reportModal} style={{ flex: 1, border: 'none', width: '100%' }} title="Report PDF" />
@@ -4147,12 +4147,12 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               <p key={pi} style={{ color: '#e8e8f0', fontSize: mobile ? 15.5 : 16.5, lineHeight: 1.85, margin: 0, marginBottom: pi === checkoutModal.desc.split('\n\n').length - 1 ? 28 : 18 }}>{para}</p>
             ))}
             {checkoutModal.delivery && (
-              <p style={{ color: '#00f5c4', fontSize: 12.5, lineHeight: 1.6, marginBottom: 20, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+              <p style={{ color: '#00f5c4', fontSize: 12.5, lineHeight: 1.6, marginBottom: 20, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.12em' }}>
                 ⏱ {checkoutModal.delivery}
               </p>
             )}
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
-              <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
               {/* Single combined checkbox, not two - the old two-checkbox gate (business-customer
                   declaration + separate ToS/no-refund consent) meant the Continue button stayed
                   disabled through two clicks, not one, and funnel data showed most people never
@@ -4169,7 +4169,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 <button onClick={confirmCheckout}
                   disabled={!agbChecked || !b2bChecked}
                   style={{
-                    flex: mobile ? undefined : 2, padding: '13px', borderRadius: 6, fontSize: 13, fontFamily: 'monospace',
+                    flex: mobile ? undefined : 2, padding: '13px', borderRadius: 6, fontSize: 13, fontFamily: "'JetBrains Mono', monospace",
                     letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 700,
                     // Always reads as "the real button", checked or not - a fully disabled-looking
                     // grey-on-transparent button next to a loud red Cancel was the actual conversion
@@ -4182,7 +4182,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   Continue to Stripe →
                 </button>
                 <button onClick={() => cancelCheckout(checkoutModal.key)}
-                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                   Cancel
                 </button>
               </div>
@@ -4210,7 +4210,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               <p key={pi} style={{ color: '#e8e8f0', fontSize: mobile ? 15.5 : 16.5, lineHeight: 1.85, margin: 0, marginBottom: pi === proposalModal.desc.split('\n\n').length - 1 ? 28 : 18 }}>{para}</p>
             ))}
             {proposalModal.delivery && (
-              <p style={{ color: '#00f5c4', fontSize: 12.5, lineHeight: 1.6, marginBottom: 20, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+              <p style={{ color: '#00f5c4', fontSize: 12.5, lineHeight: 1.6, marginBottom: 20, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.12em' }}>
                 ⏱ {proposalModal.delivery}
               </p>
             )}
@@ -4220,11 +4220,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               </p>
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
                 <button onClick={confirmProposal}
-                  style={{ flex: mobile ? undefined : 2, padding: '13px', background: TEAL, border: `1px solid ${TEAL}`, borderRadius: 6, color: '#070711', fontSize: 13, fontWeight: 700, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  style={{ flex: mobile ? undefined : 2, padding: '13px', background: TEAL, border: `1px solid ${TEAL}`, borderRadius: 6, color: '#070711', fontSize: 13, fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                   Continue to Contact →
                 </button>
                 <button onClick={() => setProposalModal(null)}
-                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                   Cancel
                 </button>
               </div>
@@ -4377,7 +4377,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.06) 0%, transparent 70%)',
       }}>
         <HeroBackground />
-        <p style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
+        <p className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
           <RevealWords text="Rethink the Obvious." />
         </p>
         <h1 style={{
@@ -4413,7 +4413,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             <Reveal key={s.label} delay={i} from={s.from}>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: 32, fontWeight: 900, color: 'var(--accent-text)' }}><CountUp value={s.n} /></div>
-                <div style={{ fontSize: 11, color: 'var(--text)', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{s.label}</div>
+                <div style={{ fontSize: 11, color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{s.label}</div>
               </div>
             </Reveal>
           ))}
@@ -4424,7 +4424,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="research" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Areas of Magnification</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Areas of Magnification</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>where our attention falls</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
@@ -4440,7 +4440,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="projects" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="right">
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Undertakings</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Undertakings</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
           </Reveal>
           <Reveal from="left" delay={1}>
@@ -4458,7 +4458,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="track-record" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the discipline, demonstrated</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
@@ -4488,7 +4488,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     : '0 8px 32px rgba(0,0,0,0.35)',
                 }}>
                   <div style={{ fontSize: 40, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}><CountUp value={s.n} /></div>
-                  <div style={{ fontSize: 12, color: '#ffffff', fontWeight: 700, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 12 }}>{s.label}</div>
+                  <div style={{ fontSize: 12, color: '#ffffff', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 12 }}>{s.label}</div>
                 </div>
               </Reveal>
             ))}
@@ -4579,7 +4579,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             ).length
             const sortLabel: Record<string, string> = { 'elapsed-desc': 'elapsed ↓', 'notified-desc': 'notified ↓', 'notified-asc': 'notified ↑', sev: 'sev', status: 'status' }
             return (
-              <div style={{ fontFamily: 'monospace', fontSize: 10, color: n > 0 ? TEAL : '#f87171', marginBottom: 10, letterSpacing: '0.06em' }}>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: n > 0 ? TEAL : '#f87171', marginBottom: 10, letterSpacing: '0.06em' }}>
                 {n > 0 ? `${n} of ${AUDIT_HIGHLIGHTS.length} entries` : `no matches`}
                 {searchQuery.trim() ? ` for "${searchQuery}"` : ''}
                 {sortBy !== 'default' ? ` · sorted by ${sortLabel[sortBy] ?? sortBy}` : ''}
@@ -4601,7 +4601,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               padding: '7px 14px',
               position: 'sticky', top: 0, zIndex: 2,
               background: 'var(--bg)', borderBottom: '1px solid var(--border2)',
-              fontFamily: 'monospace', fontSize: 10, fontWeight: 700,
+              fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 700,
               color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.1em',
             }}>
               <span>Organisation</span>
@@ -4691,17 +4691,17 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     {/* Organisation */}
                     <div>
                       <div style={{ fontWeight: 700, fontSize: 12, color: 'var(--text)', lineHeight: 1.4 }}>{a.target}</div>
-                      <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', marginTop: 2 }}>{a.market}</div>
+                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', marginTop: 2 }}>{a.market}</div>
                     </div>
 
                     {/* Notified */}
                     {!mobile && (
                       <div style={{ paddingTop: 1 }}>
-                        <div style={{ fontFamily: 'monospace', fontSize: 10, color: meta?.notified ? 'var(--text2)' : 'var(--text4)' }}>
+                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: meta?.notified ? 'var(--text2)' : 'var(--text4)' }}>
                           {meta?.notified ?? '-'}
                         </div>
                         {notifiedTs && (
-                          <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'var(--accent-text)', marginTop: 2, letterSpacing: '0.04em' }}>
+                          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: 'var(--accent-text)', marginTop: 2, letterSpacing: '0.04em' }}>
                             {eDays === 0 ? 'today' : `${eDays}d ago`}
                           </div>
                         )}
@@ -4710,13 +4710,13 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
                     {/* Status */}
                     <div style={{ paddingTop: 1 }}>
-                      <span className="site-status-badge" style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3, border: '1px solid var(--border)', background: sm.bg, color: sm.color, letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>{sm.label}</span>
+                      <span className="site-status-badge" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3, border: '1px solid var(--border)', background: sm.bg, color: sm.color, letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>{sm.label}</span>
                     </div>
 
                     {/* SEV */}
                     {!mobile && (
                       <div style={{ paddingTop: 1 }}>
-                        <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, color: SEV_COLOR[a.sev] ?? TEAL }}>{a.sev}</span>
+                        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 700, color: SEV_COLOR[a.sev] ?? TEAL }}>{a.sev}</span>
                       </div>
                     )}
 
@@ -4738,12 +4738,12 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                       return (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3, paddingTop: 1, minWidth: 0, overflow: 'hidden' }}>
                           {statutes.length === 0 ? (
-                            <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>-</span>
+                            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)' }}>-</span>
                           ) : (
                             <>
                               {shown.map((s, si) => (
                                 <span key={si} title={`${s.note} (${s.source})`} style={{
-                                  fontFamily: 'monospace', fontSize: 8, fontWeight: 700, padding: '2px 5px',
+                                  fontFamily: "'JetBrains Mono', monospace", fontSize: 8, fontWeight: 700, padding: '2px 5px',
                                   borderRadius: 3, letterSpacing: '0.04em', whiteSpace: 'nowrap', cursor: 'default',
                                   ...{ background: 'transparent', color: 'var(--text3)', border: '1px solid rgba(150,150,150,0.35)' },
                                 }}>
@@ -4754,7 +4754,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                                 <span
                                   title={rest.map(s => `${s.article ? `${s.law} ${s.article}` : s.law}: ${s.note} (${s.source})`).join('\n')}
                                   style={{
-                                    fontFamily: 'monospace', fontSize: 8, fontWeight: 700, padding: '2px 5px',
+                                    fontFamily: "'JetBrains Mono', monospace", fontSize: 8, fontWeight: 700, padding: '2px 5px',
                                     borderRadius: 3, letterSpacing: '0.04em', whiteSpace: 'nowrap', cursor: 'default',
                                     background: 'rgba(255,255,255,0.06)', color: 'var(--text3)', border: '1px solid rgba(150,150,150,0.25)',
                                   }}>
@@ -4771,7 +4771,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     {!mobile && (
                       <div style={{ paddingTop: 1 }}>
                         <span style={{
-                          fontFamily: 'monospace', fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                          fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                           background: 'var(--surface-sunken)', color: 'var(--text)', letterSpacing: '0.07em',
                         }}>{resolved ? 'YES' : 'NO'}</span>
                       </div>
@@ -4779,10 +4779,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
 
                     {/* Countdown */}
                     <div style={{ paddingTop: 1 }}>
-                      <div style={{ fontFamily: 'monospace', fontSize: mobile ? 12 : 16, fontWeight: 900, color: resolved ? '#00f5c4' : cdColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
+                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: mobile ? 12 : 16, fontWeight: 900, color: resolved ? '#00f5c4' : cdColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
                         {resolved ? 'CLOSED' : cdStr}
                       </div>
-                      <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
+                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
                         DISCLOSURE
                       </div>
                     </div>
@@ -4790,10 +4790,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                     {/* Elapsed */}
                     {!mobile && (
                       <div style={{ paddingTop: 1 }}>
-                        <div style={{ fontFamily: 'monospace', fontSize: 16, fontWeight: 900, color: eColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
+                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 900, color: eColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
                           {notifiedTs ? eStr : '-'}
                         </div>
-                        <div style={{ fontFamily: 'monospace', fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
+                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
                           {resolved ? 'RESPONDED' : 'ELAPSED'}
                         </div>
                       </div>
@@ -4806,14 +4806,14 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                           <button onClick={() => setReportModal(meta.reportUrl!)} style={{
                             background: 'rgba(0,245,196,0.10)', border: '1px solid rgba(0,245,196,0.3)',
                             borderRadius: 4, padding: '4px 8px', cursor: 'pointer', display: 'flex',
-                            alignItems: 'center', gap: 4, color: TEAL, fontSize: 10, fontFamily: 'monospace',
+                            alignItems: 'center', gap: 4, color: TEAL, fontSize: 10, fontFamily: "'JetBrains Mono', monospace",
                             fontWeight: 700, letterSpacing: '0.06em', transition: 'background 0.15s',
                           }}>
                             <svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="M1 1h5l3 3v7H1V1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M6 1v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M3 6h4M3 8h3" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>
                             PDF
                           </button>
                         ) : (
-                          <span style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>-</span>
+                          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)' }}>-</span>
                         )}
                       </div>
                     )}
@@ -4824,7 +4824,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           </div>
           </div>
 
-          <p style={{ marginTop: 12, fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)' }}>
+          <p style={{ marginTop: 12, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)' }}>
           this ledger is updated in real time as companies respond. silence is public. · <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
           </p>
         </div>
@@ -4834,7 +4834,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="pricing" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>priced in plain terms</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
               Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.
@@ -4934,7 +4934,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             paddingTop: 32,
             textAlign: 'center',
           }}>
-            <div style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>where the money goes</div>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>where the money goes</div>
             <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8, maxWidth: 620, margin: '0 auto' }}>
               100% of surplus revenue is reinvested into open science, public research, and infrastructure.{' '}
               <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>Zero goes to shareholders - we have none.</span>{' '}
@@ -4949,7 +4949,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="team" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>06 / The Institute</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>06 / The Institute</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 48, textAlign: 'center' }}>one team, everything in-house</h2>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16 }}>
@@ -4998,7 +4998,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="coop-partners" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>07 / Research Cooperation</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>07 / Research Cooperation</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}>built alongside our coop partner</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
               Laura Serna Gaviria directs the Emergent Interaction Lab's own research and agent architecture - Lauras Team, Call Laura, and Jarvis all grew out of her method. RFI-IRFOS builds what she directs, labelled as hers so it stays clear who did what.
@@ -5081,7 +5081,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="submit" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Disclosures</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Disclosures</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? say so.</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
               We run our own intake channel instead of routing you to a third-party bug bounty platform - for the same reason we refuse to be routed to one ourselves when we report a finding. This is a direct line to the same permanent ledger you see above, held to the same standard.
@@ -5163,7 +5163,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="contact" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 860, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: 'monospace', fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>09 / Correspondence</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>09 / Correspondence</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>write to us</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 48 }}>for research collaboration, security disclosures, or service inquiries.</p>
           </Reveal>
@@ -5240,11 +5240,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 }}
                   onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
                   onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
-                  <div style={{ fontSize: 10, fontFamily: 'monospace', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
+                  <div style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
                   <div style={{ color: 'var(--accent-text)', fontWeight: 600, fontSize: 13 }}>{c.value}</div>
                 </a>
               ))}
-              <p style={{ fontSize: 11, color: 'var(--text3)', fontFamily: 'monospace', marginTop: 8, lineHeight: 1.8 }}>
+              <p style={{ fontSize: 11, color: 'var(--text3)', fontFamily: "'JetBrains Mono', monospace", marginTop: 8, lineHeight: 1.8 }}>
                 Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
               </p>
             </div>
@@ -5274,7 +5274,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </svg>
           </a>
         </div>
-        <p style={{ fontFamily: 'monospace', fontSize: 12, color: TEAL, letterSpacing: '0.06em', marginBottom: 28, fontWeight: 600 }}>
+        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: TEAL, letterSpacing: '0.06em', marginBottom: 28, fontWeight: 600 }}>
           Human rights are not subject to negotiation.
           <br />
           <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>— RFI-IRFOS × Emergent Interaction Lab, core doctrine</span>
@@ -5298,7 +5298,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
         {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address) lives on
             Legal Notice - not duplicated here, this footer only needs to point there. */}
-        <p style={{ fontFamily: 'monospace', fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', marginBottom: 0 }}>
+        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', marginBottom: 0 }}>
           &copy; 2026 RFI-IRFOS &nbsp;·&nbsp; Graz, Austria &nbsp;·&nbsp; ZVR 1015608684
         </p>
       </footer>
@@ -5323,7 +5323,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                 }}>
                   <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: theme === 'dark' ? '#ffffff' : '#000000', fontWeight: 'bold', lineHeight: 1.5 }}>
                     this is a useless cookie banner. it&apos;s just here to look like one * we don&apos;t use cookies, so there&apos;s nothing to consent to. don&apos;t let anyone tell you otherwise.
-                    <span style={{ display: 'block', fontFamily: 'monospace', fontSize: 10.5, color: theme === 'dark' ? '#999999' : '#555555', letterSpacing: '0.04em', marginTop: 4, fontWeight: 'normal' }}>
+                    <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: theme === 'dark' ? '#999999' : '#555555', letterSpacing: '0.04em', marginTop: 4, fontWeight: 'normal' }}>
                       two buttons, one closes this and throws some confetti. the other literally does nothing.
                     </span>
                   </p>

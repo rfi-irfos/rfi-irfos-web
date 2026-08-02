@@ -3,6 +3,14 @@ body { margin: 0; -webkit-font-smoothing: antialiased; }
 html { scroll-padding-top: 72px; }
 #root { width: 100%; min-height: 100svh; }
 
+/* Headline font - all section h2s already use real heading tags, so this one rule
+   covers every "what we build" / "priced in plain terms" style section title without
+   touching JSX. The hero's big display line ("Rethink the Obvious.") isn't a heading
+   tag (it's a plain <p>, pre-existing), so it gets the .rfi-display class instead. */
+h1, h2, h3, .rfi-display {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+}
+
 /* ── Theme variables ──────────────────────────────────────────── */
 
 /* dark = default (also :root fallback) */
@@ -172,7 +180,7 @@ html { scroll-padding-top: 72px; }
   background: none;
   border: 1px solid var(--border);
   color: var(--text3);
-  font-family: monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
   padding: 4px 8px;

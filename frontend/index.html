@@ -20,6 +20,18 @@
       })();
     </script>
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <!-- Real webfonts - the site referenced 'Inter' in CSS everywhere but never actually
+         loaded it, so every visitor has been seeing whatever their OS's system-ui font is.
+         Space Grotesk added for headlines (a bit more technical/geometric character than
+         Inter alone), JetBrains Mono for the monospace eyebrow labels/tags site-wide
+         (previously just the browser's generic monospace fallback). font-display=swap so
+         this never blocks first paint - text renders in the fallback immediately. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Space Grotesk's variable axis only goes up to weight 700 (no 800/900 exists for
+         this font) - headings requesting fontWeight 900 fall back to the nearest
+         available weight via normal CSS font matching, which is correct, not a bug. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RFI-IRFOS - Interdisciplinary Research Facility for Open Sciences</title>
     <meta name="description" content="Regulated Austrian research institute at the intersection of ternary AI, security & privacy, governance, and ecocentric technology. Graz, Austria." />
