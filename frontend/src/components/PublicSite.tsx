@@ -538,11 +538,24 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
   return (
     <motion.div ref={tiltRef} className="rfi-hover-card rfi-pricing-card" style={{
       ...tilt,
-      background: highlight ? 'rgba(0,245,196,0.06)' : 'var(--bg2)',
-      border: `1px solid ${highlight ? 'rgba(0,245,196,0.25)' : 'var(--border)'}`,
-      borderRadius: 14, padding: '22px 20px', height: '100%',
+      // Highlight used to be a barely-there 6%-opacity tint - easy to miss scanning a
+      // dense grid of near-identical cards. Now a visibly brighter tint, a solid
+      // (not low-opacity) border, and a persistent glow (not hover-only) so the
+      // recommended tier actually reads as recommended at a glance, plus the badge below.
+      background: highlight ? 'rgba(0,245,196,0.1)' : 'var(--bg2)',
+      border: `1px solid ${highlight ? 'rgba(0,245,196,0.55)' : 'var(--border)'}`,
+      boxShadow: highlight ? '0 0 0 1px rgba(0,245,196,0.12), 0 12px 32px rgba(0,245,196,0.14)' : undefined,
+      borderRadius: 14, padding: '22px 20px', height: '100%', position: 'relative',
       display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 16,
     }}>
+      {highlight && (
+        <span style={{
+          position: 'absolute', top: -11, left: 20,
+          background: TEAL, color: '#070711', fontSize: 9.5, fontWeight: 800,
+          fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase',
+          padding: '3px 9px', borderRadius: 20,
+        }}>Recommended</span>
+      )}
       <div>
         <div style={{ fontWeight: 800, fontSize: 17, color: 'var(--text)', lineHeight: 1.3, marginBottom: hook ? 10 : 0 }}>{tier}</div>
         {hook && (
