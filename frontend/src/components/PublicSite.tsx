@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { useState, useEffect, useRef, useCallback, lazy, Suspense, Fragment } from 'react'
+import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion'
 import { useTheme } from '../hooks/useTheme'
 
 const prefersReducedMotion = () =>
@@ -120,35 +120,35 @@ function HeroCtaRow() {
 
 // Per-word stagger reveal for headline text - splits on spaces, each word its own
 // span animated in on mount via Framer, respects reduced-motion (renders flat/static).
-function RevealWords({ text, delayStart = 0.2, flipIndices = [] }: { text: string; delayStart?: number; flipIndices?: number[] }) {
+function RevealWords({ text, delayStart = 0.2, emphasizeIndices = [] }: { text: string; delayStart?: number; emphasizeIndices?: number[] }) {
   const words = text.split(' ')
   const reduced = prefersReducedMotion()
   if (reduced) return <>{text}</>
   return (
     <>
       {words.map((w, i) => {
-        const flipped = flipIndices.includes(i)
+        const emphasized = emphasizeIndices.includes(i)
         const wordDelay = delayStart + i * 0.16
         return (
           <motion.span
             key={i}
-            // Rotating the glyphs doesn't preserve the visual gap a reader expects before
-            // the next word - the mirrored letterforms sit flush against it. Extra right
-            // margin restores that breathing room once flipped.
-            style={{ display: 'inline-block', transformOrigin: '50% 50%', marginRight: flipped ? '0.22em' : undefined }}
-            initial={{ opacity: 0, y: 30, filter: 'blur(6px)', rotate: 0 }}
-            // Comes in straight with the rest of the headline, holds a beat once settled,
-            // then flips and rests permanently upside down - core-doctrine detail (Simeon's
-            // call, 2026-08-02): "rethink" flips first, forcing you to reorient before
-            // reading it, mirroring what the tagline is actually asking you to do.
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)', rotate: flipped ? 180 : 0 }}
+            style={{ display: 'inline-block', transformOrigin: '50% 50%', color: emphasized ? TEAL : undefined }}
+            initial={{ opacity: 0, y: 30, filter: 'blur(6px)', scale: emphasized ? 0.85 : 1 }}
+            // Reverted (2026-08-02): the emphasized word used to flip permanently upside
+            // down after settling - live reaction was that it reads as disorienting, not
+            // clever ("stresst mein Gehirn"), not worth the reorientation cost it forced on
+            // every reader. Reveal-in motion stays, and is leaned into harder for the
+            // emphasized word specifically (a teal color pop + a slight overshoot scale
+            // instead of the rest of the headline's plain fade/slide-up) - but nothing ends
+            // up flipped anymore.
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
             transition={{
               opacity: { duration: 0.95, delay: wordDelay, ease: [0.16, 1, 0.3, 1] },
               y: { duration: 0.95, delay: wordDelay, ease: [0.16, 1, 0.3, 1] },
               filter: { duration: 0.95, delay: wordDelay, ease: [0.16, 1, 0.3, 1] },
-              rotate: flipped
-                ? { duration: 0.65, delay: wordDelay + 0.95 + 0.35, ease: [0.65, 0, 0.35, 1] }
-                : { duration: 0 },
+              scale: emphasized
+                ? { duration: 0.5, delay: wordDelay, ease: [0.34, 1.56, 0.64, 1] }
+                : { duration: 0.95, delay: wordDelay, ease: [0.16, 1, 0.3, 1] },
             }}
           >
             {w}{i < words.length - 1 ? ' ' : ''}
@@ -156,6 +156,69 @@ function RevealWords({ text, delayStart = 0.2, flipIndices = [] }: { text: strin
         )
       })}
     </>
+  )
+}
+
+// Hero problem/solution pairs (website-repositioning plan, Stage 1a). Four concrete
+// "does this sound like you" openers, each paired with the plain answer to it - the
+// carousel that sits between the hero subhead and the "Observe" gold-core line.
+const PROBLEM_SOLUTION_PAIRS = [
+  { q: "Your AI doesn't behave the way it's supposed to?", a: "We investigate what it actually does, not what the documentation promised." },
+  { q: 'Your software behaves differently in production than it did in testing?', a: 'We observe the system as it really runs, under real conditions.' },
+  { q: "You're worried about the AI Act and don't know where you actually stand?", a: 'We assess where the real risk sits, not just where a checklist points.' },
+  { q: "There's a security issue and nobody can explain how it happened?", a: 'We trace it back through the system until the cause is clear.' },
+]
+
+// Auto-rotating problem/solution pair for the hero - reuses the same fade/blur/
+// translateY language as Reveal/RevealWords above rather than a new animation
+// approach or library. Pauses on hover, advances on a timer otherwise, and skips
+// the timer entirely under reduced-motion (renders the first pair, static, forever -
+// no forced motion, no confusing mid-cycle freeze-frame).
+function ProblemSolutionCarousel() {
+  const pairs = PROBLEM_SOLUTION_PAIRS
+  const [i, setI] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const reduced = prefersReducedMotion()
+  useEffect(() => {
+    if (reduced || paused) return
+    const t = setInterval(() => setI(prev => (prev + 1) % pairs.length), 4600)
+    return () => clearInterval(t)
+  }, [reduced, paused, pairs.length])
+  const pair = pairs[reduced ? 0 : i]
+  return (
+    <div
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      style={{ maxWidth: 640, margin: '0 auto 32px', minHeight: 96 }}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={reduced ? 'static' : i}
+          initial={reduced ? false : { opacity: 0, y: 14, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={reduced ? undefined : { opacity: 0, y: -14, filter: 'blur(6px)' }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>{pair.q}</p>
+          <p style={{ fontSize: 16, color: TEAL, fontWeight: 600 }}>{pair.a}</p>
+        </motion.div>
+      </AnimatePresence>
+      {!reduced && (
+        <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginTop: 16 }}>
+          {pairs.map((_, idx) => (
+            <button
+              key={idx}
+              aria-label={`Show problem ${idx + 1} of ${pairs.length}`}
+              onClick={() => setI(idx)}
+              style={{
+                width: 8, height: 8, borderRadius: '50%', border: 'none', padding: 0, cursor: 'pointer',
+                background: idx === i ? TEAL : 'rgba(255,255,255,0.18)', transition: 'background 0.2s',
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -617,6 +680,154 @@ function PriceTierCard({ tier, price, hook, highlight, onBuy, onProposal }: {
   )
 }
 
+// ── Output vocabulary (website-repositioning plan, Stage 1e) ───────────────────
+// Shared framework a tier's `outputs` field draws from instead of each product
+// line inventing its own "what you get" language. Not every tier lists all six -
+// only the ones that line's desc copy actually supports (see per-tier `outputs`
+// arrays below, e.g. Security Audits / Market Research). Web/Mobile Dev and Device
+// Privacy tiers deliver a built product or a service session, not a report, so
+// most of them carry no `outputs` tag at all rather than forcing report language
+// onto a non-report deliverable.
+const OUTPUT_VOCABULARY = [
+  'Investigation Report', 'Evidence Map', 'Risk Matrix',
+  'Technical Findings', 'Recommendations', 'Optional Retest',
+] as const
+
+// One scope tag per product LINE (not per tier - all tiers within a line cover
+// the same scope), so a visitor scanning the pricing headers knows what a whole
+// carousel covers before opening any single tier. Deliberately not a new field
+// on `CarouselTier` - would touch every tier array in every product line for a
+// value that doesn't vary tier-to-tier. A small static label next to the
+// existing product-line heading instead.
+function ScopeTag({ label }: { label: string }) {
+  return (
+    <span style={{
+      display: 'inline-block', fontSize: 10.5, fontWeight: 700, letterSpacing: '0.05em',
+      textTransform: 'uppercase', fontFamily: "'JetBrains Mono', monospace", color: 'var(--accent-text)',
+      border: '1px solid rgba(0,245,196,0.3)', background: 'rgba(0,245,196,0.06)',
+      borderRadius: 999, padding: '4px 12px', verticalAlign: 'middle', marginLeft: 12,
+    }}>{label}</span>
+  )
+}
+
+function OutputTags({ outputs }: { outputs?: readonly string[] }) {
+  if (!outputs || outputs.length === 0) return null
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 16 }}>
+      {outputs.map(o => (
+        <span key={o} style={{
+          fontSize: 10.5, fontWeight: 700, letterSpacing: '0.03em', textTransform: 'uppercase',
+          fontFamily: "'JetBrains Mono', monospace", color: 'var(--text3)',
+          border: '1px solid var(--border)', borderRadius: 999, padding: '4px 10px',
+        }}>{o}</span>
+      ))}
+    </div>
+  )
+}
+
+// Shape every product-line tier array conforms to (Security Audits, Market
+// Research, Web Development, Mobile App Dev, Device Privacy Hardening). `outputs`
+// is optional and deliberately omitted where the Output vocabulary doesn't fit.
+type CarouselTier = {
+  tier: string
+  price: string
+  hook?: string
+  desc: string
+  delivery?: string
+  highlight?: boolean
+  outputs?: readonly string[]
+}
+
+// Featured-tier carousel - the display mechanism for Stage 1e's corrected
+// instruction (2026-08-02): all 19+ existing price tiers stay, none get merged
+// or dropped. One large "featured tier" card up top (name, price, the full desc
+// copy inline - no extra click into a modal needed to read it, delivery, output
+// tags, buy/propose button) plus a filmstrip of small clickable tiles for that
+// same product line's REMAINING tiers underneath - click a tile and its content
+// swaps into the big slot. Same interaction as an old HTC BlinkFeed camera-widget
+// carousel. One instance per product line, never mixing tiers across lines.
+function TierCarousel({ tiers, getActions }: {
+  tiers: readonly CarouselTier[]
+  getActions: (t: CarouselTier) => { onBuy?: () => void; onProposal?: () => void }
+}) {
+  const defaultIdx = tiers.findIndex(t => t.highlight)
+  const [idx, setIdx] = useState(defaultIdx === -1 ? 0 : defaultIdx)
+  const active = tiers[idx]
+  const actions = getActions(active)
+  const others = tiers.map((t, i) => ({ t, i })).filter(({ i }) => i !== idx)
+
+  return (
+    <div style={{ marginBottom: 48 }}>
+      <motion.div key={active.tier} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}
+        style={{
+          maxWidth: 760, margin: '0 auto 20px', borderRadius: 18, padding: '30px 32px',
+          background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.35)',
+          boxShadow: '0 12px 40px rgba(0,245,196,0.1)',
+        }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>Featured tier</div>
+            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
+            {active.hook && <div style={{ fontSize: 14, color: 'var(--text2)', marginTop: 6 }}>{active.hook}</div>}
+          </div>
+          <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{active.price}</div>
+        </div>
+        <div style={{ marginTop: 18 }}>
+          {active.desc.split('\n\n').map((p, i) => (
+            <p key={i} style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8, marginBottom: 12 }}>{p}</p>
+          ))}
+        </div>
+        <OutputTags outputs={active.outputs} />
+        {active.delivery && (
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 16,
+            background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
+            borderRadius: 20, padding: '5px 12px',
+            color: TEAL, fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace",
+            textTransform: 'uppercase', letterSpacing: '0.1em',
+          }}>
+            <ClockIcon /> {active.delivery}
+          </div>
+        )}
+        {(actions.onBuy || actions.onProposal) && (
+          <div>
+            <button
+              onClick={actions.onBuy ?? actions.onProposal}
+              style={{
+                marginTop: 20, borderRadius: 8, cursor: 'pointer', padding: '12px 22px',
+                display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 800,
+                letterSpacing: '0.02em',
+                background: actions.onBuy ? 'var(--accent)' : 'var(--bg3)',
+                border: actions.onBuy ? 'none' : '1px solid var(--border)',
+                color: actions.onBuy ? 'var(--accent-fg)' : 'var(--text)',
+              }}
+            >
+              {actions.onBuy ? <CartIcon /> : <ArrowIcon />}
+              {actions.onBuy ? 'Get Started' : 'Request Proposal'}
+            </button>
+          </div>
+        )}
+      </motion.div>
+
+      {others.length > 0 && (
+        <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6, maxWidth: 900, margin: '0 auto' }}>
+          {others.map(({ t, i }) => (
+            <button key={t.tier} onClick={() => setIdx(i)} style={{
+              flexShrink: 0, minWidth: 140, textAlign: 'left', cursor: 'pointer',
+              borderRadius: 10, padding: '10px 14px',
+              background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
+              transition: 'border-color .15s, background .15s',
+            }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{t.tier}</div>
+              <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--accent-text)', marginTop: 4 }}>{t.price}</div>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function useMobile(bp = 768) {
   const [m, setM] = useState(() => typeof window !== 'undefined' && window.innerWidth < bp)
   useEffect(() => {
@@ -729,28 +940,145 @@ function useFormAbandonment(name: string, values: Record<string, unknown>, state
   }, [name, state])
 }
 
+// Human Rights and Team both dropped from primary nav (website-repositioning plan
+// M9 / Stage 0): Human Rights stays reachable via the footer's mission/company
+// framing rather than competing for top-level attention against the actual
+// services; Team moved to its own page (`#p/team`), linked from the footer's
+// Company group - see the removed `<section id="team">` in this file.
 const NAV_LINKS = [
   { label: 'Research', href: '#research' },
   { label: 'Projects', href: '#projects' },
   { label: 'Track Record', href: '#track-record' },
-  { label: 'Human Rights', href: '/humanrights' },
   { label: 'Pricing', href: '#pricing' },
-  { label: 'Team', href: '#team' },
+  { label: 'Journey', href: '#journey' },
+  { label: 'Evidence', href: '#evidence' },
+  { label: 'Principles', href: '#investigation-principles' },
   { label: 'Coop', href: '#coop-partners' },
   { label: 'Submit', href: '#submit' },
 ]
 
-// The people - mirrors ternlang.com's roster. Kept as data so a departure/new-hire is
-// one array edit, not a hunt through JSX (see the Lisa Scharler removal, 2026-07-04).
-const TEAM = [
-  { name: 'Simeon Kepp',      gh: 'simeon-kepp',   role: 'Founder · ML & Systems', desc: 'architecture, compiler, training - the whole stack in Rust' },
-  { name: 'Zabih Karimi',     gh: 'zabih-sudo',     role: 'Cofounder · Engineering', desc: 'infrastructure, deployment, stress-tests every system before it ships' },
-  { name: 'Nikoletta Csonka', gh: 'csonikoletta',   role: 'Cofounder · Education', desc: 'onboarding, culture, wellbeing - truth over comfort, always' },
-  { name: 'Louis Ehrig',      gh: 'louisuhr',       role: 'Cofounder', desc: 'press, public affairs, keeps training data newsroom-grade' },
-  { name: 'Ana Diez',         gh: 'anadiezmartini', role: 'Head of Research & Wellbeing', desc: 'agent-based wellbeing research, model safety evaluation' },
-  { name: 'Brennan Bell',     gh: '496crows',       role: 'Head of Model Safety & Welfare', desc: 'human & AI welfare, model safety' },
-  { name: 'Mariano Sosa',     gh: '',               role: 'Head of Trust & Public Perception', desc: 'trust, public perception' },
-]
+// ── "I am a..." persona entry points (stage2, 2026-08-02) ──────────────────────
+// Deliberately light: a single row of anchor chips, not a segmentation flow or new
+// copy blocks. Each persona maps to the ONE existing section that answers their
+// actual question first, using the real term hierarchy above (App Privacy is its
+// own door-opener section; Security/AI Behaviour live inside it; Track Record,
+// Pricing, Evidence and Investigation Principles are all real, already-built
+// sections). No new pages, no new sections beyond this row.
+const PERSONA_ENTRY_POINTS = [
+  { label: 'App Developer', href: '#app-privacy' },
+  { label: 'CEO / Founder', href: '#pricing' },
+  { label: 'Security Lead', href: '#track-record' },
+  { label: 'Researcher', href: '#investigation-principles' },
+  { label: 'Journalist', href: '#evidence' },
+] as const
+
+function PersonaEntryPoints() {
+  return (
+    <Reveal from="bottom" delay={1}>
+      <div style={{ margin: '8px auto 0', maxWidth: 720, textAlign: 'center' }}>
+        <p style={{
+          fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: 'var(--text3)',
+          textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 14,
+        }}>I am a...</p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center' }}>
+          {PERSONA_ENTRY_POINTS.map(p => (
+            <a key={p.label} href={p.href} onClick={() => beacon('persona_click:' + p.label)} style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              padding: '9px 18px', borderRadius: 999,
+              border: '1px solid var(--border)', background: 'rgba(255,255,255,0.04)',
+              color: 'var(--text)', textDecoration: 'none', fontSize: 13, fontWeight: 700,
+              transition: 'border-color 0.15s, background 0.15s, color 0.15s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.5)'; e.currentTarget.style.background = 'rgba(0,245,196,0.08)'; e.currentTarget.style.color = 'var(--accent-text)' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = 'var(--text)' }}
+            >{p.label}</a>
+          ))}
+        </div>
+      </div>
+    </Reveal>
+  )
+}
+
+// ── Customer Journey timeline (stage2, 2026-08-02) ─────────────────────────────
+// Post-sale delivery process, distinct from the pre-sale hero/pricing decision
+// flow above it: what actually happens once a client has started, in the order
+// it happens. Generic-but-honest professional-services structure (standard
+// engagement lifecycle, not a fabricated specific claim) - one to two sentences
+// per stage, grounded in language already used elsewhere in this file (delivery
+// windows in the Pricing tiers, the five-question format in Evidence, the
+// Methods/Disclosure principles in Investigation Principles, the "Optional
+// Retest" output tag already offered on several tiers).
+const JOURNEY_STEPS = [
+  {
+    stage: 'Kickoff',
+    body: 'Scope gets locked, a named engineer is assigned, and whatever you\'re providing - a build, API access, a device - is exchanged through a secure channel. You know exactly who is doing the work and when it starts.',
+  },
+  {
+    stage: 'Analyse',
+    body: 'The investigation itself, run against the same Sources and Methods principles that apply to every client: source-level testing, root-cause tracing, nothing accepted that only one person can reproduce.',
+  },
+  {
+    stage: 'Review',
+    body: 'Every finding is triaged and ranked by severity before it reaches you, in the same five-part format as the Evidence section above - what we found, what proves it, how we proved it, how sure we are, what to do about it.',
+  },
+  {
+    stage: 'Delivery',
+    body: 'You receive the findings in the format your tier defines - plain-language summary first, technical detail underneath - on the delivery window agreed at checkout.',
+  },
+  {
+    stage: 'Follow-up',
+    body: 'Once fixes ship, a retest confirms they actually closed the gap, where the tier includes one. For ongoing engagements, follow-up is also where the next audit cycle begins.',
+  },
+] as const
+
+function CustomerJourneyTimeline() {
+  const mobile = useMobile()
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: mobile ? '1fr' : `repeat(${JOURNEY_STEPS.length}, 1fr)`,
+      gap: mobile ? 0 : 4,
+    }}>
+      {JOURNEY_STEPS.map((s, i) => (
+        <Reveal key={s.stage} from={mobile ? 'left' : 'bottom'} delay={i}>
+          <div style={{
+            position: 'relative', padding: mobile ? '0 0 28px 40px' : '0 16px',
+            borderLeft: mobile ? `2px solid ${i === 0 ? TEAL : 'var(--border)'}` : 'none',
+            marginLeft: mobile ? 8 : 0,
+          }}>
+            {!mobile && (
+              <div style={{
+                height: 3, borderRadius: 2, marginBottom: 22,
+                background: i === 0 ? TEAL : 'var(--border)',
+              }} />
+            )}
+            <div style={{
+              position: mobile ? 'absolute' : 'static', left: mobile ? -21 : undefined, top: mobile ? -2 : undefined,
+              width: 30, height: 30, borderRadius: '50%', flexShrink: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: i === 0 ? TEAL : 'rgba(255,255,255,0.06)',
+              border: `1px solid ${i === 0 ? TEAL : 'var(--border)'}`,
+              color: i === 0 ? '#070711' : 'var(--text2)',
+              fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: 12.5,
+              marginBottom: mobile ? 0 : 14,
+            }}>{i + 1}</div>
+            <div style={{ fontWeight: 800, fontSize: 16, color: 'var(--text)', marginBottom: 8, marginTop: mobile ? 2 : 0 }}>{s.stage}</div>
+            <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8, margin: 0 }}>{s.body}</p>
+          </div>
+        </Reveal>
+      ))}
+    </div>
+  )
+}
+
+// The full roster (with GitHub handles + focus lines) now lives on its own Team page
+// (LegalPage.tsx's `Team` component, reached via `#p/team`) - moved off the mainpage
+// per the website-repositioning plan (decision space vs. trust space). Only the
+// headcount survives here for the hero stat strip; keep this in sync with
+// LegalPage.tsx's `TEAM` array length by hand when someone joins/leaves - a small,
+// deliberate exception to "one array edit" now that the roster lives in a different
+// (lazily-loaded) file.
+const TEAM_COUNT = 7
 
 const _I = ({ children }: { children: React.ReactNode }) => (
   <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
@@ -873,6 +1201,67 @@ const RESEARCH_AREAS = [
   },
 ]
 
+// ── Term hierarchy (website-repositioning plan, Stage 1d) ──────────────────────
+// Fixed. Do not introduce a new top-level term anywhere on the site outside this
+// hierarchy without updating the plan itself first:
+//
+//   RFI
+//    └─ Technology Intelligence   (internal framing only — never surfaced to a
+//                                  visitor as a product/service name, it's the
+//                                  RESULT of the three services below, not a
+//                                  fourth thing alongside them)
+//        └─ Services:   Investigate · Assess · Monitor
+//             Investigate — understand what happened
+//             Assess      — understand where the risk sits
+//             Monitor     — understand how a system changes over time
+//        └─ Domains (human → product → system order; App Privacy is the
+//                     deliberate door-opener, not equal billing with the rest):
+//             1. App Privacy & Data Behaviour   (see #app-privacy section)
+//             2. AI Behaviour & Reliability     (not "AI Safety" — see plan 1d)
+//             3. Security                       (root-cause analysis)
+//             4. Competitive Intelligence       (sourcing phrase + value phrase
+//                                                 must always appear together,
+//                                                 never sourcing alone)
+//
+// Stage 1e/1f/1g landed in a later pass (2026-08-02): the pricing carousel below
+// (see `TierCarousel`), the Evidence section (#evidence), and Investigation
+// Principles section (#investigation-principles) all use this same Investigate ·
+// Assess · Monitor vocabulary - no new top-level term was introduced for any of
+// them. Note Stage 1e's own correction, same date: Laura's "reduce 19 tiers to
+// ~3" recommendation was explicitly overridden by the user - every existing tier
+// stayed, the carousel is the display mechanism, not a reduction.
+
+// The 4-row approach comparison, Stage 1b - pulled forward from the plan's original
+// "M7" position because a visitor needs to know what's different before being asked
+// to absorb research areas or pricing. Framed as two APPROACHES, deliberately never
+// naming a competitor or category (Pentester/Big Four/etc. stay unnamed) - see the
+// plan's own non-disparagement rule, unchanged since v1/v2.
+const DIFFERENTIATION_ROWS = [
+  { classic: 'Checks known risks', rfi: 'Discovers unknown behaviour' },
+  { classic: 'Controls against standards', rfi: 'Investigates reality' },
+  { classic: 'Delivers a compliance report', rfi: 'Delivers insight' },
+  { classic: 'Looks at individual systems', rfi: 'Recognizes patterns across systems' },
+]
+
+// The three domains beyond App Privacy (which gets its own full section - see
+// #app-privacy below), kept deliberately brief here: one line each, human→product→
+// system order, no pricing/product detail (that's Stage 1e, out of scope this pass).
+// Competitive Intelligence carries BOTH required phrases together, per the plan's
+// sharpened Stage 1d language rule - sourcing phrase alone reads like plain OSINT.
+const OTHER_DOMAINS = [
+  {
+    title: 'AI Behaviour & Reliability',
+    desc: "How a model actually behaves once real users are involved, not just how it performs in a demo or a benchmark.",
+  },
+  {
+    title: 'Security',
+    desc: 'Root-level investigation of vulnerabilities and incidents, tracing back to what actually happened rather than stopping at what was exposed.',
+  },
+  {
+    title: 'Competitive Intelligence',
+    desc: "Independent analysis of publicly accessible digital behaviour: we analyze patterns in the behavior of digital products, not just isolated data points.",
+  },
+]
 
 const PROJECTS = [
   {
@@ -4344,7 +4733,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       }}>
         <HeroBackground />
         <p className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
-          <RevealWords text="Rethink the Obvious." flipIndices={[0]} />
+          <RevealWords text="Rethink the Obvious." emphasizeIndices={[2]} />
         </p>
         <h1 style={{
           fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,
@@ -4352,10 +4741,25 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         }}>
           <span style={{ color: 'var(--accent-text)' }}>Interdisciplinary</span> Research Facility for Open Sciences
         </h1>
-        <p style={{ fontSize: 17, color: 'var(--text2)', maxWidth: 580, lineHeight: 1.75, marginBottom: 48 }}>
+        <p style={{ fontSize: 17, color: 'var(--text2)', maxWidth: 580, lineHeight: 1.75, marginBottom: 40 }}>
           Regulated Austrian research institute. Ternary AI, security, governance, minor protection, and ecocentric technology.
           One team. Everything built in-house.
         </p>
+
+        {/* Problem/solution carousel + "Observe" gold-core line (website-repositioning
+            plan, Stage 1a). Laura's Round 3 read: this, not "Hacken"/Security/AI, is
+            the actual gold core - observation of real system states. The carousel
+            gives a visitor four concrete "does this sound like you" openers before
+            the identity line lands, so the abstract sentence below has something to
+            attach to rather than arriving cold. */}
+        <ProblemSolutionCarousel />
+        <p style={{
+          fontSize: 'clamp(1.05rem, 2.3vw, 1.3rem)', fontWeight: 800, color: TEAL,
+          maxWidth: 640, margin: '0 auto 40px', lineHeight: 1.55,
+        }}>
+          Most technology decisions are based on assumptions. We investigate what systems actually do.
+        </p>
+
         {/* Down from 3 co-equal buttons to 2, deliberately unequal: Hire Us is the one
             real conversion action and gets the solid fill; Track Record is the proof
             a skeptical visitor wants before that, secondary by design. Research and
@@ -4373,7 +4777,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             { n: `${RESEARCH_AREAS.length}`,    label: 'research areas',      from: 'left'   },
             { n: `${PROJECTS.length}+`,         label: 'open-source projects', from: 'bottom' },
             { n: `${PUBLICATIONS.length}+`,     label: 'publications',        from: 'scale'  },
-            { n: `${TEAM.length}`,              label: 'people, in-house',    from: 'bottom' },
+            { n: `${TEAM_COUNT}`,              label: 'people, in-house',    from: 'bottom' },
             { n: '6',                           label: 'years of research',   from: 'bottom' },
           ] as const).map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from}>
@@ -4384,13 +4788,140 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </Reveal>
           ))}
         </div>
+
+        {/* "I am a..." persona entry points (stage2, 2026-08-02) - a single light
+            row of anchor chips, not a segmentation flow. Sits at the very end of
+            the hero so it reads as "still deciding where to look? start here"
+            right before the differentiation table makes its own case. */}
+        <PersonaEntryPoints />
+      </section>
+
+      {/* APPROACH / DIFFERENTIATION — Stage 1b + part of 1d (website-repositioning
+          plan). Pulled forward from the plan's original "M7" slot: a visitor needs to
+          know what makes this different BEFORE being asked to absorb research areas
+          or pricing. Order follows the plan's standing rule for every section,
+          Problem → Insight → Result → Method: the lead paragraph states the problem
+          (checklists stop at named risks) and the insight (the question starts one
+          step earlier), "RFI doesn't sell more analysis..." is the one-line result,
+          and the table is the concrete comparison backing it up - never a named-
+          competitor comparison, framed as two approaches per the plan's own
+          non-disparagement rule (unchanged since v1/v2). The "what is a system?"
+          clarifier (Stage 1d) sits at the end of this section, near the identity
+          content it belongs next to. */}
+      <section id="approach" style={{ padding: '100px 2rem' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <Reveal from="left">
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / How We're Different</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>same category, different question</h2>
+          </Reveal>
+          <Reveal from="right" delay={1}>
+            <p style={{ color: 'var(--text2)', marginBottom: 24, maxWidth: 680, fontSize: 15, lineHeight: 1.9 }}>
+              Most technology work starts from a checklist: does this system meet a known standard, pass a known test, avoid a known risk? That question is necessary, but it stops at whatever has already been named as a risk. Ours starts one step earlier — what is this system actually doing, right now, in practice?
+            </p>
+          </Reveal>
+          <Reveal from="bottom" delay={1}>
+            <p style={{ fontWeight: 800, fontSize: 19, marginBottom: 40 }}>
+              RFI doesn't sell more analysis. RFI sells a different perspective.
+            </p>
+          </Reveal>
+          <Reveal from="bottom" delay={2}>
+            <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 56 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+                <div style={{ padding: '16px 24px', background: 'rgba(255,255,255,0.03)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text3)', borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>Classic approach</div>
+                <div style={{ padding: '16px 24px', background: 'rgba(0,245,196,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)', borderBottom: '1px solid var(--border)' }}>RFI</div>
+                {DIFFERENTIATION_ROWS.map((row, i) => (
+                  <Fragment key={i}>
+                    <div style={{ padding: '18px 24px', fontSize: 14, color: 'var(--text2)', borderRight: '1px solid var(--border)', borderBottom: i < DIFFERENTIATION_ROWS.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.classic}</div>
+                    <div style={{ padding: '18px 24px', fontSize: 14, fontWeight: 700, color: 'var(--text)', borderBottom: i < DIFFERENTIATION_ROWS.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.rfi}</div>
+                  </Fragment>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+          <Reveal from="bottom" delay={2}>
+            <div style={{ padding: '20px 24px', border: '1px solid var(--border)', borderRadius: 12, background: 'rgba(255,255,255,0.03)' }}>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>What we mean by "system"</p>
+              <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8 }}>
+                When we say "system", we mean anything that behaves and can be observed doing it — a mobile application, an AI model, an API ecosystem, a software architecture, a digital service, a connected device. If it runs and does something in the real world, we can investigate it.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* APP PRIVACY DOOR-OPENER — Stage 1c (website-repositioning plan). Laura's
+          Round 3 note: a CEO understands "my app might be selling user data" far more
+          readily than "we do Technology Intelligence through System Observation" - so
+          App Privacy gets the most prominent placement of the four domains, directly
+          after the hero/differentiation block, not equal billing with the other
+          three. The other three domains (Stage 1d hierarchy, see OTHER_DOMAINS above
+          and the term-hierarchy comment near RESEARCH_AREAS) get one line each further
+          down in this same section, in human→product→system order, so App Privacy
+          stays the door and the rest stay visibly secondary rather than competing
+          with it for attention. */}
+      <section id="app-privacy" style={{ padding: '100px 2rem', background: 'rgba(0,245,196,0.03)' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <Reveal from="left">
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Start Here</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>does your app really protect user data?</h2>
+          </Reveal>
+          <Reveal from="right" delay={1}>
+            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, fontSize: 15, lineHeight: 1.9 }}>
+              Most teams believe the answer is yes, because the app passes whatever checklist it was built against. What it actually does once it's running — which SDKs it talks to, where the data ends up, whether tracking starts before anyone consents — is a separate question, and often a different answer. This is usually the easiest place to start, because the question itself is easy to ask.
+            </p>
+          </Reveal>
+          <Reveal from="bottom" delay={1}>
+            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: 24, marginBottom: 40 }}>
+              <div style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: 16, background: 'rgba(255,255,255,0.03)' }}>
+                <div style={{ fontWeight: 800, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--accent-text)', marginBottom: 14 }}>What we check</div>
+                <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.9 }}>
+                  Permissions actually requested and used, where data flows once it leaves the device, which third-party SDKs are embedded and what they receive, and when tracking behaviour actually starts relative to consent.
+                </p>
+              </div>
+              <div style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: 16, background: 'rgba(255,255,255,0.03)' }}>
+                <div style={{ fontWeight: 800, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--accent-text)', marginBottom: 14 }}>What you get</div>
+                <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.9 }}>
+                  A data flow map of what the app actually does, a risk analysis of what that means for you, and the underlying findings behind both — in plain language first, technical detail available underneath.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+          <Reveal from="bottom" delay={2}>
+            <a href="#contact" className="rfi-cta-pulse" style={{
+              display: 'inline-block', background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
+              fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
+              textTransform: 'uppercase', transition: 'opacity 0.15s', marginBottom: 64,
+            }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Talk to us about your app</a>
+          </Reveal>
+
+          <Reveal from="left" delay={1}>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>Beyond app privacy</p>
+          </Reveal>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 20, marginBottom: 32 }}>
+            {OTHER_DOMAINS.map((d, i) => (
+              <Reveal key={d.title} from="bottom" delay={i + 1}>
+                <div style={{ padding: '20px', border: '1px solid var(--border)', borderRadius: 14, height: '100%' }}>
+                  <div style={{ fontWeight: 800, fontSize: 14, marginBottom: 8 }}>{d.title}</div>
+                  <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8 }}>{d.desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal from="bottom" delay={1}>
+            <p style={{ color: 'var(--text3)', fontSize: 13, lineHeight: 1.8, maxWidth: 680 }}>
+              Each of these runs through the same three services: Investigate to understand what happened, Assess to understand where the risk sits, Monitor to understand how it changes over time.
+            </p>
+          </Reveal>
+        </div>
       </section>
 
       {/* RESEARCH AREAS */}
       <section id="research" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Areas of Magnification</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Areas of Magnification</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>where our attention falls</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
@@ -4406,7 +4937,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="projects" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="right">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Undertakings</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>04 / Undertakings</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
           </Reveal>
           <Reveal from="left" delay={1}>
@@ -4424,7 +4955,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="track-record" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Track Record</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the discipline, demonstrated</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
@@ -4800,81 +5331,92 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="pricing" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>06 / Pricing</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>priced in plain terms</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
               Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.
             </p>
           </Reveal>
 
-          {/* Security Audit tiers */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: 48 }}>
-            {([
-              { tier: 'Public',                   price: 'free',      hook: 'Free, forever - findings publish after 90 days no matter what.', desc: 'You get the same source-code-level audit we run for paying clients, at no cost. Findings publish on our public ledger after a 90-day heads-up window, giving the organization time to fix the problem before anyone else sees it.\n\nEvery name on that ledger is held to the identical rule, big or small, paying or not. No contract, no secrecy agreement, no quieter treatment for anyone.\n\nYour first phone privacy session is included: we walk you through switching off the hidden trackers running on your own device. That offer does not expire.', highlight: false, stripeKey: null,            directUrl: null, delivery: 'Begins immediately after intake; report within 7 calendar days of scope lock.', contact: false },
-              { tier: 'Security Retainer',        price: '€1,500 / mo', hook: 'Ongoing security coverage between audits, not a one-time snapshot.', desc: 'A single audit is a photo taken on one day; real security drifts the moment you ship new code. This retainer replaces the snapshot with ongoing coverage.\n\nFor 1,500 euros a month we monitor your product continuously, run a full deep-dive audit every three months, and move you to the front of the queue the instant something urgent appears.\n\nYou get one named engineer who already knows your system, so a panic call never starts with explaining your setup. Coverage begins within days of your first payment.\n\nThink of it as a standing security team on call, without hiring one.', highlight: false, stripeKey: 'retainer', directUrl: null, delivery: 'Report within 7 calendar days of audit completion.', contact: false },
-              { tier: 'Remediation Advisory',     price: '€4,500',    hook: 'A ranked report, plus a walkthrough with the engineers who found it.', desc: 'You get a ranked report in plain language: exactly how we tested, every weakness found, and a concrete fix for each one, delivered within 7 calendar days of payment.\n\nThe engineers who found the holes walk you through closing them. This is never a list of problems handed off to someone else to interpret.\n\nThirty days later we check back to confirm the fixes actually landed, not that someone claimed they did. Every finding is tied to the exact privacy-law article it breaks, so your legal team gets a map instead of a guess.\n\nThis is the difference between having a report and being truly fixed.',                                        highlight: true, stripeKey: 'remediation',   directUrl: null, delivery: 'Report within 7 calendar days of payment.', contact: false },
-              { tier: 'Confidential',             price: '€9,000',    hook: 'The same ranked report, kept private under a strict secrecy agreement.', desc: 'You get a written report ranking every weakness by severity and pinned to the exact spot in your code, plus a plain-language summary your non-technical leadership can actually read. Delivered within 7 calendar days of payment.\n\nEverything stays private under a strict secrecy agreement; your customers and the public never see it. Once you ship fixes, we re-test by hand to confirm the holes are closed, not just patched on paper.\n\nOne thing does not change: as a not-for-profit bound by our own rules, the relevant regulators are still told, in parallel, without detail that would expose you. Discretion where it matters, proof where it counts.',                                        highlight: false, stripeKey: 'confidential',  directUrl: null, delivery: 'Report within 7 calendar days of payment.', contact: false },
-              { tier: 'Enterprise NDA',           price: '€18,000',   hook: 'Private report, longer embargo, direct engineer access to fix it.', desc: 'You get the same private, ranked report as the Confidential tier, with one difference: the embargo runs well past our standard 90 days, so your team has real time to fix things properly instead of patching over a weekend.\n\nYou work directly with the engineers on the repair. Your lawyers receive a complete evidence package they can hand straight to counsel.\n\nWe kick off within days of payment, and any follow-up work jumps the queue. Built for organizations where fixing everything inside 90 days is not realistic.', highlight: false, stripeKey: 'enterprise_nda', directUrl: null, delivery: 'Begins immediately after intake; full report within 7 calendar days of scope lock.', contact: false },
-              { tier: 'Critical Infrastructure',  price: '€75,000',   hook: 'Full-scope review, legal cover, and a rehearsed emergency-response plan.', desc: 'You get a full-scope review under a secrecy agreement, our own legal review, and a communications-containment plan built with your team before anything goes wrong. For operators of energy, water, health care, or transport infrastructure, a breach is a public-safety event, not an IT ticket.\n\nWe speak directly to every relevant authority on your behalf. You receive a standing emergency-response protocol, so the worst day is rehearsed in advance, not invented on the spot.\n\nWe mobilize within days of payment. This is the tier for situations where failure is not an option.', highlight: false,  stripeKey: 'critical_infra', directUrl: 'https://buy.stripe.com/9B66oJ6OIbU32LPcHK7N60H', delivery: 'Begins immediately after intake; full report within 7 calendar days of scope lock.', contact: false },
-              { tier: 'IoB / Art. 9',             price: '€150,000',  hook: 'A full biometric-data trace - the category most shops won\'t touch.', desc: 'You get a full trace of every flow of biometric data through your product: retention periods, cross-border transfers, and processing purpose, mapped against the strictest category in European privacy law.\n\nThe price reflects the depth of the work. You keep the same secrecy agreement and regulator contact as the Enterprise tier. Most security shops will not touch this category; we specialize in it because the data involved is literally people\'s bodies.\n\nWe start within days of payment.', highlight: false,  stripeKey: 'iob_art9', directUrl: 'https://buy.stripe.com/4gMcN7ehagaj4TXcHK7N60G', delivery: 'Continuous; first quarterly report within 7 calendar days of kick-off.', contact: false },
-              { tier: 'Annual Intelligence Retainer', price: '€250,000', hook: 'A year-round external security and compliance department.', desc: 'You get a full year of our flagship service: continuous coverage of your entire app portfolio, not a sample, with a deep audit every three months.\n\nYour dedicated contact speaks directly to the regulators that matter, from the Austrian and German data-protection authorities to the UK ICO. You get a threat briefing every month and immediate notice the moment we see a breach taking shape.\n\nWe take over within a week of payment and act as your external security and compliance department from day one.', highlight: false, stripeKey: 'annual_retainer', directUrl: 'https://buy.stripe.com/00wcN71uo4rBdqt7nq7N60I', contact: false, delivery: 'Continuous; first quarterly report within 7 calendar days of kick-off.' },
-            ] as const).map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} hook={t.hook} highlight={t.highlight}
-                  onBuy={t.stripeKey ? () => openCheckoutModal({ key: t.stripeKey!, tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery, directUrl: t.directUrl ?? undefined }) : undefined}
-                  onProposal={t.contact ? () => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery }) : undefined} />
-              </Reveal>
-            ))}
-          </div>
+          {/* Security Audit tiers - featured-tier carousel (Stage 1e, corrected
+              2026-08-02): all 8 existing tiers stay, none merged/dropped. One big
+              card + a filmstrip of the rest, per product line - see `TierCarousel`. */}
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Security Audits &amp; Responsible Disclosure<ScopeTag label="Mobile + Web + AI" /></p>
+          {(() => {
+            const securityTiers = ([
+              { tier: 'Public',                   price: 'free',      hook: 'Free, forever - findings publish after 90 days no matter what.', desc: 'You get the same source-code-level audit we run for paying clients, at no cost. Findings publish on our public ledger after a 90-day heads-up window, giving the organization time to fix the problem before anyone else sees it.\n\nEvery name on that ledger is held to the identical rule, big or small, paying or not. No contract, no secrecy agreement, no quieter treatment for anyone.\n\nYour first phone privacy session is included: we walk you through switching off the hidden trackers running on your own device. That offer does not expire.', highlight: false, stripeKey: null,            directUrl: null, delivery: 'Begins immediately after intake; report within 7 calendar days of scope lock.', contact: false, outputs: ['Investigation Report', 'Technical Findings'] },
+              { tier: 'Security Retainer',        price: '€1,500 / mo', hook: 'Ongoing security coverage between audits, not a one-time snapshot.', desc: 'A single audit is a photo taken on one day; real security drifts the moment you ship new code. This retainer replaces the snapshot with ongoing coverage.\n\nFor 1,500 euros a month we monitor your product continuously, run a full deep-dive audit every three months, and move you to the front of the queue the instant something urgent appears.\n\nYou get one named engineer who already knows your system, so a panic call never starts with explaining your setup. Coverage begins within days of your first payment.\n\nThink of it as a standing security team on call, without hiring one.', highlight: false, stripeKey: 'retainer', directUrl: null, delivery: 'Report within 7 calendar days of audit completion.', contact: false, outputs: ['Technical Findings', 'Recommendations'] },
+              { tier: 'Remediation Advisory',     price: '€4,500',    hook: 'A ranked report, plus a walkthrough with the engineers who found it.', desc: 'You get a ranked report in plain language: exactly how we tested, every weakness found, and a concrete fix for each one, delivered within 7 calendar days of payment.\n\nThe engineers who found the holes walk you through closing them. This is never a list of problems handed off to someone else to interpret.\n\nThirty days later we check back to confirm the fixes actually landed, not that someone claimed they did. Every finding is tied to the exact privacy-law article it breaks, so your legal team gets a map instead of a guess.\n\nThis is the difference between having a report and being truly fixed.',                                        highlight: true, stripeKey: 'remediation',   directUrl: null, delivery: 'Report within 7 calendar days of payment.', contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Technical Findings', 'Recommendations', 'Optional Retest'] },
+              { tier: 'Confidential',             price: '€9,000',    hook: 'The same ranked report, kept private under a strict secrecy agreement.', desc: 'You get a written report ranking every weakness by severity and pinned to the exact spot in your code, plus a plain-language summary your non-technical leadership can actually read. Delivered within 7 calendar days of payment.\n\nEverything stays private under a strict secrecy agreement; your customers and the public never see it. Once you ship fixes, we re-test by hand to confirm the holes are closed, not just patched on paper.\n\nOne thing does not change: as a not-for-profit bound by our own rules, the relevant regulators are still told, in parallel, without detail that would expose you. Discretion where it matters, proof where it counts.',                                        highlight: false, stripeKey: 'confidential',  directUrl: null, delivery: 'Report within 7 calendar days of payment.', contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Optional Retest'] },
+              { tier: 'Enterprise NDA',           price: '€18,000',   hook: 'Private report, longer embargo, direct engineer access to fix it.', desc: 'You get the same private, ranked report as the Confidential tier, with one difference: the embargo runs well past our standard 90 days, so your team has real time to fix things properly instead of patching over a weekend.\n\nYou work directly with the engineers on the repair. Your lawyers receive a complete evidence package they can hand straight to counsel.\n\nWe kick off within days of payment, and any follow-up work jumps the queue. Built for organizations where fixing everything inside 90 days is not realistic.', highlight: false, stripeKey: 'enterprise_nda', directUrl: null, delivery: 'Begins immediately after intake; full report within 7 calendar days of scope lock.', contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Evidence Map', 'Recommendations'] },
+              { tier: 'Critical Infrastructure',  price: '€75,000',   hook: 'Full-scope review, legal cover, and a rehearsed emergency-response plan.', desc: 'You get a full-scope review under a secrecy agreement, our own legal review, and a communications-containment plan built with your team before anything goes wrong. For operators of energy, water, health care, or transport infrastructure, a breach is a public-safety event, not an IT ticket.\n\nWe speak directly to every relevant authority on your behalf. You receive a standing emergency-response protocol, so the worst day is rehearsed in advance, not invented on the spot.\n\nWe mobilize within days of payment. This is the tier for situations where failure is not an option.', highlight: false,  stripeKey: 'critical_infra', directUrl: 'https://buy.stripe.com/9B66oJ6OIbU32LPcHK7N60H', delivery: 'Begins immediately after intake; full report within 7 calendar days of scope lock.', contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Recommendations'] },
+              { tier: 'IoB / Art. 9',             price: '€150,000',  hook: 'A full biometric-data trace - the category most shops won\'t touch.', desc: 'You get a full trace of every flow of biometric data through your product: retention periods, cross-border transfers, and processing purpose, mapped against the strictest category in European privacy law.\n\nThe price reflects the depth of the work. You keep the same secrecy agreement and regulator contact as the Enterprise tier. Most security shops will not touch this category; we specialize in it because the data involved is literally people\'s bodies.\n\nWe start within days of payment.', highlight: false,  stripeKey: 'iob_art9', directUrl: 'https://buy.stripe.com/4gMcN7ehagaj4TXcHK7N60G', delivery: 'Continuous; first quarterly report within 7 calendar days of kick-off.', contact: false, outputs: ['Investigation Report', 'Evidence Map', 'Technical Findings'] },
+              { tier: 'Annual Intelligence Retainer', price: '€250,000', hook: 'A year-round external security and compliance department.', desc: 'You get a full year of our flagship service: continuous coverage of your entire app portfolio, not a sample, with a deep audit every three months.\n\nYour dedicated contact speaks directly to the regulators that matter, from the Austrian and German data-protection authorities to the UK ICO. You get a threat briefing every month and immediate notice the moment we see a breach taking shape.\n\nWe take over within a week of payment and act as your external security and compliance department from day one.', highlight: false, stripeKey: 'annual_retainer', directUrl: 'https://buy.stripe.com/00wcN71uo4rBdqt7nq7N60I', contact: false, delivery: 'Continuous; first quarterly report within 7 calendar days of kick-off.', outputs: ['Investigation Report', 'Technical Findings', 'Recommendations'] },
+            ] as const)
+            return (
+              <TierCarousel tiers={securityTiers} getActions={t => {
+                const full = securityTiers.find(s => s.tier === t.tier)!
+                return {
+                  onBuy: full.stripeKey ? () => openCheckoutModal({ key: full.stripeKey!, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined }) : undefined,
+                  onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) : undefined,
+                }
+              }} />
+            )
+          })()}
 
           {/* Market Research & Competitor Analysis */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Market Research &amp; Competitor Analysis</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 48 }}>
-            {[
-              { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  delivery: '14 calendar days.', highlight: true, hook: 'A ten-page, jargon-free map of your sector, in 14 days.', desc: 'You get a plain-language map of your sector: the key players, how regulation actually works for them, and where the real openings sit. Delivered within 14 calendar days.\n\nIt runs at least ten pages, no jargon, no two-hundred-slide deck, written so a founder can read it in one sitting.\n\nResearch starts within days of payment.' },
-              { tier: 'Competitor Intelligence',    price: '€7,500',      stripeKey: 'competitor_intel', delivery: '14 calendar days.', highlight: false, hook: 'Three to five competitors taken apart: tech, privacy, positioning.', desc: 'You get three to five of your competitors taken apart: what technology they run on, how they actually treat user privacy versus what they claim, how they position themselves, and where they are strategically weak.\n\nThe result is a realistic picture of the field, including gaps you can exploit and ones you need to close. This is the homework most teams skip and later regret.\n\nDelivered within 14 calendar days of payment.' },
-              { tier: 'Sector Intelligence Report', price: '€18,000',     stripeKey: 'sector_intel',     delivery: '14 calendar days.', highlight: false, hook: 'Market, regulation, and technology - refreshed every quarter.', desc: 'You get the complete picture of your sector: market, regulation, and technology, with each major player\'s risk exposure spelled out in numbers, not vague claims.\n\nBecause markets move, this is not a one-off document. You receive a fresh update every three months, so you always know where the sector is heading.\n\nFirst report within 14 calendar days of payment, refreshed every quarter after.' },
-              { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', stripeKey: 'ongoing_intel', delivery: 'First briefing within 14 calendar days, then monthly.', highlight: false, hook: 'A dedicated analyst watching your competitors, month after month.', desc: 'You get continuous watch on your competitors: a proper briefing every month, and an immediate alert the moment one of them makes a significant move, a funding round, a pivot, a breach, or a key hire.\n\nOne dedicated analyst who knows your space handles it, so you hear about a competitor\'s launch the day it happens, not after.\n\nYour analyst is assigned within a week of payment; the first briefing lands at the end of month one.' },
-            ].map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} hook={t.hook} highlight={t.highlight} onBuy={() => openCheckoutModal({ key: t.stripeKey, tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery })} />
-              </Reveal>
-            ))}
-          </div>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Market Research &amp; Competitor Analysis<ScopeTag label="Desk research + technical analysis" /></p>
+          {(() => {
+            const marketTiers = [
+              { tier: 'Market Overview',          price: '€2,500',      stripeKey: 'market_overview',  delivery: '14 calendar days.', highlight: true, hook: 'A ten-page, jargon-free map of your sector, in 14 days.', desc: 'You get a plain-language map of your sector: the key players, how regulation actually works for them, and where the real openings sit. Delivered within 14 calendar days.\n\nIt runs at least ten pages, no jargon, no two-hundred-slide deck, written so a founder can read it in one sitting.\n\nResearch starts within days of payment.', outputs: ['Investigation Report'] },
+              { tier: 'Competitor Intelligence',    price: '€7,500',      stripeKey: 'competitor_intel', delivery: '14 calendar days.', highlight: false, hook: 'Three to five competitors taken apart: tech, privacy, positioning.', desc: 'You get three to five of your competitors taken apart: what technology they run on, how they actually treat user privacy versus what they claim, how they position themselves, and where they are strategically weak.\n\nThe result is a realistic picture of the field, including gaps you can exploit and ones you need to close. This is the homework most teams skip and later regret.\n\nDelivered within 14 calendar days of payment.', outputs: ['Investigation Report', 'Evidence Map', 'Technical Findings'] },
+              { tier: 'Sector Intelligence Report', price: '€18,000',     stripeKey: 'sector_intel',     delivery: '14 calendar days.', highlight: false, hook: 'Market, regulation, and technology - refreshed every quarter.', desc: 'You get the complete picture of your sector: market, regulation, and technology, with each major player\'s risk exposure spelled out in numbers, not vague claims.\n\nBecause markets move, this is not a one-off document. You receive a fresh update every three months, so you always know where the sector is heading.\n\nFirst report within 14 calendar days of payment, refreshed every quarter after.', outputs: ['Investigation Report', 'Risk Matrix'] },
+              { tier: 'Ongoing Intelligence Briefing', price: '€4,500 / mo', stripeKey: 'ongoing_intel', delivery: 'First briefing within 14 calendar days, then monthly.', highlight: false, hook: 'A dedicated analyst watching your competitors, month after month.', desc: 'You get continuous watch on your competitors: a proper briefing every month, and an immediate alert the moment one of them makes a significant move, a funding round, a pivot, a breach, or a key hire.\n\nOne dedicated analyst who knows your space handles it, so you hear about a competitor\'s launch the day it happens, not after.\n\nYour analyst is assigned within a week of payment; the first briefing lands at the end of month one.', outputs: ['Investigation Report', 'Recommendations'] },
+            ]
+            return (
+              <TierCarousel tiers={marketTiers} getActions={t => {
+                const full = marketTiers.find(s => s.tier === t.tier)!
+                return { onBuy: () => openCheckoutModal({ key: full.stripeKey, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) }
+              }} />
+            )
+          })()}
 
           {/* Web Development */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Web Development</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
-            {[
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Web Development<ScopeTag label="Web only" /></p>
+          {(() => {
+            const webTiers = [
               { tier: 'Landing Page',   price: '€1,500',  stripeKey: 'web_landing'   as string | null, delivery: '48 hours.', highlight: true, hook: 'A fast, clean single page, live within 48 hours.', desc: 'You get a sharp single-page site on our own open-source React template: fast, clean, live within 48 hours of payment.\n\nBuilt by the same team that audits apps for security, so it is clean by default, not an afterthought.\n\nNo page-builder lock-in: you own the code and can take it anywhere.' },
               { tier: 'Full Site',      price: '€4,500',  stripeKey: 'web_full'      as string | null, delivery: '14–28 calendar days, depending on scope.', highlight: false, hook: 'A proper multi-page site with a real content editor, PWA-ready.', desc: 'You get a proper multi-page site with a content editor your team can actually use, a working contact form, and privacy-respecting analytics built in from the start.\n\nIt ships as an installable progressive web app, behaving like a native app on Android and iPhone without an app-store listing. Delivered in about two weeks.\n\nBuilt by the same team that audits apps for security, so it is clean by default.' },
               { tier: 'Enterprise Site',price: '€18,000', stripeKey: 'web_enterprise' as string | null, delivery: '14–28 calendar days, depending on scope.', highlight: false, hook: 'A full custom build: Rust backend, auth, native apps included.', desc: 'You get a full custom build: a Rust backend, authentication, and the specific integrations your operation requires; we scope every one of them with you directly.\n\nReal native Android and iPhone apps are included, not a web wrapper dressed up as one. Long-term support is part of the deal, not a later upsell.\n\nWe scope the build with you in the first week after payment. For organizations where the website is the business, not a brochure.' },
               { tier: 'Platform Build', price: '€75,000', stripeKey: null,                              delivery: 'User-specific timeline, aligned after kick-off.', highlight: false, hook: 'The whole product - infrastructure, API, native apps - built with you.', desc: 'You get a complete product, not just a site: custom infrastructure, API design, data pipelines, and native apps, with a dedicated team that stays on it.\n\nThis is the engagement for building the actual platform, not only the front door to it.\n\nWe start within a week of payment and keep building with you as the product grows; we set scope and timeline together at kickoff, not in advance.' },
-            ].map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} hook={t.hook} highlight={t.highlight}
-                  onBuy={t.stripeKey ? () => openCheckoutModal({ key: t.stripeKey!, tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery }) : undefined}
-                  onProposal={!t.stripeKey ? () => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery }) : undefined} />
-              </Reveal>
-            ))}
-          </div>
+            ]
+            return (
+              <TierCarousel tiers={webTiers} getActions={t => {
+                const full = webTiers.find(s => s.tier === t.tier)!
+                return {
+                  onBuy: full.stripeKey ? () => openCheckoutModal({ key: full.stripeKey!, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) : undefined,
+                  onProposal: !full.stripeKey ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) : undefined,
+                }
+              }} />
+            )
+          })()}
 
           {/* Mobile App Development & Fixing */}
-          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Mobile App Development &amp; Fixing</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, marginBottom: 64 }}>
-            {[
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20 }}>Mobile App Development &amp; Fixing<ScopeTag label="Mobile only (Android + iOS)" /></p>
+          {(() => {
+            const mobileTiers = [
               { tier: 'Maintenance Retainer',  price: '€1,200 / mo', delivery: 'Ongoing engagement; first patch within 14 calendar days.', highlight: false, hook: 'Steady patches and dependency upkeep, so your app doesn\'t rot.', desc: 'You get a steady rhythm of patches, app-store compliance monitoring so a policy change never catches you off guard, and clean dependency upkeep so old libraries do not become tomorrow\'s emergency.\n\nOne named contact and priority response; first review lands within a week of payment.\n\nQuiet, continuous upkeep, so your app does not silently rot.' },
               { tier: 'APK Review & Bugfix',  price: 'from €1,500', delivery: '1 week / 7 calendar days.', highlight: true, hook: 'Send your build, get root-level answers in one week.', desc: 'You send us your build; we read the actual code, not the marketing. Covers Android and iPhone.\n\nWe identify crashes and real weak spots, then hand you concrete guidance for fixing each one, at a fixed scope with a one-week turnaround from the day you send the build.\n\nA clear answer fast, instead of a six-week audit you were not braced for.' },
               { tier: 'App Build',            price: 'from €9,000', delivery: '14–28 calendar days, depending on scope.', highlight: false, hook: 'Your native app, Kotlin and Swift, built in-house from zero to shipped.', desc: 'You get your native app built from zero to shipped: Kotlin for Android, Swift for iPhone, with a Rust backend underneath.\n\nWe do everything in-house, with the team you are already talking to, not an offshore handoff. We also handle Play Store and App Store submission, exactly where most builds stall.\n\nWe kick off within a week of payment. One team, one codebase, one launch.' },
               { tier: 'Full Mobile Product',   price: 'on request',  delivery: 'User-specific timeline after kick-off.', highlight: false, hook: 'From a napkin sketch to a launched app, built together end to end.', desc: 'You get the whole mobile product, from a spec on a napkin to a launched app: custom infrastructure, API design, native apps, and a dedicated team that stays on it.\n\nThis is an ongoing engagement, because a real product keeps evolving after launch.\n\nWe start within a week of payment and build it with you as it grows. For when you need a mobile business built, not only an app made.' },
-            ].map((t, i) => (
-              <Reveal key={t.tier} delay={i % 4} from={(['left','bottom','right','scale'] as const)[i % 4]}>
-                <PriceTierCard tier={t.tier} price={t.price} hook={t.hook} highlight={t.highlight}
-                  onProposal={() => openProposalModal({ tier: t.tier, desc: t.desc, price: t.price, delivery: t.delivery })} />
-              </Reveal>
-            ))}
-          </div>
+            ]
+            return (
+              <TierCarousel tiers={mobileTiers} getActions={t => {
+                const full = mobileTiers.find(s => s.tier === t.tier)!
+                return { onProposal: () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) }
+              }} />
+            )
+          })()}
 
           {/* Research Cooperation Products - via our coop partner Laura Serna
               Gaviria / Emergent Interaction Lab. No Stripe checkout: these are
@@ -4911,48 +5453,131 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
       </section>
 
-      {/* TEAM */}
-      <section id="team" style={{ padding: '100px 2rem' }}>
+      {/* TEAM moved off the mainpage - now its own page, `#p/team` (LegalPage.tsx),
+          linked from the footer's Company group. See website-repositioning plan:
+          mainpage is decision space ("what can you do"), Team is trust space
+          ("who are you") - the wrong section to spend mainpage scroll on first. */}
+
+      {/* CUSTOMER JOURNEY - stage2 (2026-08-02). Distinct from the pre-sale
+          hero/pricing decision flow above: this is what happens AFTER a client
+          has started, in order. Sits right after Pricing (you now know what it
+          costs) and right before Evidence (here's proof of the quality of the
+          work you just read the process for). */}
+      <section id="journey" style={{ padding: '100px 2rem' }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+          <Reveal from="left">
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>07 / Engagement Journey</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what happens after you start</h2>
+          </Reveal>
+          <Reveal from="right" delay={1}>
+            <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 640 }}>
+              Same five stages whether the engagement is a one-week APK review or a year-round retainer. What changes between tiers is the depth and the timeline, never the order.
+            </p>
+          </Reveal>
+          <CustomerJourneyTimeline />
+        </div>
+      </section>
+
+      {/* EVIDENCE - website-repositioning plan Stage 1f. The row below is a real
+          finding (MC-01) from the "Merge Chicken" disclosure, already public on
+          this site's own Track Record ledger and full report PDF - not fabricated
+          content, per the plan's no-fabrication rule. */}
+      <section id="evidence" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>06 / The Institute</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 48, textAlign: 'center' }}>one team, everything in-house</h2>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Evidence</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>a claim you can't trace back isn't evidence</h2>
+            <p style={{ color: 'var(--text2)', marginBottom: 20, maxWidth: 680, lineHeight: 1.8 }}>
+              Most reports stop at a severity label: critical, high, medium. That tells you how worried to be, but not why - and a client's own legal or engineering team can't check work they can't see the steps of.
+            </p>
+            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
+              So every finding we deliver is required to answer five questions in order, not just the last one: what did we find, what proves it, how did we prove it, how sure are we, and what should you do about it. That order is the actual audit, laid out instead of hidden behind a verdict.
+            </p>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16 }}>
-            {TEAM.map((p, i) => (
-              <Reveal key={p.name} delay={i} from="bottom">
-                <a href={p.gh ? `https://github.com/${p.gh}` : undefined} target="_blank" rel="noopener"
-                   style={{
-                     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
-                     background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
-                     borderRadius: 14, padding: 20, textAlign: 'center', textDecoration: 'none',
-                     height: '100%', transition: 'border-color 0.15s', cursor: p.gh ? 'pointer' : 'default',
-                   }}
-                   onMouseEnter={e => { if (p.gh) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.4)' }}
-                   onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)' }}>
-                  {p.gh ? (
-                    // Self-hosted, not hotlinked: an <img> pointed straight at github.com/user.png
-                    // triggers GitHub's own Set-Cookie headers on the response, which the browser
-                    // (correctly) rejects as third-party in a cross-site context - harmless, but
-                    // noisy console warnings on every load. A local copy avoids the request entirely.
-                    <img src={`/team/${p.gh}.png`} alt={p.name} loading="lazy"
-                         style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid var(--border)', objectFit: 'cover' }} />
-                  ) : (
-                    <div style={{
-                      width: 56, height: 56, borderRadius: '50%', border: '2px solid var(--border)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 20, fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
-                    }}>{p.name[0]}</div>
-                  )}
-                  <div>
-                    <p style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{p.name}</p>
-                    <p style={{ fontSize: 11, color: 'var(--accent-text)', marginTop: 3, fontWeight: 600 }}>{p.role}</p>
-                    <p style={{ fontSize: 11, color: 'var(--text3)', marginTop: 6, lineHeight: 1.5 }}>{p.desc}</p>
-                  </div>
-                </a>
-              </Reveal>
-            ))}
-          </div>
+
+          <Reveal from="bottom" delay={1}>
+            <div style={{
+              background: 'rgba(0,224,193,0.06)', border: '1px solid rgba(0,224,193,0.3)',
+              borderRadius: 12, padding: '14px 18px', marginBottom: 24,
+              display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap',
+            }}>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em', whiteSpace: 'nowrap' }}>Real, disclosed finding</span>
+              <span style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.6 }}>
+                From "Merge Chicken" (com.Merge.o98Chickens), reported to Google Play & Android Security 2026-06-25, removed from the Play Store 2026-06-30.{' '}
+                <a href="/reports/merge-chicken-2026.pdf" target="_blank" rel="noopener noreferrer" style={{ color: TEAL, textDecoration: 'underline' }}>Full report (PDF)</a>
+              </span>
+            </div>
+          </Reveal>
+
+          <Reveal from="bottom" delay={2}>
+            <div style={{
+              display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(5, 1fr)', gap: 1,
+              background: 'var(--border)', borderRadius: 14, overflow: 'hidden',
+              border: '1px solid var(--border)',
+            }}>
+              {[
+                { label: 'Finding', body: 'A Google Play app rated PEGI 3 ("suitable for all ages") and listed as a casual merge puzzle game functioned as an unlicensed, no-KYC real-money online casino - not present on the face of the submitted build.' },
+                { label: 'Evidence', body: 'The gambling UI and logic were absent from the reviewed binary and gated behind a server-controlled switch (Firebase Remote Config), with the live payload served from separately-controlled infrastructure after install.' },
+                { label: 'Method', body: 'Static root-level analysis of the published release APK: apktool decompilation, dex/string inspection, manifest review, plus open-source corroboration of the developer entity. No production servers or user accounts were probed.' },
+                { label: 'Confidence', body: 'Confirmed - reported directly to Google Play & Android Security as abuse, not negotiated as a vendor disclosure. Google\'s own security team confirmed removal from the Play Store.' },
+                { label: 'Recommendation', body: 'Reported 2026-06-25; app removed from the Play Store 2026-06-30 - 5 days to resolution, the first publicly documented enforcement outcome of the RFI-IRFOS 2026 Android audit programme.' },
+              ].map(col => (
+                <div key={col.label} style={{ background: 'var(--bg2)', padding: '20px 18px' }}>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 10 }}>{col.label}</div>
+                  <p style={{ color: 'var(--text2)', fontSize: 12.5, lineHeight: 1.7, margin: 0 }}>{col.body}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* INVESTIGATION PRINCIPLES - website-repositioning plan Stage 1g, renamed
+          from "Data Ethics"/"Intelligence Ethics" per Laura's note that the latter
+          reads like an intelligence agency. Deliberately general/methodology-level:
+          sources, methods, handling of results, disclosure - not specific data-
+          retention/storage claims we'd need to verify against real practice docs
+          before publishing (same no-fabrication gate as Evidence, above). */}
+      <section id="investigation-principles" style={{ padding: '100px 2rem' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <Reveal>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>09 / Investigation Principles</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the same rules, whoever the client is</h2>
+            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
+              An investigator who bends the rules for a paying client isn't an investigator anymore - just a vendor with a fancier vocabulary. These four principles govern where we look, how we test, what we do with what we find, and when it becomes public, regardless of who's paying.
+            </p>
+          </Reveal>
+
+          <Reveal from="bottom" delay={1}>
+            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+              {[
+                {
+                  title: 'Sources',
+                  body: 'We only work from what we\'re lawfully entitled to see: publicly accessible information, devices we own or are authorized to test, and software we\'re authorized to analyze. If material crosses into unauthorized access to a system we don\'t control, we don\'t use it - we report it to the relevant authority instead, the same way we\'d want to be treated in reverse.',
+                },
+                {
+                  title: 'Methods',
+                  body: 'Investigate first, judge second: we trace root cause instead of stopping at the first symptom, and every step has to be reproducible by someone other than the person who ran it the first time. A finding that only one person can reproduce isn\'t a finding yet.',
+                },
+                {
+                  title: 'Handling results',
+                  body: 'Severity gets ranked, not asserted - and every client, paying or not, gets the same triage discipline (ISO/IEC 30111: reproduce it, scope it, fix it, credit the reporter). What changes between tiers is confidentiality and turnaround, never the rigor of the underlying work.',
+                },
+                {
+                  title: 'Disclosure',
+                  body: 'A fixed public heads-up window applies before anything goes on the public ledger, giving the organization real time to fix a problem before anyone else sees it. Regulators are told in parallel where our own rules require it, without exposing detail that would put a client at risk before they\'ve had the chance to fix it.',
+                },
+              ].map(p => (
+                <div key={p.title} style={{
+                  background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
+                  borderRadius: 14, padding: '22px 22px',
+                }}>
+                  <div style={{ fontWeight: 800, fontSize: 15, color: 'var(--text)', marginBottom: 10 }}>{p.title}</div>
+                  <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8, margin: 0 }}>{p.body}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -4964,7 +5589,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="coop-partners" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>07 / Research Cooperation</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>10 / Research Cooperation</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}>built alongside our coop partner</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
               Laura Serna Gaviria directs the Emergent Interaction Lab's own research and agent architecture - Lauras Team, Call Laura, and Jarvis all grew out of her method. RFI-IRFOS builds what she directs, labelled as hers so it stays clear who did what.
@@ -5047,7 +5672,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="submit" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Disclosures</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>11 / Disclosures</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? say so.</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
               We run our own intake channel instead of routing you to a third-party bug bounty platform - for the same reason we refuse to be routed to one ourselves when we report a finding. This is a direct line to the same permanent ledger you see above, held to the same standard.
@@ -5129,7 +5754,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="contact" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 860, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>09 / Correspondence</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>12 / Correspondence</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>write to us</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 48 }}>for research collaboration, security disclosures, or service inquiries.</p>
           </Reveal>
@@ -5245,21 +5870,47 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           <br />
           <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>— RFI-IRFOS × Emergent Interaction Lab, core doctrine</span>
         </p>
-        <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 24 }}>
+        {/* Three separate groups, not one flat row: Legal (statutory pages) vs.
+            Company (who we are - Team moved here from the mainpage, see Stage 0
+            of the website-repositioning plan) vs. Research (a core service, not
+            company trivia - Laura's review round 2 specifically flagged folding
+            Research into "Company" as confusing since it's a real service line). */}
+        <div style={{ display: 'flex', gap: '2.5rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 24 }}>
           {[
-            { label: 'Legal Notice', href: '#p/impressum' },
-            { label: 'Privacy Policy', href: '#p/datenschutz' },
-            { label: 'Terms', href: '#p/agb' },
-            { label: 'Security Policy', href: '#p/security' },
-            { label: 'Standards', href: '#p/standards' },
-            { label: 'ternlang.com', href: 'https://ternlang.com' },
-            { label: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
-          ].map(l => (
-            <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
-              onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-              onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
-              {l.label}
-            </a>
+            {
+              heading: 'Legal', links: [
+                { label: 'Legal Notice', href: '#p/impressum' },
+                { label: 'Privacy Policy', href: '#p/datenschutz' },
+                { label: 'Terms', href: '#p/agb' },
+                { label: 'Security Policy', href: '#p/security' },
+                { label: 'Standards', href: '#p/standards' },
+              ],
+            },
+            {
+              heading: 'Company', links: [
+                { label: 'Team', href: '#p/team' },
+                { label: 'Careers', href: 'mailto:career@rfi-irfos.com' },
+                { label: 'ternlang.com', href: 'https://ternlang.com' },
+                { label: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
+              ],
+            },
+            {
+              heading: 'Research', links: [
+                { label: 'Research', href: '#research' },
+                { label: 'Track Record', href: '#track-record' },
+              ],
+            },
+          ].map(group => (
+            <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0 }}>{group.heading}</p>
+              {group.links.map(l => (
+                <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                  onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                  {l.label}
+                </a>
+              ))}
+            </div>
           ))}
         </div>
         {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address) lives on

@@ -55,7 +55,8 @@ export function LegalPage({ slug }: { slug: string }) {
         {slug === 'agb'         && <AGB />}
         {slug === 'security'    && <Security />}
         {slug === 'standards'   && <Standards />}
-        {!['impressum', 'datenschutz', 'agb', 'security', 'standards'].includes(slug) && (
+        {slug === 'team'        && <Team />}
+        {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team'].includes(slug) && (
           <p style={P}>Seite nicht gefunden.</p>
         )}
         <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 10, color: '#404058' }}>
@@ -435,5 +436,75 @@ function Standards() {
 
     <h2 style={H2}>ePrivacy Directive &middot; EU 2002/58/EC</h2>
     <p style={P}>Consent for tracking, access to terminal equipment, electronic communications confidentiality. Art. 5(3) is the legal backbone of every SDK-consent finding we publish.</p>
+  </>
+}
+
+// The people - mirrors ternlang.com's roster. Kept as data so a departure/new-hire is
+// one array edit, not a hunt through JSX (see the Lisa Scharler removal, 2026-07-04).
+// Moved off the homepage onto its own page (was `#team`, a full mainpage section) -
+// decision space vs. trust space: a first-time visitor cares "what can you do" before
+// "who are you," per the website-repositioning plan. Lives under "Company" in the
+// footer now, not under "Legal" - team bios aren't a legal document, just no longer a
+// mainpage section either.
+//
+// Name + one focus line, not a stacked "bold title + separate description" - a
+// generated "Head of X & Y" title format made distinct people read as filling the
+// same org-chart slot (Ana Diez/Brennan Bell specifically read as near-duplicates:
+// both titles combined "welfare" + "model safety" in different words). Simeon is the
+// one deliberate exception: his contribution isn't a domain like everyone else's, it's
+// the methodology/investigation approach itself, so he keeps a role title rather than
+// a focus tag.
+//
+// Ana/Brennan's focus lines are grounded in their actual signed offer letters
+// (~/Desktop/Documents/RFI-IRFOS_Offer_{Ana_Diez,Brennan_Bell}_...pdf), not guessed:
+// the "model-welfare framework / long-horizon rubric" clause is word-for-word
+// identical in both letters (genuinely shared responsibility, not a differentiator).
+// The real difference: Ana's letter has her leading "our entire research and
+// model-wellbeing arm" including "growth and mentoring of the research team as we
+// scale" (research-org leadership); Brennan's letter has him owning "the model safety
+// research agenda" specifically plus "collaboration with... external academic
+// partners" (he's PhD-track and publishing - the academic-facing safety-research seat).
+const TEAM = [
+  { name: 'Simeon Kepp',      gh: 'simeon-kepp',   focus: 'Founder / Principal Investigator' },
+  { name: 'Zabih Karimi',     gh: 'zabih-sudo',     focus: 'Infrastructure & engineering' },
+  { name: 'Nikoletta Csonka', gh: 'csonikoletta',   focus: 'Onboarding & culture' },
+  { name: 'Louis Ehrig',      gh: 'louisuhr',       focus: 'Press & public affairs' },
+  { name: 'Ana Diez',         gh: 'anadiezmartini', focus: 'Research leadership & team growth' },
+  { name: 'Brennan Bell',     gh: '496crows',       focus: 'Safety research & academic partnerships' },
+  { name: 'Mariano Sosa',     gh: '',               focus: 'Trust & public perception' },
+]
+
+function Team() {
+  return <>
+    <h1 style={H1}>Team</h1>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>One team, everything in-house</p>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginTop: 32 }}>
+      {TEAM.map(p => (
+        <a key={p.name} href={p.gh ? `https://github.com/${p.gh}` : undefined} target="_blank" rel="noopener"
+           style={{
+             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+             background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.09)',
+             borderRadius: 14, padding: 20, textAlign: 'center', textDecoration: 'none',
+             transition: 'border-color 0.15s', cursor: p.gh ? 'pointer' : 'default',
+           }}
+           onMouseEnter={e => { if (p.gh) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.4)' }}
+           onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)' }}>
+          {p.gh ? (
+            <img src={`/team/${p.gh}.png`} alt={p.name} loading="lazy"
+                 style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)', objectFit: 'cover' }} />
+          ) : (
+            <div style={{
+              width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 20, fontWeight: 900, color: TEAL, background: 'rgba(0,245,196,0.08)',
+            }}>{p.name[0]}</div>
+          )}
+          <div>
+            <p style={{ fontSize: 14, fontWeight: 800, color: '#e8e8f0' }}>{p.name}</p>
+            <p style={{ fontSize: 11, color: TEAL, marginTop: 4, fontWeight: 600 }}>{p.focus}</p>
+          </div>
+        </a>
+      ))}
+    </div>
   </>
 }
