@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { useState, useEffect, useRef, useCallback, lazy, Suspense, Fragment } from 'react'
+import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion'
 import { useTheme } from '../hooks/useTheme'
 
 const prefersReducedMotion = () =>
@@ -156,6 +156,69 @@ function RevealWords({ text, delayStart = 0.2, emphasizeIndices = [] }: { text: 
         )
       })}
     </>
+  )
+}
+
+// Hero problem/solution pairs (website-repositioning plan, Stage 1a). Four concrete
+// "does this sound like you" openers, each paired with the plain answer to it - the
+// carousel that sits between the hero subhead and the "Observe" gold-core line.
+const PROBLEM_SOLUTION_PAIRS = [
+  { q: "Your AI doesn't behave the way it's supposed to?", a: "We investigate what it actually does, not what the documentation promised." },
+  { q: 'Your software behaves differently in production than it did in testing?', a: 'We observe the system as it really runs, under real conditions.' },
+  { q: "You're worried about the AI Act and don't know where you actually stand?", a: 'We assess where the real risk sits, not just where a checklist points.' },
+  { q: "There's a security issue and nobody can explain how it happened?", a: 'We trace it back through the system until the cause is clear.' },
+]
+
+// Auto-rotating problem/solution pair for the hero - reuses the same fade/blur/
+// translateY language as Reveal/RevealWords above rather than a new animation
+// approach or library. Pauses on hover, advances on a timer otherwise, and skips
+// the timer entirely under reduced-motion (renders the first pair, static, forever -
+// no forced motion, no confusing mid-cycle freeze-frame).
+function ProblemSolutionCarousel() {
+  const pairs = PROBLEM_SOLUTION_PAIRS
+  const [i, setI] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const reduced = prefersReducedMotion()
+  useEffect(() => {
+    if (reduced || paused) return
+    const t = setInterval(() => setI(prev => (prev + 1) % pairs.length), 4600)
+    return () => clearInterval(t)
+  }, [reduced, paused, pairs.length])
+  const pair = pairs[reduced ? 0 : i]
+  return (
+    <div
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      style={{ maxWidth: 640, margin: '0 auto 32px', minHeight: 96 }}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={reduced ? 'static' : i}
+          initial={reduced ? false : { opacity: 0, y: 14, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={reduced ? undefined : { opacity: 0, y: -14, filter: 'blur(6px)' }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>{pair.q}</p>
+          <p style={{ fontSize: 16, color: TEAL, fontWeight: 600 }}>{pair.a}</p>
+        </motion.div>
+      </AnimatePresence>
+      {!reduced && (
+        <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginTop: 16 }}>
+          {pairs.map((_, idx) => (
+            <button
+              key={idx}
+              aria-label={`Show problem ${idx + 1} of ${pairs.length}`}
+              onClick={() => setI(idx)}
+              style={{
+                width: 8, height: 8, borderRadius: '50%', border: 'none', padding: 0, cursor: 'pointer',
+                background: idx === i ? TEAL : 'rgba(255,255,255,0.18)', transition: 'background 0.2s',
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -873,6 +936,64 @@ const RESEARCH_AREAS = [
   },
 ]
 
+// ── Term hierarchy (website-repositioning plan, Stage 1d) ──────────────────────
+// Fixed. Do not introduce a new top-level term anywhere on the site outside this
+// hierarchy without updating the plan itself first:
+//
+//   RFI
+//    └─ Technology Intelligence   (internal framing only — never surfaced to a
+//                                  visitor as a product/service name, it's the
+//                                  RESULT of the three services below, not a
+//                                  fourth thing alongside them)
+//        └─ Services:   Investigate · Assess · Monitor
+//             Investigate — understand what happened
+//             Assess      — understand where the risk sits
+//             Monitor     — understand how a system changes over time
+//        └─ Domains (human → product → system order; App Privacy is the
+//                     deliberate door-opener, not equal billing with the rest):
+//             1. App Privacy & Data Behaviour   (see #app-privacy section)
+//             2. AI Behaviour & Reliability     (not "AI Safety" — see plan 1d)
+//             3. Security                       (root-cause analysis)
+//             4. Competitive Intelligence       (sourcing phrase + value phrase
+//                                                 must always appear together,
+//                                                 never sourcing alone)
+//
+// Stage 1e (product-family reduction, 19 price tiers → ~3) and 1f/1g (Evidence,
+// Investigation Principles) are explicitly NOT part of this pass - this hierarchy
+// is introduced here so later work has one fixed vocabulary to build on, not so
+// that pricing/evidence gets touched now.
+
+// The 4-row approach comparison, Stage 1b - pulled forward from the plan's original
+// "M7" position because a visitor needs to know what's different before being asked
+// to absorb research areas or pricing. Framed as two APPROACHES, deliberately never
+// naming a competitor or category (Pentester/Big Four/etc. stay unnamed) - see the
+// plan's own non-disparagement rule, unchanged since v1/v2.
+const DIFFERENTIATION_ROWS = [
+  { classic: 'Checks known risks', rfi: 'Discovers unknown behaviour' },
+  { classic: 'Controls against standards', rfi: 'Investigates reality' },
+  { classic: 'Delivers a compliance report', rfi: 'Delivers insight' },
+  { classic: 'Looks at individual systems', rfi: 'Recognizes patterns across systems' },
+]
+
+// The three domains beyond App Privacy (which gets its own full section - see
+// #app-privacy below), kept deliberately brief here: one line each, human→product→
+// system order, no pricing/product detail (that's Stage 1e, out of scope this pass).
+// Competitive Intelligence carries BOTH required phrases together, per the plan's
+// sharpened Stage 1d language rule - sourcing phrase alone reads like plain OSINT.
+const OTHER_DOMAINS = [
+  {
+    title: 'AI Behaviour & Reliability',
+    desc: "How a model actually behaves once real users are involved, not just how it performs in a demo or a benchmark.",
+  },
+  {
+    title: 'Security',
+    desc: 'Root-level investigation of vulnerabilities and incidents, tracing back to what actually happened rather than stopping at what was exposed.',
+  },
+  {
+    title: 'Competitive Intelligence',
+    desc: "Independent analysis of publicly accessible digital behaviour: we analyze patterns in the behavior of digital products, not just isolated data points.",
+  },
+]
 
 const PROJECTS = [
   {
@@ -4352,10 +4473,25 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         }}>
           <span style={{ color: 'var(--accent-text)' }}>Interdisciplinary</span> Research Facility for Open Sciences
         </h1>
-        <p style={{ fontSize: 17, color: 'var(--text2)', maxWidth: 580, lineHeight: 1.75, marginBottom: 48 }}>
+        <p style={{ fontSize: 17, color: 'var(--text2)', maxWidth: 580, lineHeight: 1.75, marginBottom: 40 }}>
           Regulated Austrian research institute. Ternary AI, security, governance, minor protection, and ecocentric technology.
           One team. Everything built in-house.
         </p>
+
+        {/* Problem/solution carousel + "Observe" gold-core line (website-repositioning
+            plan, Stage 1a). Laura's Round 3 read: this, not "Hacken"/Security/AI, is
+            the actual gold core - observation of real system states. The carousel
+            gives a visitor four concrete "does this sound like you" openers before
+            the identity line lands, so the abstract sentence below has something to
+            attach to rather than arriving cold. */}
+        <ProblemSolutionCarousel />
+        <p style={{
+          fontSize: 'clamp(1.05rem, 2.3vw, 1.3rem)', fontWeight: 800, color: TEAL,
+          maxWidth: 640, margin: '0 auto 40px', lineHeight: 1.55,
+        }}>
+          Most technology decisions are based on assumptions. We investigate what systems actually do.
+        </p>
+
         {/* Down from 3 co-equal buttons to 2, deliberately unequal: Hire Us is the one
             real conversion action and gets the solid fill; Track Record is the proof
             a skeptical visitor wants before that, secondary by design. Research and
@@ -4386,11 +4522,132 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         </div>
       </section>
 
+      {/* APPROACH / DIFFERENTIATION — Stage 1b + part of 1d (website-repositioning
+          plan). Pulled forward from the plan's original "M7" slot: a visitor needs to
+          know what makes this different BEFORE being asked to absorb research areas
+          or pricing. Order follows the plan's standing rule for every section,
+          Problem → Insight → Result → Method: the lead paragraph states the problem
+          (checklists stop at named risks) and the insight (the question starts one
+          step earlier), "RFI doesn't sell more analysis..." is the one-line result,
+          and the table is the concrete comparison backing it up - never a named-
+          competitor comparison, framed as two approaches per the plan's own
+          non-disparagement rule (unchanged since v1/v2). The "what is a system?"
+          clarifier (Stage 1d) sits at the end of this section, near the identity
+          content it belongs next to. */}
+      <section id="approach" style={{ padding: '100px 2rem' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <Reveal from="left">
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / How We're Different</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>same category, different question</h2>
+          </Reveal>
+          <Reveal from="right" delay={1}>
+            <p style={{ color: 'var(--text2)', marginBottom: 24, maxWidth: 680, fontSize: 15, lineHeight: 1.9 }}>
+              Most technology work starts from a checklist: does this system meet a known standard, pass a known test, avoid a known risk? That question is necessary, but it stops at whatever has already been named as a risk. Ours starts one step earlier — what is this system actually doing, right now, in practice?
+            </p>
+          </Reveal>
+          <Reveal from="bottom" delay={1}>
+            <p style={{ fontWeight: 800, fontSize: 19, marginBottom: 40 }}>
+              RFI doesn't sell more analysis. RFI sells a different perspective.
+            </p>
+          </Reveal>
+          <Reveal from="bottom" delay={2}>
+            <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 56 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+                <div style={{ padding: '16px 24px', background: 'rgba(255,255,255,0.03)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text3)', borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>Classic approach</div>
+                <div style={{ padding: '16px 24px', background: 'rgba(0,245,196,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)', borderBottom: '1px solid var(--border)' }}>RFI</div>
+                {DIFFERENTIATION_ROWS.map((row, i) => (
+                  <Fragment key={i}>
+                    <div style={{ padding: '18px 24px', fontSize: 14, color: 'var(--text2)', borderRight: '1px solid var(--border)', borderBottom: i < DIFFERENTIATION_ROWS.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.classic}</div>
+                    <div style={{ padding: '18px 24px', fontSize: 14, fontWeight: 700, color: 'var(--text)', borderBottom: i < DIFFERENTIATION_ROWS.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.rfi}</div>
+                  </Fragment>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+          <Reveal from="bottom" delay={2}>
+            <div style={{ padding: '20px 24px', border: '1px solid var(--border)', borderRadius: 12, background: 'rgba(255,255,255,0.03)' }}>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>What we mean by "system"</p>
+              <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.8 }}>
+                When we say "system", we mean anything that behaves and can be observed doing it — a mobile application, an AI model, an API ecosystem, a software architecture, a digital service, a connected device. If it runs and does something in the real world, we can investigate it.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* APP PRIVACY DOOR-OPENER — Stage 1c (website-repositioning plan). Laura's
+          Round 3 note: a CEO understands "my app might be selling user data" far more
+          readily than "we do Technology Intelligence through System Observation" - so
+          App Privacy gets the most prominent placement of the four domains, directly
+          after the hero/differentiation block, not equal billing with the other
+          three. The other three domains (Stage 1d hierarchy, see OTHER_DOMAINS above
+          and the term-hierarchy comment near RESEARCH_AREAS) get one line each further
+          down in this same section, in human→product→system order, so App Privacy
+          stays the door and the rest stay visibly secondary rather than competing
+          with it for attention. */}
+      <section id="app-privacy" style={{ padding: '100px 2rem', background: 'rgba(0,245,196,0.03)' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <Reveal from="left">
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Start Here</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>does your app really protect user data?</h2>
+          </Reveal>
+          <Reveal from="right" delay={1}>
+            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, fontSize: 15, lineHeight: 1.9 }}>
+              Most teams believe the answer is yes, because the app passes whatever checklist it was built against. What it actually does once it's running — which SDKs it talks to, where the data ends up, whether tracking starts before anyone consents — is a separate question, and often a different answer. This is usually the easiest place to start, because the question itself is easy to ask.
+            </p>
+          </Reveal>
+          <Reveal from="bottom" delay={1}>
+            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: 24, marginBottom: 40 }}>
+              <div style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: 16, background: 'rgba(255,255,255,0.03)' }}>
+                <div style={{ fontWeight: 800, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--accent-text)', marginBottom: 14 }}>What we check</div>
+                <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.9 }}>
+                  Permissions actually requested and used, where data flows once it leaves the device, which third-party SDKs are embedded and what they receive, and when tracking behaviour actually starts relative to consent.
+                </p>
+              </div>
+              <div style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: 16, background: 'rgba(255,255,255,0.03)' }}>
+                <div style={{ fontWeight: 800, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--accent-text)', marginBottom: 14 }}>What you get</div>
+                <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.9 }}>
+                  A data flow map of what the app actually does, a risk analysis of what that means for you, and the underlying findings behind both — in plain language first, technical detail available underneath.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+          <Reveal from="bottom" delay={2}>
+            <a href="#contact" className="rfi-cta-pulse" style={{
+              display: 'inline-block', background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
+              fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
+              textTransform: 'uppercase', transition: 'opacity 0.15s', marginBottom: 64,
+            }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Talk to us about your app</a>
+          </Reveal>
+
+          <Reveal from="left" delay={1}>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>Beyond app privacy</p>
+          </Reveal>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 20, marginBottom: 32 }}>
+            {OTHER_DOMAINS.map((d, i) => (
+              <Reveal key={d.title} from="bottom" delay={i + 1}>
+                <div style={{ padding: '20px', border: '1px solid var(--border)', borderRadius: 14, height: '100%' }}>
+                  <div style={{ fontWeight: 800, fontSize: 14, marginBottom: 8 }}>{d.title}</div>
+                  <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8 }}>{d.desc}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal from="bottom" delay={1}>
+            <p style={{ color: 'var(--text3)', fontSize: 13, lineHeight: 1.8, maxWidth: 680 }}>
+              Each of these runs through the same three services: Investigate to understand what happened, Assess to understand where the risk sits, Monitor to understand how it changes over time.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
       {/* RESEARCH AREAS */}
       <section id="research" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Areas of Magnification</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Areas of Magnification</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>where our attention falls</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
@@ -4406,7 +4663,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="projects" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="right">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Undertakings</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>04 / Undertakings</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
           </Reveal>
           <Reveal from="left" delay={1}>
@@ -4424,7 +4681,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="track-record" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal from="left">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Track Record</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the discipline, demonstrated</h2>
           </Reveal>
           <Reveal from="right" delay={1}>
@@ -4800,7 +5057,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="pricing" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1320, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>05 / Pricing</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>06 / Pricing</p>
             <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>priced in plain terms</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
               Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.
