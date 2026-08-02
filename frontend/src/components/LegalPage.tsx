@@ -56,7 +56,8 @@ export function LegalPage({ slug }: { slug: string }) {
         {slug === 'security'    && <Security />}
         {slug === 'standards'   && <Standards />}
         {slug === 'team'        && <Team />}
-        {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team'].includes(slug) && (
+        {slug === 'methodology' && <Methodology />}
+        {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology'].includes(slug) && (
           <p style={P}>Seite nicht gefunden.</p>
         )}
         <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 10, color: '#404058' }}>
@@ -509,6 +510,47 @@ function Team() {
             <p style={{ fontSize: 11, color: TEAL, marginTop: 4, fontWeight: 600 }}>{p.focus}</p>
           </div>
         </a>
+      ))}
+    </div>
+  </>
+}
+
+// Moved off the mainpage entirely (previously a "Methodology" block folded into
+// the Research section) per live feedback: these four rules read as reference
+// material for whoever wants to check our process, not something that needs to
+// compete for mainpage scroll - same reasoning as Team moving to its own page.
+const METHODOLOGY_PRINCIPLES = [
+  {
+    title: 'Sources',
+    body: 'We only work from what we\'re lawfully entitled to see: publicly accessible information, devices we own or are authorized to test, and software we\'re authorized to analyze. If material crosses into unauthorized access to a system we don\'t control, we don\'t use it - we report it to the relevant authority instead, the same way we\'d want to be treated in reverse.',
+  },
+  {
+    title: 'Methods',
+    body: 'Investigate first, judge second: we trace root cause instead of stopping at the first symptom, and every step has to be reproducible by someone other than the person who ran it the first time. A finding that only one person can reproduce isn\'t a finding yet.',
+  },
+  {
+    title: 'Handling results',
+    body: 'Severity gets ranked, not asserted - and every client, paying or not, gets the same triage discipline (ISO/IEC 30111: reproduce it, scope it, fix it, credit the reporter). What changes between tiers is confidentiality and turnaround, never the rigor of the underlying work.',
+  },
+  {
+    title: 'Disclosure',
+    body: 'A fixed public heads-up window applies before anything goes on the public ledger, giving the organization real time to fix a problem before anyone else sees it. Regulators are told in parallel where our own rules require it, without exposing detail that would put a client at risk before they\'ve had the chance to fix it.',
+  },
+]
+
+function Methodology() {
+  return <>
+    <h1 style={H1}>Methodology</h1>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>The same rules, whoever the client is</p>
+    <p style={P}>
+      An investigator who bends the rules for a paying client isn't an investigator anymore - just a vendor with a fancier vocabulary. These four principles govern where we look, how we test, what we do with what we find, and when it becomes public, regardless of who's paying.
+    </p>
+    <div style={{ display: 'grid', gap: 24, marginTop: 24 }}>
+      {METHODOLOGY_PRINCIPLES.map(p => (
+        <div key={p.title}>
+          <h2 style={H2}>{p.title}</h2>
+          <p style={P}>{p.body}</p>
+        </div>
       ))}
     </div>
   </>

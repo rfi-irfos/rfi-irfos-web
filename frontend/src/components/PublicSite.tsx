@@ -107,7 +107,7 @@ function HeroCtaRow() {
       }}
         onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
         onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Track Record</a>
-      <a href="#contact" className="rfi-cta-pulse" style={{
+      <a href="#submit" className="rfi-cta-pulse" style={{
         background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
         fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
         textTransform: 'uppercase', transition: 'opacity 0.15s',
@@ -774,7 +774,12 @@ function TierCarousel({ tiers, getActions }: {
         }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>
           <div>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8 }}>Featured tier</div>
+            {/* Label now says which tier this actually is, not just "you're looking
+                at one" - live feedback: after clicking around, there was no cue left
+                for which tier was originally recommended. */}
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: idx === defaultIdx ? TEAL : 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8, fontWeight: idx === defaultIdx ? 800 : 400 }}>
+              {idx === defaultIdx ? '★ Recommended tier' : 'Featured tier'}
+            </div>
             <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
             {active.hook && <div style={{ fontSize: 13, color: 'var(--text2)', marginTop: 6 }}>{active.hook}</div>}
           </div>
@@ -836,9 +841,15 @@ function TierCarousel({ tiers, getActions }: {
               <button key={t.tier} onClick={() => setIdx(i)} style={{
                 flexShrink: 0, minWidth: 140, textAlign: 'left', cursor: 'pointer',
                 borderRadius: 10, padding: '10px 14px',
-                background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
+                background: 'rgba(255,255,255,0.05)',
+                border: `1px solid ${i === defaultIdx ? 'rgba(0,245,196,0.4)' : 'var(--border)'}`,
                 transition: 'border-color .15s, background .15s',
               }}>
+                {/* Marks the recommended tier even while it's not the active card,
+                    so the cue survives clicking/cycling to other tiers. */}
+                {i === defaultIdx && (
+                  <div style={{ fontSize: 9, fontWeight: 800, color: TEAL, letterSpacing: '0.05em', marginBottom: 3 }}>★ RECOMMENDED</div>
+                )}
                 <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{t.tier}</div>
                 <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--accent-text)', marginTop: 4 }}>{t.price}</div>
               </button>
@@ -991,7 +1002,7 @@ const PERSONA_ENTRY_POINTS = [
   { label: 'App Developer', href: '#app-privacy' },
   { label: 'CEO / Founder', href: '#pricing' },
   { label: 'Security Lead', href: '#track-record' },
-  { label: 'Researcher', href: '#research' },
+  { label: 'Researcher', href: '#p/methodology' },
   { label: 'Journalist', href: '#evidence' },
 ] as const
 
@@ -1101,8 +1112,15 @@ function CustomerJourneyTimeline() {
               fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: 12.5,
               marginBottom: mobile ? 0 : 14, transition: 'background 0.4s, border-color 0.4s, color 0.4s',
             }}>{i + 1}</div>
-            <div style={{ fontWeight: 800, fontSize: 16, color: 'var(--text)', marginBottom: 8, marginTop: mobile ? 2 : 0 }}>{s.stage}</div>
-            <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8, margin: 0 }}>{s.body}</p>
+            {/* Active stage reads noticeably bolder/brighter than the rest (live
+                feedback: all five looked identical, so nothing signalled "you are
+                here" without staring at the small number badge). */}
+            <div style={{
+              fontWeight: 900, fontSize: i === current ? 19 : 16,
+              color: i === current ? '#ffffff' : 'var(--text2)',
+              marginBottom: 8, marginTop: mobile ? 2 : 0, transition: 'font-size 0.4s, color 0.4s',
+            }}>{s.stage}</div>
+            <p style={{ color: i === current ? 'var(--text)' : 'var(--text3)', fontSize: 13, lineHeight: 1.8, margin: 0, transition: 'color 0.4s' }}>{s.body}</p>
           </div>
         </Reveal>
       ))}
@@ -1269,38 +1287,6 @@ const RESEARCH_AREAS = [
 // them. Note Stage 1e's own correction, same date: Laura's "reduce 19 tiers to
 // ~3" recommendation was explicitly overridden by the user - every existing tier
 // stayed, the carousel is the display mechanism, not a reduction.
-
-// The 4-row approach comparison, Stage 1b - pulled forward from the plan's original
-// "M7" position because a visitor needs to know what's different before being asked
-// to absorb research areas or pricing. Framed as two APPROACHES, deliberately never
-// naming a competitor or category (Pentester/Big Four/etc. stay unnamed) - see the
-// plan's own non-disparagement rule, unchanged since v1/v2.
-const DIFFERENTIATION_ROWS = [
-  { classic: 'Checks known risks', rfi: 'Discovers unknown behaviour' },
-  { classic: 'Controls against standards', rfi: 'Investigates reality' },
-  { classic: 'Delivers a compliance report', rfi: 'Delivers insight' },
-  { classic: 'Looks at individual systems', rfi: 'Recognizes patterns across systems' },
-]
-
-// The three domains beyond App Privacy (which gets its own full section - see
-// #app-privacy below), kept deliberately brief here: one line each, human→product→
-// system order, no pricing/product detail (that's Stage 1e, out of scope this pass).
-// Competitive Intelligence carries BOTH required phrases together, per the plan's
-// sharpened Stage 1d language rule - sourcing phrase alone reads like plain OSINT.
-const OTHER_DOMAINS = [
-  {
-    title: 'AI Behaviour & Reliability',
-    desc: "How a model actually behaves once real users are involved, not just how it performs in a demo or a benchmark.",
-  },
-  {
-    title: 'Security',
-    desc: 'Root-level investigation of vulnerabilities and incidents, tracing back to what actually happened rather than stopping at what was exposed.',
-  },
-  {
-    title: 'Competitive Intelligence',
-    desc: "Independent analysis of publicly accessible digital behaviour: we analyze patterns in the behavior of digital products, not just isolated data points.",
-  },
-]
 
 const PROJECTS = [
   {
@@ -4038,11 +4024,14 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
 export function PublicSite() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', botcheck: '' })
-  const [formState, setFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
-  const [tipForm, setTipForm] = useState({ handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false, botcheck: '' })
+  // One consolidated contact/disclosure form (live feedback: two separate full
+  // forms - a general "write to us" one and a security-tip one - stacked on the
+  // page read as duplicated UI). `topic` added so it still covers every inquiry
+  // type the old general form's Topic dropdown did; the disclosure-specific
+  // fields (credit preference, lawful-basis attestation) stay, since those are
+  // the compliance-relevant part and apply just as validly to any inquiry.
+  const [tipForm, setTipForm] = useState({ topic: '', handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false, botcheck: '' })
   const [tipFormState, setTipFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
-  useFormAbandonment('contact', form, formState)
   useFormAbandonment('submit_tip', tipForm, tipFormState)
   const pixelRef = useRef<HTMLImageElement>(null)
   const ledgerRef = useRef<HTMLDivElement>(null)
@@ -4221,7 +4210,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     if (!proposalModal) return
     proposalRequest(proposalModal.tier)
     setProposalModal(null)
-    location.hash = '#contact'
+    location.hash = '#submit'
   }
 
   const handleCheckout = async (tier: string) => {
@@ -4415,38 +4404,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
     return () => io.disconnect()
   }, [])
 
-  async function submitForm(e: React.FormEvent) {
-    e.preventDefault()
-    // Honeypot - real users never fill a visually hidden field; bots that
-    // blindly fill every input do. A non-empty value here means it's spam,
-    // so we quietly pretend to succeed instead of hitting the API at all.
-    if (form.botcheck) { setFormState('ok'); setForm({ name: '', email: '', subject: '', message: '', botcheck: '' }); return }
-    setFormState('sending')
-    try {
-      if (WEB3FORMS_KEY) {
-        const res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            access_key: WEB3FORMS_KEY,
-            subject: `[rfi-irfos.at] ${form.subject || 'New inquiry'} - ${form.name}`,
-            name: form.name,
-            email: form.email,
-            replyto: form.email,
-            subject_interest: form.subject,
-            message: form.message,
-            botcheck: form.botcheck,
-          }),
-        })
-        if (!res.ok) throw new Error()
-      }
-      setFormState('ok')
-      setForm({ name: '', email: '', subject: '', message: '', botcheck: '' })
-    } catch {
-      setFormState('err')
-    }
-  }
-
   async function submitTip(e: React.FormEvent) {
     e.preventDefault()
     if (!tipForm.lawful) return
@@ -4459,10 +4416,11 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             access_key: WEB3FORMS_KEY,
-            subject: `[rfi-irfos.at] Tip submission - ${tipForm.target || 'unspecified target'}`,
+            subject: `[rfi-irfos.at] ${tipForm.topic || 'Tip submission'} - ${tipForm.target || 'unspecified target'}`,
             name: tipForm.handle || 'anonymous',
             email: tipForm.email || 'not provided',
             replyto: tipForm.email || undefined,
+            topic: tipForm.topic,
             target: tipForm.target,
             credit_preference: tipForm.credit,
             message: tipForm.finding,
@@ -4473,7 +4431,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
         if (!res.ok) throw new Error()
       }
       setTipFormState('ok')
-      setTipForm({ handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false })
+      setTipForm({ topic: '', handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false, botcheck: '' })
     } catch {
       setTipFormState('err')
     }
@@ -4667,28 +4625,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg2)'; e.currentTarget.style.color = 'var(--text2)' }}>
               <ThemeIcon t={theme} />
             </button>
-
-            {/* Was a raw mailto: link - popped the visitor's local email client instead
-                of the actual on-page contact form (proper fields, Web3Forms submission),
-                and there's no other "Contact" entry anywhere in NAV_LINKS. Now scrolls to
-                the real form instead. */}
-            <a href="#contact" title="Contact" aria-label="Contact"
-              style={{
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                width: 38, height: 38, borderRadius: 8,
-                background: ACCENT, border: `1px solid ${ACCENT}`,
-                // Light mode's ACCENT is a deep green - needs a white icon for contrast.
-                // Dark/hc's ACCENT is bright teal - black reads better there, same
-                // dark-text-on-teal-fill convention already used on the theme toggle.
-                color: theme === 'light' ? '#ffffff' : '#070711', textDecoration: 'none', transition: 'opacity 0.15s',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="5" width="18" height="14" rx="2" />
-                <path d="M3 7l9 6 9-6" />
-              </svg>
-            </a>
+            {/* Standalone nav mail-icon button removed entirely (live feedback) -
+                "Submit" is already in NAV_LINKS and points at the same consolidated
+                contact/disclosure section, so this was a second, visually louder
+                route to the identical destination. */}
           </div>
         </div>
 
@@ -4740,24 +4680,8 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
             cursor: 'pointer',
           }}><ThemeIcon t={theme} /></button>
-
-          {/* The NAV_LINKS anchors above close the mobile menu on click - this one didn't,
-              so tapping Contact scrolled the page behind the still-open full-screen
-              overlay. Wired to the same closeMobile() the nav links effectively inline. */}
-          <a href="#contact" title="Contact" aria-label="Contact" onClick={closeMobile}
-            style={{
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              width: 48, height: 48, borderRadius: 8,
-              background: ACCENT, border: `1px solid ${ACCENT}`,
-              color: theme === 'light' ? '#ffffff' : '#070711', textDecoration: 'none', transition: 'opacity 0.15s',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="M3 7l9 6 9-6" />
-            </svg>
-          </a>
+          {/* Mobile mail-icon button removed too, same reasoning as the desktop nav
+              - Submit already covers this destination. */}
         </div>
       </div>
 
@@ -4848,51 +4772,6 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </p>
           </Reveal>
           <ResearchAreasGrid />
-
-          {/* METHODOLOGY - folded in from the former standalone "Investigation
-              Principles" section per live feedback: these four rules (Sources,
-              Methods, Handling results, Disclosure) belong next to the research
-              areas they govern, not as a separate nav destination. */}
-          <div style={{ marginTop: 72 }}>
-            <Reveal>
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>Methodology</p>
-              <h3 style={{ fontSize: 26, fontWeight: 900, marginBottom: 16 }}>the same rules, whoever the client is</h3>
-              <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
-                An investigator who bends the rules for a paying client isn't an investigator anymore - just a vendor with a fancier vocabulary. These four principles govern where we look, how we test, what we do with what we find, and when it becomes public, regardless of who's paying.
-              </p>
-            </Reveal>
-
-            <Reveal from="bottom" delay={1}>
-              <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
-                {[
-                  {
-                    title: 'Sources',
-                    body: 'We only work from what we\'re lawfully entitled to see: publicly accessible information, devices we own or are authorized to test, and software we\'re authorized to analyze. If material crosses into unauthorized access to a system we don\'t control, we don\'t use it - we report it to the relevant authority instead, the same way we\'d want to be treated in reverse.',
-                  },
-                  {
-                    title: 'Methods',
-                    body: 'Investigate first, judge second: we trace root cause instead of stopping at the first symptom, and every step has to be reproducible by someone other than the person who ran it the first time. A finding that only one person can reproduce isn\'t a finding yet.',
-                  },
-                  {
-                    title: 'Handling results',
-                    body: 'Severity gets ranked, not asserted - and every client, paying or not, gets the same triage discipline (ISO/IEC 30111: reproduce it, scope it, fix it, credit the reporter). What changes between tiers is confidentiality and turnaround, never the rigor of the underlying work.',
-                  },
-                  {
-                    title: 'Disclosure',
-                    body: 'A fixed public heads-up window applies before anything goes on the public ledger, giving the organization real time to fix a problem before anyone else sees it. Regulators are told in parallel where our own rules require it, without exposing detail that would put a client at risk before they\'ve had the chance to fix it.',
-                  },
-                ].map(p => (
-                  <div key={p.title} style={{
-                    background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
-                    borderRadius: 14, padding: '22px 22px',
-                  }}>
-                    <div style={{ fontWeight: 800, fontSize: 15, color: 'var(--text)', marginBottom: 10 }}>{p.title}</div>
-                    <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8, margin: 0 }}>{p.body}</p>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-          </div>
         </div>
       </section>
 
@@ -5325,7 +5204,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
             </div>
           </Reveal>
           <Reveal from="bottom" delay={2}>
-            <a href="#contact" className="rfi-cta-pulse" style={{
+            <a href="#submit" className="rfi-cta-pulse" style={{
               display: 'inline-block', background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
               fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
               textTransform: 'uppercase', transition: 'opacity 0.15s', marginBottom: 64,
@@ -5333,25 +5212,10 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Talk to us about your app</a>
           </Reveal>
-
-          <Reveal from="left" delay={1}>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>Beyond app privacy</p>
-          </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: 20, marginBottom: 32 }}>
-            {OTHER_DOMAINS.map((d, i) => (
-              <Reveal key={d.title} from="bottom" delay={i + 1}>
-                <div style={{ padding: '20px', border: '1px solid var(--border)', borderRadius: 14, height: '100%' }}>
-                  <div style={{ fontWeight: 800, fontSize: 14, marginBottom: 8 }}>{d.title}</div>
-                  <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.8 }}>{d.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal from="bottom" delay={1}>
-            <p style={{ color: 'var(--text3)', fontSize: 13, lineHeight: 1.8, maxWidth: 680 }}>
-              Each of these runs through the same three services: Investigate to understand what happened, Assess to understand where the risk sits, Monitor to understand how it changes over time.
-            </p>
-          </Reveal>
+          {/* "Beyond app privacy" (OTHER_DOMAINS grid) + the closing "same three
+              services" line removed entirely per live feedback - redundant with
+              Research Areas / the Investigate-Assess-Monitor hierarchy already
+              explained elsewhere on the page. */}
         </div>
       </section>
 
@@ -5633,17 +5497,19 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
       <section id="submit" style={{ padding: '100px 2rem' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>10 / Disclosures</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? say so.</h2>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>10 / Disclosures &amp; Contact</p>
+            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>found something? say so. anything else? same form.</h2>
             <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
-              We run our own intake channel instead of routing you to a third-party bug bounty platform - for the same reason we refuse to be routed to one ourselves when we report a finding. This is a direct line to the same permanent ledger you see above, held to the same standard.
+              We run our own intake channel instead of routing security findings to a third-party bug bounty platform - for the same reason we refuse to be routed to one ourselves when we report a finding. This is a direct line to the same permanent ledger you see above, held to the same standard. Research collaboration, service inquiries, and everything else go through the same door.
             </p>
           </Reveal>
 
           <div style={{ display: mobile ? 'block' : 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'start' }}>
-            {/* left: policy */}
+            {/* left: policy + quick contact channels (merged from the former
+                standalone Contact section - live feedback: two separate contact
+                forms on one page read as duplicated UI) */}
             <Reveal from="left">
-              <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '28px 26px', marginBottom: mobile ? 24 : 0 }}>
+              <div style={{ background: 'rgba(0,245,196,0.06)', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 16, padding: '28px 26px', marginBottom: 20 }}>
                 <div style={{ fontWeight: 900, fontSize: 15, color: 'var(--text)', marginBottom: 14 }}>How we handle what you send us</div>
                 <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.85, marginBottom: 16 }}>
                   <strong style={{ color: 'var(--accent-text)' }}>ISO/IEC 30111 triage:</strong> reproduce it, scope it, fix it, credit you. No finding gets buried because it's inconvenient - that's the entire complaint we file against everyone else, and we're not exempting ourselves from it.
@@ -5656,21 +5522,53 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   <a href="#p/agb" style={{ color: 'var(--accent-text)' }}>terms</a>. No call, no meeting. Everything stays written, same as every disclosure we send.
                 </p>
               </div>
+              <p style={{ fontSize: 12.5, color: 'var(--text3)', marginBottom: 14 }}>
+                Not sure what to pick above? <strong style={{ color: 'var(--text2)' }}>General inquiries</strong> reaches a human either way - or email one of these directly.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {CONTACT_CARDS.map(c => (
+                  <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
+                    background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
+                    borderRadius: 12, padding: '14px 18px', textDecoration: 'none', display: 'block',
+                    transition: 'border-color 0.2s',
+                  }}
+                    onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
+                    onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
+                    <div style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 5 }}>{c.label}</div>
+                    <div style={{ color: 'var(--accent-text)', fontWeight: 600, fontSize: 13 }}>{c.value}</div>
+                  </a>
+                ))}
+                <p style={{ fontSize: 11, color: 'var(--text3)', fontFamily: "'JetBrains Mono', monospace", marginTop: 4, lineHeight: 1.8 }}>
+                  Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
+                </p>
+              </div>
             </Reveal>
 
-            {/* right: form */}
+            {/* right: the one form */}
             <Reveal from="right">
               <form onSubmit={submitTip} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                 <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
                   value={tipForm.botcheck} onChange={e => setTipForm(p => ({ ...p, botcheck: e.target.value }))}
                   style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
+                <select value={tipForm.topic} onChange={e => setTipForm(p => ({ ...p, topic: e.target.value }))} style={{
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
+                  borderRadius: 8, padding: '12px 16px', color: tipForm.topic ? 'var(--text)' : 'var(--text3)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
+                }}>
+                  <option value="">Topic (optional)</option>
+                  <option value="Security Disclosure">Security Disclosure</option>
+                  <option value="Security Audit">Security Audit</option>
+                  <option value="Send APK">Send us your APK</option>
+                  <option value="Research Collaboration">Research Collaboration</option>
+                  <option value="Web Development">Web Development</option>
+                  <option value="Other">Other</option>
+                </select>
                 <input type="text" placeholder="Name or alias (optional - leave blank to stay anonymous)"
                   value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
                   style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-                <input type="email" placeholder="Email (optional - only if you want follow-up)"
+                <input type="email" placeholder="Email (optional - only if you want a reply)"
                   value={tipForm.email} onChange={e => setTipForm(p => ({ ...p, email: e.target.value }))}
                   style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-                <input type="text" required placeholder="Company / app / target"
+                <input type="text" required placeholder="Company / app / subject"
                   value={tipForm.target} onChange={e => setTipForm(p => ({ ...p, target: e.target.value }))}
                   style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
                 <select value={tipForm.credit} onChange={e => setTipForm(p => ({ ...p, credit: e.target.value }))} style={{
@@ -5681,7 +5579,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   <option value="anonymous">Do not credit me - keep this anonymous</option>
                   <option value="full-name">Credit me by full legal name</option>
                 </select>
-                <textarea required placeholder="What did you find? Include what it is, where you found it, and how to reproduce it."
+                <textarea required placeholder="What's this about? Include what it is, where relevant, and how to reach a conclusion (e.g. how to reproduce a finding)."
                   value={tipForm.finding} onChange={e => setTipForm(p => ({ ...p, finding: e.target.value }))}
                   rows={6} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
                 <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
@@ -5699,107 +5597,15 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
                   padding: '13px 24px', borderRadius: 8, fontWeight: 800, fontSize: 14,
                   cursor: tipFormState === 'sending' ? 'wait' : !tipForm.lawful ? 'not-allowed' : 'pointer',
                   opacity: !tipForm.lawful && tipFormState === 'idle' ? 0.5 : 1, fontFamily: 'inherit',
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 9,
                 }}>
-                  {tipFormState === 'sending' ? 'Sending...' : tipFormState === 'ok' ? 'Received. Thank you.' : 'Submit tip'}
+                  <FormStateIcon state={tipFormState} />
+                  {tipFormState === 'sending' ? 'Sending...' : tipFormState === 'ok' ? 'Received. Thank you.' : 'Send message'}
                 </button>
                 {tipFormState === 'err' && (
                   <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>Something went wrong. Email us directly at contact@rfi-irfos.com</p>
                 )}
               </form>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" style={{ padding: '100px 2rem' }}>
-        <div style={{ maxWidth: 860, margin: '0 auto' }}>
-          <Reveal>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>11 / Correspondence</p>
-            <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>write to us</h2>
-            <p style={{ color: 'var(--text2)', marginBottom: 48 }}>for research collaboration, security disclosures, or service inquiries.</p>
-          </Reveal>
-
-          <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: mobile ? 16 : 40 }}>
-            {/* left: form */}
-            <Reveal from="left" style={{ display: 'flex', flexDirection: 'column' }}>
-            <form onSubmit={submitForm} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
-                value={form.botcheck} onChange={e => setForm(p => ({ ...p, botcheck: e.target.value }))}
-                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
-              {(['name', 'email'] as const).map(f => (
-                <input key={f} type={f === 'email' ? 'email' : 'text'} required placeholder={f === 'name' ? 'Name' : 'Email'}
-                  value={form[f]} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))}
-                  style={{
-                    background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
-                    borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none',
-                    fontFamily: 'inherit', transition: 'border-color 0.2s, box-shadow 0.2s',
-                  }}
-                  onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(0,245,196,0.12)' }}
-                  onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none' }} />
-              ))}
-              <select value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} style={{
-                background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
-                borderRadius: 8, padding: '12px 16px', color: form.subject ? '#e8e8f0' : '#606080',
-                fontSize: 14, outline: 'none', fontFamily: 'inherit', transition: 'border-color 0.2s, box-shadow 0.2s',
-              }}
-                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(0,245,196,0.12)' }}
-                onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none' }}>
-                <option value="">Topic (optional)</option>
-                <option value="Security Audit">Security Audit</option>
-                <option value="Send APK">Send us your APK</option>
-                <option value="Research Collaboration">Research Collaboration</option>
-                <option value="Web Development">Web Development</option>
-                <option value="Other">Other</option>
-              </select>
-              <textarea required placeholder="Message" value={form.message}
-                onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
-                rows={5} style={{
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
-                  borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14,
-                  outline: 'none', resize: 'vertical', fontFamily: 'inherit', transition: 'border-color 0.2s, box-shadow 0.2s',
-                }}
-                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(0,245,196,0.12)' }}
-                onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none' }} />
-              <button type="submit" disabled={formState === 'sending'} style={{
-                background: formState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
-                color: formState === 'ok' ? TEAL : '#070711',
-                border: formState === 'ok' ? `1px solid ${TEAL}` : 'none',
-                padding: '13px 24px', borderRadius: 8, fontWeight: 800, fontSize: 14,
-                cursor: formState === 'sending' ? 'wait' : 'pointer', fontFamily: 'inherit',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 9,
-              }}>
-                <FormStateIcon state={formState} />
-                {formState === 'sending' ? 'Sending...' : formState === 'ok' ? 'Message received.' : 'Send message'}
-              </button>
-              {formState === 'err' && (
-                <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>Something went wrong. Email us directly at contact@rfi-irfos.com</p>
-              )}
-            </form>
-            </Reveal>
-
-            {/* right: links */}
-            <Reveal from="right">
-            <p style={{ fontSize: 12.5, color: 'var(--text3)', marginBottom: 14 }}>
-              Not sure which? <strong style={{ color: 'var(--text2)' }}>General inquiries</strong> reaches a human either way.
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              {CONTACT_CARDS.map(c => (
-                <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
-                  borderRadius: 12, padding: '18px 20px', textDecoration: 'none', display: 'block',
-                  transition: 'border-color 0.2s',
-                }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
-                  <div style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 6 }}>{c.label}</div>
-                  <div style={{ color: 'var(--accent-text)', fontWeight: 600, fontSize: 13 }}>{c.value}</div>
-                </a>
-              ))}
-              <p style={{ fontSize: 11, color: 'var(--text3)', fontFamily: "'JetBrains Mono', monospace", marginTop: 8, lineHeight: 1.8 }}>
-                Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
-              </p>
-            </div>
             </Reveal>
           </div>
         </div>
@@ -5863,6 +5669,7 @@ const [sortBy, setSortBy] = useState<string>('elapsed-desc')
               heading: 'Research', links: [
                 { label: 'Research', href: '#research' },
                 { label: 'Track Record', href: '#track-record' },
+                { label: 'Methodology', href: '#p/methodology' },
               ],
             },
           ].map(group => (

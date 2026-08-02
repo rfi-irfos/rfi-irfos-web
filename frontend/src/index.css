@@ -13,6 +13,15 @@ h1, h2, h3, .rfi-display {
 
 /* ── Theme variables ──────────────────────────────────────────── */
 
+/* Native form controls (select dropdowns, in particular) render using the OS/
+   browser's own light or dark chrome unless told otherwise - color-scheme is
+   the actual fix (not just <option> color/background, which browsers mostly
+   ignore for the closed dropdown popup). Without this, a select styled dark
+   via inline background/color still opened a plain white system dropdown
+   underneath it, which is the "translate this into dark mode too" bug. */
+:root, [data-theme="dark"], [data-theme="hc"] { color-scheme: dark; }
+[data-theme="light"] { color-scheme: light; }
+
 /* dark = default (also :root fallback) */
 :root,
 [data-theme="dark"] {
