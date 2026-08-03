@@ -54,7 +54,10 @@ const LOCALE_LABEL: Record<Locale, string> = { en: 'English', de: 'Deutsch' }
 // ThemeIcon below, but text-based (two-letter language code) rather than an
 // SVG glyph, since there's no obvious universal icon for "language".
 function LocaleIcon({ locale }: { locale: Locale }) {
-  return <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 800, letterSpacing: '0.02em' }}>{locale.toUpperCase()}</span>
+  // Show the *target* language, not the current one — users expect the toggle
+  // to say "click here to switch to Deutsch/English", not "you are already here".
+  const target = LOCALES[(LOCALES.indexOf(locale) + 1) % LOCALES.length]
+  return <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 800, letterSpacing: '0.02em' }}>{target.toUpperCase()}</span>
 }
 
 // Sun / Moon / Monitor glyphs for the theme toggle - icon-only reads at a glance and
