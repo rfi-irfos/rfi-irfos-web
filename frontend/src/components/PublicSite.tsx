@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTheme } from '../hooks/useTheme'
+import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
 import { TEAL, useMobile, useWebVitals, useFormAbandonment, beacon, LIGHTHOUSE_PIXEL, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
@@ -42,7 +43,19 @@ function EkgLine() {
   )
 }
 
-const THEME_LABEL: Record<'light' | 'dark' | 'hc', string> = { light: 'Light', dark: 'Dark', hc: 'High contrast' }
+// Labels shown in the locale toggle's title/aria text - deliberately each
+// language's own name for itself ("English"/"Deutsch"), not translated
+// through the content layer, since a language switcher naming languages in
+// the CURRENTLY active language would be backwards (a German visitor should
+// see "Switch to English", not a German translation of "English").
+const LOCALE_LABEL: Record<Locale, string> = { en: 'English', de: 'Deutsch' }
+
+// LocaleIcon glyph for the EN/DE toggle - same 38x38 ghost-button family as
+// ThemeIcon below, but text-based (two-letter language code) rather than an
+// SVG glyph, since there's no obvious universal icon for "language".
+function LocaleIcon({ locale }: { locale: Locale }) {
+  return <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 800, letterSpacing: '0.02em' }}>{locale.toUpperCase()}</span>
+}
 
 // Sun / Moon / Monitor glyphs for the theme toggle - icon-only reads at a glance and
 // avoids the light-theme "LIGHT" label going low-contrast against its own selected pill.
@@ -65,15 +78,20 @@ function ThemeIcon({ t }: { t: 'light' | 'dark' | 'hc' }) {
 // framing rather than competing for top-level attention against the actual
 // services; Team moved to its own page (`#p/team`), linked from the footer's
 // Company group - see the removed `<section id="team">` in this file.
-const NAV_LINKS = [
-  { label: 'Research', href: '#research' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Track Record', href: '#track-record' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Submit', href: '#submit' },
+// Hrefs only - labels come from the current locale's content object (t.nav.links)
+// since NAV_LINKS itself sits above PublicSite() and can't call useLocale().
+const NAV_HREFS = [
+  { key: 'research' as const, href: '#research' },
+  { key: 'projects' as const, href: '#projects' },
+  { key: 'trackRecord' as const, href: '#track-record' },
+  { key: 'pricing' as const, href: '#pricing' },
+  { key: 'submit' as const, href: '#submit' },
 ]
 
 export function PublicSite() {
+  const { locale, setLocale, t } = useLocale()
+  const NAV_LINKS = NAV_HREFS.map(n => ({ label: t.nav.links[n.key], href: n.href }))
+  const toggleLocale = () => setLocale(LOCALES[(LOCALES.indexOf(locale) + 1) % LOCALES.length])
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   // One consolidated contact/disclosure form (live feedback: two separate full
@@ -278,7 +296,7 @@ export function PublicSite() {
       const { url } = await res.json()
       window.location.href = url
     } catch {
-      alert('Checkout unavailable. Please contact us directly.')
+      alert(t.alerts.checkoutUnavailable)
     } finally {
       setCheckoutLoading(null)
     }
@@ -531,10 +549,10 @@ export function PublicSite() {
         <div className="rfi-modal-backdrop" onClick={() => setReportModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(0,0,0,0.85)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
           <div className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 900, height: '85vh', background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid var(--border)', background: '#0a0a18' }}>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>report - rfi-irfos</span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t.reportModal.label}</span>
               <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
             </div>
-            <iframe src={reportModal} style={{ flex: 1, border: 'none', width: '100%' }} title="Report PDF" />
+            <iframe src={reportModal} style={{ flex: 1, border: 'none', width: '100%' }} title={t.reportModal.iframeTitle} />
           </div>
         </div>
       )}
@@ -559,7 +577,7 @@ export function PublicSite() {
                 illegible grey-on-navy. */}
             <ModalTierBody tier={checkoutModal.tier} price={checkoutModal.price} desc={checkoutModal.desc} delivery={checkoutModal.delivery} mobile={mobile} />
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>Order confirmation</div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>{t.checkoutModal.orderConfirmation}</div>
               {/* Single combined checkbox, not two - the old two-checkbox gate (business-customer
                   declaration + separate ToS/no-refund consent) meant the Continue button stayed
                   disabled through two clicks, not one, and funnel data showed most people never
@@ -569,7 +587,7 @@ export function PublicSite() {
                 <input type="checkbox" checked={agbChecked} onChange={e => { setAgbChecked(e.target.checked); setB2bChecked(e.target.checked) }}
                   style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
                 <span style={{ color: '#a0a0b8', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                  I'm purchasing as a <strong style={{ color: '#e8e8f0' }}>business customer</strong> and agree to the <a href="#p/agb" style={{ color: TEAL }}>Terms of Service</a>. The service begins immediately upon payment; no right of withdrawal applies and refunds are excluded.
+                  {t.checkoutModal.agreementPrefix}<strong style={{ color: '#e8e8f0' }}>{t.checkoutModal.agreementBusinessCustomer}</strong>{t.checkoutModal.agreementMiddle}<a href="#p/agb" style={{ color: TEAL }}>{t.checkoutModal.agreementTos}</a>{t.checkoutModal.agreementSuffix}
                 </span>
               </label>
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
@@ -586,11 +604,11 @@ export function PublicSite() {
                     color: agbChecked && b2bChecked ? '#070711' : 'rgba(0,245,196,0.55)',
                     cursor: agbChecked && b2bChecked ? 'pointer' : 'not-allowed',
                   }}>
-                  Continue to Stripe →
+                  {t.checkoutModal.continueToStripe}
                 </button>
                 <button onClick={() => cancelCheckout(checkoutModal.key)}
                   style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  Cancel
+                  {t.checkoutModal.cancel}
                 </button>
               </div>
             </div>
@@ -612,16 +630,16 @@ export function PublicSite() {
             <ModalTierBody tier={proposalModal.tier} price={proposalModal.price} desc={proposalModal.desc} delivery={proposalModal.delivery} mobile={mobile} />
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
               <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.6, marginBottom: 20 }}>
-                No payment happens here. This takes you to our contact form with <strong style={{ color: '#e8e8f0' }}>{proposalModal.tier}</strong> pre-noted, so we start the conversation with the right context.
+                {t.proposalModal.bodyPrefix}<strong style={{ color: '#e8e8f0' }}>{proposalModal.tier}</strong>{t.proposalModal.bodySuffix}
               </p>
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
                 <button onClick={confirmProposal}
                   style={{ flex: mobile ? undefined : 2, padding: '13px', background: TEAL, border: `1px solid ${TEAL}`, borderRadius: 6, color: '#070711', fontSize: 13, fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  Continue to Contact →
+                  {t.proposalModal.continueToContact}
                 </button>
                 <button onClick={() => setProposalModal(null)}
                   style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  Cancel
+                  {t.proposalModal.cancel}
                 </button>
               </div>
             </div>
@@ -664,7 +682,16 @@ export function PublicSite() {
               deliberately minimal/neutral (ghost button, no color fill) - Contact is the one
               that's allowed to be loud, solid ACCENT fill with a white icon. */}
           <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-            <button onClick={cycle} title={`Theme: ${THEME_LABEL[theme]} (click to switch)`} aria-label={`Current theme ${THEME_LABEL[theme]}, click to switch theme`} style={{
+            <button onClick={toggleLocale} title={t.nav.localeTitle(LOCALE_LABEL[locale])} aria-label={t.nav.localeAria(LOCALE_LABEL[locale])} style={{
+              width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
+              cursor: 'pointer', transition: 'background 0.15s, color 0.15s, border-color 0.15s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = 'var(--text)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg2)'; e.currentTarget.style.color = 'var(--text2)' }}>
+              <LocaleIcon locale={locale} />
+            </button>
+            <button onClick={cycle} title={t.nav.themeTitle(t.nav.themeLabel[theme])} aria-label={t.nav.themeAria(t.nav.themeLabel[theme])} style={{
               width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
               background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
               cursor: 'pointer', transition: 'background 0.15s, color 0.15s, border-color 0.15s',
@@ -685,7 +712,7 @@ export function PublicSite() {
           display: mobile ? 'flex' : 'none',
           background: 'none', border: 'none', cursor: 'pointer',
           padding: '8px', color: 'var(--text)',
-        }} aria-label="Menu">
+        }} aria-label={t.nav.menuAria}>
           {mobileOpen ? (
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           ) : (
@@ -723,7 +750,12 @@ export function PublicSite() {
           }}>{n.label}</a>
         ))}
         <div style={{ display: 'flex', gap: 8, marginTop: 24, alignSelf: 'flex-end' }}>
-          <button onClick={cycle} title={`Theme: ${THEME_LABEL[theme]} (click to switch)`} aria-label={`Current theme ${THEME_LABEL[theme]}, click to switch theme`} style={{
+          <button onClick={toggleLocale} title={t.nav.localeTitle(LOCALE_LABEL[locale])} aria-label={t.nav.localeAria(LOCALE_LABEL[locale])} style={{
+            width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
+            cursor: 'pointer',
+          }}><LocaleIcon locale={locale} /></button>
+          <button onClick={cycle} title={t.nav.themeTitle(t.nav.themeLabel[theme])} aria-label={t.nav.themeAria(t.nav.themeLabel[theme])} style={{
             width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center',
             background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
             cursor: 'pointer',
@@ -812,9 +844,9 @@ export function PublicSite() {
           </a>
         </div>
         <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: TEAL, letterSpacing: '0.06em', marginBottom: 28, fontWeight: 600 }}>
-          Human rights are not subject to negotiation.
+          {t.footer.tagline}
           <br />
-          <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>— RFI-IRFOS × Emergent Interaction Lab, core doctrine</span>
+          <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>{t.footer.taglineAttribution}</span>
         </p>
         {/* Three separate groups, not one flat row: Legal (statutory pages) vs.
             Company (who we are - Team moved here from the mainpage, see Stage 0
@@ -828,27 +860,27 @@ export function PublicSite() {
         <div style={{ display: 'flex', gap: '2.5rem', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 24, maxWidth: 900, margin: '0 auto 24px' }}>
           {[
             {
-              heading: 'Legal', links: [
-                { label: 'Legal Notice', href: '#p/impressum' },
-                { label: 'Privacy Policy', href: '#p/datenschutz' },
-                { label: 'Terms', href: '#p/agb' },
-                { label: 'Security Policy', href: '#p/security' },
-                { label: 'Standards', href: '#p/standards' },
+              heading: t.footer.groups.legal.heading, links: [
+                { label: t.footer.groups.legal.links.impressum, href: '#p/impressum' },
+                { label: t.footer.groups.legal.links.datenschutz, href: '#p/datenschutz' },
+                { label: t.footer.groups.legal.links.agb, href: '#p/agb' },
+                { label: t.footer.groups.legal.links.security, href: '#p/security' },
+                { label: t.footer.groups.legal.links.standards, href: '#p/standards' },
               ],
             },
             {
-              heading: 'Company', links: [
-                { label: 'Team', href: '#p/team' },
-                { label: 'Careers', href: 'mailto:career@rfi-irfos.com' },
-                { label: 'ternlang.com', href: 'https://ternlang.com' },
-                { label: 'github.com/rfi-irfos', href: 'https://github.com/rfi-irfos' },
+              heading: t.footer.groups.company.heading, links: [
+                { label: t.footer.groups.company.links.team, href: '#p/team' },
+                { label: t.footer.groups.company.links.careers, href: 'mailto:career@rfi-irfos.com' },
+                { label: t.footer.groups.company.links.ternlang, href: 'https://ternlang.com' },
+                { label: t.footer.groups.company.links.github, href: 'https://github.com/rfi-irfos' },
               ],
             },
             {
-              heading: 'Research', links: [
-                { label: 'Research', href: '#research' },
-                { label: 'Track Record', href: '#track-record' },
-                { label: 'Methodology', href: '#p/methodology' },
+              heading: t.footer.groups.research.heading, links: [
+                { label: t.footer.groups.research.links.research, href: '#research' },
+                { label: t.footer.groups.research.links.trackRecord, href: '#track-record' },
+                { label: t.footer.groups.research.links.methodology, href: '#p/methodology' },
               ],
             },
           ].map(group => (
@@ -867,7 +899,7 @@ export function PublicSite() {
         {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address) lives on
             Legal Notice - not duplicated here, this footer only needs to point there. */}
         <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', marginBottom: 0 }}>
-          &copy; 2026 RFI-IRFOS &nbsp;·&nbsp; Graz, Austria &nbsp;·&nbsp; ZVR 1015608684
+          {t.footer.copyright}
         </p>
       </footer>
       {cookieBannerOpen && (
@@ -890,9 +922,9 @@ export function PublicSite() {
                   transition: 'transform 0.24s ease-in, opacity 0.24s ease-in, background 0.2s',
                 }}>
                   <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: theme === 'dark' ? '#ffffff' : '#000000', fontWeight: 'bold', lineHeight: 1.5 }}>
-                    this is a useless cookie banner. it&apos;s just here to look like one * we don&apos;t use cookies, so there&apos;s nothing to consent to. don&apos;t let anyone tell you otherwise.
+                    {t.cookieBanner.text}
                     <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: theme === 'dark' ? '#999999' : '#555555', letterSpacing: '0.04em', marginTop: 4, fontWeight: 'normal' }}>
-                      two buttons, one closes this and throws some confetti. the other literally does nothing.
+                      {t.cookieBanner.subtext}
                     </span>
                   </p>
                   <div style={{ display: 'flex', gap: 8, flex: 'none' }}>
@@ -904,7 +936,7 @@ export function PublicSite() {
                         borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
                       }}
                     >
-                      does nothing
+                      {t.cookieBanner.doesNothing}
                     </button>
                     <button
                       onClick={dismissCookieBanner}
@@ -913,7 +945,7 @@ export function PublicSite() {
                         borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 700, cursor: 'pointer',
                       }}
                     >
-                      close
+                      {t.cookieBanner.close}
                     </button>
                   </div>
                 </div>
