@@ -85,8 +85,11 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
       background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.06) 0%, transparent 70%)',
     }}>
       <HeroBackground />
+      {/* Stays English in both locales (live feedback) - "Rethink the Obvious."
+          is the site's signature line/wordmark-adjacent phrase, not translated
+          copy. */}
       <p className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
-        <RevealWords text={t.hero.headline} emphasizeIndices={[t.hero.headlineEmphasisIndex]} />
+        <RevealWords text="Rethink the Obvious." emphasizeIndices={[2]} />
       </p>
       <h1 style={{
         fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,

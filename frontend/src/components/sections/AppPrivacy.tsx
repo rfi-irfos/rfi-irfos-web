@@ -7,7 +7,7 @@ import { useLocale } from '../../hooks/useLocale'
 // here after Track Record per live feedback: the pitch reads better once
 // a visitor has already seen the ledger of real, disclosed findings,
 // rather than immediately after the hero before any proof exists.
-export function AppPrivacySection({ mobile }: { mobile: boolean }) {
+export function AppPrivacySection() {
   const { t } = useLocale()
   return (
     <section id="app-privacy" style={{ padding: '100px 2rem', background: 'rgba(0,245,196,0.03)' }}>
@@ -24,19 +24,22 @@ export function AppPrivacySection({ mobile }: { mobile: boolean }) {
             {t.appPrivacy.paragraph}
           </p>
         </Reveal>
+        {/* Replaced the "What we check / What you get" two-card block with a
+            direct comparison table (live feedback: the two cards read as too
+            soft/abstract - a side-by-side contrast lands harder). Framed as two
+            APPROACHES, not naming a competitor, same non-disparagement rule as
+            the rest of the site's differentiation language. */}
         <Reveal from="bottom" delay={1}>
-          <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: 24, marginBottom: 40 }}>
-            <div style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: 16, background: 'rgba(255,255,255,0.03)' }}>
-              <div style={{ fontWeight: 800, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--accent-text)', marginBottom: 14 }}>{t.appPrivacy.whatWeCheckHeading}</div>
-              <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.9 }}>
-                {t.appPrivacy.whatWeCheck}
-              </p>
-            </div>
-            <div style={{ padding: '24px', border: '1px solid var(--border)', borderRadius: 16, background: 'rgba(255,255,255,0.03)' }}>
-              <div style={{ fontWeight: 800, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--accent-text)', marginBottom: 14 }}>{t.appPrivacy.whatYouGetHeading}</div>
-              <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.9 }}>
-                {t.appPrivacy.whatYouGet}
-              </p>
+          <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 40 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+              <div style={{ padding: '16px 24px', background: 'rgba(255,255,255,0.03)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text3)', borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>{t.appPrivacy.comparisonClassicLabel}</div>
+              <div style={{ padding: '16px 24px', background: 'rgba(0,245,196,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)', borderBottom: '1px solid var(--border)' }}>{t.appPrivacy.comparisonRfiLabel}</div>
+              {t.appPrivacy.comparisonRows.map((row, i) => (
+                <div key={i} style={{ display: 'contents' }}>
+                  <div style={{ padding: '18px 24px', fontSize: 14, color: 'var(--text2)', borderRight: '1px solid var(--border)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.classic}</div>
+                  <div style={{ padding: '18px 24px', fontSize: 14, fontWeight: 700, color: 'var(--text)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.rfi}</div>
+                </div>
+              ))}
             </div>
           </div>
         </Reveal>

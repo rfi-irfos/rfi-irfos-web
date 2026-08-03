@@ -60,7 +60,11 @@ function CustomerJourneyTimeline() {
               color: i === current ? '#ffffff' : 'var(--text2)',
               marginBottom: 8, marginTop: mobile ? 2 : 0, transition: 'font-size 0.4s, color 0.4s',
             }}>{s.stage}</div>
-            <p style={{ color: i === current ? 'var(--text)' : 'var(--text3)', fontSize: 13, lineHeight: 1.8, margin: 0, transition: 'color 0.4s' }}>{s.body}</p>
+            {/* Split into two shorter paragraphs instead of one dense block, and
+                bumped up a size, per live feedback - easier to scan at a glance. */}
+            {s.body.split('\n\n').map((para, pi) => (
+              <p key={pi} style={{ color: i === current ? 'var(--text)' : 'var(--text3)', fontSize: 14, lineHeight: 1.8, margin: pi === 0 ? '0 0 10px' : 0, transition: 'color 0.4s' }}>{para}</p>
+            ))}
           </div>
         </Reveal>
       ))}
@@ -76,7 +80,7 @@ function CustomerJourneyTimeline() {
 export function JourneySection() {
   const { t } = useLocale()
   return (
-    <section id="journey" style={{ padding: '100px 2rem' }}>
+    <section id="journey" style={{ padding: '40px 2rem 100px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.journey.eyebrow}</p>

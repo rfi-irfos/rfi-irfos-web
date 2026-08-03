@@ -737,7 +737,13 @@ export function PublicSite() {
           : '0 8px 32px rgba(0,0,0,0.35)',
         display: 'flex', flexDirection: 'column', alignItems: 'flex-end',
         padding: '1.5rem 1.5rem 1.75rem', gap: 4,
-        transform: mobileOpen ? 'translateY(0)' : 'translateY(-110%)',
+        // Fixed bug (live feedback, 2026-08-03): translateY(-110%) only clears
+        // 110% of the panel's OWN height, but the panel also sits 64px down
+        // from the viewport top (`top: 64`) - for any panel shorter than ~640px
+        // tall, that left a visible sliver of the carbon-textured background
+        // peeking in at the very top of the page. Adding the top offset itself
+        // to the translate distance guarantees the whole panel clears y=0.
+        transform: mobileOpen ? 'translateY(0)' : 'translateY(calc(-100% - 64px))',
         transition: 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
         pointerEvents: mobileOpen ? 'auto' : 'none',
         textAlign: 'right',
@@ -793,7 +799,7 @@ export function PublicSite() {
           here after Track Record per live feedback: the pitch reads better once
           a visitor has already seen the ledger of real, disclosed findings,
           rather than immediately after the hero before any proof exists. */}
-      <AppPrivacySection mobile={mobile} />
+      <AppPrivacySection />
 
       {/* PRICING */}
       <PricingSection openCheckoutModal={openCheckoutModal} openProposalModal={openProposalModal} />

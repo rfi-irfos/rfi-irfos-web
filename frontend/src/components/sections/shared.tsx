@@ -431,12 +431,20 @@ export function TierCarousel({ tiers, getActions }: {
   const [idx, setIdx] = useState(defaultIdx === -1 ? 0 : defaultIdx)
   const active = tiers[idx]
   const actions = getActions(active)
-  const others = tiers.map((t, i) => ({ t, i })).filter(({ i }) => i !== idx)
   // Arrows cycle the FEATURED tier itself (wraparound through the full tier list),
   // not just scroll the filmstrip - live feedback: clicking an arrow should feel
   // like flipping through the tiers directly, the way a movie-preview carousel
   // advances the main frame, rather than only revealing more thumbnails to click.
   const cycle = (dir: 1 | -1) => setIdx(prev => (prev + dir + tiers.length) % tiers.length)
+  // Filmstrip now shows ALL tiers, not just "the rest" - live feedback: excluding
+  // the active tile meant the strip reshuffled every time you cycled, with no
+  // fixed "you are here" position, which read as the preview not tracking the
+  // arrows at all. Each tile stays in its permanent slot; only the highlight
+  // moves, and the strip auto-scrolls the active tile into view.
+  const tileRefs = useRef<(HTMLButtonElement | null)[]>([])
+  useEffect(() => {
+    tileRefs.current[idx]?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' })
+  }, [idx])
 
   return (
     <div style={{ marginBottom: 48 }}>
@@ -462,7 +470,11 @@ export function TierCarousel({ tiers, getActions }: {
           </div>
           <div style={{ fontSize: 21, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{active.price}</div>
         </div>
-        <div style={{ marginTop: 16 }}>
+        {/* Capped height + scroll (live feedback: on the longer tiers - four full
+            paragraphs - the card grew tall enough to push the Get Started button
+            out of view without scrolling the whole page). Every card now has the
+            same predictable height regardless of description length. */}
+        <div style={{ marginTop: 16, maxHeight: 220, overflowY: 'auto' }}>
           {active.desc.split('\n\n').map((p, i) => (
             <p key={i} style={{ color: 'var(--text2)', fontSize: 13.5, lineHeight: 1.75, marginBottom: 11 }}>{p}</p>
           ))}
@@ -503,23 +515,24 @@ export function TierCarousel({ tiers, getActions }: {
         </div>
       </motion.div>
 
-      {/* Filmstrip - arrows now cycle the featured tier itself (see `cycle` above);
-          the strip's own tiles are still individually clickable to jump straight
-          to a specific tier, but the arrows no longer just scroll the row. */}
-      {others.length > 0 && (
+      {/* Filmstrip - every tier gets a permanent slot (see note above); the
+          active one is now visually highlighted (teal border+fill) so the strip
+          always shows "you are here", whether you got there via the arrows or
+          by clicking a tile directly. Centered when it doesn't fill the row. */}
+      {tiers.length > 1 && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, maxWidth: 640, margin: '0 auto' }}>
           <button onClick={() => cycle(-1)} aria-label={locale.tierCarousel.prevTierAria} style={{
             flexShrink: 0, width: 32, height: 32, borderRadius: '50%', cursor: 'pointer',
             background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
             color: 'var(--text2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>&#8592;</button>
-          <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6, scrollBehavior: 'smooth' }}>
-            {others.map(({ t, i }) => (
-              <button key={t.tier} onClick={() => setIdx(i)} style={{
+          <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6, scrollBehavior: 'smooth', justifyContent: 'center' }}>
+            {tiers.map((t, i) => (
+              <button key={t.tier} ref={el => { tileRefs.current[i] = el }} onClick={() => setIdx(i)} style={{
                 flexShrink: 0, minWidth: 140, textAlign: 'left', cursor: 'pointer',
                 borderRadius: 10, padding: '10px 14px',
-                background: 'rgba(255,255,255,0.05)',
-                border: `1px solid ${i === defaultIdx ? 'rgba(0,245,196,0.4)' : 'var(--border)'}`,
+                background: i === idx ? 'rgba(0,245,196,0.12)' : 'rgba(255,255,255,0.05)',
+                border: `1px solid ${i === idx ? TEAL : i === defaultIdx ? 'rgba(0,245,196,0.4)' : 'var(--border)'}`,
                 transition: 'border-color .15s, background .15s',
               }}>
                 {/* Marks the recommended tier even while it's not the active card,
