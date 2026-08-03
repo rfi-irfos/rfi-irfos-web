@@ -6,6 +6,7 @@
 import { useState, useEffect } from 'react'
 import type { Theme } from '../../hooks/useTheme'
 import { TEAL, CountUp, Reveal } from './shared'
+import { useLocale } from '../../hooks/useLocale'
 
 
 const AUDIT_HIGHLIGHTS: { target: string; market: string; sev: string; status: string; finding: string; company?: string; aliases?: string[] }[] = [
@@ -2558,26 +2559,27 @@ export function TrackRecordSection({
   setOpenDD: (v: string | null) => void
   setReportModal: (v: string) => void
 }) {
+  const { t } = useLocale()
   return (
     <section id="track-record" style={{ padding: '100px 2rem' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>03 / Track Record</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>the discipline, demonstrated</h2>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.trackRecord.eyebrow}</p>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>{t.trackRecord.heading}</h2>
         </Reveal>
         <Reveal from="right" delay={1}>
           <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 720, fontSize: 15, lineHeight: 1.9 }}>
-            We read apps at the source-code level, not just the outside. The companies on this ledger got here the same way: they quietly pass your data to third parties, track you without consent, or leave security holes open. On every report we send, the data-protection authorities are copied in directly and we give the company ninety days to fix it before anything becomes public. The rule is simple and non-negotiable: every organization here is treated exactly the same, whether or not they ever pay us a cent.
+            {t.trackRecord.paragraph}
           </p>
         </Reveal>
         {/* Permanent disclosure ledger — framed panel (search + table).
             KPIs live ABOVE the panel as their own clean row now. */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 28 }}>
           {[
-            { n: `${AUDIT_HIGHLIGHTS.length}+`, label: 'Apps audited',        from: 'left'   },
-            { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: 'Companies notified',  from: 'bottom' },
-            { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: 'Critical findings',   from: 'top'    },
-            { n: '18+',  label: 'Regulators notified', from: 'right'  },
+            { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,        from: 'left'   },
+            { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: t.trackRecord.kpis.companiesNotified,  from: 'bottom' },
+            { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: t.trackRecord.kpis.criticalFindings,   from: 'top'    },
+            { n: '18+',  label: t.trackRecord.kpis.regulatorsNotified, from: 'right'  },
           ].map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
               <div style={{
@@ -2609,7 +2611,7 @@ export function TrackRecordSection({
             </svg>
             <input
               type="text"
-              placeholder="search your company..."
+              placeholder={t.trackRecord.searchPlaceholder}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               style={{
@@ -2636,31 +2638,31 @@ export function TrackRecordSection({
           {/* Status dropdown */}
           <LedgerDropdown id="status" mobile={mobile} minWidth={115}
             value={activeStatus ?? ''} onSelect={v => setActiveStatus(v || null)}
-            open={openDD === 'status'} onToggle={setOpenDD} placeholder="STATUS"
+            open={openDD === 'status'} onToggle={setOpenDD} placeholder={t.trackRecord.dropdowns.statusPlaceholder}
             selColor={activeStatus ? (STATUS_META[activeStatus]?.color ?? TEAL) : null}
-            options={[{ value: '', label: 'STATUS' }, ...Object.entries(STATUS_META).map(([k, v]) => ({ value: k, label: `${v.label} (${AUDIT_HIGHLIGHTS.filter(a => a.status === k).length})`, color: v.color }))]}
+            options={[{ value: '', label: t.trackRecord.dropdowns.statusPlaceholder }, ...Object.entries(STATUS_META).map(([k, v]) => ({ value: k, label: `${v.label} (${AUDIT_HIGHLIGHTS.filter(a => a.status === k).length})`, color: v.color }))]}
           />
 
           {/* SEV dropdown */}
           <LedgerDropdown id="sev" mobile={mobile} minWidth={88}
             value={activeSev ?? ''} onSelect={v => setActiveSev(v || null)}
-            open={openDD === 'sev'} onToggle={setOpenDD} placeholder="SEV"
+            open={openDD === 'sev'} onToggle={setOpenDD} placeholder={t.trackRecord.dropdowns.sevPlaceholder}
             selColor={activeSev === 'CRITICAL' ? '#f87171' : activeSev === 'HIGH' ? '#fb923c' : activeSev === 'MEDIUM' ? '#fbbf24' : null}
-            options={[{ value: '', label: 'SEV' }, ...(['CRITICAL', 'HIGH', 'MEDIUM'] as const).map(sev => ({ value: sev, label: `${sev} (${AUDIT_HIGHLIGHTS.filter(a => a.sev === sev).length})`, color: sev === 'CRITICAL' ? '#f87171' : sev === 'HIGH' ? '#fb923c' : '#fbbf24' }))]}
+            options={[{ value: '', label: t.trackRecord.dropdowns.sevPlaceholder }, ...(['CRITICAL', 'HIGH', 'MEDIUM'] as const).map(sev => ({ value: sev, label: `${sev} (${AUDIT_HIGHLIGHTS.filter(a => a.sev === sev).length})`, color: sev === 'CRITICAL' ? '#f87171' : sev === 'HIGH' ? '#fb923c' : '#fbbf24' }))]}
           />
 
           {/* Sort by dropdown */}
           <LedgerDropdown id="sort" mobile={mobile} minWidth={130}
             value={sortBy} onSelect={v => setSortBy(v)}
-            open={openDD === 'sort'} onToggle={setOpenDD} placeholder="SORT"
+            open={openDD === 'sort'} onToggle={setOpenDD} placeholder={t.trackRecord.dropdowns.sortPlaceholder}
             selColor={sortBy !== 'default' ? TEAL : null}
             options={[
-              { value: 'elapsed-desc', label: 'ELAPSED ↓' },
-              { value: 'notified-desc', label: 'NOTIFIED ↓' },
-              { value: 'notified-asc', label: 'NOTIFIED ↑' },
-              { value: 'sev', label: 'SEV' },
-              { value: 'status', label: 'STATUS' },
-              { value: 'default', label: 'DEFAULT' },
+              { value: 'elapsed-desc', label: t.trackRecord.dropdowns.sortOptions.elapsedDesc },
+              { value: 'notified-desc', label: t.trackRecord.dropdowns.sortOptions.notifiedDesc },
+              { value: 'notified-asc', label: t.trackRecord.dropdowns.sortOptions.notifiedAsc },
+              { value: 'sev', label: t.trackRecord.dropdowns.sortOptions.sev },
+              { value: 'status', label: t.trackRecord.dropdowns.sortOptions.status },
+              { value: 'default', label: t.trackRecord.dropdowns.sortOptions.default },
             ]}
           />
 
@@ -2681,12 +2683,12 @@ export function TrackRecordSection({
             (!activeStatus || a.status === activeStatus) &&
             (!activeSev || a.sev === activeSev)
           ).length
-          const sortLabel: Record<string, string> = { 'elapsed-desc': 'elapsed ↓', 'notified-desc': 'notified ↓', 'notified-asc': 'notified ↑', sev: 'sev', status: 'status' }
+          const sortLabel = t.trackRecord.resultsSummary.sortLabel
           return (
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: n > 0 ? TEAL : '#f87171', marginBottom: 10, letterSpacing: '0.06em' }}>
-              {n > 0 ? `${n} of ${AUDIT_HIGHLIGHTS.length} entries` : `no matches`}
-              {searchQuery.trim() ? ` for "${searchQuery}"` : ''}
-              {sortBy !== 'default' ? ` · sorted by ${sortLabel[sortBy] ?? sortBy}` : ''}
+              {n > 0 ? t.trackRecord.resultsSummary.matches(n, AUDIT_HIGHLIGHTS.length) : t.trackRecord.resultsSummary.noMatches}
+              {searchQuery.trim() ? t.trackRecord.resultsSummary.forQuery(searchQuery) : ''}
+              {sortBy !== 'default' ? t.trackRecord.resultsSummary.sortedBy(sortLabel[sortBy] ?? sortBy) : ''}
             </div>
           )
         })()}
@@ -2708,16 +2710,16 @@ export function TrackRecordSection({
             fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 700,
             color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.1em',
           }}>
-            <span>Organisation</span>
-            {!mobile && <span>Notified</span>}
-            <span>Status</span>
-            {!mobile && <span>SEV</span>}
-            {!mobile && <span>Intel</span>}
-            {!mobile && <span>Statutes</span>}
-            {!mobile && <span>Resolved</span>}
-            <span>Disclosure</span>
-            {!mobile && <span>Elapsed</span>}
-            {!mobile && <span>Report</span>}
+            <span>{t.trackRecord.table.organisation}</span>
+            {!mobile && <span>{t.trackRecord.table.notified}</span>}
+            <span>{t.trackRecord.table.status}</span>
+            {!mobile && <span>{t.trackRecord.table.sev}</span>}
+            {!mobile && <span>{t.trackRecord.table.intel}</span>}
+            {!mobile && <span>{t.trackRecord.table.statutes}</span>}
+            {!mobile && <span>{t.trackRecord.table.resolved}</span>}
+            <span>{t.trackRecord.table.disclosure}</span>
+            {!mobile && <span>{t.trackRecord.table.elapsed}</span>}
+            {!mobile && <span>{t.trackRecord.table.report}</span>}
           </div>
 
           {/* Rows */}
@@ -2806,7 +2808,7 @@ export function TrackRecordSection({
                       </div>
                       {notifiedTs && (
                         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: 'var(--accent-text)', marginTop: 2, letterSpacing: '0.04em' }}>
-                          {eDays === 0 ? 'today' : `${eDays}d ago`}
+                          {eDays === 0 ? t.trackRecord.row.today : t.trackRecord.row.daysAgo(eDays)}
                         </div>
                       )}
                     </div>
@@ -2877,17 +2879,17 @@ export function TrackRecordSection({
                       <span style={{
                         fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                         background: 'var(--surface-sunken)', color: 'var(--text)', letterSpacing: '0.07em',
-                      }}>{resolved ? 'YES' : 'NO'}</span>
+                      }}>{resolved ? t.trackRecord.row.yes : t.trackRecord.row.no}</span>
                     </div>
                   )}
 
                   {/* Countdown */}
                   <div style={{ paddingTop: 1 }}>
                     <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: mobile ? 12 : 16, fontWeight: 900, color: resolved ? '#00f5c4' : cdColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
-                      {resolved ? 'CLOSED' : cdStr}
+                      {resolved ? t.trackRecord.row.closed : cdStr}
                     </div>
                     <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
-                      DISCLOSURE
+                      {t.trackRecord.row.disclosureLabel}
                     </div>
                   </div>
 
@@ -2898,7 +2900,7 @@ export function TrackRecordSection({
                         {notifiedTs ? eStr : '-'}
                       </div>
                       <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
-                        {resolved ? 'RESPONDED' : 'ELAPSED'}
+                        {resolved ? t.trackRecord.row.respondedLabel : t.trackRecord.row.elapsedLabel}
                       </div>
                     </div>
                   )}
@@ -2914,7 +2916,7 @@ export function TrackRecordSection({
                           fontWeight: 700, letterSpacing: '0.06em', transition: 'background 0.15s',
                         }}>
                           <svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="M1 1h5l3 3v7H1V1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M6 1v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M3 6h4M3 8h3" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>
-                          PDF
+                          {t.trackRecord.row.pdf}
                         </button>
                       ) : (
                         <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)' }}>-</span>
@@ -2929,7 +2931,7 @@ export function TrackRecordSection({
         </div>
 
         <p style={{ marginTop: 12, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)' }}>
-        this ledger is updated in real time as companies respond. silence is public. · <a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
+        {t.trackRecord.footerNote}<a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
         </p>
       </div>
     </section>

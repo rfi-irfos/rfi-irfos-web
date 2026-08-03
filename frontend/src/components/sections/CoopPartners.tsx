@@ -2,6 +2,7 @@
 // verbatim from PublicSite.tsx. Its buy buttons open the same page-level
 // checkout modal as Pricing, so `openCheckoutModal` is passed in as a prop.
 import { Reveal } from './shared'
+import { useLocale } from '../../hooks/useLocale'
 
 type CheckoutInfo = { key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string }
 
@@ -16,14 +17,15 @@ export function CoopPartnersSection({
   mobile: boolean
   openCheckoutModal: (info: CheckoutInfo) => void
 }) {
+  const { t } = useLocale()
   return (
     <section id="coop-partners" style={{ padding: '100px 2rem' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>07 / Research Cooperation</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}>built alongside our coop partner</h2>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.coopPartners.eyebrow}</p>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}>{t.coopPartners.heading}</h2>
           <p style={{ color: 'var(--text2)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
-            Laura Serna Gaviria directs the Emergent Interaction Lab's own research and agent architecture - Lauras Team, Call Laura, and Jarvis all grew out of her method. RFI-IRFOS builds what she directs, labelled as hers so it stays clear who did what.
+            {t.coopPartners.subheading}
           </p>
         </Reveal>
         <Reveal from="bottom" delay={1}>
@@ -34,9 +36,9 @@ export function CoopPartnersSection({
           }}>
             <div>
               <p style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>Laura Serna Gaviria</p>
-              <p style={{ fontSize: 13, color: 'var(--accent-text)', marginTop: 2, fontWeight: 600 }}>Emergent Interaction Lab · Coop Partner</p>
+              <p style={{ fontSize: 13, color: 'var(--accent-text)', marginTop: 2, fontWeight: 600 }}>{t.coopPartners.role}</p>
               <p style={{ fontSize: 13, color: 'var(--text2)', marginTop: 10, lineHeight: 1.6, maxWidth: 560 }}>
-                Research into human-AI interaction since 2023 - the method behind Lauras Team, a multi-agent system of one SWAT lead team directing 15 specialised sub-agents.
+                {t.coopPartners.laura.desc}
               </p>
               <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer"
                  style={{ display: 'inline-block', marginTop: 14, fontSize: 13, fontWeight: 700, color: 'var(--accent-text)', textDecoration: 'none' }}>
@@ -73,13 +75,13 @@ export function CoopPartnersSection({
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10, marginTop: 16 }}>
             {[
-              { name: 'Systemaudit', price: '€4.500', href: 'https://buy.stripe.com/14AdRbgpi1fpdqt6jm7N60r', desc: 'A focused audit of one system using Laura\'s Emergent Interaction / Case Intelligence method - process reconstruction and findings, scoped to a single system.' },
-              { name: 'Emergent Case Intelligence Sprint', price: '€12.500', href: 'https://buy.stripe.com/bJe9AVc927DNdqtePS7N60m', desc: 'A short, intensive sprint applying Laura\'s Case Intelligence method to a real case or process, end to end.' },
-              { name: 'Multi-Agent System Design', price: '€24.500', href: 'https://buy.stripe.com/00w3cxc92bU30DH2367N60n', desc: 'Architecture and design for a multi-agent system built on Laura\'s Emergent Interaction method, tailored to your organization.' },
-              { name: 'System Design & Deployment', price: '€55.000', href: 'https://buy.stripe.com/dRm9AVgpi7DNdqt37a7N60A', desc: 'Full design-to-deployment engagement: architecture, build, and launch of a multi-agent system on Laura\'s method.' },
+              { name: 'Systemaudit', price: '€4.500', href: 'https://buy.stripe.com/14AdRbgpi1fpdqt6jm7N60r' },
+              { name: 'Emergent Case Intelligence Sprint', price: '€12.500', href: 'https://buy.stripe.com/bJe9AVc927DNdqtePS7N60m' },
+              { name: 'Multi-Agent System Design', price: '€24.500', href: 'https://buy.stripe.com/00w3cxc92bU30DH2367N60n' },
+              { name: 'System Design & Deployment', price: '€55.000', href: 'https://buy.stripe.com/dRm9AVgpi7DNdqt37a7N60A' },
             ].map((p, i) => (
               <button key={i}
-                onClick={() => openCheckoutModal({ key: `coop_${i}`, tier: p.name, desc: p.desc, price: p.price, delivery: `Answered within 24h after purchase; kick-off aligned on request.`, directUrl: p.href })}
+                onClick={() => openCheckoutModal({ key: `coop_${i}`, tier: p.name, desc: t.coopPartners.products[i].desc, price: p.price, delivery: t.coopPartners.productsDeliveryNote, directUrl: p.href })}
                 style={{
                   display: 'flex', flexDirection: 'column', gap: 4, padding: '14px 16px',
                   background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
@@ -91,7 +93,7 @@ export function CoopPartnersSection({
             ))}
           </div>
           <p style={{ fontSize: 11, color: 'var(--text3)', marginTop: 10 }}>
-            4 of her packages, shown as entry points across engagement phases - the full list depends on where a company is in its process. Full pricing on request via{' '}
+            {t.coopPartners.footerNotePrefix}{' '}
             <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text2)' }}>emergent-interaction-lab.fly.dev</a>.
           </p>
         </Reveal>

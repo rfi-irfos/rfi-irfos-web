@@ -4,10 +4,12 @@ import { useState, lazy, Suspense } from 'react'
 import { TEAL, prefersReducedMotion, Reveal, RevealWords, CountUp } from './shared'
 import { RESEARCH_AREAS } from './Research'
 import { PROJECTS } from './Projects'
+import { useLocale } from '../../hooks/useLocale'
 
 // Hero CTAs, unchanged copy/hierarchy/href (Track Record secondary outline, Book us
 // solid-fill conversion action, rfi-cta-pulse kept) - only addition is magnetic pull.
 function HeroCtaRow() {
+  const { t } = useLocale()
   return (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
       <a href="#track-record" style={{
@@ -16,14 +18,14 @@ function HeroCtaRow() {
         textTransform: 'uppercase', transition: 'border-color 0.15s',
       }}
         onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
-        onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>Track Record</a>
+        onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>{t.hero.ctaTrackRecord}</a>
       <a href="#submit" className="rfi-cta-pulse" style={{
         background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
         fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
         textTransform: 'uppercase', transition: 'opacity 0.15s',
       }}
         onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>Book us!</a>
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>{t.hero.ctaBookUs}</a>
     </div>
   )
 }
@@ -74,6 +76,7 @@ const PUBLICATIONS = [
 ]
 
 export function HeroSection({ mobile }: { mobile: boolean }) {
+  const { t } = useLocale()
   return (
     <section style={{
       display: 'flex', flexDirection: 'column', position: 'relative',
@@ -83,17 +86,16 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
     }}>
       <HeroBackground />
       <p className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
-        <RevealWords text="Rethink the Obvious." emphasizeIndices={[2]} />
+        <RevealWords text={t.hero.headline} emphasizeIndices={[t.hero.headlineEmphasisIndex]} />
       </p>
       <h1 style={{
         fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,
         marginBottom: 24, letterSpacing: '0.01em', color: 'var(--text2)',
       }}>
-        <span style={{ color: 'var(--accent-text)' }}>Interdisciplinary</span> Research Facility for Open Sciences
+        <span style={{ color: 'var(--accent-text)' }}>{t.hero.subtitlePrefix}</span>{t.hero.subtitleSuffix}
       </h1>
       <p style={{ fontSize: 17, color: 'var(--text2)', maxWidth: 580, lineHeight: 1.75, marginBottom: 40 }}>
-        Regulated Austrian research institute. Ternary AI, security, governance, minor protection, and ecocentric technology.
-        One team. Everything built in-house.
+        {t.hero.identity}
       </p>
 
       {/* Stats moved up, directly after the identity paragraph (live feedback:
@@ -109,12 +111,12 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
             years. Showing the same five numbers twice wastes the hero's one shot at
             explaining why the institute matters beyond appsec. */}
         {([
-          { n: `${RESEARCH_AREAS.length}`,    label: 'research areas',      from: 'left'   },
-          { n: `${PROJECTS.length}+`,         label: 'open-source projects', from: 'bottom' },
-          { n: `${PUBLICATIONS.length}+`,     label: 'publications',        from: 'scale'  },
-          { n: `${TEAM_COUNT}`,              label: 'people, in-house',    from: 'bottom' },
-          { n: '6',                           label: 'years of research',   from: 'bottom' },
-        ] as const).map((s, i) => (
+          { n: `${RESEARCH_AREAS.length}`,    label: t.hero.stats.researchAreas,      from: 'left'   as const },
+          { n: `${PROJECTS.length}+`,         label: t.hero.stats.openSourceProjects, from: 'bottom' as const },
+          { n: `${PUBLICATIONS.length}+`,     label: t.hero.stats.publications,       from: 'scale'  as const },
+          { n: `${TEAM_COUNT}`,               label: t.hero.stats.people,             from: 'bottom' as const },
+          { n: '6',                           label: t.hero.stats.years,              from: 'bottom' as const },
+        ]).map((s, i) => (
           <Reveal key={s.label} delay={i} from={s.from}>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 32, fontWeight: 900, color: 'var(--accent-text)' }}><CountUp value={s.n} /></div>

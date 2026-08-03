@@ -3,6 +3,7 @@
 // ~5600-line PublicSite.tsx as a pure refactor (no copy/style/behavior changes).
 import { useState, useEffect, useRef } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { useLocale } from '../../hooks/useLocale'
 
 export const TEAL = '#00f5c4'
 export const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
@@ -246,6 +247,7 @@ export function ClockIcon() {
 export function ModalTierBody({ tier, price, desc, delivery, mobile }: {
   tier: string; price: string; desc: string; delivery?: string; mobile: boolean
 }) {
+  const { t } = useLocale()
   const paras = desc.split('\n\n')
   const body = paras.slice(0, -1)
   const punchline = paras[paras.length - 1]
@@ -257,7 +259,7 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile }: {
       </div>
       {body.length > 0 && (
         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>
-          What you get
+          {t.modalTierBody.whatYouGet}
         </div>
       )}
       {body.map((para, pi) => (
@@ -424,6 +426,7 @@ export function TierCarousel({ tiers, getActions }: {
   tiers: readonly CarouselTier[]
   getActions: (t: CarouselTier) => { onBuy?: () => void; onProposal?: () => void }
 }) {
+  const { t: locale } = useLocale()
   const defaultIdx = tiers.findIndex(t => t.highlight)
   const [idx, setIdx] = useState(defaultIdx === -1 ? 0 : defaultIdx)
   const active = tiers[idx]
@@ -452,7 +455,7 @@ export function TierCarousel({ tiers, getActions }: {
                 at one" - live feedback: after clicking around, there was no cue left
                 for which tier was originally recommended. */}
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: idx === defaultIdx ? TEAL : 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8, fontWeight: idx === defaultIdx ? 800 : 400 }}>
-              {idx === defaultIdx ? '★ Recommended tier' : 'Featured tier'}
+              {idx === defaultIdx ? locale.tierCarousel.recommendedTier : locale.tierCarousel.featuredTier}
             </div>
             <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
             {active.hook && <div style={{ fontSize: 13, color: 'var(--text2)', marginTop: 6 }}>{active.hook}</div>}
@@ -494,7 +497,7 @@ export function TierCarousel({ tiers, getActions }: {
               }}
             >
               {actions.onBuy ? <CartIcon /> : <ArrowIcon />}
-              {actions.onBuy ? 'Get Started' : 'Request Proposal'}
+              {actions.onBuy ? locale.tierCarousel.getStarted : locale.tierCarousel.requestProposal}
             </button>
           )}
         </div>
@@ -505,7 +508,7 @@ export function TierCarousel({ tiers, getActions }: {
           to a specific tier, but the arrows no longer just scroll the row. */}
       {others.length > 0 && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, maxWidth: 640, margin: '0 auto' }}>
-          <button onClick={() => cycle(-1)} aria-label="Previous tier" style={{
+          <button onClick={() => cycle(-1)} aria-label={locale.tierCarousel.prevTierAria} style={{
             flexShrink: 0, width: 32, height: 32, borderRadius: '50%', cursor: 'pointer',
             background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
             color: 'var(--text2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -522,14 +525,14 @@ export function TierCarousel({ tiers, getActions }: {
                 {/* Marks the recommended tier even while it's not the active card,
                     so the cue survives clicking/cycling to other tiers. */}
                 {i === defaultIdx && (
-                  <div style={{ fontSize: 9, fontWeight: 800, color: TEAL, letterSpacing: '0.05em', marginBottom: 3 }}>★ RECOMMENDED</div>
+                  <div style={{ fontSize: 9, fontWeight: 800, color: TEAL, letterSpacing: '0.05em', marginBottom: 3 }}>{locale.tierCarousel.recommendedBadge}</div>
                 )}
                 <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{t.tier}</div>
                 <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--accent-text)', marginTop: 4 }}>{t.price}</div>
               </button>
             ))}
           </div>
-          <button onClick={() => cycle(1)} aria-label="Next tier" style={{
+          <button onClick={() => cycle(1)} aria-label={locale.tierCarousel.nextTierAria} style={{
             flexShrink: 0, width: 32, height: 32, borderRadius: '50%', cursor: 'pointer',
             background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
             color: 'var(--text2)', display: 'flex', alignItems: 'center', justifyContent: 'center',

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { prefersReducedMotion, beacon, TEAL, Reveal } from './shared'
+import { useLocale } from '../../hooks/useLocale'
 
 // Problem/solution pairs (website-repositioning plan, Stage 1a) - moved out of
 // the hero into "what we build" (live feedback, 2026-08-02): each pair now
@@ -13,36 +14,14 @@ import { prefersReducedMotion, beacon, TEAL, Reveal } from './shared'
 // to the pricing product line that actually delivers it. All four map to
 // Security Audits & Responsible Disclosure - the "Mobile + Web + AI" scope tag
 // is literally the product that covers AI/software/compliance investigation.
-const PROBLEM_SOLUTION_PAIRS = [
-  {
-    q: "Your AI doesn't behave the way it's supposed to?",
-    a: "We investigate what it actually does, not what the documentation promised.",
-    detail: 'Root-level testing against real inputs and real users, not a vendor demo or a benchmark score.',
-  },
-  {
-    q: 'Your software behaves differently in production than it did in testing?',
-    a: 'We observe the system as it really runs, under real conditions.',
-    detail: 'The same root-cause tracing discipline behind every finding we publish - stopping at the first symptom isn\'t a finding yet.',
-  },
-  {
-    q: "You're worried about the AI Act and don't know where you actually stand?",
-    a: 'We assess where the real risk sits, not just where a checklist points.',
-    detail: 'Mapped against actual risk tiers and real data flows, not a generic compliance questionnaire.',
-  },
-  {
-    q: "There's a security issue and nobody can explain how it happened?",
-    a: 'We trace it back through the system until the cause is clear.',
-    detail: 'Delivered in the same five-question format as every audit: what we found, what proves it, how we proved it, how sure we are, what to do about it.',
-  },
-] as const
-
 // Auto-rotating problem/solution showcase - reuses the same fade/blur/
 // translateY language as Reveal/RevealWords above rather than a new animation
 // approach or library. Pauses on hover, advances on a timer otherwise, and skips
 // the timer entirely under reduced-motion (renders the first pair, static, forever -
 // no forced motion, no confusing mid-cycle freeze-frame).
 function ProblemSolutionShowcase() {
-  const pairs = PROBLEM_SOLUTION_PAIRS
+  const { t } = useLocale()
+  const pairs = t.projects.problemSolution.pairs
   const [i, setI] = useState(0)
   const [paused, setPaused] = useState(false)
   const reduced = prefersReducedMotion()
@@ -81,7 +60,7 @@ function ProblemSolutionShowcase() {
             color: 'var(--accent-text)', fontSize: 11.5, fontWeight: 700, textDecoration: 'none',
             border: '1px solid rgba(0,245,196,0.3)', borderRadius: 999, padding: '5px 14px',
           }}>
-            Pricing &rarr;
+            {t.projects.problemSolution.pricingLink}
           </a>
         </motion.div>
       </AnimatePresence>
@@ -117,7 +96,13 @@ function useCarouselSize() {
   return n
 }
 
-function ProjectCard({ p }: { p: typeof PROJECTS[number] }) {
+// Localized project - PROJECTS below carries only locale-independent fields
+// (name, link); sub/desc/tag come from the current locale's t.projects.items,
+// zipped together by index in ProjectsSection/ProjectsCarousel.
+type LocalizedProject = { name: string; link: string | null; sub: string; desc: string; tag: string }
+
+function ProjectCard({ p }: { p: LocalizedProject }) {
+  const { t } = useLocale()
   return (
     <div style={{
       background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
@@ -140,7 +125,7 @@ function ProjectCard({ p }: { p: typeof PROJECTS[number] }) {
         <a href={p.link} target="_blank" rel="noopener noreferrer"
           onClick={() => beacon('project_click:' + p.name)}
           style={{ color: 'var(--accent-text)', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
-          {p.link.includes('crates.io') ? 'View on crates.io' : p.link.includes('github.com') ? 'View on GitHub' : 'View live'} &rarr;
+          {p.link.includes('crates.io') ? t.projects.viewOnCratesIo : p.link.includes('github.com') ? t.projects.viewOnGitHub : t.projects.viewLive} &rarr;
         </a>
       )}
     </div>
@@ -153,7 +138,8 @@ function ProjectCard({ p }: { p: typeof PROJECTS[number] }) {
 // Reverted to this native scroll-snap version, which was never reported broken, and
 // removed the gsap dependency entirely since nothing else in the codebase used it -
 // pure dead weight in the bundle for a feature that was permanently disabled anyway.
-function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
+function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
+  const { t } = useLocale()
   const perView = useCarouselSize()
   const reduced = prefersReducedMotion()
   const n = projects.length
@@ -206,7 +192,7 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <button onClick={() => go(-1)} aria-label="previous projects" style={arrowStyle}>&larr;</button>
+        <button onClick={() => go(-1)} aria-label={t.projects.carouselPrevAria} style={arrowStyle}>&larr;</button>
         <div style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}>
           <div
             ref={trackRef}
@@ -225,7 +211,7 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
             ))}
           </div>
         </div>
-        <button onClick={() => go(1)} aria-label="next projects" style={arrowStyle}>&rarr;</button>
+        <button onClick={() => go(1)} aria-label={t.projects.carouselNextAria} style={arrowStyle}>&rarr;</button>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}>
         <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', letterSpacing: '0.08em' }}>
@@ -266,152 +252,50 @@ function ProjectsCarousel({ projects }: { projects: typeof PROJECTS }) {
 // ~3" recommendation was explicitly overridden by the user - every existing tier
 // stayed, the carousel is the display mechanism, not a reduction.
 
+// Locale-independent fields only (name, link) - sub/desc/tag come from the
+// current locale's t.projects.items, zipped together by index below.
 export const PROJECTS = [
-  {
-    name: 'Ternary Intelligence Stack',
-    sub: 'TIS monorepo',
-    desc: 'Full-stack post-binary AI platform. Language, compiler, ISA, virtual machine, linear algebra, API, and model. Built on balanced ternary {-1, 0, +1}.',
-    link: 'https://github.com/rfi-irfos/ternary-intelligence-stack',
-    tag: 'core platform',
-  },
-  {
-    name: 'albert.',
-    sub: 'ternary MoE language model',
-    desc: 'Language model trained from scratch on ternary arithmetic. Grows its own architecture via autonomous plateau-gated Net2Net surgery. No human layer additions ever.',
-    link: 'https://github.com/rfi-irfos/ternary-intelligence-stack',
-    tag: 'AI model',
-  },
-  {
-    name: 'Rusty Penguin',
-    sub: 'pure-Rust OS',
-    desc: 'Operating system written from scratch in Rust. Own kernel, GUI desktop, from-scratch TCP/IP stack, Linux ABI compatibility layer. Ubuntu replacement roadmap active.',
-    link: 'https://github.com/rfi-irfos/rusty-penguin',
-    tag: 'systems',
-  },
-  {
-    name: 'Lighthouse',
-    sub: 'sovereign workplace OS',
-    desc: 'One self-hosted Rust + React binary running the entire institute: comms, CRM, finance, payroll, HR, governance, and live training telemetry. Append-only 50-year audit trail.',
-    link: null,
-    tag: 'internal · live',
-  },
-  {
-    name: 'Android Security Audit 2026',
-    sub: '215+ apps · 100+ companies',
-    desc: '250+ critical findings across NYSE, NASDAQ, LSE, and XETRA listed companies. Includes children\'s app wave with COPPA + GDPR Art. 8 scope. Root level code analysis. Coordinated disclosure 2026-09-19. Regulators BCC\'d on every submission.',
-    link: 'https://github.com/rfi-irfos/android-security-audit-2026',
-    tag: 'security research',
-  },
-  {
-    name: 'aladdin-mini',
-    sub: 'disclosure impact engine',
-    desc: 'Models how markets react to security disclosures once they go public - including our own, only after the 90-day embargo lifts. A hedge system trades the signal. BlackRock\'s version is called Aladdin ($21T AUM). This one\'s free.',
-    link: 'https://github.com/rfi-irfos/aladdin-mini',
-    tag: 'open source',
-  },
-  {
-    name: 'albert-cli',
-    sub: 'ternary AI terminal client',
-    desc: 'Multi-provider CLI for albert. and other LLMs. Native SSE streaming, reasoning effort control, OpenAI/Anthropic/NVIDIA NIM/Google compatible. Extracted from TIS into its own standalone repo.',
-    link: 'https://github.com/rfi-irfos/agent-albert-cli',
-    tag: 'CLI · crates.io',
-  },
-  {
-    name: 'albert-llb',
-    sub: 'last look back protocol',
-    desc: 'Deterministic filesystem containment gate for sovereign AI agents - a hard safety boundary an agent cannot write outside. Published on crates.io. Part of the Ternary Intelligence Stack.',
-    link: 'https://crates.io/crates/albert-llb',
-    tag: 'rust crate · crates.io',
-  },
-  {
-    name: 'ternlang-core',
-    sub: 'ternary compiler + VM',
-    desc: 'Compiler and virtual machine for Ternlang - a balanced-ternary language with affirm/tend/reject trit semantics, @sparseskip codegen and BET bytecode execution. Published on crates.io.',
-    link: 'https://crates.io/crates/ternlang-core',
-    tag: 'rust crate · crates.io',
-  },
-  {
-    name: 'ternlang-moe',
-    sub: 'ternary mixture-of-experts',
-    desc: 'Ternary MoE orchestrator: routes a query through 13 domain experts, synthesises an emergent ternary signal, enforces a hard safety veto, and returns a decision with confidence and temperature. Published on crates.io.',
-    link: 'https://crates.io/crates/ternlang-moe',
-    tag: 'rust crate · crates.io',
-  },
-  {
-    name: 'invisible layer',
-    sub: '44 sensor experiments',
-    desc: '44 browser-based experiments that use your phone\'s built-in sensors and APIs to reveal what has been running silently. No install. No account. No server. One profile page that shows exactly how you look to the systems watching.',
-    link: 'https://github.com/rfi-irfos/invisible-layer',
-    tag: 'open source · privacy',
-  },
-  {
-    name: 'rfi-irfos port prox',
-    sub: 'offline port-checker PWA',
-    desc: 'Honest, offline-installable port-checker for your phone. Real WebSocket connect-timing probe of localhost - no fake scanning, no fake "close" button. Shows real per-OS terminal commands instead. Sibling to invisible layer.',
-    link: 'https://github.com/rfi-irfos/lauras-port-proxy',
-    tag: 'open source · privacy',
-  },
-  {
-    name: 'LAURA',
-    sub: 'canary-token honeypot',
-    desc: 'Protects against NFC/Bluetooth proximity phone-data theft - bait photo folders that fire a passive beacon when opened without consent, nothing more. No exploit, no device access, no automatic reporting. A human reviews every hit before anything further happens. Live demo: rfi-irfos.github.io/laura.',
-    link: 'https://github.com/rfi-irfos/laura',
-    tag: 'open source · privacy',
-  },
-  {
-    name: 'call-laura',
-    sub: 'deterministic document-review framework',
-    desc: 'MCP server where agents submit plans or documents and get structured findings across four lenses, or the full 15-agent expert team - every finding cites the exact text span it references. Fully local, no external APIs, fully reproducible. Crates: lauras-core, lauras-team, lauras-mcp, lauras-api.',
-    link: 'https://github.com/rfi-irfos/call-laura',
-    tag: 'open source · crates.io',
-  },
-  {
-    name: "Laura's Agents",
-    sub: 'LLM-bridged expert team',
-    desc: 'Live LLM-bridged versions of the same 15 expert agents behind call-laura (OSINT, security, legal, finance, UX, and more). Modular: license one agent, a bundle, or the full team as an automated data-processing pipeline. Public overview only - the agent logic itself stays private.',
-    link: 'https://github.com/rfi-irfos/lauras-agents-public',
-    tag: 'commercial · private engine',
-  },
-  {
-    name: 'CoEvolution Factory',
-    sub: 'autonomous compliance/risk AI centers',
-    desc: "50 live compliance/risk AI centers running on Laura's Agents engine, each an autonomous 'daughter' firm scaled out from one constitution.",
-    link: 'https://coevolution-factory-sparkling-mountain-1802.fly.dev',
-    tag: 'live · internal',
-  },
-  {
-    name: 'VEO Framework',
-    sub: 'reflective-mode technique for LLMs',
-    desc: 'A reusable technique for pulling a language model out of transactional "answer mode" and into genuine reflective mode - examining its own reasoning and acknowledging uncertainty instead of just completing the prompt. Developed from Laura Serna Gaviria\'s human-AI co-evolution research.',
-    link: 'https://github.com/rfi-irfos/veo-framework',
-    tag: 'open source · research',
-  },
-  {
-    name: 'NFCS',
-    sub: 'ecocentric research',
-    desc: 'Neurobiological-Fitness Consequence Separation. Agent-based model proving the global food system produces 1.64x the calories needed to feed every person on Earth. The scarcity is not thermodynamic - it is organizational. Manufactured, not physical.',
-    link: 'https://github.com/rfi-irfos/foodchain-analysis',
-    tag: 'ecocentric research',
-  },
+  { name: 'Ternary Intelligence Stack', link: 'https://github.com/rfi-irfos/ternary-intelligence-stack' },
+  { name: 'albert.', link: 'https://github.com/rfi-irfos/ternary-intelligence-stack' },
+  { name: 'Rusty Penguin', link: 'https://github.com/rfi-irfos/rusty-penguin' },
+  { name: 'Lighthouse', link: null },
+  { name: 'Android Security Audit 2026', link: 'https://github.com/rfi-irfos/android-security-audit-2026' },
+  { name: 'aladdin-mini', link: 'https://github.com/rfi-irfos/aladdin-mini' },
+  { name: 'albert-cli', link: 'https://github.com/rfi-irfos/agent-albert-cli' },
+  { name: 'albert-llb', link: 'https://crates.io/crates/albert-llb' },
+  { name: 'ternlang-core', link: 'https://crates.io/crates/ternlang-core' },
+  { name: 'ternlang-moe', link: 'https://crates.io/crates/ternlang-moe' },
+  { name: 'invisible layer', link: 'https://github.com/rfi-irfos/invisible-layer' },
+  { name: 'rfi-irfos port prox', link: 'https://github.com/rfi-irfos/lauras-port-proxy' },
+  { name: 'LAURA', link: 'https://github.com/rfi-irfos/laura' },
+  { name: 'call-laura', link: 'https://github.com/rfi-irfos/call-laura' },
+  { name: "Laura's Agents", link: 'https://github.com/rfi-irfos/lauras-agents-public' },
+  { name: 'CoEvolution Factory', link: 'https://coevolution-factory-sparkling-mountain-1802.fly.dev' },
+  { name: 'VEO Framework', link: 'https://github.com/rfi-irfos/veo-framework' },
+  { name: 'NFCS', link: 'https://github.com/rfi-irfos/foodchain-analysis' },
 ]
 
 // PROJECTS section (`#projects`, "what we build") plus the Problem/Solution
 // showcase underneath it (moved here from the hero, live feedback 2026-08-02).
 export function ProjectsSection() {
+  const { t } = useLocale()
+  const localizedProjects: LocalizedProject[] = PROJECTS.map((p, i) => ({
+    name: p.name, link: p.link, ...t.projects.items[i],
+  }))
   return (
     <section id="projects" style={{ padding: '100px 2rem' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="right">
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>02 / Undertakings</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>what we build</h2>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.projects.eyebrow}</p>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>{t.projects.heading}</h2>
         </Reveal>
         <Reveal from="left" delay={1}>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
-            Every project is a proof of concept for a specific research question. All built on the same stack.
+            {t.projects.subheading}
           </p>
         </Reveal>
         <Reveal from="bottom" delay={1}>
-          <ProjectsCarousel projects={PROJECTS} />
+          <ProjectsCarousel projects={localizedProjects} />
         </Reveal>
 
         {/* Problem/solution showcase, moved here from the hero (live feedback,

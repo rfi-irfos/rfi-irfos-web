@@ -4,13 +4,15 @@
 // pixel right below the form, and the abandonment beacon, both key off the same
 // state - so this section receives it all as props.
 import { FormStateIcon, TEAL, Reveal, LIGHTHOUSE_PIXEL } from './shared'
+import { useLocale } from '../../hooks/useLocale'
 
+// Emails/hrefs are locale-independent; labels come from t.submit.contactCards.
 const CONTACT_CARDS = [
-  { label: 'General inquiries', value: 'contact@rfi-irfos.com', href: 'mailto:contact@rfi-irfos.com' },
-  { label: 'Security disclosures', value: 'security@rfi-irfos.com', href: 'mailto:security@rfi-irfos.com' },
-  { label: 'Public disclosures (audit correspondence)', value: 'rfi.irfos@gmail.com', href: 'mailto:rfi.irfos@gmail.com' },
-  { label: 'Research collaboration', value: 'research@rfi-irfos.com', href: 'mailto:research@rfi-irfos.com' },
-  { label: 'Careers', value: 'career@rfi-irfos.com', href: 'mailto:career@rfi-irfos.com' },
+  { key: 'general' as const, value: 'contact@rfi-irfos.com', href: 'mailto:contact@rfi-irfos.com' },
+  { key: 'security' as const, value: 'security@rfi-irfos.com', href: 'mailto:security@rfi-irfos.com' },
+  { key: 'publicDisclosures' as const, value: 'rfi.irfos@gmail.com', href: 'mailto:rfi.irfos@gmail.com' },
+  { key: 'research' as const, value: 'research@rfi-irfos.com', href: 'mailto:research@rfi-irfos.com' },
+  { key: 'careers' as const, value: 'career@rfi-irfos.com', href: 'mailto:career@rfi-irfos.com' },
 ]
 
 export type TipForm = {
@@ -34,14 +36,15 @@ export function SubmitSection({
   submitTip: (e: React.FormEvent) => void
   pixelRef: React.RefObject<HTMLImageElement | null>
 }) {
+  const { t } = useLocale()
   return (
     <section id="submit" style={{ padding: '100px 2rem' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>08 / Contact &amp; Disclosures</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>get in touch</h2>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.submit.eyebrow}</p>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>{t.submit.heading}</h2>
           <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
-            One form, whatever it's about: a general question, a service inquiry, research collaboration - or a security finding. If it's the last one, we run our own intake channel instead of routing it to a third-party bug bounty platform, for the same reason we'd refuse to be routed to one ourselves.
+            {t.submit.paragraph}
           </p>
         </Reveal>
 
@@ -53,18 +56,18 @@ export function SubmitSection({
               "just email someone" option. */}
           <Reveal from="left">
             <p style={{ fontSize: 12.5, color: 'var(--text3)', marginBottom: 14 }}>
-              Not sure what to pick on the right? <strong style={{ color: 'var(--text2)' }}>General inquiries</strong> reaches a human either way - or email one of these directly.
+              {t.submit.notSurePrefix}<strong style={{ color: 'var(--text2)' }}>{t.submit.notSureStrong}</strong>{t.submit.notSureSuffix}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
               {CONTACT_CARDS.map(c => (
-                <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={{
+                <a key={c.key} href={c.href} target="_blank" rel="noopener noreferrer" style={{
                   background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
                   borderRadius: 12, padding: '14px 18px', textDecoration: 'none', display: 'block',
                   transition: 'border-color 0.2s',
                 }}
                   onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
                   onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
-                  <div style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 5 }}>{c.label}</div>
+                  <div style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 5 }}>{t.submit.contactCards[c.key]}</div>
                   <div style={{ color: 'var(--accent-text)', fontWeight: 600, fontSize: 13 }}>{c.value}</div>
                 </a>
               ))}
@@ -75,11 +78,13 @@ export function SubmitSection({
                 section feel cluttered/security-intake-only rather than one
                 clean form. */}
             <p style={{ fontSize: 12, color: 'var(--text3)', marginBottom: 20, lineHeight: 1.7 }}>
-              Sending a security finding? See our{' '}
-              <a href="#p/security" style={{ color: 'var(--accent-text)' }}>full disclosure-handling policy</a> - triage, lawful basis, and your choice of credit.
+              {t.submit.disclosurePolicyPrefix}
+              <a href="#p/security" style={{ color: 'var(--accent-text)' }}>{t.submit.disclosurePolicyLink}</a>{t.submit.disclosurePolicySuffix}
             </p>
             <p style={{ fontSize: 11, color: 'var(--text3)', fontFamily: "'JetBrains Mono', monospace", marginBottom: 0, lineHeight: 1.8 }}>
-              Elisabethinergasse 25<br />8020 Graz, Austria<br />rfi-irfos.com · rfi-irfos.at
+              {t.submit.address.split('\n').map((line, i, arr) => (
+                <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
+              ))}
             </p>
           </Reveal>
 
@@ -93,32 +98,32 @@ export function SubmitSection({
                 background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
                 borderRadius: 8, padding: '12px 16px', color: tipForm.topic ? 'var(--text)' : 'var(--text3)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
               }}>
-                <option value="">Topic (optional)</option>
-                <option value="Security Disclosure">Security Disclosure</option>
-                <option value="Security Audit">Security Audit</option>
-                <option value="Send APK">Send us your APK</option>
-                <option value="Research Collaboration">Research Collaboration</option>
-                <option value="Web Development">Web Development</option>
-                <option value="Other">Other</option>
+                <option value="">{t.submit.form.topicPlaceholder}</option>
+                <option value="Security Disclosure">{t.submit.form.topicOptions.securityDisclosure}</option>
+                <option value="Security Audit">{t.submit.form.topicOptions.securityAudit}</option>
+                <option value="Send APK">{t.submit.form.topicOptions.sendApk}</option>
+                <option value="Research Collaboration">{t.submit.form.topicOptions.researchCollaboration}</option>
+                <option value="Web Development">{t.submit.form.topicOptions.webDevelopment}</option>
+                <option value="Other">{t.submit.form.topicOptions.other}</option>
               </select>
-              <input type="text" placeholder="Name or alias (optional - leave blank to stay anonymous)"
+              <input type="text" placeholder={t.submit.form.namePlaceholder}
                 value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
                 style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-              <input type="email" placeholder="Email (optional - only if you want a reply)"
+              <input type="email" placeholder={t.submit.form.emailPlaceholder}
                 value={tipForm.email} onChange={e => setTipForm(p => ({ ...p, email: e.target.value }))}
                 style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-              <input type="text" required placeholder="Company / app / subject"
+              <input type="text" required placeholder={t.submit.form.targetPlaceholder}
                 value={tipForm.target} onChange={e => setTipForm(p => ({ ...p, target: e.target.value }))}
                 style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
               <select value={tipForm.credit} onChange={e => setTipForm(p => ({ ...p, credit: e.target.value }))} style={{
                 background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
                 borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
               }}>
-                <option value="alias">Credit me by alias / name I provide above</option>
-                <option value="anonymous">Do not credit me - keep this anonymous</option>
-                <option value="full-name">Credit me by full legal name</option>
+                <option value="alias">{t.submit.form.creditOptions.alias}</option>
+                <option value="anonymous">{t.submit.form.creditOptions.anonymous}</option>
+                <option value="full-name">{t.submit.form.creditOptions.fullName}</option>
               </select>
-              <textarea required placeholder="What's this about? Include what it is, where relevant, and how to reach a conclusion (e.g. how to reproduce a finding)."
+              <textarea required placeholder={t.submit.form.findingPlaceholder}
                 value={tipForm.finding} onChange={e => setTipForm(p => ({ ...p, finding: e.target.value }))}
                 rows={6} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
               <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
@@ -126,7 +131,7 @@ export function SubmitSection({
                   onChange={e => setTipForm(p => ({ ...p, lawful: e.target.checked }))}
                   style={{ marginTop: 3, accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
                 <span style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.6 }}>
-                  I confirm this information was obtained through lawful, authorized means - publicly accessible data, my own devices, or software I'm authorized to test.
+                  {t.submit.form.lawfulLabel}
                 </span>
               </label>
               <button type="submit" disabled={tipFormState === 'sending' || !tipForm.lawful} style={{
@@ -139,10 +144,10 @@ export function SubmitSection({
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 9,
               }}>
                 <FormStateIcon state={tipFormState} />
-                {tipFormState === 'sending' ? 'Sending...' : tipFormState === 'ok' ? 'Received. Thank you.' : 'Send message'}
+                {tipFormState === 'sending' ? t.submit.form.submitSending : tipFormState === 'ok' ? t.submit.form.submitOk : t.submit.form.submitIdle}
               </button>
               {tipFormState === 'err' && (
-                <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>Something went wrong. Email us directly at contact@rfi-irfos.com</p>
+                <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>{t.submit.form.errorText}</p>
               )}
             </form>
           </Reveal>

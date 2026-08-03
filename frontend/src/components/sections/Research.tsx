@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { prefersReducedMotion, useTilt, Reveal } from './shared'
+import { useLocale } from '../../hooks/useLocale'
 
 // One tile of the Research Areas grid, uniform sizing (a "featured wide tile" pass
 // shipped and got flagged as worse than the plain even grid - reverted, Simeon
@@ -10,7 +11,7 @@ import { prefersReducedMotion, useTilt, Reveal } from './shared'
 // out circularly once scrolled into view - ties the "Areas of Magnification" copy to
 // an actual visual motif instead of a plain fade. One-shot, not scroll-scrubbed, so
 // it stays cheap (single transition, not per-frame JS).
-function BentoTile({ a }: { a: typeof RESEARCH_AREAS[number] }) {
+function BentoTile({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
   const [visible, setVisible] = useState(() => prefersReducedMotion())
   const wrapRef = useRef<HTMLDivElement>(null)
   const tiltRef = useRef<HTMLDivElement>(null)
@@ -34,18 +35,24 @@ function BentoTile({ a }: { a: typeof RESEARCH_AREAS[number] }) {
         clipPath: visible ? 'circle(150% at 40px 40px)' : 'circle(0% at 40px 40px)',
         transition: 'clip-path 0.9s cubic-bezier(0.16,1,0.3,1)',
       }}>
-        <div style={{ marginBottom: 16, lineHeight: 0 }}>{a.icon}</div>
-        <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{a.title}</div>
-        <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7 }}>{a.desc}</div>
+        <div style={{ marginBottom: 16, lineHeight: 0 }}>{icon}</div>
+        <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{title}</div>
+        <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7 }}>{desc}</div>
       </motion.div>
     </div>
   )
 }
 
+// Icons are locale-independent (module-level RESEARCH_AREAS below), title/desc
+// come from the current locale's content object, zipped together by index.
 function ResearchAreasGrid() {
+  const { t } = useLocale()
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
-      {RESEARCH_AREAS.map(a => <BentoTile key={a.title} a={a} />)}
+      {RESEARCH_AREAS.map((a, i) => {
+        const area = t.research.areas[i]
+        return <BentoTile key={area.title} icon={a.icon} title={area.title} desc={area.desc} />
+      })}
     </div>
   )
 }
@@ -177,16 +184,17 @@ export const RESEARCH_AREAS = [
 // a visitor sees anything concrete). App Privacy now sits after Track
 // Record instead - proof first, then the "start here" pitch.
 export function ResearchSection() {
+  const { t } = useLocale()
   return (
     <section id="research" style={{ padding: '100px 2rem' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>01 / Areas of Magnification</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>where our attention falls</h2>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.research.eyebrow}</p>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>{t.research.heading}</h2>
         </Reveal>
         <Reveal from="right" delay={1}>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
-            One team. The same people who train the model write the regulatory analysis and file the disclosure.
+            {t.research.subheading}
           </p>
         </Reveal>
         <ResearchAreasGrid />

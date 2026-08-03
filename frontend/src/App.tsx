@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { PublicSite } from './components/PublicSite'
+import { LocaleProvider } from './hooks/useLocale'
 import './App.css'
 
 // Lazy-loaded: legal pages are a secondary route homepage visitors never hit, so there's
@@ -43,6 +44,9 @@ export default function App() {
     window.scrollTo(0, slug ? 0 : homeScrollY.current)
   }, [slug])
 
+  // LegalPage (Team/legal pages) stays English-only and out of scope for this
+  // i18n pass - wrapping only PublicSite in the LocaleProvider keeps that
+  // boundary explicit rather than incidental.
   if (slug) return <Suspense fallback={null}><LegalPage slug={slug} /></Suspense>
-  return <PublicSite />
+  return <LocaleProvider><PublicSite /></LocaleProvider>
 }
