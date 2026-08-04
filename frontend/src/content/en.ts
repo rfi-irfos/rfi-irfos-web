@@ -33,7 +33,7 @@ export const EN = {
     headlineEmphasisIndex: 2,
     subtitlePrefix: 'Interdisciplinary',
     subtitleSuffix: ' Research Facility for Open Sciences',
-    identity: 'Regulated Austrian research institute. Ternary AI, security, governance, minor protection, and ecocentric technology. One team. Everything built in-house.',
+    identity: 'Regulated Austrian research institute for NIS2 implementation, cybersecurity compliance, ternary AI, governance, and ecocentric technology. We translate directive obligations into technical controls, audit critical infrastructure, and file disclosures with regulators.',
     stats: {
       researchAreas: 'research areas',
       openSourceProjects: 'open-source projects',
