@@ -20,26 +20,15 @@
       })();
     </script>
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <!-- Real webfonts - the site referenced 'Inter' in CSS everywhere but never actually
-         loaded it, so every visitor has been seeing whatever their OS's system-ui font is.
-         Space Grotesk added for headlines (a bit more technical/geometric character than
-         Inter alone), JetBrains Mono for the monospace eyebrow labels/tags site-wide
-         (previously just the browser's generic monospace fallback). font-display=swap so
-         this never blocks first paint - text renders in the fallback immediately. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Space Grotesk's variable axis only goes up to weight 700 (no 800/900 exists for
-         this font) - headings requesting fontWeight 900 fall back to the nearest
-         available weight via normal CSS font matching, which is correct, not a bug. -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="canonical" href="https://rfi-irfos.com" />
+    <link rel="alternate" hreflang="de" href="https://rfi-irfos.com" />
+    <link rel="alternate" hreflang="en" href="https://rfi-irfos.com" />
     <title>RFI-IRFOS - NIS2 Implementation Austria · Cybersecurity · Ternary AI</title>
     <meta name="description" content="Austrian research institute for NIS2 implementation, incident response, cybersecurity compliance, and ternary AI. Root-level code analysis, GDPR, EU AI Act. Graz, Austria." />
-    <!-- og:image/twitter tags were entirely missing - shared links rendered as bare text
-         cards with no preview on Slack/LinkedIn/Twitter/etc. og-image.png built to match
-         the site's actual visual identity (carbon gradient, Space Grotesk headline, teal
-         accent), not a generic placeholder. -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="RFI-IRFOS - Rethink the Obvious." />
     <meta property="og:description" content="Interdisciplinary Research Facility for Open Sciences. Ternary AI · Security · Governance · Graz, Austria." />
@@ -52,6 +41,34 @@
     <meta name="twitter:title" content="RFI-IRFOS - Rethink the Obvious." />
     <meta name="twitter:description" content="Interdisciplinary Research Facility for Open Sciences. Ternary AI · Security · Governance · Graz, Austria." />
     <meta name="twitter:image" content="https://rfi-irfos.com/og-image.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "RFI-IRFOS",
+      "url": "https://rfi-irfos.com",
+      "description": "Austrian research institute for NIS2 implementation, incident response, cybersecurity compliance, and ternary AI. Root-level code analysis, GDPR, EU AI Act. Graz, Austria.",
+      "location": {
+        "@type": "City",
+        "name": "Graz",
+        "addressRegion": "Styria",
+        "addressCountry": "AT"
+      },
+      "sameAs": [
+        "https://github.com/rfi-irfos"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "RFI-IRFOS",
+      "url": "https://rfi-irfos.com",
+      "description": "Austrian research institute for NIS2 implementation, incident response, cybersecurity compliance, and ternary AI.",
+      "inLanguage": ["en", "de"]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
