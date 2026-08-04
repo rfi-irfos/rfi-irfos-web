@@ -27,7 +27,7 @@ function ProblemSolutionShowcase() {
   const reduced = prefersReducedMotion()
   useEffect(() => {
     if (reduced || paused) return
-    const t = setInterval(() => setI(prev => (prev + 1) % pairs.length), 7000)
+    const t = setInterval(() => setI(prev => (prev + 1) % pairs.length), 10000)
     return () => clearInterval(t)
   }, [reduced, paused, pairs.length])
   const pair = pairs[reduced ? 0 : i]

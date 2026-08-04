@@ -58,6 +58,9 @@ export const EN = {
       { title: 'Prompt Injection & Adversarial Robustness', desc: 'Red-teaming prompt injection, jailbreak resistance, and adversarial robustness. Mapping where instruction-following breaks under pressure, and hardening against it.' },
       { title: 'Web App Development', desc: 'Full-stack builds engineered by the same team that audits for a living. React front ends, Rust backends, installable PWAs. No bloated page builders, no lock-in.' },
       { title: 'Model Welfare & Wellbeing', desc: 'Model welfare as a first-class research axis. Wellbeing signals during training, distress detection, and dignity for the systems we cultivate, not just the humans they serve.' },
+      { title: 'NIS2 & Cybersecurity', desc: 'NIS2 implementation, incident-response playbooks, and national cybersecurity posture for regulated operators. We translate directive obligations into technical controls your infrastructure team can actually implement.' },
+      { title: 'Internet of Bodies', desc: 'Biometric and behavioural data streams across wearables, medical devices, and AI health assistants. We audit where bodies become data, who owns the signal, and where current law stops protecting people.' },
+      { title: 'Child Protection & Minors', desc: 'Children are not a niche. We specialise in the intersection of COPPA, GDPR Art. 8, and the EU AI Act provisions for minors - audit, enforcement, and regulator-backed disclosure across apps, games, and streaming platforms.' },
     ],
   },
 
@@ -83,12 +86,27 @@ export const EN = {
           detail: 'The same root-cause tracing discipline behind every finding we publish - stopping at the first symptom isn\'t a finding yet.',
         },
         {
-          q: "You're worried about the AI Act and don't know where you actually stand?",
+          q: 'You need NIS2-compliant incident response but don\'t know which controls actually fit your stack?',
+          a: 'We translate directive obligations into technical controls your infrastructure team can implement.',
+          detail: 'NIS2 is not a checklist you can buy. We map the obligations against your actual systems, your actual code, and the actual data flows that regulators will ask about first.',
+        },
+        {
+          q: 'You\'re worried about the AI Act and don\'t know where you actually stand?',
           a: 'We assess where the real risk sits, not just where a checklist points.',
           detail: 'Mapped against actual risk tiers and real data flows, not a generic compliance questionnaire.',
         },
         {
-          q: "There's a security issue and nobody can explain how it happened?",
+          q: 'Your app processes children\'s data and you\'re not sure the consent flow actually holds up?',
+          a: 'We audit under COPPA, GDPR Art. 8, and the EU AI Act provisions for minors - the intersection where most compliance frameworks stop.',
+          detail: 'Children\'s privacy is not a lighter version of adult privacy. We test the exact flows that matter for minors: age gating, consent mechanisms, biometric handling, and the SDKs that run before any screen appears.',
+        },
+        {
+          q: 'You\'re building AI health or wearable products and the biometric data path is unclear?',
+          a: 'We trace where bodies become data - from sensor to storage to third-party processor.',
+          detail: 'The Internet of Bodies is not hypothetical. We audit wearables, medical devices, and AI health assistants for GDPR Art. 9 compliance, data minimisation, and the cross-border transfers that happen without anyone noticing.',
+        },
+        {
+          q: 'There\'s a security issue and nobody can explain how it happened?',
           a: 'We trace it back through the system until the cause is clear.',
           detail: 'Delivered in the same five-question format as every audit: what we found, what proves it, how we proved it, how sure we are, what to do about it.',
         },

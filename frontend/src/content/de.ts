@@ -55,6 +55,9 @@ export const DE: Content = {
       { title: 'Prompt Injection & Adversariale Robustheit', desc: 'Red-Teaming für Prompt Injection, Jailbreak-Resistenz und adversariale Robustheit. Wir kartieren, wo Instruction-Following unter Druck bricht, und härten dagegen ab.' },
       { title: 'Web-App-Entwicklung', desc: 'Full-Stack-Builds von demselben Team, das hauptberuflich audititert. React-Frontends, Rust-Backends, installierbare PWAs. Keine aufgeblähten Page-Builder, kein Vendor-Lock-in.' },
       { title: 'Modellwohlergehen & Wellbeing', desc: 'Modellwohlergehen als eigenständige Forschungsachse. Wellbeing-Signale während des Trainings, Distress-Erkennung und Würde für die Systeme, die wir kultivieren - nicht nur für die Menschen, denen sie dienen.' },
+      { title: 'NIS2 & Cybersecurity', desc: 'NIS2-Implementierung, Incident-Response-Playbooks und nationale Cybersicherheitslage für regulierte Betreiber. Wir übersetzen Richtlinienpflichten in technische Kontrollen, die Ihr Infrastrukturteam tatsächlich umsetzen kann.' },
+      { title: 'Internet of Bodies', desc: 'Biometrische und verhaltensbasierte Datenströme über Wearables, Medizingeräte und KI-Gesundheitsassistenten. Wir auditieren, wo Körper zu Daten werden, wer das Signal besitzt und wo das geltende Recht aufhört, Menschen zu schützen.' },
+      { title: 'Kinderschutz & Minderjährige', desc: 'Kinder sind keine Nische. Wir spezialisieren uns auf die Schnittstelle von COPPA, DSGVO Art. 8 und den EU-AI-Act-Bestimmungen für Minderjährige - Audit, Durchsetzung und regierungsunterstützte Offenlegung über Apps, Spiele und Streaming-Plattformen.' },
     ],
   },
 
@@ -80,9 +83,24 @@ export const DE: Content = {
           detail: 'Dieselbe Ursachenanalyse, die hinter jedem veröffentlichten Befund steht - wer beim ersten Symptom aufhört, hat noch keinen Befund.',
         },
         {
+          q: 'Sie brauchen NIS2-konforme Incident Response, wissen aber nicht, welche Kontrollen wirklich zu Ihrem Stack passen?',
+          a: 'Wir übersetzen Richtlinienpflichten in technische Kontrollen, die Ihr Infrastrukturteam tatsächlich umsetzen kann.',
+          detail: 'NIS2 ist keine Checkliste, die man kaufen kann. Wir mappen die Pflichten gegen Ihre tatsächlichen Systeme, Ihren tatsächlichen Code und die tatsächlichen Datenflüsse, die Regulatoren zuerst abfragen werden.',
+        },
+        {
           q: 'Sie machen sich Sorgen wegen des AI Act und wissen nicht, wo Sie wirklich stehen?',
           a: 'Wir bewerten, wo das reale Risiko liegt - nicht nur, worauf eine Checkliste zeigt.',
           detail: 'Zugeordnet zu echten Risikoklassen und tatsächlichen Datenflüssen, nicht zu einem generischen Compliance-Fragebogen.',
+        },
+        {
+          q: 'Ihre App verarbeitet Kinderdaten und Sie sind sich nicht sicher, ob der Consent-Flow wirklich standhält?',
+          a: 'Wir auditieren unter COPPA, DSGVO Art. 8 und den EU-AI-Act-Bestimmungen für Minderjährige - die Schnittstelle, wo die meisten Compliance-Frameworks aufhören.',
+          detail: 'Kinderdatenschutz ist keine light-Version von Erwachsenen-Datenschutz. Wir testen die genauen Flows, die für Minderjährige relevant sind: Age-Gating, Consent-Mechanismen, biometrische Verarbeitung und die SDKs, die laufen, bevor überhaupt ein Screen erscheint.',
+        },
+        {
+          q: 'Sie bauen KI-Gesundheits- oder Wearable-Produkte und der biometrische Datenpfad ist unklar?',
+          a: 'Wir verfolgen, wo Körper zu Daten werden - vom Sensor zur Speicherung zum Drittverarbeiter.',
+          detail: 'Internet of Bodies ist nicht hypothetisch. Wir auditieren Wearables, Medizingeräte und KI-Gesundheitsassistenten auf DSGVO Art. 9-Konformität, Datenminimierung und die Cross-Border-Transfers, die unbemerkt passieren.',
         },
         {
           q: 'Es gibt ein Sicherheitsproblem und niemand kann erklären, wie es passiert ist?',
