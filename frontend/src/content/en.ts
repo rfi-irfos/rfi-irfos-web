@@ -202,7 +202,7 @@ export const EN = {
       { classic: 'Trust in the vendor\'s compliance statement', rfi: 'Verification of every control under NIS2, GDPR, and the AI Act' },
       { classic: 'A one-time snapshot at launch', rfi: 'Continuous monitoring with regulator-grade evidence' },
       { classic: 'A pass/fail outcome', rfi: 'A reproducible audit trail, timestamped and regulator-ready' },
-      { classic: 'Remediation left to the vendor\\'s discretion', rfi: 'If remediation stalls, we initiate disclosure under our statutory mandate' },
+      { classic: 'Remediation left to the vendor\'s discretion', rfi: 'If remediation stalls, we initiate disclosure under our statutory mandate' },
     ],
     cta: 'Talk to us about your app',
   },
