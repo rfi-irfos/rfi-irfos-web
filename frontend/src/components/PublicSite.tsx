@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
-import { TEAL, useMobile, useWebVitals, useFormAbandonment, beacon, LIGHTHOUSE_PIXEL, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
+import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_PIXEL, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
 import { ProjectsSection } from './sections/Projects'
@@ -325,7 +325,6 @@ export function PublicSite() {
     return () => clearInterval(t)
   }, [])
   const mobile = useMobile()
-  useWebVitals()
 
   useEffect(() => {
     const el = ledgerRef.current; if (!el) return
