@@ -176,50 +176,6 @@ export const RESEARCH_AREAS = [
     title: 'Model Welfare & Wellbeing',
     desc: 'Model welfare as a first-class research axis. Wellbeing signals during training, distress detection, and dignity for the systems we cultivate, not just the humans they serve.',
   },
-  {
-    icon: (
-      <_I>
-        {/* network / NIS2 / cyber */}
-        <circle cx="16" cy="16" r="3"/>
-        <circle cx="16" cy="6" r="2.5"/>
-        <circle cx="16" cy="26" r="2.5"/>
-        <circle cx="6" cy="16" r="2.5"/>
-        <circle cx="26" cy="16" r="2.5"/>
-        <line x1="16" y1="9" x2="16" y2="13"/>
-        <line x1="16" y1="19" x2="16" y2="23.5"/>
-        <line x1="9" y1="16" x2="13" y2="16"/>
-        <line x1="19" y1="16" x2="23" y2="16"/>
-      </_I>
-    ),
-    title: 'NIS2 & Cybersecurity',
-    desc: 'NIS2 implementation, incident-response playbooks, and national cybersecurity posture for regulated operators. We translate directive obligations into technical controls your infrastructure team can actually implement.',
-  },
-  {
-    icon: (
-      <_I>
-        {/* internet of bodies / biometric / health */}
-        <path d="M16 4c-5.5 0-10 4.5-10 10 0 3.6 1.9 6.8 4.8 8.5.4.2.6.7.5 1.1-.2.7-.5 2.1-.5 2.5 0 .3.2.6.5.7.4.1 2.1.3 2.7.3.3 0 .5-.2.5-.5 0-.4-.3-1.7-.5-2.4-.1-.3.1-.7.4-.8C22.3 23.2 26 19.5 26 16c0-5.5-4.5-10-10-10z"/>
-        <circle cx="12" cy="13" r="1.2"/>
-        <circle cx="20" cy="13" r="1.2"/>
-        <path d="M13.5 17c.8.8 2.2.8 3 0" strokeWidth="1.4" strokeLinecap="round"/>
-      </_I>
-    ),
-    title: 'Internet of Bodies',
-    desc: 'Biometric and behavioural data streams across wearables, medical devices, and AI health assistants. We audit where bodies become data, who owns the signal, and where current law stops protecting people.',
-  },
-  {
-    icon: (
-      <_I>
-        {/* parents / child / shield over child */}
-        <path d="M12 22c5.5 0 10-4.5 10-10 0-4.5-3-8.3-7-9.5L13 7l-2 1.5C6 10.7 3 14.5 3 19c0 3.5 2.5 6.5 6 7 1 .1 2 .1 3 0z" strokeWidth="1.4"/>
-        <circle cx="10.5" cy="14" r=".9"/>
-        <circle cx="15.5" cy="14" r=".9"/>
-        <path d="M12 4c-2.5 0-4.5 2-4.5 4.5S10 12.5 12 12.5 16.5 11 16.5 8.5 14.5 4 12 4z" strokeWidth="1.2"/>
-      </_I>
-    ),
-    title: 'Child Protection & Minors',
-    desc: 'Children are not a niche. We specialise in the intersection of COPPA, GDPR Art. 8, and the EU AI Act provisions for minors - audit, enforcement, and regulator-backed disclosure across apps, games, and streaming platforms.',
-  },
 ]
 
 // RESEARCH AREAS - moved directly under the hero (was pushed down by the

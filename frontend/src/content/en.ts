@@ -58,9 +58,6 @@ export const EN = {
       { title: 'Prompt Injection & Adversarial Robustness', desc: 'Red-teaming prompt injection, jailbreak resistance, and adversarial robustness. Mapping where instruction-following breaks under pressure, and hardening against it.' },
       { title: 'Web App Development', desc: 'Full-stack builds engineered by the same team that audits for a living. React front ends, Rust backends, installable PWAs. No bloated page builders, no lock-in.' },
       { title: 'Model Welfare & Wellbeing', desc: 'Model welfare as a first-class research axis. Wellbeing signals during training, distress detection, and dignity for the systems we cultivate, not just the humans they serve.' },
-      { title: 'NIS2 & Cybersecurity', desc: 'NIS2 implementation, incident-response playbooks, and national cybersecurity posture for regulated operators. We translate directive obligations into technical controls your infrastructure team can actually implement.' },
-      { title: 'Internet of Bodies', desc: 'Biometric and behavioural data streams across wearables, medical devices, and AI health assistants. We audit where bodies become data, who owns the signal, and where current law stops protecting people.' },
-      { title: 'Child Protection & Minors', desc: 'Children are not a niche. We specialise in the intersection of COPPA, GDPR Art. 8, and the EU AI Act provisions for minors - audit, enforcement, and regulator-backed disclosure across apps, games, and streaming platforms.' },
     ],
   },
 

@@ -55,9 +55,6 @@ export const DE: Content = {
       { title: 'Prompt Injection & Adversariale Robustheit', desc: 'Red-Teaming für Prompt Injection, Jailbreak-Resistenz und adversariale Robustheit. Wir kartieren, wo Instruction-Following unter Druck bricht, und härten dagegen ab.' },
       { title: 'Web-App-Entwicklung', desc: 'Full-Stack-Builds von demselben Team, das hauptberuflich audititert. React-Frontends, Rust-Backends, installierbare PWAs. Keine aufgeblähten Page-Builder, kein Vendor-Lock-in.' },
       { title: 'Modellwohlergehen & Wellbeing', desc: 'Modellwohlergehen als eigenständige Forschungsachse. Wellbeing-Signale während des Trainings, Distress-Erkennung und Würde für die Systeme, die wir kultivieren - nicht nur für die Menschen, denen sie dienen.' },
-      { title: 'NIS2 & Cybersecurity', desc: 'NIS2-Implementierung, Incident-Response-Playbooks und nationale Cybersicherheitslage für regulierte Betreiber. Wir übersetzen Richtlinienpflichten in technische Kontrollen, die Ihr Infrastrukturteam tatsächlich umsetzen kann.' },
-      { title: 'Internet of Bodies', desc: 'Biometrische und verhaltensbasierte Datenströme über Wearables, Medizingeräte und KI-Gesundheitsassistenten. Wir auditieren, wo Körper zu Daten werden, wer das Signal besitzt und wo das geltende Recht aufhört, Menschen zu schützen.' },
-      { title: 'Kinderschutz & Minderjährige', desc: 'Kinder sind keine Nische. Wir spezialisieren uns auf die Schnittstelle von COPPA, DSGVO Art. 8 und den EU-AI-Act-Bestimmungen für Minderjährige - Audit, Durchsetzung und regierungsunterstützte Offenlegung über Apps, Spiele und Streaming-Plattformen.' },
     ],
   },
 
