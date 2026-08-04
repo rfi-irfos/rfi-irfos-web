@@ -30,7 +30,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    identity: 'NIS2-Implementierung aus Graz. Controls statt Bürokratie, Offenlegungen ohne Warnweste. Kritische Infrastrukturen auditieren wir direkt.',
+    identity: 'NIS2-Implementierung aus Graz. Wir übersetzen Richtlinienpflichten in eingesetzte technische Kontrollen und führen quellcodebasierte Audits kritischer Infrastrukturen durch. Keine Show, keine Warnwesten.',
     stats: {
       researchAreas: 'Forschungsbereiche',
       openSourceProjects: 'Open-Source-Projekte',
@@ -195,11 +195,11 @@ export const DE: Content = {
     comparisonClassicLabel: 'Was Sie bisher kannten',
     comparisonRfiLabel: 'Was wir anders machen',
     comparisonRows: [
-      { classic: 'Eine Checkliste, gegen die die App gebaut wurde', rfi: 'Eine Quellcode-Nachverfolgung gegen die App, wie sie tatsächlich läuft' },
+      { classic: 'Eine Checkliste, nach der die App gebaut wurde', rfi: 'Eine Quellcode-Nachverfolgung gegen die App, wie sie tatsächlich läuft' },
       { classic: 'Vertrauen in die Compliance-Aussage des Anbieters', rfi: 'Verifikation jeder Kontrolle unter NIS2, DSGVO und AI Act' },
       { classic: 'Eine einmalige Momentaufnahme beim Launch', rfi: 'Kontinuierliche Überwachung mit behördenfähigen Belegen' },
       { classic: 'Ein Bestanden/Durchgefallen-Ergebnis', rfi: 'Ein reproduzierbarer Audit-Trail, zeitgestempelt und regierungsbereit' },
-      { classic: 'Sanierung bleibt dem Anbieter überlassen', rfi: 'Wir reichen direkt bei der Behörde ein, wenn nichts passiert' },
+      { classic: 'Sanierung bleibt dem Anbieter überlassen', rfi: 'Wenn die Sanierung stockt, leiten wir die Offenlegung aus unserem gesetzlichen Auftrag ein' },
     ],
     cta: 'Sprechen Sie mit uns über Ihre App',
   },

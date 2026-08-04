@@ -33,7 +33,7 @@ export const EN = {
     headlineEmphasisIndex: 2,
     subtitlePrefix: 'Interdisciplinary',
     subtitleSuffix: ' Research Facility for Open Sciences',
-    identity: 'NIS2 implementation from Graz. Controls, not compliance theater. Direct audits for critical infrastructure. No high-visibility vests required.',
+    identity: 'NIS2 implementation from Graz. We translate directive obligations into deployed technical controls and run source-level audits of critical infrastructure. No theater, no high-visibility vests.',
     stats: {
       researchAreas: 'research areas',
       openSourceProjects: 'open-source projects',
@@ -202,7 +202,7 @@ export const EN = {
       { classic: 'Trust in the vendor\'s compliance statement', rfi: 'Verification of every control under NIS2, GDPR, and the AI Act' },
       { classic: 'A one-time snapshot at launch', rfi: 'Continuous monitoring with regulator-grade evidence' },
       { classic: 'A pass/fail outcome', rfi: 'A reproducible audit trail, timestamped and regulator-ready' },
-      { classic: 'Remediation left to the vendor\'s discretion', rfi: 'We file directly with the regulator if nothing moves' },
+      { classic: 'Remediation left to the vendor\\'s discretion', rfi: 'If remediation stalls, we initiate disclosure under our statutory mandate' },
     ],
     cta: 'Talk to us about your app',
   },

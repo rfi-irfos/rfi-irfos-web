@@ -462,7 +462,7 @@ export function TierCarousel({ tiers, getActions }: {
             {/* Label now says which tier this actually is, not just "you're looking
                 at one" - live feedback: after clicking around, there was no cue left
                 for which tier was originally recommended. */}
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: idx === defaultIdx ? TEAL : 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8, fontWeight: idx === defaultIdx ? 800 : 400 }}>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: idx === defaultIdx ? TEAL : 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8, fontWeight: idx === defaultIdx ? 800 : 400, borderLeft: idx === defaultIdx ? `2px solid ${TEAL}` : 'none', paddingLeft: idx === defaultIdx ? 8 : 0 }}>
               {idx === defaultIdx ? locale.tierCarousel.recommendedTier : locale.tierCarousel.featuredTier}
             </div>
             <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
@@ -474,7 +474,7 @@ export function TierCarousel({ tiers, getActions }: {
             paragraphs - the card grew tall enough to push the Get Started button
             out of view without scrolling the whole page). Every card now has the
             same predictable height regardless of description length. */}
-        <div style={{ marginTop: 16, maxHeight: 220, overflowY: 'auto' }}>
+        <div style={{ marginTop: 16, maxHeight: 300, overflowY: 'auto' }}>
           {active.desc.split('\n\n').map((p, i) => (
             <p key={i} style={{ color: 'var(--text2)', fontSize: 13.5, lineHeight: 1.75, marginBottom: 11 }}>{p}</p>
           ))}
