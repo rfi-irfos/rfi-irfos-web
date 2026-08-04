@@ -30,7 +30,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    identity: 'Reguliertes österreichisches Forschungsinstitut für NIS2-Implementierung, Cybersecurity-Compliance, ternäre KI, Governance und ökozentrische Technologie. Wir übersetzen Richtlinienpflichten in technische Kontrollen, auditieren kritische Infrastrukturen und reichen Offenlegungen bei Regulatoren ein.',
+    identity: 'NIS2-Implementierung aus Graz. Controls statt Bürokratie, Offenlegungen ohne Warnweste. Kritische Infrastrukturen auditieren wir direkt.',
     stats: {
       researchAreas: 'Forschungsbereiche',
       openSourceProjects: 'Open-Source-Projekte',
