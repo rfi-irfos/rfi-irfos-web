@@ -107,7 +107,7 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
           the stats, as a single slower-cycling line rather than competing with
           a second static teal headline underneath it (that redundant "Most
           technology decisions..." line has been removed entirely). */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: mobile ? '1.25rem' : '3rem', margin: '0 auto 48px', maxWidth: 860, justifyContent: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: mobile ? '1.25rem' : '3rem', margin: '0 auto 48px', maxWidth: 860, justifyContent: 'center' }}>
         {/* Deliberately NOT the same numbers as the Track Record stat row further down -
             that one is audit-specific (apps/findings/companies/regulators), this one is
             the breadth story: research areas, open-source projects, publications, team,
