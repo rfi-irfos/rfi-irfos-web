@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
-import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_PIXEL, ModalTierBody, revealSuppressed } from './sections/shared'
+import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_PIXEL, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
 import { ProjectsSection } from './sections/Projects'
@@ -518,8 +518,38 @@ export function PublicSite() {
       setTipFormState('ok')
       setTipForm({ topic: '', handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false, botcheck: '' })
     } catch {
-      // Never report success on a failed send again.
-      setTipFormState('err')
+      // CRM relay failed. Fall back to Web3Forms, which is an email-forwarding
+      // service and is what actually delivered mail before this rewrite. Two
+      // independent paths to a lead, so one being down never loses it: CRM first
+      // because it is what the leads counter reads, email second because it
+      // reaches a human immediately, and the mailto in the error state third.
+      // Requires VITE_WEB3FORMS_KEY at build time, now passed via the Dockerfile.
+      try {
+        if (!WEB3FORMS_KEY) throw new Error('no web3forms key in this build')
+        const res2 = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: `[rfi-irfos.com] ${tipForm.topic || 'Enquiry'} - ${tipForm.target || 'unspecified'}`,
+            name: tipForm.handle || 'anonymous',
+            email: tipForm.email,
+            replyto: tipForm.email || undefined,
+            topic: tipForm.topic,
+            target: tipForm.target,
+            credit_preference: tipForm.credit,
+            message: tipForm.finding,
+          }),
+        })
+        if (!res2.ok) throw new Error(String(res2.status))
+        beacon('lead_submitted_email_fallback')
+        setTipFormState('ok')
+        setTipForm({ topic: '', handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false, botcheck: '' })
+      } catch {
+        // Both paths down. Never report success on a failed send: the error state
+        // carries a pre-filled mailto so the visitor can still reach us.
+        setTipFormState('err')
+      }
     }
   }
 

@@ -79,7 +79,7 @@ export function PricingSection({
             Each product line now wrapped in its own bordered container (live
             feedback) so the four lines read as distinct units, not one long
             unbroken scroll. */}
-        <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginBottom: 48 }}>
+        <div className="rfi-glass-flat" style={{ borderRadius: 20, padding: '36px 28px', marginBottom: 48, maxWidth: 1080, marginLeft: 'auto', marginRight: 'auto' }}>
         <p id="pricing-security" style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center', scrollMarginTop: 96 }}>{t.pricing.lineHeadings.security}<ScopeTag label={t.pricing.scopeTags.security} /></p>
         <TierCarousel tiers={securityTiers} getActions={tier => {
           const full = securityTiers.find(s => s.tier === tier.tier)!
@@ -91,7 +91,7 @@ export function PricingSection({
         </div>
 
         {/* Market Research & Competitor Analysis */}
-        <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginBottom: 48 }}>
+        <div className="rfi-glass-flat" style={{ borderRadius: 20, padding: '36px 28px', marginBottom: 48, maxWidth: 1080, marginLeft: 'auto', marginRight: 'auto' }}>
         <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.market}<ScopeTag label={t.pricing.scopeTags.market} /></p>
         <TierCarousel tiers={marketTiers} getActions={tier => {
           const full = marketTiers.find(s => s.tier === tier.tier)!
@@ -100,7 +100,7 @@ export function PricingSection({
         </div>
 
         {/* Web Development */}
-        <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginBottom: 48 }}>
+        <div className="rfi-glass-flat" style={{ borderRadius: 20, padding: '36px 28px', marginBottom: 48, maxWidth: 1080, marginLeft: 'auto', marginRight: 'auto' }}>
         <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.web}<ScopeTag label={t.pricing.scopeTags.web} /></p>
         <TierCarousel tiers={webTiers} getActions={tier => {
           const full = webTiers.find(s => s.tier === tier.tier)!
@@ -112,7 +112,7 @@ export function PricingSection({
         </div>
 
         {/* Mobile App Development & Fixing */}
-        <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginBottom: 48 }}>
+        <div className="rfi-glass-flat" style={{ borderRadius: 20, padding: '36px 28px', marginBottom: 0, maxWidth: 1080, marginLeft: 'auto', marginRight: 'auto' }}>
         <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.mobile}<ScopeTag label={t.pricing.scopeTags.mobile} /></p>
         <TierCarousel tiers={mobileTiers} getActions={tier => {
           const full = mobileTiers.find(s => s.tier === tier.tier)!

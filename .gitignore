@@ -38,3 +38,7 @@ Thumbs.db
 # Runtime data (not source)
 backend/contacts.jsonl
 backend/uploads/
+
+# agent scratch: worktree pointers and internal planning docs, never shipped
+.claude/
+.hermes/
