@@ -155,6 +155,20 @@ export function RevealWords({ text, delayStart = 0.2, emphasizeIndices = [] }: {
 // cell instead. Same single shared flag, same semantics, just import-safe.
 export const revealSuppressed = { current: false }
 
+// Rewritten 2026-08-05. The previous version computed opacity as a pure function of the
+// element's CURRENT position relative to the viewport on every scroll event, with no
+// memory of ever having been shown. That meant scrolling an element into view, then
+// scrolling back up past it - completely ordinary browsing, re-reading pricing, checking
+// the ledger a second time - drove its rect.top back below the reveal threshold and set
+// its opacity straight back to 0. Confirmed by direct reproduction (scroll down, scroll
+// back to top, re-check computed opacity) and independently flagged before this by
+// another agent's report of "missing" sections that were never actually missing from the
+// DOM, just invisible at whatever scroll position was current. Whole sections - the
+// Projects carousel, the Track Record heading and its KPI cards - could vanish entirely
+// depending on scroll direction, on the one page currently taking paid traffic.
+// Fixed by switching to a one-shot IntersectionObserver, the same pattern already used
+// by BentoTile in Research.tsx: once an element has been seen, `visible` latches true
+// and never reverts, regardless of where the user scrolls afterward.
 export function Reveal({
   children, delay = 0, from = 'bottom', dist = 32, style: extra,
 }: {
@@ -164,30 +178,41 @@ export function Reveal({
   dist?: number
   style?: React.CSSProperties
 }) {
+  const [visible, setVisible] = useState(() => prefersReducedMotion() || revealSuppressed.current)
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
+    if (visible) return // reduced-motion or an in-flight anchor jump already satisfied this
     const el = ref.current; if (!el) return
-    let rafId = 0
-    const update = () => {
-      if (revealSuppressed.current) { el.style.opacity = '1'; el.style.transform = 'none'; return }
-      const rect = el.getBoundingClientRect(), vh = window.innerHeight
-      const startFrac = 0.97 - delay * 0.04
-      const lin = Math.max(0, Math.min(1, (vh * startFrac - rect.top) / (vh * 0.16)))
-      const p = lin * lin * (3 - 2 * lin) // smoothstep - snappier assemble than a flat linear ramp
-      el.style.opacity = String(p)
-      const d = (1 - p) * dist
-      el.style.transform = from === 'left'  ? `translateX(${-d}px)` :
-                           from === 'right' ? `translateX(${d}px)`  :
-                           from === 'top'   ? `translateY(${-d}px)` :
-                           from === 'scale' ? `scale(${0.84 + p * 0.16})` :
-                           `translateY(${d}px)`
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting || revealSuppressed.current) { setVisible(true); io.disconnect() }
+    }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' })
+    io.observe(el)
+    // IO alone misses one case: an instant jump (scrollbar drag, End key, a #hash link
+    // outside our own nav handler) that lands past the element in a single tick, with no
+    // rendered frame ever showing it as intersecting. A plain scroll listener as a backup
+    // catches that reliably by just checking current position - this only ever turns
+    // visible ON, never back off, so it can't reintroduce the bug this rewrite fixes.
+    const onScroll = () => {
+      if (el.getBoundingClientRect().top < window.innerHeight) { setVisible(true); io.disconnect() }
     }
-    const onScroll = () => { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(update) }
     window.addEventListener('scroll', onScroll, { passive: true })
-    update()
-    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(rafId) }
-  }, [delay, from, dist])
-  return <div ref={ref} style={{ opacity: 0, willChange: 'transform, opacity', ...extra }}>{children}</div>
+    return () => { io.disconnect(); window.removeEventListener('scroll', onScroll) }
+  }, [visible])
+  const d = visible ? 0 : dist
+  const transform = from === 'left'  ? `translateX(${-d}px)` :
+                     from === 'right' ? `translateX(${d}px)`  :
+                     from === 'top'   ? `translateY(${-d}px)` :
+                     from === 'scale' ? `scale(${visible ? 1 : 0.84})` :
+                     `translateY(${d}px)`
+  return (
+    <div ref={ref} style={{
+      opacity: visible ? 1 : 0,
+      transform,
+      transition: revealSuppressed.current ? 'none' : `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${(delay * 0.08).toFixed(2)}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${(delay * 0.08).toFixed(2)}s`,
+      willChange: visible ? undefined : 'transform, opacity',
+      ...extra,
+    }}>{children}</div>
+  )
 }
 
 // Shared pricing-tier card, used by every pricing group (Security Audits, Market
