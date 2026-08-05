@@ -1,7 +1,7 @@
 // Hero (no `<section id>` of its own - it's the first section on the page,
 // scrolled to via the bare "#" logo link) - extracted verbatim from PublicSite.tsx.
 import { useState, lazy, Suspense } from 'react'
-import { TEAL, prefersReducedMotion, Reveal, RevealWords, CountUp } from './shared'
+import { TEAL, prefersReducedMotion, Reveal, RevealWords, CountUp, HeroFlipWord } from './shared'
 import { RESEARCH_AREAS } from './Research'
 import { PROJECTS } from './Projects'
 import { useLocale } from '../../hooks/useLocale'
@@ -87,9 +87,14 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
       <HeroBackground />
       {/* Stays English in both locales (live feedback) - "Rethink the Obvious."
           is the site's signature line/wordmark-adjacent phrase, not translated
-          copy. */}
+          copy. "Rethink" split out to HeroFlipWord (2026-08-05, approved after
+          several review rounds) - same reveal-in timing it had inside
+          RevealWords before (delay 0.2), "the Obvious." keeps its own timing by
+          starting RevealWords' stagger at 0.36 instead of 0.2 (equivalent to
+          "the"/"Obvious." having been words 1/2 of one three-word call). */}
       <p className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
-        <RevealWords text="Rethink the Obvious." emphasizeIndices={[2]} />
+        <HeroFlipWord word="Rethink" delay={0.2} />{' '}
+        <RevealWords text="the Obvious." delayStart={0.36} emphasizeIndices={[1]} />
       </p>
       <h1 style={{
         fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,

@@ -1,7 +1,7 @@
 // Shared primitives used across multiple homepage sections (and by PublicSite.tsx
 // itself for the nav/modals/footer) - extracted verbatim from the former single
 // ~5600-line PublicSite.tsx as a pure refactor (no copy/style/behavior changes).
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { useLocale } from '../../hooks/useLocale'
 
@@ -144,6 +144,223 @@ export function RevealWords({ text, delayStart = 0.2, emphasizeIndices = [] }: {
         )
       })}
     </>
+  )
+}
+
+// Real per-letter mirror-flip for a single word. Approved 2026-08-05 after several
+// review rounds against a standalone motion prototype - replaces the earlier
+// permanent-upside-down rotate(180deg) attempt (added and reverted same day,
+// 2026-08-02: "disorienting, not clever", see the comment in RevealWords below).
+// Each letter is its own absolutely-positioned span with its own transition - it
+// slides from its normal slot to its mirrored slot and flips (scaleX(-1))
+// individually, once its own brief shuffle settles, rather than one rotate() on
+// the whole word (which read as "a string rotating," not real per-letter motion).
+// Widths are measured per character (an offscreen probe in the real font), not
+// an equal 1/n cell - equal cells looked mechanically spaced next to the
+// tightly-kerned normal word. Settles and holds once scrolled into view; resets
+// and replays if scrolled away and back. Renders into an EMPTY ref target on
+// purpose - all character content is written imperatively below, never through
+// JSX children, so React's reconciler never fights the per-frame DOM writes
+// (the same pattern used to wrap non-React widgets, not a hack).
+export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: number }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const reduced = prefersReducedMotion()
+
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    if (reduced) { el.textContent = word; return }
+
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+    const randomChar = () => chars[Math.floor(Math.random() * chars.length)]
+    const n = word.length
+    const spans: HTMLSpanElement[] = []
+    const normalLeft: number[] = []
+    const mirrorLeft: number[] = new Array(n)
+    let playing = false
+    let raf = 0
+    let leadTimer: ReturnType<typeof setTimeout> | null = null
+
+    el.textContent = word
+    const height = el.getBoundingClientRect().height
+    el.textContent = ''
+    const probe = document.createElement('span')
+    probe.style.position = 'absolute'
+    probe.style.visibility = 'hidden'
+    probe.style.whiteSpace = 'pre'
+    probe.style.font = getComputedStyle(el).font
+    document.body.appendChild(probe)
+    const widths: number[] = []
+    for (let i = 0; i < n; i++) { probe.textContent = word[i]; widths.push(probe.getBoundingClientRect().width) }
+    document.body.removeChild(probe)
+    let totalWidth = 0
+    for (let i = 0; i < n; i++) totalWidth += widths[i]
+    el.style.width = totalWidth + 'px'
+    el.style.height = height + 'px'
+    let accN = 0
+    for (let i = 0; i < n; i++) { normalLeft.push(accN); accN += widths[i] }
+    let accM = 0
+    for (let i = n - 1; i >= 0; i--) { mirrorLeft[i] = accM; accM += widths[i] }
+    for (let i = 0; i < n; i++) {
+      const span = document.createElement('span')
+      span.className = 'flip-char'
+      span.textContent = word[i]
+      span.style.width = widths[i] + 'px'
+      span.style.left = normalLeft[i] + 'px'
+      span.style.transition = 'none'
+      el.appendChild(span)
+      spans.push(span)
+    }
+
+    function reset() {
+      cancelAnimationFrame(raf)
+      playing = false
+      for (let i = 0; i < n; i++) {
+        const span = spans[i]
+        span.style.transition = 'none'
+        span.textContent = word[i]
+        span.style.filter = 'none'
+        span.style.left = normalLeft[i] + 'px'
+        span.style.transform = 'scaleX(1) rotate(0deg)'
+      }
+    }
+    function play() {
+      if (playing) return
+      playing = true
+      const plans = spans.map(() => {
+        const start = Math.floor(Math.random() * 60)
+        return { start, end: start + Math.floor(Math.random() * 70) + 40, flipped: false }
+      })
+      spans.forEach(span => {
+        span.style.transition = 'left 420ms cubic-bezier(.3,1.4,.5,1), transform 420ms cubic-bezier(.3,1.4,.5,1), filter 60ms linear'
+      })
+      let frame = 0
+      function tick() {
+        let allDone = true
+        for (let i = 0; i < n; i++) {
+          const p = plans[i], span = spans[i]
+          if (frame < p.start) { allDone = false }
+          else if (frame < p.end) {
+            allDone = false
+            span.textContent = randomChar()
+            const remaining = (p.end - frame) / (p.end - p.start)
+            span.style.filter = `blur(${Math.max(0, remaining * 3.6).toFixed(2)}px)`
+            const jitter = (Math.random() - 0.5) * remaining * 10
+            span.style.transform = `scaleX(1) rotate(${jitter.toFixed(1)}deg)`
+          } else if (!p.flipped) {
+            p.flipped = true
+            span.textContent = word[i]
+            span.style.filter = 'none'
+            span.style.left = mirrorLeft[i] + 'px'
+            span.style.transform = 'scaleX(-1) rotate(0deg)'
+          }
+        }
+        if (allDone) { playing = false; return }
+        raf = requestAnimationFrame(tick)
+        frame++
+      }
+      tick()
+    }
+
+    const section = el.closest('section')
+    let io: IntersectionObserver | null = null
+    if (section) {
+      io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            leadTimer = setTimeout(play, 500)
+          } else {
+            if (leadTimer) clearTimeout(leadTimer)
+            reset()
+          }
+        })
+      }, { threshold: 0.6 })
+      io.observe(section)
+    }
+
+    return () => {
+      io?.disconnect()
+      if (leadTimer) clearTimeout(leadTimer)
+      cancelAnimationFrame(raf)
+    }
+  }, [word, reduced])
+
+  if (reduced) return <>{word}</>
+
+  return (
+    <motion.span
+      ref={ref}
+      style={{ display: 'inline-block', position: 'relative', verticalAlign: 'bottom' }}
+      initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }}
+      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      transition={{ duration: 0.95, delay, ease: [0.16, 1, 0.3, 1] }}
+    />
+  )
+}
+
+// Lighter version of the same shuffle mechanic as HeroFlipWord, without the
+// mirror - nav labels settle back into themselves on hover, no reversal (only
+// the hero flips, by direct instruction). innerHTML-based rather than
+// per-character spans since these are short and hover-triggered, not a
+// continuous multi-second run - the performance concern that justified
+// HeroFlipWord's persistent-span architecture doesn't apply here. Same empty-
+// ref-target discipline as HeroFlipWord, for the same reconciliation-safety
+// reason - `label` changes (locale toggle) are written on layout, never as JSX
+// children.
+export function NavLink({ href, label }: { href: string; label: string }) {
+  const ref = useRef<HTMLAnchorElement>(null)
+  const reduced = prefersReducedMotion()
+  const playingRef = useRef(false)
+  const rafRef = useRef(0)
+
+  useLayoutEffect(() => {
+    if (!playingRef.current && ref.current) ref.current.textContent = label
+  }, [label])
+
+  useEffect(() => () => cancelAnimationFrame(rafRef.current), [])
+
+  const handleEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.color = 'var(--text)'
+    const el = ref.current
+    if (!el || reduced || playingRef.current) return
+    playingRef.current = true
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+    const randomChar = () => chars[Math.floor(Math.random() * chars.length)]
+    const n = label.length
+    const plans = Array.from({ length: n }, () => {
+      const start = Math.floor(Math.random() * 6)
+      return { start, end: start + Math.floor(Math.random() * 8) + 6 }
+    })
+    let frame = 0
+    const tick = () => {
+      let out = ''
+      let done = 0
+      for (let i = 0; i < n; i++) {
+        const p = plans[i]
+        if (frame >= p.end) { done++; out += label[i] }
+        else if (frame >= p.start) {
+          const remaining = (p.end - frame) / (p.end - p.start)
+          out += `<span style="filter:blur(${Math.max(0, remaining * 2).toFixed(2)}px)">${randomChar()}</span>`
+        } else {
+          out += label[i]
+        }
+      }
+      el.innerHTML = out
+      if (done === n) { playingRef.current = false; return }
+      rafRef.current = requestAnimationFrame(tick)
+      frame++
+    }
+    tick()
+  }
+
+  return (
+    <a ref={ref} href={href} style={{
+      color: 'var(--text2)', fontSize: 13, fontWeight: 600,
+      textDecoration: 'none', letterSpacing: '0.04em',
+      transition: 'color 0.18s',
+    }}
+      onMouseEnter={handleEnter}
+      onMouseLeave={e => (e.currentTarget.style.color = 'var(--text2)')} />
   )
 }
 
