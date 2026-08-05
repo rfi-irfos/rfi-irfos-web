@@ -33,7 +33,7 @@ export const EN = {
     headlineEmphasisIndex: 2,
     subtitlePrefix: 'Interdisciplinary',
     subtitleSuffix: ' Research Facility for Open Sciences',
-    identity: "We're engineers, not academics. Fifteen years past university, we build production systems and audit the ones other people ship. No theater, no high-visibility vests.",
+    identity: 'Fifteen years past university, we build production systems and audit the ones other people ship. No theater, no high-visibility vests.',
     stats: {
       researchAreas: 'research areas',
       openSourceProjects: 'open-source projects',
