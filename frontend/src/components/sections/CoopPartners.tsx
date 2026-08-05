@@ -19,11 +19,11 @@ export function CoopPartnersSection({
 }) {
   const { t } = useLocale()
   return (
-    <section id="coop-partners" style={{ padding: '72px 2rem' }}>
+    <section id="coop-partners" style={{ padding: '48px 2rem 72px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.coopPartners.eyebrow}</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}><ScrambleHeading text={t.coopPartners.heading} /></h2>
+          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, textAlign: 'center' }}><ScrambleHeading text={t.coopPartners.heading} /></h2>
           <p style={{ color: 'var(--text2)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
             {t.coopPartners.subheading}
           </p>

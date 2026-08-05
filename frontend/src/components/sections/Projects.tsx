@@ -292,11 +292,11 @@ export function ProjectsSection() {
     name: p.name, link: p.link, ...t.projects.items[i],
   }))
   return (
-    <section id="projects" style={{ padding: '72px 2rem' }}>
+    <section id="projects" style={{ padding: '48px 2rem 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="right">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.projects.eyebrow}</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}><ScrambleHeading text={t.projects.heading} /></h2>
+          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.projects.heading} /></h2>
         </Reveal>
         <Reveal from="left" delay={1}>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>

@@ -366,6 +366,13 @@ export function PublicSite() {
       const abs = target.getBoundingClientRect().top + window.pageYOffset
       window.scrollTo({ top: Math.max(0, abs + 10), behavior: 'smooth' })
       setTimeout(() => { revealSuppressed.current = false }, 800)
+      // Explicit signal for ScrambleHeading (2026-08-05): a fixed suppression
+      // window racing an unrelated smooth-scroll's actual duration is exactly
+      // the kind of thing that "sometimes replays, sometimes doesn't" - a
+      // longer jump can cross the heading's intersection threshold after the
+      // 800ms window already expired. This event fires deterministically at
+      // the moment of the click itself, independent of scroll/threshold timing.
+      target.dispatchEvent(new CustomEvent('rfi-nav-jump', { bubbles: true }))
     }
     document.addEventListener('click', handler)
     return () => document.removeEventListener('click', handler)

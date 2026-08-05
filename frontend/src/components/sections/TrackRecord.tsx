@@ -2561,11 +2561,11 @@ export function TrackRecordSection({
 }) {
   const { t } = useLocale()
   return (
-    <section id="track-record" style={{ padding: '72px 2rem' }}>
+    <section id="track-record" style={{ padding: '48px 2rem 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.trackRecord.eyebrow}</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}><ScrambleHeading text={t.trackRecord.heading} /></h2>
+          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.trackRecord.heading} /></h2>
         </Reveal>
         <Reveal from="right" delay={1}>
           <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 720, fontSize: 15, lineHeight: 1.9 }}>

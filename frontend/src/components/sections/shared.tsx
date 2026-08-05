@@ -302,14 +302,26 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
 }
 
 // Lighter version of the same shuffle mechanic as HeroFlipWord, without the
-// mirror - a section heading settles into itself once, the first time it
-// scrolls into view. One-shot, same discipline as Reveal/BentoTile elsewhere
-// in this file (never re-triggers) - the opposite of HeroFlipWord's hero,
-// which deliberately resets and replays. Tried this as a nav-link hover effect
-// first (2026-08-05); direct correction was "not these, the actual header[s]
-// on the page as you scroll" - moved here instead, nav links reverted to plain.
-// innerHTML-based rather than persistent per-character spans, same reasoning
-// as before: short text, runs once, not a continuous multi-second loop.
+// mirror - a section heading settles into itself the first time it scrolls
+// into view, AND every time a top-nav click jumps straight to it.
+//
+// The nav-jump case first tried piggybacking on `revealSuppressed` (the
+// existing ~800ms flag the global anchor-click handler sets during its smooth
+// scroll) - unreliable in practice: that's a fixed timer racing an unrelated,
+// variable-duration scroll animation, so for a long jump the flag could
+// already be back to false by the time this heading's intersection threshold
+// actually crossed, silently skipping the replay. Fixed with a direct signal
+// instead: the click handler dispatches an 'rfi-nav-jump' CustomEvent on the
+// actual target element at the moment of the click, independent of how long
+// the resulting scroll takes - listened for here directly, deterministic.
+//
+// Organic re-scrolling past an already-played heading does not replay it -
+// only the first natural scroll-into-view or an explicit nav click does.
+// Tried this as a nav-link hover effect first (2026-08-05); direct correction
+// was "not these, the actual header[s] on the page as you scroll" - moved
+// here instead, nav links reverted to plain. innerHTML-based rather than
+// persistent per-character spans: short text, runs once per trigger, not a
+// continuous loop.
 export function ScrambleHeading({ text }: { text: string }) {
   const ref = useRef<HTMLSpanElement>(null)
   const reduced = prefersReducedMotion()
@@ -324,8 +336,11 @@ export function ScrambleHeading({ text }: { text: string }) {
     const randomChar = () => chars[Math.floor(Math.random() * chars.length)]
     const n = text.length
     let raf = 0
+    let playing = false
 
     function play() {
+      if (playing) return
+      playing = true
       const plans = Array.from({ length: n }, () => {
         const start = Math.floor(Math.random() * 10)
         return { start, end: start + Math.floor(Math.random() * 12) + 8 }
@@ -345,7 +360,7 @@ export function ScrambleHeading({ text }: { text: string }) {
           }
         }
         el!.innerHTML = out
-        if (done === n) return
+        if (done === n) { playing = false; return }
         raf = requestAnimationFrame(tick)
         frame++
       }
@@ -359,7 +374,14 @@ export function ScrambleHeading({ text }: { text: string }) {
     }, { threshold: 0.4 })
     io.observe(el)
 
-    return () => { io.disconnect(); cancelAnimationFrame(raf) }
+    const section = el.closest('section')
+    section?.addEventListener('rfi-nav-jump', play)
+
+    return () => {
+      io.disconnect()
+      section?.removeEventListener('rfi-nav-jump', play)
+      cancelAnimationFrame(raf)
+    }
   }, [text, reduced])
 
   return <span ref={ref} />
