@@ -137,12 +137,11 @@ export function PublicSite() {
   const { theme, cycle } = useTheme()
   // Dismissal persists. Previously the banner reopened on every single page load,
   // so a returning visitor (and every click from a paid ad) got the panel back over
-  // the pricing CTA. Lazy initializer so it never flashes open for someone who has
-  // already closed it. localStorage is wrapped because Safari private mode throws
-  // on access; a throw here must not take the whole page down.
-  const [cookieBannerOpen, setCookieBannerOpen] = useState(() => {
-    try { return localStorage.getItem('rfi-cookie-banner-dismissed') !== '1' } catch { return true }
-  })
+  // the pricing CTA. Reverted the localStorage-dismissal persistence added earlier
+  // today (2026-08-05): this banner is the joke one - "we don't use cookies, so
+  // there's nothing to consent to" - not a real consent mechanism, and it always
+  // reappearing on refresh is the actual, deliberate, pre-existing behavior.
+  const [cookieBannerOpen, setCookieBannerOpen] = useState(true)
   const [bannerClosing, setBannerClosing] = useState(false)
   const bannerRef = useRef<HTMLDivElement>(null)
 
@@ -254,7 +253,6 @@ export function PublicSite() {
     if (el) fireConfettiFromRect(el.getBoundingClientRect(), 90)
     playMockClapSound()
     new Image().src = `${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&s=${encodeURIComponent('Cookie Banner Close')}`
-    try { localStorage.setItem('rfi-cookie-banner-dismissed', '1') } catch { /* private mode */ }
     setBannerClosing(true)
     setTimeout(() => { setCookieBannerOpen(false); setBannerClosing(false) }, 240)
   }
