@@ -144,8 +144,31 @@ export function SubmitSection({
                 <FormStateIcon state={tipFormState} />
                 {tipFormState === 'sending' ? t.submit.form.submitSending : tipFormState === 'ok' ? t.submit.form.submitOk : t.submit.form.submitIdle}
               </button>
+              {/* A failed send must still convert. The old error was unclickable 12px text,
+                  so a visitor whose submission failed simply left. This hands them a
+                  one-tap mailto with everything they already typed carried across, which
+                  also means the page is safe to ship before the CRM relay key is set:
+                  worst case the lead arrives by email instead of in the CRM, never nowhere. */}
               {tipFormState === 'err' && (
-                <p style={{ color: 'var(--sev-crit)', fontSize: 12 }}>{t.submit.form.errorText}</p>
+                <p style={{ color: 'var(--sev-crit)', fontSize: 13, lineHeight: 1.6 }}>
+                  {t.submit.form.errorText}{' '}
+                  <a
+                    href={`mailto:contact@rfi-irfos.com?subject=${encodeURIComponent(
+                      `[rfi-irfos.com] ${tipForm.topic || 'Enquiry'}${tipForm.target ? ' - ' + tipForm.target : ''}`
+                    )}&body=${encodeURIComponent(
+                      [
+                        tipForm.handle ? `From: ${tipForm.handle}` : '',
+                        tipForm.email ? `Email: ${tipForm.email}` : '',
+                        tipForm.target ? `Target: ${tipForm.target}` : '',
+                        '',
+                        tipForm.finding,
+                      ].filter(Boolean).join('\n')
+                    )}`}
+                    style={{ color: 'var(--accent-text)', fontWeight: 700 }}
+                  >
+                    {t.submit.form.errorMailtoCta}
+                  </a>
+                </p>
               )}
             </form>
           </Reveal>

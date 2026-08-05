@@ -359,7 +359,8 @@ export const DE: Content = {
       submitSending: 'Wird gesendet...',
       submitOk: 'Erhalten. Vielen Dank.',
       submitIdle: 'Nachricht senden',
-      errorText: 'Etwas ist schiefgelaufen. Schreiben Sie uns direkt an contact@rfi-irfos.com',
+      errorText: 'Auf unserer Seite ist etwas schiefgelaufen. Ihre Nachricht ist nicht verloren:',
+      errorMailtoCta: 'schicken Sie sie uns stattdessen per E-Mail',
     },
   },
 

@@ -366,7 +366,8 @@ export const EN = {
       submitSending: 'Sending...',
       submitOk: 'Received. Thank you.',
       submitIdle: 'Send message',
-      errorText: 'Something went wrong. Email us directly at contact@rfi-irfos.com',
+      errorText: 'Something went wrong on our side. Your message was not lost:',
+      errorMailtoCta: 'send it to us by email instead',
     },
   },
 
