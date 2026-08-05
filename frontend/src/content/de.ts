@@ -30,7 +30,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    identity: 'NIS2-Implementierung aus Graz. Wir übersetzen Richtlinienpflichten in eingesetzte technische Kontrollen und führen quellcodebasierte Audits kritischer Infrastrukturen durch. Keine Show, keine Warnwesten.',
+    identity: 'Wir sind Ingenieur:innen, keine Akademiker:innen. Fünfzehn Jahre nach der Uni bauen wir Produktivsysteme und auditieren die, die andere ausliefern. Keine Show, keine Warnwesten.',
     stats: {
       researchAreas: 'Forschungsbereiche',
       openSourceProjects: 'Open-Source-Projekte',
