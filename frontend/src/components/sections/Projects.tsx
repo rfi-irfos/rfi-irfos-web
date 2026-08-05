@@ -104,14 +104,20 @@ function ProjectCard({ p }: { p: LocalizedProject }) {
       borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12,
       flex: '1 1 0', minWidth: 0,
     }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div>
+      {/* flexWrap+minWidth:0+flexShrink:0 - on narrow cards (mobile, 84% basis) a long
+          project name left no room for a nowrap badge on the same line, and since this
+          row had no overflow:hidden of its own, the badge text silently overflowed past
+          the card edge and got guillotined by the carousel track's overflow:hidden
+          instead ("CORE PLATFO|" mid-word). Wrapping drops the badge to its own line
+          when space is tight rather than letting it run off the card. */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '4px 8px' }}>
+        <div style={{ minWidth: 0 }}>
           <div style={{ fontWeight: 900, fontSize: 17 }}>{p.name}</div>
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
         </div>
         <span style={{
           fontSize: 9, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em',
-          padding: '3px 8px', borderRadius: 20,
+          padding: '3px 8px', borderRadius: 20, flexShrink: 0,
           border: '1px solid rgba(0,245,196,0.3)', color: 'var(--accent-text)', whiteSpace: 'nowrap',
         }}>{p.tag}</span>
       </div>
@@ -180,16 +186,20 @@ function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
     }
   }
 
+  // Smaller arrows + tighter gap on phone (perView===1): two 44px round buttons plus
+  // 16px gaps on each side ate 120px of a 390px viewport before the card even got its
+  // 84% basis, which is most of why the carousel read as cramped on mobile.
+  const arrowSize = perView === 1 ? 36 : 44
   const arrowStyle: React.CSSProperties = {
-    width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.3)',
-    background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: 18, cursor: 'pointer',
+    width: arrowSize, height: arrowSize, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.3)',
+    background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: perView === 1 ? 15 : 18, cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'center',
   }
   const cardBasis = perView === 1 ? '84%' : '340px'
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: perView === 1 ? 10 : 16 }}>
         <button onClick={() => go(-1)} aria-label={t.projects.carouselPrevAria} style={arrowStyle}>&larr;</button>
         <div style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}>
           <div

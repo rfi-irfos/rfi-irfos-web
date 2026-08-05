@@ -959,34 +959,26 @@ export function PublicSite() {
         </p>
       </footer>
       {cookieBannerOpen && (
-        <div ref={bannerRef} style={{
+        // background/border/box-shadow come from .rfi-glass-flat now, not hand-rolled per
+        // theme - that inline duplication only ever branched dark-vs-not-dark, so it silently
+        // fell back to the light gradient under data-theme="hc" instead of the canonical
+        // opaque-black/no-weave AAA treatment index.css already defines for hc. The shared
+        // class is the single source of truth for all three themes; text still branches
+        // explicitly below because, unlike the checkout modal, this surface's background
+        // really does flip light/dark and can't just hardcode one text color.
+        <div ref={bannerRef} className="rfi-glass-flat" style={{
                   position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
                   maxWidth: 640, margin: '0 auto',
-                  // Light mode was rgba(255,255,255,0.25) - a 25% transparent panel, so the
-                  // entire page showed straight through it and the banner text collided with
-                  // whatever sat behind (screenshot feedback 2026-08-05: unreadable over the
-                  // ledger, over the pricing CTA, everywhere). Dark mode had a fully opaque
-                  // carbon gradient the whole time. Light now gets the same treatment in its
-                  // own key: opaque base + the identical 112deg carbon weave, blended with
-                  // multiply so the fibre darkens instead of washing out.
-                  background: theme === 'dark'
-                    ? 'linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
-                    : 'linear-gradient(155deg, #ffffff 0%, #f5f5f7 30%, #ececed 55%, #f8f8fa 78%, #f1f1f4 100%), repeating-linear-gradient(112deg, rgba(0,0,0,0.045) 0px, rgba(0,0,0,0.045) 1px, transparent 1px, transparent 3px)',
-                  backgroundBlendMode: theme === 'dark' ? 'overlay' : 'multiply',
-                  border: theme === 'dark' ? '1px solid rgba(255,255,255,0.09)' : '1px solid var(--border)',
                   borderRadius: 12,
                   padding: '20px 24px',
-                  boxShadow: theme === 'dark'
-                    ? 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 40px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.5)'
-                    : '0 8px 32px rgba(0,0,0,0.35)',
                   display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
                   transform: bannerClosing ? 'scale(0.85)' : 'scale(1)',
                   opacity: bannerClosing ? 0 : 1,
-                  transition: 'transform 0.24s ease-in, opacity 0.24s ease-in, background 0.2s',
+                  transition: 'transform 0.24s ease-in, opacity 0.24s ease-in',
                 }}>
-                  <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: theme === 'dark' ? '#ffffff' : '#000000', fontWeight: 'bold', lineHeight: 1.5 }}>
+                  <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 1.5 }}>
                     {t.cookieBanner.text}
-                    <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: theme === 'dark' ? '#999999' : '#555555', letterSpacing: '0.04em', marginTop: 4, fontWeight: 'normal' }}>
+                    <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: theme === 'light' ? '#555555' : '#999999', letterSpacing: '0.04em', marginTop: 4, fontWeight: 'normal' }}>
                       {t.cookieBanner.subtext}
                     </span>
                   </p>
@@ -994,8 +986,8 @@ export function PublicSite() {
                     <button
                       onClick={() => {}}
                       style={{
-                        background: 'transparent', color: theme === 'dark' ? '#ffffff' : '#000000',
-                        border: theme === 'dark' ? '2px solid #ffffff' : '1px solid var(--border)',
+                        background: 'transparent', color: theme === 'light' ? '#000000' : '#ffffff',
+                        border: theme === 'light' ? '1px solid var(--border)' : '2px solid #ffffff',
                         borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
                       }}
                     >
