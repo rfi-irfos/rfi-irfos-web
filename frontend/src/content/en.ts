@@ -135,7 +135,7 @@ export const EN = {
   trackRecord: {
     eyebrow: '03 / Track Record',
     heading: 'the discipline, demonstrated',
-    paragraph: 'We read apps at the source-code level, not just the outside. The companies on this ledger got here the same way: they quietly pass your data to third parties, track you without consent, or leave security holes open. On every report we send, the data-protection authorities are copied in directly and we give the company ninety days to fix it before anything becomes public. The rule is simple and non-negotiable: every organization here is treated exactly the same, whether or not they ever pay us a cent.',
+    paragraph: 'We decompile shipped apps and trace their data flows to real endpoints in real countries. Companies land on this ledger for three reasons: they hand your data to third parties, they track without consent, they leave the door open. Every report goes out with the data-protection authorities copied in and a ninety-day clock attached. One rule, no exceptions: paying clients and everyone else are held to the identical standard.',
     kpis: {
       appsAudited: 'Apps audited',
       companiesNotified: 'Companies notified',
@@ -197,8 +197,8 @@ export const EN = {
 
   appPrivacy: {
     eyebrow: '04 / Start Here',
-    heading: 'does your app really protect user data?',
-    paragraph: "Teams trust their app protects user data because it passes its build checklist. What it actually does in production — which SDKs it contacts, where data lands, whether tracking starts before consent — is a different question, and often a different answer. This is the easiest place to start: the question itself is simple to ask.",
+    heading: 'what your app does after it ships',
+    paragraph: "Your app passes its build checklist. That says nothing about what the shipped binary does in production: which SDKs it contacts, where data lands, whether tracking fires before consent. We decompile it and trace every flow to the endpoint and the country it terminates in. Checklists record intent. We report behaviour.",
     comparisonClassicLabel: 'What you used to see',
     comparisonRfiLabel: 'What we do differently',
     comparisonRows: [
@@ -208,12 +208,12 @@ export const EN = {
       { classic: 'A pass-or-fail verdict', rfi: 'A timestamped, reproducible audit trail, regulator-ready' },
       { classic: "Remediation left to the vendor's discretion", rfi: 'Stalled remediation triggers disclosure under our statutory mandate' },
     ],
-    cta: 'Talk to us about your app',
+    cta: 'Send us your app',
   },
 
   pricing: {
     eyebrow: '05 / Pricing',
-    heading: 'priced in plain terms',
+    heading: 'what it costs',
     subheading: 'Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.',
     scopeTags: {
       security: 'Mobile + Web + AI',
@@ -327,7 +327,7 @@ export const EN = {
 
   submit: {
     eyebrow: '08 / Contact & Disclosures',
-    heading: 'get in touch',
+    heading: 'reach us directly',
     paragraph: "One form, whatever it's about: a general question, a service inquiry, research collaboration - or a security finding. If it's the last one, we run our own intake channel instead of routing it to a third-party bug bounty platform, for the same reason we'd refuse to be routed to one ourselves.",
     notSurePrefix: 'Not sure what to pick on the right? ',
     notSureStrong: 'General inquiries',
@@ -372,7 +372,7 @@ export const EN = {
 
   footer: {
     tagline: 'Human rights are not subject to negotiation.',
-    taglineAttribution: '— RFI-IRFOS × Emergent Interaction Lab, core doctrine',
+    taglineAttribution: 'RFI-IRFOS × Emergent Interaction Lab, core doctrine',
     groups: {
       legal: {
         heading: 'Legal',
