@@ -39,11 +39,11 @@ export const DE: Content = {
       years: 'Jahre Forschung',
     },
     ctaTrackRecord: 'Track Record',
-    ctaBookUs: 'Jetzt buchen!',
+    ctaBookUs: 'Beauftragen',
   },
 
   research: {
-    eyebrow: '01 / Schwerpunkte',
+    eyebrow: '01 / Unter der Lupe',
     heading: 'worauf unser Blick fällt',
     subheading: 'Ein Team. Dieselben Leute, die das Modell trainieren, schreiben die regulatorische Analyse und reichen die Offenlegung ein.',
     areas: [
@@ -53,7 +53,7 @@ export const DE: Content = {
       { title: 'Ökozentrische Technologie', desc: 'Technologie im Dienst ökologischer und sozialer Systeme. Suffizienz statt Wachstum. Forschung zu künstlich erzeugter Knappheit.' },
       { title: 'Minderjährigen- & Jugendschutz', desc: 'COPPA-Konformität, DSGVO Art. 8, EU-AI-Act-Bestimmungen für Minderjährige. Audit von Kinder-Apps, Spielen und Streaming-Plattformen. Biometrische und Verhaltensdaten von Minderjährigen im Fokus.' },
       { title: 'Prompt Injection & Adversariale Robustheit', desc: 'Red-Teaming für Prompt Injection, Jailbreak-Resistenz und adversariale Robustheit. Wir kartieren, wo Instruction-Following unter Druck bricht, und härten dagegen ab.' },
-      { title: 'Web-App-Entwicklung', desc: 'Full-Stack-Builds von demselben Team, das hauptberuflich audititert. React-Frontends, Rust-Backends, installierbare PWAs. Keine aufgeblähten Page-Builder, kein Vendor-Lock-in.' },
+      { title: 'Web-App-Entwicklung', desc: 'Full-Stack-Builds von demselben Team, das hauptberuflich auditiert. React-Frontends, Rust-Backends, installierbare PWAs. Keine aufgeblähten Page-Builder, kein Vendor-Lock-in.' },
       { title: 'Modellwohlergehen & Wellbeing', desc: 'Modellwohlergehen als eigenständige Forschungsachse. Wellbeing-Signale während des Trainings, Distress-Erkennung und Würde für die Systeme, die wir kultivieren - nicht nur für die Menschen, denen sie dienen.' },
     ],
   },
@@ -61,7 +61,7 @@ export const DE: Content = {
   projects: {
     eyebrow: '02 / Vorhaben',
     heading: 'was wir bauen',
-    subheading: 'Jedes Projekt ist ein Proof of Concept für eine konkrete Forschungsfrage. Alle auf demselben Stack aufgebaut.',
+    subheading: 'Jedes Projekt beantwortet eine konkrete Forschungsfrage. Alle laufen auf demselben Stack.',
     carouselPrevAria: 'vorherige Projekte',
     carouselNextAria: 'nächste Projekte',
     viewOnCratesIo: 'Auf crates.io ansehen',
@@ -71,12 +71,12 @@ export const DE: Content = {
       pairs: [
         {
           q: 'Ihre KI verhält sich nicht so, wie sie sollte?',
-          a: 'Wir untersuchen, was sie tatsächlich tut - nicht, was die Dokumentation versprochen hat.',
+          a: 'Wir zerlegen das ausgelieferte System und protokollieren sein tatsächliches Verhalten. Die Dokumentation ist dabei nur eine Behauptung, die wir gegenprüfen.',
           detail: 'Getestet auf Code-Ebene, mit echten Eingaben und echten Nutzern - nicht mit einer Vorführung oder einem Benchmark-Wert.',
         },
         {
           q: 'Ihre Software verhält sich in Produktion anders als im Test?',
-          a: 'Wir beobachten das System, wie es wirklich läuft, unter realen Bedingungen.',
+          a: 'Wir instrumentieren das laufende System und zeichnen auf, was es unter echter Last tatsächlich tut.',
           detail: 'Dieselbe Ursachenanalyse, die hinter jedem veröffentlichten Befund steht - wer beim ersten Symptom aufhört, hat noch keinen Befund.',
         },
         {
@@ -86,7 +86,7 @@ export const DE: Content = {
         },
         {
           q: 'Sie machen sich Sorgen wegen des AI Act und wissen nicht, wo Sie wirklich stehen?',
-          a: 'Wir bewerten, wo das reale Risiko liegt - nicht nur, worauf eine Checkliste zeigt.',
+          a: 'Wir ordnen Ihre Systeme den realen Risikoklassen zu. Eine Checkliste zeigt auf Dokumente. Wir zeigen auf Datenflüsse.',
           detail: 'Zugeordnet zu echten Risikoklassen und tatsächlichen Datenflüssen, nicht zu einem generischen Compliance-Fragebogen.',
         },
         {
@@ -201,7 +201,7 @@ export const DE: Content = {
       { classic: 'Ein Bestanden-oder-Durchgefallen-Urteil', rfi: 'Ein reproduzierbares Prüfprotokoll, zeitgestempelt und behördenbereit' },
       { classic: 'Die Behebung bleibt dem Anbieter überlassen', rfi: 'Stockt die Behebung, leiten wir die Offenlegung aus unserem gesetzlichen Auftrag ein' },
     ],
-    cta: 'Sprechen Sie mit uns über Ihre App',
+    cta: 'Schicken Sie uns Ihren Build',
   },
 
   pricing: {
@@ -226,7 +226,7 @@ export const DE: Content = {
       { tier: 'Remediation Advisory', hook: 'Ein nach Schwere geordneter Bericht, plus ein Walkthrough mit den Ingenieur:innen, die es gefunden haben.', desc: 'Sie erhalten einen nach Schwere geordneten Bericht in klarer Sprache: genau, wie wir getestet haben, jede gefundene Schwachstelle und eine konkrete Behebung für jede davon, geliefert innerhalb von 7 Kalendertagen nach Zahlung.\n\nDie Ingenieur:innen, die die Lücken gefunden haben, führen Sie durch deren Schließung. Das ist nie eine Liste von Problemen, die jemand anderem zur Interpretation übergeben wird.\n\nDreißig Tage später prüfen wir nach, ob die Fixes tatsächlich angekommen sind - nicht, ob jemand behauptet hat, sie seien es. Jeder Fund ist mit dem genauen Datenschutz-Artikel verknüpft, den er verletzt, damit Ihr Rechtsteam eine Landkarte statt einer Vermutung bekommt.\n\nDas ist der Unterschied zwischen „einen Bericht haben“ und „tatsächlich behoben sein“.', delivery: 'Bericht innerhalb von 7 Kalendertagen nach Zahlung.' },
       { tier: 'Confidential', hook: 'Derselbe geordnete Bericht, unter strikter Geheimhaltungsvereinbarung vertraulich gehalten.', desc: 'Sie erhalten einen schriftlichen Bericht, der jede Schwachstelle nach Schwere ordnet und exakt an der Stelle in Ihrem Code verortet, plus eine Zusammenfassung in klarer Sprache, die auch nicht-technische Führungskräfte tatsächlich lesen können. Geliefert innerhalb von 7 Kalendertagen nach Zahlung.\n\nAlles bleibt unter einer strikten Geheimhaltungsvereinbarung vertraulich; Ihre Kund:innen und die Öffentlichkeit sehen es nie. Sobald Sie Fixes ausliefern, testen wir manuell nach, um zu bestätigen, dass die Lücken tatsächlich geschlossen sind - nicht nur auf dem Papier gepatcht.\n\nEines ändert sich nicht: Als Non-Profit-Organisation, die an ihre eigenen Regeln gebunden ist, werden die zuständigen Regulatoren trotzdem parallel informiert, ohne Details, die Sie exponieren würden. Diskretion, wo sie zählt, Beweise, wo es darauf ankommt.', delivery: 'Bericht innerhalb von 7 Kalendertagen nach Zahlung.' },
       { tier: 'Enterprise NDA', hook: 'Privater Bericht, längere Sperrfrist, direkter Zugang zu den Ingenieur:innen für die Behebung.', desc: 'Sie erhalten denselben privaten, geordneten Bericht wie in der Confidential-Stufe, mit einem Unterschied: Die Sperrfrist läuft deutlich über unsere üblichen 90 Tage hinaus, damit Ihr Team echte Zeit hat, die Dinge richtig zu reparieren, statt an einem Wochenende drüberzupatchen.\n\nSie arbeiten direkt mit den Ingenieur:innen an der Behebung. Ihre Anwält:innen erhalten ein vollständiges Beweispaket, das sie direkt an die Rechtsvertretung weitergeben können.\n\nWir starten innerhalb weniger Tage nach Zahlung, und jede Folgearbeit springt an die Spitze der Warteschlange. Gebaut für Organisationen, bei denen alles innerhalb von 90 Tagen zu beheben nicht realistisch ist.', delivery: 'Beginnt sofort nach Aufnahme; vollständiger Bericht innerhalb von 7 Kalendertagen nach Umfangsfestlegung.' },
-      { tier: 'Critical Infrastructure', hook: 'NIS2-konforme Notfallreaktion für regulierte Betreiber.', desc: 'Sie erhalten eine Prüfung mit vollem Umfang unter Geheimhaltungsvereinbarung, unsere eigene Rechtsprüfung und ein mit Ihrem Team gemeinsam eingeübtes Incident-Response-Protokoll, bevor irgendetwas schiefgeht. Für Betreiber von Energie-, Wasser-, Gesundheits- oder Verkehrsinfrastruktur ist ein Vorfall ein Ereignis der öffentlichen Sicherheit, kein IT-Ticket.\\n\\nWir übersetzen NIS2-Pflichten in technische Kontrollen, die Ihr Infrastrukturteam tatsächlich umsetzen kann, und sprechen in Ihrem Namen direkt mit den zuständigen österreichischen und deutschen Behörden. Sie erhalten ein ständiges Notfallreaktionsprotokoll, damit der schlimmste Tag im Voraus eingeübt ist und nicht spontan erfunden werden muss.\\n\\nWir mobilisieren innerhalb weniger Tage nach Zahlung. Das ist die Stufe für Situationen, in denen Scheitern keine Option ist.', delivery: 'Beginnt sofort nach Aufnahme; vollständiger Bericht innerhalb von 7 Kalendertagen nach Umfangsfestlegung.' },
+      { tier: 'Critical Infrastructure', hook: 'NIS2-konforme Notfallreaktion für regulierte Betreiber.', desc: 'Sie erhalten eine Prüfung mit vollem Umfang unter Geheimhaltungsvereinbarung, unsere eigene Rechtsprüfung und ein mit Ihrem Team gemeinsam eingeübtes Incident-Response-Protokoll, bevor irgendetwas schiefgeht. Für Betreiber von Energie-, Wasser-, Gesundheits- oder Verkehrsinfrastruktur ist ein Vorfall ein Ereignis der öffentlichen Sicherheit, kein IT-Ticket.\n\nWir übersetzen NIS2-Pflichten in technische Kontrollen, die Ihr Infrastrukturteam tatsächlich umsetzen kann, und sprechen in Ihrem Namen direkt mit den zuständigen österreichischen und deutschen Behörden. Sie erhalten ein ständiges Notfallreaktionsprotokoll, damit der schlimmste Tag im Voraus eingeübt ist und nicht spontan erfunden werden muss.\n\nWir mobilisieren innerhalb weniger Tage nach Zahlung. Das ist die Stufe für Situationen, in denen Scheitern keine Option ist.', delivery: 'Beginnt sofort nach Aufnahme; vollständiger Bericht innerhalb von 7 Kalendertagen nach Umfangsfestlegung.' },
       { tier: 'IoB / Art. 9', hook: 'Eine vollständige Nachverfolgung biometrischer Daten - die Kategorie, die die meisten Anbieter nicht anfassen.', desc: 'Sie erhalten eine vollständige Nachverfolgung jedes Flusses biometrischer Daten durch Ihr Produkt: Speicherfristen, grenzüberschreitende Übermittlungen und Verarbeitungszweck, kartiert gegen die strengste Kategorie des europäischen Datenschutzrechts.\n\nDer Preis spiegelt die Tiefe der Arbeit wider. Sie behalten dieselbe Geheimhaltungsvereinbarung und denselben Regulatorkontakt wie in der Enterprise-Stufe. Die meisten Sicherheitsanbieter fassen diese Kategorie nicht an; wir haben uns darauf spezialisiert, weil die betroffenen Daten buchstäblich die Körper von Menschen sind.\n\nWir starten innerhalb weniger Tage nach Zahlung.', delivery: 'Fortlaufend; erster Quartalsbericht innerhalb von 7 Kalendertagen nach Kick-off.' },
       { tier: 'Annual Intelligence Retainer', hook: 'Eine externe Sicherheits- und Compliance-Abteilung, das ganze Jahr über.', desc: 'Sie erhalten ein volles Jahr unseres Flaggschiff-Service: kontinuierliche Abdeckung Ihres gesamten App-Portfolios, keine Stichprobe, mit einem tiefgehenden Audit alle drei Monate.\n\nIhre feste Ansprechperson spricht direkt mit den relevanten Regulatoren, von den österreichischen und deutschen Datenschutzbehörden bis zur britischen ICO. Sie erhalten jeden Monat ein Bedrohungsbriefing und sofortige Benachrichtigung, sobald wir einen sich anbahnenden Vorfall sehen.\n\nWir übernehmen innerhalb einer Woche nach Zahlung und agieren von Tag eins an als Ihre externe Sicherheits- und Compliance-Abteilung.', delivery: 'Fortlaufend; erster Quartalsbericht innerhalb von 7 Kalendertagen nach Kick-off.' },
     ],
@@ -322,7 +322,7 @@ export const DE: Content = {
     eyebrow: '08 / Kontakt & Offenlegungen',
     heading: 'nehmen Sie Kontakt auf',
     paragraph: 'Ein Formular, egal worum es geht: eine allgemeine Frage, eine Serviceanfrage, eine Forschungskooperation - oder ein Sicherheitsfund. Bei Letzterem betreiben wir einen eigenen Aufnahmekanal, statt ihn an eine Drittanbieter-Bug-Bounty-Plattform weiterzuleiten - aus demselben Grund, aus dem wir uns weigern würden, selbst an eine solche verwiesen zu werden.',
-    notSurePrefix: 'Nicht sicher, was Sie rechts auswählen sollen? ',
+    notSurePrefix: 'Im Zweifel: ',
     notSureStrong: 'Allgemeine Anfragen',
     notSureSuffix: ' erreicht so oder so einen Menschen - oder schreiben Sie direkt an eine dieser Adressen.',
     contactCards: {
@@ -365,7 +365,7 @@ export const DE: Content = {
 
   footer: {
     tagline: 'Menschenrechte stehen nicht zur Verhandlung.',
-    taglineAttribution: '— RFI-IRFOS × Emergent Interaction Lab, Kerndoktrin',
+    taglineAttribution: 'RFI-IRFOS × Emergent Interaction Lab, Kerndoktrin',
     groups: {
       legal: {
         heading: 'Rechtliches',

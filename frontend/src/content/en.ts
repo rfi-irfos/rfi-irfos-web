@@ -42,7 +42,7 @@ export const EN = {
       years: 'years of research',
     },
     ctaTrackRecord: 'Track Record',
-    ctaBookUs: 'Book us!',
+    ctaBookUs: 'Book us',
   },
 
   research: {
@@ -79,8 +79,8 @@ export const EN = {
         },
         {
           q: 'Your software behaves differently in production than it did in testing?',
-          a: 'We observe the system as it really runs, under real conditions.',
-          detail: 'The same root-cause tracing discipline behind every finding we publish - stopping at the first symptom isn\'t a finding yet.',
+          a: 'We instrument the running system and reproduce the divergence.',
+          detail: 'Same root-cause discipline as every finding we publish. A symptom is not a cause, and we do not file it as one.',
         },
         {
           q: 'You need NIS2-compliant incident response but don\'t know which controls actually fit your stack?',
@@ -89,7 +89,7 @@ export const EN = {
         },
         {
           q: 'You\'re worried about the AI Act and don\'t know where you actually stand?',
-          a: 'We assess where the real risk sits, not just where a checklist points.',
+          a: 'We place your systems in the AI Act risk tiers and show the evidence behind every placement.',
           detail: 'Mapped against actual risk tiers and real data flows, not a generic compliance questionnaire.',
         },
         {
@@ -104,7 +104,7 @@ export const EN = {
         },
         {
           q: 'There\'s a security issue and nobody can explain how it happened?',
-          a: 'We trace it back through the system until the cause is clear.',
+          a: 'We reconstruct the chain from entry point to impact, with the artefacts to prove each link.',
           detail: 'Delivered in the same five-question format as every audit: what we found, what proves it, how we proved it, how sure we are, what to do about it.',
         },
       ],
