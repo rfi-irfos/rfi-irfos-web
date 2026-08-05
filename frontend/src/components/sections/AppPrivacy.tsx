@@ -29,11 +29,19 @@ export function AppPrivacySection() {
             soft/abstract - a side-by-side contrast lands harder). Framed as two
             APPROACHES, not naming a competitor, same non-disparagement rule as
             the rest of the site's differentiation language. */}
+        {/* Table narrowed to 920 and auto-margined ("middle/center aligned table" feedback,
+            asked for twice). Centering the section's heading/intro while leaving the table at
+            the full 1320 container width was not what was meant - the table still ran edge to
+            edge under a centered heading. Cell text stays left-aligned on purpose: centered
+            cells read as a poster, not as a side-by-side comparison.
+            Header size 11 -> 13: the weight was already 800, but index.html loads JetBrains
+            Mono at wght@400;500;600;700 only, so 800 silently falls back to 700 and cannot
+            render any heavier. Size is the lever that actually adds visibility here. */}
         <Reveal from="bottom" delay={1}>
-          <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 40 }}>
+          <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 40, maxWidth: 920, marginLeft: 'auto', marginRight: 'auto' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-              <div style={{ padding: '16px 24px', background: 'rgba(255,255,255,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text)', borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>{t.appPrivacy.comparisonClassicLabel}</div>
-              <div style={{ padding: '16px 24px', background: 'rgba(0,245,196,0.08)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)', borderBottom: '1px solid var(--border)' }}>{t.appPrivacy.comparisonRfiLabel}</div>
+              <div style={{ padding: '16px 24px', background: 'rgba(255,255,255,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text)', borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>{t.appPrivacy.comparisonClassicLabel}</div>
+              <div style={{ padding: '16px 24px', background: 'rgba(0,245,196,0.08)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)', borderBottom: '1px solid var(--border)' }}>{t.appPrivacy.comparisonRfiLabel}</div>
               {t.appPrivacy.comparisonRows.map((row, i) => (
                 <div key={i} style={{ display: 'contents' }}>
                   <div style={{ display: 'flex', alignItems: 'center', padding: '18px 24px', fontSize: 14, color: 'var(--text2)', borderRight: '1px solid var(--border)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.classic}</div>
