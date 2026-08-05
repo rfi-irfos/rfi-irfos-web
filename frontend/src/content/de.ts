@@ -180,7 +180,7 @@ export const DE: Content = {
       closed: 'GESCHLOSSEN',
       disclosureLabel: 'OFFENLEGUNG',
       respondedLabel: 'REAGIERT',
-      elapsedLabel: 'VERSTRICHEN',
+      elapsedLabel: 'TAGE STILLE',
       yes: 'JA',
       no: 'NEIN',
       pdf: 'PDF',

@@ -441,9 +441,15 @@ export function TierCarousel({ tiers, getActions }: {
   // fixed "you are here" position, which read as the preview not tracking the
   // arrows at all. Each tile stays in its permanent slot; only the highlight
   // moves, and the strip auto-scrolls the active tile into view.
+  // inline: 'center' instead of 'nearest' - "nearest" is a no-op the moment a tile is even
+  // partially visible, which on first mount (combined with the filmstrip's own overflow-x
+  // container below) left the recommended tile sitting half-cropped behind the left edge of
+  // the scroll container instead of fully in view (screenshot feedback 2026-08-05: "the
+  // recommended is a half cut off card"). 'center' forces a real scroll on every idx change,
+  // mount included, so the active tile is always fully visible.
   const tileRefs = useRef<(HTMLButtonElement | null)[]>([])
   useEffect(() => {
-    tileRefs.current[idx]?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' })
+    tileRefs.current[idx]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
   }, [idx])
 
   return (
@@ -526,7 +532,11 @@ export function TierCarousel({ tiers, getActions }: {
             background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
             color: 'var(--text2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>&#8592;</button>
-          <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6, scrollBehavior: 'smooth', justifyContent: 'center' }}>
+          {/* flex-start, not center: on an overflow-x container whose content is wider than
+              the box, justifyContent: 'center' crops BOTH ends evenly in the initial paint -
+              before the scrollIntoView above ever runs - so the featured tile came up half
+              cut off. flex-start keeps the strip anchored and lets the scroll do the work. */}
+          <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6, scrollBehavior: 'smooth', justifyContent: 'flex-start' }}>
             {tiers.map((t, i) => (
               <button key={t.tier} ref={el => { tileRefs.current[i] = el }} onClick={() => setIdx(i)} style={{
                 flexShrink: 0, minWidth: 140, textAlign: 'left', cursor: 'pointer',
