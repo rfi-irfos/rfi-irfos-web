@@ -227,9 +227,12 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
     function play() {
       if (playing) return
       playing = true
+      // Live feedback 2026-08-05: overall animation read as too long. Windows
+      // roughly halved from the reviewed version - still individually varied
+      // per letter (not clustered), just compressed to a shorter total span.
       const plans = spans.map(() => {
-        const start = Math.floor(Math.random() * 60)
-        return { start, end: start + Math.floor(Math.random() * 70) + 40, flipped: false }
+        const start = Math.floor(Math.random() * 25)
+        return { start, end: start + Math.floor(Math.random() * 30) + 18, flipped: false }
       })
       spans.forEach(span => {
         span.style.transition = 'left 420ms cubic-bezier(.3,1.4,.5,1), transform 420ms cubic-bezier(.3,1.4,.5,1), filter 60ms linear'
@@ -268,7 +271,7 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
       io = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            leadTimer = setTimeout(play, 500)
+            leadTimer = setTimeout(play, 300)
           } else {
             if (leadTimer) clearTimeout(leadTimer)
             reset()

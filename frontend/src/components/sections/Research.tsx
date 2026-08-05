@@ -39,7 +39,10 @@ function BentoTile({ icon, title, desc }: { icon: React.ReactNode; title: string
         borderRadius: 16, padding: '28px 24px',
         height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column',
         clipPath: visible ? 'circle(150% at 40px 40px)' : 'circle(0% at 40px 40px)',
-        transition: 'clip-path 0.9s cubic-bezier(0.16,1,0.3,1), box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 180ms cubic-bezier(0.4,0,0.2,1)',
+        // Ink-bleed reveal slowed 0.9s -> 1.5s (live feedback 2026-08-05: tiles rendered
+        // in too fast). Hover box-shadow/border-color timings untouched - that's
+        // interaction feel, not the scroll-reveal, no complaint about that.
+        transition: 'clip-path 1.5s cubic-bezier(0.16,1,0.3,1), box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 180ms cubic-bezier(0.4,0,0.2,1)',
       }}
         whileHover={prefersReducedMotion() ? undefined : { y: -4, scale: 1.012 }}
         transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
