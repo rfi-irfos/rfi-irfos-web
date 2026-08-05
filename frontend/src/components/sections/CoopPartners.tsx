@@ -29,9 +29,8 @@ export function CoopPartnersSection({
           </p>
         </Reveal>
         <Reveal from="bottom" delay={1}>
-          <div style={{
+          <div className="rfi-glass-flat" style={{
             display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 20,
-            background: 'var(--bg2)', border: '1px solid var(--border)',
             borderRadius: 14, padding: '28px 28px',
           }}>
             <div>
@@ -82,10 +81,10 @@ export function CoopPartnersSection({
             ].map((p, i) => (
               <button key={i}
                 onClick={() => openCheckoutModal({ key: `coop_${i}`, tier: p.name, desc: t.coopPartners.products[i].desc, price: p.price, delivery: t.coopPartners.productsDeliveryNote, directUrl: p.href })}
+                className="rfi-hover-card rfi-glass-flat"
                 style={{
                   display: 'flex', flexDirection: 'column', gap: 4, padding: '14px 16px',
-                  background: 'var(--bg2)', border: '1px solid var(--border)',
-                  borderRadius: 10, textAlign: 'left', cursor: 'pointer', transition: 'border-color .15s',
+                  borderRadius: 10, textAlign: 'left', cursor: 'pointer',
                 }}>
                 <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{p.name}</span>
                 <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-text)' }}>{p.price}</span>

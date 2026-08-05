@@ -94,9 +94,13 @@ type LocalizedProject = { name: string; link: string | null; sub: string; desc: 
 
 function ProjectCard({ p }: { p: LocalizedProject }) {
   const { t } = useLocale()
+  // background and border are deliberately absent from the inline style: .rfi-glass-flat
+  // supplies both, and an inline declaration would override the class. That specificity
+  // trap is exactly why the hover lift silently did nothing on the other card families.
+  // Flat variant, not .rfi-glass: these repeat and sit inside a horizontal scroll
+  // container, and backdrop-filter re-samples every scroll frame.
   return (
-    <div style={{
-      background: 'var(--bg2)', border: '1px solid var(--border)',
+    <div className="rfi-hover-card rfi-glass-flat" style={{
       borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12,
       flex: '1 1 0', minWidth: 0,
     }}>
