@@ -2,7 +2,7 @@
 // PublicSite.tsx, including the Problem/Solution showcase that lives under it.
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { prefersReducedMotion, beacon, TEAL, Reveal } from './shared'
+import { prefersReducedMotion, beacon, TEAL, Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // Problem/solution pairs (website-repositioning plan, Stage 1a) - moved out of
@@ -296,7 +296,7 @@ export function ProjectsSection() {
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="right">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.projects.eyebrow}</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>{t.projects.heading}</h2>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}><ScrambleHeading text={t.projects.heading} /></h2>
         </Reveal>
         <Reveal from="left" delay={1}>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>

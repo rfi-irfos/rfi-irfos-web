@@ -1,7 +1,7 @@
 // "Research Areas" section (`#research`) - extracted verbatim from PublicSite.tsx.
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { prefersReducedMotion, useTilt, Reveal } from './shared'
+import { prefersReducedMotion, useTilt, Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // One tile of the Research Areas grid, uniform sizing (a "featured wide tile" pass
@@ -199,7 +199,7 @@ export function ResearchSection() {
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.research.eyebrow}</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>{t.research.heading}</h2>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}><ScrambleHeading text={t.research.heading} /></h2>
         </Reveal>
         <Reveal from="right" delay={1}>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>

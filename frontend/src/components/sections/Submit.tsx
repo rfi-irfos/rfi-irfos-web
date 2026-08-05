@@ -3,7 +3,7 @@
 // handler live at the page level (PublicSite.tsx) since the Lighthouse tracking
 // pixel right below the form, and the abandonment beacon, both key off the same
 // state - so this section receives it all as props.
-import { FormStateIcon, TEAL, Reveal, LIGHTHOUSE_PIXEL } from './shared'
+import { FormStateIcon, TEAL, Reveal, LIGHTHOUSE_PIXEL, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // Emails/hrefs are locale-independent; labels come from t.submit.contactCards.
@@ -42,7 +42,7 @@ export function SubmitSection({
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.submit.eyebrow}</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>{t.submit.heading}</h2>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}><ScrambleHeading text={t.submit.heading} /></h2>
           <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
             {t.submit.paragraph}
           </p>

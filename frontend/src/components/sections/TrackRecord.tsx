@@ -5,7 +5,7 @@
 // receives it as props rather than owning its own copy.
 import { useState, useEffect } from 'react'
 import type { Theme } from '../../hooks/useTheme'
-import { TEAL, CountUp, Reveal } from './shared'
+import { TEAL, CountUp, Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 
@@ -2565,7 +2565,7 @@ export function TrackRecordSection({
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.trackRecord.eyebrow}</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>{t.trackRecord.heading}</h2>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}><ScrambleHeading text={t.trackRecord.heading} /></h2>
         </Reveal>
         <Reveal from="right" delay={1}>
           <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 720, fontSize: 15, lineHeight: 1.9 }}>

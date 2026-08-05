@@ -1,6 +1,6 @@
 // "App Privacy" door-opener section (`#app-privacy`) - extracted verbatim from
 // PublicSite.tsx.
-import { Reveal, TEAL } from './shared'
+import { Reveal, TEAL, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // APP PRIVACY DOOR-OPENER — Stage 1c (website-repositioning plan), moved
@@ -17,7 +17,7 @@ export function AppPrivacySection() {
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.appPrivacy.eyebrow}</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>{t.appPrivacy.heading}</h2>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}><ScrambleHeading text={t.appPrivacy.heading} /></h2>
         </Reveal>
         <Reveal from="right" delay={1}>
           <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, fontSize: 15, lineHeight: 1.9 }}>

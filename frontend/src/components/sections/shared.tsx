@@ -299,69 +299,67 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
 }
 
 // Lighter version of the same shuffle mechanic as HeroFlipWord, without the
-// mirror - nav labels settle back into themselves on hover, no reversal (only
-// the hero flips, by direct instruction). innerHTML-based rather than
-// per-character spans since these are short and hover-triggered, not a
-// continuous multi-second run - the performance concern that justified
-// HeroFlipWord's persistent-span architecture doesn't apply here. Same empty-
-// ref-target discipline as HeroFlipWord, for the same reconciliation-safety
-// reason - `label` changes (locale toggle) are written on layout, never as JSX
-// children.
-export function NavLink({ href, label }: { href: string; label: string }) {
-  const ref = useRef<HTMLAnchorElement>(null)
+// mirror - a section heading settles into itself once, the first time it
+// scrolls into view. One-shot, same discipline as Reveal/BentoTile elsewhere
+// in this file (never re-triggers) - the opposite of HeroFlipWord's hero,
+// which deliberately resets and replays. Tried this as a nav-link hover effect
+// first (2026-08-05); direct correction was "not these, the actual header[s]
+// on the page as you scroll" - moved here instead, nav links reverted to plain.
+// innerHTML-based rather than persistent per-character spans, same reasoning
+// as before: short text, runs once, not a continuous multi-second loop.
+export function ScrambleHeading({ text }: { text: string }) {
+  const ref = useRef<HTMLSpanElement>(null)
   const reduced = prefersReducedMotion()
-  const playingRef = useRef(false)
-  const rafRef = useRef(0)
 
   useLayoutEffect(() => {
-    if (!playingRef.current && ref.current) ref.current.textContent = label
-  }, [label])
-
-  useEffect(() => () => cancelAnimationFrame(rafRef.current), [])
-
-  const handleEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.currentTarget.style.color = 'var(--text)'
     const el = ref.current
-    if (!el || reduced || playingRef.current) return
-    playingRef.current = true
+    if (!el) return
+    el.textContent = text
+    if (reduced) return
+
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     const randomChar = () => chars[Math.floor(Math.random() * chars.length)]
-    const n = label.length
-    const plans = Array.from({ length: n }, () => {
-      const start = Math.floor(Math.random() * 6)
-      return { start, end: start + Math.floor(Math.random() * 8) + 6 }
-    })
-    let frame = 0
-    const tick = () => {
-      let out = ''
-      let done = 0
-      for (let i = 0; i < n; i++) {
-        const p = plans[i]
-        if (frame >= p.end) { done++; out += label[i] }
-        else if (frame >= p.start) {
-          const remaining = (p.end - frame) / (p.end - p.start)
-          out += `<span style="filter:blur(${Math.max(0, remaining * 2).toFixed(2)}px)">${randomChar()}</span>`
-        } else {
-          out += label[i]
-        }
-      }
-      el.innerHTML = out
-      if (done === n) { playingRef.current = false; return }
-      rafRef.current = requestAnimationFrame(tick)
-      frame++
-    }
-    tick()
-  }
+    const n = text.length
+    let raf = 0
 
-  return (
-    <a ref={ref} href={href} style={{
-      color: 'var(--text2)', fontSize: 13, fontWeight: 600,
-      textDecoration: 'none', letterSpacing: '0.04em',
-      transition: 'color 0.18s',
-    }}
-      onMouseEnter={handleEnter}
-      onMouseLeave={e => (e.currentTarget.style.color = 'var(--text2)')} />
-  )
+    function play() {
+      const plans = Array.from({ length: n }, () => {
+        const start = Math.floor(Math.random() * 10)
+        return { start, end: start + Math.floor(Math.random() * 12) + 8 }
+      })
+      let frame = 0
+      function tick() {
+        let out = ''
+        let done = 0
+        for (let i = 0; i < n; i++) {
+          const p = plans[i]
+          if (frame >= p.end) { done++; out += text[i] }
+          else if (frame >= p.start) {
+            const remaining = (p.end - frame) / (p.end - p.start)
+            out += `<span style="filter:blur(${Math.max(0, remaining * 2.4).toFixed(2)}px)">${randomChar()}</span>`
+          } else {
+            out += text[i]
+          }
+        }
+        el!.innerHTML = out
+        if (done === n) return
+        raf = requestAnimationFrame(tick)
+        frame++
+      }
+      tick()
+    }
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { play(); io.unobserve(entry.target) }
+      })
+    }, { threshold: 0.4 })
+    io.observe(el)
+
+    return () => { io.disconnect(); cancelAnimationFrame(raf) }
+  }, [text, reduced])
+
+  return <span ref={ref} />
 }
 
 // nav-jump suppressor: set true during anchor-link scroll → all Reveal elements snap to p=1.

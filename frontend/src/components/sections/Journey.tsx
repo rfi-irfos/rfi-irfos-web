@@ -1,6 +1,6 @@
 // "Customer Journey" section (`#journey`) - extracted verbatim from PublicSite.tsx.
 import { useState, useEffect } from 'react'
-import { TEAL, prefersReducedMotion, useMobile, Reveal } from './shared'
+import { TEAL, prefersReducedMotion, useMobile, Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // Auto-advances which stage reads as "current" (live feedback: a static timeline
@@ -91,7 +91,7 @@ export function JourneySection() {
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.journey.eyebrow}</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>{t.journey.heading}</h2>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}><ScrambleHeading text={t.journey.heading} /></h2>
         </Reveal>
         <Reveal from="right" delay={1}>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 640 }}>

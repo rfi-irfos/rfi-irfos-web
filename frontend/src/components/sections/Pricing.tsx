@@ -9,7 +9,7 @@
 // (price, stripeKey, directUrl, contact flag, output-vocabulary tags - the
 // output tags stay English in both locales, same small fixed-vocabulary
 // treatment as the Track Record ledger's STATUS_META codes).
-import { ScopeTag, TierCarousel, Reveal } from './shared'
+import { ScopeTag, TierCarousel, Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 type CheckoutInfo = { key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string }
@@ -67,7 +67,7 @@ export function PricingSection({
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.pricing.eyebrow}</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}>{t.pricing.heading}</h2>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16 }}><ScrambleHeading text={t.pricing.heading} /></h2>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
             {t.pricing.subheading}
           </p>

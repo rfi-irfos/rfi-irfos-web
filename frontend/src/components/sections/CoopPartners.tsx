@@ -1,7 +1,7 @@
 // "Research Cooperation" / coop partner section (`#coop-partners`) - extracted
 // verbatim from PublicSite.tsx. Its buy buttons open the same page-level
 // checkout modal as Pricing, so `openCheckoutModal` is passed in as a prop.
-import { Reveal } from './shared'
+import { Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 type CheckoutInfo = { key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string }
@@ -23,7 +23,7 @@ export function CoopPartnersSection({
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.coopPartners.eyebrow}</p>
-          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}>{t.coopPartners.heading}</h2>
+          <h2 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, textAlign: 'center' }}><ScrambleHeading text={t.coopPartners.heading} /></h2>
           <p style={{ color: 'var(--text2)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
             {t.coopPartners.subheading}
           </p>

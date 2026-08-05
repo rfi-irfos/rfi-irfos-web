@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
-import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_PIXEL, WEB3FORMS_KEY, ModalTierBody, revealSuppressed, NavLink } from './sections/shared'
+import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_PIXEL, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
 import { ProjectsSection } from './sections/Projects'
@@ -713,10 +713,17 @@ export function PublicSite() {
 
         {/* Desktop nav - React inline styles can't do media queries, so gate on the useMobile() hook */}
         <div style={{ display: mobile ? 'none' : 'flex', gap: '1.75rem', alignItems: 'center' }}>
-          {/* NavLink (2026-08-05): same shuffle mechanic as the hero's HeroFlipWord,
-              lighter and without the mirror - settles back into its own label on
-              hover, doesn't flip. Only the hero flips, by direct instruction. */}
-          {NAV_LINKS.map(n => <NavLink key={n.href} href={n.href} label={n.label} />)}
+          {NAV_LINKS.map(n => (
+            <a key={n.href} href={n.href} style={{
+              color: 'var(--text2)', fontSize: 13, fontWeight: 600,
+              textDecoration: 'none', letterSpacing: '0.04em',
+              transition: 'color 0.18s',
+            }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text2)')}>
+              {n.label}
+            </a>
+          ))}
 
           {/* Theme + Contact - same 38x38 square, same radius, sit flush together as one
               pair (their own tight-gap group, not the wide nav-link gap). Theme toggle is
