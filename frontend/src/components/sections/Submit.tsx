@@ -38,7 +38,7 @@ export function SubmitSection({
 }) {
   const { t } = useLocale()
   return (
-    <section id="submit" style={{ padding: '100px 2rem' }}>
+    <section id="submit" style={{ padding: '72px 2rem' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.submit.eyebrow}</p>
@@ -61,7 +61,7 @@ export function SubmitSection({
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
               {CONTACT_CARDS.map(c => (
                 <a key={c.key} href={c.href} target="_blank" rel="noopener noreferrer" style={{
-                  background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
+                  background: 'var(--bg2)', border: '1px solid var(--border)',
                   borderRadius: 12, padding: '14px 18px', textDecoration: 'none', display: 'block',
                   transition: 'border-color 0.2s',
                 }}
@@ -95,7 +95,7 @@ export function SubmitSection({
                 value={tipForm.botcheck} onChange={e => setTipForm(p => ({ ...p, botcheck: e.target.value }))}
                 style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
               <select value={tipForm.topic} onChange={e => setTipForm(p => ({ ...p, topic: e.target.value }))} style={{
-                background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
+                background: 'var(--input-bg)', border: '1px solid var(--border)',
                 borderRadius: 8, padding: '12px 16px', color: tipForm.topic ? 'var(--text)' : 'var(--text3)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
               }}>
                 <option value="">{t.submit.form.topicPlaceholder}</option>
@@ -108,15 +108,15 @@ export function SubmitSection({
               </select>
               <input type="text" placeholder={t.submit.form.namePlaceholder}
                 value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-              <input type="email" placeholder={t.submit.form.emailPlaceholder}
+                style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+              <input type="email" required placeholder={t.submit.form.emailPlaceholder}
                 value={tipForm.email} onChange={e => setTipForm(p => ({ ...p, email: e.target.value }))}
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
               <input type="text" required placeholder={t.submit.form.targetPlaceholder}
                 value={tipForm.target} onChange={e => setTipForm(p => ({ ...p, target: e.target.value }))}
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
               <select value={tipForm.credit} onChange={e => setTipForm(p => ({ ...p, credit: e.target.value }))} style={{
-                background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)',
+                background: 'var(--input-bg)', border: '1px solid var(--border)',
                 borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
               }}>
                 <option value="alias">{t.submit.form.creditOptions.alias}</option>
@@ -125,7 +125,7 @@ export function SubmitSection({
               </select>
               <textarea required placeholder={t.submit.form.findingPlaceholder}
                 value={tipForm.finding} onChange={e => setTipForm(p => ({ ...p, finding: e.target.value }))}
-                rows={6} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
+                rows={6} style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
               <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
                 <input type="checkbox" required checked={tipForm.lawful}
                   onChange={e => setTipForm(p => ({ ...p, lawful: e.target.checked }))}

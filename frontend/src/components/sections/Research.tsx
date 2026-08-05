@@ -27,14 +27,23 @@ function BentoTile({ icon, title, desc }: { icon: React.ReactNode; title: string
   }, [visible])
   return (
     <div ref={wrapRef}>
+      {/* whileHover rather than the CSS class's transform: useTilt writes an inline
+          `transform` on mount, and an inline transform beats a stylesheet :hover rule,
+          so .rfi-hover-card's lift never actually ran here. Framer composes y/scale with
+          the tilt's rotateX/rotateY into a single transform, which is the only way to
+          have both. The clip-path transition also stays inline, so it is declared
+          alongside the class's transitions rather than replacing them. */}
       <motion.div ref={tiltRef} className="rfi-hover-card" style={{
         ...tilt,
-        background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
+        background: 'var(--bg2)', border: '1px solid var(--border)',
         borderRadius: 16, padding: '28px 24px',
         height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column',
         clipPath: visible ? 'circle(150% at 40px 40px)' : 'circle(0% at 40px 40px)',
-        transition: 'clip-path 1.4s cubic-bezier(0.16,1,0.3,1)',
-      }}>
+        transition: 'clip-path 0.9s cubic-bezier(0.16,1,0.3,1), box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 180ms cubic-bezier(0.4,0,0.2,1)',
+      }}
+        whileHover={prefersReducedMotion() ? undefined : { y: -4, scale: 1.012 }}
+        transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+      >
         <div style={{ marginBottom: 16, lineHeight: 0 }}>{icon}</div>
         <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{title}</div>
         <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7 }}>{desc}</div>
@@ -59,7 +68,7 @@ function ResearchAreasGrid() {
 
 const _I = ({ children }: { children: React.ReactNode }) => (
   <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
-    stroke="#00f5c4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    stroke="currentColor" style={{ color: 'var(--accent)' }} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     {children}
   </svg>
 )
@@ -128,7 +137,7 @@ export const RESEARCH_AREAS = [
         <path d="M16 5C9 5 5 10 5 16h22c0-6-4-11-11-11z"/>
         <line x1="16" y1="16" x2="16" y2="25"/>
         <path d="M16 25 Q16 27 14 27"/>
-        <circle cx="16" cy="3" r="1.5" fill="#00f5c4" stroke="none"/>
+        <circle cx="16" cy="3" r="1.5" fill="currentColor" stroke="none"/>
       </_I>
     ),
     title: 'Minor & Youth Protection',
@@ -155,9 +164,9 @@ export const RESEARCH_AREAS = [
         {/* browser window with code brackets - web app dev */}
         <rect x="4" y="6" width="24" height="20" rx="2"/>
         <line x1="4" y1="12" x2="28" y2="12"/>
-        <circle cx="8" cy="9" r="0.8" fill="#00f5c4" stroke="none"/>
-        <circle cx="11" cy="9" r="0.8" fill="#00f5c4" stroke="none"/>
-        <circle cx="14" cy="9" r="0.8" fill="#00f5c4" stroke="none"/>
+        <circle cx="8" cy="9" r="0.8" fill="currentColor" stroke="none"/>
+        <circle cx="11" cy="9" r="0.8" fill="currentColor" stroke="none"/>
+        <circle cx="14" cy="9" r="0.8" fill="currentColor" stroke="none"/>
         <path d="M12 17l-3 3 3 3"/>
         <path d="M20 17l3 3-3 3"/>
       </_I>
@@ -186,7 +195,7 @@ export const RESEARCH_AREAS = [
 export function ResearchSection() {
   const { t } = useLocale()
   return (
-    <section id="research" style={{ padding: '100px 2rem' }}>
+    <section id="research" style={{ padding: '72px 2rem' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.research.eyebrow}</p>

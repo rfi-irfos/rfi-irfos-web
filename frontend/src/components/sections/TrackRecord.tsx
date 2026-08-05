@@ -2561,7 +2561,7 @@ export function TrackRecordSection({
 }) {
   const { t } = useLocale()
   return (
-    <section id="track-record" style={{ padding: '100px 2rem' }}>
+    <section id="track-record" style={{ padding: '72px 2rem' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.trackRecord.eyebrow}</p>
@@ -2585,7 +2585,7 @@ export function TrackRecordSection({
               <div style={{
                 background: theme === 'dark'
                   ? 'linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
-                  : 'rgba(255,255,255,0.25)',
+                  : 'var(--bg2)',
                 backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
                 border: theme === 'dark' ? '1px solid rgba(0,245,196,0.35)' : '1px solid rgba(10,122,92,0.45)',
                 borderRadius: 12, padding: '26px 20px', textAlign: 'center', height: '100%',
@@ -2594,7 +2594,7 @@ export function TrackRecordSection({
                   : '0 8px 32px rgba(0,0,0,0.35)',
               }}>
                 <div style={{ fontSize: 40, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}><CountUp value={s.n} /></div>
-                <div style={{ fontSize: 12, color: '#ffffff', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 12 }}>{s.label}</div>
+                <div style={{ fontSize: 12, color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 12 }}>{s.label}</div>
               </div>
             </Reveal>
           ))}
@@ -2792,7 +2792,11 @@ export function TrackRecordSection({
                 }}>
                   {/* Battery bar */}
                   <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'rgba(255,255,255,0.05)' }}>
-                    <div style={{ height: '100%', width: resolved ? '100%' : `${batteryPct * 100}%`, background: resolved ? 'linear-gradient(90deg, rgba(0,245,196,0.55), #00f5c4)' : `linear-gradient(90deg, ${batteryColor}55, ${batteryColor})`, borderRadius: '0 2px 0 0', transition: 'width 1s linear' }} />
+                    <div style={{ height: '100%', width: '100%',
+                      // scaleX, not width: this bar exists on all 311 ledger rows and is
+                      // re-driven by a 1Hz clock tick. Animating width ran layout+paint on
+                      // every row every second; transform is compositor-only.
+                      transform: `scaleX(${resolved ? 1 : batteryPct})`, transformOrigin: '0 50%', background: resolved ? 'linear-gradient(90deg, rgba(0,245,196,0.55), #00f5c4)' : `linear-gradient(90deg, ${batteryColor}55, ${batteryColor})`, borderRadius: '0 2px 0 0', transition: 'transform 1s linear' }} />
                   </div>
                   {/* Organisation */}
                   <div>
@@ -2912,7 +2916,7 @@ export function TrackRecordSection({
                         <button onClick={() => setReportModal(meta.reportUrl!)} style={{
                           background: 'rgba(0,245,196,0.10)', border: '1px solid rgba(0,245,196,0.3)',
                           borderRadius: 4, padding: '4px 8px', cursor: 'pointer', display: 'flex',
-                          alignItems: 'center', gap: 4, color: TEAL, fontSize: 10, fontFamily: "'JetBrains Mono', monospace",
+                          alignItems: 'center', gap: 4, color: 'var(--accent-text)', fontSize: 10, fontFamily: "'JetBrains Mono', monospace",
                           fontWeight: 700, letterSpacing: '0.06em', transition: 'background 0.15s',
                         }}>
                           <svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="M1 1h5l3 3v7H1V1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M6 1v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M3 6h4M3 8h3" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>

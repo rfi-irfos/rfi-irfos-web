@@ -1,10 +1,9 @@
-const TEAL = '#00f5c4'
 const BASE = { background: '#070711', color: '#e8e8f0', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', padding: '80px 2rem' }
 const PROSE = { maxWidth: 720, margin: '0 auto', lineHeight: 1.8 }
 const H1 = { fontSize: 32, fontWeight: 900, marginBottom: 8, color: '#e8e8f0' }
-const H2: React.CSSProperties = { fontSize: 12, fontWeight: 800, marginTop: 32, marginBottom: 8, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'monospace' }
+const H2: React.CSSProperties = { fontSize: 12, fontWeight: 800, marginTop: 32, marginBottom: 8, color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'monospace' }
 const P = { color: '#a0a0b8', fontSize: 14, marginBottom: 12 }
-const A = { color: TEAL, textDecoration: 'none' }
+const A = { color: 'var(--accent-text)', textDecoration: 'none' }
 
 import React, { useEffect, useRef } from 'react'
 
@@ -212,7 +211,7 @@ function Datenschutz() {
       This is usually where the actual tracking lives, and this is usually the one place a privacy policy goes vague. We won't. This site loads a single 1&times;1 pixel image, self-hosted, no cookie, no consent needed for it because a cookie-consent requirement (ePrivacy Art. 5(3)) attaches to storing or reading something on <em>your</em> device, and this pixel never does either. Each page load sends exactly this, the literal tag that is live on this page right now, copy it and inspect it yourself:
     </p>
     <div style={{ background: '#0c0c16', border: '1px solid rgba(0,245,196,0.2)', borderRadius: 6, padding: '12px 16px', margin: '8px 0 16px 0', overflowX: 'auto' }}>
-      <code style={{ fontFamily: 'monospace', fontSize: 12, color: TEAL, whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+      <code style={{ fontFamily: 'monospace', fontSize: 12, color: 'var(--accent-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
         {'<img src="https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif?site=rfi-irfos&p={page-path}&r={referrer}&utm_source={utm}" width="1" height="1" alt="" style="display:none">'}
       </code>
     </div>
@@ -508,12 +507,12 @@ function Team() {
             <div style={{
               width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 20, fontWeight: 900, color: TEAL, background: 'rgba(0,245,196,0.08)',
+              fontSize: 20, fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
             }}>{p.name[0]}</div>
           )}
           <div>
             <p style={{ fontSize: 14, fontWeight: 800, color: '#e8e8f0' }}>{p.name}</p>
-            <p style={{ fontSize: 11, color: TEAL, marginTop: 4, fontWeight: 600 }}>{p.focus}</p>
+            <p style={{ fontSize: 11, color: 'var(--accent-text)', marginTop: 4, fontWeight: 600 }}>{p.focus}</p>
           </div>
         </a>
       ))}

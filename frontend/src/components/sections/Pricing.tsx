@@ -63,7 +63,7 @@ export function PricingSection({
   const mobileTiers = t.pricing.mobile.map((tier, i) => ({ ...tier, ...MOBILE_META[i] }))
 
   return (
-    <section id="pricing" style={{ padding: '100px 2rem 40px' }}>
+    <section id="pricing" style={{ padding: '72px 2rem' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.pricing.eyebrow}</p>

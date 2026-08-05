@@ -10,7 +10,7 @@ import { useLocale } from '../../hooks/useLocale'
 export function AppPrivacySection() {
   const { t } = useLocale()
   return (
-    <section id="app-privacy" style={{ padding: '100px 2rem', background: 'rgba(0,245,196,0.03)' }}>
+    <section id="app-privacy" style={{ padding: '72px 2rem', background: 'rgba(0,245,196,0.03)' }}>
       {/* maxWidth matched to the neighboring Track Record/Pricing sections (1320,
           not 1000) - live feedback: the narrower container made this section's
           left edge sit further right than the sections directly above/below it. */}
@@ -52,7 +52,7 @@ export function AppPrivacySection() {
           </div>
         </Reveal>
         <Reveal from="bottom" delay={2}>
-          <div style={{ textAlign: 'center', marginBottom: 64 }}>
+          <div style={{ textAlign: 'center', marginBottom: 0 }}>
             <a href="#submit" className="rfi-cta-pulse" style={{
               display: 'inline-block', background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
               fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',

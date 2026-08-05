@@ -106,6 +106,73 @@ pub async fn submit_contact(
         }
     }
 
-    tracing::info!("Contact from {} ({})", entry.name, entry.email);
-    StatusCode::OK.into_response()
+    // Relay the lead into the Lighthouse CRM. This is the whole point of the endpoint:
+    // Lighthouse computes its "leads" figure as COUNT(*) FROM contacts, so a submission
+    // that never reaches that table is invisible no matter how many people send it. Until
+    // 2026-08-05 nothing on rfi-irfos.com wrote to it, which is why 71,340 visits showed
+    // zero leads.
+    //
+    // The key is held here, server side, and never reaches the browser bundle. We send
+    // x-inbox-key against Lighthouse's existing LIGHTHOUSE_INBOX_KEY rather than
+    // introducing LIGHTHOUSE_SIGNUP_KEY: signup() validates against a single key value,
+    // so defining SIGNUP_KEY over there would invalidate the key ternlang.com already
+    // sends and silently break its lead flow.
+    let relayed = relay_to_crm(&entry).await;
+
+    match relayed {
+        Ok(()) => {
+            tracing::info!("Contact from {} ({}) relayed to CRM", entry.name, entry.email);
+            StatusCode::OK.into_response()
+        }
+        Err(e) => {
+            // The submission is already durably appended above, so it is not lost. We still
+            // fail loudly rather than returning 200: a form that reports success while the
+            // lead goes nowhere is exactly the failure this endpoint exists to end. The
+            // visitor sees an error and the direct email address instead.
+            tracing::error!("Contact relay to CRM failed for {}: {e}", entry.email);
+            (StatusCode::BAD_GATEWAY, "could not reach the CRM").into_response()
+        }
+    }
+}
+
+async fn relay_to_crm(entry: &ContactEntry) -> Result<(), String> {
+    let key = std::env::var("LIGHTHOUSE_INBOX_KEY")
+        .or_else(|_| std::env::var("LIGHTHOUSE_SIGNUP_KEY"))
+        .unwrap_or_default();
+    if key.is_empty() {
+        return Err("LIGHTHOUSE_INBOX_KEY not set on this app".into());
+    }
+
+    let base = std::env::var("LIGHTHOUSE_BASE_URL")
+        .unwrap_or_else(|_| "https://lighthouse-rfi-irfos.fly.dev".to_string());
+
+    // Everything the visitor typed goes into `org` and the message body, because the CRM
+    // signup shape only carries email/name/org/tier. The full message is preserved in the
+    // contacts.jsonl line written above, and `tier` marks where the lead came from so
+    // website leads are distinguishable from ternlang.com API signups in the CRM.
+    let payload = serde_json::json!({
+        "email": entry.email,
+        "name":  entry.name,
+        "org":   entry.phone,
+        "tier":  "rfi-irfos.com contact form",
+    });
+
+    let client = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(10))
+        .build()
+        .map_err(|e| e.to_string())?;
+
+    let res = client
+        .post(format!("{base}/lighthouse/api/crm/signup"))
+        .header("x-inbox-key", key)
+        .json(&payload)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+
+    if res.status().is_success() {
+        Ok(())
+    } else {
+        Err(format!("CRM returned {}", res.status()))
+    }
 }

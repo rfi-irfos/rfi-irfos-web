@@ -5,7 +5,10 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { useLocale } from '../../hooks/useLocale'
 
-export const TEAL = '#00f5c4'
+// Was the literal '#00f5c4'. In dark, --accent IS #00f5c4, so this is a zero-diff
+// change to the primary theme, while light (#009e7a) and high-contrast (#ffd400)
+// finally receive a legible accent instead of near-white-on-white at 1.41:1.
+export const TEAL = 'var(--accent)'
 export const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
 export const LIGHTHOUSE_BEACON = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track'
 export const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
@@ -255,7 +258,7 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile }: {
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 14 }}>
         <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: '#c8c8d8', lineHeight: 1.2 }}>{tier}</h3>
-        <div style={{ fontSize: mobile ? 22 : 26, fontWeight: 900, color: TEAL, whiteSpace: 'nowrap' }}>{price}</div>
+        <div style={{ fontSize: mobile ? 22 : 26, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{price}</div>
       </div>
       {body.length > 0 && (
         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>
@@ -268,7 +271,7 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile }: {
       {body.length > 0 && <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', margin: '2px 0 18px' }} />}
       {punchline && (
         <p style={{
-          color: TEAL, fontSize: mobile ? 15.5 : 17, fontWeight: 700, lineHeight: 1.6,
+          color: 'var(--accent-text)', fontSize: mobile ? 15.5 : 17, fontWeight: 700, lineHeight: 1.6,
           margin: 0, marginBottom: 20, paddingLeft: 14, borderLeft: `2px solid ${TEAL}`,
         }}>{punchline}</p>
       )}
@@ -277,7 +280,7 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile }: {
           display: 'inline-flex', alignItems: 'center', gap: 6,
           background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
           borderRadius: 20, padding: '5px 12px', marginBottom: 20,
-          color: TEAL, fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace",
+          color: 'var(--accent-text)', fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace",
           textTransform: 'uppercase', letterSpacing: '0.1em',
         }}>
           <ClockIcon /> {delivery}
@@ -453,7 +456,7 @@ export function TierCarousel({ tiers, getActions }: {
   }, [idx])
 
   return (
-    <div style={{ marginBottom: 48 }}>
+    <div style={{ marginBottom: 0 }}>
       {/* Featured card - shrunk from maxWidth 760 (live feedback: too large relative
           to the filmstrip below it) so the two halves of the widget read as one
           balanced unit rather than one oversized card sitting over a thin strip. */}
@@ -497,7 +500,7 @@ export function TierCarousel({ tiers, getActions }: {
               display: 'inline-flex', alignItems: 'center', gap: 6,
               background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
               borderRadius: 20, padding: '5px 12px',
-              color: TEAL, fontSize: 12.5, fontWeight: 600,
+              color: 'var(--accent-text)', fontSize: 12.5, fontWeight: 600,
             }}>
               <ClockIcon /> {active.delivery}
             </div>
@@ -548,7 +551,7 @@ export function TierCarousel({ tiers, getActions }: {
                 {/* Marks the recommended tier even while it's not the active card,
                     so the cue survives clicking/cycling to other tiers. */}
                 {i === defaultIdx && (
-                  <div style={{ fontSize: 9, fontWeight: 800, color: TEAL, letterSpacing: '0.05em', marginBottom: 3 }}>{locale.tierCarousel.recommendedBadge}</div>
+                  <div style={{ fontSize: 9, fontWeight: 800, color: 'var(--accent-text)', letterSpacing: '0.05em', marginBottom: 3 }}>{locale.tierCarousel.recommendedBadge}</div>
                 )}
                 <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{t.tier}</div>
                 <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--accent-text)', marginTop: 4 }}>{t.price}</div>

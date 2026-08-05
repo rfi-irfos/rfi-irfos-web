@@ -55,10 +55,17 @@ function CustomerJourneyTimeline() {
             {/* Active stage reads noticeably bolder/brighter than the rest (live
                 feedback: all five looked identical, so nothing signalled "you are
                 here" without staring at the small number badge). */}
+            {/* Was fontSize 16 -> 19 with a font-size transition. font-size is a LAYOUT
+                property, and this timeline auto-advances every 3.2s, so it reflowed the
+                stage column and every paragraph beneath it twenty times a minute. Fixed
+                size with a compositor-only scale is visually equivalent and free. */}
             <div style={{
-              fontWeight: 900, fontSize: i === current ? 19 : 16,
-              color: i === current ? '#ffffff' : 'var(--text2)',
-              marginBottom: 8, marginTop: mobile ? 2 : 0, transition: 'font-size 0.4s, color 0.4s',
+              fontWeight: 900, fontSize: 19,
+              transform: i === current ? 'scale(1)' : 'scale(0.84)',
+              transformOrigin: 'left center',
+              color: i === current ? 'var(--text)' : 'var(--text2)',
+              marginBottom: 8, marginTop: mobile ? 2 : 0,
+              transition: 'transform 420ms cubic-bezier(0.16,1,0.3,1), color 200ms cubic-bezier(0.4,0,0.2,1)',
             }}>{s.stage}</div>
             {/* Split into two shorter paragraphs instead of one dense block, and
                 bumped up a size, per live feedback - easier to scan at a glance. */}
@@ -80,7 +87,7 @@ function CustomerJourneyTimeline() {
 export function JourneySection() {
   const { t } = useLocale()
   return (
-    <section id="journey" style={{ padding: '40px 2rem 100px' }}>
+    <section id="journey" style={{ padding: '72px 2rem' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.journey.eyebrow}</p>

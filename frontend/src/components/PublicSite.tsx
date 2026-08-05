@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
-import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_PIXEL, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
+import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_PIXEL, ModalTierBody, revealSuppressed } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
 import { ProjectsSection } from './sections/Projects'
@@ -135,7 +135,14 @@ export function PublicSite() {
   const [agbChecked, setAgbChecked]           = useState(false)
   const [b2bChecked, setB2bChecked]           = useState(false)
   const { theme, cycle } = useTheme()
-  const [cookieBannerOpen, setCookieBannerOpen] = useState(true)
+  // Dismissal persists. Previously the banner reopened on every single page load,
+  // so a returning visitor (and every click from a paid ad) got the panel back over
+  // the pricing CTA. Lazy initializer so it never flashes open for someone who has
+  // already closed it. localStorage is wrapped because Safari private mode throws
+  // on access; a throw here must not take the whole page down.
+  const [cookieBannerOpen, setCookieBannerOpen] = useState(() => {
+    try { return localStorage.getItem('rfi-cookie-banner-dismissed') !== '1' } catch { return true }
+  })
   const [bannerClosing, setBannerClosing] = useState(false)
   const bannerRef = useRef<HTMLDivElement>(null)
 
@@ -247,6 +254,7 @@ export function PublicSite() {
     if (el) fireConfettiFromRect(el.getBoundingClientRect(), 90)
     playMockClapSound()
     new Image().src = `${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&s=${encodeURIComponent('Cookie Banner Close')}`
+    try { localStorage.setItem('rfi-cookie-banner-dismissed', '1') } catch { /* private mode */ }
     setBannerClosing(true)
     setTimeout(() => { setCookieBannerOpen(false); setBannerClosing(false) }, 240)
   }
@@ -477,30 +485,40 @@ export function PublicSite() {
     if (!tipForm.lawful) return
     if (tipForm.botcheck) { setTipFormState('ok'); return }
     setTipFormState('sending')
+    // Posts same-origin to our own backend, which relays into the Lighthouse CRM with
+    // the key held server side. This replaced a direct call to Web3Forms that was gated
+    // behind `if (WEB3FORMS_KEY)`. That key comes from import.meta.env, Vite inlines it
+    // at BUILD time, and the Dockerfile never passed it, so in production the constant
+    // was undefined, the whole branch was dead-code-eliminated, and the code below still
+    // reported success. Every submission since that deploy was shown a confirmation and
+    // thrown away. Verified against the live bundle: zero occurrences of "web3forms".
+    //
+    // The GitHub Actions workflow does set VITE_WEB3FORMS_KEY, but it builds for GitHub
+    // Pages, and rfi-irfos.com is served by Fly. The secret was wired to a pipeline
+    // nobody serves from.
     try {
-      if (WEB3FORMS_KEY) {
-        const res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            access_key: WEB3FORMS_KEY,
-            subject: `[rfi-irfos.at] ${tipForm.topic || 'Tip submission'} - ${tipForm.target || 'unspecified target'}`,
-            name: tipForm.handle || 'anonymous',
-            email: tipForm.email || 'not provided',
-            replyto: tipForm.email || undefined,
-            topic: tipForm.topic,
-            target: tipForm.target,
-            credit_preference: tipForm.credit,
-            message: tipForm.finding,
-            lawful_confirmed: tipForm.lawful,
-            botcheck: tipForm.botcheck,
-          }),
-        })
-        if (!res.ok) throw new Error()
-      }
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: tipForm.handle || 'anonymous',
+          email: tipForm.email,
+          phone: tipForm.target,
+          message: [
+            tipForm.topic ? `Topic: ${tipForm.topic}` : null,
+            tipForm.target ? `Target: ${tipForm.target}` : null,
+            `Credit preference: ${tipForm.credit}`,
+            '',
+            tipForm.finding,
+          ].filter(v => v !== null).join('\n'),
+        }),
+      })
+      if (!res.ok) throw new Error(String(res.status))
+      beacon('lead_submitted')
       setTipFormState('ok')
       setTipForm({ topic: '', handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false, botcheck: '' })
     } catch {
+      // Never report success on a failed send again.
       setTipFormState('err')
     }
   }
@@ -551,7 +569,7 @@ export function PublicSite() {
         <div className="rfi-modal-backdrop" onClick={() => setReportModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(0,0,0,0.85)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
           <div className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 900, height: '85vh', background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid var(--border)', background: '#0a0a18' }}>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t.reportModal.label}</span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--accent-text)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t.reportModal.label}</span>
               <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
             </div>
             <iframe src={reportModal} style={{ flex: 1, border: 'none', width: '100%' }} title={t.reportModal.iframeTitle} />
@@ -589,7 +607,7 @@ export function PublicSite() {
                 <input type="checkbox" checked={agbChecked} onChange={e => { setAgbChecked(e.target.checked); setB2bChecked(e.target.checked) }}
                   style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
                 <span style={{ color: '#a0a0b8', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
-                  {t.checkoutModal.agreementPrefix}<strong style={{ color: '#e8e8f0' }}>{t.checkoutModal.agreementBusinessCustomer}</strong>{t.checkoutModal.agreementMiddle}<a href="#p/agb" style={{ color: TEAL }}>{t.checkoutModal.agreementTos}</a>{t.checkoutModal.agreementSuffix}
+                  {t.checkoutModal.agreementPrefix}<strong style={{ color: '#e8e8f0' }}>{t.checkoutModal.agreementBusinessCustomer}</strong>{t.checkoutModal.agreementMiddle}<a href="#p/agb" style={{ color: 'var(--accent-text)' }}>{t.checkoutModal.agreementTos}</a>{t.checkoutModal.agreementSuffix}
                 </span>
               </label>
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
@@ -851,7 +869,7 @@ export function PublicSite() {
             </svg>
           </a>
         </div>
-        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: TEAL, letterSpacing: '0.06em', marginBottom: 28, fontWeight: 600 }}>
+        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: 'var(--accent-text)', letterSpacing: '0.06em', marginBottom: 28, fontWeight: 600 }}>
           {t.footer.tagline}
           <br />
           <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>{t.footer.taglineAttribution}</span>
@@ -914,10 +932,17 @@ export function PublicSite() {
         <div ref={bannerRef} style={{
                   position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
                   maxWidth: 640, margin: '0 auto',
+                  // Light mode was rgba(255,255,255,0.25) - a 25% transparent panel, so the
+                  // entire page showed straight through it and the banner text collided with
+                  // whatever sat behind (screenshot feedback 2026-08-05: unreadable over the
+                  // ledger, over the pricing CTA, everywhere). Dark mode had a fully opaque
+                  // carbon gradient the whole time. Light now gets the same treatment in its
+                  // own key: opaque base + the identical 112deg carbon weave, blended with
+                  // multiply so the fibre darkens instead of washing out.
                   background: theme === 'dark'
                     ? 'linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
-                    : 'rgba(255,255,255,0.25)',
-                  backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
+                    : 'linear-gradient(155deg, #ffffff 0%, #f5f5f7 30%, #ececed 55%, #f8f8fa 78%, #f1f1f4 100%), repeating-linear-gradient(112deg, rgba(0,0,0,0.045) 0px, rgba(0,0,0,0.045) 1px, transparent 1px, transparent 3px)',
+                  backgroundBlendMode: theme === 'dark' ? 'overlay' : 'multiply',
                   border: theme === 'dark' ? '1px solid rgba(255,255,255,0.09)' : '1px solid var(--border)',
                   borderRadius: 12,
                   padding: '20px 24px',

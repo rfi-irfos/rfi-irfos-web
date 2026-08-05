@@ -19,7 +19,7 @@ export function CoopPartnersSection({
 }) {
   const { t } = useLocale()
   return (
-    <section id="coop-partners" style={{ padding: '100px 2rem' }}>
+    <section id="coop-partners" style={{ padding: '72px 2rem' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.coopPartners.eyebrow}</p>
@@ -31,7 +31,7 @@ export function CoopPartnersSection({
         <Reveal from="bottom" delay={1}>
           <div style={{
             display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 20,
-            background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
+            background: 'var(--bg2)', border: '1px solid var(--border)',
             borderRadius: 14, padding: '28px 28px',
           }}>
             <div>
@@ -84,7 +84,7 @@ export function CoopPartnersSection({
                 onClick={() => openCheckoutModal({ key: `coop_${i}`, tier: p.name, desc: t.coopPartners.products[i].desc, price: p.price, delivery: t.coopPartners.productsDeliveryNote, directUrl: p.href })}
                 style={{
                   display: 'flex', flexDirection: 'column', gap: 4, padding: '14px 16px',
-                  background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
+                  background: 'var(--bg2)', border: '1px solid var(--border)',
                   borderRadius: 10, textAlign: 'left', cursor: 'pointer', transition: 'border-color .15s',
                 }}>
                 <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{p.name}</span>

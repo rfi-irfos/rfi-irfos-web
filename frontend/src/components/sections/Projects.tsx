@@ -50,7 +50,7 @@ function ProblemSolutionShowcase() {
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
         >
           <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>{pair.q}</p>
-          <p style={{ fontSize: 16, color: TEAL, fontWeight: 600, marginBottom: 10 }}>{pair.a}</p>
+          <p style={{ fontSize: 16, color: 'var(--accent-text)', fontWeight: 600, marginBottom: 10 }}>{pair.a}</p>
           {/* Pricing pill-link removed entirely (live feedback) - not needed here. */}
           <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.7, margin: 0, maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>{pair.detail}</p>
         </motion.div>
@@ -96,7 +96,7 @@ function ProjectCard({ p }: { p: LocalizedProject }) {
   const { t } = useLocale()
   return (
     <div style={{
-      background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)',
+      background: 'var(--bg2)', border: '1px solid var(--border)',
       borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12,
       flex: '1 1 0', minWidth: 0,
     }}>
@@ -158,7 +158,10 @@ function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
         if (ratio > bestRatio) { bestRatio = ratio; bestIdx = cardRefs.current.indexOf(card as HTMLDivElement) }
       })
       if (bestIdx >= 0) setActiveIdx(bestIdx)
-    }, { root: track, threshold: [0, 0.25, 0.5, 0.75, 1] })
+    // 21 stops, not 5. The observer writes opacity/scale only on threshold crossings,
+    // so five stops between 0.94 and 1.0 rendered as five discrete jumps - that stepped
+    // snap is the "cards expand instantly" complaint. A continuous ramp scrubs.
+    }, { root: track, threshold: Array.from({ length: 21 }, (_, i) => i / 20) })
     cardRefs.current.forEach(card => card && io.observe(card))
     const onScroll = () => markUsed()
     track.addEventListener('scroll', onScroll, { once: true, passive: true })
@@ -175,7 +178,7 @@ function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
 
   const arrowStyle: React.CSSProperties = {
     width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.3)',
-    background: 'rgba(255,255,255,0.03)', color: 'var(--accent-text)', fontSize: 18, cursor: 'pointer',
+    background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: 18, cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'center',
   }
   const cardBasis = perView === 1 ? '84%' : '340px'
@@ -195,7 +198,8 @@ function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
             {projects.map((p, i) => (
               <div key={p.name} ref={el => { cardRefs.current[i] = el }} style={{
                 flex: `0 0 ${cardBasis}`, minWidth: 0, boxSizing: 'border-box', display: 'flex',
-                scrollSnapAlign: 'center', transition: 'opacity 0.2s, transform 0.2s',
+                scrollSnapAlign: 'center',
+                transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1)',
               }}>
                 <ProjectCard p={p} />
               </div>
@@ -274,7 +278,7 @@ export function ProjectsSection() {
     name: p.name, link: p.link, ...t.projects.items[i],
   }))
   return (
-    <section id="projects" style={{ padding: '100px 2rem' }}>
+    <section id="projects" style={{ padding: '72px 2rem' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="right">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.projects.eyebrow}</p>
