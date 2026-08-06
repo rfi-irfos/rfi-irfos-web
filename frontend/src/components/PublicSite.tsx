@@ -833,9 +833,16 @@ export function PublicSite() {
       {/* RESEARCH AREAS - moved directly under the hero (was pushed down by the
           since-removed differentiation table + App Privacy door-opener; live
           feedback was that those made the top of the page too dense/talky before
-          a visitor sees anything concrete). App Privacy now sits after Track
-          Record instead - proof first, then the "start here" pitch. */}
+          a visitor sees anything concrete). */}
       <ResearchSection />
+
+      {/* APP PRIVACY DOOR-OPENER — moved back up here, right after Research
+          (Simeon, 2026-08-06): reads as one unit with "where our attention
+          falls" instead of being wedged between the ledger and Pricing. Prior
+          placement (after Track Record) was itself a deliberate live-feedback
+          move - proof-before-pitch - so if this ever needs revisiting, that's
+          the tradeoff to weigh again, not an oversight. */}
+      <AppPrivacySection />
 
       {/* PROJECTS */}
       <ProjectsSection />
@@ -856,12 +863,6 @@ export function PublicSite() {
           2026-08-06: nobody digs into the ledger's filter+click flow to find
           out reports actually exist). Renders nothing if none are published yet. */}
       <ProofSection setReportModal={setReportModal} />
-
-      {/* APP PRIVACY DOOR-OPENER — Stage 1c (website-repositioning plan), moved
-          here after Track Record per live feedback: the pitch reads better once
-          a visitor has already seen the ledger of real, disclosed findings,
-          rather than immediately after the hero before any proof exists. */}
-      <AppPrivacySection />
 
       {/* PRICING */}
       <PricingSection openCheckoutModal={openCheckoutModal} openProposalModal={openProposalModal} />

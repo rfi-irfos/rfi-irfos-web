@@ -59,7 +59,7 @@ export const DE: Content = {
   },
 
   projects: {
-    eyebrow: '02 / Vorhaben',
+    eyebrow: '03 / Vorhaben',
     heading: 'was wir bauen',
     subheading: 'Jedes Projekt beantwortet eine konkrete Forschungsfrage. Alle laufen auf demselben Stack.',
     carouselPrevAria: 'vorherige Projekte',
@@ -130,7 +130,7 @@ export const DE: Content = {
   },
 
   trackRecord: {
-    eyebrow: '03 / Track Record',
+    eyebrow: '04 / Track Record',
     heading: 'die Disziplin, bewiesen',
     paragraph: 'Wir lesen Apps auf Quellcode-Ebene, nicht nur von außen. Die Unternehmen auf diesem Ledger sind auf demselben Weg hierher gelandet: Sie geben Ihre Daten still an Dritte weiter, tracken ohne Zustimmung oder lassen Sicherheitslücken offen. Bei jedem Bericht, den wir versenden, werden die Datenschutzbehörden direkt in Kopie gesetzt, und wir geben dem Unternehmen neunzig Tage Zeit, das Problem zu beheben, bevor irgendetwas öffentlich wird. Die Regel ist einfach und nicht verhandelbar: Jede Organisation hier wird exakt gleich behandelt, ob sie uns je einen Cent zahlt oder nicht.',
     kpis: {
@@ -189,7 +189,7 @@ export const DE: Content = {
   },
 
   proof: {
-    eyebrow: '04 / Das Ergebnis',
+    eyebrow: '05 / Das Ergebnis',
     heading: 'das, was Sie tatsächlich in der Hand hätten',
     subheading: 'Jeder Fall im Ledger endet in genau so einem Dokument: einem vollständigen, evidenzbasierten Offenlegungsbericht, nach Ablauf des Embargos öffentlich einsehbar - gleiches Format, gleiche Tiefe, unabhängig davon, ob das Unternehmen uns darüber hinaus beauftragt. Keine Zusammenfassung, keine Verkaufsbroschüre. Öffnen Sie einen und lesen Sie das Original.',
     viewReport: 'vollständigen Bericht lesen',
@@ -199,7 +199,7 @@ export const DE: Content = {
   },
 
   appPrivacy: {
-    eyebrow: '05 / Hier beginnen',
+    eyebrow: '02 / Hier beginnen',
     heading: 'schützt Ihre App die Nutzerdaten wirklich?',
     paragraph: 'Teams vertrauen darauf, dass ihre App Nutzerdaten schützt, weil sie ihre Entwicklungs-Checkliste besteht. Was sie in Produktion tatsächlich tut - mit welchen SDKs sie kommuniziert, wo Daten landen, ob das Tracking vor der Zustimmung beginnt - ist eine andere Frage, oft eine andere Antwort. Das ist der einfachste Einstiegspunkt: Die Frage selbst ist leicht zu stellen.',
     comparisonClassicLabel: 'Was Sie bisher kannten',

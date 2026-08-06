@@ -62,7 +62,7 @@ export const EN = {
   },
 
   projects: {
-    eyebrow: '02 / Undertakings',
+    eyebrow: '03 / Undertakings',
     heading: 'what we build',
     subheading: 'Every project is a proof of concept for a specific research question. All built on the same stack.',
     carouselPrevAria: 'previous projects',
@@ -133,7 +133,7 @@ export const EN = {
   },
 
   trackRecord: {
-    eyebrow: '03 / Track Record',
+    eyebrow: '04 / Track Record',
     heading: 'the discipline, demonstrated',
     paragraph: 'We decompile shipped apps and trace their data flows to real endpoints in real countries. Companies land on this ledger for three reasons: they hand your data to third parties, they track without consent, they leave the door open. Every report goes out with the data-protection authorities copied in and a ninety-day clock attached. One rule, no exceptions: paying clients and everyone else are held to the identical standard.',
     kpis: {
@@ -196,7 +196,7 @@ export const EN = {
   },
 
   proof: {
-    eyebrow: '04 / The Deliverable',
+    eyebrow: '05 / The Deliverable',
     heading: "what you'd actually hold in your hands",
     subheading: 'Every case on the ledger ends in one of these: a complete, evidence-backed disclosure report, published in full once the embargo lifts - same format and depth regardless of whether the company ever engages us further. No summary. No sales deck. Open one and read the real thing.',
     viewReport: 'read the full report',
@@ -206,7 +206,7 @@ export const EN = {
   },
 
   appPrivacy: {
-    eyebrow: '05 / Start Here',
+    eyebrow: '02 / Start Here',
     heading: 'what your app does after it ships',
     paragraph: "Your app passes its build checklist. That says nothing about what the shipped binary does in production: which SDKs it contacts, where data lands, whether tracking fires before consent. We decompile it and trace every flow to the endpoint and the country it terminates in. Checklists record intent. We report behaviour.",
     comparisonClassicLabel: 'What you used to see',
