@@ -219,7 +219,11 @@ function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: perView === 1 ? 10 : 16 }}>
         <button onClick={() => go(-1)} aria-label={t.projects.carouselPrevAria} style={arrowStyle}>&larr;</button>
-        <div style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}>
+        {/* overflowY visible (not hidden) - added 2026-08-06: the proximity
+            glow's filter:drop-shadow needs room outside a card's own box to
+            render, and scrolling here is horizontal-only anyway, so there's
+            no reason vertical overflow needs to be clipped too. */}
+        <div style={{ overflowX: 'hidden', overflowY: 'visible', flex: 1, minWidth: 0 }}>
           <div
             ref={trackRef}
             style={{

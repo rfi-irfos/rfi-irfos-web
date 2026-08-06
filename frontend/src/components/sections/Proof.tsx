@@ -164,7 +164,10 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: perView === 1 ? 10 : 16 }}>
         {showArrows && <button onClick={() => go(-1)} aria-label={t.proof.carouselPrevAria} style={arrowStyle}>&larr;</button>}
-        <div style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}>
+        {/* overflowY visible (not hidden) - see identical note in Projects.tsx's
+            ProjectsCarousel: the proximity glow needs room outside the card
+            box, and scrolling here is horizontal-only anyway. */}
+        <div style={{ overflowX: 'hidden', overflowY: 'visible', flex: 1, minWidth: 0 }}>
           <div
             ref={trackRef}
             style={{
