@@ -296,6 +296,7 @@ h1, h2, h3, .rfi-display {
 :root, [data-theme="dark"] {
   --glass-bg:       rgba(18,18,24,0.52);
   --glass-bg-strong:rgba(14,14,19,0.72);
+  --glass-bg-solid: #101013;
   --glass-border:   rgba(255,255,255,0.11);
   --glass-hairline: rgba(255,255,255,0.10);
   --glass-underline:rgba(0,0,0,0.34);
@@ -305,6 +306,7 @@ h1, h2, h3, .rfi-display {
 [data-theme="light"] {
   --glass-bg:       rgba(255,255,255,0.62);
   --glass-bg-strong:rgba(255,255,255,0.82);
+  --glass-bg-solid: #f5f5f7;
   --glass-border:   rgba(0,0,0,0.10);
   --glass-hairline: rgba(255,255,255,0.85);
   --glass-underline:rgba(0,0,0,0.07);
@@ -313,7 +315,7 @@ h1, h2, h3, .rfi-display {
 }
 /* High contrast stays opaque and hairline-free; blur would destroy the AAA guarantee. */
 [data-theme="hc"] {
-  --glass-bg: #000000; --glass-bg-strong: #000000;
+  --glass-bg: #000000; --glass-bg-strong: #000000; --glass-bg-solid: #000000;
   --glass-border: #ffffff; --glass-hairline: transparent; --glass-underline: transparent;
   --glass-blur: none; --carbon-weave: none;
 }
@@ -332,6 +334,11 @@ h1, h2, h3, .rfi-display {
           backdrop-filter: var(--glass-blur);
 }
 .rfi-glass-strong { background-color: var(--glass-bg-strong); }
+/* Fully opaque, no see-through at all - for surfaces that must read as a solid carbon
+   plate (the cookie banner), not the translucent material everything else here uses.
+   Still theme-correct (incl. hc) through the same variable set, so it doesn't
+   reintroduce the dark-vs-not-dark branching bug .rfi-glass-flat was built to fix. */
+.rfi-glass-solid { background-color: var(--glass-bg-solid); }
 /* Blur is a progressive enhancement, never load-bearing. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .rfi-glass { background-color: var(--glass-bg-strong); }

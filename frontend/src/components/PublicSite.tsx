@@ -971,7 +971,11 @@ export function PublicSite() {
         // class is the single source of truth for all three themes; text still branches
         // explicitly below because, unlike the checkout modal, this surface's background
         // really does flip light/dark and can't just hardcode one text color.
-        <div ref={bannerRef} className="rfi-glass-flat" style={{
+        // rfi-glass-solid on top: this banner reads as a solid carbon plate, not the
+        // translucent material the rest of the site uses - .rfi-glass-flat alone made it
+        // 52% see-through (feedback 2026-08-06), so the opaque variant overrides just the
+        // background while keeping the same theme-correct border/shadow/hc handling.
+        <div ref={bannerRef} className="rfi-glass-flat rfi-glass-solid" style={{
                   position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
                   maxWidth: 640, margin: '0 auto',
                   borderRadius: 12,

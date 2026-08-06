@@ -341,9 +341,12 @@ export function ScrambleHeading({ text }: { text: string }) {
     function play() {
       if (playing) return
       playing = true
+      // Slowed ~2x from the original (start 0-9, end +8-19) - feedback 2026-08-06:
+      // headings resettled too fast while scrolling, read as flicker not a shuffle.
+      // HeroFlipWord's own timing is untouched, this only affects section headings.
       const plans = Array.from({ length: n }, () => {
-        const start = Math.floor(Math.random() * 10)
-        return { start, end: start + Math.floor(Math.random() * 12) + 8 }
+        const start = Math.floor(Math.random() * 20)
+        return { start, end: start + Math.floor(Math.random() * 24) + 16 }
       })
       let frame = 0
       function tick() {
