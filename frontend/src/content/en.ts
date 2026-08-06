@@ -195,8 +195,18 @@ export const EN = {
     footerNote: 'this ledger is updated in real time as companies respond. silence is public. · ',
   },
 
+  proof: {
+    eyebrow: '04 / Proof',
+    heading: 'what you can already read',
+    subheading: "Every finding on the ledger above ends in a written report. These are the ones already public: full findings, full evidence, no paywall, no login. Click a card, get the PDF you'd otherwise have had to dig for.",
+    viewReport: 'read the report',
+    resolvedOn: (date: string) => `resolved ${date}`,
+    carouselPrevAria: 'Previous report',
+    carouselNextAria: 'Next report',
+  },
+
   appPrivacy: {
-    eyebrow: '04 / Start Here',
+    eyebrow: '05 / Start Here',
     heading: 'what your app does after it ships',
     paragraph: "Your app passes its build checklist. That says nothing about what the shipped binary does in production: which SDKs it contacts, where data lands, whether tracking fires before consent. We decompile it and trace every flow to the endpoint and the country it terminates in. Checklists record intent. We report behaviour.",
     comparisonClassicLabel: 'What you used to see',
@@ -212,7 +222,7 @@ export const EN = {
   },
 
   pricing: {
-    eyebrow: '05 / Pricing',
+    eyebrow: '06 / Pricing',
     heading: 'what it costs',
     subheading: 'Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.',
     scopeTags: {
@@ -295,7 +305,7 @@ export const EN = {
   },
 
   journey: {
-    eyebrow: '06 / Engagement Journey',
+    eyebrow: '07 / Engagement Journey',
     heading: 'what happens after you start',
     subheading: 'Five stages, from a one-week APK review to a year-round retainer. Depth and timeline change between tiers. The order never does.',
     steps: [
@@ -308,7 +318,7 @@ export const EN = {
   },
 
   coopPartners: {
-    eyebrow: '07 / Research Cooperation',
+    eyebrow: '08 / Research Cooperation',
     heading: 'built alongside our coop partner',
     subheading: "Laura Serna Gaviria directs the Emergent Interaction Lab's research and agent architecture. Lauras Team, Call Laura, and Jarvis all came out of her method. RFI-IRFOS builds what she directs. Her name stays on her work.",
     role: 'Emergent Interaction Lab · Coop Partner',
@@ -326,7 +336,7 @@ export const EN = {
   },
 
   submit: {
-    eyebrow: '08 / Contact & Disclosures',
+    eyebrow: '09 / Contact & Disclosures',
     heading: 'reach us directly',
     paragraph: "One form, whatever it is: a question, a service inquiry, research collaboration, or a security finding. Findings come to us directly, never through a third-party bug bounty platform. We would refuse to be routed through one ourselves.",
     notSurePrefix: 'Not sure what to pick on the right? ',

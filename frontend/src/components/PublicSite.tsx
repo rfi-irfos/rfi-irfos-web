@@ -6,6 +6,7 @@ import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
 import { ProjectsSection } from './sections/Projects'
 import { TrackRecordSection } from './sections/TrackRecord'
+import { ProofSection } from './sections/Proof'
 import { AppPrivacySection } from './sections/AppPrivacy'
 import { PricingSection } from './sections/Pricing'
 import { JourneySection } from './sections/Journey'
@@ -849,6 +850,12 @@ export function PublicSite() {
         openDD={openDD} setOpenDD={setOpenDD}
         setReportModal={setReportModal}
       />
+
+      {/* PROOF — quick-glance cards for every ledger entry that already has a
+          published report, directly under the ledger (live feedback via Laura,
+          2026-08-06: nobody digs into the ledger's filter+click flow to find
+          out reports actually exist). Renders nothing if none are published yet. */}
+      <ProofSection setReportModal={setReportModal} />
 
       {/* APP PRIVACY DOOR-OPENER — Stage 1c (website-repositioning plan), moved
           here after Track Record per live feedback: the pitch reads better once

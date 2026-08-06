@@ -188,8 +188,18 @@ export const DE: Content = {
     footerNote: 'dieses Ledger wird in Echtzeit aktualisiert, sobald Unternehmen reagieren. Schweigen ist öffentlich. · ',
   },
 
+  proof: {
+    eyebrow: '04 / Beweis',
+    heading: 'was Sie schon jetzt lesen können',
+    subheading: 'Jeder Befund im Ledger oben endet in einem schriftlichen Bericht. Hier sind die bereits öffentlichen: vollständige Befunde, vollständige Evidenz, kein Paywall, kein Login. Karte anklicken, und Sie haben das PDF, für das Sie sonst hätten suchen müssen.',
+    viewReport: 'Bericht lesen',
+    resolvedOn: (date: string) => `behoben am ${date}`,
+    carouselPrevAria: 'Vorheriger Bericht',
+    carouselNextAria: 'Nächster Bericht',
+  },
+
   appPrivacy: {
-    eyebrow: '04 / Hier beginnen',
+    eyebrow: '05 / Hier beginnen',
     heading: 'schützt Ihre App die Nutzerdaten wirklich?',
     paragraph: 'Teams vertrauen darauf, dass ihre App Nutzerdaten schützt, weil sie ihre Entwicklungs-Checkliste besteht. Was sie in Produktion tatsächlich tut - mit welchen SDKs sie kommuniziert, wo Daten landen, ob das Tracking vor der Zustimmung beginnt - ist eine andere Frage, oft eine andere Antwort. Das ist der einfachste Einstiegspunkt: Die Frage selbst ist leicht zu stellen.',
     comparisonClassicLabel: 'Was Sie bisher kannten',
@@ -205,7 +215,7 @@ export const DE: Content = {
   },
 
   pricing: {
-    eyebrow: '05 / Preise',
+    eyebrow: '06 / Preise',
     heading: 'klar kalkuliert',
     subheading: 'Feste Preise. Keine Bindung an ein Abo, außer Sie wollen eine. Der Umfang bestimmt die Stufe, nicht die Unternehmensgröße.',
     scopeTags: {
@@ -288,7 +298,7 @@ export const DE: Content = {
   },
 
   journey: {
-    eyebrow: '06 / Ablauf der Zusammenarbeit',
+    eyebrow: '07 / Ablauf der Zusammenarbeit',
     heading: 'was nach dem Start passiert',
     subheading: 'Dieselben fünf Phasen, egal ob es sich um ein einwöchiges APK-Review oder einen ganzjährigen Retainer handelt. Was sich zwischen den Stufen ändert, ist die Tiefe und der Zeitplan - nie die Reihenfolge.',
     steps: [
@@ -301,7 +311,7 @@ export const DE: Content = {
   },
 
   coopPartners: {
-    eyebrow: '07 / Forschungskooperation',
+    eyebrow: '08 / Forschungskooperation',
     heading: 'gebaut gemeinsam mit unserem Kooperationspartner',
     subheading: 'Laura Serna Gaviria leitet die eigene Forschung und Agentenarchitektur des Emergent Interaction Lab - Lauras Team, Call Laura und Jarvis sind alle aus ihrer Methode entstanden. RFI-IRFOS baut, was sie anleitet, klar als ihres gekennzeichnet, damit stets nachvollziehbar bleibt, wer was gemacht hat.',
     role: 'Emergent Interaction Lab · Kooperationspartnerin',
@@ -319,7 +329,7 @@ export const DE: Content = {
   },
 
   submit: {
-    eyebrow: '08 / Kontakt & Offenlegungen',
+    eyebrow: '09 / Kontakt & Offenlegungen',
     heading: 'nehmen Sie Kontakt auf',
     paragraph: 'Ein Formular, egal worum es geht: eine allgemeine Frage, eine Serviceanfrage, eine Forschungskooperation - oder ein Sicherheitsfund. Bei Letzterem betreiben wir einen eigenen Aufnahmekanal, statt ihn an eine Drittanbieter-Bug-Bounty-Plattform weiterzuleiten - aus demselben Grund, aus dem wir uns weigern würden, selbst an eine solche verwiesen zu werden.',
     notSurePrefix: 'Im Zweifel: ',
