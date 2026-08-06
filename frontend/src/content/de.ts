@@ -39,7 +39,7 @@ export const DE: Content = {
       years: 'Jahre Forschung',
     },
     ctaTrackRecord: 'Track Record',
-    ctaBookUs: 'Beauftragen',
+    ctaBookUs: 'Beauftragen!',
   },
 
   research: {

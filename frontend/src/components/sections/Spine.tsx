@@ -69,37 +69,60 @@ export function ScrollSpine() {
     return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(rafId) }
   }, [clipHeight])
 
+  // Per-CARD proximity glow (rewritten 2026-08-06, screenshot feedback on the
+  // section-level version: with card backgrounds now opaque, an inset shadow on
+  // the outer <section> was invisible behind them everywhere except a thin band
+  // at the very top/bottom edge - useless for a tall multi-row grid like the
+  // Research tiles, and where it WAS visible (Proof's two-card row) it clipped
+  // hard at the section's own square bounds, reading as a heavy rectangular
+  // seam against the cards' rounded corners. Targeting .rfi-hover-card directly
+  // instead - every card family site-wide uses that class - fixes both: each
+  // card gets its OWN glow from its OWN distance-to-center, so a multi-row grid
+  // lights up consistently top to bottom, and drop-shadow (not inset box-shadow)
+  // wraps the card's actual rounded silhouette instead of clipping at a
+  // rectangular boundary.
   useEffect(() => {
     if (reduced) return // pure ambience, no informational payload to preserve - skip setup entirely
-    const sections = Array.from(document.querySelectorAll<HTMLElement>('section[id]'))
-    sections.forEach(el => el.classList.add('rfi-proximity-glow'))
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('.rfi-hover-card'))
+    cards.forEach(el => el.classList.add('rfi-proximity-glow'))
     const io = new IntersectionObserver(entries => {
       for (const entry of entries) {
         const el = entry.target as HTMLElement
-        if (!entry.isIntersecting) { el.style.boxShadow = 'none'; continue }
+        if (!entry.isIntersecting) { el.style.filter = 'none'; continue }
         const vh = entry.rootBounds?.height ?? window.innerHeight
-        const sectionCenter = entry.boundingClientRect.top + entry.boundingClientRect.height / 2
-        const dist = Math.abs(sectionCenter - vh / 2)
-        const falloff = vh * 0.65
+        const cardCenter = entry.boundingClientRect.top + entry.boundingClientRect.height / 2
+        const dist = Math.abs(cardCenter - vh / 2)
+        const falloff = vh * 0.55
         const ratio = Math.max(0, 1 - dist / falloff)
-        const a = (ratio * 0.12).toFixed(3)
-        el.style.boxShadow = `inset 0 40px 60px -40px rgba(0,245,196,${a}), inset 0 -40px 60px -40px rgba(0,245,196,${a})`
+        const a = (ratio * 0.35).toFixed(3)
+        el.style.filter = `drop-shadow(0 0 18px rgba(0,245,196,${a}))`
       }
     }, { threshold: Array.from({ length: 21 }, (_, i) => i / 20) })
-    sections.forEach(el => io.observe(el))
+    cards.forEach(el => io.observe(el))
     return () => {
       io.disconnect()
-      sections.forEach(el => { el.style.boxShadow = ''; el.classList.remove('rfi-proximity-glow') })
+      cards.forEach(el => { el.style.filter = ''; el.classList.remove('rfi-proximity-glow') })
     }
   }, [reduced])
 
   const staticTop = `${3 + rawProgress * 94}%`
 
+  // Fades the orb out over the last ~90px before it reaches the footer clip
+  // point, rather than letting it hard-clip and sit pinned to that edge
+  // (Simeon, screenshot feedback: it should actually vanish, not visibly park
+  // itself on the seam above the footer).
+  const orbOpacity = useTransform([smooth, clipHeight], (latest) => {
+    const [s, ch] = latest as [number, number]
+    const vh = window.innerHeight
+    const orbPx = ((3 + s * 94) / 100) * vh
+    return Math.max(0, Math.min(1, (ch - orbPx) / 90))
+  })
+
   return (
     <motion.div aria-hidden="true" style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none', opacity: reduced ? 1 : groupOpacity }}>
       <motion.div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: clipHeight, overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: 2, transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.1)', boxShadow: '0 0 6px rgba(0,245,196,0.08)' }} />
-        <motion.div style={{ position: 'absolute', left: '50%', width: 0, height: 0, top: reduced ? staticTop : topPct }}>
+        <motion.div style={{ position: 'absolute', left: '50%', width: 0, height: 0, top: reduced ? staticTop : topPct, opacity: reduced ? 1 : orbOpacity }}>
           {/* the trail - a short fading tail extending back up the spine, not a
               radial blob, so it stays confined to the line's own narrow width */}
           <div style={{

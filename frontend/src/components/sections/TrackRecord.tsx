@@ -2568,7 +2568,15 @@ export function TrackRecordSection({
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.trackRecord.heading} /></h2>
         </Reveal>
         <Reveal from="right" delay={1}>
-          <p style={{ color: 'var(--text2)', marginBottom: 48, maxWidth: 720, fontSize: 15, lineHeight: 1.9 }}>
+          {/* Solid backing added 2026-08-06 (spine feedback): this paragraph sits
+              directly on the page background with nothing behind it, and its
+              720px max-width crosses the page's horizontal center where the
+              spine/orb live. Padding + a matching negative margin keep the text
+              itself pixel-aligned with before - only the panel is new. */}
+          <p style={{
+            color: 'var(--text2)', marginBottom: 40, maxWidth: 720, fontSize: 15, lineHeight: 1.9,
+            background: 'var(--glass-bg-solid)', borderRadius: 8, padding: '8px 12px', marginLeft: -12, marginTop: -8,
+          }}>
             {t.trackRecord.paragraph}
           </p>
         </Reveal>

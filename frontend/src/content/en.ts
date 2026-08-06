@@ -42,7 +42,7 @@ export const EN = {
       years: 'years of research',
     },
     ctaTrackRecord: 'Track Record',
-    ctaBookUs: 'Book us',
+    ctaBookUs: 'Book us!',
   },
 
   research: {

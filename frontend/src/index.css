@@ -261,14 +261,20 @@ h1, h2, h3, .rfi-display {
   .rfi-cta-pulse { animation: none; }
 }
 
-/* ScrollSpine's per-section proximity glow (components/sections/Spine.tsx) writes
-   an inline box-shadow directly on each <section id> element as the scroll orb
-   passes it - this class only owns the transition timing, so the discrete
-   IntersectionObserver-driven updates read as a smooth ambient fade rather than
-   a series of jumps. Skipped entirely (never added) under reduced motion at the
-   JS level, but the guard stays here too in case that ever changes. */
+/* ScrollSpine's per-card proximity glow (components/sections/Spine.tsx) writes an
+   inline `filter: drop-shadow(...)` directly on each .rfi-hover-card as the scroll
+   orb passes it - this class only owns the transition timing, so the discrete
+   IntersectionObserver-driven updates read as a smooth ambient fade rather than a
+   series of jumps. `filter` (not box-shadow/border-color) deliberately, so this
+   never fights .rfi-hover-card's own :hover feedback - inline styles always beat
+   a class's :hover rule on the SAME property, which box-shadow/border-color would
+   have. Also drop-shadow wraps the card's actual rounded silhouette, unlike an
+   inset box-shadow on a section (which clipped hard at the section's own square
+   edges, and was invisible in the first place once cards became opaque). Skipped
+   entirely (never added) under reduced motion at the JS level, but the guard
+   stays here too in case that ever changes. */
 .rfi-proximity-glow {
-  transition: box-shadow 400ms cubic-bezier(0.16,1,0.3,1);
+  transition: filter 400ms cubic-bezier(0.16,1,0.3,1);
 }
 @media (prefers-reduced-motion: reduce) {
   .rfi-proximity-glow { transition: none; }
