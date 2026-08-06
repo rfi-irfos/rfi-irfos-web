@@ -40,7 +40,7 @@ function ProblemSolutionShowcase() {
         // Opaque base + a teal wash layered on top (not a single translucent
         // rgba fill) - spine feedback, 2026-08-06: a plain low-alpha background
         // let the scroll spine/orb show straight through this box.
-        background: 'linear-gradient(rgba(0,245,196,0.04), rgba(0,245,196,0.04)), var(--glass-bg-solid)',
+        background: 'linear-gradient(var(--accent-dim), var(--accent-dim)), var(--glass-bg-solid)',
         border: '1px solid rgba(0,245,196,0.2)',
         borderRadius: 16, padding: '32px 36px',
       }}

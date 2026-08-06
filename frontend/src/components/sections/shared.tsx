@@ -731,7 +731,7 @@ export function TierCarousel({ tiers, getActions }: {
           // spine feedback, 2026-08-06: this pricing card is exactly the kind
           // of dense, text-heavy surface the scroll spine/orb must never bleed
           // through, and a flat low-alpha background let it show straight through.
-          background: 'linear-gradient(rgba(0,245,196,0.07), rgba(0,245,196,0.07)), var(--glass-bg-solid)',
+          background: 'linear-gradient(var(--accent-dim), var(--accent-dim)), var(--glass-bg-solid)',
           border: '1px solid rgba(0,245,196,0.35)',
           boxShadow: '0 12px 40px rgba(0,245,196,0.1)',
         }}>

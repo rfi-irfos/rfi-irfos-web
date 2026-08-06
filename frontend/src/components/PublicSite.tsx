@@ -608,7 +608,7 @@ export function PublicSite() {
       position: 'relative', zIndex: 0,
       color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
 
-      <ScrollSpine />
+      <ScrollSpine theme={theme} />
 
       {/* REPORT PDF MODAL */}
       {reportModal && (
