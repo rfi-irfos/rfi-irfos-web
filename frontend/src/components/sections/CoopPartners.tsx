@@ -29,7 +29,7 @@ export function CoopPartnersSection({
           </p>
         </Reveal>
         <Reveal from="bottom" delay={1}>
-          <div className="rfi-glass-flat" style={{
+          <div className="rfi-glass-flat rfi-glass-solid" style={{
             display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 20,
             borderRadius: 14, padding: '28px 28px',
           }}>
@@ -81,7 +81,7 @@ export function CoopPartnersSection({
             ].map((p, i) => (
               <button key={i}
                 onClick={() => openCheckoutModal({ key: `coop_${i}`, tier: p.name, desc: t.coopPartners.products[i].desc, price: p.price, delivery: t.coopPartners.productsDeliveryNote, directUrl: p.href })}
-                className="rfi-hover-card rfi-glass-flat"
+                className="rfi-hover-card rfi-glass-flat rfi-glass-solid"
                 style={{
                   display: 'flex', flexDirection: 'column', gap: 4, padding: '14px 16px',
                   borderRadius: 10, textAlign: 'left', cursor: 'pointer',

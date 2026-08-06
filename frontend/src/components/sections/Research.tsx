@@ -23,7 +23,7 @@ function BentoTile({ icon, title, desc, from, delay }: {
     <Reveal from={from} delay={delay} style={{ height: '100%' }}>
       <motion.div ref={tiltRef} className="rfi-hover-card" style={{
         ...tilt,
-        background: 'var(--bg2)', border: '1px solid var(--border)',
+        background: 'var(--glass-bg-solid)', border: '1px solid var(--border)',
         borderRadius: 16, padding: '28px 24px',
         height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column',
         transition: 'box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 180ms cubic-bezier(0.4,0,0.2,1)',

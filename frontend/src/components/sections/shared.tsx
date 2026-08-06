@@ -727,7 +727,12 @@ export function TierCarousel({ tiers, getActions }: {
       <motion.div key={active.tier} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}
         style={{
           maxWidth: 560, margin: '0 auto 20px', borderRadius: 18, padding: '24px 26px',
-          background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.35)',
+          // Opaque base + a teal wash (not a single translucent rgba fill) -
+          // spine feedback, 2026-08-06: this pricing card is exactly the kind
+          // of dense, text-heavy surface the scroll spine/orb must never bleed
+          // through, and a flat low-alpha background let it show straight through.
+          background: 'linear-gradient(rgba(0,245,196,0.07), rgba(0,245,196,0.07)), var(--glass-bg-solid)',
+          border: '1px solid rgba(0,245,196,0.35)',
           boxShadow: '0 12px 40px rgba(0,245,196,0.1)',
         }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>

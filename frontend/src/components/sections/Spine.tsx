@@ -8,16 +8,17 @@
 // component's `zIndex: -1` layer stays behind every section instead of escaping
 // to the document root's stacking context and painting behind the page background).
 //
-// Second pass (same day): the first version used a wide, bright radial-gradient
-// blob for the orb, which visibly bled through semi-transparent card/table
-// backgrounds and sat on top of readable text (screenshot feedback: showing on
-// the Track Record ledger's dense rows). Rebuilt as a narrow "comet trail" hugging
-// the spine's own 2px width - a small core plus a short fading tail, not a wide
-// glow - so it reads as "the line itself is lit up here" rather than a floating
-// object independent of it, and stays thin enough to mostly avoid overlapping
-// text even where it does cross dense content.
+// A negative z-index alone bled through everywhere at first: every card family
+// on this site (`rfi-glass-flat`, the ledger panel, the featured pricing card,
+// the problem/solution box) used a genuinely semi-transparent background by
+// design, so the spine showed straight through all of them. Fixed at the source
+// instead of here (see `rfi-glass-solid` applied across those components,
+// components/sections/TrackRecord.tsx's ledger panel background, etc.) - once
+// the surfaces the spine passes behind are actually opaque, plain z-index
+// stacking works exactly as it should, with no per-component masking logic
+// needed in this file at all.
 import { useEffect } from 'react'
-import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { TEAL, prefersReducedMotion, usePageScrollProgress } from './shared'
 
 export function ScrollSpine() {
@@ -32,24 +33,41 @@ export function ScrollSpine() {
   const topPct = useTransform(smooth, v => `${3 + v * 94}%`)
 
   // Fades the whole spine group in only once scrolled past the Hero (Simeon:
-  // shouldn't compete with the hero's own CTA) - uses the Research section's
+  // shouldn't compete with the hero's own CTA), using the Research section's
   // offsetTop as "end of hero" rather than giving Hero.tsx an id of its own
-  // purely for this. A MotionValue, not React state: `.set()` inside an effect
-  // doesn't trigger a React re-render the way setState does, so this stays
-  // outside the "don't setState synchronously in an effect" territory entirely
-  // rather than fighting that lint rule.
-  const { scrollY } = useScroll()
-  const heroBottomMV = useMotionValue(600)
+  // purely for this. Reads window.scrollY directly inside the transform
+  // callback (Framer's value pipeline, not React's render phase) so this
+  // doesn't need its own synchronized motion-value plumbing.
+  const heroBottom = useMotionValue(600)
   useEffect(() => {
     const el = document.getElementById('research')
-    if (el) heroBottomMV.set(el.offsetTop)
-  }, [heroBottomMV])
-  const groupOpacity = useTransform([scrollY, heroBottomMV], (latest) => {
-    const [sy, hb] = latest as [number, number]
+    if (el) heroBottom.set(el.offsetTop)
+  }, [heroBottom])
+  const groupOpacity = useTransform([mv, heroBottom], (latest) => {
+    const hb = (latest as number[])[1]
+    const sy = window.scrollY
     const start = Math.max(0, hb - 150)
     if (hb <= start) return sy >= hb ? 1 : 0
     return Math.min(1, Math.max(0, (sy - start) / (hb - start)))
   })
+
+  // Stops the rail (and clips the orb with it) right above the footer's WKO
+  // badge (Simeon, screenshot feedback) - measured live against the footer's
+  // current viewport-relative top on every scroll frame, not a fixed page
+  // offset, so it stays correct regardless of how much content is above it.
+  const clipHeight = useMotionValue(typeof window === 'undefined' ? 2000 : window.innerHeight)
+  useEffect(() => {
+    let rafId = 0
+    const compute = () => {
+      const footerTop = document.querySelector('footer')?.getBoundingClientRect().top
+      clipHeight.set(footerTop === undefined ? window.innerHeight : Math.max(0, Math.min(window.innerHeight, footerTop)))
+    }
+    const onScroll = () => { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(compute) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    compute()
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(rafId) }
+  }, [clipHeight])
 
   useEffect(() => {
     if (reduced) return // pure ambience, no informational payload to preserve - skip setup entirely
@@ -79,22 +97,24 @@ export function ScrollSpine() {
 
   return (
     <motion.div aria-hidden="true" style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none', opacity: reduced ? 1 : groupOpacity }}>
-      <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: 2, transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.1)', boxShadow: '0 0 6px rgba(0,245,196,0.08)' }} />
-      <motion.div style={{ position: 'absolute', left: '50%', width: 0, height: 0, top: reduced ? staticTop : topPct }}>
-        {/* the trail - a short fading tail extending back up the spine, not a
-            radial blob, so it stays confined to the line's own narrow width */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: '50%', width: 5, height: 110,
-          transform: 'translateX(-50%)',
-          background: 'linear-gradient(to top, rgba(0,245,196,0.4), rgba(0,245,196,0))',
-          filter: 'blur(1.5px)',
-        }} />
-        {/* the core - small, soft-edged, tight glow radius */}
-        <div style={{
-          position: 'absolute', bottom: -3, left: '50%', width: 6, height: 6, borderRadius: '50%',
-          transform: 'translateX(-50%)', background: TEAL,
-          boxShadow: '0 0 5px 1.5px rgba(0,245,196,0.45)',
-        }} />
+      <motion.div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: clipHeight, overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: 2, transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.1)', boxShadow: '0 0 6px rgba(0,245,196,0.08)' }} />
+        <motion.div style={{ position: 'absolute', left: '50%', width: 0, height: 0, top: reduced ? staticTop : topPct }}>
+          {/* the trail - a short fading tail extending back up the spine, not a
+              radial blob, so it stays confined to the line's own narrow width */}
+          <div style={{
+            position: 'absolute', bottom: 0, left: '50%', width: 5, height: 110,
+            transform: 'translateX(-50%)',
+            background: 'linear-gradient(to top, rgba(0,245,196,0.4), rgba(0,245,196,0))',
+            filter: 'blur(1.5px)',
+          }} />
+          {/* the core - small, soft-edged, tight glow radius */}
+          <div style={{
+            position: 'absolute', bottom: -3, left: '50%', width: 6, height: 6, borderRadius: '50%',
+            transform: 'translateX(-50%)', background: TEAL,
+            boxShadow: '0 0 5px 1.5px rgba(0,245,196,0.45)',
+          }} />
+        </motion.div>
       </motion.div>
     </motion.div>
   )

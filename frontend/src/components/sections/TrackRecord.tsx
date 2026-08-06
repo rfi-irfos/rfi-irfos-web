@@ -2600,7 +2600,10 @@ export function TrackRecordSection({
           ))}
         </div>
 
-        <div style={{ border: '1px solid var(--accent-text)', borderRadius: 12, padding: '18px 20px 16px', marginBottom: 32 }}>
+        {/* Solid background added 2026-08-06 (spine feedback: the panel had none at
+            all, just a border, so the scroll spine/orb bled straight through the
+            search bar, dropdowns, and every table row underneath it). */}
+        <div style={{ background: 'var(--glass-bg-solid)', border: '1px solid var(--accent-text)', borderRadius: 12, padding: '18px 20px 16px', marginBottom: 32 }}>
         <div style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'stretch', flexWrap: mobile ? 'wrap' : 'nowrap' }}>
 
           {/* Search */}

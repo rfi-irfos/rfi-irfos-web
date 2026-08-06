@@ -50,7 +50,7 @@ function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string)
   return (
     <button
       onClick={() => { beacon('proof_card_click:' + entry.target); onOpen(entry.reportUrl) }}
-      className="rfi-hover-card rfi-glass-flat"
+      className="rfi-hover-card rfi-glass-flat rfi-glass-solid"
       style={{
         borderRadius: 16, padding: 0, display: 'flex', flexDirection: 'column', gap: 0,
         flex: '1 1 0', minWidth: 0, textAlign: 'left', cursor: 'pointer',

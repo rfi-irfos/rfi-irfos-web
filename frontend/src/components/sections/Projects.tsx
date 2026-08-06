@@ -37,7 +37,11 @@ function ProblemSolutionShowcase() {
       onMouseLeave={() => setPaused(false)}
       style={{
         maxWidth: 680, margin: '0 auto', minHeight: 170, textAlign: 'center',
-        background: 'rgba(0,245,196,0.04)', border: '1px solid rgba(0,245,196,0.2)',
+        // Opaque base + a teal wash layered on top (not a single translucent
+        // rgba fill) - spine feedback, 2026-08-06: a plain low-alpha background
+        // let the scroll spine/orb show straight through this box.
+        background: 'linear-gradient(rgba(0,245,196,0.04), rgba(0,245,196,0.04)), var(--glass-bg-solid)',
+        border: '1px solid rgba(0,245,196,0.2)',
         borderRadius: 16, padding: '32px 36px',
       }}
     >
@@ -100,7 +104,7 @@ function ProjectCard({ p }: { p: LocalizedProject }) {
   // Flat variant, not .rfi-glass: these repeat and sit inside a horizontal scroll
   // container, and backdrop-filter re-samples every scroll frame.
   return (
-    <div className="rfi-hover-card rfi-glass-flat" style={{
+    <div className="rfi-hover-card rfi-glass-flat rfi-glass-solid" style={{
       borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12,
       flex: '1 1 0', minWidth: 0,
     }}>

@@ -60,7 +60,7 @@ export function SubmitSection({
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
               {CONTACT_CARDS.map(c => (
-                <a key={c.key} href={c.href} target="_blank" rel="noopener noreferrer" className="rfi-hover-card rfi-glass-flat" style={{
+                <a key={c.key} href={c.href} target="_blank" rel="noopener noreferrer" className="rfi-hover-card rfi-glass-flat rfi-glass-solid" style={{
                   borderRadius: 12, padding: '14px 18px', textDecoration: 'none', display: 'block',
                 }}
                   onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
