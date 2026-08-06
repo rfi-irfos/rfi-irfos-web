@@ -547,9 +547,9 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile }: {
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: 6,
           background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
-          borderRadius: 20, padding: '5px 12px', marginBottom: 20,
+          borderRadius: 10, padding: '6px 12px', marginBottom: 20, maxWidth: '100%',
           color: 'var(--accent-text)', fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace",
-          textTransform: 'uppercase', letterSpacing: '0.1em',
+          textTransform: 'uppercase', letterSpacing: '0.1em', lineHeight: 1.5,
         }}>
           <ClockIcon /> {delivery}
         </div>
@@ -757,37 +757,42 @@ export function TierCarousel({ tiers, getActions }: {
           ))}
         </div>
         <OutputTags outputs={active.outputs} />
-        {/* Delivery pill + CTA button now share one row (live feedback: the pill's
-            monospace/uppercase styling read as a mismatched "code" font next to
-            everything else, and the button sitting flush-left under it looked
-            unbalanced) - pill in the normal body font on the left, button pinned
-            bottom-right of the card. */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginTop: 20 }}>
-          {active.delivery ? (
+        {/* Delivery pill + CTA button, stacked (fixed 2026-08-06: sharing one
+            flex-wrap row broke the moment a tier's delivery text was long enough
+            to wrap - e.g. Enterprise NDA/Critical Infrastructure's "Begins
+            immediately after intake; full report within 7 calendar days of scope
+            lock." - the pill grew to two lines at a fixed borderRadius, and the
+            button dropped onto its own unaligned row underneath. Stacking always,
+            regardless of delivery text length, means the pill can wrap to as many
+            lines as it needs without ever fighting the button for row space.) */}
+        <div style={{ marginTop: 20 }}>
+          {active.delivery && (
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
               background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
-              borderRadius: 20, padding: '5px 12px',
-              color: 'var(--accent-text)', fontSize: 12.5, fontWeight: 600,
+              borderRadius: 10, padding: '6px 12px', marginBottom: 14, maxWidth: '100%',
+              color: 'var(--accent-text)', fontSize: 12.5, fontWeight: 600, lineHeight: 1.5,
             }}>
               <ClockIcon /> {active.delivery}
             </div>
-          ) : <span />}
+          )}
           {(actions.onBuy || actions.onProposal) && (
-            <button
-              onClick={actions.onBuy ?? actions.onProposal}
-              style={{
-                borderRadius: 8, cursor: 'pointer', padding: '12px 22px',
-                display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 800,
-                letterSpacing: '0.02em',
-                background: actions.onBuy ? 'var(--accent)' : 'var(--bg3)',
-                border: actions.onBuy ? 'none' : '1px solid var(--border)',
-                color: actions.onBuy ? 'var(--accent-fg)' : 'var(--text)',
-              }}
-            >
-              {actions.onBuy ? <CartIcon /> : <ArrowIcon />}
-              {actions.onBuy ? locale.tierCarousel.getStarted : locale.tierCarousel.requestProposal}
-            </button>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button
+                onClick={actions.onBuy ?? actions.onProposal}
+                style={{
+                  borderRadius: 8, cursor: 'pointer', padding: '12px 22px',
+                  display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 800,
+                  letterSpacing: '0.02em',
+                  background: actions.onBuy ? 'var(--accent)' : 'var(--bg3)',
+                  border: actions.onBuy ? 'none' : '1px solid var(--border)',
+                  color: actions.onBuy ? 'var(--accent-fg)' : 'var(--text)',
+                }}
+              >
+                {actions.onBuy ? <CartIcon /> : <ArrowIcon />}
+                {actions.onBuy ? locale.tierCarousel.getStarted : locale.tierCarousel.requestProposal}
+              </button>
+            </div>
           )}
         </div>
       </motion.div>
