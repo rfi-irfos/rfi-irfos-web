@@ -41,6 +41,11 @@ function useCarouselSize() {
 
 function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string) => void }) {
   const { t } = useLocale()
+  // Severity color stays on the small badge only (keeps the CRITICAL/HIGH/MEDIUM
+  // meaning legible). Full teal frame instead of a top strip (Simeon, 2026-08-06,
+  // second pass - a full-width colored bar per card, red or teal, still read as
+  // heavier than needed; a thin border around the whole card reads as "featured
+  // document" without dominating it).
   const color = SEV_COLOR[entry.sev] ?? TEAL
   return (
     <button
@@ -48,11 +53,10 @@ function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string)
       className="rfi-hover-card rfi-glass-flat"
       style={{
         borderRadius: 16, padding: 0, display: 'flex', flexDirection: 'column', gap: 0,
-        flex: '1 1 0', minWidth: 0, textAlign: 'left', cursor: 'pointer', border: 'none',
-        font: 'inherit', color: 'inherit', overflow: 'hidden',
+        flex: '1 1 0', minWidth: 0, textAlign: 'left', cursor: 'pointer',
+        border: `1.5px solid ${TEAL}`, font: 'inherit', color: 'inherit', overflow: 'hidden',
       }}
     >
-      <div style={{ height: 5, background: color, flexShrink: 0 }} />
       <div style={{ padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
           <div style={{ fontWeight: 900, fontSize: 17, minWidth: 0 }}>{entry.target}</div>
@@ -128,11 +132,22 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
     return () => { io.disconnect(); track.removeEventListener('scroll', onScroll) }
   }, [n])
 
+  // Wraps at both ends - see the identical comment on ProjectsCarousel's go()
+  // in Projects.tsx for why a plain scrollBy needed this.
   const go = (dir: number) => {
     markUsed()
-    if (trackRef.current) {
-      const cardWidth = trackRef.current.firstElementChild?.clientWidth ?? 300
-      trackRef.current.scrollBy({ left: cardWidth * dir, behavior: reduced ? 'auto' : 'smooth' })
+    const track = trackRef.current
+    if (!track) return
+    const cardWidth = track.firstElementChild?.clientWidth ?? 300
+    const maxScroll = track.scrollWidth - track.clientWidth
+    const atStart = track.scrollLeft <= 2
+    const atEnd = track.scrollLeft >= maxScroll - 2
+    if (dir < 0 && atStart) {
+      track.scrollTo({ left: maxScroll, behavior: reduced ? 'auto' : 'smooth' })
+    } else if (dir > 0 && atEnd) {
+      track.scrollTo({ left: 0, behavior: reduced ? 'auto' : 'smooth' })
+    } else {
+      track.scrollBy({ left: cardWidth * dir, behavior: reduced ? 'auto' : 'smooth' })
     }
   }
 

@@ -422,25 +422,27 @@ export function Reveal({
   style?: React.CSSProperties
 }) {
   const [visible, setVisible] = useState(() => prefersReducedMotion() || revealSuppressed.current)
+  // Captured once at mount, deliberately not re-read after: reduced-motion and an
+  // in-flight anchor jump both mean "skip the animation entirely, forever" for this
+  // element, not just "count as already revealed for now" - a static flag keeps that
+  // bypass permanent even though `visible` itself becomes bidirectional below.
+  const bypass = useRef(prefersReducedMotion() || revealSuppressed.current)
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    if (visible) return // reduced-motion or an in-flight anchor jump already satisfied this
+    if (bypass.current) return
     const el = ref.current; if (!el) return
+    // Bidirectional (restored 2026-08-06, Simeon: "hypermodular" - assembles from every
+    // direction on the way down, explodes back apart on the way up): no io.disconnect()
+    // on reveal, and no manual scroll-listener workaround. entry.isIntersecting toggles
+    // `visible` both ways - each element still animates along its own `from` axis, so
+    // scrolling back up sends every element off in whichever direction it came from,
+    // not one uniform direction.
     const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting || revealSuppressed.current) { setVisible(true); io.disconnect() }
+      setVisible(entry.isIntersecting)
     }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' })
     io.observe(el)
-    // IO alone misses one case: an instant jump (scrollbar drag, End key, a #hash link
-    // outside our own nav handler) that lands past the element in a single tick, with no
-    // rendered frame ever showing it as intersecting. A plain scroll listener as a backup
-    // catches that reliably by just checking current position - this only ever turns
-    // visible ON, never back off, so it can't reintroduce the bug this rewrite fixes.
-    const onScroll = () => {
-      if (el.getBoundingClientRect().top < window.innerHeight) { setVisible(true); io.disconnect() }
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => { io.disconnect(); window.removeEventListener('scroll', onScroll) }
-  }, [visible])
+    return () => io.disconnect()
+  }, [])
   const d = visible ? 0 : dist
   const transform = from === 'left'  ? `translateX(${-d}px)` :
                      from === 'right' ? `translateX(${d}px)`  :
@@ -451,7 +453,7 @@ export function Reveal({
     <div ref={ref} style={{
       opacity: visible ? 1 : 0,
       transform,
-      transition: revealSuppressed.current ? 'none' : `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${(delay * 0.08).toFixed(2)}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${(delay * 0.08).toFixed(2)}s`,
+      transition: bypass.current ? 'none' : `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${(delay * 0.08).toFixed(2)}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${(delay * 0.08).toFixed(2)}s`,
       willChange: visible ? undefined : 'transform, opacity',
       ...extra,
     }}>{children}</div>

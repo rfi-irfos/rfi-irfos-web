@@ -178,11 +178,25 @@ function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
     return () => { io.disconnect(); track.removeEventListener('scroll', onScroll) }
   }, [n])
 
+  // Wraps at both ends (Simeon, 2026-08-06: clicking left at the first card, or
+  // right at the last, should loop instead of just stopping dead) - a plain
+  // scrollBy has no concept of "the end," so the boundary has to be checked
+  // explicitly against the track's actual scroll extent before deciding whether
+  // to advance normally or jump to the opposite edge.
   const go = (dir: number) => {
     markUsed()
-    if (trackRef.current) {
-      const cardWidth = trackRef.current.firstElementChild?.clientWidth ?? 300
-      trackRef.current.scrollBy({ left: cardWidth * dir, behavior: reduced ? 'auto' : 'smooth' })
+    const track = trackRef.current
+    if (!track) return
+    const cardWidth = track.firstElementChild?.clientWidth ?? 300
+    const maxScroll = track.scrollWidth - track.clientWidth
+    const atStart = track.scrollLeft <= 2
+    const atEnd = track.scrollLeft >= maxScroll - 2
+    if (dir < 0 && atStart) {
+      track.scrollTo({ left: maxScroll, behavior: reduced ? 'auto' : 'smooth' })
+    } else if (dir > 0 && atEnd) {
+      track.scrollTo({ left: 0, behavior: reduced ? 'auto' : 'smooth' })
+    } else {
+      track.scrollBy({ left: cardWidth * dir, behavior: reduced ? 'auto' : 'smooth' })
     }
   }
 
