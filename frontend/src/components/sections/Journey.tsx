@@ -31,10 +31,19 @@ function CustomerJourneyTimeline() {
       }}>
       {steps.map((s, i) => (
         <Reveal key={s.stage} from={mobile ? 'left' : 'bottom'} delay={i}>
+          {/* Solid backing added 2026-08-06 (spine feedback): these step columns
+              sit directly on the page background with nothing behind them, and
+              with 5 equal columns the middle one straddles the page's
+              horizontal center where the spine/orb live. Padding + a matching
+              negative margin keep the column's content pixel-aligned with
+              before - only the panel is new. */}
           <div onClick={() => setActive(i)} style={{
-            position: 'relative', padding: mobile ? '0 0 28px 40px' : '0 16px',
+            position: 'relative', padding: mobile ? '0 0 28px 40px' : '14px 16px',
+            margin: mobile ? undefined : '-14px -16px 0',
+            background: mobile ? undefined : 'var(--glass-bg-solid)',
+            borderRadius: mobile ? undefined : 10,
             borderLeft: mobile ? `2px solid ${i === current ? TEAL : 'var(--border)'}` : 'none',
-            marginLeft: mobile ? 8 : 0, cursor: 'pointer', transition: 'border-color 0.4s',
+            marginLeft: mobile ? 8 : undefined, cursor: 'pointer', transition: 'border-color 0.4s',
           }}>
             {!mobile && (
               <div style={{
