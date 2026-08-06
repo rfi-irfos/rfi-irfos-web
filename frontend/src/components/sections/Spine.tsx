@@ -112,8 +112,11 @@ export function ScrollSpine({ theme }: { theme: Theme }) {
         const dist = Math.abs(cardCenter - orbPx)
         const falloff = 220
         const ratio = Math.max(0, 1 - dist / falloff)
-        const a = (ratio * 0.35).toFixed(3)
-        el.style.filter = ratio > 0 ? `drop-shadow(0 0 18px rgba(${accentRgb},${a}))` : 'none'
+        // Softened per feedback (2026-08-06): a tight 18px/0.35 read as a hard
+        // highlight, not ambience. Wider blur + much lower peak alpha reads as
+        // a soft foggy wash instead of a distinct glow outline.
+        const a = (ratio * 0.14).toFixed(3)
+        el.style.filter = ratio > 0 ? `drop-shadow(0 0 42px rgba(${accentRgb},${a}))` : 'none'
       }
     }
     const onScroll = () => { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(compute) }
