@@ -90,22 +90,6 @@ export function CountUp({ value }: { value: string }) {
   return <span ref={ref}>{isNaN(target) ? value : `${display}${suffix}`}</span>
 }
 
-// Fixed-top scroll progress bar, teal fill on the nav's carbon background - gives
-// the whole long funnel (research → projects → track record → pricing → contact)
-// a sense of "you're getting somewhere". Fixed 3px strip, transform-only (scaleX).
-export function ScrollProgressBar() {
-  const progress = usePageScrollProgress()
-  return (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 3, zIndex: 101, background: 'rgba(255,255,255,0.04)' }}>
-      <div style={{
-        height: '100%', width: '100%', transformOrigin: '0 50%',
-        transform: `scaleX(${progress})`, background: TEAL,
-        boxShadow: '0 0 8px rgba(0,245,196,0.6)',
-      }} />
-    </div>
-  )
-}
-
 // Per-word stagger reveal for headline text - splits on spaces, each word its own
 // span animated in on mount via Framer, respects reduced-motion (renders flat/static).
 export function RevealWords({ text, delayStart = 0.2, emphasizeIndices = [] }: { text: string; delayStart?: number; emphasizeIndices?: number[] }) {
@@ -422,14 +406,16 @@ export function Reveal({
   style?: React.CSSProperties
 }) {
   const [visible, setVisible] = useState(() => prefersReducedMotion() || revealSuppressed.current)
-  // Captured once at mount, deliberately not re-read after: reduced-motion and an
-  // in-flight anchor jump both mean "skip the animation entirely, forever" for this
-  // element, not just "count as already revealed for now" - a static flag keeps that
-  // bypass permanent even though `visible` itself becomes bidirectional below.
-  const bypass = useRef(prefersReducedMotion() || revealSuppressed.current)
+  // Captured once at mount via a lazy initializer, deliberately never updated after:
+  // reduced-motion and an in-flight anchor jump both mean "skip the animation
+  // entirely, forever" for this element, not just "count as already revealed for
+  // now" - useState (not useRef) because the transition line below reads this
+  // during render, and reading a ref's `.current` during render is a real lint
+  // violation (react-hooks/refs) even though it happened to work at runtime here.
+  const [bypass] = useState(() => prefersReducedMotion() || revealSuppressed.current)
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    if (bypass.current) return
+    if (bypass) return
     const el = ref.current; if (!el) return
     // Bidirectional (restored 2026-08-06, Simeon: "hypermodular" - assembles from every
     // direction on the way down, explodes back apart on the way up): no io.disconnect()
@@ -442,7 +428,7 @@ export function Reveal({
     }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' })
     io.observe(el)
     return () => io.disconnect()
-  }, [])
+  }, [bypass])
   const d = visible ? 0 : dist
   const transform = from === 'left'  ? `translateX(${-d}px)` :
                      from === 'right' ? `translateX(${d}px)`  :
@@ -453,7 +439,7 @@ export function Reveal({
     <div ref={ref} style={{
       opacity: visible ? 1 : 0,
       transform,
-      transition: bypass.current ? 'none' : `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${(delay * 0.08).toFixed(2)}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${(delay * 0.08).toFixed(2)}s`,
+      transition: bypass ? 'none' : `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${(delay * 0.08).toFixed(2)}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${(delay * 0.08).toFixed(2)}s`,
       willChange: visible ? undefined : 'transform, opacity',
       ...extra,
     }}>{children}</div>

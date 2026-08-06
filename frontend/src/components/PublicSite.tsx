@@ -7,6 +7,7 @@ import { ResearchSection } from './sections/Research'
 import { ProjectsSection } from './sections/Projects'
 import { TrackRecordSection } from './sections/TrackRecord'
 import { ProofSection } from './sections/Proof'
+import { ScrollSpine } from './sections/Spine'
 import { AppPrivacySection } from './sections/AppPrivacy'
 import { PricingSection } from './sections/Pricing'
 import { JourneySection } from './sections/Journey'
@@ -598,7 +599,16 @@ export function PublicSite() {
         : undefined,
       backgroundBlendMode: 'normal',
       backgroundAttachment: theme === 'dark' ? 'fixed' : 'scroll',
+      // position:relative + zIndex:0 give this wrapper its own stacking context -
+      // without it, ScrollSpine's zIndex:-1 rail escapes to the document root's
+      // stacking context and paints BEHIND this div's own background instead of
+      // in front of it, i.e. invisible. Everything else in the page (nav, modals,
+      // dropdowns) already carries its own explicit positive z-index and is
+      // unaffected by this - they paint above the spine exactly as before.
+      position: 'relative', zIndex: 0,
       color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
+
+      <ScrollSpine />
 
       {/* REPORT PDF MODAL */}
       {reportModal && (

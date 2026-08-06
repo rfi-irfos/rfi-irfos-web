@@ -1,48 +1,32 @@
 // "Research Areas" section (`#research`) - extracted verbatim from PublicSite.tsx.
-import { useState, useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { prefersReducedMotion, useTilt, Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
-// One tile of the Research Areas grid, uniform sizing (a "featured wide tile" pass
-// shipped and got flagged as worse than the plain even grid - reverted, Simeon
-// preferred the original same-sized cards). Entrance is an ink-bleed: the whole card
-// (bg, border, icon, copy) is clip-path'd to a point at the icon's corner and grows
-// out circularly once scrolled into view - ties the "Areas of Magnification" copy to
-// an actual visual motif instead of a plain fade. One-shot, not scroll-scrubbed, so
-// it stays cheap (single transition, not per-frame JS).
-function BentoTile({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
-  const [visible, setVisible] = useState(() => prefersReducedMotion())
-  const wrapRef = useRef<HTMLDivElement>(null)
+// One tile of the Research Areas grid. Was its own bespoke ink-bleed clip-path
+// reveal (whole card clip-path'd to a point at the icon's corner, growing out
+// circularly) - replaced 2026-08-06 with the shared `Reveal` so each of the 8
+// tiles can fly in from its own distinct direction (Simeon/Zabih: the grid should
+// visibly assemble from multiple directions at once, not one uniform effect).
+// Tradeoff made explicitly: layering a directional translate ON TOP of the old
+// clip-path would have been two competing entrance motions on one element, which
+// reads as busy - the ink-bleed's distinct character is traded away here for the
+// "genuinely mixed directions" requirement instead.
+function BentoTile({ icon, title, desc, from, delay }: {
+  icon: React.ReactNode; title: string; desc: string
+  from: 'left' | 'right' | 'top' | 'bottom'; delay: number
+}) {
   const tiltRef = useRef<HTMLDivElement>(null)
   const tilt = useTilt(tiltRef, 5)
-  useEffect(() => {
-    if (visible) return // reduced-motion already satisfied via the lazy initializer above
-    const el = wrapRef.current; if (!el) return
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { setVisible(true); io.disconnect() }
-    }, { threshold: 0.2 })
-    io.observe(el)
-    return () => io.disconnect()
-  }, [visible])
   return (
-    <div ref={wrapRef}>
-      {/* whileHover rather than the CSS class's transform: useTilt writes an inline
-          `transform` on mount, and an inline transform beats a stylesheet :hover rule,
-          so .rfi-hover-card's lift never actually ran here. Framer composes y/scale with
-          the tilt's rotateX/rotateY into a single transform, which is the only way to
-          have both. The clip-path transition also stays inline, so it is declared
-          alongside the class's transitions rather than replacing them. */}
+    <Reveal from={from} delay={delay} style={{ height: '100%' }}>
       <motion.div ref={tiltRef} className="rfi-hover-card" style={{
         ...tilt,
         background: 'var(--bg2)', border: '1px solid var(--border)',
         borderRadius: 16, padding: '28px 24px',
         height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column',
-        clipPath: visible ? 'circle(150% at 40px 40px)' : 'circle(0% at 40px 40px)',
-        // Ink-bleed reveal slowed 0.9s -> 1.5s (live feedback 2026-08-05: tiles rendered
-        // in too fast). Hover box-shadow/border-color timings untouched - that's
-        // interaction feel, not the scroll-reveal, no complaint about that.
-        transition: 'clip-path 1.5s cubic-bezier(0.16,1,0.3,1), box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 180ms cubic-bezier(0.4,0,0.2,1)',
+        transition: 'box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 180ms cubic-bezier(0.4,0,0.2,1)',
       }}
         whileHover={prefersReducedMotion() ? undefined : { y: -4, scale: 1.012 }}
         transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
@@ -51,9 +35,15 @@ function BentoTile({ icon, title, desc }: { icon: React.ReactNode; title: string
         <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{title}</div>
         <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7 }}>{desc}</div>
       </motion.div>
-    </div>
+    </Reveal>
   )
 }
+
+// Genuinely mixed per-card directions (not a left-half/right-half mirror): each
+// column's two rows get a different axis, e.g. column 0 is left-then-top, not
+// left-then-left - see plan discussion for why a mirror doesn't satisfy the ask.
+const RESEARCH_TILE_DIRECTIONS: Array<'left' | 'right' | 'top' | 'bottom'> =
+  ['left', 'top', 'bottom', 'right', 'right', 'bottom', 'top', 'left']
 
 // Icons are locale-independent (module-level RESEARCH_AREAS below), title/desc
 // come from the current locale's content object, zipped together by index.
@@ -63,7 +53,10 @@ function ResearchAreasGrid() {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
       {RESEARCH_AREAS.map((a, i) => {
         const area = t.research.areas[i]
-        return <BentoTile key={area.title} icon={a.icon} title={area.title} desc={area.desc} />
+        return (
+          <BentoTile key={area.title} icon={a.icon} title={area.title} desc={area.desc}
+            from={RESEARCH_TILE_DIRECTIONS[i % RESEARCH_TILE_DIRECTIONS.length]} delay={i} />
+        )
       })}
     </div>
   )
