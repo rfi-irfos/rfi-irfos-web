@@ -2,7 +2,7 @@
 // itself for the nav/modals/footer) - extracted verbatim from the former single
 // ~5600-line PublicSite.tsx as a pure refactor (no copy/style/behavior changes).
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion'
 import { useLocale } from '../../hooks/useLocale'
 
 // Was the literal '#00f5c4'. In dark, --accent IS #00f5c4, so this is a zero-diff
@@ -382,20 +382,31 @@ export function ScrambleHeading({ text }: { text: string }) {
 // cell instead. Same single shared flag, same semantics, just import-safe.
 export const revealSuppressed = { current: false }
 
-// Rewritten 2026-08-05. The previous version computed opacity as a pure function of the
-// element's CURRENT position relative to the viewport on every scroll event, with no
-// memory of ever having been shown. That meant scrolling an element into view, then
-// scrolling back up past it - completely ordinary browsing, re-reading pricing, checking
-// the ledger a second time - drove its rect.top back below the reveal threshold and set
-// its opacity straight back to 0. Confirmed by direct reproduction (scroll down, scroll
-// back to top, re-check computed opacity) and independently flagged before this by
-// another agent's report of "missing" sections that were never actually missing from the
-// DOM, just invisible at whatever scroll position was current. Whole sections - the
-// Projects carousel, the Track Record heading and its KPI cards - could vanish entirely
-// depending on scroll direction, on the one page currently taking paid traffic.
-// Fixed by switching to a one-shot IntersectionObserver, the same pattern already used
-// by BentoTile in Research.tsx: once an element has been seen, `visible` latches true
-// and never reverts, regardless of where the user scrolls afterward.
+// History of this function, both incidents worth knowing before touching it again:
+//
+// (1) Original version computed opacity as a pure function of the element's CURRENT
+// position on every scroll event, with NO defined settle zone and no reduced-motion/
+// anchor-jump escape hatch - it could leave content stuck invisible depending on
+// scroll direction, confirmed by direct reproduction on the one page taking paid
+// traffic. Fixed 2026-08-05 by switching to a one-shot IntersectionObserver:
+// `visible` latched true forever once seen, never reverting.
+//
+// (2) That one-shot version was itself replaced 2026-08-06 (bidirectional toggle),
+// then replaced AGAIN the same day: bidirectional-via-CSS-transition still fired a
+// fixed-duration animation off a threshold crossing, which read as a discrete "snap"
+// rather than tracking scroll continuously (Simeon: "diese reinfliegen muss nich
+// animiert sein sondern vom scroll abhangig sein"). This version fixes that by using
+// Framer's `useScroll` to read the element's own scroll-relative progress directly -
+// opacity/transform are a continuous function of CURRENT position again, same shape
+// as incident (1)'s root cause. The difference this time, deliberately: a real
+// library primitive (`useScroll`) does the position tracking instead of a hand-rolled
+// listener, and `prefersReducedMotion()`/`revealSuppressed.current` are checked
+// LIVE inside the `useTransform` callback below (which runs in Framer's value
+// pipeline, not React's render phase - not the same class of read as the
+// react-hooks/refs violation fixed earlier the same day) rather than captured once
+// at mount. That live check is what makes an in-app anchor-nav click correctly force
+// already-mounted elements to full visibility regardless of where the jump lands,
+// closing the specific gap the mount-once "bypass" state had.
 export function Reveal({
   children, delay = 0, from = 'bottom', dist = 32, style: extra,
 }: {
@@ -405,44 +416,41 @@ export function Reveal({
   dist?: number
   style?: React.CSSProperties
 }) {
-  const [visible, setVisible] = useState(() => prefersReducedMotion() || revealSuppressed.current)
-  // Captured once at mount via a lazy initializer, deliberately never updated after:
-  // reduced-motion and an in-flight anchor jump both mean "skip the animation
-  // entirely, forever" for this element, not just "count as already revealed for
-  // now" - useState (not useRef) because the transition line below reads this
-  // during render, and reading a ref's `.current` during render is a real lint
-  // violation (react-hooks/refs) even though it happened to work at runtime here.
-  const [bypass] = useState(() => prefersReducedMotion() || revealSuppressed.current)
   const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    if (bypass) return
-    const el = ref.current; if (!el) return
-    // Bidirectional (restored 2026-08-06, Simeon: "hypermodular" - assembles from every
-    // direction on the way down, explodes back apart on the way up): no io.disconnect()
-    // on reveal, and no manual scroll-listener workaround. entry.isIntersecting toggles
-    // `visible` both ways - each element still animates along its own `from` axis, so
-    // scrolling back up sends every element off in whichever direction it came from,
-    // not one uniform direction.
-    const io = new IntersectionObserver(([entry]) => {
-      setVisible(entry.isIntersecting)
-    }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' })
-    io.observe(el)
-    return () => io.disconnect()
-  }, [bypass])
-  const d = visible ? 0 : dist
-  const transform = from === 'left'  ? `translateX(${-d}px)` :
-                     from === 'right' ? `translateX(${d}px)`  :
-                     from === 'top'   ? `translateY(${-d}px)` :
-                     from === 'scale' ? `scale(${visible ? 1 : 0.84})` :
-                     `translateY(${d}px)`
+  // 0 = element's top edge about to enter the viewport from the bottom, 1 = its
+  // bottom edge about to leave past the top - the element's full transit, not a
+  // single threshold crossing.
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  // Maps that transit into a 0-1 "how assembled is this" value: ramps up over the
+  // first stretch (entrance), holds at 1 through the middle (settled, fully
+  // readable), ramps back down over the last stretch (exit) - continuous, so
+  // scrolling slowly assembles/disassembles slowly and reversing direction
+  // reverses it at the same rate, symmetric both ways. `delay` shifts where the
+  // ramps sit (not a time delay - there's no fixed-duration animation left to
+  // delay), so a row of grid items sharing nearly the same vertical position
+  // still cascades instead of settling in lockstep.
+  const settled = useTransform(scrollYProgress, latest => {
+    if (prefersReducedMotion() || revealSuppressed.current) return 1
+    const inEnd = Math.min(0.45, 0.16 + delay * 0.025)
+    const outStart = Math.max(0.55, 0.84 - delay * 0.025)
+    if (latest <= 0) return 0
+    if (latest < inEnd) return latest / inEnd
+    if (latest <= outStart) return 1
+    if (latest < 1) return 1 - (latest - outStart) / (1 - outStart)
+    return 0
+  })
+  const transform = useTransform(settled, s => {
+    const d = (1 - s) * dist
+    if (from === 'left')  return `translateX(${-d}px)`
+    if (from === 'right') return `translateX(${d}px)`
+    if (from === 'top')   return `translateY(${-d}px)`
+    if (from === 'scale') return `scale(${1 - (1 - s) * 0.16})`
+    return `translateY(${d}px)`
+  })
   return (
-    <div ref={ref} style={{
-      opacity: visible ? 1 : 0,
-      transform,
-      transition: bypass ? 'none' : `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${(delay * 0.08).toFixed(2)}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${(delay * 0.08).toFixed(2)}s`,
-      willChange: visible ? undefined : 'transform, opacity',
-      ...extra,
-    }}>{children}</div>
+    <motion.div ref={ref} style={{ opacity: settled, transform, willChange: 'transform, opacity', ...extra }}>
+      {children}
+    </motion.div>
   )
 }
 
