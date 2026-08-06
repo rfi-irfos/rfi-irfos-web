@@ -56,10 +56,23 @@ function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string)
       <div style={{ padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
           <div style={{ fontWeight: 900, fontSize: 17, minWidth: 0 }}>{entry.target}</div>
-          <span style={{
-            fontSize: 9, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em',
-            padding: '3px 8px', borderRadius: 20, flexShrink: 0, border: `1px solid ${color}`, color,
-          }}>{entry.sev}</span>
+          {/* PDF tag, next to severity - live feedback (Simeon, 2026-08-06): the
+              small file icon down by the link wasn't enough to signal at a glance
+              that these cards ARE documents, not just more ledger rows. */}
+          <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+            <span style={{
+              fontSize: 9, fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, letterSpacing: '0.1em',
+              padding: '3px 8px', borderRadius: 20, display: 'inline-flex', alignItems: 'center', gap: 3,
+              border: '1px solid var(--text3)', color: 'var(--text2)',
+            }}>
+              <svg width="8" height="10" viewBox="0 0 10 12" fill="none"><path d="M1 1h5l3 3v7H1V1z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="M6 1v3h3" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/></svg>
+              PDF
+            </span>
+            <span style={{
+              fontSize: 9, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em',
+              padding: '3px 8px', borderRadius: 20, border: `1px solid ${color}`, color,
+            }}>{entry.sev}</span>
+          </div>
         </div>
         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
           {entry.market}{entry.resolvedDate ? ` · ${t.proof.resolvedOn(entry.resolvedDate)}` : ''}
