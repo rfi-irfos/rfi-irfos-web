@@ -196,10 +196,10 @@ export const EN = {
   },
 
   proof: {
-    eyebrow: '04 / Proof',
-    heading: 'what you can already read',
-    subheading: "Every finding on the ledger above ends in a written report. These are the ones already public: full findings, full evidence, no paywall, no login. Click a card, get the PDF you'd otherwise have had to dig for.",
-    viewReport: 'read the report',
+    eyebrow: '04 / The Deliverable',
+    heading: "what you'd actually hold in your hands",
+    subheading: 'Every case on the ledger ends in one of these: a complete, evidence-backed disclosure report, published in full once the embargo lifts - same format and depth regardless of whether the company ever engages us further. No summary. No sales deck. Open one and read the real thing.',
+    viewReport: 'read the full report',
     resolvedOn: (date: string) => `resolved ${date}`,
     carouselPrevAria: 'Previous report',
     carouselNextAria: 'Next report',

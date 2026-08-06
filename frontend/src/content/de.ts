@@ -189,10 +189,10 @@ export const DE: Content = {
   },
 
   proof: {
-    eyebrow: '04 / Beweis',
-    heading: 'was Sie schon jetzt lesen können',
-    subheading: 'Jeder Befund im Ledger oben endet in einem schriftlichen Bericht. Hier sind die bereits öffentlichen: vollständige Befunde, vollständige Evidenz, kein Paywall, kein Login. Karte anklicken, und Sie haben das PDF, für das Sie sonst hätten suchen müssen.',
-    viewReport: 'Bericht lesen',
+    eyebrow: '04 / Das Ergebnis',
+    heading: 'das, was Sie tatsächlich in der Hand hätten',
+    subheading: 'Jeder Fall im Ledger endet in genau so einem Dokument: einem vollständigen, evidenzbasierten Offenlegungsbericht, nach Ablauf des Embargos öffentlich einsehbar - gleiches Format, gleiche Tiefe, unabhängig davon, ob das Unternehmen uns darüber hinaus beauftragt. Keine Zusammenfassung, keine Verkaufsbroschüre. Öffnen Sie einen und lesen Sie das Original.',
+    viewReport: 'vollständigen Bericht lesen',
     resolvedOn: (date: string) => `behoben am ${date}`,
     carouselPrevAria: 'Vorheriger Bericht',
     carouselNextAria: 'Nächster Bericht',
