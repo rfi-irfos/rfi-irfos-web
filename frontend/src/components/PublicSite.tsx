@@ -1011,13 +1011,22 @@ export function PublicSite() {
           ].map(group => (
             <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
               <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0 }}>{group.heading}</p>
-              {group.links.map(l => (
-                <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                  onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
-                  {l.label}
-                </a>
-              ))}
+              {/* Links run in one horizontal line under the heading, not stacked - live
+                  feedback: a vertical list per group made the footer taller than it
+                  needed to be. "·" separators (same pattern as the copyright line below)
+                  keep adjacent links from reading as one run-on word when wrapped. */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 8 }}>
+                {group.links.map((l, i) => (
+                  <span key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <a href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none', whiteSpace: 'nowrap' }}
+                      onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                      onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                      {l.label}
+                    </a>
+                    {i < group.links.length - 1 && <span style={{ color: 'var(--text4)', fontSize: 12 }}>·</span>}
+                  </span>
+                ))}
+              </div>
             </div>
           ))}
         </div>
