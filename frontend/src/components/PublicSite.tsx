@@ -975,14 +975,18 @@ export function PublicSite() {
             Research into "Company" as confusing since it's a real service line). */}
         {/* Spread across the full footer width (live feedback: three groups
             clustered tightly in the center looked cramped against how wide the
-            rest of the page is) - maxWidth + space-between instead of a centered
-            flex cluster with a fixed gap. First pass used maxWidth 900, still far
+            rest of the page is) - maxWidth + a grid instead of a centered flex
+            cluster with a fixed gap. First pass used maxWidth 900, still far
             narrower than every other section's 1320 content width (Research/
             Projects/Track Record/Pricing/Journey/App Privacy all use 1320) - on
             a wide viewport that read as three narrow "pillars" stranded in the
             middle of the footer rather than a widescreen row. Matched to 1320
-            so the footer's content width is consistent with the rest of the page. */}
-        <div style={{ display: 'flex', gap: '2.5rem', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 24, maxWidth: 1320, margin: '0 auto 24px' }}>
+            so the footer's content width is consistent with the rest of the page.
+            Equal-width grid columns, not flex + space-between: Legal (5 links)/
+            Company (4)/Research (3) have different natural widths, so space-between
+            gave each group a different width and left uneven, "choppy" gaps between
+            them instead of a clean evenly-spaced row. */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2.5rem', marginBottom: 24, maxWidth: 1320, margin: '0 auto 24px' }}>
           {[
             {
               heading: t.footer.groups.legal.heading, links: [
