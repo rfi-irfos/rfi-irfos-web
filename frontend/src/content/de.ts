@@ -14,7 +14,7 @@ export const DE: Content = {
       research: 'Forschung',
       projects: 'Projekte',
       trackRecord: 'Track Record',
-      pricing: 'Preise',
+      pricing: 'Zugang',
       submit: 'Kontakt',
     },
     themeLabel: { light: 'Hell', dark: 'Dunkel', hc: 'Hoher Kontrast' },
@@ -215,7 +215,7 @@ export const DE: Content = {
   },
 
   pricing: {
-    eyebrow: '06 / Preise',
+    eyebrow: '06 / Zugang',
     heading: 'klar kalkuliert',
     subheading: 'Feste Preise. Keine Bindung an ein Abo, außer Sie wollen eine. Der Umfang bestimmt die Stufe, nicht die Unternehmensgröße.',
     scopeTags: {

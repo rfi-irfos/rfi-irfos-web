@@ -17,7 +17,7 @@ export const EN = {
       research: 'Research',
       projects: 'Projects',
       trackRecord: 'Track Record',
-      pricing: 'Pricing',
+      pricing: 'Access',
       submit: 'Submit',
     },
     themeLabel: { light: 'Light', dark: 'Dark', hc: 'High contrast' } as Record<'light' | 'dark' | 'hc', string>,
@@ -222,7 +222,7 @@ export const EN = {
   },
 
   pricing: {
-    eyebrow: '06 / Pricing',
+    eyebrow: '06 / Access',
     heading: 'what it costs',
     subheading: 'Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.',
     scopeTags: {
