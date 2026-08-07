@@ -453,6 +453,10 @@ export function PublicSite() {
         utm_source: q.get('utm_source') ?? '',
         utm_medium: q.get('utm_medium') ?? '',
         utm_campaign: q.get('utm_campaign') ?? '',
+        // Google Ads' own auto-tagging appends gclid with no UTM params at all - without
+        // reading it, a click from an ad with no manual UTM setup was indistinguishable
+        // from direct/organic traffic on the backend. See lighthouse's track.rs.
+        gclid: q.get('gclid') ?? '',
         site: 'rfi-irfos',
       }),
     }).catch(() => {})
@@ -511,6 +515,10 @@ export function PublicSite() {
           name: tipForm.handle || 'anonymous',
           email: tipForm.email,
           phone: tipForm.target,
+          // The client-side botcheck gate above (line ~497) only stops a browser
+          // running this exact JS - anything posting straight to /api/contact skips it
+          // entirely. Sending the honeypot value through lets the backend enforce it too.
+          botcheck: tipForm.botcheck,
           message: [
             tipForm.topic ? `Topic: ${tipForm.topic}` : null,
             tipForm.target ? `Target: ${tipForm.target}` : null,

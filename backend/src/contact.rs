@@ -29,6 +29,12 @@ pub struct ContactRequest {
     pub email: String,
     pub phone: Option<String>,
     pub message: String,
+    /// Honeypot field. Hidden from real visitors via the form's own CSS/tabIndex/
+    /// aria-hidden, so only an automated filler that submits every input populates it.
+    /// The frontend already no-ops on a non-empty value, but that check runs in the
+    /// browser - a script posting directly to this endpoint skips it entirely, which is
+    /// the gap this closes.
+    pub botcheck: Option<String>,
 }
 
 #[derive(Serialize)]
@@ -58,6 +64,13 @@ pub async fn submit_contact(
 
     if contact_rate_limited(&ip) {
         return (StatusCode::TOO_MANY_REQUESTS, "rate limit exceeded — 5 submissions per minute per IP\n").into_response();
+    }
+
+    // Silently accept-and-drop, mirroring the frontend's own no-op on this field, so a
+    // bot gets no signal that it tripped a check either way.
+    if body.botcheck.as_deref().is_some_and(|v| !v.trim().is_empty()) {
+        tracing::info!("Contact submission from {ip} dropped: honeypot field filled");
+        return StatusCode::OK.into_response();
     }
 
     if body.name.trim().is_empty() || body.email.trim().is_empty() || body.message.trim().is_empty() {
