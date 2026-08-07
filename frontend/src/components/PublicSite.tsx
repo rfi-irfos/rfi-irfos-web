@@ -347,6 +347,32 @@ export function PublicSite() {
   }, [])
 
   useEffect(() => {
+    // revealSuppressed itself still had the exact race ScrambleHeading's comment
+    // above already diagnosed and worked around with 'rfi-nav-jump': a fixed 800ms
+    // window guessing at an unrelated smooth-scroll's actual duration. ScrambleHeading
+    // routed around it entirely; Reveal's `settled` (shared.tsx) still reads
+    // revealSuppressed.current LIVE on every scroll frame, so the same race still
+    // applied there - live feedback ("greys out" / "auto-zooms" after a nav click)
+    // traced to this: on a long jump the flag flips back to false while the native
+    // scroll is still mid-flight, `settled` recomputes from the real (not-yet-arrived)
+    // scrollYProgress for a frame, and the element visibly drops before snapping back
+    // in once the scroll actually stops. Fixed the same way as the timing problem
+    // itself should be fixed: release on the browser's own `scrollend` signal instead
+    // of a guessed delay, with the old 1600ms bumped-up timeout only as a safety net
+    // for browsers without `scrollend` or a same-position click that never scrolls.
+    let releaseTimer: ReturnType<typeof setTimeout>
+    const release = () => {
+      revealSuppressed.current = false
+      window.removeEventListener('scrollend', release)
+      clearTimeout(releaseTimer)
+    }
+    const suppressUntilSettled = () => {
+      revealSuppressed.current = true
+      window.removeEventListener('scrollend', release)
+      window.addEventListener('scrollend', release, { once: true })
+      clearTimeout(releaseTimer)
+      releaseTimer = setTimeout(release, 1600)
+    }
     const handler = (e: MouseEvent) => {
       const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#"]')
       if (!a) return
@@ -355,29 +381,33 @@ export function PublicSite() {
         // bare "#" (e.g. the logo) - scroll to top, still suppress Reveal so hero/KPIs
         // don't get stuck mid-transform from the jump (same fix as named-anchor links below)
         e.preventDefault()
-        revealSuppressed.current = true
+        suppressUntilSettled()
         window.scrollTo({ top: 0, behavior: 'smooth' })
-        setTimeout(() => { revealSuppressed.current = false }, 800)
         return
       }
       const target = document.querySelector(href)
       if (!target) return
       e.preventDefault()
-      revealSuppressed.current = true
-      // scroll so section content (100px into section) lands at ~90px from viewport top
+      suppressUntilSettled()
+      // Land the section top BELOW the fixed 64px nav, not at/past it. This used to
+      // aim for "+10" (justified by a comment claiming section content sits ~100px
+      // into the section, so the actual heading would clear the nav) - that assumption
+      // went stale when section top padding was tightened to 48px, so the heading
+      // itself was landing at roughly y=48-60, i.e. still partly UNDER the fixed nav's
+      // blurred background. Two visible symptoms of the same root cause: (a) the nav's
+      // backdrop-filter blur washing the heading out, and (b) Reveal's scroll-scrubbed
+      // `settled` value (shared.tsx) computing well below 1 for a short element sitting
+      // that close to the very top of the transit it tracks - both read as "greys out"
+      // right after a nav click. Scrolling to clear the nav with real margin fixes both.
+      const NAV_HEIGHT = 64
       const abs = target.getBoundingClientRect().top + window.pageYOffset
-      window.scrollTo({ top: Math.max(0, abs + 10), behavior: 'smooth' })
-      setTimeout(() => { revealSuppressed.current = false }, 800)
-      // Explicit signal for ScrambleHeading (2026-08-05): a fixed suppression
-      // window racing an unrelated smooth-scroll's actual duration is exactly
-      // the kind of thing that "sometimes replays, sometimes doesn't" - a
-      // longer jump can cross the heading's intersection threshold after the
-      // 800ms window already expired. This event fires deterministically at
+      window.scrollTo({ top: Math.max(0, abs - NAV_HEIGHT - 20), behavior: 'smooth' })
+      // Explicit signal for ScrambleHeading (2026-08-05): fires deterministically at
       // the moment of the click itself, independent of scroll/threshold timing.
       target.dispatchEvent(new CustomEvent('rfi-nav-jump', { bubbles: true }))
     }
     document.addEventListener('click', handler)
-    return () => document.removeEventListener('click', handler)
+    return () => { document.removeEventListener('click', handler); window.removeEventListener('scrollend', release); clearTimeout(releaseTimer) }
   }, [])
 
   // A note for whoever opened devtools looking for something to find. Runs once, and
@@ -914,10 +944,13 @@ export function PublicSite() {
       <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} pixelRef={pixelRef} />
 
       {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid var(--border)', padding: '48px 2rem 32px', textAlign: 'center' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-          <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.85 }}>
-            <svg viewBox="0 0 420 100" width="150" height="36" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
+      <footer style={{ borderTop: '1px solid var(--border)', padding: '40px 2rem 28px', textAlign: 'center' }}>
+        {/* WKO badge sized down a step (live feedback: "der Footer soll doch net so
+            fett sein" - this loud red/white block was the single heaviest element in
+            an otherwise thin/monospace footer) - opacity nudged down to match. */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+          <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.7 }}>
+            <svg viewBox="0 0 420 100" width="120" height="29" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
               <rect x="0"   y="0" width="100" height="100" fill="#CC0000"/>
               <text x="50"  y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">W</text>
               <rect x="105" y="0" width="100" height="100" fill="#CC0000"/>
@@ -943,8 +976,13 @@ export function PublicSite() {
         {/* Spread across the full footer width (live feedback: three groups
             clustered tightly in the center looked cramped against how wide the
             rest of the page is) - maxWidth + space-between instead of a centered
-            flex cluster with a fixed gap. */}
-        <div style={{ display: 'flex', gap: '2.5rem', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 24, maxWidth: 900, margin: '0 auto 24px' }}>
+            flex cluster with a fixed gap. First pass used maxWidth 900, still far
+            narrower than every other section's 1320 content width (Research/
+            Projects/Track Record/Pricing/Journey/App Privacy all use 1320) - on
+            a wide viewport that read as three narrow "pillars" stranded in the
+            middle of the footer rather than a widescreen row. Matched to 1320
+            so the footer's content width is consistent with the rest of the page. */}
+        <div style={{ display: 'flex', gap: '2.5rem', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 24, maxWidth: 1320, margin: '0 auto 24px' }}>
           {[
             {
               heading: t.footer.groups.legal.heading, links: [

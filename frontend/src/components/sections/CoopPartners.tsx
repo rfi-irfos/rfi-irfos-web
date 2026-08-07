@@ -6,6 +6,21 @@ import { useLocale } from '../../hooks/useLocale'
 
 type CheckoutInfo = { key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string }
 
+// The four separate "GitHub · <repo>" pills used to sit in the same badge row as
+// every crates.io/OSF/live-link badge - live feedback: that read as "just a pile
+// of pointless badges" eating space. One GitHub-branded pill (linking to the org)
+// replaces all four; the individual repos move into a compact plain-text list
+// right under it instead of repeating the same platform four times as full pills.
+const LAURA_REPOS = ['call-laura', 'lauras-agents', 'lauras-agents-public', 'coevolution-factory']
+
+function GithubMark() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z" />
+    </svg>
+  )
+}
+
 // COOP PARTNERS - not team, an external research partner whose method
 // Lauras Team / Call Laura / Jarvis grew out of. Kept deliberately
 // separate from the TEAM grid above (different relationship: Laura
@@ -44,32 +59,46 @@ export function CoopPartnersSection({
                 emergent-interaction-lab.fly.dev →
               </a>
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, maxWidth: 340 }}>
-              {[
-                { label: 'GitHub · call-laura', href: 'https://github.com/rfi-irfos/call-laura' },
-                { label: 'GitHub · lauras-agents', href: 'https://github.com/rfi-irfos/lauras-agents' },
-                { label: 'GitHub · lauras-agents-public', href: 'https://github.com/rfi-irfos/lauras-agents-public' },
-                { label: 'GitHub · coevolution-factory', href: 'https://github.com/rfi-irfos/coevolution-factory' },
-                { label: 'lauras-core v0.2.0', href: 'https://crates.io/crates/lauras-core' },
-                { label: 'lauras-team v0.2.0 (auf Anfrage)', href: 'https://crates.io/crates/lauras-team' },
-                { label: 'lauras-mcp v0.2.0', href: 'https://crates.io/crates/lauras-mcp' },
-                { label: 'lauras-api v0.2.0', href: 'https://crates.io/crates/lauras-api' },
-                { label: 'OSF · HC9ZB', href: 'https://doi.org/10.17605/OSF.IO/HC9ZB' },
-                { label: 'OSF · QCVJB', href: 'https://doi.org/10.17605/OSF.IO/QCVJB' },
-                { label: 'OSF · UXCJE', href: 'https://doi.org/10.17605/OSF.IO/UXCJE' },
-                { label: 'Live API', href: 'https://laura-api.fly.dev', live: true },
-                { label: 'Coevolution Factory', href: 'https://coevolution-factory-sparkling-mountain-1802.fly.dev', live: true },
-              ].map((c, i) => (
-                <a key={i} href={c.href} target="_blank" rel="noopener noreferrer"
-                   style={{
-                     fontSize: 11, fontWeight: 700, padding: '6px 12px', borderRadius: 999,
-                     border: `1px solid ${c.live ? 'rgba(16,185,129,.5)' : 'var(--border)'}`,
-                     color: c.live ? '#10b981' : 'var(--text2)',
-                     textDecoration: 'none', whiteSpace: 'nowrap',
-                   }}>
-                  {c.label}
-                </a>
-              ))}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8, maxWidth: 340 }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 8 }}>
+                {[
+                  { label: 'GitHub · rfi-irfos', href: 'https://github.com/rfi-irfos', icon: true },
+                  { label: 'lauras-core v0.2.0', href: 'https://crates.io/crates/lauras-core' },
+                  { label: 'lauras-team v0.2.0 (auf Anfrage)', href: 'https://crates.io/crates/lauras-team' },
+                  { label: 'lauras-mcp v0.2.0', href: 'https://crates.io/crates/lauras-mcp' },
+                  { label: 'lauras-api v0.2.0', href: 'https://crates.io/crates/lauras-api' },
+                  { label: 'OSF · HC9ZB', href: 'https://doi.org/10.17605/OSF.IO/HC9ZB' },
+                  { label: 'OSF · QCVJB', href: 'https://doi.org/10.17605/OSF.IO/QCVJB' },
+                  { label: 'OSF · UXCJE', href: 'https://doi.org/10.17605/OSF.IO/UXCJE' },
+                  { label: 'Live API', href: 'https://laura-api.fly.dev', live: true },
+                  { label: 'Coevolution Factory', href: 'https://coevolution-factory-sparkling-mountain-1802.fly.dev', live: true },
+                ].map((c, i) => (
+                  <a key={i} href={c.href} target="_blank" rel="noopener noreferrer"
+                     style={{
+                       display: 'inline-flex', alignItems: 'center', gap: 6,
+                       fontSize: 11, fontWeight: 700, padding: '6px 12px', borderRadius: 999,
+                       border: `1px solid ${c.live ? 'rgba(16,185,129,.5)' : 'var(--border)'}`,
+                       color: c.live ? '#10b981' : 'var(--text2)',
+                       textDecoration: 'none', whiteSpace: 'nowrap',
+                     }}>
+                    {c.icon && <GithubMark />}
+                    {c.label}
+                  </a>
+                ))}
+              </div>
+              {/* The four repos behind the single GitHub badge above, as a plain compact
+                  list rather than four more pills - still one click away, none of the weight. */}
+              <p style={{ margin: 0, fontSize: 11, color: 'var(--text3)', textAlign: 'right', lineHeight: 1.7 }}>
+                {LAURA_REPOS.map((repo, i) => (
+                  <span key={repo}>
+                    <a href={`https://github.com/rfi-irfos/${repo}`} target="_blank" rel="noopener noreferrer"
+                       style={{ color: 'var(--text3)', textDecoration: 'underline', textUnderlineOffset: 2 }}>
+                      {repo}
+                    </a>
+                    {i < LAURA_REPOS.length - 1 ? ' · ' : ''}
+                  </span>
+                ))}
+              </p>
             </div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10, marginTop: 16 }}>
