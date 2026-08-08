@@ -173,6 +173,9 @@ export const DE: Content = {
       disclosure: 'Offenlegung',
       elapsed: 'Verstrichen',
       report: 'Bericht',
+      whyItMatters: 'Warum das wichtig ist',
+      hoverForDetail: 'für den vollen technischen Befund hier bleiben',
+      intelClickHint: 'zum Aufklappen anklicken',
     },
     row: {
       today: 'heute',
@@ -295,6 +298,10 @@ export const DE: Content = {
   reportModal: {
     label: 'bericht - rfi-irfos',
     iframeTitle: 'Bericht PDF',
+  },
+
+  intelModal: {
+    evidenceLabel: 'der Befund, technisch',
   },
 
   journey: {

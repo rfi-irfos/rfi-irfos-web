@@ -134,6 +134,10 @@ export function PublicSite() {
   const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string } | null>(null)
   const [proposalModal, setProposalModal]     = useState<{ tier: string; desc: string; price: string; delivery?: string } | null>(null)
   const [reportModal, setReportModal]         = useState<string | null>(null)
+  // Full plain-language writeup per ledger entry - the ledger row/cell only ever
+  // summarizes (hover reveals the short "why it matters" line), this is where the
+  // complete article-style explanation lives, opened by clicking the Intel cell.
+  const [intelModal, setIntelModal]           = useState<{ target: string; market: string; sev: string; finding: string; headline?: string } | null>(null)
   const [agbChecked, setAgbChecked]           = useState(false)
   const [b2bChecked, setB2bChecked]           = useState(false)
   const { theme, cycle } = useTheme()
@@ -154,11 +158,11 @@ export function PublicSite() {
   // Lock background scroll while a modal is open - without this the page behind a
   // fixed-position modal keeps scrolling under it, which reads as "scrolling is broken."
   useEffect(() => {
-    if (!checkoutModal && !proposalModal && !reportModal) return
+    if (!checkoutModal && !proposalModal && !reportModal && !intelModal) return
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = prevOverflow }
-  }, [checkoutModal, proposalModal, reportModal])
+  }, [checkoutModal, proposalModal, reportModal, intelModal])
 
   // short synthesized "pop" - no audio file needed, just a quick pitch-dropping
   // burst via the Web Audio API so this stays fully self-contained.
@@ -661,6 +665,42 @@ export function PublicSite() {
         </div>
       )}
 
+      {/* INTEL ARTICLE MODAL - clicking a ledger row's Intel cell opens this. Written
+          as one flowing piece, no sub-headers inside the prose itself (Simeon, 2026-08-08:
+          "nicht mit den headers, aber halt einfach total sauberer artikel") - only the
+          technical finding at the bottom is visually separated, kept for anyone who wants
+          to verify the plain-language explanation against the actual audit evidence. */}
+      {intelModal && (() => {
+        const sep = ' — meaning '
+        const si = intelModal.finding.indexOf(sep)
+        const technical = si === -1 ? intelModal.finding : intelModal.finding.slice(0, si)
+        const meaning = si === -1 ? intelModal.finding : intelModal.finding.slice(si + sep.length)
+        return (
+          <div className="rfi-modal-backdrop" onClick={() => setIntelModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(0,0,0,0.85)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+            <div className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 640, maxHeight: '85vh', background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px', borderBottom: '1px solid var(--border)', background: '#0a0a18' }}>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{intelModal.target} · {intelModal.market} · {intelModal.sev}</div>
+                <button onClick={() => setIntelModal(null)} style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
+              </div>
+              <div style={{ padding: '20px 22px', overflowY: 'auto' }}>
+                {/* Newspaper-style headline - the thing a visitor with zero technical
+                    background reads first and instantly understands. Falls back to
+                    nothing (meaning paragraph just runs first, as before) until every
+                    ledger entry has one written - Simeon, 2026-08-08. */}
+                {intelModal.headline && (
+                  <h3 style={{ fontSize: 22, lineHeight: 1.3, fontWeight: 800, color: 'var(--text)', margin: '0 0 12px' }}>{intelModal.headline}</h3>
+                )}
+                <p style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--text)', margin: 0 }}>{meaning}</p>
+                <div style={{ marginTop: 20, paddingTop: 14, borderTop: '1px solid var(--border2)' }}>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>{t.intelModal.evidenceLabel}</div>
+                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, lineHeight: 1.6, color: 'var(--text3)', margin: 0 }}>{technical}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      })()}
+
       {/* B2B CHECKOUT CONFIRMATION MODAL - cards on the page only show tier/price/CTA now;
           this is where the full breakdown actually lives, right above the terms. */}
       {checkoutModal && (
@@ -904,6 +944,7 @@ export function PublicSite() {
         sortBy={sortBy} setSortBy={setSortBy}
         openDD={openDD} setOpenDD={setOpenDD}
         setReportModal={setReportModal}
+        setIntelModal={setIntelModal}
       />
 
       {/* PROOF — quick-glance cards for every ledger entry that already has a

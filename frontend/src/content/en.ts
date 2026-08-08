@@ -176,6 +176,9 @@ export const EN = {
       disclosure: 'Disclosure',
       elapsed: 'Elapsed',
       report: 'Report',
+      whyItMatters: 'Why this matters',
+      hoverForDetail: 'hover for the full technical finding',
+      intelClickHint: 'click to expand',
     },
     row: {
       today: 'today',
@@ -302,6 +305,10 @@ export const EN = {
   reportModal: {
     label: 'report - rfi-irfos',
     iframeTitle: 'Report PDF',
+  },
+
+  intelModal: {
+    evidenceLabel: 'the finding, technical',
   },
 
   journey: {

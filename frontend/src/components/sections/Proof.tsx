@@ -18,13 +18,13 @@ const SEV_COLOR: Record<string, string> = { CRITICAL: '#f87171', HIGH: '#fb923c'
 
 type ProofEntry = { target: string; market: string; sev: string; finding: string; reportUrl: string; resolvedDate?: string }
 
-function getProofEntries(): ProofEntry[] {
+function getProofEntries(locale: 'en' | 'de'): ProofEntry[] {
   return AUDIT_HIGHLIGHTS
     .map(a => ({ a, meta: AUDIT_META[a.target] }))
     .filter((x): x is { a: typeof AUDIT_HIGHLIGHTS[number]; meta: NonNullable<typeof x.meta> & { reportUrl: string } } => !!x.meta?.reportUrl)
     .map(({ a, meta }) => ({
       target: a.target, market: a.market, sev: a.sev,
-      finding: a.finding.split(' — meaning ')[0], // drop the plain-language restatement, keep the technical lede
+      finding: a.finding[locale].split(' — meaning ')[0], // drop the plain-language restatement, keep the technical lede
       reportUrl: meta.reportUrl, resolvedDate: meta.resolvedDate,
     }))
 }
@@ -200,8 +200,8 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
 }
 
 export function ProofSection({ setReportModal }: { setReportModal: (url: string) => void }) {
-  const { t } = useLocale()
-  const entries = getProofEntries()
+  const { t, locale } = useLocale()
+  const entries = getProofEntries(locale)
   if (entries.length === 0) return null // nothing published yet - section simply doesn't render, no empty-state placeholder needed
   return (
     <section id="proof" style={{ padding: '0 2rem 72px' }}>
