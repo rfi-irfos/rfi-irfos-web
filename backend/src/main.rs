@@ -6,11 +6,29 @@ mod stripe;
 mod track;
 mod upload;
 
-use axum::{routing::{get, post}, Router};
+use axum::{
+    extract::Request,
+    http::header,
+    middleware::{self, Next},
+    response::{IntoResponse, Redirect, Response},
+    routing::{get, post}, Router,
+};
 use sqlx::SqlitePool;
 use std::{collections::HashMap, path::PathBuf, sync::{Arc, RwLock}};
 use tower_http::{cors::CorsLayer, services::{ServeDir, ServeFile}};
 use serde::{Deserialize, Serialize};
+
+// Google indexes rfi-irfos.com and www.rfi-irfos.com as duplicate pages
+// otherwise — the canonical tag alone doesn't stop the www host from
+// serving its own 200 response.
+async fn redirect_www(req: Request, next: Next) -> Response {
+    let host = req.headers().get(header::HOST).and_then(|h| h.to_str().ok());
+    if let Some(bare) = host.and_then(|h| h.strip_prefix("www.")) {
+        let path_and_query = req.uri().path_and_query().map(|pq| pq.as_str()).unwrap_or("/");
+        return Redirect::permanent(&format!("https://{bare}{path_and_query}")).into_response();
+    }
+    next.run(req).await
+}
 
 #[derive(Clone)]
 pub struct AppState {
@@ -101,7 +119,8 @@ async fn main() {
         // React SPA
         .fallback_service(spa_fallback)
         .with_state(state)
-        .layer(CorsLayer::permissive());
+        .layer(CorsLayer::permissive())
+        .layer(middleware::from_fn(redirect_www));
 
     let port = std::env::var("PORT").unwrap_or("3000".into());
     let addr = format!("0.0.0.0:{port}");
