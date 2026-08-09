@@ -9,14 +9,36 @@ import './App.css'
 // the common case.
 const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ default: m.LegalPage })))
 
+const LEGAL_SLUGS = ['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology']
+// Section ids that also get a real, crawlable URL (e.g. /pricing) in addition to
+// their existing #pricing scroll-anchor - Google doesn't index hash fragments as
+// separate pages, so a direct search hit or external link needs a real path to
+// land on. The homepage's own nav still uses the #hash hrefs (instant scroll, no
+// reload); this only matters for someone arriving at /pricing from the outside.
+const SECTION_SLUGS = ['research', 'projects', 'track-record', 'pricing', 'submit']
+
+function pathSlug() {
+  return window.location.pathname.replace(/^\/|\/$/g, '')
+}
+
 function getSlug() {
   const h = window.location.hash
   if (h.startsWith('#p/')) return h.slice(3)
-  return null
+  const p = pathSlug()
+  return LEGAL_SLUGS.includes(p) ? p : null
+}
+
+function getSectionFocus() {
+  const p = pathSlug()
+  return SECTION_SLUGS.includes(p) ? p : null
 }
 
 export default function App() {
   const [slug, setSlug] = useState(getSlug)
+  // Read once on mount, not reactive to hashchange - a direct-path landing like
+  // /pricing decides the initial scroll target and meta tags, the homepage's own
+  // #hash nav clicks are unrelated native browser scrolling, not a slug change.
+  const [sectionFocus] = useState(getSectionFocus)
   const homeScrollY = useRef(0)
 
   useEffect(() => {
@@ -48,5 +70,5 @@ export default function App() {
   // i18n pass - wrapping only PublicSite in the LocaleProvider keeps that
   // boundary explicit rather than incidental.
   if (slug) return <Suspense fallback={null}><LegalPage slug={slug} /></Suspense>
-  return <LocaleProvider><PublicSite /></LocaleProvider>
+  return <LocaleProvider><PublicSite initialSection={sectionFocus} /></LocaleProvider>
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
+import type { Content } from '../content/en'
 import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_PIXEL, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
@@ -93,9 +94,37 @@ const NAV_HREFS = [
   { key: 'submit' as const, href: '#submit' },
 ]
 
-export function PublicSite() {
+// Section-specific <title>/meta description for visitors (and crawlers) landing
+// directly on a section's own URL (e.g. /pricing) instead of the homepage - pulled
+// straight from each section's existing heading/dek text so it stays bilingual for
+// free instead of needing a second, separately-maintained copy of the same copy.
+function sectionMeta(t: Content, section: string) {
+  switch (section) {
+    case 'research': return { title: `${t.research.heading} — RFI-IRFOS`, description: t.research.subheading }
+    case 'projects': return { title: `${t.projects.heading} — RFI-IRFOS`, description: t.projects.subheading }
+    case 'track-record': return { title: `${t.trackRecord.heading} — RFI-IRFOS`, description: t.trackRecord.paragraph }
+    case 'pricing': return { title: `${t.pricing.heading} — RFI-IRFOS`, description: t.pricing.subheading }
+    case 'submit': return { title: `${t.submit.heading} — RFI-IRFOS`, description: t.submit.paragraph }
+    default: return null
+  }
+}
+
+export function PublicSite({ initialSection }: { initialSection?: string | null } = {}) {
   const { locale, setLocale, t } = useLocale()
   const NAV_LINKS = NAV_HREFS.map(n => ({ label: t.nav.links[n.key], href: n.href }))
+
+  // Landed on a section's own URL (crawler or external link, not an in-page nav
+  // click) - set that section's meta tags and scroll to it once on mount.
+  useEffect(() => {
+    if (!initialSection) return
+    const meta = sectionMeta(t, initialSection)
+    if (meta) {
+      document.title = meta.title
+      document.querySelector('meta[name="description"]')?.setAttribute('content', meta.description)
+    }
+    document.getElementById(initialSection)?.scrollIntoView()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const toggleLocale = () => setLocale(LOCALES[(LOCALES.indexOf(locale) + 1) % LOCALES.length])
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -1031,16 +1060,16 @@ export function PublicSite() {
           {[
             {
               heading: t.footer.groups.legal.heading, links: [
-                { label: t.footer.groups.legal.links.impressum, href: '#p/impressum' },
-                { label: t.footer.groups.legal.links.datenschutz, href: '#p/datenschutz' },
-                { label: t.footer.groups.legal.links.agb, href: '#p/agb' },
-                { label: t.footer.groups.legal.links.security, href: '#p/security' },
-                { label: t.footer.groups.legal.links.standards, href: '#p/standards' },
+                { label: t.footer.groups.legal.links.impressum, href: '/impressum' },
+                { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz' },
+                { label: t.footer.groups.legal.links.agb, href: '/agb' },
+                { label: t.footer.groups.legal.links.security, href: '/security' },
+                { label: t.footer.groups.legal.links.standards, href: '/standards' },
               ],
             },
             {
               heading: t.footer.groups.company.heading, links: [
-                { label: t.footer.groups.company.links.team, href: '#p/team' },
+                { label: t.footer.groups.company.links.team, href: '/team' },
                 { label: t.footer.groups.company.links.careers, href: 'mailto:career@rfi-irfos.com' },
                 { label: t.footer.groups.company.links.ternlang, href: 'https://ternlang.com' },
                 { label: t.footer.groups.company.links.github, href: 'https://github.com/rfi-irfos' },
@@ -1050,7 +1079,7 @@ export function PublicSite() {
               heading: t.footer.groups.research.heading, links: [
                 { label: t.footer.groups.research.links.research, href: '#research' },
                 { label: t.footer.groups.research.links.trackRecord, href: '#track-record' },
-                { label: t.footer.groups.research.links.methodology, href: '#p/methodology' },
+                { label: t.footer.groups.research.links.methodology, href: '/methodology' },
               ],
             },
           ].map(group => (

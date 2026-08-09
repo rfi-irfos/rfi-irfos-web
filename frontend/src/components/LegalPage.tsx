@@ -10,8 +10,29 @@ import React, { useEffect, useRef } from 'react'
 const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
 const LIGHTHOUSE_TRACK = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track'
 
+// Reached via a real URL (/impressum etc) or the #p/slug hash - either way the
+// document still carries the homepage's shared <title>/description until we set
+// our own, so a search result or a browser tab would otherwise show "RFI-IRFOS -
+// Rethink the Obvious." for every one of these instead of what the page is.
+const META: Record<string, { title: string; description: string }> = {
+  impressum: { title: 'Legal Notice — RFI-IRFOS', description: 'Legal notice for RFI-IRFOS, a registered nonprofit research institute in Graz, Austria — registry data, contact, and trade information.' },
+  datenschutz: { title: 'Privacy Policy — RFI-IRFOS', description: 'How RFI-IRFOS handles data under GDPR: what we collect, our processors, and your rights. No cookies, no tracking, no ad network.' },
+  agb: { title: 'Terms and Conditions — RFI-IRFOS', description: 'General Terms and Conditions for RFI-IRFOS security audits, software development, and research services. B2B only.' },
+  security: { title: 'Security Policy — RFI-IRFOS', description: "RFI-IRFOS's coordinated vulnerability disclosure policy: ISO/IEC 29147, 90-day embargo, regulator notification, safe harbor for good-faith research." },
+  standards: { title: 'Standards & Compliance — RFI-IRFOS', description: 'The regulatory frameworks RFI-IRFOS audits against: NIS-2, GDPR, EU AI Act, DSA, ISO/IEC 29147/30111/27001, and more.' },
+  team: { title: 'Team — RFI-IRFOS', description: "The people behind RFI-IRFOS's security research, disclosure, and ternary AI work." },
+  methodology: { title: 'Methodology — RFI-IRFOS', description: "The four principles governing RFI-IRFOS's research: sources, methods, handling results, and disclosure — the same rules regardless of who's paying." },
+}
+
 export function LegalPage({ slug }: { slug: string }) {
   const footerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const meta = META[slug]
+    if (!meta) return
+    document.title = meta.title
+    document.querySelector('meta[name="description"]')?.setAttribute('content', meta.description)
+  }, [slug])
 
   // Same privacy-safe mechanism as the main site's section tracker: an in-memory-only
   // IntersectionObserver, no cookie/localStorage, no visitor id. This one watches the
@@ -42,8 +63,16 @@ export function LegalPage({ slug }: { slug: string }) {
       <div style={PROSE}>
         <div style={{ marginBottom: 40 }}>
           <a
-            href="#"
-            onClick={e => { e.preventDefault(); location.hash = '' }}
+            href="/"
+            onClick={e => {
+              // Reached via #p/slug (hash only, still on "/"): clearing the hash is
+              // enough, no reload. Reached via a real path (/impressum etc, no hash):
+              // that alone wouldn't change the URL, so fall through to the normal
+              // href navigation instead of preventing it.
+              if (!window.location.hash) return
+              e.preventDefault()
+              location.hash = ''
+            }}
             style={{ ...A, fontFamily: 'monospace', fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase' }}
           >
             &larr; rfi-irfos.com
