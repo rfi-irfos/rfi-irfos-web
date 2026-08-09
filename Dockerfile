@@ -3,6 +3,7 @@ FROM node:22-slim AS frontend
 WORKDIR /app
 COPY frontend/package*.json ./
 RUN npm ci
+RUN npx playwright install --with-deps chromium
 COPY frontend/ ./
 # Vite inlines import.meta.env.VITE_* at BUILD time. This build never received
 # VITE_WEB3FORMS_KEY, so on the Fly-served site the constant was undefined, the
