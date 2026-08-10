@@ -14,16 +14,14 @@ import { prefersReducedMotion, beacon, TEAL, Reveal, ScrambleHeading } from './s
 import { useLocale } from '../../hooks/useLocale'
 import { AUDIT_HIGHLIGHTS, AUDIT_META } from './TrackRecord'
 
-const SEV_COLOR: Record<string, string> = { CRITICAL: '#f87171', HIGH: '#fb923c', MEDIUM: '#fbbf24' }
-
-type ProofEntry = { target: string; market: string; sev: string; finding: string; reportUrl: string; resolvedDate?: string }
+type ProofEntry = { target: string; market: string; finding: string; reportUrl: string; resolvedDate?: string }
 
 function getProofEntries(locale: 'en' | 'de'): ProofEntry[] {
   return AUDIT_HIGHLIGHTS
     .map(a => ({ a, meta: AUDIT_META[a.target] }))
     .filter((x): x is { a: typeof AUDIT_HIGHLIGHTS[number]; meta: NonNullable<typeof x.meta> & { reportUrl: string } } => !!x.meta?.reportUrl)
     .map(({ a, meta }) => ({
-      target: a.target, market: a.market, sev: a.sev,
+      target: a.target, market: a.market,
       finding: a.finding[locale].split(' — meaning ')[0], // drop the plain-language restatement, keep the technical lede
       reportUrl: meta.reportUrl, resolvedDate: meta.resolvedDate,
     }))
@@ -41,12 +39,10 @@ function useCarouselSize() {
 
 function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string) => void }) {
   const { t } = useLocale()
-  // Severity color stays on the small badge only (keeps the CRITICAL/HIGH/MEDIUM
-  // meaning legible). Full teal frame instead of a top strip (Simeon, 2026-08-06,
-  // second pass - a full-width colored bar per card, red or teal, still read as
-  // heavier than needed; a thin border around the whole card reads as "featured
+  // Full teal frame instead of a top strip (Simeon, 2026-08-06, second pass -
+  // a full-width colored bar per card, red or teal, still read as heavier
+  // than needed; a thin border around the whole card reads as "featured
   // document" without dominating it).
-  const color = SEV_COLOR[entry.sev] ?? TEAL
   return (
     <button
       onClick={() => { beacon('proof_card_click:' + entry.target); onOpen(entry.reportUrl) }}
@@ -60,23 +56,17 @@ function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string)
       <div style={{ padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
           <div style={{ fontWeight: 900, fontSize: 17, minWidth: 0 }}>{entry.target}</div>
-          {/* PDF tag, next to severity - live feedback (Simeon, 2026-08-06): the
-              small file icon down by the link wasn't enough to signal at a glance
-              that these cards ARE documents, not just more ledger rows. */}
-          <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
-            <span style={{
-              fontSize: 9, fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, letterSpacing: '0.1em',
-              padding: '3px 8px', borderRadius: 20, display: 'inline-flex', alignItems: 'center', gap: 3,
-              border: '1px solid var(--text3)', color: 'var(--text2)',
-            }}>
-              <svg width="8" height="10" viewBox="0 0 10 12" fill="none"><path d="M1 1h5l3 3v7H1V1z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="M6 1v3h3" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/></svg>
-              PDF
-            </span>
-            <span style={{
-              fontSize: 9, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em',
-              padding: '3px 8px', borderRadius: 20, border: `1px solid ${color}`, color,
-            }}>{entry.sev}</span>
-          </div>
+          {/* PDF tag - live feedback (Simeon, 2026-08-06): the small file icon
+              down by the link wasn't enough to signal at a glance that these
+              cards ARE documents, not just more ledger rows. */}
+          <span style={{
+            fontSize: 9, fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, letterSpacing: '0.1em',
+            padding: '3px 8px', borderRadius: 20, display: 'inline-flex', alignItems: 'center', gap: 3,
+            border: '1px solid var(--text3)', color: 'var(--text2)', flexShrink: 0,
+          }}>
+            <svg width="8" height="10" viewBox="0 0 10 12" fill="none"><path d="M1 1h5l3 3v7H1V1z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="M6 1v3h3" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/></svg>
+            PDF
+          </span>
         </div>
         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
           {entry.market}{entry.resolvedDate ? ` · ${t.proof.resolvedOn(entry.resolvedDate)}` : ''}
@@ -171,7 +161,7 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
           <div
             ref={trackRef}
             style={{
-              display: 'flex', gap: 20, overflowX: 'auto', scrollSnapType: 'x mandatory',
+              display: 'flex', gap: 20, overflowX: 'auto', overflowY: 'visible', scrollSnapType: 'x mandatory',
               WebkitOverflowScrolling: 'touch', paddingBottom: 4,
             }}
           >

@@ -231,7 +231,7 @@ export const EN = {
 
   pricing: {
     eyebrow: '06 / Access',
-    heading: 'what it costs',
+    heading: 'priced in plain terms',
     subheading: 'Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.',
     scopeTags: {
       security: 'Mobile + Web + AI',

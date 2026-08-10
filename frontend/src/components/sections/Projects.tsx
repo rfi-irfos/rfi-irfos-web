@@ -227,7 +227,7 @@ function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
           <div
             ref={trackRef}
             style={{
-              display: 'flex', gap: 20, overflowX: 'auto', scrollSnapType: 'x mandatory',
+              display: 'flex', gap: 20, overflowX: 'auto', overflowY: 'visible', scrollSnapType: 'x mandatory',
               WebkitOverflowScrolling: 'touch', paddingBottom: 4,
             }}
           >
