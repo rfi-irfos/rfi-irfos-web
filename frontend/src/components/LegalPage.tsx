@@ -564,7 +564,7 @@ const METHODOLOGY_PRINCIPLES = [
   },
   {
     title: 'Handling results',
-    body: 'Severity gets ranked, not asserted - and every client, paying or not, gets the same triage discipline (ISO/IEC 30111: reproduce it, scope it, fix it, credit the reporter). What changes between tiers is confidentiality and turnaround, never the rigor of the underlying work.',
+    body: 'Severity gets ranked, not asserted - and every client, paying or not, gets the same triage discipline (ISO/IEC 30111: reproduce it, scope it, fix it, credit the reporter). What changes between tiers is how much of the report stays private and how fast we move - never whether the finding publishes, never the rigor of the underlying work.',
   },
   {
     title: 'Disclosure',
