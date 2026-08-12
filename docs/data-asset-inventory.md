@@ -3,9 +3,12 @@
 > Automatisch aus `investigations/reports/*.md` extrahiert am 2026-08-12. **Nur echte, in den Reports stehende Zahlen — keine Schaetzung.**
 > App-Anzahl ueber Package-Identifikatoren (com.x.y) dedupliziert, nicht ueber Ordner — manche Targets (SAP, ORF, outfit7) umfassen mehrere Apps.
 
+> **Korrektur 2026-08-12 (nachtraeglich):** Die "649 eindeutige Package-IDs" unten sind **kein verlaesslicher App-Count** — die Sample-Liste am Dateiende zeigt, dass die com.x.y-Regex ueberwiegend SDK-/Component-interne Package-Namen mitzaehlt (z. B. `com.adjust.sdk.activityhandler`, ein FileProvider-Component, keine App), nicht nur Top-Level-App-Packages. Der verifizierte App-Count ist **311**, direkt aus `AUDIT_HIGHLIGHTS.length` in `frontend/src/components/sections/TrackRecord.tsx` gezaehlt (treibt dort auch die Live-KPI). Die 649 bitte nirgends als App-Zahl zitieren, bis die Extraktion auf Top-Level-Packages eingeschraenkt ist. Die Entity-Zahlen weiter unten (Smali-Klassen, SDK-/Tracker-Mentions etc.) sind davon unberuehrt — das ist eine andere Metrik (Korpustiefe, nicht App-Zahl).
+
 ## Korpus-Umfang
 
-- **Apps (eindeutige Package-IDs):** 649
+- **Apps (eindeutige Package-IDs, siehe Korrektur oben — vermutlich zu hoch):** 649
+- **Apps (verifiziert, aus dem Ledger):** 311
 - **Report-Dateien (alle .md):** 572
 - **Reports mit 'Apps Analyzed'-Tabelle:** 1
 
