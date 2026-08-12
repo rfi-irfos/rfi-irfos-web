@@ -2585,12 +2585,12 @@ export function TrackRecordSection({
             KPIs live ABOVE the panel as their own clean row now. */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 28 }}>
           {[
-            { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,          from: 'left'   },
-            { n: `1.08M`,                    label: t.trackRecord.kpis.smaliClasses,           from: 'bottom' },
-            { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: t.trackRecord.kpis.criticalFindings, from: 'top'    },
-            { n: `499`,                      label: t.trackRecord.kpis.trackersFound,          from: 'right'  },
-            { n: `392`,                      label: t.trackRecord.kpis.endpointsInvestigated,  from: 'left'   },
-            { n: `192`,                      label: t.trackRecord.kpis.sdkClasses,             from: 'bottom' },
+            { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,          sub: t.trackRecord.kpisSub.appsAudited,        from: 'left'   },
+            { n: `1.08M`,                    label: t.trackRecord.kpis.smaliClasses,           sub: t.trackRecord.kpisSub.smaliClasses,     from: 'bottom' },
+            { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: t.trackRecord.kpis.criticalFindings, sub: t.trackRecord.kpisSub.criticalFindings, from: 'top' },
+            { n: `499`,                      label: t.trackRecord.kpis.trackersFound,          sub: t.trackRecord.kpisSub.trackersFound,    from: 'right'  },
+            { n: `392`,                      label: t.trackRecord.kpis.endpointsInvestigated,  sub: t.trackRecord.kpisSub.endpointsInvestigated, from: 'left' },
+            { n: `192`,                      label: t.trackRecord.kpis.sdkClasses,             sub: t.trackRecord.kpisSub.sdkClasses,       from: 'bottom' },
           ].map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
               <div style={{
@@ -2606,6 +2606,7 @@ export function TrackRecordSection({
               }}>
                 <div style={{ fontSize: 40, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}><CountUp value={s.n} /></div>
                 <div style={{ fontSize: 12, color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 12 }}>{s.label}</div>
+                <div style={{ fontSize: 10, color: 'var(--text2)', fontWeight: 500, marginTop: 6, lineHeight: 1.4 }}>{s.sub}</div>
               </div>
             </Reveal>
           ))}

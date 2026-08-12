@@ -143,11 +143,19 @@ export const EN = {
     paragraph: 'We decompile shipped apps and trace their data flows to real endpoints in real countries. Companies land on this ledger for many different reasons: they hand your data to third parties, they track without consent, they leave the door open. Every report goes out with the data-protection authorities copied in and a ninety-day clock attached. One rule, no exceptions: paying clients and everyone else are held to the identical standard.',
     kpis: {
       appsAudited: 'Apps audited',
-      smaliClasses: 'Smali classes',
+      smaliClasses: 'Smali classes read',
       criticalFindings: 'Critical findings',
       trackersFound: 'Trackers found',
       endpointsInvestigated: 'Endpoints investigated',
       sdkClasses: 'SDK instances',
+    },
+    kpisSub: {
+      appsAudited: 'on the public ledger',
+      smaliClasses: 'at minimum, decompiled',
+      criticalFindings: '57 medium · 13 low documented',
+      trackersFound: 'reported to authorities',
+      endpointsInvestigated: 'across the corpus',
+      sdkClasses: 'tracked across apps',
     },
     searchPlaceholder: 'search your company...',
     dropdowns: {

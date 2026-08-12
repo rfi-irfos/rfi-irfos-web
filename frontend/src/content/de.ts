@@ -140,11 +140,19 @@ export const DE: Content = {
     paragraph: 'Wir lesen Apps auf Quellcode-Ebene, nicht nur von außen. Die Unternehmen auf diesem Ledger landen aus ganz unterschiedlichen Gründen hier: Sie geben Ihre Daten still an Dritte weiter, tracken ohne Zustimmung oder lassen Sicherheitslücken offen. Bei jedem Bericht, den wir versenden, werden die Datenschutzbehörden direkt in Kopie gesetzt, und wir geben dem Unternehmen neunzig Tage Zeit, das Problem zu beheben, bevor irgendetwas öffentlich wird. Die Regel ist einfach und nicht verhandelbar: Jede Organisation hier wird exakt gleich behandelt, ob sie uns je einen Cent zahlt oder nicht.',
     kpis: {
       appsAudited: 'Apps geprüft',
-      smaliClasses: 'Smali-Klassen',
+      smaliClasses: 'Smali-Klassen gelesen',
       criticalFindings: 'Kritische Funde',
       trackersFound: 'Tracker gefunden',
       endpointsInvestigated: 'Endpunkte untersucht',
       sdkClasses: 'SDK-Instanzen',
+    },
+    kpisSub: {
+      appsAudited: 'im öffentlichen Ledger',
+      smaliClasses: 'mindestens, dekompiliert',
+      criticalFindings: '57 mittel · 13 gering dokumentiert',
+      trackersFound: 'an Behörden gemeldet',
+      endpointsInvestigated: 'über den Korpus',
+      sdkClasses: 'über Apps verfolgt',
     },
     searchPlaceholder: 'Ihr Unternehmen suchen...',
     dropdowns: {
