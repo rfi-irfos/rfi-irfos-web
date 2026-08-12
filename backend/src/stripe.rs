@@ -39,10 +39,9 @@ fn tier_info(tier: &str) -> Option<TierInfo> {
         "competitor_intel" => Some(TierInfo { label: "RFI-IRFOS Competitor Intelligence",    amount:   750_000, recurring: false }),
         "sector_intel"     => Some(TierInfo { label: "RFI-IRFOS Sector Intelligence Report", amount: 1_800_000, recurring: false }),
         "ongoing_intel"    => Some(TierInfo { label: "RFI-IRFOS Ongoing Intelligence",       amount:   450_000, recurring: true  }),
-        // Web development
-        "web_landing"      => Some(TierInfo { label: "RFI-IRFOS Landing Page",              amount:   150_000, recurring: false }),
-        "web_full"         => Some(TierInfo { label: "RFI-IRFOS Full Site",                 amount:   450_000, recurring: false }),
-        "web_enterprise"   => Some(TierInfo { label: "RFI-IRFOS Enterprise Site",           amount: 1_800_000, recurring: false }),
+        // Web development: proposal-only since 2026-08-12 (custom-scoped "from
+        // €10k" base tier, price varies by scope - same pattern Mobile always
+        // used). No direct Stripe checkout for this line anymore.
         _ => None,
     }
 }

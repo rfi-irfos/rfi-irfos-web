@@ -35,11 +35,20 @@ const MARKET_META = [
   { price: '€4,500 / mo', highlight: false, stripeKey: 'ongoing_intel', outputs: ['Investigation Report', 'Recommendations'] },
 ] as const
 
+// Positioning correction 2026-08-12: web dev used to run 4 standalone tiers
+// starting at 1,500 EUR, undercutting the audit/intelligence side of the
+// business and inviting "you're a website shop" framing. Collapsed to one
+// custom-scoped base tier ("the whole build") starting at 10k, plus 3 priced
+// add-ons on top of it - same 1-featured-tier-plus-filmstrip carousel, just
+// reused as upsells instead of competing products. No fixed price on any of
+// them (base is "starting from", add-ons scale with the base scope), so the
+// whole line is proposal-only now, same pattern MOBILE_META already uses -
+// no stripeKey field, no direct Stripe checkout.
 const WEB_META = [
-  { price: '€1,500', highlight: true, stripeKey: 'web_landing' as string | null },
-  { price: '€4,500', highlight: false, stripeKey: 'web_full' as string | null },
-  { price: '€18,000', highlight: false, stripeKey: 'web_enterprise' as string | null },
-  { price: '€75,000', highlight: false, stripeKey: null as string | null },
+  { price: 'from €10,000', highlight: true },
+  { price: '+ €8,000', highlight: false },
+  { price: '€1,500 / mo', highlight: false },
+  { price: 'on request', highlight: false },
 ] as const
 
 const MOBILE_META = [
@@ -104,10 +113,7 @@ export function PricingSection({
         <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.web}<ScopeTag label={t.pricing.scopeTags.web} /></p>
         <TierCarousel tiers={webTiers} getActions={tier => {
           const full = webTiers.find(s => s.tier === tier.tier)!
-          return {
-            onBuy: full.stripeKey ? () => openCheckoutModal({ key: full.stripeKey!, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) : undefined,
-            onProposal: !full.stripeKey ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) : undefined,
-          }
+          return { onProposal: () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) }
         }} />
         </div>
 
