@@ -73,6 +73,18 @@ export function PricingSection({
           </p>
         </Reveal>
 
+        {/* Business Intelligence - now the FIRST product line (2026-08-12):
+            the decompiled-app corpus is the asset; the tiers are queries against
+            it, not bespoke report-writing. The nine intelligence layers live in
+            each tier's desc. */}
+        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 24px', marginBottom: 48, maxWidth: 720, marginLeft: 'auto', marginRight: 'auto' }}>
+        <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.market}<ScopeTag label={t.pricing.scopeTags.market} /></p>
+        <TierCarousel tiers={marketTiers} getActions={tier => {
+          const full = marketTiers.find(s => s.tier === tier.tier)!
+          return { onBuy: () => openCheckoutModal({ key: full.stripeKey, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) }
+        }} />
+        </div>
+
         {/* Security Audit tiers - featured-tier carousel (Stage 1e, corrected
             2026-08-02): all 8 existing tiers stay, none merged/dropped. One big
             card + a filmstrip of the rest, per product line - see `TierCarousel`.
@@ -87,15 +99,6 @@ export function PricingSection({
             onBuy: full.stripeKey ? () => openCheckoutModal({ key: full.stripeKey!, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined }) : undefined,
             onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) : undefined,
           }
-        }} />
-        </div>
-
-        {/* Market Research & Competitor Analysis */}
-        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 24px', marginBottom: 48, maxWidth: 720, marginLeft: 'auto', marginRight: 'auto' }}>
-        <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.market}<ScopeTag label={t.pricing.scopeTags.market} /></p>
-        <TierCarousel tiers={marketTiers} getActions={tier => {
-          const full = marketTiers.find(s => s.tier === tier.tier)!
-          return { onBuy: () => openCheckoutModal({ key: full.stripeKey, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) }
         }} />
         </div>
 

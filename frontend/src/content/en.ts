@@ -143,9 +143,11 @@ export const EN = {
     paragraph: 'We decompile shipped apps and trace their data flows to real endpoints in real countries. Companies land on this ledger for many different reasons: they hand your data to third parties, they track without consent, they leave the door open. Every report goes out with the data-protection authorities copied in and a ninety-day clock attached. One rule, no exceptions: paying clients and everyone else are held to the identical standard.',
     kpis: {
       appsAudited: 'Apps audited',
-      companiesNotified: 'Companies notified',
+      smaliClasses: 'Smali classes',
       criticalFindings: 'Critical findings',
-      regulatorsNotified: 'Regulators notified',
+      trackersFound: 'Trackers found',
+      endpointsInvestigated: 'Endpoints investigated',
+      sdkClasses: 'SDK instances',
     },
     searchPlaceholder: 'search your company...',
     dropdowns: {
@@ -235,13 +237,13 @@ export const EN = {
     subheading: 'Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.',
     scopeTags: {
       security: 'Mobile + Web + AI',
-      market: 'Desk research + technical analysis',
+      market: 'App ecosystem intelligence',
       web: 'Web only',
       mobile: 'Mobile only (Android + iOS)',
     },
     lineHeadings: {
       security: 'Security Audits & Responsible Disclosure',
-      market: 'Market Research & Competitor Analysis',
+      market: 'Business Intelligence',
       web: 'Web Development',
       mobile: 'Mobile App Development & Fixing',
     },
@@ -256,11 +258,12 @@ export const EN = {
       { tier: 'Annual Intelligence Retainer', hook: 'A year-round external security and compliance department.', desc: 'You get a full year of our flagship service: continuous coverage of your entire app portfolio, not a sample, with a deep audit every three months.\n\nYour dedicated contact speaks directly to the regulators that matter, from the Austrian and German data-protection authorities to the UK ICO. You get a threat briefing every month and immediate notice the moment we see a breach taking shape.\n\nWe take over within a week of payment and act as your external security and compliance department from day one.', delivery: 'Quarterly reports within 7 calendar days.' },
     ],
     market: [
-      { tier: 'Market Overview', hook: 'A ten-page, jargon-free map of your sector, in 14 days.', desc: 'You get a plain-language map of your sector: the key players, how regulation actually works for them, and where the real openings sit. Delivered within 14 calendar days.\n\nTen pages minimum. No jargon, no two-hundred-slide deck. A founder reads it in one sitting.\n\nResearch starts within days of payment.', delivery: '14 calendar days.' },
-      { tier: 'Competitor Intelligence', hook: 'Three to five competitors taken apart: tech, privacy, positioning.', desc: 'You get three to five of your competitors taken apart: what technology they run on, how they actually treat user privacy versus what they claim, how they position themselves, and where they are strategically weak.\n\nThe result is a realistic picture of the field, including gaps you can exploit and ones you need to close. This is the homework most teams skip and later regret.\n\nDelivered within 14 calendar days of payment.', delivery: '14 calendar days.' },
-      { tier: 'Sector Intelligence Report', hook: 'Market, regulation, and technology - refreshed every quarter.', desc: 'You get the complete picture of your sector: market, regulation, and technology, with each major player\'s risk exposure spelled out in numbers, not vague claims.\n\nBecause markets move, this is not a one-off document. You receive a fresh update every three months, so you always know where the sector is heading.\n\nFirst report within 14 calendar days of payment, refreshed every quarter after.', delivery: '14 calendar days.' },
-      { tier: 'Ongoing Intelligence Briefing', hook: 'A dedicated analyst watching your competitors, month after month.', desc: 'You get continuous watch on your competitors: a proper briefing every month, and an immediate alert the moment one of them makes a significant move, a funding round, a pivot, a breach, or a key hire.\n\nOne dedicated analyst who knows your space handles it, so you hear about a competitor\'s launch the day it happens, not after.\n\nYour analyst is assigned within a week of payment; the first briefing lands at the end of month one.', delivery: 'First briefing within 14 calendar days, then monthly.' },
+      { tier: 'Ecosystem Snapshot', hook: 'One question, answered across 315 apps and nine intelligence layers.', desc: 'You get a single, evidenced answer pulled from the full decompiled-app corpus - not a document written about one vendor, but a query run across the ecosystem. Every answer draws on the same nine layers: Code Intelligence (Smali, packages, classes, libraries, implementations), SDK Intelligence (distribution, versions, dependencies, combinations, migrations), Data-Flow Intelligence (which component moves which data where), Tracker Intelligence (trackers, domains, providers and their relationships), Privacy Intelligence (technical behaviour versus declared processing), Supply-Chain Intelligence (app to SDK to vendor to infrastructure to further parties), Competitive Intelligence (competitor architectures benchmarked), Market Intelligence (which technologies and providers spread or vanish across industries), and Security Intelligence (recurring misconfigurations, risky implementations, exposed components).\n\nDelivered within 14 calendar days.', delivery: '14 calendar days.' },
+      { tier: 'Competitive Intelligence', hook: 'Your competitors\' technical architecture, read against the ecosystem.', desc: 'You get a read on your competitors\' technical architecture - what SDKs and trackers they actually ship, how their privacy behaviour diverges from the policy they publish, and where they are structurally weak. Benchmarked across the Code, SDK, Data-Flow, Tracker, Privacy and Supply-Chain layers of the corpus, so the gaps you can exploit and the ones you must close surface from evidence, not assumption.\n\nPulled from the same decompiled-app corpus we use for disclosure, not just the names you hand us. Delivered within 14 calendar days of payment.', delivery: '14 calendar days.' },
+      { tier: 'Sector Intelligence Report', hook: 'Your whole sector, mapped across the nine intelligence layers, refreshed every quarter.', desc: 'You get the complete picture of your sector across all nine layers - Code, SDK, Data-Flow, Tracker, Privacy, Supply-Chain, Competitive, Market and Security Intelligence - with each major player\'s exposure spelled out in numbers, not vague claims.\n\nBecause markets move, this is not a one-off document. You receive a fresh update every three months, so you always know where the sector is heading. First report within 14 calendar days of payment, refreshed every quarter after.', delivery: '14 calendar days.' },
+      { tier: 'Ongoing Intelligence Briefing', hook: 'A dedicated analyst watching the ecosystem, month after month.', desc: 'You get continuous watch across the intelligence layers: a proper briefing every month, and an immediate alert the moment a competitor makes a significant move, a funding round, a pivot, a breach, or a key hire - or the moment a tracker, SDK, or data-flow pattern shifts across the corpus.\n\nOne dedicated analyst who knows your space handles it, so you hear about a move the day it happens, not after. Your analyst is assigned within a week of payment; the first briefing lands at the end of month one.', delivery: 'First briefing within 14 calendar days, then monthly.' },
     ],
+
     web: [
       { tier: 'Landing Page', hook: 'A fast, clean single page, live within 48 hours.', desc: 'You get a sharp single-page site on our own open-source React template: fast, clean, live within 48 hours of payment.\n\nBuilt by the team that audits everyone else. Clean by construction.\n\nNo page-builder lock-in: you own the code and can take it anywhere.', delivery: '48 hours.' },
       { tier: 'Full Site', hook: 'A proper multi-page site with a real content editor, PWA-ready.', desc: 'You get a proper multi-page site with a content editor your team can actually use, a working contact form, and privacy-respecting analytics built in from the start.\n\nIt ships as an installable progressive web app, behaving like a native app on Android and iPhone without an app-store listing. Delivered in about two weeks.\n\nBuilt by the same team that audits apps for security, so it is clean by default.', delivery: '14–28 calendar days, depending on scope.' },

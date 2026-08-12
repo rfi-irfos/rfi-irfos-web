@@ -2585,10 +2585,12 @@ export function TrackRecordSection({
             KPIs live ABOVE the panel as their own clean row now. */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 28 }}>
           {[
-            { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,        from: 'left'   },
-            { n: `${new Set(AUDIT_HIGHLIGHTS.map(a => a.company ?? a.target)).size}+`, label: t.trackRecord.kpis.companiesNotified,  from: 'bottom' },
-            { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: t.trackRecord.kpis.criticalFindings,   from: 'top'    },
-            { n: '18+',  label: t.trackRecord.kpis.regulatorsNotified, from: 'right'  },
+            { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,          from: 'left'   },
+            { n: `1.08M`,                    label: t.trackRecord.kpis.smaliClasses,           from: 'bottom' },
+            { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: t.trackRecord.kpis.criticalFindings, from: 'top'    },
+            { n: `499`,                      label: t.trackRecord.kpis.trackersFound,          from: 'right'  },
+            { n: `392`,                      label: t.trackRecord.kpis.endpointsInvestigated,  from: 'left'   },
+            { n: `192`,                      label: t.trackRecord.kpis.sdkClasses,             from: 'bottom' },
           ].map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
               <div style={{
