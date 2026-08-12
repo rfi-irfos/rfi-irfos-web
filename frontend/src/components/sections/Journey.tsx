@@ -27,7 +27,7 @@ function CustomerJourneyTimeline() {
       style={{
         display: 'grid',
         gridTemplateColumns: mobile ? '1fr' : `repeat(${steps.length}, 1fr)`,
-        gap: mobile ? 0 : 4,
+        gap: mobile ? 0 : 14,
       }}>
       {steps.map((s, i) => (
         <Reveal key={s.stage} from={mobile ? 'left' : 'bottom'} delay={i}>
@@ -38,11 +38,11 @@ function CustomerJourneyTimeline() {
               negative margin keep the column's content pixel-aligned with
               before - only the panel is new. */}
           <div onClick={() => setActive(i)} style={{
-            position: 'relative', padding: mobile ? '0 0 28px 40px' : '14px 16px',
-            margin: mobile ? undefined : '-14px -16px 0',
+            position: 'relative', padding: mobile ? '0 0 28px 40px' : '18px 16px',
             background: mobile ? undefined : 'var(--glass-bg-solid)',
             borderRadius: mobile ? undefined : 10,
-            borderLeft: mobile ? `2px solid ${i === current ? TEAL : 'var(--border)'}` : 'none',
+            border: mobile ? 'none' : `1px solid ${i === current ? TEAL : 'var(--border)'}`,
+            borderLeft: mobile ? `2px solid ${i === current ? TEAL : 'var(--border)'}` : undefined,
             marginLeft: mobile ? 8 : undefined, cursor: 'pointer', transition: 'border-color 0.4s',
           }}>
             {!mobile && (

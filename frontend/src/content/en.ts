@@ -78,37 +78,37 @@ export const EN = {
     problemSolution: {
       pairs: [
         {
-          q: "Your AI doesn't behave the way it's supposed to?",
+          q: 'AI systems drift from their spec the moment real users touch them.',
           a: 'We investigate what it actually does, not what the documentation promised.',
           detail: 'Root-level testing against real inputs and real users, not a vendor demo or a benchmark score.',
         },
         {
-          q: 'Your software behaves differently in production than it did in testing?',
+          q: 'What a system does in production and what it did in testing are rarely the same system.',
           a: 'We instrument the running system and reproduce the divergence.',
           detail: 'Same root-cause discipline as every finding we publish. A symptom is not a cause, and we do not file it as one.',
         },
         {
-          q: 'You need NIS2-compliant incident response but don\'t know which controls actually fit your stack?',
+          q: 'NIS2 sets the obligations. Nobody hands you the technical controls that satisfy them.',
           a: 'We translate directive obligations into technical controls your infrastructure team can implement.',
           detail: 'NIS2 is not a checklist you can buy. We map the obligations against your actual systems, your actual code, and the actual data flows that regulators will ask about first.',
         },
         {
-          q: 'You\'re worried about the AI Act and don\'t know where you actually stand?',
+          q: 'Most companies can\'t point to their actual AI Act risk tier - only assume one.',
           a: 'We place your systems in the AI Act risk tiers and show the evidence behind every placement.',
           detail: 'Mapped against actual risk tiers and real data flows, not a generic compliance questionnaire.',
         },
         {
-          q: 'Your app processes children\'s data and you\'re not sure the consent flow actually holds up?',
+          q: 'Children\'s-data consent flows break exactly where most compliance reviews stop checking.',
           a: 'We audit under COPPA, GDPR Art. 8, and the EU AI Act provisions for minors - the intersection where most compliance frameworks stop.',
           detail: 'Children\'s privacy is not a lighter version of adult privacy. We test the exact flows that matter for minors: age gating, consent mechanisms, biometric handling, and the SDKs that run before any screen appears.',
         },
         {
-          q: 'You\'re building AI health or wearable products and the biometric data path is unclear?',
+          q: 'Body data moves through wearables and health AI along paths nobody has fully mapped.',
           a: 'We trace where bodies become data - from sensor to storage to third-party processor.',
           detail: 'The Internet of Bodies is not hypothetical. We audit wearables, medical devices, and AI health assistants for GDPR Art. 9 compliance, data minimisation, and the cross-border transfers that happen without anyone noticing.',
         },
         {
-          q: 'There\'s a security issue and nobody can explain how it happened?',
+          q: 'Security incidents get patched over before anyone reconstructs how they actually happened.',
           a: 'We reconstruct the chain from entry point to impact, with the artefacts to prove each link.',
           detail: 'Delivered in the same five-question format as every audit: what we found, what proves it, how we proved it, how sure we are, what to do about it.',
         },

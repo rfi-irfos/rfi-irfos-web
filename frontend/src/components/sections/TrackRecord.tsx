@@ -2599,26 +2599,21 @@ export function TrackRecordSection({
             { n: `192`,                      label: t.trackRecord.kpis.sdkClasses,             sub: t.trackRecord.kpisSub.sdkClasses,       from: 'bottom' },
           ].map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
-              <div>
-                {/* Free-standing number on top of the card. */}
-                <div style={{ textAlign: 'center', marginBottom: 10 }}>
-                  <div style={{ fontSize: 44, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}><CountUp value={s.n} /></div>
-                </div>
-                {/* Original per-card box, unchanged. */}
-                <div style={{
-                  background: theme === 'dark'
-                    ? 'linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
-                    : 'var(--bg2)',
-                  backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
-                  border: theme === 'dark' ? '1px solid rgba(0,245,196,0.35)' : '1px solid rgba(10,122,92,0.45)',
-                  borderRadius: 12, padding: '26px 20px', textAlign: 'center', height: '100%',
-                  boxShadow: theme === 'dark'
-                    ? 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 40px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.5)'
-                    : '0 8px 32px rgba(0,0,0,0.35)',
-                }}>
-                  <div style={{ fontSize: 12, color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.14em' }}>{s.label}</div>
-                  <div style={{ fontSize: 10, color: 'var(--text2)', fontWeight: 500, marginTop: 6, lineHeight: 1.4 }}>{s.sub}</div>
-                </div>
+              <div style={{
+                background: theme === 'dark'
+                  ? 'linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
+                  : 'var(--bg2)',
+                backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
+                border: theme === 'dark' ? '1px solid rgba(0,245,196,0.35)' : '1px solid rgba(10,122,92,0.45)',
+                borderRadius: 12, padding: '20px 20px 22px', textAlign: 'center', height: '100%',
+                display: 'flex', flexDirection: 'column',
+                boxShadow: theme === 'dark'
+                  ? 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 40px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.5)'
+                  : '0 8px 32px rgba(0,0,0,0.35)',
+              }}>
+                <div style={{ fontSize: 40, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: 12 }}><CountUp value={s.n} /></div>
+                <div style={{ fontSize: 12, color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.14em' }}>{s.label}</div>
+                <div style={{ fontSize: 10, color: 'var(--text2)', fontWeight: 500, marginTop: 6, lineHeight: 1.4 }}>{s.sub}</div>
               </div>
             </Reveal>
           ))}

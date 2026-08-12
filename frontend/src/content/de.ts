@@ -75,37 +75,37 @@ export const DE: Content = {
     problemSolution: {
       pairs: [
         {
-          q: 'Ihre KI verhält sich nicht so, wie sie sollte?',
+          q: 'KI-Systeme weichen von ihrer Spezifikation ab, sobald echte Nutzer sie berühren.',
           a: 'Wir zerlegen das ausgelieferte System und protokollieren sein tatsächliches Verhalten. Die Dokumentation ist dabei nur eine Behauptung, die wir gegenprüfen.',
           detail: 'Getestet auf Code-Ebene, mit echten Eingaben und echten Nutzern - nicht mit einer Vorführung oder einem Benchmark-Wert.',
         },
         {
-          q: 'Ihre Software verhält sich in Produktion anders als im Test?',
+          q: 'Was ein System in Produktion tut und was es im Test tat, ist selten dasselbe System.',
           a: 'Wir instrumentieren das laufende System und zeichnen auf, was es unter echter Last tatsächlich tut.',
           detail: 'Dieselbe Ursachenanalyse, die hinter jedem veröffentlichten Befund steht - wer beim ersten Symptom aufhört, hat noch keinen Befund.',
         },
         {
-          q: 'Sie brauchen NIS2-konforme Incident Response, wissen aber nicht, welche Kontrollen wirklich zu Ihrem Stack passen?',
+          q: 'NIS2 setzt die Pflichten. Niemand liefert die technischen Kontrollen, die sie erfüllen.',
           a: 'Wir übersetzen Richtlinienpflichten in technische Kontrollen, die Ihr Infrastrukturteam tatsächlich umsetzen kann.',
           detail: 'NIS2 ist keine Checkliste, die man kaufen kann. Wir mappen die Pflichten gegen Ihre tatsächlichen Systeme, Ihren tatsächlichen Code und die tatsächlichen Datenflüsse, die Regulatoren zuerst abfragen werden.',
         },
         {
-          q: 'Sie machen sich Sorgen wegen des AI Act und wissen nicht, wo Sie wirklich stehen?',
+          q: 'Die wenigsten Unternehmen kennen ihre tatsächliche AI-Act-Risikoklasse - sie nehmen sie nur an.',
           a: 'Wir ordnen Ihre Systeme den realen Risikoklassen zu. Eine Checkliste zeigt auf Dokumente. Wir zeigen auf Datenflüsse.',
           detail: 'Zugeordnet zu echten Risikoklassen und tatsächlichen Datenflüssen, nicht zu einem generischen Compliance-Fragebogen.',
         },
         {
-          q: 'Ihre App verarbeitet Kinderdaten und Sie sind sich nicht sicher, ob der Consent-Flow wirklich standhält?',
+          q: 'Consent-Flows für Kinderdaten brechen genau dort, wo die meisten Compliance-Reviews aufhören zu prüfen.',
           a: 'Wir auditieren unter COPPA, DSGVO Art. 8 und den EU-AI-Act-Bestimmungen für Minderjährige - die Schnittstelle, wo die meisten Compliance-Frameworks aufhören.',
           detail: 'Kinderdatenschutz ist keine light-Version von Erwachsenen-Datenschutz. Wir testen die genauen Flows, die für Minderjährige relevant sind: Age-Gating, Consent-Mechanismen, biometrische Verarbeitung und die SDKs, die laufen, bevor überhaupt ein Screen erscheint.',
         },
         {
-          q: 'Sie bauen KI-Gesundheits- oder Wearable-Produkte und der biometrische Datenpfad ist unklar?',
+          q: 'Körperdaten wandern durch Wearables und Gesundheits-KI auf Pfaden, die niemand vollständig kartiert hat.',
           a: 'Wir verfolgen, wo Körper zu Daten werden - vom Sensor zur Speicherung zum Drittverarbeiter.',
           detail: 'Internet of Bodies ist nicht hypothetisch. Wir auditieren Wearables, Medizingeräte und KI-Gesundheitsassistenten auf DSGVO Art. 9-Konformität, Datenminimierung und die Cross-Border-Transfers, die unbemerkt passieren.',
         },
         {
-          q: 'Es gibt ein Sicherheitsproblem und niemand kann erklären, wie es passiert ist?',
+          q: 'Sicherheitsvorfälle werden zugepflastert, bevor jemand rekonstruiert, wie sie wirklich passiert sind.',
           a: 'Wir verfolgen es durch das System zurück, bis die Ursache klar ist.',
           detail: 'Im selben Fünf-Punkte-Format wie jedes Audit: was wir gefunden haben, was es belegt, wie wir es belegt haben, wie sicher wir uns sind, was zu tun ist.',
         },
