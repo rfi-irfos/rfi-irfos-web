@@ -1124,27 +1124,27 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         // background while keeping the same theme-correct border/shadow/hc handling.
         <div ref={bannerRef} className="rfi-glass-flat rfi-glass-solid" style={{
                   position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
-                  maxWidth: 560, margin: '0 auto',
-                  borderRadius: 14,
-                  padding: '22px 24px',
-                  display: 'flex', flexDirection: 'column', gap: 16,
+                  maxWidth: 640, margin: '0 auto',
+                  borderRadius: 12,
+                  padding: '20px 24px',
+                  display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
                   transform: bannerClosing ? 'scale(0.85)' : 'scale(1)',
                   opacity: bannerClosing ? 0 : 1,
                   transition: 'transform 0.24s ease-in, opacity 0.24s ease-in',
                 }}>
-                  <p style={{ margin: 0, fontSize: 13.5, color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 1.55 }}>
+                  <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 1.5 }}>
                     {t.cookieBanner.text}
-                    <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: theme === 'light' ? '#555555' : '#999999', letterSpacing: '0.04em', marginTop: 8, fontWeight: 'normal', lineHeight: 1.6 }}>
+                    <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: theme === 'light' ? '#555555' : '#999999', letterSpacing: '0.04em', marginTop: 4, fontWeight: 'normal' }}>
                       {t.cookieBanner.subtext}
                     </span>
                   </p>
-                  <div style={{ display: 'flex', gap: 10 }}>
+                  <div style={{ display: 'flex', gap: 8, flex: 'none' }}>
                     <button
                       onClick={() => {}}
                       style={{
-                        flex: 1, background: 'transparent', color: theme === 'light' ? '#000000' : '#ffffff',
-                        border: theme === 'light' ? '1px solid var(--border)' : '1px solid rgba(255,255,255,0.35)',
-                        borderRadius: 8, padding: '10px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
+                        background: 'transparent', color: theme === 'light' ? '#000000' : '#ffffff',
+                        border: theme === 'light' ? '1px solid var(--border)' : '2px solid #ffffff',
+                        borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
                       }}
                     >
                       {t.cookieBanner.doesNothing}
@@ -1152,8 +1152,8 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                     <button
                       onClick={dismissCookieBanner}
                       style={{
-                        flex: 1, background: 'var(--accent)', color: 'var(--bg)', border: 'none',
-                        borderRadius: 8, padding: '10px 16px', fontSize: 13.5, fontWeight: 700, cursor: 'pointer',
+                        background: 'var(--accent)', color: 'var(--bg)', border: 'none',
+                        borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 700, cursor: 'pointer',
                       }}
                     >
                       {t.cookieBanner.close}
