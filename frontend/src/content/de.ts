@@ -140,9 +140,19 @@ export const DE: Content = {
     paragraph: 'Wir lesen Apps auf Quellcode-Ebene, nicht nur von außen. Die Unternehmen auf diesem Ledger landen aus ganz unterschiedlichen Gründen hier: Sie geben Ihre Daten still an Dritte weiter, tracken ohne Zustimmung oder lassen Sicherheitslücken offen. Bei jedem Bericht, den wir versenden, werden die Datenschutzbehörden direkt in Kopie gesetzt, und wir geben dem Unternehmen neunzig Tage Zeit, das Problem zu beheben, bevor irgendetwas öffentlich wird. Die Regel ist einfach und nicht verhandelbar: Jede Organisation hier wird exakt gleich behandelt, ob sie uns je einen Cent zahlt oder nicht.',
     kpis: {
       appsAudited: 'Apps geprüft',
-      companiesNotified: 'Unternehmen benachrichtigt',
+      smaliClasses: 'Smali-Klassen gelesen',
       criticalFindings: 'Kritische Funde',
-      regulatorsNotified: 'Regulatoren benachrichtigt',
+      trackersFound: 'Tracker gefunden',
+      endpointsInvestigated: 'Endpunkte untersucht',
+      sdkClasses: 'SDK-Instanzen',
+    },
+    kpisSub: {
+      appsAudited: 'im öffentlichen Ledger',
+      smaliClasses: 'mindestens, dekompiliert',
+      criticalFindings: '57 mittel · 13 gering dokumentiert',
+      trackersFound: 'an Behörden gemeldet',
+      endpointsInvestigated: 'über den Korpus',
+      sdkClasses: 'über Apps verfolgt',
     },
     searchPlaceholder: 'Ihr Unternehmen suchen...',
     dropdowns: {
@@ -228,13 +238,13 @@ export const DE: Content = {
     subheading: 'Feste Preise. Keine Bindung an ein Abo, außer Sie wollen eine. Der Umfang bestimmt die Stufe, nicht die Unternehmensgröße.',
     scopeTags: {
       security: 'Mobile + Web + KI',
-      market: 'Desk Research + technische Analyse',
+      market: 'App-Ökosystem-Intelligenz',
       web: 'Nur Web',
       mobile: 'Nur Mobile (Android + iOS)',
     },
     lineHeadings: {
       security: 'Sicherheitsaudits & Responsible Disclosure',
-      market: 'Marktforschung & Wettbewerbsanalyse',
+      market: 'Business Intelligence',
       web: 'Web-Entwicklung',
       mobile: 'Mobile-App-Entwicklung & -Fixes',
     },
@@ -249,11 +259,12 @@ export const DE: Content = {
       { tier: 'Annual Intelligence Retainer', hook: 'Eine externe Sicherheits- und Compliance-Abteilung, das ganze Jahr über.', desc: 'Sie erhalten ein volles Jahr unseres Flaggschiff-Service: kontinuierliche Abdeckung Ihres gesamten App-Portfolios, keine Stichprobe, mit einem tiefgehenden Audit alle drei Monate.\n\nIhre feste Ansprechperson spricht direkt mit den relevanten Regulatoren, von den österreichischen und deutschen Datenschutzbehörden bis zur britischen ICO. Sie erhalten jeden Monat ein Bedrohungsbriefing und sofortige Benachrichtigung, sobald wir einen sich anbahnenden Vorfall sehen.\n\nWir übernehmen innerhalb einer Woche nach Zahlung und agieren von Tag eins an als Ihre externe Sicherheits- und Compliance-Abteilung.', delivery: 'Quartalsberichte innerhalb von 7 Kalendertagen.' },
     ],
     market: [
-      { tier: 'Market Overview', hook: 'Eine zehnseitige, jargonfreie Landkarte Ihres Sektors, in 14 Tagen.', desc: 'Sie erhalten eine Landkarte Ihres Sektors in klarer Sprache: die wichtigsten Akteure, wie Regulierung für sie tatsächlich funktioniert, und wo die echten Chancen liegen. Geliefert innerhalb von 14 Kalendertagen.\n\nSie umfasst mindestens zehn Seiten, kein Fachjargon, kein zweihundert-Folien-Deck, geschrieben, damit ein Gründer bzw. eine Gründerin es in einem Zug lesen kann.\n\nDie Recherche beginnt innerhalb weniger Tage nach Zahlung.', delivery: '14 Kalendertage.' },
-      { tier: 'Competitor Intelligence', hook: 'Drei bis fünf Wettbewerber auseinandergenommen: Technik, Datenschutz, Positionierung.', desc: 'Wir nehmen drei bis fünf Ihrer Wettbewerber auseinander: welche Technologie sie einsetzen, wie sie Nutzerdatenschutz tatsächlich handhaben im Vergleich zu dem, was sie behaupten, wie sie sich positionieren, und wo sie strategisch schwach sind.\n\nDas Ergebnis ist ein realistisches Bild des Feldes, inklusive Lücken, die Sie nutzen können, und solchen, die Sie schließen müssen. Das ist die Hausaufgabe, die die meisten Teams überspringen und später bereuen.\n\nGeliefert innerhalb von 14 Kalendertagen nach Zahlung.', delivery: '14 Kalendertage.' },
-      { tier: 'Sector Intelligence Report', hook: 'Markt, Regulierung und Technologie - vierteljährlich aktualisiert.', desc: 'Sie erhalten das vollständige Bild Ihres Sektors: Markt, Regulierung und Technologie, mit dem Risikoprofil jedes wichtigen Akteurs in Zahlen ausbuchstabiert, nicht in vagen Behauptungen.\n\nWeil sich Märkte bewegen, ist das kein einmaliges Dokument. Sie erhalten alle drei Monate ein frisches Update, damit Sie immer wissen, wohin sich der Sektor entwickelt.\n\nErster Bericht innerhalb von 14 Kalendertagen nach Zahlung, danach vierteljährlich aktualisiert.', delivery: '14 Kalendertage.' },
-      { tier: 'Ongoing Intelligence Briefing', hook: 'Ein fester Analyst, der Ihre Wettbewerber Monat für Monat beobachtet.', desc: 'Sie erhalten eine kontinuierliche Beobachtung Ihrer Wettbewerber: ein richtiges Briefing jeden Monat und eine sofortige Warnung, sobald einer von ihnen einen bedeutenden Schritt macht - eine Finanzierungsrunde, eine Kurskorrektur, einen Sicherheitsvorfall oder eine Schlüsseleinstellung.\n\nEin fester Analyst, der Ihr Feld kennt, übernimmt das, damit Sie vom Launch eines Wettbewerbers am Tag erfahren, an dem er passiert - nicht danach.\n\nIhr Analyst wird innerhalb einer Woche nach Zahlung zugewiesen; das erste Briefing landet Ende des ersten Monats.', delivery: 'Erstes Briefing innerhalb von 14 Kalendertagen, danach monatlich.' },
+      { tier: 'Ecosystem Snapshot', hook: 'Eine Frage, beantwortet über 315 Apps und neun Intelligenz-Ebenen.', desc: 'Sie erhalten eine einzelne, belegte Antwort aus dem vollständigen dekompilierten App-Korpus - kein Dokument über einen einzelnen Anbieter, sondern eine Query über das gesamte Ökosystem. Jede Antwort zieht aus denselben neun Ebenen: Code Intelligence (Smali, Packages, Classes, Libraries, Implementierungen), SDK Intelligence (Verbreitung, Versionen, Abhängigkeiten, Kombinationen, Migrationen), Data-Flow Intelligence (welche Komponenten welche Daten wohin bewegen), Tracker Intelligence (Tracker, Domains, Anbieter und deren Beziehungen), Privacy Intelligence (technisches Verhalten versus deklarierte Verarbeitung), Supply-Chain Intelligence (App → SDK → Vendor → Infrastruktur → weitere Parteien), Competitive Intelligence (technische Architektur von Wettbewerbern im Vergleich), Market Intelligence (welche Technologien/Anbieter sich in Branchen verbreiten oder verschwinden) und Security Intelligence (wiederkehrende Fehlkonfigurationen, riskante Implementierungen, exposed components).\n\nGeliefert innerhalb von 14 Kalendertagen.', delivery: '14 Kalendertage.' },
+      { tier: 'Competitive Intelligence', hook: 'Die technische Architektur Ihrer Wettbewerber, gelesen gegen das Ökosystem.', desc: 'Sie erhalten ein Bild der technischen Architektur Ihrer Wettbewerber - welche SDKs und Tracker sie tatsächlich ausliefern, wie ihr Datenschutzverhalten von der veröffentlichten Richtlinie abweicht, und wo sie strukturell schwach sind. Benchmarkt über die Code-, SDK-, Data-Flow-, Tracker-, Privacy- und Supply-Chain-Ebenen des Korpus, damit die Lücken, die Sie nutzen können, und die, die Sie schließen müssen, aus Beweisen statt aus Annahmen auftauchen.\n\nGezogen aus demselben dekompilierten App-Korpus, den wir für Offenlegungen nutzen, nicht nur aus den Namen, die Sie uns nennen. Geliefert innerhalb von 14 Kalendertagen nach Zahlung.', delivery: '14 Kalendertage.' },
+      { tier: 'Sector Intelligence Report', hook: 'Ihr ganzer Sektor, kartiert über die neun Intelligenz-Ebenen, vierteljährlich aktualisiert.', desc: 'Sie erhalten das vollständige Bild Ihres Sektors über alle neun Ebenen - Code, SDK, Data-Flow, Tracker, Privacy, Supply-Chain, Competitive, Market und Security Intelligence - mit dem Risikoprofil jedes wichtigen Akteurs in Zahlen ausbuchstabiert, nicht in vagen Behauptungen.\n\nWeil sich Märkte bewegen, ist das kein einmaliges Dokument. Sie erhalten alle drei Monate ein frisches Update, damit Sie immer wissen, wohin sich der Sektor entwickelt.\n\nErster Bericht innerhalb von 14 Kalendertagen nach Zahlung, danach vierteljährlich aktualisiert.', delivery: '14 Kalendertage.' },
+      { tier: 'Ongoing Intelligence Briefing', hook: 'Ein fester Analyst, der das Ökosystem Monat für Monat beobachtet.', desc: 'Sie erhalten eine kontinuierliche Beobachtung über die Intelligenz-Ebenen: ein richtiges Briefing jeden Monat und eine sofortige Warnung, sobald ein Wettbewerber einen bedeutenden Schritt macht - eine Finanzierungsrunde, eine Kurskorrektur, einen Sicherheitsvorfall oder eine Schlüsseleinstellung - oder sobald sich ein Tracker-, SDK- oder Data-Flow-Muster im Korpus verschiebt.\n\nEin fester Analyst, der Ihr Feld kennt, übernimmt das, damit Sie vom Schritt am Tag erfahren, an dem er passiert - nicht danach. Ihr Analyst wird innerhalb einer Woche nach Zahlung zugewiesen; das erste Briefing landet Ende des ersten Monats.', delivery: 'Erstes Briefing innerhalb von 14 Kalendertagen, danach monatlich.' },
     ],
+
     web: [
       { tier: 'Full Build', hook: 'Der komplette individuelle Bau, kein Template, kein Page-Builder.', desc: 'Sie erhalten eine vollständige, individuell gebaute Website oder Plattform: mehrseitig, mit einem Content-Editor, den Ihr Team tatsächlich nutzen kann, und einem Backend, das mit Ihrem Betrieb mitwächst statt an seine Grenzen zu stoßen.\n\nWir planen den Umfang mit Ihnen in der ersten Woche nach Zahlung: welche Integrationen Sie brauchen, ob ein eigenes Backend in Rust sinnvoll ist, wie tief die Authentifizierung gehen muss. Gebaut von demselben Team, das Apps auf Sicherheit prüft, also standardmäßig sauber, kein nachträglicher Gedanke.\n\nKein Page-Builder-Lock-in: Sie besitzen den Code und können ihn überallhin mitnehmen. Für Organisationen, bei denen die Website das Geschäft ist, keine Broschüre.', delivery: '14-28 Kalendertage, je nach Umfang.' },
       { tier: 'Native App Bundle', hook: 'Echte native Apps für Android und iPhone, auf demselben Backend wie Ihr Full Build.', desc: 'Sie erhalten echte native Android- und iPhone-Apps, kein als App verkleideter Web-Wrapper, gebaut auf demselben Backend wie Ihr Full-Build-Projekt.\n\nWir übernehmen auch die Einreichung im Play Store und App Store, genau dort, wo die meisten Builds hängen bleiben.\n\nAls Erweiterung zum Full Build geplant, kein separates Projekt mit eigener Infrastruktur.', delivery: '14-28 Kalendertage, parallel zum Full Build.' },
