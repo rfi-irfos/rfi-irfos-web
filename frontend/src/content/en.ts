@@ -150,12 +150,12 @@ export const EN = {
       sdkClasses: 'SDK instances',
     },
     kpisSub: {
-      appsAudited: 'on the public ledger',
-      smaliClasses: 'at minimum, decompiled',
-      criticalFindings: '57 medium · 13 low documented',
-      trackersFound: 'reported to authorities',
-      endpointsInvestigated: 'across the corpus',
-      sdkClasses: 'tracked across apps',
+      appsAudited: 'Every app is decompiled at source-code level, not just scanned from outside.',
+      smaliClasses: 'The full shipped code we have actually read — not an estimate.',
+      criticalFindings: 'Confirmed findings copied to regulators, not theoretical risks.',
+      trackersFound: 'Third-party tracking we have provably found inside the binary.',
+      endpointsInvestigated: 'Real servers and countries where data actually flows.',
+      sdkClasses: 'Reusable libraries correlated across the entire corpus.',
     },
     searchPlaceholder: 'search your company...',
     dropdowns: {
