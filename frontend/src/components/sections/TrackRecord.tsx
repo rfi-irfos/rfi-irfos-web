@@ -2581,14 +2581,15 @@ export function TrackRecordSection({
             {t.trackRecord.paragraph}
           </p>
         </Reveal>
-        {/* Permanent disclosure ledger — framed panel (search + table).
-            KPIs live ABOVE the panel as their own clean row now.
-            2026-08-12: reverted the "shared description box" experiment
-            (never wanted, per direct feedback) back to one bordered card per
-            KPI - the original per-card design - and additionally floated a
-            large free-standing number on top of each card, per request.
-            Everything inside the card (number + label + sub) is unchanged. */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 28 }}>
+        {/* Permanent disclosure ledger — KPI row + search/table panel now share
+            ONE outer frame (live feedback 2026-08-12: the two used to be
+            separate floating blocks with a gap between them, which read as
+            disjointed rather than one connected ledger). The KPI cards keep
+            their own individual bordered-card treatment from the prior pass
+            (2026-08-12 revert of the shared-description-box experiment) -
+            only the outer boundary changed, not the cards themselves. */}
+        <div style={{ background: 'var(--glass-bg-solid)', border: '1px solid var(--accent-text)', borderRadius: 20, padding: '24px 20px 20px', marginBottom: 32 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 24 }}>
           {[
             { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,          sub: t.trackRecord.kpisSub.appsAudited,        from: 'left'   },
             { n: `1.08M`,                    label: t.trackRecord.kpis.smaliClasses,           sub: t.trackRecord.kpisSub.smaliClasses,     from: 'bottom' },
@@ -2623,10 +2624,10 @@ export function TrackRecordSection({
           ))}
         </div>
 
-        {/* Solid background added 2026-08-06 (spine feedback: the panel had none at
-            all, just a border, so the scroll spine/orb bled straight through the
-            search bar, dropdowns, and every table row underneath it). */}
-        <div style={{ background: 'var(--glass-bg-solid)', border: '1px solid var(--accent-text)', borderRadius: 12, padding: '18px 20px 16px', marginBottom: 32 }}>
+        {/* Divider between the KPI row and the search/table - both now live
+            inside the shared outer frame above, so this only needs a thin
+            rule plus its own top padding, not a second nested border/background. */}
+        <div style={{ borderTop: '1px solid rgba(0,245,196,0.2)', paddingTop: 20 }}>
         <div style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'stretch', flexWrap: mobile ? 'wrap' : 'nowrap' }}>
 
           {/* Search */}
@@ -2980,6 +2981,7 @@ export function TrackRecordSection({
               )
             })}
           </div>
+        </div>
         </div>
         </div>
 

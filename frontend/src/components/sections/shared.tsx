@@ -520,10 +520,7 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile }: {
   const punchline = paras[paras.length - 1]
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 14 }}>
-        <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: '#c8c8d8', lineHeight: 1.2 }}>{tier}</h3>
-        <div style={{ fontSize: mobile ? 22 : 26, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{price}</div>
-      </div>
+      <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: '#c8c8d8', lineHeight: 1.2, marginBottom: 14 }}>{tier}</h3>
       {body.length > 0 && (
         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>
           {t.modalTierBody.whatYouGet}
@@ -539,17 +536,23 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile }: {
           margin: 0, marginBottom: 20, paddingLeft: 14, borderLeft: `2px solid ${TEAL}`,
         }}>{punchline}</p>
       )}
-      {delivery && (
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: 6,
-          background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
-          borderRadius: 10, padding: '6px 12px', marginBottom: 20, maxWidth: '100%',
-          color: 'var(--accent-text)', fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace",
-          textTransform: 'uppercase', letterSpacing: '0.1em', lineHeight: 1.5,
-        }}>
-          <ClockIcon /> {delivery}
-        </div>
-      )}
+      {/* Price + delivery grouped bottom-left, same "one unit, one place" rule
+          as the pricing cards - price used to sit top-right next to the tier
+          name here, delivery bottom-left in its own pill; now they're one row. */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
+        {delivery && (
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
+            borderRadius: 10, padding: '6px 12px', maxWidth: '100%',
+            color: 'var(--accent-text)', fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace",
+            textTransform: 'uppercase', letterSpacing: '0.1em', lineHeight: 1.5,
+          }}>
+            <ClockIcon /> {delivery}
+          </div>
+        )}
+        <span style={{ fontSize: mobile ? 20 : 24, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{price}</span>
+      </div>
     </>
   )
 }
@@ -681,14 +684,41 @@ export type CarouselTier = {
   outputs?: readonly string[]
 }
 
-// Featured-tier carousel - the display mechanism for Stage 1e's corrected
-// instruction (2026-08-02): all 19+ existing price tiers stay, none get merged
-// or dropped. One large "featured tier" card up top (name, price, the full desc
-// copy inline - no extra click into a modal needed to read it, delivery, output
-// tags, buy/propose button) plus a filmstrip of small clickable tiles for that
-// same product line's REMAINING tiers underneath - click a tile and its content
-// swaps into the big slot. Same interaction as an old HTC BlinkFeed camera-widget
-// carousel. One instance per product line, never mixing tiers across lines.
+// Price + delivery, grouped as one bottom-left unit (live feedback,
+// 2026-08-12: price used to sit top-right next to the tier name while delivery
+// sat bottom-left in its own pill - two different reading paths for the two
+// numbers that actually decide a purchase. Now every rendering of a tier -
+// featured card, secondary card, modal - pins price directly beside the
+// calendar-days pill at the bottom, same order, same place, every time).
+function PriceDelivery({ price, delivery, size = 'md' }: { price: string; delivery?: string; size?: 'sm' | 'md' }) {
+  const priceSize = size === 'sm' ? 15 : 20
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+      {delivery && (
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
+          borderRadius: 10, padding: size === 'sm' ? '4px 9px' : '6px 12px',
+          color: 'var(--accent-text)', fontSize: size === 'sm' ? 11 : 12.5, fontWeight: 600, lineHeight: 1.5,
+        }}>
+          <ClockIcon /> {delivery}
+        </div>
+      )}
+      <span style={{ fontSize: priceSize, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{price}</span>
+    </div>
+  )
+}
+
+// Featured-tier display (redesigned 2026-08-12, live feedback: no more
+// prev/next arrows cycling the featured slot one tier at a time - a product
+// line now always ships exactly 1 highlighted tier + 3 upsells, so all 4 fit
+// on screen at once. One large card for the highlighted/active tier, a static
+// 3-across row of full secondary cards underneath (side by side, not stacked,
+// not a scrolling filmstrip) for the other tiers in the line. Clicking a
+// secondary card still swaps it into the featured slot - that swap
+// interaction stays, only the "cycle via arrows" and "one-line filmstrip
+// tile" parts are gone. One instance per product line, never mixing tiers
+// across lines.
 export function TierCarousel({ tiers, getActions }: {
   tiers: readonly CarouselTier[]
   getActions: (t: CarouselTier) => { onBuy?: () => void; onProposal?: () => void }
@@ -698,31 +728,12 @@ export function TierCarousel({ tiers, getActions }: {
   const [idx, setIdx] = useState(defaultIdx === -1 ? 0 : defaultIdx)
   const active = tiers[idx]
   const actions = getActions(active)
-  // Arrows cycle the FEATURED tier itself (wraparound through the full tier list),
-  // not just scroll the filmstrip - live feedback: clicking an arrow should feel
-  // like flipping through the tiers directly, the way a movie-preview carousel
-  // advances the main frame, rather than only revealing more thumbnails to click.
-  const cycle = (dir: 1 | -1) => setIdx(prev => (prev + dir + tiers.length) % tiers.length)
-  // Filmstrip now shows ALL tiers, not just "the rest" - live feedback: excluding
-  // the active tile meant the strip reshuffled every time you cycled, with no
-  // fixed "you are here" position, which read as the preview not tracking the
-  // arrows at all. Each tile stays in its permanent slot; only the highlight
-  // moves, and the strip auto-scrolls the active tile into view.
-  // inline: 'center' instead of 'nearest' - "nearest" is a no-op the moment a tile is even
-  // partially visible, which on first mount (combined with the filmstrip's own overflow-x
-  // container below) left the recommended tile sitting half-cropped behind the left edge of
-  // the scroll container instead of fully in view (screenshot feedback 2026-08-05: "the
-  // recommended is a half cut off card"). 'center' forces a real scroll on every idx change,
-  // mount included, so the active tile is always fully visible.
-  const tileRefs = useRef<(HTMLButtonElement | null)[]>([])
-  useEffect(() => {
-    tileRefs.current[idx]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
-  }, [idx])
+  const secondary = tiers.map((t, i) => ({ t, i })).filter(({ i }) => i !== idx)
 
   return (
     <div style={{ marginBottom: 0 }}>
       {/* Featured card - shrunk from maxWidth 760 (live feedback: too large relative
-          to the filmstrip below it) so the two halves of the widget read as one
+          to the row below it) so the two halves of the widget read as one
           balanced unit rather than one oversized card sitting over a thin strip. */}
       <motion.div key={active.tier} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}
         style={{
@@ -735,18 +746,15 @@ export function TierCarousel({ tiers, getActions }: {
           border: '1px solid rgba(0,245,196,0.35)',
           boxShadow: '0 12px 40px rgba(0,245,196,0.1)',
         }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>
-          <div>
-            {/* Label now says which tier this actually is, not just "you're looking
-                at one" - live feedback: after clicking around, there was no cue left
-                for which tier was originally recommended. */}
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: idx === defaultIdx ? TEAL : 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8, fontWeight: idx === defaultIdx ? 800 : 400, borderLeft: idx === defaultIdx ? `2px solid ${TEAL}` : 'none', paddingLeft: idx === defaultIdx ? 8 : 0 }}>
-              {idx === defaultIdx ? locale.tierCarousel.recommendedTier : locale.tierCarousel.featuredTier}
-            </div>
-            <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
-            {active.hook && <div style={{ fontSize: 13, color: 'var(--text2)', marginTop: 6 }}>{active.hook}</div>}
+        <div>
+          {/* Label now says which tier this actually is, not just "you're looking
+              at one" - live feedback: after clicking around, there was no cue left
+              for which tier was originally recommended. */}
+          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: idx === defaultIdx ? TEAL : 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8, fontWeight: idx === defaultIdx ? 800 : 400, borderLeft: idx === defaultIdx ? `2px solid ${TEAL}` : 'none', paddingLeft: idx === defaultIdx ? 8 : 0 }}>
+            {idx === defaultIdx ? locale.tierCarousel.recommendedTier : locale.tierCarousel.featuredTier}
           </div>
-          <div style={{ fontSize: 21, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{active.price}</div>
+          <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
+          {active.hook && <div style={{ fontSize: 13, color: 'var(--text2)', marginTop: 6 }}>{active.hook}</div>}
         </div>
         {/* Capped height + scroll (live feedback: on the longer tiers - four full
             paragraphs - the card grew tall enough to push the Get Started button
@@ -758,25 +766,9 @@ export function TierCarousel({ tiers, getActions }: {
           ))}
         </div>
         <OutputTags outputs={active.outputs} />
-        {/* Delivery pill + CTA button share one row, side by side (kept per
-            Simeon 2026-08-06 - the stacked layout tried earlier wasn't what was
-            wanted). The actual bug was the delivery COPY running long enough to
-            wrap (Enterprise NDA/Critical Infrastructure/IoB/Annual Retainer) -
-            fixed at the content layer instead (shortened those strings to the
-            same length range as the tiers that already fit on one line), plus a
-            smaller border-radius here so a pill still looks like a pill on the
-            rare narrow-viewport wrap rather than a stretched capsule. */}
+        {/* Price + delivery grouped bottom-left, CTA bottom-right - one row. */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginTop: 20 }}>
-          {active.delivery ? (
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
-              borderRadius: 10, padding: '6px 12px',
-              color: 'var(--accent-text)', fontSize: 12.5, fontWeight: 600, lineHeight: 1.5,
-            }}>
-              <ClockIcon /> {active.delivery}
-            </div>
-          ) : <span />}
+          <PriceDelivery price={active.price} delivery={active.delivery} />
           {(actions.onBuy || actions.onProposal) && (
             <button
               onClick={actions.onBuy ?? actions.onProposal}
@@ -796,45 +788,30 @@ export function TierCarousel({ tiers, getActions }: {
         </div>
       </motion.div>
 
-      {/* Filmstrip - every tier gets a permanent slot (see note above); the
-          active one is now visually highlighted (teal border+fill) so the strip
-          always shows "you are here", whether you got there via the arrows or
-          by clicking a tile directly. Centered when it doesn't fill the row. */}
-      {tiers.length > 1 && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, maxWidth: 640, margin: '0 auto' }}>
-          <button onClick={() => cycle(-1)} aria-label={locale.tierCarousel.prevTierAria} style={{
-            flexShrink: 0, width: 32, height: 32, borderRadius: '50%', cursor: 'pointer',
-            background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
-            color: 'var(--text2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>&#8592;</button>
-          {/* flex-start, not center: on an overflow-x container whose content is wider than
-              the box, justifyContent: 'center' crops BOTH ends evenly in the initial paint -
-              before the scrollIntoView above ever runs - so the featured tile came up half
-              cut off. flex-start keeps the strip anchored and lets the scroll do the work. */}
-          <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 6, scrollBehavior: 'smooth', justifyContent: 'flex-start' }}>
-            {tiers.map((t, i) => (
-              <button key={t.tier} ref={el => { tileRefs.current[i] = el }} onClick={() => setIdx(i)} style={{
-                flexShrink: 0, minWidth: 140, textAlign: 'left', cursor: 'pointer',
-                borderRadius: 10, padding: '10px 14px',
-                background: i === idx ? 'rgba(0,245,196,0.12)' : 'rgba(255,255,255,0.05)',
-                border: `1px solid ${i === idx ? TEAL : i === defaultIdx ? 'rgba(0,245,196,0.4)' : 'var(--border)'}`,
-                transition: 'border-color .15s, background .15s',
-              }}>
-                {/* Marks the recommended tier even while it's not the active card,
-                    so the cue survives clicking/cycling to other tiers. */}
-                {i === defaultIdx && (
-                  <div style={{ fontSize: 9, fontWeight: 800, color: 'var(--accent-text)', letterSpacing: '0.05em', marginBottom: 3 }}>{locale.tierCarousel.recommendedBadge}</div>
-                )}
-                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{t.tier}</div>
-                <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--accent-text)', marginTop: 4 }}>{t.price}</div>
-              </button>
-            ))}
-          </div>
-          <button onClick={() => cycle(1)} aria-label={locale.tierCarousel.nextTierAria} style={{
-            flexShrink: 0, width: 32, height: 32, borderRadius: '50%', cursor: 'pointer',
-            background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
-            color: 'var(--text2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>&#8594;</button>
+      {/* Secondary tiers - the other tiers in this line, side by side, always
+          visible, no click-through required to see what else exists. Grid
+          wraps to fewer columns only when the viewport can't fit 3 readable
+          cards, never stacks to a single column on desktop. */}
+      {secondary.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, maxWidth: 720, margin: '0 auto' }}>
+          {secondary.map(({ t, i }) => (
+            <button key={t.tier} onClick={() => setIdx(i)} style={{
+              textAlign: 'left', cursor: 'pointer', display: 'flex', flexDirection: 'column',
+              borderRadius: 12, padding: '14px 16px', gap: 8,
+              background: 'rgba(255,255,255,0.05)',
+              border: `1px solid ${i === defaultIdx ? 'rgba(0,245,196,0.4)' : 'var(--border)'}`,
+              transition: 'border-color .15s, background .15s',
+            }}>
+              {i === defaultIdx && (
+                <div style={{ fontSize: 9, fontWeight: 800, color: 'var(--accent-text)', letterSpacing: '0.05em' }}>{locale.tierCarousel.recommendedBadge}</div>
+              )}
+              <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{t.tier}</div>
+              {t.hook && <div style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.5 }}>{t.hook}</div>}
+              <div style={{ marginTop: 'auto', paddingTop: 4 }}>
+                <PriceDelivery price={t.price} size="sm" />
+              </div>
+            </button>
+          ))}
         </div>
       )}
     </div>
