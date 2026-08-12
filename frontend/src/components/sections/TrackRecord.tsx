@@ -2606,7 +2606,7 @@ export function TrackRecordSection({
               }}>
                 <div style={{ fontSize: 40, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}><CountUp value={s.n} /></div>
                 <div style={{ fontSize: 12, color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 12 }}>{s.label}</div>
-                <div style={{ fontSize: 10, color: 'var(--text2)', fontWeight: 500, marginTop: 6, lineHeight: 1.4 }}>{s.sub}</div>
+                <div style={{ fontSize: 11, color: 'var(--text2)', fontWeight: 500, marginTop: 8, lineHeight: 1.45, maxWidth: 220, marginLeft: 'auto', marginRight: 'auto' }}>{s.sub}</div>
               </div>
             </Reveal>
           ))}
