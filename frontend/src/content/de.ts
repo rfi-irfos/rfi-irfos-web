@@ -300,10 +300,10 @@ export const DE: Content = {
   journey: {
     eyebrow: '07 / Ablauf der Zusammenarbeit',
     heading: 'was nach dem Start passiert',
-    subheading: 'Dieselben fünf Phasen, egal ob es sich um ein einwöchiges APK-Review oder einen ganzjährigen Retainer handelt. Was sich zwischen den Stufen ändert, ist die Tiefe und der Zeitplan - nie die Reihenfolge.',
+    subheading: 'Dieselben fünf Phasen, egal ob es sich um ein einwöchiges Security-Audit oder einen ganzjährigen Intelligence-Retainer handelt - über AppSec, Compliance und Business Intelligence hinweg. Was sich zwischen den Stufen und Produktlinien ändert, ist die Tiefe und der Zeitplan - nie die Reihenfolge.',
     steps: [
-      { stage: 'Kick-off', body: 'Der Umfang wird festgelegt und eine feste Ingenieurin oder ein fester Ingenieur zugewiesen.\n\nWas auch immer Sie bereitstellen - ein Build, API-Zugang, ein Gerät - wird über einen sicheren Kanal ausgetauscht. Sie wissen genau, wer die Arbeit macht und wann sie beginnt.' },
-      { stage: 'Analyse', body: 'Die eigentliche Untersuchung, geführt nach denselben Grundsätzen zu Quellen und Methoden, die für jeden Kunden gelten.\n\nTests auf Quellcode-Ebene, Verfolgung bis zur eigentlichen Ursache - nichts wird akzeptiert, das nur eine Person reproduzieren kann.' },
+      { stage: 'Kick-off', body: 'Der Umfang wird festgelegt und eine feste Ingenieurin oder ein fester Ingenieur zugewiesen.\n\nWas auch immer Sie bereitstellen - Zugangsdaten, API-Zugang, Systeme - wird über einen sicheren Kanal ausgetauscht. Sie wissen genau, wer die Arbeit macht und wann sie beginnt.' },
+      { stage: 'Analyse', body: 'Die eigentliche Untersuchung - Dekompilierung, Instrumentierung, Korrelation, Nachverfolgung, je nachdem, was das System verlangt - geführt nach denselben Grundsätzen zu Quellen und Methoden, die für jeden Kunden gelten.\n\nNichts wird akzeptiert, das nur eine Person reproduzieren kann.' },
       { stage: 'Review', body: 'Jeder Befund wird triagiert und nach Schwere geordnet, bevor er Sie erreicht.\n\nIm selben fünfteiligen Format, das in unserer Methodik dokumentiert ist: was wir gefunden haben, was es belegt, wie wir es belegt haben, wie sicher wir uns sind, was zu tun ist.' },
       { stage: 'Lieferung', body: 'Sie erhalten die Befunde in dem Format, das Ihre Stufe vorsieht - zuerst eine Zusammenfassung in klarer Sprache, technisches Detail darunter.\n\nGeliefert innerhalb des beim Checkout vereinbarten Zeitfensters.' },
       { stage: 'Follow-up', body: 'Sobald Fixes ausgeliefert sind, bestätigt ein erneuter Test, dass die Lücke tatsächlich geschlossen wurde, sofern die Stufe das vorsieht.\n\nBei laufenden Aufträgen beginnt hier auch der nächste Audit-Zyklus.' },

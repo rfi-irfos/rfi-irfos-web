@@ -307,10 +307,10 @@ export const EN = {
   journey: {
     eyebrow: '07 / Engagement Journey',
     heading: 'what happens after you start',
-    subheading: 'Five stages, from a one-week APK review to a year-round retainer. Depth and timeline change between tiers. The order never does.',
+    subheading: 'Five stages, from a one-week security audit to a standing intelligence retainer. Depth and timeline change between tiers and product lines - AppSec, compliance, or business intelligence. The order never does.',
     steps: [
-      { stage: 'Kickoff', body: "We lock the scope and name the engineer who runs the case.\n\nBuild, API access, device: everything moves over an encrypted channel. You have a name and a start date before the first binary is opened." },
-      { stage: 'Analyse', body: 'We decompile, instrument, and trace. The same Sources and Methods principles apply to every client, paying or not.\n\nIf only one engineer can reproduce it, it does not ship as a finding.' },
+      { stage: 'Kickoff', body: "We lock the scope and name the engineer who runs the case.\n\nAccess, credentials, systems: everything moves over an encrypted channel. You have a name and a start date before work begins." },
+      { stage: 'Analyse', body: 'We decompile, instrument, correlate, and trace - whatever the system demands. The same Sources and Methods principles apply to every client, paying or not.\n\nIf only one engineer can reproduce it, it does not ship as a finding.' },
       { stage: 'Review', body: 'We triage and rank every finding by severity before you see it.\n\nSame five-part format documented in our Methodology: what we found, what proves it, how we proved it, how sure we are, what to do about it.' },
       { stage: 'Delivery', body: "Findings arrive in your tier's format: plain-language summary first, technical detail underneath.\n\nInside the window agreed at checkout, not after it." },
       { stage: 'Follow-up', body: 'Once fixes ship, we re-test and confirm the gap is closed. Claims do not count.\n\nOn ongoing engagements, follow-up is where the next audit cycle starts.' },

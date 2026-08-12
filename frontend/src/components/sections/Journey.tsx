@@ -44,6 +44,7 @@ function CustomerJourneyTimeline() {
             border: mobile ? 'none' : `1px solid ${i === current ? TEAL : 'var(--border)'}`,
             borderLeft: mobile ? `2px solid ${i === current ? TEAL : 'var(--border)'}` : undefined,
             marginLeft: mobile ? 8 : undefined, cursor: 'pointer', transition: 'border-color 0.4s',
+            height: mobile ? undefined : '100%', boxSizing: 'border-box',
           }}>
             {!mobile && (
               <div style={{
