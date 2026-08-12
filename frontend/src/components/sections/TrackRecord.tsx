@@ -2582,9 +2582,13 @@ export function TrackRecordSection({
           </p>
         </Reveal>
         {/* Permanent disclosure ledger — framed panel (search + table).
-            KPIs live ABOVE the panel as their own clean row now. */}
-        {/* KPI numbers + labels live OUTSIDE any box (free row). */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 20 }}>
+            KPIs live ABOVE the panel as their own clean row now.
+            2026-08-12: reverted the "shared description box" experiment
+            (never wanted, per direct feedback) back to one bordered card per
+            KPI - the original per-card design - and additionally floated a
+            large free-standing number on top of each card, per request.
+            Everything inside the card (number + label + sub) is unchanged. */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 28 }}>
           {[
             { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,          sub: t.trackRecord.kpisSub.appsAudited,        from: 'left'   },
             { n: `1.08M`,                    label: t.trackRecord.kpis.smaliClasses,           sub: t.trackRecord.kpisSub.smaliClasses,     from: 'bottom' },
@@ -2594,38 +2598,29 @@ export function TrackRecordSection({
             { n: `192`,                      label: t.trackRecord.kpis.sdkClasses,             sub: t.trackRecord.kpisSub.sdkClasses,       from: 'bottom' },
           ].map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 44, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}><CountUp value={s.n} /></div>
-                <div style={{ fontSize: 12, color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 10 }}>{s.label}</div>
+              <div>
+                {/* Free-standing number on top of the card. */}
+                <div style={{ textAlign: 'center', marginBottom: 10 }}>
+                  <div style={{ fontSize: 44, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}><CountUp value={s.n} /></div>
+                </div>
+                {/* Original per-card box, unchanged. */}
+                <div style={{
+                  background: theme === 'dark'
+                    ? 'linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
+                    : 'var(--bg2)',
+                  backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
+                  border: theme === 'dark' ? '1px solid rgba(0,245,196,0.35)' : '1px solid rgba(10,122,92,0.45)',
+                  borderRadius: 12, padding: '26px 20px', textAlign: 'center', height: '100%',
+                  boxShadow: theme === 'dark'
+                    ? 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 40px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.5)'
+                    : '0 8px 32px rgba(0,0,0,0.35)',
+                }}>
+                  <div style={{ fontSize: 40, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em' }}><CountUp value={s.n} /></div>
+                  <div style={{ fontSize: 12, color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: 12 }}>{s.label}</div>
+                  <div style={{ fontSize: 10, color: 'var(--text2)', fontWeight: 500, marginTop: 6, lineHeight: 1.4 }}>{s.sub}</div>
+                </div>
               </div>
             </Reveal>
-          ))}
-        </div>
-
-        {/* Single box holding ONLY the KPI descriptions. */}
-        <div style={{
-          background: theme === 'dark'
-            ? 'linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
-            : 'var(--bg2)',
-          backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
-          border: theme === 'dark' ? '1px solid rgba(0,245,196,0.35)' : '1px solid rgba(10,122,92,0.45)',
-          borderRadius: 12, padding: '18px 22px', marginBottom: 28,
-          boxShadow: theme === 'dark'
-            ? 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 40px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.5)'
-            : '0 8px 32px rgba(0,0,0,0.35)',
-        }}>
-          {[
-            { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,          sub: t.trackRecord.kpisSub.appsAudited },
-            { n: `1.08M`,                    label: t.trackRecord.kpis.smaliClasses,           sub: t.trackRecord.kpisSub.smaliClasses },
-            { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: t.trackRecord.kpis.criticalFindings, sub: t.trackRecord.kpisSub.criticalFindings },
-            { n: `499`,                      label: t.trackRecord.kpis.trackersFound,          sub: t.trackRecord.kpisSub.trackersFound },
-            { n: `392`,                      label: t.trackRecord.kpis.endpointsInvestigated,  sub: t.trackRecord.kpisSub.endpointsInvestigated },
-            { n: `192`,                      label: t.trackRecord.kpis.sdkClasses,             sub: t.trackRecord.kpisSub.sdkClasses },
-          ].map((s, i) => (
-            <div key={s.label} style={{ display: 'flex', gap: 12, alignItems: 'baseline', padding: '7px 0', borderBottom: i < 5 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
-              <span style={{ flex: '0 0 130px', fontSize: 12, fontWeight: 800, color: 'var(--accent-text)', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.08em' }}>{s.n} {s.label}</span>
-              <span style={{ flex: 1, fontSize: 12, color: 'var(--text2)', lineHeight: 1.4 }}>{s.sub}</span>
-            </div>
           ))}
         </div>
 
