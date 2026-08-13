@@ -20,8 +20,8 @@ export const EN = {
   nav: {
     links: {
       research: 'Research',
-      projects: 'Projects',
-      trackRecord: 'Track Record',
+      projects: 'Systems',
+      trackRecord: 'Evidence',
       pricing: 'Access',
       submit: 'Submit',
     },
@@ -403,7 +403,7 @@ export const EN = {
       },
       research: {
         heading: 'Research',
-        links: { research: 'Research', trackRecord: 'Track Record', methodology: 'Methodology' },
+        links: { research: 'Research', trackRecord: 'Evidence', methodology: 'Methodology' },
       },
     },
     copyright: '© 2026 RFI-IRFOS  ·  Graz, Austria  ·  ZVR 1015608684',
