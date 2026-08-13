@@ -49,7 +49,7 @@ const MARKET_META = [
 ] as const
 
 const TECHNICAL_META = [
-  { price: 'from €12,000', highlight: false, stripeKey: 'agent_deployment', directUrl: 'https://buy.stripe.com/aFa00l6OIcY7eux4be7N60N', contact: false, outputs: ['Architecture Plan', 'Prototype', 'Validation Criteria'] },
+  { price: 'from €12,000', highlight: true, stripeKey: 'agent_deployment', directUrl: 'https://buy.stripe.com/aFa00l6OIcY7eux4be7N60N', contact: false, outputs: ['Architecture Plan', 'Prototype', 'Validation Criteria'] },
   { price: 'from €24,000', highlight: false, stripeKey: 'custom_stack', directUrl: 'https://buy.stripe.com/8x2cN76OI1fp725gY07N60O', contact: false, outputs: ['Custom System', 'Source Code', 'Documentation'] },
   { price: 'from €8,500', highlight: false, stripeKey: 'architecture_lab', directUrl: 'https://buy.stripe.com/7sY14p7SMaPZ4TXdLO7N60Q', contact: false, outputs: ['Research Plan', 'Architecture Design', 'Prototype'] },
   { price: 'from €50,000', highlight: false, stripeKey: 'full_spectrum_deploy', directUrl: 'https://buy.stripe.com/9B68wReha2jt5Y1bDG7N60R', contact: false, outputs: ['Full Deployment', 'Integration', 'Training', 'Ongoing Support'] },
