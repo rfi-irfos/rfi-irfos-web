@@ -32,7 +32,7 @@ function ProblemSolutionShowcase() {
   }, [reduced, paused, pairs.length])
   const pair = pairs[reduced ? 0 : i]
   return (
-    <div
+        <div
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       style={{
@@ -53,10 +53,9 @@ function ProblemSolutionShowcase() {
           exit={reduced ? undefined : { opacity: 0, y: -14, filter: 'blur(6px)' }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--accent-text)', marginBottom: 8 }}>{pair.q}</p>
-          <p style={{ fontSize: 16, color: 'var(--text2)', fontWeight: 600, marginBottom: 10 }}>{pair.a}</p>
+          <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--accent-text)', marginBottom: 10 }}>{pair.a}</p>
           {/* Pricing pill-link removed entirely (live feedback) - not needed here. */}
-          <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.7, margin: 0, maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>{pair.detail}</p>
+          <p style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.7, margin: 0, maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>{pair.detail}</p>
         </motion.div>
       </AnimatePresence>
       {!reduced && (
