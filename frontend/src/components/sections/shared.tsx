@@ -766,23 +766,33 @@ export function TierCarousel({ tiers, getActions }: {
           ))}
         </div>
         <OutputTags outputs={active.outputs} />
-        {/* Price + delivery grouped bottom-left, CTA bottom-right - one row. */}
+        {/* Delivery pill (left) + green buy button showing cart icon + price (right).
+            Replaces the old "Get Started" label - the price IS the button label. */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginTop: 20 }}>
-          <PriceDelivery price={active.price} delivery={active.delivery} />
+          {active.delivery && (
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
+              borderRadius: 10, padding: '6px 12px',
+              color: 'var(--accent-text)', fontSize: 12.5, fontWeight: 600, lineHeight: 1.5,
+            }}>
+              <ClockIcon /> {active.delivery}
+            </div>
+          )}
           {(actions.onBuy || actions.onProposal) && (
             <button
               onClick={actions.onBuy ?? actions.onProposal}
               style={{
                 borderRadius: 8, cursor: 'pointer', padding: '9px 16px',
-                display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 700,
+                display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 800,
                 letterSpacing: '0.02em', whiteSpace: 'nowrap',
                 background: actions.onBuy ? 'var(--accent)' : 'var(--bg3)',
                 border: actions.onBuy ? 'none' : '1px solid var(--border)',
                 color: actions.onBuy ? 'var(--accent-fg)' : 'var(--text)',
               }}
             >
-              {actions.onBuy ? <CartIcon /> : <ArrowIcon />}
-              {actions.onBuy ? locale.tierCarousel.getStarted : locale.tierCarousel.requestProposal}
+              <CartIcon />
+              {active.price}
             </button>
           )}
         </div>
