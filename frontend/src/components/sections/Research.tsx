@@ -31,8 +31,10 @@ function BentoTile({ icon, title, desc, from, delay }: {
         whileHover={prefersReducedMotion() ? undefined : { y: -4, scale: 1.012 }}
         transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div style={{ marginBottom: 16, lineHeight: 0 }}>{icon}</div>
-        <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 10 }}>{title}</div>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14, marginBottom: 14 }}>
+          <div style={{ lineHeight: 0, flex: '0 0 auto' }}>{icon}</div>
+          <div style={{ fontWeight: 800, fontSize: 16, lineHeight: 1.25 }}>{title}</div>
+        </div>
         <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7 }}>{desc}</div>
       </motion.div>
     </Reveal>
@@ -99,10 +101,12 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* pattern + propagation - branching network */}
-        <circle cx="16" cy="7" r="2.5"/><circle cx="8" cy="24" r="2.5"/><circle cx="24" cy="24" r="2.5"/>
-        <circle cx="16" cy="17" r="2.5"/><line x1="16" y1="9.5" x2="16" y2="14.5"/><line x1="14" y1="19" x2="10" y2="22"/><line x1="18" y1="19" x2="22" y2="22"/>
-        <path d="M5 12h7M9 8l4 4-4 4"/>
+        {/* pattern matching - repeated structure with one recognized mark */}
+        <circle cx="6" cy="9" r="2"/><circle cx="13" cy="6" r="2"/><circle cx="13" cy="13" r="2"/>
+        <line x1="7.8" y1="8.2" x2="11.2" y2="6.8"/><line x1="7.8" y1="9.8" x2="11.2" y2="12.2"/>
+        <circle cx="18" cy="9" r="2"/><circle cx="25" cy="6" r="2"/><circle cx="25" cy="13" r="2"/>
+        <line x1="19.8" y1="8.2" x2="23.2" y2="6.8"/><line x1="19.8" y1="9.8" x2="23.2" y2="12.2"/>
+        <path d="M13 20c3-3 6-3 9 0"/><circle cx="25" cy="20" r="2.5" fill="currentColor" stroke="none"/>
       </_I>
     ),
     title: 'Pattern Recognition & Impact Propagation',
@@ -144,9 +148,13 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* model welfare + prompt injection - heart and needle */}
-        <path d="M16 25C16 25 6 19 6 12c0-3 2-5 5-5 2 0 4 1 5 3 1-2 3-3 5-3 3 0 5 2 5 5 0 7-10 13-10 13z"/>
-        <path d="M8 27L24 5"/><path d="M21 4l4 3M19 7l4 3"/>
+        {/* syringe / injection */}
+        <line x1="24" y1="4" x2="28" y2="8"/>
+        <path d="M7 19L19 7l6 6-12 12z"/>
+        <line x1="4" y1="28" x2="9" y2="23"/>
+        <line x1="12" y1="10" x2="15" y2="13"/>
+        <line x1="15" y1="8" x2="18" y2="11"/>
+        <line x1="10" y1="16" x2="13" y2="19"/>
       </_I>
     ),
     title: 'Model Welfare & Prompt Injection',
