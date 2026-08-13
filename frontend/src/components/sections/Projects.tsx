@@ -1,25 +1,10 @@
 // "Projects" section (`#projects`, "what we build") - extracted verbatim from
-// PublicSite.tsx, including the Problem/Solution showcase that lives under it.
+// PublicSite.tsx.
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { prefersReducedMotion, beacon, TEAL, Reveal, ScrambleHeading } from './shared'
+import { prefersReducedMotion, beacon, Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
-// Problem/solution pairs (website-repositioning plan, Stage 1a) - moved out of
-// the hero into "what we build" (live feedback, 2026-08-02): each pair now
-// carries one enrichment line (concrete, no new facts - just spelling out the
-// same claim already made elsewhere on the page: Investigation Principles'
-// "trace root cause" language, the Evidence section's five-question format,
-// the AI Act risk-tier framing from the pricing scope tags) plus a quicklink
-// to the pricing product line that actually delivers it. All four map to
-// Security Audits & Responsible Disclosure - the "Mobile + Web + AI" scope tag
-// is literally the product that covers AI/software/compliance investigation.
-// Auto-rotating problem/solution showcase - reuses the same fade/blur/
-// translateY language as Reveal/RevealWords above rather than a new animation
-// approach or library. Pauses on hover, advances on a timer otherwise, and skips
-// the timer entirely under reduced-motion (renders the first pair, static, forever -
-// no forced motion, no confusing mid-cycle freeze-frame).
-function ProblemSolutionShowcase() {
+function IntelligenceProofShowcase() {
   const { t } = useLocale()
   const pairs = t.projects.problemSolution.pairs
   const [i, setI] = useState(0)
@@ -27,52 +12,24 @@ function ProblemSolutionShowcase() {
   const reduced = prefersReducedMotion()
   useEffect(() => {
     if (reduced || paused) return
-    const t = setInterval(() => setI(prev => (prev + 1) % pairs.length), 10000)
-    return () => clearInterval(t)
+    const timer = setInterval(() => setI(prev => (prev + 1) % pairs.length), 10000)
+    return () => clearInterval(timer)
   }, [reduced, paused, pairs.length])
   const pair = pairs[reduced ? 0 : i]
   return (
-        <div
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      style={{
-        maxWidth: 680, margin: '0 auto', minHeight: 170, textAlign: 'center',
-        // Opaque base + a teal wash layered on top (not a single translucent
-        // rgba fill) - spine feedback, 2026-08-06: a plain low-alpha background
-        // let the scroll spine/orb show straight through this box.
-        background: 'linear-gradient(var(--accent-dim), var(--accent-dim)), var(--glass-bg-solid)',
-        border: '1px solid rgba(0,245,196,0.2)',
-        borderRadius: 16, padding: '32px 36px',
-      }}
-    >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={reduced ? 'static' : i}
-          initial={reduced ? false : { opacity: 0, y: 14, filter: 'blur(6px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          exit={reduced ? undefined : { opacity: 0, y: -14, filter: 'blur(6px)' }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--accent-text)', marginBottom: 10 }}>{pair.a}</p>
-          {/* Pricing pill-link removed entirely (live feedback) - not needed here. */}
-          <p style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.7, margin: 0, maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>{pair.detail}</p>
-        </motion.div>
-      </AnimatePresence>
-      {!reduced && (
-        <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginTop: 20 }}>
-          {pairs.map((_, idx) => (
-            <button
-              key={idx}
-              aria-label={`Show problem ${idx + 1} of ${pairs.length}`}
-              onClick={() => setI(idx)}
-              style={{
-                width: 8, height: 8, borderRadius: '50%', border: 'none', padding: 0, cursor: 'pointer',
-                background: idx === i ? TEAL : 'rgba(255,255,255,0.18)', transition: 'background 0.2s',
-              }}
-            />
-          ))}
-        </div>
-      )}
+    <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} style={{
+      maxWidth: 680, margin: '0 auto', minHeight: 145, textAlign: 'center',
+      background: 'linear-gradient(var(--accent-dim), var(--accent-dim)), var(--glass-bg-solid)',
+      border: '1px solid rgba(0,245,196,0.2)', borderRadius: 16, padding: '32px 36px',
+    }}>
+      <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--accent-text)', marginBottom: 10 }}>{pair.a}</p>
+      <p style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.7, margin: 0, maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>{pair.detail}</p>
+      {!reduced && <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginTop: 20 }}>
+        {pairs.map((_, idx) => <button key={idx} aria-label={`Show intelligence proof ${idx + 1} of ${pairs.length}`} onClick={() => setI(idx)} style={{
+          width: 8, height: 8, borderRadius: '50%', border: 'none', padding: 0, cursor: 'pointer',
+          background: idx === i ? 'var(--accent-text)' : 'rgba(255,255,255,0.18)', transition: 'background 0.2s',
+        }} />)}
+      </div>}
     </div>
   )
 }
@@ -305,8 +262,8 @@ export const PROJECTS = [
   { name: 'NFCS', link: 'https://github.com/rfi-irfos/foodchain-analysis' },
 ]
 
-// PROJECTS section (`#projects`, "what we build") plus the Problem/Solution
-// showcase underneath it (moved here from the hero, live feedback 2026-08-02).
+// PROJECTS section (`#projects`, "what we build") plus the intelligence proof
+// showcase underneath it.
 export function ProjectsSection() {
   const { t } = useLocale()
   const localizedProjects: LocalizedProject[] = PROJECTS.map((p, i) => ({
@@ -328,12 +285,11 @@ export function ProjectsSection() {
           <ProjectsCarousel projects={localizedProjects} />
         </Reveal>
 
-        {/* Problem/solution showcase, moved here from the hero (live feedback,
-            2026-08-02): reads better as content next to the actual work than as
-            hero decoration. */}
+        {/* Compact proof points keep the research claims concrete without adding
+            another full content block to the page. */}
         <Reveal from="bottom" delay={2}>
           <div style={{ marginTop: 56 }}>
-            <ProblemSolutionShowcase />
+            <IntelligenceProofShowcase />
           </div>
         </Reveal>
       </div>
