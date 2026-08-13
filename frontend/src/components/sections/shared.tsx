@@ -768,13 +768,14 @@ export function TierCarousel({ tiers, getActions }: {
         <OutputTags outputs={active.outputs} />
         {/* Delivery pill (left) + green buy button showing cart icon + price (right).
             Replaces the old "Get Started" label - the price IS the button label. */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginTop: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', gap: 12, marginTop: 20 }}>
           {active.delivery && (
             <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
+              display: 'inline-flex', alignItems: 'center', gap: 6, flexShrink: 0,
               background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
               borderRadius: 10, padding: '6px 12px',
               color: 'var(--accent-text)', fontSize: 12.5, fontWeight: 600, lineHeight: 1.5,
+              whiteSpace: 'nowrap',
             }}>
               <ClockIcon /> {active.delivery}
             </div>
