@@ -768,23 +768,24 @@ export function TierCarousel({ tiers, getActions }: {
         <OutputTags outputs={active.outputs} />
         {/* Delivery pill (left) + green buy button showing cart icon + price (right).
             Replaces the old "Get Started" label - the price IS the button label. */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', gap: 12, marginTop: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', gap: 10, marginTop: 20 }}>
           {active.delivery && (
             <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6, flex: '0 0 auto', maxWidth: '100%',
+              display: 'inline-flex', alignItems: 'center', gap: 6, flex: '1 1 auto', minWidth: 0,
               background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
-              borderRadius: 10, padding: '6px 12px',
-              color: 'var(--accent-text)', fontSize: 12.5, fontWeight: 600, lineHeight: 1.5,
+              borderRadius: 10, padding: '5px 10px',
+              color: 'var(--accent-text)', fontSize: 11.5, fontWeight: 600, lineHeight: 1.4,
+              overflow: 'hidden',
             }}>
-              <ClockIcon /> <span style={{ minWidth: 0 }}>{active.delivery}</span>
+              <ClockIcon style={{ flexShrink: 0 }} /> <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{active.delivery}</span>
             </div>
           )}
           {(actions.onBuy || actions.onProposal) && (
             <button
               onClick={actions.onBuy ?? actions.onProposal}
               style={{
-                borderRadius: 8, cursor: 'pointer', padding: '9px 16px',
-                display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 800,
+                borderRadius: 8, cursor: 'pointer', padding: '8px 14px', flexShrink: 0, marginLeft: 'auto',
+                display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, fontWeight: 800,
                 letterSpacing: '0.02em', whiteSpace: 'nowrap',
                 background: actions.onBuy ? 'var(--accent)' : 'var(--bg3)',
                 border: actions.onBuy ? 'none' : '1px solid var(--border)',
