@@ -35,17 +35,24 @@ type ProposalInfo = { tier: string; desc: string; price: string; delivery?: stri
 // fixed Stripe price each. Their direct Stripe Payment Links still exist on
 // Stripe's side but are no longer linked from the site.
 const SECURITY_META = [
-  { price: 'free', highlight: false, stripeKey: null as string | null, directUrl: null as string | null, contact: false, outputs: ['Investigation Report', 'Technical Findings'] },
-  { price: '€4,500', highlight: true, stripeKey: 'remediation', directUrl: null, contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Technical Findings', 'Recommendations', 'Optional Retest'] },
-  { price: '€9,000', highlight: false, stripeKey: 'confidential', directUrl: null, contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Optional Retest'] },
-  { price: 'from €18,000', highlight: false, stripeKey: null, directUrl: null, contact: true, outputs: ['Investigation Report', 'Risk Matrix', 'Evidence Map', 'Recommendations'] },
+  { price: 'free', highlight: false, stripeKey: null as string | null, directUrl: null as string | null, contact: true, outputs: ['Investigation Report', 'Technical Findings'] },
+  { price: '€9,500', highlight: true, stripeKey: null as string | null, directUrl: 'https://buy.stripe.com/9B67sN6OI4rB5Y12367N60S', contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Technical Findings', 'Recommendations', 'Optional Retest'] },
+  { price: '€18,000', highlight: false, stripeKey: null as string | null, directUrl: 'https://buy.stripe.com/aFa4gB4GA3nx1HLgY07N60T', contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Optional Retest'] },
+  { price: 'from €50,000', highlight: false, stripeKey: null as string | null, directUrl: 'https://buy.stripe.com/dRm8wRdd67DN1HLbDG7N60U', contact: true, outputs: ['Investigation Report', 'Risk Matrix', 'Evidence Map', 'Recommendations'] },
 ] as const
 
 const MARKET_META = [
-  { price: '€2,500', highlight: true, stripeKey: 'market_overview', outputs: ['Investigation Report'] },
-  { price: '€7,500', highlight: false, stripeKey: 'competitor_intel', outputs: ['Investigation Report', 'Evidence Map', 'Technical Findings'] },
-  { price: '€18,000', highlight: false, stripeKey: 'sector_intel', outputs: ['Investigation Report', 'Risk Matrix'] },
-  { price: '€4,500 / mo', highlight: false, stripeKey: 'ongoing_intel', outputs: ['Investigation Report', 'Recommendations'] },
+  { price: '€3,500', highlight: true, stripeKey: 'first_light', directUrl: 'https://buy.stripe.com/aFacN7dd64rB0DHazC7N60J', outputs: ['Investigation Report'] },
+  { price: '€9,500', highlight: false, stripeKey: 'competitive_trace', directUrl: 'https://buy.stripe.com/9B6eVf3Cw2jt869cHK7N60K', outputs: ['Investigation Report', 'Evidence Map', 'Technical Findings'] },
+  { price: '€22,000', highlight: false, stripeKey: 'sector_map', directUrl: 'https://buy.stripe.com/5kQeVf4GA6zJ1HL0Z27N60L', outputs: ['Investigation Report', 'Risk Matrix'] },
+  { price: '€6,500 / mo', highlight: false, stripeKey: 'signal', directUrl: 'https://buy.stripe.com/3cI28tgpi5vFcmp4be7N60M', outputs: ['Investigation Report', 'Recommendations'] },
+] as const
+
+const TECHNICAL_META = [
+  { price: 'from €12,000', highlight: false, stripeKey: 'agent_deployment', directUrl: 'https://buy.stripe.com/aFa00l6OIcY7eux4be7N60N', contact: false, outputs: ['Architecture Plan', 'Prototype', 'Validation Criteria'] },
+  { price: 'from €24,000', highlight: false, stripeKey: 'custom_stack', directUrl: 'https://buy.stripe.com/8x2cN76OI1fp725gY07N60O', contact: false, outputs: ['Custom System', 'Source Code', 'Documentation'] },
+  { price: 'from €8,500', highlight: false, stripeKey: 'architecture_lab', directUrl: 'https://buy.stripe.com/7sY14p7SMaPZ4TXdLO7N60Q', contact: false, outputs: ['Research Plan', 'Architecture Design', 'Prototype'] },
+  { price: 'from €50,000', highlight: false, stripeKey: 'full_spectrum_deploy', directUrl: 'https://buy.stripe.com/9B68wReha2jt5Y1bDG7N60R', contact: false, outputs: ['Full Deployment', 'Integration', 'Training', 'Ongoing Support'] },
 ] as const
 
 export function PricingSection({
@@ -58,6 +65,7 @@ export function PricingSection({
 
   const securityTiers = t.pricing.security.map((tier, i) => ({ ...tier, ...SECURITY_META[i] }))
   const marketTiers = t.pricing.market.map((tier, i) => ({ ...tier, ...MARKET_META[i] }))
+  const technicalTiers = t.pricing.technical.map((tier, i) => ({ ...tier, ...TECHNICAL_META[i] }))
 
   return (
     <section id="pricing" style={{ padding: '48px 2rem 72px' }}>
@@ -72,13 +80,23 @@ export function PricingSection({
 
         {/* Business Intelligence - now the FIRST product line (2026-08-12):
             the decompiled-app corpus is the asset; the tiers are queries against
-            it, not bespoke report-writing. The nine intelligence layers live in
-            each tier's desc. */}
+            it, not bespoke report-writing. */}
         <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 24px', marginBottom: 48, maxWidth: 720, marginLeft: 'auto', marginRight: 'auto' }}>
         <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.market}<ScopeTag label={t.pricing.scopeTags.market} /></p>
         <TierCarousel tiers={marketTiers} getActions={tier => {
           const full = marketTiers.find(s => s.tier === tier.tier)!
           return { onBuy: () => openCheckoutModal({ key: full.stripeKey, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) }
+        }} />
+        </div>
+
+        {/* Technical Intelligence & Systems - second product line: AI integration,
+            custom systems, research architecture. No Stripe checkout for these tiers
+            by default - they route to proposal/contact. */}
+        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 24px', marginBottom: 48, maxWidth: 720, marginLeft: 'auto', marginRight: 'auto' }}>
+        <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.technical}<ScopeTag label={t.pricing.scopeTags.technical} /></p>
+        <TierCarousel tiers={technicalTiers} getActions={tier => {
+          const full = technicalTiers.find(s => s.tier === tier.tier)!
+          return { onBuy: () => openCheckoutModal({ key: full.stripeKey, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined }) }
         }} />
         </div>
 
