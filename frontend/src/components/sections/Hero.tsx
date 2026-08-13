@@ -123,7 +123,7 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
           { n: `${PROJECTS.length}+`,         label: t.hero.stats.openSourceProjects, from: 'bottom' as const },
           { n: `${PUBLICATIONS.length}+`,     label: t.hero.stats.publications,       from: 'scale'  as const },
           { n: `${TEAM_COUNT}`,               label: t.hero.stats.people,             from: 'bottom' as const },
-          { n: '6',                           label: t.hero.stats.years,              from: 'bottom' as const },
+          { n: '300+',                        label: t.hero.stats.agents,             from: 'bottom' as const },
         ]).map((s, i) => (
           <Reveal key={s.label} delay={i} from={s.from}>
             <div style={{ textAlign: 'center' }}>
