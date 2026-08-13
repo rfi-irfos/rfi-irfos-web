@@ -110,8 +110,9 @@ export function PricingSection({
         <p id="pricing-security" style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center', scrollMarginTop: 96 }}>{t.pricing.lineHeadings.security}<ScopeTag label={t.pricing.scopeTags.security} /></p>
         <TierCarousel tiers={securityTiers} getActions={tier => {
           const full = securityTiers.find(s => s.tier === tier.tier)!
+          const hasCheckout = !!(full.stripeKey || full.directUrl)
           return {
-            onBuy: full.stripeKey ? () => openCheckoutModal({ key: full.stripeKey!, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined }) : undefined,
+            onBuy: hasCheckout ? () => openCheckoutModal({ key: full.stripeKey ?? full.tier, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined }) : undefined,
             onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) : undefined,
           }
         }} />
