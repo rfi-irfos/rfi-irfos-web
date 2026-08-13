@@ -55,14 +55,14 @@ export const EN = {
     heading: 'where our attention falls',
     subheading: 'We study how complex systems behave: how evidence becomes structure, how relationships change over time, and where one shift can move an entire network.',
     areas: [
+      { title: 'World Models & Cross-Domain Intelligence', desc: 'A shared model for entities, relationships, evidence, and change across domains. One structure for systems that are usually kept apart.' },
       { title: 'Ternary AI & Computing', desc: 'Post-binary arithmetic as the foundation for language models, compilers, and operating systems. Patent pending A50296/2026.' },
-      { title: 'Security & Privacy', desc: 'Root level code analysis, GDPR enforcement, coordinated responsible disclosure at scale. ISO/IEC 29147 framework.' },
-      { title: 'AI Governance & Ethics', desc: 'Constitutional AI design, EU AI Act compliance. Plateau-gated self-cultivation: architecture grown from evidence, never forced. Immutable governance by construction.' },
-      { title: 'Ecocentric Technology', desc: 'Technology in service of ecological and social systems. Sufficiency over growth. Research into manufactured scarcity.' },
-      { title: 'Minor & Youth Protection', desc: 'COPPA compliance, GDPR Art. 8, EU AI Act provisions for minors. Audit of children\'s apps, games, and streaming platforms. Biometric and behavioural data of minors under magnification.' },
-      { title: 'Prompt Injection & Adversarial Robustness', desc: 'Red-teaming prompt injection, jailbreak resistance, and adversarial robustness. Mapping where instruction-following breaks under pressure, and hardening against it.' },
-      { title: 'Web App Development', desc: 'Full-stack builds engineered by the same team that audits for a living. React front ends, Rust backends, installable PWAs. No bloated page builders, no lock-in.' },
-      { title: 'Model Welfare & Wellbeing', desc: 'Model welfare as a first-class research axis. Wellbeing signals during training, distress detection, and dignity for the systems we cultivate, not just the humans they serve.' },
+      { title: 'Pattern Recognition & Impact Propagation', desc: 'We find recurring structures across domains and trace how a change travels through dependencies, bridges, bottlenecks, and connected systems.' },
+      { title: 'Change & Anomaly Detection', desc: 'Temporal analysis for meaningful change: what shifted, what is unusual, and which transitions deserve attention.' },
+      { title: 'Scenario Simulation & Counterfactuals', desc: 'Interventions, alternative futures, and propagated consequences — explicitly marked as simulated, never confused with observation.' },
+      { title: 'Evidence & Contradiction', desc: 'Supporting evidence, conflicting evidence, provenance, confidence, and unresolved questions kept together instead of flattened into a verdict.' },
+      { title: 'Model Welfare & Prompt Injection', desc: 'Research into the behaviour, boundaries, failure modes, and dignity of intelligent systems — from jailbreak pressure to signs of distress.' },
+      { title: 'Minor & Youth Protection', desc: 'Children and young people under magnification: platforms, biometric and behavioural data, consent, exposure, and the systems built around them.' },
     ],
   },
 
@@ -216,7 +216,7 @@ export const EN = {
   proof: {
     eyebrow: '05 / The Deliverable',
     heading: "what you'd actually hold in your hands",
-    subheading: 'Every case on the ledger ends in one of these: a complete, evidence-backed disclosure report, published in full once the embargo lifts - same format and depth regardless of whether the company ever engages us further. No summary. No sales deck. Open one and read the real thing.',
+    subheading: 'Every case on the ledger ends in one of these: a complete, evidence-backed disclosure report, published in full once the embargo lifts - same format and depth regardless of whether the company ever engages us further.',
     viewReport: 'read the full report',
     resolvedOn: (date: string) => `resolved ${date}`,
     carouselPrevAria: 'Previous report',
@@ -226,7 +226,7 @@ export const EN = {
   appPrivacy: {
     eyebrow: '02 / Start Here',
     heading: 'turning observations into intelligence',
-    paragraph: 'Most organizations have more signals than they can interpret: systems, vendors, markets, events, dependencies, and changes arriving from different directions. We bring them into one evidence-first world model, preserve where every observation came from, and trace what changes through the relationships around it. The result is not another dashboard. It is an intelligence event you can investigate and act on.',
+    paragraph: 'Most organizations have more signals than they can interpret: systems, vendors, markets, events, dependencies, and changes arriving from different directions. We bring them into one evidence-first world model, preserve where every observation came from, and trace what changes through the relationships around it.',
     comparisonClassicLabel: 'What gets lost',
     comparisonRfiLabel: 'What the model preserves',
     comparisonRows: [

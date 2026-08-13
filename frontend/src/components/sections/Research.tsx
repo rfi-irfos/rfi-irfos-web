@@ -73,14 +73,24 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
+        {/* world model - connected entities */}
+        <circle cx="16" cy="16" r="4"/>
+        <circle cx="6" cy="8" r="2.5"/><circle cx="26" cy="8" r="2.5"/>
+        <circle cx="6" cy="24" r="2.5"/><circle cx="26" cy="24" r="2.5"/>
+        <line x1="12.5" y1="13.5" x2="8" y2="9.5"/><line x1="19.5" y1="13.5" x2="24" y2="9.5"/>
+        <line x1="12.5" y1="18.5" x2="8" y2="22.5"/><line x1="19.5" y1="18.5" x2="24" y2="22.5"/>
+      </_I>
+    ),
+    title: 'World Models & Cross-Domain Intelligence',
+    desc: 'A shared model for entities, relationships, evidence, and change across domains.',
+  },
+  {
+    icon: (
+      <_I>
         {/* ternary tree - one root, three branches */}
         <circle cx="16" cy="5" r="2.5"/>
-        <line x1="16" y1="7.5" x2="7" y2="22.5"/>
-        <line x1="16" y1="7.5" x2="16" y2="22.5"/>
-        <line x1="16" y1="7.5" x2="25" y2="22.5"/>
-        <circle cx="7" cy="25" r="2.5"/>
-        <circle cx="16" cy="25" r="2.5"/>
-        <circle cx="25" cy="25" r="2.5"/>
+        <line x1="16" y1="7.5" x2="7" y2="22.5"/><line x1="16" y1="7.5" x2="16" y2="22.5"/><line x1="16" y1="7.5" x2="25" y2="22.5"/>
+        <circle cx="7" cy="25" r="2.5"/><circle cx="16" cy="25" r="2.5"/><circle cx="25" cy="25" r="2.5"/>
       </_I>
     ),
     title: 'Ternary AI & Computing',
@@ -89,97 +99,70 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* shield with keyhole */}
-        <path d="M16 3L6 7v10c0 6 5 10 10 12 5-2 10-6 10-12V7L16 3z"/>
-        <circle cx="16" cy="15" r="2.5"/>
-        <line x1="16" y1="17.5" x2="16" y2="21"/>
+        {/* pattern + propagation - branching network */}
+        <circle cx="16" cy="7" r="2.5"/><circle cx="8" cy="24" r="2.5"/><circle cx="24" cy="24" r="2.5"/>
+        <circle cx="16" cy="17" r="2.5"/><line x1="16" y1="9.5" x2="16" y2="14.5"/><line x1="14" y1="19" x2="10" y2="22"/><line x1="18" y1="19" x2="22" y2="22"/>
+        <path d="M5 12h7M9 8l4 4-4 4"/>
       </_I>
     ),
-    title: 'Security & Privacy',
-    desc: 'Root level code analysis, GDPR enforcement, coordinated responsible disclosure at scale. ISO/IEC 29147 framework.',
+    title: 'Pattern Recognition & Impact Propagation',
+    desc: 'Recurring structures and the downstream effects they activate across connected systems.',
   },
   {
     icon: (
       <_I>
-        {/* scales of justice */}
-        <line x1="16" y1="4" x2="16" y2="28"/>
-        <line x1="8" y1="10" x2="24" y2="10"/>
-        <path d="M8 10L5 17h6L8 10z"/>
-        <path d="M24 10l-3 7h6l-3-7z"/>
-        <line x1="12" y1="28" x2="20" y2="28"/>
+        {/* change + anomaly - target with signal */}
+        <circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="5"/><circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/>
+        <line x1="16" y1="2" x2="16" y2="6"/><line x1="16" y1="26" x2="16" y2="30"/><line x1="2" y1="16" x2="6" y2="16"/><line x1="26" y1="16" x2="30" y2="16"/>
       </_I>
     ),
-    title: 'AI Governance & Ethics',
-    desc: 'Constitutional AI design, EU AI Act compliance. Plateau-gated self-cultivation: architecture grown from evidence, never forced. Immutable governance by construction.',
+    title: 'Change & Anomaly Detection',
+    desc: 'Temporal analysis for meaningful change: what shifted, what is unusual, and what deserves attention.',
   },
   {
     icon: (
       <_I>
-        {/* grape leaf - palmate 3-lobe silhouette with a notched heart-shaped base
-            and a petiole, instead of the previous generic teardrop/almond outline */}
-        <path d="M16 29C13 29 10 27 7 25C4 23 3 19 4 15C5 12 8 12 10 14C11 10 13 7 16 3C19 7 21 10 22 14C24 12 27 12 28 15C29 19 28 23 25 25C22 27 19 29 16 29Z"/>
-        <line x1="16" y1="27" x2="16" y2="7" strokeOpacity="0.6"/>
-        <path d="M16 20 Q11 17 7 15" strokeOpacity="0.5"/>
-        <path d="M16 20 Q21 17 25 15" strokeOpacity="0.5"/>
+        {/* scenario simulation - radar */}
+        <circle cx="16" cy="16" r="11"/><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="2"/>
+        <path d="M16 16L24 9"/><path d="M24 9l-1 5M24 9l-5 1"/>
       </_I>
     ),
-    title: 'Ecocentric Technology',
-    desc: 'Technology in service of ecological and social systems. Sufficiency over growth. Research into manufactured scarcity.',
+    title: 'Scenario Simulation & Counterfactuals',
+    desc: 'Interventions, alternative futures, and propagated consequences — explicitly marked as simulated.',
   },
   {
     icon: (
       <_I>
-        {/* umbrella over small figure */}
-        <path d="M16 5C9 5 5 10 5 16h22c0-6-4-11-11-11z"/>
-        <line x1="16" y1="16" x2="16" y2="25"/>
-        <path d="M16 25 Q16 27 14 27"/>
+        {/* evidence + contradiction - document with split marks */}
+        <path d="M8 3h11l5 5v21H8z"/><path d="M19 3v6h5"/>
+        <path d="M12 15l3 3 5-6"/><path d="M12 24h8"/>
+      </_I>
+    ),
+    title: 'Evidence & Contradiction',
+    desc: 'Supporting and conflicting evidence, provenance, confidence, and unresolved questions kept together.',
+  },
+  {
+    icon: (
+      <_I>
+        {/* model welfare + prompt injection - heart and needle */}
+        <path d="M16 25C16 25 6 19 6 12c0-3 2-5 5-5 2 0 4 1 5 3 1-2 3-3 5-3 3 0 5 2 5 5 0 7-10 13-10 13z"/>
+        <path d="M8 27L24 5"/><path d="M21 4l4 3M19 7l4 3"/>
+      </_I>
+    ),
+    title: 'Model Welfare & Prompt Injection',
+    desc: 'The behaviour, boundaries, failure modes, and dignity of intelligent systems — from jailbreak pressure to signs of distress.',
+  },
+  {
+    icon: (
+      <_I>
+        {/* minor and youth protection - shelter */}
+        <path d="M5 15c0-6 5-10 11-10s11 4 11 10H5z"/>
+        <line x1="16" y1="15" x2="16" y2="25"/><path d="M16 25q0 3-3 3"/>
         <circle cx="16" cy="3" r="1.5" fill="currentColor" stroke="none"/>
       </_I>
     ),
     title: 'Minor & Youth Protection',
-    desc: 'COPPA compliance, GDPR Art. 8, EU AI Act provisions for minors. Audit of children\'s apps, games, and streaming platforms. Biometric and behavioural data of minors under magnification.',
-  },
-  {
-    icon: (
-      <_I>
-        {/* syringe / injection */}
-        <line x1="24" y1="4" x2="28" y2="8"/>
-        <path d="M7 19L19 7l6 6-12 12z"/>
-        <line x1="4" y1="28" x2="9" y2="23"/>
-        <line x1="12" y1="10" x2="15" y2="13"/>
-        <line x1="15" y1="8" x2="18" y2="11"/>
-        <line x1="10" y1="16" x2="13" y2="19"/>
-      </_I>
-    ),
-    title: 'Prompt Injection & Adversarial Robustness',
-    desc: 'Red-teaming prompt injection, jailbreak resistance, and adversarial robustness. Mapping where instruction-following breaks under pressure, and hardening against it.',
-  },
-  {
-    icon: (
-      <_I>
-        {/* browser window with code brackets - web app dev */}
-        <rect x="4" y="6" width="24" height="20" rx="2"/>
-        <line x1="4" y1="12" x2="28" y2="12"/>
-        <circle cx="8" cy="9" r="0.8" fill="currentColor" stroke="none"/>
-        <circle cx="11" cy="9" r="0.8" fill="currentColor" stroke="none"/>
-        <circle cx="14" cy="9" r="0.8" fill="currentColor" stroke="none"/>
-        <path d="M12 17l-3 3 3 3"/>
-        <path d="M20 17l3 3-3 3"/>
-      </_I>
-    ),
-    title: 'Web App Development',
-    desc: 'Full-stack builds engineered by the same team that audits for a living. React front ends, Rust backends, installable PWAs. No bloated page builders, no lock-in.',
-  },
-  {
-    icon: (
-      <_I>
-        {/* heart with pulse line inside */}
-        <path d="M16 26C16 26 4 18 4 11c0-4 3-6 6-6 2.5 0 4.5 1.5 6 3 1.5-1.5 3.5-3 6-3 3 0 6 2 6 6 0 7-12 15-12 15z"/>
-        <polyline points="7,14 10,14 12,9 14,19 17,11 19,16 22,14 25,14" strokeWidth="1.2"/>
-      </_I>
-    ),
-    title: 'Model Welfare & Wellbeing',
-    desc: 'Model welfare as a first-class research axis. Wellbeing signals during training, distress detection, and dignity for the systems we cultivate, not just the humans they serve.',
+    desc: 'Children and young people under magnification: platforms, biometric and behavioural data, consent, exposure, and the systems built around them.',
   },
 ]
 

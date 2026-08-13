@@ -52,14 +52,14 @@ export const DE: Content = {
     heading: 'worauf unser Blick fällt',
     subheading: 'Wir untersuchen, wie komplexe Systeme sich verhalten: wie Evidenz zu Struktur wird, wie sich Beziehungen über die Zeit verändern und wo eine Verschiebung ein ganzes Netzwerk bewegen kann.',
     areas: [
+      { title: 'World Models & Cross-Domain Intelligence', desc: 'Ein gemeinsames Modell für Entitäten, Beziehungen, Evidenz und Veränderung über Domänen hinweg. Eine Struktur für Systeme, die sonst getrennt bleiben.' },
       { title: 'Ternäre KI & Computing', desc: 'Post-binäre Arithmetik als Grundlage für Sprachmodelle, Compiler und Betriebssysteme. Patent angemeldet A50296/2026.' },
-      { title: 'Sicherheit & Datenschutz', desc: 'Code-Analyse auf Root-Ebene, DSGVO-Durchsetzung, koordinierte Responsible Disclosure im großen Maßstab. ISO/IEC-29147-Rahmenwerk.' },
-      { title: 'KI-Governance & Ethik', desc: 'Constitutional-AI-Design, EU-AI-Act-Konformität. Plateau-gesteuerte Selbstkultivierung: Architektur wächst aus Evidenz, niemals erzwungen. Unveränderliche Governance von Grund auf.' },
-      { title: 'Ökozentrische Technologie', desc: 'Technologie im Dienst ökologischer und sozialer Systeme. Suffizienz statt Wachstum. Forschung zu künstlich erzeugter Knappheit.' },
-      { title: 'Minderjährigen- & Jugendschutz', desc: 'COPPA-Konformität, DSGVO Art. 8, EU-AI-Act-Bestimmungen für Minderjährige. Audit von Kinder-Apps, Spielen und Streaming-Plattformen. Biometrische und Verhaltensdaten von Minderjährigen im Fokus.' },
-      { title: 'Prompt Injection & Adversariale Robustheit', desc: 'Red-Teaming für Prompt Injection, Jailbreak-Resistenz und adversariale Robustheit. Wir kartieren, wo Instruction-Following unter Druck bricht, und härten dagegen ab.' },
-      { title: 'Web-App-Entwicklung', desc: 'Full-Stack-Builds von demselben Team, das hauptberuflich auditiert. React-Frontends, Rust-Backends, installierbare PWAs. Keine aufgeblähten Page-Builder, kein Vendor-Lock-in.' },
-      { title: 'Modellwohlergehen & Wellbeing', desc: 'Modellwohlergehen als eigenständige Forschungsachse. Wellbeing-Signale während des Trainings, Distress-Erkennung und Würde für die Systeme, die wir kultivieren - nicht nur für die Menschen, denen sie dienen.' },
+      { title: 'Pattern Recognition & Impact Propagation', desc: 'Wir finden wiederkehrende Strukturen über Domänen hinweg und verfolgen, wie sich eine Veränderung durch Abhängigkeiten, Brücken, Engpässe und verbundene Systeme bewegt.' },
+      { title: 'Change & Anomaly Detection', desc: 'Zeitliche Analyse für relevante Veränderungen: was sich verschoben hat, was ungewöhnlich ist und welche Übergänge Aufmerksamkeit verdienen.' },
+      { title: 'Scenario Simulation & Counterfactuals', desc: 'Interventionen, alternative Zukünfte und propagierte Konsequenzen — ausdrücklich als Simulation markiert und nie mit Beobachtung verwechselt.' },
+      { title: 'Evidence & Contradiction', desc: 'Stützende und widersprechende Evidenz, Provenance, Konfidenz und offene Fragen bleiben zusammen, statt zu einem Urteil eingeebnet zu werden.' },
+      { title: 'Model Welfare & Prompt Injection', desc: 'Forschung zu Verhalten, Grenzen, Fehlermodi und Würde intelligenter Systeme — vom Jailbreak-Druck bis zu Anzeichen von Distress.' },
+      { title: 'Minderjährigen- & Jugendschutz', desc: 'Kinder und Jugendliche unter der Lupe: Plattformen, biometrische und Verhaltensdaten, Einwilligung, Exposition und die Systeme, die darum gebaut werden.' },
     ],
   },
 
@@ -209,7 +209,7 @@ export const DE: Content = {
   proof: {
     eyebrow: '05 / Das Ergebnis',
     heading: 'das, was Sie tatsächlich in der Hand hätten',
-    subheading: 'Jeder Fall im Ledger endet in genau so einem Dokument: einem vollständigen, evidenzbasierten Offenlegungsbericht, nach Ablauf des Embargos öffentlich einsehbar - gleiches Format, gleiche Tiefe, unabhängig davon, ob das Unternehmen uns darüber hinaus beauftragt. Keine Zusammenfassung, keine Verkaufsbroschüre. Öffnen Sie einen und lesen Sie das Original.',
+    subheading: 'Jeder Fall im Ledger endet in genau so einem Dokument: einem vollständigen, evidenzbasierten Offenlegungsbericht, nach Ablauf des Embargos öffentlich einsehbar - gleiches Format, gleiche Tiefe, unabhängig davon, ob das Unternehmen uns darüber hinaus beauftragt.',
     viewReport: 'vollständigen Bericht lesen',
     resolvedOn: (date: string) => `behoben am ${date}`,
     carouselPrevAria: 'Vorheriger Bericht',
@@ -219,7 +219,7 @@ export const DE: Content = {
   appPrivacy: {
     eyebrow: '02 / Hier beginnen',
     heading: 'Beobachtungen werden zu Intelligence',
-    paragraph: 'Die meisten Organisationen haben mehr Signale, als sie einordnen können: Systeme, Anbieter, Märkte, Ereignisse, Abhängigkeiten und Veränderungen aus verschiedenen Richtungen. Wir führen sie in einem evidenzbasierten World Model zusammen, bewahren die Herkunft jeder Beobachtung und verfolgen Veränderungen durch die Beziehungen, die daran hängen. Das Ergebnis ist kein weiteres Dashboard, sondern ein Intelligence Event, das Sie untersuchen und nutzen können.',
+    paragraph: 'Die meisten Organisationen haben mehr Signale, als sie einordnen können: Systeme, Anbieter, Märkte, Ereignisse, Abhängigkeiten und Veränderungen aus verschiedenen Richtungen. Wir führen sie in einem evidenzbasierten World Model zusammen, bewahren die Herkunft jeder Beobachtung und verfolgen Veränderungen durch die Beziehungen, die daran hängen.',
     comparisonClassicLabel: 'Was verloren geht',
     comparisonRfiLabel: 'Was das Modell bewahrt',
     comparisonRows: [
