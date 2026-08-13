@@ -38,7 +38,7 @@ export const EN = {
     headlineEmphasisIndex: 2,
     subtitlePrefix: 'Interdisciplinary',
     subtitleSuffix: ' Research Facility for Open Sciences',
-    identity: 'We engineer what holds under load and expose what was built to fail. No theater, no high-visibility vests.',
+    identity: 'We craft what holds under load and expose what was destined to fail.',
     stats: {
       researchAreas: 'research areas',
       openSourceProjects: 'open-source projects',
@@ -53,7 +53,7 @@ export const EN = {
   research: {
     eyebrow: '01 / Areas of Magnification',
     heading: 'where our attention falls',
-    subheading: 'One team. The same people who train the model write the regulatory analysis and file the disclosure.',
+    subheading: 'We study how complex systems behave: how evidence becomes structure, how relationships change over time, and where one shift can move an entire network.',
     areas: [
       { title: 'Ternary AI & Computing', desc: 'Post-binary arithmetic as the foundation for language models, compilers, and operating systems. Patent pending A50296/2026.' },
       { title: 'Security & Privacy', desc: 'Root level code analysis, GDPR enforcement, coordinated responsible disclosure at scale. ISO/IEC 29147 framework.' },
@@ -225,18 +225,18 @@ export const EN = {
 
   appPrivacy: {
     eyebrow: '02 / Start Here',
-    heading: 'what your app does after it ships',
-    paragraph: "Your app passes its build checklist. That says nothing about what the shipped binary does in production: which SDKs it contacts, where data lands, whether tracking fires before consent. We decompile it and trace every flow to the endpoint and the country it terminates in. Checklists record intent. We report behaviour.",
-    comparisonClassicLabel: 'What you used to see',
-    comparisonRfiLabel: 'What we do differently',
+    heading: 'turning observations into intelligence',
+    paragraph: 'Most organizations have more signals than they can interpret: systems, vendors, markets, events, dependencies, and changes arriving from different directions. We bring them into one evidence-first world model, preserve where every observation came from, and trace what changes through the relationships around it. The result is not another dashboard. It is an intelligence event you can investigate and act on.',
+    comparisonClassicLabel: 'What gets lost',
+    comparisonRfiLabel: 'What the model preserves',
     comparisonRows: [
-      { classic: 'A checklist the app was built to pass', rfi: 'Source-code tracing of the app as it actually runs' },
-      { classic: "Trust in the vendor's compliance statement", rfi: 'Each control verified under NIS2, GDPR, and the AI Act' },
-      { classic: 'A single snapshot captured at launch', rfi: 'Continuous monitoring backed by regulator-grade evidence' },
-      { classic: 'A pass-or-fail verdict', rfi: 'A timestamped, reproducible audit trail, regulator-ready' },
-      { classic: "Remediation left to the vendor's discretion", rfi: 'Stalled remediation triggers disclosure under our statutory mandate' },
+      { classic: 'Signals trapped in separate systems', rfi: 'One world model across domains' },
+      { classic: 'Snapshots without a history', rfi: 'Temporal change with context' },
+      { classic: 'Relationships inferred by hand', rfi: 'Canonical tracing with provenance' },
+      { classic: 'Patterns treated as isolated findings', rfi: 'Patterns connected across domains' },
+      { classic: 'Uncertainty hidden behind confidence', rfi: 'Evidence, contradiction, and the unknown kept visible' },
     ],
-    cta: 'Send us your app',
+    cta: 'Bring us a signal',
   },
 
   pricing: {
@@ -315,13 +315,13 @@ export const EN = {
   journey: {
     eyebrow: '07 / Engagement Journey',
     heading: 'what happens after you start',
-    subheading: 'Five stages, from a one-week security audit to a standing intelligence retainer. Depth and timeline change between tiers and product lines - AppSec, compliance, or business intelligence. The order never does.',
+    subheading: 'Five stages, from a single observation to a continuously improving intelligence model. The depth changes with the question; the discipline stays the same.',
     steps: [
-      { stage: 'Kickoff', body: "We lock the scope and name the engineer who runs the case.\n\nAccess, credentials, systems: everything moves over an encrypted channel. You have a name and a start date before work begins." },
-      { stage: 'Analyse', body: 'We decompile, instrument, correlate, and trace - whatever the system demands. The same Sources and Methods principles apply to every client, paying or not.\n\nIf only one engineer can reproduce it, it does not ship as a finding.' },
-      { stage: 'Review', body: 'We triage and rank every finding by severity before you see it.\n\nSame five-part format documented in our Methodology: what we found, what proves it, how we proved it, how sure we are, what to do about it.' },
-      { stage: 'Delivery', body: "Findings arrive in your tier's format: plain-language summary first, technical detail underneath.\n\nInside the window agreed at checkout, not after it." },
-      { stage: 'Follow-up', body: 'Once fixes ship, we re-test and confirm the gap is closed. Claims do not count.\n\nOn ongoing engagements, follow-up is where the next audit cycle starts.' },
+      { stage: 'Ingest', body: 'We start with an observation: a change, signal, relationship, source, or question. It can come from your systems, public data, or one of the domains we already monitor.\n\nThe starting point can be small. The model is not.' },
+      { stage: 'Normalize', body: 'We resolve entities, map relationships, attach timestamps and provenance, and preserve what remains uncertain. Different vocabularies become comparable without pretending they are identical.\n\nNothing is accepted without origin. Nothing unknown is silently filled in.' },
+      { stage: 'Trace', body: 'We compare states over time, follow dependencies, find bridges and bottlenecks, and test whether the observation matches a known or cross-domain pattern.\n\nThe question is not only what changed, but what is connected to the change.' },
+      { stage: 'Emit', body: 'A meaningful change becomes an intelligence event: evidence, contradiction state, confidence, affected domains, network implications, and commercial relevance in one traceable object.\n\nNot a verdict. A structured event you can investigate and use.' },
+      { stage: 'Learn', body: 'The model retains supporting evidence, contradictions, unresolved questions, and recurring structures. Simulations can test what might happen under an intervention, clearly marked as hypothetical.\n\nEach observation makes the next one more useful.' },
     ],
   },
 

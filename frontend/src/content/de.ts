@@ -35,7 +35,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    identity: 'Wir konstruieren, was unter Last hält, und legen offen, was zum Scheitern gebaut wurde. Keine Show, keine Warnwesten.',
+    identity: 'Wir formen, was unter Last hält, und legen offen, was zum Scheitern bestimmt war.',
     stats: {
       researchAreas: 'Forschungsbereiche',
       openSourceProjects: 'Open-Source-Projekte',
@@ -50,7 +50,7 @@ export const DE: Content = {
   research: {
     eyebrow: '01 / Unter der Lupe',
     heading: 'worauf unser Blick fällt',
-    subheading: 'Ein Team. Dieselben Leute, die das Modell trainieren, schreiben die regulatorische Analyse und reichen die Offenlegung ein.',
+    subheading: 'Wir untersuchen, wie komplexe Systeme sich verhalten: wie Evidenz zu Struktur wird, wie sich Beziehungen über die Zeit verändern und wo eine Verschiebung ein ganzes Netzwerk bewegen kann.',
     areas: [
       { title: 'Ternäre KI & Computing', desc: 'Post-binäre Arithmetik als Grundlage für Sprachmodelle, Compiler und Betriebssysteme. Patent angemeldet A50296/2026.' },
       { title: 'Sicherheit & Datenschutz', desc: 'Code-Analyse auf Root-Ebene, DSGVO-Durchsetzung, koordinierte Responsible Disclosure im großen Maßstab. ISO/IEC-29147-Rahmenwerk.' },
@@ -218,18 +218,18 @@ export const DE: Content = {
 
   appPrivacy: {
     eyebrow: '02 / Hier beginnen',
-    heading: 'schützt Ihre App die Nutzerdaten wirklich?',
-    paragraph: 'Teams vertrauen darauf, dass ihre App Nutzerdaten schützt, weil sie ihre Entwicklungs-Checkliste besteht. Was sie in Produktion tatsächlich tut - mit welchen SDKs sie kommuniziert, wo Daten landen, ob das Tracking vor der Zustimmung beginnt - ist eine andere Frage, oft eine andere Antwort. Das ist der einfachste Einstiegspunkt: Die Frage selbst ist leicht zu stellen.',
-    comparisonClassicLabel: 'Was Sie bisher kannten',
-    comparisonRfiLabel: 'Was wir anders machen',
+    heading: 'Beobachtungen werden zu Intelligence',
+    paragraph: 'Die meisten Organisationen haben mehr Signale, als sie einordnen können: Systeme, Anbieter, Märkte, Ereignisse, Abhängigkeiten und Veränderungen aus verschiedenen Richtungen. Wir führen sie in einem evidenzbasierten World Model zusammen, bewahren die Herkunft jeder Beobachtung und verfolgen Veränderungen durch die Beziehungen, die daran hängen. Das Ergebnis ist kein weiteres Dashboard, sondern ein Intelligence Event, das Sie untersuchen und nutzen können.',
+    comparisonClassicLabel: 'Was verloren geht',
+    comparisonRfiLabel: 'Was das Modell bewahrt',
     comparisonRows: [
-      { classic: 'Eine Checkliste, die die App bestehen muss', rfi: 'Quellcode-Nachverfolgung der App, wie sie tatsächlich läuft' },
-      { classic: 'Vertrauen in die Compliance-Aussage des Anbieters', rfi: 'Jede Kontrolle wird unter NIS2, DSGVO und AI Act verifiziert' },
-      { classic: 'Eine einmalige Momentaufnahme beim Start', rfi: 'Kontinuierliche Überwachung mit behördenfähigen Belegen' },
-      { classic: 'Ein Bestanden-oder-Durchgefallen-Urteil', rfi: 'Ein reproduzierbares Prüfprotokoll, zeitgestempelt und behördenbereit' },
-      { classic: 'Die Behebung bleibt dem Anbieter überlassen', rfi: 'Stockt die Behebung, leiten wir die Offenlegung aus unserem gesetzlichen Auftrag ein' },
+      { classic: 'Signale bleiben in getrennten Systemen', rfi: 'Ein World Model über Domänen hinweg' },
+      { classic: 'Momentaufnahmen ohne Geschichte', rfi: 'Zeitliche Veränderung mit Kontext' },
+      { classic: 'Beziehungen werden händisch vermutet', rfi: 'Kanonisches Tracing mit Provenance' },
+      { classic: 'Muster werden als Einzelfunde behandelt', rfi: 'Muster werden domänenübergreifend verbunden' },
+      { classic: 'Unsicherheit verschwindet hinter Konfidenz', rfi: 'Evidenz, Widerspruch und Unbekanntes bleiben sichtbar' },
     ],
-    cta: 'Schicken Sie uns Ihren Build',
+    cta: 'Bringen Sie uns ein Signal',
   },
 
   pricing: {
@@ -308,13 +308,13 @@ export const DE: Content = {
   journey: {
     eyebrow: '07 / Ablauf der Zusammenarbeit',
     heading: 'was nach dem Start passiert',
-    subheading: 'Dieselben fünf Phasen, egal ob es sich um ein einwöchiges Security-Audit oder einen ganzjährigen Intelligence-Retainer handelt - über AppSec, Compliance und Business Intelligence hinweg. Was sich zwischen den Stufen und Produktlinien ändert, ist die Tiefe und der Zeitplan - nie die Reihenfolge.',
+    subheading: 'Fünf Phasen, von einer einzelnen Beobachtung bis zu einem kontinuierlich schärfer werdenden Intelligence-Modell. Die Tiefe ändert sich mit der Frage; die Disziplin bleibt gleich.',
     steps: [
-      { stage: 'Kick-off', body: 'Der Umfang wird festgelegt und eine feste Ingenieurin oder ein fester Ingenieur zugewiesen.\n\nWas auch immer Sie bereitstellen - Zugangsdaten, API-Zugang, Systeme - wird über einen sicheren Kanal ausgetauscht. Sie wissen genau, wer die Arbeit macht und wann sie beginnt.' },
-      { stage: 'Analyse', body: 'Die eigentliche Untersuchung - Dekompilierung, Instrumentierung, Korrelation, Nachverfolgung, je nachdem, was das System verlangt - geführt nach denselben Grundsätzen zu Quellen und Methoden, die für jeden Kunden gelten.\n\nNichts wird akzeptiert, das nur eine Person reproduzieren kann.' },
-      { stage: 'Review', body: 'Jeder Befund wird triagiert und nach Schwere geordnet, bevor er Sie erreicht.\n\nIm selben fünfteiligen Format, das in unserer Methodik dokumentiert ist: was wir gefunden haben, was es belegt, wie wir es belegt haben, wie sicher wir uns sind, was zu tun ist.' },
-      { stage: 'Lieferung', body: 'Sie erhalten die Befunde in dem Format, das Ihre Stufe vorsieht - zuerst eine Zusammenfassung in klarer Sprache, technisches Detail darunter.\n\nGeliefert innerhalb des beim Checkout vereinbarten Zeitfensters.' },
-      { stage: 'Follow-up', body: 'Sobald Fixes ausgeliefert sind, bestätigt ein erneuter Test, dass die Lücke tatsächlich geschlossen wurde, sofern die Stufe das vorsieht.\n\nBei laufenden Aufträgen beginnt hier auch der nächste Audit-Zyklus.' },
+      { stage: 'Ingest', body: 'Wir beginnen mit einer Beobachtung: einer Veränderung, einem Signal, einer Beziehung, einer Quelle oder einer Frage. Sie kann aus Ihren Systemen, öffentlichen Daten oder einer von uns bereits beobachteten Domäne kommen.\n\nDer Ausgangspunkt kann klein sein. Das Modell ist es nicht.' },
+      { stage: 'Normalize', body: 'Wir lösen Entitäten auf, mappen Beziehungen, ergänzen Zeitstempel und Provenance und bewahren, was unsicher bleibt. Unterschiedliche Vokabulare werden vergleichbar, ohne sie als identisch auszugeben.\n\nNichts wird ohne Herkunft akzeptiert. Unbekanntes wird nicht stillschweigend ergänzt.' },
+      { stage: 'Trace', body: 'Wir vergleichen Zustände über die Zeit, verfolgen Abhängigkeiten, finden Brücken und Engpässe und prüfen, ob die Beobachtung zu einem bekannten oder domänenübergreifenden Muster passt.\n\nDie Frage lautet nicht nur, was sich verändert hat, sondern was damit verbunden ist.' },
+      { stage: 'Emit', body: 'Eine relevante Veränderung wird zu einem Intelligence Event: Evidenz, Widerspruchsstatus, Konfidenz, betroffene Domänen, Netzwerkimplikationen und kommerzielle Relevanz in einem nachvollziehbaren Objekt.\n\nKein Urteil. Ein strukturiertes Event, das Sie untersuchen und nutzen können.' },
+      { stage: 'Learn', body: 'Das Modell bewahrt stützende Evidenz, Widersprüche, offene Fragen und wiederkehrende Strukturen. Simulationen können prüfen, was unter einer Intervention geschehen könnte — klar als hypothetisch markiert.\n\nJede Beobachtung macht die nächste wertvoller.' },
     ],
   },
 
