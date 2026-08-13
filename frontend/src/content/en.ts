@@ -41,9 +41,9 @@ export const EN = {
     identity: 'We craft what holds under load and expose what was destined to fail.',
     stats: {
       researchAreas: 'research areas',
-      openSourceProjects: 'open-source projects',
+      openSourceProjects: 'systems & projects',
       publications: 'publications',
-      people: 'people, in-house',
+      people: 'core researchers',
       agents: 'specialized agents',
     },
     ctaTrackRecord: 'Track Record',

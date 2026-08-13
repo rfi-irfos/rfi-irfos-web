@@ -38,9 +38,9 @@ export const DE: Content = {
     identity: 'Wir formen, was unter Last hält, und legen offen, was zum Scheitern bestimmt war.',
     stats: {
       researchAreas: 'Forschungsbereiche',
-      openSourceProjects: 'Open-Source-Projekte',
+      openSourceProjects: 'Systeme & Projekte',
       publications: 'Publikationen',
-      people: 'Mitarbeitende, intern',
+      people: 'Forschungsteam',
       agents: 'Spezialisierte Agenten',
     },
     ctaTrackRecord: 'Track Record',

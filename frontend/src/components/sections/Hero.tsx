@@ -115,7 +115,7 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: mobile ? '1.25rem' : '3rem', margin: '0 auto 48px', maxWidth: 860, justifyContent: 'center' }}>
         {/* Deliberately NOT the same numbers as the Track Record stat row further down -
             that one is audit-specific (apps/findings/companies/regulators), this one is
-            the breadth story: research areas, open-source projects, publications, team,
+            the breadth story: research areas, systems and projects, publications, team,
             years. Showing the same five numbers twice wastes the hero's one shot at
             explaining why the institute matters beyond appsec. */}
         {([
