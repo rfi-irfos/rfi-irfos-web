@@ -771,13 +771,12 @@ export function TierCarousel({ tiers, getActions }: {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', gap: 12, marginTop: 20 }}>
           {active.delivery && (
             <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6, flexShrink: 0,
+              display: 'inline-flex', alignItems: 'center', gap: 6, flex: '1 1 auto', minWidth: 0,
               background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
               borderRadius: 10, padding: '6px 12px',
               color: 'var(--accent-text)', fontSize: 12.5, fontWeight: 600, lineHeight: 1.5,
-              whiteSpace: 'nowrap',
             }}>
-              <ClockIcon /> {active.delivery}
+              <ClockIcon /> <span style={{ minWidth: 0 }}>{active.delivery}</span>
             </div>
           )}
           {(actions.onBuy || actions.onProposal) && (
