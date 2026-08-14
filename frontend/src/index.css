@@ -321,6 +321,24 @@ h1, h2, h3, .rfi-display {
   .rfi-modal-backdrop, .rfi-modal-panel { animation: none; }
 }
 
+/* ── Hero Ken Burns ───────────────────────────────────────────────
+   Slow zoom-out on the hero's software screenshot (live feedback 2026-08-14):
+   starts tight/zoomed in, eases out to the full frame, then holds there
+   (forwards) instead of reverting or looping - a loop would fight for
+   attention against the headline it's sitting behind. transform, not
+   background-size, so the browser only ever recomposites, never repaints. */
+@keyframes rfi-hero-zoom-out {
+  from { transform: scale(1.55); }
+  to { transform: scale(1); }
+}
+.rfi-hero-zoom {
+  animation: rfi-hero-zoom-out 22s cubic-bezier(0.16,1,0.3,1) forwards;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rfi-hero-zoom { animation: none; }
+}
+
 /* ── Form submit state icon ──────────────────────────────────────
    Spinner rotation + checkmark stroke draw-in, both one-off/continuous-but-cheap
    (transform rotate, stroke-dashoffset), used by FormStateIcon. */

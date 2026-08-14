@@ -54,22 +54,32 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
   const { t } = useLocale()
   return (
     <section style={{
-      display: 'flex', flexDirection: 'column', position: 'relative',
+      display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden',
       alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
       padding: 'calc(72px + 6vh) 2rem 72px',
-      // No photo of its own anymore - PublicSite's fixed-position backdrop (the same
-      // page-structure-dark/light.jpeg used everywhere else) already shows through here
-      // via transparency. Hero used to layer hero-structure.jpeg on top of that, which
-      // meant two different photos visibly seamed together at Hero's bottom edge once
-      // the page-wide backdrop actually started rendering (it silently hadn't, for a
-      // pre-existing reason - see PublicSite.tsx). Just the tint gradient stays, for
-      // text legibility over whatever's showing through.
+      // Tint gradient only - the actual photo is the dedicated zoom layer below,
+      // not this section's own background. Kept as a tint (not a full photo) for
+      // text legibility over whatever's showing through it.
       background: theme === 'dark'
         ? 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.55) 0%, rgba(5,7,14,0.32) 52%, rgba(5,7,14,0.5) 100%)'
         : theme === 'hc'
           ? 'rgba(0,0,0,0.35)'
           : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,122,92,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(250,245,239,0.55) 0%, rgba(250,245,239,0.32) 52%, rgba(250,245,239,0.5) 100%)',
     }}>
+      {/* Real screenshot of our own OSINT/monitoring software as the hero backdrop
+          (live feedback 2026-08-14: "this is from the software itself"), with a slow
+          Ken Burns zoom-out - starts tight/zoomed in, eases out to the full frame over
+          the animation's run, then holds (animation-fill-mode: forwards in the
+          .rfi-hero-zoom CSS rule, index.css). overflow: hidden on the section above
+          clips the zoomed-in overflow; transform (not background-size) animates since
+          transform is compositor-only, cheaper than repainting background-size every
+          frame. Sits behind HeroBackground's WebGL canvas (zIndex -1) at -2, and
+          behind the tint gradient above it (the section's own `background`, which
+          paints on top of z-index -2/-1 children per normal stacking order). */}
+      <div aria-hidden="true" className="rfi-hero-zoom" style={{
+        position: 'absolute', inset: 0, zIndex: -2,
+        backgroundImage: 'url("/hero-software.jpeg")', backgroundSize: 'cover', backgroundPosition: 'center',
+      }} />
       <HeroBackground theme={theme} />
       {/* Stays English in both locales (live feedback) - "Rethink the Obvious."
           is the site's signature line/wordmark-adjacent phrase, not translated
