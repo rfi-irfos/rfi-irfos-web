@@ -1,31 +1,25 @@
 // Hero (no `<section id>` of its own - it's the first section on the page,
 // scrolled to via the bare "#" logo link) - extracted verbatim from PublicSite.tsx.
 import { useState, lazy, Suspense } from 'react'
-import { TEAL, prefersReducedMotion, Reveal, RevealWords, CountUp, HeroFlipWord } from './shared'
+import { prefersReducedMotion, Reveal, RevealWords, CountUp, HeroFlipWord } from './shared'
 import { RESEARCH_AREAS } from './Research'
 import { PROJECTS } from './Projects'
 import { useLocale } from '../../hooks/useLocale'
 
-// Hero CTAs, unchanged copy/hierarchy/href (Track Record secondary outline, Book us
-// solid-fill conversion action, rfi-cta-pulse kept) - only addition is magnetic pull.
-function HeroCtaRow() {
+// The hero keeps one proof-first action. The contact form remains on the landing
+// page, but no longer competes with the Evidence view from the first screen.
+function HeroCtaRow({ onNavigate }: { onNavigate?: (href: string) => void }) {
   const { t } = useLocale()
   return (
-    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-      <a href="#track-record" style={{
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <a href="#evidence" style={{
         border: '1px solid rgba(0,245,196,0.35)', color: 'var(--accent-text)', padding: '13px 30px', borderRadius: 8,
         fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
         textTransform: 'uppercase', transition: 'border-color 0.15s',
       }}
+        onClick={e => { if (onNavigate) { e.preventDefault(); onNavigate('#evidence') } }}
         onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
         onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>{t.hero.ctaTrackRecord}</a>
-      <a href="#submit" className="rfi-cta-pulse" style={{
-        background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
-        fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
-        textTransform: 'uppercase', transition: 'opacity 0.15s',
-      }}
-        onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>{t.hero.ctaBookUs}</a>
     </div>
   )
 }
@@ -75,7 +69,7 @@ const PUBLICATIONS = [
   { year: '2025', title: 'A1ERF: EU Regulation Proposal', sub: 'AI-first emergency relay framework for autonomous cardiac arrest detection', href: 'https://osf.io/ueac8/', tag: 'Policy · EU' },
 ]
 
-export function HeroSection({ mobile }: { mobile: boolean }) {
+export function HeroSection({ mobile, onNavigate }: { mobile: boolean; onNavigate?: (href: string) => void }) {
   const { t } = useLocale()
   return (
     <section style={{
@@ -144,7 +138,7 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
           a skeptical visitor wants before that, secondary by design. Research and
           Pricing dropped as separate hero buttons - both are one scroll or one nav
           click away already, they don't need to compete with the actual CTA here. */}
-      <HeroCtaRow />
+      <HeroCtaRow onNavigate={onNavigate} />
       {/* "I am a..." persona chips removed entirely (live feedback: redundant -
           the nav/CTAs/Research Areas right below already cover the same
           "where do I look" job without a second, parallel navigation device). */}
