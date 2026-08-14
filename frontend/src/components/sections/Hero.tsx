@@ -1,6 +1,7 @@
 // Hero (no `<section id>` of its own - it's the first section on the page,
 // scrolled to via the bare "#" logo link) - extracted verbatim from PublicSite.tsx.
 import { useState, lazy, Suspense } from 'react'
+import { motion } from 'framer-motion'
 import { prefersReducedMotion, Reveal, RevealWords, CountUp, HeroFlipWord } from './shared'
 import { RESEARCH_AREAS } from './Research'
 import { PROJECTS } from './Projects'
@@ -81,11 +82,22 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
         <HeroFlipWord word="Rethink" delay={0.2} />{' '}
         <RevealWords text="the Obvious." delayStart={0.36} emphasizeIndices={[1]} />
       </p>
-      <Reveal from="bottom">
-        <p style={{ fontSize: 'clamp(1.05rem, 2vw, 1.4rem)', fontWeight: 400, color: 'var(--text2)', maxWidth: 1000, lineHeight: 1.5, marginBottom: 40, letterSpacing: '0.01em' }}>
-          {t.hero.identity}
-        </p>
-      </Reveal>
+      {/* Mount-triggered fly-in, not the scroll-linked `Reveal` (used elsewhere below
+          the fold) - Reveal drives its animation off scroll progress through the
+          viewport, so content already in view at page load (everything in the Hero)
+          never gets a scroll transit to animate through and just appears static.
+          Chained after the headline settles (RevealWords' last word starts at 0.36 +
+          1*0.16 = 0.52s) - same easing curve as RevealWords for visual consistency.
+          Font size taken down a step further (clamp 1.05-1.4rem -> 0.95-1.2rem, live
+          feedback 2026-08-14: still reading too heavy under the shrunk headline). */}
+      <motion.p
+        initial={prefersReducedMotion() ? undefined : { opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        style={{ fontSize: 'clamp(0.95rem, 1.7vw, 1.2rem)', fontWeight: 400, color: 'var(--text2)', maxWidth: 1000, lineHeight: 1.5, marginBottom: 40, letterSpacing: '0.01em' }}
+      >
+        {t.hero.identity}
+      </motion.p>
 
       {/* Stats moved up, directly after the identity paragraph (live feedback:
           the hero read as a wall of text with too many stacked lines before
