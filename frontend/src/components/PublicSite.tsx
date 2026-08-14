@@ -689,7 +689,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       // uniform stripe reads as a flat repeating pattern, layering a second finer grain
       // at a shallow angle offset breaks that regularity up into something closer to
       // actual brushed-metal/carbon-fiber grain. Requested by Simeon 2026-07-31.
-      backgroundColor: theme === 'dark' ? '#000000' : 'var(--bg)',
+      backgroundColor: theme === 'dark' ? '#000000' : theme === 'hc' ? '#000000' : 'var(--bg)',
       // Three soft teal glows layered on top of the carbon base - "the main background
       // is still pretty much just black" feedback after the grain/gradient tuning above.
       // Radial-gradient background-image layers, not blur/filter, so this stays exactly
@@ -698,10 +698,12 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       // stay full-contrast every screenful instead of being stretched thin over a
       // multi-thousand-px-tall page).
       backgroundImage: theme === 'dark'
-        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(165deg, rgba(28,28,34,0.9) 0%, rgba(10,10,12,0.9) 35%, rgba(3,3,4,0.92) 65%, rgba(23,23,29,0.9) 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(107deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 2px), linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("/page-structure.jpeg") center / cover no-repeat'
-        : undefined,
+        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(165deg, rgba(28,28,34,0.9) 0%, rgba(10,10,12,0.9) 35%, rgba(3,3,4,0.92) 65%, rgba(23,23,29,0.9) 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(107deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 2px), linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("/page-structure.jpeg") center / cover no-repeat'
+        : theme === 'light'
+          ? 'linear-gradient(rgba(250,245,239,0.86), rgba(250,245,239,0.86)), url("/page-structure.jpeg") center / cover no-repeat'
+          : undefined,
       backgroundBlendMode: 'normal',
-      backgroundAttachment: theme === 'dark' ? 'fixed' : 'scroll',
+      backgroundAttachment: theme === 'hc' ? 'scroll' : 'fixed',
       // position:relative + zIndex:0 give this wrapper its own stacking context -
       // without it, ScrollSpine's zIndex:-1 rail escapes to the document root's
       // stacking context and paints BEHIND this div's own background instead of

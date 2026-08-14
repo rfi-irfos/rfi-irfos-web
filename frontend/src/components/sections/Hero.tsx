@@ -5,6 +5,7 @@ import { prefersReducedMotion, Reveal, RevealWords, CountUp, HeroFlipWord } from
 import { RESEARCH_AREAS } from './Research'
 import { PROJECTS } from './Projects'
 import { useLocale } from '../../hooks/useLocale'
+import { useTheme } from '../../hooks/useTheme'
 
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 
@@ -15,12 +16,13 @@ const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 // CSS radial-gradient (set directly on the hero section) stays as the base layer/
 // no-JS fallback the whole time, this only ever adds on top of it.
 function HeroBackground() {
+  const { theme } = useTheme()
   const [enabled] = useState(() => {
     if (typeof window === 'undefined') return false
     const cores = navigator.hardwareConcurrency ?? 8
-    return !prefersReducedMotion() && window.innerWidth >= 1024 && cores >= 4
+    return theme === 'dark' && !prefersReducedMotion() && window.innerWidth >= 1024 && cores >= 4
   })
-  if (!enabled) return null
+  if (!enabled || theme !== 'dark') return null
   return (
     <div style={{ position: 'absolute', inset: 0, zIndex: -1 }}>
       <Suspense fallback={null}>
@@ -44,12 +46,17 @@ const PUBLICATIONS = [
 
 export function HeroSection({ mobile }: { mobile: boolean }) {
   const { t } = useLocale()
+  const { theme } = useTheme()
   return (
     <section style={{
       display: 'flex', flexDirection: 'column', position: 'relative',
       alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
       padding: 'calc(72px + 6vh) 2rem 72px',
-      background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.96) 0%, rgba(5,7,14,0.78) 52%, rgba(5,7,14,0.91) 100%), url("/hero-structure.jpeg") center / cover no-repeat',
+      background: theme === 'dark'
+        ? 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.96) 0%, rgba(5,7,14,0.78) 52%, rgba(5,7,14,0.91) 100%), url("/hero-structure.jpeg") center / cover no-repeat'
+        : theme === 'hc'
+          ? '#000'
+          : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,122,92,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(250,245,239,0.94) 0%, rgba(250,245,239,0.84) 52%, rgba(250,245,239,0.94) 100%), url("/hero-structure.jpeg") center / cover no-repeat',
     }}>
       <HeroBackground />
       {/* Stays English in both locales (live feedback) - "Rethink the Obvious."
