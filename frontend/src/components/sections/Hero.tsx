@@ -59,11 +59,11 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
           RevealWords before (delay 0.2), "the Obvious." keeps its own timing by
           starting RevealWords' stagger at 0.36 instead of 0.2 (equivalent to
           "the"/"Obvious." having been words 1/2 of one three-word call). */}
-      <p className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
+      <p className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
         <HeroFlipWord word="Rethink" delay={0.2} />{' '}
         <RevealWords text="the Obvious." delayStart={0.36} emphasizeIndices={[1]} />
       </p>
-      <p style={{ fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, color: 'var(--text2)', maxWidth: 700, lineHeight: 1.5, marginBottom: 40, letterSpacing: '0.01em' }}>
+      <p style={{ fontSize: 'clamp(1.05rem, 2vw, 1.4rem)', fontWeight: 600, color: 'var(--text2)', maxWidth: 1000, lineHeight: 1.5, marginBottom: 40, letterSpacing: '0.01em' }}>
         {t.hero.identity}
       </p>
 
