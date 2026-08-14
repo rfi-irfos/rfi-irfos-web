@@ -961,23 +961,28 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               pair (their own tight-gap group, not the wide nav-link gap). Theme toggle is
               deliberately minimal/neutral (ghost button, no color fill) - Contact is the one
               that's allowed to be loud, solid ACCENT fill with a white icon. */}
+          {/* Live feedback 2026-08-14: "buttons in white mode must stay transparent"
+              - var(--bg2) is a near-white solid fill in light theme, which read as
+              two stark white squares floating on the hero photo. Idle state now
+              transparent specifically in light theme; hover still fills for
+              affordance, dark/hc keep their original ghost-grey fill throughout. */}
           <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
             <button onClick={toggleLocale} title={t.nav.localeTitle(LOCALE_LABEL[locale])} aria-label={t.nav.localeAria(LOCALE_LABEL[locale])} style={{
               width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
+              background: theme === 'light' ? 'transparent' : 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
               cursor: 'pointer', transition: 'background 0.15s, color 0.15s, border-color 0.15s',
             }}
               onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = 'var(--text)' }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg2)'; e.currentTarget.style.color = 'var(--text2)' }}>
+              onMouseLeave={e => { e.currentTarget.style.background = theme === 'light' ? 'transparent' : 'var(--bg2)'; e.currentTarget.style.color = 'var(--text2)' }}>
               <LocaleIcon locale={locale} />
             </button>
             <button onClick={cycle} title={t.nav.themeTitle(t.nav.themeLabel[theme])} aria-label={t.nav.themeAria(t.nav.themeLabel[theme])} style={{
               width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
+              background: theme === 'light' ? 'transparent' : 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
               cursor: 'pointer', transition: 'background 0.15s, color 0.15s, border-color 0.15s',
             }}
               onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = 'var(--text)' }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg2)'; e.currentTarget.style.color = 'var(--text2)' }}>
+              onMouseLeave={e => { e.currentTarget.style.background = theme === 'light' ? 'transparent' : 'var(--bg2)'; e.currentTarget.style.color = 'var(--text2)' }}>
               <ThemeIcon t={theme} />
             </button>
             {/* Standalone nav mail-icon button removed entirely (live feedback) -
@@ -1090,30 +1095,11 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           unreadable ("erschmal darf der hintergrund da nicht durchscheinen unten
           sonst sieht man ja ganix") - same solid-surface token used everywhere
           else on the site for text sitting over the photo backdrop. */}
-      <footer style={{ borderTop: '1px solid var(--border)', padding: '40px 2rem 28px', textAlign: 'center', background: 'var(--glass-bg-solid)' }}>
-        {/* WKO badge sized down a step (live feedback: "der Footer soll doch net so
-            fett sein" - this loud red/white block was the single heaviest element in
-            an otherwise thin/monospace footer) - opacity nudged down to match. */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-          <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.7 }}>
-            <svg viewBox="0 0 420 100" width="120" height="29" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
-              <rect x="0"   y="0" width="100" height="100" fill="#CC0000"/>
-              <text x="50"  y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">W</text>
-              <rect x="105" y="0" width="100" height="100" fill="#CC0000"/>
-              <text x="155" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">K</text>
-              <rect x="210" y="0" width="100" height="100" fill="#CC0000"/>
-              <text x="260" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">O</text>
-              <rect x="320" y="0"  width="100" height="33" fill="#CC0000"/>
-              <rect x="320" y="33" width="100" height="34" fill="#fff"/>
-              <rect x="320" y="67" width="100" height="33" fill="#CC0000"/>
-            </svg>
-          </a>
-        </div>
-        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: 'var(--accent-text)', letterSpacing: '0.06em', marginBottom: 28, fontWeight: 600 }}>
-          {t.footer.tagline}
-          <br />
-          <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>{t.footer.taglineAttribution}</span>
-        </p>
+      {/* Live feedback 2026-08-14: "an even darker tint behind all and above the
+          BG would work even better" - dark/hc now go flat black instead of the
+          slightly-lighter --glass-bg-solid token; light theme keeps that token
+          since a dark tint would be backwards there. */}
+      <footer style={{ borderTop: '1px solid var(--border)', padding: '40px 2rem 28px', textAlign: 'center', background: theme === 'light' ? 'var(--glass-bg-solid)' : '#000000' }}>
         {/* Rebuilt as a dense link directory (live feedback 2026-08-14, relayed
             from Laura via Simeon: "wir sollten wie alle unsere arbeit da rein
             tun" - link every public RFI-IRFOS repo, not just the three curated
@@ -1171,6 +1157,11 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               </div>
             ))}
           </div>
+          {/* Subtle vertical divider between Legal/Company/Research and the repo
+              directories (live feedback 2026-08-14: "a subtle divider line between
+              the legal and the rest"). alignSelf: 'stretch' lets it span the full
+              height of whichever side ends up taller instead of a fixed height. */}
+          <div aria-hidden="true" style={{ alignSelf: 'stretch', width: 1, background: 'var(--border)' }} />
           {/* Repo names stay as-is - real identifiers, not prose (same convention
               as the ledger data elsewhere on the site). CSS multi-column, not a
               manually chunked array: lets the browser balance ~40/~70 short items
@@ -1187,7 +1178,10 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               { heading: t.footer.repoHeadingPersonal, repos: SIMEON_REPOS, flex: '1.8 1 720px' },
             ].map(group => (
               <div key={group.heading} style={{ flex: group.flex }}>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px' }}>{group.heading}</p>
+                {/* Live feedback 2026-08-14: "RFI-IRFOS Repositories + Simeon Kepp,
+                    Personal middle aligned above" - centered, the columns below stay
+                    left-aligned since that's how a directory actually scans. */}
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{group.heading}</p>
                 <div style={{ columnWidth: 150, columnGap: 20 }}>
                   {group.repos.map(r => (
                     <a key={r.u} href={r.u} target="_blank" rel="noopener noreferrer" style={{
@@ -1205,6 +1199,31 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             ))}
           </div>
         </div>
+        {/* WKO badge + tagline moved below the link directory (live feedback
+            2026-08-14: "the wko logo and the tagline below that") - sized down a
+            step (earlier feedback: "der Footer soll doch net so fett sein" - this
+            loud red/white block was the single heaviest element in an otherwise
+            thin/monospace footer) - opacity nudged down to match. */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+          <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.7 }}>
+            <svg viewBox="0 0 420 100" width="120" height="29" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
+              <rect x="0"   y="0" width="100" height="100" fill="#CC0000"/>
+              <text x="50"  y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">W</text>
+              <rect x="105" y="0" width="100" height="100" fill="#CC0000"/>
+              <text x="155" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">K</text>
+              <rect x="210" y="0" width="100" height="100" fill="#CC0000"/>
+              <text x="260" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">O</text>
+              <rect x="320" y="0"  width="100" height="33" fill="#CC0000"/>
+              <rect x="320" y="33" width="100" height="34" fill="#fff"/>
+              <rect x="320" y="67" width="100" height="33" fill="#CC0000"/>
+            </svg>
+          </a>
+        </div>
+        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: 'var(--accent-text)', letterSpacing: '0.06em', marginBottom: 28, fontWeight: 600 }}>
+          {t.footer.tagline}
+          <br />
+          <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>{t.footer.taglineAttribution}</span>
+        </p>
         {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address) lives on
             Legal Notice - not duplicated here, this footer only needs to point there. */}
         <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', marginBottom: 0 }}>
