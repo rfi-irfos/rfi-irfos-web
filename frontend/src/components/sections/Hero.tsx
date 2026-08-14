@@ -100,14 +100,37 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           1*0.16 = 0.52s) - same easing curve as RevealWords for visual consistency.
           Font size taken down a step further (clamp 1.05-1.4rem -> 0.95-1.2rem, live
           feedback 2026-08-14: still reading too heavy under the shrunk headline). */}
-      <motion.p
-        initial={prefersReducedMotion() ? undefined : { opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
-        style={{ fontSize: 'clamp(0.95rem, 1.7vw, 1.2rem)', fontWeight: 400, color: 'var(--text2)', maxWidth: 1000, lineHeight: 1.5, marginBottom: 40, letterSpacing: '0.01em' }}
-      >
-        {t.hero.identity}
-      </motion.p>
+      {/* Live feedback 2026-08-14: the identity line sits directly on the busy
+          dashboard screenshot now (map dots/lines right behind the glyphs), so
+          plain text color alone doesn't hold contrast anymore. A solid bar in
+          the theme's own background tone sweeps in behind the text (scaleX,
+          left-anchored, "zieht rein") just before the text itself fades up -
+          same fix pattern as a highlighter, not a glass panel: opaque enough
+          to read cleanly against any part of the photo underneath it. */}
+      <div style={{ position: 'relative', display: 'inline-block', maxWidth: 1000, marginBottom: 40 }}>
+        <motion.div
+          aria-hidden="true"
+          initial={prefersReducedMotion() ? undefined : { scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.55, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            position: 'absolute', inset: '-10px -18px', zIndex: 0, borderRadius: 6, transformOrigin: 'left center',
+            background: theme === 'dark'
+              ? 'rgba(5,7,14,0.88)'
+              : theme === 'hc'
+                ? 'rgba(0,0,0,0.92)'
+                : 'rgba(250,245,239,0.92)',
+          }}
+        />
+        <motion.p
+          initial={prefersReducedMotion() ? undefined : { opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(0.95rem, 1.7vw, 1.2rem)', fontWeight: 400, color: 'var(--text2)', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0 }}
+        >
+          {t.hero.identity}
+        </motion.p>
+      </div>
 
       {/* Stats moved up, directly after the identity paragraph (live feedback:
           the hero read as a wall of text with too many stacked lines before
