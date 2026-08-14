@@ -667,29 +667,21 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
 
   return (
     <div style={{
-      // Photo scrolls WITH the page (live feedback 2026-08-14: an earlier position:fixed
-      // backdrop pinned it to the viewport - explicitly not what was wanted, it should
-      // move with the rest of the content). Sizing the photo (and its tint overlay) at
-      // '100% 100vh' + repeat-y instead of 'cover' or '100% 100%': this element's own
-      // height is the full page, which varies a lot route to route, and both of those
-      // alternatives size relative to THAT height - 'cover' on a several-screens-tall box
-      // means any single screenful only ever shows a heavily zoomed-in sliver of the
-      // photo (the original reason 'fixed' was used at all, before today), and stretching
-      // to '100% 100%' visibly distorted the photo AND re-scaled differently on every
-      // route depending on how long that particular page happened to be (live feedback).
-      // One tile = one viewport height, same on every route, repeating down the page -
-      // same crisp per-screenful look Hero had on its own, now tiled instead of pinned.
+      // Plain single image, 'cover', scrolls normally with the page (live feedback
+      // 2026-08-14, after both a position:fixed pin and a repeat-y tile were tried and
+      // rejected: one straightforward photo, not tiled, not stretched - the standard
+      // background-image pattern any site uses, nothing cleverer than that).
       backgroundBlendMode: 'normal',
       background: theme === 'dark'
-        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.42)) center top / 100% 100vh repeat-y, url("/page-structure-dark.jpeg") center top / 100% 100vh repeat-y'
+        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.42)), url("/page-structure-dark.jpeg") center top / cover no-repeat'
         : theme === 'light'
-          ? 'linear-gradient(rgba(250,245,239,0.38), rgba(250,245,239,0.38)) center top / 100% 100vh repeat-y, url("/page-structure-light.jpeg") center top / 100% 100vh repeat-y'
+          ? 'linear-gradient(rgba(250,245,239,0.38), rgba(250,245,239,0.38)), url("/page-structure-light.jpeg") center top / cover no-repeat'
           // hc reuses the dark photo but under a much heavier black overlay (0.8 vs dark's
           // 0.42) - the --text/--border AAA ratios in index.css ([data-theme="hc"]) are
           // verified against a literal #000000 backdrop, so the image can only sit under
           // hc at an opacity dark near-black enough not to erode those ratios. No teal glow
           // layers here either - hc's accent is amber (--accent: #ffd400), not teal.
-          : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)) center top / 100% 100vh repeat-y, url("/page-structure-dark.jpeg") center top / 100% 100vh repeat-y',
+          : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/page-structure-dark.jpeg") center top / cover no-repeat',
       backgroundColor: theme === 'dark' ? '#000000' : theme === 'hc' ? '#000000' : 'var(--bg)',
       // position:relative + zIndex:0 give this wrapper its own stacking context -
       // without it, ScrollSpine's zIndex:-1 rail escapes to the document root's

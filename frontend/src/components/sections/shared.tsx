@@ -211,12 +211,14 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
     function play() {
       if (playing) return
       playing = true
-      // Live feedback 2026-08-05: overall animation read as too long. Windows
-      // roughly halved from the reviewed version - still individually varied
-      // per letter (not clustered), just compressed to a shorter total span.
+      // Live feedback 2026-08-05: overall animation read as too long, windows
+      // roughly halved. Live feedback 2026-08-14: went too far the other way -
+      // "wechselt sich zu schnell, muss ein bisschen länger da stehen" - widened
+      // back out partway (not fully back to the original), still individually
+      // varied per letter, not clustered.
       const plans = spans.map(() => {
-        const start = Math.floor(Math.random() * 25)
-        return { start, end: start + Math.floor(Math.random() * 30) + 18, flipped: false }
+        const start = Math.floor(Math.random() * 35)
+        return { start, end: start + Math.floor(Math.random() * 40) + 25, flipped: false }
       })
       spans.forEach(span => {
         span.style.transition = 'left 420ms cubic-bezier(.3,1.4,.5,1), transform 420ms cubic-bezier(.3,1.4,.5,1), filter 60ms linear'
