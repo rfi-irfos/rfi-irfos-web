@@ -685,25 +685,23 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       position: 'relative', zIndex: 0,
       color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
 
-      {/* Photo backdrop, on its own layer now (live feedback 2026-08-14: "it takes
-          too much attention, like a drummer overshadowing the band, not carrying
-          it" - wants it to recede, not compete with content). Split out from the
-          wrapper's own background specifically so filter: blur() can apply to just
-          this layer, not the text/content the wrapper also contains (filter on the
-          wrapper itself would blur everything). position:absolute + inset:0 inside
-          this position:relative wrapper spans the exact same box the background
-          used to cover directly - same sizing/crop behavior as before, just its
-          own paint layer. Tint opacity also raised a touch (0.42->0.5 dark,
-          0.38->0.46 light) alongside the blur - both push the photo further back
-          as ambient texture instead of a crisp, attention-grabbing image. hc
-          untouched, its 0.8 overlay is the accessibility-mandated one. */}
+      {/* Photo backdrop, on its own layer (live feedback 2026-08-14: "it takes too
+          much attention, like a drummer overshadowing the band, not carrying it" -
+          wants it to recede, not compete with content). filter: blur() was tried
+          in the same pass and reverted immediately after ("remove the blur...the
+          blur looks bad") - grain + the raised tint opacity below are what's
+          actually doing the "recede" work now. Kept as its own layer (split out
+          from the wrapper's own background) regardless, since a dedicated paint
+          layer is harmless and keeps this ready if blur or another per-layer
+          effect comes back. position:absolute + inset:0 inside this
+          position:relative wrapper spans the exact same box the background used
+          to cover directly - same sizing/crop behavior as before, just its own
+          paint layer. Tint opacity raised a touch (0.42->0.5 dark, 0.38->0.46
+          light) to push the photo further back as ambient texture. hc untouched,
+          its 0.8 overlay is the accessibility-mandated one. */}
       <div aria-hidden="true" style={{
-        // inset -10px, not 0: filter: blur() can otherwise show a faint unblurred
-        // fringe right at the box edge, since blur samples pixels outside the box
-        // that don't exist there. The wrapper's overflowX: 'hidden' clips the
-        // horizontal overhang; the extra 10px top/bottom is harmless.
-        position: 'absolute', inset: -10, zIndex: -2, pointerEvents: 'none',
-        filter: 'blur(3px)', backgroundBlendMode: 'normal',
+        position: 'absolute', inset: 0, zIndex: -2, pointerEvents: 'none',
+        backgroundBlendMode: 'normal',
         background: theme === 'dark'
           ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("/page-structure-dark.jpeg") center top / cover no-repeat'
           : theme === 'light'

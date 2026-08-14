@@ -1,5 +1,6 @@
 // "Research Areas" section (`#research`) - extracted verbatim from PublicSite.tsx.
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { motion } from 'framer-motion'
 import { prefersReducedMotion, useTilt, Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
@@ -127,8 +128,22 @@ function ResearchAreasGrid() {
           )
         })}
       </div>
-      {selected !== null && (
-        <ResearchAreaModal index={selected} onClose={() => setSelected(null)} onNavigate={setSelected} />
+      {/* Portaled straight to document.body - this component sits deep inside
+          <main className="rfi-view-stage"> (PublicSite.tsx), which carries a
+          framer-motion identity transform (matrix(1,0,0,1,0,0) - a visual no-op,
+          but "not none" is enough). Per spec, ANY non-none transform on an
+          ancestor makes that ancestor the containing block for descendant
+          position:fixed elements instead of the viewport - so the modal was
+          centering itself against the full document height, not the visible
+          viewport, and rendered far below whatever was actually on screen
+          ("rendert irgendwo im Nirgendwo," live feedback 2026-08-14). The other
+          four modals on this page (checkout/proposal/report/intel, all in
+          PublicSite.tsx) happen to render as siblings of <main> rather than
+          descendants, so they were never exposed to this. A portal sidesteps it
+          outright regardless of where this component lives in the tree. */}
+      {selected !== null && createPortal(
+        <ResearchAreaModal index={selected} onClose={() => setSelected(null)} onNavigate={setSelected} />,
+        document.body
       )}
     </>
   )
