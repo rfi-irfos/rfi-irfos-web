@@ -18,9 +18,9 @@ function IntelligenceProofShowcase() {
   const pair = pairs[reduced ? 0 : i]
   return (
     <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} style={{
-      maxWidth: 680, margin: '0 auto', height: 'clamp(190px, 18vw, 220px)', boxSizing: 'border-box', textAlign: 'center',
+      maxWidth: 680, margin: '0 auto', height: 'clamp(140px, 13vw, 170px)', boxSizing: 'border-box', textAlign: 'center',
       background: 'linear-gradient(var(--accent-dim), var(--accent-dim)), var(--glass-bg-solid)',
-      border: '1px solid rgba(0,245,196,0.2)', borderRadius: 16, padding: '32px 36px',
+      border: '1px solid rgba(0,245,196,0.2)', borderRadius: 16, padding: '24px 32px',
       display: 'flex', flexDirection: 'column', justifyContent: 'center',
     }}>
       <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--accent-text)', marginBottom: 10 }}>{pair.a}</p>
@@ -62,7 +62,7 @@ function ProjectCard({ p }: { p: LocalizedProject }) {
   // container, and backdrop-filter re-samples every scroll frame.
   return (
     <div className="rfi-hover-card rfi-glass-flat rfi-glass-solid" style={{
-      borderRadius: 16, padding: '32px 28px', display: 'flex', flexDirection: 'column', gap: 12,
+      borderRadius: 16, padding: '32px 28px', minHeight: 390, display: 'flex', flexDirection: 'column', gap: 12,
       flex: '1 1 0', minWidth: 0,
     }}>
       {/* flexWrap+minWidth:0+flexShrink:0 - on narrow cards (mobile, 84% basis) a long
