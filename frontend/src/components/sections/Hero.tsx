@@ -74,9 +74,11 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
         <HeroFlipWord word="Rethink" delay={0.2} />{' '}
         <RevealWords text="the Obvious." delayStart={0.36} emphasizeIndices={[1]} />
       </p>
-      <p style={{ fontSize: 'clamp(1.05rem, 2vw, 1.4rem)', fontWeight: 400, color: 'var(--text2)', maxWidth: 1000, lineHeight: 1.5, marginBottom: 40, letterSpacing: '0.01em' }}>
-        {t.hero.identity}
-      </p>
+      <Reveal from="bottom">
+        <p style={{ fontSize: 'clamp(1.05rem, 2vw, 1.4rem)', fontWeight: 400, color: 'var(--text2)', maxWidth: 1000, lineHeight: 1.5, marginBottom: 40, letterSpacing: '0.01em' }}>
+          {t.hero.identity}
+        </p>
+      </Reveal>
 
       {/* Stats moved up, directly after the identity paragraph (live feedback:
           the hero read as a wall of text with too many stacked lines before
