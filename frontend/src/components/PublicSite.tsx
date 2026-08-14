@@ -726,8 +726,13 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         // rather than one section abruptly reading slightly darker than its
         // neighbors. AppPrivacySection's own copy removed below to avoid
         // doubling it up right there.
+        // Live feedback 2026-08-14: "mehr schwarztönung... der BG passt wies isch
+        // aber die schwarzung muss dunker sein, sodass alles was der kunde sieht
+        // sich noch besser abhebt" - flat black raised 0.4->0.6, applied top to
+        // bottom via this same page-wide layer, no other change to the photo
+        // itself (position/crop/asset all untouched).
         background: theme === 'dark'
-          ? 'linear-gradient(rgba(0,245,196,0.03), rgba(0,245,196,0.03)), radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("/page-structure-dark.jpeg") center top / cover no-repeat'
+          ? 'linear-gradient(rgba(0,245,196,0.03), rgba(0,245,196,0.03)), radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("/page-structure-dark.jpeg") center top / cover no-repeat'
           : theme === 'light'
             ? 'linear-gradient(rgba(0,245,196,0.03), rgba(0,245,196,0.03)), linear-gradient(rgba(250,245,239,0.36), rgba(250,245,239,0.36)), url("/page-structure-light.jpeg") center top / cover no-repeat'
             : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/page-structure-dark.jpeg") center top / cover no-repeat',
