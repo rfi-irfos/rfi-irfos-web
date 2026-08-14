@@ -76,7 +76,7 @@ export const DE: Content = {
       pairs: [
         {
           a: 'Wir verfolgen, was ein KI-System tatsächlich tut, wenn Menschen es benutzen.',
-          detail: 'Code-Analyse mit echten Eingaben und echtem Verhalten — nicht mit Dokumentation, Demos oder Benchmark-Werten.',
+          detail: 'Code-Analyse mit echten Eingaben und echtem Verhalten, nicht mit Dokumentation, Demos oder Benchmark-Werten.',
         },
         {
           a: 'Wir übersetzen Richtlinienpflichten in technische Kontrollen, die Ihr Infrastrukturteam tatsächlich umsetzen kann.',
@@ -88,10 +88,10 @@ export const DE: Content = {
         },
         {
           a: 'Wir prüfen Systeme für Kinder dort, wo Einwilligung, Exposition und biometrische Daten zusammentreffen.',
-          detail: 'COPPA, DSGVO Art. 8 und die EU-AI-Act-Bestimmungen für Minderjährige — getestet an Altersprüfung, Einwilligung, Verhaltensdaten und SDKs.',
+          detail: 'COPPA, DSGVO Art. 8 und die EU-AI-Act-Bestimmungen für Minderjährige, getestet an Altersprüfung, Einwilligung, Verhaltensdaten und SDKs.',
         },
         {
-          a: 'Wir verfolgen, wo Körper zu Daten werden — vom Sensor über Speicherung bis zum Prozessor.',
+          a: 'Wir verfolgen, wo Körper zu Daten werden, vom Sensor über Speicherung bis zum Prozessor.',
           detail: 'Wearables, Medizingeräte und Gesundheitsassistenten: kartiert auf DSGVO Art. 9, Datenminimierung und grenzüberschreitende Transfers.',
         },
         {
@@ -137,7 +137,7 @@ export const DE: Content = {
     },
     kpisSub: {
       appsAudited: 'Jede App wird auf Quellcode-Ebene dekompiliert, nicht nur von außen gescannt.',
-      smaliClasses: 'Der gesamte ausgelieferte Code, den wir tatsächlich gelesen haben — keine Schätzung.',
+      smaliClasses: 'Der gesamte ausgelieferte Code, den wir tatsächlich gelesen haben, keine Schätzung.',
       criticalFindings: 'Bestätigte Befunde mit Behörden-Copy, keine theoretischen Risiken.',
       trackersFound: 'Drittanbieter-Tracking, das wir nachweislich im Binary gefunden haben.',
       endpointsInvestigated: 'Reale Server und Länder, wohin Daten tatsächlich fließen.',
@@ -198,7 +198,7 @@ export const DE: Content = {
   proof: {
     eyebrow: 'Das Ergebnis',
     heading: 'das, was Sie tatsächlich in der Hand hätten',
-    subheading: 'Jeder Fall im Ledger endet in genau so einem Dokument: einem vollständigen, evidenzbasierten Offenlegungsbericht, nach Ablauf des Embargos öffentlich einsehbar - gleiches Format, gleiche Tiefe, unabhängig davon, ob das Unternehmen uns darüber hinaus beauftragt.',
+    subheading: 'Jeder Fall im Ledger endet in genau so einem Dokument: einem vollständigen, evidenzbasierten Offenlegungsbericht, nach Ablauf des Embargos öffentlich einsehbar - gleiches Format, gleiche Tiefe, unabhängig davon, ob das Unternehmen uns darüber hinaus beauftragt. Jede Behauptung darin lässt sich bis zur zugrundeliegenden Evidenz zurückverfolgen, Sie können es selbst nachprüfen, statt uns einfach zu glauben.',
     viewReport: 'vollständigen Bericht lesen',
     resolvedOn: (date: string) => `behoben am ${date}`,
     carouselPrevAria: 'Vorheriger Bericht',
@@ -208,7 +208,7 @@ export const DE: Content = {
   appPrivacy: {
     eyebrow: 'Hier beginnen',
     heading: 'Beobachtungen werden zu Intelligence',
-    paragraph: 'Die meisten Organisationen haben mehr Signale, als sie einordnen können: Systeme, Anbieter, Märkte, Ereignisse, Abhängigkeiten und Veränderungen aus verschiedenen Richtungen. Wir führen sie in einem evidenzbasierten World Model zusammen, bewahren die Herkunft jeder Beobachtung und verfolgen Veränderungen durch die Beziehungen, die daran hängen.',
+    paragraph: 'Die meisten Organisationen haben mehr Signale, als sie einordnen können: Systeme, Anbieter, Märkte, Ereignisse, Abhängigkeiten und Veränderungen aus verschiedenen Richtungen. Wir führen sie in einem evidenzbasierten World Model zusammen, bewahren die Herkunft jeder Beobachtung und verfolgen Veränderungen durch die Beziehungen, die daran hängen. Jede Beobachtung bleibt bis zu ihrem Ursprung nachvollziehbar: Whitebox by Design, sodass im Modell nichts als Blackbox läuft.',
     comparisonClassicLabel: 'Was verloren geht',
     comparisonRfiLabel: 'Was das Modell bewahrt',
     comparisonRows: [
@@ -242,10 +242,10 @@ export const DE: Content = {
       { tier: 'Signal', hook: 'Ein stehendes Frühwarnsystem für Ihren Sektor - kontinuierliche Beobachtung statt Monatsbericht.', desc: 'Ein Wettbewerber macht selten einen öffentlichen Schritt, ohne dass monatelang Signale davor sichtbar waren: eine Finanzierungsrunde, ein Sicherheitsvorfall, ein SDK-Wechsel, eine stille Kursänderung im Code. Wir halten einen festen Analysten bereit, der den Korpus für Ihren Sektor kontinuierlich beobachtet - nicht als monatliche Zusammenfassung, sondern als laufende Überwachung relevanter Veränderungen mit sofortiger Warnung bei Bewegung. Die Leistung ist fortlaufende Intelligence: Sie erfahren den Zeitpunkt des Signals, nicht die Schlagzeile Wochen später. Zugewiesen innerhalb einer Woche nach Zahlung.', delivery: 'Briefing ab 14 Kalendertagen, danach monatlich.' },
     ],
     technical: [
-      { tier: 'Agent Deployment', hook: 'Von der Analyse zur Architektur — von der Architektur zum laufenden System.', desc: 'Sie erhalten keine Blackbox. Wir bauen Agentensysteme, Schwarmlogik und MCP-Server, die auf Ihrer Infrastruktur laufen - dokumentiert, reproduzierbar, unter Ihrer Kontrolle. Auf Basis von TIS, Ternlang und Laura\'s-Agents-Engine, je nach Aufgabe.\n\nDas Ziel ist kein Demo-Chatbot. Das Ziel ist ein System, das Ihre operativen Fragen selbstständig beantwortet: Evidence sammeln, Befunde triagieren, Regeln anwenden, Handlungsoptionen aufbereiten.\n\nJede Integration wird mit demselben Evidenzstandard geliefert wie unsere Audits: nachvollziehbare Quellen, reproduzierbare Schritte, klare Grenzen.', delivery: 'Erste Integration innerhalb von 21 Kalendertagen.' },
+      { tier: 'Agent Deployment', hook: 'Von der Analyse zur Architektur, von der Architektur zum laufenden System.', desc: 'Sie erhalten keine Blackbox. Wir bauen Agentensysteme, Schwarmlogik und MCP-Server, die auf Ihrer Infrastruktur laufen - dokumentiert, reproduzierbar, unter Ihrer Kontrolle. Auf Basis von TIS, Ternlang und Laura\'s-Agents-Engine, je nach Aufgabe.\n\nDas Ziel ist kein Demo-Chatbot. Das Ziel ist ein System, das Ihre operativen Fragen selbstständig beantwortet: Evidence sammeln, Befunde triagieren, Regeln anwenden, Handlungsoptionen aufbereiten.\n\nJede Integration wird mit demselben Evidenzstandard geliefert wie unsere Audits: nachvollziehbare Quellen, reproduzierbare Schritte, klare Grenzen.', delivery: 'Erste Integration innerhalb von 21 Kalendertagen.' },
       { tier: 'Custom Stack', hook: 'Systeme, die keine Kompromisse erzwingen.', desc: 'Sie erhalten ein maßgeschneidertes System auf Basis von Rust, TIS oder Ternlang - dort, wo fertige Frameworks zu langsam, zu unsicher oder zu teuer sind. Backend, API, Compiler, VM, Desktop, PWA, Embedded-Agent: alles aus einer Hand, vom selben Team, das die Forschung betreibt.\n\nKeine aufgeblähten Page-Builder, kein Vendor-Lock-in, keine Sprachen, die nur funktionieren, solange niemand genauer hinsieht. Wenn wir etwas bauen, bleibt es unter Ihrer Kontrolle - Quellcode, Toolchain, Infrastruktur.\n\nIdeal, wenn Standard-Software Ihre Frage nicht beantworten kann, weil die Frage selbst noch keine Standardantwort hat.', delivery: 'Definition of Done + Zeitplan innerhalb von 14 Kalendertagen.' },
       { tier: 'Architecture Lab', hook: 'Gemeinsam an der Architektur, bevor irgendjemand codet.', desc: 'Sie bekommen keinen fertigen Report, sondern eine Forschungs- und Systemarchitektur, die gemeinsam mit Ihnen entworfen wird - auf Basis von Lauras Emergent-Interaction-Methode oder ternärer KI-Architektur, je nach Fragestellung.\n\nDas Ergebnis ist kein PDF, sondern ein baufertiger Plan: Forschungsfrage, Prototyp, Validierungskriterien, Zeitplan. Wenn Sie es anschließend bauen lassen wollen, haben wir das gleiche Team. Wenn nicht, haben Sie trotzdem eine klare Architektur, die niemand aus einer Massenvorlage erzeugt hätte.\n\nGeeignet für Organisationen, die nicht nur konsumieren, sondern mitbestimmen wollen, wie die Systeme aussehen, auf die sie sich verlassen.', delivery: 'Architektur- und Forschungsplan innerhalb von 14 Kalendertagen.' },
-      { tier: 'Full Spectrum Deploy', hook: 'Von der ersten Analyse bis zum laufenden Betrieb — alles aus einer Hand.', desc: 'Sie erhalten nicht nur ein System, sondern den gesamten Betrieb: Software-Installation, Systemintegration, Datenmigration, Team-Training und laufender Support. Wir verbinden die Dots, installieren die Software, trainieren die Leute und bleiben, bis es läuft — und danach.\n\nAlles aus einer Hand, vom selben Team, das die Forschung betreibt. Keine Übergaben an Dritte, keine Blackboxen, kein Vendor-Lock-in. Wenn wir etwas deployen, bleibt es unter Ihrer Kontrolle.\n\nIdeal für Organisationen, die nicht nur eine Lösung kaufen wollen, sondern eine komplette, betriebsbereite Infrastruktur, die sofort produktiv ist.', delivery: 'Definition of Done + Zeitplan innerhalb von 14 Kalendertagen.' },
+      { tier: 'Full Spectrum Deploy', hook: 'Von der ersten Analyse bis zum laufenden Betrieb, alles aus einer Hand.', desc: 'Sie erhalten nicht nur ein System, sondern den gesamten Betrieb: Software-Installation, Systemintegration, Datenmigration, Team-Training und laufender Support. Wir verbinden die Dots, installieren die Software, trainieren die Leute und bleiben, bis es läuft, und danach.\n\nAlles aus einer Hand, vom selben Team, das die Forschung betreibt. Keine Übergaben an Dritte, keine Blackboxen, kein Vendor-Lock-in. Wenn wir etwas deployen, bleibt es unter Ihrer Kontrolle.\n\nIdeal für Organisationen, die nicht nur eine Lösung kaufen wollen, sondern eine komplette, betriebsbereite Infrastruktur, die sofort produktiv ist.', delivery: 'Definition of Done + Zeitplan innerhalb von 14 Kalendertagen.' },
     ],
     security: [
       { tier: 'Public', hook: 'Kostenlos, für immer. Funde werden nach 90 Tagen veröffentlicht, ausnahmslos.', desc: 'Wir stellen dieselbe quellcode-nahe Beobachtungsleistung bereit, die auch zahlende Kunden erhalten - kostenlos. Nach einer 90-Tage-Vorlauffrist wird der Fund auf unserem öffentlichen Ledger veröffentlicht, damit die betroffene Organisation Zeit zur Reaktion hat, bevor ihn jemand anderes sieht. Jeder Eintrag auf diesem Ledger unterliegt derselben Regel - groß oder klein, zahlend oder nicht. Kein Vertrag, keine Geheimhaltung, keine leisere Behandlung. Eingeschlossen ist die erste Handy-Privatsphäre-Sitzung: wir zeigen Ihnen, wie Sie die versteckten Tracker auf Ihrem eigenen Gerät abschalten.', delivery: 'Bericht innerhalb von 7 Kalendertagen.' },
@@ -294,13 +294,13 @@ export const DE: Content = {
   journey: {
     eyebrow: 'Ablauf der Zusammenarbeit',
     heading: 'was nach dem Start passiert',
-    subheading: 'Fünf Phasen, von einer einzelnen Beobachtung bis zu einem kontinuierlich schärfer werdenden Intelligence-Modell. Die Tiefe ändert sich mit der Frage; die Disziplin bleibt gleich.',
+    subheading: 'Fünf Phasen, von einer einzelnen Beobachtung bis zu einem kontinuierlich schärfer werdenden Intelligence-Modell. Die Tiefe ändert sich mit der Frage; die Disziplin bleibt gleich. Jede Phase bleibt lückenlos nachvollziehbar, Whitebox by Design, jede Aktion lässt sich bis zur ursprünglichen Beobachtung zurückverfolgen.',
     steps: [
       { stage: 'Ingest', body: 'Wir beginnen mit dem, was Sie uns anvertrauen: einer Veränderung, einem Signal, einer Beziehung, einer Quelle oder einer Frage, aus Ihren Systemen, öffentlichen Daten oder einer von uns bereits beobachteten Domäne.\n\nEs wird nichts angefasst, bevor wir nicht jede einzelne Datei gelesen haben, nicht das README, nicht das Manifest, das eigentliche Ding. Der Ausgangspunkt kann klein sein. Das Modell ist es nicht.' },
       { stage: 'Normalize', body: 'Wir lösen Entitäten auf, mappen Beziehungen, ergänzen Zeitstempel und Provenance und bewahren, was unsicher bleibt. Unterschiedliche Vokabulare werden vergleichbar, ohne sie als identisch auszugeben.\n\nNichts wird ohne Herkunft akzeptiert. Unbekanntes wird nicht stillschweigend ergänzt.' },
       { stage: 'Trace', body: 'Wir vergleichen Zustände über die Zeit, verfolgen Abhängigkeiten, finden Brücken und Engpässe und prüfen, ob die Beobachtung zu einem bekannten oder domänenübergreifenden Muster passt.\n\nDie Frage lautet nicht nur, was sich verändert hat, sondern was damit verbunden ist.' },
       { stage: 'Emit', body: 'Eine relevante Veränderung wird zu einem Intelligence Event: Evidenz, Widerspruchsstatus, Konfidenz, betroffene Domänen, Netzwerkimplikationen und kommerzielle Relevanz in einem nachvollziehbaren Objekt.\n\nKein Urteil. Ein strukturiertes Event, das Sie untersuchen und nutzen können.' },
-      { stage: 'Learn', body: 'Das Modell bewahrt stützende Evidenz, Widersprüche, offene Fragen und wiederkehrende Strukturen. Simulationen können prüfen, was unter einer Intervention geschehen könnte — klar als hypothetisch markiert.\n\nJede Beobachtung macht die nächste wertvoller.' },
+      { stage: 'Learn', body: 'Das Modell bewahrt stützende Evidenz, Widersprüche, offene Fragen und wiederkehrende Strukturen. Simulationen können prüfen, was unter einer Intervention geschehen könnte, klar als hypothetisch markiert.\n\nJede Beobachtung macht die nächste wertvoller.' },
     ],
   },
 

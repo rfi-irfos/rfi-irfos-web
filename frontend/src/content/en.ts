@@ -79,7 +79,7 @@ export const EN = {
       pairs: [
         {
           a: 'We trace what an AI system actually does when people use it.',
-          detail: 'Source-level testing against real inputs and real behaviour — not documentation, demos, or benchmark scores.',
+          detail: 'Source-level testing against real inputs and real behaviour, not documentation, demos, or benchmark scores.',
         },
         {
           a: 'We translate directive obligations into technical controls your infrastructure team can implement.',
@@ -91,7 +91,7 @@ export const EN = {
         },
         {
           a: 'We audit children\'s systems where consent, exposure, and biometric data meet.',
-          detail: 'COPPA, GDPR Art. 8, and the EU AI Act provisions for minors — tested against age gates, consent mechanisms, behavioural data, and the SDKs that run before any screen appears.',
+          detail: 'COPPA, GDPR Art. 8, and the EU AI Act provisions for minors, tested against age gates, consent mechanisms, behavioural data, and the SDKs that run before any screen appears.',
         },
         {
           a: 'We trace where bodies become data, from sensor to storage to processor.',
@@ -105,9 +105,9 @@ export const EN = {
       pricingLink: 'Pricing →',
     },
     items: [
-      { sub: 'TIS monorepo', desc: 'The full-stack substrate: Ternlang language and compiler, BET instruction set, virtual machine, linear algebra, API, MCP server, and model runtime. Balanced ternary {-1, 0, +1} is a native systems primitive here — not a quantisation layer added after the fact. The repository includes 34 MCP tools, a live API, 28,000+ open standard-library modules, and the specifications that connect the whole stack.', tag: 'core platform' },
+      { sub: 'TIS monorepo', desc: 'The full-stack substrate: Ternlang language and compiler, BET instruction set, virtual machine, linear algebra, API, MCP server, and model runtime. Balanced ternary {-1, 0, +1} is a native systems primitive here, not a quantisation layer added after the fact. The repository includes 34 MCP tools, a live API, 28,000+ open standard-library modules, and the specifications that connect the whole stack.', tag: 'core platform' },
       { sub: 'ternary MoE language model', desc: 'albert. is trained from scratch with ternary weights {-γ, 0, +γ}, not converted from a floating-point model. Its dual-stream Mixture-of-Experts architecture routes through sparse expert layers, skips zero-weight operations, and can expand itself through plateau-gated Net2Net surgery. The current research system is a live existence proof of the TIS architecture, with training telemetry and benchmarkable CPU inference.', tag: 'AI model' },
-      { sub: 'pure-Rust OS', desc: 'Rusty Penguin is a bare-metal operating system built from the ground up on the same balanced-ternary logic. It has its own kernel, long-mode boot, paging, preemptive multitasking, Aero-style desktop, on-disk filesystem, from-scratch TCP/IP and TLS 1.3 stack, and Linux-ABI compatibility layer. The long-term target is a ternary-native substrate for ternary-native intelligence — with every milestone verified in QEMU or against published vectors.', tag: 'systems' },
+      { sub: 'pure-Rust OS', desc: 'Rusty Penguin is a bare-metal operating system built from the ground up on the same balanced-ternary logic. It has its own kernel, long-mode boot, paging, preemptive multitasking, Aero-style desktop, on-disk filesystem, from-scratch TCP/IP and TLS 1.3 stack, and Linux-ABI compatibility layer. The long-term target is a ternary-native substrate for ternary-native intelligence, with every milestone verified in QEMU or against published vectors.', tag: 'systems' },
       { sub: 'sovereign workplace OS', desc: 'One self-hosted Rust + React binary replacing the SaaS stack most institutes buy piecemeal: comms, CRM, finance, payroll, HR, governance, and live training telemetry, all under one roof, all on infrastructure we actually own. Every action lands in an append-only ledger built to outlast the people who wrote to it: a 50-year audit trail, not a compliance checkbox.', tag: 'internal · live' },
       { sub: '215+ apps · 100+ companies', desc: '250+ critical findings across NYSE, NASDAQ, LSE, and XETRA listed companies. Includes children\'s app wave with COPPA + GDPR Art. 8 scope. Root level code analysis. Coordinated disclosure 2026-09-19. Regulators BCC\'d on every submission.', tag: 'security research' },
       { sub: 'disclosure impact engine', desc: 'Models how markets react to security disclosures once they go public - including our own, only after the 90-day embargo lifts. A hedge system trades the signal. BlackRock\'s version is called Aladdin ($21T AUM). This one\'s free.', tag: 'open source' },
@@ -140,7 +140,7 @@ export const EN = {
     },
     kpisSub: {
       appsAudited: 'Every app is decompiled at source-code level, not just scanned from outside.',
-      smaliClasses: 'The full shipped code we have actually read — not an estimate.',
+      smaliClasses: 'The full shipped code we have actually read, not an estimate.',
       criticalFindings: 'Confirmed findings copied to regulators, not theoretical risks.',
       trackersFound: 'Third-party tracking we have provably found inside the binary.',
       endpointsInvestigated: 'Real servers and countries where data actually flows.',
@@ -205,7 +205,7 @@ export const EN = {
   proof: {
     eyebrow: 'The Deliverable',
     heading: "what you'd actually hold in your hands",
-    subheading: 'Every case on the ledger ends in one of these: a complete, evidence-backed disclosure report, published in full once the embargo lifts - same format and depth regardless of whether the company ever engages us further.',
+    subheading: 'Every case on the ledger ends in one of these: a complete, evidence-backed disclosure report, published in full once the embargo lifts - same format and depth regardless of whether the company ever engages us further. Every claim in it traces back to the evidence behind it, so you can verify it yourself instead of taking our word for it.',
     viewReport: 'read the full report',
     resolvedOn: (date: string) => `resolved ${date}`,
     carouselPrevAria: 'Previous report',
@@ -215,7 +215,7 @@ export const EN = {
   appPrivacy: {
     eyebrow: 'Start Here',
     heading: 'turning observations into intelligence',
-    paragraph: 'Most organizations have more signals than they can interpret: systems, vendors, markets, events, dependencies, and changes arriving from different directions. We bring them into one evidence-first world model, preserve where every observation came from, and trace what changes through the relationships around it.',
+    paragraph: 'Most organizations have more signals than they can interpret: systems, vendors, markets, events, dependencies, and changes arriving from different directions. We bring them into one evidence-first world model, preserve where every observation came from, and trace what changes through the relationships around it. Every observation stays traceable back to where it came from: whitebox by design, so nothing in the model runs as a black box.',
     comparisonClassicLabel: 'What gets lost',
     comparisonRfiLabel: 'What the model preserves',
     comparisonRows: [
@@ -249,10 +249,10 @@ export const EN = {
       { tier: 'Signal', hook: 'A standing early-warning system for your sector - continuous observation, not a monthly report.', desc: 'A competitor rarely makes one public move without months of signal first - a funding round, a security incident, an SDK swap, a quiet pivot in the code. We maintain a dedicated analyst who observes the corpus for your sector continuously - not as a monthly summary, but as ongoing monitoring of relevant change with immediate alert on movement. The capability is continuous intelligence: you learn the moment the signal appears, not the headline weeks later. Assigned within a week of payment.', delivery: 'Briefing from 14 calendar days, then monthly.' },
     ],
     technical: [
-      { tier: 'Agent Deployment', hook: 'From investigation to architecture — from architecture to a live system.', desc: 'You don\'t get a black box. We build agent systems, swarm logic, and MCP servers that run on your infrastructure - documented, reproducible, and under your control. Based on TIS, Ternlang, and Laura\'s Agents Engine, depending on the job.\n\nThe goal is not a demo chatbot. The goal is a system that answers your operational questions on its own: collecting evidence, triaging findings, applying rules, and preparing courses of action.\n\nEvery integration is delivered with the same evidentiary standard as our audits: traceable sources, reproducible steps, clear boundaries.', delivery: 'First integration within 21 calendar days.' },
+      { tier: 'Agent Deployment', hook: 'From investigation to architecture, from architecture to a live system.', desc: 'You don\'t get a black box. We build agent systems, swarm logic, and MCP servers that run on your infrastructure - documented, reproducible, and under your control. Based on TIS, Ternlang, and Laura\'s Agents Engine, depending on the job.\n\nThe goal is not a demo chatbot. The goal is a system that answers your operational questions on its own: collecting evidence, triaging findings, applying rules, and preparing courses of action.\n\nEvery integration is delivered with the same evidentiary standard as our audits: traceable sources, reproducible steps, clear boundaries.', delivery: 'First integration within 21 calendar days.' },
       { tier: 'Custom Stack', hook: 'Systems that refuse to compromise.', desc: 'You get a bespoke system built on Rust, TIS, or Ternlang - where off-the-shelf frameworks are too slow, too insecure, or too costly. Backend, API, compiler, VM, desktop, PWA, embedded agent: all from one team, the same team that runs the research.\n\nNo bloated page-builders, no vendor lock-in, no languages that only work as long as nobody looks too closely. When we build something, it stays under your control - source code, toolchain, infrastructure.\n\nBuilt for the cases standard software cannot answer, because the question itself has no standard answer yet.', delivery: 'Definition of Done + schedule within 14 calendar days.' },
       { tier: 'Architecture Lab', hook: 'Design the architecture together, before anyone writes production code.', desc: 'You don\'t get a finished report. You get a research and system architecture designed with you - based on Laura\'s Emergent Interaction method or ternary AI architecture, depending on the problem.\n\nThe output is not a PDF. It\'s a build-ready plan: research question, prototype, validation criteria, timeline. If you want us to build it afterward, we\'re the same team. If you don\'t, you still have a coherent architecture nobody generated from a generic template.\n\nFor organizations that want to shape the systems they rely on, not just consume them.', delivery: 'Architecture and research plan within 14 calendar days.' },
-      { tier: 'Full Spectrum Deploy', hook: 'From the first analysis to live operations — everything from one team.', desc: 'You don\'t just get a system. You get the entire operation: software installation, system integration, data migration, team training, and ongoing support. We connect the dots, install the software, train the people, and stay until it runs — and after.\n\nEverything from one team, the same team that runs the research. No handoffs to third parties, no black boxes, no vendor lock-in. If we deploy something, it stays under your control.\n\nIdeal for organizations that want more than a product — they want a complete, production-ready infrastructure that is immediately operational.', delivery: 'Definition of Done + schedule within 14 calendar days.' },
+      { tier: 'Full Spectrum Deploy', hook: 'From the first analysis to live operations, everything from one team.', desc: 'You don\'t just get a system. You get the entire operation: software installation, system integration, data migration, team training, and ongoing support. We connect the dots, install the software, train the people, and stay until it runs, and after.\n\nEverything from one team, the same team that runs the research. No handoffs to third parties, no black boxes, no vendor lock-in. If we deploy something, it stays under your control.\n\nIdeal for organizations that want more than a product: a complete, production-ready infrastructure that is immediately operational.', delivery: 'Definition of Done + schedule within 14 calendar days.' },
     ],
     security: [
       { tier: 'Public', hook: 'Free, forever. Findings publish after 90 days, no exceptions.', desc: 'We provide the same source-code-level observation capability that paying clients receive - at no cost. After a 90-day heads-up window, the finding is published on our public ledger, giving the affected organization time to react before anyone else sees it. Every entry on that ledger is held to the identical rule - big or small, paying or not. No contract, no secrecy, no quieter treatment. Included is your first phone privacy session: we walk you through switching off the hidden trackers running on your own device.', delivery: 'Report within 7 calendar days.' },
@@ -301,7 +301,7 @@ export const EN = {
   journey: {
     eyebrow: 'Engagement Journey',
     heading: 'what happens after you start',
-    subheading: 'Five stages, from a single observation to a continuously improving intelligence model. The depth changes with the question; the discipline stays the same.',
+    subheading: 'Five stages, from a single observation to a continuously improving intelligence model. The depth changes with the question; the discipline stays the same. Every stage stays traceable end to end, whitebox by design, so any action can be backtraced to the observation that produced it.',
     steps: [
       { stage: 'Ingest', body: 'We start with what you trust us to handle: a change, signal, relationship, source, or question, from your systems, public data, or a domain we already monitor.\n\nNothing gets touched until we have read every single file, not the README, not the manifesto, the actual thing. The starting point can be small. The model is not.' },
       { stage: 'Normalize', body: 'We resolve entities, map relationships, attach timestamps and provenance, and preserve what remains uncertain. Different vocabularies become comparable without pretending they are identical.\n\nNothing is accepted without origin. Nothing unknown is silently filled in.' },
