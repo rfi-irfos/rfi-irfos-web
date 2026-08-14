@@ -227,67 +227,14 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     return () => { document.body.style.overflow = prevOverflow }
   }, [checkoutModal, proposalModal, reportModal, intelModal])
 
-  // short synthesized "pop" - no audio file needed, just a quick pitch-dropping
-  // burst via the Web Audio API so this stays fully self-contained.
-  const playPopSound = () => {
-    try {
-      const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
-      const ctx = new AC()
-      const now = ctx.currentTime
-      const osc = ctx.createOscillator()
-      const gain = ctx.createGain()
-      osc.type = 'triangle'
-      osc.frequency.setValueAtTime(900, now)
-      osc.frequency.exponentialRampToValueAtTime(120, now + 0.18)
-      gain.gain.setValueAtTime(0.18, now)
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22)
-      osc.connect(gain)
-      gain.connect(ctx.destination)
-      osc.start(now)
-      osc.stop(now + 0.24)
-      osc.onended = () => ctx.close()
-    } catch { /* audio is a nice-to-have, never block the banner over it */ }
-  }
-
-  // A half-empty room, a few scattered claps — the "yeah, sure, we'll clap
-  // for that" self-roast when dismissing our own useless cookie banner.
-  const playMockClapSound = () => {
-    try {
-      if (typeof window === 'undefined') return
-      const Ctx = (window as any).AudioContext || (window as any).webkitAudioContext
-      if (!Ctx) return
-      const claps = 3 + Math.floor(Math.random() * 3) // 3–5 sad claps
-      for (let i = 0; i < claps; i++) {
-        setTimeout(() => {
-          const ctx = new Ctx()
-          const now = ctx.currentTime
-          const dur = 0.07
-          // White-noise burst = the "slap" of a real hand clap.
-          const buf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * dur), ctx.sampleRate)
-          const data = buf.getChannelData(0)
-          for (let n = 0; n < data.length; n++) data[n] = (Math.random() * 2 - 1)
-          const noise = ctx.createBufferSource(); noise.buffer = buf
-          // Bandpass shapes the noise into a clap (body ~1.2kHz, some spread).
-          const bp = ctx.createBiquadFilter()
-          bp.type = 'bandpass'; bp.frequency.value = 1100 + Math.random() * 500
-          bp.Q.value = 0.8
-          const gain = ctx.createGain()
-          const peak = 0.18 + Math.random() * 0.08 // quiet, scattered
-          gain.gain.setValueAtTime(0.0001, now)
-          gain.gain.exponentialRampToValueAtTime(peak, now + 0.005)
-          gain.gain.exponentialRampToValueAtTime(0.0006, now + dur)
-          noise.connect(bp); bp.connect(gain); gain.connect(ctx.destination)
-          noise.start(now); noise.stop(now + dur + 0.02)
-          noise.onended = () => ctx.close()
-        }, i * (120 + Math.random() * 150)) // irregular, scattered timing
-      }
-    } catch { /* never block the banner over audio */ }
-  }
-
   // "ba-dum-tss" - Zabih's idea, live feedback 2026-08-14: the confetti pop needed a
-  // rimshot to sell the joke. Two low kick thumps (sine, pitch-dropping, ~180ms apart)
-  // then a cymbal crash (filtered noise burst, longer decay) - same synthesis approach
-  // as playPopSound/playMockClapSound above, no audio file.
+  // rimshot to sell the joke. Two low kick thumps (sine, pitch-dropping) then a
+  // cymbal crash (filtered noise burst, longer decay), synthesized via the Web
+  // Audio API, no audio file. This used to run alongside a separate "pop" sound and
+  // a scattered-clap sound (both removed 2026-08-14, live feedback: "ONLY badumm
+  // tss pls") - it is now the only sound on the cookie-banner-close/confetti
+  // moment. Timing widened slightly (0.18/0.32 -> 0.24/0.44) same feedback pass,
+  // "a bissl langsamer."
   const playRimshotSound = () => {
     try {
       const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
@@ -305,8 +252,8 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         osc.start(now); osc.stop(now + 0.13)
       }
       kick(0)
-      kick(0.18)
-      const cymbalAt = 0.32
+      kick(0.24)
+      const cymbalAt = 0.44
       const now = ctx.currentTime + cymbalAt
       const dur = 0.5
       const buf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * dur), ctx.sampleRate)
@@ -332,7 +279,6 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   // transition, so pieces flutter down instead of dropping on rails.
   const fireConfettiFromRect = (rect: DOMRect, count: number) => {
     const colors = ['#00f5c4', '#ef4444', '#f97316', '#eab308', '#e8e8f0', '#ec4899', '#facc15']
-    playPopSound()
     playRimshotSound()
     for (let i = 0; i < count; i++) {
       const el = document.createElement('div')
@@ -383,7 +329,6 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   const dismissCookieBanner = () => {
     const el = bannerRef.current
     if (el) fireConfettiFromRect(el.getBoundingClientRect(), 90)
-    playMockClapSound()
     new Image().src = `${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&s=${encodeURIComponent('Cookie Banner Close')}`
     setBannerClosing(true)
     setTimeout(() => { setCookieBannerOpen(false); setBannerClosing(false) }, 240)
@@ -730,21 +675,6 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
 
   return (
     <div style={{
-      // Plain single image, 'cover', scrolls normally with the page (live feedback
-      // 2026-08-14, after both a position:fixed pin and a repeat-y tile were tried and
-      // rejected: one straightforward photo, not tiled, not stretched - the standard
-      // background-image pattern any site uses, nothing cleverer than that).
-      backgroundBlendMode: 'normal',
-      background: theme === 'dark'
-        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.42)), url("/page-structure-dark.jpeg") center top / cover no-repeat'
-        : theme === 'light'
-          ? 'linear-gradient(rgba(250,245,239,0.38), rgba(250,245,239,0.38)), url("/page-structure-light.jpeg") center top / cover no-repeat'
-          // hc reuses the dark photo but under a much heavier black overlay (0.8 vs dark's
-          // 0.42) - the --text/--border AAA ratios in index.css ([data-theme="hc"]) are
-          // verified against a literal #000000 backdrop, so the image can only sit under
-          // hc at an opacity dark near-black enough not to erode those ratios. No teal glow
-          // layers here either - hc's accent is amber (--accent: #ffd400), not teal.
-          : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/page-structure-dark.jpeg") center top / cover no-repeat',
       backgroundColor: theme === 'dark' ? '#000000' : theme === 'hc' ? '#000000' : 'var(--bg)',
       // position:relative + zIndex:0 give this wrapper its own stacking context -
       // without it, ScrollSpine's zIndex:-1 rail escapes to the document root's
@@ -755,18 +685,44 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       position: 'relative', zIndex: 0,
       color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
 
+      {/* Photo backdrop, on its own layer now (live feedback 2026-08-14: "it takes
+          too much attention, like a drummer overshadowing the band, not carrying
+          it" - wants it to recede, not compete with content). Split out from the
+          wrapper's own background specifically so filter: blur() can apply to just
+          this layer, not the text/content the wrapper also contains (filter on the
+          wrapper itself would blur everything). position:absolute + inset:0 inside
+          this position:relative wrapper spans the exact same box the background
+          used to cover directly - same sizing/crop behavior as before, just its
+          own paint layer. Tint opacity also raised a touch (0.42->0.5 dark,
+          0.38->0.46 light) alongside the blur - both push the photo further back
+          as ambient texture instead of a crisp, attention-grabbing image. hc
+          untouched, its 0.8 overlay is the accessibility-mandated one. */}
+      <div aria-hidden="true" style={{
+        // inset -10px, not 0: filter: blur() can otherwise show a faint unblurred
+        // fringe right at the box edge, since blur samples pixels outside the box
+        // that don't exist there. The wrapper's overflowX: 'hidden' clips the
+        // horizontal overhang; the extra 10px top/bottom is harmless.
+        position: 'absolute', inset: -10, zIndex: -2, pointerEvents: 'none',
+        filter: 'blur(3px)', backgroundBlendMode: 'normal',
+        background: theme === 'dark'
+          ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("/page-structure-dark.jpeg") center top / cover no-repeat'
+          : theme === 'light'
+            ? 'linear-gradient(rgba(250,245,239,0.46), rgba(250,245,239,0.46)), url("/page-structure-light.jpeg") center top / cover no-repeat'
+            : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/page-structure-dark.jpeg") center top / cover no-repeat',
+      }} />
+
       {/* Grain overlay (live feedback 2026-08-14: the photo backdrop looked too
-          clean/digital, "more like a newspaper print"). SVG feTurbulence noise,
-          not a shipped PNG - generates the texture at render time so there's no
-          extra asset request. mix-blend-mode: 'overlay' + very low opacity is
-          the whole effect: barely visible on its own, but breaks up the photo's
-          otherwise perfectly smooth gradients just enough to read as printed
-          rather than rendered. position:fixed is fine here (unlike the photo
-          layer) since a repeating noise tile has no crop/zoom concerns tied to
-          viewport size the way a single photo does. */}
+          clean/digital, "more like a newspaper print"; opacity raised 0.05->0.08
+          in the same pass that added the blur above, "more grainy"). SVG
+          feTurbulence noise, not a shipped PNG - generates the texture at render
+          time so there's no extra asset request. mix-blend-mode: 'overlay' is the
+          whole effect: breaks up the photo's otherwise perfectly smooth gradients
+          just enough to read as printed rather than rendered. position:fixed is
+          fine here (unlike the photo layer above) since a repeating noise tile has
+          no crop/zoom concerns tied to viewport size the way a single photo does. */}
       <div aria-hidden="true" style={{
         position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none',
-        opacity: 0.05, mixBlendMode: 'overlay',
+        opacity: 0.08, mixBlendMode: 'overlay',
         backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
         backgroundRepeat: 'repeat', backgroundSize: '180px 180px',
       }} />

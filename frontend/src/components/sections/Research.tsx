@@ -105,6 +105,17 @@ function ResearchAreaModal({ index, onClose, onNavigate }: {
 function ResearchAreasGrid() {
   const { t } = useLocale()
   const [selected, setSelected] = useState<number | null>(null)
+  // Scroll lock while open - the other 4 modals on the page (checkout, proposal,
+  // report, intel) all get this from a shared effect in PublicSite.tsx keyed off
+  // their own state; this modal's state lives locally here instead, so it needs
+  // its own copy of the same lock. Without it the page behind the blur can keep
+  // scrolling, which is likely what read as "rendert irgendwo im Nirgendwo."
+  useEffect(() => {
+    if (selected === null) return
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = prevOverflow }
+  }, [selected])
   return (
     <>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
@@ -124,7 +135,7 @@ function ResearchAreasGrid() {
 }
 
 const _I = ({ children }: { children: React.ReactNode }) => (
-  <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+  <svg width="48" height="48" viewBox="0 0 32 32" fill="none"
     stroke="currentColor" style={{ color: 'var(--accent)' }} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     {children}
   </svg>
