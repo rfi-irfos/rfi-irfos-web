@@ -18,21 +18,19 @@ import { RFI_REPOS, SIMEON_REPOS } from '../content/repos'
 
 // Nav logo's EKG line. Was one fixed blip shape looping identically forever - "measuring
 // the same heartbeat forever" per Simeon. A wider multi-beat path was tried and reverted
-// (he wanted the original short length/duration back, just varied). Live feedback
-// 2026-08-14: still read as a crude zigzag, not "like a real EKG" - rebuilt as actual
-// P-QRS-T morphology (a real ECG's three phases: a small rounded P wave, a sharp
-// tall QRS spike, a broader rounded T wave) using an SVG <path> instead of a
-// <polyline> - cubic beziers for the P/T waves (a real ECG IS smooth there) and
-// straight segments for the QRS spike (a real ECG is genuinely sharp there, so
-// full smoothness would be LESS accurate, not more). Five variants swap the wave
-// amplitudes/widths for real beat-to-beat variation instead of five unrelated
-// zigzags. `key={i}` still forces a clean remount each swap.
+// (he wanted the original short length/duration back, just varied). A bezier P-QRS-T
+// version was tried (real ECG morphology, smooth P/T waves) and reverted same day - live
+// feedback: "looks terrible, not like a heartbeat anymore but like a strange appendix".
+// Back to straight-line polyline points (the classic minimal heart-rate-monitor icon
+// shape: flat, small bump, flat, sharp spike, flat, bigger bump, flat) - five variants
+// shift where the small/big bumps and the spike sit for beat-to-beat variation, no
+// curves to go wrong.
 const EKG_SHAPES = [
-  'M0,9 L8,9 C9.5,9 10.5,6.5 12,6.5 C13.5,6.5 14.5,9 16,9 L19,9 L20,11 L21.5,1 L23,16 L24.5,9 L28,9 C31,9 33,4.5 37,4.5 C41,4.5 43,9 46,9 L54,9',
-  'M0,9 L9,9 C10,9 10.8,7.5 12,7.5 C13.2,7.5 14,9 15,9 L19,9 L20,10.5 L21,0.5 L22,17 L23,9 L27,9 C30,9 32,3.5 36,3.5 C40,3.5 42.5,9 46,9 L54,9',
-  'M0,9 L7,9 C8.5,9 9.5,5.5 11,5.5 C12.5,5.5 13.5,9 15,9 L18,9 L19.5,10 L21,2.5 L22.5,15 L24,9 L29,9 C33,9 35,5 40,5 C44,5 46,9 49,9 L54,9',
-  'M0,9 L8,9 C9.5,9 10.5,6 12,6 C13.5,6 14.5,9 16,9 L20,9 L21,11 L22,0 L23,17.5 L24,9 L27,9 C29.5,9 31.5,5 35,5 C38.5,5 40.5,9 43,9 L54,9',
-  'M0,9 L7,9 C8.5,9 9.5,7 11,7 C12.5,7 13.5,9 15,9 L18,9 L19,10 L20,2 L21,15 L22,7 L22.5,11 L23,9 L27,9 C30,9 32,5.5 36,5.5 C40,5.5 42,9 45,9 L54,9',
+  '0,9 10,9 13,5 16,9 19,9 21,9 23,1 25,17 27,9 30,9 34,5 38,9 41,9 54,9',
+  '0,9 9,9 12,4 15,9 18,9 20,9 22,2 24,16 26,9 29,9 33,4 37,9 40,9 54,9',
+  '0,9 10,9 13,6 16,9 19,9 21,9 23,0 25,18 27,9 31,9 36,3 41,9 44,9 54,9',
+  '0,9 8,9 11,5 14,9 17,9 19,9 21,1 23,17 25,9 28,9 32,4 36,9 39,9 54,9',
+  '0,9 6,9 8,7 10,9 13,9 16,5 19,9 22,9 24,9 26,1 28,17 30,9 33,9 37,4 41,9 44,9 54,9',
 ]
 function EkgLine({ theme }: { theme: Theme }) {
   const [i, setI] = useState(0)
@@ -53,7 +51,7 @@ function EkgLine({ theme }: { theme: Theme }) {
   }, [])
   return (
     <svg width="54" height="18" viewBox="0 0 54 18" fill="none" style={{ marginLeft: 4, flexShrink: 0, overflow: 'visible' }}>
-      <path key={i} className="ekg-line" d={EKG_SHAPES[i]}
+      <polyline key={i} className="ekg-line" points={EKG_SHAPES[i]}
         stroke={accent} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
@@ -924,19 +922,30 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         </div>
       )}
 
-      {/* NAV */}
+      {/* Live feedback 2026-08-14: nav wordmark/links were invisible in light
+          theme on the Systems/Evidence/Access views ("in white mode the name is
+          not visible... should be black writing, not grey"). Root cause: the
+          light hardcoded nav colors were gated purely on `scrolled`
+          (window.scrollY > 40), on the assumption that "unscrolled" always
+          meant "still sitting on the dark hero" - true on the home view, but
+          those other views are their own light-themed sections with no hero at
+          all, and can render with scrollY still at/near 0 right after a view
+          switch (no hero to scroll past). Gated on the view too now, so the
+          light-text fallback only ever applies where the dark hero actually is. */}
+      {(() => { const overDarkHero = !scrolled && view === 'home'
+      return (
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: scrolled ? 'var(--nav-bg)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(16px)' : 'none',
-        borderBottom: scrolled ? '1px solid var(--nav-border)' : 'none',
+        background: overDarkHero ? 'transparent' : 'var(--nav-bg)',
+        backdropFilter: overDarkHero ? 'none' : 'blur(16px)',
+        borderBottom: overDarkHero ? 'none' : '1px solid var(--nav-border)',
         transition: 'background 0.3s, backdrop-filter 0.3s, border-color 0.3s',
         padding: '0 1.5rem',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px',
       }}>
         <a href="#" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 42, height: 42, objectFit: 'contain', flexShrink: 0 }} />
-          <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: scrolled ? 'var(--text)' : '#e8e8f0' }}>RFI-IRFOS</span>
+          <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: overDarkHero ? '#e8e8f0' : 'var(--text)' }}>RFI-IRFOS</span>
           <EkgLine theme={theme} />
         </a>
 
@@ -952,12 +961,12 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               theme-colored bar behind it, keeps these readable without a pill. */}
           {NAV_LINKS.map(n => (
             <a key={n.href} href={n.href} style={{
-              color: scrolled ? 'var(--text2)' : '#a0a0b8', fontSize: 13, fontWeight: 600,
+              color: overDarkHero ? '#a0a0b8' : 'var(--text2)', fontSize: 13, fontWeight: 600,
               textDecoration: 'none', letterSpacing: '0.04em',
               transition: 'color 0.18s',
             }}
-              onMouseEnter={e => (e.currentTarget.style.color = scrolled ? 'var(--text)' : '#e8e8f0')}
-              onMouseLeave={e => (e.currentTarget.style.color = scrolled ? 'var(--text2)' : '#a0a0b8')}
+              onMouseEnter={e => (e.currentTarget.style.color = overDarkHero ? '#e8e8f0' : 'var(--text)')}
+              onMouseLeave={e => (e.currentTarget.style.color = overDarkHero ? '#a0a0b8' : 'var(--text2)')}
               onClick={e => { e.preventDefault(); navigateTo(n.href) }}
               aria-current={viewForSection(n.href.slice(1)) === view ? 'page' : undefined}>
               {n.label}
@@ -1012,6 +1021,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           )}
         </button>
       </nav>
+      ) })()}
 
       {/* Mobile menu overlay — always mounted, drops down from the top (partial height) */}
       <div style={{

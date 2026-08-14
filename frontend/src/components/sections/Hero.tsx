@@ -160,13 +160,19 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           { n: '301',                         label: t.hero.stats.agents,             from: 'bottom' as const },
           { n: '1',                           label: t.hero.stats.worldModel,         from: 'bottom' as const },
         ]).map((s, i) => (
-          <Reveal key={s.label} delay={i} from={s.from}>
+          <Reveal key={s.label} delay={i} from={s.from} style={{ height: '100%' }}>
             {/* Same canonical carbon-gradient card as the ledger/checkout modals
                 (live feedback 2026-08-14: "gebma den kpis die gleichen carbon
                 cards wie den ledger auch?") - fixed hex text, not var(--accent-
                 text)/var(--text), same reasoning as the identity bar above: this
-                sits on the hero's always-dark tint regardless of site theme. */}
+                sits on the hero's always-dark tint regardless of site theme.
+                height: 100% + flex centering (live feedback: "kpi cards are not
+                the same size") - labels wrap to a different number of lines
+                ("SYSTEMS & PROJECTS" vs "PUBLICATIONS"), so without a shared
+                height each card just hugged its own content and the row looked
+                uneven. */}
             <div style={{
+              height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'center',
               textAlign: 'center', padding: '20px 10px', borderRadius: 12,
               background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
               backgroundBlendMode: 'overlay',
