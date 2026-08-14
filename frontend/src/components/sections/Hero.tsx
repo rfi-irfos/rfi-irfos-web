@@ -63,7 +63,7 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
         <HeroFlipWord word="Rethink" delay={0.2} />{' '}
         <RevealWords text="the Obvious." delayStart={0.36} emphasizeIndices={[1]} />
       </p>
-      <p style={{ fontSize: 'clamp(1.05rem, 2vw, 1.4rem)', fontWeight: 600, color: 'var(--text2)', maxWidth: 1000, lineHeight: 1.5, marginBottom: 40, letterSpacing: '0.01em' }}>
+      <p style={{ fontSize: 'clamp(1.05rem, 2vw, 1.4rem)', fontWeight: 400, color: 'var(--text2)', maxWidth: 1000, lineHeight: 1.5, marginBottom: 40, letterSpacing: '0.01em' }}>
         {t.hero.identity}
       </p>
 
