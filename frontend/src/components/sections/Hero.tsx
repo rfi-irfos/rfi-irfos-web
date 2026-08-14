@@ -59,19 +59,15 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       padding: 'calc(72px + 6vh) 2rem 72px',
       // Tint gradient only - the actual photo is the dedicated zoom layer below,
       // not this section's own background. Kept as a tint (not a full photo) for
-      // text legibility over whatever's showing through it. Went near-opaque here
-      // once already (live feedback: "strange grey mess") - overcorrected, that
-      // hid the photo entirely (live feedback 2026-08-14: "die software auch
-      // garnicht mehr im hero... vollkommen überschattet"). Settled in between:
-      // lighter than the original faded wash, still see-through. The original's
-      // deep dip to 0.32 at the 52% stop (vs 0.55/0.5 either side) was likely
-      // what read as a dark smudge specifically where the headline sits - flattened
-      // that dip out too instead of just raising every stop by the same amount.
-      background: theme === 'dark'
-        ? 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.55) 0%, rgba(5,7,14,0.32) 52%, rgba(5,7,14,0.5) 100%)'
-        : theme === 'hc'
-          ? 'rgba(0,0,0,0.45)'
-          : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,122,92,0.06) 0%, transparent 70%), linear-gradient(90deg, rgba(250,245,239,0.62) 0%, rgba(250,245,239,0.52) 52%, rgba(250,245,239,0.6) 100%)',
+      // text legibility over whatever's showing through it. Tried tuning a
+      // separate, lighter tint for light theme (twice - first too transparent,
+      // "strange grey mess", then overcorrected to fully hiding the photo) before
+      // live feedback settled it: same principle regardless of dark or light mode,
+      // hero always shows the photo in its own dark tint - only HC (which needs
+      // near-opaque for its own contrast floor) stays different.
+      background: theme === 'hc'
+        ? 'rgba(0,0,0,0.45)'
+        : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.55) 0%, rgba(5,7,14,0.32) 52%, rgba(5,7,14,0.5) 100%)',
     }}>
       {/* Real screenshot of our own OSINT/monitoring software as the hero backdrop
           (live feedback 2026-08-14: "this is from the software itself"), with a slow
@@ -95,7 +91,10 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           RevealWords before (delay 0.2), "the Obvious." keeps its own timing by
           starting RevealWords' stagger at 0.36 instead of 0.2 (equivalent to
           "the"/"Obvious." having been words 1/2 of one three-word call). */}
-      <p className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32 }}>
+      {/* color fixed here too (not inherited var(--text)) - same always-dark-hero
+          reasoning as the identity bar/KPIs below: light theme's near-black
+          default text went illegible once the hero stopped following theme. */}
+      <p className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32, color: '#e8e8f0' }}>
         <HeroFlipWord word="Rethink" delay={0.2} />{' '}
         <RevealWords text="the Obvious." delayStart={0.36} emphasizeIndices={[1]} />
       </p>
@@ -113,8 +112,15 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           the theme's own background tone sweeps in behind the text (scaleX,
           left-anchored, "zieht rein") just before the text itself fades up -
           same fix pattern as a highlighter, not a glass panel: opaque enough
-          to read cleanly against any part of the photo underneath it. */}
-      <div style={{ position: 'relative', display: 'inline-block', maxWidth: 1000, marginBottom: 40 }}>
+          to read cleanly against any part of the photo underneath it. Fixed
+          hex, not var(--text2)/theme-conditional, now that the hero's own
+          background is always the dark tint regardless of site theme (same
+          "carbon modal" reasoning as the ledger modals - a section that's
+          deliberately theme-independent needs theme-independent text too,
+          or light mode's dark text tokens go illegible on it). maxWidth
+          widened 1000->1300 so the longer identity line (with "Kein Theater,
+          keine Warnwesten.") fits on one line instead of wrapping mid-bar. */}
+      <div style={{ position: 'relative', display: 'inline-block', maxWidth: 1300, marginBottom: 40 }}>
         <motion.div
           aria-hidden="true"
           initial={prefersReducedMotion() ? undefined : { scaleX: 0 }}
@@ -122,18 +128,14 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           transition={{ duration: 1.3, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           style={{
             position: 'absolute', inset: '-1px -4px', zIndex: 0, borderRadius: 3, transformOrigin: 'left center',
-            background: theme === 'dark'
-              ? 'rgba(5,7,14,0.88)'
-              : theme === 'hc'
-                ? 'rgba(0,0,0,0.92)'
-                : 'rgba(250,245,239,0.92)',
+            background: theme === 'hc' ? 'rgba(0,0,0,0.92)' : 'rgba(5,7,14,0.88)',
           }}
         />
         <motion.p
           initial={prefersReducedMotion() ? undefined : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(0.95rem, 1.7vw, 1.2rem)', fontWeight: 400, color: 'var(--text2)', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0 }}
+          style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(0.95rem, 1.7vw, 1.2rem)', fontWeight: 400, color: '#a0a0b8', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0 }}
         >
           {t.hero.identity}
         </motion.p>
@@ -160,8 +162,12 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
         ]).map((s, i) => (
           <Reveal key={s.label} delay={i} from={s.from}>
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1 }}><CountUp value={s.n} /></div>
-              <div style={{ fontSize: 11, color: 'var(--text)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8 }}>{s.label}</div>
+              {/* Fixed hex, not var(--accent-text)/var(--text) - same reasoning as the
+                  identity bar above: this sits on the hero's always-dark tint
+                  regardless of site theme, so light theme's dark-on-light tokens
+                  (accent-text #007a5c, text #0a0a0a) would go illegible here. */}
+              <div style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: '#00f5c4', lineHeight: 1 }}><CountUp value={s.n} /></div>
+              <div style={{ fontSize: 11, color: '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8 }}>{s.label}</div>
             </div>
           </Reveal>
         ))}

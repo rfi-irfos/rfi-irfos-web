@@ -20,7 +20,7 @@ export function AppPrivacySection() {
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.appPrivacy.heading} /></h2>
         </Reveal>
         <Reveal from="right" delay={1}>
-          <p style={{ color: 'var(--text)', marginBottom: 40, maxWidth: 680, fontSize: 15, lineHeight: 1.9 }}>
+          <p style={{ color: 'var(--text)', marginBottom: 40, maxWidth: 680, fontSize: 16, lineHeight: 1.9 }}>
             {t.appPrivacy.paragraph}
           </p>
         </Reveal>
@@ -55,6 +55,18 @@ export function AppPrivacySection() {
               ))}
             </div>
           </div>
+        </Reveal>
+        {/* Live feedback 2026-08-14: the comparison rows above read as too abstract
+            ("Signale bleiben in getrennten Systemen" vs. what it actually does)
+            - wants Palantir-level directness ("our software powers real-time,
+            ai driven decisions in critical government and commercial enterprises")
+            without naming them (non-disparagement, same as the table above). One
+            large, concrete, unmissable sentence: what the system actually does,
+            today, in the real world - not framed as a comparison at all. */}
+        <Reveal from="bottom" delay={1.5}>
+          <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', lineHeight: 1.5, textAlign: 'center', maxWidth: 820, margin: '0 auto 40px' }}>
+            {t.appPrivacy.concrete}
+          </p>
         </Reveal>
         <Reveal from="bottom" delay={2}>
           <div style={{ textAlign: 'center', marginBottom: 0 }}>

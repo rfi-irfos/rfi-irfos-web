@@ -225,6 +225,7 @@ export const EN = {
       { classic: 'Patterns treated as isolated findings', rfi: 'Patterns connected across domains' },
       { classic: 'Uncertainty hidden behind confidence', rfi: 'Evidence, contradiction, and the unknown kept visible' },
     ],
+    concrete: "This isn't a concept. Our world model already runs the audits behind our public disclosure ledger today, tracing a finding from a raw signal in a decompiled app to the exact line of code, and to the regulator who gets told about it.",
     cta: 'Ping us',
   },
 
@@ -392,6 +393,8 @@ export const EN = {
         links: { research: 'Research', trackRecord: 'Evidence', methodology: 'Methodology' },
       },
     },
+    repoHeadingOrg: 'RFI-IRFOS Repositories',
+    repoHeadingPersonal: 'Simeon Kepp, Personal',
     copyright: '© 2026 RFI-IRFOS  ·  Graz, Austria  ·  ZVR 1015608684',
   },
 

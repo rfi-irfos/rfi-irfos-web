@@ -14,19 +14,25 @@ import { PricingSection } from './sections/Pricing'
 import { JourneySection } from './sections/Journey'
 import { CoopPartnersSection } from './sections/CoopPartners'
 import { SubmitSection, type TipForm } from './sections/Submit'
+import { RFI_REPOS, SIMEON_REPOS } from '../content/repos'
 
 // Nav logo's EKG line. Was one fixed blip shape looping identically forever - "measuring
 // the same heartbeat forever" per Simeon. A wider multi-beat path was tried and reverted
-// (he wanted the original short length/duration back, just varied). Five different
-// single-beat shapes at the *original* 54x18 box, cycled one per pulse - `key={i}` forces
-// a clean remount each swap so the dash animation always restarts from a full pulse
-// instead of jumping mid-cycle. stroke-dasharray/duration unchanged from the original.
+// (he wanted the original short length/duration back, just varied). Live feedback
+// 2026-08-14: still read as a crude zigzag, not "like a real EKG" - rebuilt as actual
+// P-QRS-T morphology (a real ECG's three phases: a small rounded P wave, a sharp
+// tall QRS spike, a broader rounded T wave) using an SVG <path> instead of a
+// <polyline> - cubic beziers for the P/T waves (a real ECG IS smooth there) and
+// straight segments for the QRS spike (a real ECG is genuinely sharp there, so
+// full smoothness would be LESS accurate, not more). Five variants swap the wave
+// amplitudes/widths for real beat-to-beat variation instead of five unrelated
+// zigzags. `key={i}` still forces a clean remount each swap.
 const EKG_SHAPES = [
-  '0,9 12,9 16,2 20,16 24,2 28,9 54,9',           // original classic spike
-  '0,9 14,9 18,4 22,9 54,9',                       // small single bump
-  '0,9 10,9 13,6 16,11 19,9 23,9 27,2 29,16 31,9 54,9', // irregular double-bump
-  '0,9 15,9 17,0 19,18 21,9 54,9',                 // tall thin spike
-  '0,9 11,9 15,3 19,9 24,9 26,6 28,9 54,9',        // shallow spike + small aftershock
+  'M0,9 L8,9 C9.5,9 10.5,6.5 12,6.5 C13.5,6.5 14.5,9 16,9 L19,9 L20,11 L21.5,1 L23,16 L24.5,9 L28,9 C31,9 33,4.5 37,4.5 C41,4.5 43,9 46,9 L54,9',
+  'M0,9 L9,9 C10,9 10.8,7.5 12,7.5 C13.2,7.5 14,9 15,9 L19,9 L20,10.5 L21,0.5 L22,17 L23,9 L27,9 C30,9 32,3.5 36,3.5 C40,3.5 42.5,9 46,9 L54,9',
+  'M0,9 L7,9 C8.5,9 9.5,5.5 11,5.5 C12.5,5.5 13.5,9 15,9 L18,9 L19.5,10 L21,2.5 L22.5,15 L24,9 L29,9 C33,9 35,5 40,5 C44,5 46,9 49,9 L54,9',
+  'M0,9 L8,9 C9.5,9 10.5,6 12,6 C13.5,6 14.5,9 16,9 L20,9 L21,11 L22,0 L23,17.5 L24,9 L27,9 C29.5,9 31.5,5 35,5 C38.5,5 40.5,9 43,9 L54,9',
+  'M0,9 L7,9 C8.5,9 9.5,7 11,7 C12.5,7 13.5,9 15,9 L18,9 L19,10 L20,2 L21,15 L22,7 L22.5,11 L23,9 L27,9 C30,9 32,5.5 36,5.5 C40,5.5 42,9 45,9 L54,9',
 ]
 function EkgLine({ theme }: { theme: Theme }) {
   const [i, setI] = useState(0)
@@ -37,12 +43,17 @@ function EkgLine({ theme }: { theme: Theme }) {
   // way Hero's did (see Hero.tsx HeroBackground comment).
   const accent = theme === 'light' ? '#0a7a5c' : TEAL
   useEffect(() => {
-    const id = setInterval(() => setI(p => (p + 1) % EKG_SHAPES.length), 2400)
+    // Was 2400ms against a 3.6s CSS pulse (App.css .ekg-line) - every remount cut the
+    // previous pulse off ~2/3 through, before its own fade-out ever played, which is
+    // most of what read as choppy rather than "supersmooth". Matched to the animation's
+    // own duration so every pulse draws in, holds, and fades out completely before the
+    // next one starts.
+    const id = setInterval(() => setI(p => (p + 1) % EKG_SHAPES.length), 3600)
     return () => clearInterval(id)
   }, [])
   return (
     <svg width="54" height="18" viewBox="0 0 54 18" fill="none" style={{ marginLeft: 4, flexShrink: 0, overflow: 'visible' }}>
-      <polyline key={i} className="ekg-line" points={EKG_SHAPES[i]}
+      <path key={i} className="ekg-line" d={EKG_SHAPES[i]}
         stroke={accent} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
@@ -702,10 +713,15 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       <div aria-hidden="true" style={{
         position: 'absolute', inset: 0, zIndex: -2, pointerEvents: 'none',
         backgroundBlendMode: 'normal',
+        // Live feedback 2026-08-14: "die bottom bar braucht ein bissl weniger
+        // opacity gegen den BG dass man die pages da unten sieht" - footer has
+        // no background of its own, so this page-wide tint is what was dimming
+        // it too. Nudged back down a step (was raised for the grain/blur pass
+        // earlier this session, see the comment above this block).
         background: theme === 'dark'
-          ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("/page-structure-dark.jpeg") center top / cover no-repeat'
+          ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("/page-structure-dark.jpeg") center top / cover no-repeat'
           : theme === 'light'
-            ? 'linear-gradient(rgba(250,245,239,0.46), rgba(250,245,239,0.46)), url("/page-structure-light.jpeg") center top / cover no-repeat'
+            ? 'linear-gradient(rgba(250,245,239,0.36), rgba(250,245,239,0.36)), url("/page-structure-light.jpeg") center top / cover no-repeat'
             : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/page-structure-dark.jpeg") center top / cover no-repeat',
       }} />
 
@@ -905,37 +921,33 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       }}>
         <a href="#" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 42, height: 42, objectFit: 'contain', flexShrink: 0 }} />
-          <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: 'var(--text)' }}>RFI-IRFOS</span>
+          <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: scrolled ? 'var(--text)' : '#e8e8f0' }}>RFI-IRFOS</span>
           <EkgLine theme={theme} />
         </a>
 
         {/* Desktop nav - React inline styles can't do media queries, so gate on the useMobile() hook */}
-        <div style={{ display: mobile ? 'none' : 'flex', gap: '1.25rem', alignItems: 'center' }}>
-          {/* Live feedback 2026-08-14: at the top of the page (nav still transparent,
-              `scrolled` false) these links sit directly on the hero photo and
-              disappeared against its busier patches. Button-wrapped now regardless of
-              scroll state - glassy grey fill + blur - so they read as buttons against
-              any background, not just plain text hoping for contrast. Follow-up
-              feedback: not bold, rounded corners rather than a full pill, and grouped
-              tight against each other (own inner gap, separate from the outer gap to
-              the theme/locale/contact icon group). */}
-          <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
-            {NAV_LINKS.map(n => (
-              <a key={n.href} href={n.href} style={{
-                color: 'var(--text2)', fontSize: 14, fontWeight: 600,
-                textDecoration: 'none', letterSpacing: '0.02em',
-                padding: '8px 18px', borderRadius: 10,
-                background: 'var(--bg2)', border: '1px solid var(--border)',
-                backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)',
-                transition: 'color 0.18s, background 0.18s, border-color 0.18s',
-              }}
-                  onMouseLeave={e => { e.currentTarget.style.color = 'var(--text2)'; e.currentTarget.style.background = 'var(--bg2)' }}
-                onClick={e => { e.preventDefault(); navigateTo(n.href) }}
-                aria-current={viewForSection(n.href.slice(1)) === view ? 'page' : undefined}>
-                {n.label}
-              </a>
-            ))}
-          </div>
+        <div style={{ display: mobile ? 'none' : 'flex', gap: '1.75rem', alignItems: 'center' }}>
+          {/* Live feedback 2026-08-14: pill treatment ("schaut billig aus") reverted
+              back to plain text. Contrast against the hero photo (the original
+              problem the pills were solving) is handled differently now: at the top
+              of the page the nav is still transparent and sits on the hero, but the
+              hero itself is always dark-toned regardless of site theme (see
+              Hero.tsx) - so a fixed light color while unscrolled, falling back to
+              the normal theme-following color once `scrolled` puts a solid
+              theme-colored bar behind it, keeps these readable without a pill. */}
+          {NAV_LINKS.map(n => (
+            <a key={n.href} href={n.href} style={{
+              color: scrolled ? 'var(--text2)' : '#a0a0b8', fontSize: 13, fontWeight: 600,
+              textDecoration: 'none', letterSpacing: '0.04em',
+              transition: 'color 0.18s',
+            }}
+              onMouseEnter={e => (e.currentTarget.style.color = scrolled ? 'var(--text)' : '#e8e8f0')}
+              onMouseLeave={e => (e.currentTarget.style.color = scrolled ? 'var(--text2)' : '#a0a0b8')}
+              onClick={e => { e.preventDefault(); navigateTo(n.href) }}
+              aria-current={viewForSection(n.href.slice(1)) === view ? 'page' : undefined}>
+              {n.label}
+            </a>
+          ))}
 
           {/* Theme + Contact - same 38x38 square, same radius, sit flush together as one
               pair (their own tight-gap group, not the wide nav-link gap). Theme toggle is
@@ -1089,28 +1101,21 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           <br />
           <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>{t.footer.taglineAttribution}</span>
         </p>
-        {/* Three separate groups, not one flat row: Legal (statutory pages) vs.
-            Company (who we are - Team moved here from the mainpage, see Stage 0
-            of the website-repositioning plan) vs. Research (a core service, not
-            company trivia - Laura's review round 2 specifically flagged folding
-            Research into "Company" as confusing since it's a real service line). */}
-        {/* Spread across the full footer width (live feedback: three groups
-            clustered tightly in the center looked cramped against how wide the
-            rest of the page is) - maxWidth + a grid instead of a centered flex
-            cluster with a fixed gap. First pass used maxWidth 900, still far
-            narrower than every other section's 1320 content width (Research/
-            Projects/Track Record/Pricing/Journey/App Privacy all use 1320) - on
-            a wide viewport that read as three narrow "pillars" stranded in the
-            middle of the footer rather than a widescreen row. Matched to 1320
-            so the footer's content width is consistent with the rest of the page.
-            Equal-width grid columns, not flex + space-between: Legal (5 links)/
-            Company (4)/Research (3) have different natural widths, so space-between
-            gave each group a different width and left uneven, "choppy" gaps between
-            them instead of a clean evenly-spaced row. */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2.5rem', marginBottom: 24, maxWidth: 1320, margin: '0 auto 24px' }}>
+        {/* Rebuilt as a dense link directory (live feedback 2026-08-14, relayed
+            from Laura via Simeon: "wir sollten wie alle unsere arbeit da rein
+            tun" - link every public RFI-IRFOS repo, not just the three curated
+            footer groups; layout/density inspired by Palantir's footer
+            screenshot, wording is our own throughout). Legal moved to a narrow
+            column on the far left per that same feedback ("die legal pages iwie
+            ganz nach links... in einem kleinern block"); Company/Research keep
+            their previous link sets but stack vertically now instead of running
+            horizontally, since a directory this size reads as columns, not
+            centered clusters. Left-aligned throughout - a centered dense
+            directory doesn't scan the way a left-aligned one does. */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2.5rem', marginBottom: 28, maxWidth: 1320, margin: '0 auto 28px', textAlign: 'left' }}>
           {[
             {
-              heading: t.footer.groups.legal.heading, links: [
+              heading: t.footer.groups.legal.heading, flex: '0 0 130px', links: [
                 { label: t.footer.groups.legal.links.impressum, href: '/impressum' },
                 { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz' },
                 { label: t.footer.groups.legal.links.agb, href: '/agb' },
@@ -1119,7 +1124,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               ],
             },
             {
-              heading: t.footer.groups.company.heading, links: [
+              heading: t.footer.groups.company.heading, flex: '0 0 150px', links: [
                 { label: t.footer.groups.company.links.team, href: '/team' },
                 { label: t.footer.groups.company.links.careers, href: 'mailto:career@rfi-irfos.com' },
                 { label: t.footer.groups.company.links.ternlang, href: 'https://ternlang.com' },
@@ -1127,29 +1132,47 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               ],
             },
             {
-              heading: t.footer.groups.research.heading, links: [
+              heading: t.footer.groups.research.heading, flex: '0 0 150px', links: [
                 { label: t.footer.groups.research.links.research, href: '#research' },
                 { label: t.footer.groups.research.links.trackRecord, href: '#track-record' },
                 { label: t.footer.groups.research.links.methodology, href: '/methodology' },
               ],
             },
           ].map(group => (
-            <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0 }}>{group.heading}</p>
-              {/* Links run in one horizontal line under the heading, not stacked - live
-                  feedback: a vertical list per group made the footer taller than it
-                  needed to be. "·" separators (same pattern as the copyright line below)
-                  keep adjacent links from reading as one run-on word when wrapped. */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 8 }}>
-                {group.links.map((l, i) => (
-                  <span key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <a href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none', whiteSpace: 'nowrap' }}
-                      onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                      onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
-                      {l.label}
-                    </a>
-                    {i < group.links.length - 1 && <span style={{ color: 'var(--text4)', fontSize: 12 }}>·</span>}
-                  </span>
+            <div key={group.heading} style={{ flex: group.flex, display: 'flex', flexDirection: 'column', gap: 9 }}>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 2px' }}>{group.heading}</p>
+              {group.links.map(l => (
+                <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                  onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          ))}
+          {/* Repo names stay as-is - real identifiers, not prose (same convention
+              as the ledger data elsewhere on the site). CSS multi-column, not a
+              manually chunked array: lets the browser balance ~40/~70 short items
+              into readable columns instead of one long scroll, without any layout
+              math on our side. break-inside: avoid on each link keeps a name from
+              splitting across a column boundary. */}
+          {[
+            { heading: t.footer.repoHeadingOrg, repos: RFI_REPOS, flex: '1 1 260px', columns: 2 },
+            { heading: t.footer.repoHeadingPersonal, repos: SIMEON_REPOS, flex: '1.6 1 380px', columns: 3 },
+          ].map(group => (
+            <div key={group.heading} style={{ flex: group.flex }}>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px' }}>{group.heading}</p>
+              <div style={{ columns: group.columns, columnGap: 20 }}>
+                {group.repos.map(r => (
+                  <a key={r.u} href={r.u} target="_blank" rel="noopener noreferrer" style={{
+                    display: 'block', breakInside: 'avoid', color: 'var(--text3)', fontSize: 12,
+                    textDecoration: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                    marginBottom: 6, fontFamily: "'JetBrains Mono', monospace",
+                  }}
+                    onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                    {r.n}
+                  </a>
                 ))}
               </div>
             </div>

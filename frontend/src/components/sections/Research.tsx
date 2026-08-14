@@ -274,7 +274,7 @@ export function ResearchSection() {
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.research.heading} /></h2>
         </Reveal>
         <Reveal from="right" delay={1}>
-          <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
+          <p style={{ color: 'var(--text2)', fontSize: 17, marginBottom: 56, maxWidth: 560 }}>
             {t.research.subheading}
           </p>
         </Reveal>

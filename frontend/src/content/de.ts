@@ -218,6 +218,7 @@ export const DE: Content = {
       { classic: 'Muster werden als Einzelfunde behandelt', rfi: 'Muster werden domänenübergreifend verbunden' },
       { classic: 'Unsicherheit verschwindet hinter Konfidenz', rfi: 'Evidenz, Widerspruch und Unbekanntes bleiben sichtbar' },
     ],
+    concrete: 'Das ist kein Konzept. Unser World Model treibt schon heute die Audits hinter unserem öffentlichen Offenlegungs-Ledger an und verfolgt einen Fund vom rohen Signal in einer dekompilierten App bis zur exakten Codezeile, und bis zur Behörde, die davon erfährt.',
     cta: 'Ping uns',
   },
 
@@ -385,6 +386,8 @@ export const DE: Content = {
         links: { research: 'Forschung', trackRecord: 'Evidenz', methodology: 'Methodik' },
       },
     },
+    repoHeadingOrg: 'RFI-IRFOS Repositories',
+    repoHeadingPersonal: 'Simeon Kepp, privat',
     copyright: '© 2026 RFI-IRFOS  ·  Graz, Österreich  ·  ZVR 1015608684',
   },
 

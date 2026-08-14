@@ -43,7 +43,7 @@ export function SubmitSection({
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.submit.eyebrow}</p>
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.submit.heading} /></h2>
-          <p style={{ color: 'var(--text)', marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
+          <p style={{ color: 'var(--text)', fontSize: 17, marginBottom: 40, maxWidth: 680, lineHeight: 1.8 }}>
             {t.submit.paragraph}
           </p>
         </Reveal>
