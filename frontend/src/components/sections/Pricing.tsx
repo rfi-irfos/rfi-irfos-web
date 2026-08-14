@@ -78,10 +78,11 @@ export function PricingSection({
           </p>
         </Reveal>
 
+        <div className="rfi-pricing-lines">
         {/* Business Intelligence - now the FIRST product line (2026-08-12):
             the decompiled-app corpus is the asset; the tiers are queries against
             it, not bespoke report-writing. */}
-        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 24px', marginBottom: 48, maxWidth: 720, marginLeft: 'auto', marginRight: 'auto' }}>
+        <div className="rfi-glass-flat rfi-glass-solid rfi-pricing-line" style={{ borderRadius: 20, padding: '28px 18px' }}>
         <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.market}<ScopeTag label={t.pricing.scopeTags.market} /></p>
         <TierCarousel tiers={marketTiers} getActions={tier => {
           const full = marketTiers.find(s => s.tier === tier.tier)!
@@ -92,7 +93,7 @@ export function PricingSection({
         {/* Technical Intelligence & Systems - second product line: AI integration,
             custom systems, research architecture. No Stripe checkout for these tiers
             by default - they route to proposal/contact. */}
-        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 24px', marginBottom: 48, maxWidth: 720, marginLeft: 'auto', marginRight: 'auto' }}>
+        <div className="rfi-glass-flat rfi-glass-solid rfi-pricing-line" style={{ borderRadius: 20, padding: '28px 18px' }}>
         <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.technical}<ScopeTag label={t.pricing.scopeTags.technical} /></p>
         <TierCarousel tiers={technicalTiers} getActions={tier => {
           const full = technicalTiers.find(s => s.tier === tier.tier)!
@@ -106,7 +107,7 @@ export function PricingSection({
             Confidential (NDA) + Enterprise & Critical Infrastructure (merged
             top tier, proposal-only). One big card + a filmstrip of the rest,
             per product line - see `TierCarousel`. */}
-        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 24px', marginBottom: 0, maxWidth: 720, marginLeft: 'auto', marginRight: 'auto' }}>
+        <div className="rfi-glass-flat rfi-glass-solid rfi-pricing-line" style={{ borderRadius: 20, padding: '28px 18px' }}>
         <p id="pricing-security" style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center', scrollMarginTop: 96 }}>{t.pricing.lineHeadings.security}<ScopeTag label={t.pricing.scopeTags.security} /></p>
         <TierCarousel tiers={securityTiers} getActions={tier => {
           const full = securityTiers.find(s => s.tier === tier.tier)!
@@ -131,6 +132,7 @@ export function PricingSection({
             (live feedback 2026-08-02: never booked, and the free first-session
             offer already lives inside the Public security tier's description
             above - this standalone product line was redundant with it). */}
+        </div>
       </div>
     </section>
   )

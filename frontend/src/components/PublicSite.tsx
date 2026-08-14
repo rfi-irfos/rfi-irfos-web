@@ -99,7 +99,6 @@ const NAV_HREFS = [
   { key: 'projects' as const, href: '#systems' },
   { key: 'trackRecord' as const, href: '#evidence' },
   { key: 'pricing' as const, href: '#access' },
-  { key: 'submit' as const, href: '#submit' },
 ]
 
 // Section-specific <title>/meta description for visitors (and crawlers) landing
