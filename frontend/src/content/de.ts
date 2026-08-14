@@ -212,13 +212,12 @@ export const DE: Content = {
     comparisonClassicLabel: 'Was verloren geht',
     comparisonRfiLabel: 'Was das Modell bewahrt',
     comparisonRows: [
-      { classic: 'Signale bleiben in getrennten Systemen', rfi: 'Ein World Model über Domänen hinweg' },
-      { classic: 'Momentaufnahmen ohne Geschichte', rfi: 'Zeitliche Veränderung mit Kontext' },
-      { classic: 'Beziehungen werden händisch vermutet', rfi: 'Kanonisches Tracing mit Provenance' },
-      { classic: 'Muster werden als Einzelfunde behandelt', rfi: 'Muster werden domänenübergreifend verbunden' },
-      { classic: 'Unsicherheit verschwindet hinter Konfidenz', rfi: 'Evidenz, Widerspruch und Unbekanntes bleiben sichtbar' },
+      { classic: 'Signale bleiben in getrennten Systemen', rfi: 'Ein World Model, live hinter unserem öffentlichen Offenlegungs-Ledger' },
+      { classic: 'Momentaufnahmen ohne Geschichte', rfi: 'Jeder Fund zeitgestempelt vom rohen Signal bis zur veröffentlichten Evidenz' },
+      { classic: 'Beziehungen werden händisch vermutet', rfi: 'Automatisch nachverfolgt, bis zur exakten Codezeile' },
+      { classic: 'Muster werden als Einzelfunde behandelt', rfi: 'Abgeglichen mit jedem anderen Fall, der schon auf dem Ledger steht' },
+      { classic: 'Unsicherheit verschwindet hinter Konfidenz', rfi: 'Konfidenz, Widerspruch und die Behörde, die informiert wird, alles veröffentlicht' },
     ],
-    concrete: 'Das ist kein Konzept. Unser World Model treibt schon heute die Audits hinter unserem öffentlichen Offenlegungs-Ledger an und verfolgt einen Fund vom rohen Signal in einer dekompilierten App bis zur exakten Codezeile, und bis zur Behörde, die davon erfährt.',
     cta: 'Ping uns',
   },
 

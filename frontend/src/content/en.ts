@@ -219,13 +219,12 @@ export const EN = {
     comparisonClassicLabel: 'What gets lost',
     comparisonRfiLabel: 'What the model preserves',
     comparisonRows: [
-      { classic: 'Signals trapped in separate systems', rfi: 'One world model across domains' },
-      { classic: 'Snapshots without a history', rfi: 'Temporal change with context' },
-      { classic: 'Relationships inferred by hand', rfi: 'Canonical tracing with provenance' },
-      { classic: 'Patterns treated as isolated findings', rfi: 'Patterns connected across domains' },
-      { classic: 'Uncertainty hidden behind confidence', rfi: 'Evidence, contradiction, and the unknown kept visible' },
+      { classic: 'Signals trapped in separate systems', rfi: 'One world model, running live behind our public disclosure ledger' },
+      { classic: 'Snapshots without a history', rfi: 'Every finding timestamped from raw signal to published evidence' },
+      { classic: 'Relationships inferred by hand', rfi: 'Traced automatically, down to the exact line of code' },
+      { classic: 'Patterns treated as isolated findings', rfi: 'Cross-referenced against every other case already on the ledger' },
+      { classic: 'Uncertainty hidden behind confidence', rfi: 'Confidence, contradiction, and the regulator who gets told, all published' },
     ],
-    concrete: "This isn't a concept. Our world model already runs the audits behind our public disclosure ledger today, tracing a finding from a raw signal in a decompiled app to the exact line of code, and to the regulator who gets told about it.",
     cta: 'Ping us',
   },
 

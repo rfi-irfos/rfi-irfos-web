@@ -328,15 +328,21 @@ h1, h2, h3, .rfi-display {
    hero that's stopped moving reads as "loaded" rather than "alive" once
    someone's had the page open a while. transform, not background-size,
    so the browser only ever recomposites, never repaints. */
-@keyframes rfi-hero-zoom-out {
-  from { transform: scale(1.55); }
-  to { transform: scale(1); }
+/* Live feedback 2026-08-14: "the hero can start from THIS and slowly zoom in
+   instead, maybe move it to the right a bit, like an actual fake zoom effect
+   like somebody would move it very slowly" - reversed from zoom-out to
+   zoom-in (starts at the full frame, not pre-zoomed), and a slight pan added
+   alongside the scale so it reads as a hand-operated push-in, not a static
+   zoom. */
+@keyframes rfi-hero-zoom-in {
+  from { transform: scale(1) translateX(0%); }
+  to { transform: scale(1.22) translateX(2%); }
 }
 .rfi-hero-zoom {
   /* Live feedback 2026-08-14: "must move way slower, the hero its way too fast" -
      45s each direction (up from a one-shot 60s), alternating back and forth
      forever instead of holding the final frame. */
-  animation: rfi-hero-zoom-out 45s ease-in-out infinite alternate;
+  animation: rfi-hero-zoom-in 45s ease-in-out infinite alternate;
   will-change: transform;
 }
 @media (prefers-reduced-motion: reduce) {

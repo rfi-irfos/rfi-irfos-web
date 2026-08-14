@@ -1077,7 +1077,12 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       </main>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid var(--border)', padding: '40px 2rem 28px', textAlign: 'center' }}>
+      {/* Live feedback 2026-08-14: with the repo directory added below, the page
+          backdrop showing through made the ~110 small monospace links close to
+          unreadable ("erschmal darf der hintergrund da nicht durchscheinen unten
+          sonst sieht man ja ganix") - same solid-surface token used everywhere
+          else on the site for text sitting over the photo backdrop. */}
+      <footer style={{ borderTop: '1px solid var(--border)', padding: '40px 2rem 28px', textAlign: 'center', background: 'var(--glass-bg-solid)' }}>
         {/* WKO badge sized down a step (live feedback: "der Footer soll doch net so
             fett sein" - this loud red/white block was the single heaviest element in
             an otherwise thin/monospace footer) - opacity nudged down to match. */}
@@ -1105,78 +1110,81 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             from Laura via Simeon: "wir sollten wie alle unsere arbeit da rein
             tun" - link every public RFI-IRFOS repo, not just the three curated
             footer groups; layout/density inspired by Palantir's footer
-            screenshot, wording is our own throughout). Legal moved to a narrow
-            column on the far left per that same feedback ("die legal pages iwie
-            ganz nach links... in einem kleinern block"); Company/Research keep
-            their previous link sets but stack vertically now instead of running
-            horizontally, since a directory this size reads as columns, not
-            centered clusters. Left-aligned throughout - a centered dense
-            directory doesn't scan the way a left-aligned one does. */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2.5rem', marginBottom: 28, maxWidth: 1320, margin: '0 auto 28px', textAlign: 'left' }}>
-          {[
-            {
-              heading: t.footer.groups.legal.heading, flex: '0 0 130px', links: [
-                { label: t.footer.groups.legal.links.impressum, href: '/impressum' },
-                { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz' },
-                { label: t.footer.groups.legal.links.agb, href: '/agb' },
-                { label: t.footer.groups.legal.links.security, href: '/security' },
-                { label: t.footer.groups.legal.links.standards, href: '/standards' },
-              ],
-            },
-            {
-              heading: t.footer.groups.company.heading, flex: '0 0 150px', links: [
-                { label: t.footer.groups.company.links.team, href: '/team' },
-                { label: t.footer.groups.company.links.careers, href: 'mailto:career@rfi-irfos.com' },
-                { label: t.footer.groups.company.links.ternlang, href: 'https://ternlang.com' },
-                { label: t.footer.groups.company.links.github, href: 'https://github.com/rfi-irfos' },
-              ],
-            },
-            {
-              heading: t.footer.groups.research.heading, flex: '0 0 150px', links: [
-                { label: t.footer.groups.research.links.research, href: '#research' },
-                { label: t.footer.groups.research.links.trackRecord, href: '#track-record' },
-                { label: t.footer.groups.research.links.methodology, href: '/methodology' },
-              ],
-            },
-          ].map(group => (
-            <div key={group.heading} style={{ flex: group.flex, display: 'flex', flexDirection: 'column', gap: 9 }}>
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 2px' }}>{group.heading}</p>
-              {group.links.map(l => (
-                <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                  onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
-                  {l.label}
-                </a>
-              ))}
-            </div>
-          ))}
+            screenshot, wording is our own throughout). Two-part layout per
+            follow-up feedback ("die LEGAL pages und des alles LINKS
+            untereinander, und der rest daneben... das soll schon logik habe"):
+            Legal/Company/Research stack as ONE narrow column on the far left
+            (not three independent flex items that could wrap anywhere), the
+            two repo directories fill the rest of the width to its right. */}
+        <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', marginBottom: 28, maxWidth: 1320, margin: '0 auto 28px', textAlign: 'left' }}>
+          <div style={{ flex: '0 0 170px', display: 'flex', flexDirection: 'column', gap: 22 }}>
+            {[
+              {
+                heading: t.footer.groups.legal.heading, links: [
+                  { label: t.footer.groups.legal.links.impressum, href: '/impressum' },
+                  { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz' },
+                  { label: t.footer.groups.legal.links.agb, href: '/agb' },
+                  { label: t.footer.groups.legal.links.security, href: '/security' },
+                  { label: t.footer.groups.legal.links.standards, href: '/standards' },
+                ],
+              },
+              {
+                heading: t.footer.groups.company.heading, links: [
+                  { label: t.footer.groups.company.links.team, href: '/team' },
+                  { label: t.footer.groups.company.links.careers, href: 'mailto:career@rfi-irfos.com' },
+                  { label: t.footer.groups.company.links.ternlang, href: 'https://ternlang.com' },
+                  { label: t.footer.groups.company.links.github, href: 'https://github.com/rfi-irfos' },
+                ],
+              },
+              {
+                heading: t.footer.groups.research.heading, links: [
+                  { label: t.footer.groups.research.links.research, href: '#research' },
+                  { label: t.footer.groups.research.links.trackRecord, href: '#track-record' },
+                  { label: t.footer.groups.research.links.methodology, href: '/methodology' },
+                ],
+              },
+            ].map(group => (
+              <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 2px' }}>{group.heading}</p>
+                {group.links.map(l => (
+                  <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
+                    onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                    {l.label}
+                  </a>
+                ))}
+              </div>
+            ))}
+          </div>
           {/* Repo names stay as-is - real identifiers, not prose (same convention
               as the ledger data elsewhere on the site). CSS multi-column, not a
               manually chunked array: lets the browser balance ~40/~70 short items
               into readable columns instead of one long scroll, without any layout
               math on our side. break-inside: avoid on each link keeps a name from
               splitting across a column boundary. */}
-          {[
-            { heading: t.footer.repoHeadingOrg, repos: RFI_REPOS, flex: '1 1 260px', columns: 2 },
-            { heading: t.footer.repoHeadingPersonal, repos: SIMEON_REPOS, flex: '1.6 1 380px', columns: 3 },
-          ].map(group => (
-            <div key={group.heading} style={{ flex: group.flex }}>
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px' }}>{group.heading}</p>
-              <div style={{ columns: group.columns, columnGap: 20 }}>
-                {group.repos.map(r => (
-                  <a key={r.u} href={r.u} target="_blank" rel="noopener noreferrer" style={{
-                    display: 'block', breakInside: 'avoid', color: 'var(--text3)', fontSize: 12,
-                    textDecoration: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                    marginBottom: 6, fontFamily: "'JetBrains Mono', monospace",
-                  }}
-                    onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                    onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
-                    {r.n}
-                  </a>
-                ))}
+          <div style={{ flex: '1 1 auto', display: 'flex', flexWrap: 'wrap', gap: '2.5rem' }}>
+            {[
+              { heading: t.footer.repoHeadingOrg, repos: RFI_REPOS, flex: '1 1 260px', columns: 2 },
+              { heading: t.footer.repoHeadingPersonal, repos: SIMEON_REPOS, flex: '1.6 1 380px', columns: 3 },
+            ].map(group => (
+              <div key={group.heading} style={{ flex: group.flex }}>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px' }}>{group.heading}</p>
+                <div style={{ columns: group.columns, columnGap: 20 }}>
+                  {group.repos.map(r => (
+                    <a key={r.u} href={r.u} target="_blank" rel="noopener noreferrer" style={{
+                      display: 'block', breakInside: 'avoid', color: 'var(--text3)', fontSize: 12,
+                      textDecoration: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                      marginBottom: 6, fontFamily: "'JetBrains Mono', monospace",
+                    }}
+                      onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                      onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                      {r.n}
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
         {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address) lives on
             Legal Notice - not duplicated here, this footer only needs to point there. */}
