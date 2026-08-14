@@ -18,9 +18,10 @@ function IntelligenceProofShowcase() {
   const pair = pairs[reduced ? 0 : i]
   return (
     <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} style={{
-      maxWidth: 680, margin: '0 auto', minHeight: 145, textAlign: 'center',
+      maxWidth: 680, margin: '0 auto', height: 'clamp(190px, 18vw, 220px)', boxSizing: 'border-box', textAlign: 'center',
       background: 'linear-gradient(var(--accent-dim), var(--accent-dim)), var(--glass-bg-solid)',
       border: '1px solid rgba(0,245,196,0.2)', borderRadius: 16, padding: '32px 36px',
+      display: 'flex', flexDirection: 'column', justifyContent: 'center',
     }}>
       <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--accent-text)', marginBottom: 10 }}>{pair.a}</p>
       <p style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.7, margin: 0, maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>{pair.detail}</p>
@@ -61,7 +62,7 @@ function ProjectCard({ p }: { p: LocalizedProject }) {
   // container, and backdrop-filter re-samples every scroll frame.
   return (
     <div className="rfi-hover-card rfi-glass-flat rfi-glass-solid" style={{
-      borderRadius: 16, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 12,
+      borderRadius: 16, padding: '32px 28px', display: 'flex', flexDirection: 'column', gap: 12,
       flex: '1 1 0', minWidth: 0,
     }}>
       {/* flexWrap+minWidth:0+flexShrink:0 - on narrow cards (mobile, 84% basis) a long
@@ -81,7 +82,7 @@ function ProjectCard({ p }: { p: LocalizedProject }) {
           border: '1px solid rgba(0,245,196,0.3)', color: 'var(--accent-text)', whiteSpace: 'nowrap',
         }}>{p.tag}</span>
       </div>
-      <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
+      <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
       {p.link && (
         <a href={p.link} target="_blank" rel="noopener noreferrer"
           onClick={() => beacon('project_click:' + p.name)}
@@ -169,7 +170,9 @@ function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
     background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: perView === 1 ? 15 : 18, cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'center',
   }
-  const cardBasis = perView === 1 ? '84%' : '340px'
+  const cardBasis = perView === 1
+    ? '92%'
+    : `calc((100% - ${20 * (perView - 1)}px) / ${perView})`
 
   return (
     <div>
