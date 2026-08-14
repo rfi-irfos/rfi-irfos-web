@@ -56,8 +56,8 @@ export const EN = {
     subheading: 'We study how complex systems behave: how evidence becomes structure, how relationships change over time, and where one shift can move an entire network.',
     areas: [
       { title: 'Ethics & Minor Protection', desc: 'Ethics is not a footnote here, but where the research starts. Consent, dignity, and exposure in systems built around people who cannot fully protect themselves, starting with children and young people: platforms, biometric and behavioural data, and the systems built around them.' },
-      { title: 'Ternary AI & Computing', desc: 'Post-binary arithmetic is not an academic curiosity for us, but the foundation everything else runs on: language models, compilers, and operating systems built with it natively, not bolted on afterward. Patent pending A50296/2026.' },
-      { title: 'World Models & Cross-Domain Intelligence', desc: 'Most systems that track entities, relationships, evidence, and change keep their domains apart, but ours does not: one shared model, so a shift in one system is traceable into everywhere it actually connects.' },
+      { title: 'Ternary AI & Computing', desc: 'Post-binary arithmetic is not an academic curiosity for us, but the foundation everything else runs on. We built our own programming language, Ternlang, directly on the {-1, 0, +1} trit rather than the binary bit, and it powers language models, compilers, and operating systems that run dramatically more energy-efficiently than their binary equivalents. Patent pending A50296/2026.' },
+      { title: 'World Models & Cross-Domain Intelligence', desc: 'Most systems that track entities, relationships, evidence, and change keep their domains apart, but ours does not: one shared model, so a shift in one system is traceable into everywhere it actually connects. Alongside albert., our language model, we are building Dingir, our own world model: a neural network built for physical-world deployment, part of the same ternary-computing resurgence that includes projects like Rust\'s Candle.' },
       { title: 'Pattern Recognition & Impact Propagation', desc: 'A change rarely stays where it started, because it moves through dependencies, bridges, bottlenecks, and every connected system downstream. Finding those recurring structures across domains is what this area is for.' },
       { title: 'Change & Anomaly Detection', desc: 'Not every shift matters, and not every anomaly is noise, so this is the discipline of watching systems over time and telling the two apart: what changed, what is unusual, and which transitions actually deserve attention.' },
       { title: 'Scenario Simulation & Counterfactuals', desc: 'What happens if, safely asked and safely answered: interventions, alternative futures, and their propagated consequences, always explicitly marked as simulated and never confused with what actually happened.' },
@@ -225,7 +225,7 @@ export const EN = {
       { classic: 'Patterns treated as isolated findings', rfi: 'Patterns connected across domains' },
       { classic: 'Uncertainty hidden behind confidence', rfi: 'Evidence, contradiction, and the unknown kept visible' },
     ],
-    cta: 'Bring us a signal',
+    cta: 'Send us your signal',
   },
 
   pricing: {

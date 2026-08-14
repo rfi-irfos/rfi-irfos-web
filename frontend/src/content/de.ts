@@ -53,8 +53,8 @@ export const DE: Content = {
     subheading: 'Wir untersuchen, wie komplexe Systeme sich verhalten: wie Evidenz zu Struktur wird, wie sich Beziehungen über die Zeit verändern und wo eine Verschiebung ein ganzes Netzwerk bewegen kann.',
     areas: [
       { title: 'Ethik & Minderjährigenschutz', desc: 'Ethik ist bei uns keine Fußnote, sondern der Ausgangspunkt der Forschung. Einwilligung, Würde und Exposition in Systemen, die um Menschen herum gebaut werden, die sich nicht vollständig selbst schützen können, allen voran Kinder und Jugendliche: Plattformen, biometrische und Verhaltensdaten und die Systeme, die darum gebaut werden.' },
-      { title: 'Ternäre KI & Computing', desc: 'Post-binäre Arithmetik ist für uns keine akademische Spielerei, sondern das Fundament, auf dem alles andere läuft: Sprachmodelle, Compiler und Betriebssysteme, die sie nativ nutzen, nicht nachträglich aufgesetzt. Patent angemeldet A50296/2026.' },
-      { title: 'Weltmodelle & domänenübergreifende Intelligenz', desc: 'Die meisten Systeme, die Entitäten, Beziehungen, Evidenz und Veränderung untersuchen, halten ihre Domänen getrennt, unseres aber nicht: ein gemeinsames Modell, damit sich eine Verschiebung in einem System dorthin zurückverfolgen lässt, wo sie tatsächlich mit einem anderen zusammenhängt.' },
+      { title: 'Ternäre KI & Computing', desc: 'Post-binäre Arithmetik ist für uns keine akademische Spielerei, sondern das Fundament, auf dem alles andere läuft. Wir haben mit Ternlang unsere eigene Programmiersprache entwickelt, direkt auf dem Trit {-1, 0, +1} statt auf dem binären Bit, und sie treibt Sprachmodelle, Compiler und Betriebssysteme an, die deutlich energiesparender laufen als ihre binären Pendants. Patent angemeldet A50296/2026.' },
+      { title: 'Weltmodelle & domänenübergreifende Intelligenz', desc: 'Die meisten Systeme, die Entitäten, Beziehungen, Evidenz und Veränderung untersuchen, halten ihre Domänen getrennt, unseres aber nicht: ein gemeinsames Modell, damit sich eine Verschiebung in einem System dorthin zurückverfolgen lässt, wo sie tatsächlich mit einem anderen zusammenhängt. Neben albert., unserem Sprachmodell, bauen wir mit Dingir unser eigenes Weltmodell: ein neuronales Netz für den Einsatz in der physischen Welt, Teil derselben Renaissance ternärer Systeme, zu der auch Projekte wie Rusts Candle gehören.' },
       { title: 'Mustererkennung & Wirkungsausbreitung', desc: 'Eine Veränderung bleibt selten dort, wo sie beginnt, denn sie bewegt sich durch Abhängigkeiten, Brücken, Engpässe und jedes verbundene System dahinter. Genau diese wiederkehrenden Strukturen über Domänen hinweg zu finden, ist die Aufgabe dieses Forschungsbereichs.' },
       { title: 'Veränderungs- & Anomalieerkennung', desc: 'Nicht jede Verschiebung ist relevant, und nicht jede Anomalie ist Rauschen. Diese Disziplin beobachtet Systeme über die Zeit und unterscheidet die beiden: was sich verschoben hat, was ungewöhnlich ist und welche Übergänge tatsächlich Aufmerksamkeit verdienen.' },
       { title: 'Szenariensimulation & Kontrafaktik', desc: 'Was-wäre-wenn, sicher gefragt und sicher beantwortet: Interventionen, alternative Zukünfte und ihre propagierten Konsequenzen, immer ausdrücklich als Simulation markiert und nie mit dem verwechselt, was tatsächlich passiert ist.' },
@@ -218,7 +218,7 @@ export const DE: Content = {
       { classic: 'Muster werden als Einzelfunde behandelt', rfi: 'Muster werden domänenübergreifend verbunden' },
       { classic: 'Unsicherheit verschwindet hinter Konfidenz', rfi: 'Evidenz, Widerspruch und Unbekanntes bleiben sichtbar' },
     ],
-    cta: 'Bringen Sie uns ein Signal',
+    cta: 'Senden Sie uns Ihr Signal',
   },
 
   pricing: {

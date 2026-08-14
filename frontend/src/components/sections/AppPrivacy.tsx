@@ -1,6 +1,6 @@
 // "App Privacy" door-opener section (`#app-privacy`) - extracted verbatim from
 // PublicSite.tsx.
-import { Reveal, TEAL, ScrambleHeading } from './shared'
+import { Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // APP PRIVACY DOOR-OPENER — Stage 1c (website-repositioning plan), moved
@@ -38,7 +38,12 @@ export function AppPrivacySection() {
             Mono at wght@400;500;600;700 only, so 800 silently falls back to 700 and cannot
             render any heavier. Size is the lever that actually adds visibility here. */}
         <Reveal from="bottom" delay={1}>
-          <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 40, maxWidth: 920, marginLeft: 'auto', marginRight: 'auto' }}>
+          {/* background: var(--glass-bg-solid) added (live feedback 2026-08-14: this
+              table had no fill of its own, so on light theme it sat directly over the
+              page's busy marble photo and was hard to read) - same solid-card token the
+              Research bento tiles use for exactly this "readable over the photo
+              backdrop" job. */}
+          <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 40, maxWidth: 920, marginLeft: 'auto', marginRight: 'auto', background: 'var(--glass-bg-solid)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
               <div style={{ padding: '16px 24px', background: 'rgba(255,255,255,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text)', borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>{t.appPrivacy.comparisonClassicLabel}</div>
               <div style={{ padding: '16px 24px', background: 'rgba(0,245,196,0.08)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)', borderBottom: '1px solid var(--border)' }}>{t.appPrivacy.comparisonRfiLabel}</div>
@@ -53,13 +58,27 @@ export function AppPrivacySection() {
         </Reveal>
         <Reveal from="bottom" delay={2}>
           <div style={{ textAlign: 'center', marginBottom: 0 }}>
+            {/* Orange instead of the site's teal (live feedback 2026-08-14: one
+                singular, orange CTA here) - deliberately off-brand-teal so this one
+                button reads as a distinct "send us something" action, not just another
+                teal link blending into the rest of the page. Domino icon: one tile
+                leaning hard into the next, which leans into the last upright one - a
+                signal setting off a chain, matching the CTA copy. */}
             <a href="#submit" className="rfi-cta-pulse" style={{
-              display: 'inline-block', background: TEAL, color: '#070711', padding: '13px 30px', borderRadius: 8,
+              display: 'inline-flex', alignItems: 'center', gap: 10, background: '#f97316', color: '#1a0f00', padding: '13px 30px', borderRadius: 8,
               fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
               textTransform: 'uppercase', transition: 'opacity 0.15s',
             }}
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>{t.appPrivacy.cta}</a>
+              onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
+              <svg width="20" height="20" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="2" y1="27" x2="30" y2="27" />
+                <rect x="4" y="8" width="6" height="18" rx="1.5" transform="rotate(38 7 26)" />
+                <rect x="13" y="8" width="6" height="18" rx="1.5" transform="rotate(18 16 26)" />
+                <rect x="22" y="6" width="6" height="20" rx="1.5" />
+              </svg>
+              {t.appPrivacy.cta}
+            </a>
           </div>
         </Reveal>
         {/* "Beyond app privacy" (OTHER_DOMAINS grid) + the closing "same three
