@@ -62,27 +62,33 @@ export function SubmitSection({
               section read as a security-intake-only channel with no obvious
               "just email someone" option. */}
           <Reveal from="left">
-            <p style={{ fontSize: 12.5, color: 'var(--text3)', marginBottom: 14 }}>
-              {t.submit.notSurePrefix}<strong style={{ color: 'var(--text2)' }}>{t.submit.notSureStrong}</strong>{t.submit.notSureSuffix}
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
+            {/* both reassurance lines moved to sit together under the Careers
+                card at the bottom of the list (live feedback 2026-08-14) instead
+                of split - one above the cards, one below - across the whole
+                block. --text3 -> --text on both, plus the card eyebrow labels
+                below: same "proper font, black not grey" contrast fix already
+                applied to the pricing tier body copy. */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 }}>
               {CONTACT_CARDS.map(c => (
                 <a key={c.key} href={c.href} target="_blank" rel="noopener noreferrer" className="rfi-hover-card rfi-glass-flat rfi-glass-solid" style={{
                   borderRadius: 12, padding: '14px 18px', textDecoration: 'none', display: 'block',
                 }}
                   onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
                   onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
-                  <div style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 5 }}>{t.submit.contactCards[c.key]}</div>
+                  <div style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 5 }}>{t.submit.contactCards[c.key]}</div>
                   <div style={{ color: 'var(--accent-text)', fontWeight: 600, fontSize: 13 }}>{c.value}</div>
                 </a>
               ))}
             </div>
+            <p style={{ fontSize: 12.5, color: 'var(--text)', marginBottom: 10, lineHeight: 1.6 }}>
+              {t.submit.notSurePrefix}<strong>{t.submit.notSureStrong}</strong>{t.submit.notSureSuffix}
+            </p>
             {/* Full disclosure-handling policy (ISO/IEC 30111 triage, lawful
                 basis, credit choice) moved to the Security Policy legal page
                 (#p/security) - live feedback: this panel made the contact
                 section feel cluttered/security-intake-only rather than one
                 clean form. */}
-            <p style={{ fontSize: 12, color: 'var(--text3)', marginBottom: 20, lineHeight: 1.7 }}>
+            <p style={{ fontSize: 12, color: 'var(--text)', marginBottom: 20, lineHeight: 1.7 }}>
               {t.submit.disclosurePolicyPrefix}
               <a href="#p/security" style={{ color: 'var(--accent-text)' }}>{t.submit.disclosurePolicyLink}</a>{t.submit.disclosurePolicySuffix}
             </p>
