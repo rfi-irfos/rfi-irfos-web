@@ -703,9 +703,14 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(165deg, rgba(28,28,34,0.9) 0%, rgba(10,10,12,0.9) 35%, rgba(3,3,4,0.92) 65%, rgba(23,23,29,0.9) 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(107deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 2px), linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("/page-structure-dark.jpeg") center / cover no-repeat'
         : theme === 'light'
           ? 'linear-gradient(rgba(250,245,239,0.86), rgba(250,245,239,0.86)), url("/page-structure-light.jpeg") center / cover no-repeat'
-          : undefined,
+          // hc reuses the dark photo but under a much heavier black overlay (0.86 vs dark's
+          // 0.55) - the --text/--border AAA ratios in index.css ([data-theme="hc"]) are
+          // verified against a literal #000000 backdrop, so the image can only sit under
+          // hc at an opacity dark near-black enough not to erode those ratios. No teal glow
+          // layers here either - hc's accent is amber (--accent: #ffd400), not teal.
+          : 'linear-gradient(rgba(0,0,0,0.86), rgba(0,0,0,0.86)), url("/page-structure-dark.jpeg") center / cover no-repeat',
       backgroundBlendMode: 'normal',
-      backgroundAttachment: theme === 'hc' ? 'scroll' : 'fixed',
+      backgroundAttachment: 'fixed',
       // position:relative + zIndex:0 give this wrapper its own stacking context -
       // without it, ScrollSpine's zIndex:-1 rail escapes to the document root's
       // stacking context and paints BEHIND this div's own background instead of
