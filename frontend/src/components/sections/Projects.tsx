@@ -276,7 +276,6 @@ export function ProjectsSection() {
     <section id="projects" style={{ padding: '48px 2rem 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="right">
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.projects.eyebrow}</p>
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.projects.heading} /></h2>
         </Reveal>
         <Reveal from="left" delay={1}>

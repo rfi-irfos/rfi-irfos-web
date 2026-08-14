@@ -737,7 +737,7 @@ export function TierCarousel({ tiers, getActions }: {
           balanced unit rather than one oversized card sitting over a thin strip. */}
       <motion.div key={active.tier} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}
         style={{
-          maxWidth: 560, margin: '0 auto 20px', borderRadius: 18, padding: '24px 26px',
+          maxWidth: 520, margin: '0 auto 14px', borderRadius: 18, padding: '20px 22px',
           // Opaque base + a teal wash (not a single translucent rgba fill) -
           // spine feedback, 2026-08-06: this pricing card is exactly the kind
           // of dense, text-heavy surface the scroll spine/orb must never bleed
@@ -753,22 +753,22 @@ export function TierCarousel({ tiers, getActions }: {
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: idx === defaultIdx ? TEAL : 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8, fontWeight: idx === defaultIdx ? 800 : 400, borderLeft: idx === defaultIdx ? `2px solid ${TEAL}` : 'none', paddingLeft: idx === defaultIdx ? 8 : 0 }}>
             {idx === defaultIdx ? locale.tierCarousel.recommendedTier : locale.tierCarousel.featuredTier}
           </div>
-          <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
-          {active.hook && <div style={{ fontSize: 13, color: 'var(--text2)', marginTop: 6 }}>{active.hook}</div>}
+          <div style={{ fontSize: 21, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
+          {active.hook && <div style={{ fontSize: 12.5, color: 'var(--text2)', marginTop: 5 }}>{active.hook}</div>}
         </div>
         {/* Capped height + scroll (live feedback: on the longer tiers - four full
             paragraphs - the card grew tall enough to push the Get Started button
             out of view without scrolling the whole page). Every card now has the
             same predictable height regardless of description length. */}
-        <div style={{ marginTop: 16, maxHeight: 300, overflowY: 'auto' }}>
+        <div style={{ marginTop: 12, maxHeight: 240, overflowY: 'auto' }}>
           {active.desc.split('\n\n').map((p, i) => (
-            <p key={i} style={{ color: 'var(--text2)', fontSize: 13.5, lineHeight: 1.75, marginBottom: 11 }}>{p}</p>
+            <p key={i} style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.65, marginBottom: 9 }}>{p}</p>
           ))}
         </div>
-        <OutputTags outputs={active.outputs} />
+        <div style={{ marginTop: -4 }}><OutputTags outputs={active.outputs} /></div>
         {/* Delivery pill (left) + green buy button showing cart icon + price (right).
             Replaces the old "Get Started" label - the price IS the button label. */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', gap: 12, marginTop: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', gap: 12, marginTop: 14 }}>
           {active.delivery && (
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 6, flex: '0 0 auto', maxWidth: '100%',
@@ -803,11 +803,11 @@ export function TierCarousel({ tiers, getActions }: {
           wraps to fewer columns only when the viewport can't fit 3 readable
           cards, never stacks to a single column on desktop. */}
       {secondary.length > 0 && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, maxWidth: 720, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 10, maxWidth: 680, margin: '0 auto' }}>
           {secondary.map(({ t, i }) => (
             <button key={t.tier} onClick={() => setIdx(i)} style={{
               textAlign: 'left', cursor: 'pointer', display: 'flex', flexDirection: 'column',
-              borderRadius: 12, padding: '14px 16px', gap: 8,
+              borderRadius: 12, padding: '12px 14px', gap: 7,
               background: 'rgba(255,255,255,0.05)',
               border: `1px solid ${i === defaultIdx ? 'rgba(0,245,196,0.4)' : 'var(--border)'}`,
               transition: 'border-color .15s, background .15s',

@@ -129,7 +129,7 @@ export const EN = {
   trackRecord: {
     eyebrow: 'Track Record',
     heading: 'the discipline, demonstrated',
-    paragraph: 'We decompile shipped apps and trace their data flows to real endpoints in real countries. Companies land on this ledger for many different reasons: they hand your data to third parties, they track without consent, they leave the door open. Every report goes out with the data-protection authorities copied in and a ninety-day clock attached. One rule, no exceptions: paying clients and everyone else are held to the identical standard.',
+    paragraph: 'We decompile shipped apps and trace their data flows to real endpoints in real countries. Companies land on this ledger for many different reasons: they hand your data to third parties, they track without consent, or they leave the door open. Every organisation is held to the same standard, whether it pays us or not.',
     kpis: {
       appsAudited: 'Apps audited',
       smaliClasses: 'Smali classes read',

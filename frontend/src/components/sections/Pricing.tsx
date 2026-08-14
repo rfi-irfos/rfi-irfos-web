@@ -75,7 +75,6 @@ export function PricingSection({
     <section id="pricing" style={{ padding: '48px 2rem 72px' }}>
       <div style={{ maxWidth: 1240, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.pricing.eyebrow}</p>
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.pricing.heading} /></h2>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
             {t.pricing.subheading}
@@ -91,7 +90,7 @@ export function PricingSection({
 
           <div style={{ flex: 1, minWidth: 0 }}>
             {activeOffer === 0 && (
-              <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 28px' }}>
+                <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '24px 24px' }}>
                 <div style={{ textAlign: 'center', marginBottom: 20 }}><p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>{t.pricing.lineHeadings.market}</p><div style={{ marginTop: 8 }}><ScopeTag label={t.pricing.scopeTags.market} /></div></div>
                 <TierCarousel tiers={marketTiers} getActions={tier => {
                   const full = marketTiers.find(s => s.tier === tier.tier)!
@@ -101,7 +100,7 @@ export function PricingSection({
             )}
 
             {activeOffer === 1 && (
-              <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 28px' }}>
+                <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '24px 24px' }}>
                 <div style={{ textAlign: 'center', marginBottom: 20 }}><p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>{t.pricing.lineHeadings.technical}</p><div style={{ marginTop: 8 }}><ScopeTag label={t.pricing.scopeTags.technical} /></div></div>
                 <TierCarousel tiers={technicalTiers} getActions={tier => {
                   const full = technicalTiers.find(s => s.tier === tier.tier)!
@@ -111,7 +110,7 @@ export function PricingSection({
             )}
 
             {activeOffer === 2 && (
-              <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 28px' }}>
+                <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '24px 24px' }}>
                 <div id="pricing-security" style={{ textAlign: 'center', marginBottom: 20, scrollMarginTop: 96 }}><p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>{t.pricing.lineHeadings.security}</p><div style={{ marginTop: 8 }}><ScopeTag label={t.pricing.scopeTags.security} /></div></div>
                 <TierCarousel tiers={securityTiers} getActions={tier => {
                   const full = securityTiers.find(s => s.tier === tier.tier)!

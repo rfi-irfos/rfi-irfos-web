@@ -2566,7 +2566,6 @@ export function TrackRecordSection({
     <section id="track-record" style={{ padding: '48px 2rem 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.trackRecord.eyebrow}</p>
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.trackRecord.heading} /></h2>
         </Reveal>
         <Reveal from="right" delay={1}>
