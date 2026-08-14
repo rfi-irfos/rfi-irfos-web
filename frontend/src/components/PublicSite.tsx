@@ -980,7 +980,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
 
       <main className="rfi-view-stage" key={view} aria-live="polite">
         {view === 'home' && <>
-          <HeroSection mobile={mobile} />
+          <HeroSection mobile={mobile} onNavigate={navigateTo} />
           <ResearchSection />
           <AppPrivacySection />
           <CoopPartnersSection mobile={mobile} openCheckoutModal={openCheckoutModal} />

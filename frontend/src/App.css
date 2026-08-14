@@ -250,15 +250,6 @@ button { cursor: pointer; font-family: inherit; }
   min-height: 100vh;
   padding-top: 64px;
 }
-.rfi-pricing-lines {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  align-items: start;
-}
-.rfi-pricing-line {
-  min-width: 0;
-}
 @keyframes rfi-view-enter {
   from { opacity: 0; transform: translateX(28px); }
   to { opacity: 1; transform: translateX(0); }
@@ -1078,7 +1069,6 @@ button { cursor: pointer; font-family: inherit; }
 
 /* ── Tablet ─────────────────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .rfi-pricing-lines { grid-template-columns: 1fr; }
   .site-nav { padding: 0 28px; }
   .site-section { padding: 70px 32px; }
   .site-hero-inner { padding: 0 40px 60px; }
