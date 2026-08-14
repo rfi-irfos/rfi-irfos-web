@@ -680,11 +680,18 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       // that fake-texture stack only crushed the real one under ~90%-opaque overlays and
       // was removed. One soft tint overlay is enough to keep body text readable over the
       // photo; the photo itself is now the texture.
-      backgroundColor: theme === 'dark' ? '#000000' : theme === 'hc' ? '#000000' : 'var(--bg)',
       // Three soft teal glows on top of the photo - subtle brand accent, cheap as a
       // background-image layer (same 'fixed' viewport-relative positioning as the photo
       // below, so they don't scroll away or stretch thin over a multi-thousand-px page).
-      backgroundImage: theme === 'dark'
+      //
+      // Must be the `background` SHORTHAND, not `backgroundImage`: the trailing
+      // `url(...) center / cover no-repeat` on the photo layer is background-position/
+      // -size/-repeat syntax, only legal inside the `background` shorthand. Setting it
+      // via `backgroundImage` was silently rejected as an invalid value - the whole
+      // property never applied, at any theme, since before today's session. That's why
+      // the photo only ever showed inside Hero (which already used the `background`
+      // shorthand correctly) and never anywhere else on the page.
+      background: theme === 'dark'
         ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.42)), url("/page-structure-dark.jpeg") center / cover no-repeat'
         : theme === 'light'
           ? 'linear-gradient(rgba(250,245,239,0.38), rgba(250,245,239,0.38)), url("/page-structure-light.jpeg") center / cover no-repeat'
@@ -694,6 +701,9 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           // hc at an opacity dark near-black enough not to erode those ratios. No teal glow
           // layers here either - hc's accent is amber (--accent: #ffd400), not teal.
           : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/page-structure-dark.jpeg") center / cover no-repeat',
+      // backgroundColor after the shorthand so it isn't reset by it - acts as the base
+      // fallback (e.g. below the image's cover-scaled edges on very wide viewports).
+      backgroundColor: theme === 'dark' ? '#000000' : theme === 'hc' ? '#000000' : 'var(--bg)',
       backgroundBlendMode: 'normal',
       backgroundAttachment: 'fixed',
       // position:relative + zIndex:0 give this wrapper its own stacking context -
