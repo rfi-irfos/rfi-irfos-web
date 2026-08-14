@@ -43,7 +43,7 @@ export const EN = {
       researchAreas: 'research areas',
       openSourceProjects: 'systems & projects',
       publications: 'publications',
-      people: 'core researchers',
+      worldModel: 'evidence-first world model',
       agents: 'specialized agents',
     },
     ctaTrackRecord: 'Track Record',

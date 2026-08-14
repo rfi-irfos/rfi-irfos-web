@@ -30,15 +30,6 @@ function HeroBackground() {
   )
 }
 
-// The full roster (with GitHub handles + focus lines) now lives on its own Team page
-// (LegalPage.tsx's `Team` component, reached via `#p/team`) - moved off the mainpage
-// per the website-repositioning plan (decision space vs. trust space). Only the
-// headcount survives here for the hero stat strip; keep this in sync with
-// LegalPage.tsx's `TEAM` array length by hand when someone joins/leaves - a small,
-// deliberate exception to "one array edit" now that the roster lives in a different
-// (lazily-loaded) file.
-const TEAM_COUNT = 7
-
 const PUBLICATIONS = [
   { year: '2026', title: 'Android Security Audit 2026: Coordinated Disclosure', sub: '215+ apps · 100+ companies · 250+ critical findings · NYSE/NASDAQ/LSE/XETRA · StoryToys children\'s wave · disclosure Sep 2026', href: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'Security · Ongoing' },
   { year: '2026', title: 'The Ternary Intelligence Stack', sub: 'vertically integrated post-binary AI platform', href: 'https://osf.io/cyn28/', tag: 'AI · Systems' },
@@ -98,7 +89,7 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
           { n: `${RESEARCH_AREAS.length}`,    label: t.hero.stats.researchAreas,      from: 'left'   as const },
           { n: `${PROJECTS.length}+`,         label: t.hero.stats.openSourceProjects, from: 'bottom' as const },
           { n: `${PUBLICATIONS.length}+`,     label: t.hero.stats.publications,       from: 'scale'  as const },
-          { n: `${TEAM_COUNT}`,               label: t.hero.stats.people,             from: 'bottom' as const },
+          { n: '1',                           label: t.hero.stats.worldModel,         from: 'bottom' as const },
           { n: '300+',                        label: t.hero.stats.agents,             from: 'bottom' as const },
         ]).map((s, i) => (
           <Reveal key={s.label} delay={i} from={s.from}>

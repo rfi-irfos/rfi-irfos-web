@@ -40,7 +40,7 @@ export const DE: Content = {
       researchAreas: 'Forschungsbereiche',
       openSourceProjects: 'Systeme & Projekte',
       publications: 'Publikationen',
-      people: 'Forschungsteam',
+      worldModel: 'evidenzbasiertes Weltmodell',
       agents: 'Spezialisierte Agenten',
     },
     ctaTrackRecord: 'Track Record',
