@@ -755,6 +755,22 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       position: 'relative', zIndex: 0,
       color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
 
+      {/* Grain overlay (live feedback 2026-08-14: the photo backdrop looked too
+          clean/digital, "more like a newspaper print"). SVG feTurbulence noise,
+          not a shipped PNG - generates the texture at render time so there's no
+          extra asset request. mix-blend-mode: 'overlay' + very low opacity is
+          the whole effect: barely visible on its own, but breaks up the photo's
+          otherwise perfectly smooth gradients just enough to read as printed
+          rather than rendered. position:fixed is fine here (unlike the photo
+          layer) since a repeating noise tile has no crop/zoom concerns tied to
+          viewport size the way a single photo does. */}
+      <div aria-hidden="true" style={{
+        position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none',
+        opacity: 0.05, mixBlendMode: 'overlay',
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+        backgroundRepeat: 'repeat', backgroundSize: '180px 180px',
+      }} />
+
       <ScrollSpine theme={theme} />
 
       {/* REPORT PDF MODAL */}

@@ -1,48 +1,39 @@
 // "Research Areas" section (`#research`) - extracted verbatim from PublicSite.tsx.
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { prefersReducedMotion, useTilt, Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
-// One tile of the Research Areas grid. Was its own bespoke ink-bleed clip-path
-// reveal (whole card clip-path'd to a point at the icon's corner, growing out
-// circularly) - replaced 2026-08-06 with the shared `Reveal` so each of the 8
-// tiles can fly in from its own distinct direction (Simeon/Zabih: the grid should
-// visibly assemble from multiple directions at once, not one uniform effect).
-// Tradeoff made explicitly: layering a directional translate ON TOP of the old
-// clip-path would have been two competing entrance motions on one element, which
-// reads as busy - the ink-bleed's distinct character is traded away here for the
-// "genuinely mixed directions" requirement instead.
-function BentoTile({ icon, title, desc, from, delay }: {
-  icon: React.ReactNode; title: string; desc: string
+// Live feedback 2026-08-14: cards used to show the full two-paragraph
+// description inline, which read as overwhelming across 8 tiles at once.
+// Redesigned to icon + title only - a "table of contents" a visitor can
+// scan in one pass - with the actual prose moved into a click-to-open
+// modal. rfi-icon-tile (index.css) adds a barely-there background tint on
+// hover, deliberately subtle - a nudge that the tile is clickable, not a
+// competing animation on top of the existing tilt/lift.
+function BentoTile({ icon, title, onOpen, from, delay }: {
+  icon: React.ReactNode; title: string; onOpen: () => void
   from: 'left' | 'right' | 'top' | 'bottom'; delay: number
 }) {
-  const tiltRef = useRef<HTMLDivElement>(null)
+  const tiltRef = useRef<HTMLButtonElement>(null)
   const tilt = useTilt(tiltRef, 5)
   return (
     <Reveal from={from} delay={delay} style={{ height: '100%' }}>
-      <motion.div ref={tiltRef} className="rfi-hover-card" style={{
+      <motion.button ref={tiltRef} onClick={onOpen} className="rfi-hover-card rfi-icon-tile" style={{
         ...tilt,
         background: 'var(--glass-bg-solid)', border: '1px solid var(--border)',
-        borderRadius: 16, padding: '28px 24px',
-        height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column',
-        transition: 'box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 180ms cubic-bezier(0.4,0,0.2,1)',
+        borderRadius: 16, padding: '32px 20px', cursor: 'pointer',
+        height: '100%', width: '100%', boxSizing: 'border-box', overflow: 'hidden',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14, textAlign: 'center',
+        transition: 'box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 180ms cubic-bezier(0.4,0,0.2,1), background-color 180ms cubic-bezier(0.4,0,0.2,1)',
+        font: 'inherit', color: 'inherit',
       }}
         whileHover={prefersReducedMotion() ? undefined : { y: -4, scale: 1.012 }}
         transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14, marginBottom: 14 }}>
-          <div style={{ lineHeight: 0, flex: '0 0 auto' }}>{icon}</div>
-          <div style={{ fontWeight: 800, fontSize: 16, lineHeight: 1.25 }}>{title}</div>
-        </div>
-        {/* Two paragraphs per card now (live feedback 2026-08-14): first is why this
-            area exists to us, second is how it actually runs in our own production
-            systems - split on '\n\n', same convention the pricing tier descriptions
-            already use for their own paragraph breaks. */}
-        {desc.split('\n\n').map((p, i) => (
-          <div key={i} style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7, marginBottom: i === 0 ? 10 : 0 }}>{p}</div>
-        ))}
-      </motion.div>
+        <div style={{ lineHeight: 0 }}>{icon}</div>
+        <div style={{ fontWeight: 800, fontSize: 16, lineHeight: 1.25 }}>{title}</div>
+      </motion.button>
     </Reveal>
   )
 }
@@ -53,20 +44,82 @@ function BentoTile({ icon, title, desc, from, delay }: {
 const RESEARCH_TILE_DIRECTIONS: Array<'left' | 'right' | 'top' | 'bottom'> =
   ['left', 'top', 'bottom', 'right', 'right', 'bottom', 'top', 'left']
 
+// Detail modal for one research area. Reuses the checkout/proposal modal's exact
+// carbon-gradient panel (same rfi-modal-backdrop/rfi-modal-panel classes - CSS-only
+// spring-in animation, "supersmooth" per live feedback, no JS animation logic
+// needed) so it reads as the same canonical modal template site-wide instead of a
+// one-off. Always-dark chrome independent of the site theme toggle, same reasoning
+// as the checkout modal: fixed light hex text colors, not var(--text*) tokens.
+function ResearchAreaModal({ index, onClose, onNavigate }: {
+  index: number
+  onClose: () => void
+  onNavigate: (i: number) => void
+}) {
+  const { t } = useLocale()
+  const area = t.research.areas[index]
+  const icon = RESEARCH_AREAS[index].icon
+  const nextIndex = (index + 1) % RESEARCH_AREAS.length
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+
+  return (
+    <div className="rfi-modal-backdrop" onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+      {/* key={index} forces a remount on every cross-link click, re-triggering the
+          panel's CSS mount animation - a smooth swap between two areas' content
+          instead of an abrupt content swap inside a static box. */}
+      <div key={index} className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{
+        background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
+        backgroundBlendMode: 'overlay',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
+        border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '40px 36px', maxWidth: 640, width: '100%', maxHeight: '85vh', overflowY: 'auto', position: 'relative',
+      }}>
+        <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 20, lineHeight: 1, padding: 4 }}>&#x2715;</button>
+        <div style={{ lineHeight: 0, marginBottom: 18 }}>{icon}</div>
+        <h3 style={{ fontSize: 26, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2, marginBottom: 20, paddingRight: 24 }}>{area.title}</h3>
+        {area.desc.split('\n\n').map((p, i) => (
+          <p key={i} style={{ color: '#c8c8d8', fontSize: 15, lineHeight: 1.85, margin: 0, marginBottom: 16 }}>{p}</p>
+        ))}
+        {/* Deliberately unshowy (live feedback: "nicht so grell") - a low-fill teal
+            pill, not a loud CTA button, so it reads as "there's more to explore"
+            rather than competing with the actual close/primary actions elsewhere
+            on the page. */}
+        <button onClick={() => onNavigate(nextIndex)} style={{
+          marginTop: 8, display: 'inline-flex', alignItems: 'center', gap: 8,
+          background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)',
+          color: '#8fe8d0', fontSize: 12, fontFamily: "'JetBrains Mono', monospace",
+          letterSpacing: '0.04em', padding: '9px 16px', borderRadius: 999, cursor: 'pointer',
+        }}>
+          {t.research.areas[nextIndex].nextLabel} &rarr;
+        </button>
+      </div>
+    </div>
+  )
+}
+
 // Icons are locale-independent (module-level RESEARCH_AREAS below), title/desc
 // come from the current locale's content object, zipped together by index.
 function ResearchAreasGrid() {
   const { t } = useLocale()
+  const [selected, setSelected] = useState<number | null>(null)
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
-      {RESEARCH_AREAS.map((a, i) => {
-        const area = t.research.areas[i]
-        return (
-          <BentoTile key={area.title} icon={a.icon} title={area.title} desc={area.desc}
-            from={RESEARCH_TILE_DIRECTIONS[i % RESEARCH_TILE_DIRECTIONS.length]} delay={i} />
-        )
-      })}
-    </div>
+    <>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
+        {RESEARCH_AREAS.map((a, i) => {
+          const area = t.research.areas[i]
+          return (
+            <BentoTile key={area.title} icon={a.icon} title={area.title} onOpen={() => setSelected(i)}
+              from={RESEARCH_TILE_DIRECTIONS[i % RESEARCH_TILE_DIRECTIONS.length]} delay={i} />
+          )
+        })}
+      </div>
+      {selected !== null && (
+        <ResearchAreaModal index={selected} onClose={() => setSelected(null)} onNavigate={setSelected} />
+      )}
+    </>
   )
 }
 
@@ -88,7 +141,7 @@ export const RESEARCH_AREAS = [
       </_I>
     ),
     title: 'Ethics & Minor Protection',
-    desc: 'Consent, dignity, and exposure in systems built around people who cannot fully protect themselves — starting with children and young people under magnification.',
+    desc: 'Consent, dignity, and exposure in systems built around people who cannot fully protect themselves, starting with children and young people under magnification.',
   },
   {
     icon: (
@@ -150,7 +203,7 @@ export const RESEARCH_AREAS = [
       </_I>
     ),
     title: 'Scenario Simulation & Counterfactuals',
-    desc: 'Interventions, alternative futures, and propagated consequences — explicitly marked as simulated.',
+    desc: 'Interventions, alternative futures, and propagated consequences, explicitly marked as simulated.',
   },
   {
     icon: (
@@ -176,7 +229,7 @@ export const RESEARCH_AREAS = [
       </_I>
     ),
     title: 'Model Welfare & Prompt Injection',
-    desc: 'The behaviour, boundaries, failure modes, and dignity of intelligent systems — from jailbreak pressure to signs of distress.',
+    desc: 'The behaviour, boundaries, failure modes, and dignity of intelligent systems, from jailbreak pressure to signs of distress.',
   },
 ]
 

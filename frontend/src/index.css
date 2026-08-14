@@ -239,6 +239,10 @@ h1, h2, h3, .rfi-display {
   box-shadow: 0 12px 28px rgba(0,0,0,0.35);
   border-color: var(--accent-border);
 }
+/* Research area tiles (icon + title only, click opens the detail modal) - a
+   barely-there background tint on hover, on top of .rfi-hover-card's existing
+   lift/shadow, as a "this is clickable" nudge (live feedback: "mega zart"). */
+.rfi-icon-tile:hover { background-color: var(--bg2); }
 /* This class had no reduced-motion guard, unlike .rfi-cta-pulse and .rfi-modal-*. */
 @media (prefers-reduced-motion: reduce) {
   .rfi-hover-card { transition: none; }

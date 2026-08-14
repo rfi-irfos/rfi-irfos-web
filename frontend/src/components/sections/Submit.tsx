@@ -48,7 +48,14 @@ export function SubmitSection({
           </p>
         </Reveal>
 
-        <div style={{ display: mobile ? 'block' : 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'start' }}>
+        {/* Wrapped in one rounded panel (live feedback 2026-08-14: the form "floats
+            too much in timespace" without a container of its own) - same
+            glass-panel treatment the rest of the site's card surfaces use. */}
+        <div style={{
+          display: mobile ? 'block' : 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'start',
+          background: 'var(--glass-bg-solid)', border: '1px solid var(--border)', borderRadius: 20,
+          padding: mobile ? '28px 22px' : '40px',
+        }}>
           {/* left: quick contact channels first (general-purpose, what most
               visitors actually want), disclosure policy detail below it - live
               feedback: leading with the disclosure policy panel made the whole
