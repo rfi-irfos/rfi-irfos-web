@@ -718,10 +718,18 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         // no background of its own, so this page-wide tint is what was dimming
         // it too. Nudged back down a step (was raised for the grain/blur pass
         // earlier this session, see the comment above this block).
+        // Follow-up feedback: AppPrivacySection carries its own flat
+        // rgba(0,245,196,0.03) background, and the extra hair of contrast that
+        // adds against the photo backdrop was liked enough to want it EVERY
+        // section has, not just that one - added here instead, as the topmost
+        // layer of this page-wide gradient stack, so it's uniform top to bottom
+        // rather than one section abruptly reading slightly darker than its
+        // neighbors. AppPrivacySection's own copy removed below to avoid
+        // doubling it up right there.
         background: theme === 'dark'
-          ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("/page-structure-dark.jpeg") center top / cover no-repeat'
+          ? 'linear-gradient(rgba(0,245,196,0.03), rgba(0,245,196,0.03)), radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("/page-structure-dark.jpeg") center top / cover no-repeat'
           : theme === 'light'
-            ? 'linear-gradient(rgba(250,245,239,0.36), rgba(250,245,239,0.36)), url("/page-structure-light.jpeg") center top / cover no-repeat'
+            ? 'linear-gradient(rgba(0,245,196,0.03), rgba(0,245,196,0.03)), linear-gradient(rgba(250,245,239,0.36), rgba(250,245,239,0.36)), url("/page-structure-light.jpeg") center top / cover no-repeat'
             : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/page-structure-dark.jpeg") center top / cover no-repeat',
       }} />
 
@@ -1115,8 +1123,15 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             untereinander, und der rest daneben... das soll schon logik habe"):
             Legal/Company/Research stack as ONE narrow column on the far left
             (not three independent flex items that could wrap anywhere), the
-            two repo directories fill the rest of the width to its right. */}
-        <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', marginBottom: 28, maxWidth: 1320, margin: '0 auto 28px', textAlign: 'left' }}>
+            two repo directories fill the rest of the width to its right.
+            maxWidth dropped entirely (live feedback: "wieso nehmen wir nicht
+            den kompletten space die ganze breite... man könnte literally alle
+            spalten nebeneinander schreiben") - every other section on this
+            page caps at 1320 because they hold prose/cards meant to stay
+            readable at a fixed width, but a link directory has the opposite
+            goal: more width means more columns fit side by side instead of
+            wrapping into a tall single-column scroll. */}
+        <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', marginBottom: 28, textAlign: 'left' }}>
           <div style={{ flex: '0 0 170px', display: 'flex', flexDirection: 'column', gap: 22 }}>
             {[
               {
@@ -1163,13 +1178,17 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               math on our side. break-inside: avoid on each link keeps a name from
               splitting across a column boundary. */}
           <div style={{ flex: '1 1 auto', display: 'flex', flexWrap: 'wrap', gap: '2.5rem' }}>
+            {/* columnWidth, not a fixed columns count - the browser fits as many
+                ~150px columns as the now-unbounded width allows, so this
+                actually spreads wider on a wider viewport instead of a fixed
+                count just stretching into wasted whitespace per column. */}
             {[
-              { heading: t.footer.repoHeadingOrg, repos: RFI_REPOS, flex: '1 1 260px', columns: 2 },
-              { heading: t.footer.repoHeadingPersonal, repos: SIMEON_REPOS, flex: '1.6 1 380px', columns: 3 },
+              { heading: t.footer.repoHeadingOrg, repos: RFI_REPOS, flex: '1 1 480px' },
+              { heading: t.footer.repoHeadingPersonal, repos: SIMEON_REPOS, flex: '1.8 1 720px' },
             ].map(group => (
               <div key={group.heading} style={{ flex: group.flex }}>
                 <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px' }}>{group.heading}</p>
-                <div style={{ columns: group.columns, columnGap: 20 }}>
+                <div style={{ columnWidth: 150, columnGap: 20 }}>
                   {group.repos.map(r => (
                     <a key={r.u} href={r.u} target="_blank" rel="noopener noreferrer" style={{
                       display: 'block', breakInside: 'avoid', color: 'var(--text3)', fontSize: 12,

@@ -32,7 +32,16 @@ function BentoTile({ icon, title, onOpen, from, delay }: {
         whileHover={prefersReducedMotion() ? undefined : { y: -4, scale: 1.012 }}
         transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div style={{ lineHeight: 0 }}>{icon}</div>
+        {/* Live feedback 2026-08-14: icons bumped up (48->56) and given their own
+            rounded-square frame ("noch extra mit so einem abgerundeten Viereck
+            einrahmen, für bessere visibility") - a badge, not just a bare glyph
+            floating on the card. */}
+        <div style={{
+          width: 84, height: 84, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: 'var(--accent-dim)', border: '1px solid var(--accent-border)', borderRadius: 20, lineHeight: 0,
+        }}>
+          {icon}
+        </div>
         <div style={{ fontWeight: 800, fontSize: 16, lineHeight: 1.25 }}>{title}</div>
       </motion.button>
     </Reveal>
@@ -150,7 +159,7 @@ function ResearchAreasGrid() {
 }
 
 const _I = ({ children }: { children: React.ReactNode }) => (
-  <svg width="48" height="48" viewBox="0 0 32 32" fill="none"
+  <svg width="56" height="56" viewBox="0 0 32 32" fill="none"
     stroke="currentColor" style={{ color: 'var(--accent)' }} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     {children}
   </svg>

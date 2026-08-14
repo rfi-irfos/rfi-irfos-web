@@ -9,8 +9,12 @@ import { useLocale } from '../../hooks/useLocale'
 // rather than immediately after the hero before any proof exists.
 export function AppPrivacySection() {
   const { t } = useLocale()
+  // Own flat tint removed (live feedback 2026-08-14: liked the extra hair of
+  // contrast enough to want it page-wide, not just here) - now part of the
+  // page-wide backdrop gradient in PublicSite.tsx, so it stays uniform
+  // instead of this one section reading slightly darker than its neighbors.
   return (
-    <section id="app-privacy" style={{ padding: '48px 2rem 72px', background: 'rgba(0,245,196,0.03)' }}>
+    <section id="app-privacy" style={{ padding: '48px 2rem 72px' }}>
       {/* maxWidth matched to the neighboring Track Record/Pricing sections (1320,
           not 1000) - live feedback: the narrower container made this section's
           left edge sit further right than the sections directly above/below it. */}
