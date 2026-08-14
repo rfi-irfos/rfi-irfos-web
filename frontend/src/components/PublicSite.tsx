@@ -863,9 +863,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px',
       }}>
         <a href="#" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
-          <span aria-hidden="true" style={{ width: 40, height: 40, borderRadius: '50%', background: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <img src="/logo.png" alt="" style={{ width: 30, height: 30, objectFit: 'contain' }} />
-          </span>
+          <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 42, height: 42, objectFit: 'contain', flexShrink: 0 }} />
           <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: 'var(--text)' }}>RFI-IRFOS</span>
           <EkgLine />
         </a>
