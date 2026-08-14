@@ -522,7 +522,18 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile }: {
   const punchline = paras[paras.length - 1]
   return (
     <>
-      <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: '#c8c8d8', lineHeight: 1.2, marginBottom: 14 }}>{tier}</h3>
+      {/* Title was a hardcoded #c8c8d8 (fixed light grey, not theme-aware - would've
+          been low-contrast on light theme too) - live feedback 2026-08-14, "fat white
+          [in dark] or black [in light]" - var(--text) instead. Same live feedback for
+          the punchline paragraph below: color was var(--accent-text) (teal), meant as
+          a small closing-line highlight, but for any tier whose desc has no '\n\n'
+          paragraph break, `body` is empty and the ENTIRE description becomes the
+          "punchline" - i.e. a full block of teal body copy, not a highlight. Text is
+          var(--text) now for both cases; the teal left border alone still marks it as
+          the closing/highlighted line when there IS a real body above it. The smaller
+          "WHAT YOU GET" eyebrow stays on its own muted grey - that one's meant to
+          stay quiet, it's just the section label, not primary content. */}
+      <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: 'var(--text)', lineHeight: 1.2, marginBottom: 14 }}>{tier}</h3>
       {body.length > 0 && (
         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>
           {t.modalTierBody.whatYouGet}
@@ -534,7 +545,7 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile }: {
       {body.length > 0 && <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', margin: '2px 0 18px' }} />}
       {punchline && (
         <p style={{
-          color: 'var(--accent-text)', fontSize: mobile ? 15.5 : 17, fontWeight: 700, lineHeight: 1.6,
+          color: 'var(--text)', fontSize: mobile ? 15.5 : 17, fontWeight: 700, lineHeight: 1.6,
           margin: 0, marginBottom: 20, paddingLeft: 14, borderLeft: `2px solid ${TEAL}`,
         }}>{punchline}</p>
       )}
