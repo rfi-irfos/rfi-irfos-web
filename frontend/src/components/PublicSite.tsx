@@ -667,45 +667,21 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
 
   return (
     <div style={{
-      // No filter: blur() - a blurred position:fixed layer covering the whole viewport
-      // forced the browser to recompute an expensive blur on every scroll repaint.
-      //
-      // backgroundAttachment: 'fixed' below makes the gradient/image positioning area the
-      // VIEWPORT instead of this element's own (several-thousand-px-tall) box, so every
-      // screenful shows the full image and full gradient contrast instead of a near-flat
-      // sliver stretched over the whole page.
-      //
-      // Used to layer synthetic noise/grain gradients on top of a flat color here (no real
-      // texture existed yet) - now that page-structure-dark/light.jpeg are actual photos,
-      // that fake-texture stack only crushed the real one under ~90%-opaque overlays and
-      // was removed. One soft tint overlay is enough to keep body text readable over the
-      // photo; the photo itself is now the texture.
-      // Three soft teal glows on top of the photo - subtle brand accent, cheap as a
-      // background-image layer (same 'fixed' viewport-relative positioning as the photo
-      // below, so they don't scroll away or stretch thin over a multi-thousand-px page).
-      //
-      // Must be the `background` SHORTHAND, not `backgroundImage`: the trailing
-      // `url(...) center / cover no-repeat` on the photo layer is background-position/
-      // -size/-repeat syntax, only legal inside the `background` shorthand. Setting it
-      // via `backgroundImage` was silently rejected as an invalid value - the whole
-      // property never applied, at any theme, since before today's session. That's why
-      // the photo only ever showed inside Hero (which already used the `background`
-      // shorthand correctly) and never anywhere else on the page.
-      background: theme === 'dark'
-        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.42)), url("/page-structure-dark.jpeg") center / cover no-repeat'
-        : theme === 'light'
-          ? 'linear-gradient(rgba(250,245,239,0.38), rgba(250,245,239,0.38)), url("/page-structure-light.jpeg") center / cover no-repeat'
-          // hc reuses the dark photo but under a much heavier black overlay (0.8 vs dark's
-          // 0.42) - the --text/--border AAA ratios in index.css ([data-theme="hc"]) are
-          // verified against a literal #000000 backdrop, so the image can only sit under
-          // hc at an opacity dark near-black enough not to erode those ratios. No teal glow
-          // layers here either - hc's accent is amber (--accent: #ffd400), not teal.
-          : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/page-structure-dark.jpeg") center / cover no-repeat',
-      // backgroundColor after the shorthand so it isn't reset by it - acts as the base
-      // fallback (e.g. below the image's cover-scaled edges on very wide viewports).
+      // Flat fallback only - the actual photo/gradient backdrop is the dedicated
+      // position:fixed div below, not this element's own background. Used to be a
+      // multi-layer `background` shorthand with `backgroundAttachment: 'fixed'` on
+      // this same (in-flow, several-thousand-px-tall) element, which was fragile in
+      // two ways: (1) `background-image` (not the `background` shorthand) with a
+      // trailing `url(...) center / cover no-repeat` is invalid CSS - silently
+      // dropped, so the photo never rendered anywhere on the page at all, before
+      // today; (2) after fixing that, 'fixed' attachment applied inconsistently
+      // between the dark (5-layer) and light (2-layer) gradient stacks - dark's
+      // photo stayed pinned while light's scrolled with the page. A real
+      // position:fixed element sidesteps both: it can't have invalid background
+      // syntax since it's plain background/backgroundSize/backgroundPosition props,
+      // and "stays put while scrolling" is what position:fixed IS, not an
+      // attachment-list quirk that can differ layer to layer.
       backgroundColor: theme === 'dark' ? '#000000' : theme === 'hc' ? '#000000' : 'var(--bg)',
-      backgroundBlendMode: 'normal',
-      backgroundAttachment: 'fixed',
       // position:relative + zIndex:0 give this wrapper its own stacking context -
       // without it, ScrollSpine's zIndex:-1 rail escapes to the document root's
       // stacking context and paints BEHIND this div's own background instead of
@@ -714,6 +690,29 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       // unaffected by this - they paint above the spine exactly as before.
       position: 'relative', zIndex: 0,
       color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
+
+      {/* The actual page-wide photo backdrop. position:fixed (not backgroundAttachment:
+          'fixed' on an in-flow element) so it's pinned to the viewport unconditionally -
+          zIndex -2, one behind ScrollSpine's -1, so it paints first: wrapper background
+          -> this photo -> ScrollSpine -> everything else. Hero deliberately has no photo
+          of its own anymore (see Hero.tsx) - it used to layer hero-structure.jpeg on top
+          of this, which meant two different photos visibly seamed together right at
+          Hero's bottom edge once this backdrop actually started rendering. One continuous
+          photo now, Hero included, via transparency down to this same layer. */}
+      <div aria-hidden="true" style={{
+        position: 'fixed', inset: 0, zIndex: -2, pointerEvents: 'none',
+        backgroundBlendMode: 'normal',
+        background: theme === 'dark'
+          ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.42)), url("/page-structure-dark.jpeg") center / cover no-repeat'
+          : theme === 'light'
+            ? 'linear-gradient(rgba(250,245,239,0.38), rgba(250,245,239,0.38)), url("/page-structure-light.jpeg") center / cover no-repeat'
+            // hc reuses the dark photo but under a much heavier black overlay (0.8 vs dark's
+            // 0.42) - the --text/--border AAA ratios in index.css ([data-theme="hc"]) are
+            // verified against a literal #000000 backdrop, so the image can only sit under
+            // hc at an opacity dark near-black enough not to erode those ratios. No teal glow
+            // layers here either - hc's accent is amber (--accent: #ffd400), not teal.
+            : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/page-structure-dark.jpeg") center / cover no-repeat',
+      }} />
 
       <ScrollSpine theme={theme} />
 

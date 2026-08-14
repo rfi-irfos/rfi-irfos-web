@@ -56,11 +56,18 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       display: 'flex', flexDirection: 'column', position: 'relative',
       alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
       padding: 'calc(72px + 6vh) 2rem 72px',
+      // No photo of its own anymore - PublicSite's fixed-position backdrop (the same
+      // page-structure-dark/light.jpeg used everywhere else) already shows through here
+      // via transparency. Hero used to layer hero-structure.jpeg on top of that, which
+      // meant two different photos visibly seamed together at Hero's bottom edge once
+      // the page-wide backdrop actually started rendering (it silently hadn't, for a
+      // pre-existing reason - see PublicSite.tsx). Just the tint gradient stays, for
+      // text legibility over whatever's showing through.
       background: theme === 'dark'
-        ? 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.96) 0%, rgba(5,7,14,0.78) 52%, rgba(5,7,14,0.91) 100%), url("/hero-structure.jpeg") center / cover no-repeat'
+        ? 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.55) 0%, rgba(5,7,14,0.32) 52%, rgba(5,7,14,0.5) 100%)'
         : theme === 'hc'
-          ? '#000'
-          : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,122,92,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(250,245,239,0.94) 0%, rgba(250,245,239,0.84) 52%, rgba(250,245,239,0.94) 100%), url("/hero-structure.jpeg") center / cover no-repeat',
+          ? 'rgba(0,0,0,0.35)'
+          : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,122,92,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(250,245,239,0.55) 0%, rgba(250,245,239,0.32) 52%, rgba(250,245,239,0.5) 100%)',
     }}>
       <HeroBackground theme={theme} />
       {/* Stays English in both locales (live feedback) - "Rethink the Obvious."

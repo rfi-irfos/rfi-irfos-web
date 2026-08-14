@@ -89,6 +89,18 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
+        {/* ethics and minor protection - shelter */}
+        <path d="M5 15c0-6 5-10 11-10s11 4 11 10H5z"/>
+        <line x1="16" y1="15" x2="16" y2="25"/><path d="M16 25q0 3-3 3"/>
+        <circle cx="16" cy="3" r="1.5" fill="currentColor" stroke="none"/>
+      </_I>
+    ),
+    title: 'Ethics & Minor Protection',
+    desc: 'Consent, dignity, and exposure in systems built around people who cannot fully protect themselves — starting with children and young people under magnification.',
+  },
+  {
+    icon: (
+      <_I>
         {/* ternary tree - one root, three branches */}
         <circle cx="16" cy="5" r="2.5"/>
         <line x1="16" y1="7.5" x2="7" y2="22.5"/><line x1="16" y1="7.5" x2="16" y2="22.5"/><line x1="16" y1="7.5" x2="25" y2="22.5"/>
@@ -159,18 +171,6 @@ export const RESEARCH_AREAS = [
     ),
     title: 'Model Welfare & Prompt Injection',
     desc: 'The behaviour, boundaries, failure modes, and dignity of intelligent systems — from jailbreak pressure to signs of distress.',
-  },
-  {
-    icon: (
-      <_I>
-        {/* minor and youth protection - shelter */}
-        <path d="M5 15c0-6 5-10 11-10s11 4 11 10H5z"/>
-        <line x1="16" y1="15" x2="16" y2="25"/><path d="M16 25q0 3-3 3"/>
-        <circle cx="16" cy="3" r="1.5" fill="currentColor" stroke="none"/>
-      </_I>
-    ),
-    title: 'Minor & Youth Protection',
-    desc: 'Children and young people under magnification: platforms, biometric and behavioural data, consent, exposure, and the systems built around them.',
   },
 ]
 

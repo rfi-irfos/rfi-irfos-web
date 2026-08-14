@@ -56,13 +56,13 @@ export const EN = {
     subheading: 'We study how complex systems behave: how evidence becomes structure, how relationships change over time, and where one shift can move an entire network.',
     areas: [
       { title: 'World Models & Cross-Domain Intelligence', desc: 'A shared model for entities, relationships, evidence, and change across domains. One structure for systems that are usually kept apart.' },
+      { title: 'Ethics & Minor Protection', desc: 'Consent, dignity, and exposure in systems built around people who cannot fully protect themselves — starting with children and young people under magnification: platforms, biometric and behavioural data, and the systems built around them.' },
       { title: 'Ternary AI & Computing', desc: 'Post-binary arithmetic as the foundation for language models, compilers, and operating systems. Patent pending A50296/2026.' },
       { title: 'Pattern Recognition & Impact Propagation', desc: 'We find recurring structures across domains and trace how a change travels through dependencies, bridges, bottlenecks, and connected systems.' },
       { title: 'Change & Anomaly Detection', desc: 'Temporal analysis for meaningful change: what shifted, what is unusual, and which transitions deserve attention.' },
       { title: 'Scenario Simulation & Counterfactuals', desc: 'Interventions, alternative futures, and propagated consequences — explicitly marked as simulated, never confused with observation.' },
       { title: 'Evidence & Contradiction', desc: 'Supporting evidence, conflicting evidence, provenance, confidence, and unresolved questions kept together instead of flattened into a verdict.' },
       { title: 'Model Welfare & Prompt Injection', desc: 'Research into the behaviour, boundaries, failure modes, and dignity of intelligent systems — from jailbreak pressure to signs of distress.' },
-      { title: 'Minor & Youth Protection', desc: 'Children and young people under magnification: platforms, biometric and behavioural data, consent, exposure, and the systems built around them.' },
     ],
   },
 
@@ -263,11 +263,8 @@ export const EN = {
   },
 
   tierCarousel: {
-    recommendedTier: '★ Recommended tier',
-    featuredTier: 'Featured tier',
     getStarted: 'Get Started',
     requestProposal: 'Request Proposal',
-    recommendedBadge: '★ RECOMMENDED',
   },
 
   modalTierBody: {

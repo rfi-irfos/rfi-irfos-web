@@ -656,17 +656,33 @@ export function ScopeTag({ label }: { label: string }) {
   )
 }
 
+// Soft, low-opacity fills instead of the flat grey/mono-border pills that used
+// to render here - same font/weight/letterspacing as the rest of the site's
+// tag treatment, just a rotating set of desaturated brand-adjacent hues so a
+// row of several tags reads as a set rather than a monochrome wall. Assigned
+// by index (not per-string hash) so it's deterministic across renders and
+// locales without depending on the tag text itself.
+const OUTPUT_TAG_HUES = [
+  { fg: '#00f5c4', bg: 'rgba(0,245,196,0.1)',  border: 'rgba(0,245,196,0.28)' },  // teal (brand)
+  { fg: '#ffd18f', bg: 'rgba(255,180,90,0.1)', border: 'rgba(255,180,90,0.28)' }, // amber
+  { fg: '#9cc9ff', bg: 'rgba(90,160,255,0.1)', border: 'rgba(90,160,255,0.28)' }, // soft blue
+  { fg: '#d7b8ff', bg: 'rgba(180,120,255,0.1)',border: 'rgba(180,120,255,0.28)' },// soft violet
+]
+
 export function OutputTags({ outputs }: { outputs?: readonly string[] }) {
   if (!outputs || outputs.length === 0) return null
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 16 }}>
-      {outputs.map(o => (
-        <span key={o} style={{
-          fontSize: 10.5, fontWeight: 700, letterSpacing: '0.03em', textTransform: 'uppercase',
-          fontFamily: "'JetBrains Mono', monospace", color: 'var(--text3)',
-          border: '1px solid var(--border)', borderRadius: 999, padding: '4px 10px',
-        }}>{o}</span>
-      ))}
+      {outputs.map((o, i) => {
+        const hue = OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
+        return (
+          <span key={o} style={{
+            fontSize: 10.5, fontWeight: 700, letterSpacing: '0.03em', textTransform: 'uppercase',
+            fontFamily: "'JetBrains Mono', monospace", color: hue.fg,
+            border: `1px solid ${hue.border}`, background: hue.bg, borderRadius: 999, padding: '4px 10px',
+          }}>{o}</span>
+        )
+      })}
     </div>
   )
 }
@@ -747,20 +763,20 @@ export function TierCarousel({ tiers, getActions }: {
           boxShadow: '0 12px 40px rgba(0,245,196,0.1)',
         }}>
         <div>
-          {/* Label now says which tier this actually is, not just "you're looking
-              at one" - live feedback: after clicking around, there was no cue left
-              for which tier was originally recommended. */}
-          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: idx === defaultIdx ? TEAL : 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 8, fontWeight: idx === defaultIdx ? 800 : 400, borderLeft: idx === defaultIdx ? `2px solid ${TEAL}` : 'none', paddingLeft: idx === defaultIdx ? 8 : 0 }}>
-            {idx === defaultIdx ? locale.tierCarousel.recommendedTier : locale.tierCarousel.featuredTier}
-          </div>
+          {/* "FEATURED TIER" / "★ RECOMMENDED TIER" eyebrow removed (live feedback,
+              2026-08-14: reads as noise repeated over every card, the tier name
+              alone is the title). The tier name is the first thing in the card now. */}
           <div style={{ fontSize: 21, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
-          {active.hook && <div style={{ fontSize: 12.5, color: 'var(--text2)', marginTop: 5 }}>{active.hook}</div>}
+          {active.hook && <div style={{ fontSize: 12.5, color: 'var(--text2)', marginTop: 8 }}>{active.hook}</div>}
         </div>
         {/* Capped height + scroll (live feedback: on the longer tiers - four full
             paragraphs - the card grew tall enough to push the Get Started button
             out of view without scrolling the whole page). Every card now has the
-            same predictable height regardless of description length. */}
-        <div style={{ marginTop: 12, maxHeight: 240, overflowY: 'auto' }}>
+            same predictable height regardless of description length. marginTop
+            raised 12->22 (live feedback 2026-08-14: the hook sentence and the
+            first description paragraph read as cramped, one line of air wasn't
+            enough breathing room between them). */}
+        <div style={{ marginTop: 22, maxHeight: 240, overflowY: 'auto' }}>
           {active.desc.split('\n\n').map((p, i) => (
             <p key={i} style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.65, marginBottom: 9 }}>{p}</p>
           ))}
@@ -812,9 +828,6 @@ export function TierCarousel({ tiers, getActions }: {
               border: `1px solid ${i === defaultIdx ? 'rgba(0,245,196,0.4)' : 'var(--border)'}`,
               transition: 'border-color .15s, background .15s',
             }}>
-              {i === defaultIdx && (
-                <div style={{ fontSize: 9, fontWeight: 800, color: 'var(--accent-text)', letterSpacing: '0.05em' }}>{locale.tierCarousel.recommendedBadge}</div>
-              )}
               <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{t.tier}</div>
               {t.hook && <div style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.5 }}>{t.hook}</div>}
               <div style={{ marginTop: 'auto', paddingTop: 4 }}>

@@ -53,13 +53,13 @@ export const DE: Content = {
     subheading: 'Wir untersuchen, wie komplexe Systeme sich verhalten: wie Evidenz zu Struktur wird, wie sich Beziehungen über die Zeit verändern und wo eine Verschiebung ein ganzes Netzwerk bewegen kann.',
     areas: [
       { title: 'World Models & Cross-Domain Intelligence', desc: 'Ein gemeinsames Modell für Entitäten, Beziehungen, Evidenz und Veränderung über Domänen hinweg. Eine Struktur für Systeme, die sonst getrennt bleiben.' },
+      { title: 'Ethik & Minderjährigenschutz', desc: 'Einwilligung, Würde und Exposition in Systemen, die um Menschen herum gebaut werden, die sich nicht vollständig selbst schützen können — allen voran Kinder und Jugendliche unter der Lupe: Plattformen, biometrische und Verhaltensdaten und die Systeme, die darum gebaut werden.' },
       { title: 'Ternäre KI & Computing', desc: 'Post-binäre Arithmetik als Grundlage für Sprachmodelle, Compiler und Betriebssysteme. Patent angemeldet A50296/2026.' },
       { title: 'Pattern Recognition & Impact Propagation', desc: 'Wir finden wiederkehrende Strukturen über Domänen hinweg und verfolgen, wie sich eine Veränderung durch Abhängigkeiten, Brücken, Engpässe und verbundene Systeme bewegt.' },
       { title: 'Change & Anomaly Detection', desc: 'Zeitliche Analyse für relevante Veränderungen: was sich verschoben hat, was ungewöhnlich ist und welche Übergänge Aufmerksamkeit verdienen.' },
       { title: 'Scenario Simulation & Counterfactuals', desc: 'Interventionen, alternative Zukünfte und propagierte Konsequenzen — ausdrücklich als Simulation markiert und nie mit Beobachtung verwechselt.' },
       { title: 'Evidence & Contradiction', desc: 'Stützende und widersprechende Evidenz, Provenance, Konfidenz und offene Fragen bleiben zusammen, statt zu einem Urteil eingeebnet zu werden.' },
       { title: 'Model Welfare & Prompt Injection', desc: 'Forschung zu Verhalten, Grenzen, Fehlermodi und Würde intelligenter Systeme — vom Jailbreak-Druck bis zu Anzeichen von Distress.' },
-      { title: 'Minderjährigen- & Jugendschutz', desc: 'Kinder und Jugendliche unter der Lupe: Plattformen, biometrische und Verhaltensdaten, Einwilligung, Exposition und die Systeme, die darum gebaut werden.' },
     ],
   },
 
@@ -256,11 +256,8 @@ export const DE: Content = {
   },
 
   tierCarousel: {
-    recommendedTier: '★ Empfohlene Stufe',
-    featuredTier: 'Ausgewählte Stufe',
     getStarted: 'Jetzt starten',
     requestProposal: 'Angebot anfragen',
-    recommendedBadge: '★ EMPFOHLEN',
   },
 
   modalTierBody: {
