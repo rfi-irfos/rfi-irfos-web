@@ -6,24 +6,6 @@ import { RESEARCH_AREAS } from './Research'
 import { PROJECTS } from './Projects'
 import { useLocale } from '../../hooks/useLocale'
 
-// The hero keeps one proof-first action. The contact form remains on the landing
-// page, but no longer competes with the Evidence view from the first screen.
-function HeroCtaRow({ onNavigate }: { onNavigate?: (href: string) => void }) {
-  const { t } = useLocale()
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <a href="#evidence" style={{
-        border: '1px solid rgba(0,245,196,0.35)', color: 'var(--accent-text)', padding: '13px 30px', borderRadius: 8,
-        fontWeight: 700, fontSize: 13, textDecoration: 'none', letterSpacing: '0.06em',
-        textTransform: 'uppercase', transition: 'border-color 0.15s',
-      }}
-        onClick={e => { if (onNavigate) { e.preventDefault(); onNavigate('#evidence') } }}
-        onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.7)')}
-        onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.35)')}>{t.hero.ctaTrackRecord}</a>
-    </div>
-  )
-}
-
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 
 // Gates the WebGL hero background: skipped outright under prefers-reduced-motion,
@@ -69,7 +51,7 @@ const PUBLICATIONS = [
   { year: '2025', title: 'A1ERF: EU Regulation Proposal', sub: 'AI-first emergency relay framework for autonomous cardiac arrest detection', href: 'https://osf.io/ueac8/', tag: 'Policy · EU' },
 ]
 
-export function HeroSection({ mobile, onNavigate }: { mobile: boolean; onNavigate?: (href: string) => void }) {
+export function HeroSection({ mobile }: { mobile: boolean }) {
   const { t } = useLocale()
   return (
     <section style={{
@@ -106,7 +88,7 @@ export function HeroSection({ mobile, onNavigate }: { mobile: boolean; onNavigat
           the stats, as a single slower-cycling line rather than competing with
           a second static teal headline underneath it (that redundant "Most
           technology decisions..." line has been removed entirely). */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: mobile ? '1.25rem' : '3rem', margin: '0 auto 48px', maxWidth: 860, justifyContent: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: mobile ? '1.25rem' : '3rem', margin: '0 auto 24px', maxWidth: 980, justifyContent: 'center' }}>
         {/* Deliberately NOT the same numbers as the Track Record stat row further down -
             that one is audit-specific (apps/findings/companies/regulators), this one is
             the breadth story: research areas, systems and projects, publications, team,
@@ -121,8 +103,8 @@ export function HeroSection({ mobile, onNavigate }: { mobile: boolean; onNavigat
         ]).map((s, i) => (
           <Reveal key={s.label} delay={i} from={s.from}>
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 32, fontWeight: 900, color: 'var(--accent-text)' }}><CountUp value={s.n} /></div>
-              <div style={{ fontSize: 11, color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>{s.label}</div>
+              <div style={{ fontSize: 'clamp(2.35rem, 4vw, 3.25rem)', fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1 }}><CountUp value={s.n} /></div>
+              <div style={{ fontSize: 12, color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 8 }}>{s.label}</div>
             </div>
           </Reveal>
         ))}
@@ -133,12 +115,6 @@ export function HeroSection({ mobile, onNavigate }: { mobile: boolean; onNavigat
           under "what we build" (Projects section), enriched with detail and a
           pricing link per pair - see ProblemSolutionShowcase below. */}
 
-      {/* Down from 3 co-equal buttons to 2, deliberately unequal: Hire Us is the one
-          real conversion action and gets the solid fill; Track Record is the proof
-          a skeptical visitor wants before that, secondary by design. Research and
-          Pricing dropped as separate hero buttons - both are one scroll or one nav
-          click away already, they don't need to compete with the actual CTA here. */}
-      <HeroCtaRow onNavigate={onNavigate} />
       {/* "I am a..." persona chips removed entirely (live feedback: redundant -
           the nav/CTAs/Research Areas right below already cover the same
           "where do I look" job without a second, parallel navigation device). */}
