@@ -161,11 +161,18 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           { n: '1',                           label: t.hero.stats.worldModel,         from: 'bottom' as const },
         ]).map((s, i) => (
           <Reveal key={s.label} delay={i} from={s.from}>
-            <div style={{ textAlign: 'center' }}>
-              {/* Fixed hex, not var(--accent-text)/var(--text) - same reasoning as the
-                  identity bar above: this sits on the hero's always-dark tint
-                  regardless of site theme, so light theme's dark-on-light tokens
-                  (accent-text #007a5c, text #0a0a0a) would go illegible here. */}
+            {/* Same canonical carbon-gradient card as the ledger/checkout modals
+                (live feedback 2026-08-14: "gebma den kpis die gleichen carbon
+                cards wie den ledger auch?") - fixed hex text, not var(--accent-
+                text)/var(--text), same reasoning as the identity bar above: this
+                sits on the hero's always-dark tint regardless of site theme. */}
+            <div style={{
+              textAlign: 'center', padding: '20px 10px', borderRadius: 12,
+              background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
+              backgroundBlendMode: 'overlay',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 30px rgba(0,0,0,0.5), 0 12px 30px rgba(0,0,0,0.5)',
+              border: '1px solid rgba(255,255,255,0.08)',
+            }}>
               <div style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: '#00f5c4', lineHeight: 1 }}><CountUp value={s.n} /></div>
               <div style={{ fontSize: 11, color: '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8 }}>{s.label}</div>
             </div>
