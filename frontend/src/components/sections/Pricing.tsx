@@ -16,6 +16,7 @@
 // tier list. Web/Mobile as standalone product lines diluted the audit/
 // intelligence positioning; that work is still offered, just no longer
 // carried as its own priced tier here - see #contact.
+import { useState } from 'react'
 import { ScopeTag, TierCarousel, Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
@@ -66,10 +67,13 @@ export function PricingSection({
   const securityTiers = t.pricing.security.map((tier, i) => ({ ...tier, ...SECURITY_META[i] }))
   const marketTiers = t.pricing.market.map((tier, i) => ({ ...tier, ...MARKET_META[i] }))
   const technicalTiers = t.pricing.technical.map((tier, i) => ({ ...tier, ...TECHNICAL_META[i] }))
+  const [activeOffer, setActiveOffer] = useState(0)
+  const offerCount = 3
+  const cycleOffer = (direction: number) => setActiveOffer(current => (current + direction + offerCount) % offerCount)
 
   return (
     <section id="pricing" style={{ padding: '48px 2rem 72px' }}>
-      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1440, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.pricing.eyebrow}</p>
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.pricing.heading} /></h2>
@@ -78,44 +82,60 @@ export function PricingSection({
           </p>
         </Reveal>
 
-        {/* Business Intelligence - now the FIRST product line (2026-08-12):
-            the decompiled-app corpus is the asset; the tiers are queries against
-            it, not bespoke report-writing. */}
-        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 24px', marginBottom: 48, maxWidth: 720, marginLeft: 'auto', marginRight: 'auto' }}>
-        <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.market}<ScopeTag label={t.pricing.scopeTags.market} /></p>
-        <TierCarousel tiers={marketTiers} getActions={tier => {
-          const full = marketTiers.find(s => s.tier === tier.tier)!
-          return { onBuy: () => openCheckoutModal({ key: full.stripeKey, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) }
-        }} />
-        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, maxWidth: 1400, margin: '0 auto' }}>
+          <button onClick={() => cycleOffer(-1)} aria-label="Previous access offer" style={{
+            width: 48, height: 48, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.35)',
+            background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: 20, cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          }}>&larr;</button>
 
-        {/* Technical Intelligence & Systems - second product line: AI integration,
-            custom systems, research architecture. No Stripe checkout for these tiers
-            by default - they route to proposal/contact. */}
-        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 24px', marginBottom: 48, maxWidth: 720, marginLeft: 'auto', marginRight: 'auto' }}>
-        <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.technical}<ScopeTag label={t.pricing.scopeTags.technical} /></p>
-        <TierCarousel tiers={technicalTiers} getActions={tier => {
-          const full = technicalTiers.find(s => s.tier === tier.tier)!
-          return { onBuy: () => openCheckoutModal({ key: full.stripeKey, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined }) }
-        }} />
-        </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {activeOffer === 0 && (
+              <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 28px' }}>
+                <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.market}<ScopeTag label={t.pricing.scopeTags.market} /></p>
+                <TierCarousel tiers={marketTiers} getActions={tier => {
+                  const full = marketTiers.find(s => s.tier === tier.tier)!
+                  return { onBuy: () => openCheckoutModal({ key: full.stripeKey, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) }
+                }} />
+              </div>
+            )}
 
-        {/* Security Audit tiers - featured-tier carousel. Collapsed to 4 tiers
-            (2026-08-12, same treatment as Business Intelligence): Public (free,
-            highlight:false) + Remediation Advisory (highlighted/recommended) +
-            Confidential (NDA) + Enterprise & Critical Infrastructure (merged
-            top tier, proposal-only). One big card + a filmstrip of the rest,
-            per product line - see `TierCarousel`. */}
-        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 24px', marginBottom: 0, maxWidth: 720, marginLeft: 'auto', marginRight: 'auto' }}>
-        <p id="pricing-security" style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center', scrollMarginTop: 96 }}>{t.pricing.lineHeadings.security}<ScopeTag label={t.pricing.scopeTags.security} /></p>
-        <TierCarousel tiers={securityTiers} getActions={tier => {
-          const full = securityTiers.find(s => s.tier === tier.tier)!
-          const hasCheckout = !!(full.stripeKey || full.directUrl)
-          return {
-            onBuy: hasCheckout ? () => openCheckoutModal({ key: full.stripeKey ?? full.tier, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined }) : undefined,
-            onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) : undefined,
-          }
-        }} />
+            {activeOffer === 1 && (
+              <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 28px' }}>
+                <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.technical}<ScopeTag label={t.pricing.scopeTags.technical} /></p>
+                <TierCarousel tiers={technicalTiers} getActions={tier => {
+                  const full = technicalTiers.find(s => s.tier === tier.tier)!
+                  return { onBuy: () => openCheckoutModal({ key: full.stripeKey, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined }) }
+                }} />
+              </div>
+            )}
+
+            {activeOffer === 2 && (
+              <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 28px' }}>
+                <p id="pricing-security" style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center', scrollMarginTop: 96 }}>{t.pricing.lineHeadings.security}<ScopeTag label={t.pricing.scopeTags.security} /></p>
+                <TierCarousel tiers={securityTiers} getActions={tier => {
+                  const full = securityTiers.find(s => s.tier === tier.tier)!
+                  const hasCheckout = !!(full.stripeKey || full.directUrl)
+                  return {
+                    onBuy: hasCheckout ? () => openCheckoutModal({ key: full.stripeKey ?? full.tier, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined }) : undefined,
+                    onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) : undefined,
+                  }
+                }} />
+              </div>
+            )}
+          </div>
+
+          <button onClick={() => cycleOffer(1)} aria-label="Next access offer" style={{
+            width: 48, height: 48, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.35)',
+            background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: 20, cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          }}>&rarr;</button>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 7, marginTop: 18 }}>
+          {[0, 1, 2].map(index => <button key={index} onClick={() => setActiveOffer(index)} aria-label={`Show access offer ${index + 1} of 3`} style={{
+            width: 8, height: 8, borderRadius: '50%', border: 'none', padding: 0, cursor: 'pointer',
+            background: activeOffer === index ? 'var(--accent-text)' : 'rgba(255,255,255,0.18)',
+          }} />)}
         </div>
 
         {/* Research Cooperation Products - via our coop partner Laura Serna
