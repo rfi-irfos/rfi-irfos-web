@@ -698,7 +698,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       // stay full-contrast every screenful instead of being stretched thin over a
       // multi-thousand-px-tall page).
       backgroundImage: theme === 'dark'
-        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(165deg, #1c1c22 0%, #0a0a0c 35%, #030304 65%, #17171d 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(107deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 2px)'
+        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(165deg, rgba(28,28,34,0.9) 0%, rgba(10,10,12,0.9) 35%, rgba(3,3,4,0.92) 65%, rgba(23,23,29,0.9) 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(107deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 2px), linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("/page-structure.jpeg") center / cover no-repeat'
         : undefined,
       backgroundBlendMode: 'normal',
       backgroundAttachment: theme === 'dark' ? 'fixed' : 'scroll',
