@@ -18,12 +18,13 @@ import { fileURLToPath } from 'node:url'
 const DIST = fileURLToPath(new URL('./dist/', import.meta.url))
 const PORT = 4173
 
-// Legal pages (own standalone content, App.tsx's LEGAL_SLUGS) + section
-// pages (homepage scrolled to one section, App.tsx's SECTION_SLUGS) - keep
-// in sync with those two lists.
+// Legal pages (own standalone content, App.tsx's LEGAL_SLUGS) + public views
+// (App.tsx's SECTION_SLUGS) - keep the crawlable routes in sync with those lists.
 const ROUTES = [
   '/',
-  '/research', '/projects', '/track-record', '/pricing', '/submit',
+  '/research', '/systems', '/evidence', '/access', '/submit',
+  // Legacy section URLs remain valid and should keep receiving static output.
+  '/projects', '/track-record', '/pricing',
   '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/team', '/methodology',
 ]
 
@@ -54,7 +55,7 @@ const page = await browser.newPage()
 
 for (const route of ROUTES) {
   await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'networkidle' })
-  await page.waitForSelector('#root h1')
+  await page.waitForSelector('#root h1, #root h2')
   const html = await page.content() // already includes the doctype
   const outPath = route === '/' ? join(DIST, 'index.html') : join(DIST, route, 'index.html')
   await mkdir(dirname(outPath), { recursive: true })
