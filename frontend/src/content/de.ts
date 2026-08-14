@@ -231,9 +231,9 @@ export const DE: Content = {
       security: 'Mobile + Web + KI',
     },
     lineHeadings: {
-      market: 'Business Intelligence & Predictive Analysis',
-      technical: 'Technical Intelligence & Systems',
-      security: 'Security Audits & Responsible Disclosure',
+      market: 'Business Intelligence & Prädiktive Analyse',
+      technical: 'Technische Intelligence & Systeme',
+      security: 'Security-Audits & Responsible Disclosure',
     },
     market: [
       { tier: 'First Light', hook: 'Wissen, bevor es öffentlich ist. Sie bringen das Chaos, wir destillieren die Intelligence.', desc: 'Sie kommen mit einem Haufen Chaos - hunderten Apps, widersprüchlichen Aussagen, unübersichtlichen Abhängigkeiten. Wir destillieren daraus Intelligence. Die Abfrage läuft live gegen den vollständigen Korpus dekompilierter Anwendungen - nicht als Bericht über einen Anbieter, sondern als kontinuierliche Beobachtung des gesamten Ökosystems. Neun Erkenntnisebenen (Code, SDK, Data-Flow, Tracker, Privacy, Supply-Chain, Competitive, Market, Security) verbinden sich hinter jeder Antwort zu einer nachvollziehbaren Kette von Signal über Entität zur Schlussfolgerung. Das Ergebnis zeigt, was die Technologie tatsächlich tut - nicht was über sie behauptet wird. Derselbe Korpus, aus dem unsere öffentlichen Offenlegungen stammen: die Grundlage, auf der Veränderungen erkannt werden, bevor sie öffentlich werden.', delivery: '14 Kalendertage.' },

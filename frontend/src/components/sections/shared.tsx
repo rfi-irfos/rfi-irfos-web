@@ -664,11 +664,20 @@ export function ScopeTag({ label }: { label: string }) {
 // row of several tags reads as a set rather than a monochrome wall. Assigned
 // by index (not per-string hash) so it's deterministic across renders and
 // locales without depending on the tag text itself.
+// Live feedback 2026-08-14: the first pass of this (fixed light pastel text -
+// #9cc9ff soft blue, #d7b8ff soft violet, etc.) was calibrated by eye against
+// a dark card and was close to unreadable on light theme's pale mint-tinted
+// featured card - light text on a light background. Text now always stays on
+// the same var(--text3)/var(--border) tokens used everywhere else (already
+// theme-correct in both directions), the rotating hue only colors the
+// low-opacity wash background and border - a thin border and a translucent
+// fill both tolerate a lot more color before contrast becomes a problem than
+// body text does.
 const OUTPUT_TAG_HUES = [
-  { fg: '#00f5c4', bg: 'rgba(0,245,196,0.1)',  border: 'rgba(0,245,196,0.28)' },  // teal (brand)
-  { fg: '#ffd18f', bg: 'rgba(255,180,90,0.1)', border: 'rgba(255,180,90,0.28)' }, // amber
-  { fg: '#9cc9ff', bg: 'rgba(90,160,255,0.1)', border: 'rgba(90,160,255,0.28)' }, // soft blue
-  { fg: '#d7b8ff', bg: 'rgba(180,120,255,0.1)',border: 'rgba(180,120,255,0.28)' },// soft violet
+  { bg: 'rgba(0,245,196,0.09)',  border: 'rgba(0,245,196,0.35)' },  // teal (brand)
+  { bg: 'rgba(255,180,90,0.09)', border: 'rgba(255,180,90,0.4)' },  // amber
+  { bg: 'rgba(90,160,255,0.09)', border: 'rgba(90,160,255,0.4)' },  // soft blue
+  { bg: 'rgba(180,120,255,0.09)',border: 'rgba(180,120,255,0.4)' }, // soft violet
 ]
 
 export function OutputTags({ outputs }: { outputs?: readonly string[] }) {
@@ -680,7 +689,7 @@ export function OutputTags({ outputs }: { outputs?: readonly string[] }) {
         return (
           <span key={o} style={{
             fontSize: 10.5, fontWeight: 700, letterSpacing: '0.03em', textTransform: 'uppercase',
-            fontFamily: "'JetBrains Mono', monospace", color: hue.fg,
+            fontFamily: "'JetBrains Mono', monospace", color: 'var(--text3)',
             border: `1px solid ${hue.border}`, background: hue.bg, borderRadius: 999, padding: '4px 10px',
           }}>{o}</span>
         )
@@ -750,12 +759,14 @@ export function TierCarousel({ tiers, getActions }: {
 
   return (
     <div style={{ marginBottom: 0 }}>
-      {/* Featured card - shrunk from maxWidth 760 (live feedback: too large relative
-          to the row below it) so the two halves of the widget read as one
-          balanced unit rather than one oversized card sitting over a thin strip. */}
+      {/* Featured card - was shrunk to maxWidth 520 (from 760) at one point so it
+          wouldn't dwarf the narrower secondary row below it; live feedback
+          2026-08-14 reversed that - use the full width the parent already
+          allots (maxWidth: 1040 on the wrapping div in Pricing.tsx) instead of
+          leaving a wide empty margin either side. */}
       <motion.div key={active.tier} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}
         style={{
-          maxWidth: 520, margin: '0 auto 14px', borderRadius: 18, padding: '20px 22px',
+          margin: '0 auto 14px', borderRadius: 18, padding: '20px 22px',
           // Opaque base + a teal wash (not a single translucent rgba fill) -
           // spine feedback, 2026-08-06: this pricing card is exactly the kind
           // of dense, text-heavy surface the scroll spine/orb must never bleed
@@ -819,9 +830,11 @@ export function TierCarousel({ tiers, getActions }: {
       {/* Secondary tiers - the other tiers in this line, side by side, always
           visible, no click-through required to see what else exists. Grid
           wraps to fewer columns only when the viewport can't fit 3 readable
-          cards, never stacks to a single column on desktop. */}
+          cards, never stacks to a single column on desktop. maxWidth 680
+          dropped for the same reason as the featured card above - fills the
+          parent's full 1040 instead of leaving empty margin on both sides. */}
       {secondary.length > 0 && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 10, maxWidth: 680, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 10, margin: '0 auto' }}>
           {secondary.map(({ t, i }) => (
             <button key={t.tier} onClick={() => setIdx(i)} style={{
               textAlign: 'left', cursor: 'pointer', display: 'flex', flexDirection: 'column',

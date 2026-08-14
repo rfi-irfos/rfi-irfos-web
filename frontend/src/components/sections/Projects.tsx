@@ -178,16 +178,22 @@ function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: perView === 1 ? 10 : 16 }}>
         <button onClick={() => go(-1)} aria-label={t.projects.carouselPrevAria} style={arrowStyle}>&larr;</button>
-        {/* overflowY visible (not hidden) - added 2026-08-06: the proximity
-            glow's filter:drop-shadow needs room outside a card's own box to
-            render, and scrolling here is horizontal-only anyway, so there's
-            no reason vertical overflow needs to be clipped too. */}
+        {/* overflowY: 'visible' here doesn't actually work on its own - CSS
+            coerces a non-'visible' overflow-y to 'auto' the moment overflow-x
+            is anything other than 'visible' too (spec rule, not a bug in this
+            code), so both this wrapper's overflowX: 'hidden' and the scroll
+            track's overflowX: 'auto' below still clip vertically regardless of
+            what overflowY says. Fixed 2026-08-14 (live feedback: hover shadow
+            visibly cut off, "schaut billig aus") the only way that actually
+            works around the coercion: pad the box enough that .rfi-hover-card's
+            hover shadow (translateY(-4px) + 0 12px 28px) has room to fully
+            render before it ever reaches the clip edge. */}
         <div style={{ overflowX: 'hidden', overflowY: 'visible', flex: 1, minWidth: 0 }}>
           <div
             ref={trackRef}
             style={{
               display: 'flex', gap: 20, overflowX: 'auto', overflowY: 'visible', scrollSnapType: 'x mandatory',
-              WebkitOverflowScrolling: 'touch', paddingBottom: 4,
+              WebkitOverflowScrolling: 'touch', padding: '8px 4px 44px',
             }}
           >
             {projects.map((p, i) => (
