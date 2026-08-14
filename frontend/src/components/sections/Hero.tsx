@@ -5,7 +5,7 @@ import { prefersReducedMotion, Reveal, RevealWords, CountUp, HeroFlipWord } from
 import { RESEARCH_AREAS } from './Research'
 import { PROJECTS } from './Projects'
 import { useLocale } from '../../hooks/useLocale'
-import { useTheme } from '../../hooks/useTheme'
+import type { Theme } from '../../hooks/useTheme'
 
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 
@@ -15,8 +15,13 @@ const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 // Lazy-imported so its ~30kb (ogl) never blocks the hero's first paint - the existing
 // CSS radial-gradient (set directly on the hero section) stays as the base layer/
 // no-JS fallback the whole time, this only ever adds on top of it.
-function HeroBackground() {
-  const { theme } = useTheme()
+// `theme` comes from PublicSite as a prop, not its own useTheme() call - useTheme's
+// state is per-instance/local by design (so e.g. a builder preview can run independently),
+// which meant this component's own copy went stale the moment the nav theme toggle
+// changed PublicSite's instance: the hero background/canvas silently froze on whatever
+// theme was active at mount instead of following the toggle. Passing theme down keeps
+// this section in lockstep with the single source of truth PublicSite already owns.
+function HeroBackground({ theme }: { theme: Theme }) {
   const [enabled] = useState(() => {
     if (typeof window === 'undefined') return false
     const cores = navigator.hardwareConcurrency ?? 8
@@ -44,9 +49,8 @@ const PUBLICATIONS = [
   { year: '2025', title: 'A1ERF: EU Regulation Proposal', sub: 'AI-first emergency relay framework for autonomous cardiac arrest detection', href: 'https://osf.io/ueac8/', tag: 'Policy · EU' },
 ]
 
-export function HeroSection({ mobile }: { mobile: boolean }) {
+export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }) {
   const { t } = useLocale()
-  const { theme } = useTheme()
   return (
     <section style={{
       display: 'flex', flexDirection: 'column', position: 'relative',
@@ -58,7 +62,7 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
           ? '#000'
           : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,122,92,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(250,245,239,0.94) 0%, rgba(250,245,239,0.84) 52%, rgba(250,245,239,0.94) 100%), url("/hero-structure.jpeg") center / cover no-repeat',
     }}>
-      <HeroBackground />
+      <HeroBackground theme={theme} />
       {/* Stays English in both locales (live feedback) - "Rethink the Obvious."
           is the site's signature line/wordmark-adjacent phrase, not translated
           copy. "Rethink" split out to HeroFlipWord (2026-08-05, approved after

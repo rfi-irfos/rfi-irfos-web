@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { useTheme } from '../hooks/useTheme'
+import { useTheme, type Theme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
 import type { Content } from '../content/en'
 import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_PIXEL, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
@@ -28,11 +28,13 @@ const EKG_SHAPES = [
   '0,9 15,9 17,0 19,18 21,9 54,9',                 // tall thin spike
   '0,9 11,9 15,3 19,9 24,9 26,6 28,9 54,9',        // shallow spike + small aftershock
 ]
-function EkgLine() {
+function EkgLine({ theme }: { theme: Theme }) {
   const [i, setI] = useState(0)
-  const { theme } = useTheme()
   // ACCENT here is local to PublicSite() (derived from theme) and out of scope for this
   // standalone component - same light-theme-contrast fix, computed independently.
+  // theme comes in as a prop rather than its own useTheme() call - useTheme's state is
+  // per-instance/local by design, so a second call here went stale on toggle the same
+  // way Hero's did (see Hero.tsx HeroBackground comment).
   const accent = theme === 'light' ? '#0a7a5c' : TEAL
   useEffect(() => {
     const id = setInterval(() => setI(p => (p + 1) % EKG_SHAPES.length), 2400)
@@ -698,9 +700,9 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       // stay full-contrast every screenful instead of being stretched thin over a
       // multi-thousand-px-tall page).
       backgroundImage: theme === 'dark'
-        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(165deg, rgba(28,28,34,0.9) 0%, rgba(10,10,12,0.9) 35%, rgba(3,3,4,0.92) 65%, rgba(23,23,29,0.9) 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(107deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 2px), linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("/page-structure.jpeg") center / cover no-repeat'
+        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(165deg, rgba(28,28,34,0.9) 0%, rgba(10,10,12,0.9) 35%, rgba(3,3,4,0.92) 65%, rgba(23,23,29,0.9) 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(107deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 2px), linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("/page-structure-dark.jpeg") center / cover no-repeat'
         : theme === 'light'
-          ? 'linear-gradient(rgba(250,245,239,0.86), rgba(250,245,239,0.86)), url("/page-structure.jpeg") center / cover no-repeat'
+          ? 'linear-gradient(rgba(250,245,239,0.86), rgba(250,245,239,0.86)), url("/page-structure-light.jpeg") center / cover no-repeat'
           : undefined,
       backgroundBlendMode: 'normal',
       backgroundAttachment: theme === 'hc' ? 'scroll' : 'fixed',
@@ -867,7 +869,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         <a href="#" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 42, height: 42, objectFit: 'contain', flexShrink: 0 }} />
           <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: 'var(--text)' }}>RFI-IRFOS</span>
-          <EkgLine />
+          <EkgLine theme={theme} />
         </a>
 
         {/* Desktop nav - React inline styles can't do media queries, so gate on the useMobile() hook */}
@@ -982,7 +984,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
 
       <main className="rfi-view-stage" key={view} aria-live="polite">
         {view === 'home' && <>
-          <HeroSection mobile={mobile} />
+          <HeroSection mobile={mobile} theme={theme} />
           <ResearchSection />
           <AppPrivacySection />
           <CoopPartnersSection mobile={mobile} openCheckoutModal={openCheckoutModal} />
