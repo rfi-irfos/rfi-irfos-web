@@ -49,7 +49,7 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
       display: 'flex', flexDirection: 'column', position: 'relative',
       alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
       padding: 'calc(72px + 6vh) 2rem 72px',
-      background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.06) 0%, transparent 70%)',
+      background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.96) 0%, rgba(5,7,14,0.78) 52%, rgba(5,7,14,0.91) 100%), url("/hero-structure.jpeg") center / cover no-repeat',
     }}>
       <HeroBackground />
       {/* Stays English in both locales (live feedback) - "Rethink the Obvious."
