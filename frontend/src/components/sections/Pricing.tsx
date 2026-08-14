@@ -92,7 +92,7 @@ export function PricingSection({
           <div style={{ flex: 1, minWidth: 0 }}>
             {activeOffer === 0 && (
               <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 28px' }}>
-                <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.market}<ScopeTag label={t.pricing.scopeTags.market} /></p>
+                <div style={{ textAlign: 'center', marginBottom: 20 }}><p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>{t.pricing.lineHeadings.market}</p><div style={{ marginTop: 8 }}><ScopeTag label={t.pricing.scopeTags.market} /></div></div>
                 <TierCarousel tiers={marketTiers} getActions={tier => {
                   const full = marketTiers.find(s => s.tier === tier.tier)!
                   return { onBuy: () => openCheckoutModal({ key: full.stripeKey, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery }) }
@@ -102,7 +102,7 @@ export function PricingSection({
 
             {activeOffer === 1 && (
               <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 28px' }}>
-                <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center' }}>{t.pricing.lineHeadings.technical}<ScopeTag label={t.pricing.scopeTags.technical} /></p>
+                <div style={{ textAlign: 'center', marginBottom: 20 }}><p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>{t.pricing.lineHeadings.technical}</p><div style={{ marginTop: 8 }}><ScopeTag label={t.pricing.scopeTags.technical} /></div></div>
                 <TierCarousel tiers={technicalTiers} getActions={tier => {
                   const full = technicalTiers.find(s => s.tier === tier.tier)!
                   return { onBuy: () => openCheckoutModal({ key: full.stripeKey, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined }) }
@@ -112,7 +112,7 @@ export function PricingSection({
 
             {activeOffer === 2 && (
               <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '32px 28px' }}>
-                <p id="pricing-security" style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 20, textAlign: 'center', scrollMarginTop: 96 }}>{t.pricing.lineHeadings.security}<ScopeTag label={t.pricing.scopeTags.security} /></p>
+                <div id="pricing-security" style={{ textAlign: 'center', marginBottom: 20, scrollMarginTop: 96 }}><p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>{t.pricing.lineHeadings.security}</p><div style={{ marginTop: 8 }}><ScopeTag label={t.pricing.scopeTags.security} /></div></div>
                 <TierCarousel tiers={securityTiers} getActions={tier => {
                   const full = securityTiers.find(s => s.tier === tier.tier)!
                   const hasCheckout = !!(full.stripeKey || full.directUrl)

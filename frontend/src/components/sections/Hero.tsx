@@ -63,13 +63,7 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
         <HeroFlipWord word="Rethink" delay={0.2} />{' '}
         <RevealWords text="the Obvious." delayStart={0.36} emphasizeIndices={[1]} />
       </p>
-      <h1 style={{
-        fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, lineHeight: 1.5,
-        marginBottom: 24, letterSpacing: '0.01em', color: 'var(--text2)',
-      }}>
-        <span style={{ color: 'var(--accent-text)' }}>{t.hero.subtitlePrefix}</span>{t.hero.subtitleSuffix}
-      </h1>
-      <p style={{ fontSize: 17, color: 'var(--text2)', maxWidth: 580, lineHeight: 1.75, marginBottom: 40 }}>
+      <p style={{ fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 600, color: 'var(--text2)', maxWidth: 700, lineHeight: 1.5, marginBottom: 40, letterSpacing: '0.01em' }}>
         {t.hero.identity}
       </p>
 
@@ -94,8 +88,8 @@ export function HeroSection({ mobile }: { mobile: boolean }) {
         ]).map((s, i) => (
           <Reveal key={s.label} delay={i} from={s.from}>
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 'clamp(2.35rem, 4vw, 3.25rem)', fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1 }}><CountUp value={s.n} /></div>
-              <div style={{ fontSize: 12, color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 8 }}>{s.label}</div>
+              <div style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1 }}><CountUp value={s.n} /></div>
+              <div style={{ fontSize: 11, color: 'var(--text)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8 }}>{s.label}</div>
             </div>
           </Reveal>
         ))}
