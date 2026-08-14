@@ -75,20 +75,6 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* world model - connected entities */}
-        <circle cx="16" cy="16" r="4"/>
-        <circle cx="6" cy="8" r="2.5"/><circle cx="26" cy="8" r="2.5"/>
-        <circle cx="6" cy="24" r="2.5"/><circle cx="26" cy="24" r="2.5"/>
-        <line x1="12.5" y1="13.5" x2="8" y2="9.5"/><line x1="19.5" y1="13.5" x2="24" y2="9.5"/>
-        <line x1="12.5" y1="18.5" x2="8" y2="22.5"/><line x1="19.5" y1="18.5" x2="24" y2="22.5"/>
-      </_I>
-    ),
-    title: 'World Models & Cross-Domain Intelligence',
-    desc: 'A shared model for entities, relationships, evidence, and change across domains.',
-  },
-  {
-    icon: (
-      <_I>
         {/* ethics and minor protection - shelter */}
         <path d="M5 15c0-6 5-10 11-10s11 4 11 10H5z"/>
         <line x1="16" y1="15" x2="16" y2="25"/><path d="M16 25q0 3-3 3"/>
@@ -109,6 +95,20 @@ export const RESEARCH_AREAS = [
     ),
     title: 'Ternary AI & Computing',
     desc: 'Post-binary arithmetic as the foundation for language models, compilers, and operating systems. Patent pending A50296/2026.',
+  },
+  {
+    icon: (
+      <_I>
+        {/* world model - connected entities */}
+        <circle cx="16" cy="16" r="4"/>
+        <circle cx="6" cy="8" r="2.5"/><circle cx="26" cy="8" r="2.5"/>
+        <circle cx="6" cy="24" r="2.5"/><circle cx="26" cy="24" r="2.5"/>
+        <line x1="12.5" y1="13.5" x2="8" y2="9.5"/><line x1="19.5" y1="13.5" x2="24" y2="9.5"/>
+        <line x1="12.5" y1="18.5" x2="8" y2="22.5"/><line x1="19.5" y1="18.5" x2="24" y2="22.5"/>
+      </_I>
+    ),
+    title: 'World Models & Cross-Domain Intelligence',
+    desc: 'A shared model for entities, relationships, evidence, and change across domains.',
   },
   {
     icon: (

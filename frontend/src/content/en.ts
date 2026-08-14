@@ -55,9 +55,9 @@ export const EN = {
     heading: 'where our attention falls',
     subheading: 'We study how complex systems behave: how evidence becomes structure, how relationships change over time, and where one shift can move an entire network.',
     areas: [
-      { title: 'World Models & Cross-Domain Intelligence', desc: 'We build one shared model of entities, relationships, evidence, and change across domains that are usually studied apart — so a shift in one system is traceable into everywhere it actually connects.' },
       { title: 'Ethics & Minor Protection', desc: 'We test consent, dignity, and exposure in systems built around people who cannot fully protect themselves — starting with children and young people: platforms, biometric and behavioural data, and the systems built around them.' },
       { title: 'Ternary AI & Computing', desc: 'We build post-binary arithmetic into language models, compilers, and operating systems as a native primitive, not an add-on. Patent pending A50296/2026.' },
+      { title: 'World Models & Cross-Domain Intelligence', desc: 'We build one shared model of entities, relationships, evidence, and change across domains that are usually studied apart — so a shift in one system is traceable into everywhere it actually connects.' },
       { title: 'Pattern Recognition & Impact Propagation', desc: 'We find recurring structures across domains and trace how a change travels through dependencies, bridges, bottlenecks, and connected systems.' },
       { title: 'Change & Anomaly Detection', desc: 'We track systems over time to catch what shifted, what is unusual, and which transitions actually deserve attention.' },
       { title: 'Scenario Simulation & Counterfactuals', desc: 'We simulate interventions, alternative futures, and their propagated consequences — always explicitly marked as simulated, never confused with observation.' },
