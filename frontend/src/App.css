@@ -104,6 +104,17 @@ button { cursor: pointer; font-family: inherit; }
 .site[data-theme="hc"] .site-status-badge { background: #111111 !important; color: #ffd400 !important; border-color: #ffd400 !important; }
 
 /* ── NAV ─────────────────────────────────────────────────────────────────── */
+@keyframes ekgPulse {
+  0% { stroke-dashoffset: 150; opacity: 0; }
+  5% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { stroke-dashoffset: -150; opacity: 0; }
+}
+.ekg-line {
+  stroke-dasharray: 150;
+  animation: ekgPulse 3.6s linear infinite;
+}
+
 .site-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 300;
   background: var(--nav-bg); backdrop-filter: blur(12px);
