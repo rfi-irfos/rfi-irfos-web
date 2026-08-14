@@ -284,36 +284,99 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     } catch { /* never block the banner over audio */ }
   }
 
+  // "ba-dum-tss" - Zabih's idea, live feedback 2026-08-14: the confetti pop needed a
+  // rimshot to sell the joke. Two low kick thumps (sine, pitch-dropping, ~180ms apart)
+  // then a cymbal crash (filtered noise burst, longer decay) - same synthesis approach
+  // as playPopSound/playMockClapSound above, no audio file.
+  const playRimshotSound = () => {
+    try {
+      const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+      const ctx = new AC()
+      const kick = (startAt: number) => {
+        const now = ctx.currentTime + startAt
+        const osc = ctx.createOscillator()
+        const gain = ctx.createGain()
+        osc.type = 'sine'
+        osc.frequency.setValueAtTime(160, now)
+        osc.frequency.exponentialRampToValueAtTime(48, now + 0.09)
+        gain.gain.setValueAtTime(0.5, now)
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12)
+        osc.connect(gain); gain.connect(ctx.destination)
+        osc.start(now); osc.stop(now + 0.13)
+      }
+      kick(0)
+      kick(0.18)
+      const cymbalAt = 0.32
+      const now = ctx.currentTime + cymbalAt
+      const dur = 0.5
+      const buf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * dur), ctx.sampleRate)
+      const data = buf.getChannelData(0)
+      for (let n = 0; n < data.length; n++) data[n] = Math.random() * 2 - 1
+      const noise = ctx.createBufferSource(); noise.buffer = buf
+      const hp = ctx.createBiquadFilter()
+      hp.type = 'highpass'; hp.frequency.value = 6000
+      const gain = ctx.createGain()
+      gain.gain.setValueAtTime(0.22, now)
+      gain.gain.exponentialRampToValueAtTime(0.0008, now + dur)
+      noise.connect(hp); hp.connect(gain); gain.connect(ctx.destination)
+      noise.start(now); noise.stop(now + dur)
+      noise.onended = () => ctx.close()
+    } catch { /* never block the banner over audio */ }
+  }
+
+  // Upgraded from flat 6-13px circles/squares dropping in ~1s (live feedback 2026-08-14:
+  // "billige confetti... machma richtig geile"): bigger mixed shapes including actual
+  // ribbon-strip rectangles (not just dots), a shine highlight via inset box-shadow so
+  // each piece doesn't read as a flat color chip, a wider/richer palette, and a slower
+  // 3-phase fall (burst -> a mid-air sway checkpoint -> settle) instead of one straight
+  // transition, so pieces flutter down instead of dropping on rails.
   const fireConfettiFromRect = (rect: DOMRect, count: number) => {
-    const colors = ['#00f5c4', '#ef4444', '#f97316', '#eab308', '#e8e8f0']
+    const colors = ['#00f5c4', '#ef4444', '#f97316', '#eab308', '#e8e8f0', '#ec4899', '#facc15']
     playPopSound()
+    playRimshotSound()
     for (let i = 0; i < count; i++) {
       const el = document.createElement('div')
-      const size = 6 + Math.random() * 7
+      const shapeRoll = Math.random()
+      const isRibbon = shapeRoll < 0.35
+      const isCircle = !isRibbon && shapeRoll < 0.65
+      const size = 9 + Math.random() * 9
+      const w = isRibbon ? size * 0.42 : size
+      const h = isRibbon ? size * 1.9 : size
+      const color = colors[i % colors.length]
       const startX = rect.left + Math.random() * rect.width
       const startY = rect.top + Math.random() * rect.height
-      el.style.cssText = `position:fixed;left:${startX}px;top:${startY}px;width:${size}px;height:${size}px;background:${colors[i % colors.length]};opacity:1;border-radius:${Math.random() > 0.5 ? '50%' : '2px'};pointer-events:none;z-index:99999;transform:translate(0,0) scale(0.4) rotate(0deg);transition:transform 0.14s cubic-bezier(.2,.9,.35,1);`
+      el.style.cssText = `position:fixed;left:${startX}px;top:${startY}px;width:${w}px;height:${h}px;background:${color};box-shadow:inset -2px -2px 3px rgba(0,0,0,0.22),inset 2px 2px 2px rgba(255,255,255,0.35);opacity:1;border-radius:${isCircle ? '50%' : '2px'};pointer-events:none;z-index:99999;transform:translate(0,0) scale(0.4) rotate(0deg);transition:transform 0.16s cubic-bezier(.2,.9,.35,1);`
       document.body.appendChild(el)
       // force a synchronous layout so the browser commits the starting transform
       // before we change it - otherwise the transition can silently no-op.
       void el.offsetHeight
       // phase 1 - piñata burst: fast, radial, outward.
       const angle = Math.random() * Math.PI * 2
-      const burstDist = 65 + Math.random() * 150
+      const burstDist = 70 + Math.random() * 160
       const burstX = Math.cos(angle) * burstDist
-      const burstY = Math.sin(angle) * burstDist - 30 // slight upward pop before gravity takes over
-      const burstSpin = (Math.random() - 0.5) * 520
-      el.style.transform = `translate(${burstX}px, ${burstY}px) scale(1.1) rotate(${burstSpin}deg)`
+      const burstY = Math.sin(angle) * burstDist - 34 // slight upward pop before gravity takes over
+      const burstSpin = (Math.random() - 0.5) * 560
+      el.style.transform = `translate(${burstX}px, ${burstY}px) scale(1.15) rotate(${burstSpin}deg)`
       setTimeout(() => {
-        // phase 2 - gravity: tumble down past the bottom of the viewport, fading out.
-        const fallX = burstX + (Math.random() - 0.5) * 150
-        const fallY = window.innerHeight - startY + 60 + Math.random() * 80
-        const fallSpin = burstSpin + (Math.random() - 0.5) * 900
-        el.style.transition = `transform ${0.55 + Math.random() * 0.3}s cubic-bezier(.4,0,.7,1), opacity 0.4s ease-in ${0.3 + Math.random() * 0.25}s`
-        el.style.transform = `translate(${fallX}px, ${fallY}px) scale(0.85) rotate(${fallSpin}deg)`
-        el.style.opacity = '0'
-      }, 140)
-      setTimeout(() => el.remove(), 1200)
+        // phase 2 - a mid-air sway checkpoint, roughly a third of the way down, with a
+        // slower transition than the burst - this is what reads as "flutter" instead of
+        // a straight drop, since the piece visibly changes drift direction mid-fall.
+        const totalFall = window.innerHeight - startY + 80 + Math.random() * 100
+        const swayX = burstX + (Math.random() - 0.5) * 220
+        const swayY = startY + totalFall * 0.4
+        const swaySpin = burstSpin + (Math.random() - 0.5) * 500
+        el.style.transition = `transform ${0.7 + Math.random() * 0.35}s cubic-bezier(.45,0,.55,1)`
+        el.style.transform = `translate(${swayX}px, ${swayY - startY}px) scale(1) rotate(${swaySpin}deg)`
+        setTimeout(() => {
+          // phase 3 - settle the rest of the way down, fading out near the bottom.
+          const fallX = swayX + (Math.random() - 0.5) * 160
+          const fallSpin = swaySpin + (Math.random() - 0.5) * 700
+          el.style.transition = `transform ${1.1 + Math.random() * 0.5}s cubic-bezier(.45,0,.55,1), opacity 0.5s ease-in ${0.7 + Math.random() * 0.3}s`
+          el.style.transform = `translate(${fallX}px, ${totalFall}px) scale(0.85) rotate(${fallSpin}deg)`
+          el.style.opacity = '0'
+        }, (0.7 + Math.random() * 0.35) * 1000)
+      }, 160)
+      setTimeout(() => el.remove(), 3400)
     }
   }
 

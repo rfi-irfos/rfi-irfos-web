@@ -257,7 +257,12 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
       io = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            leadTimer = setTimeout(play, 300)
+            // 300ms -> 1300ms (live feedback 2026-08-14: "muss länger grade angezeigt
+            // werden... kurz Zeit haben Rethink zu lesen bevors sichs shuffelt") - the
+            // plain word is already fully legible the instant this mounts (see the
+            // per-character span setup above), this delay is purely how long it holds
+            // still and readable before the scramble starts.
+            leadTimer = setTimeout(play, 1300)
           } else {
             if (leadTimer) clearTimeout(leadTimer)
             reset()
