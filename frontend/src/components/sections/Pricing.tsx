@@ -72,8 +72,8 @@ export function PricingSection({
   const cycleOffer = (direction: number) => setActiveOffer(current => (current + direction + offerCount) % offerCount)
 
   return (
-    <section id="pricing" style={{ padding: '48px 2rem 72px' }}>
-      <div style={{ maxWidth: 1240, margin: '0 auto' }}>
+    <section id="pricing" style={{ padding: '16px 2rem 72px' }}>
+      <div style={{ maxWidth: 1120, margin: '0 auto' }}>
         <Reveal>
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.pricing.heading} /></h2>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
@@ -81,7 +81,7 @@ export function PricingSection({
           </p>
         </Reveal>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, maxWidth: 1160, margin: '0 auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, maxWidth: 1040, margin: '0 auto' }}>
           <button onClick={() => cycleOffer(-1)} aria-label="Previous access offer" style={{
             width: 48, height: 48, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.35)',
             background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: 20, cursor: 'pointer',
