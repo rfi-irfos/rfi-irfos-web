@@ -687,8 +687,10 @@ export function OutputTags({ outputs }: { outputs?: readonly string[] }) {
       {outputs.map((o, i) => {
         const hue = OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
         return (
+          // textTransform: 'uppercase' dropped (live feedback 2026-08-14: read as
+          // "rau"/shouty) - shows the tag's own Title Case as written instead.
           <span key={o} style={{
-            fontSize: 10.5, fontWeight: 700, letterSpacing: '0.03em', textTransform: 'uppercase',
+            fontSize: 11, fontWeight: 700, letterSpacing: '0.01em',
             fontFamily: "'JetBrains Mono', monospace", color: 'var(--text3)',
             border: `1px solid ${hue.border}`, background: hue.bg, borderRadius: 999, padding: '4px 10px',
           }}>{o}</span>
@@ -780,7 +782,10 @@ export function TierCarousel({ tiers, getActions }: {
               2026-08-14: reads as noise repeated over every card, the tier name
               alone is the title). The tier name is the first thing in the card now. */}
           <div style={{ fontSize: 21, fontWeight: 900, color: 'var(--text)', lineHeight: 1.25 }}>{active.tier}</div>
-          {active.hook && <div style={{ fontSize: 12.5, color: 'var(--text2)', marginTop: 8 }}>{active.hook}</div>}
+          {/* --text2 -> --text (live feedback 2026-08-14: "sollte alles weiß sein,
+              weiß geschrieben... im whitemode sauber schwarz" - full-contrast body
+              copy, not the dimmer secondary tone). */}
+          {active.hook && <div style={{ fontSize: 12.5, color: 'var(--text)', marginTop: 8 }}>{active.hook}</div>}
         </div>
         {/* Capped height + scroll (live feedback: on the longer tiers - four full
             paragraphs - the card grew tall enough to push the Get Started button
@@ -791,7 +796,7 @@ export function TierCarousel({ tiers, getActions }: {
             enough breathing room between them). */}
         <div style={{ marginTop: 22, maxHeight: 240, overflowY: 'auto' }}>
           {active.desc.split('\n\n').map((p, i) => (
-            <p key={i} style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.65, marginBottom: 9 }}>{p}</p>
+            <p key={i} style={{ color: 'var(--text)', fontSize: 13, lineHeight: 1.65, marginBottom: 9 }}>{p}</p>
           ))}
         </div>
         <div style={{ marginTop: -4 }}><OutputTags outputs={active.outputs} /></div>
@@ -844,7 +849,7 @@ export function TierCarousel({ tiers, getActions }: {
               transition: 'border-color .15s, background .15s',
             }}>
               <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{t.tier}</div>
-              {t.hook && <div style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.5 }}>{t.hook}</div>}
+              {t.hook && <div style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.5 }}>{t.hook}</div>}
               <div style={{ marginTop: 'auto', paddingTop: 4 }}>
                 <PriceDelivery price={t.price} size="sm" />
               </div>
