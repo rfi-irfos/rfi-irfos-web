@@ -667,48 +667,33 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
 
   return (
     <div style={{
-      // Plain gradient, no filter: blur() - a blurred position:fixed layer covering the
-      // whole viewport forced the browser to recompute an expensive blur on every scroll
-      // repaint (that's what made the page slow), and Simeon found the blur just read as
-      // flat black anyway rather than a visible texture.
+      // No filter: blur() - a blurred position:fixed layer covering the whole viewport
+      // forced the browser to recompute an expensive blur on every scroll repaint.
       //
-      // Real reason it STILL looked flat after fixing the contrast: percentage-based
-      // gradient stops resolve against the background positioning AREA - normally that's
-      // this element's own box, which on a long scrolling page is several thousand px
-      // tall, so the same 5 color stops get stretched over that whole height and any
-      // single screenful only shows a near-flat sliver of the gradient. backgroundAttachment:
-      // 'fixed' makes the positioning area the VIEWPORT instead of the element box, so the
-      // gradient repeats its full contrast range every screenful.
+      // backgroundAttachment: 'fixed' below makes the gradient/image positioning area the
+      // VIEWPORT instead of this element's own (several-thousand-px-tall) box, so every
+      // screenful shows the full image and full gradient contrast instead of a near-flat
+      // sliver stretched over the whole page.
       //
-      // THIRD reason it still looked flat: backgroundBlendMode: 'overlay' mathematically
-      // crushes toward black whenever the layer underneath is dark - overlay's formula is
-      // `2 * backdrop * source` when backdrop luminance is under 0.5, and our backdrop here
-      // is already near-black, so overlay math suppressed almost the entire noise layer
-      // regardless of how much its own contrast got tuned. Switched to 'normal' blending
-      // (plain alpha compositing) so the noise layer's own opacity is what actually shows,
-      // and raised that opacity since it's no longer fighting the blend math.
-      // Two noise layers at slightly different angles/spacing instead of one - a single
-      // uniform stripe reads as a flat repeating pattern, layering a second finer grain
-      // at a shallow angle offset breaks that regularity up into something closer to
-      // actual brushed-metal/carbon-fiber grain. Requested by Simeon 2026-07-31.
+      // Used to layer synthetic noise/grain gradients on top of a flat color here (no real
+      // texture existed yet) - now that page-structure-dark/light.jpeg are actual photos,
+      // that fake-texture stack only crushed the real one under ~90%-opaque overlays and
+      // was removed. One soft tint overlay is enough to keep body text readable over the
+      // photo; the photo itself is now the texture.
       backgroundColor: theme === 'dark' ? '#000000' : theme === 'hc' ? '#000000' : 'var(--bg)',
-      // Three soft teal glows layered on top of the carbon base - "the main background
-      // is still pretty much just black" feedback after the grain/gradient tuning above.
-      // Radial-gradient background-image layers, not blur/filter, so this stays exactly
-      // as cheap as the grain layers below (same backgroundAttachment: 'fixed' trick -
-      // positioned against the viewport, not the page box, so they don't scroll away and
-      // stay full-contrast every screenful instead of being stretched thin over a
-      // multi-thousand-px-tall page).
+      // Three soft teal glows on top of the photo - subtle brand accent, cheap as a
+      // background-image layer (same 'fixed' viewport-relative positioning as the photo
+      // below, so they don't scroll away or stretch thin over a multi-thousand-px page).
       backgroundImage: theme === 'dark'
-        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(165deg, rgba(28,28,34,0.9) 0%, rgba(10,10,12,0.9) 35%, rgba(3,3,4,0.92) 65%, rgba(23,23,29,0.9) 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(107deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 2px), linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("/page-structure-dark.jpeg") center / cover no-repeat'
+        ? 'radial-gradient(ellipse 60% 45% at 12% 15%, rgba(0,245,196,0.06) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 88% 55%, rgba(0,245,196,0.05) 0%, transparent 60%), radial-gradient(ellipse 55% 45% at 20% 92%, rgba(0,245,196,0.045) 0%, transparent 60%), linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.42)), url("/page-structure-dark.jpeg") center / cover no-repeat'
         : theme === 'light'
-          ? 'linear-gradient(rgba(250,245,239,0.86), rgba(250,245,239,0.86)), url("/page-structure-light.jpeg") center / cover no-repeat'
-          // hc reuses the dark photo but under a much heavier black overlay (0.86 vs dark's
-          // 0.55) - the --text/--border AAA ratios in index.css ([data-theme="hc"]) are
+          ? 'linear-gradient(rgba(250,245,239,0.38), rgba(250,245,239,0.38)), url("/page-structure-light.jpeg") center / cover no-repeat'
+          // hc reuses the dark photo but under a much heavier black overlay (0.8 vs dark's
+          // 0.42) - the --text/--border AAA ratios in index.css ([data-theme="hc"]) are
           // verified against a literal #000000 backdrop, so the image can only sit under
           // hc at an opacity dark near-black enough not to erode those ratios. No teal glow
           // layers here either - hc's accent is amber (--accent: #ffd400), not teal.
-          : 'linear-gradient(rgba(0,0,0,0.86), rgba(0,0,0,0.86)), url("/page-structure-dark.jpeg") center / cover no-repeat',
+          : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/page-structure-dark.jpeg") center / cover no-repeat',
       backgroundBlendMode: 'normal',
       backgroundAttachment: 'fixed',
       // position:relative + zIndex:0 give this wrapper its own stacking context -
