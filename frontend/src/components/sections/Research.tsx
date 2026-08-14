@@ -35,7 +35,13 @@ function BentoTile({ icon, title, desc, from, delay }: {
           <div style={{ lineHeight: 0, flex: '0 0 auto' }}>{icon}</div>
           <div style={{ fontWeight: 800, fontSize: 16, lineHeight: 1.25 }}>{title}</div>
         </div>
-        <div style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7 }}>{desc}</div>
+        {/* Two paragraphs per card now (live feedback 2026-08-14): first is why this
+            area exists to us, second is how it actually runs in our own production
+            systems - split on '\n\n', same convention the pricing tier descriptions
+            already use for their own paragraph breaks. */}
+        {desc.split('\n\n').map((p, i) => (
+          <div key={i} style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.7, marginBottom: i === 0 ? 10 : 0 }}>{p}</div>
+        ))}
       </motion.div>
     </Reveal>
   )
