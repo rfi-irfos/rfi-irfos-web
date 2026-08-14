@@ -328,21 +328,27 @@ h1, h2, h3, .rfi-display {
    hero that's stopped moving reads as "loaded" rather than "alive" once
    someone's had the page open a while. transform, not background-size,
    so the browser only ever recomposites, never repaints. */
-/* Live feedback 2026-08-14: "the hero can start from THIS and slowly zoom in
-   instead, maybe move it to the right a bit, like an actual fake zoom effect
-   like somebody would move it very slowly" - reversed from zoom-out to
-   zoom-in (starts at the full frame, not pre-zoomed), and a slight pan added
-   alongside the scale so it reads as a hand-operated push-in, not a static
-   zoom. */
+/* Live feedback 2026-08-14: the previous 2-keyframe `alternate` version read
+   as "ruckelt und zuckelt hin und her... wie ein Erdbeben" - alternating
+   scale+pan together every 45s reverses BOTH at once, which reads as a jerky
+   snap-back rather than a camera move. Rebuilt as one real explicit sequence
+   instead of a mirrored back-and-forth: fully zoomed out to start, a slow
+   push in to 1.5x, hold and drift right, sweep all the way left, settle back
+   to center, ease back out to the start frame, then loop - a single very
+   long `infinite` pass (not `alternate`) so every leg of the move is its own
+   distinct, deliberate motion instead of two symmetric halves. */
 @keyframes rfi-hero-zoom-in {
-  from { transform: scale(1) translateX(0%); }
-  to { transform: scale(1.22) translateX(2%); }
+  0%   { transform: scale(1)   translateX(0%); }
+  22%  { transform: scale(1.5) translateX(0%); }
+  40%  { transform: scale(1.5) translateX(4%); }
+  62%  { transform: scale(1.5) translateX(-4%); }
+  80%  { transform: scale(1.5) translateX(0%); }
+  100% { transform: scale(1)   translateX(0%); }
 }
 .rfi-hero-zoom {
-  /* Live feedback 2026-08-14: "must move way slower, the hero its way too fast" -
-     45s each direction (up from a one-shot 60s), alternating back and forth
-     forever instead of holding the final frame. */
-  animation: rfi-hero-zoom-in 45s ease-in-out infinite alternate;
+  /* Live feedback 2026-08-14: "MEGA LANGSAM" - one full cycle now takes
+     140s, not 45s. */
+  animation: rfi-hero-zoom-in 140s ease-in-out infinite;
   will-change: transform;
 }
 @media (prefers-reduced-motion: reduce) {
