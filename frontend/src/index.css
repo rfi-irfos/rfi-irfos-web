@@ -322,19 +322,21 @@ h1, h2, h3, .rfi-display {
 }
 
 /* ── Hero Ken Burns ───────────────────────────────────────────────
-   Slow zoom-out on the hero's software screenshot (live feedback 2026-08-14):
-   starts tight/zoomed in, eases out to the full frame, then holds there
-   (forwards) instead of reverting or looping - a loop would fight for
-   attention against the headline it's sitting behind. transform, not
-   background-size, so the browser only ever recomposites, never repaints. */
+   Slow zoom on the hero's software screenshot (live feedback 2026-08-14):
+   eases between tight and full frame and keeps drifting for as long as
+   anyone's looking at it, rather than doing one pass and freezing - a
+   hero that's stopped moving reads as "loaded" rather than "alive" once
+   someone's had the page open a while. transform, not background-size,
+   so the browser only ever recomposites, never repaints. */
 @keyframes rfi-hero-zoom-out {
   from { transform: scale(1.55); }
   to { transform: scale(1); }
 }
 .rfi-hero-zoom {
   /* Live feedback 2026-08-14: "must move way slower, the hero its way too fast" -
-     60s (up from 22s), same easing/scale range, just stretched. */
-  animation: rfi-hero-zoom-out 60s cubic-bezier(0.16,1,0.3,1) forwards;
+     45s each direction (up from a one-shot 60s), alternating back and forth
+     forever instead of holding the final frame. */
+  animation: rfi-hero-zoom-out 45s ease-in-out infinite alternate;
   will-change: transform;
 }
 @media (prefers-reduced-motion: reduce) {

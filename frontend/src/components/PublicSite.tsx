@@ -889,14 +889,23 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
 
         {/* Desktop nav - React inline styles can't do media queries, so gate on the useMobile() hook */}
         <div style={{ display: mobile ? 'none' : 'flex', gap: '1.75rem', alignItems: 'center' }}>
+          {/* Live feedback 2026-08-14: at the top of the page (nav still transparent,
+              `scrolled` false) these links sit directly on the hero photo and
+              disappeared against its busier patches. Pill-wrapped now regardless of
+              scroll state - glassy grey fill + blur, bigger/bolder label - so they
+              read as buttons against any background, not just plain text hoping for
+              contrast. */}
           {NAV_LINKS.map(n => (
             <a key={n.href} href={n.href} style={{
-              color: 'var(--text2)', fontSize: 13, fontWeight: 600,
-              textDecoration: 'none', letterSpacing: '0.04em',
-              transition: 'color 0.18s',
+              color: 'var(--text2)', fontSize: 14, fontWeight: 800,
+              textDecoration: 'none', letterSpacing: '0.02em',
+              padding: '8px 18px', borderRadius: 999,
+              background: 'var(--bg2)', border: '1px solid var(--border)',
+              backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)',
+              transition: 'color 0.18s, background 0.18s, border-color 0.18s',
             }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text2)')}
+              onMouseEnter={e => { e.currentTarget.style.color = 'var(--text)'; e.currentTarget.style.background = 'var(--bg3)' }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'var(--text2)'; e.currentTarget.style.background = 'var(--bg2)' }}
               onClick={e => { e.preventDefault(); navigateTo(n.href) }}
               aria-current={viewForSection(n.href.slice(1)) === view ? 'page' : undefined}>
               {n.label}
