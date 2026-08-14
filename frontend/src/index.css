@@ -332,7 +332,9 @@ h1, h2, h3, .rfi-display {
   to { transform: scale(1); }
 }
 .rfi-hero-zoom {
-  animation: rfi-hero-zoom-out 22s cubic-bezier(0.16,1,0.3,1) forwards;
+  /* Live feedback 2026-08-14: "must move way slower, the hero its way too fast" -
+     60s (up from 22s), same easing/scale range, just stretched. */
+  animation: rfi-hero-zoom-out 60s cubic-bezier(0.16,1,0.3,1) forwards;
   will-change: transform;
 }
 @media (prefers-reduced-motion: reduce) {
