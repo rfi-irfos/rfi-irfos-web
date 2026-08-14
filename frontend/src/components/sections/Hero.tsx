@@ -59,12 +59,16 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       padding: 'calc(72px + 6vh) 2rem 72px',
       // Tint gradient only - the actual photo is the dedicated zoom layer below,
       // not this section's own background. Kept as a tint (not a full photo) for
-      // text legibility over whatever's showing through it.
+      // text legibility over whatever's showing through it. Light theme's tint
+      // sits over a dark night-mode dashboard shot, so a light, faded-out wash
+      // (as dark used) just blended into a muddy grey (live feedback 2026-08-14:
+      // "strange grey mess") - bumped near-opaque instead, so light mode reads as
+      // its own clean surface with only a faint ghost of the photo through it.
       background: theme === 'dark'
         ? 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.55) 0%, rgba(5,7,14,0.32) 52%, rgba(5,7,14,0.5) 100%)'
         : theme === 'hc'
-          ? 'rgba(0,0,0,0.35)'
-          : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,122,92,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(250,245,239,0.55) 0%, rgba(250,245,239,0.32) 52%, rgba(250,245,239,0.5) 100%)',
+          ? 'rgba(0,0,0,0.45)'
+          : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,122,92,0.06) 0%, transparent 70%), linear-gradient(90deg, rgba(250,245,239,0.9) 0%, rgba(250,245,239,0.82) 52%, rgba(250,245,239,0.88) 100%)',
     }}>
       {/* Real screenshot of our own OSINT/monitoring software as the hero backdrop
           (live feedback 2026-08-14: "this is from the software itself"), with a slow
@@ -148,8 +152,8 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           { n: `${RESEARCH_AREAS.length}`,    label: t.hero.stats.researchAreas,      from: 'left'   as const },
           { n: `${PROJECTS.length}+`,         label: t.hero.stats.openSourceProjects, from: 'bottom' as const },
           { n: `${PUBLICATIONS.length}+`,     label: t.hero.stats.publications,       from: 'scale'  as const },
+          { n: '301',                         label: t.hero.stats.agents,             from: 'bottom' as const },
           { n: '1',                           label: t.hero.stats.worldModel,         from: 'bottom' as const },
-          { n: '300+',                        label: t.hero.stats.agents,             from: 'bottom' as const },
         ]).map((s, i) => (
           <Reveal key={s.label} delay={i} from={s.from}>
             <div style={{ textAlign: 'center' }}>

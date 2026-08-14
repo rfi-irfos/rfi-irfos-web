@@ -35,7 +35,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    identity: 'Wir formen, was unter Last hält, und legen offen, was zum Scheitern bestimmt war.',
+    identity: 'Wir formen, was unter Last hält, und legen offen, was zum Scheitern bestimmt war. Kein Theater, keine Warnwesten.',
     stats: {
       researchAreas: 'Forschungsbereiche',
       openSourceProjects: 'Systeme & Projekte',

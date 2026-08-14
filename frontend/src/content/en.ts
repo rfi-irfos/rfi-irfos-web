@@ -38,7 +38,7 @@ export const EN = {
     headlineEmphasisIndex: 2,
     subtitlePrefix: 'Interdisciplinary',
     subtitleSuffix: ' Research Facility for Open Sciences',
-    identity: 'We craft what holds under load and expose what was destined to fail.',
+    identity: 'We craft what holds under load and expose what was destined to fail. No theater, no high-visibility vests.',
     stats: {
       researchAreas: 'research areas',
       openSourceProjects: 'systems & projects',

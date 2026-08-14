@@ -51,7 +51,7 @@ export function CoopPartnersSection({
             <div>
               <p style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>Laura Serna Gaviria</p>
               <p style={{ fontSize: 13, color: 'var(--accent-text)', marginTop: 2, fontWeight: 600 }}>{t.coopPartners.role}</p>
-              <p style={{ fontSize: 13, color: 'var(--text2)', marginTop: 10, lineHeight: 1.6, maxWidth: 560 }}>
+              <p style={{ fontSize: 13, color: 'var(--text)', marginTop: 10, lineHeight: 1.6, maxWidth: 560 }}>
                 {t.coopPartners.laura.desc}
               </p>
               <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer"

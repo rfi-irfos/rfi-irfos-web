@@ -20,7 +20,7 @@ export function AppPrivacySection() {
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.appPrivacy.heading} /></h2>
         </Reveal>
         <Reveal from="right" delay={1}>
-          <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 680, fontSize: 15, lineHeight: 1.9 }}>
+          <p style={{ color: 'var(--text)', marginBottom: 40, maxWidth: 680, fontSize: 15, lineHeight: 1.9 }}>
             {t.appPrivacy.paragraph}
           </p>
         </Reveal>
