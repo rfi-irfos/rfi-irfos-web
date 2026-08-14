@@ -114,7 +114,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           animate={{ scaleX: 1 }}
           transition={{ duration: 0.55, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            position: 'absolute', inset: '-10px -18px', zIndex: 0, borderRadius: 6, transformOrigin: 'left center',
+            position: 'absolute', inset: '-1px -4px', zIndex: 0, borderRadius: 3, transformOrigin: 'left center',
             background: theme === 'dark'
               ? 'rgba(5,7,14,0.88)'
               : theme === 'hc'
