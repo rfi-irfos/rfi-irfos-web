@@ -51,7 +51,7 @@ export const EN = {
   },
 
   research: {
-    eyebrow: '01 / Areas of Magnification',
+    eyebrow: 'Areas of Magnification',
     heading: 'where our attention falls',
     subheading: 'We study how complex systems behave: how evidence becomes structure, how relationships change over time, and where one shift can move an entire network.',
     areas: [
@@ -67,7 +67,7 @@ export const EN = {
   },
 
   projects: {
-    eyebrow: '03 / Undertakings',
+    eyebrow: 'Systems',
     heading: 'what we build',
     subheading: 'Every project is a proof of concept for a specific research question. All built on the same stack.',
     carouselPrevAria: 'previous projects',
@@ -127,7 +127,7 @@ export const EN = {
   },
 
   trackRecord: {
-    eyebrow: '04 / Track Record',
+    eyebrow: 'Track Record',
     heading: 'the discipline, demonstrated',
     paragraph: 'We decompile shipped apps and trace their data flows to real endpoints in real countries. Companies land on this ledger for many different reasons: they hand your data to third parties, they track without consent, they leave the door open. Every report goes out with the data-protection authorities copied in and a ninety-day clock attached. One rule, no exceptions: paying clients and everyone else are held to the identical standard.',
     kpis: {
@@ -203,7 +203,7 @@ export const EN = {
   },
 
   proof: {
-    eyebrow: '05 / The Deliverable',
+    eyebrow: 'The Deliverable',
     heading: "what you'd actually hold in your hands",
     subheading: 'Every case on the ledger ends in one of these: a complete, evidence-backed disclosure report, published in full once the embargo lifts - same format and depth regardless of whether the company ever engages us further.',
     viewReport: 'read the full report',
@@ -213,7 +213,7 @@ export const EN = {
   },
 
   appPrivacy: {
-    eyebrow: '02 / Start Here',
+    eyebrow: 'Start Here',
     heading: 'turning observations into intelligence',
     paragraph: 'Most organizations have more signals than they can interpret: systems, vendors, markets, events, dependencies, and changes arriving from different directions. We bring them into one evidence-first world model, preserve where every observation came from, and trace what changes through the relationships around it.',
     comparisonClassicLabel: 'What gets lost',
@@ -229,7 +229,7 @@ export const EN = {
   },
 
   pricing: {
-    eyebrow: '06 / Access',
+    eyebrow: 'Access',
     heading: 'priced in plain terms',
     subheading: 'Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.',
     scopeTags: {
@@ -302,7 +302,7 @@ export const EN = {
   },
 
   journey: {
-    eyebrow: '07 / Engagement Journey',
+    eyebrow: 'Engagement Journey',
     heading: 'what happens after you start',
     subheading: 'Five stages, from a single observation to a continuously improving intelligence model. The depth changes with the question; the discipline stays the same.',
     steps: [
@@ -315,7 +315,7 @@ export const EN = {
   },
 
   coopPartners: {
-    eyebrow: '08 / Research Cooperation',
+    eyebrow: 'Research Cooperation',
     heading: 'built alongside our coop partner',
     subheading: "Laura Serna Gaviria directs the Emergent Interaction Lab's research and agent architecture. Lauras Team, Call Laura, and Jarvis all came out of her method. RFI-IRFOS builds what she directs. Her name stays on her work.",
     role: 'Emergent Interaction Lab · Coop Partner',
@@ -333,7 +333,7 @@ export const EN = {
   },
 
   submit: {
-    eyebrow: '09 / Contact & Disclosures',
+    eyebrow: 'Contact & Disclosures',
     heading: 'reach us directly',
     paragraph: "One form, whatever it is: a question, a service inquiry, research collaboration, or a security finding. Findings come to us directly, never through a third-party bug bounty platform. We would refuse to be routed through one ourselves.",
     notSurePrefix: 'Not sure what to pick on the right? ',

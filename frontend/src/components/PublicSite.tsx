@@ -79,6 +79,15 @@ function ThemeIcon({ t }: { t: 'light' | 'dark' | 'hc' }) {
   )
 }
 
+type PublicView = 'home' | 'systems' | 'evidence' | 'access'
+
+function viewForSection(section?: string | null): PublicView {
+  if (section === 'systems' || section === 'projects') return 'systems'
+  if (section === 'evidence' || section === 'track-record') return 'evidence'
+  if (section === 'access' || section === 'pricing') return 'access'
+  return 'home'
+}
+
 // Human Rights and Team both dropped from primary nav (website-repositioning plan
 // M9 / Stage 0): Human Rights stays reachable via the footer's mission/company
 // framing rather than competing for top-level attention against the actual
@@ -87,10 +96,9 @@ function ThemeIcon({ t }: { t: 'light' | 'dark' | 'hc' }) {
 // Hrefs only - labels come from the current locale's content object (t.nav.links)
 // since NAV_LINKS itself sits above PublicSite() and can't call useLocale().
 const NAV_HREFS = [
-  { key: 'research' as const, href: '#research' },
-  { key: 'projects' as const, href: '#projects' },
-  { key: 'trackRecord' as const, href: '#track-record' },
-  { key: 'pricing' as const, href: '#pricing' },
+  { key: 'projects' as const, href: '#systems' },
+  { key: 'trackRecord' as const, href: '#evidence' },
+  { key: 'pricing' as const, href: '#access' },
   { key: 'submit' as const, href: '#submit' },
 ]
 
@@ -101,8 +109,11 @@ const NAV_HREFS = [
 function sectionMeta(t: Content, section: string) {
   switch (section) {
     case 'research': return { title: `${t.research.heading} — RFI-IRFOS`, description: t.research.subheading }
+    case 'systems':
     case 'projects': return { title: `${t.projects.heading} — RFI-IRFOS`, description: t.projects.subheading }
+    case 'evidence':
     case 'track-record': return { title: `${t.trackRecord.heading} — RFI-IRFOS`, description: t.trackRecord.paragraph }
+    case 'access':
     case 'pricing': return { title: `${t.pricing.heading} — RFI-IRFOS`, description: t.pricing.subheading }
     case 'submit': return { title: `${t.submit.heading} — RFI-IRFOS`, description: t.submit.paragraph }
     default: return null
@@ -112,6 +123,7 @@ function sectionMeta(t: Content, section: string) {
 export function PublicSite({ initialSection }: { initialSection?: string | null } = {}) {
   const { locale, setLocale, t } = useLocale()
   const NAV_LINKS = NAV_HREFS.map(n => ({ label: t.nav.links[n.key], href: n.href }))
+  const [view, setView] = useState<PublicView>(() => viewForSection(initialSection))
 
   // Landed on a section's own URL (crawler or external link, not an in-page nav
   // click) - set that section's meta tags and scroll to it once on mount.
@@ -122,9 +134,30 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       document.title = meta.title
       document.querySelector('meta[name="description"]')?.setAttribute('content', meta.description)
     }
-    document.getElementById(initialSection)?.scrollIntoView()
+    if (initialSection === 'submit') {
+      requestAnimationFrame(() => document.getElementById('submit')?.scrollIntoView({ block: 'start' }))
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  function navigateTo(href: string) {
+    const target = href.slice(1)
+    if (target === 'submit') {
+      setView('home')
+      window.history.replaceState(null, '', '#submit')
+      requestAnimationFrame(() => document.getElementById('submit')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+      return
+    }
+    const next = viewForSection(target)
+    setView(next)
+    window.history.replaceState(null, '', `#${target}`)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+  function navigateHome() {
+    setView('home')
+    window.history.replaceState(null, '', '/')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
   const toggleLocale = () => setLocale(LOCALES[(LOCALES.indexOf(locale) + 1) % LOCALES.length])
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -377,7 +410,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     // cross a nonzero threshold, so guarantee rows render even if the observer never fires.
     const fallback = setTimeout(() => setLedgerFired(true), 800)
     return () => { obs.disconnect(); clearTimeout(fallback) }
-  }, [])
+  }, [view])
 
   useEffect(() => {
     // revealSuppressed itself still had the exact race ScrambleHeading's comment
@@ -532,7 +565,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   // can only ever answer "how many page-loads scrolled past section X today", never "who".
   useEffect(() => {
     const seen = new Set<string>()
-    const sectionIds = ['research', 'projects', 'track-record', 'timeline', 'submit', 'pricing', 'team', 'coop-partners', 'contact']
+    const sectionIds = ['research', 'systems', 'projects', 'evidence', 'track-record', 'timeline', 'submit', 'access', 'pricing', 'team', 'coop-partners', 'contact']
     const els = sectionIds.map(id => document.getElementById(id)).filter((e): e is HTMLElement => !!e)
     if (!els.length) return
     const io = new IntersectionObserver(entries => {
@@ -552,7 +585,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     }, { threshold: 0.4 })
     els.forEach(el => io.observe(el))
     return () => io.disconnect()
-  }, [])
+  }, [view])
 
   async function submitTip(e: React.FormEvent) {
     e.preventDefault()
@@ -830,7 +863,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         padding: '0 1.5rem',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px',
       }}>
-        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
+        <a href="#" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 34, height: 34, objectFit: 'contain' }} />
           <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: 'var(--text)' }}>RFI-IRFOS</span>
           <EkgLine />
@@ -845,7 +878,9 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               transition: 'color 0.18s',
             }}
               onMouseEnter={e => (e.currentTarget.style.color = 'var(--text)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text2)')}>
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text2)')}
+              onClick={e => { e.preventDefault(); navigateTo(n.href) }}
+              aria-current={viewForSection(n.href.slice(1)) === view ? 'page' : undefined}>
               {n.label}
             </a>
           ))}
@@ -922,7 +957,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         textAlign: 'right',
       }}>
         {NAV_LINKS.map(n => (
-          <a key={n.href} href={n.href} onClick={() => setMobileOpen(false)} style={{
+          <a key={n.href} href={n.href} onClick={e => { e.preventDefault(); setMobileOpen(false); navigateTo(n.href) }} style={{
             color: 'var(--text)', fontSize: 20, fontWeight: 700, textDecoration: 'none',
             padding: '16px 0', borderBottom: '1px solid var(--border)', width: '100%',
             textAlign: 'right',
@@ -944,74 +979,38 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         </div>
       </div>
 
-      {/* HERO */}
-      <HeroSection mobile={mobile} />
+      <main className="rfi-view-stage" key={view} aria-live="polite">
+        {view === 'home' && <>
+          <HeroSection mobile={mobile} />
+          <ResearchSection />
+          <AppPrivacySection />
+          <CoopPartnersSection mobile={mobile} openCheckoutModal={openCheckoutModal} />
+          <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} pixelRef={pixelRef} />
+        </>}
 
-      {/* RESEARCH AREAS - moved directly under the hero (was pushed down by the
-          since-removed differentiation table + App Privacy door-opener; live
-          feedback was that those made the top of the page too dense/talky before
-          a visitor sees anything concrete). */}
-      <ResearchSection />
+        {view === 'systems' && <section id="systems" className="rfi-view-panel">
+          <ProjectsSection />
+        </section>}
 
-      {/* APP PRIVACY DOOR-OPENER — moved back up here, right after Research
-          (Simeon, 2026-08-06): reads as one unit with "where our attention
-          falls" instead of being wedged between the ledger and Pricing. Prior
-          placement (after Track Record) was itself a deliberate live-feedback
-          move - proof-before-pitch - so if this ever needs revisiting, that's
-          the tradeoff to weigh again, not an oversight. */}
-      <AppPrivacySection />
+        {view === 'evidence' && <section id="evidence" className="rfi-view-panel">
+          <TrackRecordSection
+            mobile={mobile} theme={theme} now={now} ledgerFired={ledgerFired} ledgerRef={ledgerRef}
+            searchQuery={searchQuery} setSearchQuery={setSearchQuery}
+            activeStatus={activeStatus} setActiveStatus={setActiveStatus}
+            activeSev={activeSev} setActiveSev={setActiveSev}
+            sortBy={sortBy} setSortBy={setSortBy}
+            openDD={openDD} setOpenDD={setOpenDD}
+            setReportModal={setReportModal}
+            setIntelModal={setIntelModal}
+          />
+          <ProofSection setReportModal={setReportModal} />
+        </section>}
 
-      {/* PROJECTS */}
-      <ProjectsSection />
-
-      {/* TRACK RECORD */}
-      <TrackRecordSection
-        mobile={mobile} theme={theme} now={now} ledgerFired={ledgerFired} ledgerRef={ledgerRef}
-        searchQuery={searchQuery} setSearchQuery={setSearchQuery}
-        activeStatus={activeStatus} setActiveStatus={setActiveStatus}
-        activeSev={activeSev} setActiveSev={setActiveSev}
-        sortBy={sortBy} setSortBy={setSortBy}
-        openDD={openDD} setOpenDD={setOpenDD}
-        setReportModal={setReportModal}
-        setIntelModal={setIntelModal}
-      />
-
-      {/* PROOF — quick-glance cards for every ledger entry that already has a
-          published report, directly under the ledger (live feedback via Laura,
-          2026-08-06: nobody digs into the ledger's filter+click flow to find
-          out reports actually exist). Renders nothing if none are published yet. */}
-      <ProofSection setReportModal={setReportModal} />
-
-      {/* PRICING */}
-      <PricingSection openCheckoutModal={openCheckoutModal} openProposalModal={openProposalModal} />
-
-      {/* TEAM moved off the mainpage - now its own page, `#p/team` (LegalPage.tsx),
-          linked from the footer's Company group. See website-repositioning plan:
-          mainpage is decision space ("what can you do"), Team is trust space
-          ("who are you") - the wrong section to spend mainpage scroll on first. */}
-
-      {/* CUSTOMER JOURNEY - stage2 (2026-08-02). Distinct from the pre-sale
-          hero/pricing decision flow above: this is what happens AFTER a client
-          has started, in order. Sits right after Pricing (you now know what it
-          costs) and right before Evidence (here's proof of the quality of the
-          work you just read the process for). */}
-      <JourneySection />
-
-      {/* EVIDENCE moved off the mainpage entirely into the Methodology page
-          (#p/methodology, LegalPage.tsx) - live feedback, 2026-08-02: same
-          reasoning as Team and the four Sources/Methods/Handling-results/
-          Disclosure principles before it. */}
-
-
-      {/* COOP PARTNERS - not team, an external research partner whose method
-          Lauras Team / Call Laura / Jarvis grew out of. Kept deliberately
-          separate from the TEAM grid above (different relationship: Laura
-          directs her own research and agent architecture; RFI-IRFOS builds
-          on her direction, not the reverse). */}
-      <CoopPartnersSection mobile={mobile} openCheckoutModal={openCheckoutModal} />
-
-      {/* SUBMIT A TIP */}
-      <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} pixelRef={pixelRef} />
+        {view === 'access' && <section id="access" className="rfi-view-panel">
+          <PricingSection openCheckoutModal={openCheckoutModal} openProposalModal={openProposalModal} />
+          <JourneySection />
+        </section>}
+      </main>
 
       {/* FOOTER */}
       <footer style={{ borderTop: '1px solid var(--border)', padding: '40px 2rem 28px', textAlign: 'center' }}>

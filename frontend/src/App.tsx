@@ -10,12 +10,10 @@ import './App.css'
 const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ default: m.LegalPage })))
 
 const LEGAL_SLUGS = ['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology']
-// Section ids that also get a real, crawlable URL (e.g. /pricing) in addition to
-// their existing #pricing scroll-anchor - Google doesn't index hash fragments as
-// separate pages, so a direct search hit or external link needs a real path to
-// land on. The homepage's own nav still uses the #hash hrefs (instant scroll, no
-// reload); this only matters for someone arriving at /pricing from the outside.
-const SECTION_SLUGS = ['research', 'projects', 'track-record', 'pricing', 'submit']
+// View ids that also get a real, crawlable URL in addition to their homepage hash.
+// The legacy section slugs remain accepted so existing links do not break while
+// the public shell is reorganised into Home / Systems / Evidence / Access views.
+const SECTION_SLUGS = ['systems', 'evidence', 'access', 'submit', 'research', 'projects', 'track-record', 'pricing']
 
 function pathSlug() {
   return window.location.pathname.replace(/^\/|\/$/g, '')

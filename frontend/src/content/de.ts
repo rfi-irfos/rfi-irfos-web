@@ -48,7 +48,7 @@ export const DE: Content = {
   },
 
   research: {
-    eyebrow: '01 / Unter der Lupe',
+    eyebrow: 'Unter der Lupe',
     heading: 'worauf unser Blick fällt',
     subheading: 'Wir untersuchen, wie komplexe Systeme sich verhalten: wie Evidenz zu Struktur wird, wie sich Beziehungen über die Zeit verändern und wo eine Verschiebung ein ganzes Netzwerk bewegen kann.',
     areas: [
@@ -64,7 +64,7 @@ export const DE: Content = {
   },
 
   projects: {
-    eyebrow: '03 / Vorhaben',
+    eyebrow: 'Systeme',
     heading: 'was wir bauen',
     subheading: 'Jedes Projekt beantwortet eine konkrete Forschungsfrage. Alle laufen auf demselben Stack.',
     carouselPrevAria: 'vorherige Projekte',
@@ -124,7 +124,7 @@ export const DE: Content = {
   },
 
   trackRecord: {
-    eyebrow: '04 / Track Record',
+    eyebrow: 'Track Record',
     heading: 'die Disziplin, bewiesen',
     paragraph: 'Wir lesen Apps auf Quellcode-Ebene, nicht nur von außen. Die Unternehmen auf diesem Ledger landen aus ganz unterschiedlichen Gründen hier: Sie geben Ihre Daten still an Dritte weiter, tracken ohne Zustimmung oder lassen Sicherheitslücken offen. Bei jedem Bericht, den wir versenden, werden die Datenschutzbehörden direkt in Kopie gesetzt, und wir geben dem Unternehmen neunzig Tage Zeit, das Problem zu beheben, bevor irgendetwas öffentlich wird. Die Regel ist einfach und nicht verhandelbar: Jede Organisation hier wird exakt gleich behandelt, ob sie uns je einen Cent zahlt oder nicht.',
     kpis: {
@@ -196,7 +196,7 @@ export const DE: Content = {
   },
 
   proof: {
-    eyebrow: '05 / Das Ergebnis',
+    eyebrow: 'Das Ergebnis',
     heading: 'das, was Sie tatsächlich in der Hand hätten',
     subheading: 'Jeder Fall im Ledger endet in genau so einem Dokument: einem vollständigen, evidenzbasierten Offenlegungsbericht, nach Ablauf des Embargos öffentlich einsehbar - gleiches Format, gleiche Tiefe, unabhängig davon, ob das Unternehmen uns darüber hinaus beauftragt.',
     viewReport: 'vollständigen Bericht lesen',
@@ -206,7 +206,7 @@ export const DE: Content = {
   },
 
   appPrivacy: {
-    eyebrow: '02 / Hier beginnen',
+    eyebrow: 'Hier beginnen',
     heading: 'Beobachtungen werden zu Intelligence',
     paragraph: 'Die meisten Organisationen haben mehr Signale, als sie einordnen können: Systeme, Anbieter, Märkte, Ereignisse, Abhängigkeiten und Veränderungen aus verschiedenen Richtungen. Wir führen sie in einem evidenzbasierten World Model zusammen, bewahren die Herkunft jeder Beobachtung und verfolgen Veränderungen durch die Beziehungen, die daran hängen.',
     comparisonClassicLabel: 'Was verloren geht',
@@ -222,7 +222,7 @@ export const DE: Content = {
   },
 
   pricing: {
-    eyebrow: '06 / Zugang',
+    eyebrow: 'Zugang',
     heading: 'klar kalkuliert',
     subheading: 'Feste Preise. Keine Bindung an ein Abo, außer Sie wollen eine. Der Umfang bestimmt die Stufe, nicht die Unternehmensgröße.',
     scopeTags: {
@@ -295,7 +295,7 @@ export const DE: Content = {
   },
 
   journey: {
-    eyebrow: '07 / Ablauf der Zusammenarbeit',
+    eyebrow: 'Ablauf der Zusammenarbeit',
     heading: 'was nach dem Start passiert',
     subheading: 'Fünf Phasen, von einer einzelnen Beobachtung bis zu einem kontinuierlich schärfer werdenden Intelligence-Modell. Die Tiefe ändert sich mit der Frage; die Disziplin bleibt gleich.',
     steps: [
@@ -308,7 +308,7 @@ export const DE: Content = {
   },
 
   coopPartners: {
-    eyebrow: '08 / Forschungskooperation',
+    eyebrow: 'Forschungskooperation',
     heading: 'gebaut gemeinsam mit unserem Kooperationspartner',
     subheading: 'Laura Serna Gaviria leitet die eigene Forschung und Agentenarchitektur des Emergent Interaction Lab - Lauras Team, Call Laura und Jarvis sind alle aus ihrer Methode entstanden. RFI-IRFOS baut, was sie anleitet, klar als ihres gekennzeichnet, damit stets nachvollziehbar bleibt, wer was gemacht hat.',
     role: 'Emergent Interaction Lab · Kooperationspartnerin',
@@ -326,7 +326,7 @@ export const DE: Content = {
   },
 
   submit: {
-    eyebrow: '09 / Kontakt & Offenlegungen',
+    eyebrow: 'Kontakt & Offenlegungen',
     heading: 'nehmen Sie Kontakt auf',
     paragraph: 'Ein Formular, egal worum es geht: eine allgemeine Frage, eine Serviceanfrage, eine Forschungskooperation - oder ein Sicherheitsfund. Bei Letzterem betreiben wir einen eigenen Aufnahmekanal, statt ihn an eine Drittanbieter-Bug-Bounty-Plattform weiterzuleiten - aus demselben Grund, aus dem wir uns weigern würden, selbst an eine solche verwiesen zu werden.',
     notSurePrefix: 'Im Zweifel: ',

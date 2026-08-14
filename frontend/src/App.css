@@ -240,6 +240,24 @@ button { cursor: pointer; font-family: inherit; }
   margin-bottom: 56px; letter-spacing: -.01em;
 }
 
+/* Public site chapters. The shell changes view; the existing section components
+   remain vertically readable inside each chapter, including the ledger and form. */
+.rfi-view-stage {
+  min-height: 100vh;
+  animation: rfi-view-enter .42s cubic-bezier(.16, 1, .3, 1) both;
+}
+.rfi-view-panel {
+  min-height: 100vh;
+  padding-top: 64px;
+}
+@keyframes rfi-view-enter {
+  from { opacity: 0; transform: translateX(28px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rfi-view-stage { animation: none; }
+}
+
 /* ── CATEGORIES / DRILL-DOWN BROWSER ─────────────────────────────────────── */
 .site-categories { background: var(--surface-alt); }
 .site-browser-header {
