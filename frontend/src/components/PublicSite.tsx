@@ -733,10 +733,19 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         // 2026-08-14: that's "the canonical template", this one was still the older
         // flat rgba(0,0,0,0.85) dim with no blur - now the same blur(14px) treatment).
         <div className="rfi-modal-backdrop" onClick={() => setReportModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-          <div className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 900, height: '85vh', background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid var(--border)', background: '#0a0a18' }}>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--accent-text)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t.reportModal.label}</span>
-              <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
+          {/* Same always-dark carbon chrome as the checkout/intel modals (live
+              feedback 2026-08-14) - fixed light hex text, not var(--text*)/var(--accent-text),
+              which resolve dark in light mode and went illegible against this panel. */}
+          <div className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{
+            width: '100%', maxWidth: 900, height: '85vh', overflow: 'hidden', display: 'flex', flexDirection: 'column',
+            background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
+            backgroundBlendMode: 'overlay',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
+            border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t.reportModal.label}</span>
+              <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
             </div>
             <iframe src={reportModal} style={{ flex: 1, border: 'none', width: '100%' }} title={t.reportModal.iframeTitle} />
           </div>
@@ -757,10 +766,23 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           // Blurred backdrop to match the checkout/proposal modals - same reasoning
           // as the Report PDF modal above.
           <div className="rfi-modal-backdrop" onClick={() => setIntelModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-            <div className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 640, maxHeight: '85vh', background: '#0e0e1e', border: '1px solid rgba(0,245,196,0.25)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px', borderBottom: '1px solid var(--border)', background: '#0a0a18' }}>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{intelModal.target} · {intelModal.market} · {intelModal.sev}</div>
-                <button onClick={() => setIntelModal(null)} style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
+            {/* Same canonical carbon-gradient template as the checkout/proposal modals
+                (live feedback 2026-08-14: this one was still on a flat hardcoded navy
+                panel, "auch nichtmal in dem carbon style") - and, same as those, this
+                chrome is deliberately always-dark independent of the site theme
+                toggle, so every text color inside is a fixed light hex, NOT a
+                var(--text*) token (those resolve to near-black in light mode and read
+                as illegible dark-on-navy - the actual light-mode contrast bug). */}
+            <div className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{
+              width: '100%', maxWidth: 640, maxHeight: '85vh', overflow: 'hidden', display: 'flex', flexDirection: 'column',
+              background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
+              backgroundBlendMode: 'overlay',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
+              border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14,
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{intelModal.target} · {intelModal.market} · {intelModal.sev}</div>
+                <button onClick={() => setIntelModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
               </div>
               <div style={{ padding: '20px 22px', overflowY: 'auto' }}>
                 {/* Newspaper-style headline - the thing a visitor with zero technical
@@ -768,12 +790,12 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                     nothing (meaning paragraph just runs first, as before) until every
                     ledger entry has one written - Simeon, 2026-08-08. */}
                 {intelModal.headline && (
-                  <h3 style={{ fontSize: 22, lineHeight: 1.3, fontWeight: 800, color: 'var(--text)', margin: '0 0 12px' }}>{intelModal.headline}</h3>
+                  <h3 style={{ fontSize: 22, lineHeight: 1.3, fontWeight: 800, color: '#e8e8f0', margin: '0 0 12px' }}>{intelModal.headline}</h3>
                 )}
-                <p style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--text)', margin: 0 }}>{meaning}</p>
-                <div style={{ marginTop: 20, paddingTop: 14, borderTop: '1px solid var(--border2)' }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>{t.intelModal.evidenceLabel}</div>
-                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, lineHeight: 1.6, color: 'var(--text3)', margin: 0 }}>{technical}</p>
+                <p style={{ fontSize: 15, lineHeight: 1.7, color: '#e8e8f0', margin: 0 }}>{meaning}</p>
+                <div style={{ marginTop: 20, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>{t.intelModal.evidenceLabel}</div>
+                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, lineHeight: 1.6, color: '#a0a0b8', margin: 0 }}>{technical}</p>
                 </div>
               </div>
             </div>

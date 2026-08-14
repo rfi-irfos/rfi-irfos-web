@@ -59,16 +59,19 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       padding: 'calc(72px + 6vh) 2rem 72px',
       // Tint gradient only - the actual photo is the dedicated zoom layer below,
       // not this section's own background. Kept as a tint (not a full photo) for
-      // text legibility over whatever's showing through it. Light theme's tint
-      // sits over a dark night-mode dashboard shot, so a light, faded-out wash
-      // (as dark used) just blended into a muddy grey (live feedback 2026-08-14:
-      // "strange grey mess") - bumped near-opaque instead, so light mode reads as
-      // its own clean surface with only a faint ghost of the photo through it.
+      // text legibility over whatever's showing through it. Went near-opaque here
+      // once already (live feedback: "strange grey mess") - overcorrected, that
+      // hid the photo entirely (live feedback 2026-08-14: "die software auch
+      // garnicht mehr im hero... vollkommen überschattet"). Settled in between:
+      // lighter than the original faded wash, still see-through. The original's
+      // deep dip to 0.32 at the 52% stop (vs 0.55/0.5 either side) was likely
+      // what read as a dark smudge specifically where the headline sits - flattened
+      // that dip out too instead of just raising every stop by the same amount.
       background: theme === 'dark'
         ? 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.55) 0%, rgba(5,7,14,0.32) 52%, rgba(5,7,14,0.5) 100%)'
         : theme === 'hc'
           ? 'rgba(0,0,0,0.45)'
-          : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,122,92,0.06) 0%, transparent 70%), linear-gradient(90deg, rgba(250,245,239,0.9) 0%, rgba(250,245,239,0.82) 52%, rgba(250,245,239,0.88) 100%)',
+          : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,122,92,0.06) 0%, transparent 70%), linear-gradient(90deg, rgba(250,245,239,0.62) 0%, rgba(250,245,239,0.52) 52%, rgba(250,245,239,0.6) 100%)',
     }}>
       {/* Real screenshot of our own OSINT/monitoring software as the hero backdrop
           (live feedback 2026-08-14: "this is from the software itself"), with a slow
@@ -116,7 +119,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           aria-hidden="true"
           initial={prefersReducedMotion() ? undefined : { scaleX: 0 }}
           animate={{ scaleX: 1 }}
-          transition={{ duration: 0.55, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1.3, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           style={{
             position: 'absolute', inset: '-1px -4px', zIndex: 0, borderRadius: 3, transformOrigin: 'left center',
             background: theme === 'dark'
