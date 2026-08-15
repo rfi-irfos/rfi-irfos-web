@@ -1139,7 +1139,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             readable at a fixed width, but a link directory has the opposite
             goal: more width means more columns fit side by side instead of
             wrapping into a tall single-column scroll. */}
-        <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', marginBottom: 28, textAlign: 'left' }}>
+        <div style={{ display: 'flex', gap: '1.1rem', alignItems: 'flex-start', marginBottom: 28, textAlign: 'left' }}>
           <div style={{ flex: '0 0 170px', display: 'flex', flexDirection: 'column', gap: 22 }}>
             {[
               {
@@ -1179,12 +1179,16 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               </div>
             ))}
           </div>
-          {/* Subtle vertical divider between Legal/Company/Research and the repo
-              directories (live feedback 2026-08-14: "a subtle divider line between
-              the legal and the rest"). alignSelf: 'stretch' lets it span the full
-              height of whichever side ends up taller instead of a fixed height. */}
-          <div aria-hidden="true" style={{ alignSelf: 'stretch', width: 1, background: 'var(--border)' }} />
-          {/* Restructured 2026-08-15 (live feedback, twice): first pass grouped
+          {/* Divider hugs the Legal column tighter now (live feedback 2026-08-15:
+              "muss direkt ans legal ran, mehr nach links") - the outer flex gap
+              was shrunk to 1.1rem for this side, with the larger gap restored via
+              marginLeft on the zones container below instead of a shared gap.
+              Bumped to 2px + var(--text4) (a visibly stronger grey than the
+              --border hairline token) per the same feedback ("bissl mehr grauer,
+              dann siehst das"). alignSelf: 'stretch' lets it span the full height
+              of whichever side ends up taller instead of a fixed height. */}
+          <div aria-hidden="true" style={{ alignSelf: 'stretch', width: 2, background: 'var(--text4)' }} />
+          {/* Restructured 2026-08-15 (live feedback, three times): first pass grouped
               repos by GitHub *owner* ("RFI-IRFOS Repositories" / "Simeon Kepp,
               Personal") - told a visitor nothing about what any of it does.
               Second pass added a one-line gloss per link, but the real fix
@@ -1195,11 +1199,14 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               go-deeper link at the very bottom, plus "connects to" pills that
               swap the modal along real verified architecture relationships. So
               the footer itself stays a clean, undescribed zone-grouped list -
-              the description now lives one click deeper, in the modal. */}
-          <div style={{ flex: '1 1 auto', display: 'flex', flexWrap: 'wrap', gap: '2.5rem 2rem' }}>
+              the description now lives one click deeper, in the modal. Third pass:
+              headings centered above their column (matches the original repo-
+              directory convention this replaced), marginLeft restores the wider
+              gap the shared flex gap used to provide on this side only. */}
+          <div style={{ flex: '1 1 auto', display: 'flex', flexWrap: 'wrap', gap: '2.5rem 2rem', marginLeft: '1.9rem' }}>
             {ZONE_ORDER.map(zone => (
               <div key={zone} style={{ flex: '1 1 180px', minWidth: 160 }}>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px' }}>{ZONE_LABELS[zone][locale]}</p>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{ZONE_LABELS[zone][locale]}</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                   {SYSTEMS.filter(s => s.zone === zone).map(s => (
                     <button key={s.key} onClick={() => setSystemModal(s.key)} style={{
@@ -1214,19 +1221,29 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 </div>
               </div>
             ))}
+          </div>
+          {/* Second divider (live feedback 2026-08-15: "mit einer V-line von der
+              linkliste trennen") - separates the four curated System Card zones
+              from the uncurated overflow directory below, same treatment as the
+              Legal divider. */}
+          <div aria-hidden="true" style={{ alignSelf: 'stretch', width: 2, background: 'var(--text4)' }} />
+          <div style={{ flex: '2 1 520px', display: 'flex', flexWrap: 'wrap', gap: '2.5rem 2rem', marginLeft: '0.5rem' }}>
             {/* Everything NOT curated into a System Card yet - forks, personal
                 side-projects, the remaining crates.io packages. Live feedback
                 2026-08-15: the four zones above shouldn't be the ceiling, every
                 repo/crate is still a link here, just without a modal behind it
                 (no curated card content exists for these yet). Plain links, no
-                descriptors - same "clean, undescribed" list style as the zones. */}
+                descriptors - same "clean, undescribed" list style as the zones.
+                "Repositories" runs 4 internal sub-columns (columnCount, not
+                columnWidth auto-fit) per live feedback - shortened from "More
+                repositories"/"Weitere Repositories" to fit the tighter heading. */}
             {[
-              { heading: locale === 'de' ? 'Weitere Repositories' : 'More repositories', items: [...RFI_REPOS, ...SIMEON_REPOS] },
-              { heading: 'Crates (crates.io)', items: CRATES },
+              { heading: locale === 'de' ? 'Repositories' : 'Repositories', items: [...RFI_REPOS, ...SIMEON_REPOS], columns: 4, flex: '3 1 560px' },
+              { heading: 'Crates (crates.io)', items: CRATES, columns: 2, flex: '1.4 1 260px' },
             ].map(group => (
-              <div key={group.heading} style={{ flex: '1.6 1 320px', minWidth: 260 }}>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px' }}>{group.heading}</p>
-                <div style={{ columnWidth: 150, columnGap: 20 }}>
+              <div key={group.heading} style={{ flex: group.flex }}>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{group.heading}</p>
+                <div style={{ columnCount: group.columns, columnGap: 20 }}>
                   {group.items.map(r => (
                     <a key={r.u} href={r.u} target="_blank" rel="noopener noreferrer" style={{
                       display: 'block', breakInside: 'avoid', color: 'var(--text3)', fontSize: 12,
