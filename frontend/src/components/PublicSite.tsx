@@ -18,6 +18,18 @@ import { ZONE_ORDER, ZONE_LABELS, SYSTEMS } from '../content/systems'
 import { SystemCardModal } from './sections/SystemCardModal'
 import { RFI_REPOS, SIMEON_REPOS, CRATES, CRATES_IO_PROFILE } from '../content/repos'
 
+// Footer's overflow repo/crate directory (2026-08-15) is rendered as literal
+// grid-column chunks, not CSS column-count, so it lines up as flat siblings
+// with the System Card zones - "alles soll in einer Linie sein, spaltenweise
+// wie ne Excel." Split once at module scope (static input, no need to
+// recompute per render).
+function splitIntoColumns<T>(items: T[], columns: number): T[][] {
+  const size = Math.ceil(items.length / columns)
+  return Array.from({ length: columns }, (_, i) => items.slice(i * size, (i + 1) * size)).filter(c => c.length > 0)
+}
+const FOOTER_REPO_COLUMNS = splitIntoColumns([...RFI_REPOS, ...SIMEON_REPOS], 4)
+const FOOTER_CRATE_COLUMNS = splitIntoColumns(CRATES, 2)
+
 // Nav logo's EKG line. Was one fixed blip shape looping identically forever - "measuring
 // the same heartbeat forever" per Simeon. A wider multi-beat path was tried and reverted
 // (he wanted the original short length/duration back, just varied). A bezier P-QRS-T
@@ -1188,24 +1200,21 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               dann siehst das"). alignSelf: 'stretch' lets it span the full height
               of whichever side ends up taller instead of a fixed height. */}
           <div aria-hidden="true" style={{ alignSelf: 'stretch', width: 2, background: 'var(--text4)' }} />
-          {/* Restructured 2026-08-15 (live feedback, three times): first pass grouped
-              repos by GitHub *owner* ("RFI-IRFOS Repositories" / "Simeon Kepp,
-              Personal") - told a visitor nothing about what any of it does.
-              Second pass added a one-line gloss per link, but the real fix
-              (Simeon's idea, refined) is that these links don't go straight to
-              GitHub/crates.io at all anymore - they open the System Card modal
-              (SystemCardModal.tsx), a standardized problem/why/different/fit/
-              proof/technical breakdown with GitHub/crates.io only as a
-              go-deeper link at the very bottom, plus "connects to" pills that
-              swap the modal along real verified architecture relationships. So
-              the footer itself stays a clean, undescribed zone-grouped list -
-              the description now lives one click deeper, in the modal. Third pass:
-              headings centered above their column (matches the original repo-
-              directory convention this replaced), marginLeft restores the wider
-              gap the shared flex gap used to provide on this side only. */}
-          <div style={{ flex: '1 1 auto', display: 'flex', flexWrap: 'wrap', gap: '2.5rem 2rem', marginLeft: '1.9rem' }}>
+          {/* Restructured 2026-08-15 (live feedback, four times - the previous
+              flex-wrap version left an ugly uneven gap between the "Repositories"
+              multi-column block and "Crates", not a clean row): "alles soll in
+              einer Linie sein... spaltenweise wie ne Excel." True CSS grid now -
+              every column (the four System Card zones, four Repositories chunks,
+              two Crates chunks) is a flat sibling grid item, same width, same top
+              edge, no flex-wrap gap math. Repositories/Crates are pre-chunked
+              into N literal arrays (splitRepoColumns below) instead of relying on
+              CSS column-count, which is what produced the uneven flow. Only the
+              first chunk of a multi-column group gets a heading; the rest stay
+              blank so the group still reads as one wide section, not N repeated
+              labels. */}
+          <div style={{ flex: '1 1 auto', display: 'grid', gridTemplateColumns: `repeat(${4 + FOOTER_REPO_COLUMNS.length + FOOTER_CRATE_COLUMNS.length}, minmax(100px, 1fr))`, columnGap: '1.6rem', marginLeft: '1.9rem' }}>
             {ZONE_ORDER.map(zone => (
-              <div key={zone} style={{ flex: '1 1 180px', minWidth: 160 }}>
+              <div key={zone}>
                 <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{ZONE_LABELS[zone][locale]}</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                   {SYSTEMS.filter(s => s.zone === zone).map(s => (
@@ -1221,34 +1230,14 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 </div>
               </div>
             ))}
-          </div>
-          {/* Second divider (live feedback 2026-08-15: "mit einer V-line von der
-              linkliste trennen") - separates the four curated System Card zones
-              from the uncurated overflow directory below, same treatment as the
-              Legal divider. */}
-          <div aria-hidden="true" style={{ alignSelf: 'stretch', width: 2, background: 'var(--text4)' }} />
-          <div style={{ flex: '2 1 520px', display: 'flex', flexWrap: 'wrap', gap: '2.5rem 2rem', marginLeft: '0.5rem' }}>
-            {/* Everything NOT curated into a System Card yet - forks, personal
-                side-projects, the remaining crates.io packages. Live feedback
-                2026-08-15: the four zones above shouldn't be the ceiling, every
-                repo/crate is still a link here, just without a modal behind it
-                (no curated card content exists for these yet). Plain links, no
-                descriptors - same "clean, undescribed" list style as the zones.
-                "Repositories" runs 4 internal sub-columns (columnCount, not
-                columnWidth auto-fit) per live feedback - shortened from "More
-                repositories"/"Weitere Repositories" to fit the tighter heading. */}
-            {[
-              { heading: locale === 'de' ? 'Repositories' : 'Repositories', items: [...RFI_REPOS, ...SIMEON_REPOS], columns: 4, flex: '3 1 560px' },
-              { heading: 'Crates (crates.io)', items: CRATES, columns: 2, flex: '1.4 1 260px' },
-            ].map(group => (
-              <div key={group.heading} style={{ flex: group.flex }}>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{group.heading}</p>
-                <div style={{ columnCount: group.columns, columnGap: 20 }}>
-                  {group.items.map(r => (
+            {FOOTER_REPO_COLUMNS.map((col, i) => (
+              <div key={`repo-${i}`}>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{i === 0 ? 'Repositories' : ' '}</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  {col.map(r => (
                     <a key={r.u} href={r.u} target="_blank" rel="noopener noreferrer" style={{
-                      display: 'block', breakInside: 'avoid', color: 'var(--text3)', fontSize: 12,
-                      textDecoration: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                      marginBottom: 6, font: 'inherit',
+                      display: 'block', color: 'var(--text3)', fontSize: 12, textDecoration: 'none',
+                      whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', font: 'inherit',
                     }}
                       onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                       onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
@@ -1256,11 +1245,28 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                     </a>
                   ))}
                 </div>
-                {group.heading === 'Crates (crates.io)' && (
-                  <a href={CRATES_IO_PROFILE} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: 8, color: 'var(--text3)', fontSize: 11, textDecoration: 'underline', textUnderlineOffset: 2 }}>
-                    {locale === 'de' ? 'alle Pakete auf crates.io →' : 'all packages on crates.io →'}
-                  </a>
-                )}
+              </div>
+            ))}
+            {FOOTER_CRATE_COLUMNS.map((col, i) => (
+              <div key={`crate-${i}`}>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{i === 0 ? 'Crates (crates.io)' : ' '}</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  {col.map(r => (
+                    <a key={r.u} href={r.u} target="_blank" rel="noopener noreferrer" style={{
+                      display: 'block', color: 'var(--text3)', fontSize: 12, textDecoration: 'none',
+                      whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', font: 'inherit',
+                    }}
+                      onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                      onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                      {r.n}
+                    </a>
+                  ))}
+                  {i === FOOTER_CRATE_COLUMNS.length - 1 && (
+                    <a href={CRATES_IO_PROFILE} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', fontSize: 11, textDecoration: 'underline', textUnderlineOffset: 2, marginTop: 4 }}>
+                      {locale === 'de' ? 'alle Pakete →' : 'all packages →'}
+                    </a>
+                  )}
+                </div>
               </div>
             ))}
           </div>
