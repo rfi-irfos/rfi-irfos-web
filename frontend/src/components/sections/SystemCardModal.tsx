@@ -63,7 +63,7 @@ function PreviewBox({ preview, accent }: { preview: ReturnType<typeof getPreview
     }}>
       {preview.type === 'image'
         ? <img src={preview.src} alt={preview.alt} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        : <div style={{ width: '82%', height: '82%' }}><SystemDiagram archetype={preview.archetype} accent={accent} /></div>}
+        : <div style={{ width: '96%', height: '96%' }}><SystemDiagram archetype={preview.archetype} accent={accent} /></div>}
     </div>
   )
 }

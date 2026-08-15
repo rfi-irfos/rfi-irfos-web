@@ -415,6 +415,22 @@ h1, h2, h3, .rfi-display {
   0% { transform: translateX(0); }
   100% { transform: translateX(var(--rfi-shimmer-dist, 200px)); }
 }
+/* VectorStorage's redesign (live feedback: diagrams need to be "stupidly
+   simple", literally show the mechanism) - a scatter of points visibly
+   gathers into clusters and back. Each dot sets its own
+   --rfi-cluster-dx/dy (its personal distance to its assigned cluster) so
+   one shared keyframe drives 12 different trajectories. */
+@keyframes rfi-diagram-cluster {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(var(--rfi-cluster-dx, 0px), var(--rfi-cluster-dy, 0px)); }
+}
+/* ForkReference's redesign - "marching ants" on the solid/active branch
+   (the classic moving-dash pattern) signals "this path is still live",
+   contrasted against the dashed-but-static branch that represents our
+   frozen, unmodified fork. */
+@keyframes rfi-diagram-march {
+  to { stroke-dashoffset: -32; }
+}
 @media (prefers-reduced-motion: reduce) {
   .rfi-diagram-anim, .rfi-diagram-anim * { animation: none !important; }
 }

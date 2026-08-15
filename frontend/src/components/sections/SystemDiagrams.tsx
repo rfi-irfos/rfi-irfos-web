@@ -11,8 +11,11 @@
 // containment the same way the rest of the site treats decorative motion).
 import type { DiagramArchetype } from '../../content/systemPreviews'
 
+// Square viewBox (live feedback 2026-08-15: "same size issue" - a 260x300
+// canvas inside a square preview box always left letterboxing bars, on top
+// of the diagrams themselves already under-using their own canvas).
 const VB_W = 260
-const VB_H = 300
+const VB_H = 260
 
 function Frame({ children }: { children: React.ReactNode }) {
   return (
@@ -70,21 +73,85 @@ function PipelineFlow({ accent }: { accent: string }) {
 }
 
 function VectorStorage({ accent }: { accent: string }) {
+  // Redesigned 2026-08-15 (live feedback: "everybody thinks nice flashing
+  // colors, nobody understands the diagram... must be stupidly simple") -
+  // the previous version (a database icon with dots orbiting it) looked like
+  // generic "tech decoration," not "finds and groups similar things." This
+  // is the literal pictogram instead: a scatter of points visibly gathers
+  // into three tight clusters and back, on a loop - the actual mechanism
+  // (grouping by similarity), not an abstract stand-in for it.
   const cx = VB_W / 2, cy = VB_H / 2
-  const dots = Array.from({ length: 14 }, (_, i) => {
-    const angle = (i / 14) * Math.PI * 2
-    const rad = 55 + (i % 3) * 12
-    return { x: cx + Math.cos(angle) * rad, y: cy + Math.sin(angle) * rad, i }
+  const clusters = [{ x: cx - 66, y: cy - 38 }, { x: cx + 66, y: cy - 28 }, { x: cx, y: cy + 68 }]
+  const dots = Array.from({ length: 12 }, (_, i) => {
+    const angle = (i / 12) * Math.PI * 2
+    const startX = cx + Math.cos(angle) * 95
+    const startY = cy + Math.sin(angle) * 95
+    const cluster = clusters[i % 3]
+    const jitterX = ((i % 3) - 1) * 9
+    const jitterY = (Math.floor(i / 3) % 2) * 9 - 4
+    return { startX, startY, dx: cluster.x + jitterX - startX, dy: cluster.y + jitterY - startY, i }
   })
   return (
     <Frame>
-      <circle cx={cx} cy={cy} r={26} fill="none" stroke={accent} strokeWidth={1.4} opacity={0.4} />
-      <rect x={cx - 14} y={cy - 18} width={28} height={36} rx={3} fill="none" stroke={accent} strokeWidth={1.6} />
-      <line x1={cx - 14} y1={cy - 6} x2={cx + 14} y2={cy - 6} stroke={accent} strokeWidth={1} opacity={0.5} />
-      <line x1={cx - 14} y1={cy + 6} x2={cx + 14} y2={cy + 6} stroke={accent} strokeWidth={1} opacity={0.5} />
-      <g style={{ transformOrigin: `${cx}px ${cy}px`, animation: 'rfi-diagram-orbit 22s linear infinite' }}>
-        {dots.map(d => <circle key={d.i} cx={d.x} cy={d.y} r={2.6} fill={accent} opacity={0.7} />)}
-      </g>
+      {dots.map(d => (
+        <circle key={d.i} cx={d.startX} cy={d.startY} r={6.5} fill={accent} opacity={0.75}
+          style={{
+            ['--rfi-cluster-dx' as string]: `${d.dx}px`, ['--rfi-cluster-dy' as string]: `${d.dy}px`,
+            animation: `rfi-diagram-cluster 5s ease-in-out ${(d.i % 3) * 0.15}s infinite`,
+          }} />
+      ))}
+    </Frame>
+  )
+}
+
+function ResourceFlow({ accent }: { accent: string }) {
+  // Custom pictogram for foodsharing (live feedback: "what does this show
+  // me about how foodsharing works?" - the generic web-app browser mockup
+  // said nothing). Two people, a surplus item literally moving from the one
+  // who has extra to the one who needs it - the entire concept in one loop.
+  const cy = VB_H / 2
+  const person = (x: number) => (
+    <>
+      <circle cx={x} cy={cy - 34} r={13} fill="none" stroke={accent} strokeWidth={2} opacity={0.7} />
+      <path d={`M ${x - 20} ${cy + 26} Q ${x - 20} ${cy - 8} ${x} ${cy - 8} Q ${x + 20} ${cy - 8} ${x + 20} ${cy + 26}`} fill="none" stroke={accent} strokeWidth={2} opacity={0.7} />
+    </>
+  )
+  return (
+    <Frame>
+      {person(56)}
+      {person(VB_W - 56)}
+      <line x1={90} y1={cy - 4} x2={VB_W - 90} y2={cy - 4} stroke={accent} strokeWidth={1.2} strokeDasharray="3 6" opacity={0.35} />
+      <circle r={9} fill={accent} cy={cy - 4}
+        style={{ animation: 'rfi-diagram-flow 3.2s ease-in-out infinite', transformBox: 'view-box', transformOrigin: '90px center' }} />
+      <text x={VB_W / 2} y={cy + 60} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">SURPLUS &rarr; NEED</text>
+    </Frame>
+  )
+}
+
+function DeterministicReplay({ accent }: { accent: string }) {
+  // Custom pictogram for moe-runtime/moe-ddel (live feedback: "random
+  // charts, not showing the architecture"). The actual claim is "run it
+  // twice, get the identical result" - so this literally runs two identical
+  // lanes in perfect lockstep, both landing on the same checkmark at the
+  // same instant. No other archetype states that as plainly.
+  const lanes = [VB_W / 2 - 56, VB_W / 2 + 56]
+  const steps = [-70, -20, 30]
+  return (
+    <Frame>
+      <line x1={VB_W / 2} y1={30} x2={VB_W / 2} y2={100} stroke={accent} strokeWidth={1.2} strokeDasharray="2 5" opacity={0.3} />
+      <text x={VB_W / 2} y={22} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">SAME INPUT</text>
+      {lanes.map((lx, li) => (
+        <g key={li}>
+          <line x1={lx} y1={100} x2={lx} y2={210} stroke={accent} strokeWidth={1.2} opacity={0.25} />
+          {steps.map((sy, si) => (
+            <rect key={si} x={lx - 15} y={VB_H / 2 + sy} width={30} height={20} rx={4} fill="none" stroke={accent} strokeWidth={1.4}
+              style={{ animation: `rfi-diagram-node-wake 3s ease-in-out ${si * 0.5}s infinite` }} />
+          ))}
+          <circle cx={lx} cy={VB_H / 2 + 60} r={11} fill="none" stroke={accent} strokeWidth={1.8} />
+          <path d={`M ${lx - 5} ${VB_H / 2 + 60} l 3.5 4 l 6.5 -8`} fill="none" stroke={accent} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
+            strokeDasharray={1} pathLength={1} style={{ animation: `rfi-draw 0.5s ease-out 1.6s both` } as React.CSSProperties} />
+        </g>
+      ))}
     </Frame>
   )
 }
@@ -126,19 +193,24 @@ function ProtocolBridge({ accent }: { accent: string }) {
 }
 
 function ForkReference({ accent }: { accent: string }) {
-  const cx = VB_W / 2
+  // Redesigned 2026-08-15 (live feedback: "stupidly simple and clear...
+  // imagine somebody can't read") - the literal git-branch pictogram: one
+  // origin point, one path that keeps going solid and bright (the real
+  // upstream project, still active), one path that branches off and
+  // visibly stops at a dim, static, dashed node (our kept copy). The
+  // contrast between "moving" and "stopped" carries the whole meaning
+  // without needing a single word.
+  const cx = VB_W / 2, originY = 56
   return (
     <Frame>
-      <rect x={cx - 62} y={60} width={124} height={68} rx={8} fill="none" stroke={accent} strokeWidth={1.2} opacity={0.3} />
-      <line x1={cx - 46} y1={80} x2={cx + 30} y2={80} stroke={accent} strokeWidth={1} opacity={0.22} />
-      <line x1={cx - 46} y1={94} x2={cx + 42} y2={94} stroke={accent} strokeWidth={1} opacity={0.22} />
-      <line x1={cx - 46} y1={108} x2={cx + 10} y2={108} stroke={accent} strokeWidth={1} opacity={0.22} />
-      <circle cx={cx} cy={94} r={15} fill={accent} opacity={0.9} />
-      <line x1={cx} y1={128} x2={cx} y2={196} stroke={accent} strokeWidth={1.4} strokeDasharray="3 5" opacity={0.5} />
-      <circle cx={cx} cy={220} r={34} fill="none" stroke={accent} strokeWidth={1.3} opacity={0.25} strokeDasharray="2 6" />
-      <circle cx={cx} cy={220} r={19} fill="none" stroke={accent} strokeWidth={1.5}
-        style={{ animation: 'rfi-diagram-echo 3.4s ease-in-out infinite', transformBox: 'fill-box', transformOrigin: 'center' }} />
-      <circle cx={cx} cy={220} r={10} fill="none" stroke={accent} strokeWidth={1.2} opacity={0.45} />
+      <circle cx={cx} cy={originY} r={13} fill={accent} />
+      <path d={`M ${cx} ${originY + 13} L ${cx + 58} ${originY + 68} L ${cx + 58} ${VB_H - 40}`} fill="none" stroke={accent} strokeWidth={3} strokeLinecap="round" strokeDasharray="10 6" opacity={0.9}
+        style={{ animation: 'rfi-diagram-march 1.4s linear infinite' }} />
+      <circle cx={cx + 58} cy={VB_H - 40} r={7} fill={accent} opacity={0.9}
+        style={{ animation: 'rfi-diagram-node-wake 2.2s ease-in-out infinite' }} />
+      <path d={`M ${cx} ${originY + 13} L ${cx - 58} ${originY + 68} L ${cx - 58} ${VB_H - 78}`} fill="none" stroke={accent} strokeWidth={2.5} strokeLinecap="round" strokeDasharray="1 8" opacity={0.35} />
+      <circle cx={cx - 58} cy={VB_H - 78} r={11} fill="none" stroke={accent} strokeWidth={2} opacity={0.45} />
+      <line x1={cx - 58 - 13} y1={VB_H - 78} x2={cx - 58 + 13} y2={VB_H - 78} stroke={accent} strokeWidth={2} opacity={0.35} />
     </Frame>
   )
 }
@@ -267,6 +339,8 @@ const ARCHETYPES: Record<DiagramArchetype, (props: { accent: string }) => JSX.El
   'document-review': DocumentReview,
   'web-app': WebApp,
   'empty-placeholder': EmptyPlaceholder,
+  'resource-flow': ResourceFlow,
+  'deterministic-replay': DeterministicReplay,
 }
 
 export function SystemDiagram({ archetype, accent }: { archetype: DiagramArchetype; accent: string }) {

@@ -23,6 +23,8 @@ export type DiagramArchetype =
   | 'document-review'
   | 'web-app'
   | 'empty-placeholder'
+  | 'resource-flow'
+  | 'deterministic-replay'
 
 export type PreviewSpec =
   | { type: 'image'; src: string; alt: string }
@@ -68,7 +70,9 @@ const OVERRIDES: Record<string, PreviewSpec> = {
   'rfi-e-techbike-at': { type: 'diagram', archetype: 'web-app' },
   'rfi-nikoletta-tutor': { type: 'diagram', archetype: 'web-app' },
   'simeon-deutsch-lernen-pwa': { type: 'diagram', archetype: 'web-app' },
-  'simeon-foodsharing': { type: 'diagram', archetype: 'web-app' },
+  // Situation-aware pictogram (live feedback: "what does this show me
+  // about how foodsharing works?" - the generic browser mockup didn't).
+  'simeon-foodsharing': { type: 'diagram', archetype: 'resource-flow' },
 
   // Confirmed-empty scaffolds - the honest "nothing here yet" state, not a
   // reference-fork ghost (these aren't forks at all, or the fork content
@@ -104,6 +108,13 @@ const OVERRIDES: Record<string, PreviewSpec> = {
   'crate-lauras-team': { type: 'diagram', archetype: 'orchestrator-hub' },
   'crate-ternlang-ml': { type: 'diagram', archetype: 'model-inference' },
   'crate-ternlang-compat': { type: 'diagram', archetype: 'document-review' },
+
+  // Situation-aware pictogram (live feedback: "the agent picked random
+  // charts... not showing the architecture" on moe-runtime specifically).
+  // Both crates' whole claim is literally "run it twice, get the identical
+  // result" - the deterministic-replay pictogram states that directly.
+  'crate-moe-runtime': { type: 'diagram', archetype: 'deterministic-replay' },
+  'crate-moe-ddel': { type: 'diagram', archetype: 'deterministic-replay' },
 }
 
 // Keyword heuristic - only reached for the ~35 real RFI crates/tools that
