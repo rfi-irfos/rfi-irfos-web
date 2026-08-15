@@ -406,9 +406,14 @@ h1, h2, h3, .rfi-display {
   0%, 100% { opacity: 0.18; transform: scale(0.94); }
   50% { opacity: 0.45; transform: scale(1); }
 }
-@keyframes rfi-diagram-shimmer {
-  0% { background-position: -120% 0; }
-  100% { background-position: 220% 0; }
+/* rfi-diagram-shimmer (background-position) had no effect on an SVG <rect> -
+   background-* is an HTML box-model property, SVG shapes paint via
+   fill/stroke, not a CSS background. Fixed 2026-08-15 (design review):
+   transform DOES apply to SVG elements, so WebApp's shimmer now translates a
+   gradient-filled rect instead. */
+@keyframes rfi-diagram-shimmer-x {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(var(--rfi-shimmer-dist, 200px)); }
 }
 @media (prefers-reduced-motion: reduce) {
   .rfi-diagram-anim, .rfi-diagram-anim * { animation: none !important; }

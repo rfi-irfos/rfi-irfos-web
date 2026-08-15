@@ -86,6 +86,24 @@ const OVERRIDES: Record<string, PreviewSpec> = {
   'simeon-albert-strategy-orchestrator': { type: 'diagram', archetype: 'orchestrator-hub' },
   'simeon-rfi-labs-arcade': { type: 'diagram', archetype: 'web-app' },
   'simeon-ontologyscope': { type: 'diagram', archetype: 'vector-storage' },
+
+  // Corrections from the 2026-08-15 design review: classify() only scans
+  // technical/fit/name, so a crate that merely NAMES a neighbor (e.g.
+  // "underneath agent-albert-cli") got misclassified by that neighbor's
+  // keyword instead of its own actual function. Listed here individually
+  // rather than reworking the regex order, since these are genuine one-off
+  // mismatches, not a systemic pattern worth a rule change.
+  'crate-albert-reference': { type: 'diagram', archetype: 'document-review' },
+  'crate-albert-compat': { type: 'diagram', archetype: 'pipeline-flow' },
+  'crate-call-laura-core': { type: 'diagram', archetype: 'document-review' },
+  'crate-ternlang-lsp': { type: 'diagram', archetype: 'protocol-bridge' },
+  'crate-ternlang-runtime': { type: 'diagram', archetype: 'protocol-bridge' },
+  'crate-ternlang-codegen': { type: 'diagram', archetype: 'pipeline-flow' },
+  'crate-ternpkg': { type: 'diagram', archetype: 'pipeline-flow' },
+  'crate-moe-sdk': { type: 'diagram', archetype: 'orchestrator-hub' },
+  'crate-lauras-team': { type: 'diagram', archetype: 'orchestrator-hub' },
+  'crate-ternlang-ml': { type: 'diagram', archetype: 'model-inference' },
+  'crate-ternlang-compat': { type: 'diagram', archetype: 'document-review' },
 }
 
 // Keyword heuristic - only reached for the ~35 real RFI crates/tools that

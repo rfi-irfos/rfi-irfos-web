@@ -54,7 +54,6 @@ function useCarouselSize() {
 type LocalizedProject = { name: string; link: string | null; sub: string; desc: string; plain?: string; tag: string }
 
 function ProjectCard({ p }: { p: LocalizedProject }) {
-  const { t } = useLocale()
   // background and border are deliberately absent from the inline style: .rfi-glass-flat
   // supplies both, and an inline declaration would override the class. That specificity
   // trap is exactly why the hover lift silently did nothing on the other card families.
@@ -82,23 +81,28 @@ function ProjectCard({ p }: { p: LocalizedProject }) {
           border: '1px solid rgba(0,245,196,0.3)', color: 'var(--accent-text)', whiteSpace: 'nowrap',
         }}>{p.tag}</span>
       </div>
-      <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
-      {/* Plain-language benefit line (2026-08-15, live feedback: "kein Mensch
-          versteht das, nichtmal ich selber und ich hab das gebaut" - the
-          architecture-description desc above never says what a visitor
-          actually gets out of it). Same teal-left-border treatment as the
-          research modal's plain line and the pricing modal's punchline, for
-          one consistent "here's the one-sentence version" pattern site-wide. */}
+      {/* Reordered 2026-08-15 (live feedback: "the technicals are on github,
+          the page is for humans") - the plain-language line now leads, since
+          it's the only sentence on the card most visitors can actually parse
+          without a CS background; the architecture desc below is demoted to
+          a smaller, muted secondary line instead of the primary read. Same
+          teal-left-border treatment as the research modal's plain line and
+          the pricing modal's punchline, for one consistent "here's the
+          one-sentence version" pattern site-wide. Outbound crates.io/GitHub
+          link removed entirely (feedback: "we get rid of the links that link
+          away, we loose too much attention... all links are anyways down in
+          the bottom" - every one of these systems already has its own full
+          System Card modal reachable from the footer). Losing that link is
+          also what fixes the "not fully visible when you click on it" bug:
+          a long desc plus a link plus minHeight:390 pushed real content past
+          the track wrapper's effective clip height (see the overflowY
+          comment on the carousel below) - shorter, demoted desc plus no link
+          keeps every card well under that limit instead of relying on the
+          scroll-driven opacity/scale rig to hide the overflow. */}
       {p.plain && (
-        <p style={{ color: 'var(--text)', fontSize: 12.5, fontWeight: 600, lineHeight: 1.55, margin: 0, paddingLeft: 10, borderLeft: `2px solid ${TEAL}` }}>{p.plain}</p>
+        <p style={{ color: 'var(--text)', fontSize: 15, fontWeight: 700, lineHeight: 1.6, margin: 0, paddingLeft: 12, borderLeft: `2px solid ${TEAL}` }}>{p.plain}</p>
       )}
-      {p.link && (
-        <a href={p.link} target="_blank" rel="noopener noreferrer"
-          onClick={() => beacon('project_click:' + p.name)}
-          style={{ color: 'var(--accent-text)', fontSize: 12, textDecoration: 'none', fontWeight: 600 }}>
-          {p.link.includes('crates.io') ? t.projects.viewOnCratesIo : p.link.includes('github.com') ? t.projects.viewOnGitHub : t.projects.viewLive} &rarr;
-        </a>
-      )}
+      <p style={{ color: 'var(--text3)', fontSize: 12, lineHeight: 1.6, flex: 1, margin: 0 }}>{p.desc}</p>
     </div>
   )
 }
@@ -260,6 +264,12 @@ function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
 // Locale-independent fields only (name, link) - sub/desc/tag come from the
 // current locale's t.projects.items, zipped together by index below.
 export const PROJECTS = [
+  // DINGIR leads the carousel on purpose (live feedback 2026-08-15: "our
+  // frontier model and prime value proposition... this is very crucial that
+  // this is the first card") - it was previously missing from this section
+  // entirely despite being a real, operational system (see content/systems.ts
+  // 'dingir'). No outbound link: not yet public on GitHub.
+  { name: 'DINGIR', link: null },
   { name: 'Ternary Intelligence Stack', link: 'https://github.com/rfi-irfos/ternary-intelligence-stack' },
   { name: 'albert.', link: 'https://github.com/rfi-irfos/ternary-intelligence-stack' },
   { name: 'Rusty Penguin', link: 'https://github.com/rfi-irfos/rusty-penguin' },

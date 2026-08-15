@@ -105,14 +105,22 @@ function CliTerminal({ accent }: { accent: string }) {
 }
 
 function ProtocolBridge({ accent }: { accent: string }) {
-  const y = VB_H / 2
+  const y = VB_H / 2, bw = 76, bh = 128
+  const rows = [-40, -14, 12, 38]
   return (
     <Frame>
-      <rect x={30} y={y - 26} width={56} height={52} rx={6} fill="none" stroke={accent} strokeWidth={1.5} opacity={0.6} />
-      <rect x={174} y={y - 26} width={56} height={52} rx={6} fill="none" stroke={accent} strokeWidth={1.5} opacity={0.6} />
-      <line x1={90} y1={y} x2={170} y2={y} stroke={accent} strokeWidth={1.4} strokeDasharray="4 4" opacity={0.5} />
-      <rect x={122} y={y - 6} width={12} height={12} rx={2} fill={accent}
-        style={{ ['--rfi-pp-dist' as string]: '56px', animation: 'rfi-diagram-pingpong 2.8s ease-in-out infinite', transformBox: 'fill-box', transformOrigin: 'center' }} />
+      {[30, VB_W - 30 - bw].map((bx, side) => (
+        <g key={side}>
+          <rect x={bx} y={y - bh / 2} width={bw} height={bh} rx={8} fill="none" stroke={accent} strokeWidth={1.5} opacity={0.6} />
+          <line x1={bx + 12} y1={y - bh / 2 + 20} x2={bx + bw - 12} y2={y - bh / 2 + 20} stroke={accent} strokeWidth={1.1} opacity={0.4} />
+          {rows.map((ry, i) => (
+            <rect key={i} x={bx + 12} y={y + ry} width={bw - 24 - (i % 2) * 14} height={5} rx={2} fill={accent} opacity={0.28} />
+          ))}
+        </g>
+      ))}
+      <line x1={30 + bw + 6} y1={y} x2={VB_W - 30 - bw - 6} y2={y} stroke={accent} strokeWidth={1.4} strokeDasharray="4 4" opacity={0.5} />
+      <rect x={VB_W / 2 - 7} y={y - 7} width={14} height={14} rx={3} fill={accent}
+        style={{ ['--rfi-pp-dist' as string]: `${VB_W / 2 - 30 - bw - 13}px`, animation: 'rfi-diagram-pingpong 2.8s ease-in-out infinite', transformBox: 'fill-box', transformOrigin: 'center' }} />
     </Frame>
   )
 }
@@ -121,11 +129,16 @@ function ForkReference({ accent }: { accent: string }) {
   const cx = VB_W / 2
   return (
     <Frame>
-      <circle cx={cx} cy={116} r={13} fill={accent} opacity={0.9} />
-      <line x1={cx} y1={129} x2={cx} y2={182} stroke={accent} strokeWidth={1.4} strokeDasharray="3 5" opacity={0.5} />
-      <circle cx={cx} cy={200} r={17} fill="none" stroke={accent} strokeWidth={1.4}
+      <rect x={cx - 62} y={60} width={124} height={68} rx={8} fill="none" stroke={accent} strokeWidth={1.2} opacity={0.3} />
+      <line x1={cx - 46} y1={80} x2={cx + 30} y2={80} stroke={accent} strokeWidth={1} opacity={0.22} />
+      <line x1={cx - 46} y1={94} x2={cx + 42} y2={94} stroke={accent} strokeWidth={1} opacity={0.22} />
+      <line x1={cx - 46} y1={108} x2={cx + 10} y2={108} stroke={accent} strokeWidth={1} opacity={0.22} />
+      <circle cx={cx} cy={94} r={15} fill={accent} opacity={0.9} />
+      <line x1={cx} y1={128} x2={cx} y2={196} stroke={accent} strokeWidth={1.4} strokeDasharray="3 5" opacity={0.5} />
+      <circle cx={cx} cy={220} r={34} fill="none" stroke={accent} strokeWidth={1.3} opacity={0.25} strokeDasharray="2 6" />
+      <circle cx={cx} cy={220} r={19} fill="none" stroke={accent} strokeWidth={1.5}
         style={{ animation: 'rfi-diagram-echo 3.4s ease-in-out infinite', transformBox: 'fill-box', transformOrigin: 'center' }} />
-      <circle cx={cx} cy={200} r={9} fill="none" stroke={accent} strokeWidth={1.2} opacity={0.4} />
+      <circle cx={cx} cy={220} r={10} fill="none" stroke={accent} strokeWidth={1.2} opacity={0.45} />
     </Frame>
   )
 }
@@ -191,7 +204,8 @@ function DocumentReview({ accent }: { accent: string }) {
         <g key={i}>
           <rect x={x + 14} y={cy - 7} width={14} height={14} rx={3} fill="none" stroke={accent} strokeWidth={1.3} opacity={0.5} />
           <path d={`M ${x + 17} ${cy} l 4 4 l 7 -8`} fill="none" stroke={accent} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"
-            pathLength={1} style={{ animation: `rfi-draw 0.5s ease-out ${0.6 + i * 0.7}s both, rfi-diagram-node-wake 3.6s ease-in-out ${3 + i * 0.7}s ${0.6 + i * 0.7}s infinite` } as React.CSSProperties} />
+            strokeDasharray={1} pathLength={1}
+            style={{ animation: `rfi-draw 0.6s ease-out ${0.6 + i * 0.7}s both, rfi-diagram-node-wake 3.2s ease-in-out ${1.2 + i * 0.7}s infinite` } as React.CSSProperties} />
           <line x1={x + 36} y1={cy} x2={x + w - 14} y2={cy} stroke={accent} strokeWidth={1} opacity={0.3} />
         </g>
       ))}
@@ -201,15 +215,31 @@ function DocumentReview({ accent }: { accent: string }) {
 
 function WebApp({ accent }: { accent: string }) {
   const x = 34, y = 74, w = 192, h = 132
+  const cw = w - 28, cx0 = x + 14, cy0 = y + 58, ch = 44
+  // CSS `background`/`background-position` has no effect on an SVG <rect> -
+  // it's an HTML box-model property, SVG shapes paint via fill/stroke only.
+  // Fixed with an SVG-native sweep instead: a gradient-filled rect three
+  // times the content width, clipped to the content box, translated via a
+  // CSS transform keyframe (transform DOES work on SVG elements).
   return (
     <Frame>
+      <defs>
+        <linearGradient id="rfi-diagram-webapp-shimmer" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor={accent} stopOpacity="0" />
+          <stop offset="50%" stopColor={accent} stopOpacity="0.4" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0" />
+        </linearGradient>
+        <clipPath id="rfi-diagram-webapp-clip"><rect x={cx0} y={cy0} width={cw} height={ch} rx={4} /></clipPath>
+      </defs>
       <rect x={x} y={y} width={w} height={h} rx={7} fill="none" stroke={accent} strokeWidth={1.5} opacity={0.6} />
       <line x1={x} y1={y + 22} x2={x + w} y2={y + 22} stroke={accent} strokeWidth={1} opacity={0.3} />
       {[0, 1, 2].map(i => <circle key={i} cx={x + 14 + i * 11} cy={y + 11} r={2.8} fill={accent} opacity={0.5} />)}
-      <rect x={x + 14} y={y + 36} width={w - 28} height={12} rx={2} fill={accent} opacity={0.5} />
-      <rect x={x + 14} y={y + 58} width={w - 28} height={44} rx={4} fill="none" stroke={accent} strokeWidth={1} opacity={0.35} />
-      <rect x={x + 14} y={y + 58} width={70} height={44} fill={accent} opacity={0.08}
-        style={{ background: `linear-gradient(100deg, transparent 30%, ${accent}44 50%, transparent 70%)`, backgroundSize: '250% 100%', animation: 'rfi-diagram-shimmer 3s linear infinite' } as React.CSSProperties} />
+      <rect x={cx0} y={y + 36} width={cw} height={12} rx={2} fill={accent} opacity={0.5} />
+      <rect x={cx0} y={cy0} width={cw} height={ch} rx={4} fill="none" stroke={accent} strokeWidth={1} opacity={0.35} />
+      <g clipPath="url(#rfi-diagram-webapp-clip)">
+        <rect x={cx0 - cw} y={cy0} width={cw * 3} height={ch} fill="url(#rfi-diagram-webapp-shimmer)"
+          style={{ ['--rfi-shimmer-dist' as string]: `${cw * 2}px`, animation: 'rfi-diagram-shimmer-x 2.8s linear infinite' }} />
+      </g>
     </Frame>
   )
 }

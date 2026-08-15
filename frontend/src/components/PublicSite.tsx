@@ -1244,61 +1244,84 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               first chunk of a multi-column group gets a heading; the rest stay
               blank so the group still reads as one wide section, not N repeated
               labels. */}
-          <div style={{ flex: '1 1 auto', display: 'grid', gridTemplateColumns: `repeat(${4 + FOOTER_REPO_COLUMNS.length + FOOTER_CRATE_COLUMNS.length}, minmax(100px, 1fr))`, columnGap: '1.6rem', marginLeft: '1.9rem' }}>
-            {ZONE_ORDER.map(zone => (
-              <div key={zone}>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px' }}>{ZONE_LABELS[zone][locale]}</p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  {SYSTEMS.filter(s => s.zone === zone).map(s => (
-                    <button key={s.key} onClick={() => setSystemModal(s.key)} style={{
-                      display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                      color: 'var(--text3)', fontSize: 12, lineHeight: 1.6, font: 'inherit',
-                    }}
-                      onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                      onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
-                      {s.name}
-                    </button>
-                  ))}
-                </div>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${4 + FOOTER_REPO_COLUMNS.length + FOOTER_CRATE_COLUMNS.length}, minmax(100px, 1fr))`,
+            gridTemplateRows: 'auto 1fr', columnGap: '1.6rem', rowGap: 9, flex: '1 1 auto', marginLeft: '1.9rem',
+          }}>
+            {/* Explicit gridColumn/gridRow placement (live feedback 2026-08-15:
+                "repositories header is still above the first column, not
+                between the second and third in the middle") - the previous
+                version rendered "Repositories"/"Crates" as the heading of ONLY
+                their group's first per-column div, so text-align:center
+                centered them within one ~140px track, not across the whole
+                group. Headings are now their own grid items in row 1 spanning
+                their full column count, so centering actually centers over
+                the group. Zone headings stay individual (one per column,
+                left-aligned) since each zone's content differs. Every heading
+                also gets the same soft border-bottom as the rest of the
+                site's hairline dividers (var(--border)) per "underline each
+                of those headers... same soft grey line". */}
+            {ZONE_ORDER.map((zone, i) => (
+              <p key={`zh-${zone}`} style={{
+                gridColumn: i + 1, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)',
+                textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)',
+              }}>{ZONE_LABELS[zone][locale]}</p>
+            ))}
+            <p style={{
+              gridColumn: `5 / span ${FOOTER_REPO_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)',
+              textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)', textAlign: 'center',
+            }}>Repositories</p>
+            <p style={{
+              gridColumn: `${5 + FOOTER_REPO_COLUMNS.length} / span ${FOOTER_CRATE_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)',
+              textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)', textAlign: 'center', whiteSpace: 'nowrap',
+            }}>Crates (crates.io)</p>
+
+            {ZONE_ORDER.map((zone, i) => (
+              <div key={zone} style={{ gridColumn: i + 1, gridRow: 2, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {SYSTEMS.filter(s => s.zone === zone).map(s => (
+                  <button key={s.key} onClick={() => setSystemModal(s.key)} style={{
+                    display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+                    color: 'var(--text3)', fontSize: 12, lineHeight: 1.6, font: 'inherit',
+                  }}
+                    onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                    {s.name}
+                  </button>
+                ))}
               </div>
             ))}
             {FOOTER_REPO_COLUMNS.map((col, i) => (
-              <div key={`repo-${i}`}>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{i === 0 ? 'Repositories' : ' '}</p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  {col.map(r => (
-                    <button key={r.key} onClick={() => setSystemModal(r.key)} style={{
-                      display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                      color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', font: 'inherit',
-                    }}
-                      onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                      onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
-                      {r.n}
-                    </button>
-                  ))}
-                </div>
+              <div key={`repo-${i}`} style={{ gridColumn: 5 + i, gridRow: 2, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {col.map(r => (
+                  <button key={r.key} onClick={() => setSystemModal(r.key)} style={{
+                    display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+                    color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', font: 'inherit',
+                  }}
+                    onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                    {r.n}
+                  </button>
+                ))}
               </div>
             ))}
             {FOOTER_CRATE_COLUMNS.map((col, i) => (
-              <div key={`crate-${i}`}>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{i === 0 ? 'Crates (crates.io)' : ' '}</p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  {col.map(r => (
-                    <button key={r.key} onClick={() => setSystemModal(r.key)} style={{
-                      display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                      color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', font: 'inherit',
-                    }}
-                      onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                      onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
-                      {r.n}
-                    </button>
-                  ))}
-                  {i === FOOTER_CRATE_COLUMNS.length - 1 && (
-                    <a href={CRATES_IO_PROFILE} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', fontSize: 11, textDecoration: 'underline', textUnderlineOffset: 2, marginTop: 4 }}>
-                      {locale === 'de' ? 'alle Pakete →' : 'all packages →'}
-                    </a>
-                  )}
-                </div>
+              <div key={`crate-${i}`} style={{ gridColumn: 5 + FOOTER_REPO_COLUMNS.length + i, gridRow: 2, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {col.map(r => (
+                  <button key={r.key} onClick={() => setSystemModal(r.key)} style={{
+                    display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+                    color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', font: 'inherit',
+                  }}
+                    onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                    onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                    {r.n}
+                  </button>
+                ))}
+                {i === FOOTER_CRATE_COLUMNS.length - 1 && (
+                  <a href={CRATES_IO_PROFILE} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', fontSize: 11, textDecoration: 'underline', textUnderlineOffset: 2, marginTop: 4 }}>
+                    {locale === 'de' ? 'alle Pakete →' : 'all packages →'}
+                  </a>
+                )}
               </div>
             ))}
           </div>
