@@ -16,6 +16,7 @@ import { CoopPartnersSection } from './sections/CoopPartners'
 import { SubmitSection, type TipForm } from './sections/Submit'
 import { ZONE_ORDER, ZONE_LABELS, SYSTEMS } from '../content/systems'
 import { SystemCardModal } from './sections/SystemCardModal'
+import { RFI_REPOS, SIMEON_REPOS, CRATES, CRATES_IO_PROFILE } from '../content/repos'
 
 // Nav logo's EKG line. Was one fixed blip shape looping identically forever - "measuring
 // the same heartbeat forever" per Simeon. A wider multi-beat path was tried and reverted
@@ -1203,7 +1204,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                   {SYSTEMS.filter(s => s.zone === zone).map(s => (
                     <button key={s.key} onClick={() => setSystemModal(s.key)} style={{
                       display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                      color: 'var(--text3)', fontSize: 12, lineHeight: 1.6, fontFamily: "'JetBrains Mono', monospace",
+                      color: 'var(--text3)', fontSize: 12, lineHeight: 1.6, font: 'inherit',
                     }}
                       onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                       onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
@@ -1211,6 +1212,38 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                     </button>
                   ))}
                 </div>
+              </div>
+            ))}
+            {/* Everything NOT curated into a System Card yet - forks, personal
+                side-projects, the remaining crates.io packages. Live feedback
+                2026-08-15: the four zones above shouldn't be the ceiling, every
+                repo/crate is still a link here, just without a modal behind it
+                (no curated card content exists for these yet). Plain links, no
+                descriptors - same "clean, undescribed" list style as the zones. */}
+            {[
+              { heading: locale === 'de' ? 'Weitere Repositories' : 'More repositories', items: [...RFI_REPOS, ...SIMEON_REPOS] },
+              { heading: 'Crates (crates.io)', items: CRATES },
+            ].map(group => (
+              <div key={group.heading} style={{ flex: '1.6 1 320px', minWidth: 260 }}>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px' }}>{group.heading}</p>
+                <div style={{ columnWidth: 150, columnGap: 20 }}>
+                  {group.items.map(r => (
+                    <a key={r.u} href={r.u} target="_blank" rel="noopener noreferrer" style={{
+                      display: 'block', breakInside: 'avoid', color: 'var(--text3)', fontSize: 12,
+                      textDecoration: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                      marginBottom: 6, font: 'inherit',
+                    }}
+                      onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                      onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                      {r.n}
+                    </a>
+                  ))}
+                </div>
+                {group.heading === 'Crates (crates.io)' && (
+                  <a href={CRATES_IO_PROFILE} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: 8, color: 'var(--text3)', fontSize: 11, textDecoration: 'underline', textUnderlineOffset: 2 }}>
+                    {locale === 'de' ? 'alle Pakete auf crates.io →' : 'all packages on crates.io →'}
+                  </a>
+                )}
               </div>
             ))}
           </div>
