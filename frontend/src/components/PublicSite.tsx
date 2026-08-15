@@ -1267,14 +1267,14 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{i === 0 ? 'Repositories' : ' '}</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                   {col.map(r => (
-                    <a key={r.u} href={r.u} target="_blank" rel="noopener noreferrer" style={{
-                      display: 'block', color: 'var(--text3)', fontSize: 12, textDecoration: 'none',
-                      whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', font: 'inherit',
+                    <button key={r.key} onClick={() => setSystemModal(r.key)} style={{
+                      display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+                      color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', font: 'inherit',
                     }}
                       onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                       onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
                       {r.n}
-                    </a>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -1284,14 +1284,14 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{i === 0 ? 'Crates (crates.io)' : ' '}</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                   {col.map(r => (
-                    <a key={r.u} href={r.u} target="_blank" rel="noopener noreferrer" style={{
-                      display: 'block', color: 'var(--text3)', fontSize: 12, textDecoration: 'none',
-                      whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', font: 'inherit',
+                    <button key={r.key} onClick={() => setSystemModal(r.key)} style={{
+                      display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+                      color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', font: 'inherit',
                     }}
                       onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                       onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
                       {r.n}
-                    </a>
+                    </button>
                   ))}
                   {i === FOOTER_CRATE_COLUMNS.length - 1 && (
                     <a href={CRATES_IO_PROFILE} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', fontSize: 11, textDecoration: 'underline', textUnderlineOffset: 2, marginTop: 4 }}>

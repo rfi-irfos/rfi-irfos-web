@@ -361,6 +361,59 @@ h1, h2, h3, .rfi-display {
 @keyframes rfi-spin { to { transform: rotate(360deg); } }
 @keyframes rfi-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 
+/* ── System Card modal preview diagrams (SystemDiagrams.tsx, 2026-08-15) ──
+   A small shared vocabulary of keyframes, reused across the ~12 archetype
+   diagrams with different stagger delays/durations per instance rather than
+   one bespoke keyframe set per archetype - keeps 143 assigned diagrams
+   visually coherent as one family instead of a grab-bag of unrelated
+   animations. All compositor-friendly (opacity/transform) except the two
+   stroke-dashoffset draws, which reuse the existing .rfi-draw pattern above.
+   Every rule below gets a reduced-motion override at the bottom of this
+   block, same as the rest of this file. */
+@keyframes rfi-diagram-pulse-out {
+  0% { opacity: 0; transform: scale(0.4); }
+  40% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.15); }
+}
+@keyframes rfi-diagram-node-wake {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+@keyframes rfi-diagram-flow {
+  0% { transform: translateX(-6%); opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { transform: translateX(106%); opacity: 0; }
+}
+@keyframes rfi-diagram-orbit {
+  to { transform: rotate(360deg); }
+}
+@keyframes rfi-diagram-blink {
+  0%, 45% { opacity: 1; }
+  50%, 95% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes rfi-diagram-type {
+  0%, 8% { width: 0; }
+  45%, 60% { width: var(--rfi-type-w, 100%); }
+  92%, 100% { width: 0; }
+}
+@keyframes rfi-diagram-pingpong {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(var(--rfi-pp-dist, 60px)); }
+}
+@keyframes rfi-diagram-echo {
+  0%, 100% { opacity: 0.18; transform: scale(0.94); }
+  50% { opacity: 0.45; transform: scale(1); }
+}
+@keyframes rfi-diagram-shimmer {
+  0% { background-position: -120% 0; }
+  100% { background-position: 220% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rfi-diagram-anim, .rfi-diagram-anim * { animation: none !important; }
+}
+
 /* ── Glass material ──────────────────────────────────────────────────
    Generalisation of the treatment already shipping inline on the cookie banner
    and the checkout modal: the 112deg carbon weave, a hairline top highlight via
