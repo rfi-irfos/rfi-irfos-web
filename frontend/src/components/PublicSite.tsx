@@ -1190,6 +1190,38 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 ))}
               </div>
             ))}
+            {/* WKO badge + tagline + copyright moved into the Legal column itself
+                (live feedback 2026-08-15: "das betten wir auch in diesem linken
+                part ein, ganz links") - was a separate centered block below the
+                whole link directory before. Left-aligned/un-centered to fit the
+                narrow 170px column; divider now naturally reaches this column's
+                actual bottom (align-self: stretch matches whichever sibling in
+                the row is tallest) instead of stopping short of it. */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8 }}>
+              <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.7 }}>
+                <svg viewBox="0 0 420 100" width="100" height="24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
+                  <rect x="0"   y="0" width="100" height="100" fill="#CC0000"/>
+                  <text x="50"  y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">W</text>
+                  <rect x="105" y="0" width="100" height="100" fill="#CC0000"/>
+                  <text x="155" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">K</text>
+                  <rect x="210" y="0" width="100" height="100" fill="#CC0000"/>
+                  <text x="260" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">O</text>
+                  <rect x="320" y="0"  width="100" height="33" fill="#CC0000"/>
+                  <rect x="320" y="33" width="100" height="34" fill="#fff"/>
+                  <rect x="320" y="67" width="100" height="33" fill="#CC0000"/>
+                </svg>
+              </a>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: 'var(--accent-text)', letterSpacing: '0.06em', fontWeight: 600, margin: 0 }}>
+                {t.footer.tagline}
+                <br />
+                <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>{t.footer.taglineAttribution}</span>
+              </p>
+              {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address)
+                  lives on Legal Notice - not duplicated here, this footer only points there. */}
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', margin: 0 }}>
+                {t.footer.copyright}
+              </p>
+            </div>
           </div>
           {/* Divider hugs the Legal column tighter now (live feedback 2026-08-15:
               "muss direkt ans legal ran, mehr nach links") - the outer flex gap
@@ -1215,7 +1247,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           <div style={{ flex: '1 1 auto', display: 'grid', gridTemplateColumns: `repeat(${4 + FOOTER_REPO_COLUMNS.length + FOOTER_CRATE_COLUMNS.length}, minmax(100px, 1fr))`, columnGap: '1.6rem', marginLeft: '1.9rem' }}>
             {ZONE_ORDER.map(zone => (
               <div key={zone}>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{ZONE_LABELS[zone][locale]}</p>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px' }}>{ZONE_LABELS[zone][locale]}</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                   {SYSTEMS.filter(s => s.zone === zone).map(s => (
                     <button key={s.key} onClick={() => setSystemModal(s.key)} style={{
@@ -1272,36 +1304,6 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           </div>
         </div>
         {systemModal && <SystemCardModal systemKey={systemModal} onClose={() => setSystemModal(null)} onNavigate={setSystemModal} />}
-        {/* WKO badge + tagline moved below the link directory (live feedback
-            2026-08-14: "the wko logo and the tagline below that") - sized down a
-            step (earlier feedback: "der Footer soll doch net so fett sein" - this
-            loud red/white block was the single heaviest element in an otherwise
-            thin/monospace footer) - opacity nudged down to match. */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-          <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.7 }}>
-            <svg viewBox="0 0 420 100" width="120" height="29" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
-              <rect x="0"   y="0" width="100" height="100" fill="#CC0000"/>
-              <text x="50"  y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">W</text>
-              <rect x="105" y="0" width="100" height="100" fill="#CC0000"/>
-              <text x="155" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">K</text>
-              <rect x="210" y="0" width="100" height="100" fill="#CC0000"/>
-              <text x="260" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">O</text>
-              <rect x="320" y="0"  width="100" height="33" fill="#CC0000"/>
-              <rect x="320" y="33" width="100" height="34" fill="#fff"/>
-              <rect x="320" y="67" width="100" height="33" fill="#CC0000"/>
-            </svg>
-          </a>
-        </div>
-        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: 'var(--accent-text)', letterSpacing: '0.06em', marginBottom: 28, fontWeight: 600 }}>
-          {t.footer.tagline}
-          <br />
-          <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>{t.footer.taglineAttribution}</span>
-        </p>
-        {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address) lives on
-            Legal Notice - not duplicated here, this footer only needs to point there. */}
-        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', marginBottom: 0 }}>
-          {t.footer.copyright}
-        </p>
       </footer>
       {cookieBannerOpen && (
         // background/border/box-shadow come from .rfi-glass-flat now, not hand-rolled per
