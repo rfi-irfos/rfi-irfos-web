@@ -20,8 +20,8 @@ import { useState } from 'react'
 import { ScopeTag, TierCarousel, Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
-type CheckoutInfo = { key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[] }
-type ProposalInfo = { tier: string; desc: string; price: string; delivery?: string; bullets?: readonly string[] }
+type CheckoutInfo = { key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[]; bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[] }
+type ProposalInfo = { tier: string; desc: string; price: string; delivery?: string; bullets?: readonly string[]; bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[] }
 
 // Technical metadata only, one entry per tier, same order as the corresponding
 // t.pricing.<line> array so index-zipping lines them up correctly.
@@ -103,8 +103,8 @@ export function PricingSection({
                   const full = marketTiers.find(s => s.tier === tier.tier)!
                   const hasCheckout = !!(full.stripeKey || full.directUrl)
                   return {
-                    onBuy: hasCheckout ? () => openCheckoutModal({ key: full.stripeKey ?? full.tier, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined, bullets: full.bullets }) : undefined,
-                    onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, bullets: full.bullets }) : undefined,
+                    onBuy: hasCheckout ? () => openCheckoutModal({ key: full.stripeKey ?? full.tier, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined, bullets: full.bullets, bring: full.bring, mechanism: full.mechanism, receive: full.receive }) : undefined,
+                    onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, bullets: full.bullets, bring: full.bring, mechanism: full.mechanism, receive: full.receive }) : undefined,
                   }
                 }} />
               </div>
@@ -117,8 +117,8 @@ export function PricingSection({
                   const full = technicalTiers.find(s => s.tier === tier.tier)!
                   const hasCheckout = !!(full.stripeKey || full.directUrl)
                   return {
-                    onBuy: hasCheckout ? () => openCheckoutModal({ key: full.stripeKey ?? full.tier, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined, bullets: full.bullets }) : undefined,
-                    onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, bullets: full.bullets }) : undefined,
+                    onBuy: hasCheckout ? () => openCheckoutModal({ key: full.stripeKey ?? full.tier, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined, bullets: full.bullets, bring: full.bring, mechanism: full.mechanism, receive: full.receive }) : undefined,
+                    onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, bullets: full.bullets, bring: full.bring, mechanism: full.mechanism, receive: full.receive }) : undefined,
                   }
                 }} />
               </div>
@@ -131,8 +131,8 @@ export function PricingSection({
                   const full = securityTiers.find(s => s.tier === tier.tier)!
                   const hasCheckout = !!(full.stripeKey || full.directUrl)
                   return {
-                    onBuy: hasCheckout ? () => openCheckoutModal({ key: full.stripeKey ?? full.tier, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined, bullets: full.bullets }) : undefined,
-                    onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, bullets: full.bullets }) : undefined,
+                    onBuy: hasCheckout ? () => openCheckoutModal({ key: full.stripeKey ?? full.tier, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined, bullets: full.bullets, bring: full.bring, mechanism: full.mechanism, receive: full.receive }) : undefined,
+                    onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, bullets: full.bullets, bring: full.bring, mechanism: full.mechanism, receive: full.receive }) : undefined,
                   }
                 }} />
               </div>

@@ -377,8 +377,10 @@ h1, h2, h3, .rfi-display {
      push is actually visible over a normal hero dwell time. transform-origin
      shifted toward Europe (roughly where it sits in this specific globe
      shot) instead of dead-center, so the push reads as "zooming toward
-     Europe" rather than a generic center-crop. */
-  animation: rfi-hero-video-zoom 55s ease-in-out infinite;
+     Europe" rather than a generic center-crop. Same-day follow-up: 55s
+     over-corrected the other way and now reads as rushed - settled at 95s,
+     roughly midway between the two extremes. */
+  animation: rfi-hero-video-zoom 95s ease-in-out infinite;
   transform-origin: 58% 32%;
   will-change: transform;
 }

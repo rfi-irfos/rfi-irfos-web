@@ -238,58 +238,149 @@ export const DE: Content = {
       security: 'Security-Audits & Responsible Disclosure',
     },
     market: [
-      { tier: 'First Light', hook: 'Wissen, bevor es öffentlich ist. Sie bringen das Chaos, wir destillieren die Intelligence.', desc: 'Sie kommen mit einem Haufen Chaos - hunderten Apps, widersprüchlichen Aussagen, unübersichtlichen Abhängigkeiten. Wir destillieren daraus Intelligence. Die Abfrage läuft live gegen den vollständigen Korpus dekompilierter Anwendungen - nicht als Bericht über einen Anbieter, sondern als kontinuierliche Beobachtung des gesamten Ökosystems. Neun Erkenntnisebenen (Code, SDK, Data-Flow, Tracker, Privacy, Supply-Chain, Competitive, Market, Security) verbinden sich hinter jeder Antwort zu einer nachvollziehbaren Kette von Signal über Entität zur Schlussfolgerung. Das Ergebnis zeigt, was die Technologie tatsächlich tut - nicht was über sie behauptet wird. Derselbe Korpus, aus dem unsere öffentlichen Offenlegungen stammen: die Grundlage, auf der Veränderungen erkannt werden, bevor sie öffentlich werden.', bullets: [
+      { tier: 'First Light', hook: 'Wissen, bevor es öffentlich ist. Sie bringen das Chaos, wir destillieren die Intelligence.', desc: 'Sie haben eine Frage zu einer Firma, App oder einem Anbieter - und keine einfache Möglichkeit zu prüfen, ob deren Aussagen stimmen. Wir untersuchen das echte Produkt, nicht das Marketing, und geben Ihnen eine klare Antwort: stimmt, stimmt nicht, oder unbelegt.', bring: [
+        'Eine Firma, App oder ein Anbieter, den Sie verstehen müssen',
+        'Aussagen, die Sie geprüft haben wollen - Datenschutzerklärung, Pitch-Deck, Presseaussage',
+        'Ihre konkrete Frage oder Ihren Verdacht',
+      ], mechanism: [
+        'Untersucht das echte Produkt, nicht das Marketing',
+        'Gleicht mit unserem Korpus aus 315+ bereits geprüften Apps ab',
+        'Verfolgt jede Aussage bis zum Beleg zurück',
+      ], receive: [
+        'Einen schriftlichen Untersuchungsbericht',
+        'Eine klare Antwort, keine Ausflucht',
+        'Belege, mit denen Sie handeln oder die Sie zitieren können',
+      ], bullets: [
         'Vor einer Investment-Entscheidung wissen, ob eine App wirklich hält, was ihr Datenschutz-Text verspricht',
         'Vor einer Übernahme (M&A) eine unabhängige technische Zweitmeinung zu den Systemen der Zielfirma bekommen',
-        'Einen konkreten Verdacht - ein Tracker, ein SDK - belegt statt vermutet in der Hand haben',
-        'Als Journalist:in oder Regulator:in vor einer Veröffentlichung eine technisch abgesicherte Quelle brauchen',
-        'Wissen, welche der 315+ bereits geprüften Apps Ihre Branche oder Ihr Portfolio konkret betreffen',
+        'Einen konkreten Verdacht - über eine Firma oder App - belegt statt vermutet in der Hand haben',
+        'Als Journalist:in oder Regulator:in vor einer Veröffentlichung eine zitierfähige, geprüfte Quelle brauchen',
+        'Wissen, ob wir uns eine Firma, die für Sie relevant ist, bereits angesehen haben',
       ], delivery: '14 Kalendertage.' },
-      { tier: 'Competitive Trace', hook: 'Den Schritt sehen, bevor er angekündigt wird.', desc: 'Wenn die Kursänderung eines Wettbewerbers in der Presse landet, steckt sie oft schon monatelang im Code. Wir beobachten diese Veränderung dort, wo sie entsteht: welche SDKs tatsächlich ausgeliefert werden, wo das Datenschutzverhalten von der veröffentlichten Richtlinie abweicht, wo sich die Architektur still verändert. Über sechs Korpus-Ebenen (Code, SDK, Data-Flow, Tracker, Privacy, Supply-Chain) übersetzen wir die Beobachtung in eine belastbare Beziehung zwischen technischer Veränderung und geschäftlicher Bedeutung. Sie handeln auf Evidenz, während andere noch spekulieren. Das läuft gegen denselben Korpus, aus dem auch unsere eigenen Offenlegungen stammen.', bullets: [
-        'Ein Wettbewerber verspricht "keine Datenweitergabe an Dritte" - Sie wollen wissen, ob das im Code auch stimmt',
-        'Vor einer Partnerschaft prüfen, welche SDKs ein potenzieller Partner tatsächlich einbindet',
-        'Eine Preis- oder Strategieänderung bei der Konkurrenz sehen und verstehen, was sich technisch dahinter verändert hat',
+      { tier: 'Competitive Trace', hook: 'Den echten Schritt sehen, bevor er angekündigt wird - nicht die Pressemitteilung dazu.', desc: 'Die echte Strategie eines Wettbewerbers zeigt sich meist in dem, was tatsächlich gebaut wird - Monate bevor eine Pressemitteilung folgt. Wir prüfen, was gesagt wird, gegen das, was tatsächlich gebaut wurde, und machen aus dieser Lücke etwas, mit dem Sie arbeiten können.', bring: [
+        'Einen Wettbewerber oder potenziellen Partner, den Sie beobachten',
+        'Deren öffentliche Aussagen oder Marketing',
+        'Was Sie konkret wissen müssen, bevor Sie handeln',
+      ], mechanism: [
+        'Vergleicht das Gesagte mit dem tatsächlich Gebauten',
+        'Verfolgt echte Produktänderungen über Zeit, nicht Ankündigungen',
+        'Übersetzt die technische Veränderung in geschäftliche Bedeutung',
+      ], receive: [
+        'Einen klaren, geschäftlich lesbaren Vergleich',
+        'Belege statt Spekulation',
+        'Einen Vorsprung, bevor es öffentlich wird',
+      ], bullets: [
+        'Ein Wettbewerber verspricht "keine Datenweitergabe an Dritte" - Sie wollen wissen, ob das auch stimmt',
+        'Vor einer Partnerschaft prüfen, was ein potenzieller Partner tatsächlich gebaut hat, nicht nur behauptet',
+        'Eine Preis- oder Strategieänderung bei der Konkurrenz sehen und den echten Grund dahinter verstehen',
         'Als PR- oder Kommunikationsteam vor einer eigenen Kampagne prüfen, was ein Mitbewerber wirklich ausliefert',
         'Als Investor:in die technische Ehrlichkeit eines Pitch-Decks vor einem Investment gegenchecken',
       ], delivery: '14 Kalendertage.' },
-      { tier: 'Sector Map', hook: 'Ihr gesamter Sektor als zusammenhängendes Lagebild - vierteljährlich neu aufgelöst.', desc: 'Ein Schnappschuss ist in dem Moment veraltet, in dem er gedruckt ist. Wir halten das Risikoprofil jedes relevanten Akteurs in Ihrem Sektor über alle neun Erkenntnisebenen als fortlaufendes Lagebild - alle drei Monate neu aufgelöst. Die Leistung ist nicht die Lieferung eines Dokuments, sondern die fortlaufende Beobachtung, wie sich Beziehungen, Abhängigkeiten und Expositionen im Sektor verschieben. Sie erkennen die Veränderung, während sie entsteht, nicht nachdem sie bereits eingepreist ist. Erster Lagebericht innerhalb von 14 Kalendertagen; danach bleibt das Bild drei Monate vor dem Markt.', bullets: [
-        'Als Fonds oder VC das Risikoprofil des gesamten Portfolios laufend im Blick behalten, nicht nur einzelne Positionen',
-        'Als Aufsichtsbehörde einen ganzen Sektor (z. B. Fintech-Apps) systematisch beobachten statt Einzelfälle abzuarbeiten',
-        'Vor einer Marktstrategie sehen, wo sich Abhängigkeiten und Risiken im Sektor tatsächlich konzentrieren',
-        'Als Versicherer Cyber-Risiko über einen ganzen Kundenstamm hinweg einschätzen',
+      { tier: 'Sector Map', hook: 'Ihr gesamter Sektor, kartiert und aktuell gehalten - vierteljährlich neu aufgelöst.', desc: 'Ein einmaliger Bericht ist in dem Moment veraltet, in dem er fertig ist. Wir beobachten stattdessen Ihren gesamten Sektor laufend - wer mit wem verbunden ist, wo das echte Risiko sitzt - und aktualisieren das vollständige Bild alle drei Monate.', bring: [
+        'Den Sektor oder die Firmen, die Sie im Blick behalten müssen',
+        'Was Ihnen am wichtigsten ist - Risiko, Abhängigkeiten, Wettbewerb',
+      ], mechanism: [
+        'Baut ein laufend aktuelles Lagebild jedes relevanten Akteurs im Sektor',
+        'Aktualisiert es vierteljährlich, nicht nur einmal',
+        'Markiert, wo sich Risiko oder Veränderung konzentriert',
+      ], receive: [
+        'Ein laufend aktualisiertes Sektor-Lagebild',
+        'Frühe Sicht auf entstehende Veränderungen',
+        'Ein Gesamtbild statt vieler Einzelberichte',
+      ], bullets: [
+        'Als Fonds oder Investor das Risikoprofil des gesamten Portfolios laufend im Blick behalten, nicht nur einzelne Positionen',
+        'Als Aufsichtsbehörde einen ganzen Sektor systematisch beobachten statt Einzelfälle abzuarbeiten',
+        'Vor einer Marktstrategie sehen, wo sich Risiko im Sektor tatsächlich konzentriert',
+        'Als Versicherer Risiko über einen ganzen Kundenstamm hinweg einschätzen',
         'Als Konzern mit vielen Tochterfirmen oder Lieferanten einen Gesamtüberblick statt einzelner Audits bekommen',
       ], delivery: '14 Kalendertage, danach vierteljährlich.' },
-      { tier: 'Signal', hook: 'Ein stehendes Frühwarnsystem für Ihren Sektor - kontinuierliche Beobachtung statt Monatsbericht.', desc: 'Ein Wettbewerber macht selten einen öffentlichen Schritt, ohne dass monatelang Signale davor sichtbar waren: eine Finanzierungsrunde, ein Sicherheitsvorfall, ein SDK-Wechsel, eine stille Kursänderung im Code. Wir halten einen festen Analysten bereit, der den Korpus für Ihren Sektor kontinuierlich beobachtet - nicht als monatliche Zusammenfassung, sondern als laufende Überwachung relevanter Veränderungen mit sofortiger Warnung bei Bewegung. Die Leistung ist fortlaufende Intelligence: Sie erfahren den Zeitpunkt des Signals, nicht die Schlagzeile Wochen später. Zugewiesen innerhalb einer Woche nach Zahlung.', bullets: [
-        'Sofort erfahren, wenn ein Wettbewerber ein neues SDK integriert oder still seine Datenschutzrichtlinie ändert',
+      { tier: 'Signal', hook: 'Ein stehendes Frühwarnsystem für Ihren Sektor.', desc: 'Große Schritte passieren selten ohne Vorwarnung - eine Finanzierungsrunde, ein Vorfall, eine stille Änderung, die niemand angekündigt hat. Wir beobachten das laufend für Sie und melden uns in dem Moment, in dem etwas Relevantes passiert - nicht Wochen später in der Schlagzeile.', bring: [
+        'Den Sektor oder die Firmen, die Sie überwachen müssen',
+        'Was für Sie als Veränderung tatsächlich zählt',
+      ], mechanism: [
+        'Beobachtet laufend, nicht nach festem Zeitplan',
+        'Meldet relevante Veränderung in dem Moment, in dem sie auftritt',
+        'Filtert Rauschen heraus, behält, was zählt',
+      ], receive: [
+        'Eine sofortige Meldung, wenn etwas Relevantes passiert',
+        'Laufende Beobachtung statt Monatsbericht',
+        'Zeit zu reagieren, bevor es öffentlich ist',
+      ], bullets: [
+        'Sofort erfahren, wenn ein Wettbewerber eine relevante Änderung vornimmt, nicht erst Wochen später',
         'Als Compliance-Team laufend wissen, ob sich bei einem überwachten Drittanbieter etwas Meldepflichtiges verändert',
-        'Frühwarnung vor einem Sicherheitsvorfall bei einem kritischen Zulieferer bekommen, bevor er in der Presse steht',
+        'Frühwarnung vor einem Problem bei einem kritischen Zulieferer bekommen, bevor es in der Presse steht',
         'Als PR- oder IR-Team nicht von einer Enthüllung über die eigene Branche überrascht werden',
         'Als M&A-Team einen Übernahmekandidaten über Monate laufend beobachten statt nur einmalig zu prüfen',
       ], delivery: 'Briefing ab 14 Kalendertagen, danach monatlich.' },
     ],
     technical: [
-      { tier: 'Agent Deployment', hook: 'Von der Analyse zur Architektur, von der Architektur zum laufenden System.', desc: 'Sie erhalten keine Blackbox. Wir bauen Agentensysteme, Schwarmlogik und MCP-Server, die auf Ihrer Infrastruktur laufen - dokumentiert, reproduzierbar, unter Ihrer Kontrolle. Auf Basis von TIS, Ternlang und Laura\'s-Agents-Engine, je nach Aufgabe.\n\nDas Ziel ist kein Demo-Chatbot. Das Ziel ist ein System, das Ihre operativen Fragen selbstständig beantwortet: Evidence sammeln, Befunde triagieren, Regeln anwenden, Handlungsoptionen aufbereiten.\n\nJede Integration wird mit demselben Evidenzstandard geliefert wie unsere Audits: nachvollziehbare Quellen, reproduzierbare Schritte, klare Grenzen.', bullets: [
+      { tier: 'Agent Deployment', hook: 'Von der Analyse zur Architektur, von der Architektur zum laufenden System.', desc: 'Sie erhalten keine Blackbox. Wir bauen das KI-Agentensystem, installieren es auf Ihrer eigenen Infrastruktur und übergeben etwas Dokumentiertes und Nachvollziehbares - keine Demo, sondern ein System, das Ihre operativen Fragen selbstständig beantwortet.', bring: [
+        'Die Aufgabe oder den Prozess, den Sie automatisiert haben wollen',
+        'Ihre bestehenden Systeme, mit denen es zusammenarbeiten muss',
+        'Regeln oder Grenzen, die es einhalten muss',
+      ], mechanism: [
+        'Baut das Agentensystem auf Ihrer eigenen Infrastruktur',
+        'Dokumentiert jeden Schritt, damit nichts eine Blackbox bleibt',
+        'Testet gegen echte operative Fragen, nicht gegen eine Demo',
+      ], receive: [
+        'Ein funktionierendes Agentensystem, vollständig unter Ihrer Kontrolle',
+        'Vollständige Dokumentation und Quellcode-Zugriff',
+        'Ein System, das weiterläuft, auch nachdem wir fertig sind',
+      ], bullets: [
         'Ihr Support-Team ertrinkt in Tickets, die eigentlich automatisiert vorsortiert werden könnten',
         'Sie wollen einen eigenen KI-Agenten, der Compliance-Dokumente prüft, ohne Daten an OpenAI/Anthropic zu schicken',
         'Ein internes Team soll ohne Programmierkenntnisse mit einem Agenten-Schwarm auf Ihre eigenen Systeme zugreifen',
         'Sie brauchen einen MCP-Server, der interne Tools sicher für KI-Assistenten zugänglich macht',
         'Als Behörde oder Kanzlei Aktenprüfung automatisieren, bei der Daten zwingend On-Premise bleiben müssen',
       ], delivery: 'Erste Integration innerhalb von 21 Kalendertagen.' },
-      { tier: 'Custom Stack', hook: 'Systeme, die keine Kompromisse erzwingen.', desc: 'Sie erhalten ein maßgeschneidertes System auf Basis von Rust, TIS oder Ternlang - dort, wo fertige Frameworks zu langsam, zu unsicher oder zu teuer sind. Backend, API, Compiler, VM, Desktop, PWA, Embedded-Agent: alles aus einer Hand, vom selben Team, das die Forschung betreibt.\n\nKeine aufgeblähten Page-Builder, kein Vendor-Lock-in, keine Sprachen, die nur funktionieren, solange niemand genauer hinsieht. Wenn wir etwas bauen, bleibt es unter Ihrer Kontrolle - Quellcode, Toolchain, Infrastruktur.\n\nIdeal, wenn Standard-Software Ihre Frage nicht beantworten kann, weil die Frage selbst noch keine Standardantwort hat.', bullets: [
+      { tier: 'Custom Stack', hook: 'Systeme, die keine Kompromisse erzwingen.', desc: 'Wenn fertige Software zu langsam, zu unsicher oder zu teuer ist, bauen wir Ihnen stattdessen etwas Maßgeschneidertes - und Sie behalten die volle Kontrolle über den Quellcode, nicht wir.', bring: [
+        'Das Problem, das Standard-Software nicht lösen kann',
+        'Ihre Anforderungen an Geschwindigkeit, Sicherheit oder Kontrolle',
+      ], mechanism: [
+        'Baut ein maßgeschneidertes System von Grund auf - Backend, API, Desktop, Embedded, je nach Bedarf',
+        'Setzt Rust und eigene Werkzeuge dort ein, wo es wirklich zählt',
+        'Übergibt Quellcode, keine Blackbox',
+      ], receive: [
+        'Ein System, das exakt auf Ihr Problem passt',
+        'Vollständigen Quellcode und Kontrolle',
+        'Kein Vendor-Lock-in',
+      ], bullets: [
         'Ihre aktuelle Software ist für Echtzeit-Anforderungen zu langsam, ein Standard-Framework skaliert nicht',
         'Sie bauen ein Embedded-Gerät und brauchen eine schlanke, sichere Laufzeitumgebung ohne Altlasten',
         'Sie wollen aus einem teuren SaaS-Vendor-Lock-in raus und volle Kontrolle über den Quellcode',
         'Bei kritischer Infrastruktur ist Speichersicherheit (Rust) Pflicht, kein Nice-to-have',
         'Sie brauchen Desktop-, PWA- und CLI-Anwendung aus einer Hand statt von drei verschiedenen Dienstleistern',
       ], delivery: 'Definition of Done + Zeitplan innerhalb von 14 Kalendertagen.' },
-      { tier: 'Architecture Lab', hook: 'Gemeinsam an der Architektur, bevor irgendjemand codet.', desc: 'Sie bekommen keinen fertigen Report, sondern eine Forschungs- und Systemarchitektur, die gemeinsam mit Ihnen entworfen wird - auf Basis von Lauras Emergent-Interaction-Methode oder ternärer KI-Architektur, je nach Fragestellung.\n\nDas Ergebnis ist kein PDF, sondern ein baufertiger Plan: Forschungsfrage, Prototyp, Validierungskriterien, Zeitplan. Wenn Sie es anschließend bauen lassen wollen, haben wir das gleiche Team. Wenn nicht, haben Sie trotzdem eine klare Architektur, die niemand aus einer Massenvorlage erzeugt hätte.\n\nGeeignet für Organisationen, die nicht nur konsumieren, sondern mitbestimmen wollen, wie die Systeme aussehen, auf die sie sich verlassen.', bullets: [
+      { tier: 'Architecture Lab', hook: 'Gemeinsam an der Architektur, bevor irgendjemand codet.', desc: 'Bevor Sie bauen, brauchen Sie einen echten Plan, keine Buzzword-Folien. Wir entwerfen die Architektur gemeinsam mit Ihnen: was gebaut wird, wie geprüft wird, dass es funktioniert, und einen realistischen Zeitplan.', bring: [
+        'Das Problem oder die Entscheidung, vor der Sie stehen',
+        'Bereits bekannte Rahmenbedingungen',
+      ], mechanism: [
+        'Entwirft die Architektur gemeinsam mit Ihrem Team',
+        'Definiert, was "funktioniert" konkret bedeutet - Validierungskriterien, kein Bauchgefühl',
+        'Baut einen realistischen, baufertigen Plan',
+      ], receive: [
+        'Eine konkrete Architektur, kein Konzept',
+        'Validierungskriterien und einen Zeitplan',
+        'Einen Plan, den Ihr eigenes Team - oder wir - umsetzen kann',
+      ], bullets: [
         'Sie stehen vor einer technischen Entscheidung mit hohem Risiko und wollen sie nicht allein treffen',
         'Vor einer großen Investition erst einen Prototyp mit Validierungskriterien statt eines fertigen Systems',
         'Als Forschungsteam eine KI-Architektur, die zu einer echten wissenschaftlichen Frage passt, nicht zum Buzzword',
         'Sie wollen eine zweite, unabhängige technische Meinung, bevor Ihr eigenes Team lossbaut',
         'Als Start-up vor der Seed-Runde brauchen Sie eine belastbare technische Roadmap für Investor:innen',
       ], delivery: 'Architektur- und Forschungsplan innerhalb von 14 Kalendertagen.' },
-      { tier: 'Full Spectrum Deploy', hook: 'Von der ersten Analyse bis zum laufenden Betrieb, alles aus einer Hand.', desc: 'Sie erhalten nicht nur ein System, sondern den gesamten Betrieb: Software-Installation, Systemintegration, Datenmigration, Team-Training und laufender Support. Wir verbinden die Dots, installieren die Software, trainieren die Leute und bleiben, bis es läuft, und danach.\n\nWer es installiert, ist dasselbe Team, das die Forschung betrieben und das System gebaut hat, von Anfang bis Ende, ohne Übergabe an einen Subunternehmer zwischendrin. Kein Vendor-Lock-in - wenn wir etwas deployen, bleibt es unter Ihrer Kontrolle.\n\nIdeal für Organisationen, die nicht nur eine Lösung kaufen wollen, sondern eine komplette, betriebsbereite Infrastruktur, die sofort produktiv ist.', bullets: [
+      { tier: 'Full Spectrum Deploy', hook: 'Von der ersten Analyse bis zum laufenden Betrieb, alles aus einer Hand.', desc: 'Sie erhalten nicht nur Software, sondern den gesamten Betrieb - installiert, integriert, Ihr Team geschult, und Support, der nicht bei der Übergabe endet.', bring: [
+        'Ein System oder eine Infrastruktur, die vollständig laufen soll',
+        'Ihr Team, das gleich mitgeschult wird',
+      ], mechanism: [
+        'Installiert und integriert alles, von Anfang bis Ende',
+        'Migriert Ihre bestehenden Daten',
+        'Schult Ihr Team und bleibt für laufenden Support',
+      ], receive: [
+        'Ein betriebsbereites System, nicht nur eine Lieferung',
+        'Ein geschultes Team, das es selbst betreiben kann',
+        'Ein verantwortliches Team über den gesamten Weg',
+      ], bullets: [
         'Sie wollen eine komplette, sofort betriebsbereite Infrastruktur, nicht nur ein Stück Software',
         'Ihr Team hat keine Kapazität, ein neues System selbst zu integrieren, zu migrieren und zu schulen',
         'Sie brauchen einen einzigen Ansprechpartner von der ersten Analyse bis zum laufenden Support',
@@ -298,28 +389,71 @@ export const DE: Content = {
       ], delivery: 'Definition of Done + Zeitplan innerhalb von 14 Kalendertagen.' },
     ],
     security: [
-      { tier: 'Public', hook: 'Kostenlos, für immer. Funde werden nach 90 Tagen veröffentlicht, ausnahmslos.', desc: 'Wir stellen dieselbe quellcode-nahe Beobachtungsleistung bereit, die auch zahlende Kunden erhalten - kostenlos. Nach einer 90-Tage-Vorlauffrist wird der Fund auf unserem öffentlichen Ledger veröffentlicht, damit die betroffene Organisation Zeit zur Reaktion hat, bevor ihn jemand anderes sieht. Jeder Eintrag auf diesem Ledger unterliegt derselben Regel - groß oder klein, zahlend oder nicht. Kein Vertrag, keine Geheimhaltung, keine leisere Behandlung. Eingeschlossen ist die erste Handy-Privatsphäre-Sitzung: wir zeigen Ihnen, wie Sie die versteckten Tracker auf Ihrem eigenen Gerät abschalten.', bullets: [
+      { tier: 'Public', hook: 'Kostenlos, für immer. Funde werden nach 90 Tagen veröffentlicht, ausnahmslos.', desc: 'Wir prüfen Ihre App genauso, wie wir jede App prüfen - kostenlos. Finden wir etwas, haben Sie 90 Tage Zeit zur Behebung, bevor es auf unserem öffentlichen Ledger landet. Für alle gilt dieselbe Regel, zahlend oder nicht.', bring: [
+        'Eine App, die Sie geprüft haben wollen - Ihre eigene, oder eine, die Sie interessiert',
+      ], mechanism: [
+        'Führt dieselbe Untersuchung wie bei unseren zahlenden Kunden durch',
+        'Wendet für alle dieselbe Regel an, ausnahmslos',
+        'Gibt Ihnen 90 Tage, um Gefundenes zu beheben, bevor es öffentlich wird',
+      ], receive: [
+        'Eine kostenlose Sicherheitsprüfung',
+        'Ein 90-Tage-Fenster zur Behebung von Funden',
+        'Eine kostenlose Erklärung der Tracker auf Ihrem eigenen Handy',
+      ], bullets: [
         'Sie wollen einfach wissen, welche Tracker gerade auf Ihrem eigenen Handy aktiv sind',
         'Sie haben eine App im Verdacht und wollen eine kostenlose Erstprüfung, bevor Sie Geld investieren',
         'Als Journalist:in oder Verbraucherschützer:in brauchen Sie eine öffentlich zitierfähige Quelle',
         'Als kleines Unternehmen ohne Security-Budget verdienen Sie trotzdem denselben Prüfstandard wie ein Konzern',
         'Als Entwickler:in wollen Sie Ihre eigene App vor dem Launch kostenlos gegenchecken lassen',
       ], delivery: 'Bericht innerhalb von 7 Kalendertagen.' },
-      { tier: 'Remediation Advisory', hook: 'Keine PDF von der Stange. Eine Untersuchung mit unserer Methode gegen unseren Korpus.', desc: 'Sie bezahlen nicht für ein Dokument. Sie beauftragen eine Untersuchung mit unserer Methodik, dem Korpus dekompilierter Apps und der Quellen-Architektur - exakt der Struktur, mit der Funde auf dem öffentlichen Ledger abgelegt werden. Das Ergebnis ist ein nach Schwere geordneter Befund: genau, wie beobachtet wurde, jede Schwachstelle, eine konkrete Behebung für jede davon - innerhalb von 7 Kalendertagen. Dieselben Ingenieur:innen, die die Lücken gefunden haben, führen durch deren Schließung. Dreißig Tage später prüfen wir nach, ob die Fixes tatsächlich angekommen sind. Jeder Fund ist mit dem genauen Datenschutz-Artikel verknüpft, den er verletzt.\n\nDiese Stufe gibt Ihnen das Was: den Fund und die Behebung. Das Wie, unsere Methodik und die Werkzeuge dahinter, ist das, was die vertrauliche Stufe darunter noch hinzufügt.', bullets: [
+      { tier: 'Remediation Advisory', hook: 'Keine PDF von der Stange. Eine echte Untersuchung, mit fertiger Behebung.', desc: 'Sie bezahlen nicht für ein Dokument. Sie bezahlen für eine echte Untersuchung - jede gefundene Schwachstelle nach Schwere geordnet, mit einer konkreten Behebung für jede einzelne, in 7 Tagen. Dreißig Tage später prüfen wir nach, ob die Fixes tatsächlich funktioniert haben.', bring: [
+        'Ihre App oder Ihr System',
+        'Bereits bekannte Bedenken oder vorhandene Berichte',
+      ], mechanism: [
+        'Untersucht mit unserer eigenen Methode und unserem Korpus',
+        'Ordnet jede Schwachstelle danach, wie ernst sie wirklich ist',
+        'Führt Ihr Team durch die Behebung, prüft nach 30 Tagen nach',
+      ], receive: [
+        'Einen nach Schwere geordneten Befund',
+        'Eine konkrete Behebung für jede Schwachstelle',
+        'Eine Nachprüfung nach 30 Tagen, die bestätigt, dass es funktioniert hat',
+      ], bullets: [
         'Sie vermuten einen Sicherheitsvorfall und brauchen schnell einen belastbaren, priorisierten Befund',
         'Als Start-up vor einem Investoren-Audit wollen Sie Ihre App vorher selbst sauber machen',
         'Sie wollen nicht nur wissen, was kaputt ist, sondern genau, wie man es behebt - mit Nachprüfung nach 30 Tagen',
         'Ihr Entwicklerteam braucht eine unabhängige zweite Meinung zu einer bereits gemeldeten Schwachstelle',
         'Vertraulichkeit ist Ihnen nicht wichtig, Tempo (7 Tage) und ein belastbarer Fund dagegen schon',
       ], delivery: 'Befund innerhalb von 7 Kalendertagen nach Zahlung.' },
-      { tier: 'Confidential', hook: 'Dieselbe Untersuchung. Unter Geheimhaltung. Die Regulatoren erfahren es trotzdem.', desc: `Sie beauftragen dieselbe Untersuchung gegen unseren Korpus - unter Geheimhaltung. Das Ergebnis ist ein Befund, der jede Schwachstelle nach Schwere ordnet und exakt im Code verortet, plus eine Zusammenfassung, die nicht-technische Führungskräfte lesen können. Innerhalb von 7 Kalendertagen.\n\n${NDA_CLAUSE}\n\nSobald Sie Fixes ausliefern, testen wir manuell nach, ob die Lücken wirklich geschlossen sind - nicht nur auf dem Papier gepatcht.\n\nAls Non-Profit-Organisation, die an ihre eigenen Regeln gebunden ist, informieren wir die zuständigen Regulatoren trotzdem parallel, ohne Details, die Sie exponieren würden.`, bullets: [
+      { tier: 'Confidential', hook: 'Dieselbe Untersuchung. Unter Geheimhaltung. Die Regulatoren erfahren es trotzdem.', desc: `Dieselbe Untersuchung wie oben - unter Geheimhaltung. Sie erhalten einen nach Schwere geordneten Befund, exakt lokalisiert, plus eine Zusammenfassung, die nicht-technische Führungskräfte lesen können. Sobald Sie Fixes ausliefern, testen wir manuell nach, ob die Lücke wirklich geschlossen ist.\n\n${NDA_CLAUSE}\n\nAls Non-Profit-Organisation, die an ihre eigenen Regeln gebunden ist, informieren wir die zuständigen Regulatoren trotzdem parallel - ohne Details, die Sie exponieren würden.`, bring: [
+        'Ihre App oder Ihr System, unter NDA',
+        'Bereits bekannte Bedenken oder vorhandene Berichte',
+      ], mechanism: [
+        'Führt dieselbe Untersuchung durch, unter Geheimhaltung',
+        'Testet nach ausgelieferten Fixes manuell nach',
+        'Informiert Regulatoren parallel, ohne Sie zu exponieren',
+      ], receive: [
+        'Einen vertraulichen, nach Schwere geordneten Befund',
+        'Eine Zusammenfassung, die Ihre nicht-technische Führung lesen kann',
+        'Handgeprüfte Bestätigung, dass Ihre Fixes funktioniert haben',
+      ], bullets: [
         'Als börsennotiertes Unternehmen wollen Sie einen Fund erst intern klären, bevor er publik wird',
         'Sie brauchen eine vorstandstaugliche Zusammenfassung, nicht nur einen technischen Report',
-        'Sie wollen Methodik und Werkzeuge verstehen (das Wie), nicht nur das Ergebnis',
+        'Sie wollen Methodik und Werkzeuge verstehen, nicht nur das Ergebnis',
         'Mit eigener Rechtsabteilung wollen Sie Kontrolle über den Zeitpunkt der Kommunikation behalten, nicht über das Ob',
         'Sie sind selbst regulatorisch verpflichtet und brauchen eine saubere, dokumentierte Prüfspur',
       ], delivery: 'Befund innerhalb von 7 Kalendertagen nach Zahlung.' },
-      { tier: 'Enterprise & Critical Infrastructure', hook: 'NDA, NIS2-Notfallprotokoll, biometrische Datenflüsse nach Art. 9 - eine Stufe für alles, was die meisten Anbieter nicht anfassen.', desc: `Wir stellen Geheimhaltung, priorisierte Remediation-Zeit über das übliche 90-Tage-Fenster hinaus und direkten Zugang zu den Ingenieur:innen bereit. Für Betreiber kritischer Infrastruktur (Energie, Wasser, Gesundheit, Verkehr) übersetzen wir NIS2-Pflichten in Kontrollen, die Ihr Team tatsächlich umsetzen kann, und üben das Incident-Response-Protokoll mit Ihnen ein, bevor etwas schiefgeht.\n\n${NDA_CLAUSE}\n\nFür biometrische Daten (Art. 9) verfolgen wir jeden Fluss vollständig: Speicherfristen, grenzüberschreitende Übermittlungen, Verarbeitungszweck. Die meisten Sicherheitsanbieter fassen diese Kategorie nicht an.\n\nAuf Wunsch als laufender Auftrag: kontinuierliche Portfolio-Abdeckung statt Einzelaudit, mit vierteljährlichem Deep-Dive und fester Ansprechperson. Umfang und Preis werden mit Ihrem Team abgestimmt - kein Standardformular für Situationen, in denen Scheitern keine Option ist.`, bullets: [
+      { tier: 'Enterprise & Critical Infrastructure', hook: 'NIS2, biometrische Daten, NDA - die Fälle, die die meisten Anbieter nicht anfassen.', desc: `Geheimhaltung, priorisierte Reaktionszeit und direkter Zugang zu den Ingenieur:innen, wenn schnell etwas behoben werden muss. Für Betreiber kritischer Infrastruktur (Energie, Wasser, Gesundheit, Verkehr) übersetzen wir Ihre NIS2-Pflichten in Kontrollen, die Ihr Team tatsächlich umsetzen kann - und üben das Incident-Response-Protokoll mit Ihnen ein, bevor etwas schiefgeht.\n\n${NDA_CLAUSE}\n\nFür biometrische Daten (Art. 9 DSGVO) verfolgen wir jeden Fluss vollständig: wohin er geht, wie lange er gespeichert wird, wer darauf zugreift. Die meisten Sicherheitsanbieter fassen diese Kategorie nicht an.\n\nAuch als laufender Auftrag verfügbar: kontinuierliche Abdeckung statt Einzelaudit, mit vierteljährlichem Deep-Dive und fester Ansprechperson. Umfang und Preis werden direkt mit Ihrem Team abgestimmt.`, bring: [
+        'Kritische Infrastruktur oder biometrische/hochsensible Daten',
+        'Ihre bestehenden NIS2- oder Art.-9-Pflichten',
+      ], mechanism: [
+        'Übersetzt NIS2-Pflichten in Kontrollen, die Ihr Team tatsächlich umsetzen kann',
+        'Übt Incident-Response ein, bevor etwas schiefgeht',
+        'Verfolgt jeden Fluss biometrischer Daten (Art. 9) vollständig',
+      ], receive: [
+        'Kontrollen, die Sie umsetzen können, keine reine Checkliste',
+        'Einen geübten Incident-Response-Plan',
+        'Priorisierte Reaktionszeit, wenn es zählt, plus feste Ansprechperson',
+      ], bullets: [
         'Als Betreiber kritischer Infrastruktur (Energie, Wasser, Verkehr) müssen Sie NIS2-Pflichten in echte technische Kontrollen übersetzen',
         'Sie verarbeiten biometrische Daten (Art. 9 DSGVO) und finden kaum spezialisierte Prüfer dafür',
         'Sie brauchen laufende Portfolio-Abdeckung statt Einzelaudits, mit fester Ansprechperson',
@@ -336,6 +470,8 @@ export const DE: Content = {
 
   modalTierBody: {
     whatYouGet: 'Was Sie bekommen',
+    youBring: 'Sie bringen',
+    youReceive: 'Sie erhalten',
   },
 
   checkoutModal: {

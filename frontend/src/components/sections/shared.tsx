@@ -512,6 +512,53 @@ export function ArrowIcon() {
     </svg>
   )
 }
+// "You bring / RFI-IRFOS / You receive" transformation diagram, as three short bullet
+// groups joined by an arrow - added 2026-08-15, live feedback (via Laura's own review of
+// the site): a visitor can see what RFI-IRFOS is capable of but not how their own messy,
+// unstructured problem turns into a concrete deliverable. Deliberately terse bullet
+// phrases (not full sentences) on all three sides - this is a diagram, not more prose;
+// TierBullets right below it still carries the "is this you" concrete scenarios in full
+// sentences. Renders nothing if none of the three arrays are populated (most non-pricing
+// CarouselTier consumers won't set these fields at all).
+function EngagementFlow({ bring, mechanism, receive }: {
+  bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[]
+}) {
+  const { t: locale } = useLocale()
+  if ((!bring || bring.length === 0) && (!mechanism || mechanism.length === 0) && (!receive || receive.length === 0)) return null
+  const groups: { label: string; items: readonly string[] | undefined }[] = [
+    { label: locale.modalTierBody.youBring, items: bring },
+    { label: 'RFI-IRFOS', items: mechanism },
+    { label: locale.modalTierBody.youReceive, items: receive },
+  ]
+  return (
+    <div style={{
+      display: 'flex', flexDirection: 'column', gap: 0, marginBottom: 16,
+      border: '1px solid rgba(0,245,196,0.18)', borderRadius: 12, overflow: 'hidden',
+    }}>
+      {groups.map((g, gi) => (
+        (g.items && g.items.length > 0) && (
+          <div key={g.label} style={{
+            padding: '11px 14px',
+            borderTop: gi > 0 ? '1px solid rgba(0,245,196,0.12)' : undefined,
+            background: gi === 1 ? 'rgba(0,245,196,0.05)' : 'transparent',
+          }}>
+            <div style={{
+              fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, fontWeight: 700,
+              color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 6,
+            }}>{g.label}</div>
+            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexWrap: 'wrap', gap: '4px 16px' }}>
+              {g.items!.map((item, i) => (
+                <li key={i} style={{ fontSize: 12.5, lineHeight: 1.5, color: 'var(--text)', display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                  <span style={{ color: TEAL, fontSize: 10 }}>&#9656;</span>{item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      ))}
+    </div>
+  )
+}
 // Shared renderer for a tier's concrete-use-case bullets (see CarouselTier.bullets) -
 // same small check-mark-in-a-circle glyph used nowhere else on the pricing UI, so it
 // reads as "here's a list of situations", not another paragraph of prose.
@@ -542,8 +589,9 @@ export function ClockIcon() {
 // the tier copy's closing sentence (always the strongest line - see the pricing rewrite)
 // pulled out as a distinct highlighted callout instead of blending into the paragraph
 // flow. Delivery line upgraded from floating text to an actual bordered pill.
-export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets }: {
+export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets, bring, mechanism, receive }: {
   tier: string; price: string; desc: string; delivery?: string; mobile: boolean; bullets?: readonly string[]
+  bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[]
 }) {
   const { t } = useLocale()
   const paras = desc.split('\n\n')
@@ -753,6 +801,14 @@ export type CarouselTier = {
   // you") - added 2026-08-15, live feedback: the desc prose alone doesn't land for
   // a visitor with zero background in what RFI-IRFOS does, however well-written.
   bullets?: readonly string[]
+  // Three-part "You bring / RFI-IRFOS / You receive" transformation, as short bullet
+  // phrases rather than prose - added 2026-08-15, live feedback: even a well-written
+  // desc paragraph doesn't make it obvious what a visitor is meant to hand over and
+  // what they get back; a diagram-like bullet structure does. All three optional -
+  // renders nothing if omitted (see EngagementFlow).
+  bring?: readonly string[]
+  mechanism?: readonly string[]
+  receive?: readonly string[]
   delivery?: string
   highlight?: boolean
   outputs?: readonly string[]
@@ -843,6 +899,7 @@ export function TierCarousel({ tiers, getActions }: {
           {active.desc.split('\n\n').map((p, i) => (
             <p key={i} style={{ color: 'var(--text)', fontSize: 13, lineHeight: 1.65, marginBottom: 9 }}>{p}</p>
           ))}
+          <EngagementFlow bring={active.bring} mechanism={active.mechanism} receive={active.receive} />
           <TierBullets bullets={active.bullets} />
         </div>
         <div style={{ marginTop: -4 }}><OutputTags outputs={active.outputs} /></div>

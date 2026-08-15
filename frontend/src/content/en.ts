@@ -245,58 +245,149 @@ export const EN = {
       security: 'Security Audits & Responsible Disclosure',
     },
     market: [
-      { tier: 'First Light', hook: 'Know before it\'s public. You bring the chaos, we distill the intelligence.', desc: 'You arrive with a pile of chaos - hundreds of apps, contradictory claims, tangled dependencies. We distill intelligence from it. The query runs live against the complete corpus of decompiled applications - not as a report about one vendor, but as a continuous observation of the entire ecosystem. Nine intelligence layers (code, SDK, data-flow, trackers, privacy, supply-chain, competitive, market, security) combine behind every answer into a traceable chain from signal to entity to conclusion. The result shows what the technology actually does, not what is claimed about it. This is the same corpus our public disclosures draw from: the basis on which change is detected before it becomes public.', bullets: [
-        'You need to know, before you invest, whether an app actually keeps the promises its privacy text makes',
-        'Before an acquisition, you want an independent technical second opinion on the target company\'s systems',
-        'You have a concrete suspicion - a tracker, an SDK - and want it proven, not assumed',
-        'As a journalist or regulator, you need a technically verified source before you publish',
-        'You want to know which of the 315+ apps we\'ve already audited actually touch your sector or portfolio',
+      { tier: 'First Light', hook: 'Know before it\'s public. You bring the chaos, we distill the intelligence.', desc: 'You have a question about a company, app, or vendor - and no easy way to check if what they claim is actually true. We investigate the real product, not the marketing, and hand back a plain answer: true, false, or unproven.', bring: [
+        'A company, app, or vendor you need to understand',
+        'Any claims you want checked - privacy policy, pitch deck, press statement',
+        'Your specific question or suspicion',
+      ], mechanism: [
+        'Investigates the real product, not the marketing',
+        'Cross-checks against our corpus of 315+ apps we\'ve already audited',
+        'Traces every claim back to the evidence behind it',
+      ], receive: [
+        'A written investigation report',
+        'A clear answer, not a hedge',
+        'Evidence you can act on or cite',
+      ], bullets: [
+        'Before you invest, you want to know if a company\'s privacy or security claims actually hold up',
+        'Before an acquisition, you want an independent second opinion on the target\'s systems',
+        'You have a concrete suspicion about a company or app and want it proven, not assumed',
+        'As a journalist or regulator, you need a source you can verify and cite',
+        'You want to know if we\'ve already looked at a company that matters to you',
       ], delivery: '14 calendar days.' },
-      { tier: 'Competitive Trace', hook: 'See the move before they announce it - in the code, not the press release.', desc: 'A competitor\'s strategic shift usually sits in their code for months before it reaches the press. We observe that change where it forms: which SDKs they actually ship, where their privacy behaviour diverges from the policy they publish, where the architecture is quietly changing. Across six corpus layers (code, SDK, data-flow, trackers, privacy, supply-chain), we translate the observation into a defensible relationship between technical change and business meaning. You act on evidence while others are still speculating. This runs against the same corpus our own disclosures come from.', bullets: [
-        'A competitor claims "no third-party data sharing" - you want to know if the code actually backs that up',
-        'Before a partnership, you want to check which SDKs a potential partner actually ships',
-        'You see a pricing or strategy shift from a competitor and want to understand what changed technically behind it',
-        'As a PR or comms team, you want to verify what a rival actually ships before your own campaign launches',
-        'As an investor, you want to check a pitch deck\'s technical claims against reality before committing',
+      { tier: 'Competitive Trace', hook: 'See the real move before they announce it - not the press-release version.', desc: 'A competitor\'s real strategy usually shows up in what they actually build, months before it shows up in a press release. We check what they say against what they\'ve actually shipped, and turn the gap into something you can act on.', bring: [
+        'A competitor or potential partner you\'re watching',
+        'Their public claims or marketing',
+        'What you specifically want to know before you act',
+      ], mechanism: [
+        'Compares what they say to what they\'ve actually built',
+        'Tracks real product changes over time, not announcements',
+        'Translates the technical change into what it means for your business',
+      ], receive: [
+        'A clear, business-readable comparison',
+        'Evidence, not speculation',
+        'A head start before it\'s public knowledge',
+      ], bullets: [
+        'A competitor claims something ("no data sharing," "fully secure") - you want to know if it\'s actually true',
+        'Before a partnership, you want to check what a potential partner has actually built, not just what they claim',
+        'You notice a pricing or strategy shift and want to understand the real reason behind it',
+        'As PR or comms, you want to verify a rival\'s claims before your own campaign goes out',
+        'As an investor, you want a pitch deck\'s technical claims checked against reality before you commit',
       ], delivery: '14 calendar days.' },
-      { tier: 'Sector Map', hook: 'Your entire sector as a connected intelligence picture - re-resolved every quarter.', desc: 'A snapshot is stale the moment it prints. We maintain the risk profile of every relevant actor in your sector across all nine intelligence layers as a continuous intelligence picture - refreshed every quarter. The capability is not the delivery of a document, but the continuous observation of how relationships, dependencies and exposures shift across the sector. You see the change forming, not after it has already been priced in. First picture within 14 calendar days; after that the view stays three months ahead of the market.', bullets: [
-        'As a fund or VC, you want your whole portfolio\'s risk profile tracked continuously, not just single positions',
-        'As a regulator, you want to watch an entire sector (e.g. fintech apps) systematically, not case by case',
-        'Before a market strategy, you want to see where risk and dependency actually concentrate across the sector',
-        'As an insurer, you need to estimate cyber risk across an entire client base at once',
+      { tier: 'Sector Map', hook: 'Your whole sector, mapped and kept current - refreshed every quarter.', desc: 'A one-time report is out of date the moment it\'s finished. We keep watching your whole sector instead - who\'s connected to whom, where the real risk sits - and refresh the full picture every three months.', bring: [
+        'The sector or set of companies you need to track',
+        'What matters most to you - risk, dependencies, competition',
+      ], mechanism: [
+        'Builds a live map of every relevant company in the sector',
+        'Refreshes it every quarter, not once',
+        'Flags where risk or change is concentrating',
+      ], receive: [
+        'A continuously updated sector map',
+        'Early visibility on where change is forming',
+        'One picture instead of many separate reports',
+      ], bullets: [
+        'As a fund or investor, you want your whole portfolio tracked continuously, not just one company at a time',
+        'As a regulator, you want to watch an entire sector systematically, not case by case',
+        'Before a market strategy, you want to see where risk actually concentrates across your sector',
+        'As an insurer, you need to estimate risk across your entire client base at once',
         'As a group with many subsidiaries or suppliers, you want one overview instead of separate audits for each',
       ], delivery: '14 calendar days, quarterly thereafter.' },
-      { tier: 'Signal', hook: 'A standing early-warning system for your sector - continuous observation, not a monthly report.', desc: 'A competitor rarely makes one public move without months of signal first - a funding round, a security incident, an SDK swap, a quiet pivot in the code. We maintain a dedicated analyst who observes the corpus for your sector continuously - not as a monthly summary, but as ongoing monitoring of relevant change with immediate alert on movement. The capability is continuous intelligence: you learn the moment the signal appears, not the headline weeks later. Assigned within a week of payment.', bullets: [
-        'You want to know immediately when a competitor integrates a new SDK or quietly changes its privacy policy',
-        'As a compliance team, you need to know continuously if a monitored vendor changes something reportable',
-        'You want early warning of a security incident at a critical supplier before it hits the press',
-        'As a PR or IR team, you don\'t want to be blindsided by a story breaking about your own industry',
-        'As an M&A team, you want to watch an acquisition target continuously over months, not just once',
+      { tier: 'Signal', hook: 'A standing early-warning system for your sector.', desc: 'Big moves rarely happen without warning - a funding round, an incident, a quiet change nobody announced. We keep watching for you and tell you the moment something relevant happens, not weeks later in the headlines.', bring: [
+        'The sector or companies you need to monitor',
+        'What kind of change actually matters to you',
+      ], mechanism: [
+        'Watches continuously, not on a fixed schedule',
+        'Flags relevant change the moment it appears',
+        'Filters out noise, keeps what matters',
+      ], receive: [
+        'An immediate alert when something relevant happens',
+        'Ongoing monitoring, not a monthly report',
+        'Time to react before it\'s public',
+      ], bullets: [
+        'You want to know immediately when a competitor makes a meaningful change, not weeks later',
+        'As a compliance team, you need continuous visibility on a vendor you\'re responsible for',
+        'You want early warning of a problem at a critical supplier before it hits the press',
+        'As PR or investor relations, you don\'t want to be blindsided by a story about your own industry',
+        'As an M&A team, you want to keep watching a target over months, not just check once',
       ], delivery: 'Briefing from 14 calendar days, then monthly.' },
     ],
     technical: [
-      { tier: 'Agent Deployment', hook: 'From investigation to architecture, from architecture to a live system.', desc: 'You don\'t get a black box. We build agent systems, swarm logic, and MCP servers that run on your infrastructure - documented, reproducible, and under your control. Based on TIS, Ternlang, and Laura\'s Agents Engine, depending on the job.\n\nThe goal is not a demo chatbot. The goal is a system that answers your operational questions on its own: collecting evidence, triaging findings, applying rules, and preparing courses of action.\n\nEvery integration is delivered with the same evidentiary standard as our audits: traceable sources, reproducible steps, clear boundaries.', bullets: [
+      { tier: 'Agent Deployment', hook: 'From investigation to architecture, from architecture to a live system.', desc: 'You don\'t get a black box. We build the AI agent system, install it on your own infrastructure, and hand over something documented and reproducible - not a demo, a system that actually answers your operational questions on its own.', bring: [
+        'The task or workflow you want automated',
+        'Your existing systems it needs to work with',
+        'Any rules or boundaries it must respect',
+      ], mechanism: [
+        'Builds the agent system on your own infrastructure',
+        'Documents every step so it\'s reproducible, not a black box',
+        'Tests it against real operational questions, not a demo',
+      ], receive: [
+        'A working agent system you fully control',
+        'Full documentation and source access',
+        'A system that keeps working after we leave',
+      ], bullets: [
         'Your support team is drowning in tickets that could actually be triaged automatically',
         'You want your own AI agent that reviews compliance documents without sending data to OpenAI/Anthropic',
         'An internal team needs to query your own systems through an agent swarm without writing code',
         'You need an MCP server that safely exposes internal tools to AI assistants',
         'As a government body or law firm, you need to automate case review while keeping data strictly on-premise',
       ], delivery: 'First integration within 21 calendar days.' },
-      { tier: 'Custom Stack', hook: 'Systems that refuse to compromise.', desc: 'You get a bespoke system built on Rust, TIS, or Ternlang - where off-the-shelf frameworks are too slow, too insecure, or too costly. Backend, API, compiler, VM, desktop, PWA, embedded agent: all from one team, the same team that runs the research.\n\nNo bloated page-builders, no vendor lock-in, no languages that only work as long as nobody looks too closely. When we build something, it stays under your control - source code, toolchain, infrastructure.\n\nBuilt for the cases standard software cannot answer, because the question itself has no standard answer yet.', bullets: [
+      { tier: 'Custom Stack', hook: 'Systems that refuse to compromise.', desc: 'When off-the-shelf software is too slow, too insecure, or too expensive, we build you something custom instead - and you keep full control of the source code, not us.', bring: [
+        'The problem standard software can\'t solve',
+        'Your performance, security, or control requirements',
+      ], mechanism: [
+        'Builds a custom system from scratch - backend, API, desktop, embedded, whatever the job needs',
+        'Uses Rust and our own tools where it actually matters',
+        'Hands over source code, not a black box',
+      ], receive: [
+        'A system built exactly for your problem',
+        'Full source code and control',
+        'No vendor lock-in',
+      ], bullets: [
         'Your current software is too slow for real-time requirements and a standard framework won\'t scale',
         'You\'re building an embedded device and need a lean, secure runtime with no baggage',
         'You want out of an expensive SaaS vendor lock-in and full control over the source code',
         'In critical infrastructure, memory safety (Rust) is a requirement, not a nice-to-have',
         'You need desktop, PWA, and CLI apps from one team instead of three different vendors',
       ], delivery: 'Definition of Done + schedule within 14 calendar days.' },
-      { tier: 'Architecture Lab', hook: 'Design the architecture together, before anyone writes production code.', desc: 'You don\'t get a finished report. You get a research and system architecture designed with you - based on Laura\'s Emergent Interaction method or ternary AI architecture, depending on the problem.\n\nThe output is not a PDF. It\'s a build-ready plan: research question, prototype, validation criteria, timeline. If you want us to build it afterward, we\'re the same team. If you don\'t, you still have a coherent architecture nobody generated from a generic template.\n\nFor organizations that want to shape the systems they rely on, not just consume them.', bullets: [
+      { tier: 'Architecture Lab', hook: 'Design the architecture together, before anyone writes production code.', desc: 'Before you build, you need a real plan, not a buzzword deck. We design the architecture with you: what to build, how to validate it works, and a realistic timeline.', bring: [
+        'The problem or decision you\'re facing',
+        'Constraints you already know about',
+      ], mechanism: [
+        'Designs the architecture together with your team',
+        'Defines what "working" actually means - validation criteria, not vibes',
+        'Builds a realistic, build-ready plan',
+      ], receive: [
+        'A concrete architecture, not a concept',
+        'Validation criteria and a timeline',
+        'A plan your own team (or ours) can build from',
+      ], bullets: [
         'You\'re facing a high-risk technical decision and don\'t want to make the call alone',
         'Before a major investment, you want a prototype with validation criteria, not a finished system yet',
         'As a research team, you need an AI architecture that fits a real scientific question, not a buzzword',
         'You want a second, independent technical opinion before your own team starts building',
         'As a pre-seed startup, you need a credible technical roadmap to show investors',
       ], delivery: 'Architecture and research plan within 14 calendar days.' },
-      { tier: 'Full Spectrum Deploy', hook: 'From the first analysis to live operations, everything from one team.', desc: 'You don\'t just get a system. You get the entire operation: software installation, system integration, data migration, team training, and ongoing support. We connect the dots, install the software, train the people, and stay until it runs, and after.\n\nThe team that installs it is the team that ran the research and built the system, start to finish, with nothing handed off to a subcontractor midway. No vendor lock-in - if we deploy something, it stays under your control.\n\nIdeal for organizations that want more than a product: a complete, production-ready infrastructure that is immediately operational.', bullets: [
+      { tier: 'Full Spectrum Deploy', hook: 'From the first analysis to live operations, everything from one team.', desc: 'You don\'t just get software. You get the whole operation - installed, integrated, your team trained, and support that doesn\'t stop at handover.', bring: [
+        'A system or infrastructure you need fully operational',
+        'Your team, to be trained alongside it',
+      ], mechanism: [
+        'Installs and integrates everything, start to finish',
+        'Migrates your existing data',
+        'Trains your team and stays for ongoing support',
+      ], receive: [
+        'A production-ready system, not just a delivery',
+        'A trained team that can run it',
+        'One accountable team the whole way through',
+      ], bullets: [
         'You want a complete, immediately operational infrastructure, not just a piece of software',
         'Your team doesn\'t have the capacity to integrate, migrate, and train on a new system itself',
         'You need a single point of contact from first analysis through ongoing support',
@@ -305,31 +396,74 @@ export const EN = {
       ], delivery: 'Definition of Done + schedule within 14 calendar days.' },
     ],
     security: [
-      { tier: 'Public', hook: 'Free, forever. Findings publish after 90 days, no exceptions.', desc: 'We provide the same source-code-level observation capability that paying clients receive - at no cost. After a 90-day heads-up window, the finding is published on our public ledger, giving the affected organization time to react before anyone else sees it. Every entry on that ledger is held to the identical rule - big or small, paying or not. No contract, no secrecy, no quieter treatment. Included is your first phone privacy session: we walk you through switching off the hidden trackers running on your own device.', bullets: [
+      { tier: 'Public', hook: 'Free, forever. Findings publish after 90 days, no exceptions.', desc: 'We check your app the same way we check every app - for free. If we find something, you get 90 days to fix it before it goes on our public ledger. Everyone gets the same rule, paying or not.', bring: [
+        'An app you want checked - yours, or one you\'re curious about',
+      ], mechanism: [
+        'Runs the same investigation as our paid audits',
+        'Applies the identical rule to everyone, no exceptions',
+        'Gives you 90 days to fix anything found before it\'s public',
+      ], receive: [
+        'A free security check',
+        'A 90-day window to fix anything we find',
+        'A free walkthrough of the trackers running on your own phone',
+      ], bullets: [
         'You just want to know which trackers are currently active on your own phone',
         'You suspect something about an app and want a free first check before spending any money',
         'As a journalist or consumer advocate, you need a source you can cite publicly',
         'As a small business with no security budget, you deserve the same audit standard as a large company',
         'As a developer, you want your own app checked for free before launch',
       ], delivery: 'Report within 7 calendar days.' },
-      { tier: 'Remediation Advisory', hook: 'Not a template PDF. An investigation run with our method against our corpus.', desc: 'You are not paying for a document. You are commissioning an investigation using our methodology, our corpus of decompiled apps and our source architecture - the exact structure used to log findings on the public ledger. The output is a severity-ranked finding: exactly how it was observed, every weakness, a concrete fix for each one - within 7 calendar days. The same engineers who found the holes walk you through closing them. Thirty days later we check back to confirm the fixes actually landed. Every finding is tied to the exact privacy-law article it breaks.\n\nThis tier gives you the what: the finding and the fix. The how, our methodology and the tools behind it, is what the confidential tier below adds.', bullets: [
+      { tier: 'Remediation Advisory', hook: 'Not a template PDF. A real investigation, with a fix attached.', desc: 'You\'re not paying for a document. You\'re paying for a real investigation - every weakness found, ranked by how bad it is, with a concrete fix for each one, in 7 days. Thirty days later, we check back that the fixes actually worked.', bring: [
+        'Your app or system',
+        'Any known concerns or existing reports',
+      ], mechanism: [
+        'Investigates using our own method and corpus',
+        'Ranks every issue by how serious it actually is',
+        'Walks your team through the fix, then checks back after 30 days',
+      ], receive: [
+        'A severity-ranked finding',
+        'A concrete fix for every issue',
+        'A 30-day check-back confirming it worked',
+      ], bullets: [
         'You suspect a security incident and need a solid, prioritized finding fast',
         'As a startup ahead of an investor audit, you want to clean up your app yourself first',
         'You don\'t just want to know what\'s broken - you want the fix, with a check-back after 30 days',
         'Your dev team wants an independent second opinion on an already-reported vulnerability',
         'Confidentiality doesn\'t matter to you - speed (7 days) and a solid finding do',
       ], delivery: 'Finding within 7 calendar days of payment.' },
-      { tier: 'Confidential', hook: 'The same investigation. Under secrecy. The regulators still hear about it.', desc: `You commission the same investigation against our corpus - under secrecy. The output is a finding that ranks every weakness by severity and pins it to the exact spot in your code, plus a plain-language summary your non-technical leadership can actually read. Within 7 calendar days.\n\n${NDA_CLAUSE}\n\nOnce you ship fixes, we re-test by hand to confirm the holes are closed, not just patched on paper.\n\nAs a not-for-profit bound by our own rules, the relevant regulators are still told, in parallel, without detail that would expose you.`, bullets: [
+      { tier: 'Confidential', hook: 'The same investigation. Under secrecy. The regulators still hear about it.', desc: `Same investigation as above - kept under secrecy. You get a severity-ranked finding pinned to the exact issue, plus a plain-language summary your non-technical leadership can actually read. Once you ship fixes, we re-test by hand to confirm they actually closed the hole.\n\n${NDA_CLAUSE}\n\nAs a not-for-profit bound by our own rules, the relevant regulators are still told in parallel - without any detail that would expose you.`, bring: [
+        'Your app or system, under NDA',
+        'Any known concerns or existing reports',
+      ], mechanism: [
+        'Runs the same investigation, kept confidential',
+        'Re-tests by hand once you\'ve shipped fixes',
+        'Notifies regulators in parallel, without exposing detail',
+      ], receive: [
+        'A confidential, severity-ranked finding',
+        'A summary your non-technical leadership can read',
+        'Hand-verified confirmation your fixes actually worked',
+      ], bullets: [
         'As a publicly listed company, you want to resolve a finding internally before it goes public',
         'You need a board-ready summary, not just a technical report',
-        'You want to understand our methodology and tools (the how), not just the result',
+        'You want to understand our method and tools, not just the result',
         'With your own legal team, you want control over the timing of communication, not over whether it happens',
         'You\'re under your own regulatory obligation and need a clean, documented audit trail',
       ], delivery: 'Finding within 7 calendar days of payment.' },
-      { tier: 'Enterprise & Critical Infrastructure', hook: 'NDA, NIS2 emergency protocol, biometric data-flow tracing under Art. 9 - one tier for what most shops won\'t touch.', desc: `We provide secrecy, priority remediation time beyond the standard 90-day window, and direct engineer access to fix it. For operators of critical infrastructure (energy, water, health, transport) we translate NIS2 obligations into controls your team can actually implement, and rehearse the incident-response protocol with you before anything goes wrong.\n\n${NDA_CLAUSE}\n\nFor biometric data (Art. 9) we trace every flow in full: retention periods, cross-border transfers, processing purpose. Most security shops will not touch this category.\n\nAvailable as a standing engagement on request: continuous portfolio coverage instead of a single audit, with a quarterly deep-dive and one dedicated contact. Scope and price are worked out directly with your team, no standard form for situations where failure is not an option.`, bullets: [
+      { tier: 'Enterprise & Critical Infrastructure', hook: 'NIS2, biometric data, NDA - the risk most security shops won\'t touch.', desc: `Secrecy, priority response time, and direct engineer access when something needs fixing fast. For critical infrastructure (energy, water, health, transport), we turn your NIS2 obligations into controls your team can actually run - and rehearse the incident response with you before anything goes wrong.\n\n${NDA_CLAUSE}\n\nFor biometric data (GDPR Art. 9), we trace every flow in full - where it goes, how long it\'s kept, who touches it. Most security shops won\'t take this on.\n\nAlso available as a standing engagement: continuous coverage instead of a one-off audit, with a quarterly deep-dive and one dedicated contact. Scope and price are worked out directly with your team.`, bring: [
+        'Critical infrastructure or biometric/high-sensitivity data',
+        'Your existing NIS2 or GDPR Art. 9 obligations',
+      ], mechanism: [
+        'Turns NIS2 obligations into controls your team can actually run',
+        'Rehearses incident response before anything goes wrong',
+        'Traces every flow of biometric data (Art. 9) in full',
+      ], receive: [
+        'Controls you can implement, not just a compliance checklist',
+        'A rehearsed incident-response plan',
+        'Priority response time when it matters, plus a dedicated contact',
+      ], bullets: [
         'As a critical-infrastructure operator (energy, water, transport), you need NIS2 obligations turned into real controls',
         'You process biometric data (GDPR Art. 9) and struggle to find specialized auditors for it',
-        'You need continuous portfolio coverage instead of one-off audits, with a single dedicated contact',
+        'You need continuous coverage instead of one-off audits, with a single dedicated contact',
         'You want to have rehearsed an incident-response scenario once before it actually happens',
         'A security failure isn\'t an option for you - you need priority response time, not the standard window',
       ], delivery: 'Report from 7 calendar days, scope individual.' },
@@ -343,6 +477,8 @@ export const EN = {
 
   modalTierBody: {
     whatYouGet: 'What you get',
+    youBring: 'You bring',
+    youReceive: 'You receive',
   },
 
   checkoutModal: {
