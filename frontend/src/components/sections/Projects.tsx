@@ -1,7 +1,7 @@
 // "Projects" section (`#projects`, "what we build") - extracted verbatim from
 // PublicSite.tsx.
 import { useState, useEffect, useRef } from 'react'
-import { prefersReducedMotion, beacon, Reveal, ScrambleHeading } from './shared'
+import { prefersReducedMotion, beacon, Reveal, ScrambleHeading, TEAL } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 function IntelligenceProofShowcase() {
@@ -51,7 +51,7 @@ function useCarouselSize() {
 // Localized project - PROJECTS below carries only locale-independent fields
 // (name, link); sub/desc/tag come from the current locale's t.projects.items,
 // zipped together by index in ProjectsSection/ProjectsCarousel.
-type LocalizedProject = { name: string; link: string | null; sub: string; desc: string; tag: string }
+type LocalizedProject = { name: string; link: string | null; sub: string; desc: string; plain?: string; tag: string }
 
 function ProjectCard({ p }: { p: LocalizedProject }) {
   const { t } = useLocale()
@@ -83,6 +83,15 @@ function ProjectCard({ p }: { p: LocalizedProject }) {
         }}>{p.tag}</span>
       </div>
       <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.7, flex: 1 }}>{p.desc}</p>
+      {/* Plain-language benefit line (2026-08-15, live feedback: "kein Mensch
+          versteht das, nichtmal ich selber und ich hab das gebaut" - the
+          architecture-description desc above never says what a visitor
+          actually gets out of it). Same teal-left-border treatment as the
+          research modal's plain line and the pricing modal's punchline, for
+          one consistent "here's the one-sentence version" pattern site-wide. */}
+      {p.plain && (
+        <p style={{ color: 'var(--text)', fontSize: 12.5, fontWeight: 600, lineHeight: 1.55, margin: 0, paddingLeft: 10, borderLeft: `2px solid ${TEAL}` }}>{p.plain}</p>
+      )}
       {p.link && (
         <a href={p.link} target="_blank" rel="noopener noreferrer"
           onClick={() => beacon('project_click:' + p.name)}

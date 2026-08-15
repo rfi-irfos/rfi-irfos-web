@@ -90,6 +90,17 @@ function ResearchAreaModal({ index, onClose, onNavigate }: {
         <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 20, lineHeight: 1, padding: 4 }}>&#x2715;</button>
         <div style={{ lineHeight: 0, marginBottom: 18 }}>{icon}</div>
         <h3 style={{ fontSize: 26, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2, marginBottom: 20, paddingRight: 24 }}>{area.title}</h3>
+        {/* Plain-language anchor line (2026-08-15, live feedback: the two prose
+            paragraphs below assume a reader already knows what a "world model" or
+            a "trit" is - this line never does, one concrete sentence before the
+            deeper explanation). Same teal-left-border treatment as the pricing
+            modal's punchline paragraph, for visual consistency across modals. */}
+        {area.plain && (
+          <p style={{
+            color: '#e8e8f0', fontSize: 15, fontWeight: 700, lineHeight: 1.6,
+            margin: 0, marginBottom: 20, paddingLeft: 14, borderLeft: '2px solid #00f5c4',
+          }}>{area.plain}</p>
+        )}
         {area.desc.split('\n\n').map((p, i) => (
           <p key={i} style={{ color: '#c8c8d8', fontSize: 15, lineHeight: 1.85, margin: 0, marginBottom: 16 }}>{p}</p>
         ))}

@@ -146,7 +146,20 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           the stats, as a single slower-cycling line rather than competing with
           a second static teal headline underneath it (that redundant "Most
           technology decisions..." line has been removed entirely). */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: mobile ? '1.25rem' : '3rem', margin: '0 auto 24px', maxWidth: 980, justifyContent: 'center' }}>
+      {/* FIXED (live bug report, mobile Safari, 2026-08-15): was a hard `repeat(5,
+          1fr)` - 5 equal columns at every viewport width, with `mobile` only
+          ever touching the gap, never the column count. On a ~390px phone that
+          forces 5 columns down to ~50px each, well under the card's own min
+          content width (the number alone floors at clamp()'s 2rem/32px), so
+          the row just crushed/overflowed - not "a bit too big," no responsive
+          logic was actually sizing it to the viewport at all. `auto-fit` +
+          `minmax` (same pattern already used for TierCarousel's secondary row
+          below in this file) reflows continuously by available width instead
+          of a single mobile/desktop toggle: 5-across at the 980px desktop
+          maxWidth, 2 or 3-across on a phone, 1-across only once a column would
+          otherwise drop under the readable floor - correct at 360/390/430px
+          and everything between, not just the one width someone last tested. */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: mobile ? '1.25rem' : '3rem', margin: '0 auto 24px', maxWidth: 980, justifyContent: 'center' }}>
         {/* Deliberately NOT the same numbers as the Track Record stat row further down -
             that one is audit-specific (apps/findings/companies/regulators), this one is
             the breadth story: research areas, systems and projects, publications, team,

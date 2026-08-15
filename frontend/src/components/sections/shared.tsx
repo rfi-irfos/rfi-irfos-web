@@ -131,14 +131,25 @@ export function RevealWords({ text, delayStart = 0.2, emphasizeIndices = [] }: {
   )
 }
 
-// Real per-letter mirror-flip for a single word. Approved 2026-08-05 after several
-// review rounds against a standalone motion prototype - replaces the earlier
-// permanent-upside-down rotate(180deg) attempt (added and reverted same day,
-// 2026-08-02: "disorienting, not clever", see the comment in RevealWords below).
-// Each letter is its own absolutely-positioned span with its own transition - it
-// slides from its normal slot to its mirrored slot and flips (scaleX(-1))
-// individually, once its own brief shuffle settles, rather than one rotate() on
-// the whole word (which read as "a string rotating," not real per-letter motion).
+// Real per-letter shuffle-reveal for a single word. Approved 2026-08-05 after
+// several review rounds against a standalone motion prototype - replaces the
+// earlier permanent-upside-down rotate(180deg) attempt (added and reverted
+// same day, 2026-08-02: "disorienting, not clever", see the comment in
+// RevealWords below). Each letter is its own absolutely-positioned span with
+// its own transition, individually cycling through random characters with a
+// blur/jitter flourish before settling back into its own normal slot at the
+// end of its brief shuffle, rather than one rotate() on the whole word (which
+// read as "a string rotating," not real per-letter motion).
+// FIXED (live bug report, mobile Safari screenshot, 2026-08-15): this used to
+// settle each letter into a MIRRORED slot (scaleX(-1), reversed left-to-right
+// position via `mirrorLeft`) and hold there permanently - on the primary hero
+// headline that reads as exactly what it is, backwards/mirrored garbage text
+// ("ЯэHTЭЯ"), not a legible word. Whatever read as an acceptable flourish in
+// review clearly doesn't survive contact with the actual deployed headline -
+// every letter now settles back into its own normal (unflipped, correctly
+// ordered) position: the shuffle-in flourish stays, the word is legible again
+// once it settles, on every viewport, not just ones where nobody looked
+// closely enough to notice it never un-mirrors.
 // Widths are measured per character (an offscreen probe in the real font), not
 // an equal 1/n cell - equal cells looked mechanically spaced next to the
 // tightly-kerned normal word. Settles and holds once scrolled into view; resets
@@ -160,7 +171,6 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
     const n = word.length
     const spans: HTMLSpanElement[] = []
     const normalLeft: number[] = []
-    const mirrorLeft: number[] = new Array(n)
     let playing = false
     let raf = 0
     let leadTimer: ReturnType<typeof setTimeout> | null = null
@@ -183,8 +193,6 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
     el.style.height = height + 'px'
     let accN = 0
     for (let i = 0; i < n; i++) { normalLeft.push(accN); accN += widths[i] }
-    let accM = 0
-    for (let i = n - 1; i >= 0; i--) { mirrorLeft[i] = accM; accM += widths[i] }
     for (let i = 0; i < n; i++) {
       const span = document.createElement('span')
       span.className = 'flip-char'
@@ -218,7 +226,7 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
       // varied per letter, not clustered.
       const plans = spans.map(() => {
         const start = Math.floor(Math.random() * 35)
-        return { start, end: start + Math.floor(Math.random() * 40) + 25, flipped: false }
+        return { start, end: start + Math.floor(Math.random() * 40) + 25, settled: false }
       })
       spans.forEach(span => {
         span.style.transition = 'left 420ms cubic-bezier(.3,1.4,.5,1), transform 420ms cubic-bezier(.3,1.4,.5,1), filter 60ms linear'
@@ -236,12 +244,12 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
             span.style.filter = `blur(${Math.max(0, remaining * 3.6).toFixed(2)}px)`
             const jitter = (Math.random() - 0.5) * remaining * 10
             span.style.transform = `scaleX(1) rotate(${jitter.toFixed(1)}deg)`
-          } else if (!p.flipped) {
-            p.flipped = true
+          } else if (!p.settled) {
+            p.settled = true
             span.textContent = word[i]
             span.style.filter = 'none'
-            span.style.left = mirrorLeft[i] + 'px'
-            span.style.transform = 'scaleX(-1) rotate(0deg)'
+            span.style.left = normalLeft[i] + 'px'
+            span.style.transform = 'scaleX(1) rotate(0deg)'
           }
         }
         if (allDone) { playing = false; return }

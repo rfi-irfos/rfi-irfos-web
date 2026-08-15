@@ -14,7 +14,8 @@ import { PricingSection } from './sections/Pricing'
 import { JourneySection } from './sections/Journey'
 import { CoopPartnersSection } from './sections/CoopPartners'
 import { SubmitSection, type TipForm } from './sections/Submit'
-import { RFI_REPOS, SIMEON_REPOS } from '../content/repos'
+import { ZONE_ORDER, ZONE_LABELS, SYSTEMS } from '../content/systems'
+import { SystemCardModal } from './sections/SystemCardModal'
 
 // Nav logo's EKG line. Was one fixed blip shape looping identically forever - "measuring
 // the same heartbeat forever" per Simeon. A wider multi-beat path was tried and reverted
@@ -210,6 +211,9 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   // summarizes (hover reveals the short "why it matters" line), this is where the
   // complete article-style explanation lives, opened by clicking the Intel cell.
   const [intelModal, setIntelModal]           = useState<{ target: string; market: string; sev: string; finding: string; headline?: string } | null>(null)
+  // Footer's zone-grouped system links open this instead of linking straight to
+  // GitHub/crates.io - see SystemCardModal.tsx.
+  const [systemModal, setSystemModal]         = useState<string | null>(null)
   const [agbChecked, setAgbChecked]           = useState(false)
   const [b2bChecked, setB2bChecked]           = useState(false)
   const { theme, cycle } = useTheme()
@@ -1179,43 +1183,39 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               the legal and the rest"). alignSelf: 'stretch' lets it span the full
               height of whichever side ends up taller instead of a fixed height. */}
           <div aria-hidden="true" style={{ alignSelf: 'stretch', width: 1, background: 'var(--border)' }} />
-          {/* Repo names stay as-is - real identifiers, not prose (same convention
-              as the ledger data elsewhere on the site). CSS multi-column, not a
-              manually chunked array: lets the browser balance ~40/~70 short items
-              into readable columns instead of one long scroll, without any layout
-              math on our side. break-inside: avoid on each link keeps a name from
-              splitting across a column boundary. */}
-          <div style={{ flex: '1 1 auto', display: 'flex', flexWrap: 'wrap', gap: '2.5rem' }}>
-            {/* columnWidth, not a fixed columns count - the browser fits as many
-                ~150px columns as the now-unbounded width allows, so this
-                actually spreads wider on a wider viewport instead of a fixed
-                count just stretching into wasted whitespace per column. */}
-            {[
-              { heading: t.footer.repoHeadingOrg, repos: RFI_REPOS, flex: '1 1 480px' },
-              { heading: t.footer.repoHeadingPersonal, repos: SIMEON_REPOS, flex: '1.8 1 720px' },
-            ].map(group => (
-              <div key={group.heading} style={{ flex: group.flex }}>
-                {/* Live feedback 2026-08-14: "RFI-IRFOS Repositories + Simeon Kepp,
-                    Personal middle aligned above" - centered, the columns below stay
-                    left-aligned since that's how a directory actually scans. */}
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px', textAlign: 'center' }}>{group.heading}</p>
-                <div style={{ columnWidth: 150, columnGap: 20 }}>
-                  {group.repos.map(r => (
-                    <a key={r.u} href={r.u} target="_blank" rel="noopener noreferrer" style={{
-                      display: 'block', breakInside: 'avoid', color: 'var(--text3)', fontSize: 12,
-                      textDecoration: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                      marginBottom: 6, fontFamily: "'JetBrains Mono', monospace",
+          {/* Restructured 2026-08-15 (live feedback, twice): first pass grouped
+              repos by GitHub *owner* ("RFI-IRFOS Repositories" / "Simeon Kepp,
+              Personal") - told a visitor nothing about what any of it does.
+              Second pass added a one-line gloss per link, but the real fix
+              (Simeon's idea, refined) is that these links don't go straight to
+              GitHub/crates.io at all anymore - they open the System Card modal
+              (SystemCardModal.tsx), a standardized problem/why/different/fit/
+              proof/technical breakdown with GitHub/crates.io only as a
+              go-deeper link at the very bottom, plus "connects to" pills that
+              swap the modal along real verified architecture relationships. So
+              the footer itself stays a clean, undescribed zone-grouped list -
+              the description now lives one click deeper, in the modal. */}
+          <div style={{ flex: '1 1 auto', display: 'flex', flexWrap: 'wrap', gap: '2.5rem 2rem' }}>
+            {ZONE_ORDER.map(zone => (
+              <div key={zone} style={{ flex: '1 1 180px', minWidth: 160 }}>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 9px' }}>{ZONE_LABELS[zone][locale]}</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  {SYSTEMS.filter(s => s.zone === zone).map(s => (
+                    <button key={s.key} onClick={() => setSystemModal(s.key)} style={{
+                      display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+                      color: 'var(--text3)', fontSize: 12, lineHeight: 1.6, fontFamily: "'JetBrains Mono', monospace",
                     }}
                       onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                       onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
-                      {r.n}
-                    </a>
+                      {s.name}
+                    </button>
                   ))}
                 </div>
               </div>
             ))}
           </div>
         </div>
+        {systemModal && <SystemCardModal systemKey={systemModal} onClose={() => setSystemModal(null)} onNavigate={setSystemModal} />}
         {/* WKO badge + tagline moved below the link directory (live feedback
             2026-08-14: "the wko logo and the tagline below that") - sized down a
             step (earlier feedback: "der Footer soll doch net so fett sein" - this
