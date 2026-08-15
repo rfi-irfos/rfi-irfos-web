@@ -478,6 +478,7 @@ export const EN = {
   modalTierBody: {
     whatYouGet: 'What you get',
     youBring: 'You bring',
+    we: 'We',
     youReceive: 'You receive',
   },
 

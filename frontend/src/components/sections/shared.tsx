@@ -512,14 +512,17 @@ export function ArrowIcon() {
     </svg>
   )
 }
-// "You bring / RFI-IRFOS / You receive" transformation diagram, as three short bullet
-// groups joined by an arrow - added 2026-08-15, live feedback (via Laura's own review of
-// the site): a visitor can see what RFI-IRFOS is capable of but not how their own messy,
-// unstructured problem turns into a concrete deliverable. Deliberately terse bullet
-// phrases (not full sentences) on all three sides - this is a diagram, not more prose;
-// TierBullets right below it still carries the "is this you" concrete scenarios in full
-// sentences. Renders nothing if none of the three arrays are populated (most non-pricing
-// CarouselTier consumers won't set these fields at all).
+// "You bring / We / You receive" transformation diagram, as one cohesive box with three
+// stacked bullet groups - added 2026-08-15, live feedback (via Laura's own review of the
+// site): a visitor can see what RFI-IRFOS is capable of but not how their own messy,
+// unstructured problem turns into a concrete deliverable. Same-day follow-up: the first
+// pass read as three visually separate segments (alternating background, heavier
+// dividers, bullets wrapping onto the same line) - "very chaotic". Flattened to one
+// uniform surface, hairline dividers only, one bullet per line. Middle label is "We",
+// not "RFI-IRFOS" - the name is already the page's own voice throughout, repeating it
+// here read as oddly formal. This box fully replaces TierBullets/OutputTags in the
+// pricing UI - deliberately not rendered alongside them (see call sites) to avoid the
+// exact redundant, overflowing-card problem this box was built to fix.
 function EngagementFlow({ bring, mechanism, receive }: {
   bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[]
 }) {
@@ -527,29 +530,29 @@ function EngagementFlow({ bring, mechanism, receive }: {
   if ((!bring || bring.length === 0) && (!mechanism || mechanism.length === 0) && (!receive || receive.length === 0)) return null
   const groups: { label: string; items: readonly string[] | undefined }[] = [
     { label: locale.modalTierBody.youBring, items: bring },
-    { label: 'RFI-IRFOS', items: mechanism },
+    { label: locale.modalTierBody.we, items: mechanism },
     { label: locale.modalTierBody.youReceive, items: receive },
   ]
   return (
     <div style={{
-      display: 'flex', flexDirection: 'column', gap: 0, marginBottom: 16,
-      border: '1px solid rgba(0,245,196,0.18)', borderRadius: 12, overflow: 'hidden',
+      display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16,
+      border: '1px solid rgba(0,245,196,0.16)', borderRadius: 12, padding: '14px 16px',
+      background: 'rgba(0,245,196,0.03)',
     }}>
       {groups.map((g, gi) => (
         (g.items && g.items.length > 0) && (
           <div key={g.label} style={{
-            padding: '11px 14px',
-            borderTop: gi > 0 ? '1px solid rgba(0,245,196,0.12)' : undefined,
-            background: gi === 1 ? 'rgba(0,245,196,0.05)' : 'transparent',
+            paddingTop: gi > 0 ? 10 : 0,
+            borderTop: gi > 0 ? '1px solid rgba(255,255,255,0.07)' : undefined,
           }}>
             <div style={{
               fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, fontWeight: 700,
               color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 6,
             }}>{g.label}</div>
-            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexWrap: 'wrap', gap: '4px 16px' }}>
+            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
               {g.items!.map((item, i) => (
                 <li key={i} style={{ fontSize: 12.5, lineHeight: 1.5, color: 'var(--text)', display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                  <span style={{ color: TEAL, fontSize: 10 }}>&#9656;</span>{item}
+                  <span style={{ color: TEAL, fontSize: 10, flexShrink: 0 }}>&#9656;</span>{item}
                 </li>
               ))}
             </ul>
@@ -562,6 +565,10 @@ function EngagementFlow({ bring, mechanism, receive }: {
 // Shared renderer for a tier's concrete-use-case bullets (see CarouselTier.bullets) -
 // same small check-mark-in-a-circle glyph used nowhere else on the pricing UI, so it
 // reads as "here's a list of situations", not another paragraph of prose.
+// NOT rendered on pricing cards/modals any more (superseded by EngagementFlow, live
+// feedback 2026-08-15 - the two together overflowed the card's capped height and read as
+// redundant/broken, showing one truncated bullet). Still exported for any future non-
+// pricing CarouselTier consumer that wants "who this is for" without the 3-part diagram.
 function TierBullets({ bullets }: { bullets?: readonly string[] }) {
   if (!bullets || bullets.length === 0) return null
   return (
@@ -626,7 +633,7 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets, br
           margin: 0, marginBottom: 20, paddingLeft: 14, borderLeft: `2px solid ${TEAL}`,
         }}>{punchline}</p>
       )}
-      <TierBullets bullets={bullets} />
+      <EngagementFlow bring={bring} mechanism={mechanism} receive={receive} />
       {/* Price + delivery grouped bottom-left, same "one unit, one place" rule
           as the pricing cards - price used to sit top-right next to the tier
           name here, delivery bottom-left in its own pill; now they're one row. */}
@@ -869,7 +876,7 @@ export function TierCarousel({ tiers, getActions }: {
           leaving a wide empty margin either side. */}
       <motion.div key={active.tier} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}
         style={{
-          margin: '0 auto 14px', borderRadius: 18, padding: '20px 22px',
+          margin: '0 auto 14px', borderRadius: 18, padding: '20px 16px',
           // Opaque base + a teal wash (not a single translucent rgba fill) -
           // spine feedback, 2026-08-06: this pricing card is exactly the kind
           // of dense, text-heavy surface the scroll spine/orb must never bleed
@@ -900,9 +907,7 @@ export function TierCarousel({ tiers, getActions }: {
             <p key={i} style={{ color: 'var(--text)', fontSize: 13, lineHeight: 1.65, marginBottom: 9 }}>{p}</p>
           ))}
           <EngagementFlow bring={active.bring} mechanism={active.mechanism} receive={active.receive} />
-          <TierBullets bullets={active.bullets} />
         </div>
-        <div style={{ marginTop: -4 }}><OutputTags outputs={active.outputs} /></div>
         {/* Delivery pill (left) + green buy button showing cart icon + price (right).
             Replaces the old "Get Started" label - the price IS the button label. */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', gap: 12, marginTop: 14 }}>

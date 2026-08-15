@@ -471,6 +471,7 @@ export const DE: Content = {
   modalTierBody: {
     whatYouGet: 'Was Sie bekommen',
     youBring: 'Sie bringen',
+    we: 'Wir',
     youReceive: 'Sie erhalten',
   },
 
