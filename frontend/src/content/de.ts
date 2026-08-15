@@ -145,6 +145,7 @@ export const DE: Content = {
       sdkClasses: 'Wiederverwendbare Bibliotheken, über den gesamten Korpus korreliert.',
     },
     searchPlaceholder: 'Ihr Unternehmen suchen...',
+    clearSearchAriaLabel: 'Suche leeren',
     dropdowns: {
       statusPlaceholder: 'STATUS',
       sevPlaceholder: 'SCHWERE',
@@ -414,6 +415,7 @@ export const DE: Content = {
     disclosurePolicySuffix: ' - Triage, Rechtsgrundlage und Ihre Wahl der Namensnennung.',
     address: 'Elisabethinergasse 25\n8020 Graz, Österreich\nrfi-irfos.com · rfi-irfos.at',
     form: {
+      topicAriaLabel: 'Thema',
       topicPlaceholder: 'Thema (optional)',
       topicOptions: {
         securityDisclosure: 'Sicherheitsmeldung',
@@ -426,6 +428,7 @@ export const DE: Content = {
       namePlaceholder: 'Name oder Alias (optional - leer lassen, um anonym zu bleiben)',
       emailPlaceholder: 'E-Mail (optional - nur, wenn Sie eine Antwort wünschen)',
       targetPlaceholder: 'Unternehmen / App / Betreff',
+      creditAriaLabel: 'Namensnennung',
       creditOptions: {
         alias: 'Mit dem oben angegebenen Alias / Namen nennen',
         anonymous: 'Nicht nennen - anonym halten',

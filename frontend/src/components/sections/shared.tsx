@@ -564,7 +564,7 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets }: 
           stay quiet, it's just the section label, not primary content. */}
       <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: 'var(--text)', lineHeight: 1.2, marginBottom: 14 }}>{tier}</h3>
       {body.length > 0 && (
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>
+        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>
           {t.modalTierBody.whatYouGet}
         </div>
       )}

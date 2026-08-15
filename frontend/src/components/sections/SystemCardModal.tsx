@@ -42,7 +42,7 @@ function StatusBadge({ status }: { status: SystemStatus }) {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 6, marginTop: 18 }}>
+    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 6, marginTop: 18 }}>
       {children}
     </div>
   )
@@ -135,7 +135,7 @@ export function SystemCardModal({ systemKey, onClose, onNavigate }: {
         boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
         border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '36px 32px', maxWidth: 820, width: '100%', maxHeight: '85vh', overflowY: 'auto', position: 'relative',
       }}>
-        <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 20, lineHeight: 1, padding: 4, zIndex: 1 }}>&#x2715;</button>
+        <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 8, right: 8, background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 20, lineHeight: 1, padding: 10, zIndex: 1 }}>&#x2715;</button>
 
         {/* Zone breadcrumb - current zone highlighted, same architecture-position
             signal at the top of every card regardless of which system it is.
@@ -146,7 +146,7 @@ export function SystemCardModal({ systemKey, onClose, onNavigate }: {
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6, fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, letterSpacing: '0.04em', marginBottom: 16, paddingRight: 24 }}>
             {ZONE_ORDER.map((z, i) => (
               <span key={z} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ color: z === sys.zone ? '#00f5c4' : '#606080', fontWeight: z === sys.zone ? 800 : 500 }}>
+                <span style={{ color: z === sys.zone ? '#00f5c4' : '#7a7aa0', fontWeight: z === sys.zone ? 800 : 500 }}>
                   {z === sys.zone ? `[${ZONE_LABELS[z][locale].toUpperCase()}]` : ZONE_LABELS[z][locale]}
                 </span>
                 {i < ZONE_ORDER.length - 1 && <span style={{ color: '#404058' }}>&rarr;</span>}

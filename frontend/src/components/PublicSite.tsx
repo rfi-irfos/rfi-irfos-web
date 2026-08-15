@@ -518,7 +518,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     const big = 'font-family:monospace;font-size:32px;font-weight:900;color:#00f5c4'
     const h = 'font-size:15px;font-weight:700;color:#e8e8f0'
     const p = 'font-size:12px;color:#a0a0b8;line-height:1.7'
-    const mono = 'font-family:monospace;font-size:11px;color:#606080'
+    const mono = 'font-family:monospace;font-size:11px;color:#7a7aa0'
     const link = 'font-size:12px;color:#00f5c4;font-weight:700'
     const crit = 'font-family:monospace;font-size:11px;font-weight:900;color:#ef4444'
     const high = 'font-family:monospace;font-size:11px;font-weight:900;color:#f97316'
@@ -791,7 +791,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
               <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t.reportModal.label}</span>
-              <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
+              <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '9px 11px' }}>&#x2715;</button>
             </div>
             <iframe src={reportModal} style={{ flex: 1, border: 'none', width: '100%' }} title={t.reportModal.iframeTitle} />
           </div>
@@ -827,8 +827,8 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{intelModal.target} · {intelModal.market} · {intelModal.sev}</div>
-                <button onClick={() => setIntelModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }}>&#x2715;</button>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{intelModal.target} · {intelModal.market} · {intelModal.sev}</div>
+                <button onClick={() => setIntelModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '9px 11px' }}>&#x2715;</button>
               </div>
               <div style={{ padding: '20px 22px', overflowY: 'auto' }}>
                 {/* Newspaper-style headline - the thing a visitor with zero technical
@@ -840,7 +840,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 )}
                 <p style={{ fontSize: 15, lineHeight: 1.7, color: '#e8e8f0', margin: 0 }}>{meaning}</p>
                 <div style={{ marginTop: 20, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>{t.intelModal.evidenceLabel}</div>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>{t.intelModal.evidenceLabel}</div>
                   <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, lineHeight: 1.6, color: '#a0a0b8', margin: 0 }}>{technical}</p>
                 </div>
               </div>
@@ -869,7 +869,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 illegible grey-on-navy. */}
             <ModalTierBody tier={checkoutModal.tier} price={checkoutModal.price} desc={checkoutModal.desc} delivery={checkoutModal.delivery} mobile={mobile} bullets={checkoutModal.bullets} />
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>{t.checkoutModal.orderConfirmation}</div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>{t.checkoutModal.orderConfirmation}</div>
               {/* Single combined checkbox, not two - the old two-checkbox gate (business-customer
                   declaration + separate ToS/no-refund consent) meant the Continue button stayed
                   disabled through two clicks, not one, and funnel data showed most people never
@@ -961,7 +961,10 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px',
       }}>
         <a href="#" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
-          <img src="/logo.png" alt="RFI-IRFOS" style={{ width: 42, height: 42, objectFit: 'contain', flexShrink: 0 }} />
+          <picture>
+            <source srcSet="/logo.webp" type="image/webp" />
+            <img src="/logo.png" alt="" style={{ width: 42, height: 42, objectFit: 'contain', flexShrink: 0 }} />
+          </picture>
           <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: overDarkHero ? '#e8e8f0' : 'var(--text)' }}>RFI-IRFOS</span>
           <EkgLine theme={theme} />
         </a>
@@ -1184,7 +1187,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 {group.links.map(l => (
                   <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                    onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                    onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}>
                     {l.label}
                   </a>
                 ))}
@@ -1285,7 +1288,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                     font: 'inherit', color: 'var(--text3)', fontSize: 12, lineHeight: 1.6,
                   }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                    onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                    onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}>
                     {s.name}
                   </button>
                 ))}
@@ -1299,7 +1302,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                     font: 'inherit', color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                   }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                    onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                    onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}>
                     {r.n}
                   </button>
                 ))}
@@ -1313,7 +1316,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                     font: 'inherit', color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                   }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                    onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
+                    onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}>
                     {r.n}
                   </button>
                 ))}

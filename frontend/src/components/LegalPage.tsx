@@ -88,7 +88,7 @@ export function LegalPage({ slug }: { slug: string }) {
         {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology'].includes(slug) && (
           <p style={P}>Seite nicht gefunden.</p>
         )}
-        <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 10, color: '#404058' }}>
+        <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 10, color: '#7a7aa0' }}>
           RFI-IRFOS &nbsp;&middot;&nbsp; ZVR 1015608684 &nbsp;&middot;&nbsp; GISA 39261441 &nbsp;&middot;&nbsp; GLN 9110038490191 &nbsp;&middot;&nbsp; UID ATU83405245 &nbsp;&middot;&nbsp; Steuernummer 68 696/8736 &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz
         </div>
         {/* Lighthouse tracking pixel — page-view only, same mechanism disclosed in the privacy policy below */}
@@ -102,7 +102,7 @@ export function LegalPage({ slug }: { slug: string }) {
 function Impressum() {
   return <>
     <h1 style={H1}>Legal Notice</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act) &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act) &middot; Last updated: July 2026</p>
 
     <p style={P}>
       We publish under our own name, at a real street address, because coordinated disclosure only works if the institute doing it can be found, verified, and held to account — the same standard we hold everyone we audit to. Most of what follows on this page exists because the law requires it. A few lines exist because we think a legal notice page shouldn't feel like the one part of a website that nobody proofread.
@@ -180,7 +180,7 @@ function Impressum() {
 function Datenschutz() {
   return <>
     <h1 style={H1}>Privacy Policy</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>Pursuant to the GDPR (EU) 2016/679 &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Pursuant to the GDPR (EU) 2016/679 &middot; Last updated: July 2026</p>
 
     <p style={P}>
       This page has every section a privacy policy is supposed to have. We just refuse to pad any of them with the vague language that usually fills them, because we spend our working hours pointing out exactly that vague language in other people's apps. So: full sections, plain claims, and where a claim is checkable, we tell you how to check it.
@@ -288,7 +288,7 @@ function Datenschutz() {
 function AGB() {
   return <>
     <h1 style={H1}>General Terms and Conditions</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>RFI-IRFOS &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>RFI-IRFOS &middot; Last updated: July 2026</p>
 
     <p style={P}>
       Thirteen sections, no filler clause, nothing in here that exists only to look thorough. If a paragraph below feels short, that's because the short version was the accurate one.
@@ -354,7 +354,7 @@ function AGB() {
 function Security() {
   return <>
     <h1 style={H1}>Security Policy</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>Coordinated Disclosure &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Coordinated Disclosure &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
 
     <h2 style={H2}>Our Method</h2>
     <p style={P}>
@@ -433,7 +433,7 @@ function Security() {
 function Standards() {
   return <>
     <h1 style={H1}>Standards &amp; Compliance</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>The frameworks we file every audit against &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>The frameworks we file every audit against &middot; Last updated: July 2026</p>
 
     <p style={P}>
       Every audit RFI-IRFOS runs is filed against current EU and Austrian law. We track new standards as they enter force and keep our methodology up to date. This page lists what that actually means in practice — the specific frameworks, not just a claim that we "follow best practice."
@@ -517,7 +517,7 @@ const TEAM = [
 function Team() {
   return <>
     <h1 style={H1}>Team</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>One team, everything in-house</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>One team, everything in-house</p>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginTop: 32 }}>
       {TEAM.map(p => (
         <a key={p.name} href={p.gh ? `https://github.com/${p.gh}` : undefined} target="_blank" rel="noopener"
@@ -530,7 +530,7 @@ function Team() {
            onMouseEnter={e => { if (p.gh) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.4)' }}
            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)' }}>
           {p.gh ? (
-            <img src={`/team/${p.gh}.png`} alt={p.name} loading="lazy"
+            <img src={`/team/${p.gh}.png`} alt="" loading="lazy"
                  style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)', objectFit: 'cover' }} />
           ) : (
             <div style={{
@@ -588,7 +588,7 @@ const EVIDENCE_COLUMNS = [
 function Methodology() {
   return <>
     <h1 style={H1}>Methodology</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#606080' }}>The same rules, whoever the client is</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>The same rules, whoever the client is</p>
     <p style={P}>
       An investigator who bends the rules for a paying client isn't an investigator anymore - just a vendor with a fancier vocabulary. These four principles govern where we look, how we test, what we do with what we find, and when it becomes public, regardless of who's paying.
     </p>

@@ -2647,9 +2647,9 @@ export function TrackRecordSection({
               onBlur={e => { if (!searchQuery) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.18)' }}
             />
             {searchQuery && (
-              <button onClick={() => setSearchQuery('')} style={{
-                position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)', padding: 4, lineHeight: 0,
+              <button onClick={() => setSearchQuery('')} aria-label={t.trackRecord.clearSearchAriaLabel} style={{
+                position: 'absolute', right: 6, top: '50%', transform: 'translateY(-50%)',
+                background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)', padding: 9, lineHeight: 0,
               }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>

@@ -559,7 +559,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                 </PanelSection>
                 <PanelSection title="Schrift">
                   <div className="panel-field">
-                    <select value={draft.meta?.font ?? ''} onChange={e => update('meta.font', e.target.value)}>
+                    <select value={draft.meta?.font ?? ''} onChange={e => update('meta.font', e.target.value)} aria-label="Schrift">
                       <option value="system-ui, -apple-system, sans-serif">System Standard</option>
                       <option value="'Inter', sans-serif">Inter</option>
                       <option value="'Georgia', serif">Georgia</option>
@@ -766,7 +766,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                           <div key={f} style={{ marginBottom: 7 }}>
                             <label style={{ display: 'block', fontSize: 11, fontWeight: 600, marginBottom: 2, textTransform: 'capitalize' }}>{f.replace('_', ' ')}</label>
                             {f === 'status'
-                              ? <select value={editingStudent[f] as string} onChange={e => setEditingStudent(d => d ? ({ ...d, [f]: e.target.value } as Student) : null)} style={{ width: '100%', borderRadius: 6, border: '1px solid var(--panel-border, #e0e0e0)', padding: '5px 8px', fontSize: 12 }}>
+                              ? <select value={editingStudent[f] as string} onChange={e => setEditingStudent(d => d ? ({ ...d, [f]: e.target.value } as Student) : null)} aria-label={f.replace('_', ' ')} style={{ width: '100%', borderRadius: 6, border: '1px solid var(--panel-border, #e0e0e0)', padding: '5px 8px', fontSize: 12 }}>
                                   <option value="active">Active</option>
                                   <option value="paused">Paused</option>
                                   <option value="completed">Completed</option>
@@ -1054,7 +1054,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                   </div>
                   <div className="pem-field">
                     <label>Kategorie</label>
-                    <select value={editingProd.category} onChange={e => updateProduct(editingProd.id, 'category', e.target.value)}>
+                    <select value={editingProd.category} onChange={e => updateProduct(editingProd.id, 'category', e.target.value)} aria-label="Kategorie">
                       {(draft.products?.tabs?.slice(1) ?? []).map(t => <option key={t} value={t}>{t}</option>)}
                       {!(draft.products?.tabs?.slice(1) ?? []).includes(editingProd.category) && <option value={editingProd.category}>{editingProd.category}</option>}
                     </select>

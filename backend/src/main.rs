@@ -8,7 +8,7 @@ mod upload;
 
 use axum::{
     extract::Request,
-    http::header,
+    http::{header, HeaderName, HeaderValue},
     middleware::{self, Next},
     response::{IntoResponse, Redirect, Response},
     routing::{get, post}, Router,
@@ -28,6 +28,121 @@ async fn redirect_www(req: Request, next: Next) -> Response {
         return Redirect::permanent(&format!("https://{bare}{path_and_query}")).into_response();
     }
     next.run(req).await
+}
+
+// Lighthouse "Use efficient cache lifetimes" (live audit, 2026-08-15): every
+// static asset served by this app had Cache-Control: none — ~1,320 KiB of
+// avoidable re-downloads on repeat visits. Lifetime depends on whether Vite
+// content-hashes the file:
+//   - /assets/*.js /assets/*.css are content-hashed by Vite (e.g.
+//     index-CsjbmRaB.js) — the filename itself changes whenever the content
+//     does, so these are safe to cache for a full year as immutable.
+//   - index.html (and every extensionless SPA route that falls back to it,
+//     via spa_fallback below) references the CURRENT hashed filenames, so it
+//     must always be revalidated: caching it long risks serving a visitor a
+//     stale page pointing at asset hashes a later deploy has already deleted.
+//   - Plain images (/logo.png, /hero-software.jpeg, ...) are NOT
+//     content-hashed, so a full year is too aggressive — an image swap on
+//     the same filename wouldn't bust the cache. A week is a deliberate
+//     middle ground between bandwidth savings and staleness risk; adjust up
+//     if these images turn out to change rarely in practice.
+// Scoped to the static frontend surface only (excludes /api, /auth,
+// /uploads) so we never accidentally cache something like the tracking
+// pixel at /api/track/pixel.gif, which would silently undercount visits.
+async fn set_cache_control(req: Request, next: Next) -> Response {
+    let path = req.uri().path().to_string();
+    let mut res = next.run(req).await;
+
+    if path.starts_with("/api/") || path.starts_with("/auth/") || path.starts_with("/uploads/") {
+        return res;
+    }
+
+    let cache_value = if path.starts_with("/assets/") {
+        "public, max-age=31536000, immutable"
+    } else if [".png", ".jpg", ".jpeg", ".webp", ".gif", ".ico", ".svg"]
+        .iter()
+        .any(|ext| path.ends_with(ext))
+    {
+        "public, max-age=604800" // 1 week — see rationale above
+    } else {
+        "no-cache" // index.html and every SPA route that falls back to it
+    };
+
+    res.headers_mut()
+        .insert(header::CACHE_CONTROL, HeaderValue::from_static(cache_value));
+    res
+}
+
+// Lighthouse "Best Practices" (live audit, 2026-08-15) flagged CSP, HSTS,
+// COOP and frame-control as entirely absent (all High severity — literal
+// "No CSP found" / "No HSTS header found" / "No COOP header found" / "No
+// frame control policy found"). Applied as a separate global layer since
+// these headers belong on every response, not just static assets.
+//
+// The CSP allowlist below was built by grepping frontend/src + index.html
+// for every external resource the site actually loads (2026-08-15), not
+// guessed:
+//   - script-src/style-src 'unsafe-inline': frontend/index.html ships two
+//     inline <script> blocks (http->https upgrade, a URL-rewrite hack for
+//     GitHub-Pages-style query params), and React's style={{...}} props
+//     render as inline style="" attributes throughout the app. There's no
+//     nonce/hash plumbing in this static-file server to avoid 'unsafe-inline'
+//     without a much larger change (per-request HTML rewriting).
+//   - style-src/font-src fonts.googleapis.com/fonts.gstatic.com:
+//     index.html preconnects to and loads Inter/Space Grotesk/JetBrains
+//     Mono from Google Fonts.
+//   - img-src/connect-src lighthouse-rfi-irfos.fly.dev: the first-party
+//     tracking pixel (<img src=.../pixel.gif> in PublicSite.tsx/
+//     LegalPage.tsx) and the beacon (fetch POST to .../api/track).
+//   - connect-src api.github.com: the admin panel's GitHub Contents API
+//     read/write (frontend/src/lib/github.ts).
+//   - img-src/connect-src raw.githubusercontent.com: the public site's live
+//     content fetch (frontend/src/hooks/useContent.ts) and uploaded content
+//     images, which are served straight from raw.githubusercontent.com URLs.
+//   - connect-src api.web3forms.com: the contact form's email fallback path
+//     (PublicSite.tsx submitTip) used only if the CRM relay to /api/contact
+//     fails.
+//   - Stripe (checkout.stripe.com / buy.stripe.com) is deliberately NOT in
+//     connect-src or script-src: there's no Stripe.js on the frontend at
+//     all (confirmed via package.json + source grep) — checkout is a full
+//     top-level navigation, `window.location.href = url`, in
+//     PublicSite.tsx's handleCheckout/confirmCheckout. CSP's connect-src/
+//     script-src don't govern plain top-level navigations, so no entry is
+//     needed and adding one would be a no-op at best.
+const CSP_POLICY: &str = "default-src 'self'; \
+    script-src 'self' 'unsafe-inline'; \
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; \
+    font-src 'self' https://fonts.gstatic.com; \
+    img-src 'self' data: https://raw.githubusercontent.com https://lighthouse-rfi-irfos.fly.dev; \
+    connect-src 'self' https://lighthouse-rfi-irfos.fly.dev https://api.github.com https://raw.githubusercontent.com https://api.web3forms.com; \
+    frame-src 'self'; \
+    frame-ancestors 'self'; \
+    object-src 'none'; \
+    base-uri 'self'; \
+    form-action 'self'";
+
+async fn set_security_headers(req: Request, next: Next) -> Response {
+    let mut res = next.run(req).await;
+    let headers = res.headers_mut();
+
+    headers.insert(header::CONTENT_SECURITY_POLICY, HeaderValue::from_static(CSP_POLICY));
+    // fly.toml already sets force_https = true at the edge; HSTS just tells
+    // the browser to remember that and skip the plaintext hop entirely.
+    headers.insert(
+        header::STRICT_TRANSPORT_SECURITY,
+        HeaderValue::from_static("max-age=31536000; includeSubDomains"),
+    );
+    // Stripe Checkout redirects the top-level page rather than popping up
+    // (see CSP comment above), so same-origin is safe here.
+    headers.insert(
+        HeaderName::from_static("cross-origin-opener-policy"),
+        HeaderValue::from_static("same-origin"),
+    );
+    // Belt-and-suspenders with the CSP frame-ancestors directive above, for
+    // older browsers that don't honor frame-ancestors.
+    headers.insert(header::X_FRAME_OPTIONS, HeaderValue::from_static("SAMEORIGIN"));
+
+    res
 }
 
 #[derive(Clone)]
@@ -120,6 +235,8 @@ async fn main() {
         .fallback_service(spa_fallback)
         .with_state(state)
         .layer(CorsLayer::permissive())
+        .layer(middleware::from_fn(set_cache_control))
+        .layer(middleware::from_fn(set_security_headers))
         .layer(middleware::from_fn(redirect_www));
 
     let port = std::env::var("PORT").unwrap_or("3000".into());

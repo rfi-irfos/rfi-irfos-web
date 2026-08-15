@@ -148,6 +148,7 @@ export const EN = {
       sdkClasses: 'Reusable libraries correlated across the entire corpus.',
     },
     searchPlaceholder: 'search your company...',
+    clearSearchAriaLabel: 'Clear search',
     dropdowns: {
       statusPlaceholder: 'STATUS',
       sevPlaceholder: 'SEV',
@@ -421,6 +422,7 @@ export const EN = {
     disclosurePolicySuffix: ' - triage, lawful basis, and your choice of credit.',
     address: 'Elisabethinergasse 25\n8020 Graz, Austria\nrfi-irfos.com · rfi-irfos.at',
     form: {
+      topicAriaLabel: 'Topic',
       topicPlaceholder: 'Topic (optional)',
       topicOptions: {
         securityDisclosure: 'Security Disclosure',
@@ -433,6 +435,7 @@ export const EN = {
       namePlaceholder: 'Name or alias (optional - leave blank to stay anonymous)',
       emailPlaceholder: 'Email (optional - only if you want a reply)',
       targetPlaceholder: 'Company / app / subject',
+      creditAriaLabel: 'Credit preference',
       creditOptions: {
         alias: 'Credit me by alias / name I provide above',
         anonymous: 'Do not credit me - keep this anonymous',

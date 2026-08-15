@@ -105,7 +105,7 @@ export function SubmitSection({
               <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
                 value={tipForm.botcheck} onChange={e => setTipForm(p => ({ ...p, botcheck: e.target.value }))}
                 style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
-              <select value={tipForm.topic} onChange={e => setTipForm(p => ({ ...p, topic: e.target.value }))} style={{
+              <select value={tipForm.topic} onChange={e => setTipForm(p => ({ ...p, topic: e.target.value }))} aria-label={t.submit.form.topicAriaLabel} style={{
                 background: 'var(--input-bg)', border: '1px solid var(--border)',
                 borderRadius: 8, padding: '12px 16px', color: tipForm.topic ? 'var(--text)' : 'var(--text3)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
               }}>
@@ -126,7 +126,7 @@ export function SubmitSection({
               <input type="text" required placeholder={t.submit.form.targetPlaceholder}
                 value={tipForm.target} onChange={e => setTipForm(p => ({ ...p, target: e.target.value }))}
                 style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-              <select value={tipForm.credit} onChange={e => setTipForm(p => ({ ...p, credit: e.target.value }))} style={{
+              <select value={tipForm.credit} onChange={e => setTipForm(p => ({ ...p, credit: e.target.value }))} aria-label={t.submit.form.creditAriaLabel} style={{
                 background: 'var(--input-bg)', border: '1px solid var(--border)',
                 borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
               }}>

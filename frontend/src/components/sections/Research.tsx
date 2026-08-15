@@ -87,7 +87,7 @@ function ResearchAreaModal({ index, onClose, onNavigate }: {
         boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
         border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '40px 36px', maxWidth: 640, width: '100%', maxHeight: '85vh', overflowY: 'auto', position: 'relative',
       }}>
-        <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 20, lineHeight: 1, padding: 4 }}>&#x2715;</button>
+        <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 8, right: 8, background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 20, lineHeight: 1, padding: 10 }}>&#x2715;</button>
         <div style={{ lineHeight: 0, marginBottom: 18 }}>{icon}</div>
         <h3 style={{ fontSize: 26, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2, marginBottom: 20, paddingRight: 24 }}>{area.title}</h3>
         {/* Plain-language anchor line (2026-08-15, live feedback: the two prose
