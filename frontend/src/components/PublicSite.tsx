@@ -203,8 +203,8 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   // Cards now show only tier/price/CTA - the full breakdown (what this tier actually
   // is) moved into this confirmation modal, shown above the B2B/ToS checkboxes, so
   // nothing gets lost by trimming the card itself.
-  const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string } | null>(null)
-  const [proposalModal, setProposalModal]     = useState<{ tier: string; desc: string; price: string; delivery?: string } | null>(null)
+  const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[] } | null>(null)
+  const [proposalModal, setProposalModal]     = useState<{ tier: string; desc: string; price: string; delivery?: string; bullets?: readonly string[] } | null>(null)
   const [reportModal, setReportModal]         = useState<string | null>(null)
   // Full plain-language writeup per ledger entry - the ledger row/cell only ever
   // summarizes (hover reveals the short "why it matters" line), this is where the
@@ -343,7 +343,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     setTimeout(() => { setCookieBannerOpen(false); setBannerClosing(false) }, 240)
   }
 
-  const openCheckoutModal = (info: { key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string }) => {
+  const openCheckoutModal = (info: { key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[] }) => {
     // Funnel step 1: user pressed the tier button → open the checkout modal AND
     // beam offer_click:<tier> to Lighthouse (same first-party tracker as pageviews).
     beacon('offer_click:' + info.key)
@@ -358,7 +358,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     setCheckoutModal(null)
   }
 
-  const openProposalModal = (info: { tier: string; desc: string; price: string; delivery?: string }) => {
+  const openProposalModal = (info: { tier: string; desc: string; price: string; delivery?: string; bullets?: readonly string[] }) => {
     setProposalModal(info)
   }
 
@@ -850,7 +850,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 site theme toggle - so every text color inside it is a fixed light hex, NOT a
                 var(--text*) token, which would resolve to near-black in light mode and read as
                 illegible grey-on-navy. */}
-            <ModalTierBody tier={checkoutModal.tier} price={checkoutModal.price} desc={checkoutModal.desc} delivery={checkoutModal.delivery} mobile={mobile} />
+            <ModalTierBody tier={checkoutModal.tier} price={checkoutModal.price} desc={checkoutModal.desc} delivery={checkoutModal.delivery} mobile={mobile} bullets={checkoutModal.bullets} />
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
               <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#606080', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>{t.checkoutModal.orderConfirmation}</div>
               {/* Single combined checkbox, not two - the old two-checkbox gate (business-customer
@@ -902,7 +902,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             border: '1px solid rgba(255,255,255,0.08)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '28px 24px 36px' : '40px 36px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
             {/* Same fixed-light-on-dark rule as the checkout modal above - this chrome
                 doesn't follow the site theme either. */}
-            <ModalTierBody tier={proposalModal.tier} price={proposalModal.price} desc={proposalModal.desc} delivery={proposalModal.delivery} mobile={mobile} />
+            <ModalTierBody tier={proposalModal.tier} price={proposalModal.price} desc={proposalModal.desc} delivery={proposalModal.delivery} mobile={mobile} bullets={proposalModal.bullets} />
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
               <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.6, marginBottom: 20 }}>
                 {t.proposalModal.bodyPrefix}<strong style={{ color: '#e8e8f0' }}>{proposalModal.tier}</strong>{t.proposalModal.bodySuffix}

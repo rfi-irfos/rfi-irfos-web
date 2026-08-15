@@ -504,6 +504,22 @@ export function ArrowIcon() {
     </svg>
   )
 }
+// Shared renderer for a tier's concrete-use-case bullets (see CarouselTier.bullets) -
+// same small check-mark-in-a-circle glyph used nowhere else on the pricing UI, so it
+// reads as "here's a list of situations", not another paragraph of prose.
+function TierBullets({ bullets }: { bullets?: readonly string[] }) {
+  if (!bullets || bullets.length === 0) return null
+  return (
+    <ul style={{ listStyle: 'none', margin: '0 0 14px', padding: 0, display: 'flex', flexDirection: 'column', gap: 7 }}>
+      {bullets.map((b, i) => (
+        <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12.5, lineHeight: 1.55, color: 'var(--text)' }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 3 }}><path d="M20 6L9 17l-5-5" /></svg>
+          <span>{b}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
 export function ClockIcon() {
   return (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -518,8 +534,8 @@ export function ClockIcon() {
 // the tier copy's closing sentence (always the strongest line - see the pricing rewrite)
 // pulled out as a distinct highlighted callout instead of blending into the paragraph
 // flow. Delivery line upgraded from floating text to an actual bordered pill.
-export function ModalTierBody({ tier, price, desc, delivery, mobile }: {
-  tier: string; price: string; desc: string; delivery?: string; mobile: boolean
+export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets }: {
+  tier: string; price: string; desc: string; delivery?: string; mobile: boolean; bullets?: readonly string[]
 }) {
   const { t } = useLocale()
   const paras = desc.split('\n\n')
@@ -554,6 +570,7 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile }: {
           margin: 0, marginBottom: 20, paddingLeft: 14, borderLeft: `2px solid ${TEAL}`,
         }}>{punchline}</p>
       )}
+      <TierBullets bullets={bullets} />
       {/* Price + delivery grouped bottom-left, same "one unit, one place" rule
           as the pricing cards - price used to sit top-right next to the tier
           name here, delivery bottom-left in its own pill; now they're one row. */}
@@ -724,6 +741,10 @@ export type CarouselTier = {
   price: string
   hook?: string
   desc: string
+  // Concrete, jargon-free use cases ("you're in this situation, this tier is for
+  // you") - added 2026-08-15, live feedback: the desc prose alone doesn't land for
+  // a visitor with zero background in what RFI-IRFOS does, however well-written.
+  bullets?: readonly string[]
   delivery?: string
   highlight?: boolean
   outputs?: readonly string[]
@@ -810,10 +831,11 @@ export function TierCarousel({ tiers, getActions }: {
             raised 12->22 (live feedback 2026-08-14: the hook sentence and the
             first description paragraph read as cramped, one line of air wasn't
             enough breathing room between them). */}
-        <div style={{ marginTop: 22, maxHeight: 240, overflowY: 'auto' }}>
+        <div style={{ marginTop: 22, maxHeight: 320, overflowY: 'auto' }}>
           {active.desc.split('\n\n').map((p, i) => (
             <p key={i} style={{ color: 'var(--text)', fontSize: 13, lineHeight: 1.65, marginBottom: 9 }}>{p}</p>
           ))}
+          <TierBullets bullets={active.bullets} />
         </div>
         <div style={{ marginTop: -4 }}><OutputTags outputs={active.outputs} /></div>
         {/* Delivery pill (left) + green buy button showing cart icon + price (right).

@@ -4,7 +4,6 @@ import { useState, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { prefersReducedMotion, Reveal, RevealWords, CountUp, HeroFlipWord } from './shared'
 import { RESEARCH_AREAS } from './Research'
-import { PROJECTS } from './Projects'
 import { useLocale } from '../../hooks/useLocale'
 import type { Theme } from '../../hooks/useTheme'
 
@@ -155,7 +154,13 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
             explaining why the institute matters beyond appsec. */}
         {([
           { n: `${RESEARCH_AREAS.length}`,    label: t.hero.stats.researchAreas,      from: 'left'   as const },
-          { n: `${PROJECTS.length}+`,         label: t.hero.stats.openSourceProjects, from: 'bottom' as const },
+          // Was `${PROJECTS.length}+` (18+) - only counted the curated highlight
+          // cards in the Systems section, not RFI-IRFOS's actual system count.
+          // Live-counted via `gh repo list` across both accounts (2026-08-15):
+          // 53 original (non-fork) repositories - see rfi-irfos-architecture-
+          // synthesis.md for the full breakdown. Re-count periodically, same
+          // caveat as the footer's repo directory (content/repos.ts).
+          { n: '53+',                         label: t.hero.stats.openSourceProjects, from: 'bottom' as const },
           { n: `${PUBLICATIONS.length}+`,     label: t.hero.stats.publications,       from: 'scale'  as const },
           { n: '301',                         label: t.hero.stats.agents,             from: 'bottom' as const },
           { n: '1',                           label: t.hero.stats.worldModel,         from: 'bottom' as const },
