@@ -1,11 +1,18 @@
 // Animated preview diagrams for the System Card modal's left column
 // (2026-08-15). 143 modals, most with no live UI to screenshot - rather than
 // one bespoke animation per system (untenable) or a static icon (reads as
-// filler), this is a small family of ~12 visual metaphors assigned by what a
+// filler), this is a small family of ~14 visual metaphors assigned by what a
 // system actually does (see content/systemPreviews.ts for the assignment
 // logic). Every archetype shares the same viewBox and the same keyframe
 // vocabulary from index.css, so switching between modals via the "connects
 // to" pills never feels like jumping between unrelated design systems.
+// Every archetype also carries a short plain-language caption baked into the
+// SVG itself (live feedback 2026-08-15: "das sind doch keine archetypen...
+// die sollen wie strassentafeln jede mensch unmissverständlich erklären was
+// des system macht" - reusing one diagram across many systems is fine, an
+// unlabeled abstract shape that reads as decoration is not). The caption
+// states what the *pattern* does, not the specific system - the system's own
+// name/description sits in the modal's text column right next to it.
 // Pure SVG + CSS animation - no canvas, no animation library, so this stays
 // prerenderable and costs nothing at rest (paused off-screen via CSS
 // containment the same way the rest of the site treats decorative motion).
@@ -41,6 +48,7 @@ function OrchestratorHub({ accent }: { accent: string }) {
   ]
   return (
     <Frame>
+      <text x={cx} y={16} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">ONE HUB, MANY SPOKES</text>
       {spokes.map((s, i) => (
         <line key={i} x1={cx} y1={cy} x2={s.x} y2={s.y} stroke={accent} strokeWidth={1} opacity={0.22} />
       ))}
@@ -61,6 +69,7 @@ function PipelineFlow({ accent }: { accent: string }) {
   const stages = [40, 100, 160, 220]
   return (
     <Frame>
+      <text x={VB_W / 2} y={246} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">STAGE BY STAGE, IN ORDER</text>
       <line x1={30} y1={y} x2={230} y2={y} stroke={accent} strokeWidth={1} opacity={0.2} />
       {stages.map((x, i) => (
         <rect key={i} x={x - 14} y={y - 20} width={28} height={40} rx={5} fill="none" stroke={accent} strokeWidth={1.4} opacity={0.55} />
@@ -93,6 +102,7 @@ function VectorStorage({ accent }: { accent: string }) {
   })
   return (
     <Frame>
+      <text x={VB_W / 2} y={16} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">GROUPS BY SIMILARITY</text>
       {dots.map(d => (
         <circle key={d.i} cx={d.startX} cy={d.startY} r={6.5} fill={accent} opacity={0.75}
           style={{
@@ -133,7 +143,7 @@ function DeterministicReplay({ accent }: { accent: string }) {
   // charts, not showing the architecture"). The actual claim is "run it
   // twice, get the identical result" - so this literally runs two identical
   // lanes in perfect lockstep, both landing on the same checkmark at the
-  // same instant. No other archetype states that as plainly.
+  // same instant.
   const lanes = [VB_W / 2 - 56, VB_W / 2 + 56]
   const steps = [-70, -20, 30]
   return (
@@ -160,6 +170,7 @@ function CliTerminal({ accent }: { accent: string }) {
   const x = 40, y = 90, w = 180, h = 120
   return (
     <Frame>
+      <text x={VB_W / 2} y={246} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">RUN FROM THE COMMAND LINE</text>
       <rect x={x} y={y} width={w} height={h} rx={7} fill="none" stroke={accent} strokeWidth={1.4} opacity={0.55} />
       <line x1={x} y1={y + 24} x2={x + w} y2={y + 24} stroke={accent} strokeWidth={1} opacity={0.3} />
       {[0, 1, 2].map(i => <circle key={i} cx={x + 14 + i * 12} cy={y + 12} r={3} fill={accent} opacity={0.5} />)}
@@ -176,6 +187,7 @@ function ProtocolBridge({ accent }: { accent: string }) {
   const rows = [-40, -14, 12, 38]
   return (
     <Frame>
+      <text x={VB_W / 2} y={244} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">TRANSLATES BETWEEN TWO SIDES</text>
       {[30, VB_W - 30 - bw].map((bx, side) => (
         <g key={side}>
           <rect x={bx} y={y - bh / 2} width={bw} height={bh} rx={8} fill="none" stroke={accent} strokeWidth={1.5} opacity={0.6} />
@@ -203,6 +215,7 @@ function ForkReference({ accent }: { accent: string }) {
   const cx = VB_W / 2, originY = 56
   return (
     <Frame>
+      <text x={cx} y={248} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">KEPT FOR REFERENCE ONLY</text>
       <circle cx={cx} cy={originY} r={13} fill={accent} />
       <path d={`M ${cx} ${originY + 13} L ${cx + 58} ${originY + 68} L ${cx + 58} ${VB_H - 40}`} fill="none" stroke={accent} strokeWidth={3} strokeLinecap="round" strokeDasharray="10 6" opacity={0.9}
         style={{ animation: 'rfi-diagram-march 1.4s linear infinite' }} />
@@ -219,6 +232,7 @@ function SecurityGate({ accent }: { accent: string }) {
   const y = VB_H / 2
   return (
     <Frame>
+      <text x={VB_W / 2} y={244} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">CHECKED BEFORE IT PASSES</text>
       <line x1={20} y1={y} x2={240} y2={y} stroke={accent} strokeWidth={1} opacity={0.18} />
       <path d={`M ${VB_W / 2 - 20} ${y - 34} L ${VB_W / 2 + 20} ${y - 34} L ${VB_W / 2 + 20} ${y + 10} Q ${VB_W / 2} ${y + 40} ${VB_W / 2 - 20} ${y + 10} Z`}
         fill="none" stroke={accent} strokeWidth={1.8} opacity={0.75} />
@@ -235,6 +249,7 @@ function ModelInference({ accent }: { accent: string }) {
   const counts = [3, 4, 3]
   return (
     <Frame>
+      <text x={VB_W / 2} y={244} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">SIGNAL FLOWS LAYER TO LAYER</text>
       {layers.map((x, li) => Array.from({ length: counts[li] }, (_, ni) => {
         const spread = counts[li] === 4 ? [-72, -24, 24, 72] : [-48, 0, 48]
         return <circle key={`${li}-${ni}`} cx={x} cy={VB_H / 2 + spread[ni]} r={5.5} fill="none" stroke={accent} strokeWidth={1.4}
@@ -255,6 +270,7 @@ function HardwareSilicon({ accent }: { accent: string }) {
   const path = 'M30,80 H90 V50 H160 V110 H230 M90,50 V150 H60 V220 M160,110 V200 H200 M160,150 H120 V240'
   return (
     <Frame>
+      <text x={VB_W / 2} y={14} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={9} fill={accent} opacity={0.45} letterSpacing="0.1em">BUILT INTO THE CIRCUIT</text>
       <path d={path} fill="none" stroke={accent} strokeWidth={1.3} opacity={0.35} />
       <path d={path} fill="none" stroke={accent} strokeWidth={1.6} strokeDasharray="1" pathLength={1}
         style={{ animation: 'rfi-draw 5s ease-in-out infinite', strokeDashoffset: 1 } as React.CSSProperties} />
@@ -270,6 +286,7 @@ function DocumentReview({ accent }: { accent: string }) {
   const checks = [y + 34, y + 66, y + 98]
   return (
     <Frame>
+      <text x={VB_W / 2} y={244} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">REVIEWED LINE BY LINE</text>
       <rect x={x} y={y} width={w} height={h} rx={6} fill="none" stroke={accent} strokeWidth={1.5} opacity={0.6} />
       <line x1={x + 14} y1={y + 16} x2={x + w - 14} y2={y + 16} stroke={accent} strokeWidth={1.2} opacity={0.4} />
       {checks.map((cy, i) => (
@@ -303,6 +320,7 @@ function WebApp({ accent }: { accent: string }) {
         </linearGradient>
         <clipPath id="rfi-diagram-webapp-clip"><rect x={cx0} y={cy0} width={cw} height={ch} rx={4} /></clipPath>
       </defs>
+      <text x={VB_W / 2} y={242} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">RUNS IN THE BROWSER</text>
       <rect x={x} y={y} width={w} height={h} rx={7} fill="none" stroke={accent} strokeWidth={1.5} opacity={0.6} />
       <line x1={x} y1={y + 22} x2={x + w} y2={y + 22} stroke={accent} strokeWidth={1} opacity={0.3} />
       {[0, 1, 2].map(i => <circle key={i} cx={x + 14 + i * 11} cy={y + 11} r={2.8} fill={accent} opacity={0.5} />)}
@@ -322,6 +340,7 @@ function EmptyPlaceholder({ accent }: { accent: string }) {
     <Frame>
       <rect x={x} y={y} width={w} height={h} rx={6} fill="none" stroke={accent} strokeWidth={1.2} strokeDasharray="5 5" opacity={0.35} />
       <circle cx={VB_W / 2} cy={VB_H / 2} r={4} fill={accent} opacity={0.35} style={{ animation: 'rfi-diagram-echo 4s ease-in-out infinite', transformBox: 'fill-box', transformOrigin: 'center' }} />
+      <text x={VB_W / 2} y={246} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize={10} fill={accent} opacity={0.45} letterSpacing="0.1em">NOTHING BUILT HERE YET</text>
     </Frame>
   )
 }

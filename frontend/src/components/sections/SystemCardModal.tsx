@@ -48,27 +48,45 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
-// Two equal halves (live feedback 2026-08-15, stated repeatedly: "modal of
-// two equal slices... instagram sized square card left side with the
-// diagram and the other with the writing") - this box now fills its whole
-// half of the panel rather than sitting as a small fixed-size box in a lot
-// of left-over whitespace. aspectRatio keeps it square regardless of the
-// panel's actual width, same footprint whether it holds a real screenshot
-// (object-fit: cover) or a generated SVG diagram (fills via width/height
-// 100%), so switching systems via the "connects to" pills never produces a
-// visible size jump.
+// Card fills the FULL height of its column, matching the text side (live
+// feedback 2026-08-15: "die visualisierung muss auch bis zum boden
+// runterkommen" - the previous aspectRatio: '1/1' box stayed square and
+// left a dead gap of plain modal background below it whenever the text
+// side's 7 content blocks ran taller, which is most of the time). height:
+// '100%' + the flex row's default align-items: stretch means this card's
+// outer edge always matches the text column's height, so the two halves
+// read as one true rectangle split into two equal panels, not one full-height
+// panel next to a small square floating in whitespace. A real screenshot
+// still covers the whole card (object-fit: cover handles a non-square box
+// fine); a generated SVG diagram instead stays a true, undistorted square
+// (aspectRatio '1/1' on the inner wrapper) centered inside the taller card -
+// stretching the line-art itself to a tall rectangle would visibly warp it.
 function PreviewBox({ preview, accent }: { preview: ReturnType<typeof getPreview>; accent: string }) {
   return (
     <div style={{
-      width: '100%', aspectRatio: '1 / 1', borderRadius: 10, overflow: 'hidden',
+      width: '100%', height: '100%', minHeight: 280, borderRadius: 10, overflow: 'hidden',
       background: 'radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,0.05), transparent 60%), #0c0c11',
       border: '1px solid rgba(255,255,255,0.08)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
     }}>
       {preview.type === 'image'
         ? <img src={preview.src} alt={preview.alt} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        : <div style={{ width: '96%', height: '96%' }}><SystemDiagram archetype={preview.archetype} accent={accent} /></div>}
+        : <div style={{ width: '96%', aspectRatio: '1 / 1', maxHeight: '96%' }}><SystemDiagram archetype={preview.archetype} accent={accent} /></div>}
     </div>
+  )
+}
+
+// Same pill chrome as the "connects to" buttons below, reused for the
+// external links row (live feedback 2026-08-15: "die links am ende des
+// modal unten zu klein und sollten auch iwie rechts sein und in einer pill
+// sitzen" - was plain small underline-free text, left-aligned).
+function LinkPill({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" style={{
+      fontSize: 13, fontWeight: 700, padding: '8px 16px', borderRadius: 999, cursor: 'pointer',
+      background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)', color: '#8fe8d0',
+      fontFamily: "'JetBrains Mono', monospace", textDecoration: 'none',
+    }}>{children}</a>
   )
 }
 
@@ -193,10 +211,10 @@ export function SystemCardModal({ systemKey, onClose, onNavigate }: {
         </div>
 
         {(sys.links.github || sys.links.crates || sys.links.live) && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginTop: 24, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            {sys.links.github && <a href={sys.links.github} target="_blank" rel="noopener noreferrer" style={{ color: '#8fe8d0', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>GitHub &rarr;</a>}
-            {sys.links.crates && <a href={sys.links.crates} target="_blank" rel="noopener noreferrer" style={{ color: '#8fe8d0', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>crates.io &rarr;</a>}
-            {sys.links.live && <a href={sys.links.live} target="_blank" rel="noopener noreferrer" style={{ color: '#8fe8d0', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>{locale === 'de' ? 'Live ansehen' : 'View live'} &rarr;</a>}
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 10, marginTop: 24, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            {sys.links.github && <LinkPill href={sys.links.github}>GitHub &rarr;</LinkPill>}
+            {sys.links.crates && <LinkPill href={sys.links.crates}>crates.io &rarr;</LinkPill>}
+            {sys.links.live && <LinkPill href={sys.links.live}>{locale === 'de' ? 'Live ansehen' : 'View live'} &rarr;</LinkPill>}
           </div>
         )}
       </div>

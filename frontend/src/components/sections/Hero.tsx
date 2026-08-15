@@ -68,37 +68,21 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
         ? 'rgba(0,0,0,0.45)'
         : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.55) 0%, rgba(5,7,14,0.32) 52%, rgba(5,7,14,0.5) 100%)',
     }}>
-      {/* Real live footage of our own OSINT/monitoring software as the hero backdrop
-          (live feedback 2026-08-15: "damit sieht man mehr, und man kann das video
-          einfach loopen" - a static screenshot never showed the dashboard's own live
-          motion, a looping video does, natively, with no scripted reveal needed).
-          Was a static screenshot with a scale+pan Ken Burns loop (.rfi-hero-zoom);
-          the video keeps that screenshot as its `poster` (first-paint fallback before
-          the video loads, and the frame shown under prefers-reduced-motion, where we
-          don't autoplay) and gets its own slower, pan-free zoom class
-          (.rfi-hero-video-zoom, index.css) - panning on top of footage that's already
-          animating its own content read as too much motion. muted+playsInline+loop:
-          required for autoplay on mobile Safari/Chrome; no audio track exists anyway
-          (stripped at encode time). Same stacking position as the screenshot before
-          it: behind HeroBackground's WebGL canvas (zIndex -1) at -2, behind the tint
-          gradient above it. */}
-      {/* Zoom transform lives on this wrapper, NOT the <video> itself (live
-          feedback 2026-08-15: "es wackelt... schaut aus als hätt sie a
-          erdbeben" - animating transform directly on a <video> element
-          fights the browser's own video-frame compositing/decode pipeline
-          in a way a plain <img>/background-image never did, producing a
-          visible judder that isn't in the source footage. Moving the
-          animated transform one level up, onto a plain div with the video
-          filling it via inset:0, keeps the video's own paint path untouched
-          and lets the transform run on ordinary compositor layers instead. */}
-      <div aria-hidden="true" className="rfi-hero-video-zoom" style={{ position: 'absolute', inset: 0, zIndex: -2, overflow: 'hidden' }}>
-        <video autoPlay={!prefersReducedMotion()} muted loop playsInline
-          poster="/hero-software-poster.jpg" style={{
-            position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover',
-          }}>
-          <source src="/hero-software.mp4" type="video/mp4" />
-        </video>
-      </div>
+      {/* Real screenshot of our own OSINT/monitoring software as the hero backdrop
+          (reverted 2026-08-15, live feedback: back to a still image - the looping
+          video read as too busy/distracting sitting behind the headline). Slow Ken
+          Burns zoom-out - starts tight/zoomed in, eases out to the full frame over
+          the animation's run, then holds (animation-fill-mode: forwards in the
+          .rfi-hero-zoom CSS rule, index.css). overflow: hidden on the section above
+          clips the zoomed-in overflow; transform (not background-size) animates since
+          transform is compositor-only, cheaper than repainting background-size every
+          frame. Sits behind HeroBackground's WebGL canvas (zIndex -1) at -2, and
+          behind the tint gradient above it (the section's own `background`, which
+          paints on top of z-index -2/-1 children per normal stacking order). */}
+      <div aria-hidden="true" className="rfi-hero-zoom" style={{
+        position: 'absolute', inset: 0, zIndex: -2,
+        backgroundImage: 'url("/hero-software.jpeg")', backgroundSize: 'cover', backgroundPosition: 'center',
+      }} />
       <HeroBackground theme={theme} />
       {/* Stays English in both locales (live feedback) - "Rethink the Obvious."
           is the site's signature line/wordmark-adjacent phrase, not translated
