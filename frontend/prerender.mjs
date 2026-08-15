@@ -32,6 +32,7 @@ const MIME = {
   '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json',
   '.woff2': 'font/woff2', '.ico': 'image/x-icon',
+  '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.mp4': 'video/mp4',
 }
 
 const server = createServer(async (req, res) => {
@@ -54,8 +55,21 @@ const browser = await chromium.launch()
 const page = await browser.newPage()
 
 for (const route of ROUTES) {
-  await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'networkidle' })
-  await page.waitForSelector('#root h1, #root h2')
+  // 'networkidle' hangs intermittently now that the Hero route ships a
+  // looping, autoplaying <video> (2026-08-15): this dev-only static server
+  // has no HTTP Range support, so Chrome's video-streaming requests for it
+  // never resolve the way the browser expects, and 'networkidle' waits for
+  // network quiet that a continuously-looping video's own requests keep
+  // preventing. Switching outright to 'load' broke OTHER routes instead
+  // (some lazy-loaded chunks/async content genuinely need the extra
+  // settle time networkidle used to provide, confirmed by /evidence
+  // failing its content check under 'load'). Keeping 'networkidle' as the
+  // primary wait but swallowing just its timeout - if the network never
+  // quiets down within 12s, proceed anyway; the waitForSelector below
+  // (with visibility, not just DOM presence) is the actual correctness
+  // gate regardless of which path got us here.
+  await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'networkidle', timeout: 12000 }).catch(() => {})
+  await page.waitForSelector('#root h1, #root h2', { state: 'visible', timeout: 20000 })
   const html = await page.content() // already includes the doctype
   const outPath = route === '/' ? join(DIST, 'index.html') : join(DIST, route, 'index.html')
   await mkdir(dirname(outPath), { recursive: true })

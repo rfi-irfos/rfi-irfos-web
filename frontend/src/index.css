@@ -367,11 +367,19 @@ h1, h2, h3, .rfi-display {
    plays instead of always reaching max zoom on the same frame. */
 @keyframes rfi-hero-video-zoom {
   0%   { transform: scale(1); }
-  85%  { transform: scale(1.28); }
+  85%  { transform: scale(1.4); }
   100% { transform: scale(1); }
 }
 .rfi-hero-video-zoom {
-  animation: rfi-hero-video-zoom 240s ease-in-out infinite;
+  /* Live feedback 2026-08-15: 240s made the push-in imperceptible - "ich seh
+     nur wies zittert" (only the video's own micro-motion read, not a zoom
+     at all). Cut to 55s and bumped the target scale (1.28 -> 1.4) so the
+     push is actually visible over a normal hero dwell time. transform-origin
+     shifted toward Europe (roughly where it sits in this specific globe
+     shot) instead of dead-center, so the push reads as "zooming toward
+     Europe" rather than a generic center-crop. */
+  animation: rfi-hero-video-zoom 55s ease-in-out infinite;
+  transform-origin: 58% 32%;
   will-change: transform;
 }
 @media (prefers-reduced-motion: reduce) {
