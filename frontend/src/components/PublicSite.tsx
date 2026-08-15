@@ -1282,7 +1282,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 {SYSTEMS.filter(s => s.zone === zone).map(s => (
                   <button key={s.key} onClick={() => setSystemModal(s.key)} style={{
                     display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                    color: 'var(--text3)', fontSize: 12, lineHeight: 1.6, font: 'inherit',
+                    font: 'inherit', color: 'var(--text3)', fontSize: 12, lineHeight: 1.6,
                   }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                     onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
@@ -1296,7 +1296,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 {col.map(r => (
                   <button key={r.key} onClick={() => setSystemModal(r.key)} style={{
                     display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                    color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', font: 'inherit',
+                    font: 'inherit', color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                   }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                     onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>
@@ -1310,7 +1310,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 {col.map(r => (
                   <button key={r.key} onClick={() => setSystemModal(r.key)} style={{
                     display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                    color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', font: 'inherit',
+                    font: 'inherit', color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                   }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                     onMouseLeave={e => (e.currentTarget.style.color = '#606080')}>

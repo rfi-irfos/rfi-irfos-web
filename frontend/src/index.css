@@ -351,8 +351,31 @@ h1, h2, h3, .rfi-display {
   animation: rfi-hero-zoom-in 140s ease-in-out infinite;
   will-change: transform;
 }
+/* Hero background switched from a static screenshot to a looping video of
+   the same live dashboard (2026-08-15: "damit sieht man mehr, und man kann
+   das video einfach loopen"). A straight push-in, no pan - the pan legs of
+   rfi-hero-zoom-in above were tuned for a still image; layering camera pan
+   on top of a video that's already animating its own content (planes,
+   tickers) read as too much motion. Pure scale keeps it to one deliberate
+   move. 85% of the cycle pushes in to 1.28x (kept below rfi-hero-zoom-in's
+   1.5x - a video's own motion sells "alive" a static image never could, so
+   it doesn't need as aggressive a crop to read as engaging), the last 15%
+   eases back down - long relative to the push-in so the direction change
+   itself reads as another slow move, not a reset. Cycle length (240s) is
+   independent of the video's own ~27s content loop on purpose: decoupling
+   them means the zoom position drifts against the content over repeat
+   plays instead of always reaching max zoom on the same frame. */
+@keyframes rfi-hero-video-zoom {
+  0%   { transform: scale(1); }
+  85%  { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+.rfi-hero-video-zoom {
+  animation: rfi-hero-video-zoom 240s ease-in-out infinite;
+  will-change: transform;
+}
 @media (prefers-reduced-motion: reduce) {
-  .rfi-hero-zoom { animation: none; }
+  .rfi-hero-zoom, .rfi-hero-video-zoom { animation: none; }
 }
 
 /* ── Form submit state icon ──────────────────────────────────────
