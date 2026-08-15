@@ -1180,7 +1180,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               },
             ].map(group => (
               <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 2px' }}>{group.heading}</p>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 2px' }}>{group.heading}</p>
                 {group.links.map(l => (
                   <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
@@ -1264,16 +1264,16 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 of those headers... same soft grey line". */}
             {ZONE_ORDER.map((zone, i) => (
               <p key={`zh-${zone}`} style={{
-                gridColumn: i + 1, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)',
+                gridColumn: i + 1, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
                 textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)',
               }}>{ZONE_LABELS[zone][locale]}</p>
             ))}
             <p style={{
-              gridColumn: `5 / span ${FOOTER_REPO_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)',
+              gridColumn: `5 / span ${FOOTER_REPO_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
               textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)', textAlign: 'center',
             }}>Repositories</p>
             <p style={{
-              gridColumn: `${5 + FOOTER_REPO_COLUMNS.length} / span ${FOOTER_CRATE_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)',
+              gridColumn: `${5 + FOOTER_REPO_COLUMNS.length} / span ${FOOTER_CRATE_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
               textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)', textAlign: 'center', whiteSpace: 'nowrap',
             }}>Crates (crates.io)</p>
 

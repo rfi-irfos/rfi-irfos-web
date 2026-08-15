@@ -48,17 +48,21 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
-// Every modal's left-side preview box is the same fixed footprint whether it
-// holds a real screenshot (object-fit: cover) or a generated SVG diagram
-// (fills via width/height 100%) - the point (2026-08-15 feedback) is that
-// switching between "real product" and "generated diagram" cards via the
-// connects pills never produces a visible size jump.
+// Two equal halves (live feedback 2026-08-15, stated repeatedly: "modal of
+// two equal slices... instagram sized square card left side with the
+// diagram and the other with the writing") - this box now fills its whole
+// half of the panel rather than sitting as a small fixed-size box in a lot
+// of left-over whitespace. aspectRatio keeps it square regardless of the
+// panel's actual width, same footprint whether it holds a real screenshot
+// (object-fit: cover) or a generated SVG diagram (fills via width/height
+// 100%), so switching systems via the "connects to" pills never produces a
+// visible size jump.
 function PreviewBox({ preview, accent }: { preview: ReturnType<typeof getPreview>; accent: string }) {
   return (
     <div style={{
-      flex: '1 1 200px', maxWidth: 236, width: '100%', height: 236, borderRadius: 10, overflow: 'hidden',
+      width: '100%', aspectRatio: '1 / 1', borderRadius: 10, overflow: 'hidden',
       background: 'radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,0.05), transparent 60%), #0c0c11',
-      border: '1px solid rgba(255,255,255,0.08)', flexShrink: 0,
+      border: '1px solid rgba(255,255,255,0.08)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
     }}>
       {preview.type === 'image'
@@ -133,14 +137,21 @@ export function SystemCardModal({ systemKey, onClose, onNavigate }: {
           </div>
         )}
 
-        {/* Wide layout (2026-08-15 feedback): preview left, everything else
-            right - wraps to stacked (preview on top) once the panel is
-            narrower than both flex-basis widths combined, so this needs no
-            separate mobile branch. */}
+        {/* True two-column split (live feedback 2026-08-15, repeated several
+            times: "modal of two equal slices... instagram sized square card
+            left side with the diagram and the other with the writing") -
+            flex: '1 1 0' on BOTH sides makes them equal width regardless of
+            content (previously the right side had a much larger flex-grow,
+            which is exactly the "not equal" layout that kept getting
+            flagged). Wraps to stacked (preview on top, full width) once the
+            panel drops under ~420px combined - minWidth: 280 on each side
+            is the threshold, not a separate mobile branch. */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 28 }}>
-          <PreviewBox preview={preview} accent={accent} />
+          <div style={{ flex: '1 1 0', minWidth: 280 }}>
+            <PreviewBox preview={preview} accent={accent} />
+          </div>
 
-          <div style={{ flex: '999 1 300px', minWidth: 0 }}>
+          <div style={{ flex: '1 1 0', minWidth: 280 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 4, marginTop: 0 }}>
               <h3 style={{ fontSize: 24, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2, margin: 0 }}>{sys.name}</h3>
               <StatusBadge status={sys.status} />

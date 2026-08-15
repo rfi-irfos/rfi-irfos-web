@@ -82,12 +82,23 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           (stripped at encode time). Same stacking position as the screenshot before
           it: behind HeroBackground's WebGL canvas (zIndex -1) at -2, behind the tint
           gradient above it. */}
-      <video aria-hidden="true" className="rfi-hero-video-zoom" autoPlay={!prefersReducedMotion()} muted loop playsInline
-        poster="/hero-software-poster.jpg" style={{
-          position: 'absolute', inset: 0, zIndex: -2, width: '100%', height: '100%', objectFit: 'cover',
-        }}>
-        <source src="/hero-software.mp4" type="video/mp4" />
-      </video>
+      {/* Zoom transform lives on this wrapper, NOT the <video> itself (live
+          feedback 2026-08-15: "es wackelt... schaut aus als hätt sie a
+          erdbeben" - animating transform directly on a <video> element
+          fights the browser's own video-frame compositing/decode pipeline
+          in a way a plain <img>/background-image never did, producing a
+          visible judder that isn't in the source footage. Moving the
+          animated transform one level up, onto a plain div with the video
+          filling it via inset:0, keeps the video's own paint path untouched
+          and lets the transform run on ordinary compositor layers instead. */}
+      <div aria-hidden="true" className="rfi-hero-video-zoom" style={{ position: 'absolute', inset: 0, zIndex: -2, overflow: 'hidden' }}>
+        <video autoPlay={!prefersReducedMotion()} muted loop playsInline
+          poster="/hero-software-poster.jpg" style={{
+            position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover',
+          }}>
+          <source src="/hero-software.mp4" type="video/mp4" />
+        </video>
+      </div>
       <HeroBackground theme={theme} />
       {/* Stays English in both locales (live feedback) - "Rethink the Obvious."
           is the site's signature line/wordmark-adjacent phrase, not translated

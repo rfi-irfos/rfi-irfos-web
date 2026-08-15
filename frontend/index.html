@@ -29,6 +29,15 @@
     <link rel="alternate" hreflang="en" href="https://rfi-irfos.com" />
     <title>RFI-IRFOS - Rethink the Obvious.</title>
     <meta name="description" content="Interdisciplinary Research Facility for Open Sciences. Ternary AI · Security · Governance · Graz, Austria." />
+    <!-- Meta keywords is a dead ranking signal for Google specifically, but
+         other engines/scrapers/social previews still read it, and it costs
+         nothing - added 2026-08-15 alongside JSON-LD knowsAbout below
+         (that one Google DOES use for topical/entity understanding) once
+         the systems/ page grew to 143 entries and the site's actual scope
+         (ternary computing research, not just security audits) needed a
+         structured signal, not just prose buried in body text. -->
+
+    <meta name="keywords" content="ternary computing, balanced ternary logic, ternary AI, mixture of experts, world model, AI safety research, open source AI, Rust operating system, security research, app security audit, AI governance, ternary intelligence stack" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="RFI-IRFOS - Rethink the Obvious." />
     <meta property="og:description" content="Interdisciplinary Research Facility for Open Sciences. Ternary AI · Security · Governance · Graz, Austria." />
@@ -44,7 +53,7 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
+      "@type": "ResearchOrganization",
       "name": "RFI-IRFOS",
       "url": "https://rfi-irfos.com",
       "description": "Interdisciplinary Research Facility for Open Sciences. Ternary AI · Security · Governance · Graz, Austria.",
@@ -54,6 +63,18 @@
         "addressRegion": "Styria",
         "addressCountry": "AT"
       },
+      "knowsAbout": [
+        "Ternary computing",
+        "Balanced ternary logic",
+        "Ternary AI models",
+        "Mixture of experts architectures",
+        "World models",
+        "AI safety research",
+        "Open source AI",
+        "Rust operating systems",
+        "Application security research",
+        "AI governance"
+      ],
       "sameAs": [
         "https://github.com/rfi-irfos"
       ]
