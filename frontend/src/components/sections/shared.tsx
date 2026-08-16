@@ -585,48 +585,57 @@ function JourneyPreview({ mobile }: { mobile: boolean }) {
   const circle = mobile ? 20 : 24
   const font = mobile ? 8.5 : 10
   const connectorMin = mobile ? 3 : 8
+  const reduced = prefersReducedMotion()
+  // Relay animation (live feedback 2026-08-16): the first pass used one absolutely-
+  // positioned dot sweeping via guessed percentage left/right offsets - fragile, since
+  // the last step's circle is auto-sized (not evenly spaced like the flex:1 ones), so a
+  // percentage endpoint can't reliably land "behind Learn" the way it was asked to. This
+  // version instead animates each connector's OWN background color in sequence (each one
+  // is already correctly positioned, no guessing needed) and finishes with a glow directly
+  // on the Learn circle itself - the highlight can't help but end exactly where it should,
+  // because it's driven by the real element, not a separately-positioned copy of it. All
+  // four connectors + the glow share one identical `times` array so they can't drift out
+  // of sync across repeats (a `delay` prop resets after the first loop in framer-motion,
+  // baking the stagger into keyframe `times` instead avoids that entirely).
+  const CONNECTORS = 4
+  const TIMES = [0, 0.15, 0.3, 0.45, 0.6, 0.75, 1]
+  const GREY = 'rgba(255,255,255,0.14)'
+  const HOT = '#00f5c4'
+  const connectorColors = (segmentIndex: number) => TIMES.map((_, ti) => (ti === segmentIndex + 1 ? HOT : GREY))
+  const glowShadows = TIMES.map((_, ti) => (ti === CONNECTORS + 1 ? '0 0 16px 4px rgba(0,245,196,0.85)' : '0 0 0 0 rgba(0,245,196,0)'))
   return (
     <div style={{ marginBottom: 20 }}>
       <div style={{
         fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, fontWeight: 700,
         color: TEAL, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12,
       }}>{locale.modalTierBody.whatHappensNext}</div>
-      <div style={{ position: 'relative' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-          {steps.map((s, i) => (
-            <div key={s.stage} style={{ display: 'flex', alignItems: 'flex-start', flex: i === steps.length - 1 ? '0 0 auto' : 1, minWidth: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+        {steps.map((s, i) => {
+          const isLast = i === steps.length - 1
+          return (
+            <div key={s.stage} style={{ display: 'flex', alignItems: 'flex-start', flex: isLast ? '0 0 auto' : 1, minWidth: 0 }}>
               <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.08 }}
                 style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-                <div style={{
-                  width: circle, height: circle, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  background: 'rgba(0,245,196,0.12)', border: `1px solid ${TEAL}`, color: TEAL,
-                  fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: font,
-                }}>{i + 1}</div>
+                <motion.div
+                  animate={isLast && !reduced ? { boxShadow: glowShadows } : undefined}
+                  transition={isLast && !reduced ? { duration: 4, times: TIMES, repeat: Infinity, ease: 'easeInOut' } : undefined}
+                  style={{
+                    width: circle, height: circle, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: 'rgba(0,245,196,0.12)', border: `1px solid ${TEAL}`, color: TEAL,
+                    fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: font,
+                  }}>{i + 1}</motion.div>
                 <div style={{ fontSize: font, fontWeight: 700, color: '#e8e8f0', textAlign: 'center', whiteSpace: 'nowrap' }}>{s.stage}</div>
               </motion.div>
-              {i < steps.length - 1 && (
-                <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.14)', marginTop: circle / 2, minWidth: connectorMin }} />
+              {!isLast && (
+                <motion.div
+                  animate={reduced ? undefined : { background: connectorColors(i) }}
+                  transition={reduced ? undefined : { duration: 4, times: TIMES, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{ flex: 1, height: 1, background: GREY, marginTop: circle / 2, minWidth: connectorMin }}
+                />
               )}
             </div>
-          ))}
-        </div>
-        {/* Traveling highlight (live feedback 2026-08-16: "a highlight travelling from
-            one side through, blue dot that turns green in the end") - sweeps left to
-            right along the connector track, blue at Ingest, teal/green by Learn, echoing
-            the same "starts small, ends as a delivered result" arc the rewritten step
-            copy now tells. Percentage-based left/skips exact circle-center math (good
-            enough for a decorative sweep); respects prefers-reduced-motion like every
-            other looping animation in this file. */}
-        {!prefersReducedMotion() && (
-          <motion.div
-            animate={{ left: ['4%', '96%'], backgroundColor: ['#5aa0ff', TEAL] }}
-            transition={{ duration: 2.6, ease: 'easeInOut', repeat: Infinity, repeatDelay: 1.4 }}
-            style={{
-              position: 'absolute', top: circle / 2 - 4, width: 8, height: 8, borderRadius: '50%',
-              marginLeft: -4, boxShadow: '0 0 10px 1px rgba(0,245,196,0.6)', pointerEvents: 'none',
-            }}
-          />
-        )}
+          )
+        })}
       </div>
     </div>
   )
@@ -686,20 +695,14 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets, br
           the closing/highlighted line when there IS a real body above it. The smaller
           "WHAT YOU GET" eyebrow stays on its own muted grey - that one's meant to
           stay quiet, it's just the section label, not primary content. */}
-      {/* Title + the 12h response commitment now share one header row (live feedback
+      {/* Title + the 12h response commitment share one header row (live feedback
           2026-08-16: "title, next to it the pill, then summary, then what happens
-          next") - the pill used to sit at the very bottom next to a price that's now
-          shown on the Pay button itself instead, so it moved up here and the old
-          bottom price/pill row is gone entirely. */}
+          next"). First pass gave this its own bordered/background chip - flagged
+          same day as "too much noise" next to the title - downgraded to plain quiet
+          inline text, no box, no uppercase shouting. */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
         <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: 'var(--text)', lineHeight: 1.2, margin: 0 }}>{tier}</h3>
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: 6, flexShrink: 0,
-          background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
-          borderRadius: 10, padding: '6px 12px', maxWidth: '100%',
-          color: 'var(--accent-text)', fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace",
-          textTransform: 'uppercase', letterSpacing: '0.1em', lineHeight: 1.5,
-        }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, flexShrink: 0, color: '#8a8aa0', fontSize: 12, marginTop: 4 }}>
           <ClockIcon /> {t.modalTierBody.inTouchWithin12h}
         </div>
       </div>
