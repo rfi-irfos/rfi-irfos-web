@@ -55,7 +55,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
     <section style={{
       display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden',
       alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
-      padding: 'calc(72px + 6vh) 2rem 72px',
+      padding: 'calc(72px + 6vh) var(--sec-pad-x) 72px',
       // Tint gradient only - the actual photo is the dedicated zoom layer below,
       // not this section's own background. Kept as a tint (not a full photo) for
       // text legibility over whatever's showing through it. Tried tuning a

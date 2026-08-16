@@ -147,13 +147,18 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
     background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: perView === 1 ? 15 : 18, cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'center',
   }
-  const cardBasis = perView === 1 ? '84%' : '340px'
+  // Phone: arrows move under the track and the card takes the full width - same
+  // fix and same reasoning as ProjectsCarousel in Projects.tsx (2026-08-16).
+  // 84% was the worst offender of the two: arrows + gaps + an 16% self-imposed
+  // inset left the evidence card at barely half the viewport.
+  const phone = perView === 1
+  const cardBasis = phone ? '100%' : '340px'
   const showArrows = n > perView
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: perView === 1 ? 10 : 16 }}>
-        {showArrows && <button onClick={() => go(-1)} aria-label={t.proof.carouselPrevAria} style={arrowStyle}>&larr;</button>}
+      <div style={{ display: 'flex', alignItems: 'center', gap: phone ? 0 : 16 }}>
+        {showArrows && !phone && <button onClick={() => go(-1)} aria-label={t.proof.carouselPrevAria} style={arrowStyle}>&larr;</button>}
         {/* overflowY visible (not hidden) - see identical note in Projects.tsx's
             ProjectsCarousel: the proximity glow needs room outside the card
             box, and scrolling here is horizontal-only anyway. */}
@@ -176,13 +181,15 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
             ))}
           </div>
         </div>
-        {showArrows && <button onClick={() => go(1)} aria-label={t.proof.carouselNextAria} style={arrowStyle}>&rarr;</button>}
+        {showArrows && !phone && <button onClick={() => go(1)} aria-label={t.proof.carouselNextAria} style={arrowStyle}>&rarr;</button>}
       </div>
       {showArrows && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: phone ? 12 : 28 }}>
+          {phone && <button onClick={() => go(-1)} aria-label={t.proof.carouselPrevAria} style={arrowStyle}>&larr;</button>}
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', letterSpacing: '0.08em' }}>
             {String(Math.min(activeIdx + 1, n)).padStart(2, '0')} / {n}
           </span>
+          {phone && <button onClick={() => go(1)} aria-label={t.proof.carouselNextAria} style={arrowStyle}>&rarr;</button>}
         </div>
       )}
     </div>
@@ -194,7 +201,7 @@ export function ProofSection({ setReportModal }: { setReportModal: (url: string)
   const entries = getProofEntries(locale)
   if (entries.length === 0) return null // nothing published yet - section simply doesn't render, no empty-state placeholder needed
   return (
-    <section id="proof" style={{ padding: '0 2rem 72px' }}>
+    <section id="proof" style={{ padding: '0 var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="right">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.proof.eyebrow}</p>

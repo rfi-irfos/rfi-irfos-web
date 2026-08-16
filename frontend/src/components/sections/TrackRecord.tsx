@@ -2562,7 +2562,7 @@ export function TrackRecordSection({
 }) {
   const { t, locale } = useLocale()
   return (
-    <section id="track-record" style={{ padding: '16px 2rem 72px' }}>
+    <section id="track-record" style={{ padding: '16px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.trackRecord.heading} /></h2>

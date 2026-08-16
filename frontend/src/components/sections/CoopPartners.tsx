@@ -34,7 +34,7 @@ export function CoopPartnersSection({
 }) {
   const { t } = useLocale()
   return (
-    <section id="coop-partners" style={{ padding: '48px 2rem 72px' }}>
+    <section id="coop-partners" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.coopPartners.eyebrow}</p>
@@ -45,19 +45,33 @@ export function CoopPartnersSection({
         </Reveal>
         <Reveal from="bottom" delay={1}>
           <div className="rfi-glass-flat rfi-glass-solid" style={{
-            display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 20,
+            display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: 20,
             borderRadius: 14, padding: '28px 28px',
           }}>
+            {/* alignItems was 'center', which floated her name down to the vertical
+                middle of a tall pill stack instead of anchoring it at the top-left
+                of the card (live feedback 2026-08-16). Her name is the heading of
+                this card, so it starts where a heading starts. */}
             <div>
-              <p style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>Laura Serna Gaviria</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                <p style={{ fontSize: 19, fontWeight: 800, color: 'var(--text)' }}>Laura Serna Gaviria</p>
+                {/* The one badge worth promoting out of the pill cloud: a live
+                    deployment is a claim about the present tense, so it belongs
+                    beside the name rather than buried among version tags. */}
+                <a href="https://laura-api.fly.dev" target="_blank" rel="noopener noreferrer"
+                   style={{
+                     display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 10, fontWeight: 700,
+                     letterSpacing: '0.06em', textTransform: 'uppercase', padding: '3px 9px', borderRadius: 999,
+                     border: '1px solid rgba(16,185,129,.45)', color: '#10b981', textDecoration: 'none', whiteSpace: 'nowrap',
+                   }}>
+                  <span style={{ width: 5, height: 5, borderRadius: 999, background: '#10b981', display: 'inline-block' }} />
+                  Live API
+                </a>
+              </div>
               <p style={{ fontSize: 13, color: 'var(--accent-text)', marginTop: 2, fontWeight: 600 }}>{t.coopPartners.role}</p>
               <p style={{ fontSize: 13, color: 'var(--text)', marginTop: 10, lineHeight: 1.6, maxWidth: 560 }}>
                 {t.coopPartners.laura.desc}
               </p>
-              <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer"
-                 style={{ display: 'inline-block', marginTop: 14, fontSize: 13, fontWeight: 700, color: 'var(--accent-text)', textDecoration: 'none' }}>
-                emergent-interaction-lab.fly.dev →
-              </a>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8, maxWidth: 340 }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 8 }}>
@@ -70,15 +84,16 @@ export function CoopPartnersSection({
                   { label: 'OSF · HC9ZB', href: 'https://doi.org/10.17605/OSF.IO/HC9ZB' },
                   { label: 'OSF · QCVJB', href: 'https://doi.org/10.17605/OSF.IO/QCVJB' },
                   { label: 'OSF · UXCJE', href: 'https://doi.org/10.17605/OSF.IO/UXCJE' },
-                  { label: 'Live API', href: 'https://laura-api.fly.dev', live: true },
-                  { label: 'Coevolution Factory', href: 'https://coevolution-factory-sparkling-mountain-1802.fly.dev', live: true },
+                  // "Live API" moved up beside her name. "Coevolution Factory" dropped
+                  // entirely: coevolution-factory is already in the repo line below, so
+                  // the pill was a second route to the same project and the cloud read
+                  // as duplicated rather than dense (live feedback 2026-08-16).
                 ].map((c, i) => (
                   <a key={i} href={c.href} target="_blank" rel="noopener noreferrer"
                      style={{
                        display: 'inline-flex', alignItems: 'center', gap: 6,
-                       fontSize: 11, fontWeight: 700, padding: '6px 12px', borderRadius: 999,
-                       border: `1px solid ${c.live ? 'rgba(16,185,129,.5)' : 'var(--border)'}`,
-                       color: c.live ? '#10b981' : 'var(--text2)',
+                       fontSize: 10.5, fontWeight: 600, padding: '5px 10px', borderRadius: 999,
+                       border: '1px solid var(--border)', color: 'var(--text2)',
                        textDecoration: 'none', whiteSpace: 'nowrap',
                      }}>
                     {c.icon && <GithubMark />}

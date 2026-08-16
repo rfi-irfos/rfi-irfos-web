@@ -527,6 +527,12 @@ function EngagementFlow({ bring, mechanism, receive }: {
   bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[]
 }) {
   const { t: locale } = useLocale()
+  // This box is the innermost of four nested padded surfaces (section gutter >
+  // offer glass card > featured tier card > this), so its own horizontal padding
+  // is the last 32px taken off an already narrow phone column. Halved on mobile
+  // as part of the 2026-08-16 squeezed-card fix - see the comment on the arrow
+  // buttons in Pricing.tsx for the full chain.
+  const mobile = useMobile(640)
   if ((!bring || bring.length === 0) && (!mechanism || mechanism.length === 0) && (!receive || receive.length === 0)) return null
   const groups: { label: string; items: readonly string[] | undefined }[] = [
     { label: locale.modalTierBody.youBring, items: bring },
@@ -536,7 +542,8 @@ function EngagementFlow({ bring, mechanism, receive }: {
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16,
-      border: '1px solid rgba(0,245,196,0.16)', borderRadius: 12, padding: '14px 16px',
+      border: '1px solid rgba(0,245,196,0.16)', borderRadius: 12,
+      padding: mobile ? '12px 10px' : '14px 16px',
       background: 'rgba(0,245,196,0.03)',
     }}>
       {groups.map((g, gi) => (
@@ -956,6 +963,7 @@ export function TierCarousel({ tiers, getActions }: {
   getActions: (t: CarouselTier) => { onBuy?: () => void; onProposal?: () => void }
 }) {
   const { t: locale } = useLocale()
+  const mobile = useMobile(640)
   const defaultIdx = tiers.findIndex(t => t.highlight)
   const [idx, setIdx] = useState(defaultIdx === -1 ? 0 : defaultIdx)
   const active = tiers[idx]
@@ -971,7 +979,7 @@ export function TierCarousel({ tiers, getActions }: {
           leaving a wide empty margin either side. */}
       <motion.div key={active.tier} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}
         style={{
-          margin: '0 auto 14px', borderRadius: 18, padding: '20px 16px',
+          margin: '0 auto 14px', borderRadius: 18, padding: mobile ? '16px 12px' : '20px 16px',
           // Opaque base + a teal wash (not a single translucent rgba fill) -
           // spine feedback, 2026-08-06: this pricing card is exactly the kind
           // of dense, text-heavy surface the scroll spine/orb must never bleed
@@ -1006,7 +1014,13 @@ export function TierCarousel({ tiers, getActions }: {
         </div>
         {/* Delivery pill (left) + green buy button showing cart icon + price (right).
             Replaces the old "Get Started" label - the price IS the button label. */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', gap: 12, marginTop: 14 }}>
+        {/* flexWrap nowrap -> wrap (2026-08-16): both children are whiteSpace:
+            nowrap, so on a narrow card they could not shrink and simply spilled
+            past the card's edge instead of dropping onto a second line. That
+            overflow is why the delivery/price badges still looked correctly
+            sized in the bug screenshot while everything above them was crushed -
+            they were never inside the narrow column to begin with. */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginTop: 14 }}>
           {active.delivery && (
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 6, flex: '0 0 auto', maxWidth: '100%',
@@ -1041,9 +1055,12 @@ export function TierCarousel({ tiers, getActions }: {
           wraps to fewer columns only when the viewport can't fit 3 readable
           cards, never stacks to a single column on desktop. maxWidth 680
           dropped for the same reason as the featured card above - fills the
-          parent's full 1040 instead of leaving empty margin on both sides. */}
+          parent's full 1040 instead of leaving empty margin on both sides.
+          minmax's first argument is min(100%, 170px), not a bare 170px: auto-fit's
+          minimum is a hard floor, so on a container narrower than 170px the track
+          stayed 170px and overflowed. Same guard Research.tsx already uses. */}
       {secondary.length > 0 && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 10, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 170px), 1fr))', gap: 10, margin: '0 auto' }}>
           {secondary.map(({ t, i }) => (
             <button key={t.tier} onClick={() => setIdx(i)} style={{
               textAlign: 'left', cursor: 'pointer', display: 'flex', flexDirection: 'column',

@@ -180,10 +180,15 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* ethics and minor protection - shelter */}
-        <path d="M5 15c0-6 5-10 11-10s11 4 11 10H5z"/>
-        <line x1="16" y1="15" x2="16" y2="25"/><path d="M16 25q0 3-3 3"/>
-        <circle cx="16" cy="3" r="1.5" fill="currentColor" stroke="none"/>
+        {/* ethics and minor protection - umbrella. Scalloped canopy edge + panel
+            ribs + a proper crook handle: the shelter reads as a made object
+            someone is holding over someone else, not an abstract dome. */}
+        <path d="M4 15a12 12 0 0 1 24 0"/>
+        <path d="M4 15q3 3.6 6 0t6 0 6 0 6 0"/>
+        <path d="M16 3.2 10 15M16 3.2 22 15"/>
+        <line x1="16" y1="15" x2="16" y2="24.5"/>
+        <path d="M16 24.5q0 3.5-3.2 3.5t-3.2-3.5"/>
+        <circle cx="16" cy="3.2" r="1.2" fill="currentColor" stroke="none"/>
       </_I>
     ),
     title: 'Ethics & Minor Protection',
@@ -192,10 +197,16 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* ternary tree - one root, three branches */}
+        {/* ternary tree - one root, three branches, and the three trit VALUES
+            drawn inside the leaves (-1 / 0 / +1) instead of three identical
+            empty circles. The detail carries the actual meaning of the word
+            "ternary" rather than just decorating the shape. */}
         <circle cx="16" cy="5" r="2.5"/>
         <line x1="16" y1="7.5" x2="7" y2="22.5"/><line x1="16" y1="7.5" x2="16" y2="22.5"/><line x1="16" y1="7.5" x2="25" y2="22.5"/>
-        <circle cx="7" cy="25" r="2.5"/><circle cx="16" cy="25" r="2.5"/><circle cx="25" cy="25" r="2.5"/>
+        <circle cx="7" cy="25" r="3"/><circle cx="16" cy="25" r="3"/><circle cx="25" cy="25" r="3"/>
+        <line x1="5.6" y1="25" x2="8.4" y2="25"/>
+        <circle cx="16" cy="25" r="1" fill="currentColor" stroke="none"/>
+        <line x1="23.6" y1="25" x2="26.4" y2="25"/><line x1="25" y1="23.6" x2="25" y2="26.4"/>
       </_I>
     ),
     title: 'Ternary AI & Computing',
@@ -204,12 +215,20 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* world model - connected entities */}
+        {/* world model - a GRAPH, not a star. The satellites are now linked to
+            each other as well as to the centre, and an enclosing boundary marks
+            it as one bounded model rather than a loose cluster: a world model is
+            defined by the relationships between things, so the icon has to show
+            edges that do not pass through the middle. */}
+        <circle cx="16" cy="16" r="13" strokeDasharray="2.5 3" opacity="0.5"/>
         <circle cx="16" cy="16" r="4"/>
+        <circle cx="16" cy="16" r="1.2" fill="currentColor" stroke="none"/>
         <circle cx="6" cy="8" r="2.5"/><circle cx="26" cy="8" r="2.5"/>
         <circle cx="6" cy="24" r="2.5"/><circle cx="26" cy="24" r="2.5"/>
         <line x1="12.5" y1="13.5" x2="8" y2="9.5"/><line x1="19.5" y1="13.5" x2="24" y2="9.5"/>
         <line x1="12.5" y1="18.5" x2="8" y2="22.5"/><line x1="19.5" y1="18.5" x2="24" y2="22.5"/>
+        <line x1="6" y1="10.5" x2="6" y2="21.5"/><line x1="26" y1="10.5" x2="26" y2="21.5"/>
+        <line x1="8.5" y1="8" x2="23.5" y2="8"/>
       </_I>
     ),
     title: 'World Models & Cross-Domain Intelligence',
@@ -218,12 +237,20 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* pattern matching - repeated structure with one recognized mark */}
-        <circle cx="6" cy="9" r="2"/><circle cx="13" cy="6" r="2"/><circle cx="13" cy="13" r="2"/>
-        <line x1="7.8" y1="8.2" x2="11.2" y2="6.8"/><line x1="7.8" y1="9.8" x2="11.2" y2="12.2"/>
-        <circle cx="18" cy="9" r="2"/><circle cx="25" cy="6" r="2"/><circle cx="25" cy="13" r="2"/>
-        <line x1="19.8" y1="8.2" x2="23.2" y2="6.8"/><line x1="19.8" y1="9.8" x2="23.2" y2="12.2"/>
-        <path d="M13 20c3-3 6-3 9 0"/><circle cx="25" cy="20" r="2.5" fill="currentColor" stroke="none"/>
+        {/* pattern matching + propagation - the same triad appears twice fully
+            and a THIRD time only half-formed, which is the recognition step:
+            two instances establish the pattern, the incomplete one is what the
+            system predicts next. The arc below carries that prediction into a
+            filled node downstream. */}
+        <circle cx="5" cy="8" r="1.8"/><circle cx="11" cy="5" r="1.8"/><circle cx="11" cy="11" r="1.8"/>
+        <line x1="6.6" y1="7.3" x2="9.4" y2="5.9"/><line x1="6.6" y1="8.7" x2="9.4" y2="10.1"/>
+        <circle cx="16" cy="8" r="1.8"/><circle cx="22" cy="5" r="1.8"/><circle cx="22" cy="11" r="1.8"/>
+        <line x1="17.6" y1="7.3" x2="20.4" y2="5.9"/><line x1="17.6" y1="8.7" x2="20.4" y2="10.1"/>
+        <circle cx="27" cy="8" r="1.8" strokeDasharray="2 2"/>
+        <line x1="28.6" y1="7.3" x2="30.2" y2="6.5" strokeDasharray="2 2"/>
+        <path d="M8 17c5 4 11 4 16 0"/>
+        <path d="M22.5 15.8 24 17l-1.2 1.6"/>
+        <circle cx="27" cy="21" r="2.5" fill="currentColor" stroke="none"/>
       </_I>
     ),
     title: 'Pattern Recognition & Impact Propagation',
@@ -232,9 +259,14 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* change + anomaly - target with signal */}
-        <circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="5"/><circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/>
-        <line x1="16" y1="2" x2="16" y2="6"/><line x1="16" y1="26" x2="16" y2="30"/><line x1="2" y1="16" x2="6" y2="16"/><line x1="26" y1="16" x2="30" y2="16"/>
+        {/* change + anomaly - a baseline trace running flat through the sights
+            with ONE deviation, marked. The old version was crosshairs aimed at
+            nothing; detection needs something to have deviated from. */}
+        <circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="5" strokeDasharray="2.5 2.5" opacity="0.6"/>
+        <line x1="16" y1="2.5" x2="16" y2="5.5"/><line x1="16" y1="26.5" x2="16" y2="29.5"/>
+        <line x1="2.5" y1="16" x2="5.5" y2="16"/><line x1="26.5" y1="16" x2="29.5" y2="16"/>
+        <path d="M7 17.5h4l1.6-2.6 2 2.6h2.2l1.8-7 2.4 7H25"/>
+        <circle cx="20.6" cy="10.5" r="2.2" fill="currentColor" stroke="none"/>
       </_I>
     ),
     title: 'Change & Anomaly Detection',
@@ -243,20 +275,36 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* scenario simulation - radar */}
-        <circle cx="16" cy="16" r="11"/><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="2"/>
-        <path d="M16 16L24 9"/><path d="M24 9l-1 5M24 9l-5 1"/>
+        {/* early warning + scenario prediction - a radar sweep that has already
+            picked something up, plus a widening cone: the cone is the forecast,
+            and it widens because uncertainty grows with distance ahead. The
+            dashed blip is the predicted contact, the solid one is observed. */}
+        <circle cx="16" cy="16" r="11"/>
+        <circle cx="16" cy="16" r="6" strokeDasharray="2.5 3" opacity="0.6"/>
+        <circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/>
+        <path d="M16 16 24.8 8.2"/>
+        <path d="M16 16a11 11 0 0 1 6.2-9.9" opacity="0.55"/>
+        <path d="M16 16 27 12.5M16 16 27 20" strokeDasharray="2 2.5" opacity="0.75"/>
+        <circle cx="21.5" cy="10.5" r="1.6" fill="currentColor" stroke="none"/>
+        <circle cx="24.5" cy="18.5" r="1.6" strokeDasharray="1.8 1.6"/>
       </_I>
     ),
-    title: 'Scenario Simulation & Counterfactuals',
-    desc: 'Interventions, alternative futures, and propagated consequences, explicitly marked as simulated.',
+    title: 'Early Warning & Scenario Prediction',
+    desc: 'Hazard chains computed before they arrive, with alternative futures and propagated consequences, every forecast explicitly marked as simulated.',
   },
   {
     icon: (
       <_I>
-        {/* evidence + contradiction - document with split marks */}
-        <path d="M8 3h11l5 5v21H8z"/><path d="M19 3v6h5"/>
-        <path d="M12 15l3 3 5-6"/><path d="M12 24h8"/>
+        {/* evidence + contradiction - the old icon showed only a checkmark, i.e.
+            only the supporting half, which is exactly the failure this research
+            area exists to prevent. Now the document carries a check AND a cross
+            side by side, with the unresolved question left open below them. */}
+        <path d="M7 3h12l6 6v20H7z"/><path d="M19 3v6h6"/>
+        <path d="M10 15.5l2.2 2.2 3.6-4.4"/>
+        <path d="M19 13.5l4.5 4.5M23.5 13.5 19 18"/>
+        <line x1="10" y1="22.5" x2="22" y2="22.5" opacity="0.7"/>
+        <line x1="10" y1="25.5" x2="17" y2="25.5" opacity="0.7"/>
+        <circle cx="21" cy="25.5" r="1.1" fill="currentColor" stroke="none"/>
       </_I>
     ),
     title: 'Evidence & Contradiction',
@@ -265,13 +313,17 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* syringe / injection */}
-        <line x1="24" y1="4" x2="28" y2="8"/>
-        <path d="M7 19L19 7l6 6-12 12z"/>
-        <line x1="4" y1="28" x2="9" y2="23"/>
-        <line x1="12" y1="10" x2="15" y2="13"/>
-        <line x1="15" y1="8" x2="18" y2="11"/>
-        <line x1="10" y1="16" x2="13" y2="19"/>
+        {/* model welfare + prompt injection - a syringe whose needle TOUCHES the
+            heart and does not pierce it. Piercing reads as medical harm, which
+            is the wrong signal; touching holds both halves of the card at once,
+            the injection as the attack and the heart as the thing being cared
+            for. "Prompt injection" is also literally the injection. */}
+        <path d="M12 26.5C7.5 23 4.5 20.5 4.5 17.5A3.6 3.6 0 0 1 12 15.6a3.6 3.6 0 0 1 7.5 1.9c0 3-3 5.5-7.5 9z"/>
+        <line x1="16.6" y1="14.4" x2="19.6" y2="11.4"/>
+        <path d="M19 11 25.5 4.5 28.5 7.5 22 14z"/>
+        <line x1="21.4" y1="9" x2="23.2" y2="10.8"/>
+        <line x1="23.4" y1="7" x2="25.2" y2="8.8"/>
+        <line x1="26.4" y1="2.6" x2="29.4" y2="5.6"/>
       </_I>
     ),
     title: 'Model Welfare & Prompt Injection',
@@ -287,7 +339,7 @@ export const RESEARCH_AREAS = [
 export function ResearchSection() {
   const { t } = useLocale()
   return (
-    <section id="research" style={{ padding: '48px 2rem 72px' }}>
+    <section id="research" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.research.eyebrow}</p>

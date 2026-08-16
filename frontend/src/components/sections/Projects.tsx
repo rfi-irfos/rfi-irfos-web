@@ -183,14 +183,22 @@ function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
     background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: perView === 1 ? 15 : 18, cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'center',
   }
-  const cardBasis = perView === 1
-    ? '92%'
+  // On phones the arrows leave the row entirely and join the position counter
+  // underneath (2026-08-16, same fix as the Access offer carousel): even at the
+  // reduced 36px they plus their gaps still charged 92px against a 348px
+  // viewport, so the card got 92% of the remaining 256px = 235px, i.e. a 62%-
+  // width card with two dead gutters - the "thin vertical rectangle" shape the
+  // whole page was reported for. Out of the row, the card takes the full width
+  // and the arrows stay reachable directly under it.
+  const phone = perView === 1
+  const cardBasis = phone
+    ? '100%'
     : `calc((100% - ${20 * (perView - 1)}px) / ${perView})`
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: perView === 1 ? 10 : 16 }}>
-        <button onClick={() => go(-1)} aria-label={t.projects.carouselPrevAria} style={arrowStyle}>&larr;</button>
+      <div style={{ display: 'flex', alignItems: 'center', gap: phone ? 0 : 16 }}>
+        {!phone && <button onClick={() => go(-1)} aria-label={t.projects.carouselPrevAria} style={arrowStyle}>&larr;</button>}
         {/* overflowY: 'visible' here doesn't actually work on its own - CSS
             coerces a non-'visible' overflow-y to 'auto' the moment overflow-x
             is anything other than 'visible' too (spec rule, not a bug in this
@@ -220,12 +228,14 @@ function ProjectsCarousel({ projects }: { projects: LocalizedProject[] }) {
             ))}
           </div>
         </div>
-        <button onClick={() => go(1)} aria-label={t.projects.carouselNextAria} style={arrowStyle}>&rarr;</button>
+        {!phone && <button onClick={() => go(1)} aria-label={t.projects.carouselNextAria} style={arrowStyle}>&rarr;</button>}
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: phone ? 4 : 28 }}>
+        {phone && <button onClick={() => go(-1)} aria-label={t.projects.carouselPrevAria} style={arrowStyle}>&larr;</button>}
         <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', letterSpacing: '0.08em' }}>
           {String(Math.min(activeIdx + 1, n)).padStart(2, '0')} / {n}
         </span>
+        {phone && <button onClick={() => go(1)} aria-label={t.projects.carouselNextAria} style={arrowStyle}>&rarr;</button>}
       </div>
     </div>
   )
@@ -298,7 +308,7 @@ export function ProjectsSection() {
     name: p.name, link: p.link, ...t.projects.items[i],
   }))
   return (
-    <section id="projects" style={{ padding: '16px 2rem 72px' }}>
+    <section id="projects" style={{ padding: '16px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="right">
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.projects.heading} /></h2>

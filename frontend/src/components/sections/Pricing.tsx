@@ -17,7 +17,7 @@
 // intelligence positioning; that work is still offered, just no longer
 // carried as its own priced tier here - see #contact.
 import { useState } from 'react'
-import { ScopeTag, TierCarousel, Reveal, ScrambleHeading } from './shared'
+import { ScopeTag, TierCarousel, Reveal, ScrambleHeading, useMobile } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 type CheckoutInfo = { key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[]; bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[] }
@@ -77,9 +77,38 @@ export function PricingSection({
   const [activeOffer, setActiveOffer] = useState(0)
   const offerCount = 3
   const cycleOffer = (direction: number) => setActiveOffer(current => (current + direction + offerCount) % offerCount)
+  // FIXED (live bug report + phone screenshot, 2026-08-16): the two round
+  // prev/next buttons below used to sit INSIDE the same flex row as the offer
+  // card, with flexShrink: 0. On a 380px phone that row had 316px to spend
+  // (viewport minus the section gutter) and the arrows plus their two 16px gaps
+  // took 128px of it before the card was measured at all, leaving the card
+  // flex: 1 with exactly 188px. The card's own 24px glass padding, the featured
+  // tier card's 16px padding and the EngagementFlow box's 16px padding then
+  // stacked on top of that, so the "You receive" bullets rendered in a ~70px
+  // column - "Ein Urteil:" / "wahr, falsch" / "oder" / "unbewiesen", four lines
+  // for four words. The delivery/price badges at the card's foot looked fine
+  // because they are nowrap and simply overflowed their box, which is why the
+  // page container looked innocent. On phones the arrows now move OUT of the
+  // row and join the dots in a single nav strip above the card, so the card
+  // gets the full width; desktop keeps the side arrows it was designed with.
+  const mobile = useMobile(640)
+  const arrowStyle: React.CSSProperties = {
+    width: mobile ? 40 : 48, height: mobile ? 40 : 48, borderRadius: '50%',
+    border: '1px solid rgba(0,245,196,0.35)', background: 'var(--bg2)',
+    color: 'var(--accent-text)', fontSize: mobile ? 17 : 20, cursor: 'pointer',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+  }
+  const dots = (
+    <div style={{ display: 'flex', justifyContent: 'center', gap: 7 }}>
+      {[0, 1, 2].map(index => <button key={index} onClick={() => setActiveOffer(index)} aria-label={`Show access offer ${index + 1} of 3`} style={{
+        width: 8, height: 8, borderRadius: '50%', border: 'none', padding: 0, cursor: 'pointer',
+        background: activeOffer === index ? 'var(--accent-text)' : 'rgba(255,255,255,0.18)',
+      }} />)}
+    </div>
+  )
 
   return (
-    <section id="pricing" style={{ padding: '16px 2rem 72px' }}>
+    <section id="pricing" style={{ padding: '16px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1120, margin: '0 auto' }}>
         <Reveal>
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.pricing.heading} /></h2>
@@ -93,16 +122,25 @@ export function PricingSection({
             with the actual offer card below the fold on mobile. The heading stays
             reachable by scrolling up further; the nav click now lands on the card
             itself so the offer is what you see immediately. */}
+        {/* Phone nav strip - arrows + dots in one row ABOVE the card. Above, not
+            below, because a single offer card is several thousand px tall on a
+            phone: controls placed under it are effectively unreachable, and
+            #pricing-offer is also the nav's scroll target, so the controls are
+            the first thing in view when "Access" is tapped. */}
+        {mobile && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, marginBottom: 14 }}>
+            <button onClick={() => cycleOffer(-1)} aria-label="Previous access offer" style={arrowStyle}>&larr;</button>
+            {dots}
+            <button onClick={() => cycleOffer(1)} aria-label="Next access offer" style={arrowStyle}>&rarr;</button>
+          </div>
+        )}
+
         <div id="pricing-offer" style={{ display: 'flex', alignItems: 'center', gap: 16, maxWidth: 1040, margin: '0 auto', scrollMarginTop: 84 }}>
-          <button onClick={() => cycleOffer(-1)} aria-label="Previous access offer" style={{
-            width: 48, height: 48, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.35)',
-            background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: 20, cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-          }}>&larr;</button>
+          {!mobile && <button onClick={() => cycleOffer(-1)} aria-label="Previous access offer" style={arrowStyle}>&larr;</button>}
 
           <div style={{ flex: 1, minWidth: 0 }}>
             {activeOffer === 0 && (
-                <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '24px 24px' }}>
+                <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: mobile ? '16px 14px' : '24px 24px' }}>
                 <div style={{ textAlign: 'center', marginBottom: 20 }}><p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>{t.pricing.lineHeadings.market}</p><div style={{ marginTop: 8 }}><ScopeTag label={t.pricing.scopeTags.market} /></div></div>
                 <TierCarousel tiers={marketTiers} getActions={tier => {
                   const full = marketTiers.find(s => s.tier === tier.tier)!
@@ -116,7 +154,7 @@ export function PricingSection({
             )}
 
             {activeOffer === 1 && (
-                <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '24px 24px' }}>
+                <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: mobile ? '16px 14px' : '24px 24px' }}>
                 <div style={{ textAlign: 'center', marginBottom: 20 }}><p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>{t.pricing.lineHeadings.technical}</p><div style={{ marginTop: 8 }}><ScopeTag label={t.pricing.scopeTags.technical} /></div></div>
                 <TierCarousel tiers={technicalTiers} getActions={tier => {
                   const full = technicalTiers.find(s => s.tier === tier.tier)!
@@ -130,7 +168,7 @@ export function PricingSection({
             )}
 
             {activeOffer === 2 && (
-                <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: '24px 24px' }}>
+                <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: mobile ? '16px 14px' : '24px 24px' }}>
                 <div id="pricing-security" style={{ textAlign: 'center', marginBottom: 20, scrollMarginTop: 96 }}><p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>{t.pricing.lineHeadings.security}</p><div style={{ marginTop: 8 }}><ScopeTag label={t.pricing.scopeTags.security} /></div></div>
                 <TierCarousel tiers={securityTiers} getActions={tier => {
                   const full = securityTiers.find(s => s.tier === tier.tier)!
@@ -144,18 +182,11 @@ export function PricingSection({
             )}
           </div>
 
-          <button onClick={() => cycleOffer(1)} aria-label="Next access offer" style={{
-            width: 48, height: 48, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.35)',
-            background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: 20, cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-          }}>&rarr;</button>
+          {!mobile && <button onClick={() => cycleOffer(1)} aria-label="Next access offer" style={arrowStyle}>&rarr;</button>}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 7, marginTop: 18 }}>
-          {[0, 1, 2].map(index => <button key={index} onClick={() => setActiveOffer(index)} aria-label={`Show access offer ${index + 1} of 3`} style={{
-            width: 8, height: 8, borderRadius: '50%', border: 'none', padding: 0, cursor: 'pointer',
-            background: activeOffer === index ? 'var(--accent-text)' : 'rgba(255,255,255,0.18)',
-          }} />)}
-        </div>
+        {/* Desktop keeps its dots under the card; on phones they are already in
+            the nav strip above, rendering them twice would just be noise. */}
+        {!mobile && <div style={{ marginTop: 18 }}>{dots}</div>}
 
         {/* Research Cooperation Products - via our coop partner Laura Serna
             Gaviria / Emergent Interaction Lab. No Stripe checkout: these are

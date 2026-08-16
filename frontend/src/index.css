@@ -40,6 +40,14 @@ h1, h2, h3, .rfi-display {
      page eases the same way instead of each component inventing its own 0.15s. */
   --ease-expand:  cubic-bezier(0.16, 1, 0.3, 1);
   --ease-settle:  cubic-bezier(0.4, 0, 0.2, 1);
+  /* Horizontal gutter every top-level <section> uses. Was hardcoded to 2rem in
+     each section's inline style, which on a 380px phone spent 64px (17% of the
+     screen) on empty margin before any content existed - and that gutter sat on
+     TOP of each card's own padding, so the innermost text column ended up ~70px
+     wide. Inline styles can't carry a media query, but they CAN read a custom
+     property, so the breakpoint lives here once instead of a useMobile() call in
+     every section. See the @media override further down this block. */
+  --sec-pad-x:    2rem;
   --dur-enter:    420ms;
   --dur-exit:     260ms;
   --dur-colour:   180ms;
@@ -60,6 +68,16 @@ h1, h2, h3, .rfi-display {
   --input-ph:     #606080;
   --timeline-line:rgba(0,245,196,0.2);
   --surface-sunken: var(--bg3);
+}
+
+/* Phone gutter. Theme-independent, so it deliberately sits outside the
+   dark/light token blocks - it must apply whichever theme is active. 640px is
+   the breakpoint the project already uses for "one card per view" in
+   useCarouselSize() (Projects.tsx / Proof.tsx); reusing it keeps the gutter and
+   the carousel switching to their phone shape at the same width instead of
+   fighting each other in a 640-768px band. */
+@media (max-width: 640px) {
+  :root { --sec-pad-x: 1rem; }
 }
 
 [data-theme="light"] {

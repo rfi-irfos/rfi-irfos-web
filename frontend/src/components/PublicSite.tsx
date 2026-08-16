@@ -30,6 +30,25 @@ function splitIntoColumns<T>(items: T[], columns: number): T[][] {
 const FOOTER_REPO_COLUMNS = splitIntoColumns([...RFI_REPOS, ...SIMEON_REPOS], 4)
 const FOOTER_CRATE_COLUMNS = splitIntoColumns(CRATES, 2)
 
+// Zones are wildly uneven: Foundation carries ~20 systems while World Model
+// carries one, so a strict column-per-zone left Foundation running far below
+// every neighbouring column and dragging the footer's height with it (live
+// feedback 2026-08-16: "wir müssen die foundation repos auch in zwei spalten
+// schreiben"). Foundation therefore gets two grid columns, everything else
+// keeps one. Column COUNT per zone is data, not a special case in the JSX, so
+// a future zone that outgrows its column only changes this map.
+const ZONE_COLUMNS: Record<string, number> = { foundation: 2 }
+const zoneCols = (zone: string) => ZONE_COLUMNS[zone] ?? 1
+// Where each zone's first grid column sits, 1-based, accounting for the zones
+// before it that take more than one column.
+const ZONE_COL_START: Record<string, number> = (() => {
+  let next = 1
+  const out: Record<string, number> = {}
+  for (const z of ZONE_ORDER) { out[z] = next; next += zoneCols(z) }
+  return out
+})()
+const ZONE_TOTAL_COLUMNS = ZONE_ORDER.reduce((n, z) => n + zoneCols(z), 0)
+
 // Nav logo's EKG line. Was one fixed blip shape looping identically forever - "measuring
 // the same heartbeat forever" per Simeon. A wider multi-beat path was tried and reverted
 // (he wanted the original short length/duration back, just varied). A bezier P-QRS-T
@@ -1352,7 +1371,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               labels. */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: `repeat(${4 + FOOTER_REPO_COLUMNS.length + FOOTER_CRATE_COLUMNS.length}, minmax(100px, 1fr))`,
+            gridTemplateColumns: `repeat(${ZONE_TOTAL_COLUMNS + FOOTER_REPO_COLUMNS.length + FOOTER_CRATE_COLUMNS.length}, minmax(100px, 1fr))`,
             gridTemplateRows: 'auto 1fr', columnGap: '1.6rem', rowGap: 9, flex: '1 1 auto', marginLeft: '1.9rem',
           }}>
             {/* Explicit gridColumn/gridRow placement (live feedback 2026-08-15:
@@ -1368,37 +1387,43 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 also gets the same soft border-bottom as the rest of the
                 site's hairline dividers (var(--border)) per "underline each
                 of those headers... same soft grey line". */}
-            {ZONE_ORDER.map((zone, i) => (
+            {ZONE_ORDER.map(zone => (
               <p key={`zh-${zone}`} style={{
-                gridColumn: i + 1, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
+                gridColumn: `${ZONE_COL_START[zone]} / span ${zoneCols(zone)}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
                 textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)',
               }}>{ZONE_LABELS[zone][locale]}</p>
             ))}
             <p style={{
-              gridColumn: `5 / span ${FOOTER_REPO_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
+              gridColumn: `${ZONE_TOTAL_COLUMNS + 1} / span ${FOOTER_REPO_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
               textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)', textAlign: 'center',
             }}>Repositories</p>
             <p style={{
-              gridColumn: `${5 + FOOTER_REPO_COLUMNS.length} / span ${FOOTER_CRATE_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
+              gridColumn: `${ZONE_TOTAL_COLUMNS + 1 + FOOTER_REPO_COLUMNS.length} / span ${FOOTER_CRATE_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
               textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)', textAlign: 'center', whiteSpace: 'nowrap',
             }}>Crates (crates.io)</p>
 
-            {ZONE_ORDER.map((zone, i) => (
-              <div key={zone} style={{ gridColumn: i + 1, gridRow: 2, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {SYSTEMS.filter(s => s.zone === zone).map(s => (
-                  <button key={s.key} onClick={() => setSystemModal(s.key)} style={{
-                    display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                    font: 'inherit', color: 'var(--text3)', fontSize: 12, lineHeight: 1.6,
-                  }}
-                    onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                    onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}>
-                    {s.name}
-                  </button>
-                ))}
-              </div>
-            ))}
+            {/* One <div> per grid column, not per zone: a zone with zoneCols > 1
+                is chunked the same way Repositories already is, so its entries
+                stay flat siblings on the shared grid rather than wrapping inside
+                a single track. */}
+            {ZONE_ORDER.flatMap(zone =>
+              splitIntoColumns(SYSTEMS.filter(s => s.zone === zone), zoneCols(zone)).map((chunk, ci) => (
+                <div key={`${zone}-${ci}`} style={{ gridColumn: ZONE_COL_START[zone] + ci, gridRow: 2, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  {chunk.map(s => (
+                    <button key={s.key} onClick={() => setSystemModal(s.key)} style={{
+                      display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+                      font: 'inherit', color: 'var(--text3)', fontSize: 12, lineHeight: 1.6,
+                    }}
+                      onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
+                      onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}>
+                      {s.name}
+                    </button>
+                  ))}
+                </div>
+              ))
+            )}
             {FOOTER_REPO_COLUMNS.map((col, i) => (
-              <div key={`repo-${i}`} style={{ gridColumn: 5 + i, gridRow: 2, display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <div key={`repo-${i}`} style={{ gridColumn: ZONE_TOTAL_COLUMNS + 1 + i, gridRow: 2, display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {col.map(r => (
                   <button key={r.key} onClick={() => setSystemModal(r.key)} style={{
                     display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
@@ -1412,7 +1437,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               </div>
             ))}
             {FOOTER_CRATE_COLUMNS.map((col, i) => (
-              <div key={`crate-${i}`} style={{ gridColumn: 5 + FOOTER_REPO_COLUMNS.length + i, gridRow: 2, display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <div key={`crate-${i}`} style={{ gridColumn: ZONE_TOTAL_COLUMNS + 1 + FOOTER_REPO_COLUMNS.length + i, gridRow: 2, display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {col.map(r => (
                   <button key={r.key} onClick={() => setSystemModal(r.key)} style={{
                     display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',

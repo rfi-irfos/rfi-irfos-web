@@ -1,6 +1,6 @@
 // "App Privacy" door-opener section (`#app-privacy`) - extracted verbatim from
 // PublicSite.tsx.
-import { Reveal, ScrambleHeading } from './shared'
+import { Reveal, ScrambleHeading, useMobile } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // APP PRIVACY DOOR-OPENER — Stage 1c (website-repositioning plan), moved
@@ -9,12 +9,18 @@ import { useLocale } from '../../hooks/useLocale'
 // rather than immediately after the hero before any proof exists.
 export function AppPrivacySection() {
   const { t } = useLocale()
+  // The comparison table below stays two columns at every width on purpose - a
+  // side-by-side comparison collapsed to one column stops being a comparison.
+  // What gives on a phone is the cell padding instead: 24px per side x2 columns
+  // took 96px of a 348px row, leaving ~126px of text per cell and wrapping every
+  // label onto three lines (2026-08-16 mobile pass).
+  const mobile = useMobile(640)
   // Own flat tint removed (live feedback 2026-08-14: liked the extra hair of
   // contrast enough to want it page-wide, not just here) - now part of the
   // page-wide backdrop gradient in PublicSite.tsx, so it stays uniform
   // instead of this one section reading slightly darker than its neighbors.
   return (
-    <section id="app-privacy" style={{ padding: '48px 2rem 72px' }}>
+    <section id="app-privacy" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       {/* maxWidth matched to the neighboring Track Record/Pricing sections (1320,
           not 1000) - live feedback: the narrower container made this section's
           left edge sit further right than the sections directly above/below it. */}
@@ -49,12 +55,12 @@ export function AppPrivacySection() {
               backdrop" job. */}
           <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 40, maxWidth: 920, marginLeft: 'auto', marginRight: 'auto', background: 'var(--glass-bg-solid)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-              <div style={{ padding: '16px 24px', background: 'rgba(255,255,255,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text)', borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>{t.appPrivacy.comparisonClassicLabel}</div>
-              <div style={{ padding: '16px 24px', background: 'rgba(0,245,196,0.08)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)', borderBottom: '1px solid var(--border)' }}>{t.appPrivacy.comparisonRfiLabel}</div>
+              <div style={{ padding: mobile ? '12px 10px' : '16px 24px', background: 'rgba(255,255,255,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text)', borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>{t.appPrivacy.comparisonClassicLabel}</div>
+              <div style={{ padding: mobile ? '12px 10px' : '16px 24px', background: 'rgba(0,245,196,0.08)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)', borderBottom: '1px solid var(--border)' }}>{t.appPrivacy.comparisonRfiLabel}</div>
               {t.appPrivacy.comparisonRows.map((row, i) => (
                 <div key={i} style={{ display: 'contents' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', padding: '18px 24px', fontSize: 14, color: 'var(--text2)', borderRight: '1px solid var(--border)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.classic}</div>
-                  <div style={{ display: 'flex', alignItems: 'center', padding: '18px 24px', fontSize: 14, fontWeight: 700, color: 'var(--text)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.rfi}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, color: 'var(--text2)', borderRight: '1px solid var(--border)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.classic}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, fontWeight: 700, color: 'var(--text)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.rfi}</div>
                 </div>
               ))}
             </div>

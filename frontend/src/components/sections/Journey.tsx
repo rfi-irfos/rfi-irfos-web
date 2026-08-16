@@ -97,7 +97,7 @@ function CustomerJourneyTimeline() {
 export function JourneySection() {
   const { t } = useLocale()
   return (
-    <section id="journey" style={{ padding: '48px 2rem 72px' }}>
+    <section id="journey" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.journey.eyebrow}</p>

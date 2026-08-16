@@ -38,7 +38,7 @@ export function SubmitSection({
 }) {
   const { t } = useLocale()
   return (
-    <section id="submit" style={{ padding: '48px 2rem 72px' }}>
+    <section id="submit" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.submit.eyebrow}</p>
