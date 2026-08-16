@@ -484,6 +484,7 @@ export const DE: Content = {
     we: 'Wir',
     youReceive: 'Sie erhalten',
     whatHappensNext: 'Was als Nächstes passiert',
+    inTouchWithin12h: 'Wir melden uns innerhalb von 12h nach dem Kauf',
   },
 
   checkoutModal: {
@@ -493,9 +494,9 @@ export const DE: Content = {
     agreementMiddle: ' und stimme den ',
     agreementTos: 'Allgemeinen Geschäftsbedingungen',
     agreementSuffix: ' zu. Die Leistung beginnt sofort mit Zahlungseingang; es besteht kein Widerrufsrecht, Rückerstattungen sind ausgeschlossen.',
-    continueToStripe: 'Weiter zu Stripe →',
+    payButton: (price: string) => `${price} zahlen →`,
     cancel: 'Abbrechen',
-    talkFirstInstead: 'Noch nicht zahlungsbereit? Erst mit uns sprechen →',
+    talkFirstInstead: 'Nicht das Richtige dabei? Sprechen Sie mit uns - individuelles Angebot →',
   },
 
   proposalModal: {

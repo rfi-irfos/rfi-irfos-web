@@ -678,27 +678,42 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets, br
       ))}
       {body.length > 0 && <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', margin: '2px 0 18px' }} />}
       {punchline && (
-        <p style={{
-          color: 'var(--text)', fontSize: mobile ? 15.5 : 17, fontWeight: 700, lineHeight: 1.6,
-          margin: 0, marginBottom: 20, paddingLeft: 14, borderLeft: `2px solid ${TEAL}`,
-        }}>{punchline}</p>
+        body.length > 0 ? (
+          <p style={{
+            color: 'var(--text)', fontSize: mobile ? 15.5 : 17, fontWeight: 700, lineHeight: 1.6,
+            margin: 0, marginBottom: 20, paddingLeft: 14, borderLeft: `2px solid ${TEAL}`,
+          }}>{punchline}</p>
+        ) : (
+          // No real body/punchline split (single-paragraph desc, e.g. First Light) - this
+          // used to get the SAME bold/highlighted treatment as a genuine closing line above
+          // real body text, so the whole description read as one shouting block (live
+          // feedback 2026-08-16: "darf grau sein und bissl kleiner, nich so fett"). Downgraded
+          // to quiet context copy here specifically - the tiers that DO have a real body +
+          // distinct closing punchline keep the emphasized version above untouched.
+          <p style={{
+            color: '#8a8aa0', fontSize: mobile ? 13.5 : 14, fontWeight: 400, lineHeight: 1.6,
+            margin: 0, marginBottom: 20,
+          }}>{punchline}</p>
+        )
       )}
       <JourneyPreview mobile={mobile} />
-      {/* Price + delivery grouped bottom-left, same "one unit, one place" rule
-          as the pricing cards - price used to sit top-right next to the tier
-          name here, delivery bottom-left in its own pill; now they're one row. */}
+      {/* Price + a fixed 12h response commitment, grouped bottom-left (live feedback
+          2026-08-16: the tier-specific delivery pill just repeated the card, and the
+          thing that actually matters at checkout is "will someone respond" - Simeon:
+          "we will get in touch within 12h after purchase regardless of the query".
+          Same pill treatment as before, fixed text instead of the delivery prop -
+          applies to both checkout and proposal modals equally, since it's true either
+          way. `delivery` no longer used here (still shown on the card itself). */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
-        {delivery && (
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 6,
-            background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
-            borderRadius: 10, padding: '6px 12px', maxWidth: '100%',
-            color: 'var(--accent-text)', fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace",
-            textTransform: 'uppercase', letterSpacing: '0.1em', lineHeight: 1.5,
-          }}>
-            <ClockIcon /> {delivery}
-          </div>
-        )}
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
+          borderRadius: 10, padding: '6px 12px', maxWidth: '100%',
+          color: 'var(--accent-text)', fontSize: 11.5, fontFamily: "'JetBrains Mono', monospace",
+          textTransform: 'uppercase', letterSpacing: '0.1em', lineHeight: 1.5,
+        }}>
+          <ClockIcon /> {t.modalTierBody.inTouchWithin12h}
+        </div>
         <span style={{ fontSize: mobile ? 20 : 24, fontWeight: 900, color: 'var(--accent-text)', whiteSpace: 'nowrap' }}>{price}</span>
       </div>
     </>

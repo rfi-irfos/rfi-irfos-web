@@ -491,6 +491,7 @@ export const EN = {
     we: 'We',
     youReceive: 'You receive',
     whatHappensNext: 'What happens next',
+    inTouchWithin12h: 'We\'re in touch within 12h of purchase',
   },
 
   checkoutModal: {
@@ -500,9 +501,9 @@ export const EN = {
     agreementMiddle: ' and agree to the ',
     agreementTos: 'Terms of Service',
     agreementSuffix: '. The service begins immediately upon payment; no right of withdrawal applies and refunds are excluded.',
-    continueToStripe: 'Continue to Stripe →',
+    payButton: (price: string) => `Pay ${price} →`,
     cancel: 'Cancel',
-    talkFirstInstead: 'Not ready to pay? Talk to us first →',
+    talkFirstInstead: 'Didn\'t find the right fit? Talk to us - get a custom quote →',
   },
 
   proposalModal: {

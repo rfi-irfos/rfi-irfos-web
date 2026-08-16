@@ -947,7 +947,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                     color: agbChecked && b2bChecked ? '#070711' : 'rgba(0,245,196,0.55)',
                     cursor: agbChecked && b2bChecked ? 'pointer' : 'not-allowed',
                   }}>
-                  {t.checkoutModal.continueToStripe}
+                  {t.checkoutModal.payButton(checkoutModal.price)}
                 </button>
                 <button onClick={() => cancelCheckout(checkoutModal.key)}
                   style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
