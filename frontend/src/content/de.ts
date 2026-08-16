@@ -170,8 +170,6 @@ export const DE: Content = {
     },
     table: {
       organisation: 'Organisation',
-      // Mobile-only abbreviation - see the matching en.ts key for why.
-      organisationShort: 'Org.',
       notified: 'Gemeldet',
       status: 'Status',
       sev: 'SCHWERE',
@@ -508,6 +506,9 @@ export const DE: Content = {
   reportModal: {
     label: 'bericht - rfi-irfos',
     iframeTitle: 'Bericht PDF',
+    // Mobile fallback copy - see the matching en.ts key for why.
+    mobileFallbackHint: 'PDF-Berichte lassen sich auf mobilen Browsern nicht zuverlässig einbetten. Stattdessen direkt öffnen:',
+    mobileOpenLabel: 'Bericht öffnen (PDF)',
   },
 
   intelModal: {

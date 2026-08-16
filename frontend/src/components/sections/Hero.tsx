@@ -165,7 +165,18 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           maxWidth, 2 or 3-across on a phone, 1-across only once a column would
           otherwise drop under the readable floor - correct at 360/390/430px
           and everything between, not just the one width someone last tested. */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: mobile ? '1.25rem' : '3rem', margin: '0 auto 24px', maxWidth: 980, justifyContent: 'center' }}>
+      {/* FIXED (live bug report, mobile Chrome screenshot, 2026-08-16): the auto-fit/
+          minmax fix above was still overflowing off the right edge on real mobile
+          viewports ("die kpis gehn rechts am rand raus"). Root cause: this section's
+          own flex container sets `alignItems: 'center'` (not the flex default
+          `stretch`), so without an explicit `width` this grid was sized via
+          shrink-to-fit/max-content instead of being constrained to the actually
+          available cross-axis space - `auto-fit` was then computing its column count
+          against that unconstrained max-content width, not the real ~310px viewport
+          budget, so a 3rd column got created and spilled past the screen edge.
+          `width: '100%'` (bounded by the existing maxWidth: 980) forces layout to use
+          the real available width, so auto-fit wraps to 2/1 columns correctly. */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: mobile ? '1.25rem' : '3rem', margin: '0 auto 24px', width: '100%', maxWidth: 980, justifyContent: 'center' }}>
         {/* Deliberately NOT the same numbers as the Track Record stat row further down -
             that one is audit-specific (apps/findings/companies/regulators), this one is
             the breadth story: research areas, systems and projects, publications, team,

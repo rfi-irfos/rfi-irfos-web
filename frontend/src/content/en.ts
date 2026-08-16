@@ -173,11 +173,6 @@ export const EN = {
     },
     table: {
       organisation: 'Organisation',
-      // Mobile-only abbreviation (TrackRecord.tsx, ledger header) - the full word
-      // doesn't fit the ~30-90px this column gets once Status/Disclosure's own
-      // fixed-width columns are subtracted on a narrow viewport; see the fix
-      // comment at the call site for the full mobile-overflow root cause.
-      organisationShort: 'Org.',
       notified: 'Notified',
       status: 'Status',
       sev: 'SEV',
@@ -518,6 +513,15 @@ export const EN = {
   reportModal: {
     label: 'report - rfi-irfos',
     iframeTitle: 'Report PDF',
+    // Mobile fallback copy (PublicSite.tsx, REPORT PDF MODAL) - live bug report,
+    // mobile Chrome screenshot 2026-08-16: an <iframe src="*.pdf"> renders the PDF
+    // fine on desktop (Chrome ships a PDF viewer usable inside iframes there) but
+    // came back blank/broken-file-icon on mobile Chrome, which does not reliably
+    // render PDFs embedded in an iframe. Mobile now skips the iframe entirely and
+    // shows this explicit "open it yourself" CTA instead (the PDF still opens
+    // correctly as a normal top-level mobile navigation/download, just not inline).
+    mobileFallbackHint: 'PDF reports don’t embed reliably on mobile browsers. Open it directly instead:',
+    mobileOpenLabel: 'Open Report (PDF)',
   },
 
   intelModal: {

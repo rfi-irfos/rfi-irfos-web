@@ -806,7 +806,45 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t.reportModal.label}</span>
               <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '9px 11px' }}>&#x2715;</button>
             </div>
-            <iframe src={reportModal} style={{ flex: 1, border: 'none', width: '100%' }} title={t.reportModal.iframeTitle} />
+            {/* FIXED (live bug report, mobile Chrome screenshots, 2026-08-16): a bare
+                <iframe src="*.pdf"> rendered the report fine on desktop (Chrome ships
+                a PDF viewer that also works embedded in an iframe there) but came
+                back as a blank grey box with a broken-file icon on mobile Chrome -
+                confirmed by reproduction: the network request for the PDF returns
+                200, then the iframe's navigation to it gets aborted client-side,
+                which is the standard signature of a browser that can't hand the
+                response off to an inline PDF renderer. Mobile browsers in general
+                don't reliably support inline PDF embeds the way desktop does, so
+                rather than keep shipping a broken embed on every phone, mobile skips
+                the iframe entirely and shows an explicit "open it yourself" CTA - the
+                PDF itself opens fine as a normal top-level navigation/download on
+                mobile, this only routes around the broken INLINE case. Desktop is
+                unchanged (the iframe already works there). */}
+            {mobile ? (
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 18, padding: '32px 24px', textAlign: 'center' }}>
+                <svg width="40" height="48" viewBox="0 0 20 24" fill="none" style={{ opacity: 0.6 }}>
+                  <path d="M2 1h11l5 5v16a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" stroke="#8a8aa0" strokeWidth="1.4" strokeLinejoin="round" />
+                  <path d="M13 1v5h5" stroke="#8a8aa0" strokeWidth="1.4" strokeLinejoin="round" />
+                </svg>
+                <p style={{ color: '#a0a0b8', fontSize: 13.5, lineHeight: 1.6, margin: 0, maxWidth: 320 }}>{t.reportModal.mobileFallbackHint}</p>
+                <a
+                  href={reportModal}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => beacon('report_modal_mobile_open')}
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none',
+                    background: 'var(--accent)', color: 'var(--accent-fg)', fontWeight: 800, fontSize: 13.5,
+                    padding: '11px 20px', borderRadius: 8, letterSpacing: '0.02em',
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6" /><path d="M10 14L21 3" /></svg>
+                  {t.reportModal.mobileOpenLabel}
+                </a>
+              </div>
+            ) : (
+              <iframe src={reportModal} style={{ flex: 1, border: 'none', width: '100%' }} title={t.reportModal.iframeTitle} />
+            )}
           </div>
         </div>
       )}
@@ -1168,33 +1206,63 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             goal: more width means more columns fit side by side instead of
             wrapping into a tall single-column scroll. */}
         <div style={{ display: 'flex', gap: '1.1rem', alignItems: 'flex-start', marginBottom: 28, textAlign: 'left' }}>
-          <div style={{ flex: '0 0 170px', display: 'flex', flexDirection: 'column', gap: 22 }}>
-            {[
-              {
-                heading: t.footer.groups.legal.heading, links: [
-                  { label: t.footer.groups.legal.links.impressum, href: '/impressum' },
-                  { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz' },
-                  { label: t.footer.groups.legal.links.agb, href: '/agb' },
-                  { label: t.footer.groups.legal.links.security, href: '/security' },
-                  { label: t.footer.groups.legal.links.standards, href: '/standards' },
-                ],
-              },
-              {
-                heading: t.footer.groups.company.heading, links: [
-                  { label: t.footer.groups.company.links.team, href: '/team' },
-                  { label: t.footer.groups.company.links.careers, href: 'mailto:career@rfi-irfos.com' },
-                  { label: t.footer.groups.company.links.ternlang, href: 'https://ternlang.com' },
-                  { label: t.footer.groups.company.links.github, href: 'https://github.com/rfi-irfos' },
-                ],
-              },
-              {
-                heading: t.footer.groups.research.heading, links: [
-                  { label: t.footer.groups.research.links.research, href: '#research' },
-                  { label: t.footer.groups.research.links.trackRecord, href: '#track-record' },
-                  { label: t.footer.groups.research.links.methodology, href: '/methodology' },
-                ],
-              },
-            ].map(group => (
+          <div style={{ flex: mobile ? '1 1 auto' : '0 0 170px', display: 'flex', flexDirection: 'column', gap: 22 }}>
+            {/* FIXED (live bug report, mobile Chrome screenshot, 2026-08-16): this
+                footer is a dense, desktop-oriented link directory (Legal/Company/
+                Research column + a wide grid of Systems zones/Repositories/Crates
+                columns off to its right, see the comment further down) with no
+                mobile handling at all - on a narrow viewport every one of those
+                fixed/minmax(100px,...) grid columns tried to render side by side
+                anyway, "total kaputt" per the live report. Mobile now shows only
+                the Legal/compliance group (Impressum/Datenschutz/AGB/Security/
+                Standards - the group this footer's own data already calls
+                `t.footer.groups.legal`) plus the WKO badge/tagline/copyright block
+                that was already living in this same column; Company (team/careers/
+                ternlang/github) and Research (anchors + methodology) collapse out,
+                and the entire right-side Systems/Repositories/Crates directory
+                below is skipped outright (see `{!mobile && (...)}` further down) -
+                that whole grid is internal tooling/repo sprawl, not anything a
+                mobile visitor came to the footer looking for. Desktop is
+                unchanged (full directory, same as before). */}
+            {(mobile
+              ? [
+                {
+                  heading: t.footer.groups.legal.heading, links: [
+                    { label: t.footer.groups.legal.links.impressum, href: '/impressum' },
+                    { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz' },
+                    { label: t.footer.groups.legal.links.agb, href: '/agb' },
+                    { label: t.footer.groups.legal.links.security, href: '/security' },
+                    { label: t.footer.groups.legal.links.standards, href: '/standards' },
+                  ],
+                },
+              ]
+              : [
+                {
+                  heading: t.footer.groups.legal.heading, links: [
+                    { label: t.footer.groups.legal.links.impressum, href: '/impressum' },
+                    { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz' },
+                    { label: t.footer.groups.legal.links.agb, href: '/agb' },
+                    { label: t.footer.groups.legal.links.security, href: '/security' },
+                    { label: t.footer.groups.legal.links.standards, href: '/standards' },
+                  ],
+                },
+                {
+                  heading: t.footer.groups.company.heading, links: [
+                    { label: t.footer.groups.company.links.team, href: '/team' },
+                    { label: t.footer.groups.company.links.careers, href: 'mailto:career@rfi-irfos.com' },
+                    { label: t.footer.groups.company.links.ternlang, href: 'https://ternlang.com' },
+                    { label: t.footer.groups.company.links.github, href: 'https://github.com/rfi-irfos' },
+                  ],
+                },
+                {
+                  heading: t.footer.groups.research.heading, links: [
+                    { label: t.footer.groups.research.links.research, href: '#research' },
+                    { label: t.footer.groups.research.links.trackRecord, href: '#track-record' },
+                    { label: t.footer.groups.research.links.methodology, href: '/methodology' },
+                  ],
+                },
+              ]
+            ).map(group => (
               <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
                 <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 2px' }}>{group.heading}</p>
                 {group.links.map(l => (
@@ -1239,6 +1307,10 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               </p>
             </div>
           </div>
+          {/* Divider + the full Systems/Repositories/Crates directory are desktop-
+              only (see the mobile-condensation comment above) - nothing to divide
+              once the right-hand side isn't rendering on mobile at all. */}
+          {!mobile && (<>
           {/* Divider hugs the Legal column tighter now (live feedback 2026-08-15:
               "muss direkt ans legal ran, mehr nach links") - the outer flex gap
               was shrunk to 1.1rem for this side, with the larger gap restored via
@@ -1341,6 +1413,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               </div>
             ))}
           </div>
+          </>)}
         </div>
         {systemModal && <SystemCardModal systemKey={systemModal} onClose={() => setSystemModal(null)} onNavigate={setSystemModal} />}
       </footer>

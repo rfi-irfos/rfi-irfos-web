@@ -2721,8 +2721,25 @@ export function TrackRecordSection({
           {/* Sticky header */}
           <div className="ledger-grid" style={{
             display: 'grid',
+            // FIXED (live bug report, mobile Chrome screenshot, 2026-08-16): mobile
+            // fixed-px columns tightened 85/110 -> 52/80. `.ledger-grid>*` (the
+            // <style> block above) sets `min-width:0` on every grid child, which lets
+            // the flexible 1fr "Organisation" column shrink well below its own
+            // ~84px single-line width once the two fixed-px "Status"/"Disclosure"
+            // tracks and gaps are subtracted - down to ~32px in the field. Nothing
+            // then stopped the actual (unbreakable single-word) text from painting
+            // past that shrunk box, bleeding straight into "Status" and reading as
+            // one merged "ORGANISATIONSTATUS" mush. Root measurement (live, headless
+            // Chromium, same font/weight/letter-spacing as this row): "Organisation"
+            // needs ~84px, but "Status" only ever needs ~42px and "Disclosure" ~70px
+            // - the old 85px/110px columns were more than double what those two
+            // labels actually use, while starving the one column that needed the
+            // room. Right-sized to 52px/80px (small buffer over each label's real
+            // width) so the freed space goes to the 1fr column via the grid's normal
+            // distribution - "Organisation" now renders in full, unclipped, with
+            // ~11px of slack. Desktop is untouched (already had ample room).
             gridTemplateColumns: mobile
-              ? '1fr 85px 110px'
+              ? '1fr 52px 80px'
               : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 110px 70px 130px 130px 56px',
             gap: '0 6px',
             padding: '7px 14px',
@@ -2731,7 +2748,12 @@ export function TrackRecordSection({
             fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 700,
             color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.1em',
           }}>
-            <span>{t.trackRecord.table.organisation}</span>
+            {/* overflow/ellipsis stays on as a defensive floor even though the
+                column-width fix above gives "Organisation" a comfortable ~11px of
+                slack on every currently shipped locale - so a future longer
+                translation truncates cleanly instead of bleeding into "Status"
+                again, rather than relying solely on the fixed px budget above. */}
+            <span style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.trackRecord.table.organisation}</span>
             {!mobile && <span>{t.trackRecord.table.notified}</span>}
             <span style={{ textAlign: 'center' }}>{t.trackRecord.table.status}</span>
             {!mobile && <span style={{ textAlign: 'center' }}>{t.trackRecord.table.sev}</span>}
