@@ -250,12 +250,12 @@ export const EN = {
         'What\'s riding on it - a signature, an investment, a story',
         'Anything public already out there about it - we don\'t start from zero',
       ], mechanism: [
-        'Turns the claim into a testable question',
-        'Checks it against years of interdisciplinary research, not one narrow database - 100+ published findings and a cross-domain evidence graph spanning technology, compliance, and the real world',
-        'Traces the verdict back to real evidence, not a summary of public claims',
+        'Turn the claim into a testable question',
+        'Check it against years of interdisciplinary research, not one narrow database - 100+ published findings and a cross-domain evidence graph spanning technology, compliance, and the real world',
+        'Trace the verdict back to real evidence, not a summary of public claims',
       ], receive: [
         'A verdict: true, false, or unproven',
-        'The evidence trail behind it - source-level, not a summary of public claims',
+        'The evidence trail behind it, not just our word for it - the same sourcing we\'d stand behind ourselves',
         'Something you can sign off on, invest on, or publish on',
       ], bullets: [
         'Before you sign a contract, you want a vendor\'s security or privacy claims checked against reality',
@@ -269,11 +269,11 @@ export const EN = {
         'The assumptions you want tested',
         'The strategic questions surrounding it',
       ], mechanism: [
-        'Traces the target across its technologies, dependencies, vendors, products, and relationships',
-        'Connects current observations with historical and cross-entity intelligence',
-        'Exposes structures and changes that remain invisible when the target is examined in isolation',
+        'Trace the target across its technologies, dependencies, vendors, products, and relationships',
+        'Connect current observations with historical and cross-entity intelligence',
+        'Expose structures and changes that remain invisible when the target is examined in isolation',
       ], receive: [
-        'A reconstructed intelligence picture of the target',
+        'A reconstructed intelligence picture of the target - built the same way we\'d build our own',
         'Its relevant dependencies, relationships, movements, and technical footprint',
         'The parts of its operating reality that materially change your assessment',
       ], bullets: [
@@ -288,11 +288,11 @@ export const EN = {
         'What matters most to you - risk, dependencies, competitive structure',
         'How often you need the picture refreshed - once, or standing',
       ], mechanism: [
-        'Maps every relevant actor in the sector as one connected model, not separate files',
-        'Re-resolves the map every quarter, tracking how relationships shift',
-        'Flags where risk or change is concentrating across the whole structure',
+        'Map every relevant actor in the sector as one connected model, not separate files',
+        'Re-resolve the map every quarter, tracking how relationships shift',
+        'Flag where risk or change is concentrating across the whole structure',
       ], receive: [
-        'One connected sector map, not a stack of individual reports',
+        'Direct access to the connected sector map itself, not a stack of individual reports',
         'Early visibility on where change is forming',
         'A model that gets more valuable every quarter, not a snapshot that expires',
       ], bullets: [
@@ -307,11 +307,11 @@ export const EN = {
         'The changes that could affect your decisions',
         'The questions you need answered as the situation evolves',
       ], mechanism: [
-        'Monitors the relevant entities, technologies, relationships, and changes across our intelligence environment',
-        'Correlates new observations with what we already know',
-        'Surfaces material signals as the underlying situation changes',
+        'Monitor the relevant entities, technologies, relationships, and changes across our intelligence environment',
+        'Correlate new observations with what we already know',
+        'Surface material signals as the underlying situation changes',
       ], receive: [
-        'A live intelligence feed around the subject that matters to you',
+        'Direct access to a live intelligence feed around the subject that matters to you',
         'Change signals with the context required to understand their significance',
         'Accumulated intelligence that becomes more useful over time',
       ], bullets: [
@@ -328,9 +328,9 @@ export const EN = {
         'Your existing systems it needs to work with',
         'Any rules or boundaries it must respect',
       ], mechanism: [
-        'Builds the agent system on your own infrastructure',
-        'Documents every step so it\'s reproducible, not a black box',
-        'Tests it against real operational questions, not a demo',
+        'Build the agent system on your own infrastructure',
+        'Document every step so it\'s reproducible, not a black box',
+        'Test it against real operational questions, not a demo',
       ], receive: [
         'An integrated, autonomous agent you fully control',
         'Full documentation and source access - nothing hidden, nothing black-boxed',
@@ -347,9 +347,9 @@ export const EN = {
         'Your performance, security, or control requirements',
         'Any existing systems it needs to integrate with',
       ], mechanism: [
-        'Builds a custom system from scratch - backend, API, desktop, embedded, whatever the job needs',
-        'Uses Rust and our own tools where it actually matters',
-        'Hands over source code, not a black box',
+        'Build a custom system from scratch - backend, API, desktop, embedded, whatever the job needs',
+        'Use Rust and our own tools where it actually matters',
+        'Hand over source code, not a black box',
       ], receive: [
         'A system built exactly for your problem',
         'Full source code and control',
@@ -366,11 +366,11 @@ export const EN = {
         'The claims, assumptions, or unknowns surrounding its implementation',
         'The level of access available for the investigation',
       ], mechanism: [
-        'Reconstructs the technology beneath the product surface',
-        'Traces components, SDKs, services, interfaces, dependencies, and external relationships',
-        'Tests the observed architecture against documentation, claims, and the intelligence already accumulated around it',
+        'Reconstruct the technology beneath the product surface',
+        'Trace components, SDKs, services, interfaces, dependencies, and external relationships',
+        'Test the observed architecture against documentation, claims, and the intelligence already accumulated around it',
       ], receive: [
-        'A technical intelligence model of the system under investigation',
+        'The technical intelligence model itself, not a slide summary of it',
         'The architecture that matters to your decision, including relevant hidden dependencies',
         'Findings that expose where the implemented system diverges from the understood one',
       ], bullets: [
@@ -385,9 +385,9 @@ export const EN = {
         'Your team, to be trained alongside it',
         'Your existing data, ready to be migrated in',
       ], mechanism: [
-        'Installs and integrates everything, start to finish',
-        'Migrates your existing data',
-        'Trains your team and stays for ongoing support',
+        'Install and integrate everything, start to finish',
+        'Migrate your existing data',
+        'Train your team and stay for ongoing support',
       ], receive: [
         'A production-ready system, not just a delivery',
         'A trained team that can run it',
@@ -406,9 +406,9 @@ export const EN = {
         'Nothing else - no NDA, no payment, no priority queue',
         'The same 90-day disclosure clock as every other app we check',
       ], mechanism: [
-        'Runs the same investigation as our paid audits',
-        'Applies the identical rule to everyone, no exceptions',
-        'Gives you 90 days to fix anything found before it\'s public',
+        'Run the same investigation as our paid audits',
+        'Apply the identical rule to everyone, no exceptions',
+        'Give you 90 days to fix anything found before it\'s public',
       ], receive: [
         'A free security check',
         'A 90-day window to fix anything we find',
@@ -425,11 +425,11 @@ export const EN = {
         'The system or organization affected',
         'The decision that cannot wait for another generic assessment',
       ], mechanism: [
-        'Traces the exposure through the underlying technology and dependency structure',
-        'Establishes what is actually affected, what is merely assumed, and where the exposure originates',
-        'Identifies the intervention points that change the underlying condition',
+        'Trace the exposure through the underlying technology and dependency structure',
+        'Establish what is actually affected, what is merely assumed, and where the exposure originates',
+        'Identify the intervention points that change the underlying condition',
       ], receive: [
-        'A prioritized intelligence picture of the exposure',
+        'Direct access to the prioritized intelligence picture of the exposure',
         'The paths through the system that create or amplify it',
         'A concrete basis for deciding where to intervene',
       ], bullets: [
@@ -444,12 +444,12 @@ export const EN = {
         'Your app or system, under NDA',
         'The stakeholders who need to sign off before anything moves',
       ], mechanism: [
-        'Runs the same investigation, kept confidential',
-        'Re-tests by hand once you\'ve shipped fixes',
-        'Notifies regulators in parallel, without exposing detail',
+        'Run the same investigation, kept confidential',
+        'Re-test by hand once you\'ve shipped fixes',
+        'Notify regulators in parallel, without exposing detail',
       ], receive: [
         'A confidential, severity-ranked finding',
-        'A summary your non-technical leadership can read',
+        'The method and tooling behind it, not just the result - the intellectual property an NDA is built to protect',
         'Hand-verified confirmation your fixes actually worked',
       ], bullets: [
         'As a publicly listed company, you want to resolve a finding internally before it goes public',
@@ -463,9 +463,9 @@ export const EN = {
         'Your existing NIS2 or GDPR Art. 9 obligations',
         'The regulatory deadline or audit you\'re working against',
       ], mechanism: [
-        'Turns NIS2 obligations into controls your team can actually run',
-        'Rehearses incident response before anything goes wrong',
-        'Traces every flow of biometric data (Art. 9) in full',
+        'Turn NIS2 obligations into controls your team can actually run',
+        'Rehearse incident response before anything goes wrong',
+        'Trace every flow of biometric data (Art. 9) in full',
       ], receive: [
         'Controls you can implement, not just a compliance checklist',
         'A rehearsed incident-response plan',

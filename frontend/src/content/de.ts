@@ -243,12 +243,12 @@ export const DE: Content = {
         'Was davon abhängt - eine Unterschrift, ein Investment, eine Story',
         'Was öffentlich schon dazu vorliegt - wir fangen nicht bei null an',
       ], mechanism: [
-        'Macht aus der Behauptung eine testbare Frage',
-        'Gleicht sie mit Jahren interdisziplinärer Forschung ab, nicht mit einer einzelnen Datenbank - 100+ veröffentlichte Befunde und ein domänenübergreifender Wissensgraph über Technologie, Compliance und die reale Welt',
-        'Verfolgt das Urteil bis zum echten Beleg zurück, nicht bis zur Zusammenfassung öffentlicher Aussagen',
+        'Machen aus der Behauptung eine testbare Frage',
+        'Gleichen sie mit Jahren interdisziplinärer Forschung ab, nicht mit einer einzelnen Datenbank - 100+ veröffentlichte Befunde und ein domänenübergreifender Wissensgraph über Technologie, Compliance und die reale Welt',
+        'Verfolgen das Urteil bis zum echten Beleg zurück, nicht bis zur Zusammenfassung öffentlicher Aussagen',
       ], receive: [
         'Ein Urteil: stimmt, stimmt nicht, oder unbelegt',
-        'Die Beweiskette dahinter - auf Quellcode-Ebene, keine Zusammenfassung öffentlicher Aussagen',
+        'Die Beweiskette dahinter, nicht nur unser Wort dafür - dieselbe Quellenlage, für die wir selbst geradestehen würden',
         'Etwas, das Sie unterschreiben, investieren oder veröffentlichen können',
       ], bullets: [
         'Vor der Vertragsunterschrift wollen Sie die Sicherheits- oder Datenschutzaussagen eines Anbieters gegen die Realität geprüft haben',
@@ -262,11 +262,11 @@ export const DE: Content = {
         'Die Annahmen, die Sie getestet haben wollen',
         'Die strategischen Fragen dahinter',
       ], mechanism: [
-        'Verfolgt das Ziel über seine Technologien, Abhängigkeiten, Anbieter, Produkte und Beziehungen',
-        'Verbindet neue Beobachtungen mit historischer und entitätsübergreifender Intelligence',
-        'Legt Strukturen und Veränderungen offen, die unsichtbar bleiben, wenn man das Ziel isoliert betrachtet',
+        'Verfolgen das Ziel über seine Technologien, Abhängigkeiten, Anbieter, Produkte und Beziehungen',
+        'Verbinden neue Beobachtungen mit historischer und entitätsübergreifender Intelligence',
+        'Legen Strukturen und Veränderungen offen, die unsichtbar bleiben, wenn man das Ziel isoliert betrachtet',
       ], receive: [
-        'Ein rekonstruiertes Lagebild des Ziels',
+        'Ein rekonstruiertes Lagebild des Ziels - aufgebaut genauso, wie wir unser eigenes aufbauen würden',
         'Seine relevanten Abhängigkeiten, Beziehungen, Bewegungen und technischen Fußabdruck',
         'Die Teile seiner operativen Realität, die Ihre Einschätzung tatsächlich verändern',
       ], bullets: [
@@ -281,13 +281,13 @@ export const DE: Content = {
         'Was Ihnen am wichtigsten ist - Risiko, Abhängigkeiten, Wettbewerb',
         'Wie oft das Bild aktualisiert werden soll - einmalig oder laufend',
       ], mechanism: [
-        'Baut ein laufend aktuelles Lagebild jedes relevanten Akteurs im Sektor',
-        'Aktualisiert es vierteljährlich, nicht nur einmal',
-        'Markiert, wo sich Risiko oder Veränderung konzentriert',
+        'Bauen ein laufend aktuelles Lagebild jedes relevanten Akteurs im Sektor',
+        'Aktualisieren es vierteljährlich, nicht nur einmal',
+        'Markieren, wo sich Risiko oder Veränderung konzentriert',
       ], receive: [
-        'Ein laufend aktualisiertes Sektor-Lagebild',
+        'Direkten Zugriff auf das zusammenhängende Sektor-Lagebild selbst, nicht auf einen Stapel Einzelberichte',
         'Frühe Sicht auf entstehende Veränderungen',
-        'Ein Gesamtbild statt vieler Einzelberichte',
+        'Ein Modell, das mit jedem Quartal wertvoller wird, kein Snapshot, der veraltet',
       ], bullets: [
         'Als Fonds oder Investor das Risikoprofil des gesamten Portfolios laufend im Blick behalten, nicht nur einzelne Positionen',
         'Als Aufsichtsbehörde einen ganzen Sektor systematisch beobachten statt Einzelfälle abzuarbeiten',
@@ -300,11 +300,11 @@ export const DE: Content = {
         'Die Veränderungen, die Ihre Entscheidungen tatsächlich beeinflussen könnten',
         'Die Fragen, die Sie beantwortet brauchen, während sich die Lage entwickelt',
       ], mechanism: [
-        'Beobachtet die relevanten Entitäten, Technologien, Beziehungen und Veränderungen über unser gesamtes Lagefeld',
-        'Gleicht neue Beobachtungen mit dem ab, was wir bereits wissen',
-        'Meldet materielle Signale, sobald sich die zugrundeliegende Lage ändert',
+        'Beobachten die relevanten Entitäten, Technologien, Beziehungen und Veränderungen über unser gesamtes Lagefeld',
+        'Gleichen neue Beobachtungen mit dem ab, was wir bereits wissen',
+        'Melden materielle Signale, sobald sich die zugrundeliegende Lage ändert',
       ], receive: [
-        'Ein laufender Intelligence-Feed rund um das Thema, das für Sie zählt',
+        'Direkten Zugriff auf einen laufenden Intelligence-Feed rund um das Thema, das für Sie zählt',
         'Änderungssignale mit dem Kontext, um ihre Bedeutung zu verstehen',
         'Akkumulierte Intelligence, die mit der Zeit wertvoller wird',
       ], bullets: [
@@ -321,9 +321,9 @@ export const DE: Content = {
         'Ihre bestehenden Systeme, mit denen es zusammenarbeiten muss',
         'Regeln oder Grenzen, die es einhalten muss',
       ], mechanism: [
-        'Baut das Agentensystem auf Ihrer eigenen Infrastruktur',
-        'Dokumentiert jeden Schritt, damit nichts eine Blackbox bleibt',
-        'Testet gegen echte operative Fragen, nicht gegen eine Demo',
+        'Bauen das Agentensystem auf Ihrer eigenen Infrastruktur',
+        'Dokumentieren jeden Schritt, damit nichts eine Blackbox bleibt',
+        'Testen gegen echte operative Fragen, nicht gegen eine Demo',
       ], receive: [
         'Ein integriertes, autonomes Agentensystem, vollständig unter Ihrer Kontrolle',
         'Vollständige Dokumentation und Quellcode-Zugriff - nichts versteckt, keine Blackbox',
@@ -340,9 +340,9 @@ export const DE: Content = {
         'Ihre Anforderungen an Geschwindigkeit, Sicherheit oder Kontrolle',
         'Bestehende Systeme, mit denen es zusammenarbeiten muss',
       ], mechanism: [
-        'Baut ein maßgeschneidertes System von Grund auf - Backend, API, Desktop, Embedded, je nach Bedarf',
-        'Setzt Rust und eigene Werkzeuge dort ein, wo es wirklich zählt',
-        'Übergibt Quellcode, keine Blackbox',
+        'Bauen ein maßgeschneidertes System von Grund auf - Backend, API, Desktop, Embedded, je nach Bedarf',
+        'Setzen Rust und eigene Werkzeuge dort ein, wo es wirklich zählt',
+        'Übergeben Quellcode, keine Blackbox',
       ], receive: [
         'Ein System, das exakt auf Ihr Problem passt',
         'Vollständigen Quellcode und Kontrolle',
@@ -359,11 +359,11 @@ export const DE: Content = {
         'Die Behauptungen, Annahmen oder Unbekannten rund um die Umsetzung',
         'Den verfügbaren Zugriffsgrad für die Untersuchung',
       ], mechanism: [
-        'Rekonstruiert die Technologie unter der Produktoberfläche',
-        'Verfolgt Komponenten, SDKs, Services, Schnittstellen, Abhängigkeiten und externe Beziehungen',
-        'Prüft die beobachtete Architektur gegen Dokumentation, Behauptungen und bereits akkumulierte Intelligence',
+        'Rekonstruieren die Technologie unter der Produktoberfläche',
+        'Verfolgen Komponenten, SDKs, Services, Schnittstellen, Abhängigkeiten und externe Beziehungen',
+        'Prüfen die beobachtete Architektur gegen Dokumentation, Behauptungen und bereits akkumulierte Intelligence',
       ], receive: [
-        'Ein technisches Intelligence-Modell des untersuchten Systems',
+        'Das technische Intelligence-Modell selbst, keine Folienzusammenfassung davon',
         'Die Architektur, die für Ihre Entscheidung zählt, inklusive relevanter versteckter Abhängigkeiten',
         'Befunde, die zeigen, wo das umgesetzte System vom verstandenen System abweicht',
       ], bullets: [
@@ -378,9 +378,9 @@ export const DE: Content = {
         'Ihr Team, das gleich mitgeschult wird',
         'Ihre bestehenden Daten, bereit zur Migration',
       ], mechanism: [
-        'Installiert und integriert alles, von Anfang bis Ende',
-        'Migriert Ihre bestehenden Daten',
-        'Schult Ihr Team und bleibt für laufenden Support',
+        'Installieren und integrieren alles, von Anfang bis Ende',
+        'Migrieren Ihre bestehenden Daten',
+        'Schulen Ihr Team und bleiben für laufenden Support',
       ], receive: [
         'Ein betriebsbereites System, nicht nur eine Lieferung',
         'Ein geschultes Team, das es selbst betreiben kann',
@@ -399,9 +399,9 @@ export const DE: Content = {
         'Sonst nichts - kein NDA, keine Zahlung, kein Vorrang',
         'Denselben 90-Tage-Takt wie bei jeder anderen App, die wir prüfen',
       ], mechanism: [
-        'Führt dieselbe Untersuchung wie bei unseren zahlenden Kunden durch',
-        'Wendet für alle dieselbe Regel an, ausnahmslos',
-        'Gibt Ihnen 90 Tage, um Gefundenes zu beheben, bevor es öffentlich wird',
+        'Führen dieselbe Untersuchung wie bei unseren zahlenden Kunden durch',
+        'Wenden für alle dieselbe Regel an, ausnahmslos',
+        'Geben Ihnen 90 Tage, um Gefundenes zu beheben, bevor es öffentlich wird',
       ], receive: [
         'Eine kostenlose Sicherheitsprüfung',
         'Ein 90-Tage-Fenster zur Behebung von Funden',
@@ -418,11 +418,11 @@ export const DE: Content = {
         'Das betroffene System oder die Organisation',
         'Die Entscheidung, die nicht auf eine weitere generische Einschätzung warten kann',
       ], mechanism: [
-        'Verfolgt die Schwachstelle durch die zugrundeliegende Technologie- und Abhängigkeitsstruktur',
-        'Stellt fest, was tatsächlich betroffen ist, was nur angenommen wird, und wo die Schwachstelle entsteht',
-        'Identifiziert die Eingriffspunkte, die den zugrundeliegenden Zustand tatsächlich ändern',
+        'Verfolgen die Schwachstelle durch die zugrundeliegende Technologie- und Abhängigkeitsstruktur',
+        'Stellen fest, was tatsächlich betroffen ist, was nur angenommen wird, und wo die Schwachstelle entsteht',
+        'Identifizieren die Eingriffspunkte, die den zugrundeliegenden Zustand tatsächlich ändern',
       ], receive: [
-        'Ein priorisiertes Lagebild der Schwachstelle',
+        'Direkten Zugriff auf das priorisierte Lagebild der Schwachstelle',
         'Die Pfade durch das System, die sie erzeugen oder verstärken',
         'Eine konkrete Grundlage für die Entscheidung, wo einzugreifen ist',
       ], bullets: [
@@ -437,12 +437,12 @@ export const DE: Content = {
         'Ihre App oder Ihr System, unter NDA',
         'Die Beteiligten, die zustimmen müssen, bevor sich etwas bewegt',
       ], mechanism: [
-        'Führt dieselbe Untersuchung durch, unter Geheimhaltung',
-        'Testet nach ausgelieferten Fixes manuell nach',
-        'Informiert Regulatoren parallel, ohne Sie zu exponieren',
+        'Führen dieselbe Untersuchung durch, unter Geheimhaltung',
+        'Testen nach ausgelieferten Fixes manuell nach',
+        'Informieren Regulatoren parallel, ohne Sie zu exponieren',
       ], receive: [
         'Einen vertraulichen, nach Schwere geordneten Befund',
-        'Eine Zusammenfassung, die Ihre nicht-technische Führung lesen kann',
+        'Die Methode und Werkzeuge dahinter, nicht nur das Ergebnis - genau das geistige Eigentum, das ein NDA eigentlich schützt',
         'Handgeprüfte Bestätigung, dass Ihre Fixes funktioniert haben',
       ], bullets: [
         'Als börsennotiertes Unternehmen wollen Sie einen Fund erst intern klären, bevor er publik wird',
@@ -456,9 +456,9 @@ export const DE: Content = {
         'Ihre bestehenden NIS2- oder Art.-9-Pflichten',
         'Die regulatorische Frist oder Prüfung, auf die Sie hinarbeiten',
       ], mechanism: [
-        'Übersetzt NIS2-Pflichten in Kontrollen, die Ihr Team tatsächlich umsetzen kann',
-        'Übt Incident-Response ein, bevor etwas schiefgeht',
-        'Verfolgt jeden Fluss biometrischer Daten (Art. 9) vollständig',
+        'Übersetzen NIS2-Pflichten in Kontrollen, die Ihr Team tatsächlich umsetzen kann',
+        'Üben Incident-Response ein, bevor etwas schiefgeht',
+        'Verfolgen jeden Fluss biometrischer Daten (Art. 9) vollständig',
       ], receive: [
         'Kontrollen, die Sie umsetzen können, keine reine Checkliste',
         'Einen geübten Incident-Response-Plan',
