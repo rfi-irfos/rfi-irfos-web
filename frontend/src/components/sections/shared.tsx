@@ -706,9 +706,14 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets, br
           next"). First pass gave this its own bordered/background chip - flagged
           same day as "too much noise" next to the title - downgraded to plain quiet
           inline text, no box, no uppercase shouting. */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
+      {/* alignItems: 'baseline' (not 'flex-start') - live feedback 2026-08-16: the small
+          pill text was sitting visibly higher than the title, because top-aligning two
+          very different font sizes lines up their box tops, not their actual text
+          baselines. Baseline alignment fixes that regardless of the size difference,
+          no manual marginTop nudge needed any more. */}
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
         <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: 'var(--text)', lineHeight: 1.2, margin: 0 }}>{tier}</h3>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, flexShrink: 0, color: '#8a8aa0', fontSize: 12, marginTop: 4 }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, flexShrink: 0, color: '#8a8aa0', fontSize: 12 }}>
           <ClockIcon /> {t.modalTierBody.inTouchWithin12h}
         </div>
       </div>
