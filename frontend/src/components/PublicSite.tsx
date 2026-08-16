@@ -912,7 +912,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
             backgroundBlendMode: 'overlay',
             boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
-            border: '1px solid rgba(255,255,255,0.08)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '28px 24px 36px' : '40px 28px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
+            border: '1px solid rgba(255,255,255,0.08)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '22px 20px 30px' : '30px 24px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
             {/* This modal's chrome is deliberately always-dark (carbon gradient, same family as
                 the cookie banner but darker), independent of the
                 site theme toggle - so every text color inside it is a fixed light hex, NOT a
@@ -933,7 +933,14 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                   {t.checkoutModal.agreementPrefix}<strong style={{ color: '#e8e8f0' }}>{t.checkoutModal.agreementBusinessCustomer}</strong>{t.checkoutModal.agreementMiddle}<a href="#p/agb" style={{ color: 'var(--accent-text)' }}>{t.checkoutModal.agreementTos}</a>{t.checkoutModal.agreementSuffix}
                 </span>
               </label>
+              {/* Cancel/Pay order swapped (live feedback 2026-08-16) - primary action
+                  now sits on the right, the more common placement for the "confirm"
+                  button in a two-button row. */}
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
+                <button onClick={() => cancelCheckout(checkoutModal.key)}
+                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  {t.checkoutModal.cancel}
+                </button>
                 <button onClick={confirmCheckout}
                   disabled={!agbChecked || !b2bChecked}
                   style={{
@@ -948,10 +955,6 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                     cursor: agbChecked && b2bChecked ? 'pointer' : 'not-allowed',
                   }}>
                   {t.checkoutModal.payButton(checkoutModal.price)}
-                </button>
-                <button onClick={() => cancelCheckout(checkoutModal.key)}
-                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  {t.checkoutModal.cancel}
                 </button>
               </div>
               {/* Soft off-ramp for someone who reaches checkout but isn't ready to pay
@@ -982,7 +985,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
             backgroundBlendMode: 'overlay',
             boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
-            border: '1px solid rgba(255,255,255,0.08)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '28px 24px 36px' : '40px 28px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
+            border: '1px solid rgba(255,255,255,0.08)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '22px 20px 30px' : '30px 24px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
             {/* Same fixed-light-on-dark rule as the checkout modal above - this chrome
                 doesn't follow the site theme either. */}
             <ModalTierBody tier={proposalModal.tier} price={proposalModal.price} desc={proposalModal.desc} delivery={proposalModal.delivery} mobile={mobile} bullets={proposalModal.bullets} bring={proposalModal.bring} mechanism={proposalModal.mechanism} receive={proposalModal.receive} />

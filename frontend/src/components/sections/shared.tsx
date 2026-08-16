@@ -597,12 +597,18 @@ function JourneyPreview({ mobile }: { mobile: boolean }) {
   // four connectors + the glow share one identical `times` array so they can't drift out
   // of sync across repeats (a `delay` prop resets after the first loop in framer-motion,
   // baking the stagger into keyframe `times` instead avoids that entirely).
-  const CONNECTORS = 4
-  const TIMES = [0, 0.15, 0.3, 0.45, 0.6, 0.75, 1]
+  // Glow slowed down and given a two-point plateau instead of a single spike (live
+  // feedback 2026-08-16: "this glow could be a bit slower and more gradual") - it now
+  // fades in, holds, and fades out over roughly a third of the (also lengthened) cycle
+  // instead of one sharp keyframe.
+  const CYCLE_SECONDS = 5.5
+  const TIMES = [0, 0.13, 0.26, 0.39, 0.52, 0.68, 0.84, 1]
   const GREY = 'rgba(255,255,255,0.14)'
   const HOT = '#00f5c4'
   const connectorColors = (segmentIndex: number) => TIMES.map((_, ti) => (ti === segmentIndex + 1 ? HOT : GREY))
-  const glowShadows = TIMES.map((_, ti) => (ti === CONNECTORS + 1 ? '0 0 16px 4px rgba(0,245,196,0.85)' : '0 0 0 0 rgba(0,245,196,0)'))
+  const GLOW_ON = '0 0 16px 4px rgba(0,245,196,0.85)'
+  const GLOW_OFF = '0 0 0 0 rgba(0,245,196,0)'
+  const glowShadows = TIMES.map((_, ti) => (ti === 5 || ti === 6 ? GLOW_ON : GLOW_OFF))
   return (
     <div style={{ marginBottom: 20 }}>
       <div style={{
@@ -618,7 +624,7 @@ function JourneyPreview({ mobile }: { mobile: boolean }) {
                 style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flexShrink: 0 }}>
                 <motion.div
                   animate={isLast && !reduced ? { boxShadow: glowShadows } : undefined}
-                  transition={isLast && !reduced ? { duration: 4, times: TIMES, repeat: Infinity, ease: 'easeInOut' } : undefined}
+                  transition={isLast && !reduced ? { duration: CYCLE_SECONDS, times: TIMES, repeat: Infinity, ease: 'easeInOut' } : undefined}
                   style={{
                     width: circle, height: circle, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     background: 'rgba(0,245,196,0.12)', border: `1px solid ${TEAL}`, color: TEAL,
@@ -629,7 +635,7 @@ function JourneyPreview({ mobile }: { mobile: boolean }) {
               {!isLast && (
                 <motion.div
                   animate={reduced ? undefined : { background: connectorColors(i) }}
-                  transition={reduced ? undefined : { duration: 4, times: TIMES, repeat: Infinity, ease: 'easeInOut' }}
+                  transition={reduced ? undefined : { duration: CYCLE_SECONDS, times: TIMES, repeat: Infinity, ease: 'easeInOut' }}
                   style={{ flex: 1, height: 1, background: GREY, marginTop: circle / 2, minWidth: connectorMin }}
                 />
               )}
