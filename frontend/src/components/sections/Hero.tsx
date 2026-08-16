@@ -206,16 +206,27 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
                 ("SYSTEMS & PROJECTS" vs "PUBLICATIONS"), so without a shared
                 height each card just hugged its own content and the row looked
                 uneven. */}
+            {/* justifyContent was 'center', which vertically centred the whole
+                number+label block - so the two cards whose label wraps to two
+                lines pushed their NUMBER up relative to the single-line cards and
+                the row read as misaligned (live feedback 2026-08-16). Top-aligned
+                instead: every number sits on one line, every first label line
+                sits on one line, and only the wrapping cards extend a second line
+                downward. height:100% still equalises the card sizes themselves. */}
             <div style={{
-              height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'center',
-              textAlign: 'center', padding: '20px 10px', borderRadius: 12,
-              background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
+              height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start',
+              textAlign: 'center', padding: '20px 12px', borderRadius: 12,
+              background: 'linear-gradient(155deg, #1c1c22 0%, #101014 28%, #0a0a0d 52%, #18181f 76%, #0d0d11 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 3px)',
               backgroundBlendMode: 'overlay',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 30px rgba(0,0,0,0.5), 0 12px 30px rgba(0,0,0,0.5)',
-              border: '1px solid rgba(255,255,255,0.08)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 30px rgba(0,0,0,0.5), 0 12px 30px rgba(0,0,0,0.5)',
+              border: '1px solid rgba(255,255,255,0.09)',
             }}>
               <div style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: '#00f5c4', lineHeight: 1 }}><CountUp value={s.n} /></div>
-              <div style={{ fontSize: 11, color: '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8 }}>{s.label}</div>
+              {/* marginRight cancels the trailing letter-space that letter-spacing
+                  appends after the final character. Centred text is otherwise
+                  optically pushed right by half a tracking unit, which is what
+                  made the longest label look off-centre. */}
+              <div style={{ fontSize: 11, color: '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8, marginRight: '-0.08em' }}>{s.label}</div>
             </div>
           </Reveal>
         ))}

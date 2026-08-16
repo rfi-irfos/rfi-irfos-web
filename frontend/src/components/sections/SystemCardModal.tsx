@@ -94,10 +94,12 @@ const LABELS = {
   de: {
     problem: 'Welches Problem löst es?', why: 'Warum haben wir es gebaut?', different: 'Was macht es anders?',
     fit: 'Wo sitzt es im Stack?', proof: 'Beleg', technical: 'Technisch', connects: 'Verbunden mit', deepen: 'Vertiefen',
+    source: 'Quelle',
   },
   en: {
     problem: 'What problem does it solve?', why: 'Why did we build it?', different: 'What does it do differently?',
     fit: 'Where does it fit?', proof: 'Proof', technical: 'Technical details', connects: 'Connects to', deepen: 'Go deeper',
+    source: 'Source',
   },
 } as const
 
@@ -207,16 +209,26 @@ export function SystemCardModal({ systemKey, onClose, onNavigate }: {
                 </div>
               </>
             )}
+
+            {/* Source links used to sit in their own full-width footer row below
+                the two columns, separated by a divider - which pushed them off
+                the first screen on longer cards, so some systems showed their
+                link and some needed scrolling (live feedback 2026-08-16: "why do
+                we have the button that links to source disjointed"). They are a
+                labelled section of the content column like every other, so the
+                whole card reads in one pass. */}
+            {(sys.links.github || sys.links.crates || sys.links.live) && (
+              <>
+                <SectionLabel>{l.source}</SectionLabel>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {sys.links.github && <LinkPill href={sys.links.github}>GitHub &rarr;</LinkPill>}
+                  {sys.links.crates && <LinkPill href={sys.links.crates}>crates.io &rarr;</LinkPill>}
+                  {sys.links.live && <LinkPill href={sys.links.live}>{locale === 'de' ? 'Live ansehen' : 'View live'} &rarr;</LinkPill>}
+                </div>
+              </>
+            )}
           </div>
         </div>
-
-        {(sys.links.github || sys.links.crates || sys.links.live) && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 10, marginTop: 24, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            {sys.links.github && <LinkPill href={sys.links.github}>GitHub &rarr;</LinkPill>}
-            {sys.links.crates && <LinkPill href={sys.links.crates}>crates.io &rarr;</LinkPill>}
-            {sys.links.live && <LinkPill href={sys.links.live}>{locale === 'de' ? 'Live ansehen' : 'View live'} &rarr;</LinkPill>}
-          </div>
-        )}
       </div>
     </div>,
     document.body

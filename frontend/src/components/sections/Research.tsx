@@ -87,9 +87,20 @@ function ResearchAreaModal({ index, onClose, onNavigate }: {
         boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
         border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '40px 36px', maxWidth: 640, width: '100%', maxHeight: '85vh', overflowY: 'auto', position: 'relative',
       }}>
-        <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 8, right: 8, background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 20, lineHeight: 1, padding: 10 }}>&#x2715;</button>
-        <div style={{ lineHeight: 0, marginBottom: 18 }}>{icon}</div>
-        <h3 style={{ fontSize: 26, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2, marginBottom: 20, paddingRight: 24 }}>{area.title}</h3>
+        {/* Icon and close button share one row. The close button used to be
+            absolutely positioned at top:8 while the icon sat inside the panel's
+            40px padding, so the two never lined up (live feedback 2026-08-16:
+            "das logo isch weiter unten wie das x oben rechts"). Negative margins
+            pull the button's generous tap padding back out to the panel edge
+            without moving its optical position. */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, marginBottom: 18 }}>
+          <div style={{ lineHeight: 0 }}>{icon}</div>
+          <button onClick={onClose} aria-label="Close" style={{
+            background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer',
+            fontSize: 20, lineHeight: 1, padding: 10, margin: '-10px -10px 0 0',
+          }}>&#x2715;</button>
+        </div>
+        <h3 style={{ fontSize: 26, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2, marginBottom: 20 }}>{area.title}</h3>
         {/* Plain-language anchor line (2026-08-15, live feedback: the two prose
             paragraphs below assume a reader already knows what a "world model" or
             a "trit" is - this line never does, one concrete sentence before the
@@ -180,15 +191,15 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* ethics and minor protection - umbrella. Scalloped canopy edge + panel
-            ribs + a proper crook handle: the shelter reads as a made object
-            someone is holding over someone else, not an abstract dome. */}
-        <path d="M4 15a12 12 0 0 1 24 0"/>
-        <path d="M4 15q3 3.6 6 0t6 0 6 0 6 0"/>
-        <path d="M16 3.2 10 15M16 3.2 22 15"/>
-        <line x1="16" y1="15" x2="16" y2="24.5"/>
-        <path d="M16 24.5q0 3.5-3.2 3.5t-3.2-3.5"/>
-        <circle cx="16" cy="3.2" r="1.2" fill="currentColor" stroke="none"/>
+        {/* ethics and minor protection - a plain umbrella. An earlier pass gave
+            it a deeply scalloped hem, which made it read as a flower rather
+            than a shelter (live feedback 2026-08-16: "can we just make a normal
+            freaking umbrella"). Flat hem, two panel seams, crook handle. */}
+        <path d="M16 5a12 12 0 0 0-12 11h24A12 12 0 0 0 16 5z"/>
+        <path d="M10 16q0-8 6-11M22 16q0-8-6-11"/>
+        <line x1="16" y1="16" x2="16" y2="24"/>
+        <path d="M16 24a3.3 3.3 0 0 1-6.6 0"/>
+        <line x1="16" y1="2.5" x2="16" y2="5"/>
       </_I>
     ),
     title: 'Ethics & Minor Protection',
@@ -242,15 +253,16 @@ export const RESEARCH_AREAS = [
             two instances establish the pattern, the incomplete one is what the
             system predicts next. The arc below carries that prediction into a
             filled node downstream. */}
-        <circle cx="5" cy="8" r="1.8"/><circle cx="11" cy="5" r="1.8"/><circle cx="11" cy="11" r="1.8"/>
-        <line x1="6.6" y1="7.3" x2="9.4" y2="5.9"/><line x1="6.6" y1="8.7" x2="9.4" y2="10.1"/>
-        <circle cx="16" cy="8" r="1.8"/><circle cx="22" cy="5" r="1.8"/><circle cx="22" cy="11" r="1.8"/>
-        <line x1="17.6" y1="7.3" x2="20.4" y2="5.9"/><line x1="17.6" y1="8.7" x2="20.4" y2="10.1"/>
-        <circle cx="27" cy="8" r="1.8" strokeDasharray="2 2"/>
-        <line x1="28.6" y1="7.3" x2="30.2" y2="6.5" strokeDasharray="2 2"/>
-        <path d="M8 17c5 4 11 4 16 0"/>
-        <path d="M22.5 15.8 24 17l-1.2 1.6"/>
-        <circle cx="27" cy="21" r="2.5" fill="currentColor" stroke="none"/>
+        {/* Recentred 2026-08-16: the content was hugging the top-right of the
+            32px box. It now sits balanced on both axes inside the tile frame. */}
+        <circle cx="5" cy="11" r="1.8"/><circle cx="11" cy="8" r="1.8"/><circle cx="11" cy="14" r="1.8"/>
+        <line x1="6.6" y1="10.3" x2="9.4" y2="8.9"/><line x1="6.6" y1="11.7" x2="9.4" y2="13.1"/>
+        <circle cx="16" cy="11" r="1.8"/><circle cx="22" cy="8" r="1.8"/><circle cx="22" cy="14" r="1.8"/>
+        <line x1="17.6" y1="10.3" x2="20.4" y2="8.9"/><line x1="17.6" y1="11.7" x2="20.4" y2="13.1"/>
+        <circle cx="27" cy="11" r="1.8" strokeDasharray="2 2"/>
+        <path d="M6 21c4.5 3.6 11.5 3.6 16 0"/>
+        <path d="M20.6 20.1 22 21.4l-1.4 1.3"/>
+        <circle cx="26" cy="21" r="2.3" fill="currentColor" stroke="none"/>
       </_I>
     ),
     title: 'Pattern Recognition & Impact Propagation',
