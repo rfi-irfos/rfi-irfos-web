@@ -131,10 +131,15 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
             background: theme === 'hc' ? 'rgba(0,0,0,0.92)' : 'rgba(5,7,14,0.88)',
           }}
         />
+        {/* This paragraph is the page's LCP element (Lighthouse, 2026-08-16) - the old
+            0.65s delay + 0.8s fade added ~1.45s of pure animation on top of JS hydration
+            time, directly inflating the LCP score for purely cosmetic reveal polish.
+            Cut hard since this is the single largest lever on the performance score;
+            the bar sweep above is decorative and unaffected. */}
         <motion.p
           initial={prefersReducedMotion() ? undefined : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.3, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
           style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(0.95rem, 1.7vw, 1.2rem)', fontWeight: 400, color: '#a0a0b8', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0 }}
         >
           {t.hero.identity}
