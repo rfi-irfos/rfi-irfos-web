@@ -241,13 +241,14 @@ export const DE: Content = {
       { tier: 'First Light', hook: 'Aus einer Behauptung wird ein Urteil.', desc: 'Ein Anbieter, ein Pitch-Deck, ein Wettbewerber - irgendjemand hat eine Behauptung aufgestellt, und echtes Geld oder Vertrauen hängt davon ab, ob sie stimmt. Wir prüfen sie durch Dingir, unser eigenes Weltmodell: dieselbe evidenzbasierte Engine, die Entitäten, Beziehungen und Belege über alle unsere Domänen hinweg verbindet - und geben ein Urteil zurück, keine plausibel klingende Vermutung.', bring: [
         'Die Behauptung, die Sie geprüft haben wollen - ein Anbieter-Versprechen, ein Pitch-Deck, eine öffentliche Aussage',
         'Was davon abhängt - eine Unterschrift, ein Investment, eine Story',
+        'Was öffentlich schon dazu vorliegt - wir fangen nicht bei null an',
       ], mechanism: [
         'Macht aus der Behauptung eine testbare Frage',
-        'Gleicht sie mit allem ab, was Dingir bereits weiß - 315+ geprüfte Apps und ein lebendiger, domänenübergreifender Wissensgraph',
+        'Gleicht sie mit dem ab, was wir aus 311+ geprüften Apps tatsächlich extrahiert haben - 1,08 Mio. Klassen echten Code, 499 bestätigte Tracker, 392 nachverfolgte Endpunkte, nicht nur eine Namensliste',
         'Verfolgt das Urteil bis zum echten Beleg zurück, nicht bis zur Zusammenfassung öffentlicher Aussagen',
       ], receive: [
         'Ein Urteil: stimmt, stimmt nicht, oder unbelegt',
-        'Ein Urteil, verankert in Evidenz, auf die eine allgemeine KI keinen Zugriff hat',
+        'Die Beweiskette dahinter - auf Quellcode-Ebene, keine Zusammenfassung öffentlicher Aussagen',
         'Etwas, das Sie unterschreiben, investieren oder veröffentlichen können',
       ], bullets: [
         'Vor der Vertragsunterschrift wollen Sie die Sicherheits- oder Datenschutzaussagen eines Anbieters gegen die Realität geprüft haben',
@@ -278,6 +279,7 @@ export const DE: Content = {
       { tier: 'Sector Map', hook: 'Die Beziehungen, nicht die Berichte.', desc: 'Sie kaufen nicht fünfzig einzelne Firmenberichte. Dingir kartiert, wie jeder relevante Akteur in Ihrem Sektor tatsächlich mit den anderen zusammenhängt - ein zusammenhängendes, lebendiges Lagebild, alle drei Monate neu aufgelöst, damit Sie Veränderung sehen, bevor sie bereits eingepreist ist.', bring: [
         'Den Sektor oder die Firmen, die Sie im Blick behalten müssen',
         'Was Ihnen am wichtigsten ist - Risiko, Abhängigkeiten, Wettbewerb',
+        'Wie oft das Bild aktualisiert werden soll - einmalig oder laufend',
       ], mechanism: [
         'Baut ein laufend aktuelles Lagebild jedes relevanten Akteurs im Sektor',
         'Aktualisiert es vierteljährlich, nicht nur einmal',
@@ -323,9 +325,9 @@ export const DE: Content = {
         'Dokumentiert jeden Schritt, damit nichts eine Blackbox bleibt',
         'Testet gegen echte operative Fragen, nicht gegen eine Demo',
       ], receive: [
-        'Ein funktionierendes Agentensystem, vollständig unter Ihrer Kontrolle',
-        'Vollständige Dokumentation und Quellcode-Zugriff',
-        'Ein System, das weiterläuft, auch nachdem wir fertig sind',
+        'Ein integriertes, autonomes Agentensystem, vollständig unter Ihrer Kontrolle',
+        'Vollständige Dokumentation und Quellcode-Zugriff - nichts versteckt, keine Blackbox',
+        'Produktionsreif ab Tag eins, kein Proof of Concept',
       ], bullets: [
         'Ihr Support-Team ertrinkt in Tickets, die eigentlich automatisiert vorsortiert werden könnten',
         'Sie wollen einen eigenen KI-Agenten, der Compliance-Dokumente prüft, ohne Daten an OpenAI/Anthropic zu schicken',
@@ -336,6 +338,7 @@ export const DE: Content = {
       { tier: 'Custom Stack', hook: 'Keine Untersuchung. Eine Fähigkeit, um Sie herum gebaut.', desc: 'Über einen einzelnen Agenten hinaus geht es hier darum, die Intelligence-Fähigkeit selbst zu entwerfen - ein maßgeschneidertes System dort, wo fertige Software zu langsam, zu unsicher oder zu begrenzt ist, und Sie behalten die volle Kontrolle über den Quellcode, nicht wir.', bring: [
         'Das Problem, das Standard-Software nicht lösen kann',
         'Ihre Anforderungen an Geschwindigkeit, Sicherheit oder Kontrolle',
+        'Bestehende Systeme, mit denen es zusammenarbeiten muss',
       ], mechanism: [
         'Baut ein maßgeschneidertes System von Grund auf - Backend, API, Desktop, Embedded, je nach Bedarf',
         'Setzt Rust und eigene Werkzeuge dort ein, wo es wirklich zählt',
@@ -373,6 +376,7 @@ export const DE: Content = {
       { tier: 'Full Spectrum Deploy', hook: 'Intelligence als Betriebsschicht, kein Projekt mit Enddatum.', desc: 'Ihre Organisation braucht Intelligence über mehrere Flächen hinweg, kontinuierlich und operativ. Wir setzen die Infrastruktur ein, die das real macht - installiert, integriert, Ihr Team geschult, Support, der nicht bei der Übergabe endet.', bring: [
         'Ein System oder eine Infrastruktur, die vollständig laufen soll',
         'Ihr Team, das gleich mitgeschult wird',
+        'Ihre bestehenden Daten, bereit zur Migration',
       ], mechanism: [
         'Installiert und integriert alles, von Anfang bis Ende',
         'Migriert Ihre bestehenden Daten',
@@ -392,6 +396,8 @@ export const DE: Content = {
     security: [
       { tier: 'Public', hook: 'Kostenlos, für immer. Funde werden nach 90 Tagen veröffentlicht, ausnahmslos.', desc: 'Wir prüfen Ihre App genauso, wie wir jede App prüfen - kostenlos. Finden wir etwas, haben Sie 90 Tage Zeit zur Behebung, bevor es auf unserem öffentlichen Ledger landet. Für alle gilt dieselbe Regel, zahlend oder nicht.', bring: [
         'Eine App, die Sie geprüft haben wollen - Ihre eigene, oder eine, die Sie interessiert',
+        'Sonst nichts - kein NDA, keine Zahlung, kein Vorrang',
+        'Denselben 90-Tage-Takt wie bei jeder anderen App, die wir prüfen',
       ], mechanism: [
         'Führt dieselbe Untersuchung wie bei unseren zahlenden Kunden durch',
         'Wendet für alle dieselbe Regel an, ausnahmslos',
@@ -429,6 +435,7 @@ export const DE: Content = {
       { tier: 'Confidential', hook: 'Geben Sie uns das Problem, das Sie nicht öffentlich exponieren können.', desc: `Dieselbe Untersuchung wie bei Remediation Advisory - unter Geheimhaltung, für den Fall, dass die Schwachstelle selbst etwas ist, das nicht durch den normalen Prozess laufen kann. Sie erhalten einen nach Schwere geordneten Befund, exakt lokalisiert, plus eine Zusammenfassung, die nicht-technische Führungskräfte lesen können. Sobald Sie Fixes ausliefern, testen wir manuell nach, ob die Lücke wirklich geschlossen ist.\n\n${NDA_CLAUSE}\n\nAls Non-Profit-Organisation, die an ihre eigenen Regeln gebunden ist, informieren wir die zuständigen Regulatoren trotzdem parallel - ohne Details, die Sie exponieren würden.`, bring: [
         'Ein Problem, das nicht durch den normalen Prozess laufen kann',
         'Ihre App oder Ihr System, unter NDA',
+        'Die Beteiligten, die zustimmen müssen, bevor sich etwas bewegt',
       ], mechanism: [
         'Führt dieselbe Untersuchung durch, unter Geheimhaltung',
         'Testet nach ausgelieferten Fixes manuell nach',
@@ -447,6 +454,7 @@ export const DE: Content = {
       { tier: 'Enterprise & Critical Infrastructure', hook: 'NIS2, biometrische Daten, NDA - die Fälle, die die meisten Anbieter nicht anfassen.', desc: `Geheimhaltung, priorisierte Reaktionszeit und direkter Zugang zu den Ingenieur:innen, wenn schnell etwas behoben werden muss. Für Betreiber kritischer Infrastruktur (Energie, Wasser, Gesundheit, Verkehr) übersetzen wir Ihre NIS2-Pflichten in Kontrollen, die Ihr Team tatsächlich umsetzen kann - und üben das Incident-Response-Protokoll mit Ihnen ein, bevor etwas schiefgeht.\n\n${NDA_CLAUSE}\n\nFür biometrische Daten (Art. 9 DSGVO) verfolgen wir jeden Fluss vollständig: wohin er geht, wie lange er gespeichert wird, wer darauf zugreift. Die meisten Sicherheitsanbieter fassen diese Kategorie nicht an.\n\nAuch als laufender Auftrag verfügbar: kontinuierliche Abdeckung statt Einzelaudit, mit vierteljährlichem Deep-Dive und fester Ansprechperson. Umfang und Preis werden direkt mit Ihrem Team abgestimmt.`, bring: [
         'Kritische Infrastruktur oder biometrische/hochsensible Daten',
         'Ihre bestehenden NIS2- oder Art.-9-Pflichten',
+        'Die regulatorische Frist oder Prüfung, auf die Sie hinarbeiten',
       ], mechanism: [
         'Übersetzt NIS2-Pflichten in Kontrollen, die Ihr Team tatsächlich umsetzen kann',
         'Übt Incident-Response ein, bevor etwas schiefgeht',

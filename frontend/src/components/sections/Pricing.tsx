@@ -88,7 +88,12 @@ export function PricingSection({
           </p>
         </Reveal>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, maxWidth: 1040, margin: '0 auto' }}>
+        {/* id + scrollMarginTop (live feedback 2026-08-16): clicking "Access" in the
+            nav used to jump to the very top of this section - the heading/subheading,
+            with the actual offer card below the fold on mobile. The heading stays
+            reachable by scrolling up further; the nav click now lands on the card
+            itself so the offer is what you see immediately. */}
+        <div id="pricing-offer" style={{ display: 'flex', alignItems: 'center', gap: 16, maxWidth: 1040, margin: '0 auto', scrollMarginTop: 84 }}>
           <button onClick={() => cycleOffer(-1)} aria-label="Previous access offer" style={{
             width: 48, height: 48, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.35)',
             background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: 20, cursor: 'pointer',

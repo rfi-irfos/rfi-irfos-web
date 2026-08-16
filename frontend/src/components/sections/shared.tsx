@@ -895,14 +895,15 @@ export function TierCarousel({ tiers, getActions }: {
               copy, not the dimmer secondary tone). */}
           {active.hook && <div style={{ fontSize: 12.5, color: 'var(--text)', marginTop: 8 }}>{active.hook}</div>}
         </div>
-        {/* Capped height + scroll (live feedback: on the longer tiers - four full
-            paragraphs - the card grew tall enough to push the Get Started button
-            out of view without scrolling the whole page). Every card now has the
-            same predictable height regardless of description length. marginTop
+        {/* Used to be capped at maxHeight 320 + internal scroll, so every card had
+            the same predictable height regardless of description length - live
+            feedback 2026-08-16: an offer you have to scroll inside of to read isn't
+            a good offer, the whole You bring/We/You receive box needs to be visible
+            in one look. Card now grows to fit its content instead. marginTop
             raised 12->22 (live feedback 2026-08-14: the hook sentence and the
             first description paragraph read as cramped, one line of air wasn't
             enough breathing room between them). */}
-        <div style={{ marginTop: 22, maxHeight: 320, overflowY: 'auto' }}>
+        <div style={{ marginTop: 22 }}>
           {active.desc.split('\n\n').map((p, i) => (
             <p key={i} style={{ color: 'var(--text)', fontSize: 13, lineHeight: 1.65, marginBottom: 9 }}>{p}</p>
           ))}

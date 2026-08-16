@@ -248,13 +248,14 @@ export const EN = {
       { tier: 'First Light', hook: 'Turn a claim into a verdict.', desc: 'A vendor, a pitch deck, a competitor - somebody made a claim, and real money or trust is riding on whether it holds up. We run it through Dingir, our own world model: the same evidence-first engine that connects entities, relationships, and evidence across every domain we cover - and hand back a verdict, not a plausible-sounding guess.', bring: [
         'The claim you need verified - a vendor promise, a pitch deck, a public statement',
         'What\'s riding on it - a signature, an investment, a story',
+        'Anything public already out there about it - we don\'t start from zero',
       ], mechanism: [
         'Turns the claim into a testable question',
-        'Checks it against everything Dingir already knows - 315+ audited apps and a live, cross-domain evidence graph',
+        'Checks it against what we\'ve actually extracted from 311+ audited apps - 1.08M classes of real code, 499 confirmed trackers, 392 traced endpoints, not just a list of names',
         'Traces the verdict back to real evidence, not a summary of public claims',
       ], receive: [
         'A verdict: true, false, or unproven',
-        'A verdict anchored in evidence a general-purpose AI has no access to',
+        'The evidence trail behind it - source-level, not a summary of public claims',
         'Something you can sign off on, invest on, or publish on',
       ], bullets: [
         'Before you sign a contract, you want a vendor\'s security or privacy claims checked against reality',
@@ -285,6 +286,7 @@ export const EN = {
       { tier: 'Sector Map', hook: 'The relationships, not the reports.', desc: 'You\'re not buying fifty separate company reports. Dingir maps how every relevant actor in your sector actually relates to the others - one connected, living picture, re-resolved every quarter, so you see change forming before it\'s already priced in.', bring: [
         'The sector or set of companies you need to understand as a whole',
         'What matters most to you - risk, dependencies, competitive structure',
+        'How often you need the picture refreshed - once, or standing',
       ], mechanism: [
         'Maps every relevant actor in the sector as one connected model, not separate files',
         'Re-resolves the map every quarter, tracking how relationships shift',
@@ -330,9 +332,9 @@ export const EN = {
         'Documents every step so it\'s reproducible, not a black box',
         'Tests it against real operational questions, not a demo',
       ], receive: [
-        'A working agent system you fully control',
-        'Full documentation and source access',
-        'A system that keeps working after we leave',
+        'An integrated, autonomous agent you fully control',
+        'Full documentation and source access - nothing hidden, nothing black-boxed',
+        'Production-ready from day one, not a proof of concept',
       ], bullets: [
         'Your support team is drowning in tickets that could actually be triaged automatically',
         'You want your own AI agent that reviews compliance documents without sending data to OpenAI/Anthropic',
@@ -343,6 +345,7 @@ export const EN = {
       { tier: 'Custom Stack', hook: 'Not an investigation. A capability built around you.', desc: 'Beyond a single agent, this is designing the intelligence capability itself - a custom system built where off-the-shelf software is too slow, too insecure, or too limited, and you keep full control of the source code, not us.', bring: [
         'The problem standard software can\'t solve',
         'Your performance, security, or control requirements',
+        'Any existing systems it needs to integrate with',
       ], mechanism: [
         'Builds a custom system from scratch - backend, API, desktop, embedded, whatever the job needs',
         'Uses Rust and our own tools where it actually matters',
@@ -380,6 +383,7 @@ export const EN = {
       { tier: 'Full Spectrum Deploy', hook: 'Intelligence as an operating layer, not a project that ends.', desc: 'Your organization needs intelligence across multiple surfaces, continuously and operationally. We deploy the infrastructure to make that real - installed, integrated, your team trained, support that doesn\'t stop at handover.', bring: [
         'A system or infrastructure you need fully operational',
         'Your team, to be trained alongside it',
+        'Your existing data, ready to be migrated in',
       ], mechanism: [
         'Installs and integrates everything, start to finish',
         'Migrates your existing data',
@@ -399,6 +403,8 @@ export const EN = {
     security: [
       { tier: 'Public', hook: 'Free, forever. Findings publish after 90 days, no exceptions.', desc: 'We check your app the same way we check every app - for free. If we find something, you get 90 days to fix it before it goes on our public ledger. Everyone gets the same rule, paying or not.', bring: [
         'An app you want checked - yours, or one you\'re curious about',
+        'Nothing else - no NDA, no payment, no priority queue',
+        'The same 90-day disclosure clock as every other app we check',
       ], mechanism: [
         'Runs the same investigation as our paid audits',
         'Applies the identical rule to everyone, no exceptions',
@@ -436,6 +442,7 @@ export const EN = {
       { tier: 'Confidential', hook: 'Give us the problem you cannot expose publicly.', desc: `Same investigation as Remediation Advisory - kept under secrecy, for when the exposure itself is something you can't run through the normal process. You get a severity-ranked finding pinned to the exact issue, plus a plain-language summary your non-technical leadership can actually read. Once you ship fixes, we re-test by hand to confirm they actually closed the hole.\n\n${NDA_CLAUSE}\n\nAs a not-for-profit bound by our own rules, the relevant regulators are still told in parallel - without any detail that would expose you.`, bring: [
         'A problem you can\'t put through the normal process',
         'Your app or system, under NDA',
+        'The stakeholders who need to sign off before anything moves',
       ], mechanism: [
         'Runs the same investigation, kept confidential',
         'Re-tests by hand once you\'ve shipped fixes',
@@ -454,6 +461,7 @@ export const EN = {
       { tier: 'Enterprise & Critical Infrastructure', hook: 'NIS2, biometric data, NDA - the risk most security shops won\'t touch.', desc: `Secrecy, priority response time, and direct engineer access when something needs fixing fast. For critical infrastructure (energy, water, health, transport), we turn your NIS2 obligations into controls your team can actually run - and rehearse the incident response with you before anything goes wrong.\n\n${NDA_CLAUSE}\n\nFor biometric data (GDPR Art. 9), we trace every flow in full - where it goes, how long it\'s kept, who touches it. Most security shops won\'t take this on.\n\nAlso available as a standing engagement: continuous coverage instead of a one-off audit, with a quarterly deep-dive and one dedicated contact. Scope and price are worked out directly with your team.`, bring: [
         'Critical infrastructure or biometric/high-sensitivity data',
         'Your existing NIS2 or GDPR Art. 9 obligations',
+        'The regulatory deadline or audit you\'re working against',
       ], mechanism: [
         'Turns NIS2 obligations into controls your team can actually run',
         'Rehearses incident response before anything goes wrong',

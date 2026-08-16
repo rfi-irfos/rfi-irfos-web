@@ -175,6 +175,19 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     const next = viewForSection(target)
     setView(next)
     window.history.replaceState(null, '', `#${target}`)
+    if (next === 'access') {
+      // Land on the offer card itself, not the section heading above it (live
+      // feedback 2026-08-16) - see the `pricing-offer` id + scrollMarginTop in
+      // Pricing.tsx. requestAnimationFrame waits one paint for the view swap
+      // above to actually mount the access section before we measure it.
+      requestAnimationFrame(() => {
+        const el = document.getElementById('pricing-offer')
+        if (!el) { window.scrollTo({ top: 0, behavior: 'smooth' }); return }
+        const abs = el.getBoundingClientRect().top + window.pageYOffset
+        window.scrollTo({ top: Math.max(0, abs - 84), behavior: 'smooth' })
+      })
+      return
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
   function navigateHome() {
