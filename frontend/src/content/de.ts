@@ -170,6 +170,8 @@ export const DE: Content = {
     },
     table: {
       organisation: 'Organisation',
+      // Mobile-only abbreviation - see the matching en.ts key for why.
+      organisationShort: 'Org.',
       notified: 'Gemeldet',
       status: 'Status',
       sev: 'SCHWERE',
@@ -244,7 +246,7 @@ export const DE: Content = {
         'Was öffentlich schon dazu vorliegt - wir fangen nicht bei null an',
       ], mechanism: [
         'Macht aus der Behauptung eine testbare Frage',
-        'Gleicht sie mit dem ab, was wir aus 311+ geprüften Apps tatsächlich extrahiert haben - 1,08 Mio. Klassen echten Code, 499 bestätigte Tracker, 392 nachverfolgte Endpunkte, nicht nur eine Namensliste',
+        'Gleicht sie mit Jahren interdisziplinärer Forschung ab, nicht mit einer einzelnen Datenbank - 100+ veröffentlichte Befunde und ein domänenübergreifender Wissensgraph über Technologie, Compliance und die reale Welt',
         'Verfolgt das Urteil bis zum echten Beleg zurück, nicht bis zur Zusammenfassung öffentlicher Aussagen',
       ], receive: [
         'Ein Urteil: stimmt, stimmt nicht, oder unbelegt',

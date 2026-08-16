@@ -173,6 +173,11 @@ export const EN = {
     },
     table: {
       organisation: 'Organisation',
+      // Mobile-only abbreviation (TrackRecord.tsx, ledger header) - the full word
+      // doesn't fit the ~30-90px this column gets once Status/Disclosure's own
+      // fixed-width columns are subtracted on a narrow viewport; see the fix
+      // comment at the call site for the full mobile-overflow root cause.
+      organisationShort: 'Org.',
       notified: 'Notified',
       status: 'Status',
       sev: 'SEV',
@@ -251,7 +256,7 @@ export const EN = {
         'Anything public already out there about it - we don\'t start from zero',
       ], mechanism: [
         'Turns the claim into a testable question',
-        'Checks it against what we\'ve actually extracted from 311+ audited apps - 1.08M classes of real code, 499 confirmed trackers, 392 traced endpoints, not just a list of names',
+        'Checks it against years of interdisciplinary research, not one narrow database - 100+ published findings and a cross-domain evidence graph spanning technology, compliance, and the real world',
         'Traces the verdict back to real evidence, not a summary of public claims',
       ], receive: [
         'A verdict: true, false, or unproven',
