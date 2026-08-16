@@ -954,6 +954,21 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                   {t.checkoutModal.cancel}
                 </button>
               </div>
+              {/* Soft off-ramp for someone who reaches checkout but isn't ready to pay
+                  immediately - needs internal approval, wants to talk first - who previously
+                  had no option except Cancel (a dead end, tracked as offer_cancel same as
+                  genuine abandonment). Distinct beacon event so this doesn't get counted as
+                  a dropout in the funnel. */}
+              <div style={{ textAlign: 'center', marginTop: 16 }}>
+                <a href="#submit" onClick={e => {
+                  e.preventDefault()
+                  beacon('offer_talk_first:' + checkoutModal.key)
+                  setCheckoutModal(null)
+                  navigateTo('#submit')
+                }} style={{ fontSize: 12, color: '#8a8aa0', textDecoration: 'underline', cursor: 'pointer' }}>
+                  {t.checkoutModal.talkFirstInstead}
+                </a>
+              </div>
             </div>
           </div>
         </div>

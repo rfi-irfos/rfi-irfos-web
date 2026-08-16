@@ -483,6 +483,7 @@ export const DE: Content = {
     youBring: 'Sie bringen',
     we: 'Wir',
     youReceive: 'Sie erhalten',
+    whatHappensNext: 'Was als Nächstes passiert',
   },
 
   checkoutModal: {
@@ -494,6 +495,7 @@ export const DE: Content = {
     agreementSuffix: ' zu. Die Leistung beginnt sofort mit Zahlungseingang; es besteht kein Widerrufsrecht, Rückerstattungen sind ausgeschlossen.',
     continueToStripe: 'Weiter zu Stripe →',
     cancel: 'Abbrechen',
+    talkFirstInstead: 'Noch nicht zahlungsbereit? Erst mit uns sprechen →',
   },
 
   proposalModal: {
@@ -520,11 +522,11 @@ export const DE: Content = {
     heading: 'was nach dem Start passiert',
     subheading: 'Fünf Phasen, von einer einzelnen Beobachtung bis zu einem kontinuierlich schärfer werdenden Intelligence-Modell. Die Tiefe ändert sich mit der Frage; die Disziplin bleibt gleich. Jede Phase bleibt lückenlos nachvollziehbar, Whitebox by Design, jede Aktion lässt sich bis zur ursprünglichen Beobachtung zurückverfolgen.',
     steps: [
-      { stage: 'Ingest', body: 'Wir beginnen mit dem, was Sie uns anvertrauen: einer Veränderung, einem Signal, einer Beziehung, einer Quelle oder einer Frage, aus Ihren Systemen, öffentlichen Daten oder einer von uns bereits beobachteten Domäne.\n\nEs wird nichts angefasst, bevor wir nicht jede einzelne Datei gelesen haben, nicht das README, nicht das Manifest, das eigentliche Ding. Der Ausgangspunkt kann klein sein. Das Modell ist es nicht.' },
-      { stage: 'Normalize', body: 'Wir lösen Entitäten auf, mappen Beziehungen, ergänzen Zeitstempel und Provenance und bewahren, was unsicher bleibt. Unterschiedliche Vokabulare werden vergleichbar, ohne sie als identisch auszugeben.\n\nNichts wird ohne Herkunft akzeptiert. Unbekanntes wird nicht stillschweigend ergänzt.' },
-      { stage: 'Trace', body: 'Wir vergleichen Zustände über die Zeit, verfolgen Abhängigkeiten, finden Brücken und Engpässe und prüfen, ob die Beobachtung zu einem bekannten oder domänenübergreifenden Muster passt.\n\nDie Frage lautet nicht nur, was sich verändert hat, sondern was damit verbunden ist.' },
-      { stage: 'Emit', body: 'Eine relevante Veränderung wird zu einem Intelligence Event: Evidenz, Widerspruchsstatus, Konfidenz, betroffene Domänen, Netzwerkimplikationen und kommerzielle Relevanz in einem nachvollziehbaren Objekt.\n\nKein Urteil. Ein strukturiertes Event, das Sie untersuchen und nutzen können.' },
-      { stage: 'Learn', body: 'Das Modell bewahrt stützende Evidenz, Widersprüche, offene Fragen und wiederkehrende Strukturen. Simulationen können prüfen, was unter einer Intervention geschehen könnte, klar als hypothetisch markiert.\n\nJede Beobachtung macht die nächste wertvoller.' },
+      { stage: 'Ingest', body: 'Wir beginnen mit dem, was Sie uns anvertrauen: einem Signal, einer Behauptung, einem System oder einer Frage - aus Ihrer eigenen Umgebung, öffentlichen Quellen oder einer Domäne, die wir bereits beobachten.\n\nEs wird nichts angefasst, bevor wir nicht das eigentliche Ding gelesen haben, nicht das README, nicht die Zusammenfassung, die jemand anderes darüber geschrieben hat. Der Ausgangspunkt kann klein sein. Womit wir ihn abgleichen, ist es nicht.' },
+      { stage: 'Normalize', body: 'Wir lösen Entitäten auf, mappen Beziehungen, ergänzen Zeitstempel und Provenance und bewahren, was tatsächlich unsicher bleibt, statt zu raten. Unterschiedliche Vokabulare, Systeme, Sprachen werden vergleichbar, ohne auf eine falsche Gleichheit reduziert zu werden.\n\nNichts wird ohne Herkunft akzeptiert. Unbekanntes wird nicht stillschweigend ergänzt.' },
+      { stage: 'Trace', body: 'Hier leisten drei eigens dafür gebaute Engines die eigentliche Arbeit: TemporalEngine vergleicht Zustände über die Zeit, NetworkEngine verfolgt Abhängigkeiten und findet Brücken und Engpässe, PatternEngine prüft, ob das Beobachtete zu etwas passt, das wir anderswo bereits gefunden haben.\n\nDie Frage war nie nur, was sich verändert hat - sondern womit es sonst noch verbunden ist.' },
+      { stage: 'Emit', body: 'Eine relevante Veränderung wird zu einem Intelligence Event: Evidenz, Konfidenz, Widerspruchsstatus und jede betroffene Domäne, geschrieben in EvidenceGraph als ein einziges nachvollziehbares Objekt, nicht vergraben in einem Absatz, dem Sie einfach glauben müssen.\n\nNoch kein Urteil. Etwas, das Sie weiterhin untersuchen und infrage stellen können.' },
+      { stage: 'Learn', body: 'Hier erreicht es Sie: der Befund, die Evidenz dahinter, und was sich dadurch für Sie ändert - ein Ergebnis, mit dem Sie tatsächlich arbeiten können.\n\nDamit ist es aber nicht vorbei. Dieselbe Evidenz bleibt in EvidenceGraph erhalten, sodass die nächste Frage zum selben Thema bei dem ansetzt, was wir bereits wissen, nicht bei null - jeder Auftrag macht den nächsten schneller.' },
     ],
   },
 

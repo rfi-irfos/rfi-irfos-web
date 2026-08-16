@@ -490,6 +490,7 @@ export const EN = {
     youBring: 'You bring',
     we: 'We',
     youReceive: 'You receive',
+    whatHappensNext: 'What happens next',
   },
 
   checkoutModal: {
@@ -501,6 +502,7 @@ export const EN = {
     agreementSuffix: '. The service begins immediately upon payment; no right of withdrawal applies and refunds are excluded.',
     continueToStripe: 'Continue to Stripe →',
     cancel: 'Cancel',
+    talkFirstInstead: 'Not ready to pay? Talk to us first →',
   },
 
   proposalModal: {
@@ -533,11 +535,11 @@ export const EN = {
     heading: 'what happens after you start',
     subheading: 'Five stages, from a single observation to a continuously improving intelligence model. The depth changes with the question; the discipline stays the same. Every stage stays traceable end to end, whitebox by design, so any action can be backtraced to the observation that produced it.',
     steps: [
-      { stage: 'Ingest', body: 'We start with what you trust us to handle: a change, signal, relationship, source, or question, from your systems, public data, or a domain we already monitor.\n\nNothing gets touched until we have read every single file, not the README, not the manifesto, the actual thing. The starting point can be small. The model is not.' },
-      { stage: 'Normalize', body: 'We resolve entities, map relationships, attach timestamps and provenance, and preserve what remains uncertain. Different vocabularies become comparable without pretending they are identical.\n\nNothing is accepted without origin. Nothing unknown is silently filled in.' },
-      { stage: 'Trace', body: 'We compare states over time, follow dependencies, find bridges and bottlenecks, and test whether the observation matches a known or cross-domain pattern.\n\nThe question is not only what changed, but what is connected to the change.' },
-      { stage: 'Emit', body: 'A meaningful change becomes an intelligence event: evidence, contradiction state, confidence, affected domains, network implications, and commercial relevance in one traceable object.\n\nNot a verdict. A structured event you can investigate and use.' },
-      { stage: 'Learn', body: 'The model retains supporting evidence, contradictions, unresolved questions, and recurring structures. Simulations can test what might happen under an intervention, clearly marked as hypothetical.\n\nEach observation makes the next one more useful.' },
+      { stage: 'Ingest', body: 'We start with what you trust us to handle: a signal, a claim, a system, or a question - from your own environment, public sources, or a domain we already monitor.\n\nNothing gets touched until we\'ve read the actual thing, not a README, not a summary someone else wrote about it. The starting point can be small. What we check it against is not.' },
+      { stage: 'Normalize', body: 'We resolve entities, map relationships, attach timestamps and provenance, and preserve what remains genuinely uncertain instead of guessing. Different vocabularies, different systems, different languages become comparable without being flattened into sameness.\n\nNothing is accepted without a source. Nothing unknown gets silently filled in.' },
+      { stage: 'Trace', body: 'This is where three purpose-built engines do the actual work: TemporalEngine compares states over time, NetworkEngine follows dependencies to find bridges and bottlenecks, PatternEngine tests whether what we\'re seeing matches something we\'ve already found elsewhere.\n\nThe question was never only what changed - it\'s what else it touches.' },
+      { stage: 'Emit', body: 'A meaningful change becomes an intelligence event: evidence, confidence, contradiction state, and every domain it affects, written into EvidenceGraph as one traceable object, not buried in a paragraph you have to take our word for.\n\nNot a verdict yet. Something you can still investigate and challenge.' },
+      { stage: 'Learn', body: 'This is where it reaches you: the finding, the evidence behind it, and what it changes for you - one deliverable you can actually act on.\n\nIt doesn\'t end there. The same evidence stays in EvidenceGraph, so the next question about the same subject starts from what we already know, not from zero - every engagement makes the next one faster.' },
     ],
   },
 

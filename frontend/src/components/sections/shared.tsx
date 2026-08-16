@@ -562,6 +562,56 @@ function EngagementFlow({ bring, mechanism, receive }: {
     </div>
   )
 }
+// Compact, non-repeating preview of "what happens after you pay" - added 2026-08-16
+// (live feedback: the checkout modal repeated the exact same You bring/We/You
+// receive box the buyer already read on the card before clicking Buy - by the time
+// someone reaches checkout they've decided, they don't need re-convincing, they
+// want to know what happens now, and internal funnel data already shows this is
+// where people bail: 68 clicks, 50-100% cancel rate per tier, PAID stuck at 0). This
+// reuses the same journey.steps content as the Journey section further down the
+// page - no new copy, just a second, higher-leverage placement for it, right at the
+// moment of highest purchase anxiety. Only used inside ModalTierBody (the modal),
+// never on the card - the card's job is still to convince, via EngagementFlow.
+function JourneyPreview({ mobile }: { mobile: boolean }) {
+  const { t: locale } = useLocale()
+  const steps = locale.journey.steps
+  // Mobile sizing tightened separately (not just a scaled-down version of desktop) -
+  // 5 nowrap labels ("Normalize" is the long one) plus connector lines is close to
+  // the available width even on desktop; the modal's mobile padding leaves noticeably
+  // less room, and this exact "5 fixed columns overflow a narrow viewport" shape is
+  // what broke the Evidence table days earlier - shrinking font/circle/connector-
+  // width here specifically avoids repeating that bug rather than hoping flex-shrink
+  // handles it.
+  const circle = mobile ? 20 : 24
+  const font = mobile ? 8.5 : 10
+  const connectorMin = mobile ? 3 : 8
+  return (
+    <div style={{ marginBottom: 20 }}>
+      <div style={{
+        fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, fontWeight: 700,
+        color: TEAL, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12,
+      }}>{locale.modalTierBody.whatHappensNext}</div>
+      <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+        {steps.map((s, i) => (
+          <div key={s.stage} style={{ display: 'flex', alignItems: 'flex-start', flex: i === steps.length - 1 ? '0 0 auto' : 1, minWidth: 0 }}>
+            <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.08 }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+              <div style={{
+                width: circle, height: circle, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'rgba(0,245,196,0.12)', border: `1px solid ${TEAL}`, color: TEAL,
+                fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: font,
+              }}>{i + 1}</div>
+              <div style={{ fontSize: font, fontWeight: 700, color: '#e8e8f0', textAlign: 'center', whiteSpace: 'nowrap' }}>{s.stage}</div>
+            </motion.div>
+            {i < steps.length - 1 && (
+              <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.14)', marginTop: circle / 2, minWidth: connectorMin }} />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 // Shared renderer for a tier's concrete-use-case bullets (see CarouselTier.bullets) -
 // same small check-mark-in-a-circle glyph used nowhere else on the pricing UI, so it
 // reads as "here's a list of situations", not another paragraph of prose.
@@ -633,7 +683,7 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets, br
           margin: 0, marginBottom: 20, paddingLeft: 14, borderLeft: `2px solid ${TEAL}`,
         }}>{punchline}</p>
       )}
-      <EngagementFlow bring={bring} mechanism={mechanism} receive={receive} />
+      <JourneyPreview mobile={mobile} />
       {/* Price + delivery grouped bottom-left, same "one unit, one place" rule
           as the pricing cards - price used to sit top-right next to the tier
           name here, delivery bottom-left in its own pill; now they're one row. */}
