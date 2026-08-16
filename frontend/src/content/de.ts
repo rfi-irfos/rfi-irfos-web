@@ -228,7 +228,7 @@ export const DE: Content = {
     heading: 'klar kalkuliert',
     subheading: 'Feste Preise. Keine Bindung an ein Abo, außer Sie wollen eine. Der Umfang bestimmt die Stufe, nicht die Unternehmensgröße.',
     scopeTags: {
-      market: 'Proprietärer Korpus · Knowledge Graphs · Longitudinal Intelligence',
+      market: 'Dingir-Weltmodell · Evidenzbasiert · Domänenübergreifende Intelligence',
       technical: 'KI-Agenten · Schwarmlogik · TIS/Ternlang · Custom Systems',
       security: 'Mobile + Web + KI',
     },
@@ -238,37 +238,36 @@ export const DE: Content = {
       security: 'Security-Audits & Responsible Disclosure',
     },
     market: [
-      { tier: 'First Light', hook: 'Wissen, bevor es öffentlich ist. Sie bringen das Chaos, wir destillieren die Intelligence.', desc: 'Sie haben eine Frage zu einer Firma, App oder einem Anbieter - und keine einfache Möglichkeit zu prüfen, ob deren Aussagen stimmen. Wir untersuchen das echte Produkt, nicht das Marketing, und geben Ihnen eine klare Antwort: stimmt, stimmt nicht, oder unbelegt.', bring: [
-        'Eine Firma, App oder ein Anbieter, den Sie verstehen müssen',
-        'Aussagen, die Sie geprüft haben wollen - Datenschutzerklärung, Pitch-Deck, Presseaussage',
-        'Ihre konkrete Frage oder Ihren Verdacht',
+      { tier: 'First Light', hook: 'Aus einer Behauptung wird ein Urteil.', desc: 'Ein Anbieter, ein Pitch-Deck, ein Wettbewerber - irgendjemand hat eine Behauptung aufgestellt, und echtes Geld oder Vertrauen hängt davon ab, ob sie stimmt. Wir prüfen sie durch Dingir, unser eigenes Weltmodell: dieselbe evidenzbasierte Engine, die Entitäten, Beziehungen und Belege über alle unsere Domänen hinweg verbindet - und geben ein Urteil zurück, keine plausibel klingende Vermutung.', bring: [
+        'Die Behauptung, die Sie geprüft haben wollen - ein Anbieter-Versprechen, ein Pitch-Deck, eine öffentliche Aussage',
+        'Was davon abhängt - eine Unterschrift, ein Investment, eine Story',
       ], mechanism: [
-        'Untersucht das echte Produkt, nicht das Marketing',
-        'Gleicht mit unserem Korpus aus 315+ bereits geprüften Apps ab',
-        'Verfolgt jede Aussage bis zum Beleg zurück',
+        'Macht aus der Behauptung eine testbare Frage',
+        'Gleicht sie mit allem ab, was Dingir bereits weiß - 315+ geprüfte Apps und ein lebendiger, domänenübergreifender Wissensgraph',
+        'Verfolgt das Urteil bis zum echten Beleg zurück, nicht bis zur Zusammenfassung öffentlicher Aussagen',
       ], receive: [
-        'Einen schriftlichen Untersuchungsbericht',
-        'Eine klare Antwort, keine Ausflucht',
-        'Belege, mit denen Sie handeln oder die Sie zitieren können',
+        'Ein Urteil: stimmt, stimmt nicht, oder unbelegt',
+        'Ein Urteil, verankert in Evidenz, auf die eine allgemeine KI keinen Zugriff hat',
+        'Etwas, das Sie unterschreiben, investieren oder veröffentlichen können',
       ], bullets: [
-        'Vor einer Investment-Entscheidung wissen, ob eine App wirklich hält, was ihr Datenschutz-Text verspricht',
-        'Vor einer Übernahme (M&A) eine unabhängige technische Zweitmeinung zu den Systemen der Zielfirma bekommen',
-        'Einen konkreten Verdacht - über eine Firma oder App - belegt statt vermutet in der Hand haben',
-        'Als Journalist:in oder Regulator:in vor einer Veröffentlichung eine zitierfähige, geprüfte Quelle brauchen',
-        'Wissen, ob wir uns eine Firma, die für Sie relevant ist, bereits angesehen haben',
+        'Vor der Vertragsunterschrift wollen Sie die Sicherheits- oder Datenschutzaussagen eines Anbieters gegen die Realität geprüft haben',
+        'Vor einem Investment wollen Sie die technischen Behauptungen in einem Pitch-Deck belegt sehen, nicht nur geglaubt',
+        'Vor einem größeren Einkauf wollen Sie unabhängigen Beweis, nicht noch eine Verkaufspräsentation',
+        'Vor einer Veröffentlichung brauchen Sie eine Behauptung, die Sie selbst nicht prüfen können, bestätigt oder widerlegt',
+        'Sie wollen wissen, ob Dingir zu der Firma, die Sie sich ansehen, schon etwas gefunden hat',
       ], delivery: '14 Kalendertage.' },
-      { tier: 'Competitive Trace', hook: 'Den echten Schritt sehen, bevor er angekündigt wird - nicht die Pressemitteilung dazu.', desc: 'Die echte Strategie eines Wettbewerbers zeigt sich meist in dem, was tatsächlich gebaut wird - Monate bevor eine Pressemitteilung folgt. Wir prüfen, was gesagt wird, gegen das, was tatsächlich gebaut wurde, und machen aus dieser Lücke etwas, mit dem Sie arbeiten können.', bring: [
-        'Einen Wettbewerber oder potenziellen Partner, den Sie beobachten',
-        'Deren öffentliche Aussagen oder Marketing',
-        'Was Sie konkret wissen müssen, bevor Sie handeln',
+      { tier: 'Competitive Trace', hook: 'Wissen, was sie wirklich tun - jenseits der öffentlichen Erzählung.', desc: 'Die öffentliche Erzählung eines Wettbewerbers ist das, was er Sie glauben lassen will. Dingir verfolgt, was tatsächlich dahinter passiert - über Technologie, Abhängigkeiten und Beziehungen hinweg - und verbindet es mit dem, was es für Ihr Geschäft bedeutet.', bring: [
+        'Einen Wettbewerber, ein Produkt, eine Technologie oder Organisation, die Sie jenseits der öffentlichen Erzählung sehen müssen',
+        'Die Annahmen, die Sie getestet haben wollen',
+        'Die strategischen Fragen dahinter',
       ], mechanism: [
-        'Vergleicht das Gesagte mit dem tatsächlich Gebauten',
-        'Verfolgt echte Produktänderungen über Zeit, nicht Ankündigungen',
-        'Übersetzt die technische Veränderung in geschäftliche Bedeutung',
+        'Verfolgt das Ziel über seine Technologien, Abhängigkeiten, Anbieter, Produkte und Beziehungen',
+        'Verbindet neue Beobachtungen mit historischer und entitätsübergreifender Intelligence',
+        'Legt Strukturen und Veränderungen offen, die unsichtbar bleiben, wenn man das Ziel isoliert betrachtet',
       ], receive: [
-        'Einen klaren, geschäftlich lesbaren Vergleich',
-        'Belege statt Spekulation',
-        'Einen Vorsprung, bevor es öffentlich wird',
+        'Ein rekonstruiertes Lagebild des Ziels',
+        'Seine relevanten Abhängigkeiten, Beziehungen, Bewegungen und technischen Fußabdruck',
+        'Die Teile seiner operativen Realität, die Ihre Einschätzung tatsächlich verändern',
       ], bullets: [
         'Ein Wettbewerber verspricht "keine Datenweitergabe an Dritte" - Sie wollen wissen, ob das auch stimmt',
         'Vor einer Partnerschaft prüfen, was ein potenzieller Partner tatsächlich gebaut hat, nicht nur behauptet',
@@ -276,7 +275,7 @@ export const DE: Content = {
         'Als PR- oder Kommunikationsteam vor einer eigenen Kampagne prüfen, was ein Mitbewerber wirklich ausliefert',
         'Als Investor:in die technische Ehrlichkeit eines Pitch-Decks vor einem Investment gegenchecken',
       ], delivery: '14 Kalendertage.' },
-      { tier: 'Sector Map', hook: 'Ihr gesamter Sektor, kartiert und aktuell gehalten - vierteljährlich neu aufgelöst.', desc: 'Ein einmaliger Bericht ist in dem Moment veraltet, in dem er fertig ist. Wir beobachten stattdessen Ihren gesamten Sektor laufend - wer mit wem verbunden ist, wo das echte Risiko sitzt - und aktualisieren das vollständige Bild alle drei Monate.', bring: [
+      { tier: 'Sector Map', hook: 'Die Beziehungen, nicht die Berichte.', desc: 'Sie kaufen nicht fünfzig einzelne Firmenberichte. Dingir kartiert, wie jeder relevante Akteur in Ihrem Sektor tatsächlich mit den anderen zusammenhängt - ein zusammenhängendes, lebendiges Lagebild, alle drei Monate neu aufgelöst, damit Sie Veränderung sehen, bevor sie bereits eingepreist ist.', bring: [
         'Den Sektor oder die Firmen, die Sie im Blick behalten müssen',
         'Was Ihnen am wichtigsten ist - Risiko, Abhängigkeiten, Wettbewerb',
       ], mechanism: [
@@ -294,17 +293,18 @@ export const DE: Content = {
         'Als Versicherer Risiko über einen ganzen Kundenstamm hinweg einschätzen',
         'Als Konzern mit vielen Tochterfirmen oder Lieferanten einen Gesamtüberblick statt einzelner Audits bekommen',
       ], delivery: '14 Kalendertage, danach vierteljährlich.' },
-      { tier: 'Signal', hook: 'Ein stehendes Frühwarnsystem für Ihren Sektor.', desc: 'Große Schritte passieren selten ohne Vorwarnung - eine Finanzierungsrunde, ein Vorfall, eine stille Änderung, die niemand angekündigt hat. Wir beobachten das laufend für Sie und melden uns in dem Moment, in dem etwas Relevantes passiert - nicht Wochen später in der Schlagzeile.', bring: [
-        'Den Sektor oder die Firmen, die Sie überwachen müssen',
-        'Was für Sie als Veränderung tatsächlich zählt',
+      { tier: 'Signal', hook: 'Wissen, was sich verändert hat.', desc: 'Eine ständige Wache innerhalb von Dingir - kein Monatsbericht. Das Modell beobachtet laufend und gleicht jedes neue Signal mit allem ab, was es bereits weiß, damit Sie in dem Moment erfahren, wenn sich etwas Relevantes bewegt, nicht Wochen später in der Schlagzeile.', bring: [
+        'Eine Technologie, einen Anbieter, Wettbewerber oder ein Lagefeld, das Beobachtung wert ist',
+        'Die Veränderungen, die Ihre Entscheidungen tatsächlich beeinflussen könnten',
+        'Die Fragen, die Sie beantwortet brauchen, während sich die Lage entwickelt',
       ], mechanism: [
-        'Beobachtet laufend, nicht nach festem Zeitplan',
-        'Meldet relevante Veränderung in dem Moment, in dem sie auftritt',
-        'Filtert Rauschen heraus, behält, was zählt',
+        'Beobachtet die relevanten Entitäten, Technologien, Beziehungen und Veränderungen über unser gesamtes Lagefeld',
+        'Gleicht neue Beobachtungen mit dem ab, was wir bereits wissen',
+        'Meldet materielle Signale, sobald sich die zugrundeliegende Lage ändert',
       ], receive: [
-        'Eine sofortige Meldung, wenn etwas Relevantes passiert',
-        'Laufende Beobachtung statt Monatsbericht',
-        'Zeit zu reagieren, bevor es öffentlich ist',
+        'Ein laufender Intelligence-Feed rund um das Thema, das für Sie zählt',
+        'Änderungssignale mit dem Kontext, um ihre Bedeutung zu verstehen',
+        'Akkumulierte Intelligence, die mit der Zeit wertvoller wird',
       ], bullets: [
         'Sofort erfahren, wenn ein Wettbewerber eine relevante Änderung vornimmt, nicht erst Wochen später',
         'Als Compliance-Team laufend wissen, ob sich bei einem überwachten Drittanbieter etwas Meldepflichtiges verändert',
@@ -314,7 +314,7 @@ export const DE: Content = {
       ], delivery: 'Briefing ab 14 Kalendertagen, danach monatlich.' },
     ],
     technical: [
-      { tier: 'Agent Deployment', hook: 'Von der Analyse zur Architektur, von der Architektur zum laufenden System.', desc: 'Sie erhalten keine Blackbox. Wir bauen das KI-Agentensystem, installieren es auf Ihrer eigenen Infrastruktur und übergeben etwas Dokumentiertes und Nachvollziehbares - keine Demo, sondern ein System, das Ihre operativen Fragen selbstständig beantwortet.', bring: [
+      { tier: 'Agent Deployment', hook: 'Von Intelligence über die Welt zu Intelligence in Ihrem Betrieb.', desc: 'Alles oben sagt Ihnen etwas über die Welt. Das hier setzt Dingir innerhalb Ihres eigenen Betriebs ein - ein Agentensystem, das auf Ihrer Infrastruktur läuft und handelt statt nur zu berichten.', bring: [
         'Die Aufgabe oder den Prozess, den Sie automatisiert haben wollen',
         'Ihre bestehenden Systeme, mit denen es zusammenarbeiten muss',
         'Regeln oder Grenzen, die es einhalten muss',
@@ -333,7 +333,7 @@ export const DE: Content = {
         'Sie brauchen einen MCP-Server, der interne Tools sicher für KI-Assistenten zugänglich macht',
         'Als Behörde oder Kanzlei Aktenprüfung automatisieren, bei der Daten zwingend On-Premise bleiben müssen',
       ], delivery: 'Erste Integration innerhalb von 21 Kalendertagen.' },
-      { tier: 'Custom Stack', hook: 'Systeme, die keine Kompromisse erzwingen.', desc: 'Wenn fertige Software zu langsam, zu unsicher oder zu teuer ist, bauen wir Ihnen stattdessen etwas Maßgeschneidertes - und Sie behalten die volle Kontrolle über den Quellcode, nicht wir.', bring: [
+      { tier: 'Custom Stack', hook: 'Keine Untersuchung. Eine Fähigkeit, um Sie herum gebaut.', desc: 'Über einen einzelnen Agenten hinaus geht es hier darum, die Intelligence-Fähigkeit selbst zu entwerfen - ein maßgeschneidertes System dort, wo fertige Software zu langsam, zu unsicher oder zu begrenzt ist, und Sie behalten die volle Kontrolle über den Quellcode, nicht wir.', bring: [
         'Das Problem, das Standard-Software nicht lösen kann',
         'Ihre Anforderungen an Geschwindigkeit, Sicherheit oder Kontrolle',
       ], mechanism: [
@@ -351,17 +351,18 @@ export const DE: Content = {
         'Bei kritischer Infrastruktur ist Speichersicherheit (Rust) Pflicht, kein Nice-to-have',
         'Sie brauchen Desktop-, PWA- und CLI-Anwendung aus einer Hand statt von drei verschiedenen Dienstleistern',
       ], delivery: 'Definition of Done + Zeitplan innerhalb von 14 Kalendertagen.' },
-      { tier: 'Architecture Lab', hook: 'Gemeinsam an der Architektur, bevor irgendjemand codet.', desc: 'Bevor Sie bauen, brauchen Sie einen echten Plan, keine Buzzword-Folien. Wir entwerfen die Architektur gemeinsam mit Ihnen: was gebaut wird, wie geprüft wird, dass es funktioniert, und einen realistischen Zeitplan.', bring: [
-        'Das Problem oder die Entscheidung, vor der Sie stehen',
-        'Bereits bekannte Rahmenbedingungen',
+      { tier: 'Architecture Lab', hook: 'Wie das System wirklich funktioniert, bevor irgendjemand Produktionscode schreibt.', desc: 'Wir rekonstruieren gemeinsam mit Ihnen die Technologie unter der Produktoberfläche und prüfen, was tatsächlich da ist, gegen das, was dokumentiert, behauptet oder angenommen wird. Deutlich gefährlicher als ein "Architektur-Bericht".', bring: [
+        'Ein Produkt, eine Anwendung, eine Plattform oder Architektur, die genauere Untersuchung braucht',
+        'Die Behauptungen, Annahmen oder Unbekannten rund um die Umsetzung',
+        'Den verfügbaren Zugriffsgrad für die Untersuchung',
       ], mechanism: [
-        'Entwirft die Architektur gemeinsam mit Ihrem Team',
-        'Definiert, was "funktioniert" konkret bedeutet - Validierungskriterien, kein Bauchgefühl',
-        'Baut einen realistischen, baufertigen Plan',
+        'Rekonstruiert die Technologie unter der Produktoberfläche',
+        'Verfolgt Komponenten, SDKs, Services, Schnittstellen, Abhängigkeiten und externe Beziehungen',
+        'Prüft die beobachtete Architektur gegen Dokumentation, Behauptungen und bereits akkumulierte Intelligence',
       ], receive: [
-        'Eine konkrete Architektur, kein Konzept',
-        'Validierungskriterien und einen Zeitplan',
-        'Einen Plan, den Ihr eigenes Team - oder wir - umsetzen kann',
+        'Ein technisches Intelligence-Modell des untersuchten Systems',
+        'Die Architektur, die für Ihre Entscheidung zählt, inklusive relevanter versteckter Abhängigkeiten',
+        'Befunde, die zeigen, wo das umgesetzte System vom verstandenen System abweicht',
       ], bullets: [
         'Sie stehen vor einer technischen Entscheidung mit hohem Risiko und wollen sie nicht allein treffen',
         'Vor einer großen Investition erst einen Prototyp mit Validierungskriterien statt eines fertigen Systems',
@@ -369,7 +370,7 @@ export const DE: Content = {
         'Sie wollen eine zweite, unabhängige technische Meinung, bevor Ihr eigenes Team lossbaut',
         'Als Start-up vor der Seed-Runde brauchen Sie eine belastbare technische Roadmap für Investor:innen',
       ], delivery: 'Architektur- und Forschungsplan innerhalb von 14 Kalendertagen.' },
-      { tier: 'Full Spectrum Deploy', hook: 'Von der ersten Analyse bis zum laufenden Betrieb, alles aus einer Hand.', desc: 'Sie erhalten nicht nur Software, sondern den gesamten Betrieb - installiert, integriert, Ihr Team geschult, und Support, der nicht bei der Übergabe endet.', bring: [
+      { tier: 'Full Spectrum Deploy', hook: 'Intelligence als Betriebsschicht, kein Projekt mit Enddatum.', desc: 'Ihre Organisation braucht Intelligence über mehrere Flächen hinweg, kontinuierlich und operativ. Wir setzen die Infrastruktur ein, die das real macht - installiert, integriert, Ihr Team geschult, Support, der nicht bei der Übergabe endet.', bring: [
         'Ein System oder eine Infrastruktur, die vollständig laufen soll',
         'Ihr Team, das gleich mitgeschult wird',
       ], mechanism: [
@@ -406,17 +407,18 @@ export const DE: Content = {
         'Als kleines Unternehmen ohne Security-Budget verdienen Sie trotzdem denselben Prüfstandard wie ein Konzern',
         'Als Entwickler:in wollen Sie Ihre eigene App vor dem Launch kostenlos gegenchecken lassen',
       ], delivery: 'Bericht innerhalb von 7 Kalendertagen.' },
-      { tier: 'Remediation Advisory', hook: 'Keine PDF von der Stange. Eine echte Untersuchung, mit fertiger Behebung.', desc: 'Sie bezahlen nicht für ein Dokument. Sie bezahlen für eine echte Untersuchung - jede gefundene Schwachstelle nach Schwere geordnet, mit einer konkreten Behebung für jede einzelne, in 7 Tagen. Dreißig Tage später prüfen wir nach, ob die Fixes tatsächlich funktioniert haben.', bring: [
-        'Ihre App oder Ihr System',
-        'Bereits bekannte Bedenken oder vorhandene Berichte',
+      { tier: 'Remediation Advisory', hook: 'Wissen, wo die Schwachstelle sitzt, und was zu ändern ist.', desc: 'Vom Wissen, was kaputt ist, zum Wissen, wo einzugreifen ist: Wir verfolgen die Schwachstelle durch Ihr echtes System, trennen, was real betroffen ist, von dem, was nur angenommen wird, und übergeben die Behebung - in 7 Tagen, mit Nachprüfung nach 30.', bring: [
+        'Eine bekannte oder vermutete Sicherheits-, Datenschutz-, Technologie- oder Abhängigkeits-Schwachstelle',
+        'Das betroffene System oder die Organisation',
+        'Die Entscheidung, die nicht auf eine weitere generische Einschätzung warten kann',
       ], mechanism: [
-        'Untersucht mit unserer eigenen Methode und unserem Korpus',
-        'Ordnet jede Schwachstelle danach, wie ernst sie wirklich ist',
-        'Führt Ihr Team durch die Behebung, prüft nach 30 Tagen nach',
+        'Verfolgt die Schwachstelle durch die zugrundeliegende Technologie- und Abhängigkeitsstruktur',
+        'Stellt fest, was tatsächlich betroffen ist, was nur angenommen wird, und wo die Schwachstelle entsteht',
+        'Identifiziert die Eingriffspunkte, die den zugrundeliegenden Zustand tatsächlich ändern',
       ], receive: [
-        'Einen nach Schwere geordneten Befund',
-        'Eine konkrete Behebung für jede Schwachstelle',
-        'Eine Nachprüfung nach 30 Tagen, die bestätigt, dass es funktioniert hat',
+        'Ein priorisiertes Lagebild der Schwachstelle',
+        'Die Pfade durch das System, die sie erzeugen oder verstärken',
+        'Eine konkrete Grundlage für die Entscheidung, wo einzugreifen ist',
       ], bullets: [
         'Sie vermuten einen Sicherheitsvorfall und brauchen schnell einen belastbaren, priorisierten Befund',
         'Als Start-up vor einem Investoren-Audit wollen Sie Ihre App vorher selbst sauber machen',
@@ -424,9 +426,9 @@ export const DE: Content = {
         'Ihr Entwicklerteam braucht eine unabhängige zweite Meinung zu einer bereits gemeldeten Schwachstelle',
         'Vertraulichkeit ist Ihnen nicht wichtig, Tempo (7 Tage) und ein belastbarer Fund dagegen schon',
       ], delivery: 'Befund innerhalb von 7 Kalendertagen nach Zahlung.' },
-      { tier: 'Confidential', hook: 'Dieselbe Untersuchung. Unter Geheimhaltung. Die Regulatoren erfahren es trotzdem.', desc: `Dieselbe Untersuchung wie oben - unter Geheimhaltung. Sie erhalten einen nach Schwere geordneten Befund, exakt lokalisiert, plus eine Zusammenfassung, die nicht-technische Führungskräfte lesen können. Sobald Sie Fixes ausliefern, testen wir manuell nach, ob die Lücke wirklich geschlossen ist.\n\n${NDA_CLAUSE}\n\nAls Non-Profit-Organisation, die an ihre eigenen Regeln gebunden ist, informieren wir die zuständigen Regulatoren trotzdem parallel - ohne Details, die Sie exponieren würden.`, bring: [
+      { tier: 'Confidential', hook: 'Geben Sie uns das Problem, das Sie nicht öffentlich exponieren können.', desc: `Dieselbe Untersuchung wie bei Remediation Advisory - unter Geheimhaltung, für den Fall, dass die Schwachstelle selbst etwas ist, das nicht durch den normalen Prozess laufen kann. Sie erhalten einen nach Schwere geordneten Befund, exakt lokalisiert, plus eine Zusammenfassung, die nicht-technische Führungskräfte lesen können. Sobald Sie Fixes ausliefern, testen wir manuell nach, ob die Lücke wirklich geschlossen ist.\n\n${NDA_CLAUSE}\n\nAls Non-Profit-Organisation, die an ihre eigenen Regeln gebunden ist, informieren wir die zuständigen Regulatoren trotzdem parallel - ohne Details, die Sie exponieren würden.`, bring: [
+        'Ein Problem, das nicht durch den normalen Prozess laufen kann',
         'Ihre App oder Ihr System, unter NDA',
-        'Bereits bekannte Bedenken oder vorhandene Berichte',
       ], mechanism: [
         'Führt dieselbe Untersuchung durch, unter Geheimhaltung',
         'Testet nach ausgelieferten Fixes manuell nach',

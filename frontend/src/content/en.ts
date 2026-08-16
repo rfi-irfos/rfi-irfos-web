@@ -235,7 +235,7 @@ export const EN = {
     heading: 'priced in plain terms',
     subheading: 'Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.',
     scopeTags: {
-      market: 'Proprietary corpus · knowledge graphs · longitudinal intelligence',
+      market: 'Dingir world model · evidence-first · cross-domain intelligence',
       technical: 'AI agents · swarm logic · TIS/Ternlang · custom systems',
       security: 'Mobile + Web + AI',
     },
@@ -245,37 +245,36 @@ export const EN = {
       security: 'Security Audits & Responsible Disclosure',
     },
     market: [
-      { tier: 'First Light', hook: 'Know before it\'s public. You bring the chaos, we distill the intelligence.', desc: 'You have a question about a company, app, or vendor - and no easy way to check if what they claim is actually true. We investigate the real product, not the marketing, and hand back a plain answer: true, false, or unproven.', bring: [
-        'A company, app, or vendor you need to understand',
-        'Any claims you want checked - privacy policy, pitch deck, press statement',
-        'Your specific question or suspicion',
+      { tier: 'First Light', hook: 'Turn a claim into a verdict.', desc: 'A vendor, a pitch deck, a competitor - somebody made a claim, and real money or trust is riding on whether it holds up. We run it through Dingir, our own world model: the same evidence-first engine that connects entities, relationships, and evidence across every domain we cover - and hand back a verdict, not a plausible-sounding guess.', bring: [
+        'The claim you need verified - a vendor promise, a pitch deck, a public statement',
+        'What\'s riding on it - a signature, an investment, a story',
       ], mechanism: [
-        'Investigates the real product, not the marketing',
-        'Cross-checks against our corpus of 315+ apps we\'ve already audited',
-        'Traces every claim back to the evidence behind it',
+        'Turns the claim into a testable question',
+        'Checks it against everything Dingir already knows - 315+ audited apps and a live, cross-domain evidence graph',
+        'Traces the verdict back to real evidence, not a summary of public claims',
       ], receive: [
-        'A written investigation report',
-        'A clear answer, not a hedge',
-        'Evidence you can act on or cite',
+        'A verdict: true, false, or unproven',
+        'A verdict anchored in evidence a general-purpose AI has no access to',
+        'Something you can sign off on, invest on, or publish on',
       ], bullets: [
-        'Before you invest, you want to know if a company\'s privacy or security claims actually hold up',
-        'Before an acquisition, you want an independent second opinion on the target\'s systems',
-        'You have a concrete suspicion about a company or app and want it proven, not assumed',
-        'As a journalist or regulator, you need a source you can verify and cite',
-        'You want to know if we\'ve already looked at a company that matters to you',
+        'Before you sign a contract, you want a vendor\'s security or privacy claims checked against reality',
+        'Before you invest, you want the technical claims in a pitch deck verified, not taken on faith',
+        'Before a major purchase, you want independent proof, not another sales deck',
+        'Before you publish, you need a claim you can\'t verify yourself confirmed or debunked',
+        'You want to know if Dingir has already found something relevant to the company you\'re looking at',
       ], delivery: '14 calendar days.' },
-      { tier: 'Competitive Trace', hook: 'See the real move before they announce it - not the press-release version.', desc: 'A competitor\'s real strategy usually shows up in what they actually build, months before it shows up in a press release. We check what they say against what they\'ve actually shipped, and turn the gap into something you can act on.', bring: [
-        'A competitor or potential partner you\'re watching',
-        'Their public claims or marketing',
-        'What you specifically want to know before you act',
+      { tier: 'Competitive Trace', hook: 'Know what they\'re actually doing - beyond the public narrative.', desc: 'A competitor\'s public narrative is what they want you to believe. Dingir traces what\'s actually happening underneath it - across their technology, dependencies, and relationships - and connects it to what it means for your business.', bring: [
+        'A competitor, product, technology, or organization you need to see beyond the public narrative',
+        'The assumptions you want tested',
+        'The strategic questions surrounding it',
       ], mechanism: [
-        'Compares what they say to what they\'ve actually built',
-        'Tracks real product changes over time, not announcements',
-        'Translates the technical change into what it means for your business',
+        'Traces the target across its technologies, dependencies, vendors, products, and relationships',
+        'Connects current observations with historical and cross-entity intelligence',
+        'Exposes structures and changes that remain invisible when the target is examined in isolation',
       ], receive: [
-        'A clear, business-readable comparison',
-        'Evidence, not speculation',
-        'A head start before it\'s public knowledge',
+        'A reconstructed intelligence picture of the target',
+        'Its relevant dependencies, relationships, movements, and technical footprint',
+        'The parts of its operating reality that materially change your assessment',
       ], bullets: [
         'A competitor claims something ("no data sharing," "fully secure") - you want to know if it\'s actually true',
         'Before a partnership, you want to check what a potential partner has actually built, not just what they claim',
@@ -283,17 +282,17 @@ export const EN = {
         'As PR or comms, you want to verify a rival\'s claims before your own campaign goes out',
         'As an investor, you want a pitch deck\'s technical claims checked against reality before you commit',
       ], delivery: '14 calendar days.' },
-      { tier: 'Sector Map', hook: 'Your whole sector, mapped and kept current - refreshed every quarter.', desc: 'A one-time report is out of date the moment it\'s finished. We keep watching your whole sector instead - who\'s connected to whom, where the real risk sits - and refresh the full picture every three months.', bring: [
-        'The sector or set of companies you need to track',
-        'What matters most to you - risk, dependencies, competition',
+      { tier: 'Sector Map', hook: 'The relationships, not the reports.', desc: 'You\'re not buying fifty separate company reports. Dingir maps how every relevant actor in your sector actually relates to the others - one connected, living picture, re-resolved every quarter, so you see change forming before it\'s already priced in.', bring: [
+        'The sector or set of companies you need to understand as a whole',
+        'What matters most to you - risk, dependencies, competitive structure',
       ], mechanism: [
-        'Builds a live map of every relevant company in the sector',
-        'Refreshes it every quarter, not once',
-        'Flags where risk or change is concentrating',
+        'Maps every relevant actor in the sector as one connected model, not separate files',
+        'Re-resolves the map every quarter, tracking how relationships shift',
+        'Flags where risk or change is concentrating across the whole structure',
       ], receive: [
-        'A continuously updated sector map',
+        'One connected sector map, not a stack of individual reports',
         'Early visibility on where change is forming',
-        'One picture instead of many separate reports',
+        'A model that gets more valuable every quarter, not a snapshot that expires',
       ], bullets: [
         'As a fund or investor, you want your whole portfolio tracked continuously, not just one company at a time',
         'As a regulator, you want to watch an entire sector systematically, not case by case',
@@ -301,17 +300,18 @@ export const EN = {
         'As an insurer, you need to estimate risk across your entire client base at once',
         'As a group with many subsidiaries or suppliers, you want one overview instead of separate audits for each',
       ], delivery: '14 calendar days, quarterly thereafter.' },
-      { tier: 'Signal', hook: 'A standing early-warning system for your sector.', desc: 'Big moves rarely happen without warning - a funding round, an incident, a quiet change nobody announced. We keep watching for you and tell you the moment something relevant happens, not weeks later in the headlines.', bring: [
-        'The sector or companies you need to monitor',
-        'What kind of change actually matters to you',
+      { tier: 'Signal', hook: 'Know what changed.', desc: 'A standing watch inside Dingir - not a monthly report. The model observes continuously and correlates every new signal against everything it already knows, so you learn the moment something relevant moves, not weeks later in the headlines.', bring: [
+        'A technology, vendor, competitor, or intelligence surface worth watching',
+        'The changes that could affect your decisions',
+        'The questions you need answered as the situation evolves',
       ], mechanism: [
-        'Watches continuously, not on a fixed schedule',
-        'Flags relevant change the moment it appears',
-        'Filters out noise, keeps what matters',
+        'Monitors the relevant entities, technologies, relationships, and changes across our intelligence environment',
+        'Correlates new observations with what we already know',
+        'Surfaces material signals as the underlying situation changes',
       ], receive: [
-        'An immediate alert when something relevant happens',
-        'Ongoing monitoring, not a monthly report',
-        'Time to react before it\'s public',
+        'A live intelligence feed around the subject that matters to you',
+        'Change signals with the context required to understand their significance',
+        'Accumulated intelligence that becomes more useful over time',
       ], bullets: [
         'You want to know immediately when a competitor makes a meaningful change, not weeks later',
         'As a compliance team, you need continuous visibility on a vendor you\'re responsible for',
@@ -321,7 +321,7 @@ export const EN = {
       ], delivery: 'Briefing from 14 calendar days, then monthly.' },
     ],
     technical: [
-      { tier: 'Agent Deployment', hook: 'From investigation to architecture, from architecture to a live system.', desc: 'You don\'t get a black box. We build the AI agent system, install it on your own infrastructure, and hand over something documented and reproducible - not a demo, a system that actually answers your operational questions on its own.', bring: [
+      { tier: 'Agent Deployment', hook: 'From intelligence about the world to intelligence inside yours.', desc: 'Everything above tells you about the world. This puts Dingir to work inside your own operation - an agent system, running on your infrastructure, that acts on what it knows instead of just reporting it.', bring: [
         'The task or workflow you want automated',
         'Your existing systems it needs to work with',
         'Any rules or boundaries it must respect',
@@ -340,7 +340,7 @@ export const EN = {
         'You need an MCP server that safely exposes internal tools to AI assistants',
         'As a government body or law firm, you need to automate case review while keeping data strictly on-premise',
       ], delivery: 'First integration within 21 calendar days.' },
-      { tier: 'Custom Stack', hook: 'Systems that refuse to compromise.', desc: 'When off-the-shelf software is too slow, too insecure, or too expensive, we build you something custom instead - and you keep full control of the source code, not us.', bring: [
+      { tier: 'Custom Stack', hook: 'Not an investigation. A capability built around you.', desc: 'Beyond a single agent, this is designing the intelligence capability itself - a custom system built where off-the-shelf software is too slow, too insecure, or too limited, and you keep full control of the source code, not us.', bring: [
         'The problem standard software can\'t solve',
         'Your performance, security, or control requirements',
       ], mechanism: [
@@ -358,17 +358,18 @@ export const EN = {
         'In critical infrastructure, memory safety (Rust) is a requirement, not a nice-to-have',
         'You need desktop, PWA, and CLI apps from one team instead of three different vendors',
       ], delivery: 'Definition of Done + schedule within 14 calendar days.' },
-      { tier: 'Architecture Lab', hook: 'Design the architecture together, before anyone writes production code.', desc: 'Before you build, you need a real plan, not a buzzword deck. We design the architecture with you: what to build, how to validate it works, and a realistic timeline.', bring: [
-        'The problem or decision you\'re facing',
-        'Constraints you already know about',
+      { tier: 'Architecture Lab', hook: 'How the system actually works, before anyone writes production code.', desc: 'We reconstruct the technology beneath the product surface with you, and test what\'s actually there against what\'s documented, claimed, or assumed. Much more dangerous than an "architecture report".', bring: [
+        'A product, application, platform, or technical architecture that requires deeper examination',
+        'The claims, assumptions, or unknowns surrounding its implementation',
+        'The level of access available for the investigation',
       ], mechanism: [
-        'Designs the architecture together with your team',
-        'Defines what "working" actually means - validation criteria, not vibes',
-        'Builds a realistic, build-ready plan',
+        'Reconstructs the technology beneath the product surface',
+        'Traces components, SDKs, services, interfaces, dependencies, and external relationships',
+        'Tests the observed architecture against documentation, claims, and the intelligence already accumulated around it',
       ], receive: [
-        'A concrete architecture, not a concept',
-        'Validation criteria and a timeline',
-        'A plan your own team (or ours) can build from',
+        'A technical intelligence model of the system under investigation',
+        'The architecture that matters to your decision, including relevant hidden dependencies',
+        'Findings that expose where the implemented system diverges from the understood one',
       ], bullets: [
         'You\'re facing a high-risk technical decision and don\'t want to make the call alone',
         'Before a major investment, you want a prototype with validation criteria, not a finished system yet',
@@ -376,7 +377,7 @@ export const EN = {
         'You want a second, independent technical opinion before your own team starts building',
         'As a pre-seed startup, you need a credible technical roadmap to show investors',
       ], delivery: 'Architecture and research plan within 14 calendar days.' },
-      { tier: 'Full Spectrum Deploy', hook: 'From the first analysis to live operations, everything from one team.', desc: 'You don\'t just get software. You get the whole operation - installed, integrated, your team trained, and support that doesn\'t stop at handover.', bring: [
+      { tier: 'Full Spectrum Deploy', hook: 'Intelligence as an operating layer, not a project that ends.', desc: 'Your organization needs intelligence across multiple surfaces, continuously and operationally. We deploy the infrastructure to make that real - installed, integrated, your team trained, support that doesn\'t stop at handover.', bring: [
         'A system or infrastructure you need fully operational',
         'Your team, to be trained alongside it',
       ], mechanism: [
@@ -413,17 +414,18 @@ export const EN = {
         'As a small business with no security budget, you deserve the same audit standard as a large company',
         'As a developer, you want your own app checked for free before launch',
       ], delivery: 'Report within 7 calendar days.' },
-      { tier: 'Remediation Advisory', hook: 'Not a template PDF. A real investigation, with a fix attached.', desc: 'You\'re not paying for a document. You\'re paying for a real investigation - every weakness found, ranked by how bad it is, with a concrete fix for each one, in 7 days. Thirty days later, we check back that the fixes actually worked.', bring: [
-        'Your app or system',
-        'Any known concerns or existing reports',
+      { tier: 'Remediation Advisory', hook: 'Know where the exposure is, and what to change.', desc: 'From knowing what\'s wrong to knowing where to intervene: we trace the exposure through your actual system, separate what\'s real from what\'s assumed, and hand you the fix - in 7 days, checked back after 30.', bring: [
+        'A known or suspected security, privacy, technology, or dependency exposure',
+        'The system or organization affected',
+        'The decision that cannot wait for another generic assessment',
       ], mechanism: [
-        'Investigates using our own method and corpus',
-        'Ranks every issue by how serious it actually is',
-        'Walks your team through the fix, then checks back after 30 days',
+        'Traces the exposure through the underlying technology and dependency structure',
+        'Establishes what is actually affected, what is merely assumed, and where the exposure originates',
+        'Identifies the intervention points that change the underlying condition',
       ], receive: [
-        'A severity-ranked finding',
-        'A concrete fix for every issue',
-        'A 30-day check-back confirming it worked',
+        'A prioritized intelligence picture of the exposure',
+        'The paths through the system that create or amplify it',
+        'A concrete basis for deciding where to intervene',
       ], bullets: [
         'You suspect a security incident and need a solid, prioritized finding fast',
         'As a startup ahead of an investor audit, you want to clean up your app yourself first',
@@ -431,9 +433,9 @@ export const EN = {
         'Your dev team wants an independent second opinion on an already-reported vulnerability',
         'Confidentiality doesn\'t matter to you - speed (7 days) and a solid finding do',
       ], delivery: 'Finding within 7 calendar days of payment.' },
-      { tier: 'Confidential', hook: 'The same investigation. Under secrecy. The regulators still hear about it.', desc: `Same investigation as above - kept under secrecy. You get a severity-ranked finding pinned to the exact issue, plus a plain-language summary your non-technical leadership can actually read. Once you ship fixes, we re-test by hand to confirm they actually closed the hole.\n\n${NDA_CLAUSE}\n\nAs a not-for-profit bound by our own rules, the relevant regulators are still told in parallel - without any detail that would expose you.`, bring: [
+      { tier: 'Confidential', hook: 'Give us the problem you cannot expose publicly.', desc: `Same investigation as Remediation Advisory - kept under secrecy, for when the exposure itself is something you can't run through the normal process. You get a severity-ranked finding pinned to the exact issue, plus a plain-language summary your non-technical leadership can actually read. Once you ship fixes, we re-test by hand to confirm they actually closed the hole.\n\n${NDA_CLAUSE}\n\nAs a not-for-profit bound by our own rules, the relevant regulators are still told in parallel - without any detail that would expose you.`, bring: [
+        'A problem you can\'t put through the normal process',
         'Your app or system, under NDA',
-        'Any known concerns or existing reports',
       ], mechanism: [
         'Runs the same investigation, kept confidential',
         'Re-tests by hand once you\'ve shipped fixes',

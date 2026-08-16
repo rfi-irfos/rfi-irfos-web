@@ -552,7 +552,7 @@ function EngagementFlow({ bring, mechanism, receive }: {
             <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
               {g.items!.map((item, i) => (
                 <li key={i} style={{ fontSize: 12.5, lineHeight: 1.5, color: 'var(--text)', display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                  <span style={{ color: TEAL, fontSize: 10, flexShrink: 0 }}>&#9656;</span>{item}
+                  <span style={{ color: TEAL, fontSize: 16, lineHeight: 1, flexShrink: 0 }}>&#8226;</span>{item}
                 </li>
               ))}
             </ul>
