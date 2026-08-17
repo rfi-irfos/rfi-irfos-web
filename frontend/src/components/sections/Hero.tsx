@@ -6,6 +6,10 @@ import { prefersReducedMotion, Reveal, RevealWords, CountUp, HeroFlipWord } from
 import { RESEARCH_AREAS } from './Research'
 import { useLocale } from '../../hooks/useLocale'
 import type { Theme } from '../../hooks/useTheme'
+// Imported (not a /public string path) so Vite content-hashes the built filename -
+// every future swap of this file gets a new URL automatically, instead of silently
+// colliding with visitors' 7-day cache-control on the old bytes at the same path.
+import heroSoftware from '../../assets/hero-software.jpeg'
 
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 
@@ -81,7 +85,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           paints on top of z-index -2/-1 children per normal stacking order). */}
       <div aria-hidden="true" className="rfi-hero-zoom" style={{
         position: 'absolute', inset: 0, zIndex: -2,
-        backgroundImage: 'url("/hero-software.jpeg")', backgroundSize: 'cover', backgroundPosition: 'center',
+        backgroundImage: `url("${heroSoftware}")`, backgroundSize: 'cover', backgroundPosition: 'center',
       }} />
       <HeroBackground theme={theme} />
       {/* Stays English in both locales (live feedback) - "Rethink the Obvious."
