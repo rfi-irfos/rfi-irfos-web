@@ -51,7 +51,17 @@ const server = createServer(async (req, res) => {
 
 await new Promise((resolve) => server.listen(PORT, resolve))
 
-const browser = await chromium.launch()
+// --disable-dev-shm-usage: a standard mitigation for Chromium renderer
+// crashes under memory pressure in constrained environments. Checked first
+// rather than assumed: /dev/shm itself has 3.4G free on this box, so that
+// specific mechanism isn't the cause here - the real constraint (found
+// 2026-08-17) is system RAM itself: 140MB free, swap nearly exhausted, while
+// the hero route now also loads full-resolution uncompressed screenshots.
+// The renderer was killed outright rather than raising a catchable JS
+// exception, which is why this surfaced as a silent page-closed crash with
+// no console output. This flag is cheap and harmless either way; the actual
+// fix if it recurs is freeing real memory on the machine, not this flag.
+const browser = await chromium.launch({ args: ['--disable-dev-shm-usage'] })
 const page = await browser.newPage()
 
 for (const route of ROUTES) {
@@ -70,11 +80,28 @@ for (const route of ROUTES) {
   // gate regardless of which path got us here.
   await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'networkidle', timeout: 12000 }).catch(() => {})
   await page.waitForSelector('#root h1, #root h2', { state: 'visible', timeout: 20000 })
-  const html = await page.content() // already includes the doctype
+  let html = await page.content() // already includes the doctype
+
+  // FOUND 2026-08-19 via Search Console flagging /methodology/ as "Alternative
+  // page with proper canonical tag" (i.e. not indexed on its own): index.html's
+  // <link rel="canonical"> is a single hardcoded href="https://rfi-irfos.com",
+  // and every route's prerendered output starts from that same template. Every
+  // non-home route was therefore shipping a canonical tag pointing at the
+  // homepage -- correctly telling Google "this page is just an alternate of /,
+  // don't index it separately", which Google was doing exactly as instructed.
+  // Rewritten here, per route, to the page's own real URL (trailing slash on
+  // every route except / itself, matching how the site is actually served and
+  // the exact form Search Console's own examples use).
+  const canonicalUrl = route === '/' ? 'https://rfi-irfos.com' : `https://rfi-irfos.com${route}/`
+  html = html.replace(
+    /<link rel="canonical" href="[^"]*"\s*\/?>/,
+    `<link rel="canonical" href="${canonicalUrl}" />`
+  )
+
   const outPath = route === '/' ? join(DIST, 'index.html') : join(DIST, route, 'index.html')
   await mkdir(dirname(outPath), { recursive: true })
   await writeFile(outPath, html)
-  console.log(`prerendered ${route === '/' ? '/' : route + '/'}`)
+  console.log(`prerendered ${route === '/' ? '/' : route + '/'} (canonical: ${canonicalUrl})`)
 }
 
 await browser.close()

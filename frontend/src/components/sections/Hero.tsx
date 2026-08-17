@@ -1,6 +1,6 @@
 // Hero (no `<section id>` of its own - it's the first section on the page,
 // scrolled to via the bare "#" logo link) - extracted verbatim from PublicSite.tsx.
-import { useState, lazy, Suspense } from 'react'
+import { useState, useEffect, lazy, Suspense, type CSSProperties } from 'react'
 import { motion } from 'framer-motion'
 import { prefersReducedMotion, Reveal, RevealWords, CountUp, HeroFlipWord } from './shared'
 import { RESEARCH_AREAS } from './Research'
@@ -10,6 +10,19 @@ import type { Theme } from '../../hooks/useTheme'
 // every future swap of this file gets a new URL automatically, instead of silently
 // colliding with visitors' 7-day cache-control on the old bytes at the same path.
 import heroSoftware from '../../assets/hero-software.jpeg'
+// Live DINGIR dashboard screenshots (2026-08-17), full resolution/quality on
+// purpose - live feedback was explicit: "HD wie's geht", no compression.
+import heroDingir2 from '../../assets/hero-dingir-2.png'
+import heroDingir3 from '../../assets/hero-dingir-3.png'
+import heroDingir4 from '../../assets/hero-dingir-4.png'
+import heroDingir5 from '../../assets/hero-dingir-5.png'
+import heroDingir6 from '../../assets/hero-dingir-6.png'
+import heroDingir7 from '../../assets/hero-dingir-7.png'
+// Append more `import heroX from '../../assets/hero-x.jpeg'` + entries here to
+// grow the slideshow - HeroSlideshow below already handles 1..N images. With
+// just one, it renders exactly like the old single static image (no interval,
+// no cross-fade) rather than needing a separate code path for that case.
+const HERO_IMAGES = [heroSoftware, heroDingir2, heroDingir3, heroDingir4, heroDingir5, heroDingir6, heroDingir7]
 
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 
@@ -25,6 +38,89 @@ const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 // changed PublicSite's instance: the hero background/canvas silently froze on whatever
 // theme was active at mount instead of following the toggle. Passing theme down keeps
 // this section in lockstep with the single source of truth PublicSite already owns.
+// Slow cross-fade between hero screenshots, each still getting its own Ken
+// Burns zoom (the .rfi-hero-zoom CSS animation, index.css) as it becomes
+// active. Deliberately calm: an earlier looping-video hero was reverted
+// 2026-08-15 specifically because it read as too busy/distracting behind the
+// headline, so this cycles on a slow clock (8s/slide) and cross-fades over
+// 2s rather than cutting - motion in the background, not competition with
+// the text sitting on top of it.
+//
+// ONLY THE CURRENT AND OUTGOING SLIDE ARE EVER IN THE DOM. The first version
+// of this rendered all N images at once (one div per slide, opacity 0/1) --
+// harmless at the old single-image size, but these are full-resolution,
+// uncompressed dashboard screenshots (up to 3MB each, ~11MB for the full
+// set) by explicit request ("HD wie's geht", no compression). Mounting all
+// of them up front meant every one got fetched and decoded immediately on
+// load, which stalled the page long enough that the prerender build step's
+// `waitForSelector` on the headline timed out entirely -- caught by running
+// the actual production build, not just tsc. Two-slot rendering (current +
+// the one fading out, cleared once the transition finishes) means only the
+// images actually being shown are ever fetched, and the browser's own cache
+// makes a later revisit of an already-seen slide instant.
+//
+// The NEXT slide is explicitly preloaded a beat before its turn (a plain
+// `Image()`, not rendered) so the cross-fade never has to wait on a
+// mid-transition network fetch -- without that, a slow-loading image would
+// either flash in abruptly once it finally arrived or fade in from blank,
+// neither of which reads as the "clean, professional transition" this was
+// asked for.
+//
+// A `key={index}` on each mounted slide (not a persistent looping CSS
+// animation) is what makes the zoom actually restart per image: an
+// `animation-fill-mode: forwards` animation holds its end state once it's
+// played, so re-showing the same DOM node via opacity alone would leave it
+// static on second view - keying by index forces React to mount a fresh
+// node, which restarts the animation from its own 0%.
+const SLIDE_INTERVAL_MS = 8000
+const CROSSFADE_MS = 2000
+
+function HeroSlideshow({ images }: { images: string[] }) {
+  const [current, setCurrent] = useState(0)
+  const [outgoing, setOutgoing] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (images.length <= 1 || prefersReducedMotion()) return
+    // Warm the browser's cache for the NEXT slide while the current one is
+    // still showing - a full 8s head start before it's actually needed.
+    const preload = new Image()
+    preload.src = images[(current + 1) % images.length]
+
+    const id = setTimeout(() => {
+      setOutgoing(current)
+      setCurrent(c => (c + 1) % images.length)
+    }, SLIDE_INTERVAL_MS)
+    return () => clearTimeout(id)
+  }, [current, images])
+
+  // Drop the outgoing slide from the DOM once its fade has actually
+  // finished, not immediately on swap - it needs to stay mounted at
+  // opacity 0 for the transition to animate at all.
+  useEffect(() => {
+    if (outgoing === null) return
+    const id = setTimeout(() => setOutgoing(null), CROSSFADE_MS)
+    return () => clearTimeout(id)
+  }, [outgoing])
+
+  const slideStyle = (visible: boolean): CSSProperties => ({
+    position: 'absolute', inset: 0, zIndex: -2,
+    backgroundSize: 'cover', backgroundPosition: 'center',
+    opacity: visible ? 1 : 0,
+    transition: `opacity ${CROSSFADE_MS}ms ease-in-out`,
+  })
+
+  return (
+    <>
+      {outgoing !== null && outgoing !== current && (
+        <div key={outgoing} aria-hidden="true" className="rfi-hero-zoom"
+          style={{ ...slideStyle(false), backgroundImage: `url("${images[outgoing]}")` }} />
+      )}
+      <div key={current} aria-hidden="true" className="rfi-hero-zoom"
+        style={{ ...slideStyle(true), backgroundImage: `url("${images[current]}")` }} />
+    </>
+  )
+}
+
 function HeroBackground({ theme }: { theme: Theme }) {
   const [enabled] = useState(() => {
     if (typeof window === 'undefined') return false
@@ -72,21 +168,21 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
         ? 'rgba(0,0,0,0.45)'
         : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.55) 0%, rgba(5,7,14,0.32) 52%, rgba(5,7,14,0.5) 100%)',
     }}>
-      {/* Real screenshot of our own OSINT/monitoring software as the hero backdrop
+      {/* Real screenshots of our own OSINT/monitoring software as the hero backdrop
           (reverted 2026-08-15, live feedback: back to a still image - the looping
-          video read as too busy/distracting sitting behind the headline). Slow Ken
-          Burns zoom-out - starts tight/zoomed in, eases out to the full frame over
-          the animation's run, then holds (animation-fill-mode: forwards in the
-          .rfi-hero-zoom CSS rule, index.css). overflow: hidden on the section above
-          clips the zoomed-in overflow; transform (not background-size) animates since
-          transform is compositor-only, cheaper than repainting background-size every
-          frame. Sits behind HeroBackground's WebGL canvas (zIndex -1) at -2, and
-          behind the tint gradient above it (the section's own `background`, which
-          paints on top of z-index -2/-1 children per normal stacking order). */}
-      <div aria-hidden="true" className="rfi-hero-zoom" style={{
-        position: 'absolute', inset: 0, zIndex: -2,
-        backgroundImage: `url("${heroSoftware}")`, backgroundSize: 'cover', backgroundPosition: 'center',
-      }} />
+          video read as too busy/distracting sitting behind the headline; the
+          2026-08-17 slideshow keeps that lesson - slow 8s cycle, 1.5s cross-fade,
+          not a busy loop). Each slide gets its own Ken Burns zoom-out - starts
+          tight/zoomed in, eases out to the full frame over the animation's run,
+          then holds (animation-fill-mode: forwards in the .rfi-hero-zoom CSS
+          rule, index.css). overflow: hidden on the section above clips the
+          zoomed-in overflow; transform (not background-size) animates since
+          transform is compositor-only, cheaper than repainting background-size
+          every frame. Sits behind HeroBackground's WebGL canvas (zIndex -1) at
+          -2, and behind the tint gradient above it (the section's own
+          `background`, which paints on top of z-index -2/-1 children per
+          normal stacking order). */}
+      <HeroSlideshow images={HERO_IMAGES} />
       <HeroBackground theme={theme} />
       {/* Stays English in both locales (live feedback) - "Rethink the Obvious."
           is the site's signature line/wordmark-adjacent phrase, not translated
