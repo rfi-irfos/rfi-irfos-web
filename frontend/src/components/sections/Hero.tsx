@@ -18,11 +18,20 @@ import heroDingir4 from '../../assets/hero-dingir-4.png'
 import heroDingir5 from '../../assets/hero-dingir-5.png'
 import heroDingir6 from '../../assets/hero-dingir-6.png'
 import heroDingir7 from '../../assets/hero-dingir-7.png'
+import heroDingir8 from '../../assets/hero-dingir-8.png'
+import heroDingir9 from '../../assets/hero-dingir-9.png'
+import heroDingir10 from '../../assets/hero-dingir-10.png'
+import heroDingir11 from '../../assets/hero-dingir-11.png'
+import heroDingir12 from '../../assets/hero-dingir-12.png'
+import heroDingir13 from '../../assets/hero-dingir-13.png'
 // Append more `import heroX from '../../assets/hero-x.jpeg'` + entries here to
 // grow the slideshow - HeroSlideshow below already handles 1..N images. With
 // just one, it renders exactly like the old single static image (no interval,
 // no cross-fade) rather than needing a separate code path for that case.
-const HERO_IMAGES = [heroSoftware, heroDingir2, heroDingir3, heroDingir4, heroDingir5, heroDingir6, heroDingir7]
+const HERO_IMAGES = [
+  heroSoftware, heroDingir2, heroDingir3, heroDingir4, heroDingir5, heroDingir6, heroDingir7,
+  heroDingir8, heroDingir9, heroDingir10, heroDingir11, heroDingir12, heroDingir13,
+]
 
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 
@@ -83,7 +92,7 @@ const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 // index) rather than reusing one - an `animation-fill-mode: forwards`
 // animation holds its end state once played, so re-showing the same node
 // via opacity alone would leave it static on a second viewing.
-const SLIDE_INTERVAL_MS = 13000
+const SLIDE_INTERVAL_MS = 15000
 const CROSSFADE_S = 3.2
 
 function HeroSlideshow({ images }: { images: string[] }) {

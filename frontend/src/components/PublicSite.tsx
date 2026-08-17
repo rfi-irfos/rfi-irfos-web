@@ -1090,7 +1090,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               theme-colored bar behind it, keeps these readable without a pill. */}
           {NAV_LINKS.map(n => (
             <a key={n.href} href={n.href} style={{
-              color: overDarkHero ? '#a0a0b8' : 'var(--text2)', fontSize: 13, fontWeight: 600,
+              color: overDarkHero ? '#a0a0b8' : 'var(--text2)', fontSize: 15, fontWeight: 600,
               textDecoration: 'none', letterSpacing: '0.04em',
               transition: 'color 0.18s',
             }}
