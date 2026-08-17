@@ -221,7 +221,7 @@ export const DE: Content = {
       { classic: 'In einer Region ohne eigenen Standort, ohne Lieferanten und ohne offensichtliche Exponierung eskaliert ein Konflikt. Zwei Monate später ändern sich Schifffahrtsrouten, Versicherungskosten steigen und einer Ihrer Inputs wird knapp.', rfiLabel: 'World Intelligence', rfi: 'Geopolitische Ereignisse, Handelsrouten, Rohstoffe, Infrastruktur, Lieferanten und geschäftliche Abhängigkeiten werden fortlaufend über die ganze Außenwelt hinweg verbunden.' },
       { classic: 'Eine Wetterstation erfasst ein ungewöhnliches Temperaturmuster. Meeresströmungen verändern sich. Eine Dürre entsteht. Rohstoffpreise bewegen sich. Ihr Einkauf sieht den Preisanstieg, aber nicht die Kette der Ereignisse dahinter.', rfiLabel: 'Kausale Intelligence', rfi: 'Umwelt-, wirtschaftliche und operative Signale werden über die Zeit verfolgt, sodass das Modell nachvollziehen kann, wie weit entfernte Ereignisse in geschäftliche Bedingungen hineinwirken.' },
     ],
-    cta: 'Ping uns',
+    cta: 'Ping uns!',
   },
 
   pricing: {

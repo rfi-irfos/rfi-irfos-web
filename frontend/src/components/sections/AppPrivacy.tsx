@@ -79,14 +79,16 @@ export function AppPrivacySection() {
                 teal link blending into the rest of the page. Domino icon: one tile
                 leaning hard into the next, which leans into the last upright one - a
                 signal setting off a chain, matching the CTA copy. */}
+            {/* Icon 20->24, font 13->15 (live feedback) - pill padding left
+                untouched on purpose, so the button footprint stays the same. */}
             <a href="#submit" className="rfi-cta-pulse" style={{
               display: 'inline-flex', alignItems: 'center', gap: 10, background: '#f97316', color: '#1a0f00', padding: '13px 30px', borderRadius: 8,
-              fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
+              fontWeight: 800, fontSize: 15, textDecoration: 'none', letterSpacing: '0.07em',
               textTransform: 'uppercase', transition: 'opacity 0.15s',
             }}
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
-              <svg width="20" height="20" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="24" height="24" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="2" y1="27" x2="30" y2="27" />
                 <rect x="4" y="8" width="6" height="18" rx="1.5" transform="rotate(38 7 26)" />
                 <rect x="13" y="8" width="6" height="18" rx="1.5" transform="rotate(18 16 26)" />

@@ -228,7 +228,7 @@ export const EN = {
       { classic: 'A conflict escalates in a region where you have no office, no supplier and no obvious exposure. Two months later, shipping routes change, insurance costs rise and one of your inputs becomes scarce.', rfiLabel: 'World intelligence', rfi: 'geopolitical events, trade routes, commodities, infrastructure, suppliers and business dependencies are continuously connected across the external world.' },
       { classic: 'A weather station records an unusual temperature pattern. Ocean conditions shift. A drought develops. Commodity prices move. Your procurement team sees the price increase, but not the chain of events that produced it.', rfiLabel: 'Causal intelligence', rfi: 'environmental, economic and operational signals are tracked through time so the model can trace how distant events propagate into business conditions.' },
     ],
-    cta: 'Ping us',
+    cta: 'Ping us!',
   },
 
   pricing: {
