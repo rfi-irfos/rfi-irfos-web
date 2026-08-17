@@ -276,6 +276,22 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
+  // Cookie banner should never cover the footer: hide it once the visitor has
+  // scrolled down far enough that the footer (or page bottom) is in view.
+  // Cross-device safe — uses scroll position, no viewport assumptions.
+  useEffect(() => {
+    if (!cookieBannerOpen) return
+    const onScroll = () => {
+      const scrollPos = window.scrollY + window.innerHeight
+      const docHeight = document.documentElement.scrollHeight
+      // footer sits in the last ~700px of the document
+      if (scrollPos > docHeight - 720) setCookieBannerOpen(false)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [cookieBannerOpen])
+
   // Lock background scroll while a modal is open - without this the page behind a
   // fixed-position modal keeps scrolling under it, which reads as "scrolling is broken."
   useEffect(() => {
@@ -1371,8 +1387,9 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               labels. */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: `repeat(${ZONE_TOTAL_COLUMNS + FOOTER_REPO_COLUMNS.length + FOOTER_CRATE_COLUMNS.length}, minmax(100px, 1fr))`,
+            gridTemplateColumns: `repeat(${ZONE_TOTAL_COLUMNS + FOOTER_REPO_COLUMNS.length + FOOTER_CRATE_COLUMNS.length}, minmax(0, 1fr))`,
             gridTemplateRows: 'auto 1fr', columnGap: '1.6rem', rowGap: 9, flex: '1 1 auto', marginLeft: '1.9rem',
+            maxWidth: '100%', overflowX: 'hidden',
           }}>
             {/* Explicit gridColumn/gridRow placement (live feedback 2026-08-15:
                 "repositories header is still above the first column, not
