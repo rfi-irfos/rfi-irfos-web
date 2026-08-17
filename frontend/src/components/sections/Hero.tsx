@@ -1,7 +1,7 @@
 // Hero (no `<section id>` of its own - it's the first section on the page,
 // scrolled to via the bare "#" logo link) - extracted verbatim from PublicSite.tsx.
-import { useState, useEffect, lazy, Suspense, type CSSProperties } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useEffect, lazy, Suspense } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { prefersReducedMotion, Reveal, RevealWords, CountUp, HeroFlipWord } from './shared'
 import { RESEARCH_AREAS } from './Research'
 import { useLocale } from '../../hooks/useLocale'
@@ -42,82 +42,81 @@ const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 // Burns zoom (the .rfi-hero-zoom CSS animation, index.css) as it becomes
 // active. Deliberately calm: an earlier looping-video hero was reverted
 // 2026-08-15 specifically because it read as too busy/distracting behind the
-// headline, so this cycles on a slow clock (8s/slide) and cross-fades over
-// 2s rather than cutting - motion in the background, not competition with
-// the text sitting on top of it.
+// headline, and the first cut of this slideshow overcorrected the other way
+// - live feedback: the incoming image was popping in at full opacity
+// instead of fading, and the whole cycle felt too quick ("BOOOM nächstes
+// bild"). Two real causes, both fixed below, not just retuned numbers:
 //
-// ONLY THE CURRENT AND OUTGOING SLIDE ARE EVER IN THE DOM. The first version
-// of this rendered all N images at once (one div per slide, opacity 0/1) --
-// harmless at the old single-image size, but these are full-resolution,
-// uncompressed dashboard screenshots (up to 3MB each, ~11MB for the full
-// set) by explicit request ("HD wie's geht", no compression). Mounting all
-// of them up front meant every one got fetched and decoded immediately on
-// load, which stalled the page long enough that the prerender build step's
-// `waitForSelector` on the headline timed out entirely -- caught by running
-// the actual production build, not just tsc. Two-slot rendering (current +
-// the one fading out, cleared once the transition finishes) means only the
-// images actually being shown are ever fetched, and the browser's own cache
-// makes a later revisit of an already-seen slide instant.
+// 1) FIRST BUG: a plain `<div key={current}>` with `opacity: 1` set directly
+// in its initial style renders at full opacity on the very first paint -
+// CSS transitions only animate a property that CHANGES on an already-
+// rendered element, not an element's initial value on mount. Only the
+// outgoing slide (an existing node whose opacity actually changed) was
+// ever animating; the incoming one just appeared. AnimatePresence/motion.div
+// handle exactly this - `initial`/`animate` on a newly-mounted element is
+// framer-motion's whole reason to exist, so the fade-IN now genuinely
+// animates instead of popping.
+//
+// 2) Timing was too tight for "professional" pacing: 8s/slide, 2s fade.
+// Now 13s/slide with a 3.2s fade - noticeably longer dwell time on each
+// image ("längeres showcase") and a slower, softer blend, still calm
+// rather than busy.
+//
+// ONLY THE CURRENT SLIDE (PLUS ITS BRIEFLY-OVERLAPPING PREDECESSOR DURING
+// THE FADE) IS EVER IN THE DOM, via AnimatePresence with a single keyed
+// child - not all N at once. The first version of this rendered all N
+// images up front (one div per slide, opacity 0/1); harmless at the old
+// single-image size, but these are full-resolution, uncompressed dashboard
+// screenshots (up to 3MB each, ~11MB for the full set) by explicit request
+// ("HD wie's geht", no compression). Mounting all of them up front meant
+// every one got fetched and decoded immediately on load, which stalled the
+// page long enough that the prerender build step's `waitForSelector` on the
+// headline timed out entirely - caught by running the actual production
+// build, not just tsc.
 //
 // The NEXT slide is explicitly preloaded a beat before its turn (a plain
 // `Image()`, not rendered) so the cross-fade never has to wait on a
-// mid-transition network fetch -- without that, a slow-loading image would
-// either flash in abruptly once it finally arrived or fade in from blank,
-// neither of which reads as the "clean, professional transition" this was
-// asked for.
+// mid-transition network fetch.
 //
-// A `key={index}` on each mounted slide (not a persistent looping CSS
-// animation) is what makes the zoom actually restart per image: an
-// `animation-fill-mode: forwards` animation holds its end state once it's
-// played, so re-showing the same DOM node via opacity alone would leave it
-// static on second view - keying by index forces React to mount a fresh
-// node, which restarts the animation from its own 0%.
-const SLIDE_INTERVAL_MS = 8000
-const CROSSFADE_MS = 2000
+// The Ken Burns zoom (.rfi-hero-zoom, index.css) restarts correctly because
+// AnimatePresence mounts a genuinely fresh DOM node per slide (keyed by
+// index) rather than reusing one - an `animation-fill-mode: forwards`
+// animation holds its end state once played, so re-showing the same node
+// via opacity alone would leave it static on a second viewing.
+const SLIDE_INTERVAL_MS = 13000
+const CROSSFADE_S = 3.2
 
 function HeroSlideshow({ images }: { images: string[] }) {
   const [current, setCurrent] = useState(0)
-  const [outgoing, setOutgoing] = useState<number | null>(null)
+  const reduced = prefersReducedMotion()
 
   useEffect(() => {
-    if (images.length <= 1 || prefersReducedMotion()) return
+    if (images.length <= 1 || reduced) return
     // Warm the browser's cache for the NEXT slide while the current one is
-    // still showing - a full 8s head start before it's actually needed.
+    // still showing - a full interval's head start before it's needed.
     const preload = new Image()
     preload.src = images[(current + 1) % images.length]
 
-    const id = setTimeout(() => {
-      setOutgoing(current)
-      setCurrent(c => (c + 1) % images.length)
-    }, SLIDE_INTERVAL_MS)
+    const id = setTimeout(() => setCurrent(c => (c + 1) % images.length), SLIDE_INTERVAL_MS)
     return () => clearTimeout(id)
-  }, [current, images])
-
-  // Drop the outgoing slide from the DOM once its fade has actually
-  // finished, not immediately on swap - it needs to stay mounted at
-  // opacity 0 for the transition to animate at all.
-  useEffect(() => {
-    if (outgoing === null) return
-    const id = setTimeout(() => setOutgoing(null), CROSSFADE_MS)
-    return () => clearTimeout(id)
-  }, [outgoing])
-
-  const slideStyle = (visible: boolean): CSSProperties => ({
-    position: 'absolute', inset: 0, zIndex: -2,
-    backgroundSize: 'cover', backgroundPosition: 'center',
-    opacity: visible ? 1 : 0,
-    transition: `opacity ${CROSSFADE_MS}ms ease-in-out`,
-  })
+  }, [current, images, reduced])
 
   return (
-    <>
-      {outgoing !== null && outgoing !== current && (
-        <div key={outgoing} aria-hidden="true" className="rfi-hero-zoom"
-          style={{ ...slideStyle(false), backgroundImage: `url("${images[outgoing]}")` }} />
-      )}
-      <div key={current} aria-hidden="true" className="rfi-hero-zoom"
-        style={{ ...slideStyle(true), backgroundImage: `url("${images[current]}")` }} />
-    </>
+    <AnimatePresence>
+      <motion.div
+        key={current}
+        aria-hidden="true"
+        className="rfi-hero-zoom"
+        initial={reduced ? undefined : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={reduced ? undefined : { opacity: 0 }}
+        transition={{ duration: reduced ? 0 : CROSSFADE_S, ease: 'easeInOut' }}
+        style={{
+          position: 'absolute', inset: 0, zIndex: -2,
+          backgroundImage: `url("${images[current]}")`, backgroundSize: 'cover', backgroundPosition: 'center',
+        }}
+      />
+    </AnimatePresence>
   )
 }
 
