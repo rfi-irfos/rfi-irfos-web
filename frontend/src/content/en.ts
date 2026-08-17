@@ -627,7 +627,7 @@ export const EN = {
         links: { research: 'Research', trackRecord: 'Evidence', methodology: 'Methodology' },
       },
     },
-    copyright: '© 2026 RFI-IRFOS  ·  Graz, Austria  ·  ZVR 1015608684',
+    copyright: '© 2026 RFI-IRFOS  ·  Graz, Austria  ·  ZVR 1015608684  ·  GISA 39261441  ·  UID ATU83405245',
   },
 
   cookieBanner: {

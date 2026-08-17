@@ -64,6 +64,15 @@ await new Promise((resolve) => server.listen(PORT, resolve))
 const browser = await chromium.launch({ args: ['--disable-dev-shm-usage'] })
 const page = await browser.newPage()
 
+// Prerender output is serialized DOM only - decoded image/video pixels never
+// end up in it, but they dominate the renderer's memory (the hero PNGs are
+// up to 3MB compressed, tens of MB decoded). Under memory pressure (recurred
+// 2026-08-17 with <900MB available: renderer killed outright, surfacing as
+// "Target crashed" with no console output) that's exactly what pushed the
+// renderer over the edge. Abort those requests here - <img> src attributes
+// and CSS url()s still serialize identically, only the pixel decode is skipped.
+await page.route(/\.(png|jpe?g|webp|gif|mp4|webm)(\?|$)/, r => r.abort())
+
 for (const route of ROUTES) {
   // 'networkidle' hangs intermittently now that the Hero route ships a
   // looping, autoplaying <video> (2026-08-15): this dev-only static server

@@ -1332,27 +1332,12 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 ))}
               </div>
             ))}
-            {/* WKO badge + tagline + copyright moved into the Legal column itself
-                (live feedback 2026-08-15: "das betten wir auch in diesem linken
-                part ein, ganz links") - was a separate centered block below the
-                whole link directory before. Left-aligned/un-centered to fit the
-                narrow 170px column; divider now naturally reaches this column's
-                actual bottom (align-self: stretch matches whichever sibling in
-                the row is tallest) instead of stopping short of it. */}
+            {/* Tagline + copyright live in the Legal column itself (live feedback
+                2026-08-15: "das betten wir auch in diesem linken part ein, ganz
+                links"). WKO badge removed 2026-08-17 - registered trademark, no
+                written authorization (WKO Abt. Recht und Organe, deadline
+                2026-08-21); membership alone does not license logo use. */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8 }}>
-              <a href="https://www.wko.at" target="_blank" rel="noopener" title="WKO Mitglied - Wirtschaftskammer Osterreich" style={{ display: 'inline-block', opacity: 0.7 }}>
-                <svg viewBox="0 0 420 100" width="100" height="24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WKO - Wirtschaftskammer Osterreich" style={{ display: 'block' }}>
-                  <rect x="0"   y="0" width="100" height="100" fill="#CC0000"/>
-                  <text x="50"  y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">W</text>
-                  <rect x="105" y="0" width="100" height="100" fill="#CC0000"/>
-                  <text x="155" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">K</text>
-                  <rect x="210" y="0" width="100" height="100" fill="#CC0000"/>
-                  <text x="260" y="78" fontFamily="Arial Black,sans-serif" fontSize="74" fontWeight="900" fill="#fff" textAnchor="middle">O</text>
-                  <rect x="320" y="0"  width="100" height="33" fill="#CC0000"/>
-                  <rect x="320" y="33" width="100" height="34" fill="#fff"/>
-                  <rect x="320" y="67" width="100" height="33" fill="#CC0000"/>
-                </svg>
-              </a>
               <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: 'var(--accent-text)', letterSpacing: '0.06em', fontWeight: 600, margin: 0 }}>
                 {t.footer.tagline}
                 <br />
@@ -1400,12 +1385,11 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 "repositories header is still above the first column, not
                 between the second and third in the middle") - the previous
                 version rendered "Repositories"/"Crates" as the heading of ONLY
-                their group's first per-column div, so text-align:center
-                centered them within one ~140px track, not across the whole
+                their group's first per-column div, not spanning the whole
                 group. Headings are now their own grid items in row 1 spanning
-                their full column count, so centering actually centers over
-                the group. Zone headings stay individual (one per column,
-                left-aligned) since each zone's content differs. Every heading
+                their full column count. Left-aligned like the zone headings
+                (live feedback 2026-08-17: "repositories auch left aligned,
+                schaut doch schöner aus"). Every heading
                 also gets the same soft border-bottom as the rest of the
                 site's hairline dividers (var(--border)) per "underline each
                 of those headers... same soft grey line". */}
@@ -1417,11 +1401,11 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             ))}
             <p style={{
               gridColumn: `${ZONE_TOTAL_COLUMNS + 1} / span ${FOOTER_REPO_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
-              textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)', textAlign: 'center',
+              textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)',
             }}>Repositories</p>
             <p style={{
               gridColumn: `${ZONE_TOTAL_COLUMNS + 1 + FOOTER_REPO_COLUMNS.length} / span ${FOOTER_CRATE_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
-              textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)', textAlign: 'center', whiteSpace: 'nowrap',
+              textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap',
             }}>Crates (crates.io)</p>
 
             {/* One <div> per grid column, not per zone: a zone with zoneCols > 1
