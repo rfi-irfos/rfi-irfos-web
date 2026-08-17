@@ -1112,22 +1112,30 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               transparent specifically in light theme; hover still fills for
               affordance, dark/hc keep their original ghost-grey fill throughout. */}
           <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+            {/* color/border follow overDarkHero same as NAV_LINKS above - these sit on
+                the same always-dark hero photo unscrolled, so var(--text2) (tuned for
+                a white light-theme background) went near-invisible there (live bug
+                report: "DE and theme button in whitemode have unreadable grey font"). */}
             <button onClick={toggleLocale} title={t.nav.localeTitle(LOCALE_LABEL[locale])} aria-label={t.nav.localeAria(LOCALE_LABEL[locale])} style={{
               width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: theme === 'light' ? 'transparent' : 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
+              background: theme === 'light' ? 'transparent' : 'var(--bg2)',
+              color: overDarkHero ? '#a0a0b8' : 'var(--text2)',
+              border: `1px solid ${overDarkHero ? 'rgba(255,255,255,0.18)' : 'var(--border)'}`, borderRadius: 8,
               cursor: 'pointer', transition: 'background 0.15s, color 0.15s, border-color 0.15s',
             }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = 'var(--text)' }}
-              onMouseLeave={e => { e.currentTarget.style.background = theme === 'light' ? 'transparent' : 'var(--bg2)'; e.currentTarget.style.color = 'var(--text2)' }}>
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = overDarkHero ? '#e8e8f0' : 'var(--text)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = theme === 'light' ? 'transparent' : 'var(--bg2)'; e.currentTarget.style.color = overDarkHero ? '#a0a0b8' : 'var(--text2)' }}>
               <LocaleIcon locale={locale} />
             </button>
             <button onClick={cycle} title={t.nav.themeTitle(t.nav.themeLabel[theme])} aria-label={t.nav.themeAria(t.nav.themeLabel[theme])} style={{
               width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: theme === 'light' ? 'transparent' : 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
+              background: theme === 'light' ? 'transparent' : 'var(--bg2)',
+              color: overDarkHero ? '#a0a0b8' : 'var(--text2)',
+              border: `1px solid ${overDarkHero ? 'rgba(255,255,255,0.18)' : 'var(--border)'}`, borderRadius: 8,
               cursor: 'pointer', transition: 'background 0.15s, color 0.15s, border-color 0.15s',
             }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = 'var(--text)' }}
-              onMouseLeave={e => { e.currentTarget.style.background = theme === 'light' ? 'transparent' : 'var(--bg2)'; e.currentTarget.style.color = 'var(--text2)' }}>
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = overDarkHero ? '#e8e8f0' : 'var(--text)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = theme === 'light' ? 'transparent' : 'var(--bg2)'; e.currentTarget.style.color = overDarkHero ? '#a0a0b8' : 'var(--text2)' }}>
               <ThemeIcon t={theme} />
             </button>
             {/* Standalone nav mail-icon button removed entirely (live feedback) -

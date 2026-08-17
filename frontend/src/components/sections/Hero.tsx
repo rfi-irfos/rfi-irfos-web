@@ -2,7 +2,7 @@
 // scrolled to via the bare "#" logo link) - extracted verbatim from PublicSite.tsx.
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { prefersReducedMotion, Reveal, RevealWords, CountUp, HeroFlipWord } from './shared'
+import { prefersReducedMotion, RevealWords, CountUp, HeroFlipWord } from './shared'
 import { RESEARCH_AREAS } from './Research'
 import { useLocale } from '../../hooks/useLocale'
 import type { Theme } from '../../hooks/useTheme'
@@ -303,12 +303,30 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           { n: '301',                         label: t.hero.stats.agents,             from: 'bottom' as const },
           { n: '1',                           label: t.hero.stats.worldModel,         from: 'bottom' as const },
         ]).map((s, i) => (
-          <Reveal key={s.label} delay={i} from={s.from} style={{ height: '100%' }}>
-            {/* Same canonical carbon-gradient card as the ledger/checkout modals
-                (live feedback 2026-08-14: "gebma den kpis die gleichen carbon
-                cards wie den ledger auch?") - fixed hex text, not var(--accent-
-                text)/var(--text), same reasoning as the identity bar above: this
-                sits on the hero's always-dark tint regardless of site theme.
+          // Mount-triggered fly-in, NOT `Reveal` (same fix pattern as the identity
+          // paragraph above, same root cause): Reveal drives its transform off
+          // scroll progress through the viewport, but this row is above the fold -
+          // already fully in view at mount, so it never gets a scroll transit to
+          // animate through and Reveal's animation silently never played (live bug
+          // report: "die KPI cards brauchen den Effekt auch, der fehlt komplett").
+          <motion.div
+            key={s.label}
+            initial={prefersReducedMotion() ? undefined : {
+              opacity: 0,
+              x: s.from === 'left' ? -32 : s.from === 'right' ? 32 : 0,
+              y: s.from === 'bottom' ? 32 : s.from === 'top' ? -32 : 0,
+              scale: s.from === 'scale' ? 0.84 : 1,
+            }}
+            animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+            style={{ height: '100%' }}
+          >
+            {/* Carbon-gradient card in dark/hc (same family as the ledger/checkout
+                modals), given more grey than the original near-black mix + a plain
+                white card in light theme (live feedback: light theme needs its own
+                treatment here, not the fixed always-dark card - unlike the identity
+                bar/nav, these sit low enough in the hero that a white card reads
+                fine against the dark photo tint above them).
                 height: 100% + flex centering (live feedback: "kpi cards are not
                 the same size") - labels wrap to a different number of lines
                 ("SYSTEMS & PROJECTS" vs "PUBLICATIONS"), so without a shared
@@ -324,19 +342,32 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
             <div style={{
               height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start',
               textAlign: 'center', padding: '20px 12px', borderRadius: 12,
-              background: 'linear-gradient(155deg, #1c1c22 0%, #101014 28%, #0a0a0d 52%, #18181f 76%, #0d0d11 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 3px)',
-              backgroundBlendMode: 'overlay',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 30px rgba(0,0,0,0.5), 0 12px 30px rgba(0,0,0,0.5)',
-              border: '1px solid rgba(255,255,255,0.09)',
+              // Light theme: soft glass, not solid white - a hint of the dark hero
+              // photo still shows through (live feedback: "leichter Glass-Effekt
+              // statt vollem Weiss, ganz zart").
+              background: theme === 'light'
+                ? 'linear-gradient(155deg, rgba(255,255,255,0.82) 0%, rgba(246,247,248,0.78) 100%)'
+                : 'linear-gradient(155deg, #34343d 0%, #222228 28%, #1a1a1e 52%, #2c2c34 76%, #1e1e22 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 3px)',
+              backdropFilter: theme === 'light' ? 'blur(14px)' : undefined,
+              WebkitBackdropFilter: theme === 'light' ? 'blur(14px)' : undefined,
+              backgroundBlendMode: theme === 'light' ? 'normal' : 'overlay',
+              boxShadow: theme === 'light'
+                ? '0 12px 30px rgba(0,0,0,0.35)'
+                : 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 30px rgba(0,0,0,0.5), 0 12px 30px rgba(0,0,0,0.5)',
+              border: theme === 'light' ? '1px solid rgba(0,0,0,0.06)' : '1px solid rgba(255,255,255,0.09)',
             }}>
-              <div style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: '#00f5c4', lineHeight: 1 }}><CountUp value={s.n} /></div>
+              {/* Deeper, less cyan-bright green than the site's usual #00f5c4 accent
+                  (live feedback: better visibility specifically here, scoped to
+                  this card only - not a global accent change). Reads fine on both
+                  the dark carbon card and the light-theme white card. */}
+              <div style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: '#00c896', lineHeight: 1 }}><CountUp value={s.n} /></div>
               {/* marginRight cancels the trailing letter-space that letter-spacing
                   appends after the final character. Centred text is otherwise
                   optically pushed right by half a tracking unit, which is what
                   made the longest label look off-centre. */}
-              <div style={{ fontSize: 11, color: '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8, marginRight: '-0.08em' }}>{s.label}</div>
+              <div style={{ fontSize: 11, color: theme === 'light' ? '#3a3a42' : '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8, marginRight: '-0.08em' }}>{s.label}</div>
             </div>
-          </Reveal>
+          </motion.div>
         ))}
       </div>
 

@@ -60,7 +60,9 @@ export function AppPrivacySection() {
               {t.appPrivacy.comparisonRows.map((row, i) => (
                 <div key={i} style={{ display: 'contents' }}>
                   <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, color: 'var(--text2)', borderRight: '1px solid var(--border)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.classic}</div>
-                  <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, fontWeight: 700, color: 'var(--text)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.rfi}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, fontWeight: 400, color: 'var(--text2)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                    <span><strong style={{ fontWeight: 800, color: 'var(--text)' }}>{row.rfiLabel}</strong> — {row.rfi}</span>
+                  </div>
                 </div>
               ))}
             </div>
