@@ -276,20 +276,25 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
-  // Cookie banner should never cover the footer: hide it once the visitor has
-  // scrolled down far enough that the footer (or page bottom) is in view.
-  // Cross-device safe — uses scroll position, no viewport assumptions.
+  // Cookie banner should never cover the footer: hide it the moment the footer
+  // enters the viewport. Uses IntersectionObserver on the footer element, so it
+  // works regardless of which element actually scrolls (window or an inner
+  // wrapper) — cross-device safe (desktop / tablet / mobile, any OS).
   useEffect(() => {
     if (!cookieBannerOpen) return
-    const onScroll = () => {
-      const scrollPos = window.scrollY + window.innerHeight
-      const docHeight = document.documentElement.scrollHeight
-      // footer sits in the last ~700px of the document
-      if (scrollPos > docHeight - 720) setCookieBannerOpen(false)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
+    const footer = document.querySelector('footer')
+    if (!footer) return
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          setCookieBannerOpen(false)
+          io.disconnect()
+          break
+        }
+      }
+    }, { rootMargin: '120px' })
+    io.observe(footer)
+    return () => io.disconnect()
   }, [cookieBannerOpen])
 
   // Lock background scroll while a modal is open - without this the page behind a
