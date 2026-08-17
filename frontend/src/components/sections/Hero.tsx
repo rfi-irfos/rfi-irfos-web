@@ -236,7 +236,11 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           transition={{ duration: 1.3, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           style={{
             position: 'absolute', inset: '-1px -4px', zIndex: 0, borderRadius: 3, transformOrigin: 'left center',
-            background: theme === 'hc' ? 'rgba(0,0,0,0.92)' : 'rgba(5,7,14,0.88)',
+            // Light theme: white bar + dark text (live feedback), same highlighter
+            // logic as before, just flipped - still opaque enough to read cleanly
+            // against any part of the photo underneath it.
+            background: theme === 'hc' ? 'rgba(0,0,0,0.92)' : theme === 'light' ? 'rgba(255,255,255,0.92)' : 'rgba(5,7,14,0.88)',
+            boxShadow: '0 8px 20px rgba(0,0,0,0.35)',
           }}
         />
         {/* This paragraph is the page's LCP element (Lighthouse, 2026-08-16) - the old
@@ -248,7 +252,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           initial={prefersReducedMotion() ? undefined : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-          style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(0.95rem, 1.7vw, 1.2rem)', fontWeight: 400, color: '#a0a0b8', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0 }}
+          style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(0.95rem, 1.7vw, 1.2rem)', fontWeight: 400, color: theme === 'light' ? '#1a1a20' : '#ffffff', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0 }}
         >
           {t.hero.identity}
         </motion.p>
@@ -356,11 +360,12 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
                 : 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 30px rgba(0,0,0,0.5), 0 12px 30px rgba(0,0,0,0.5)',
               border: theme === 'light' ? '1px solid rgba(0,0,0,0.06)' : '1px solid rgba(255,255,255,0.09)',
             }}>
-              {/* Deeper, less cyan-bright green than the site's usual #00f5c4 accent
-                  (live feedback: better visibility specifically here, scoped to
-                  this card only - not a global accent change). Reads fine on both
-                  the dark carbon card and the light-theme white card. */}
-              <div style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: '#00c896', lineHeight: 1 }}><CountUp value={s.n} /></div>
+              {/* Dark theme: deeper, less cyan-bright green than the site's usual
+                  #00f5c4 accent (live feedback: better visibility, scoped to this
+                  card only). Light theme: same #009e7a the icon tiles below use as
+                  --accent (live feedback: the dark-theme green was hard to read on
+                  the light glass card, use what's already proven legible there). */}
+              <div style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: theme === 'light' ? '#009e7a' : '#00c896', lineHeight: 1 }}><CountUp value={s.n} /></div>
               {/* marginRight cancels the trailing letter-space that letter-spacing
                   appends after the final character. Centred text is otherwise
                   optically pushed right by half a tracking unit, which is what
