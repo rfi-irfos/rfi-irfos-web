@@ -187,7 +187,7 @@ export function SubmitSection({
           </Reveal>
         </div>
       </div>
-      {/* Lighthouse tracking pixel - site=rfi-irfos, real channel from UTM/referrer */}
+      {/* Lighthouse monitoring pixel - site=rfi-irfos, real channel from UTM/referrer */}
       <img ref={pixelRef}
         src={`${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&utm_source=${encodeURIComponent(new URLSearchParams(location.search).get('utm_source') ?? '')}&utm_medium=${encodeURIComponent(new URLSearchParams(location.search).get('utm_medium') ?? '')}&utm_campaign=${encodeURIComponent(new URLSearchParams(location.search).get('utm_campaign') ?? '')}`}
         alt="" width="1" height="1" style={{ display: 'none' }} />

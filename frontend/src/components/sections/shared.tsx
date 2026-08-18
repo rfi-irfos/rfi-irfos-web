@@ -422,8 +422,15 @@ export const revealSuppressed = { current: false }
 // at mount. That live check is what makes an in-app anchor-nav click correctly force
 // already-mounted elements to full visibility regardless of where the jump lands,
 // closing the specific gap the mount-once "bypass" state had.
+// dist default raised 32 -> 72 (2026-08-18, live feedback: "der effect isch zu
+// wenig dramatisch, fast nicht sichtbar, das muss ULTRASMOOTH sein") - the
+// mechanism underneath was already continuous/scroll-linked (see the incident
+// history above), so "ultrasmooth" was never a motion-curve problem, just a
+// travel distance too small to read as converging from the edges. Raising the
+// shared default means every existing Reveal call across the site gets the
+// more dramatic version automatically, not just the ones touched directly.
 export function Reveal({
-  children, delay = 0, from = 'bottom', dist = 32, style: extra,
+  children, delay = 0, from = 'bottom', dist = 72, style: extra,
 }: {
   children: React.ReactNode
   delay?: number

@@ -19,7 +19,7 @@ function BentoTile({ icon, title, onOpen, from, delay }: {
   const tiltRef = useRef<HTMLButtonElement>(null)
   const tilt = useTilt(tiltRef, 5)
   return (
-    <Reveal from={from} delay={delay} style={{ height: '100%' }}>
+    <Reveal from={from} delay={delay} dist={140} style={{ height: '100%' }}>
       {/* Slimmed down 2026-08-18 (live feedback: "die karten bischl verschlankern") -
           padding, icon badge and gap all cut, card reads as a compact index entry
           rather than a bulky tile. */}

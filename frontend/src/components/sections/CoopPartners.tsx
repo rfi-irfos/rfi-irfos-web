@@ -44,15 +44,23 @@ export function CoopPartnersSection({
           </p>
         </Reveal>
         <Reveal from="bottom" delay={1}>
+          {/* Card narrowed (2026-08-18, live feedback: "die karten schmaler, zu viel
+              unused space") - was stretching to the full 1000px section width, most
+              of it blank once the text and badge columns settled at their natural
+              widths. flexWrap forced to 'nowrap' on desktop (mobile still wraps to a
+              stack) so the text column growing with the longer description can't
+              push the badge column onto its own line, which is what was pulling the
+              badges into a centered-looking row below the text instead of staying
+              pinned right beside it. */}
           <div className="rfi-glass-flat rfi-glass-solid" style={{
-            display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: 20,
-            borderRadius: 14, padding: '28px 28px',
+            display: 'flex', flexWrap: mobile ? 'wrap' : 'nowrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: 20,
+            borderRadius: 14, padding: '28px 28px', maxWidth: 820, margin: '0 auto',
           }}>
             {/* alignItems was 'center', which floated her name down to the vertical
                 middle of a tall pill stack instead of anchoring it at the top-left
                 of the card (live feedback 2026-08-16). Her name is the heading of
                 this card, so it starts where a heading starts. */}
-            <div>
+            <div style={{ flex: '1 1 auto', minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
                 <p style={{ fontSize: 19, fontWeight: 800, color: 'var(--text)' }}>Laura Serna Gaviria</p>
                 {/* The one badge worth promoting out of the pill cloud: a live
@@ -73,11 +81,11 @@ export function CoopPartnersSection({
                   empty space next to the pill column) once the description grew
                   from one sentence to three - fills the card better instead of
                   wrapping narrow with blank space beside it. */}
-              <p style={{ fontSize: 14.5, color: 'var(--text)', marginTop: 10, lineHeight: 1.6, maxWidth: 640 }}>
+              <p style={{ fontSize: 14.5, color: 'var(--text)', marginTop: 10, lineHeight: 1.6 }}>
                 {t.coopPartners.laura.desc}
               </p>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8, maxWidth: 340 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8, flex: '0 0 260px', maxWidth: 260 }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 8 }}>
                 {[
                   { label: 'GitHub · rfi-irfos', href: 'https://github.com/rfi-irfos', icon: true },

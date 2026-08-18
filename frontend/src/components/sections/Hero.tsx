@@ -335,14 +335,14 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
             scale, team, years. Showing the same five numbers twice wastes the hero's
             one shot at explaining why the institute matters beyond appsec. */}
         {([
-          { n: `${RESEARCH_AREAS.length}`,    label: t.hero.stats.researchAreas,      from: 'left'   as const },
+          { n: `${RESEARCH_AREAS.length}`,    label: t.hero.stats.researchAreas,      from: 'left'   as const, sub: t.hero.stats.researchAreasSub },
           // Was `${PROJECTS.length}+` (18+) - only counted the curated highlight
           // cards in the Systems section, not RFI-IRFOS's actual system count.
           // Live-counted via `gh repo list` across both accounts (2026-08-15):
           // 53 original (non-fork) repositories - see rfi-irfos-architecture-
           // synthesis.md for the full breakdown. Re-count periodically, same
           // caveat as the footer's repo directory (content/repos.ts).
-          { n: '53+',                         label: t.hero.stats.openSourceProjects, from: 'bottom' as const },
+          { n: '53+',                         label: t.hero.stats.openSourceProjects, from: 'bottom' as const, sub: t.hero.stats.openSourceProjectsSub },
           // Replaced the old "9+ publications" count (2026-08-18, live feedback:
           // wanted a "hitter metric nobody else can reproduce") with DINGIR's live
           // tracked-entity count instead - satellites, ships, flights, CCTV cameras,
@@ -353,9 +353,9 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           // dashboard tracks came to ~61k at query time; "58k+" is a conservative
           // floor that stays true as the live count fluctuates rather than the
           // instantaneous reading. Re-verify before raising this number further.
-          { n: '58k+',                        label: t.hero.stats.dataPointsMonitored, from: 'scale'  as const },
-          { n: '301',                         label: t.hero.stats.agents,             from: 'bottom' as const },
-          { n: '1',                           label: t.hero.stats.worldModel,         from: 'bottom' as const },
+          { n: '58k+',                        label: t.hero.stats.dataPointsMonitored, from: 'scale'  as const, sub: undefined as string | undefined },
+          { n: '301',                         label: t.hero.stats.agents,             from: 'bottom' as const, sub: undefined as string | undefined },
+          { n: '1',                           label: t.hero.stats.worldModel,         from: 'bottom' as const, sub: undefined as string | undefined },
         ]).map((s, i) => (
           // Mount-triggered fly-in, NOT `Reveal` (same fix pattern as the identity
           // paragraph above, same root cause): Reveal drives its transform off
@@ -421,6 +421,10 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
                   optically pushed right by half a tracking unit, which is what
                   made the longest label look off-centre. */}
               <div style={{ fontSize: 11, color: theme === 'light' ? '#3a3a42' : '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8, marginRight: '-0.08em' }}>{s.label}</div>
+              {/* Small connective caption under just these two cards (2026-08-18,
+                  live feedback) - signals research areas and systems aren't
+                  counted in isolation, they operate as one whole. */}
+              {s.sub && <div style={{ fontSize: 9.5, color: theme === 'light' ? '#6a6a76' : 'var(--text3)', fontWeight: 500, letterSpacing: '0.04em', marginTop: 3 }}>{s.sub}</div>}
             </div>
           </motion.div>
         ))}

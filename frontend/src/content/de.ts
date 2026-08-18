@@ -38,7 +38,9 @@ export const DE: Content = {
     identity: 'Wir formen, was unter Last hält, und legen offen, was zum Scheitern bestimmt war. Kein Theater, keine Warnwesten.',
     stats: {
       researchAreas: 'Forschungsbereiche',
+      researchAreasSub: 'kombiniert',
       openSourceProjects: 'Systeme',
+      openSourceProjectsSub: 'im Zusammenspiel',
       dataPointsMonitored: 'Datenpunkte überwacht',
       worldModel: 'evidenzbasiertes ML-Weltmodell',
       agents: 'Spezialisierte Agenten',
@@ -615,7 +617,7 @@ export const DE: Content = {
         links: { research: 'Forschung', trackRecord: 'Evidenz', methodology: 'Methodik' },
       },
     },
-    copyright: '© 2026 RFI-IRFOS  ·  Graz, Österreich  ·  ZVR 1015608684  ·  GISA 39261441  ·  UID ATU83405245',
+    copyright: '© 2026 RFI-IRFOS  ·  Graz, Österreich  ·  GISA 39261441  ·  UID ATU83405245',
   },
 
   cookieBanner: {

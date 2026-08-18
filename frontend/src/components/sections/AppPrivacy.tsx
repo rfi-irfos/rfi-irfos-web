@@ -47,30 +47,43 @@ export function AppPrivacySection() {
             Header size 11 -> 13: the weight was already 800, but index.html loads JetBrains
             Mono at wght@400;500;600;700 only, so 800 silently falls back to 700 and cannot
             render any heavier. Size is the lever that actually adds visibility here. */}
-        <Reveal from="bottom" delay={1}>
-          {/* background: var(--glass-bg-solid) added (live feedback 2026-08-14: this
-              table had no fill of its own, so on light theme it sat directly over the
-              page's busy marble photo and was hard to read) - same solid-card token the
-              Research bento tiles use for exactly this "readable over the photo
-              backdrop" job. */}
-          <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 40, maxWidth: 920, marginLeft: 'auto', marginRight: 'auto', background: 'var(--glass-bg-solid)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-              <div style={{ padding: mobile ? '12px 10px' : '16px 24px', background: 'rgba(255,255,255,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text)', borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>{t.appPrivacy.comparisonClassicLabel}</div>
-              <div style={{ padding: mobile ? '12px 10px' : '16px 24px', background: 'rgba(0,245,196,0.08)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)', borderBottom: '1px solid var(--border)' }}>{t.appPrivacy.comparisonRfiLabel}</div>
-              {t.appPrivacy.comparisonRows.map((row, i) => (
-                <div key={i} style={{ display: 'contents' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, color: 'var(--text2)', borderRight: '1px solid var(--border)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>{row.classic}</div>
-                  {/* No em-dash (site-wide rule) - a colon after the bold term instead.
-                      Body copy bumped from --text2 (grey) to --text (live feedback:
-                      "das sind Kernaussagen, die machma nicht in grau"). */}
-                  <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, fontWeight: 400, color: 'var(--text)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>
+        {/* background: var(--glass-bg-solid) added (live feedback 2026-08-14: this
+            table had no fill of its own, so on light theme it sat directly over the
+            page's busy marble photo and was hard to read) - same solid-card token the
+            Research bento tiles use for exactly this "readable over the photo
+            backdrop" job.
+            Reveal moved from wrapping the whole table to wrapping each CELL
+            individually (2026-08-18, live feedback: the table should converge like
+            the research tiles - left column flying in from the left, right column
+            from the right, toward the shared centre, cascading row by row) - a
+            single bottom-reveal on the outer box couldn't express a per-column
+            direction, since Reveal's transform applies to one element, not its
+            children independently. */}
+        <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 40, maxWidth: 920, marginLeft: 'auto', marginRight: 'auto', background: 'var(--glass-bg-solid)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+            <Reveal from="left" dist={100} style={{ borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>
+              <div style={{ padding: mobile ? '12px 10px' : '16px 24px', background: 'rgba(255,255,255,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text)' }}>{t.appPrivacy.comparisonClassicLabel}</div>
+            </Reveal>
+            <Reveal from="right" dist={100} style={{ borderBottom: '1px solid var(--border)' }}>
+              <div style={{ padding: mobile ? '12px 10px' : '16px 24px', background: 'rgba(0,245,196,0.08)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)' }}>{t.appPrivacy.comparisonRfiLabel}</div>
+            </Reveal>
+            {t.appPrivacy.comparisonRows.map((row, i) => (
+              <div key={i} style={{ display: 'contents' }}>
+                <Reveal from="left" dist={100} delay={i + 1} style={{ borderRight: '1px solid var(--border)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, color: 'var(--text2)', height: '100%', boxSizing: 'border-box' }}>{row.classic}</div>
+                </Reveal>
+                {/* No em-dash (site-wide rule) - a colon after the bold term instead.
+                    Body copy bumped from --text2 (grey) to --text (live feedback:
+                    "das sind Kernaussagen, die machma nicht in grau"). */}
+                <Reveal from="right" dist={100} delay={i + 1} style={{ borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, fontWeight: 400, color: 'var(--text)', height: '100%', boxSizing: 'border-box' }}>
                     <span><strong style={{ fontWeight: 800, color: 'var(--text)' }}>{row.rfiLabel}:</strong> {row.rfi}</span>
                   </div>
-                </div>
-              ))}
-            </div>
+                </Reveal>
+              </div>
+            ))}
           </div>
-        </Reveal>
+        </div>
         <Reveal from="bottom" delay={2}>
           <div style={{ textAlign: 'center', marginBottom: 0 }}>
             {/* Orange instead of the site's teal (live feedback 2026-08-14: one

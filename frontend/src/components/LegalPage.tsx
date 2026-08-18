@@ -80,6 +80,15 @@ export function LegalPage({ slug }: { slug: string }) {
   return (
     <div style={BASE}>
       <div style={PROSE}>
+        {/* Glass card wrapping the whole page body (2026-08-18, live feedback:
+            "wenigstens schaut sleek aus drunter si ne transparente glass box unter
+            die texte") - .rfi-glass resolves against :root's dark token set even
+            without a [data-theme] ancestor (LegalPage is always-dark, unlike
+            PublicSite), so it's safe to use here unmodified. Backdrop-filter is
+            fine on a single static wrapper - the "never on repeating content"
+            rule is about the 311-row ledger/filmstrip re-sampling every scroll
+            frame, not a one-off page shell. */}
+        <div className="rfi-glass" style={{ borderRadius: 20, padding: '36px 40px' }}>
         <div style={{ marginBottom: 40, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <a
             href="/"
@@ -117,7 +126,8 @@ export function LegalPage({ slug }: { slug: string }) {
         <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 10, color: '#7a7aa0' }}>
           RFI-IRFOS &nbsp;&middot;&nbsp; ZVR 1015608684 &nbsp;&middot;&nbsp; GISA 39261441 &nbsp;&middot;&nbsp; GLN 9110038490191 &nbsp;&middot;&nbsp; UID ATU83405245 &nbsp;&middot;&nbsp; Steuernummer 68 696/8736 &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz
         </div>
-        {/* Lighthouse tracking pixel — page-view only, same mechanism disclosed in the privacy policy below */}
+        </div>
+        {/* Lighthouse monitoring pixel — page-view only, same mechanism disclosed in the privacy policy below */}
         <img src={`${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(`/${slug}`)}&r=${encodeURIComponent(document.referrer)}`}
           alt="" width="1" height="1" style={{ display: 'none' }} />
       </div>

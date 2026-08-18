@@ -41,7 +41,9 @@ export const EN = {
     identity: 'We craft what holds under load and expose what was destined to fail. No theater, no high-visibility vests.',
     stats: {
       researchAreas: 'research areas',
+      researchAreasSub: 'combined',
       openSourceProjects: 'systems',
+      openSourceProjectsSub: 'working together',
       dataPointsMonitored: 'data points monitored',
       worldModel: 'evidence-first ML world model',
       agents: 'specialized agents',
@@ -628,7 +630,7 @@ export const EN = {
         links: { research: 'Research', trackRecord: 'Evidence', methodology: 'Methodology' },
       },
     },
-    copyright: '© 2026 RFI-IRFOS  ·  Graz, Austria  ·  ZVR 1015608684  ·  GISA 39261441  ·  UID ATU83405245',
+    copyright: '© 2026 RFI-IRFOS  ·  Graz, Austria  ·  GISA 39261441  ·  UID ATU83405245',
   },
 
   cookieBanner: {

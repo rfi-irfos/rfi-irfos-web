@@ -1372,14 +1372,16 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8 }}>
               <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: 'var(--accent-text)', letterSpacing: '0.06em', fontWeight: 600, margin: 0 }}>
                 {t.footer.tagline}
-                <br />
-                <span style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400 }}>{t.footer.taglineAttribution}</span>
               </p>
               {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address)
-                  lives on Legal Notice - not duplicated here, this footer only points there. */}
+                  lives on Legal Notice - not duplicated here, this footer only points there.
+                  ZVR dropped from this line specifically (kept on the Legal Notice itself) -
+                  copyright now sits above the attribution line, which anchors the column
+                  as its own bottom-most line. */}
               <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', margin: 0 }}>
                 {t.footer.copyright}
               </p>
+              <p style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400, margin: 0 }}>{t.footer.taglineAttribution}</p>
             </div>
           </div>
           {/* Divider + the full Systems/Repositories/Crates directory are desktop-
