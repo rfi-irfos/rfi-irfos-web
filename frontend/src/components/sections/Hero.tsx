@@ -19,18 +19,40 @@ import heroDingir5 from '../../assets/hero-dingir-5.png'
 import heroDingir6 from '../../assets/hero-dingir-6.png'
 import heroDingir7 from '../../assets/hero-dingir-7.png'
 import heroDingir8 from '../../assets/hero-dingir-8.png'
-import heroDingir9 from '../../assets/hero-dingir-9.png'
 import heroDingir10 from '../../assets/hero-dingir-10.png'
 import heroDingir11 from '../../assets/hero-dingir-11.png'
 import heroDingir12 from '../../assets/hero-dingir-12.png'
 import heroDingir13 from '../../assets/hero-dingir-13.png'
+// hero-dingir-9 (Turkish Straits + a live DINGIR chat answer panel) was
+// pulled 2026-08-18 - live feedback: it read as "a screenshot of a chatbot"
+// rather than a satellite/software shot, once the slideshow had enough
+// other frames for that one to stand out. Replaced by the vessel-tracking
+// shot below, which shows the same satellite basemap without the chat UI.
+// These 5 (2026-08-18) are UMAP/embedding-graph views (semantic-similarity
+// software, no satellite basemap) and one satellite vessel-tracking view -
+// added to bring the software:satellite split to parity (8:8) and stop the
+// slideshow from reading satellite-heavy, per live feedback ("gleiche
+// gesamtzahl beider kategorien", "keine repetitionen vom thema" - so only
+// 3 of the near-identical embedding-graph screenshots are used, spread
+// apart in the sequence below rather than run back to back).
+import heroDingirEmbedBuoy from '../../assets/hero-dingir-embed-buoy.png'
+import heroDingirEmbedLanguage from '../../assets/hero-dingir-embed-language.png'
+import heroDingirEmbedImpact from '../../assets/hero-dingir-embed-impact.png'
+import heroDingirEmbedCoast from '../../assets/hero-dingir-embed-coast.png'
+import heroDingirVesselsNl from '../../assets/hero-dingir-vessels-nl.png'
 // Append more `import heroX from '../../assets/hero-x.jpeg'` + entries here to
 // grow the slideshow - HeroSlideshow below already handles 1..N images. With
 // just one, it renders exactly like the old single static image (no interval,
 // no cross-fade) rather than needing a separate code path for that case.
+// Alternates software (UI/vector-map/embedding-graph, no photographic earth
+// texture) and satellite (photographic basemap) shots after the globe opener -
+// live feedback wanted the two kept "gut abgewechselt" (well alternated) at
+// equal counts, not clustered by type.
 const HERO_IMAGES = [
-  heroSoftware, heroDingir2, heroDingir3, heroDingir4, heroDingir5, heroDingir6, heroDingir7,
-  heroDingir8, heroDingir9, heroDingir10, heroDingir11, heroDingir12, heroDingir13,
+  heroSoftware,
+  heroDingir2, heroDingir4, heroDingirEmbedBuoy, heroDingir12, heroDingir7, heroDingir6,
+  heroDingirEmbedLanguage, heroDingir13, heroDingir8, heroDingir5, heroDingirEmbedImpact,
+  heroDingirVesselsNl, heroDingir3, heroDingir10, heroDingirEmbedCoast, heroDingir11,
 ]
 
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
