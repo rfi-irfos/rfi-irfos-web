@@ -1369,19 +1369,22 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 links"). WKO badge removed 2026-08-17 - registered trademark, no
                 written authorization (WKO Abt. Recht und Organe, deadline
                 2026-08-21); membership alone does not license logo use. */}
+            {/* Order is deliberate (2026-08-18, live feedback): grey legal line on
+                top, the green tagline as the column's bottom-most anchor - "core
+                doctrine" is a description of the tagline's role, not a separate
+                line; taglineAttribution ("RFI-IRFOS × Emergent Interaction Lab,
+                core doctrine") was a literal third line here and is now purged
+                entirely, not just relocated. */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8 }}>
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: 'var(--accent-text)', letterSpacing: '0.06em', fontWeight: 600, margin: 0 }}>
-                {t.footer.tagline}
-              </p>
               {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address)
                   lives on Legal Notice - not duplicated here, this footer only points there.
-                  ZVR dropped from this line specifically (kept on the Legal Notice itself) -
-                  copyright now sits above the attribution line, which anchors the column
-                  as its own bottom-most line. */}
+                  ZVR dropped from this line specifically (kept on the Legal Notice itself). */}
               <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', margin: 0 }}>
                 {t.footer.copyright}
               </p>
-              <p style={{ fontSize: 10, color: 'var(--text3)', fontWeight: 400, margin: 0 }}>{t.footer.taglineAttribution}</p>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: 'var(--accent-text)', letterSpacing: '0.06em', fontWeight: 600, margin: 0 }}>
+                {t.footer.tagline}
+              </p>
             </div>
           </div>
           {/* Divider + the full Systems/Repositories/Crates directory are desktop-

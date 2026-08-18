@@ -340,12 +340,12 @@ export function ScrambleHeading({ text }: { text: string }) {
     function play() {
       if (playing) return
       playing = true
-      // Slowed ~2x from the original (start 0-9, end +8-19) - feedback 2026-08-06:
-      // headings resettled too fast while scrolling, read as flicker not a shuffle.
-      // HeroFlipWord's own timing is untouched, this only affects section headings.
+      // Slowed again 2026-08-18 (live feedback: "die headers shufflen zu schnell,
+      // das darf bissle warten") on top of the 2026-08-06 ~2x pass - HeroFlipWord's
+      // own timing is untouched, this only affects section headings.
       const plans = Array.from({ length: n }, () => {
-        const start = Math.floor(Math.random() * 20)
-        return { start, end: start + Math.floor(Math.random() * 24) + 16 }
+        const start = Math.floor(Math.random() * 32)
+        return { start, end: start + Math.floor(Math.random() * 36) + 24 }
       })
       let frame = 0
       function tick() {
@@ -369,11 +369,17 @@ export function ScrambleHeading({ text }: { text: string }) {
       tick()
     }
 
+    // threshold raised 0.4 -> 0.65 and a negative rootMargin added (2026-08-18,
+    // live feedback: it fired on the slightest scroll nudge instead of needing a
+    // real, deliberate scroll past the heading - "mehr pixel haben wo die sich
+    // beim scrollen treffen"). Together these mean the heading has to travel
+    // well into the viewport's middle band before play() fires, not just clip
+    // its bottom edge past the fold.
     const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) { play(); io.unobserve(entry.target) }
       })
-    }, { threshold: 0.4 })
+    }, { threshold: 0.65, rootMargin: '-12% 0px -12% 0px' })
     io.observe(el)
 
     const section = el.closest('section')

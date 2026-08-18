@@ -615,7 +615,6 @@ export const EN = {
 
   footer: {
     tagline: 'Human rights are not subject to negotiation.',
-    taglineAttribution: 'RFI-IRFOS × Emergent Interaction Lab, core doctrine',
     groups: {
       legal: {
         heading: 'Legal',

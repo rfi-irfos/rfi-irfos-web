@@ -602,7 +602,6 @@ export const DE: Content = {
 
   footer: {
     tagline: 'Menschenrechte stehen nicht zur Verhandlung.',
-    taglineAttribution: 'RFI-IRFOS × Emergent Interaction Lab, Kerndoktrin',
     groups: {
       legal: {
         heading: 'Rechtliches',

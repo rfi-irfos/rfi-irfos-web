@@ -421,10 +421,12 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
                   optically pushed right by half a tracking unit, which is what
                   made the longest label look off-centre. */}
               <div style={{ fontSize: 11, color: theme === 'light' ? '#3a3a42' : '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8, marginRight: '-0.08em' }}>{s.label}</div>
-              {/* Small connective caption under just these two cards (2026-08-18,
-                  live feedback) - signals research areas and systems aren't
-                  counted in isolation, they operate as one whole. */}
-              {s.sub && <div style={{ fontSize: 9.5, color: theme === 'light' ? '#6a6a76' : 'var(--text3)', fontWeight: 500, letterSpacing: '0.04em', marginTop: 3 }}>{s.sub}</div>}
+              {/* Connective caption under just these two cards (2026-08-18, live
+                  feedback: signals research areas and systems aren't counted in
+                  isolation, they operate as one whole) - styled identically to
+                  the label line above it, not as a smaller/muted footnote
+                  (live feedback: "genau so wie der rest"). */}
+              {s.sub && <div style={{ fontSize: 11, color: theme === 'light' ? '#3a3a42' : '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 2, marginRight: '-0.08em' }}>{s.sub}</div>}
             </div>
           </motion.div>
         ))}
