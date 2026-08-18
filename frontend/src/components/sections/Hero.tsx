@@ -28,31 +28,50 @@ import heroDingir13 from '../../assets/hero-dingir-13.png'
 // rather than a satellite/software shot, once the slideshow had enough
 // other frames for that one to stand out. Replaced by the vessel-tracking
 // shot below, which shows the same satellite basemap without the chat UI.
-// These 5 (2026-08-18) are UMAP/embedding-graph views (semantic-similarity
-// software, no satellite basemap) and one satellite vessel-tracking view -
-// added to bring the software:satellite split to parity (8:8) and stop the
-// slideshow from reading satellite-heavy, per live feedback ("gleiche
-// gesamtzahl beider kategorien", "keine repetitionen vom thema" - so only
-// 3 of the near-identical embedding-graph screenshots are used, spread
-// apart in the sequence below rather than run back to back).
+import heroDingirVesselsNl from '../../assets/hero-dingir-vessels-nl.png'
+// The embedding-graph ("neural network") shots - DINGIR's UMAP/cosine-
+// similarity view of albert's own token embeddings, 3D-rendered inside a
+// wireframe cube. Added 2026-08-18 as a third slideshow category alongside
+// plain software UI and satellite: "drei typen zum wechseln - normal,
+// satellit und vom neuralen netzwerk selber". -embed-storm is the one shot
+// that actually shows the cube's wireframe edges rather than just the
+// zoomed-in node cluster - live feedback specifically wanted this visible
+// ("nich nur label, whitebox by design" - the wireframe IS the point, not
+// just a claim about it), so it leads this category in the sequence below.
+// -embed-incident and a third "1950"-centered shot were dropped even though
+// supplied - both are the same decade/timeline cluster as the others here,
+// which would have repeated the theme rather than adding variety.
 import heroDingirEmbedBuoy from '../../assets/hero-dingir-embed-buoy.png'
 import heroDingirEmbedLanguage from '../../assets/hero-dingir-embed-language.png'
 import heroDingirEmbedImpact from '../../assets/hero-dingir-embed-impact.png'
 import heroDingirEmbedCoast from '../../assets/hero-dingir-embed-coast.png'
-import heroDingirVesselsNl from '../../assets/hero-dingir-vessels-nl.png'
+import heroDingirEmbedStorm from '../../assets/hero-dingir-embed-storm.png'
+import heroDingirEmbedHope from '../../assets/hero-dingir-embed-hope.png'
+import heroDingirEmbedWater from '../../assets/hero-dingir-embed-water.png'
+import heroDingirEmbedDecided from '../../assets/hero-dingir-embed-decided.png'
 // Append more `import heroX from '../../assets/hero-x.jpeg'` + entries here to
 // grow the slideshow - HeroSlideshow below already handles 1..N images. With
 // just one, it renders exactly like the old single static image (no interval,
 // no cross-fade) rather than needing a separate code path for that case.
-// Alternates software (UI/vector-map/embedding-graph, no photographic earth
-// texture) and satellite (photographic basemap) shots after the globe opener -
-// live feedback wanted the two kept "gut abgewechselt" (well alternated) at
-// equal counts, not clustered by type.
+// Three categories rotate after the globe opener: plain software UI (vector
+// map / panel, no satellite texture, no embedding graph), satellite
+// (photographic basemap), and neural-network (the embedding-graph shots
+// above). Only 4 software-UI shots exist vs 8 satellite / 8 neural-network,
+// so the strict 3-way round-robin below runs for 4 full turns, then
+// continues alternating satellite/neural-network for the remainder - not
+// a full 8:8:8 parity (there simply aren't 8 non-satellite, non-graph
+// software screenshots yet; more would need to come from Simeon's own
+// DINGIR session, not something to fabricate here).
 const HERO_IMAGES = [
   heroSoftware,
-  heroDingir2, heroDingir4, heroDingirEmbedBuoy, heroDingir12, heroDingir7, heroDingir6,
-  heroDingirEmbedLanguage, heroDingir13, heroDingir8, heroDingir5, heroDingirEmbedImpact,
-  heroDingirVesselsNl, heroDingir3, heroDingir10, heroDingirEmbedCoast, heroDingir11,
+  heroDingir2, heroDingir4, heroDingirEmbedStorm,
+  heroDingir7, heroDingir12, heroDingirEmbedBuoy,
+  heroDingir8, heroDingir6, heroDingirEmbedLanguage,
+  heroDingir3, heroDingir13, heroDingirEmbedWater,
+  heroDingir5, heroDingirEmbedImpact,
+  heroDingir10, heroDingirEmbedHope,
+  heroDingirVesselsNl, heroDingirEmbedCoast,
+  heroDingir11, heroDingirEmbedDecided,
 ]
 
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
