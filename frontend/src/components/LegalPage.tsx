@@ -130,7 +130,14 @@ export function LegalPage({ slug }: { slug: string }) {
             rule is about the 311-row ledger/filmstrip re-sampling every scroll
             frame, not a one-off page shell. */}
         <div className="rfi-glass" style={{ borderRadius: 20, padding: '36px 40px' }}>
-        <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {/* Back button, quicklinks, and the DE/EN toggle all in ONE row now
+            (2026-08-19, live feedback: "die pillen sollen zwischen dem back
+            und dem DE button sitzen so alle auf einer reihe") - was back+DE
+            on their own row with the quicklinks wrapping onto a second row
+            below; flex-wrap lets the quicklinks group itself wrap onto a
+            second line on narrow viewports without breaking the single-row
+            layout everywhere else. */}
+        <div style={{ marginBottom: 40, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
           {/* Text link replaced with an icon button (2026-08-19, live feedback:
               "instead of '← rfi-irfos.com' just a nice green back button svg").
               Client-side nav via the `navigate` helper above - no more full
@@ -141,7 +148,7 @@ export function LegalPage({ slug }: { slug: string }) {
             aria-label="Back to rfi-irfos.com"
             title="Back to rfi-irfos.com"
             style={{
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
               width: 34, height: 34, borderRadius: '50%',
               background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)', color: '#8fe8d0',
             }}
@@ -150,12 +157,36 @@ export function LegalPage({ slug }: { slug: string }) {
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
           </a>
+          {/* Quicklinks to the other legal/reference pages (2026-08-19, live
+              feedback) - jump between them directly instead of routing back
+              through the homepage footer each time. Client-side via `navigate`
+              (was a full-reload <a href> - "das ist nicht clean, das ist
+              increment"), real href kept for middle-click/SEO/no-JS. */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, flex: '1 1 auto', justifyContent: 'center' }}>
+            {LEGAL_QUICKLINKS.filter(q => q.slug !== slug).map(q => (
+              // display: inline-flex + lineHeight: 1 (2026-08-19, live feedback:
+              // "sollten die buttons net alle in einer reihe sauber sein?") -
+              // plain inline <a> pills can render at subtly different heights
+              // depending on their text length/line-box metrics; forcing a
+              // flex box with centred content guarantees every pill is the
+              // exact same height regardless of label length.
+              <a key={q.slug} href={`/${q.slug}`} onClick={e => navigate(e, `/${q.slug}`)} style={{
+                display: 'inline-flex', alignItems: 'center', lineHeight: 1,
+                fontFamily: 'monospace', fontSize: 10.5, fontWeight: 600, letterSpacing: '0.04em',
+                color: '#8a8aa0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
+                borderRadius: 999, padding: '6px 11px', textDecoration: 'none',
+              }}>
+                {locale === 'de' ? q.labelDe : q.labelEn}
+              </a>
+            ))}
+          </div>
           {/* Wrapped in a pill (2026-08-19, live feedback) - same chrome as the
               System Card modal's link pills, was bare text before. */}
           <button
             onClick={() => setLocale(locale === 'de' ? 'en' : 'de')}
             title={locale === 'de' ? 'Language: German (click to switch)' : 'Sprache: Englisch (klicken zum Wechseln)'}
             style={{
+              flexShrink: 0,
               fontFamily: 'monospace', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
               color: '#8fe8d0', background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)',
               borderRadius: 999, padding: '6px 14px', cursor: 'pointer',
@@ -163,29 +194,6 @@ export function LegalPage({ slug }: { slug: string }) {
           >
             {locale === 'de' ? 'EN' : 'DE'}
           </button>
-        </div>
-        {/* Quicklinks to the other legal/reference pages (2026-08-19, live
-            feedback) - jump between them directly instead of routing back
-            through the homepage footer each time. Client-side via `navigate`
-            (was a full-reload <a href> - "das ist nicht clean, das ist
-            increment"), real href kept for middle-click/SEO/no-JS. */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 40 }}>
-          {LEGAL_QUICKLINKS.filter(q => q.slug !== slug).map(q => (
-            // display: inline-flex + lineHeight: 1 (2026-08-19, live feedback:
-            // "sollten die buttons net alle in einer reihe sauber sein?") -
-            // plain inline <a> pills can render at subtly different heights
-            // depending on their text length/line-box metrics; forcing a flex
-            // box with centred content guarantees every pill is the exact
-            // same height regardless of label length.
-            <a key={q.slug} href={`/${q.slug}`} onClick={e => navigate(e, `/${q.slug}`)} style={{
-              display: 'inline-flex', alignItems: 'center', lineHeight: 1,
-              fontFamily: 'monospace', fontSize: 10.5, fontWeight: 600, letterSpacing: '0.04em',
-              color: '#8a8aa0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
-              borderRadius: 999, padding: '6px 11px', textDecoration: 'none',
-            }}>
-              {locale === 'de' ? q.labelDe : q.labelEn}
-            </a>
-          ))}
         </div>
         {/* AnimatePresence + key={slug} (2026-08-19, live feedback: "not just
             instant change and dynamic animation") - a quicklink click now
