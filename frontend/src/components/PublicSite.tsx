@@ -56,39 +56,40 @@ const ZONE_TOTAL_COLUMNS = ZONE_ORDER.reduce((n, z) => n + zoneCols(z), 0)
 // feedback: "looks terrible, not like a heartbeat anymore but like a strange appendix".
 // Back to straight-line polyline points (the classic minimal heart-rate-monitor icon
 // shape: flat, small bump, flat, sharp spike, flat, bigger bump, flat).
-// Expanded 5 -> 13 variants and shortened the path (was width 54, now 40 - "a bit
-// shorter") 2026-08-18, same live feedback pass that also asked for the rotation
-// to feel smoother and for an occasional soft neon glow - both handled below rather
-// than in this shape list, which only varies where the small/big bumps and the
-// spike sit, same house style as before, no curves.
+// Redone 2026-08-19 (live feedback: the first 13-variant pass only jittered
+// individual point coordinates by 1-3px, which reads as noise on the same
+// shape rather than 13 actually distinct heartbeats - "didn't mean one line
+// get 13 random shits"). Each entry below is a structurally different
+// pattern - different number of bumps/spikes, different order, different
+// composition - not a numeric variation of the others, while every one still
+// reads as the classic flat/bump/spike/bump heart-rate-monitor silhouette.
+// Width trimmed 40 -> 37 ("3px shorter").
 const EKG_SHAPES = [
-  '0,9 7,9 10,5 13,9 16,9 18,9 20,1 22,17 24,9 26,9 30,5 34,9 37,9 40,9',
-  '0,9 6,9 9,4 12,9 15,9 17,9 19,2 21,16 23,9 25,9 29,4 33,9 36,9 40,9',
-  '0,9 7,9 10,6 13,9 16,9 18,9 20,0 22,18 24,9 27,9 32,3 36,9 38,9 40,9',
-  '0,9 6,9 9,5 12,9 15,9 17,9 19,1 21,17 23,9 25,9 29,4 33,9 36,9 40,9',
-  '0,9 4,9 6,7 8,9 10,9 12,5 14,9 16,9 18,9 20,1 22,17 24,9 27,9 31,4 35,9 38,9 40,9',
-  '0,9 8,9 11,6 14,9 17,9 19,9 21,2 23,16 25,9 28,9 32,5 36,9 39,9 40,9',
-  '0,9 5,9 8,4 11,9 14,9 16,9 18,0 20,18 22,9 24,9 28,3 32,9 35,9 40,9',
-  '0,9 7,9 10,7 13,9 16,9 18,9 20,1 22,17 24,9 26,9 30,6 34,9 37,9 40,9',
-  '0,9 6,9 9,5 12,9 15,9 17,9 19,2 21,17 23,9 26,9 30,3 34,9 37,9 40,9',
-  '0,9 8,9 11,5 14,9 17,9 19,9 21,1 23,16 25,9 27,9 31,5 35,9 38,9 40,9',
-  '0,9 5,9 7,6 9,9 11,9 13,4 15,9 17,9 19,9 21,0 23,18 25,9 28,9 32,4 36,9 39,9 40,9',
-  '0,9 7,9 10,4 13,9 16,9 18,9 20,2 22,16 24,9 26,9 30,4 34,9 38,9 40,9',
-  '0,9 6,9 9,6 12,9 15,9 17,9 19,0 21,18 23,9 25,9 29,5 33,9 37,9 40,9',
+  '0,9 6,9 9,5 12,9 15,9 17,9 19,1 21,17 23,9 27,4 31,9 37,9',                                     // 1. classic: small bump, spike, big bump
+  '0,9 15,9 17,9 19,1 21,17 23,9 27,4 31,9 37,9',                                                  // 2. no lead-in bump, spike straight into big bump
+  '0,9 5,9 7,6 9,9 11,9 13,6 15,9 17,9 19,1 21,17 23,9 27,4 31,9 37,9',                              // 3. double small bump before the spike
+  '0,9 3,9 5,1 7,17 9,9 13,9 28,9 32,4 37,9',                                                       // 4. spike fires early, long flat run to a late big bump
+  '0,9 6,9 8,7 10,5 12,7 14,9 17,9 19,1 21,17 23,9 37,9',                                            // 5. wide rounded bump, spike, flat outro (no big bump)
+  '0,9 12,9 14,1 16,17 18,9 20,2 22,16 24,9 37,9',                                                  // 6. twin spikes, no bumps at all
+  '0,9 5,9 8,5 11,9 13,9 15,9 17,0 19,18 21,9 23,11 25,9 28,4 32,9 35,9 37,9',                        // 7. GLOW - richest pattern: bump, deep spike, recovery dip, big bump
+  '0,9 17,9 19,2 21,16 23,9 37,9',                                                                  // 8. starkest minimal: one bare spike, nothing else
+  '0,9 5,9 9,4 13,9 17,9 19,1 21,17 23,9 27,9 37,9',                                                 // 9. big bump BEFORE the spike (reversed order)
+  '0,9 6,9 9,6 12,9 15,9 17,1 19,17 21,9 24,9 27,6 30,9 37,9',                                       // 10. symmetric: small bump, spike, small bump
+  '0,9 5,9 7,6 9,9 12,9 14,6 16,9 19,9 21,6 23,9 37,9',                                              // 11. triple small notches, no spike, no big bump
+  '0,9 4,9 6,5 8,9 10,9 12,1 14,17 16,9 18,4 20,9 37,9',                                             // 12. everything packed tight early, long flat tail
+  '0,9 6,9 9,4 12,9 15,9 17,9 19,0 21,18 23,9 25,9 29,3 33,9 36,9 37,9',                              // 13. GLOW - archetypal full P-QRS-T silhouette, deepest spike
 ]
+// Glow is deterministic now, not random ("number 7 and 13 makes it softly
+// glow") - shapes at array index 6 and 12 (the 7th and 13th) always glow,
+// every other shape never does.
+const EKG_GLOW_INDICES = new Set([6, 12])
 // EKG_DURATION_MS matches App.css's .ekg-line animation-duration, and
-// EKG_DASH must match its stroke-dasharray - all three were 3600/150 before
-// this pass; shortening the path (54->40) without shortening these left the
-// draw noticeably slower than the line itself, so all three scaled down
-// together (~74%, matching the width change).
-const EKG_DURATION_MS = 2700
-const EKG_DASH = 110
+// EKG_DASH must match its stroke-dasharray - scaled together with the path
+// width (40 -> 37) so the draw speed still matches the shape's own length.
+const EKG_DURATION_MS = 2500
+const EKG_DASH = 102
 function EkgLine({ theme }: { theme: Theme }) {
   const [i, setI] = useState(0)
-  // Soft neon glow only some pulses, not every one ("soooooftly sometiems glow") -
-  // decided once per pulse rather than continuously, so it reads as an occasional
-  // occurrence rather than a flicker.
-  const [glow, setGlow] = useState(false)
   // ACCENT here is local to PublicSite() (derived from theme) and out of scope for this
   // standalone component - same light-theme-contrast fix, computed independently.
   // theme comes in as a prop rather than its own useTheme() call - useTheme's state is
@@ -99,14 +100,12 @@ function EkgLine({ theme }: { theme: Theme }) {
     // Matched to the animation's own duration (App.css .ekg-line) so every pulse
     // draws in, holds, and fades out completely before the next one starts -
     // was the fix for a choppy-not-supersmooth cutoff bug, still applies here.
-    const id = setInterval(() => {
-      setI(p => (p + 1) % EKG_SHAPES.length)
-      setGlow(Math.random() < 0.3)
-    }, EKG_DURATION_MS)
+    const id = setInterval(() => setI(p => (p + 1) % EKG_SHAPES.length), EKG_DURATION_MS)
     return () => clearInterval(id)
   }, [])
+  const glow = EKG_GLOW_INDICES.has(i)
   return (
-    <svg width="40" height="18" viewBox="0 0 40 18" fill="none" style={{ marginLeft: 4, flexShrink: 0, overflow: 'visible' }}>
+    <svg width="37" height="18" viewBox="0 0 37 18" fill="none" style={{ marginLeft: 4, flexShrink: 0, overflow: 'visible' }}>
       <polyline key={i} className={glow ? 'ekg-line ekg-line-glow' : 'ekg-line'} points={EKG_SHAPES[i]}
         stroke={accent} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
         style={glow ? { filter: `drop-shadow(0 0 2px ${accent}) drop-shadow(0 0 5px ${accent})` } : undefined} />

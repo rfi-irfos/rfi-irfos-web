@@ -68,21 +68,29 @@ import heroDingirEmbedDecade from '../../assets/hero-dingir-embed-decade.png'
 // Three categories rotate after the globe opener - plain software UI
 // (vector map/globe/panel, MAP mode), satellite (photographic SAT-mode
 // basemap), and neural-network (the embedding-graph shots) - in strict
-// software -> satellite -> neural-network triads, 8 of each, per live
-// feedback ("ersch kommt das netzt - dann satellit - dann software - dann
-// wieder das netzt"). 2 extra neural-network shots ride at the end since
-// there were 10 of those supplied against 8 software/8 satellite.
+// software -> satellite -> neural-network triads, per live feedback ("ersch
+// kommt das netzt - dann satellit - dann software - dann wieder das netzt").
+// BUG FIXED 2026-08-19: the first version of this had 10 neural-network shots
+// against only 8 software/8 satellite, and tacked the 2 extras onto the very
+// end as their own pair - which put 3 neural shots back to back right where
+// the array wrapped (live bug report: "dreimal ein neurales netzwerk foto
+// hintereinander"). Fixed by cycling software/satellite through all 10
+// rounds instead (the last 2 rounds repeat one software + one satellite shot
+// each) so every round is still a genuine triad and no two same-category
+// shots ever sit next to each other, including at the wrap back to the globe
+// opener. Repeating 2 of 8 shots once across a 31-slide rotation is the
+// honest tradeoff for having 10 neural shots and only 8 of the other two -
+// more of either would need new screenshots, not a code fix.
+const HERO_SOFTWARE_SHOTS = [heroDingir2, heroDingirMapDc, heroDingir7, heroDingirMapGrazDossier, heroDingir8, heroDingirGlobeAntarctica, heroDingir3, heroDingirGlobeAfricaThreats]
+const HERO_SATELLITE_SHOTS = [heroDingir4, heroDingir6, heroDingir12, heroDingir13, heroDingir5, heroDingir10, heroDingir11, heroDingirVesselsNl]
+const HERO_NEURAL_SHOTS = [heroDingirEmbedStorm, heroDingirEmbedBuoy, heroDingirEmbedLanguage, heroDingirEmbedWater, heroDingirEmbedImpact, heroDingirEmbedHope, heroDingirEmbedCoast, heroDingirEmbedDecided, heroDingirEmbedIncident, heroDingirEmbedDecade]
 const HERO_IMAGES = [
   heroSoftware,
-  heroDingir2, heroDingir4, heroDingirEmbedStorm,
-  heroDingirMapDc, heroDingir6, heroDingirEmbedBuoy,
-  heroDingir7, heroDingir12, heroDingirEmbedLanguage,
-  heroDingirMapGrazDossier, heroDingir13, heroDingirEmbedWater,
-  heroDingir8, heroDingir5, heroDingirEmbedImpact,
-  heroDingirGlobeAntarctica, heroDingir10, heroDingirEmbedHope,
-  heroDingir3, heroDingir11, heroDingirEmbedCoast,
-  heroDingirGlobeAfricaThreats, heroDingirVesselsNl, heroDingirEmbedDecided,
-  heroDingirEmbedIncident, heroDingirEmbedDecade,
+  ...HERO_NEURAL_SHOTS.flatMap((neural, r) => [
+    HERO_SOFTWARE_SHOTS[r % HERO_SOFTWARE_SHOTS.length],
+    HERO_SATELLITE_SHOTS[r % HERO_SATELLITE_SHOTS.length],
+    neural,
+  ]),
 ]
 
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { PublicSite } from './components/PublicSite'
 import { LocaleProvider } from './hooks/useLocale'
 import './App.css'
@@ -37,7 +37,6 @@ export default function App() {
   // /pricing decides the initial scroll target and meta tags, the homepage's own
   // #hash nav clicks are unrelated native browser scrolling, not a slug change.
   const [sectionFocus] = useState(getSectionFocus)
-  const homeScrollY = useRef(0)
 
   useEffect(() => {
     // Take over scroll restoration ourselves so the browser's own (which fires
@@ -49,19 +48,19 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
 
-  // Track scroll position on the homepage only, so a visit to a legal page
-  // and back doesn't strand them at the top having to scroll back down.
+  // Legal pages are a separate route — jump to top when entering one. Leaving
+  // one always lands at the BOTTOM of the homepage (2026-08-19, live feedback:
+  // "anywhere nav back out back at the BOTTOM"), not wherever the visitor
+  // happened to be scrolled to before - every legal-page link lives in the
+  // footer, so landing back at the footer is the natural round trip
+  // regardless of whether this page load ever had a homepage scroll position
+  // to remember in the first place (a direct /impressum bookmark never did).
   useEffect(() => {
-    if (slug) return
-    const onScroll = () => { homeScrollY.current = window.scrollY }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [slug])
-
-  // Legal pages are a separate route — jump to top when entering one, restore
-  // the remembered homepage position when leaving.
-  useEffect(() => {
-    window.scrollTo(0, slug ? 0 : homeScrollY.current)
+    if (slug) { window.scrollTo(0, 0); return }
+    // requestAnimationFrame so this runs after PublicSite has actually
+    // painted - document.body.scrollHeight read on the same tick as mount
+    // can still reflect the previous (or empty) DOM.
+    requestAnimationFrame(() => window.scrollTo(0, document.body.scrollHeight))
   }, [slug])
 
   // LegalPage now shares the same LocaleProvider/localStorage key as PublicSite

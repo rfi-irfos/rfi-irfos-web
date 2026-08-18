@@ -38,6 +38,21 @@ const META: Record<string, { title: string; description: string; titleDe?: strin
   methodology: { title: 'Methodology — RFI-IRFOS', description: "The four principles governing RFI-IRFOS's research: sources, methods, handling results, and disclosure — the same rules regardless of who's paying." },
 }
 
+// Short cross-links between the legal/reference pages themselves (2026-08-19,
+// live feedback: "add quicklinks to the others"). Same slug set/order as
+// App.tsx's LEGAL_SLUGS. labelDe only matters for the three pages that got a
+// real German translation - the rest render their English label under both
+// locales, same scope line as META above.
+const LEGAL_QUICKLINKS: { slug: string; labelEn: string; labelDe: string }[] = [
+  { slug: 'impressum', labelEn: 'Legal Notice', labelDe: 'Impressum' },
+  { slug: 'datenschutz', labelEn: 'Privacy Policy', labelDe: 'Datenschutz' },
+  { slug: 'agb', labelEn: 'Terms', labelDe: 'AGB' },
+  { slug: 'security', labelEn: 'Security Policy', labelDe: 'Security Policy' },
+  { slug: 'standards', labelEn: 'Standards', labelDe: 'Standards' },
+  { slug: 'team', labelEn: 'Team', labelDe: 'Team' },
+  { slug: 'methodology', labelEn: 'Methodology', labelDe: 'Methodology' },
+]
+
 export function LegalPage({ slug }: { slug: string }) {
   const footerRef = useRef<HTMLDivElement>(null)
   const { locale, setLocale } = useLocale()
@@ -89,7 +104,7 @@ export function LegalPage({ slug }: { slug: string }) {
             rule is about the 311-row ledger/filmstrip re-sampling every scroll
             frame, not a one-off page shell. */}
         <div className="rfi-glass" style={{ borderRadius: 20, padding: '36px 40px' }}>
-        <div style={{ marginBottom: 40, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <a
             href="/"
             onClick={e => {
@@ -105,13 +120,36 @@ export function LegalPage({ slug }: { slug: string }) {
           >
             &larr; rfi-irfos.com
           </a>
+          {/* Wrapped in a pill (2026-08-19, live feedback) - same chrome as the
+              System Card modal's link pills, was bare text before. */}
           <button
             onClick={() => setLocale(locale === 'de' ? 'en' : 'de')}
             title={locale === 'de' ? 'Language: German (click to switch)' : 'Sprache: Englisch (klicken zum Wechseln)'}
-            style={{ ...A, fontFamily: 'monospace', fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+            style={{
+              fontFamily: 'monospace', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
+              color: '#8fe8d0', background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)',
+              borderRadius: 999, padding: '6px 14px', cursor: 'pointer',
+            }}
           >
             {locale === 'de' ? 'EN' : 'DE'}
           </button>
+        </div>
+        {/* Quicklinks to the other legal/reference pages (2026-08-19, live
+            feedback) - jump between them directly instead of routing back
+            through the homepage footer each time. Plain <a href> full
+            navigation, same as the footer's own legal links (PublicSite.tsx),
+            not a client-side transition - there's no router for slug-to-slug
+            moves here. */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 40 }}>
+          {LEGAL_QUICKLINKS.filter(q => q.slug !== slug).map(q => (
+            <a key={q.slug} href={`/${q.slug}`} style={{
+              fontFamily: 'monospace', fontSize: 10.5, fontWeight: 600, letterSpacing: '0.04em',
+              color: '#8a8aa0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
+              borderRadius: 999, padding: '5px 11px', textDecoration: 'none',
+            }}>
+              {locale === 'de' ? q.labelDe : q.labelEn}
+            </a>
+          ))}
         </div>
         {slug === 'impressum'   && <Impressum />}
         {slug === 'datenschutz' && <Datenschutz />}
