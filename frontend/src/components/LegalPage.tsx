@@ -124,7 +124,7 @@ function Impressum() {
 
     <h2 style={H2}>Register &amp; Trade Data</h2>
     <p style={P}>
-      Legal form: Registered association (non-profit, regulated not-for-profit)<br />
+      Legal form: Registered association (regulated not-for-profit)<br />
       ZVR number (Austrian Central Register of Associations): 1015608684<br />
       GISA number (Trade Register): 39261441<br />
       GLN: 9110038490191<br />
