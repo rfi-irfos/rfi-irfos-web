@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { PublicSite } from './components/PublicSite'
 import { LocaleProvider } from './hooks/useLocale'
 import './App.css'
@@ -65,12 +65,25 @@ export default function App() {
   // footer, so landing back at the footer is the natural round trip
   // regardless of whether this page load ever had a homepage scroll position
   // to remember in the first place (a direct /impressum bookmark never did).
+  //
+  // CRITICAL BUG FIXED same day: this effect depends on [slug] and `slug`
+  // starts out null on a completely fresh homepage load - with no guard, that
+  // counted as "leaving a legal page" on EVERY first visit, and every visitor
+  // landed at the bottom of the page instead of the top, skipping the cookie
+  // banner and everything else along the way ("jeder der auf die startseite
+  // kommt landet sofort unten"). A ref remembers the previous slug so the
+  // bottom-scroll only fires on a genuine truthy -> null transition, never on
+  // initial mount (where there is no previous slug to have left).
+  const prevSlug = useRef(slug)
   useEffect(() => {
-    if (slug) { window.scrollTo(0, 0); return }
-    // requestAnimationFrame so this runs after PublicSite has actually
-    // painted - document.body.scrollHeight read on the same tick as mount
-    // can still reflect the previous (or empty) DOM.
-    requestAnimationFrame(() => window.scrollTo(0, document.body.scrollHeight))
+    if (slug) { window.scrollTo(0, 0); prevSlug.current = slug; return }
+    if (prevSlug.current) {
+      // requestAnimationFrame so this runs after PublicSite has actually
+      // painted - document.body.scrollHeight read on the same tick as mount
+      // can still reflect the previous (or empty) DOM.
+      requestAnimationFrame(() => window.scrollTo(0, document.body.scrollHeight))
+    }
+    prevSlug.current = slug
   }, [slug])
 
   // LegalPage now shares the same LocaleProvider/localStorage key as PublicSite
