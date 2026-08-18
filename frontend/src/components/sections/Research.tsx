@@ -14,45 +14,48 @@ import { useLocale } from '../../hooks/useLocale'
 // competing animation on top of the existing tilt/lift.
 function BentoTile({ icon, title, onOpen, from, delay }: {
   icon: React.ReactNode; title: string; onOpen: () => void
-  from: 'left' | 'right' | 'top' | 'bottom'; delay: number
+  from: 'left' | 'right'; delay: number
 }) {
   const tiltRef = useRef<HTMLButtonElement>(null)
   const tilt = useTilt(tiltRef, 5)
   return (
     <Reveal from={from} delay={delay} style={{ height: '100%' }}>
+      {/* Slimmed down 2026-08-18 (live feedback: "die karten bischl verschlankern") -
+          padding, icon badge and gap all cut, card reads as a compact index entry
+          rather than a bulky tile. */}
       <motion.button ref={tiltRef} onClick={onOpen} className="rfi-hover-card rfi-icon-tile" style={{
         ...tilt,
         background: 'var(--glass-bg-solid)', border: '1px solid var(--border)',
-        borderRadius: 16, padding: '32px 20px', cursor: 'pointer',
+        borderRadius: 14, padding: '20px 14px', cursor: 'pointer',
         height: '100%', width: '100%', boxSizing: 'border-box', overflow: 'hidden',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14, textAlign: 'center',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, textAlign: 'center',
         transition: 'box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 180ms cubic-bezier(0.4,0,0.2,1), background-color 180ms cubic-bezier(0.4,0,0.2,1)',
         font: 'inherit', color: 'inherit',
       }}
         whileHover={prefersReducedMotion() ? undefined : { y: -4, scale: 1.012 }}
         transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Live feedback 2026-08-14: icons bumped up (48->56) and given their own
-            rounded-square frame ("noch extra mit so einem abgerundeten Viereck
-            einrahmen, für bessere visibility") - a badge, not just a bare glyph
-            floating on the card. */}
         <div style={{
-          width: 84, height: 84, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'var(--accent-dim)', border: '1px solid var(--accent-border)', borderRadius: 20, lineHeight: 0,
+          width: 60, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: 'var(--accent-dim)', border: '1px solid var(--accent-border)', borderRadius: 16, lineHeight: 0,
         }}>
           {icon}
         </div>
-        <div style={{ fontWeight: 800, fontSize: 16, lineHeight: 1.25 }}>{title}</div>
+        <div style={{ fontWeight: 800, fontSize: 15, lineHeight: 1.25 }}>{title}</div>
       </motion.button>
     </Reveal>
   )
 }
 
-// Genuinely mixed per-card directions (not a left-half/right-half mirror): each
-// column's two rows get a different axis, e.g. column 0 is left-then-top, not
-// left-then-left - see plan discussion for why a mirror doesn't satisfy the ask.
-const RESEARCH_TILE_DIRECTIONS: Array<'left' | 'right' | 'top' | 'bottom'> =
-  ['left', 'top', 'bottom', 'right', 'right', 'bottom', 'top', 'left']
+// Left half of the grid flies in from the left, right half from the right - both
+// converging on the horizontal centre - and the ONLY stagger axis left is top to
+// bottom, by row (2026-08-18, live feedback: no more per-card "das kommt von da,
+// das von hier" direction scatter, sharper and simpler - the grid should read as
+// one thing breathing in from both edges toward the spine, row by row, not eight
+// independently-timed tiles). Assumes the 4-column desktop layout for the left/
+// right split; narrower auto-fit widths just get a less exact but still coherent
+// left/right assignment, same simplifying assumption the old per-index array made.
+const RESEARCH_GRID_COLS = 4
 
 // Detail modal for one research area. Reuses the checkout/proposal modal's exact
 // carbon-gradient panel (same rfi-modal-backdrop/rfi-modal-panel classes - CSS-only
@@ -153,9 +156,11 @@ function ResearchAreasGrid() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
         {RESEARCH_AREAS.map((a, i) => {
           const area = t.research.areas[i]
+          const col = i % RESEARCH_GRID_COLS
+          const row = Math.floor(i / RESEARCH_GRID_COLS)
           return (
             <BentoTile key={area.title} icon={a.icon} title={area.title} onOpen={() => setSelected(i)}
-              from={RESEARCH_TILE_DIRECTIONS[i % RESEARCH_TILE_DIRECTIONS.length]} delay={i} />
+              from={col < RESEARCH_GRID_COLS / 2 ? 'left' : 'right'} delay={row} />
           )
         })}
       </div>

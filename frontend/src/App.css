@@ -104,16 +104,24 @@ button { cursor: pointer; font-family: inherit; }
 .site[data-theme="hc"] .site-status-badge { background: #111111 !important; color: #ffd400 !important; border-color: #ffd400 !important; }
 
 /* ── NAV ─────────────────────────────────────────────────────────────────── */
+/* Path shortened + duration cut 2026-08-18 (live feedback: "make it also a bit
+   shorter") - dasharray/dashoffset and animation-duration scaled down together
+   (~74%, matching the EKG_SHAPES width change in PublicSite.tsx: 150->110,
+   3.6s->2.7s) so the draw speed still matches the shape's own length. */
 @keyframes ekgPulse {
-  0% { stroke-dashoffset: 150; opacity: 0; }
+  0% { stroke-dashoffset: 110; opacity: 0; }
   5% { opacity: 1; }
   85% { opacity: 1; }
-  100% { stroke-dashoffset: -150; opacity: 0; }
+  100% { stroke-dashoffset: -110; opacity: 0; }
 }
 .ekg-line {
-  stroke-dasharray: 150;
-  animation: ekgPulse 3.6s linear infinite;
+  stroke-dasharray: 110;
+  animation: ekgPulse 2.7s linear infinite;
 }
+/* Soft neon glow, some pulses only (JS decides per-pulse, ~30% of the time) -
+   the drop-shadow itself is set inline (needs the live theme accent colour),
+   this class only exists as a hook/marker; kept for clarity in devtools. */
+.ekg-line-glow {}
 
 .site-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 300;

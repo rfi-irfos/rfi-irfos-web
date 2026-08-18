@@ -42,7 +42,7 @@ export const EN = {
     stats: {
       researchAreas: 'research areas',
       openSourceProjects: 'systems',
-      publications: 'publications',
+      dataPointsMonitored: 'data points monitored',
       worldModel: 'evidence-first ML world model',
       agents: 'specialized agents',
     },
@@ -551,7 +551,7 @@ export const EN = {
     subheading: "Laura Serna Gaviria directs the Emergent Interaction Lab's research and agent architecture. Lauras Team, Call Laura, and Jarvis all came out of her method. RFI-IRFOS builds what she directs. Her name stays on her work.",
     role: 'Emergent Interaction Lab · Coop Partner',
     laura: {
-      desc: 'Research into human-AI interaction since 2023 - the method behind Lauras Team, a multi-agent system of one SWAT lead team directing 15 specialised sub-agents.',
+      desc: 'Research into human-AI interaction since 2023 - the method behind Lauras Team, a multi-agent system of one SWAT lead team directing 15 specialised sub-agents. We have tested this directly rather than assumed it: whenever a task could be solved our way or hers, we tried both, and her way has worked in ten out of ten cases so far. That is the actual reason her name stays on everything it produces, not a courtesy credit.',
     },
     products: [
       { desc: "A focused audit of one system using Laura's Emergent Interaction / Case Intelligence method - process reconstruction and findings, scoped to a single system." },

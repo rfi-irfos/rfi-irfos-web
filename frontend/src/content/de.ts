@@ -39,7 +39,7 @@ export const DE: Content = {
     stats: {
       researchAreas: 'Forschungsbereiche',
       openSourceProjects: 'Systeme',
-      publications: 'Publikationen',
+      dataPointsMonitored: 'Datenpunkte überwacht',
       worldModel: 'evidenzbasiertes ML-Weltmodell',
       agents: 'Spezialisierte Agenten',
     },
@@ -538,7 +538,7 @@ export const DE: Content = {
     subheading: 'Laura Serna Gaviria leitet die eigene Forschung und Agentenarchitektur des Emergent Interaction Lab - Lauras Team, Call Laura und Jarvis sind alle aus ihrer Methode entstanden. RFI-IRFOS baut, was sie anleitet, klar als ihres gekennzeichnet, damit stets nachvollziehbar bleibt, wer was gemacht hat.',
     role: 'Emergent Interaction Lab · Kooperationspartnerin',
     laura: {
-      desc: 'Forschung zu Mensch-KI-Interaktion seit 2023 - die Methode hinter Lauras Team, einem Multi-Agenten-System aus einem SWAT-Leitteam, das 15 spezialisierte Sub-Agenten anleitet.',
+      desc: 'Forschung zu Mensch-KI-Interaktion seit 2023 - die Methode hinter Lauras Team, einem Multi-Agenten-System aus einem SWAT-Leitteam, das 15 spezialisierte Sub-Agenten anleitet. Das haben wir direkt getestet, nicht nur angenommen: Wann immer sich eine Aufgabe entweder auf unsere Art oder auf ihre lösen ließ, haben wir beides probiert, und ihre Art hat sich bisher in zehn von zehn Fällen bewährt. Das ist der eigentliche Grund, warum ihr Name auf allem steht, was dabei entsteht, keine Gefälligkeit.',
     },
     products: [
       { desc: 'Ein fokussiertes Audit eines einzelnen Systems nach Lauras Emergent-Interaction-/Case-Intelligence-Methode - Prozessrekonstruktion und Befunde, begrenzt auf ein einzelnes System.' },

@@ -197,18 +197,6 @@ function HeroBackground({ theme }: { theme: Theme }) {
   )
 }
 
-const PUBLICATIONS = [
-  { year: '2026', title: 'Android Security Audit 2026: Coordinated Disclosure', sub: '215+ apps · 100+ companies · 250+ critical findings · NYSE/NASDAQ/LSE/XETRA · StoryToys children\'s wave · disclosure Sep 2026', href: 'https://github.com/rfi-irfos/android-security-audit-2026', tag: 'Security · Ongoing' },
-  { year: '2026', title: 'The Ternary Intelligence Stack', sub: 'vertically integrated post-binary AI platform', href: 'https://osf.io/cyn28/', tag: 'AI · Systems' },
-  { year: '2026', title: 'Myco-Styria', sub: 'polystyrene replacement via mycelium + Austrian lignocellulose residues', href: 'https://osf.io/ek8rm/', tag: 'Ecocentric' },
-  { year: '2025', title: 'A Ternary Logic Mixture-of-Experts Model', sub: 'sparse ternary MoE architecture with autonomous Net2Net surgery', href: 'https://osf.io/tz7dc/', tag: 'AI · Model' },
-  { year: '2025', title: 'The Ternlang Architecture', sub: 'post-binary logic framework for ethical autonomous AI', href: 'https://osf.io/zwnyr/', tag: 'AI · Governance' },
-  { year: '2025', title: 'Policy Mirror Protocol', sub: 'embedding transparency and traceability into AI refusal boundaries', href: 'https://osf.io/d2k4x/', tag: 'AI · Policy' },
-  { year: '2025', title: 'From Waste to Wild', sub: 'circular ecocentric model for riverine plastic interception', href: 'https://osf.io/4w5g6/', tag: 'Ecocentric' },
-  { year: '2025', title: 'PedalGate v1.0', sub: '101-day investigation into systemic inequities on Austrian delivery platforms', href: 'https://osf.io/h5u8f/', tag: 'Security · Accountability' },
-  { year: '2025', title: 'A1ERF: EU Regulation Proposal', sub: 'AI-first emergency relay framework for autonomous cardiac arrest detection', href: 'https://osf.io/ueac8/', tag: 'Policy · EU' },
-]
-
 export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }) {
   const { t } = useLocale()
   return (
@@ -343,9 +331,9 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: mobile ? '1.25rem' : '3rem', margin: '0 auto 24px', width: '100%', maxWidth: 980, justifyContent: 'center' }}>
         {/* Deliberately NOT the same numbers as the Track Record stat row further down -
             that one is audit-specific (apps/findings/companies/regulators), this one is
-            the breadth story: research areas, systems and projects, publications, team,
-            years. Showing the same five numbers twice wastes the hero's one shot at
-            explaining why the institute matters beyond appsec. */}
+            the breadth story: research areas, systems and projects, live monitoring
+            scale, team, years. Showing the same five numbers twice wastes the hero's
+            one shot at explaining why the institute matters beyond appsec. */}
         {([
           { n: `${RESEARCH_AREAS.length}`,    label: t.hero.stats.researchAreas,      from: 'left'   as const },
           // Was `${PROJECTS.length}+` (18+) - only counted the curated highlight
@@ -355,7 +343,17 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           // synthesis.md for the full breakdown. Re-count periodically, same
           // caveat as the footer's repo directory (content/repos.ts).
           { n: '53+',                         label: t.hero.stats.openSourceProjects, from: 'bottom' as const },
-          { n: `${PUBLICATIONS.length}+`,     label: t.hero.stats.publications,       from: 'scale'  as const },
+          // Replaced the old "9+ publications" count (2026-08-18, live feedback:
+          // wanted a "hitter metric nobody else can reproduce") with DINGIR's live
+          // tracked-entity count instead - satellites, ships, flights, CCTV cameras,
+          // wildfires, buoys, earthquakes, GDELT events and more, individually
+          // counted, not a fabricated throughput number (the dashboard's own source
+          // comment: "Real entity count — no fake throughput metrics"). Verified live
+          // against dingir-osint.fly.dev on 2026-08-18: summing every entity type the
+          // dashboard tracks came to ~61k at query time; "58k+" is a conservative
+          // floor that stays true as the live count fluctuates rather than the
+          // instantaneous reading. Re-verify before raising this number further.
+          { n: '58k+',                        label: t.hero.stats.dataPointsMonitored, from: 'scale'  as const },
           { n: '301',                         label: t.hero.stats.agents,             from: 'bottom' as const },
           { n: '1',                           label: t.hero.stats.worldModel,         from: 'bottom' as const },
         ]).map((s, i) => (
@@ -385,7 +383,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
                 fine against the dark photo tint above them).
                 height: 100% + flex centering (live feedback: "kpi cards are not
                 the same size") - labels wrap to a different number of lines
-                ("SYSTEMS & PROJECTS" vs "PUBLICATIONS"), so without a shared
+                ("SYSTEMS & PROJECTS" vs "DATA POINTS MONITORED"), so without a shared
                 height each card just hugged its own content and the row looked
                 uneven. */}
             {/* justifyContent was 'center', which vertically centred the whole

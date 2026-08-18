@@ -69,7 +69,11 @@ export function CoopPartnersSection({
                 </a>
               </div>
               <p style={{ fontSize: 13, color: 'var(--accent-text)', marginTop: 2, fontWeight: 600 }}>{t.coopPartners.role}</p>
-              <p style={{ fontSize: 13, color: 'var(--text)', marginTop: 10, lineHeight: 1.6, maxWidth: 560 }}>
+              {/* Bumped fontSize/maxWidth (2026-08-18, live feedback: the card had
+                  empty space next to the pill column) once the description grew
+                  from one sentence to three - fills the card better instead of
+                  wrapping narrow with blank space beside it. */}
+              <p style={{ fontSize: 14.5, color: 'var(--text)', marginTop: 10, lineHeight: 1.6, maxWidth: 640 }}>
                 {t.coopPartners.laura.desc}
               </p>
             </div>
