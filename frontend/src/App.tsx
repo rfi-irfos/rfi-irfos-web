@@ -82,6 +82,18 @@ export default function App() {
       // painted - document.body.scrollHeight read on the same tick as mount
       // can still reflect the previous (or empty) DOM.
       requestAnimationFrame(() => window.scrollTo(0, document.body.scrollHeight))
+      // BUG FIXED 2026-08-19: LegalPage sets document.title/description to its
+      // own page's meta on the way in, but nothing ever set it back on the way
+      // out - harmless while every legal-page exit was a full reload (a fresh
+      // document load re-reads index.html's own <title>), but now that exits
+      // are client-side (the pushState fix above), the tab kept showing e.g.
+      // "Standards & Compliance" back on the homepage ("wieso zur hölle steht
+      // im browsertab... standards und compliance, und nicht rethink the
+      // obvious"). Reset to index.html's own defaults here - PublicSite's own
+      // effect (initialSection-driven) still overrides this correctly for a
+      // direct /pricing-style landing, since that path never sets prevSlug.
+      document.title = 'RFI-IRFOS - Rethink the Obvious.'
+      document.querySelector('meta[name="description"]')?.setAttribute('content', 'Interdisciplinary Research Facility for Open Sciences. Ternary AI · Security · Governance · Graz, Austria.')
     }
     prevSlug.current = slug
   }, [slug])

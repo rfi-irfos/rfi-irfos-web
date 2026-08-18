@@ -69,11 +69,15 @@ const META: Record<string, { title: string; description: string; titleDe?: strin
 // App.tsx's LEGAL_SLUGS. labelDe only matters for the three pages that got a
 // real German translation - the rest render their English label under both
 // locales, same scope line as META above.
+// Shortened 2026-08-19 (live feedback: "schreib halt einfach nur legal
+// privacy security terms team methology, streich halt 'notice' 'policy2 und
+// policy dann passts rein") - dropped the "Notice"/"Policy" qualifiers so
+// the whole row fits on one line without wrapping.
 const LEGAL_QUICKLINKS: { slug: string; labelEn: string; labelDe: string }[] = [
-  { slug: 'impressum', labelEn: 'Legal Notice', labelDe: 'Impressum' },
-  { slug: 'datenschutz', labelEn: 'Privacy Policy', labelDe: 'Datenschutz' },
+  { slug: 'impressum', labelEn: 'Legal', labelDe: 'Impressum' },
+  { slug: 'datenschutz', labelEn: 'Privacy', labelDe: 'Datenschutz' },
   { slug: 'agb', labelEn: 'Terms', labelDe: 'AGB' },
-  { slug: 'security', labelEn: 'Security Policy', labelDe: 'Security Policy' },
+  { slug: 'security', labelEn: 'Security', labelDe: 'Security' },
   { slug: 'standards', labelEn: 'Standards', labelDe: 'Standards' },
   { slug: 'team', labelEn: 'Team', labelDe: 'Team' },
   { slug: 'methodology', labelEn: 'Methodology', labelDe: 'Methodology' },
@@ -132,12 +136,14 @@ export function LegalPage({ slug }: { slug: string }) {
         <div className="rfi-glass" style={{ borderRadius: 20, padding: '36px 40px' }}>
         {/* Back button, quicklinks, and the DE/EN toggle all in ONE row now
             (2026-08-19, live feedback: "die pillen sollen zwischen dem back
-            und dem DE button sitzen so alle auf einer reihe") - was back+DE
-            on their own row with the quicklinks wrapping onto a second row
-            below; flex-wrap lets the quicklinks group itself wrap onto a
-            second line on narrow viewports without breaking the single-row
-            layout everywhere else. */}
-        <div style={{ marginBottom: 40, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+            und dem DE button sitzen so alle auf einer reihe"). BUG FIXED same
+            day: flexWrap:'wrap' was on this OUTER row, so once the row ran
+            out of width the DE button (last child) wrapped onto its own
+            second line, exactly the two-row layout this was meant to fix
+            ("desch a witz oder"). nowrap here pins back/DE to the row
+            permanently; only the quicklinks group in the middle (its own
+            flexWrap below) is allowed to reflow onto extra internal lines. */}
+        <div style={{ marginBottom: 40, display: 'flex', flexWrap: 'nowrap', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
           {/* Text link replaced with an icon button (2026-08-19, live feedback:
               "instead of '← rfi-irfos.com' just a nice green back button svg").
               Client-side nav via the `navigate` helper above - no more full
