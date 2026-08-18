@@ -171,10 +171,17 @@ export function LegalPage({ slug }: { slug: string }) {
             increment"), real href kept for middle-click/SEO/no-JS. */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 40 }}>
           {LEGAL_QUICKLINKS.filter(q => q.slug !== slug).map(q => (
+            // display: inline-flex + lineHeight: 1 (2026-08-19, live feedback:
+            // "sollten die buttons net alle in einer reihe sauber sein?") -
+            // plain inline <a> pills can render at subtly different heights
+            // depending on their text length/line-box metrics; forcing a flex
+            // box with centred content guarantees every pill is the exact
+            // same height regardless of label length.
             <a key={q.slug} href={`/${q.slug}`} onClick={e => navigate(e, `/${q.slug}`)} style={{
+              display: 'inline-flex', alignItems: 'center', lineHeight: 1,
               fontFamily: 'monospace', fontSize: 10.5, fontWeight: 600, letterSpacing: '0.04em',
               color: '#8a8aa0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
-              borderRadius: 999, padding: '5px 11px', textDecoration: 'none',
+              borderRadius: 999, padding: '6px 11px', textDecoration: 'none',
             }}>
               {locale === 'de' ? q.labelDe : q.labelEn}
             </a>
