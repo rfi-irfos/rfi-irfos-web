@@ -6,6 +6,7 @@ const P = { color: '#a0a0b8', fontSize: 14, marginBottom: 12 }
 const A = { color: 'var(--accent-text)', textDecoration: 'none' }
 
 import React, { useEffect, useRef } from 'react'
+import { useLocale } from '../hooks/useLocale'
 
 const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
 const LIGHTHOUSE_TRACK = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track'
@@ -14,10 +15,23 @@ const LIGHTHOUSE_TRACK = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/tr
 // document still carries the homepage's shared <title>/description until we set
 // our own, so a search result or a browser tab would otherwise show "RFI-IRFOS -
 // Rethink the Obvious." for every one of these instead of what the page is.
-const META: Record<string, { title: string; description: string }> = {
-  impressum: { title: 'Legal Notice — RFI-IRFOS', description: 'Legal notice for RFI-IRFOS, a registered nonprofit research institute in Graz, Austria — registry data, contact, and trade information.' },
-  datenschutz: { title: 'Privacy Policy — RFI-IRFOS', description: 'How RFI-IRFOS handles data under GDPR: what we collect, our processors, and your rights. No cookies, no tracking, no ad network.' },
-  agb: { title: 'Terms and Conditions — RFI-IRFOS', description: 'General Terms and Conditions for RFI-IRFOS security audits, software development, and research services. B2B only.' },
+// de/de-description are only set for the three pages that actually got a German
+// translation (Impressum/Datenschutz/AGB, 2026-08-18) - the rest stay
+// English-only, so the effect below falls back to the English pair for them
+// regardless of locale.
+const META: Record<string, { title: string; description: string; titleDe?: string; descriptionDe?: string }> = {
+  impressum: {
+    title: 'Legal Notice — RFI-IRFOS', description: 'Legal notice for RFI-IRFOS, a registered not-for-profit research institute in Graz, Austria — registry data, contact, and trade information.',
+    titleDe: 'Impressum — RFI-IRFOS', descriptionDe: 'Impressum von RFI-IRFOS, einem eingetragenen, nicht gewinnorientierten Forschungsinstitut in Graz, Österreich — Registerdaten, Kontakt und Gewerbeinformationen.',
+  },
+  datenschutz: {
+    title: 'Privacy Policy — RFI-IRFOS', description: 'How RFI-IRFOS handles data under GDPR: what we collect, our processors, and your rights. No cookies, no tracking, no ad network.',
+    titleDe: 'Datenschutzerklärung — RFI-IRFOS', descriptionDe: 'Wie RFI-IRFOS mit Daten gemäß DSGVO umgeht: was wir erheben, unsere Auftragsverarbeiter und Ihre Rechte. Keine Cookies, kein Tracking, kein Werbenetzwerk.',
+  },
+  agb: {
+    title: 'Terms and Conditions — RFI-IRFOS', description: 'General Terms and Conditions for RFI-IRFOS security audits, software development, and research services. B2B only.',
+    titleDe: 'AGB — RFI-IRFOS', descriptionDe: 'Allgemeine Geschäftsbedingungen für Sicherheitsaudits, Softwareentwicklung und Forschungsleistungen von RFI-IRFOS. Ausschließlich B2B.',
+  },
   security: { title: 'Security Policy — RFI-IRFOS', description: "RFI-IRFOS's coordinated vulnerability disclosure policy: ISO/IEC 29147, 90-day embargo, regulator notification, safe harbor for good-faith research." },
   standards: { title: 'Standards & Compliance — RFI-IRFOS', description: 'The regulatory frameworks RFI-IRFOS audits against: NIS-2, GDPR, EU AI Act, DSA, ISO/IEC 29147/30111/27001, and more.' },
   team: { title: 'Team — RFI-IRFOS', description: "The people behind RFI-IRFOS's security research, disclosure, and ternary AI work." },
@@ -26,13 +40,14 @@ const META: Record<string, { title: string; description: string }> = {
 
 export function LegalPage({ slug }: { slug: string }) {
   const footerRef = useRef<HTMLDivElement>(null)
+  const { locale, setLocale } = useLocale()
 
   useEffect(() => {
     const meta = META[slug]
     if (!meta) return
-    document.title = meta.title
-    document.querySelector('meta[name="description"]')?.setAttribute('content', meta.description)
-  }, [slug])
+    document.title = (locale === 'de' && meta.titleDe) ? meta.titleDe : meta.title
+    document.querySelector('meta[name="description"]')?.setAttribute('content', (locale === 'de' && meta.descriptionDe) ? meta.descriptionDe : meta.description)
+  }, [slug, locale])
 
   // Same privacy-safe mechanism as the main site's section tracker: an in-memory-only
   // IntersectionObserver, no cookie/localStorage, no visitor id. This one watches the
@@ -58,10 +73,14 @@ export function LegalPage({ slug }: { slug: string }) {
     return () => io.disconnect()
   }, [slug])
 
+  // Only impressum/datenschutz/agb actually branch on locale (see each
+  // function below) - the toggle still shows everywhere on this route for
+  // consistency and because it's shared state with the homepage anyway, but
+  // clicking it on e.g. /security or /team just doesn't change anything there.
   return (
     <div style={BASE}>
       <div style={PROSE}>
-        <div style={{ marginBottom: 40 }}>
+        <div style={{ marginBottom: 40, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <a
             href="/"
             onClick={e => {
@@ -77,6 +96,13 @@ export function LegalPage({ slug }: { slug: string }) {
           >
             &larr; rfi-irfos.com
           </a>
+          <button
+            onClick={() => setLocale(locale === 'de' ? 'en' : 'de')}
+            title={locale === 'de' ? 'Language: German (click to switch)' : 'Sprache: Englisch (klicken zum Wechseln)'}
+            style={{ ...A, fontFamily: 'monospace', fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+          >
+            {locale === 'de' ? 'EN' : 'DE'}
+          </button>
         </div>
         {slug === 'impressum'   && <Impressum />}
         {slug === 'datenschutz' && <Datenschutz />}
@@ -99,7 +125,20 @@ export function LegalPage({ slug }: { slug: string }) {
   )
 }
 
+// Impressum/Datenschutz/AGB (2026-08-18): these three carry actual legal weight
+// for an Austrian audience under § 5 ECG / GDPR / KSchG, so they got real German
+// translations rather than staying English-only like Security/Standards/Team/
+// Methodology. Each function below branches on locale and renders one of two
+// sibling components - kept as separate EN/DE components rather than one JSX
+// tree with inline ternaries per line, since a legal text is exactly the kind
+// of content where "which language is this sentence in" needs to be visually
+// obvious while editing, not inferred from a ternary.
 function Impressum() {
+  const { locale } = useLocale()
+  return locale === 'de' ? <ImpressumDE /> : <ImpressumEN />
+}
+
+function ImpressumEN() {
   return <>
     <h1 style={H1}>Legal Notice</h1>
     <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act) &middot; Last updated: July 2026</p>
@@ -177,7 +216,90 @@ function Impressum() {
   </>
 }
 
+function ImpressumDE() {
+  return <>
+    <h1 style={H1}>Impressum</h1>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Offenlegung gemäß § 5 ECG (E-Commerce-Gesetz) &middot; Letzte Aktualisierung: Juli 2026</p>
+
+    <p style={P}>
+      Wir veröffentlichen unter eigenem Namen, mit einer echten Anschrift, weil koordinierte Offenlegung nur funktioniert, wenn das Institut, das sie durchführt, selbst auffindbar, überprüfbar und zur Verantwortung ziehbar ist — genau der Maßstab, den wir an jeden anlegen, den wir prüfen. Das meiste auf dieser Seite steht hier, weil es das Gesetz verlangt. Ein paar Zeilen stehen hier, weil wir finden, dass ein Impressum nicht der eine Teil einer Website sein sollte, den niemand Korrektur gelesen hat.
+    </p>
+
+    <h2 style={H2}>Betreiber</h2>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>Research Focus Institute — Interdisciplinary Research Facility for Open Sciences</strong><br />
+      Kurzbezeichnung: RFI-IRFOS<br />
+      Elisabethinergasse 25/10, 8020 Graz, Österreich<br />
+      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a><br />
+      Website: <a href="https://rfi-irfos.com" style={A}>rfi-irfos.com</a>
+    </p>
+
+    <h2 style={H2}>Was wir tatsächlich tun</h2>
+    <p style={P}>
+      Falls ein Impressum die erste Seite ist, auf der Sie je landen: RFI-IRFOS ist ein reguliertes, nicht gewinnorientiertes Forschungsinstitut im Bereich Sicherheitsforschung, DSGVO-fokussierter Root-Level-Codeanalyse von Android-Anwendungen und Open-Source-KI-/Ternärrechen-Forschung. Wir sind keine Marketingagentur, keine Anwaltskanzlei und keine Bug-Bounty-Plattform, was ein vereinzeltes Suchergebnis auch immer nahelegen mag.
+    </p>
+
+    <h2 style={H2}>Register- &amp; Gewerbedaten</h2>
+    <p style={P}>
+      Rechtsform: Eingetragener Verein (reguliert, nicht gewinnorientiert)<br />
+      ZVR-Zahl (Zentrales Vereinsregister): 1015608684<br />
+      GISA-Zahl (Gewerbeinformationssystem Austria): 39261441<br />
+      GLN: 9110038490191<br />
+      UID-Nummer: ATU83405245<br />
+      Steuernummer: 68 696/8736<br />
+      Gewerbewortlaut: Dienstleistungen in der automatischen Datenverarbeitung und Informationstechnik<br />
+      Anzuwendendes Gewerberecht: Österreichische Gewerbeordnung (GewO) &middot; Mitglied der Wirtschaftskammer Österreich (WKO)<br />
+      Behörde gemäß § 5 Abs. 1 Z 5 ECG: Magistrat der Stadt Graz<br />
+      Gewerbeanmeldung: 19. März 2026
+    </p>
+    <p style={P}>
+      Alle obigen Angaben sind gegen das öffentliche Register nachprüfbar, nicht nur hier behauptet. Das ist Absicht: Ein Impressum, das einen Abgleich mit seinem eigenen Register nicht überlebt, ist kein besonders gutes Impressum.
+    </p>
+
+    <h2 style={H2}>Gewerberechtliche Geschäftsführung</h2>
+    <p style={P}>Simeon-Andreas Johann Manfred Kepp, verantwortlich nach der österreichischen Gewerbeordnung (GewO) für die oben angeführte, angemeldete Tätigkeit.</p>
+
+    <h2 style={H2}>Hinweis gemäß EU-Verordnung 524/2013 (OS)</h2>
+    <p style={P}>
+      Die Europäische Kommission stellt eine Plattform für Online-Streitbeilegung bereit:{' '}
+      <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" style={A}>ec.europa.eu/consumers/odr</a>.<br />
+      Wir sind weder verpflichtet noch bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen, da wir ausschließlich mit Unternehmen kontrahieren. Das ist kein Ausweichen vor Verantwortung, sondern die zutreffende rechtliche Folge eines reinen B2B-Geschäfts (siehe unsere AGB).
+    </p>
+
+    <h2 style={H2}>Haftungsausschluss</h2>
+    <p style={P}>
+      Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität wird keine Haftung übernommen. Soweit wir extern verlinken, etwa auf eine Behörde, eine Norm oder eine Berichterstattung zu einer unserer Offenlegungen, haben wir auf diese externen Inhalte keinen Einfluss und übernehmen dafür keine Verantwortung, sobald Sie rfi-irfos.com verlassen.
+    </p>
+
+    <h2 style={H2}>Fremde Namen &amp; Marken</h2>
+    <p style={P}>
+      Firmennamen, Produktnamen, App-Namen und Marken, die irgendwo auf dieser Website, in unserer Sicherheitsforschung oder in unserem öffentlichen Offenlegungsregister genannt werden, gehören ihren jeweiligen Inhabern. Ihre Nennung hier dokumentiert, dass wir die betreffende Software untersucht haben; sie impliziert weder Billigung noch Partnerschaft noch Zugehörigkeit in irgendeiner Richtung.
+    </p>
+
+    <h2 style={H2}>Urheberrecht</h2>
+    <p style={P}>Alle von RFI-IRFOS erstellten Inhalte unterliegen dem österreichischen Urheberrecht. Vervielfältigung oder Nutzung über die Grenzen des Urheberrechts hinaus bedarf unserer schriftlichen Zustimmung. Das Zitieren unserer Offenlegungsergebnisse mit Quellenangabe, im gewöhnlichen Rahmen der Berichterstattung darüber, ist ausdrücklich in Ordnung — das ist ja der Sinn der Veröffentlichung.</p>
+
+    <h2 style={H2}>Anwendbares Recht</h2>
+    <p style={P}>Es gilt das Recht der Republik Österreich sowie das Recht der Europäischen Union.</p>
+
+    <h2 style={H2}>Externe Profile</h2>
+    <p style={P}>
+      Wir veröffentlichen unsere Forschung und unseren Code offen. Sie finden uns unter:
+    </p>
+    <ul style={{ ...P, paddingLeft: 18, marginBottom: 16 }}>
+      <li><strong style={{ color: '#e8e8f0' }}>OSF:</strong> <a href="https://osf.io/rzvyg" target="_blank" rel="noopener" style={A}>osf.io/rzvyg</a> — sämtliche Forschungspublikationen und Preprints.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>GitHub:</strong> <a href="https://github.com/rfi-irfos" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos</a> — Open-Source-Werkzeuge, Modelle und Audit-Repositories.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>LinkedIn:</strong> <a href="https://linkedin.com/company/rfi-irfos" target="_blank" rel="noopener" style={A}>RFI-IRFOS</a> — institutionelle Präsenz und Ankündigungen.</li>
+    </ul>
+  </>
+}
+
 function Datenschutz() {
+  const { locale } = useLocale()
+  return locale === 'de' ? <DatenschutzDE /> : <DatenschutzEN />
+}
+
+function DatenschutzEN() {
   return <>
     <h1 style={H1}>Privacy Policy</h1>
     <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Pursuant to the GDPR (EU) 2016/679 &middot; Last updated: July 2026</p>
@@ -285,7 +407,120 @@ function Datenschutz() {
   </>
 }
 
+function DatenschutzDE() {
+  return <>
+    <h1 style={H1}>Datenschutzerklärung</h1>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Gemäß DSGVO (EU) 2016/679 &middot; Letzte Aktualisierung: Juli 2026</p>
+
+    <p style={P}>
+      Diese Seite hat jeden Abschnitt, den eine Datenschutzerklärung haben soll. Wir weigern uns nur, sie mit der vagen Formulierung aufzublähen, die sie normalerweise füllt, weil wir unsere Arbeitszeit damit verbringen, genau diese vage Formulierung in fremden Apps aufzuzeigen. Also: vollständige Abschnitte, klare Aussagen, und wo eine Aussage nachprüfbar ist, sagen wir Ihnen, wie.
+    </p>
+
+    <h2 style={H2}>Verantwortlicher</h2>
+    <p style={P}>
+      RFI-IRFOS (Research Focus Institute — Interdisciplinary Research Facility for Open Sciences)<br />
+      Elisabethinergasse 25/10, 8020 Graz, Österreich<br />
+      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a>
+    </p>
+
+    <h2 style={H2}>Welche Daten wir erheben</h2>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>Serverprotokolle:</strong> IP-Adresse, Zugriffszeitpunkt, URL, HTTP-Statuscode — erhoben von GitHub Pages (GitHub, Inc., USA) und Fly.io (Superfly, Inc., USA) als unvermeidbarer Nebeneffekt jeder Anfrage, die irgendeinen Webserver erreicht.<br />
+      <strong style={{ color: '#e8e8f0' }}>Kontaktformular:</strong> Name, E-Mail, Betreff, Nachricht — übermittelt über Web3Forms (<a href="https://web3forms.com/privacy" target="_blank" rel="noopener" style={A}>web3forms.com/privacy</a>), nur wenn Sie es ausfüllen und absenden.<br />
+      <strong style={{ color: '#e8e8f0' }}>Zahlungsdaten:</strong> Für Käufe über die Website werden Zahlungsdaten (Kartendetails, E-Mail, Name) von <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> verarbeitet (354 Oyster Point Blvd, South San Francisco, CA 94080, USA). RFI-IRFOS erhält oder speichert Ihre Kartendaten nie. Datenschutzerklärung von Stripe: <a href="https://stripe.com/privacy" target="_blank" rel="noopener" style={A}>stripe.com/privacy</a>.<br />
+      <strong style={{ color: '#e8e8f0' }}>Besuchsstatistik:</strong> ein selbst gehosteter Tracking-Pixel (Lighthouse, Graz), der einen Seitenaufruf und einen Referrer protokolliert, auf jeder Seite einschließlich dieser. Speziell auf dieser Familie von Rechts-/Sicherheitsseiten protokollieren wir zusätzlich, nur aggregiert, ob ein Besuch bis zur Fußzeile am Ende der Seite gescrollt hat — derselbe speicherinterne, cookielose Mechanismus wie die im Abschnitt "Cookies" unten beschriebenen Abschnittszähler, hier angewendet, um eine Frage zu beantworten: Werden diese Seiten tatsächlich bis zum Ende gelesen? Speziell auf der Startseite protokollieren wir außerdem, einmal pro Besuch und nur aggregiert, ob die Entwicklertools Ihres Browsers offenbar geöffnet sind (eine passive Fenstergrößen-Prüfung, keine Timing-Tricks) — das existiert einzig, weil wir in der Konsole eine Nachricht für alle hinterlassen haben, die dort nachsehen, und uns interessiert, wie oft das tatsächlich jemand tut. Kein Cookie, kein Geräte-Fingerprint, kein websiteübergreifender Identifikator. Die unglamouröse Wahrheit darüber, was dieser Pixel tatsächlich ist, steht unter "Cookies" weiter unten.
+    </p>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>Was wir nicht erheben,</strong> zur Klarstellung: keine Standortdaten, kein Geräte-Fingerprinting, keine Werbe-ID, keine biometrischen Daten, kein websiteübergreifendes Profil, nichts wird an einen Datenhändler verkauft oder weitergegeben, nichts geht an ein Werbenetzwerk, weil es auf der anderen Seite dieser Website kein Werbenetzwerk gibt.
+    </p>
+
+    <h2 style={H2}>Rechtsgrundlage</h2>
+    <p style={P}>
+      Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO): Zahlungsabwicklung, Kontaktanfragen.<br />
+      Berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO): Serverprotokolle zur Sicherheits- und Fehleranalyse, sowie der oben beschriebene einzelne, anonymisierte Seitenaufruf-Pixel.
+    </p>
+
+    <h2 style={H2}>Auftragsverarbeiter</h2>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> — Zahlungsabwicklung. Auftragsverarbeitungsvertrag (DPA) gemäß Art. 28 DSGVO abgeschlossen. Datenübermittlung in die USA auf Grundlage von Standardvertragsklauseln (Art. 46 Abs. 2 lit. c DSGVO).<br />
+      <strong style={{ color: '#e8e8f0' }}>GitHub, Inc.</strong> — Frontend-Hosting (GitHub Pages). Datenübermittlung in die USA auf Grundlage von Standardvertragsklauseln.<br />
+      <strong style={{ color: '#e8e8f0' }}>Superfly, Inc. (Fly.io)</strong> — Backend-API-Hosting, einschließlich des Lighthouse-Tracking-Pixel-Endpunkts. Datenübermittlung in die USA auf Grundlage von Standardvertragsklauseln.<br />
+      <strong style={{ color: '#e8e8f0' }}>Web3Forms</strong> — ausschließlich Zustellung des Kontaktformulars, nur ausgelöst, wenn Sie das Formular absenden.
+    </p>
+
+    <h2 style={H2}>Internationale Datenübermittlung</h2>
+    <p style={P}>
+      Wo ein oben genannter Auftragsverarbeiter in den USA sitzt, läuft die Übermittlung über Standardvertragsklauseln (Art. 46 Abs. 2 lit. c DSGVO), nicht über einen Angemessenheitsbeschluss. Wir schreiben das offen hin, statt es in einer Klausel wie "Daten können international übermittelt werden" zu verstecken, denn dieser Satz erledigt auf den meisten Datenschutzseiten eine Menge stille Arbeit.
+    </p>
+
+    <h2 style={H2}>Cookies</h2>
+    <p style={P}>
+      Wir verwenden keine Cookies. Hier ist der Teil, den jede Datenschutzerklärung haben soll, als echte Antwort statt als Checkbox. Die üblichen vier Kategorien, so formuliert, wie sie meist formuliert werden, und darunter jeweils unsere tatsächliche Antwort:
+    </p>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>„Technisch notwendige Cookies, erforderlich für die Funktion der Website und nicht deaktivierbar."</strong><br />
+      Wir haben keine. Öffnen Sie jetzt, auf genau dieser Seite, die Entwicklertools Ihres Browsers, Reiter Application, Cookies. Es wird leer sein. Nichts wird „deaktiviert", weil nie etwas aktiviert wurde.
+    </p>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>„Funktionale Cookies, zum Merken Ihrer Einstellungen."</strong><br />
+      Sie können ein helles, dunkles oder kontrastreiches Theme sowie eine Sprache wählen, und wir merken uns diese Wahl — in <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>localStorage</code>, nicht in einem Cookie. Das verlässt nie Ihr Gerät, trägt keinen Identifikator und ist für uns nicht lesbar.
+    </p>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>„Performance-/Analyse-Cookies, um zu verstehen, wie Besucher unsere Website nutzen."</strong><br />
+      Hier steckt normalerweise das eigentliche Tracking, und hier wird eine Datenschutzerklärung normalerweise vage. Wir nicht. Diese Website lädt ein einzelnes, selbst gehostetes 1×1-Pixelbild, kein Cookie, keine Einwilligung dafür nötig, weil die Cookie-Einwilligungspflicht (ePrivacy Art. 5 Abs. 3) am Speichern oder Auslesen von etwas auf <em>Ihrem</em> Gerät ansetzt, und dieser Pixel tut keines von beiden. Jeder Seitenaufruf sendet genau das, den wortwörtlichen Tag, der genau jetzt live auf dieser Seite liegt — kopieren Sie ihn und prüfen Sie ihn selbst:
+    </p>
+    <div style={{ background: '#0c0c16', border: '1px solid rgba(0,245,196,0.2)', borderRadius: 6, padding: '12px 16px', margin: '8px 0 16px 0', overflowX: 'auto' }}>
+      <code style={{ fontFamily: 'monospace', fontSize: 12, color: 'var(--accent-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+        {'<img src="https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif?site=rfi-irfos&p={page-path}&r={referrer}&utm_source={utm}" width="1" height="1" alt="" style="display:none">'}
+      </code>
+    </div>
+    <p style={P}>
+      Was durch diese Anfrage in unserer Datenbank landet: der Seitenpfad, die verweisende Domain normalisiert auf einen Kanal ("organische Suche", "direkt", "Referral", "linkedin" und so weiter, damit wir einem Vorstandsmitglied sagen können, woher Besucher kommen) und das Site-Tag. Das ist alles, vollständig: <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>path, source, referrer, utm_source, utm_medium, utm_campaign, site</code>. Es gibt in dieser Tabelle keine IP-Adress-Spalte. Kein Besucher-ID-Feld wird von dieser Pixel-Kopie je befüllt, daher landen zwei Besuche derselben Person als zwei unabhängige, nicht verknüpfte Zeilen, nicht als ein wachsendes Profil. Vollständiger Quellcode, Backend inklusive: <a href="https://github.com/rfi-irfos/rfi-irfos-web" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos/rfi-irfos-web</a>. Wir bitten Sie nicht, einem Satz zu vertrauen, wir zeigen auf den Code, der entweder dazu passt oder nicht.
+    </p>
+    <p style={P}>
+      Ein weiteres Signal landet auf demselben Weg: welcher Abschnitt dieser einzelnen, scrollenden Seite während Ihres Besuchs sichtbar wurde (das Offenlegungsregister, Preise, das Hinweis-Formular und so weiter), gespeichert als eine weitere anonyme <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>section</code>-Spalte in derselben Tabelle. Das ist ein Zähler, kein Betrachtungsprotokoll — "der Registerabschnitt wurde heute 214 Mal gesehen", niemals "Besucher X hat sich das Register angesehen." Die Seite hält eine einfache JavaScript-Variable im Speicher, damit Hoch- und Herunterscrollen über einen Abschnitt ihn nicht doppelt zählt; diese Variable wird nie in ein Cookie, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>localStorage</code> oder <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>sessionStorage</code> geschrieben und ist beim nächsten Laden der Seite sofort weg. Dieselbe Begründung wie beim Pixel oben: Auf Ihrem Gerät wird nichts gespeichert, daher greift der ePrivacy-Einwilligungstatbestand nie, und nichts davon identifiziert Sie, daher sind es von vornherein keine personenbezogenen Daten.
+    </p>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>„Targeting-/Werbe-Cookies, zum Erstellen eines Profils Ihrer Interessen."</strong><br />
+      Wir schalten keine Werbung, haben kein Werbekonto und hätten nichts, womit wir Sie gezielt ansprechen könnten, selbst wenn wir wollten. Es gibt keinen Dritten auf der anderen Seite dieser Website, der für ein solches Profil bezahlen würde.
+    </p>
+    <p style={P}>
+      Wir hätten trotzdem einen Cookie-Banner mit einem befriedigenden "Alle akzeptieren"-Knopf einbauen können, weil ihn jeder erwartet. Haben wir nicht, weil ein Einwilligungsbanner suggeriert, dass in Ihrem Namen eine Entscheidung getroffen wird, und hier gibt es keine zu treffen. Sollte sich das je ändern, ändert sich dieser Abschnitt mit — öffentlich, in derselben Commit-Historie wie alles andere auf dieser Website.
+    </p>
+
+    <h2 style={H2}>Automatisierte Entscheidungsfindung</h2>
+    <p style={P}>Keine. Wir setzen kein Profiling und keine automatisierte Entscheidungsfindung ein, die rechtliche oder ähnlich bedeutsame Wirkung für Sie entfaltet.</p>
+
+    <h2 style={H2}>Speicherdauer</h2>
+    <p style={P}>
+      Kontaktanfragen werden nach Abschluss der Kommunikation gelöscht, spätestens nach 7 Jahren gemäß österreichischen gesetzlichen Aufbewahrungsvorschriften. Zahlungsbelege werden gemäß § 132 BAO (Bundesabgabenordnung) 7 Jahre aufbewahrt. Serverprotokolle und Pixel-Daten werden nur so lange aufbewahrt, wie es für Sicherheits- und Traffic-Analyse nötig ist, und danach rotiert.
+    </p>
+
+    <h2 style={H2}>Datenschutz für Minderjährige</h2>
+    <p style={P}>Dies ist eine B2B-Forschungs- und Offenlegungsseite. Sie richtet sich nicht an Kinder, und wir erheben wissentlich keine Daten von Personen unterhalb des nach Art. 8 DSGVO für die Einwilligung erforderlichen Alters.</p>
+
+    <h2 style={H2}>Ihre Rechte (Art. 15–21 DSGVO)</h2>
+    <p style={P}>
+      Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch, alles davon, unter: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a>. Angesichts dessen, wie wenig wir tatsächlich über eine einzelne Person vorhalten, erledigen wir die meisten dieser Anfragen in Minuten, nicht in Wochen.
+    </p>
+
+    <h2 style={H2}>Beschwerderecht</h2>
+    <p style={P}>Österreichische Datenschutzbehörde: <a href="https://www.dsb.gv.at" target="_blank" rel="noopener" style={A}>dsb.gv.at</a></p>
+
+    <h2 style={H2}>Änderungen dieser Erklärung</h2>
+    <p style={P}>Jede Änderung dessen, was wir tatsächlich erheben, wird zuerst hier abgebildet, mit vorgezogenem "Letzte Aktualisierung"-Datum oben. Wir verfolgen Änderungen an dieser Seite nach demselben Maßstab, den wir von jedem anderen erwarten würden.</p>
+
+    <h2 style={H2}>Ein Wort zur Konsistenz</h2>
+    <p style={P}>Wir verbringen unsere Forschungszeit damit, andere Unternehmen genau für diese Art von Erklärung zu prüfen. Diese hier beschreibt, was auf dieser Website tatsächlich passiert, im selben evidenzbasierten Geist — nichts hier ist Wunschdenken, und die nachprüfbaren Teile sind von Ihnen nachprüfbar, nicht nur von uns.</p>
+  </>
+}
+
 function AGB() {
+  const { locale } = useLocale()
+  return locale === 'de' ? <AGBDE /> : <AGBEN />
+}
+
+function AGBEN() {
   return <>
     <h1 style={H1}>General Terms and Conditions</h1>
     <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>RFI-IRFOS &middot; Last updated: July 2026</p>
@@ -351,6 +586,72 @@ function AGB() {
   </>
 }
 
+function AGBDE() {
+  return <>
+    <h1 style={H1}>Allgemeine Geschäftsbedingungen</h1>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>RFI-IRFOS &middot; Letzte Aktualisierung: Juli 2026</p>
+
+    <p style={P}>
+      Vierzehn Abschnitte, keine Füllklausel, nichts hier, das nur existiert, um gründlich zu wirken. Wenn ein Absatz unten kurz wirkt, dann weil die kurze Fassung die zutreffende war.
+    </p>
+
+    <h2 style={H2}>1. Geltungsbereich — Ausschließlich B2B</h2>
+    <p style={P}>
+      Diese Bedingungen gelten für alle von RFI-IRFOS (ZVR 1015608684, Elisabethinergasse 25/10, 8020 Graz) erbrachten Leistungen — insbesondere Sicherheitsaudits, Softwareentwicklung und Forschungsleistungen.<br /><br />
+      Dieses Angebot richtet sich <strong style={{ color: '#e8e8f0' }}>ausschließlich an Unternehmer</strong> im Sinne des § 1 Abs. 2 Konsumentenschutzgesetz (KSchG). Verträge mit Verbrauchern im Sinne des KSchG sind ausgeschlossen. Mit Erteilung eines Auftrags bestätigt der Kunde, im Rahmen seiner gewerblichen oder beruflichen Tätigkeit zu handeln.
+    </p>
+
+    <h2 style={H2}>2. Leistungserbringung</h2>
+    <p style={P}>Umfang und Bedingungen werden schriftlich, pro Auftrag, vor Arbeitsbeginn vereinbart. Leistungsbeschreibungen und Preislisten auf dieser Website sind unverbindlich und stellen kein bindendes Angebot dar, der tatsächliche Leistungsumfang wird mit jedem Kunden schriftlich bestätigt.</p>
+
+    <h2 style={H2}>3. Preise &amp; Zahlung</h2>
+    <p style={P}>
+      Preise verstehen sich in Euro, zuzüglich gesetzlicher Umsatzsteuer. Die Zahlung erfolgt <strong style={{ color: '#e8e8f0' }}>vollständig im Voraus</strong>, vor Arbeitsbeginn — ausschließlich über die auf der Website angebotenen Zahlungsmethoden (Stripe).<br /><br />
+      Die Leistungserbringung beginnt <strong style={{ color: '#e8e8f0' }}>unmittelbar</strong> nach Zahlungseingang. Der Kunde stimmt diesem unmittelbaren Beginn ausdrücklich zu. Dementsprechend besteht kein Rücktrittsrecht (§ 18 Abs. 1 Z 1 Fern- und Auswärtsgeschäfte-Gesetz, FAGG). Stornierung oder Rückerstattung sind nach Zahlungseingang ausgeschlossen.
+    </p>
+
+    <h2 style={H2}>4. Vertraulichkeit &amp; Geheimhaltungsvereinbarung</h2>
+    <p style={P}>
+      Ergebnisse von Sicherheitsaudits unterliegen strenger Vertraulichkeit bis zur koordinierten Offenlegung (90-Tage-Embargo, ISO/IEC 29147). Aufsichtsbehörden werden unabhängig vom Status einer Geheimhaltungsvereinbarung benachrichtigt, in Erfüllung unserer gesetzlichen Meldepflichten. Unsere Geheimhaltungsvereinbarung deckt das vertrauliche Material des Kunden ab; sie deckt Befunde, zu deren Meldung an eine Aufsichtsbehörde wir gesetzlich verpflichtet sind, nicht ab und kann dies auch nicht.
+    </p>
+
+    <h2 style={H2}>5. Haftung</h2>
+    <p style={P}>Die Haftung ist auf Vorsatz und grobe Fahrlässigkeit beschränkt. Höchsthaftung: der Rechnungswert der jeweiligen Leistung. Folgeschäden sind, soweit gesetzlich zulässig, ausgeschlossen.</p>
+
+    <h2 style={H2}>6. Kein Vollständigkeitsanspruch (Sicherheitsforschung)</h2>
+    <p style={P}>Sicherheits- und Datenschutzbewertungen spiegeln den Zustand des geprüften Systems zum Zeitpunkt der Prüfung wider, im Rahmen der Zugriffstiefe und Dauer des jeweiligen Auftrags. RFI-IRFOS gewährleistet nicht, dass alle Schwachstellen identifiziert wurden. Wer Ihnen sagt, eine Sicherheitsbewertung sei erschöpfend, verkauft Ihnen etwas — und das sagen wir hiermit auch über unsere eigenen Berichte.</p>
+
+    <h2 style={H2}>7. Geistiges Eigentum</h2>
+    <p style={P}>Berichte, Quellcode und Forschungsergebnisse bleiben Eigentum von RFI-IRFOS, bis die Zahlung vollständig eingegangen ist. Nach Zahlungseingang erhält der Kunde die vereinbarten Nutzungsrechte.</p>
+
+    <h2 style={H2}>8. Kommunikation</h2>
+    <p style={P}>Sämtliche auftragsbezogene Kommunikation erfolgt schriftlich (E-Mail), wegen des dadurch für beide Seiten entstehenden Nachweispfads. Wir bieten und führen keine Telefonate oder persönlichen Treffen im Rahmen unseres Forschungs- oder Offenlegungsprozesses durch.</p>
+
+    <h2 style={H2}>9. Höhere Gewalt</h2>
+    <p style={P}>Keine der Parteien haftet für Verzögerungen oder Nichterfüllung, die durch Umstände außerhalb ihrer zumutbaren Kontrolle verursacht werden, sofern die betroffene Partei die andere Partei unverzüglich benachrichtigt.</p>
+
+    <h2 style={H2}>10. Anwendbares Recht &amp; Gerichtsstand</h2>
+    <p style={P}>Es gilt österreichisches Recht unter Ausschluss des UN-Kaufrechts (CISG). Gerichtsstand: Graz, Österreich.</p>
+
+    <h2 style={H2}>11. Online-Streitbeilegung (OS)</h2>
+    <p style={P}>
+      EU-Plattform für Online-Streitbeilegung: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" style={A}>ec.europa.eu/consumers/odr</a>.<br />
+      Da wir ausschließlich mit Unternehmen kontrahieren, sind wir nicht verpflichtet, an Verfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+    </p>
+
+    <h2 style={H2}>12. Salvatorische Klausel</h2>
+    <p style={P}>Sollte eine Bestimmung dieser Bedingungen unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen davon unberührt.</p>
+
+    <h2 style={H2}>13. Kontakt</h2>
+    <p style={P}><a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a></p>
+
+    <h2 style={H2}>14. Verwendung der Einnahmen</h2>
+    <p style={P}>
+      100% des Überschusses werden in offene Wissenschaft, öffentliche Forschung und Infrastruktur reinvestiert. Null Prozent gehen an Anteilseigner — wir haben keine. RFI-IRFOS ist ein regulierter, nicht gewinnorientierter Verein (ZVR 1015608684). Jeder Euro über den Betriebskosten finanziert das nächste Audit, den nächsten Modelltrainingslauf oder die nächste Forschungspublikation. Das ist keine Marketingzeile. Das ist eine gesetzliche Verpflichtung.
+    </p>
+  </>
+}
+
 function Security() {
   return <>
     <h1 style={H1}>Security Policy</h1>
@@ -364,7 +665,7 @@ function Security() {
       <li><strong style={{ color: '#e8e8f0' }}>Free, unconditional disclosure.</strong> Public disclosure is Tier 1. It happens after the 90-day embargo, regardless of payment, regardless of reply. Nothing is held back for money.</li>
       <li><strong style={{ color: '#e8e8f0' }}>Coordinated, not cold outreach.</strong> We follow ISO/IEC 29147. Supervisory authorities are CC'd from day one - visibly, not blind-copied, not informed only if things go nowhere.</li>
       <li><strong style={{ color: '#e8e8f0' }}>Evidence, not allegation.</strong> Every finding points to a specific artifact in the software as actually shipped - a declared permission, a compiled SDK class, a hardcoded key. Any competent third party can independently verify it.</li>
-      <li><strong style={{ color: '#e8e8f0' }}>Not-for-profit, by structure.</strong> RFI-IRFOS is a registered nonprofit. There are no shareholders; surplus is reinvested into research. Paid advisory tiers are optional and separate - never a condition of free disclosure.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>Not-for-profit, by structure.</strong> RFI-IRFOS is a registered not-for-profit. There are no shareholders; surplus is reinvested into research. Paid advisory tiers are optional and separate - never a condition of free disclosure.</li>
       <li><strong style={{ color: '#e8e8f0' }}>Research, not extortion.</strong> Our work is grounded in the freedom of scientific research (Art. 17 Austrian Federal Constitution) and GDPR Art. 89. We report on companies' own distributed software - never private, stolen, or unauthorized-access data.</li>
       <li><strong style={{ color: '#e8e8f0' }}>No disruption, ever.</strong> No denial-of-service, no load testing. Findings come from static analysis of the software as shipped, never from attacking it in production.</li>
       <li><strong style={{ color: '#e8e8f0' }}>No dynamic testing without an agreement, no social engineering.</strong> Live calls against a company's own systems happen only under a signed engagement. We never phish, pretext, or manipulate staff to obtain access.</li>

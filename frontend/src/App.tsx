@@ -64,9 +64,12 @@ export default function App() {
     window.scrollTo(0, slug ? 0 : homeScrollY.current)
   }, [slug])
 
-  // LegalPage (Team/legal pages) stays English-only and out of scope for this
-  // i18n pass - wrapping only PublicSite in the LocaleProvider keeps that
-  // boundary explicit rather than incidental.
-  if (slug) return <Suspense fallback={null}><LegalPage slug={slug} /></Suspense>
+  // LegalPage now shares the same LocaleProvider/localStorage key as PublicSite
+  // (2026-08-18) - Impressum/Datenschutz/AGB got real German translations, so
+  // the DE/EN toggle needs to reach this route too, not just the homepage.
+  // Team/Security/Standards/Methodology stay English-only within LegalPage
+  // itself (see the locale check inside each of those) - only the three pages
+  // with actual legal weight for an Austrian audience were translated.
+  if (slug) return <LocaleProvider><Suspense fallback={null}><LegalPage slug={slug} /></Suspense></LocaleProvider>
   return <LocaleProvider><PublicSite initialSection={sectionFocus} /></LocaleProvider>
 }
