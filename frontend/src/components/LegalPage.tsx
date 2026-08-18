@@ -6,18 +6,35 @@ const P = { color: '#a0a0b8', fontSize: 14, marginBottom: 12 }
 const A = { color: 'var(--accent-text)', textDecoration: 'none' }
 
 import React, { useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useLocale } from '../hooks/useLocale'
 
 const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
 const LIGHTHOUSE_TRACK = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track'
 
+// Client-side navigation between legal pages, and back to the homepage
+// (2026-08-19, live feedback: clicking a quicklink did a full browser reload
+// - "das ist nicht clean, das ist increment") - real <a href> stays for
+// accessibility/middle-click/SEO, but a plain left-click is intercepted:
+// pushState changes the URL without reloading, then a manually-dispatched
+// PopStateEvent is what App.tsx's popstate listener picks up to actually
+// update its `slug` state (pushState alone never fires popstate itself).
+function navigate(e: React.MouseEvent, href: string) {
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+  e.preventDefault()
+  history.pushState(null, '', href)
+  window.dispatchEvent(new PopStateEvent('popstate'))
+}
+
 // Reached via a real URL (/impressum etc) or the #p/slug hash - either way the
 // document still carries the homepage's shared <title>/description until we set
 // our own, so a search result or a browser tab would otherwise show "RFI-IRFOS -
 // Rethink the Obvious." for every one of these instead of what the page is.
-// de/de-description are only set for the three pages that actually got a German
-// translation (Impressum/Datenschutz/AGB, 2026-08-18) - the rest stay
-// English-only, so the effect below falls back to the English pair for them
+// titleDe/descriptionDe are set for every page except Team (2026-08-19: Security/
+// Standards/Methodology got real German translations too, closing the gap live
+// feedback flagged - "security policy is not translated...? how could that
+// slip?"). Team stays English-only (names + short focus tags, not prose worth
+// translating), so the effect below falls back to the English pair for it
 // regardless of locale.
 const META: Record<string, { title: string; description: string; titleDe?: string; descriptionDe?: string }> = {
   impressum: {
@@ -32,10 +49,19 @@ const META: Record<string, { title: string; description: string; titleDe?: strin
     title: 'Terms and Conditions — RFI-IRFOS', description: 'General Terms and Conditions for RFI-IRFOS security audits, software development, and research services. B2B only.',
     titleDe: 'AGB — RFI-IRFOS', descriptionDe: 'Allgemeine Geschäftsbedingungen für Sicherheitsaudits, Softwareentwicklung und Forschungsleistungen von RFI-IRFOS. Ausschließlich B2B.',
   },
-  security: { title: 'Security Policy — RFI-IRFOS', description: "RFI-IRFOS's coordinated vulnerability disclosure policy: ISO/IEC 29147, 90-day embargo, regulator notification, safe harbor for good-faith research." },
-  standards: { title: 'Standards & Compliance — RFI-IRFOS', description: 'The regulatory frameworks RFI-IRFOS audits against: NIS-2, GDPR, EU AI Act, DSA, ISO/IEC 29147/30111/27001, and more.' },
+  security: {
+    title: 'Security Policy — RFI-IRFOS', description: "RFI-IRFOS's coordinated vulnerability disclosure policy: ISO/IEC 29147, 90-day embargo, regulator notification, safe harbor for good-faith research.",
+    titleDe: 'Sicherheitsrichtlinie — RFI-IRFOS', descriptionDe: 'Die koordinierte Offenlegungsrichtlinie von RFI-IRFOS: ISO/IEC 29147, 90-Tage-Embargo, Behördenbenachrichtigung, Safe Harbor für Forschung in gutem Glauben.',
+  },
+  standards: {
+    title: 'Standards & Compliance — RFI-IRFOS', description: 'The regulatory frameworks RFI-IRFOS audits against: NIS-2, GDPR, EU AI Act, DSA, ISO/IEC 29147/30111/27001, and more.',
+    titleDe: 'Standards & Compliance — RFI-IRFOS', descriptionDe: 'Die Rahmenwerke, gegen die RFI-IRFOS prüft: NIS-2, DSGVO, EU AI Act, DSA, ISO/IEC 29147/30111/27001 und mehr.',
+  },
   team: { title: 'Team — RFI-IRFOS', description: "The people behind RFI-IRFOS's security research, disclosure, and ternary AI work." },
-  methodology: { title: 'Methodology — RFI-IRFOS', description: "The four principles governing RFI-IRFOS's research: sources, methods, handling results, and disclosure — the same rules regardless of who's paying." },
+  methodology: {
+    title: 'Methodology — RFI-IRFOS', description: "The four principles governing RFI-IRFOS's research: sources, methods, handling results, and disclosure — the same rules regardless of who's paying.",
+    titleDe: 'Methodik — RFI-IRFOS', descriptionDe: 'Die vier Prinzipien, die die Forschung von RFI-IRFOS bestimmen: Quellen, Methoden, Umgang mit Ergebnissen und Offenlegung — dieselben Regeln, unabhängig vom Kunden.',
+  },
 }
 
 // Short cross-links between the legal/reference pages themselves (2026-08-19,
@@ -88,10 +114,10 @@ export function LegalPage({ slug }: { slug: string }) {
     return () => io.disconnect()
   }, [slug])
 
-  // Only impressum/datenschutz/agb actually branch on locale (see each
-  // function below) - the toggle still shows everywhere on this route for
-  // consistency and because it's shared state with the homepage anyway, but
-  // clicking it on e.g. /security or /team just doesn't change anything there.
+  // Every page except Team branches on locale now (see each function below) -
+  // the toggle still shows on /team too, for consistency and because it's
+  // shared state with the homepage anyway, it just doesn't change anything
+  // there.
   return (
     <div style={BASE}>
       <div style={PROSE}>
@@ -105,20 +131,24 @@ export function LegalPage({ slug }: { slug: string }) {
             frame, not a one-off page shell. */}
         <div className="rfi-glass" style={{ borderRadius: 20, padding: '36px 40px' }}>
         <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Text link replaced with an icon button (2026-08-19, live feedback:
+              "instead of '← rfi-irfos.com' just a nice green back button svg").
+              Client-side nav via the `navigate` helper above - no more full
+              reload on the way back to the homepage. */}
           <a
             href="/"
-            onClick={e => {
-              // Reached via #p/slug (hash only, still on "/"): clearing the hash is
-              // enough, no reload. Reached via a real path (/impressum etc, no hash):
-              // that alone wouldn't change the URL, so fall through to the normal
-              // href navigation instead of preventing it.
-              if (!window.location.hash) return
-              e.preventDefault()
-              location.hash = ''
+            onClick={e => navigate(e, '/')}
+            aria-label="Back to rfi-irfos.com"
+            title="Back to rfi-irfos.com"
+            style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: 34, height: 34, borderRadius: '50%',
+              background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)', color: '#8fe8d0',
             }}
-            style={{ ...A, fontFamily: 'monospace', fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase' }}
           >
-            &larr; rfi-irfos.com
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
           </a>
           {/* Wrapped in a pill (2026-08-19, live feedback) - same chrome as the
               System Card modal's link pills, was bare text before. */}
@@ -136,13 +166,12 @@ export function LegalPage({ slug }: { slug: string }) {
         </div>
         {/* Quicklinks to the other legal/reference pages (2026-08-19, live
             feedback) - jump between them directly instead of routing back
-            through the homepage footer each time. Plain <a href> full
-            navigation, same as the footer's own legal links (PublicSite.tsx),
-            not a client-side transition - there's no router for slug-to-slug
-            moves here. */}
+            through the homepage footer each time. Client-side via `navigate`
+            (was a full-reload <a href> - "das ist nicht clean, das ist
+            increment"), real href kept for middle-click/SEO/no-JS. */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 40 }}>
           {LEGAL_QUICKLINKS.filter(q => q.slug !== slug).map(q => (
-            <a key={q.slug} href={`/${q.slug}`} style={{
+            <a key={q.slug} href={`/${q.slug}`} onClick={e => navigate(e, `/${q.slug}`)} style={{
               fontFamily: 'monospace', fontSize: 10.5, fontWeight: 600, letterSpacing: '0.04em',
               color: '#8a8aa0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
               borderRadius: 999, padding: '5px 11px', textDecoration: 'none',
@@ -151,16 +180,31 @@ export function LegalPage({ slug }: { slug: string }) {
             </a>
           ))}
         </div>
-        {slug === 'impressum'   && <Impressum />}
-        {slug === 'datenschutz' && <Datenschutz />}
-        {slug === 'agb'         && <AGB />}
-        {slug === 'security'    && <Security />}
-        {slug === 'standards'   && <Standards />}
-        {slug === 'team'        && <Team />}
-        {slug === 'methodology' && <Methodology />}
-        {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology'].includes(slug) && (
-          <p style={P}>Seite nicht gefunden.</p>
-        )}
+        {/* AnimatePresence + key={slug} (2026-08-19, live feedback: "not just
+            instant change and dynamic animation") - a quicklink click now
+            fades/slides the new page's content in instead of snapping
+            instantly, the same "remount for a smooth swap" pattern already
+            used by the Research area modal's cross-links. */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={slug}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {slug === 'impressum'   && <Impressum />}
+            {slug === 'datenschutz' && <Datenschutz />}
+            {slug === 'agb'         && <AGB />}
+            {slug === 'security'    && <Security />}
+            {slug === 'standards'   && <Standards />}
+            {slug === 'team'        && <Team />}
+            {slug === 'methodology' && <Methodology />}
+            {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology'].includes(slug) && (
+              <p style={P}>Seite nicht gefunden.</p>
+            )}
+          </motion.div>
+        </AnimatePresence>
         <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 10, color: '#7a7aa0' }}>
           RFI-IRFOS &nbsp;&middot;&nbsp; ZVR 1015608684 &nbsp;&middot;&nbsp; GISA 39261441 &nbsp;&middot;&nbsp; GLN 9110038490191 &nbsp;&middot;&nbsp; UID ATU83405245 &nbsp;&middot;&nbsp; Steuernummer 68 696/8736 &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz
         </div>
@@ -701,6 +745,11 @@ function AGBDE() {
 }
 
 function Security() {
+  const { locale } = useLocale()
+  return locale === 'de' ? <SecurityDE /> : <SecurityEN />
+}
+
+function SecurityEN() {
   return <>
     <h1 style={H1}>Security Policy</h1>
     <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Coordinated Disclosure &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
@@ -779,7 +828,91 @@ function Security() {
   </>
 }
 
+function SecurityDE() {
+  return <>
+    <h1 style={H1}>Sicherheitsrichtlinie</h1>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Koordinierte Offenlegung &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
+
+    <h2 style={H2}>Unsere Methode</h2>
+    <p style={P}>
+      Wir sind ein Forschungsinstitut, kein Anbieter auf Kundenjagd. Wir führen Root-Level-Codeanalysen an öffentlich vertriebener Software durch und legen offen, was wir finden - gegenüber dem Unternehmen und der Aufsichtsbehörde, gleichzeitig. Hier ist, was das in der Praxis bedeutet, und warum es trägt. Wir veröffentlichen, was wir tun; die konkreten Techniken hinter einem einzelnen Fund bleiben im Bericht, den wir dem Unternehmen schicken, nicht auf dieser Seite.
+    </p>
+    <ul style={{ ...P, paddingLeft: 18, marginBottom: 16 }}>
+      <li><strong style={{ color: '#e8e8f0' }}>Kostenlose, bedingungslose Offenlegung.</strong> Öffentliche Offenlegung ist Tier 1. Sie erfolgt nach dem 90-Tage-Embargo, unabhängig von Zahlung, unabhängig von Antwort. Nichts wird für Geld zurückgehalten.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>Koordiniert, keine Kaltakquise.</strong> Wir folgen ISO/IEC 29147. Aufsichtsbehörden werden von Tag eins an in CC gesetzt - sichtbar, nicht verdeckt, nicht erst informiert, wenn nichts vorangeht.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>Evidenz, keine Behauptung.</strong> Jeder Fund verweist auf ein konkretes Artefakt in der tatsächlich ausgelieferten Software - eine deklarierte Berechtigung, eine kompilierte SDK-Klasse, einen hartkodierten Schlüssel. Jeder kompetente Dritte kann das unabhängig nachprüfen.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>Nicht gewinnorientiert, strukturell.</strong> RFI-IRFOS ist ein eingetragener, nicht gewinnorientierter Verein. Es gibt keine Anteilseigner; Überschüsse werden in Forschung reinvestiert. Kostenpflichtige Beratungsstufen sind optional und getrennt - nie eine Bedingung für kostenlose Offenlegung.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>Forschung, keine Erpressung.</strong> Unsere Arbeit gründet auf der Freiheit der Wissenschaft (Art. 17 B-VG) und Art. 89 DSGVO. Wir berichten über die eigene, vertriebene Software von Unternehmen - nie über private, gestohlene Daten oder Daten aus unbefugtem Zugriff.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>Niemals Störung.</strong> Kein Denial-of-Service, keine Lasttests. Funde stammen aus statischer Analyse der ausgelieferten Software, nie aus Angriffen auf die Produktivumgebung.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>Keine dynamischen Tests ohne Vereinbarung, kein Social Engineering.</strong> Live-Tests gegen die eigenen Systeme eines Unternehmens finden nur unter einem unterschriebenen Auftrag statt. Wir phishen nie, täuschen nie vor, manipulieren nie Personal, um Zugang zu erhalten.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>Kein erfundener Fortschritt, auch nicht von unseren eigenen Werkzeugen.</strong> Jedes hausinterne Agenten-Tool läuft unter einer schriftlichen Wahrheitsrichtlinie: nie behaupten, dass eine Datei existiert, Code gelaufen ist oder ein Test bestanden wurde, ohne dass es tatsächlich verifiziert wurde.</li>
+    </ul>
+
+    <h2 style={H2}>Unser Offenlegungsrahmen</h2>
+    <p style={P}>
+      Root-Level-Codeanalyse. Aufsichtsbehörden bei jeder Einreichung in CC - nationale Datenschutzbehörde + EDSB. 90 Tage koordinierte Offenlegung. Unser Rahmen. Unser Zeitplan.
+    </p>
+    <p style={P}>
+      Wir betreiben keine Bug-Bounty-Programme, kein HackerOne und keine Drittanbieter-Plattformen für Schwachstellenprämien. Alle Funde werden unter dem <strong style={{ color: '#e8e8f0' }}>Forschungsfreiheitsgesetz (Art. 17 StGG)</strong> veröffentlicht und stellen freien wissenschaftlichen Wissensaustausch im EU-Forschungsrahmen dar - unabhängig von kommerziellem Anreiz.
+    </p>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>Offenlegung ist bedingungslos.</strong> Jede Organisation auf unserem Ledger erhält dieselbe Behandlung - dasselbe Embargo, dieselbe Veröffentlichung, dieselbe Behördenbenachrichtigung - unabhängig davon, ob sie RFI-IRFOS kommerziell beauftragt.
+    </p>
+    <p style={P}>
+      90 Tage koordiniertes Embargo von der Erstbenachrichtigung bis zur öffentlichen Offenlegung. Aufsichtsbehörden (DSB, EDSA, CERT.at) werden parallel benachrichtigt — nicht im Nachhinein, nicht nur, „falls das hier zu nichts führt". Verlängerungen werden von Fall zu Fall geprüft, bei echter laufender Behebung, nie zum Hinauszögern.
+    </p>
+
+    <p style={P}>
+      Wir verbringen das meiste unserer Zeit damit, Dinge zu finden, die andere Unternehmen nicht gefunden haben wollten. Fairerweise: So findet man eines bei uns. Echtes Institut, echte Anschrift in Graz, Österreich, kein Bug-Bounty-Theater, kein Chatbot zwischen Ihnen und der Person, die das hier tatsächlich liest.
+    </p>
+
+    <h2 style={H2}>Eine Schwachstelle melden</h2>
+    <p style={P}>
+      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a><br />
+      PGP-Schlüssel auf Anfrage verfügbar. Wir bestätigen jede Meldung innerhalb von 48 Stunden — von einem Menschen, nicht einer Ticketnummer.
+    </p>
+
+    <h2 style={H2}>Wie wir mit Ihren Einsendungen umgehen</h2>
+    <p style={P}>ISO/IEC-30111-Triage: reproduzieren, eingrenzen, beheben, Sie kreditieren. Kein Fund wird begraben, weil er unbequem ist — genau das ist die gesamte Beschwerde, die wir gegen alle anderen erheben, und wir nehmen uns davon nicht aus.</p>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>Nur rechtmäßige Grundlage.</strong> Wir akzeptieren Funde, die über öffentlich zugängliche Informationen, Ihre eigenen Geräte oder Software, zu deren Test Sie berechtigt sind, gewonnen wurden — derselbe Maßstab, an den sich auch unsere eigene Root-Level-Codeanalyse hält. Zeigt das, was Sie uns schicken, Hinweise auf unbefugten Zugriff auf ein System, das Sie nicht kontrollieren, veröffentlichen oder kreditieren wir es unter diesem Programm nicht. Wir melden es direkt an die zuständigen Behörden, genauso, wie wir behandelt werden wollten, wenn die Rollen vertauscht wären.
+    </p>
+    <p style={P}>
+      <strong style={{ color: '#e8e8f0' }}>Namensnennung, Ihre Wahl.</strong> Vollständiger Name, Alias oder vollständig anonym — genau wie in unseren <a href="#p/agb" style={A}>AGB</a> festgelegt. Kein Anruf, kein Treffen. Alles bleibt schriftlich, wie bei jeder Offenlegung, die wir versenden.
+    </p>
+
+    <h2 style={H2}>Geltungsbereich</h2>
+    <p style={P}>rfi-irfos.com &middot; ternlang.com &middot; lighthouse-rfi-irfos.fly.dev &middot; github.com/rfi-irfos/*</p>
+
+    <h2 style={H2}>Nicht im Geltungsbereich</h2>
+    <p style={P}>Social Engineering, physische Angriffe, DoS/DDoS. Wir betreiben kein Bug-Bounty-Programm — keine Punkte, kein Merchandise, keine Bestenliste. Das hier ist keine Plattform, das ist ein Postfach.</p>
+
+    <h2 style={H2}>Ehrentafel</h2>
+    <p style={P}>Verantwortungsvolle Melder werden (mit Zustimmung) öffentlich in unseren Offenlegungsberichten genannt. Ihr Name, wo er verdient ist — nichts davon ist gamifiziert.</p>
+
+    <h2 style={H2}>Safe Harbor</h2>
+    <p style={P}>
+      Sicherheitsforschung in gutem Glauben, die im Einklang mit dieser Richtlinie durchgeführt, uns privat gemeldet und mit angemessener Zeit zur Triage versehen wird, löst von unserer Seite keine zivil- oder strafrechtliche Anzeige aus. Wir behandeln Ihre Meldung nicht als unbefugten Zugriff, sondern als das, was sie ist.
+    </p>
+
+    <h2 style={H2}>Warum wir diese Seite überhaupt veröffentlichen</h2>
+    <p style={P}>
+      Weil ein Forschungsinstitut, das die undokumentierten Tracking-Mechanismen, hartkodierten Schlüssel und SDK-Initialisierungen vor Einwilligung anderer offenlegt, ohne seine eigene Sicherheitsrichtlinie zu veröffentlichen, genau der doppelte Standard wäre, den wir in unseren eigenen Berichten anprangern. Diese Seite existiert, damit niemand das auch hier nur glauben muss.
+    </p>
+
+    <h2 style={H2}>Ein Wort zum Ton</h2>
+    <p style={P}>
+      Wir arbeiten von Graz, Österreich aus — näher an den Alpen als an einem Glasturm. Wir folgen ISO/IEC 29147 buchstabengetreu, wir melden bei Behörden, bevor uns jemand dazu zwingt, und wir finden trotzdem, dass die meisten Sicherheitsseiten von Unternehmen klingen, als wären sie von dem Vorfall geschrieben worden, den sie eigentlich verhindern sollen. Diese hier nicht.
+    </p>
+  </>
+}
+
 function Standards() {
+  const { locale } = useLocale()
+  return locale === 'de' ? <StandardsDE /> : <StandardsEN />
+}
+
+function StandardsEN() {
   return <>
     <h1 style={H1}>Standards &amp; Compliance</h1>
     <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>The frameworks we file every audit against &middot; Last updated: July 2026</p>
@@ -828,6 +961,55 @@ function Standards() {
   </>
 }
 
+function StandardsDE() {
+  return <>
+    <h1 style={H1}>Standards &amp; Compliance</h1>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Die Rahmenwerke, gegen die wir jedes Audit führen &middot; Letzte Aktualisierung: Juli 2026</p>
+
+    <p style={P}>
+      Jedes Audit, das RFI-IRFOS durchführt, wird gegen geltendes EU- und österreichisches Recht geführt. Wir verfolgen neue Standards, sobald sie in Kraft treten, und halten unsere Methodik aktuell. Diese Seite listet auf, was das in der Praxis tatsächlich bedeutet — die konkreten Rahmenwerke, nicht nur die Behauptung, wir würden „Best Practices" befolgen.
+    </p>
+
+    <h2 style={H2}>NIS-2 · NISG 2026</h2>
+    <p style={P}>
+      Die EU-Richtlinie für ein hohes gemeinsames Cybersicherheitsniveau, umgesetzt in österreichisches Recht als <strong style={{ color: '#e8e8f0' }}>NISG 2026</strong>. Sie verlangt Risikomanagement nach dem Stand der Technik, strenge Vorfallsmeldung an nationale Behörden und <strong style={{ color: '#e8e8f0' }}>persönliche Haftung der Unternehmensführung</strong>. In Österreich betrifft sie direkt rund 4.000 wesentliche und wichtige Einrichtungen, plus geschätzte 50.000 Lieferkettenpartner.
+    </p>
+    <p style={P}>
+      In der Praxis umfasst das drei Dinge: <strong style={{ color: '#e8e8f0' }}>Risikomanagement</strong> (Kryptografie, Zugriffskontrolle, Lieferkettensicherheit), <strong style={{ color: '#e8e8f0' }}>Vorfallsreaktion</strong> (verpflichtende Meldung innerhalb strenger Fristen) und <strong style={{ color: '#e8e8f0' }}>Unternehmensverantwortung</strong> (Geschäftsführung persönlich haftbar bei Nichteinhaltung). Umfang: ~4.000 Einrichtungen direkt, ~50.000 Lieferkettenpartner — siehe <a href="https://www.nis.gv.at" target="_blank" rel="noopener" style={A}>nis.gv.at</a>.
+    </p>
+
+    <h2 style={H2}>DSGVO &middot; EU 2016/679</h2>
+    <p style={P}>Art. 6 Rechtsgrundlage, Art. 9 besondere Kategorien (Gesundheit/Biometrie), Art. 8 Kinder, Art. 33 Meldung von Verletzungen. Das Rückgrat jeder Offenlegung, die wir einreichen.</p>
+
+    <h2 style={H2}>EU AI Act &middot; EU 2024/1689</h2>
+    <p style={P}>Risikogestufte Pflichten für KI-Systeme: Transparenz, Governance, Analyse verbotener Praktiken für die Modelle, die wir prüfen und bauen.</p>
+
+    <h2 style={H2}>EU DSA &middot; EU 2022/2065</h2>
+    <p style={P}>Digital Services Act. Pflichten zu systemischen Risiken und illegalen Inhalten. Bei Plattform-Funden direkt beim irischen Digital Services Coordinator (Coimisiún na Meán) eingereicht.</p>
+
+    <h2 style={H2}>ISO/IEC 29147 &middot; International</h2>
+    <p style={P}>Offenlegung von Schwachstellen. Unser koordinierter Rahmen folgt dem Standard aus 90-Tage-Embargo und Behördenbenachrichtigung — siehe unsere <a href="#" onClick={e => { e.preventDefault(); location.hash = '#p/security' }} style={A}>Sicherheitsrichtlinie</a> für den Prozess selbst.</p>
+
+    <h2 style={H2}>ISO/IEC 30111 &middot; International</h2>
+    <p style={P}>Prozesse zur Behandlung von Schwachstellen. Der interne Triage-, Validierungs- und Nachverfolgungs-Workflow hinter jeder koordinierten Offenlegung, die wir durchführen.</p>
+
+    <h2 style={H2}>ISO/IEC 27001 &middot; International</h2>
+    <p style={P}>Informationssicherheits-Management. Das Kontrollset hinter unserem Umgang mit Evidenz, NDAs und Kundendaten.</p>
+
+    <h2 style={H2}>COPPA &middot; US · 15 U.S.C. §6501</h2>
+    <p style={P}>Online-Datenschutz für Kinder. Angewendet über unsere Minderjährigenschutz-Audits von Apps, Spielen und Streaming-Plattformen hinweg.</p>
+
+    <h2 style={H2}>EU MDR &middot; EU 2017/745</h2>
+    <p style={P}>Medizinprodukteverordnung. Klasse-IIb-Prüfung für Gesundheits-/Wearable-Apps, die Internet-of-Bodies-Daten verarbeiten.</p>
+
+    <h2 style={H2}>eIDAS / Trust Services &middot; EU 910/2014</h2>
+    <p style={P}>Elektronische Identifizierung und Vertrauensdienste. Relevant für die biometrischen und Identitätsprüfungs-SDKs unter unserer Lupe.</p>
+
+    <h2 style={H2}>ePrivacy-Richtlinie &middot; EU 2002/58/EG</h2>
+    <p style={P}>Einwilligung für Tracking, Zugriff auf Endgeräte, Vertraulichkeit der elektronischen Kommunikation. Art. 5 Abs. 3 ist das rechtliche Rückgrat jedes SDK-Einwilligungsfundes, den wir veröffentlichen.</p>
+  </>
+}
+
 // The people - mirrors ternlang.com's roster. Kept as data so a departure/new-hire is
 // one array edit, not a hunt through JSX (see the Lisa Scharler removal, 2026-07-04).
 // Moved off the homepage onto its own page (was `#team`, a full mainpage section) -
@@ -854,7 +1036,7 @@ function Standards() {
 // research agenda" specifically plus "collaboration with... external academic
 // partners" (he's PhD-track and publishing - the academic-facing safety-research seat).
 const TEAM = [
-  { name: 'Simeon Kepp',      gh: 'simeon-kepp',   focus: 'Founder / Principal Investigator' },
+  { name: 'Simeon Kepp',      gh: 'simeon-kepp',   focus: 'Founder / Principal investigator' },
   { name: 'Zabih Karimi',     gh: 'zabih-sudo',     focus: 'Infrastructure & engineering' },
   { name: 'Nikoletta Csonka', gh: 'csonikoletta',   focus: 'Onboarding & culture' },
   { name: 'Louis Ehrig',      gh: 'louisuhr',       focus: 'Press & public affairs' },
@@ -934,7 +1116,39 @@ const EVIDENCE_COLUMNS = [
   { label: 'Recommendation', body: 'Reported 2026-06-25; app removed from the Play Store 2026-06-30 - 5 days to resolution, the first publicly documented enforcement outcome of the RFI-IRFOS 2026 Android audit programme.' },
 ]
 
+const METHODOLOGY_PRINCIPLES_DE = [
+  {
+    title: 'Quellen',
+    body: 'Wir arbeiten nur mit dem, wozu wir rechtmäßig Einsicht haben: öffentlich zugängliche Informationen, Geräte, die wir besitzen oder zu deren Test wir berechtigt sind, und Software, zu deren Analyse wir befugt sind. Wenn Material in unbefugten Zugriff auf ein System übergeht, das wir nicht kontrollieren, nutzen wir es nicht - wir melden es stattdessen der zuständigen Behörde, genauso, wie wir umgekehrt behandelt werden wollten.',
+  },
+  {
+    title: 'Methoden',
+    body: 'Erst untersuchen, dann urteilen: Wir verfolgen die Grundursache, statt beim ersten Symptom stehenzubleiben, und jeder Schritt muss von jemand anderem als der Person, die ihn zuerst ausgeführt hat, reproduzierbar sein. Ein Fund, den nur eine Person reproduzieren kann, ist noch kein Fund.',
+  },
+  {
+    title: 'Umgang mit Ergebnissen',
+    body: 'Schweregrade werden eingestuft, nicht behauptet - und jeder Kunde, zahlend oder nicht, bekommt dieselbe Triage-Disziplin (ISO/IEC 30111: reproduzieren, eingrenzen, beheben, den Melder kreditieren). Was sich zwischen den Stufen ändert, ist, wie viel vom Bericht privat bleibt und wie schnell wir vorgehen - nie, ob der Fund veröffentlicht wird, nie die Sorgfalt der zugrundeliegenden Arbeit.',
+  },
+  {
+    title: 'Offenlegung',
+    body: 'Ein fixes öffentliches Vorlauffenster gilt, bevor irgendetwas auf das öffentliche Ledger kommt, und gibt der Organisation echte Zeit, ein Problem zu beheben, bevor es sonst jemand sieht. Behörden werden parallel informiert, wo unsere eigenen Regeln das verlangen, ohne Details preiszugeben, die einen Kunden gefährden würden, bevor er die Chance hatte, es zu beheben.',
+  },
+]
+
+const EVIDENCE_COLUMNS_DE = [
+  { label: 'Fund', body: 'Eine mit PEGI 3 („für alle Altersgruppen geeignet") bewertete Google-Play-App, gelistet als beiläufiges Merge-Puzzle-Spiel, funktionierte als unlizenziertes Echtgeld-Online-Casino ohne KYC-Prüfung - im eingereichten Build auf den ersten Blick nicht erkennbar.' },
+  { label: 'Evidenz', body: 'Die Glücksspiel-UI und -Logik fehlten in der geprüften Binärdatei und waren hinter einem serverseitig gesteuerten Schalter (Firebase Remote Config) versteckt, wobei die Live-Payload nach der Installation von separat kontrollierter Infrastruktur ausgeliefert wurde.' },
+  { label: 'Methode', body: 'Statische Root-Level-Analyse der veröffentlichten Release-APK: apktool-Dekompilierung, dex-/String-Inspektion, Manifest-Prüfung, plus Open-Source-Bestätigung der Entwicklerentität. Keine Produktionsserver oder Nutzerkonten wurden untersucht.' },
+  { label: 'Konfidenz', body: 'Bestätigt - direkt an Google Play & Android Security als Missbrauch gemeldet, nicht als Anbieter-Offenlegung verhandelt. Googles eigenes Sicherheitsteam bestätigte die Entfernung aus dem Play Store.' },
+  { label: 'Empfehlung', body: 'Gemeldet am 25.06.2026; App am 30.06.2026 aus dem Play Store entfernt - 5 Tage bis zur Lösung, das erste öffentlich dokumentierte Durchsetzungsergebnis des RFI-IRFOS-Android-Audit-Programms 2026.' },
+]
+
 function Methodology() {
+  const { locale } = useLocale()
+  return locale === 'de' ? <MethodologyDE /> : <MethodologyEN />
+}
+
+function MethodologyEN() {
   return <>
     <h1 style={H1}>Methodology</h1>
     <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>The same rules, whoever the client is</p>
@@ -965,6 +1179,46 @@ function Methodology() {
     </div>
     <div style={{ display: 'grid', gap: 20, marginTop: 20 }}>
       {EVIDENCE_COLUMNS.map(col => (
+        <div key={col.label}>
+          <h2 style={H2}>{col.label}</h2>
+          <p style={P}>{col.body}</p>
+        </div>
+      ))}
+    </div>
+  </>
+}
+
+function MethodologyDE() {
+  return <>
+    <h1 style={H1}>Methodik</h1>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Dieselben Regeln, unabhängig vom Kunden</p>
+    <p style={P}>
+      Ein Ermittler, der die Regeln für einen zahlenden Kunden beugt, ist kein Ermittler mehr - nur ein Dienstleister mit besserem Vokabular. Diese vier Prinzipien bestimmen, wohin wir schauen, wie wir prüfen, was wir mit unseren Funden machen und wann sie öffentlich werden, unabhängig davon, wer zahlt.
+    </p>
+    <div style={{ display: 'grid', gap: 24, marginTop: 24, marginBottom: 40 }}>
+      {METHODOLOGY_PRINCIPLES_DE.map(p => (
+        <div key={p.title}>
+          <h2 style={H2}>{p.title}</h2>
+          <p style={P}>{p.body}</p>
+        </div>
+      ))}
+    </div>
+
+    <h2 style={H2}>Eine Behauptung, die man nicht zurückverfolgen kann, ist keine Evidenz</h2>
+    <p style={P}>
+      Die meisten Berichte enden bei einem Schweregrad-Label: kritisch, hoch, mittel. Das sagt Ihnen, wie besorgt Sie sein sollten, aber nicht warum - und das eigene Rechts- oder Engineering-Team eines Kunden kann keine Arbeit prüfen, deren Schritte es nicht sehen kann. Deshalb muss jeder Fund, den wir liefern, fünf Fragen der Reihe nach beantworten, nicht nur die letzte: Was haben wir gefunden, was beweist es, wie haben wir es bewiesen, wie sicher sind wir, und was sollten Sie dagegen tun.
+    </p>
+    <div style={{
+      background: 'rgba(0,224,193,0.06)', border: '1px solid rgba(0,224,193,0.25)',
+      borderRadius: 10, padding: '12px 16px', margin: '16px 0',
+    }}>
+      <p style={{ ...P, marginBottom: 0, fontSize: 12.5 }}>
+        <strong style={{ color: '#00e0c1' }}>Echter, offengelegter Fund.</strong> Aus „Merge Chicken" (com.Merge.o98Chickens), gemeldet an Google Play &amp; Android Security am 25.06.2026, aus dem Play Store entfernt am 30.06.2026.{' '}
+        <a href="/reports/merge-chicken-2026.pdf" target="_blank" rel="noopener" style={A}>Vollständiger Bericht (PDF)</a>
+      </p>
+    </div>
+    <div style={{ display: 'grid', gap: 20, marginTop: 20 }}>
+      {EVIDENCE_COLUMNS_DE.map(col => (
         <div key={col.label}>
           <h2 style={H2}>{col.label}</h2>
           <p style={P}>{col.body}</p>

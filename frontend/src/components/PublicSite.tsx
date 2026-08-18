@@ -86,7 +86,9 @@ const EKG_GLOW_INDICES = new Set([6, 12])
 // EKG_DURATION_MS matches App.css's .ekg-line animation-duration, and
 // EKG_DASH must match its stroke-dasharray - scaled together with the path
 // width (40 -> 37) so the draw speed still matches the shape's own length.
-const EKG_DURATION_MS = 2500
+// Slowed again 2026-08-19 (live feedback: "too fast, too distracting, have
+// it be almost eerie") - dasharray unchanged, only the duration stretched.
+const EKG_DURATION_MS = 4200
 const EKG_DASH = 102
 function EkgLine({ theme }: { theme: Theme }) {
   const [i, setI] = useState(0)

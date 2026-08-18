@@ -43,9 +43,19 @@ export default function App() {
     // on popstate, i.e. the real back/forward buttons) can't race the manual
     // restore below and snap the page to the wrong spot.
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
-    const onHash = () => setSlug(getSlug())
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
+    const onNav = () => setSlug(getSlug())
+    window.addEventListener('hashchange', onNav)
+    // popstate also covers the real back/forward buttons AND the manual
+    // `history.pushState` + dispatched PopStateEvent that LegalPage's
+    // quicklinks/back-link now use (2026-08-19, live feedback: clicking a
+    // legal-page link was a full browser reload, "das ist nicht clean, das
+    // ist increment" - pushState changes the URL without a reload, this
+    // listener is what turns that URL change into an actual slug update).
+    window.addEventListener('popstate', onNav)
+    return () => {
+      window.removeEventListener('hashchange', onNav)
+      window.removeEventListener('popstate', onNav)
+    }
   }, [])
 
   // Legal pages are a separate route — jump to top when entering one. Leaving
@@ -64,11 +74,10 @@ export default function App() {
   }, [slug])
 
   // LegalPage now shares the same LocaleProvider/localStorage key as PublicSite
-  // (2026-08-18) - Impressum/Datenschutz/AGB got real German translations, so
-  // the DE/EN toggle needs to reach this route too, not just the homepage.
-  // Team/Security/Standards/Methodology stay English-only within LegalPage
-  // itself (see the locale check inside each of those) - only the three pages
-  // with actual legal weight for an Austrian audience were translated.
+  // (2026-08-18) - every legal/reference page got a real German translation
+  // except Team (2026-08-19: Security/Standards/Methodology closed the gap
+  // Impressum/Datenschutz/AGB left open) - the DE/EN toggle reaches this
+  // route the same way it reaches the homepage.
   if (slug) return <LocaleProvider><Suspense fallback={null}><LegalPage slug={slug} /></Suspense></LocaleProvider>
   return <LocaleProvider><PublicSite initialSection={sectionFocus} /></LocaleProvider>
 }

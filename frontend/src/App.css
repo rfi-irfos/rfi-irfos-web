@@ -116,7 +116,7 @@ button { cursor: pointer; font-family: inherit; }
 }
 .ekg-line {
   stroke-dasharray: 102;
-  animation: ekgPulse 2.5s linear infinite;
+  animation: ekgPulse 4.2s linear infinite;
 }
 /* Soft neon glow, only on shapes 7 and 13 (deterministic, JS-selected by
    index) - the drop-shadow itself is set inline (needs the live theme accent
