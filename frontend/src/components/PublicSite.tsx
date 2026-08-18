@@ -1359,7 +1359,26 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 {group.links.map(l => (
                   <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
-                    onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}>
+                    onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}
+                    onClick={e => {
+                      // Client-side into a legal page too now (2026-08-19, live
+                      // feedback: entering was still a full reload while every
+                      // OTHER leg of the trip - legal<->legal, legal->home -
+                      // already went client-side: "it feels totally broke like
+                      // hard reload... not smooth going from main page into any
+                      // of legal pages"). A bare "/slug" href is exactly the
+                      // legal/reference routes (impressum, datenschutz, agb,
+                      // security, standards, team, methodology) - external
+                      // (https://…), mailto:, and in-page #anchor hrefs all
+                      // fail this check and fall through to normal navigation
+                      // unchanged, so this only touches the routes that
+                      // actually go through App.tsx's slug state.
+                      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+                      if (!l.href.startsWith('/') || l.href.startsWith('//')) return
+                      e.preventDefault()
+                      history.pushState(null, '', l.href)
+                      window.dispatchEvent(new PopStateEvent('popstate'))
+                    }}>
                     {l.label}
                   </a>
                 ))}
