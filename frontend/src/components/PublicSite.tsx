@@ -10,6 +10,7 @@ import { TrackRecordSection } from './sections/TrackRecord'
 import { ProofSection } from './sections/Proof'
 import { ScrollSpine } from './sections/Spine'
 import { AppPrivacySection } from './sections/AppPrivacy'
+import { CausalChainsSection } from './sections/CausalChains'
 import { PricingSection } from './sections/Pricing'
 import { JourneySection } from './sections/Journey'
 import { CoopPartnersSection } from './sections/CoopPartners'
@@ -1240,6 +1241,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           <HeroSection mobile={mobile} theme={theme} />
           <ResearchSection />
           <AppPrivacySection />
+          <CausalChainsSection />
           <CoopPartnersSection mobile={mobile} openCheckoutModal={openCheckoutModal} />
           <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} pixelRef={pixelRef} />
         </>}
