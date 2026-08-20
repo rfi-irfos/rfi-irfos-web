@@ -120,7 +120,7 @@ export function CausalChainsSection() {
   }
 
   return (
-    <section id="causal-chains" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
+    <section id="causal-chains" style={{ padding: '24px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>
