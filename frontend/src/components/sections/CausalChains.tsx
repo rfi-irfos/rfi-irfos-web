@@ -27,6 +27,12 @@ const arrowStyle: React.CSSProperties = {
   display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'center',
 }
 
+const stepArrowStyle: React.CSSProperties = {
+  width: 38, height: 38, borderRadius: 10, border: '1px solid var(--border)',
+  background: 'var(--bg2)', color: 'var(--text)', cursor: 'pointer',
+  display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 16,
+}
+
 function ChainGraph({ nodes, step, onStep }: { nodes: string[]; step: number; onStep: (i: number) => void }) {
   const W = 720
   const H = 88
@@ -40,7 +46,7 @@ function ChainGraph({ nodes, step, onStep }: { nodes: string[]; step: number; on
   )
 
   return (
-    <div style={{ width: '100%', maxWidth: 720, margin: '16px auto 0' }}>
+    <div style={{ width: '100%', maxWidth: 720, margin: '0 auto' }}>
       <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" style={{ width: '100%', height: 'auto', display: 'block' }}>
         <line x1={pad} y1={y} x2={W - pad} y2={y} stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
         {pts.map((p, i) => (
@@ -75,7 +81,9 @@ export function CausalChainsSection() {
   const [scenario, setScenario] = useState(0)
   const [step, setStep] = useState(0)
   const [anim, setAnim] = useState<'left' | 'right' | null>(null)
+  const [stepAnim, setStepAnim] = useState<'left' | 'right' | null>(null)
   const animTimer = useRef<number | null>(null)
+  const stepAnimTimer = useRef<number | null>(null)
 
   const n = chains.length
   const safeScenario = n ? scenario % n : 0
@@ -93,7 +101,13 @@ export function CausalChainsSection() {
   }
   const goStep = (i: number) => {
     if (!current) return
-    setStep(((i % current.nodes.length) + current.nodes.length) % current.nodes.length)
+    const len = current.nodes.length
+    const next = ((i % len) + len) % len
+    const dir = next > step ? 'left' : 'right'
+    setStepAnim(dir)
+    if (stepAnimTimer.current) window.clearTimeout(stepAnimTimer.current)
+    stepAnimTimer.current = window.setTimeout(() => setStepAnim(null), reduced ? 0 : 340)
+    setStep(next)
   }
 
   return (
@@ -118,56 +132,44 @@ export function CausalChainsSection() {
             <div
               className="rfi-glass-flat rfi-glass-solid"
               style={{
-                borderRadius: 16, padding: '26px 26px 22px', maxWidth: 820, flex: '1 1 auto', minWidth: 0,
+                borderRadius: 16, padding: '22px 20px 14px', width: '100%', maxWidth: 560, flex: '0 1 auto',
                 animation: anim ? `${anim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 340ms cubic-bezier(0.16,1,0.3,1)` : undefined,
+                display: 'flex', flexDirection: 'column',
               }}
             >
-              <div style={{ fontSize: 18, color: 'var(--text)', fontWeight: 800, marginBottom: 20, textAlign: 'center', lineHeight: 1.35 }}>
+              <div style={{ fontSize: 17, color: 'var(--text)', fontWeight: 800, marginBottom: 18, textAlign: 'center', lineHeight: 1.35 }}>
                 {current?.title ?? ''}
               </div>
 
-              {/* ONE step at a time, centered card */}
+              {/* Big centered step card - takes most space */}
               <div
                 style={{
                   border: '1px solid var(--border)', borderRadius: 12, background: 'var(--bg2)',
-                  padding: '20px 22px', margin: '0 auto 18px', maxWidth: 560, textAlign: 'center',
+                  padding: '34px 22px', margin: '0 auto 22px', width: '100%', maxWidth: 480,
+                  textAlign: 'center',
+                  animation: stepAnim ? `${stepAnim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 340ms cubic-bezier(0.16,1,0.3,1)` : undefined,
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 15, color: 'var(--accent-text)', minWidth: 30 }}>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, color: 'var(--accent-text)', minWidth: 34 }}>
                     {current ? String(step + 1).padStart(2, '0') : '--'}
                   </span>
-                  <span style={{ fontSize: 16, color: 'var(--text)', lineHeight: 1.5 }}>
+                  <span style={{ fontSize: 17, color: 'var(--text)', lineHeight: 1.5 }}>
                     {current ? current.nodes[step] : ''}
                   </span>
                 </div>
               </div>
 
-              {/* Nav buttons (show stage) ABOVE the graph */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginBottom: 6 }}>
-                <button
-                  onClick={() => goStep((step - 1 + (current?.nodes.length ?? 1)) % (current?.nodes.length ?? 1))}
-                  aria-label="Previous step"
-                  style={{
-                    width: 38, height: 38, borderRadius: 10, border: '1px solid var(--border)',
-                    background: 'var(--bg2)', color: 'var(--text)', cursor: 'pointer',
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 16,
-                  }}
-                >&larr;</button>
+              {/* Nav buttons (stage) ABOVE the graph, pushed down */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginBottom: 14, marginTop: 'auto' }}>
+                <button onClick={() => goStep(step - 1)} aria-label="Previous step" style={stepArrowStyle}>&larr;</button>
                 <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', letterSpacing: '0.08em', minWidth: 70, textAlign: 'center' }}>
                   {current ? `${String(step + 1).padStart(2, '0')} / ${String(current.nodes.length).padStart(2, '0')}` : '-- / --'}
                 </span>
-                <button
-                  onClick={() => goStep((step + 1) % (current?.nodes.length ?? 1))}
-                  aria-label="Next step"
-                  style={{
-                    width: 38, height: 38, borderRadius: 10, border: '1px solid var(--border)',
-                    background: 'var(--bg2)', color: 'var(--text)', cursor: 'pointer',
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 16,
-                  }}
-                >&rarr;</button>
+                <button onClick={() => goStep(step + 1)} aria-label="Next step" style={stepArrowStyle}>&rarr;</button>
               </div>
 
+              {/* Graph flush at very bottom */}
               {current && <ChainGraph nodes={current.nodes} step={step} onStep={goStep} />}
             </div>
 
