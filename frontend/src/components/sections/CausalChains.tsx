@@ -142,9 +142,8 @@ export function CausalChainsSection() {
               className="rfi-glass-flat"
               style={{
                 borderRadius: 16, padding: '22px 20px 14px', width: '100%', maxWidth: 560, flex: '0 1 auto',
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                backdropFilter: 'blur(2px)',
+                background: 'var(--bg1)',
+                border: '1px solid var(--border)',
                 animation: anim ? `${anim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 600ms cubic-bezier(0.16,1,0.3,1)` : undefined,
                 display: 'flex', flexDirection: 'column',
               }}
