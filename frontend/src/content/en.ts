@@ -567,7 +567,7 @@ export const EN = {
 
   causalChains: {
     eyebrow: 'Causality Chains',
-    heading: 'The Earthquake That Changes a Food Price Months Later',
+    heading: "A look into Dingir's Mind",
     subheading: 'Distant events propagate through infrastructure, markets, and decisions. We trace those chains end to end, from the first signal to the effect that actually reaches you.',
     readingAid: 'Causality chain',
     llmNote: 'Dingir head: raw observations → readable chain. Albert will replace this head later.',

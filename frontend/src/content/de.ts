@@ -554,7 +554,7 @@ export const DE: Content = {
 
   causalChains: {
     eyebrow: 'Kausalitätsketten',
-    heading: 'Das Erdbeben, das Lebensmittelpreise Monate später verändert',
+    heading: 'Einblicke in Dingirs Denkweise',
     subheading: 'Distantereignisse breiten sich über Infrastruktur, Märkte und Entscheidungen aus. Wir verfolgen diese Ketten vom ersten Signal bis zur Wirkung, die Sie tatsächlich erreicht.',
     readingAid: 'Kausalitätskette',
     llmNote: 'Dingir-Head: Rohdaten → lesbare Kette. Albert ersetzt diesen Head später.',
