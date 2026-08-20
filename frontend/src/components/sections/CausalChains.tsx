@@ -104,7 +104,7 @@ export function CausalChainsSection() {
     if (!n) return
     setAnim(dir < 0 ? 'right' : 'left')
     if (animTimer.current) window.clearTimeout(animTimer.current)
-    animTimer.current = window.setTimeout(() => setAnim(null), reduced ? 0 : 600)
+    animTimer.current = window.setTimeout(() => setAnim(null), reduced ? 0 : 820)
     setScenario(s => (s + dir + n) % n)
     setStep(0)
   }
@@ -115,7 +115,7 @@ export function CausalChainsSection() {
     const dir = next > step ? 'left' : 'right'
     setStepAnim(dir)
     if (stepAnimTimer.current) window.clearTimeout(stepAnimTimer.current)
-    stepAnimTimer.current = window.setTimeout(() => setStepAnim(null), reduced ? 0 : 600)
+    stepAnimTimer.current = window.setTimeout(() => setStepAnim(null), reduced ? 0 : 820)
     setStep(next)
   }
 
@@ -142,7 +142,7 @@ export function CausalChainsSection() {
               className="rfi-glass-flat rfi-glass-solid"
               style={{
                 borderRadius: 16, padding: '22px 20px 14px', width: '100%', maxWidth: 560, flex: '0 1 auto',
-                animation: anim ? `${anim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 600ms cubic-bezier(0.16,1,0.3,1)` : undefined,
+                animation: anim ? `${anim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 820ms cubic-bezier(0.16,1,0.3,1)` : undefined,
                 display: 'flex', flexDirection: 'column',
               }}
             >
@@ -156,7 +156,7 @@ export function CausalChainsSection() {
                   border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, background: 'rgba(255,255,255,0.03)',
                   padding: '34px 22px', margin: '0 auto 22px', width: '100%', maxWidth: 480,
                   textAlign: 'center', backdropFilter: 'blur(2px)',
-                  animation: stepAnim ? `${stepAnim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 600ms cubic-bezier(0.16,1,0.3,1)` : undefined,
+                  animation: stepAnim ? `${stepAnim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 820ms cubic-bezier(0.16,1,0.3,1)` : undefined,
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
