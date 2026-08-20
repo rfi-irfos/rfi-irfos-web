@@ -104,7 +104,7 @@ export function CausalChainsSection() {
     if (!n) return
     setAnim(dir < 0 ? 'right' : 'left')
     if (animTimer.current) window.clearTimeout(animTimer.current)
-    animTimer.current = window.setTimeout(() => setAnim(null), reduced ? 0 : 340)
+    animTimer.current = window.setTimeout(() => setAnim(null), reduced ? 0 : 600)
     setScenario(s => (s + dir + n) % n)
     setStep(0)
   }
@@ -115,7 +115,7 @@ export function CausalChainsSection() {
     const dir = next > step ? 'left' : 'right'
     setStepAnim(dir)
     if (stepAnimTimer.current) window.clearTimeout(stepAnimTimer.current)
-    stepAnimTimer.current = window.setTimeout(() => setStepAnim(null), reduced ? 0 : 340)
+    stepAnimTimer.current = window.setTimeout(() => setStepAnim(null), reduced ? 0 : 600)
     setStep(next)
   }
 
@@ -139,10 +139,13 @@ export function CausalChainsSection() {
             <button onClick={() => cycleScenario(-1)} aria-label="Previous scenario" style={arrowStyle}>&larr;</button>
 
             <div
-              className="rfi-glass-flat rfi-glass-solid"
+              className="rfi-glass-flat"
               style={{
                 borderRadius: 16, padding: '22px 20px 14px', width: '100%', maxWidth: 560, flex: '0 1 auto',
-                animation: anim ? `${anim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 340ms cubic-bezier(0.16,1,0.3,1)` : undefined,
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                backdropFilter: 'blur(2px)',
+                animation: anim ? `${anim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 600ms cubic-bezier(0.16,1,0.3,1)` : undefined,
                 display: 'flex', flexDirection: 'column',
               }}
             >
@@ -156,7 +159,7 @@ export function CausalChainsSection() {
                   border: '1px solid var(--border)', borderRadius: 12, background: 'var(--bg2)',
                   padding: '34px 22px', margin: '0 auto 22px', width: '100%', maxWidth: 480,
                   textAlign: 'center',
-                  animation: stepAnim ? `${stepAnim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 340ms cubic-bezier(0.16,1,0.3,1)` : undefined,
+                  animation: stepAnim ? `${stepAnim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 600ms cubic-bezier(0.16,1,0.3,1)` : undefined,
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
