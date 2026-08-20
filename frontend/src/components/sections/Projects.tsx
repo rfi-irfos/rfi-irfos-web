@@ -73,7 +73,7 @@ function ProjectCard({ p }: { p: LocalizedProject }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '4px 8px' }}>
         <div style={{ minWidth: 0 }}>
           <div style={{ fontWeight: 900, fontSize: 17 }}>{p.name}</div>
-          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
+          <div style={{ fontFamily: "'JetBrains Mono', 'Noto Sans Cuneiform', 'Segoe UI Historic', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
         </div>
         <span style={{
           fontSize: 9, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em',
