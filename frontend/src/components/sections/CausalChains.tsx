@@ -139,11 +139,9 @@ export function CausalChainsSection() {
             <button onClick={() => cycleScenario(-1)} aria-label="Previous scenario" style={arrowStyle}>&larr;</button>
 
             <div
-              className="rfi-glass-flat"
+              className="rfi-glass-flat rfi-glass-solid"
               style={{
                 borderRadius: 16, padding: '22px 20px 14px', width: '100%', maxWidth: 560, flex: '0 1 auto',
-                background: 'var(--bg1)',
-                border: '1px solid var(--border)',
                 animation: anim ? `${anim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 600ms cubic-bezier(0.16,1,0.3,1)` : undefined,
                 display: 'flex', flexDirection: 'column',
               }}
