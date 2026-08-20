@@ -716,7 +716,7 @@ const AUDIT_STATUTES: Record<string, StatuteCitation[]> = {
   'Talking Tom & Friends: World (CY)':   OUTFIT7_TTFWORLD,
 
   'Cycle AI (com.cycleai.android)': [
-    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: 'No disclosed lawful basis found for routing children\\'s AI chat prompts + face/voice biometric data to third-party AI providers; consent gate not implemented', source: 'CYCLEAI_R1.md#H2' },
+    { law: 'GDPR', article: 'Art. 6(1)', kind: 'fact', note: "No disclosed lawful basis found for routing children's AI chat prompts + face/voice biometric data to third-party AI providers; consent gate not implemented", source: 'CYCLEAI_R1.md#H2' },
     { law: 'GDPR', article: 'Art. 13(1)(c)', kind: 'fact', note: 'Processing purpose for third-party AI providers not disclosed in bundled privacy materials', source: 'CYCLEAI_R1.md#H2' },
     { law: 'GDPR', article: 'Art. 27', kind: 'fact', note: 'No EU representative identified for Beefun Pte. Ltd.; DPO contact absent; Singapore entity with EU user base', source: 'CYCLEAI_R1.md#H4' },
     { law: 'GDPR', article: 'Art. 35', kind: 'reference', note: 'DPIA not publicly disclosed; not evidenced in binary; high-risk processing categories present', source: 'CYCLEAI_R1.md#H5' },
