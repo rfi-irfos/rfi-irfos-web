@@ -35,7 +35,7 @@ export function CoopPartnersSection({
   const { t } = useLocale()
   return (
     <section id="coop-partners" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
-      <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'left' }}>{t.coopPartners.eyebrow}</p>
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, textAlign: 'left' }}><ScrambleHeading text={t.coopPartners.heading} /></h2>
