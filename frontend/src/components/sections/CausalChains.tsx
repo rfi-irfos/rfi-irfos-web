@@ -120,7 +120,7 @@ export function CausalChainsSection() {
   }
 
   return (
-    <section id="causal-chains" style={{ padding: '24px var(--sec-pad-x) 72px' }}>
+    <section id="causal-chains" style={{ padding: '12px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>
@@ -153,12 +153,12 @@ export function CausalChainsSection() {
                 {current?.title ?? ''}
               </div>
 
-              {/* Big centered step card - takes most space */}
+              {/* Big centered step card - takes most space, transparent glass */}
               <div
                 style={{
-                  border: '1px solid var(--border)', borderRadius: 12, background: 'var(--bg2)',
+                  border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, background: 'rgba(255,255,255,0.03)',
                   padding: '34px 22px', margin: '0 auto 22px', width: '100%', maxWidth: 480,
-                  textAlign: 'center',
+                  textAlign: 'center', backdropFilter: 'blur(2px)',
                   animation: stepAnim ? `${stepAnim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 600ms cubic-bezier(0.16,1,0.3,1)` : undefined,
                 }}
               >

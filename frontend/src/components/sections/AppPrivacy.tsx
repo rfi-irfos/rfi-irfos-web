@@ -20,7 +20,7 @@ export function AppPrivacySection() {
   // page-wide backdrop gradient in PublicSite.tsx, so it stays uniform
   // instead of this one section reading slightly darker than its neighbors.
   return (
-    <section id="app-privacy" style={{ padding: '48px var(--sec-pad-x) 24px' }}>
+    <section id="app-privacy" style={{ padding: '48px var(--sec-pad-x) 12px' }}>
       {/* maxWidth matched to the neighboring Track Record/Pricing sections (1320,
           not 1000) - live feedback: the narrower container made this section's
           left edge sit further right than the sections directly above/below it. */}
@@ -89,7 +89,7 @@ export function AppPrivacySection() {
               table ends at 40px bottom margin, section had 72px bottom padding.
               Added top margin and trimmed bottom padding so the button sits closer
               to the visual center of the gap instead of clinging to the table. */}
-          <div style={{ textAlign: 'center', marginTop: 16, marginBottom: 0 }}>
+          <div style={{ textAlign: 'center', marginTop: 10, marginBottom: 0 }}>
             {/* Orange instead of the site's teal (live feedback 2026-08-14: one
                 singular, orange CTA here) - deliberately off-brand-teal so this one
                 button reads as a distinct "send us something" action, not just another
