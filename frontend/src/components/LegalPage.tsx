@@ -1057,13 +1057,12 @@ function StandardsDE() {
 // research agenda" specifically plus "collaboration with... external academic
 // partners" (he's PhD-track and publishing - the academic-facing safety-research seat).
 const TEAM = [
-  { name: 'Simeon Kepp',      gh: 'simeon-kepp',   focus: 'Founder / Principal investigator' },
-  { name: 'Zabih Karimi',     gh: 'zabih-sudo',     focus: 'Infrastructure & engineering' },
-  { name: 'Nikoletta Csonka', gh: 'csonikoletta',   focus: 'Onboarding & culture' },
-  { name: 'Louis Ehrig',      gh: 'louisuhr',       focus: 'Press & public affairs' },
-  { name: 'Ana Diez',         gh: 'anadiezmartini', focus: 'Research leadership & team growth' },
-  { name: 'Brennan Bell',     gh: '496crows',       focus: 'Safety research & academic partnerships' },
-  { name: 'Mariano Sosa',     gh: '',               focus: 'Trust & public perception' },
+  { name: 'Simeon Kepp',      gh: 'simeon-kepp',   focus: 'Founder and CTO' },
+  { name: 'Zabih Karimi',     gh: 'zabih-sudo',     focus: 'Founder and CEO' },
+  { name: 'Louis Ehrig',      gh: 'louisuhr',       focus: 'Press and Public Affairs' },
+  { name: 'Ana Diez',         gh: 'anadiezmartini', focus: 'Model Safety and Wellbeing' },
+  { name: 'Brennan Bell',     gh: '496crows',       focus: 'Safety Research and Academic Partnerships' },
+  { name: 'Mariano Sosa',     gh: '',               focus: 'Trust and Public Perception' },
 ]
 
 function Team() {
