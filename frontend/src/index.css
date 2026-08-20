@@ -554,12 +554,12 @@ h1, h2, h3, .rfi-display {
 
 /* ── Causality Chains scenario cycle (reuses Systems-tab carousel feel) ── */
 @keyframes ccFlipLeft {
-  from { opacity: 0.2; transform: perspective(900px) rotateY(22deg) translateX(28px); }
-  to   { opacity: 1;   transform: perspective(900px) rotateY(0deg) translateX(0); }
+  from { opacity: 0; transform: translateX(64px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 @keyframes ccFlipRight {
-  from { opacity: 0.2; transform: perspective(900px) rotateY(-22deg) translateX(-28px); }
-  to   { opacity: 1;   transform: perspective(900px) rotateY(0deg) translateX(0); }
+  from { opacity: 0; transform: translateX(-64px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 /* ── Hero letter-flip ─────────────────────────────────────────────

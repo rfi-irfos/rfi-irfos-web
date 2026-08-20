@@ -3,23 +3,51 @@
 // vocabulary: Reveal, ScrambleHeading, JetBrains Mono eyebrow, glass cards.
 //
 // Interaction model (per spec 2026-08-20):
-//  - Section eyebrow: "Causality Chains" (left-aligned, matches page edge)
-//  - Section title:    "A look into Dingir's Mind" / "Einblicke in Dingirs Denkweise"
-//  - Section subheading stays (left-aligned).
-//  - The WIDGET: chain title centered at top; ONE step shown at a time as a
-//    centered card; nav buttons show the stage; the flat GRAPH visualizer sits
-//    UNDER the nav buttons at the very bottom of the widget.
-//  - Two SCENARIO arrows flank the widget (outside it, vertically centered),
-//    reuse the exact Systems-tab carousel button style + a card-flip slide
-//    animation (ccFlipLeft / ccFlipRight) so scenarios cycle dynamically.
+//  - Each chain shows an icon (inline SVG map, no external dep) + chain index
+//    "01 / 20" so users see how many chains exist and where they are.
+//  - ONE step shown at a time as a centered card; nav buttons show the stage;
+//    the flat GRAPH visualizer sits UNDER the nav buttons at the very bottom.
+//  - Two SCENARIO arrows flank the widget (outside it, vertically centered).
+type Chain = {
+  title: string
+  nodes: string[]
+  icon: keyof typeof ICONS
+}
+
 import { useState, useMemo, useRef } from 'react'
 import { Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
-type Chain = {
-  title: string
-  nodes: string[]
-}
+// Inline SVG icon map (sleek, single-path-ish, currentColor) - no external lib.
+const I = (d: string) => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d={d} />
+  </svg>
+)
+const ICONS = {
+  seismic: I('M3 12h2l1.5-4 3 10 3-14 3 10 1.5-2H22'),
+  rain: I('M7 18v2M12 18v2M17 18v2M5 14a4 4 0 0 1 1-7 5 5 0 0 1 9-1 3 3 0 0 1 4 3v2'),
+  mountain: I('M3 20l6-11 4 7 3-5 5 9z'),
+  snowflake: I('M12 2v20M4 7l16 10M20 7L4 17M12 2l-3 3M12 2l3 3M12 22l-3-3M12 22l3-3'),
+  shield: I('M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z'),
+  sun: I('M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19'),
+  water: I('M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z'),
+  fire: I('M12 3c1 3-2 4-2 7a4 4 0 0 0 8 0c0-2-1-4-2-6-1 2-2 2-2 4 0-3 0-5-0-5z'),
+  ship: I('M4 14l2 5M20 14l-2 5M3 14h18l-2-8H5zM12 3v3'),
+  bolt: I('M13 2L4 13h7l-1 9 9-12h-7z'),
+  virus: I('M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'),
+  thermometer: I('M14 14V5a2 2 0 0 0-4 0v9a4 4 0 1 0 4 0z'),
+  power: I('M12 3v9M7 7a7 7 0 1 0 10 0'),
+  box: I('M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8'),
+  money: I('M12 3v18M8 7h6a2 2 0 0 1 0 4H8a2 2 0 0 0 0 4h8'),
+  people: I('M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 19a5 5 0 0 1 12 0M16 11a3 3 0 1 0 0-6M16 14a5 5 0 0 1 5 5'),
+  wind: I('M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h9a3 3 0 1 0-3 3'),
+  volcano: I('M3 20h18l-7-11a3 3 0 0 0-4 0zM9 9l1 4M15 9l-1 4M11 5l1 2M12 4v2'),
+  drop: I('M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11zM9 14a3 3 0 0 0 3 3'),
+  globe: I('M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18'),
+  coin: I('M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v10M9 9h6M9 15h6'),
+  train: I('M7 4h10a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3zM7 17l2 3M17 17l-2 3M8 11h8'),
+} as const
 
 const arrowStyle: React.CSSProperties = {
   width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.3)',
@@ -104,7 +132,7 @@ export function CausalChainsSection() {
     if (!n) return
     setAnim(dir < 0 ? 'right' : 'left')
     if (animTimer.current) window.clearTimeout(animTimer.current)
-    animTimer.current = window.setTimeout(() => setAnim(null), reduced ? 0 : 820)
+    animTimer.current = window.setTimeout(() => setAnim(null), reduced ? 0 : 650)
     setScenario(s => (s + dir + n) % n)
     setStep(0)
   }
@@ -115,7 +143,7 @@ export function CausalChainsSection() {
     const dir = next > step ? 'left' : 'right'
     setStepAnim(dir)
     if (stepAnimTimer.current) window.clearTimeout(stepAnimTimer.current)
-    stepAnimTimer.current = window.setTimeout(() => setStepAnim(null), reduced ? 0 : 820)
+    stepAnimTimer.current = window.setTimeout(() => setStepAnim(null), reduced ? 0 : 650)
     setStep(next)
   }
 
@@ -146,8 +174,16 @@ export function CausalChainsSection() {
                 display: 'flex', flexDirection: 'column',
               }}
             >
-              <div style={{ fontSize: 17, color: 'var(--text)', fontWeight: 800, marginBottom: 18, textAlign: 'center', lineHeight: 1.35 }}>
-                {current?.title ?? ''}
+              <div style={{ fontSize: 17, color: 'var(--text)', fontWeight: 800, marginBottom: 18, textAlign: 'center', lineHeight: 1.35, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+                {current && ICONS[current.icon] && (
+                  <span style={{ color: 'var(--accent-text)', display: 'inline-flex', flexShrink: 0 }}>{ICONS[current.icon]}</span>
+                )}
+                <span>{current?.title ?? ''}</span>
+              </div>
+
+              {/* chain index "01 / 20" - how many chains total + where you are */}
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text)', letterSpacing: '0.1em', textAlign: 'center', marginBottom: 14 }}>
+                {String(safeScenario + 1).padStart(2, '0')} / {String(n).padStart(2, '0')} &middot; causality chains
               </div>
 
               {/* Big centered step card - takes most space, transparent glass */}
@@ -160,6 +196,9 @@ export function CausalChainsSection() {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
+                  {current && ICONS[current.icon] && (
+                    <span style={{ color: 'var(--accent-text)', display: 'inline-flex', flexShrink: 0 }}>{ICONS[current.icon]}</span>
+                  )}
                   <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, color: 'var(--accent-text)', minWidth: 34 }}>
                     {current ? String(step + 1).padStart(2, '0') : '--'}
                   </span>
@@ -172,7 +211,7 @@ export function CausalChainsSection() {
               {/* Nav buttons (stage) just above the graph */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: 8, marginBottom: 10 }}>
                 <button onClick={() => goStep(step - 1)} aria-label="Previous step" style={stepArrowStyle}>&larr;</button>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', letterSpacing: '0.08em', minWidth: 70, textAlign: 'center' }}>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text)', letterSpacing: '0.08em', minWidth: 70, textAlign: 'center' }}>
                   {current ? `${String(step + 1).padStart(2, '0')} / ${String(current.nodes.length).padStart(2, '0')}` : '-- / --'}
                 </span>
                 <button onClick={() => goStep(step + 1)} aria-label="Next step" style={stepArrowStyle}>&rarr;</button>
