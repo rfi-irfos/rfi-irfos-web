@@ -25,12 +25,12 @@ export function AppPrivacySection() {
           not 1000) - live feedback: the narrower container made this section's
           left edge sit further right than the sections directly above/below it. */}
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-        <Reveal from="left">
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.appPrivacy.eyebrow}</p>
-          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.appPrivacy.heading} /></h2>
+        <Reveal>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.appPrivacy.eyebrow}</p>
+          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, textAlign: 'center' }}><ScrambleHeading text={t.appPrivacy.heading} /></h2>
         </Reveal>
-        <Reveal from="right" delay={1}>
-          <p style={{ color: 'var(--text)', marginBottom: 40, maxWidth: 680, fontSize: 16, lineHeight: 1.9 }}>
+        <Reveal delay={1}>
+          <p style={{ color: 'var(--text)', marginBottom: 40, maxWidth: 680, fontSize: 16, lineHeight: 1.9, textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
             {t.appPrivacy.paragraph}
           </p>
         </Reveal>

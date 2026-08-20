@@ -123,13 +123,13 @@ export function CausalChainsSection() {
     <section id="causal-chains" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'left' }}>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>
             {t.causalChains.eyebrow}
           </p>
-          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, textAlign: 'left' }}>
+          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, textAlign: 'center' }}>
             <ScrambleHeading text={t.causalChains.heading} />
           </h2>
-          <p style={{ color: 'var(--text2)', fontSize: 15, marginBottom: 28, textAlign: 'left', maxWidth: 720, lineHeight: 1.7 }}>
+          <p style={{ color: 'var(--text2)', fontSize: 15, marginBottom: 28, textAlign: 'center', maxWidth: 720, lineHeight: 1.7, marginLeft: 'auto', marginRight: 'auto' }}>
             {t.causalChains.subheading}
           </p>
         </Reveal>

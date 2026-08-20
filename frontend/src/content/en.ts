@@ -219,7 +219,7 @@ export const EN = {
   appPrivacy: {
     eyebrow: 'Start Here',
     heading: 'turning observations into intelligence',
-    paragraph: 'Most organizations have more signals than they can interpret: systems, vendors, markets, events, dependencies, and changes arriving from different directions. We bring them into one evidence-first world model, preserve where every observation came from, and trace what changes through the relationships around it. Every system we build is explainable by design, which is a mechanism rather than a label: ask it why and it returns the specific observations that produced the answer, the steps it took between them, and how certain it is of each one. Whitebox is what that adds up to, not a claim we make instead of it.',
+    paragraph: 'Most organizations have more signals than they can interpret: systems, vendors, markets, events, dependencies, and changes arriving from different directions. We bring them into one evidence-first world model, preserve where every observation came from, and trace what changes through the relationships around it.',
     comparisonClassicLabel: 'What gets lost',
     comparisonRfiLabel: 'What the model preserves',
     comparisonRows: [
