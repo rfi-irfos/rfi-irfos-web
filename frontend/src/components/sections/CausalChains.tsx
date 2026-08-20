@@ -33,6 +33,15 @@ const stepArrowStyle: React.CSSProperties = {
   display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 16,
 }
 
+function dotColor(i: number, n: number) {
+  // light turquoise -> darker blue as you proceed through the chain
+  const t = n > 1 ? i / (n - 1) : 0
+  const from = [94, 234, 212]   // #5eead4 light turquoise
+  const to = [37, 99, 235]      // #2563eb darker blue
+  const c = from.map((f, k) => Math.round(f + (to[k] - f) * t))
+  return `rgb(${c[0]}, ${c[1]}, ${c[2]})`
+}
+
 function ChainGraph({ nodes, step, onStep }: { nodes: string[]; step: number; onStep: (i: number) => void }) {
   const W = 720
   const H = 88
@@ -55,7 +64,7 @@ function ChainGraph({ nodes, step, onStep }: { nodes: string[]; step: number; on
             cx={p.x.toFixed(1)}
             cy={p.y.toFixed(1)}
             r={i === step ? 5.5 : 3}
-            fill={i === step ? 'var(--accent-text)' : 'var(--text3)'}
+            fill={i === step ? 'var(--accent-text)' : dotColor(i, nodes.length)}
             style={{ cursor: 'pointer', transition: 'r 200ms cubic-bezier(0.16,1,0.3,1), fill 200ms' }}
             onClick={() => onStep(i)}
           />
@@ -112,7 +121,7 @@ export function CausalChainsSection() {
 
   return (
     <section id="causal-chains" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
-      <div style={{ maxWidth: 1320, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'left' }}>
             {t.causalChains.eyebrow}
@@ -160,8 +169,8 @@ export function CausalChainsSection() {
                 </div>
               </div>
 
-              {/* Nav buttons (stage) ABOVE the graph, pushed down */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginBottom: 14, marginTop: 'auto' }}>
+              {/* Nav buttons (stage) just above the graph */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: 8, marginBottom: 10 }}>
                 <button onClick={() => goStep(step - 1)} aria-label="Previous step" style={stepArrowStyle}>&larr;</button>
                 <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', letterSpacing: '0.08em', minWidth: 70, textAlign: 'center' }}>
                   {current ? `${String(step + 1).padStart(2, '0')} / ${String(current.nodes.length).padStart(2, '0')}` : '-- / --'}
