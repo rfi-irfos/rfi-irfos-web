@@ -1241,8 +1241,8 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           <HeroSection mobile={mobile} theme={theme} />
           <ResearchSection />
           <AppPrivacySection />
-          <CoopPartnersSection mobile={mobile} openCheckoutModal={openCheckoutModal} />
           <CausalChainsSection />
+          <CoopPartnersSection mobile={mobile} openCheckoutModal={openCheckoutModal} />
           <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} pixelRef={pixelRef} />
         </>}
 

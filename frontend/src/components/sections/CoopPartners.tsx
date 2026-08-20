@@ -128,29 +128,31 @@ export function CoopPartnersSection({
               </p>
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10, marginTop: 16 }}>
-            {[
-              { name: 'Systemaudit', price: '€4.500', href: 'https://buy.stripe.com/14AdRbgpi1fpdqt6jm7N60r' },
-              { name: 'Emergent Case Intelligence Sprint', price: '€12.500', href: 'https://buy.stripe.com/bJe9AVc927DNdqtePS7N60m' },
-              { name: 'Multi-Agent System Design', price: '€24.500', href: 'https://buy.stripe.com/00w3cxc92bU30DH2367N60n' },
-              { name: 'System Design & Deployment', price: '€55.000', href: 'https://buy.stripe.com/dRm9AVgpi7DNdqt37a7N60A' },
-            ].map((p, i) => (
-              <button key={i}
-                onClick={() => openCheckoutModal({ key: `coop_${i}`, tier: p.name, desc: t.coopPartners.products[i].desc, price: p.price, delivery: t.coopPartners.productsDeliveryNote, directUrl: p.href })}
-                className="rfi-hover-card rfi-glass-flat rfi-glass-solid"
-                style={{
-                  display: 'flex', flexDirection: 'column', gap: 4, padding: '14px 16px',
-                  borderRadius: 10, textAlign: 'left', cursor: 'pointer',
-                }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{p.name}</span>
-                <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-text)' }}>{p.price}</span>
-              </button>
-            ))}
+          <div style={{ maxWidth: 820, margin: '16px auto 0' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(180px, 1fr))', gap: 10 }}>
+              {[
+                { name: 'Systemaudit', price: '€4.500', href: 'https://buy.stripe.com/14AdRbgpi1fpdqt6jm7N60r' },
+                { name: 'Emergent Case Intelligence Sprint', price: '€12.500', href: 'https://buy.stripe.com/bJe9AVc927DNdqtePS7N60m' },
+                { name: 'Multi-Agent System Design', price: '€24.500', href: 'https://buy.stripe.com/00w3cxc92bU30DH2367N60n' },
+                { name: 'System Design & Deployment', price: '€55.000', href: 'https://buy.stripe.com/dRm9AVgpi7DNdqt37a7N60A' },
+              ].map((p, i) => (
+                <button key={i}
+                  onClick={() => openCheckoutModal({ key: `coop_${i}`, tier: p.name, desc: t.coopPartners.products[i].desc, price: p.price, delivery: t.coopPartners.productsDeliveryNote, directUrl: p.href })}
+                  className="rfi-hover-card rfi-glass-flat rfi-glass-solid"
+                  style={{
+                    display: 'flex', flexDirection: 'column', gap: 4, padding: '14px 16px',
+                    borderRadius: 10, textAlign: 'left', cursor: 'pointer',
+                  }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{p.name}</span>
+                  <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-text)' }}>{p.price}</span>
+                </button>
+              ))}
+            </div>
+            <p style={{ fontSize: 11, color: 'var(--text3)', marginTop: 10 }}>
+              {t.coopPartners.footerNotePrefix}{' '}
+              <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text2)' }}>emergent-interaction-lab.fly.dev</a>.
+            </p>
           </div>
-          <p style={{ fontSize: 11, color: 'var(--text3)', marginTop: 10 }}>
-            {t.coopPartners.footerNotePrefix}{' '}
-            <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text2)' }}>emergent-interaction-lab.fly.dev</a>.
-          </p>
         </Reveal>
       </div>
 
