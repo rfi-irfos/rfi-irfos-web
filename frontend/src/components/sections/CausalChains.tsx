@@ -6,14 +6,15 @@
 //  - Section eyebrow: "Causality Chains"
 //  - Section title:    "A look into Dingir's Mind" / "Einblicke in Dingirs Denkweise"
 //  - Section subheading stays.
-//  - The WIDGET shows the current chain's title at its top.
-//  - The WIDGET shows exactly ONE step at a time (numbered node).
+//  - The WIDGET shows the current chain's title at its top (larger).
+//  - The WIDGET shows exactly ONE step at a time as a wrapped card.
 //  - The graph is a flat horizontal line with one dot per node; the current
-//    stage's dot is highlighted. Stage nav arrows sit at the bottom of the
-//    graph to walk back/forth through the chain.
-//  - Two SCENARIO arrows flank the widget (outside it) and cycle through the
-//    different chains, wrapping around (circle).
-import { useState, useMemo } from 'react'
+//    stage's dot is highlighted. It sits at the BOTTOM of the widget.
+//  - Stage nav arrows sit at the bottom of the graph to walk back/forth.
+//  - Two SCENARIO arrows flank the widget (outside it, vertically centered),
+//    reuse the exact Systems-tab carousel button style + smooth wrap animation,
+//    and cycle scenarios, wrapping around (circle).
+import { useState, useMemo, useRef } from 'react'
 import { Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
@@ -22,8 +23,11 @@ type Chain = {
   nodes: string[]
 }
 
-// CHAINS data lives in content/*.ts (t.causalChains.chains) - this file only
-// declares the shape; the actual arrays come from the locale bundle.
+const arrowStyle: React.CSSProperties = {
+  width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.3)',
+  background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: 18, cursor: 'pointer',
+  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'center',
+}
 
 function ChainGraph({ nodes, step, onStep }: { nodes: string[]; step: number; onStep: (i: number) => void }) {
   const W = 720
@@ -52,7 +56,6 @@ function ChainGraph({ nodes, step, onStep }: { nodes: string[]; step: number; on
             onClick={() => onStep(i)}
           />
         ))}
-        {/* Connector from start to current stage, in accent, so progress reads clearly */}
         <line
           x1={pts[0]?.x ?? pad}
           y1={y}
@@ -92,26 +95,26 @@ function ChainGraph({ nodes, step, onStep }: { nodes: string[]; step: number; on
   )
 }
 
-const arrowBtn = (side: 'left' | 'right'): React.CSSProperties => ({
-  width: 48, height: 48, borderRadius: 12, border: '1px solid var(--border)',
-  background: 'var(--bg2)', color: 'var(--text)', cursor: 'pointer',
-  display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 20,
-  flexShrink: 0,
-  [side === 'left' ? 'marginRight' : 'marginLeft']: 12,
-})
-
 export function CausalChainsSection() {
   const { t } = useLocale()
   const chains = (t.causalChains.chains as Chain[]) ?? []
   const [scenario, setScenario] = useState(0)
   const [step, setStep] = useState(0)
+  const [anim, setAnim] = useState<'left' | 'right' | null>(null)
+  const animTimer = useRef<number | null>(null)
 
-  const safeScenario = chains.length ? scenario % chains.length : 0
+  const n = chains.length
+  const safeScenario = n ? scenario % n : 0
   const current = chains[safeScenario]
 
+  const reduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+
   const cycleScenario = (dir: number) => {
-    if (!chains.length) return
-    setScenario((s) => (s + dir + chains.length) % chains.length)
+    if (!n) return
+    setAnim(dir < 0 ? 'right' : 'left')
+    if (animTimer.current) window.clearTimeout(animTimer.current)
+    animTimer.current = window.setTimeout(() => setAnim(null), reduced ? 0 : 320)
+    setScenario(s => (s + dir + n) % n)
     setStep(0)
   }
   const goStep = (i: number) => {
@@ -123,44 +126,53 @@ export function CausalChainsSection() {
     <section id="causal-chains" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'left' }}>
             {t.causalChains.eyebrow}
           </p>
-          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, textAlign: 'center' }}>
+          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, textAlign: 'left' }}>
             <ScrambleHeading text={t.causalChains.heading} />
           </h2>
-          <p style={{ color: 'var(--text2)', fontSize: 15, marginBottom: 28, textAlign: 'center', maxWidth: 720, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.7 }}>
+          <p style={{ color: 'var(--text2)', fontSize: 15, marginBottom: 28, textAlign: 'left', maxWidth: 720, lineHeight: 1.7 }}>
             {t.causalChains.subheading}
           </p>
         </Reveal>
 
         <Reveal from="bottom" delay={1}>
-          <div style={{ display: 'flex', alignItems: 'stretch', justifyContent: 'center' }}>
-            <button onClick={() => cycleScenario(-1)} aria-label="Previous scenario" style={arrowBtn('left')}>&larr;</button>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+            <button onClick={() => cycleScenario(-1)} aria-label="Previous scenario" style={arrowStyle}>&larr;</button>
 
-            <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 16, padding: '22px 22px 18px', maxWidth: 820, flex: '1 1 auto', minWidth: 0 }}>
-              <div style={{ fontSize: 14, color: 'var(--text)', fontWeight: 800, marginBottom: 16, textAlign: 'center', lineHeight: 1.4 }}>
+            <div
+              className="rfi-glass-flat rfi-glass-solid"
+              style={{
+                borderRadius: 16, padding: '26px 26px 20px', maxWidth: 820, flex: '1 1 auto', minWidth: 0,
+                animation: anim ? `${anim === 'left' ? 'ccSlideLeft' : 'ccSlideRight'} 320ms cubic-bezier(0.16,1,0.3,1)` : undefined,
+              }}
+            >
+              <div style={{ fontSize: 18, color: 'var(--text)', fontWeight: 800, marginBottom: 18, textAlign: 'left', lineHeight: 1.35 }}>
                 {current?.title ?? ''}
               </div>
 
-              {/* ONE step at a time */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'center', minHeight: 56, marginBottom: 4 }}>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: 'var(--accent-text)', minWidth: 28, textAlign: 'right' }}>
-                  {current ? String(step + 1).padStart(2, '0') : '--'}
-                </span>
-                <span style={{ fontSize: 15, color: 'var(--text)', lineHeight: 1.5, textAlign: 'center', maxWidth: 560 }}>
-                  {current ? current.nodes[step] : ''}
-                </span>
+              {/* ONE step at a time, wrapped as a card */}
+              <div
+                style={{
+                  border: '1px solid var(--border)', borderRadius: 12, background: 'var(--bg2)',
+                  padding: '18px 20px', marginBottom: 4,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 15, color: 'var(--accent-text)', minWidth: 30 }}>
+                    {current ? String(step + 1).padStart(2, '0') : '--'}
+                  </span>
+                  <span style={{ fontSize: 16, color: 'var(--text)', lineHeight: 1.5 }}>
+                    {current ? current.nodes[step] : ''}
+                  </span>
+                </div>
               </div>
 
               {current && <ChainGraph nodes={current.nodes} step={step} onStep={goStep} />}
-
-              <p style={{ fontSize: 11.5, color: 'var(--text3)', fontFamily: "'JetBrains Mono', monospace", textAlign: 'center', marginTop: 14, lineHeight: 1.6 }}>
-                {t.causalChains.llmNote || 'Dingir head: raw observations → readable chain. Albert will replace this head later.'}
-              </p>
             </div>
 
-            <button onClick={() => cycleScenario(1)} aria-label="Next scenario" style={arrowBtn('right')}>&rarr;</button>
+            <button onClick={() => cycleScenario(1)} aria-label="Next scenario" style={arrowStyle}>&rarr;</button>
           </div>
         </Reveal>
       </div>

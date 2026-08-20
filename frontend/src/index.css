@@ -552,6 +552,16 @@ h1, h2, h3, .rfi-display {
   .rfi-glass, .rfi-glass-flat { -webkit-backdrop-filter: none; backdrop-filter: none; background-image: none; box-shadow: none; }
 }
 
+/* ── Causality Chains scenario cycle (reuses Systems-tab carousel feel) ── */
+@keyframes ccSlideLeft {
+  from { opacity: 0.35; transform: translateX(28px); }
+  to   { opacity: 1;    transform: translateX(0); }
+}
+@keyframes ccSlideRight {
+  from { opacity: 0.35; transform: translateX(-28px); }
+  to   { opacity: 1;    transform: translateX(0); }
+}
+
 /* ── Hero letter-flip ─────────────────────────────────────────────
    One span per character, positioned/animated imperatively by HeroFlipWord
    (shared.tsx) - width/left/transform/filter are all written from JS, this
