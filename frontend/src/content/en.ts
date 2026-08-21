@@ -221,9 +221,9 @@ export const EN = {
       { classic: 'Your most experienced engineer leaves. Six months later, a critical system behaves unexpectedly, and nobody knows why it was designed that way.', rfiLabel: 'Institutional intelligence', rfi: 'operational knowledge, design decisions, dependencies and outcomes remain connected to their original context and provenance.' },
       { classic: 'A supplier in Asia misses one shipment. At the same time, a port is congested and energy prices spike. Each event looks manageable on its own. Production stops three weeks later.', rfiLabel: 'Cross-domain intelligence', rfi: 'supplier activity, logistics, infrastructure, markets and external events are connected to reveal compound risks before they reach operations.' },
       { classic: 'Your board asks why a major investment was approved. The people who made the decision remember the conclusion, but not the evidence that made it compelling.', rfiLabel: 'Decision intelligence', rfi: 'evidence, assumptions, alternatives, conditions and subsequent outcomes remain connected, making the decision reconstructable months or years later.' },
-      { classic: 'A component manufacturer you do not buy from directly loses access to a critical material. Your supplier has another supplier. You have no idea you are exposed until your production schedule starts slipping.', rfiLabel: 'Supply-chain intelligence', rfi: 'multi-tier dependencies, geographic exposure, concentration risk and upstream disruptions are traced through the network to their potential business impact.' },
-      { classic: 'A conflict escalates in a region where you have no office, no supplier and no obvious exposure. Two months later, shipping routes change, insurance costs rise and one of your inputs becomes scarce.', rfiLabel: 'World intelligence', rfi: 'geopolitical events, trade routes, commodities, infrastructure, suppliers and business dependencies are continuously connected across the external world.' },
-      { classic: 'A weather station records an unusual temperature pattern. Ocean conditions shift. A drought develops. Commodity prices move. Your procurement team sees the price increase, but not the chain of events that produced it.', rfiLabel: 'Causal intelligence', rfi: 'environmental, economic and operational signals are tracked through time so the model can trace how distant events propagate into business conditions.' },
+      { classic: 'One of your suppliers quietly starts buying from a cheaper source. Nobody hears about it, until a bad batch shows up and you are the one explaining it to your own customers.', rfiLabel: 'Supply-chain intelligence', rfi: 'multi-tier dependencies, geographic exposure, concentration risk and upstream disruptions are traced through the network to their potential business impact.' },
+      { classic: 'A storm shuts down a port on the other side of the world. You do not ship anything through it yourself. Six weeks later your own delivery times start slipping, and nobody can say why.', rfiLabel: 'World intelligence', rfi: 'geopolitical events, trade routes, commodities, infrastructure, suppliers and business dependencies are continuously connected across the external world.' },
+      { classic: 'Fuel gets more expensive. Then shipping costs creep up. Then the price on your own invoice quietly rises with it, and nobody remembers when it started.', rfiLabel: 'Causal intelligence', rfi: 'environmental, economic and operational signals are tracked through time so the model can trace how distant events propagate into business conditions.' },
     ],
     cta: 'Ping us!',
   },
@@ -298,13 +298,6 @@ export const EN = {
     payButton: (price: string) => `Pay ${price} →`,
     cancel: 'Cancel',
     talkFirstInstead: 'Didn\'t find the right fit? Talk to us - get a custom quote →',
-  },
-
-  proposalModal: {
-    bodyPrefix: 'No payment happens here. This takes you to our contact form with ',
-    bodySuffix: ' pre-noted, so we start the conversation with the right context.',
-    continueToContact: 'Continue to Contact →',
-    cancel: 'Cancel',
   },
 
   reportModal: {
@@ -816,16 +809,16 @@ export const EN = {
     disclosurePolicyPrefix: 'Sending a security finding? See our ',
     disclosurePolicyLink: 'full disclosure-handling policy',
     disclosurePolicySuffix: ' - triage, lawful basis, and your choice of credit.',
-    address: 'Elisabethinergasse 25\n8020 Graz, Austria\nrfi-irfos.com · rfi-irfos.at',
     form: {
       topicAriaLabel: 'Topic',
       topicPlaceholder: 'Topic (optional)',
       topicOptions: {
+        firstLight: 'First Light',
+        deepField: 'Deep Field',
+        youVsWorld: 'You vs. the World',
         securityDisclosure: 'Security Disclosure',
-        securityAudit: 'Security Audit',
         sendApk: 'Send us your APK',
         researchCollaboration: 'Research Collaboration',
-        webDevelopment: 'Web Development',
         other: 'Other',
       },
       namePlaceholder: 'Name or alias (optional - leave blank to stay anonymous)',

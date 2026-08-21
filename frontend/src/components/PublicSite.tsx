@@ -262,7 +262,6 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   // is) moved into this confirmation modal, shown above the B2B/ToS checkboxes, so
   // nothing gets lost by trimming the card itself.
   const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[]; bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[] } | null>(null)
-  const [proposalModal, setProposalModal]     = useState<{ tier: string; desc: string; price: string; delivery?: string; bullets?: readonly string[]; bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[] } | null>(null)
   const [reportModal, setReportModal]         = useState<string | null>(null)
   // Full plain-language writeup per ledger entry - the ledger row/cell only ever
   // summarizes (hover reveals the short "why it matters" line), this is where the
@@ -312,11 +311,11 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   // Lock background scroll while a modal is open - without this the page behind a
   // fixed-position modal keeps scrolling under it, which reads as "scrolling is broken."
   useEffect(() => {
-    if (!checkoutModal && !proposalModal && !reportModal && !intelModal) return
+    if (!checkoutModal && !reportModal && !intelModal) return
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = prevOverflow }
-  }, [checkoutModal, proposalModal, reportModal, intelModal])
+  }, [checkoutModal, reportModal, intelModal])
 
   // "ba-dum-tss" - Zabih's idea, live feedback 2026-08-14: the confetti pop needed a
   // rimshot to sell the joke. Two low kick thumps (sine, pitch-dropping) then a
@@ -440,25 +439,13 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     setCheckoutModal(null)
   }
 
-  const openProposalModal = (info: { tier: string; desc: string; price: string; delivery?: string; bullets?: readonly string[] }) => {
-    setProposalModal(info)
-  }
-
-  const proposalRequest = (tier: string) => {
-    // Contact-only tiers have no Stripe checkout — beam the request so they show
-    // up in the same Lighthouse funnel as the paid tiers.
+  // Pricing tiers route straight to the contact form now (Simeon, 2026-08-21: "ohne
+  // zwischenschritt direkt zum kontaktformular") - the confirmation modal that used to
+  // sit in between is gone. Pre-fills the topic field with the tier name so the visitor
+  // doesn't have to type it, and beams the same funnel event a Stripe-bound click gets.
+  const selectTier = (tier: string) => {
     beacon('proposal_request:' + tier)
-  }
-
-  const confirmProposal = () => {
-    if (!proposalModal) return
-    proposalRequest(proposalModal.tier)
-    setProposalModal(null)
-    // Was a raw `location.hash = '#submit'` - did nothing when fired from the
-    // 'access' view, because #submit only exists in the DOM under view==='home'
-    // (view-gated rendering, added when the site moved to the systems/evidence/
-    // access SPA structure). navigateTo() already knows how to switch views
-    // first and then scroll - reuse it instead of the dead raw hash assignment.
+    setTipForm(p => ({ ...p, topic: tier }))
     navigateTo('#submit')
   }
 
@@ -1040,37 +1027,6 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         </div>
       )}
 
-      {/* PROPOSAL REQUEST MODAL - same "full breakdown before you commit" pattern as the
-          checkout modal above, for tiers that route to Contact instead of Stripe. */}
-      {proposalModal && (
-        <div className="rfi-modal-backdrop" style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
-          <div className="rfi-modal-panel" style={{
-            background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
-            backgroundBlendMode: 'overlay',
-            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
-            border: '1px solid rgba(255,255,255,0.08)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '18px 16px 26px' : '24px 20px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
-            {/* Same fixed-light-on-dark rule as the checkout modal above - this chrome
-                doesn't follow the site theme either. */}
-            <ModalTierBody tier={proposalModal.tier} price={proposalModal.price} desc={proposalModal.desc} delivery={proposalModal.delivery} mobile={mobile} bullets={proposalModal.bullets} bring={proposalModal.bring} mechanism={proposalModal.mechanism} receive={proposalModal.receive} />
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
-              <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.6, marginBottom: 20 }}>
-                {t.proposalModal.bodyPrefix}<strong style={{ color: '#e8e8f0' }}>{proposalModal.tier}</strong>{t.proposalModal.bodySuffix}
-              </p>
-              <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
-                <button onClick={confirmProposal}
-                  style={{ flex: mobile ? undefined : 2, padding: '13px', background: TEAL, border: `1px solid ${TEAL}`, borderRadius: 6, color: '#070711', fontSize: 13, fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  {t.proposalModal.continueToContact}
-                </button>
-                <button onClick={() => setProposalModal(null)}
-                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  {t.proposalModal.cancel}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Live feedback 2026-08-14: nav wordmark/links were invisible in light
           theme on the Systems/Evidence/Access views ("in white mode the name is
           not visible... should be black writing, not grey"). Root cause: the
@@ -1262,7 +1218,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         </section>}
 
         {view === 'access' && <section id="access" className="rfi-view-panel">
-          <PricingSection openProposalModal={openProposalModal} />
+          <PricingSection onSelectTier={selectTier} />
           <JourneySection />
         </section>}
       </main>

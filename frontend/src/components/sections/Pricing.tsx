@@ -35,8 +35,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ScopeTag, EngagementFlow, CartIcon, Reveal, ScrambleHeading, useMobile, prefersReducedMotion } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
-type ProposalInfo = { tier: string; desc: string; price: string; delivery?: string; bullets?: readonly string[]; bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[] }
-
 // Technical metadata only, one entry per tier, same order as t.pricing.tiers
 // so index-zipping lines them up correctly.
 //
@@ -59,18 +57,17 @@ type PricingTier = {
 }
 
 // One full, self-contained offer card - title, scope badge, the You bring /
-// We / You receive diagram, then a delivery pill plus a single proposal
-// button whose own label IS the price (never render the price a second time
+// We / You receive diagram, then a delivery pill plus a single CTA button
+// whose own label IS the price (never render the price a second time
 // elsewhere on the card - see the file header note on the duplication bug).
 function PricingOfferCard({
-  tier, scopeTag, mobile, openProposalModal,
+  tier, scopeTag, mobile, onSelectTier,
 }: {
   tier: PricingTier
   scopeTag: string
   mobile: boolean
-  openProposalModal: (info: ProposalInfo) => void
+  onSelectTier: (tier: string) => void
 }) {
-  const info = { tier: tier.tier, desc: '', price: tier.price, delivery: tier.delivery, bring: tier.bring, mechanism: tier.mechanism, receive: tier.receive }
   return (
     <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: mobile ? '16px 14px' : '24px 24px' }}>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
@@ -89,11 +86,16 @@ function PricingOfferCard({
             <span style={{ minWidth: 0, whiteSpace: 'nowrap' }}>{tier.delivery}</span>
           </div>
         )}
-        <button type="button" onClick={() => openProposalModal(info)} style={{
+        {/* Translucent, not solid (live feedback 2026-08-21: "nicht direkt wie n
+            kaufen button ausschaut" - this goes to the contact form now, not a
+            checkout, so it shouldn't read as a "buy" button). Same teal, same
+            shape, just dim against the background - same visual language as
+            the delivery pill beside it. */}
+        <button type="button" onClick={() => onSelectTier(tier.tier)} style={{
           borderRadius: 8, cursor: 'pointer', padding: '9px 16px', flexShrink: 0,
           display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 800,
           letterSpacing: '0.02em', whiteSpace: 'nowrap',
-          background: 'var(--accent)', border: 'none', color: 'var(--accent-fg)',
+          background: 'var(--accent-dim)', border: '1px solid var(--accent-border)', color: 'var(--accent-text)',
         }}>
           <CartIcon />
           {tier.price}
@@ -104,9 +106,9 @@ function PricingOfferCard({
 }
 
 export function PricingSection({
-  openProposalModal,
+  onSelectTier,
 }: {
-  openProposalModal: (info: ProposalInfo) => void
+  onSelectTier: (tier: string) => void
 }) {
   const { t } = useLocale()
   const tiers = t.pricing.tiers.map((tier, i) => ({ ...tier, ...TIER_META[i] }))
@@ -170,7 +172,7 @@ export function PricingSection({
                 animate={{ opacity: 1, y: 0 }}
                 exit={reduced ? undefined : { opacity: 0, y: -8 }}
                 transition={{ duration: 0.22 }}>
-                <PricingOfferCard tier={tiers[active]} scopeTag={t.pricing.scopeTag} mobile={mobile} openProposalModal={openProposalModal} />
+                <PricingOfferCard tier={tiers[active]} scopeTag={t.pricing.scopeTag} mobile={mobile} onSelectTier={onSelectTier} />
               </motion.div>
             </AnimatePresence>
           </div>

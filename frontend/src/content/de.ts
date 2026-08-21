@@ -214,9 +214,9 @@ export const DE: Content = {
       { classic: 'Ihr erfahrenster Ingenieur verlässt das Unternehmen. Sechs Monate später verhält sich ein kritisches System unerwartet, und niemand weiß mehr, warum es so entworfen wurde.', rfiLabel: 'Institutionelle Intelligence', rfi: 'Operatives Wissen, Designentscheidungen, Abhängigkeiten und Ergebnisse bleiben mit ihrem ursprünglichen Kontext und ihrer Herkunft verbunden.' },
       { classic: 'Ein Lieferant in Asien verpasst eine Lieferung. Gleichzeitig ist ein Hafen überlastet und die Energiepreise steigen. Jedes Ereignis für sich sieht beherrschbar aus. Drei Wochen später steht die Produktion still.', rfiLabel: 'Domänenübergreifende Intelligence', rfi: 'Lieferantenaktivität, Logistik, Infrastruktur, Märkte und externe Ereignisse werden verbunden, um zusammengesetzte Risiken sichtbar zu machen, bevor sie den Betrieb erreichen.' },
       { classic: 'Der Vorstand fragt, warum eine größere Investition genehmigt wurde. Die Entscheidungsträger erinnern sich an das Ergebnis, aber nicht mehr an die Evidenz, die es überzeugend gemacht hat.', rfiLabel: 'Entscheidungs-Intelligence', rfi: 'Evidenz, Annahmen, Alternativen, Bedingungen und Folgeergebnisse bleiben verbunden, sodass die Entscheidung auch nach Monaten oder Jahren rekonstruierbar bleibt.' },
-      { classic: 'Ein Bauteilhersteller, bei dem Sie nicht direkt einkaufen, verliert Zugang zu einem kritischen Material. Ihr Lieferant hat wiederum einen eigenen Lieferanten. Sie merken die Abhängigkeit erst, wenn Ihr Produktionsplan ins Rutschen gerät.', rfiLabel: 'Lieferketten-Intelligence', rfi: 'Mehrstufige Abhängigkeiten, geografische Exponierung, Konzentrationsrisiken und vorgelagerte Störungen werden durch das Netzwerk bis zu ihrer möglichen Auswirkung auf das Geschäft verfolgt.' },
-      { classic: 'In einer Region ohne eigenen Standort, ohne Lieferanten und ohne offensichtliche Exponierung eskaliert ein Konflikt. Zwei Monate später ändern sich Schifffahrtsrouten, Versicherungskosten steigen und einer Ihrer Inputs wird knapp.', rfiLabel: 'World Intelligence', rfi: 'Geopolitische Ereignisse, Handelsrouten, Rohstoffe, Infrastruktur, Lieferanten und geschäftliche Abhängigkeiten werden fortlaufend über die ganze Außenwelt hinweg verbunden.' },
-      { classic: 'Eine Wetterstation erfasst ein ungewöhnliches Temperaturmuster. Meeresströmungen verändern sich. Eine Dürre entsteht. Rohstoffpreise bewegen sich. Ihr Einkauf sieht den Preisanstieg, aber nicht die Kette der Ereignisse dahinter.', rfiLabel: 'Kausale Intelligence', rfi: 'Umwelt-, wirtschaftliche und operative Signale werden über die Zeit verfolgt, sodass das Modell nachvollziehen kann, wie weit entfernte Ereignisse in geschäftliche Bedingungen hineinwirken.' },
+      { classic: 'Einer Ihrer Lieferanten kauft still bei einer billigeren Quelle ein. Niemand erfährt davon, bis eine schlechte Lieferung ankommt und Sie es Ihren eigenen Kunden erklären müssen.', rfiLabel: 'Lieferketten-Intelligence', rfi: 'Mehrstufige Abhängigkeiten, geografische Exponierung, Konzentrationsrisiken und vorgelagerte Störungen werden durch das Netzwerk bis zu ihrer möglichen Auswirkung auf das Geschäft verfolgt.' },
+      { classic: 'Ein Sturm legt einen Hafen auf der anderen Seite der Welt lahm. Sie verschiffen selbst gar nichts darüber. Sechs Wochen später verzögern sich Ihre eigenen Lieferungen, und niemand weiß warum.', rfiLabel: 'World Intelligence', rfi: 'Geopolitische Ereignisse, Handelsrouten, Rohstoffe, Infrastruktur, Lieferanten und geschäftliche Abhängigkeiten werden fortlaufend über die ganze Außenwelt hinweg verbunden.' },
+      { classic: 'Kraftstoff wird teurer. Dann steigen die Frachtkosten. Dann steigt still der Preis auf Ihrer eigenen Rechnung mit, und niemand weiß mehr, wann es angefangen hat.', rfiLabel: 'Kausale Intelligence', rfi: 'Umwelt-, wirtschaftliche und operative Signale werden über die Zeit verfolgt, sodass das Modell nachvollziehen kann, wie weit entfernte Ereignisse in geschäftliche Bedingungen hineinwirken.' },
     ],
     cta: 'Ping uns!',
   },
@@ -291,13 +291,6 @@ export const DE: Content = {
     payButton: (price: string) => `${price} zahlen →`,
     cancel: 'Abbrechen',
     talkFirstInstead: 'Nicht das Richtige dabei? Sprechen Sie mit uns - individuelles Angebot →',
-  },
-
-  proposalModal: {
-    bodyPrefix: 'Hier wird keine Zahlung ausgelöst. Das bringt Sie zu unserem Kontaktformular, mit ',
-    bodySuffix: ' bereits vermerkt, damit wir das Gespräch mit dem richtigen Kontext beginnen.',
-    continueToContact: 'Weiter zum Kontakt →',
-    cancel: 'Abbrechen',
   },
 
   reportModal: {
@@ -803,16 +796,16 @@ export const DE: Content = {
     disclosurePolicyPrefix: 'Sie melden einen Sicherheitsfund? Siehe unsere ',
     disclosurePolicyLink: 'vollständige Richtlinie zum Umgang mit Offenlegungen',
     disclosurePolicySuffix: ' - Triage, Rechtsgrundlage und Ihre Wahl der Namensnennung.',
-    address: 'Elisabethinergasse 25\n8020 Graz, Österreich\nrfi-irfos.com · rfi-irfos.at',
     form: {
       topicAriaLabel: 'Thema',
       topicPlaceholder: 'Thema (optional)',
       topicOptions: {
+        firstLight: 'First Light',
+        deepField: 'Deep Field',
+        youVsWorld: 'You vs. the World',
         securityDisclosure: 'Sicherheitsmeldung',
-        securityAudit: 'Sicherheitsaudit',
         sendApk: 'APK einschicken',
         researchCollaboration: 'Forschungskooperation',
-        webDevelopment: 'Web-Entwicklung',
         other: 'Sonstiges',
       },
       namePlaceholder: 'Name oder Alias (optional - leer lassen, um anonym zu bleiben)',
