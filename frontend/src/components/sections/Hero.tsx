@@ -362,7 +362,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           // floor that stays true as the live count fluctuates rather than the
           // instantaneous reading. Re-verify before raising this number further.
           { n: '58k+',                        label: t.hero.stats.dataPointsMonitored, from: 'scale'  as const, sub: undefined as string | undefined },
-          { n: '301',                         label: t.hero.stats.agents,             from: 'bottom' as const, sub: undefined as string | undefined },
+          { n: '303+',                        label: t.hero.stats.agents,             from: 'bottom' as const, sub: undefined as string | undefined },
           { n: '1',                           label: t.hero.stats.worldModel,         from: 'bottom' as const, sub: undefined as string | undefined },
         ]).map((s, i) => (
           // Mount-triggered fly-in, NOT `Reveal` (same fix pattern as the identity

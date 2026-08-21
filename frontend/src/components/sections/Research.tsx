@@ -207,7 +207,7 @@ export const RESEARCH_AREAS = [
         <line x1="16" y1="2.5" x2="16" y2="5"/>
       </_I>
     ),
-    title: 'Ethics & Minor Protection',
+    title: 'Ethic Audits & Minor Protection',
     desc: 'Consent, dignity, and exposure in systems built around people who cannot fully protect themselves, starting with children and young people under magnification.',
   },
   {
@@ -225,7 +225,7 @@ export const RESEARCH_AREAS = [
         <line x1="23.6" y1="25" x2="26.4" y2="25"/><line x1="25" y1="23.6" x2="25" y2="26.4"/>
       </_I>
     ),
-    title: 'Ternary AI & Computing',
+    title: 'Ternary AI & Smart Computing',
     desc: 'Post-binary arithmetic as the foundation for language models, compilers, and operating systems. Patent pending A50296/2026.',
   },
   {
@@ -286,7 +286,7 @@ export const RESEARCH_AREAS = [
         <circle cx="20.6" cy="10.5" r="2.2" fill="currentColor" stroke="none"/>
       </_I>
     ),
-    title: 'Change & Anomaly Detection',
+    title: 'Change Detection & Anomaly Evaluation',
     desc: 'Temporal analysis for meaningful change: what shifted, what is unusual, and what deserves attention.',
   },
   {
@@ -312,19 +312,20 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* evidence + contradiction - the old icon showed only a checkmark, i.e.
-            only the supporting half, which is exactly the failure this research
-            area exists to prevent. Now the document carries a check AND a cross
-            side by side, with the unresolved question left open below them. */}
+        {/* evidence security + contradiction review - was a check+cross pair, which
+            only shows two isolated verdicts. A balance scale reads as the actual
+            process instead: evidence weighed on both sides at once, on the same
+            document, rather than a single pass/fail stamp. */}
         <path d="M7 3h12l6 6v20H7z"/><path d="M19 3v6h6"/>
-        <path d="M10 15.5l2.2 2.2 3.6-4.4"/>
-        <path d="M19 13.5l4.5 4.5M23.5 13.5 19 18"/>
-        <line x1="10" y1="22.5" x2="22" y2="22.5" opacity="0.7"/>
-        <line x1="10" y1="25.5" x2="17" y2="25.5" opacity="0.7"/>
-        <circle cx="21" cy="25.5" r="1.1" fill="currentColor" stroke="none"/>
+        <circle cx="16" cy="12.3" r="1" fill="currentColor" stroke="none"/>
+        <line x1="16" y1="13.2" x2="16" y2="24.5"/>
+        <line x1="10.5" y1="15" x2="21.5" y2="15"/>
+        <path d="M10.5 15 8.4 19.6a2.35 2.35 0 0 0 4.2 0z"/>
+        <path d="M21.5 15 19.4 19.6a2.35 2.35 0 0 0 4.2 0z"/>
+        <line x1="13" y1="24.5" x2="19" y2="24.5"/>
       </_I>
     ),
-    title: 'Evidence & Contradiction',
+    title: 'Evidence Security & Contradiction Reviews',
     desc: 'Supporting and conflicting evidence, provenance, confidence, and unresolved questions kept together.',
   },
   {
