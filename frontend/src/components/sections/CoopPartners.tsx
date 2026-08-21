@@ -129,7 +129,7 @@ export function CoopPartnersSection({
             </div>
           </div>
           <div style={{ maxWidth: 820, margin: '16px auto 0' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fit, minmax(180px, 1fr))', gap: 10 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(4, minmax(0, 1fr))', gap: 10, alignItems: 'stretch' }}>
               {[
                 { name: 'Systemaudit', price: '€4.500', href: 'https://buy.stripe.com/14AdRbgpi1fpdqt6jm7N60r' },
                 { name: 'Emergent Case Intelligence Sprint', price: '€12.500', href: 'https://buy.stripe.com/bJe9AVc927DNdqtePS7N60m' },
@@ -140,11 +140,11 @@ export function CoopPartnersSection({
                   onClick={() => openCheckoutModal({ key: `coop_${i}`, tier: p.name, desc: t.coopPartners.products[i].desc, price: p.price, delivery: t.coopPartners.productsDeliveryNote, directUrl: p.href })}
                   className="rfi-hover-card rfi-glass-flat rfi-glass-solid"
                   style={{
-                    display: 'flex', flexDirection: 'column', gap: 4, padding: '14px 16px',
+                    display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 8, padding: '14px 16px', minHeight: 76, boxSizing: 'border-box',
                     borderRadius: 10, textAlign: 'left', cursor: 'pointer',
                   }}>
                   <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{p.name}</span>
-                  <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-text)' }}>{p.price}</span>
+                  <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-text)', marginTop: 'auto' }}>{p.price}</span>
                 </button>
               ))}
             </div>

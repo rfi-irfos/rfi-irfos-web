@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
 import type { Content } from '../content/en'
-import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_PIXEL, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
+import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
 import { ProjectsSection } from './sections/Projects'
@@ -252,7 +252,6 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   const [tipForm, setTipForm] = useState<TipForm>({ topic: '', handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false, botcheck: '' })
   const [tipFormState, setTipFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
   useFormAbandonment('submit_tip', tipForm, tipFormState)
-  const pixelRef = useRef<HTMLImageElement>(null)
   const ledgerRef = useRef<HTMLDivElement>(null)
   const [ledgerFired, setLedgerFired] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -434,7 +433,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   const dismissCookieBanner = () => {
     const el = bannerRef.current
     if (el) fireConfettiFromRect(el.getBoundingClientRect(), 90)
-    new Image().src = `${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&s=${encodeURIComponent('Cookie Banner Close')}`
+    beacon('cookie_banner_close')
     setBannerClosing(true)
     setTimeout(() => { setCookieBannerOpen(false); setBannerClosing(false) }, 240)
   }
@@ -637,7 +636,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       const heightGap = window.outerHeight - window.innerHeight
       if (widthGap > threshold || heightGap > threshold) {
         fired = true
-        fetch('https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track', {
+        fetch(LIGHTHOUSE_BEACON, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ path: location.pathname, section: 'devtools-opened', site: 'rfi-irfos' }),
@@ -654,7 +653,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     window.addEventListener('scroll', onScroll)
     // beacon on page load
     const q = new URLSearchParams(location.search)
-    fetch('https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track', {
+    fetch(LIGHTHOUSE_BEACON, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -690,7 +689,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         seen.add(id)
         // Plain fetch, not sendBeacon - sendBeacon defaults to text/plain and the backend's
         // Json extractor expects application/json; this matches the proven page-load beacon above.
-        fetch('https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track', {
+        fetch(LIGHTHOUSE_BEACON, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ path: location.pathname, section: id, site: 'rfi-irfos' }),
@@ -1243,7 +1242,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           <AppPrivacySection />
           <CausalChainsSection />
           <CoopPartnersSection mobile={mobile} openCheckoutModal={openCheckoutModal} />
-          <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} pixelRef={pixelRef} />
+          <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} />
         </>}
 
         {view === 'systems' && <section id="systems" className="rfi-view-panel">

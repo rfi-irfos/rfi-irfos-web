@@ -9,8 +9,8 @@ import React, { useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLocale } from '../hooks/useLocale'
 
-const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
-const LIGHTHOUSE_TRACK = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track'
+const LIGHTHOUSE_PIXEL = '/api/track/pixel.gif'
+const LIGHTHOUSE_TRACK = '/api/track'
 
 // Client-side navigation between legal pages, and back to the homepage
 // (2026-08-19, live feedback: clicking a quicklink did a full browser reload

@@ -3,7 +3,7 @@
 // handler live at the page level (PublicSite.tsx) since the Lighthouse tracking
 // pixel right below the form, and the abandonment beacon, both key off the same
 // state - so this section receives it all as props.
-import { FormStateIcon, TEAL, Reveal, LIGHTHOUSE_PIXEL, ScrambleHeading } from './shared'
+import { FormStateIcon, TEAL, Reveal, ScrambleHeading } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // Emails/hrefs are locale-independent; labels come from t.submit.contactCards.
@@ -27,14 +27,13 @@ export type TipForm = {
 }
 
 export function SubmitSection({
-  mobile, tipForm, setTipForm, tipFormState, submitTip, pixelRef,
+  mobile, tipForm, setTipForm, tipFormState, submitTip,
 }: {
   mobile: boolean
   tipForm: TipForm
   setTipForm: (updater: (p: TipForm) => TipForm) => void
   tipFormState: 'idle' | 'sending' | 'ok' | 'err'
   submitTip: (e: React.FormEvent) => void
-  pixelRef: React.RefObject<HTMLImageElement | null>
 }) {
   const { t } = useLocale()
   return (
@@ -187,10 +186,6 @@ export function SubmitSection({
           </Reveal>
         </div>
       </div>
-      {/* Lighthouse monitoring pixel - site=rfi-irfos, real channel from UTM/referrer */}
-      <img ref={pixelRef}
-        src={`${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(location.pathname)}&r=${encodeURIComponent(document.referrer)}&utm_source=${encodeURIComponent(new URLSearchParams(location.search).get('utm_source') ?? '')}&utm_medium=${encodeURIComponent(new URLSearchParams(location.search).get('utm_medium') ?? '')}&utm_campaign=${encodeURIComponent(new URLSearchParams(location.search).get('utm_campaign') ?? '')}`}
-        alt="" width="1" height="1" style={{ display: 'none' }} />
     </section>
   )
 }

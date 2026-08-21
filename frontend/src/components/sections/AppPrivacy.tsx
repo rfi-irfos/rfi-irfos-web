@@ -59,23 +59,23 @@ export function AppPrivacySection() {
             single bottom-reveal on the outer box couldn't express a per-column
             direction, since Reveal's transform applies to one element, not its
             children independently. */}
-        <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 40, maxWidth: 920, marginLeft: 'auto', marginRight: 'auto', background: 'var(--glass-bg-solid)' }}>
+        <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 72, maxWidth: 920, marginLeft: 'auto', marginRight: 'auto', background: 'var(--glass-bg-solid)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-            <Reveal from="left" dist={100} style={{ borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>
+            <Reveal from="left" dist={100} style={{ borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
               <div style={{ padding: mobile ? '12px 10px' : '16px 24px', background: 'rgba(255,255,255,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text)' }}>{t.appPrivacy.comparisonClassicLabel}</div>
             </Reveal>
-            <Reveal from="right" dist={100} style={{ borderBottom: '1px solid var(--border)' }}>
+            <Reveal from="right" dist={100} style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
               <div style={{ padding: mobile ? '12px 10px' : '16px 24px', background: 'rgba(0,245,196,0.08)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)' }}>{t.appPrivacy.comparisonRfiLabel}</div>
             </Reveal>
             {t.appPrivacy.comparisonRows.map((row, i) => (
               <div key={i} style={{ display: 'contents' }}>
-                <Reveal from="left" dist={100} delay={i + 1} style={{ borderRight: '1px solid var(--border)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                <Reveal from="left" dist={100} delay={i + 1} style={{ borderRight: '1px solid var(--border)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
                   <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, color: 'var(--text2)', height: '100%', boxSizing: 'border-box' }}>{row.classic}</div>
                 </Reveal>
                 {/* No em-dash (site-wide rule) - a colon after the bold term instead.
                     Body copy bumped from --text2 (grey) to --text (live feedback:
                     "das sind Kernaussagen, die machma nicht in grau"). */}
-                <Reveal from="right" dist={100} delay={i + 1} style={{ borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                <Reveal from="right" dist={100} delay={i + 1.35} style={{ borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
                   <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, fontWeight: 400, color: 'var(--text)', height: '100%', boxSizing: 'border-box' }}>
                     <span><strong style={{ fontWeight: 800, color: 'var(--text)' }}>{row.rfiLabel}:</strong> {row.rfi}</span>
                   </div>
@@ -89,7 +89,7 @@ export function AppPrivacySection() {
               table ends at 40px bottom margin, section had 72px bottom padding.
               Added top margin and trimmed bottom padding so the button sits closer
               to the visual center of the gap instead of clinging to the table. */}
-          <div style={{ textAlign: 'center', marginTop: 10, marginBottom: 0 }}>
+          <div style={{ textAlign: 'center', marginTop: 32, marginBottom: 32 }}>
             {/* Orange instead of the site's teal (live feedback 2026-08-14: one
                 singular, orange CTA here) - deliberately off-brand-teal so this one
                 button reads as a distinct "send us something" action, not just another
@@ -99,13 +99,13 @@ export function AppPrivacySection() {
             {/* Icon 20->24, font 13->15 (live feedback) - pill padding left
                 untouched on purpose, so the button footprint stays the same. */}
             <a href="#submit" className="rfi-cta-pulse" style={{
-              display: 'inline-flex', alignItems: 'center', gap: 10, background: '#f97316', color: '#1a0f00', padding: '13px 30px', borderRadius: 8,
-              fontWeight: 800, fontSize: 15, textDecoration: 'none', letterSpacing: '0.07em',
+              display: 'inline-flex', alignItems: 'center', gap: 9, background: '#f97316', color: '#1a0f00', padding: '11px 28px', borderRadius: 8,
+              fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
               textTransform: 'uppercase', transition: 'opacity 0.15s',
             }}
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
-              <svg width="24" height="24" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="22" height="22" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="2" y1="27" x2="30" y2="27" />
                 <rect x="4" y="8" width="6" height="18" rx="1.5" transform="rotate(38 7 26)" />
                 <rect x="13" y="8" width="6" height="18" rx="1.5" transform="rotate(18 16 26)" />

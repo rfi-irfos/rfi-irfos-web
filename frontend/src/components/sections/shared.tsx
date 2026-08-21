@@ -9,8 +9,11 @@ import { useLocale } from '../../hooks/useLocale'
 // change to the primary theme, while light (#009e7a) and high-contrast (#ffd400)
 // finally receive a legible accent instead of near-white-on-white at 1.41:1.
 export const TEAL = 'var(--accent)'
-export const LIGHTHOUSE_PIXEL = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif'
-export const LIGHTHOUSE_BEACON = 'https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track'
+// Keep telemetry first-party. A third-party-looking Lighthouse host is needlessly
+// blocked by privacy extensions, which turns an otherwise harmless beacon into a
+// noisy red line in DevTools.
+export const LIGHTHOUSE_PIXEL = '/api/track/pixel.gif'
+export const LIGHTHOUSE_BEACON = '/api/track'
 export const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
 
 export const prefersReducedMotion = () =>
@@ -259,7 +262,7 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
       tick()
     }
 
-    const section = el.closest('section')
+    const section = el.closest('.rfi-view-panel') ?? el.closest('section')
     let io: IntersectionObserver | null = null
     if (section) {
       io = new IntersectionObserver(entries => {
@@ -382,7 +385,7 @@ export function ScrambleHeading({ text }: { text: string }) {
     }, { threshold: 0.65, rootMargin: '-12% 0px -12% 0px' })
     io.observe(el)
 
-    const section = el.closest('section')
+    const section = el.closest('.rfi-view-panel') ?? el.closest('section')
     section?.addEventListener('rfi-nav-jump', play)
 
     return () => {

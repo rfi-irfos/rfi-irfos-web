@@ -70,16 +70,18 @@ function ProjectCard({ p }: { p: LocalizedProject }) {
           the card edge and got guillotined by the carousel track's overflow:hidden
           instead ("CORE PLATFO|" mid-word). Wrapping drops the badge to its own line
           when space is tight rather than letting it run off the card. */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '4px 8px' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start' }}>
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontWeight: 900, fontSize: 17 }}>{p.name}</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'nowrap', whiteSpace: 'nowrap' }}>
+            <div style={{ fontWeight: 900, fontSize: p.name.includes('Ternary Intelligence Stack') ? 16 : 17, minWidth: 0 }}>{p.name}</div>
+            <span style={{
+              fontSize: 8, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.08em',
+              padding: '3px 8px', borderRadius: 20, flexShrink: 0,
+              border: '1px solid rgba(0,245,196,0.3)', color: 'var(--accent-text)', whiteSpace: 'nowrap',
+            }}>{p.tag}</span>
+          </div>
           <div style={{ fontFamily: "'JetBrains Mono', 'Noto Sans Cuneiform', 'Segoe UI Historic', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 3 }}>{p.sub}</div>
         </div>
-        <span style={{
-          fontSize: 9, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em',
-          padding: '3px 8px', borderRadius: 20, flexShrink: 0,
-          border: '1px solid rgba(0,245,196,0.3)', color: 'var(--accent-text)', whiteSpace: 'nowrap',
-        }}>{p.tag}</span>
       </div>
       {/* Reordered 2026-08-15 (live feedback: "the technicals are on github,
           the page is for humans") - the plain-language line now leads, since
@@ -102,7 +104,7 @@ function ProjectCard({ p }: { p: LocalizedProject }) {
       {p.plain && (
         <p style={{ color: 'var(--text)', fontSize: 15, fontWeight: 700, lineHeight: 1.6, margin: 0, paddingLeft: 12, borderLeft: `2px solid ${TEAL}` }}>{p.plain}</p>
       )}
-      <p style={{ color: 'var(--text3)', fontSize: 12, lineHeight: 1.6, flex: 1, margin: 0 }}>{p.desc}</p>
+      <p style={{ color: 'var(--text)', fontSize: 12, lineHeight: 1.6, flex: 1, margin: 0 }}>{p.desc}</p>
     </div>
   )
 }
@@ -279,7 +281,7 @@ export const PROJECTS = [
   // this is the first card") - it was previously missing from this section
   // entirely despite being a real, operational system (see content/systems.ts
   // 'dingir'). No outbound link: not yet public on GitHub.
-  { name: 'DINGIR', link: null },
+  { name: '𒀭 DINGIR', link: null },
   { name: 'Ternary Intelligence Stack', link: 'https://github.com/rfi-irfos/ternary-intelligence-stack' },
   { name: 'albert.', link: 'https://github.com/rfi-irfos/ternary-intelligence-stack' },
   { name: 'Rusty Penguin', link: 'https://github.com/rfi-irfos/rusty-penguin' },
@@ -304,20 +306,25 @@ export const PROJECTS = [
 // showcase underneath it.
 export function ProjectsSection() {
   const { t } = useLocale()
+  const [headingRun, setHeadingRun] = useState(0)
   const localizedProjects: LocalizedProject[] = PROJECTS.map((p, i) => ({
     name: p.name, link: p.link, ...t.projects.items[i],
   }))
   return (
     <section id="projects" style={{ padding: '16px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-        <Reveal from="right">
-          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.projects.heading} /></h2>
-        </Reveal>
-        <Reveal from="left" delay={1}>
+        <div style={{ alignSelf: 'flex-start' }}>
+          <h2
+            onClick={() => setHeadingRun(run => run + 1)}
+            title="Shuffle heading"
+            style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, cursor: 'pointer' }}
+          >
+            <ScrambleHeading key={headingRun} text={t.projects.heading} />
+          </h2>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
             {t.projects.subheading}
           </p>
-        </Reveal>
+        </div>
         <Reveal from="bottom" delay={1}>
           <ProjectsCarousel projects={localizedProjects} />
         </Reveal>
