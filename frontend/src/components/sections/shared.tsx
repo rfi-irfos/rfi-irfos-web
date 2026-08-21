@@ -478,6 +478,27 @@ export function Reveal({
     if (from === 'scale') return `scale(${1 - (1 - s) * 0.16})`
     return `translateY(${d}px)`
   })
+  // Same root cause ScrambleHeading already hit and fixed (see its comment above):
+  // `settled` only recomputes when `scrollYProgress` itself changes, so an in-app
+  // nav jump that lands the element at rest - no further scroll delta - never
+  // re-runs the transform, and it stays stuck at whatever mid-transit value it
+  // happened to hold at that instant (live bug report: a paragraph "stuck grey,
+  // doesn't slide fully in" after clicking a top-nav link straight to it).
+  // `revealSuppressed.current` alone doesn't fix this either, for the same reason
+  // ScrambleHeading's own comment gives: it's read inside this useTransform
+  // callback, so it only takes effect the next time the callback happens to fire.
+  // Fix: listen for the same deterministic `rfi-nav-jump` event ScrambleHeading
+  // uses and imperatively `.set(1)` on the settled MotionValue - that push
+  // directly notifies every dependent (`transform` here) regardless of whether
+  // scrollYProgress ever moves again.
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const section = el.closest('.rfi-view-panel') ?? el.closest('section')
+    const onJump = () => settled.set(1)
+    section?.addEventListener('rfi-nav-jump', onJump)
+    return () => section?.removeEventListener('rfi-nav-jump', onJump)
+  }, [settled])
   return (
     <motion.div ref={ref} style={{ opacity: settled, transform, willChange: 'transform, opacity', ...extra }}>
       {children}

@@ -108,13 +108,13 @@ export function SubmitSection({
                 borderRadius: 8, padding: '12px 16px', color: tipForm.topic ? 'var(--text)' : 'var(--text3)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
               }}>
                 <option value="" style={{ background: 'var(--bg)', color: 'var(--text3)' }}>{t.submit.form.topicPlaceholder}</option>
-                <option value="First Light" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.firstLight}</option>
-                <option value="Deep Field" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.deepField}</option>
-                <option value="You vs. the World" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.youVsWorld}</option>
                 <option value="Security Disclosure" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.securityDisclosure}</option>
                 <option value="Send APK" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.sendApk}</option>
                 <option value="Research Collaboration" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.researchCollaboration}</option>
                 <option value="Other" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.other}</option>
+                <option value="First Light" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.firstLight}</option>
+                <option value="Deep Field" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.deepField}</option>
+                <option value="You vs. the World" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.youVsWorld}</option>
               </select>
               <input type="text" placeholder={t.submit.form.namePlaceholder}
                 value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
