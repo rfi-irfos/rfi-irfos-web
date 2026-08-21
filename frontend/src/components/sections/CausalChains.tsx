@@ -378,12 +378,12 @@ export function CausalChainsSection() {
             <div
               className="rfi-glass-flat rfi-glass-solid"
               style={{
-                borderRadius: 16, padding: '22px 20px 14px', width: '100%', maxWidth: 560, flex: '0 1 auto',
+                borderRadius: 16, padding: '18px 22px 10px', width: '100%', maxWidth: 720, flex: '0 1 auto',
                 animation: anim ? `${anim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 1050ms cubic-bezier(0.22,1,0.36,1)` : undefined,
                 display: 'flex', flexDirection: 'column',
               }}
             >
-              <div style={{ fontSize: 17, color: 'var(--text)', fontWeight: 800, marginBottom: 18, textAlign: 'center', lineHeight: 1.35 }}>
+              <div style={{ fontSize: 17, color: 'var(--text)', fontWeight: 800, marginBottom: 14, textAlign: 'center', lineHeight: 1.35 }}>
                 <span>{current?.title ?? ''}</span>
               </div>
 
@@ -393,7 +393,7 @@ export function CausalChainsSection() {
                 className="cc-step-card"
                 style={{
                   border: '1px solid var(--border)', borderRadius: 12, background: 'var(--bg2)',
-                  padding: '24px 22px', margin: '0 auto 22px', width: '100%', maxWidth: 480, height: 280, boxSizing: 'border-box',
+                  padding: '20px 28px', margin: '0 auto 14px', width: '100%', maxWidth: 660, height: 190, boxSizing: 'border-box',
                   textAlign: 'center', backdropFilter: 'blur(2px)',
                   animation: stepAnim ? `${stepAnim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 1050ms cubic-bezier(0.22,1,0.36,1)` : undefined,
                 }}
@@ -411,7 +411,7 @@ export function CausalChainsSection() {
               </div>
 
               {/* Nav buttons (stage) just above the graph */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: 8, marginBottom: 10 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: 2, marginBottom: 4 }}>
                 <button onClick={() => goStep(step - 1)} aria-label="Previous step" style={stepArrowStyle}>&larr;</button>
                 <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text)', letterSpacing: '0.08em', minWidth: 70, textAlign: 'center' }}>
                   {current ? `${String(step + 1).padStart(2, '0')} / ${String(current.nodes.length).padStart(2, '0')}` : '-- / --'}
