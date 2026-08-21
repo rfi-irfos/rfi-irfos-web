@@ -41,7 +41,7 @@ function BentoTile({ icon, title, onOpen, from, delay }: {
         }}>
           {icon}
         </div>
-        <div style={{ fontWeight: 800, fontSize: 15, lineHeight: 1.25 }}>{title}</div>
+        <div style={{ fontWeight: 800, fontSize: 15, lineHeight: 1.25, whiteSpace: 'pre-line' }}>{title}</div>
       </motion.button>
     </Reveal>
   )
