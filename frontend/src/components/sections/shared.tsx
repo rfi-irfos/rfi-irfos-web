@@ -539,8 +539,14 @@ export function ArrowIcon() {
 // here read as oddly formal. This box fully replaces TierBullets/OutputTags in the
 // pricing UI - deliberately not rendered alongside them (see call sites) to avoid the
 // exact redundant, overflowing-card problem this box was built to fix.
-function EngagementFlow({ bring, mechanism, receive }: {
+// `large` (2026-08-21, live feedback): Pricing.tsx's card is now the only
+// place this renders at full card width with nothing else competing for
+// attention (the old multi-tier-per-line layout had less room to spare) - 2px
+// up on both the label and the list text there. The checkout/proposal modal's
+// usage (ModalTierBody) stays at the original tuned size, unchanged.
+export function EngagementFlow({ bring, mechanism, receive, large }: {
   bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[]
+  large?: boolean
 }) {
   const { t: locale } = useLocale()
   // This box is the innermost of four nested padded surfaces (section gutter >
@@ -567,15 +573,19 @@ function EngagementFlow({ bring, mechanism, receive }: {
           <div key={g.label} style={{
             paddingTop: gi > 0 ? 10 : 0,
             borderTop: gi > 0 ? '1px solid rgba(255,255,255,0.07)' : undefined,
+            textAlign: 'center',
           }}>
-            <div style={{
-              fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, fontWeight: 700,
-              color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 6,
-            }}>{g.label}</div>
-            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{
+              display: 'inline-block', fontFamily: "'JetBrains Mono', monospace",
+              fontSize: large ? 11.5 : 9.5, fontWeight: 700,
+              color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.1em',
+              border: '1px solid rgba(0,245,196,0.3)', background: 'rgba(0,245,196,0.06)',
+              borderRadius: 999, padding: '4px 12px', marginBottom: 8,
+            }}>{g.label}</span>
+            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 4, textAlign: 'left' }}>
               {g.items!.map((item, i) => (
-                <li key={i} style={{ fontSize: 12.5, lineHeight: 1.5, color: 'var(--text)', display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                  <span style={{ color: TEAL, fontSize: 16, lineHeight: 1, flexShrink: 0 }}>&#8226;</span>{item}
+                <li key={i} style={{ fontSize: large ? 14.5 : 12.5, lineHeight: 1.5, color: 'var(--text)', display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                  <span style={{ color: TEAL, fontSize: large ? 14.5 : 12.5, fontWeight: 800, lineHeight: 1, flexShrink: 0 }}>&gt;</span>{item}
                 </li>
               ))}
             </ul>
@@ -945,7 +955,7 @@ export type CarouselTier = {
 // numbers that actually decide a purchase. Now every rendering of a tier -
 // featured card, secondary card, modal - pins price directly beside the
 // calendar-days pill at the bottom, same order, same place, every time).
-function PriceDelivery({ price, delivery, size = 'md' }: { price: string; delivery?: string; size?: 'sm' | 'md' }) {
+export function PriceDelivery({ price, delivery, size = 'md' }: { price: string; delivery?: string; size?: 'sm' | 'md' }) {
   const priceSize = size === 'sm' ? 15 : 20
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>

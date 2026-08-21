@@ -84,13 +84,6 @@ const EKG_SHAPES = [
 // glow") - shapes at array index 6 and 12 (the 7th and 13th) always glow,
 // every other shape never does.
 const EKG_GLOW_INDICES = new Set([6, 12])
-// EKG_DURATION_MS matches App.css's .ekg-line animation-duration, and
-// EKG_DASH must match its stroke-dasharray - scaled together with the path
-// width (40 -> 37) so the draw speed still matches the shape's own length.
-// Slowed again 2026-08-19 (live feedback: "too fast, too distracting, have
-// it be almost eerie") - dasharray unchanged, only the duration stretched.
-const EKG_DURATION_MS = 4200
-const EKG_DASH = 102
 function EkgLine({ theme }: { theme: Theme }) {
   const [i, setI] = useState(0)
   // ACCENT here is local to PublicSite() (derived from theme) and out of scope for this
@@ -99,18 +92,16 @@ function EkgLine({ theme }: { theme: Theme }) {
   // per-instance/local by design, so a second call here went stale on toggle the same
   // way Hero's did (see Hero.tsx HeroBackground comment).
   const accent = theme === 'light' ? '#0a7a5c' : TEAL
-  useEffect(() => {
-    // Matched to the animation's own duration (App.css .ekg-line) so every pulse
-    // draws in, holds, and fades out completely before the next one starts -
-    // was the fix for a choppy-not-supersmooth cutoff bug, still applies here.
-    const id = setInterval(() => setI(p => (p + 1) % EKG_SHAPES.length), EKG_DURATION_MS)
-    return () => clearInterval(id)
-  }, [])
   const glow = EKG_GLOW_INDICES.has(i)
   return (
     <svg width="37" height="18" viewBox="0 0 37 18" fill="none" style={{ marginLeft: 4, flexShrink: 0, overflow: 'visible' }}>
+      {/* Advances on the animation's own `animationend` event, not a parallel
+          setInterval (fixed 2026-08-21, see the App.css comment on .ekg-line
+          for why) - the CSS animation is now the single source of truth for
+          timing, this just reacts once it's genuinely finished. */}
       <polyline key={i} className={glow ? 'ekg-line ekg-line-glow' : 'ekg-line'} points={EKG_SHAPES[i]}
         stroke={accent} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+        onAnimationEnd={() => setI(p => (p + 1) % EKG_SHAPES.length)}
         style={glow ? { filter: `drop-shadow(0 0 2px ${accent}) drop-shadow(0 0 5px ${accent})` } : undefined} />
     </svg>
   )
@@ -220,19 +211,15 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     const next = viewForSection(target)
     setView(next)
     window.history.replaceState(null, '', `#${target}`)
-    if (next === 'access') {
-      // Land on the offer card itself, not the section heading above it (live
-      // feedback 2026-08-16) - see the `pricing-offer` id + scrollMarginTop in
-      // Pricing.tsx. requestAnimationFrame waits one paint for the view swap
-      // above to actually mount the access section before we measure it.
-      requestAnimationFrame(() => {
-        const el = document.getElementById('pricing-offer')
-        if (!el) { window.scrollTo({ top: 0, behavior: 'smooth' }); return }
-        const abs = el.getBoundingClientRect().top + window.pageYOffset
-        window.scrollTo({ top: Math.max(0, abs - 84), behavior: 'smooth' })
-      })
-      return
-    }
+    // The 'access' view used to jump straight to the offer card, skipping the
+    // section heading above it (live feedback 2026-08-16) - that made sense
+    // when a single product line's card ran several thousand px tall on a
+    // phone and the heading was real space wasted. Pricing.tsx no longer
+    // ships that shape (one compact three-stage card with prev/next arrows,
+    // 2026-08-21) - short enough that landing at the very top, header and
+    // heading and card together, reads better than skipping ahead (live
+    // feedback the same day: "muss oben alles mit dem header anzeigen").
+    // Falls through to the same plain scroll-to-top every other nav link uses.
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
   function navigateHome() {
@@ -467,7 +454,12 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     if (!proposalModal) return
     proposalRequest(proposalModal.tier)
     setProposalModal(null)
-    location.hash = '#submit'
+    // Was a raw `location.hash = '#submit'` - did nothing when fired from the
+    // 'access' view, because #submit only exists in the DOM under view==='home'
+    // (view-gated rendering, added when the site moved to the systems/evidence/
+    // access SPA structure). navigateTo() already knows how to switch views
+    // first and then scroll - reuse it instead of the dead raw hash assignment.
+    navigateTo('#submit')
   }
 
   const handleCheckout = async (tier: string) => {
@@ -586,6 +578,12 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       target.dispatchEvent(new CustomEvent('rfi-nav-jump', { bubbles: true }))
     }
     document.addEventListener('click', handler)
+    // Same "greys out" race, different trigger: a direct load/refresh/bookmark on a
+    // hash URL (e.g. rfi-irfos.com/#evidence) jumps the scroll position natively,
+    // with no click for `handler` above to catch - so Reveal's `settled` was computing
+    // off the browser's own mid-flight scroll correction with no suppression at all.
+    // Same fix, same release path (scrollend or the 1600ms fallback).
+    if (window.location.hash.length > 1) suppressUntilSettled()
     return () => { document.removeEventListener('click', handler); window.removeEventListener('scrollend', release); clearTimeout(releaseTimer) }
   }, [])
 
@@ -1264,7 +1262,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         </section>}
 
         {view === 'access' && <section id="access" className="rfi-view-panel">
-          <PricingSection openCheckoutModal={openCheckoutModal} openProposalModal={openProposalModal} />
+          <PricingSection openProposalModal={openProposalModal} />
           <JourneySection />
         </section>}
       </main>

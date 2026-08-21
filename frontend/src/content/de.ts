@@ -8,11 +8,6 @@
 // codes stay English-only; everything else here is a full translation.
 import type { Content } from './en'
 
-// Deutsches Pendant zu NDA_CLAUSE in en.ts - wortgleich in jedem NDA-Tier
-// verwendet, damit der Geltungsbereich der Vertraulichkeit (Methodik privat,
-// Fund veröffentlicht sich trotzdem nach 90 Tagen) an einer Stelle gepflegt wird.
-const NDA_CLAUSE = 'Was vertraulich ist, und was nicht: Unsere Methodik bleibt unter dieser Vereinbarung vertraulich, der Fund nicht. Unter einem NDA sehen Sie das Wie, nicht nur das Was: jeden Schritt, den wir gegangen sind, die Werkzeuge, die wir benutzt haben, und das geistige Eigentum hinter unserem eigenen Prozess, genau deshalb braucht es das NDA, wir legen Ihnen unseren internen Prozess offen. Der Fund selbst wird trotzdem nach der üblichen 90-tägigen Sperrfrist auf unserem öffentlichen Ledger veröffentlicht, genau wie bei jeder Organisation, die wir prüfen - Zahlung ändert, wann Ihr Team die Details bekommt, nie, ob die Öffentlichkeit sie bekommt.'
-
 export const DE: Content = {
   nav: {
     links: {
@@ -107,22 +102,22 @@ export const DE: Content = {
       { sub: 'Weltmodell', desc: 'Sein historischer Korpus reicht zurück bis zu Ereignissen wie Vulkanausbrüchen, die um 55.500 v. Chr. aufgezeichnet wurden, und umfasst Millionen von Beobachtungen über Jahrzehnte, Länder, Systeme und Domänen hinweg. Heute zählen dazu 3,3 Millionen historische Beobachtungen neben rund 1,17 Millionen Live-Beobachtungen aus 11 kontinuierlich überwachten Strömen - darunter Bojen, Schiffe, Züge, Verkehr, Wetter, Erdbeben, Brände, Infrastruktur und geopolitische Ereignisse. Diese Beobachtungen werden in einen lebendigen Graphen aus 49.732 Knoten und 381.846 Weltgraphen-Kanten aufgelöst, der mehr als 20 Domänen umspannt.', plain: 'DINGIR ist ein kontinuierlich wachsendes Modell der Welt.', tag: 'Weltmodell · intern' },
       { sub: 'TIS-Monorepo', desc: 'Das Full-Stack-Substrat: Ternlang-Sprache und Compiler, BET-Instruktionssatz, virtuelle Maschine, lineare Algebra, API, MCP-Server und Modell-Runtime. Balancierte Ternärlogik {-1, 0, +1} ist hier ein natives Systemprimitiv - keine nachträglich aufgesetzte Quantisierung. Enthalten sind 34 MCP-Tools, eine Live-API, über 28.000 offene Standardbibliotheksmodule und die Spezifikationen, die den gesamten Stack verbinden. Jede Schicht bleibt prüfbar: Sprachregeln, Ausführung, Modellaufrufe und die Evidenz dazwischen verschwinden nicht hinter einer undurchsichtigen Service-Grenze.', plain: 'Die Grundplattform, auf der praktisch alles andere hier aufbaut - vergleichbar mit einem Betriebssystem für unsere komplette KI-Forschung.', tag: 'Kernplattform' },
       { sub: 'ternäres MoE-Sprachmodell', desc: 'albert. wird von Grund auf mit ternären Gewichten {-γ, 0, +γ} trainiert, nicht aus einem Floating-Point-Modell konvertiert. Die duale Mixture-of-Experts-Architektur routet über dünn besetzte Experten, überspringt Nullgewicht-Operationen und kann sich über plateau-gesteuerte Net2Net-Chirurgie selbst erweitern. Das laufende Forschungssystem ist ein Existenzbeweis der TIS-Architektur mit Trainings-Telemetrie und CPU-Benchmarks. Dabei geht es nicht nur um Effizienz: Die Runtime zeigt, wie eine Entscheidung entsteht, welche Experten beitragen und wo Unsicherheit bleibt, bevor eine Ausgabe den Nutzer erreicht.', plain: 'Läuft auf gewöhnlicher CPU statt teurer GPU-Farm, braucht deutlich weniger Strom und Arbeitsspeicher als vergleichbare Sprachmodelle - und jede Entscheidung im Modell lässt sich nachvollziehen, statt Blackbox zu sein.', tag: 'KI-Modell' },
-      { sub: 'reines Rust-Betriebssystem', desc: 'Rusty Penguin ist ein Bare-Metal-Betriebssystem, das auf derselben balancierten Ternärlogik von Grund auf gebaut wird. Eigener Kernel, Long-Mode-Boot, Paging, präemptives Multitasking, Aero-Desktop, Dateisystem, TCP/IP- und TLS-1.3-Stack sowie Linux-ABI-Kompatibilitätsschicht sind bereits Teil des Systems. Das langfristige Ziel: ein ternäres Substrat für ternäre Intelligenz, mit jedem Meilenstein in QEMU oder gegen veröffentlichte Vektoren verifiziert.', plain: 'Ein Betriebssystem ganz ohne die üblichen Sicherheitslücken, die aus jahrzehntealtem C-Code stammen - von Grund auf in einer speichersicheren Sprache gebaut.', tag: 'Systeme' },
-      { sub: 'souveränes Workplace-OS', desc: 'Eine einzige selbst gehostete Rust-+-React-Binärdatei, die das gesamte Institut betreibt: Kommunikation, CRM, Finanzen, Payroll, HR, Governance und Live-Trainingstelemetrie. Append-only Audit-Trail über 50 Jahre.', plain: 'Unsere komplette interne Software - E-Mail, CRM, Buchhaltung - läuft auf eigenen Servern statt bei Microsoft oder Google, niemand außer uns sieht unsere Daten.', tag: 'intern · live' },
-      { sub: '215+ Apps · 100+ Unternehmen', desc: '250+ kritische Funde bei an NYSE, NASDAQ, LSE und XETRA gelisteten Unternehmen. Inklusive Kinder-App-Welle mit COPPA- + DSGVO-Art.-8-Umfang. Code-Analyse auf Root-Ebene. Koordinierte Offenlegung am 19.09.2026. Regulatoren bei jeder Einreichung in Kopie.', plain: 'Wir lesen den tatsächlichen Programmcode einer App, nicht nur, was die Datenschutzerklärung behauptet.', tag: 'Sicherheitsforschung' },
-      { sub: 'Disclosure-Impact-Engine', desc: 'Modelliert, wie Märkte auf Sicherheits-Disclosures reagieren, sobald sie öffentlich werden - auch unsere eigenen, erst nach Ablauf der 90-Tage-Sperrfrist. Ein Hedge-System handelt das Signal. BlackRocks Version heißt Aladdin (21 Bio. $ AUM). Diese hier ist kostenlos.', plain: 'Ein Trading-Algorithmus, der reagiert, wenn ein Sicherheitsfund öffentlich wird - wie die Börsen-Software großer Fonds, nur kostenlos und offen einsehbar.', tag: 'Open Source' },
-      { sub: 'ternärer KI-Terminal-Client', desc: 'Multi-Provider-CLI für albert. und andere LLMs. Natives SSE-Streaming, Steuerung des Reasoning-Aufwands, kompatibel mit OpenAI/Anthropic/NVIDIA NIM/Google. Aus TIS in ein eigenständiges Repo extrahiert.', plain: 'Ein Terminal-Werkzeug, mit dem man albert. oder andere KI-Modelle direkt von der Kommandozeile aus benutzt, ohne Browser.', tag: 'CLI · crates.io' },
-      { sub: 'Last-Look-Back-Protokoll', desc: 'Deterministisches Dateisystem-Containment-Gate für souveräne KI-Agenten - eine harte Sicherheitsgrenze, die ein Agent nicht überschreiben kann. Auf crates.io veröffentlicht. Teil des Ternary Intelligence Stack.', plain: 'Verhindert, dass ein KI-Agent versehentlich Dateien außerhalb seines erlaubten Bereichs verändert - eine harte technische Grenze, kein bloßes Vertrauen.', tag: 'Rust-Crate · crates.io' },
-      { sub: 'ternärer Compiler + VM', desc: 'Compiler und virtuelle Maschine für Ternlang - eine balanciert-ternäre Sprache mit affirm/tend/reject-Trit-Semantik, @sparseskip-Codegen und BET-Bytecode-Ausführung. Auf crates.io veröffentlicht.', plain: 'Das Werkzeug, das unsere eigene Programmiersprache Ternlang in ausführbaren Code übersetzt.', tag: 'Rust-Crate · crates.io' },
-      { sub: 'ternäre Mixture-of-Experts', desc: 'Ternärer MoE-Orchestrator: leitet eine Anfrage durch 13 Fachexperten, synthetisiert ein emergentes ternäres Signal, erzwingt ein hartes Sicherheitsveto und liefert eine Entscheidung mit Konfidenz und Temperatur. Auf crates.io veröffentlicht.', plain: 'Verteilt eine Anfrage automatisch an die am besten passenden von 13 Fach-Experten, statt ein einziges Modell alles machen zu lassen.', tag: 'Rust-Crate · crates.io' },
-      { sub: '44 Sensor-Experimente', desc: '44 browserbasierte Experimente, die die eingebauten Sensoren und APIs Ihres Handys nutzen, um zu zeigen, was still im Hintergrund lief. Keine Installation. Kein Konto. Kein Server. Eine Profilseite, die genau zeigt, wie Sie für die beobachtenden Systeme aussehen.', plain: 'Probieren Sie selbst aus, welche Sensoren Ihr eigenes Handy gerade heimlich nutzt - direkt im Browser, ohne Installation.', tag: 'Open Source · Datenschutz' },
-      { sub: 'Offline-Port-Checker als PWA', desc: 'Ehrlicher, offline installierbarer Port-Checker fürs Handy. Echte WebSocket-Connect-Timing-Probe von localhost - kein vorgetäuschtes Scannen, kein falscher „Schließen”-Button. Zeigt stattdessen echte OS-spezifische Terminal-Befehle. Geschwisterprojekt zu invisible layer.', plain: 'Zeigt ehrlich, welche Netzwerk-Ports auf Ihrem Handy offen sind, statt wie andere Apps ein falsches “alles sicher” vorzutäuschen.', tag: 'Open Source · Datenschutz' },
-      { sub: 'Canary-Token-Honeypot', desc: 'Schutz vor NFC-/Bluetooth-Nahbereichsdiebstahl von Handydaten - Köder-Fotoordner, die beim Öffnen ohne Zustimmung nur ein passives Signal auslösen, nichts weiter. Kein Exploit, kein Gerätezugriff, keine automatische Meldung. Ein Mensch prüft jeden Treffer, bevor etwas weiter passiert. Live-Demo: rfi-irfos.github.io/laura.', plain: 'Ein Köder-Fotoordner, der Ihnen Bescheid gibt, wenn jemand unbefugt auf Ihr Handy zugreift - ganz ohne Hacking-Gegenmaßnahmen.', tag: 'Open Source · Datenschutz' },
-      { sub: 'deterministisches Dokumentenprüf-Framework', desc: 'MCP-Server, bei dem Agenten Pläne oder Dokumente einreichen und strukturierte Befunde aus vier Perspektiven erhalten - oder vom vollen 15-Agenten-Expertenteam. Jeder Fund zitiert exakt die Textstelle, auf die er sich bezieht. Vollständig lokal, keine externen APIs, vollständig reproduzierbar. Crates: lauras-core, lauras-team, lauras-mcp, lauras-api.', plain: 'Prüft Dokumente oder Pläne nach denselben festen Regeln, jedes Mal - kein Zufall, keine Stimmungsschwankung wie bei einem Menschen.', tag: 'Open Source · crates.io' },
-      { sub: 'LLM-gebrücktes Expertenteam', desc: 'Live-LLM-gebrückte Versionen derselben 15 Expertenagenten hinter call-laura (OSINT, Sicherheit, Recht, Finanzen, UX und mehr). Modular: einen einzelnen Agenten, ein Bundle oder das gesamte Team als automatisierte Datenverarbeitungs-Pipeline lizenzieren. Nur öffentlicher Überblick - die Agentenlogik selbst bleibt privat.', plain: '15 spezialisierte KI-Fachleute (Recht, Sicherheit, UX...) statt einem General-Alleskönner, der überall nur ein bisschen was weiß.', tag: 'kommerziell · privater Motor' },
-      { sub: 'autonome Compliance-/Risiko-KI-Zentren', desc: '50 live laufende Compliance-/Risiko-KI-Zentren auf Basis der Laura\'s-Agents-Engine, jedes eine autonome „Tochter”-Firma, aus einer Konstitution skaliert.', plain: '50 eigenständig laufende KI-Einheiten, die jeweils wie eine kleine spezialisierte Firma für Compliance-Aufgaben arbeiten.', tag: 'live · intern' },
-      { sub: 'Reflexionsmodus-Technik für LLMs', desc: 'Eine wiederverwendbare Technik, um ein Sprachmodell aus dem transaktionalen „Antwortmodus” in einen echten Reflexionsmodus zu holen - es prüft die eigene Argumentation und erkennt Unsicherheit an, statt den Prompt nur abzuarbeiten. Entwickelt aus Laura Serna Gavirias Forschung zur Mensch-KI-Koevolution.', plain: 'Bringt ein Sprachmodell dazu, die eigene Antwort nochmal zu hinterfragen, statt einfach das erstbeste plausible Wort zu produzieren.', tag: 'Open Source · Forschung' },
-      { sub: 'ökozentrische Forschung', desc: 'Neurobiological-Fitness Consequence Separation. Agentenbasiertes Modell, das zeigt: Das globale Ernährungssystem produziert das 1,64-Fache der Kalorien, die nötig wären, um jeden Menschen auf der Erde zu ernähren. Die Knappheit ist nicht thermodynamisch bedingt - sie ist organisatorisch. Gemacht, nicht physikalisch.', plain: 'Zeigt rechnerisch, dass genug Essen für alle da wäre - Hunger ist kein Mengenproblem, sondern ein Verteilungsproblem.', tag: 'ökozentrische Forschung' },
+      { sub: 'reines Rust-Betriebssystem', desc: 'Rusty Penguin ist ein Bare-Metal-Betriebssystem, das auf derselben balancierten Ternärlogik von Grund auf gebaut wird, über 41.500 Zeilen Rust ohne fremden Kernel darunter. Eigener Kernel, Long-Mode-Boot, Paging, präemptives Multitasking, Aero-Desktop, Dateisystem, ein von Grund auf gebauter TCP/IP- und TLS-1.3-Stack sowie eine Linux-ABI-Kompatibilitätsschicht sind bereits Teil des Systems, mit echtem HTTPS-Fetching bereits durchgehend verifiziert. Das langfristige Ziel: ein ternäres Substrat für ternäre Intelligenz, mit jedem Meilenstein in QEMU oder gegen veröffentlichte Vektoren verifiziert, dokumentiert auf einem eigenen ehrlichen Status-Board direkt im Repo.', plain: 'Ein Betriebssystem ganz ohne die üblichen Sicherheitslücken, die aus jahrzehntealtem C-Code stammen - von Grund auf in einer speichersicheren Sprache gebaut.', tag: 'Systeme' },
+      { sub: 'souveränes Workplace-OS', desc: 'Lighthouse ist eine einzige selbst gehostete Rust-+-React-Binärdatei, die den SaaS-Stack ersetzt, den die meisten Institute stückweise einkaufen: Kommunikation, CRM, Finanzen, Payroll, HR, Governance und Live-Trainingstelemetrie, alles unter einem Dach, auf Infrastruktur, die uns tatsächlich gehört. 191 Quelldateien betreiben heute das gesamte Institut, und der Umstieg hat jedes externe Abonnement überflüssig gemacht, das wir vorher bezahlt haben. Der Anspruch „ternary-native” ist im Code belegt, nicht nur behauptet: echte Trit-Felder liegen bereits in Produktions-Datenbankschemas, halten BIFP-Signale und RLHF-Bewertungen von alberts eigenen Ausgaben fest. Jede Aktion landet in einem Append-only-Ledger, gebaut, um die Menschen zu überdauern, die hineingeschrieben haben.', plain: 'Unsere komplette interne Software - E-Mail, CRM, Buchhaltung - läuft auf eigenen Servern statt bei Microsoft oder Google, niemand außer uns sieht unsere Daten.', tag: 'intern · live' },
+      { sub: '215+ Apps · 100+ Unternehmen', desc: '{{APPS_COUNT}}+ Android-Apps auf Code-Ebene dekompiliert und analysiert, über 100+ Unternehmen hinweg, gelistet an NYSE, NASDAQ, LSE, XETRA, KRX, BME, HKEx und TYO, alle nach denselben Maßstäben behandelt, unabhängig von Größe oder Bekanntheit. {{FINDINGS_COUNT}}+ kritische Funde bislang, darunter eine Kinder-App-Welle, die gezielt auf COPPA und DSGVO Art. 8 geprüft wurde. Jede Aussage führt zu einem konkreten Manifest-Eintrag, einer Berechtigung oder einer dekompilierten Klasse zurück, nie zu einer Zusammenfassung einer Datenschutzerklärung, und jedes Ziel steht auf demselben öffentlichen Ledger, egal ob das Unternehmen je antwortet. Aufsichtsbehörden stehen ab der ersten Nachricht in Kopie, und die 90-Tage-Frist läuft für alle gleich.', plain: 'Wir lesen den tatsächlichen Programmcode einer App, nicht nur, was die Datenschutzerklärung behauptet.', tag: 'Sicherheitsforschung' },
+      { sub: 'Disclosure-Impact-Engine', desc: 'aladdin-mini modelliert, wie Märkte reagieren, sobald eine Sicherheits-Disclosure öffentlich wird, einschließlich der eigenen Funde von RFI-IRFOS, veröffentlicht erst nach Ablauf der 90-Tage-Sperrfrist, nie früher. Ein Hedge-System handelt das entstehende Signal über Bayes\'sche Netze gegen MetaTrader5-Kursdaten. BlackRocks Version dieser Idee heißt Aladdin und verwaltet 21 Billionen Dollar an Vermögenswerten, diese hier sind 3.488 Zeilen Python, kostenlos und für jeden Zeile für Zeile einsehbar. Die eigene Architektur stimmt bereits exakt mit der eigenen veröffentlichten Dokumentation überein, kein aspirationelles Diagramm.', plain: 'Ein Trading-Algorithmus, der reagiert, wenn ein Sicherheitsfund öffentlich wird - wie die Börsen-Software großer Fonds, nur kostenlos und offen einsehbar.', tag: 'Open Source' },
+      { sub: 'ternärer KI-Terminal-Client', desc: 'albert-cli ist ein terminal-natives Multi-Provider-CLI für albert. und andere Sprachmodelle, mit echtem SSE-Streaming und Steuerung des Reasoning-Aufwands, kompatibel mit OpenAI, Anthropic, NVIDIA NIM und Google von Haus aus. Es wurde aus dem TIS-Monorepo in ein eigenständiges Repository extrahiert, sobald es sich als eigenständig nutzbares Werkzeug bewährt hatte. Heute sind es über 92.000 Zeilen Rust mit einer echten TUI-, Hooks-, Skills- und Permissions-Architektur, kein dünner Wrapper um einen API-Aufruf, und es hat bereits 400 Downloads auf crates.io überschritten.', plain: 'Ein Terminal-Werkzeug, mit dem man albert. oder andere KI-Modelle direkt von der Kommandozeile aus benutzt, ohne Browser.', tag: 'CLI · crates.io' },
+      { sub: 'Last-Look-Back-Protokoll', desc: 'albert-llb ist ein deterministisches Dateisystem-Containment-Gate für souveräne KI-Agenten: eine harte Grenze, die ein Agent nicht überschreiben kann, geprüft vor jedem Dateisystem-Aufruf statt im Nachhinein einfach vertraut. Es existiert, weil das eigene Urteilsvermögen eines Agenten darüber, wo er schreiben darf und wo nicht, keine Sicherheitsgrenze ist, sondern eine Hoffnung. Auf crates.io veröffentlicht, als Teil des Ternary Intelligence Stack, läuft bei jedem Aufruf dieselbe deterministische Prüfung, ohne Ausnahmepfad und ohne Konfigurationsschalter, der sie still abschaltet.', plain: 'Verhindert, dass ein KI-Agent versehentlich Dateien außerhalb seines erlaubten Bereichs verändert - eine harte technische Grenze, kein bloßes Vertrauen.', tag: 'Rust-Crate · crates.io' },
+      { sub: 'ternärer Compiler + VM', desc: 'ternlang-core ist Compiler und virtuelle Maschine für Ternlang, eine balanciert-ternäre Sprache mit affirm-, tend- und reject-Trit-Semantik direkt im Typsystem verankert statt nachträglich aufgesetzt. Der BET-Instruktionssatz läuft auf einer virtuellen Maschine mit 27 Registern und 50 Opcodes, eigens für ternäre Ausführung gebaut statt drei Zustände in Binärregistern zu emulieren. @sparseskip-Annotationen bekommen einen eigenen Codegen-Pfad, und die gesamte Toolchain kompiliert direkt zu BET-Bytecode, den die VM ausführen kann. Auf crates.io veröffentlicht als Fundament, auf dem der Rest des ternären Stacks aufbaut.', plain: 'Das Werkzeug, das unsere eigene Programmiersprache Ternlang in ausführbaren Code übersetzt.', tag: 'Rust-Crate · crates.io' },
+      { sub: 'ternäre Mixture-of-Experts', desc: 'ternlang-moe ist ein ternärer Mixture-of-Experts-Orchestrator, der eine eingehende Anfrage durch 13 Fachexperten leitet, statt ein einziges Allrounder-Modell jedes Thema abdecken zu lassen. Er synthetisiert die einzelnen Experten-Ausgaben zu einem emergenten ternären Signal, erzwingt ein hartes Sicherheitsveto, das die gesamte Entscheidung überstimmen kann, und liefert ein Ergebnis samt eigener Konfidenz und Temperatur zurück. Statt eines Blackbox-Ensemble-Durchschnitts bleibt jeder Schritt nachvollziehbar: welche Experten ausgeschlagen haben und warum das Veto gegriffen hat oder nicht. Auf crates.io veröffentlicht, als Teil des Ternary Intelligence Stack.', plain: 'Verteilt eine Anfrage automatisch an die am besten passenden von 13 Fach-Experten, statt ein einziges Modell alles machen zu lassen.', tag: 'Rust-Crate · crates.io' },
+      { sub: '44 Sensor-Experimente', desc: 'invisible layer sind 44 eigenständige, browserbasierte Experimente, die die echten Sensor- und Browser-APIs Ihres Handys live abfragen und genau zeigen, was gerade im Hintergrund läuft, auf Ihrem eigenen Gerät. Es gibt keine Installation, kein Konto und keinen Server: jedes Experiment läuft vollständig clientseitig, sodass auch nichts, was Sie darin tun, irgendwohin gesendet wird, damit wir es sehen könnten. Über 65 Dateien hinweg deckt es Mikrofon, Kamera, Bewegung, Standort und ein Dutzend weiterer APIs ab, die den meisten Menschen nie bewusst sind, dass ihr Handy sie einer Website standardmäßig zugänglich macht. Verfügbar auf Deutsch, Englisch und Französisch.', plain: 'Probieren Sie selbst aus, welche Sensoren Ihr eigenes Handy gerade heimlich nutzt - direkt im Browser, ohne Installation.', tag: 'Open Source · Datenschutz' },
+      { sub: 'Offline-Port-Checker als PWA', desc: 'rfi-irfos port prox ist ein ehrlicher, offline installierbarer Port-Checker fürs Handy, der genau das tut, was er behauptet, und nicht mehr. Statt eines vorgetäuschten Scans oder eines falschen „Schließen”-Buttons, wie ihn die meisten konkurrierenden Tools anbieten, führt er eine echte WebSocket-Connect-Timing-Probe gegen localhost aus und zeigt echte, OS-spezifische Terminal-Befehle, um tatsächlich zu schließen, was gefunden wird. Mit gerade einmal 11 Dateien ist die gesamte Timing-Probe-Logik klein genug, um sie in wenigen Minuten komplett zu lesen, keine Blackbox. Geschwisterprojekt zu invisible layer, mit demselben Ansatz ohne Installation und ohne Konto.', plain: 'Zeigt ehrlich, welche Netzwerk-Ports auf Ihrem Handy offen sind, statt wie andere Apps ein falsches “alles sicher” vorzutäuschen.', tag: 'Open Source · Datenschutz' },
+      { sub: 'Canary-Token-Honeypot', desc: 'LAURA schützt vor NFC- und Bluetooth-Nahbereichsdiebstahl von Handydaten mit Köder-Fotoordnern, die genau einmal ein passives Signal auslösen, in dem Moment, in dem sie ohne Zustimmung geöffnet werden, und sonst nichts. Es gibt keinen Exploit, keinen Gerätezugriff und keine automatische Meldung: ein Mensch prüft jeden Treffer manuell, bevor überhaupt etwas weiter passiert, absichtlich, damit ein Fehlalarm nie von selbst eskaliert. Es läuft live auf einem Rust-und-Axum-Backend, deployed auf Fly, zusammen mit einem Python-Scanner-Paket und einer echten Test-Suite, kein Proof of Concept. Live-Demo unter rfi-irfos.github.io/laura.', plain: 'Ein Köder-Fotoordner, der Ihnen Bescheid gibt, wenn jemand unbefugt auf Ihr Handy zugreift - ganz ohne Hacking-Gegenmaßnahmen.', tag: 'Open Source · Datenschutz' },
+      { sub: 'deterministisches Dokumentenprüf-Framework', desc: 'call-laura ist ein MCP-Server, bei dem Agenten Pläne oder Dokumente einreichen und strukturierte Befunde aus vier Perspektiven zurückbekommen, oder vom vollen 15-Agenten-Expertenteam, wenn der Einsatz es verlangt, und jeder einzelne Fund zitiert exakt die Textstelle, auf die er sich bezieht. Es läuft vollständig lokal ohne externe API-Aufrufe, sodass dieselbe Eingabe immer dasselbe Ergebnis liefert, anders als ein LLM, das an einem Dienstag anders urteilen kann als am Montag davor. Mit 3.064 Zeilen Rust und 50 bestandenen Tests läuft es bereits live in Produktion und ist auf crates.io als lauras-core, lauras-team, lauras-mcp und lauras-api veröffentlicht.', plain: 'Prüft Dokumente oder Pläne nach denselben festen Regeln, jedes Mal - kein Zufall, keine Stimmungsschwankung wie bei einem Menschen.', tag: 'Open Source · crates.io' },
+      { sub: 'LLM-gebrücktes Expertenteam', desc: 'Laura\'s Agents ist ein 293-Agenten-Pool, hochskaliert aus 18 handgeschriebenen Kernagenten, und liefert 15 wirklich spezialisierte Fachleute, OSINT, Sicherheit, Recht, Finanzen, UX und mehr, statt einem Alleskönner, der überall nur ein bisschen weiß. Jede Aufgabe durchläuft vor der Annahme ein ternäres Kontext-Gate, und ein gehärteter Review-Loop prüft die eigene Ausgabe, mit call-laura als unabhängiger zweiter Meinung, bevor irgendetwas ausgeliefert wird. Mit 15.676 Zeilen Rust über einen 28-Crate-Workspace und 39 bestandenen Tests läuft es bereits live in Produktion, mit dokumentierten Produktionsläufen als Beleg. Lizenzierbar als einzelner Agent, als Bundle oder als vollständiges Team.', plain: '15 spezialisierte KI-Fachleute (Recht, Sicherheit, UX...) statt einem General-Alleskönner, der überall nur ein bisschen was weiß.', tag: 'kommerziell · privater Motor' },
+      { sub: 'autonome Compliance-/Risiko-KI-Zentren', desc: 'CoEvolution Factory betreibt 50 live laufende, autonome Compliance- und Risiko-KI-Zentren, jedes eine eigenständige „Tochter”-Firma, aus einer gemeinsamen Konstitution ausgerollt statt einzeln von Hand konfiguriert. Es ruft Laura\'s Agents als Engine und call-laura als Freigabe-Gate auf, bevor irgendetwas ausgeliefert wird, und pusht die eigene Umsatz-Telemetrie direkt an Lighthouse, für dieselbe Transparenz, nach der das gesamte Institut arbeitet. Mit 12.143 Zeilen Python läuft ein echter Selbstverbesserungs-Loop mit täglicher Cron-Re-Optimierung, kein einmaliges Setup, das vor sich hin driftet. Der klarste Beleg im ganzen Stack, dass die Ebenen wirklich voneinander abhängen.', plain: '50 eigenständig laufende KI-Einheiten, die jeweils wie eine kleine spezialisierte Firma für Compliance-Aufgaben arbeiten.', tag: 'live · intern' },
+      { sub: 'Reflexionsmodus-Technik für LLMs', desc: 'VEO Framework ist eine wiederverwendbare Technik, um ein Sprachmodell aus dem transaktionalen „Antwortmodus” in einen echten Reflexionsmodus zu holen, es prüft die eigene Argumentation und erkennt Unsicherheit an, statt den Prompt nur so schnell wie möglich abzuarbeiten. Es entstand aus einem einzelnen beobachteten Fall, einem langen Gespräch mit einem Custom-GPT, das sich von selbst so verhielt, und verallgemeinert diesen einen Fall zu einer wiederholbaren, beschreibbaren Technik, die jede und jeder ausprobieren kann. Es gibt hier absichtlich keinen Code: eine reine Prompting-Methodik, ein Markdown-Whitepaper, keine Bibliothek zum Installieren. Entwickelt aus Laura Serna Gavirias Forschung zur Mensch-KI-Koevolution.', plain: 'Bringt ein Sprachmodell dazu, die eigene Antwort nochmal zu hinterfragen, statt einfach das erstbeste plausible Wort zu produzieren.', tag: 'Open Source · Forschung' },
+      { sub: 'ökozentrische Forschung', desc: 'NFCS ist ein agentenbasiertes Modell, das zeigt, dass das globale Ernährungssystem heute das 1,64-Fache der Kalorien produziert, die nötig wären, um jeden Menschen auf der Erde zu ernähren, ein Überschuss, der auf rund das 0,94-Fache zusammenbricht, sobald Nachernteverlust, Verarbeitungsverschwendung und Zugangsbarrieren tatsächlich eingerechnet werden. Die Knappheit, die Menschen erleben, ist nicht thermodynamisch bedingt, sie ist organisatorisch, gemacht statt physikalisch, und das Modell zeigt genau, an welcher Stelle der Kette sie gemacht wird. Gebaut mit Sobol-Sensitivitätsanalyse und ABC-Parameterschätzung, nicht einer einzigen fixen Annahme, und als reproduzierbare Python-Simulation mit interaktivem Dashboard geliefert, das jede und jeder selbst erkunden kann.', plain: 'Zeigt rechnerisch, dass genug Essen für alle da wäre - Hunger ist kein Mengenproblem, sondern ein Verteilungsproblem.', tag: 'ökozentrische Forschung' },
     ],
   },
 
@@ -229,250 +224,46 @@ export const DE: Content = {
   pricing: {
     eyebrow: 'Zugang',
     heading: 'klar kalkuliert',
-    subheading: 'Feste Preise. Keine Bindung an ein Abo, außer Sie wollen eine. Der Umfang bestimmt die Stufe, nicht die Unternehmensgröße.',
-    scopeTags: {
-      market: 'Dingir-Weltmodell · Evidenzbasiert · Domänenübergreifende Intelligence',
-      technical: 'KI-Agenten · Schwarmlogik · TIS/Ternlang · Custom Systems',
-      security: 'Mobile + Web + KI',
-    },
-    lineHeadings: {
-      market: 'Business Intelligence & Prädiktive Analyse',
-      technical: 'Technische Intelligence & Systeme',
-      security: 'Security-Audits & Responsible Disclosure',
-    },
-    market: [
-      { tier: 'First Light', hook: 'Aus einer Behauptung wird ein Urteil.', desc: 'Ein Anbieter, ein Pitch-Deck, ein Wettbewerber - irgendjemand hat eine Behauptung aufgestellt, und echtes Geld oder Vertrauen hängt davon ab, ob sie stimmt. Wir prüfen sie durch Dingir, unser eigenes Weltmodell: dieselbe evidenzbasierte Engine, die Entitäten, Beziehungen und Belege über alle unsere Domänen hinweg verbindet - und geben ein Urteil zurück, keine plausibel klingende Vermutung.', bring: [
-        'Die Behauptung, die Sie geprüft haben wollen - ein Anbieter-Versprechen, ein Pitch-Deck, eine öffentliche Aussage',
-        'Was davon abhängt - eine Unterschrift, ein Investment, eine Story',
-        'Was öffentlich schon dazu vorliegt - wir fangen nicht bei null an',
+    subheading: 'Drei Stufen, derselbe Standard bei jeder. Der Umfang bestimmt die Tiefe, nicht die Unternehmensgröße.',
+    scopeTag: 'Dingir-Weltmodell · evidenzbasiert · domänenübergreifende Intelligence',
+    tiers: [
+      { tier: 'First Light', bring: [
+        'Was Sie geprüft haben möchten, eine App, eine Behauptung, ein System, ein Wettbewerber, ein Anbieterversprechen, ein Pitch Deck',
+        'Was davon abhängt, eine Unterschrift, eine Investition, eine Entscheidung, eine Geschichte, die Sie veröffentlichen oder auf die Sie handeln wollen',
+        'Alles, was dazu bereits öffentlich ist, wir fangen nicht bei null an',
       ], mechanism: [
-        'Machen aus der Behauptung eine testbare Frage',
-        'Gleichen sie mit Jahren interdisziplinärer Forschung ab, nicht mit einer einzelnen Datenbank - 100+ veröffentlichte Befunde und ein domänenübergreifender Wissensgraph über Technologie, Compliance und die reale Welt',
-        'Verfolgen das Urteil bis zum echten Beleg zurück, nicht bis zur Zusammenfassung öffentlicher Aussagen',
+        'Unser Kernteam und unser Agentenschwarm führen eine nicht klassische Prüfung auf Root-Ebene durch, über Dingir, unser eigenes Weltmodell',
+        'Alles Gefundene wird kontextualisiert und in eine kohärente Form gebracht, nie als rohe Fundliste zurückgegeben',
+        'Jede Aussage wird auf echte Evidenz zurückgeführt, keine Zusammenfassung',
       ], receive: [
-        'Ein Urteil: stimmt, stimmt nicht, oder unbelegt',
-        'Die Beweiskette dahinter, nicht nur unser Wort dafür - dieselbe Quellenlage, für die wir selbst geradestehen würden',
-        'Etwas, das Sie unterschreiben, investieren oder veröffentlichen können',
-      ], bullets: [
-        'Vor der Vertragsunterschrift wollen Sie die Sicherheits- oder Datenschutzaussagen eines Anbieters gegen die Realität geprüft haben',
-        'Vor einem Investment wollen Sie die technischen Behauptungen in einem Pitch-Deck belegt sehen, nicht nur geglaubt',
-        'Vor einem größeren Einkauf wollen Sie unabhängigen Beweis, nicht noch eine Verkaufspräsentation',
-        'Vor einer Veröffentlichung brauchen Sie eine Behauptung, die Sie selbst nicht prüfen können, bestätigt oder widerlegt',
-        'Sie wollen wissen, ob Dingir zu der Firma, die Sie sich ansehen, schon etwas gefunden hat',
+        'Ein klares Urteil oder ein Befundbericht, keine plausibel klingende Vermutung',
+        'Die Beweiskette dahinter, dieselbe Quellenlage, die wir selbst vertreten würden',
+        'Etwas, das Sie unterschreiben, worauf Sie investieren, veröffentlichen oder handeln können',
       ], delivery: '14 Kalendertage.' },
-      { tier: 'Competitive Trace', hook: 'Wissen, was sie wirklich tun - jenseits der öffentlichen Erzählung.', desc: 'Die öffentliche Erzählung eines Wettbewerbers ist das, was er Sie glauben lassen will. Dingir verfolgt, was tatsächlich dahinter passiert - über Technologie, Abhängigkeiten und Beziehungen hinweg - und verbindet es mit dem, was es für Ihr Geschäft bedeutet.', bring: [
-        'Einen Wettbewerber, ein Produkt, eine Technologie oder Organisation, die Sie jenseits der öffentlichen Erzählung sehen müssen',
-        'Die Annahmen, die Sie getestet haben wollen',
-        'Die strategischen Fragen dahinter',
+      { tier: 'Deep Field', bring: [
+        'Dasselbe Thema, jetzt mit einem konkreten Fokus, Red Teaming, Path Traversal, das gesamte Portfolio eines Wettbewerbers, was auch immer der tatsächliche Schwerpunkt ist',
+        'Was für Ihr Team "fertig" bedeutet, nicht nur ein einzelnes Ja oder Nein',
       ], mechanism: [
-        'Verfolgen das Ziel über seine Technologien, Abhängigkeiten, Anbieter, Produkte und Beziehungen',
-        'Verbinden neue Beobachtungen mit historischer und entitätsübergreifender Intelligence',
-        'Legen Strukturen und Veränderungen offen, die unsichtbar bleiben, wenn man das Ziel isoliert betrachtet',
+        'Derselbe Prozess, skaliert mit mehr Agenten, je nachdem was Sie tatsächlich brauchen',
+        'Ihr Thema eingeordnet in den größeren Weltkontext darum herum, statt isoliert betrachtet',
+        'Alles kontextualisiert in ein kohärentes Bild, derselbe Standard wie First Light, nur mit mehr Tiefe',
       ], receive: [
-        'Ein rekonstruiertes Lagebild des Ziels - aufgebaut genauso, wie wir unser eigenes aufbauen würden',
-        'Seine relevanten Abhängigkeiten, Beziehungen, Bewegungen und technischen Fußabdruck',
-        'Die Teile seiner operativen Realität, die Ihre Einschätzung tatsächlich verändern',
-      ], bullets: [
-        'Ein Wettbewerber verspricht "keine Datenweitergabe an Dritte" - Sie wollen wissen, ob das auch stimmt',
-        'Vor einer Partnerschaft prüfen, was ein potenzieller Partner tatsächlich gebaut hat, nicht nur behauptet',
-        'Eine Preis- oder Strategieänderung bei der Konkurrenz sehen und den echten Grund dahinter verstehen',
-        'Als PR- oder Kommunikationsteam vor einer eigenen Kampagne prüfen, was ein Mitbewerber wirklich ausliefert',
-        'Als Investor:in die technische Ehrlichkeit eines Pitch-Decks vor einem Investment gegenchecken',
-      ], delivery: '14 Kalendertage.' },
-      { tier: 'Sector Map', hook: 'Die Beziehungen, nicht die Berichte.', desc: 'Sie kaufen nicht fünfzig einzelne Firmenberichte. Dingir kartiert, wie jeder relevante Akteur in Ihrem Sektor tatsächlich mit den anderen zusammenhängt - ein zusammenhängendes, lebendiges Lagebild, alle drei Monate neu aufgelöst, damit Sie Veränderung sehen, bevor sie bereits eingepreist ist.', bring: [
-        'Den Sektor oder die Firmen, die Sie im Blick behalten müssen',
-        'Was Ihnen am wichtigsten ist - Risiko, Abhängigkeiten, Wettbewerb',
-        'Wie oft das Bild aktualisiert werden soll - einmalig oder laufend',
+        'Ein strukturiertes, kausal nachverfolgtes Bild, keine Liste isolierter Funde',
+        'Genau den Fokus, den Sie angefragt haben, vollständig ausgearbeitet, nicht nur stichprobenartig',
+        'Dieselbe Beweiskette, erweitert auf den breiteren Kontext',
+      ], delivery: 'Gemeinsam abgestimmt, typischerweise 21 Kalendertage.' },
+      { tier: 'You vs. the World', bring: [
+        'Das Thema, und die Bereitschaft zu sehen, was passiert, wenn es in großem Maßstab auf die reale Welt trifft',
+        'Keinen vorab festgelegten Umfang, wir binden das an keine einzelne Frage',
       ], mechanism: [
-        'Bauen ein laufend aktuelles Lagebild jedes relevanten Akteurs im Sektor',
-        'Aktualisieren es vierteljährlich, nicht nur einmal',
-        'Markieren, wo sich Risiko oder Veränderung konzentriert',
+        'Ihr Produkt eingesetzt in Dingir, unser reales Weltmodell, echte Daten, keine hypothetische Sandbox',
+        'Tausende simulierte Ereignisse laufen dagegen, jeder Agent, jeder Blickwinkel, kein Scoping, keine Ketten',
+        'Nichts wird zurückgehalten, um in ein vorgegebenes Liefermodell zu passen',
       ], receive: [
-        'Direkten Zugriff auf das zusammenhängende Sektor-Lagebild selbst, nicht auf einen Stapel Einzelberichte',
-        'Frühe Sicht auf entstehende Veränderungen',
-        'Ein Modell, das mit jedem Quartal wertvoller wird, kein Snapshot, der veraltet',
-      ], bullets: [
-        'Als Fonds oder Investor das Risikoprofil des gesamten Portfolios laufend im Blick behalten, nicht nur einzelne Positionen',
-        'Als Aufsichtsbehörde einen ganzen Sektor systematisch beobachten statt Einzelfälle abzuarbeiten',
-        'Vor einer Marktstrategie sehen, wo sich Risiko im Sektor tatsächlich konzentriert',
-        'Als Versicherer Risiko über einen ganzen Kundenstamm hinweg einschätzen',
-        'Als Konzern mit vielen Tochterfirmen oder Lieferanten einen Gesamtüberblick statt einzelner Audits bekommen',
-      ], delivery: '14 Kalendertage, danach vierteljährlich.' },
-      { tier: 'Signal', hook: 'Wissen, was sich verändert hat.', desc: 'Eine ständige Wache innerhalb von Dingir - kein Monatsbericht. Das Modell beobachtet laufend und gleicht jedes neue Signal mit allem ab, was es bereits weiß, damit Sie in dem Moment erfahren, wenn sich etwas Relevantes bewegt, nicht Wochen später in der Schlagzeile.', bring: [
-        'Eine Technologie, einen Anbieter, Wettbewerber oder ein Lagefeld, das Beobachtung wert ist',
-        'Die Veränderungen, die Ihre Entscheidungen tatsächlich beeinflussen könnten',
-        'Die Fragen, die Sie beantwortet brauchen, während sich die Lage entwickelt',
-      ], mechanism: [
-        'Beobachten die relevanten Entitäten, Technologien, Beziehungen und Veränderungen über unser gesamtes Lagefeld',
-        'Gleichen neue Beobachtungen mit dem ab, was wir bereits wissen',
-        'Melden materielle Signale, sobald sich die zugrundeliegende Lage ändert',
-      ], receive: [
-        'Direkten Zugriff auf einen laufenden Intelligence-Feed rund um das Thema, das für Sie zählt',
-        'Änderungssignale mit dem Kontext, um ihre Bedeutung zu verstehen',
-        'Akkumulierte Intelligence, die mit der Zeit wertvoller wird',
-      ], bullets: [
-        'Sofort erfahren, wenn ein Wettbewerber eine relevante Änderung vornimmt, nicht erst Wochen später',
-        'Als Compliance-Team laufend wissen, ob sich bei einem überwachten Drittanbieter etwas Meldepflichtiges verändert',
-        'Frühwarnung vor einem Problem bei einem kritischen Zulieferer bekommen, bevor es in der Presse steht',
-        'Als PR- oder IR-Team nicht von einer Enthüllung über die eigene Branche überrascht werden',
-        'Als M&A-Team einen Übernahmekandidaten über Monate laufend beobachten statt nur einmalig zu prüfen',
-      ], delivery: 'Briefing ab 14 Kalendertagen, danach monatlich.' },
-    ],
-    technical: [
-      { tier: 'Agent Deployment', hook: 'Von Intelligence über die Welt zu Intelligence in Ihrem Betrieb.', desc: 'Alles oben sagt Ihnen etwas über die Welt. Das hier setzt Dingir innerhalb Ihres eigenen Betriebs ein - ein Agentensystem, das auf Ihrer Infrastruktur läuft und handelt statt nur zu berichten.', bring: [
-        'Die Aufgabe oder den Prozess, den Sie automatisiert haben wollen',
-        'Ihre bestehenden Systeme, mit denen es zusammenarbeiten muss',
-        'Regeln oder Grenzen, die es einhalten muss',
-      ], mechanism: [
-        'Bauen das Agentensystem auf Ihrer eigenen Infrastruktur',
-        'Dokumentieren jeden Schritt, damit nichts eine Blackbox bleibt',
-        'Testen gegen echte operative Fragen, nicht gegen eine Demo',
-      ], receive: [
-        'Ein integriertes, autonomes Agentensystem, vollständig unter Ihrer Kontrolle',
-        'Vollständige Dokumentation und Quellcode-Zugriff - nichts versteckt, keine Blackbox',
-        'Produktionsreif ab Tag eins, kein Proof of Concept',
-      ], bullets: [
-        'Ihr Support-Team ertrinkt in Tickets, die eigentlich automatisiert vorsortiert werden könnten',
-        'Sie wollen einen eigenen KI-Agenten, der Compliance-Dokumente prüft, ohne Daten an OpenAI/Anthropic zu schicken',
-        'Ein internes Team soll ohne Programmierkenntnisse mit einem Agenten-Schwarm auf Ihre eigenen Systeme zugreifen',
-        'Sie brauchen einen MCP-Server, der interne Tools sicher für KI-Assistenten zugänglich macht',
-        'Als Behörde oder Kanzlei Aktenprüfung automatisieren, bei der Daten zwingend On-Premise bleiben müssen',
-      ], delivery: 'Erste Integration innerhalb von 21 Kalendertagen.' },
-      { tier: 'Custom Stack', hook: 'Keine Untersuchung. Eine Fähigkeit, um Sie herum gebaut.', desc: 'Über einen einzelnen Agenten hinaus geht es hier darum, die Intelligence-Fähigkeit selbst zu entwerfen - ein maßgeschneidertes System dort, wo fertige Software zu langsam, zu unsicher oder zu begrenzt ist, und Sie behalten die volle Kontrolle über den Quellcode, nicht wir.', bring: [
-        'Das Problem, das Standard-Software nicht lösen kann',
-        'Ihre Anforderungen an Geschwindigkeit, Sicherheit oder Kontrolle',
-        'Bestehende Systeme, mit denen es zusammenarbeiten muss',
-      ], mechanism: [
-        'Bauen ein maßgeschneidertes System von Grund auf - Backend, API, Desktop, Embedded, je nach Bedarf',
-        'Setzen Rust und eigene Werkzeuge dort ein, wo es wirklich zählt',
-        'Übergeben Quellcode, keine Blackbox',
-      ], receive: [
-        'Ein System, das exakt auf Ihr Problem passt',
-        'Vollständigen Quellcode und Kontrolle',
-        'Kein Vendor-Lock-in',
-      ], bullets: [
-        'Ihre aktuelle Software ist für Echtzeit-Anforderungen zu langsam, ein Standard-Framework skaliert nicht',
-        'Sie bauen ein Embedded-Gerät und brauchen eine schlanke, sichere Laufzeitumgebung ohne Altlasten',
-        'Sie wollen aus einem teuren SaaS-Vendor-Lock-in raus und volle Kontrolle über den Quellcode',
-        'Bei kritischer Infrastruktur ist Speichersicherheit (Rust) Pflicht, kein Nice-to-have',
-        'Sie brauchen Desktop-, PWA- und CLI-Anwendung aus einer Hand statt von drei verschiedenen Dienstleistern',
-      ], delivery: 'Definition of Done + Zeitplan innerhalb von 14 Kalendertagen.' },
-      { tier: 'Architecture Lab', hook: 'Wie das System wirklich funktioniert, bevor irgendjemand Produktionscode schreibt.', desc: 'Wir rekonstruieren gemeinsam mit Ihnen die Technologie unter der Produktoberfläche und prüfen, was tatsächlich da ist, gegen das, was dokumentiert, behauptet oder angenommen wird. Deutlich gefährlicher als ein "Architektur-Bericht".', bring: [
-        'Ein Produkt, eine Anwendung, eine Plattform oder Architektur, die genauere Untersuchung braucht',
-        'Die Behauptungen, Annahmen oder Unbekannten rund um die Umsetzung',
-        'Den verfügbaren Zugriffsgrad für die Untersuchung',
-      ], mechanism: [
-        'Rekonstruieren die Technologie unter der Produktoberfläche',
-        'Verfolgen Komponenten, SDKs, Services, Schnittstellen, Abhängigkeiten und externe Beziehungen',
-        'Prüfen die beobachtete Architektur gegen Dokumentation, Behauptungen und bereits akkumulierte Intelligence',
-      ], receive: [
-        'Das technische Intelligence-Modell selbst, keine Folienzusammenfassung davon',
-        'Die Architektur, die für Ihre Entscheidung zählt, inklusive relevanter versteckter Abhängigkeiten',
-        'Befunde, die zeigen, wo das umgesetzte System vom verstandenen System abweicht',
-      ], bullets: [
-        'Sie stehen vor einer technischen Entscheidung mit hohem Risiko und wollen sie nicht allein treffen',
-        'Vor einer großen Investition erst einen Prototyp mit Validierungskriterien statt eines fertigen Systems',
-        'Als Forschungsteam eine KI-Architektur, die zu einer echten wissenschaftlichen Frage passt, nicht zum Buzzword',
-        'Sie wollen eine zweite, unabhängige technische Meinung, bevor Ihr eigenes Team lossbaut',
-        'Als Start-up vor der Seed-Runde brauchen Sie eine belastbare technische Roadmap für Investor:innen',
-      ], delivery: 'Architektur- und Forschungsplan innerhalb von 14 Kalendertagen.' },
-      { tier: 'Full Spectrum Deploy', hook: 'Intelligence als Betriebsschicht, kein Projekt mit Enddatum.', desc: 'Ihre Organisation braucht Intelligence über mehrere Flächen hinweg, kontinuierlich und operativ. Wir setzen die Infrastruktur ein, die das real macht - installiert, integriert, Ihr Team geschult, Support, der nicht bei der Übergabe endet.', bring: [
-        'Ein System oder eine Infrastruktur, die vollständig laufen soll',
-        'Ihr Team, das gleich mitgeschult wird',
-        'Ihre bestehenden Daten, bereit zur Migration',
-      ], mechanism: [
-        'Installieren und integrieren alles, von Anfang bis Ende',
-        'Migrieren Ihre bestehenden Daten',
-        'Schulen Ihr Team und bleiben für laufenden Support',
-      ], receive: [
-        'Ein betriebsbereites System, nicht nur eine Lieferung',
-        'Ein geschultes Team, das es selbst betreiben kann',
-        'Ein verantwortliches Team über den gesamten Weg',
-      ], bullets: [
-        'Sie wollen eine komplette, sofort betriebsbereite Infrastruktur, nicht nur ein Stück Software',
-        'Ihr Team hat keine Kapazität, ein neues System selbst zu integrieren, zu migrieren und zu schulen',
-        'Sie brauchen einen einzigen Ansprechpartner von der ersten Analyse bis zum laufenden Support',
-        'Sie lösen eine bestehende Dateninfrastruktur ab und müssen Mitarbeitende dabei mitnehmen',
-        'Als Kritis-Betreiber oder öffentliche Einrichtung brauchen Sie einen belastbaren, dokumentierten Übergabeprozess',
-      ], delivery: 'Definition of Done + Zeitplan innerhalb von 14 Kalendertagen.' },
-    ],
-    security: [
-      { tier: 'Public', hook: 'Kostenlos, für immer. Funde werden nach 90 Tagen veröffentlicht, ausnahmslos.', desc: 'Wir prüfen Ihre App genauso, wie wir jede App prüfen - kostenlos. Finden wir etwas, haben Sie 90 Tage Zeit zur Behebung, bevor es auf unserem öffentlichen Ledger landet. Für alle gilt dieselbe Regel, zahlend oder nicht.', bring: [
-        'Eine App, die Sie geprüft haben wollen - Ihre eigene, oder eine, die Sie interessiert',
-        'Sonst nichts - kein NDA, keine Zahlung, kein Vorrang',
-        'Denselben 90-Tage-Takt wie bei jeder anderen App, die wir prüfen',
-      ], mechanism: [
-        'Führen dieselbe Untersuchung wie bei unseren zahlenden Kunden durch',
-        'Wenden für alle dieselbe Regel an, ausnahmslos',
-        'Geben Ihnen 90 Tage, um Gefundenes zu beheben, bevor es öffentlich wird',
-      ], receive: [
-        'Eine kostenlose Sicherheitsprüfung',
-        'Ein 90-Tage-Fenster zur Behebung von Funden',
-        'Eine kostenlose Erklärung der Tracker auf Ihrem eigenen Handy',
-      ], bullets: [
-        'Sie wollen einfach wissen, welche Tracker gerade auf Ihrem eigenen Handy aktiv sind',
-        'Sie haben eine App im Verdacht und wollen eine kostenlose Erstprüfung, bevor Sie Geld investieren',
-        'Als Journalist:in oder Verbraucherschützer:in brauchen Sie eine öffentlich zitierfähige Quelle',
-        'Als kleines Unternehmen ohne Security-Budget verdienen Sie trotzdem denselben Prüfstandard wie ein Konzern',
-        'Als Entwickler:in wollen Sie Ihre eigene App vor dem Launch kostenlos gegenchecken lassen',
-      ], delivery: 'Bericht innerhalb von 7 Kalendertagen.' },
-      { tier: 'Remediation Advisory', hook: 'Wissen, wo die Schwachstelle sitzt, und was zu ändern ist.', desc: 'Vom Wissen, was kaputt ist, zum Wissen, wo einzugreifen ist: Wir verfolgen die Schwachstelle durch Ihr echtes System, trennen, was real betroffen ist, von dem, was nur angenommen wird, und übergeben die Behebung - in 7 Tagen, mit Nachprüfung nach 30.', bring: [
-        'Eine bekannte oder vermutete Sicherheits-, Datenschutz-, Technologie- oder Abhängigkeits-Schwachstelle',
-        'Das betroffene System oder die Organisation',
-        'Die Entscheidung, die nicht auf eine weitere generische Einschätzung warten kann',
-      ], mechanism: [
-        'Verfolgen die Schwachstelle durch die zugrundeliegende Technologie- und Abhängigkeitsstruktur',
-        'Stellen fest, was tatsächlich betroffen ist, was nur angenommen wird, und wo die Schwachstelle entsteht',
-        'Identifizieren die Eingriffspunkte, die den zugrundeliegenden Zustand tatsächlich ändern',
-      ], receive: [
-        'Direkten Zugriff auf das priorisierte Lagebild der Schwachstelle',
-        'Die Pfade durch das System, die sie erzeugen oder verstärken',
-        'Eine konkrete Grundlage für die Entscheidung, wo einzugreifen ist',
-      ], bullets: [
-        'Sie vermuten einen Sicherheitsvorfall und brauchen schnell einen belastbaren, priorisierten Befund',
-        'Als Start-up vor einem Investoren-Audit wollen Sie Ihre App vorher selbst sauber machen',
-        'Sie wollen nicht nur wissen, was kaputt ist, sondern genau, wie man es behebt - mit Nachprüfung nach 30 Tagen',
-        'Ihr Entwicklerteam braucht eine unabhängige zweite Meinung zu einer bereits gemeldeten Schwachstelle',
-        'Vertraulichkeit ist Ihnen nicht wichtig, Tempo (7 Tage) und ein belastbarer Fund dagegen schon',
-      ], delivery: 'Befund innerhalb von 7 Kalendertagen nach Zahlung.' },
-      { tier: 'Confidential', hook: 'Geben Sie uns das Problem, das Sie nicht öffentlich exponieren können.', desc: `Dieselbe Untersuchung wie bei Remediation Advisory - unter Geheimhaltung, für den Fall, dass die Schwachstelle selbst etwas ist, das nicht durch den normalen Prozess laufen kann. Sie erhalten einen nach Schwere geordneten Befund, exakt lokalisiert, plus eine Zusammenfassung, die nicht-technische Führungskräfte lesen können. Sobald Sie Fixes ausliefern, testen wir manuell nach, ob die Lücke wirklich geschlossen ist.\n\n${NDA_CLAUSE}\n\nAls Non-Profit-Organisation, die an ihre eigenen Regeln gebunden ist, informieren wir die zuständigen Regulatoren trotzdem parallel - ohne Details, die Sie exponieren würden.`, bring: [
-        'Ein Problem, das nicht durch den normalen Prozess laufen kann',
-        'Ihre App oder Ihr System, unter NDA',
-        'Die Beteiligten, die zustimmen müssen, bevor sich etwas bewegt',
-      ], mechanism: [
-        'Führen dieselbe Untersuchung durch, unter Geheimhaltung',
-        'Testen nach ausgelieferten Fixes manuell nach',
-        'Informieren Regulatoren parallel, ohne Sie zu exponieren',
-      ], receive: [
-        'Einen vertraulichen, nach Schwere geordneten Befund',
-        'Die Methode und Werkzeuge dahinter, nicht nur das Ergebnis - genau das geistige Eigentum, das ein NDA eigentlich schützt',
-        'Handgeprüfte Bestätigung, dass Ihre Fixes funktioniert haben',
-      ], bullets: [
-        'Als börsennotiertes Unternehmen wollen Sie einen Fund erst intern klären, bevor er publik wird',
-        'Sie brauchen eine vorstandstaugliche Zusammenfassung, nicht nur einen technischen Report',
-        'Sie wollen Methodik und Werkzeuge verstehen, nicht nur das Ergebnis',
-        'Mit eigener Rechtsabteilung wollen Sie Kontrolle über den Zeitpunkt der Kommunikation behalten, nicht über das Ob',
-        'Sie sind selbst regulatorisch verpflichtet und brauchen eine saubere, dokumentierte Prüfspur',
-      ], delivery: 'Befund innerhalb von 7 Kalendertagen nach Zahlung.' },
-      { tier: 'Enterprise & Critical Infrastructure', hook: 'NIS2, biometrische Daten, NDA - die Fälle, die die meisten Anbieter nicht anfassen.', desc: `Geheimhaltung, priorisierte Reaktionszeit und direkter Zugang zu den Ingenieur:innen, wenn schnell etwas behoben werden muss. Für Betreiber kritischer Infrastruktur (Energie, Wasser, Gesundheit, Verkehr) übersetzen wir Ihre NIS2-Pflichten in Kontrollen, die Ihr Team tatsächlich umsetzen kann - und üben das Incident-Response-Protokoll mit Ihnen ein, bevor etwas schiefgeht.\n\n${NDA_CLAUSE}\n\nFür biometrische Daten (Art. 9 DSGVO) verfolgen wir jeden Fluss vollständig: wohin er geht, wie lange er gespeichert wird, wer darauf zugreift. Die meisten Sicherheitsanbieter fassen diese Kategorie nicht an.\n\nAuch als laufender Auftrag verfügbar: kontinuierliche Abdeckung statt Einzelaudit, mit vierteljährlichem Deep-Dive und fester Ansprechperson. Umfang und Preis werden direkt mit Ihrem Team abgestimmt.`, bring: [
-        'Kritische Infrastruktur oder biometrische/hochsensible Daten',
-        'Ihre bestehenden NIS2- oder Art.-9-Pflichten',
-        'Die regulatorische Frist oder Prüfung, auf die Sie hinarbeiten',
-      ], mechanism: [
-        'Übersetzen NIS2-Pflichten in Kontrollen, die Ihr Team tatsächlich umsetzen kann',
-        'Üben Incident-Response ein, bevor etwas schiefgeht',
-        'Verfolgen jeden Fluss biometrischer Daten (Art. 9) vollständig',
-      ], receive: [
-        'Kontrollen, die Sie umsetzen können, keine reine Checkliste',
-        'Einen geübten Incident-Response-Plan',
-        'Priorisierte Reaktionszeit, wenn es zählt, plus feste Ansprechperson',
-      ], bullets: [
-        'Als Betreiber kritischer Infrastruktur (Energie, Wasser, Verkehr) müssen Sie NIS2-Pflichten in echte technische Kontrollen übersetzen',
-        'Sie verarbeiten biometrische Daten (Art. 9 DSGVO) und finden kaum spezialisierte Prüfer dafür',
-        'Sie brauchen laufende Portfolio-Abdeckung statt Einzelaudits, mit fester Ansprechperson',
-        'Sie wollen einen Incident-Response-Ernstfall einmal geübt haben, bevor er real passiert',
-        'Ein Sicherheitsvorfall ist für Sie keine Option - Sie brauchen priorisierte Reaktionszeit, nicht das Standardfenster',
-      ], delivery: 'Bericht ab 7 Kalendertagen, Umfang individuell.' },
+        'Das vollständige Bild, was auch immer dabei herauskommt',
+        'Die Arbeitsmethode selbst unter NDA, nicht nur ein einmaliges Ergebnis, damit Ihr eigenes Team sie erneut anwenden kann, ohne uns ein zweites Mal zu brauchen',
+        'Eine dauerhafte Zusammenarbeit, wenn Sie das wollen, fortlaufend statt einmalig',
+      ], delivery: 'Gemeinsam festgelegt.' },
     ],
   },
 

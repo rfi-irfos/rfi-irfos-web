@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { prefersReducedMotion, beacon, Reveal, ScrambleHeading, TEAL } from './shared'
 import { useLocale } from '../../hooks/useLocale'
+import { AUDIT_HIGHLIGHTS } from './TrackRecord'
 
 function IntelligenceProofShowcase() {
   const { t } = useLocale()
@@ -307,8 +308,19 @@ export const PROJECTS = [
 export function ProjectsSection() {
   const { t } = useLocale()
   const [headingRun, setHeadingRun] = useState(0)
+  // Live ledger counts substituted into the Android Security Audit card's
+  // {{APPS_COUNT}}/{{FINDINGS_COUNT}} placeholders (2026-08-21: a hardcoded
+  // "308+ apps / 233+ findings" string had already drifted stale by the time
+  // it deployed - the KPI row on the track-record page computes this
+  // dynamically from AUDIT_HIGHLIGHTS, this card now does the same instead of
+  // needing a manual edit every time the ledger grows).
+  const appsCount = AUDIT_HIGHLIGHTS.length
+  const findingsCount = AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length
   const localizedProjects: LocalizedProject[] = PROJECTS.map((p, i) => ({
     name: p.name, link: p.link, ...t.projects.items[i],
+    desc: t.projects.items[i].desc
+      .replace('{{APPS_COUNT}}', String(appsCount))
+      .replace('{{FINDINGS_COUNT}}', String(findingsCount)),
   }))
   return (
     <section id="projects" style={{ padding: '16px var(--sec-pad-x) 72px' }}>

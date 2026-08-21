@@ -11,11 +11,6 @@
 // vocabulary, not prose), raw numbers/prices/ISO citations/emails/URLs, and the
 // WKO footer SVG.
 
-// Reused verbatim across every NDA-bearing security tier so the confidentiality
-// scope (methodology private, finding still publishes after the 90-day embargo)
-// is maintained in one place, not copy-pasted per tier.
-const NDA_CLAUSE = "What's confidential, and what isn't: our methodology stays private under this agreement, the finding does not. Under an NDA you see the how, not only the what: every step we took, the tools we used, and the intellectual property behind our own process, which is exactly why an NDA is what covers it, we are disclosing our internal process to you. The finding itself is still published on our public ledger after the standard 90-day embargo, the same as for every organization we assess - payment changes when your team gets the detail, never whether the public does."
-
 export const EN = {
   nav: {
     links: {
@@ -110,22 +105,22 @@ export const EN = {
       { sub: 'world model', desc: "Its historical corpus reaches back to events as far as volcanic eruptions recorded around 55,500 BCE and spans millions of observations across decades, countries, systems and domains. Today that includes 3.3 million historical observations alongside roughly 1.17 million live observations from 11 continuously monitored streams including buoys, ships, trains, traffic, weather, earthquakes, fires, infrastructure and geopolitical events. Those observations are resolved into a living graph of 49,732 nodes and 381,846 world-graph edges, spanning more than 20 domains.", plain: 'DINGIR is a continuously growing model of the world.', tag: 'world model · internal' },
       { sub: 'TIS monorepo', desc: 'The full-stack substrate: Ternlang language and compiler, BET instruction set, virtual machine, linear algebra, API, MCP server, and model runtime. Balanced ternary {-1, 0, +1} is a native systems primitive here, not a quantisation layer added after the fact. The repository includes 34 MCP tools, a live API, 28,000+ open standard-library modules, and the specifications that connect the whole stack. Each layer is designed to remain inspectable: language semantics, execution, model calls, and the evidence moving between them stay connected instead of disappearing behind a service boundary.', plain: 'The base platform almost everything else here runs on - like an operating system for our entire AI research.', tag: 'core platform' },
       { sub: 'ternary MoE language model', desc: 'albert. is trained from scratch with ternary weights {-γ, 0, +γ}, not converted from a floating-point model. Its dual-stream Mixture-of-Experts architecture routes through sparse expert layers, skips zero-weight operations, and can expand itself through plateau-gated Net2Net surgery. The current research system is a live existence proof of the TIS architecture, with training telemetry and benchmarkable CPU inference. The point is not only efficiency: the runtime exposes how a decision was formed, which experts contributed, and where uncertainty remains before an output reaches a user.', plain: 'Runs on ordinary CPUs instead of an expensive GPU farm, needs far less power and memory than comparable language models - and every decision inside it can be traced, not a black box.', tag: 'AI model' },
-      { sub: 'pure-Rust OS', desc: 'Rusty Penguin is a bare-metal operating system built from the ground up on the same balanced-ternary logic. It has its own kernel, long-mode boot, paging, preemptive multitasking, Aero-style desktop, on-disk filesystem, from-scratch TCP/IP and TLS 1.3 stack, and Linux-ABI compatibility layer. The long-term target is a ternary-native substrate for ternary-native intelligence, with every milestone verified in QEMU or against published vectors.', plain: 'An operating system without the usual security holes that come from decades-old C code - built memory-safe from the ground up.', tag: 'systems' },
-      { sub: 'sovereign workplace OS', desc: 'One self-hosted Rust + React binary replacing the SaaS stack most institutes buy piecemeal: comms, CRM, finance, payroll, HR, governance, and live training telemetry, all under one roof, all on infrastructure we actually own. Every action lands in an append-only ledger built to outlast the people who wrote to it: a 50-year audit trail, not a compliance checkbox.', plain: 'All our internal software - email, CRM, accounting - runs on our own servers instead of Microsoft or Google, nobody but us sees our data.', tag: 'internal · live' },
-      { sub: '215+ apps · 100+ companies', desc: '250+ critical findings across NYSE, NASDAQ, LSE, and XETRA listed companies. Includes children\'s app wave with COPPA + GDPR Art. 8 scope. Root level code analysis. Coordinated disclosure 2026-09-19. Regulators BCC\'d on every submission.', plain: "We read an app's actual code, not just what its privacy policy claims.", tag: 'security research' },
-      { sub: 'disclosure impact engine', desc: 'Models how markets react to security disclosures once they go public - including our own, only after the 90-day embargo lifts. A hedge system trades the signal. BlackRock\'s version is called Aladdin ($21T AUM). This one\'s free.', plain: "A trading algorithm that reacts when a security finding goes public - like a large fund's trading software, except free and open to inspect.", tag: 'open source' },
-      { sub: 'ternary AI terminal client', desc: 'Multi-provider CLI for albert. and other LLMs. Native SSE streaming, reasoning effort control, OpenAI/Anthropic/NVIDIA NIM/Google compatible. Extracted from TIS into its own standalone repo.', plain: 'A terminal tool to use albert. or other AI models straight from the command line, no browser needed.', tag: 'CLI · crates.io' },
-      { sub: 'last look back protocol', desc: 'Deterministic filesystem containment gate for sovereign AI agents - a hard safety boundary an agent cannot write outside. Published on crates.io. Part of the Ternary Intelligence Stack.', plain: 'Stops an AI agent from ever editing files outside its allowed area - a hard technical boundary, not just trust.', tag: 'rust crate · crates.io' },
-      { sub: 'ternary compiler + VM', desc: 'Compiler and virtual machine for Ternlang - a balanced-ternary language with affirm/tend/reject trit semantics, @sparseskip codegen and BET bytecode execution. Published on crates.io.', plain: 'The tool that turns our own programming language, Ternlang, into code a computer can actually run.', tag: 'rust crate · crates.io' },
-      { sub: 'ternary mixture-of-experts', desc: 'Ternary MoE orchestrator: routes a query through 13 domain experts, synthesises an emergent ternary signal, enforces a hard safety veto, and returns a decision with confidence and temperature. Published on crates.io.', plain: 'Automatically routes a query to whichever of 13 specialist experts fits best, instead of one model trying to do everything.', tag: 'rust crate · crates.io' },
-      { sub: '44 sensor experiments', desc: '44 browser-based experiments that use your phone\'s built-in sensors and APIs to reveal what has been running silently. No install. No account. No server. One profile page that shows exactly how you look to the systems watching.', plain: 'Try it yourself and see which sensors your own phone is quietly using right now - right in the browser, no install.', tag: 'open source · privacy' },
-      { sub: 'offline port-checker PWA', desc: 'Honest, offline-installable port-checker for your phone. Real WebSocket connect-timing probe of localhost - no fake scanning, no fake "close" button. Shows real per-OS terminal commands instead. Sibling to invisible layer.', plain: "Honestly shows which network ports are open on your phone, instead of faking an \"all safe\" like other apps do.", tag: 'open source · privacy' },
-      { sub: 'canary-token honeypot', desc: 'Protects against NFC/Bluetooth proximity phone-data theft - bait photo folders that fire a passive beacon when opened without consent, nothing more. No exploit, no device access, no automatic reporting. A human reviews every hit before anything further happens. Live demo: rfi-irfos.github.io/laura.', plain: 'A bait photo folder that tells you if someone accesses your phone without permission - no hacking back, just a signal.', tag: 'open source · privacy' },
-      { sub: 'deterministic document-review framework', desc: 'MCP server where agents submit plans or documents and get structured findings across four lenses, or the full 15-agent expert team - every finding cites the exact text span it references. Fully local, no external APIs, fully reproducible. Crates: lauras-core, lauras-team, lauras-mcp, lauras-api.', plain: 'Reviews documents or plans by the same fixed rules every time - no randomness, no off day like a human reviewer might have.', tag: 'open source · crates.io' },
-      { sub: 'LLM-bridged expert team', desc: 'Live LLM-bridged versions of the same 15 expert agents behind call-laura (OSINT, security, legal, finance, UX, and more). Modular: license one agent, a bundle, or the full team as an automated data-processing pipeline. Public overview only - the agent logic itself stays private.', plain: '15 specialized AI experts (legal, security, UX...) instead of one generalist that knows a little about everything.', tag: 'commercial · private engine' },
-      { sub: 'autonomous compliance/risk AI centers', desc: "50 live compliance/risk AI centers running on Laura's Agents engine, each an autonomous 'daughter' firm scaled out from one constitution.", plain: '50 independently running AI units, each operating like a small specialized compliance firm.', tag: 'live · internal' },
-      { sub: 'reflective-mode technique for LLMs', desc: 'A reusable technique for pulling a language model out of transactional "answer mode" and into genuine reflective mode - examining its own reasoning and acknowledging uncertainty instead of just completing the prompt. Developed from Laura Serna Gaviria\'s human-AI co-evolution research.', plain: 'Makes a language model double-check its own answer instead of just outputting the first plausible-sounding word.', tag: 'open source · research' },
-      { sub: 'ecocentric research', desc: 'Neurobiological-Fitness Consequence Separation. Agent-based model proving the global food system produces 1.64x the calories needed to feed every person on Earth. The scarcity is not thermodynamic - it is organizational. Manufactured, not physical.', plain: "Shows mathematically that there's enough food for everyone - hunger isn't a supply problem, it's a distribution problem.", tag: 'ecocentric research' },
+      { sub: 'pure-Rust OS', desc: 'Rusty Penguin is a bare-metal operating system built from the ground up on the same balanced-ternary logic, over 41,500 lines of Rust with no external kernel underneath it. It has its own kernel, long-mode boot, paging, preemptive multitasking, an Aero-style desktop, an on-disk filesystem, a from-scratch TCP/IP and TLS 1.3 stack, and a Linux-ABI compatibility layer, with real HTTPS fetching already verified end to end. The long-term target is a ternary-native substrate for ternary-native intelligence, with every milestone checked in QEMU or against published vectors, tracked on its own honest status board right in the repo.', plain: 'An operating system without the usual security holes that come from decades-old C code - built memory-safe from the ground up.', tag: 'systems' },
+      { sub: 'sovereign workplace OS', desc: 'Lighthouse is one self-hosted Rust and React binary replacing the SaaS stack most institutes buy piecemeal: communications, CRM, finance, payroll, HR, governance, and live training telemetry, all under one roof, on infrastructure we actually own. Its 191 source files run the entire institute today, and switching to it let us cancel every third-party subscription we used to pay for. The ternary-native claim is substantiated in code, not just asserted: real trit fields already live in production database schemas, recording BIFP signals and RLHF ratings of albert.\'s own outputs. Every action lands in an append-only ledger built to outlast the people who wrote to it.', plain: 'All our internal software - email, CRM, accounting - runs on our own servers instead of Microsoft or Google, nobody but us sees our data.', tag: 'internal · live' },
+      { sub: '215+ apps · 100+ companies', desc: '{{APPS_COUNT}}+ Android apps decompiled and analyzed at the code level across 100+ companies, spanning NYSE, NASDAQ, LSE, XETRA, KRX, BME, HKEx and TYO listed firms, all treated identically regardless of size or reputation. {{FINDINGS_COUNT}}+ critical findings so far, including a children\'s-app wave scoped explicitly for COPPA and GDPR Art. 8. Every claim traces back to a specific manifest entry, permission, or decompiled class, never a policy summary, and every target sits on the same public ledger whether or not the company ever replies. Regulators are copied on every disclosure from the first message, and the 90-day coordinated-disclosure clock runs the same for everyone.', plain: "We read an app's actual code, not just what its privacy policy claims.", tag: 'security research' },
+      { sub: 'disclosure impact engine', desc: 'aladdin-mini models how markets react once a security disclosure goes public, including RFI-IRFOS\'s own findings, released only after the 90-day embargo lifts, never before. A hedge system trades the resulting signal using Bayesian networks against MetaTrader5 price feeds. BlackRock\'s version of this idea is called Aladdin and manages 21 trillion dollars in assets; this one is 3,488 lines of Python, free, and open for anyone to inspect line by line. Its architecture already matches its own published documentation exactly, not an aspirational diagram.', plain: "A trading algorithm that reacts when a security finding goes public - like a large fund's trading software, except free and open to inspect.", tag: 'open source' },
+      { sub: 'ternary AI terminal client', desc: 'albert-cli is a terminal-native, multi-provider CLI for albert. and other language models, with real SSE streaming and reasoning-effort control, compatible with OpenAI, Anthropic, NVIDIA NIM and Google out of the box. It was extracted out of the TIS monorepo into its own standalone repository once it matured into a tool worth using on its own. Today it is over 92,000 lines of Rust with a genuine TUI, hooks, skills, and permissions architecture, not a thin wrapper around an API call, and it has already passed 400 downloads on crates.io.', plain: 'A terminal tool to use albert. or other AI models straight from the command line, no browser needed.', tag: 'CLI · crates.io' },
+      { sub: 'last look back protocol', desc: 'albert-llb is a deterministic filesystem containment gate for sovereign AI agents: a hard boundary an agent cannot write outside of, checked before every filesystem call rather than trusted after the fact. It exists because trusting an agent\'s own judgment about where it should and shouldn\'t write is not a safety boundary, it\'s a hope. Published on crates.io as part of the Ternary Intelligence Stack, it runs the same deterministic check on every call, with no exception path and no configuration flag that quietly turns it off.', plain: 'Stops an AI agent from ever editing files outside its allowed area - a hard technical boundary, not just trust.', tag: 'rust crate · crates.io' },
+      { sub: 'ternary compiler + VM', desc: 'ternlang-core is the compiler and virtual machine for Ternlang, a balanced-ternary language with affirm, tend and reject trit semantics built into the type system itself rather than layered on top. Its BET instruction set runs on a 27-register virtual machine with 50 opcodes, purpose-built for ternary execution rather than emulating three states inside binary registers. @sparseskip annotations get their own dedicated codegen path, and the whole toolchain compiles down to BET bytecode the VM can execute directly. Published on crates.io as the foundation the rest of the ternary stack builds on.', plain: 'The tool that turns our own programming language, Ternlang, into code a computer can actually run.', tag: 'rust crate · crates.io' },
+      { sub: 'ternary mixture-of-experts', desc: 'ternlang-moe is a ternary Mixture-of-Experts orchestrator that routes an incoming query through 13 domain experts rather than forcing one generalist model to cover every topic. It synthesises the experts\' individual outputs into a single emergent ternary signal, enforces a hard safety veto that can override the whole decision, and returns a result together with its own confidence and temperature. Rather than a black-box ensemble average, every step stays inspectable: which experts fired, and why the veto did or didn\'t trigger. Published on crates.io as part of the Ternary Intelligence Stack.', plain: 'Automatically routes a query to whichever of 13 specialist experts fits best, instead of one model trying to do everything.', tag: 'rust crate · crates.io' },
+      { sub: '44 sensor experiments', desc: 'invisible layer is 44 self-contained, browser-based experiments that query your phone\'s real sensor and browser APIs live and show exactly what\'s running in the background, right now, on your own device. There is no install, no account, and no server involved: every experiment runs entirely client-side, so nothing you do inside it is sent anywhere for us to see either. Across 65 files it covers microphone, camera, motion, location and a dozen other APIs most people never realize their phone exposes to a website by default. Available in German, English and French.', plain: 'Try it yourself and see which sensors your own phone is quietly using right now - right in the browser, no install.', tag: 'open source · privacy' },
+      { sub: 'offline port-checker PWA', desc: 'rfi-irfos port prox is an honest, offline-installable port-checker for your phone that does exactly what it claims and nothing more. Instead of a fake scan or a fake \'close this port\' button, the kind most competing tools ship, it runs a real WebSocket connect-timing probe against localhost and shows real, per-operating-system terminal commands to actually close whatever it finds open. At just 11 files, the entire timing-probe logic is small enough to read start to finish in a few minutes, no black box involved. Sibling project to invisible layer, sharing its no-install, no-account approach.', plain: "Honestly shows which network ports are open on your phone, instead of faking an \"all safe\" like other apps do.", tag: 'open source · privacy' },
+      { sub: 'canary-token honeypot', desc: 'LAURA protects against NFC and Bluetooth proximity phone-data theft with bait photo folders that fire a single passive beacon the moment they\'re opened without consent, and nothing else. There is no exploit, no device access, and no automatic reporting: a human reviews every hit manually before anything further happens, on purpose, so a false positive can never escalate on its own. It runs live on a Rust and Axum backend deployed on Fly, paired with a Python scanner package and a real test suite, not a proof of concept. Live demo at rfi-irfos.github.io/laura.', plain: 'A bait photo folder that tells you if someone accesses your phone without permission - no hacking back, just a signal.', tag: 'open source · privacy' },
+      { sub: 'deterministic document-review framework', desc: 'call-laura is an MCP server where agents submit plans or documents and get back structured findings across four lenses, or the full 15-agent expert team when the stakes call for it, and every finding cites the exact text span it references. It runs fully local with no external API calls, so the same input produces the same output every time, unlike an LLM that can judge differently on a Tuesday than it did the Monday before. At 3,064 lines of Rust with 50 passing tests, it\'s already live in production and published on crates.io as lauras-core, lauras-team, lauras-mcp and lauras-api.', plain: 'Reviews documents or plans by the same fixed rules every time - no randomness, no off day like a human reviewer might have.', tag: 'open source · crates.io' },
+      { sub: 'LLM-bridged expert team', desc: 'Laura\'s Agents is a 293-agent pool, scaled up from 18 hand-authored core agents, giving 15 genuinely specialized experts, OSINT, security, legal, finance, UX and more, instead of one generalist that knows a little about everything. Every task passes through a ternary context gate before it\'s accepted, and a hardened review loop cross-checks its own output using call-laura as an independent second opinion before anything ships. At 15,676 lines of Rust across a 28-crate workspace with 39 passing tests, it already runs live in production with documented runs to show for it. Licensable as one agent, a bundle, or the full team.', plain: '15 specialized AI experts (legal, security, UX...) instead of one generalist that knows a little about everything.', tag: 'commercial · private engine' },
+      { sub: 'autonomous compliance/risk AI centers', desc: 'CoEvolution Factory runs 50 live, autonomous compliance and risk AI centers, each an independent \'daughter\' firm scaled out from one shared constitution rather than configured by hand one at a time. It calls Laura\'s Agents as its engine and call-laura as its approval gate before anything it produces ships, and pushes its own revenue telemetry straight into Lighthouse for the same transparency the rest of the institute runs on. At 12,143 lines of Python, it runs a genuine self-improvement loop with daily cron re-optimization, not a one-time setup left to drift. The clearest proof in the whole stack that its layers actually depend on each other.', plain: '50 independently running AI units, each operating like a small specialized compliance firm.', tag: 'live · internal' },
+      { sub: 'reflective-mode technique for LLMs', desc: 'VEO Framework is a reusable technique for pulling a language model out of transactional \'answer mode\' and into genuine reflective mode, examining its own reasoning and acknowledging uncertainty instead of just completing the prompt as fast as possible. It started from one observed case, an extended conversation with a custom GPT that behaved this way on its own, and generalizes that single instance into a repeatable, describable technique anyone can try. There is no code here at all, deliberately: it\'s a pure prompting methodology, a markdown whitepaper, not a library to install. Developed out of Laura Serna Gaviria\'s human-AI co-evolution research.', plain: 'Makes a language model double-check its own answer instead of just outputting the first plausible-sounding word.', tag: 'open source · research' },
+      { sub: 'ecocentric research', desc: 'NFCS is an agent-based model proving the global food system produces 1.64 times the calories needed to feed every person on Earth today, a surplus that collapses to roughly 0.94 times once post-harvest loss, processing waste and access barriers are actually accounted for. The scarcity people experience is not thermodynamic, it\'s organizational, manufactured rather than physical, and the model shows exactly where along the chain it gets manufactured. Built with Sobol sensitivity analysis and ABC parameter estimation, not a single fixed assumption, and delivered as a reproducible Python simulation with an interactive dashboard anyone can explore themselves.', plain: "Shows mathematically that there's enough food for everyone - hunger isn't a supply problem, it's a distribution problem.", tag: 'ecocentric research' },
     ],
   },
 
@@ -236,250 +231,46 @@ export const EN = {
   pricing: {
     eyebrow: 'Access',
     heading: 'priced in plain terms',
-    subheading: 'Fixed rates. No retainer lock-in unless you want one. Scope determines tier, not company size.',
-    scopeTags: {
-      market: 'Dingir world model · evidence-first · cross-domain intelligence',
-      technical: 'AI agents · swarm logic · TIS/Ternlang · custom systems',
-      security: 'Mobile + Web + AI',
-    },
-    lineHeadings: {
-      market: 'Business Intelligence & Predictive Analysis',
-      technical: 'Technical Intelligence & Systems',
-      security: 'Security Audits & Responsible Disclosure',
-    },
-    market: [
-      { tier: 'First Light', hook: 'Turn a claim into a verdict.', desc: 'A vendor, a pitch deck, a competitor - somebody made a claim, and real money or trust is riding on whether it holds up. We run it through Dingir, our own world model: the same evidence-first engine that connects entities, relationships, and evidence across every domain we cover - and hand back a verdict, not a plausible-sounding guess.', bring: [
-        'The claim you need verified - a vendor promise, a pitch deck, a public statement',
-        'What\'s riding on it - a signature, an investment, a story',
-        'Anything public already out there about it - we don\'t start from zero',
+    subheading: 'Three stages, same standard at every one. Scope determines depth, not company size.',
+    scopeTag: 'Dingir world model \u00b7 evidence-first \u00b7 cross-domain intelligence',
+    tiers: [
+      { tier: 'First Light', bring: [
+        'What you need looked at, an app, a claim, a system, a competitor, a vendor promise, a pitch deck',
+        'What\'s riding on it, a signature, an investment, a decision, a story you\'re about to act on or publish',
+        'Anything already public about it, we don\'t start from zero',
       ], mechanism: [
-        'Turn the claim into a testable question',
-        'Check it against years of interdisciplinary research, not one narrow database - 100+ published findings and a cross-domain evidence graph spanning technology, compliance, and the real world',
-        'Trace the verdict back to real evidence, not a summary of public claims',
+        'Our core human team and our agent swarm run a non-classical review at the root level, through Dingir, our own world model',
+        'Everything found gets contextualised and brought into one coherent shape, never handed back as a raw finding list',
+        'Every claim traced back to real evidence, not a summary',
       ], receive: [
-        'A verdict: true, false, or unproven',
-        'The evidence trail behind it, not just our word for it - the same sourcing we\'d stand behind ourselves',
-        'Something you can sign off on, invest on, or publish on',
-      ], bullets: [
-        'Before you sign a contract, you want a vendor\'s security or privacy claims checked against reality',
-        'Before you invest, you want the technical claims in a pitch deck verified, not taken on faith',
-        'Before a major purchase, you want independent proof, not another sales deck',
-        'Before you publish, you need a claim you can\'t verify yourself confirmed or debunked',
-        'You want to know if Dingir has already found something relevant to the company you\'re looking at',
+        'A clear verdict or findings report, not a plausible-sounding guess',
+        'The evidence trail behind it, the same sourcing we\'d stand behind ourselves',
+        'Something you can sign off on, invest on, publish on, or act on',
       ], delivery: '14 calendar days.' },
-      { tier: 'Competitive Trace', hook: 'Know what they\'re actually doing - beyond the public narrative.', desc: 'A competitor\'s public narrative is what they want you to believe. Dingir traces what\'s actually happening underneath it - across their technology, dependencies, and relationships - and connects it to what it means for your business.', bring: [
-        'A competitor, product, technology, or organization you need to see beyond the public narrative',
-        'The assumptions you want tested',
-        'The strategic questions surrounding it',
+      { tier: 'Deep Field', bring: [
+        'The same subject, now with a specific angle, red teaming, path traversal, a competitor\'s whole portfolio, whatever the actual focus is',
+        'What "done" looks like for your team, not just a single yes or no',
       ], mechanism: [
-        'Trace the target across its technologies, dependencies, vendors, products, and relationships',
-        'Connect current observations with historical and cross-entity intelligence',
-        'Expose structures and changes that remain invisible when the target is examined in isolation',
+        'The same process, scaled with more agents depending on what you actually need',
+        'Your subject placed into the wider world context around it, instead of reviewed in isolation',
+        'Everything contextualised into one coherent picture, same standard as First Light, at greater depth',
       ], receive: [
-        'A reconstructed intelligence picture of the target - built the same way we\'d build our own',
-        'Its relevant dependencies, relationships, movements, and technical footprint',
-        'The parts of its operating reality that materially change your assessment',
-      ], bullets: [
-        'A competitor claims something ("no data sharing," "fully secure") - you want to know if it\'s actually true',
-        'Before a partnership, you want to check what a potential partner has actually built, not just what they claim',
-        'You notice a pricing or strategy shift and want to understand the real reason behind it',
-        'As PR or comms, you want to verify a rival\'s claims before your own campaign goes out',
-        'As an investor, you want a pitch deck\'s technical claims checked against reality before you commit',
-      ], delivery: '14 calendar days.' },
-      { tier: 'Sector Map', hook: 'The relationships, not the reports.', desc: 'You\'re not buying fifty separate company reports. Dingir maps how every relevant actor in your sector actually relates to the others - one connected, living picture, re-resolved every quarter, so you see change forming before it\'s already priced in.', bring: [
-        'The sector or set of companies you need to understand as a whole',
-        'What matters most to you - risk, dependencies, competitive structure',
-        'How often you need the picture refreshed - once, or standing',
+        'A structured, causality traced picture, not a list of isolated findings',
+        'The specific angle you asked for, fully worked, not sampled',
+        'The same evidence trail, extended to cover the broader context',
+      ], delivery: 'Scoped with you, typically 21 calendar days.' },
+      { tier: 'You vs. the World', bring: [
+        'The subject, and the willingness to see what happens when it meets the real world at scale',
+        'No pre-set scope, we\'re not chaining this to one question',
       ], mechanism: [
-        'Map every relevant actor in the sector as one connected model, not separate files',
-        'Re-resolve the map every quarter, tracking how relationships shift',
-        'Flag where risk or change is concentrating across the whole structure',
+        'Your product placed into Dingir, our real-world model, real data, not a hypothetical sandbox',
+        'Thousands of simulated events run against it, every agent, every angle, no scoping, no chains',
+        'Nothing held back to fit a predefined deliverable',
       ], receive: [
-        'Direct access to the connected sector map itself, not a stack of individual reports',
-        'Early visibility on where change is forming',
-        'A model that gets more valuable every quarter, not a snapshot that expires',
-      ], bullets: [
-        'As a fund or investor, you want your whole portfolio tracked continuously, not just one company at a time',
-        'As a regulator, you want to watch an entire sector systematically, not case by case',
-        'Before a market strategy, you want to see where risk actually concentrates across your sector',
-        'As an insurer, you need to estimate risk across your entire client base at once',
-        'As a group with many subsidiaries or suppliers, you want one overview instead of separate audits for each',
-      ], delivery: '14 calendar days, quarterly thereafter.' },
-      { tier: 'Signal', hook: 'Know what changed.', desc: 'A standing watch inside Dingir - not a monthly report. The model observes continuously and correlates every new signal against everything it already knows, so you learn the moment something relevant moves, not weeks later in the headlines.', bring: [
-        'A technology, vendor, competitor, or intelligence surface worth watching',
-        'The changes that could affect your decisions',
-        'The questions you need answered as the situation evolves',
-      ], mechanism: [
-        'Monitor the relevant entities, technologies, relationships, and changes across our intelligence environment',
-        'Correlate new observations with what we already know',
-        'Surface material signals as the underlying situation changes',
-      ], receive: [
-        'Direct access to a live intelligence feed around the subject that matters to you',
-        'Change signals with the context required to understand their significance',
-        'Accumulated intelligence that becomes more useful over time',
-      ], bullets: [
-        'You want to know immediately when a competitor makes a meaningful change, not weeks later',
-        'As a compliance team, you need continuous visibility on a vendor you\'re responsible for',
-        'You want early warning of a problem at a critical supplier before it hits the press',
-        'As PR or investor relations, you don\'t want to be blindsided by a story about your own industry',
-        'As an M&A team, you want to keep watching a target over months, not just check once',
-      ], delivery: 'Briefing from 14 calendar days, then monthly.' },
-    ],
-    technical: [
-      { tier: 'Agent Deployment', hook: 'From intelligence about the world to intelligence inside yours.', desc: 'Everything above tells you about the world. This puts Dingir to work inside your own operation - an agent system, running on your infrastructure, that acts on what it knows instead of just reporting it.', bring: [
-        'The task or workflow you want automated',
-        'Your existing systems it needs to work with',
-        'Any rules or boundaries it must respect',
-      ], mechanism: [
-        'Build the agent system on your own infrastructure',
-        'Document every step so it\'s reproducible, not a black box',
-        'Test it against real operational questions, not a demo',
-      ], receive: [
-        'An integrated, autonomous agent you fully control',
-        'Full documentation and source access - nothing hidden, nothing black-boxed',
-        'Production-ready from day one, not a proof of concept',
-      ], bullets: [
-        'Your support team is drowning in tickets that could actually be triaged automatically',
-        'You want your own AI agent that reviews compliance documents without sending data to OpenAI/Anthropic',
-        'An internal team needs to query your own systems through an agent swarm without writing code',
-        'You need an MCP server that safely exposes internal tools to AI assistants',
-        'As a government body or law firm, you need to automate case review while keeping data strictly on-premise',
-      ], delivery: 'First integration within 21 calendar days.' },
-      { tier: 'Custom Stack', hook: 'Not an investigation. A capability built around you.', desc: 'Beyond a single agent, this is designing the intelligence capability itself - a custom system built where off-the-shelf software is too slow, too insecure, or too limited, and you keep full control of the source code, not us.', bring: [
-        'The problem standard software can\'t solve',
-        'Your performance, security, or control requirements',
-        'Any existing systems it needs to integrate with',
-      ], mechanism: [
-        'Build a custom system from scratch - backend, API, desktop, embedded, whatever the job needs',
-        'Use Rust and our own tools where it actually matters',
-        'Hand over source code, not a black box',
-      ], receive: [
-        'A system built exactly for your problem',
-        'Full source code and control',
-        'No vendor lock-in',
-      ], bullets: [
-        'Your current software is too slow for real-time requirements and a standard framework won\'t scale',
-        'You\'re building an embedded device and need a lean, secure runtime with no baggage',
-        'You want out of an expensive SaaS vendor lock-in and full control over the source code',
-        'In critical infrastructure, memory safety (Rust) is a requirement, not a nice-to-have',
-        'You need desktop, PWA, and CLI apps from one team instead of three different vendors',
-      ], delivery: 'Definition of Done + schedule within 14 calendar days.' },
-      { tier: 'Architecture Lab', hook: 'How the system actually works, before anyone writes production code.', desc: 'We reconstruct the technology beneath the product surface with you, and test what\'s actually there against what\'s documented, claimed, or assumed. Much more dangerous than an "architecture report".', bring: [
-        'A product, application, platform, or technical architecture that requires deeper examination',
-        'The claims, assumptions, or unknowns surrounding its implementation',
-        'The level of access available for the investigation',
-      ], mechanism: [
-        'Reconstruct the technology beneath the product surface',
-        'Trace components, SDKs, services, interfaces, dependencies, and external relationships',
-        'Test the observed architecture against documentation, claims, and the intelligence already accumulated around it',
-      ], receive: [
-        'The technical intelligence model itself, not a slide summary of it',
-        'The architecture that matters to your decision, including relevant hidden dependencies',
-        'Findings that expose where the implemented system diverges from the understood one',
-      ], bullets: [
-        'You\'re facing a high-risk technical decision and don\'t want to make the call alone',
-        'Before a major investment, you want a prototype with validation criteria, not a finished system yet',
-        'As a research team, you need an AI architecture that fits a real scientific question, not a buzzword',
-        'You want a second, independent technical opinion before your own team starts building',
-        'As a pre-seed startup, you need a credible technical roadmap to show investors',
-      ], delivery: 'Architecture and research plan within 14 calendar days.' },
-      { tier: 'Full Spectrum Deploy', hook: 'Intelligence as an operating layer, not a project that ends.', desc: 'Your organization needs intelligence across multiple surfaces, continuously and operationally. We deploy the infrastructure to make that real - installed, integrated, your team trained, support that doesn\'t stop at handover.', bring: [
-        'A system or infrastructure you need fully operational',
-        'Your team, to be trained alongside it',
-        'Your existing data, ready to be migrated in',
-      ], mechanism: [
-        'Install and integrate everything, start to finish',
-        'Migrate your existing data',
-        'Train your team and stay for ongoing support',
-      ], receive: [
-        'A production-ready system, not just a delivery',
-        'A trained team that can run it',
-        'One accountable team the whole way through',
-      ], bullets: [
-        'You want a complete, immediately operational infrastructure, not just a piece of software',
-        'Your team doesn\'t have the capacity to integrate, migrate, and train on a new system itself',
-        'You need a single point of contact from first analysis through ongoing support',
-        'You\'re replacing an existing data infrastructure and need your staff brought along, not left behind',
-        'As a critical-infrastructure operator or public body, you need a documented, accountable handover process',
-      ], delivery: 'Definition of Done + schedule within 14 calendar days.' },
-    ],
-    security: [
-      { tier: 'Public', hook: 'Free, forever. Findings publish after 90 days, no exceptions.', desc: 'We check your app the same way we check every app - for free. If we find something, you get 90 days to fix it before it goes on our public ledger. Everyone gets the same rule, paying or not.', bring: [
-        'An app you want checked - yours, or one you\'re curious about',
-        'Nothing else - no NDA, no payment, no priority queue',
-        'The same 90-day disclosure clock as every other app we check',
-      ], mechanism: [
-        'Run the same investigation as our paid audits',
-        'Apply the identical rule to everyone, no exceptions',
-        'Give you 90 days to fix anything found before it\'s public',
-      ], receive: [
-        'A free security check',
-        'A 90-day window to fix anything we find',
-        'A free walkthrough of the trackers running on your own phone',
-      ], bullets: [
-        'You just want to know which trackers are currently active on your own phone',
-        'You suspect something about an app and want a free first check before spending any money',
-        'As a journalist or consumer advocate, you need a source you can cite publicly',
-        'As a small business with no security budget, you deserve the same audit standard as a large company',
-        'As a developer, you want your own app checked for free before launch',
-      ], delivery: 'Report within 7 calendar days.' },
-      { tier: 'Remediation Advisory', hook: 'Know where the exposure is, and what to change.', desc: 'From knowing what\'s wrong to knowing where to intervene: we trace the exposure through your actual system, separate what\'s real from what\'s assumed, and hand you the fix - in 7 days, checked back after 30.', bring: [
-        'A known or suspected security, privacy, technology, or dependency exposure',
-        'The system or organization affected',
-        'The decision that cannot wait for another generic assessment',
-      ], mechanism: [
-        'Trace the exposure through the underlying technology and dependency structure',
-        'Establish what is actually affected, what is merely assumed, and where the exposure originates',
-        'Identify the intervention points that change the underlying condition',
-      ], receive: [
-        'Direct access to the prioritized intelligence picture of the exposure',
-        'The paths through the system that create or amplify it',
-        'A concrete basis for deciding where to intervene',
-      ], bullets: [
-        'You suspect a security incident and need a solid, prioritized finding fast',
-        'As a startup ahead of an investor audit, you want to clean up your app yourself first',
-        'You don\'t just want to know what\'s broken - you want the fix, with a check-back after 30 days',
-        'Your dev team wants an independent second opinion on an already-reported vulnerability',
-        'Confidentiality doesn\'t matter to you - speed (7 days) and a solid finding do',
-      ], delivery: 'Finding within 7 calendar days of payment.' },
-      { tier: 'Confidential', hook: 'Give us the problem you cannot expose publicly.', desc: `Same investigation as Remediation Advisory - kept under secrecy, for when the exposure itself is something you can't run through the normal process. You get a severity-ranked finding pinned to the exact issue, plus a plain-language summary your non-technical leadership can actually read. Once you ship fixes, we re-test by hand to confirm they actually closed the hole.\n\n${NDA_CLAUSE}\n\nAs a not-for-profit bound by our own rules, the relevant regulators are still told in parallel - without any detail that would expose you.`, bring: [
-        'A problem you can\'t put through the normal process',
-        'Your app or system, under NDA',
-        'The stakeholders who need to sign off before anything moves',
-      ], mechanism: [
-        'Run the same investigation, kept confidential',
-        'Re-test by hand once you\'ve shipped fixes',
-        'Notify regulators in parallel, without exposing detail',
-      ], receive: [
-        'A confidential, severity-ranked finding',
-        'The method and tooling behind it, not just the result - the intellectual property an NDA is built to protect',
-        'Hand-verified confirmation your fixes actually worked',
-      ], bullets: [
-        'As a publicly listed company, you want to resolve a finding internally before it goes public',
-        'You need a board-ready summary, not just a technical report',
-        'You want to understand our method and tools, not just the result',
-        'With your own legal team, you want control over the timing of communication, not over whether it happens',
-        'You\'re under your own regulatory obligation and need a clean, documented audit trail',
-      ], delivery: 'Finding within 7 calendar days of payment.' },
-      { tier: 'Enterprise & Critical Infrastructure', hook: 'NIS2, biometric data, NDA - the risk most security shops won\'t touch.', desc: `Secrecy, priority response time, and direct engineer access when something needs fixing fast. For critical infrastructure (energy, water, health, transport), we turn your NIS2 obligations into controls your team can actually run - and rehearse the incident response with you before anything goes wrong.\n\n${NDA_CLAUSE}\n\nFor biometric data (GDPR Art. 9), we trace every flow in full - where it goes, how long it\'s kept, who touches it. Most security shops won\'t take this on.\n\nAlso available as a standing engagement: continuous coverage instead of a one-off audit, with a quarterly deep-dive and one dedicated contact. Scope and price are worked out directly with your team.`, bring: [
-        'Critical infrastructure or biometric/high-sensitivity data',
-        'Your existing NIS2 or GDPR Art. 9 obligations',
-        'The regulatory deadline or audit you\'re working against',
-      ], mechanism: [
-        'Turn NIS2 obligations into controls your team can actually run',
-        'Rehearse incident response before anything goes wrong',
-        'Trace every flow of biometric data (Art. 9) in full',
-      ], receive: [
-        'Controls you can implement, not just a compliance checklist',
-        'A rehearsed incident-response plan',
-        'Priority response time when it matters, plus a dedicated contact',
-      ], bullets: [
-        'As a critical-infrastructure operator (energy, water, transport), you need NIS2 obligations turned into real controls',
-        'You process biometric data (GDPR Art. 9) and struggle to find specialized auditors for it',
-        'You need continuous coverage instead of one-off audits, with a single dedicated contact',
-        'You want to have rehearsed an incident-response scenario once before it actually happens',
-        'A security failure isn\'t an option for you - you need priority response time, not the standard window',
-      ], delivery: 'Report from 7 calendar days, scope individual.' },
+        'The complete picture, whatever it turns out to be',
+        'The working method itself under NDA, not just a one time result, so your own team can run it again without needing us a second time',
+        'A standing engagement if you want one, continuous instead of one-off',
+      ], delivery: 'Scoped together.' },
     ],
   },
 

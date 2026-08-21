@@ -3,95 +3,118 @@
 // Coop Partners section's own buy buttons and the checkout/proposal modal
 // chrome itself), so the open functions are passed in as props.
 //
-// i18n note: tier copy (hook/desc/delivery) now comes from the current locale's
-// t.pricing.{security,market} arrays (frontend/src/content/en.ts + de.ts),
+// i18n note: tier copy (bring/mechanism/receive/delivery) now comes from the
+// current locale's t.pricing.tiers array (frontend/src/content/en.ts + de.ts),
 // zipped by index with the locale-independent technical metadata below
-// (price, stripeKey, directUrl, contact flag, output-vocabulary tags - the
-// output tags stay English in both locales, same small fixed-vocabulary
-// treatment as the Track Record ledger's STATUS_META codes).
+// (price, stripeKey, directUrl, contact flag).
 //
-// Web Development and Mobile App Development lines removed entirely
-// (2026-08-12, live feedback): every remaining line follows the same
-// 1-highlighted-tier + 3-upsell shape, keyed to keywords instead of a long
-// tier list. Web/Mobile as standalone product lines diluted the audit/
-// intelligence positioning; that work is still offered, just no longer
-// carried as its own priced tier here - see #contact.
+// REBUILT 2026-08-21 (Simeon, live direction): the three separate product
+// lines (Business Intelligence / Technical Intelligence / Security), each a
+// 1-featured-tier-plus-3-upsell carousel you had to arrow through, are gone.
+// One unified three-stage ladder replaces all of it - First Light, Deep
+// Field, You vs. the World - the same "Three Stages" language already used
+// in disclosure/collaboration outreach (see
+// ~/rfi-irfos-skills/appsec/references/collaboration_offer_template.md),
+// generalised here so it reads as the site's one pricing model rather than
+// an app-review-specific pitch. No more upsell teaser cards: every card
+// already carries what the old upsells used to add separately.
+//
+// CORRECTED same day: a first pass showed all three cards side by side in a
+// static grid - wrong, Simeon wanted the same one-card-at-a-time-plus-arrows
+// navigation the old three product lines used, just cycling through these
+// three tiers instead of three lines (arrows/dots/mobile-nav-strip logic
+// below is the same shape that lived directly in this file before the
+// extraction, not reinvented). Also fixed a real duplication bug from that
+// same first pass: the price rendered twice per card (once via the
+// `PriceDelivery` helper, once again as the buy button's own label) because
+// both were wired in at once - reverted to the original pattern, price
+// appears exactly once, as the button's label, delivery sits in its own
+// pill beside it.
 import { useState } from 'react'
-import { ScopeTag, TierCarousel, Reveal, ScrambleHeading, useMobile } from './shared'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ScopeTag, EngagementFlow, CartIcon, Reveal, ScrambleHeading, useMobile, prefersReducedMotion } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
-type CheckoutInfo = { key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[]; bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[] }
 type ProposalInfo = { tier: string; desc: string; price: string; delivery?: string; bullets?: readonly string[]; bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[] }
 
-// Technical metadata only, one entry per tier, same order as the corresponding
-// t.pricing.<line> array so index-zipping lines them up correctly.
+// Technical metadata only, one entry per tier, same order as t.pricing.tiers
+// so index-zipping lines them up correctly.
 //
-// Security collapsed 8 tiers -> 4 (2026-08-12, same treatment as Business
-// Intelligence): Public stays as the free, non-negotiable entry point (the
-// disclosure-doctrine tier, not a sales funnel step). Security Retainer,
-// Enterprise NDA, Critical Infrastructure, IoB/Art.9 and Annual Retainer
-// merged into one flexible top tier - same "on request" pattern already used
-// for the old Web Enterprise tier - since their scopes (NIS2 response,
-// biometric data-flow tracing, portfolio-wide coverage) vary too much for a
-// fixed Stripe price each. Their direct Stripe Payment Links still exist on
-// Stripe's side but are no longer linked from the site.
-const SECURITY_META = [
-  { price: 'free', highlight: false, stripeKey: null as string | null, directUrl: null as string | null, contact: true, outputs: ['Investigation Report', 'Technical Findings'] },
-  { price: '€9,500', highlight: true, stripeKey: null as string | null, directUrl: 'https://buy.stripe.com/9B67sN6OI4rB5Y12367N60S', contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Technical Findings', 'Recommendations', 'Optional Retest'] },
-  { price: '€18,000', highlight: false, stripeKey: null as string | null, directUrl: 'https://buy.stripe.com/aFa4gB4GA3nx1HLgY07N60T', contact: false, outputs: ['Investigation Report', 'Risk Matrix', 'Optional Retest'] },
-  // directUrl removed (2026-08-15, live feedback): this tier had both a Stripe
-  // link AND a contact button at once - highest tier in every line should be
-  // contact-only, scope/price genuinely varies too much for a fixed checkout.
-  { price: 'from €50,000', highlight: false, stripeKey: null as string | null, directUrl: null as string | null, contact: true, outputs: ['Investigation Report', 'Risk Matrix', 'Evidence Map', 'Recommendations'] },
+// All three tiers are contact-only now (2026-08-21, corrected same day as the
+// "also contact form" request above: Simeon wanted one consistent pill on
+// every card leading to the contact form, not a Stripe checkout on First
+// Light and contact-only on the other two). First Light's Stripe Payment Link
+// stays defined here in case it comes back later, just not wired into the
+// card below anymore.
+const TIER_META = [
+  { price: 'from €9,500', stripeKey: 'first_light', directUrl: 'https://buy.stripe.com/aFacN7dd64rB0DHazC7N60J', contact: true },
+  { price: 'from €15,000', stripeKey: null as string | null, directUrl: null as string | null, contact: true },
+  { price: 'from €50,000', stripeKey: null as string | null, directUrl: null as string | null, contact: true },
 ] as const
 
-const MARKET_META = [
-  { price: '€3,500', highlight: true, stripeKey: 'first_light', directUrl: 'https://buy.stripe.com/aFacN7dd64rB0DHazC7N60J', contact: false, outputs: ['Investigation Report'] },
-  { price: '€9,500', highlight: false, stripeKey: 'competitive_trace', directUrl: 'https://buy.stripe.com/9B6eVf3Cw2jt869cHK7N60K', contact: false, outputs: ['Investigation Report', 'Evidence Map', 'Technical Findings'] },
-  // Highest one-time tier in this line - contact-only (2026-08-15, live feedback):
-  // no Stripe link, "from" pricing since Sector Map's actual scope varies per sector.
-  { price: 'from €22,000', highlight: false, stripeKey: null as string | null, directUrl: null as string | null, contact: true, outputs: ['Investigation Report', 'Risk Matrix'] },
-  { price: '€6,500 / mo', highlight: false, stripeKey: 'signal', directUrl: 'https://buy.stripe.com/3cI28tgpi5vFcmp4be7N60M', contact: false, outputs: ['Investigation Report', 'Recommendations'] },
-] as const
+type PricingTier = {
+  tier: string; delivery?: string
+  bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[]
+  price: string; stripeKey: string | null; directUrl: string | null; contact: boolean
+}
 
-const TECHNICAL_META = [
-  { price: 'from €12,000', highlight: true, stripeKey: 'agent_deployment', directUrl: 'https://buy.stripe.com/aFa00l6OIcY7eux4be7N60N', contact: false, outputs: ['Architecture Plan', 'Prototype', 'Validation Criteria'] },
-  { price: 'from €24,000', highlight: false, stripeKey: 'custom_stack', directUrl: 'https://buy.stripe.com/8x2cN76OI1fp725gY07N60O', contact: false, outputs: ['Custom System', 'Source Code', 'Documentation'] },
-  { price: 'from €8,500', highlight: false, stripeKey: 'architecture_lab', directUrl: 'https://buy.stripe.com/7sY14p7SMaPZ4TXdLO7N60Q', contact: false, outputs: ['Research Plan', 'Architecture Design', 'Prototype'] },
-  // Highest tier in this line - contact-only (2026-08-15, live feedback): scope
-  // varies too much for a fixed Stripe price, same treatment as Enterprise below.
-  { price: 'from €50,000', highlight: false, stripeKey: null as string | null, directUrl: null as string | null, contact: true, outputs: ['Full Deployment', 'Integration', 'Training', 'Ongoing Support'] },
-] as const
+// One full, self-contained offer card - title, scope badge, the You bring /
+// We / You receive diagram, then a delivery pill plus a single proposal
+// button whose own label IS the price (never render the price a second time
+// elsewhere on the card - see the file header note on the duplication bug).
+function PricingOfferCard({
+  tier, scopeTag, mobile, openProposalModal,
+}: {
+  tier: PricingTier
+  scopeTag: string
+  mobile: boolean
+  openProposalModal: (info: ProposalInfo) => void
+}) {
+  const info = { tier: tier.tier, desc: '', price: tier.price, delivery: tier.delivery, bring: tier.bring, mechanism: tier.mechanism, receive: tier.receive }
+  return (
+    <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: mobile ? '16px 14px' : '24px 24px' }}>
+      <div style={{ textAlign: 'center', marginBottom: 20 }}>
+        <p style={{ fontSize: 21, fontWeight: 900, color: 'var(--text)', margin: 0 }}>{tier.tier}</p>
+        <div style={{ marginTop: 8 }}><ScopeTag label={scopeTag} /></div>
+      </div>
+      <EngagementFlow bring={tier.bring} mechanism={tier.mechanism} receive={tier.receive} large />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginTop: 14 }}>
+        {tier.delivery && (
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6, flex: '0 0 auto', maxWidth: '100%',
+            background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
+            borderRadius: 10, padding: '6px 12px',
+            color: 'var(--accent-text)', fontSize: 12, fontWeight: 600, lineHeight: 1.5,
+          }}>
+            <span style={{ minWidth: 0, whiteSpace: 'nowrap' }}>{tier.delivery}</span>
+          </div>
+        )}
+        <button type="button" onClick={() => openProposalModal(info)} style={{
+          borderRadius: 8, cursor: 'pointer', padding: '9px 16px', flexShrink: 0,
+          display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 800,
+          letterSpacing: '0.02em', whiteSpace: 'nowrap',
+          background: 'var(--accent)', border: 'none', color: 'var(--accent-fg)',
+        }}>
+          <CartIcon />
+          {tier.price}
+        </button>
+      </div>
+    </div>
+  )
+}
 
 export function PricingSection({
-  openCheckoutModal, openProposalModal,
+  openProposalModal,
 }: {
-  openCheckoutModal: (info: CheckoutInfo) => void
   openProposalModal: (info: ProposalInfo) => void
 }) {
   const { t } = useLocale()
-
-  const securityTiers = t.pricing.security.map((tier, i) => ({ ...tier, ...SECURITY_META[i] }))
-  const marketTiers = t.pricing.market.map((tier, i) => ({ ...tier, ...MARKET_META[i] }))
-  const technicalTiers = t.pricing.technical.map((tier, i) => ({ ...tier, ...TECHNICAL_META[i] }))
-  const [activeOffer, setActiveOffer] = useState(0)
-  const offerCount = 3
-  const cycleOffer = (direction: number) => setActiveOffer(current => (current + direction + offerCount) % offerCount)
-  // FIXED (live bug report + phone screenshot, 2026-08-16): the two round
-  // prev/next buttons below used to sit INSIDE the same flex row as the offer
-  // card, with flexShrink: 0. On a 380px phone that row had 316px to spend
-  // (viewport minus the section gutter) and the arrows plus their two 16px gaps
-  // took 128px of it before the card was measured at all, leaving the card
-  // flex: 1 with exactly 188px. The card's own 24px glass padding, the featured
-  // tier card's 16px padding and the EngagementFlow box's 16px padding then
-  // stacked on top of that, so the "You receive" bullets rendered in a ~70px
-  // column - "Ein Urteil:" / "wahr, falsch" / "oder" / "unbewiesen", four lines
-  // for four words. The delivery/price badges at the card's foot looked fine
-  // because they are nowrap and simply overflowed their box, which is why the
-  // page container looked innocent. On phones the arrows now move OUT of the
-  // row and join the dots in a single nav strip above the card, so the card
-  // gets the full width; desktop keeps the side arrows it was designed with.
+  const tiers = t.pricing.tiers.map((tier, i) => ({ ...tier, ...TIER_META[i] }))
+  const [active, setActive] = useState(0)
+  const count = tiers.length
+  const cycle = (direction: number) => setActive(current => (current + direction + count) % count)
   const mobile = useMobile(640)
+  const reduced = prefersReducedMotion()
   const arrowStyle: React.CSSProperties = {
     width: mobile ? 40 : 48, height: mobile ? 40 : 48, borderRadius: '50%',
     border: '1px solid rgba(0,245,196,0.35)', background: 'var(--bg2)',
@@ -100,9 +123,9 @@ export function PricingSection({
   }
   const dots = (
     <div style={{ display: 'flex', justifyContent: 'center', gap: 7 }}>
-      {[0, 1, 2].map(index => <button key={index} onClick={() => setActiveOffer(index)} aria-label={`Show access offer ${index + 1} of 3`} style={{
+      {tiers.map((tier, index) => <button key={tier.tier} onClick={() => setActive(index)} aria-label={`Show tier ${index + 1} of ${count}`} style={{
         width: 8, height: 8, borderRadius: '50%', border: 'none', padding: 0, cursor: 'pointer',
-        background: activeOffer === index ? 'var(--accent-text)' : 'rgba(255,255,255,0.18)',
+        background: active === index ? 'var(--accent-text)' : 'rgba(255,255,255,0.18)',
       }} />)}
     </div>
   )
@@ -129,60 +152,29 @@ export function PricingSection({
             the first thing in view when "Access" is tapped. */}
         {mobile && (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, marginBottom: 14 }}>
-            <button onClick={() => cycleOffer(-1)} aria-label="Previous access offer" style={arrowStyle}>&larr;</button>
+            <button onClick={() => cycle(-1)} aria-label="Previous tier" style={arrowStyle}>&larr;</button>
             {dots}
-            <button onClick={() => cycleOffer(1)} aria-label="Next access offer" style={arrowStyle}>&rarr;</button>
+            <button onClick={() => cycle(1)} aria-label="Next tier" style={arrowStyle}>&rarr;</button>
           </div>
         )}
 
-        <div id="pricing-offer" style={{ display: 'flex', alignItems: 'center', gap: 16, maxWidth: 1040, margin: '0 auto', scrollMarginTop: 84 }}>
-          {!mobile && <button onClick={() => cycleOffer(-1)} aria-label="Previous access offer" style={arrowStyle}>&larr;</button>}
-
-          <div style={{ flex: 1, minWidth: 0 }}>
-            {activeOffer === 0 && (
-                <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: mobile ? '16px 14px' : '24px 24px' }}>
-                <div style={{ textAlign: 'center', marginBottom: 20 }}><p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>{t.pricing.lineHeadings.market}</p><div style={{ marginTop: 8 }}><ScopeTag label={t.pricing.scopeTags.market} /></div></div>
-                <TierCarousel tiers={marketTiers} getActions={tier => {
-                  const full = marketTiers.find(s => s.tier === tier.tier)!
-                  const hasCheckout = !!(full.stripeKey || full.directUrl)
-                  return {
-                    onBuy: hasCheckout ? () => openCheckoutModal({ key: full.stripeKey ?? full.tier, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined, bullets: full.bullets, bring: full.bring, mechanism: full.mechanism, receive: full.receive }) : undefined,
-                    onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, bullets: full.bullets, bring: full.bring, mechanism: full.mechanism, receive: full.receive }) : undefined,
-                  }
-                }} />
-              </div>
-            )}
-
-            {activeOffer === 1 && (
-                <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: mobile ? '16px 14px' : '24px 24px' }}>
-                <div style={{ textAlign: 'center', marginBottom: 20 }}><p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>{t.pricing.lineHeadings.technical}</p><div style={{ marginTop: 8 }}><ScopeTag label={t.pricing.scopeTags.technical} /></div></div>
-                <TierCarousel tiers={technicalTiers} getActions={tier => {
-                  const full = technicalTiers.find(s => s.tier === tier.tier)!
-                  const hasCheckout = !!(full.stripeKey || full.directUrl)
-                  return {
-                    onBuy: hasCheckout ? () => openCheckoutModal({ key: full.stripeKey ?? full.tier, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined, bullets: full.bullets, bring: full.bring, mechanism: full.mechanism, receive: full.receive }) : undefined,
-                    onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, bullets: full.bullets, bring: full.bring, mechanism: full.mechanism, receive: full.receive }) : undefined,
-                  }
-                }} />
-              </div>
-            )}
-
-            {activeOffer === 2 && (
-                <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: mobile ? '16px 14px' : '24px 24px' }}>
-                <div id="pricing-security" style={{ textAlign: 'center', marginBottom: 20, scrollMarginTop: 96 }}><p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>{t.pricing.lineHeadings.security}</p><div style={{ marginTop: 8 }}><ScopeTag label={t.pricing.scopeTags.security} /></div></div>
-                <TierCarousel tiers={securityTiers} getActions={tier => {
-                  const full = securityTiers.find(s => s.tier === tier.tier)!
-                  const hasCheckout = !!(full.stripeKey || full.directUrl)
-                  return {
-                    onBuy: hasCheckout ? () => openCheckoutModal({ key: full.stripeKey ?? full.tier, tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, directUrl: full.directUrl ?? undefined, bullets: full.bullets, bring: full.bring, mechanism: full.mechanism, receive: full.receive }) : undefined,
-                    onProposal: full.contact ? () => openProposalModal({ tier: full.tier, desc: full.desc, price: full.price, delivery: full.delivery, bullets: full.bullets, bring: full.bring, mechanism: full.mechanism, receive: full.receive }) : undefined,
-                  }
-                }} />
-              </div>
-            )}
+        <div id="pricing-offer" style={{ display: 'flex', alignItems: 'center', gap: 16, maxWidth: 720, margin: '0 auto', scrollMarginTop: 84 }}>
+          {!mobile && <button onClick={() => cycle(-1)} aria-label="Previous tier" style={arrowStyle}>&larr;</button>}
+          <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+            {/* Soft cross-fade on tier change (2026-08-21 live feedback) - AnimatePresence
+                mode="wait" so the outgoing card fully fades before the incoming one starts,
+                never a jarring overlap. Skipped entirely under reduced-motion. */}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div key={tiers[active].tier}
+                initial={reduced ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduced ? undefined : { opacity: 0, y: -8 }}
+                transition={{ duration: 0.22 }}>
+                <PricingOfferCard tier={tiers[active]} scopeTag={t.pricing.scopeTag} mobile={mobile} openProposalModal={openProposalModal} />
+              </motion.div>
+            </AnimatePresence>
           </div>
-
-          {!mobile && <button onClick={() => cycleOffer(1)} aria-label="Next access offer" style={arrowStyle}>&rarr;</button>}
+          {!mobile && <button onClick={() => cycle(1)} aria-label="Next tier" style={arrowStyle}>&rarr;</button>}
         </div>
         {/* Desktop keeps its dots under the card; on phones they are already in
             the nav strip above, rendering them twice would just be noise. */}
@@ -192,15 +184,6 @@ export function PricingSection({
             Gaviria / Emergent Interaction Lab. No Stripe checkout: these are
             bespoke engagements, always "on request" via #contact. See the
             COOP PARTNERS section below for who Laura is and the crates. */}
-        {/* Research Cooperation used to be duplicated here (3 "on request" tiers
-            under names that didn't match Coop Partners' 4 real-priced ones below,
-            same product line shown two different ways with different framing). Single
-            source of truth now lives in the Coop Partners section - #coop-partners -
-            nothing repeated here. */}
-        {/* Device Privacy Hardening / "Phone Sanitizing" tier removed entirely
-            (live feedback 2026-08-02: never booked, and the free first-session
-            offer already lives inside the Public security tier's description
-            above - this standalone product line was redundant with it). */}
       </div>
     </section>
   )
