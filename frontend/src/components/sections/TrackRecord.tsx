@@ -2589,22 +2589,29 @@ export function TrackRecordSection({
   return (
     <section id="track-record" style={{ padding: '16px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-        <Reveal from="left">
-          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.trackRecord.heading} /></h2>
-        </Reveal>
-        <Reveal from="right" delay={1}>
-          {/* Solid backing added 2026-08-06 (spine feedback): this paragraph sits
-              directly on the page background with nothing behind it, and its
-              720px max-width crosses the page's horizontal center where the
-              spine/orb live. Padding + a matching negative margin keep the text
-              itself pixel-aligned with before - only the panel is new. */}
-          <p style={{
-            color: 'var(--text2)', marginBottom: 40, maxWidth: 720, fontSize: 15, lineHeight: 1.9,
-            background: 'var(--glass-bg-solid)', borderRadius: 8, padding: '8px 12px', marginLeft: -12, marginTop: -8,
-          }}>
-            {t.trackRecord.paragraph}
-          </p>
-        </Reveal>
+        {/* Reveal removed from heading+paragraph 2026-08-21 (live feedback: "nudges to
+            the left" right as the nav-jump scroll settled) - this pair sits exactly at
+            the Evidence nav-link's scroll target, so it's the one spot on the page where
+            the horizontal from="left"/from="right" scroll-linked transform and the
+            nav-jump suppress/release race were both live on the literal landing element.
+            Systems' and Access' equivalent heading blocks don't have this problem: Systems
+            never wraps its heading/subheading in Reveal at all, Access uses the vertical
+            default (from="bottom") and its nav click lands past the heading anyway - matching
+            that working pattern here (no Reveal, always fully rendered) is more robust than
+            chasing the timing race further. ScrambleHeading's own scramble-in effect is
+            untouched, still plays on both natural scroll-into-view and nav-jump. */}
+        <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.trackRecord.heading} /></h2>
+        {/* Solid backing added 2026-08-06 (spine feedback): this paragraph sits
+            directly on the page background with nothing behind it, and its
+            720px max-width crosses the page's horizontal center where the
+            spine/orb live. Padding + a matching negative margin keep the text
+            itself pixel-aligned with before - only the panel is new. */}
+        <p style={{
+          color: 'var(--text2)', marginBottom: 40, maxWidth: 720, fontSize: 15, lineHeight: 1.9,
+          background: 'var(--glass-bg-solid)', borderRadius: 8, padding: '8px 12px', marginLeft: -12, marginTop: -8,
+        }}>
+          {t.trackRecord.paragraph}
+        </p>
         {/* Permanent disclosure ledger — KPI row + search/table panel now share
             ONE outer frame (live feedback 2026-08-12: the two used to be
             separate floating blocks with a gap between them, which read as
