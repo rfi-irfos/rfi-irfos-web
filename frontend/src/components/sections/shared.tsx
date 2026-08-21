@@ -19,6 +19,74 @@ export const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | unde
 export const prefersReducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+// Custom-styled listbox replacing the native <select>. Native option popups are
+// drawn by the OS/browser chrome, not the page, so they can't be pulled into the
+// site's glass/dark theme no matter how the closed control or <option> tags are
+// styled (live feedback 2026-08-21: "still looks like a retro box"). This trades
+// that native affordance for one drawn entirely in our own markup.
+export function Select({
+  value, onChange, options, placeholder, ariaLabel,
+}: {
+  value: string
+  onChange: (v: string) => void
+  options: { value: string; label: string }[]
+  placeholder: string
+  ariaLabel: string
+}) {
+  const [open, setOpen] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const selected = options.find(o => o.value === value)
+
+  useEffect(() => {
+    if (!open) return
+    const onDocClick = (e: MouseEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false)
+    }
+    const onEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    document.addEventListener('mousedown', onDocClick)
+    document.addEventListener('keydown', onEsc)
+    return () => {
+      document.removeEventListener('mousedown', onDocClick)
+      document.removeEventListener('keydown', onEsc)
+    }
+  }, [open])
+
+  return (
+    <div ref={rootRef} style={{ position: 'relative' }}>
+      <button type="button" aria-haspopup="listbox" aria-expanded={open} aria-label={ariaLabel}
+        onClick={() => setOpen(o => !o)}
+        style={{
+          width: '100%', textAlign: 'left', background: 'var(--input-bg)', border: '1px solid var(--border)',
+          borderRadius: 8, padding: '12px 16px', color: selected ? 'var(--text)' : 'var(--text3)', fontSize: 14,
+          fontFamily: 'inherit', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8,
+        }}>
+        <span>{selected ? selected.label : placeholder}</span>
+        <span style={{ fontSize: 10, opacity: 0.6, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s', flexShrink: 0 }}>▾</span>
+      </button>
+      {open && (
+        <div role="listbox" aria-label={ariaLabel} style={{
+          position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0, zIndex: 40,
+          background: 'var(--glass-bg-solid)', border: '1px solid var(--border)', borderRadius: 12,
+          padding: 6, boxShadow: '0 12px 32px rgba(0,0,0,0.4)', maxHeight: 280, overflowY: 'auto',
+          backdropFilter: 'blur(20px)',
+        }}>
+          {options.map(o => (
+            <div key={o.value} role="option" aria-selected={o.value === value}
+              onClick={() => { onChange(o.value); setOpen(false) }}
+              className="rfi-select-option"
+              style={{
+                padding: '10px 12px', borderRadius: 8, fontSize: 14, cursor: 'pointer',
+                color: o.value === value ? 'var(--accent-text)' : 'var(--text)',
+              }}>
+              {o.label}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // Whole-page scroll fraction (0-1), for the top progress bar - distinct from
 // useScrollProgress below, which is per-element activation, not total page position.
 export function usePageScrollProgress() {

@@ -232,9 +232,9 @@ export const DE: Content = {
         'Was davon abhängt, eine Unterschrift, eine Investition, eine Entscheidung, eine Geschichte, die Sie veröffentlichen oder auf die Sie handeln wollen',
         'Alles, was dazu bereits öffentlich ist, wir fangen nicht bei null an',
       ], mechanism: [
-        'Unser Kernteam und unser Agentenschwarm führen eine nicht klassische Prüfung auf Root-Ebene durch, über Dingir, unser eigenes Weltmodell',
-        'Alles Gefundene wird kontextualisiert und in eine kohärente Form gebracht, nie als rohe Fundliste zurückgegeben',
-        'Jede Aussage wird auf echte Evidenz zurückgeführt, keine Zusammenfassung',
+        'Führen eine nicht klassische Prüfung auf Root-Ebene durch, über Dingir, unser eigenes Weltmodell, mit unserem Kernteam und Agentenschwarm',
+        'Kontextualisieren alles Gefundene und bringen es in eine kohärente Form, geben es nie nur als rohe Fundliste zurück',
+        'Führen jede Aussage auf echte Evidenz zurück, keine Zusammenfassung',
       ], receive: [
         'Ein klares Urteil oder ein Befundbericht, keine plausibel klingende Vermutung',
         'Die Beweiskette dahinter, dieselbe Quellenlage, die wir selbst vertreten würden',
@@ -244,9 +244,9 @@ export const DE: Content = {
         'Dasselbe Thema, jetzt mit einem konkreten Fokus, Red Teaming, Path Traversal, das gesamte Portfolio eines Wettbewerbers, was auch immer der tatsächliche Schwerpunkt ist',
         'Was für Ihr Team "fertig" bedeutet, nicht nur ein einzelnes Ja oder Nein',
       ], mechanism: [
-        'Derselbe Prozess, skaliert mit mehr Agenten, je nachdem was Sie tatsächlich brauchen',
-        'Ihr Thema eingeordnet in den größeren Weltkontext darum herum, statt isoliert betrachtet',
-        'Alles kontextualisiert in ein kohärentes Bild, derselbe Standard wie First Light, nur mit mehr Tiefe',
+        'Skalieren denselben Prozess mit mehr Agenten, je nachdem was Sie tatsächlich brauchen',
+        'Ordnen Ihr Thema in den größeren Weltkontext darum herum ein, statt es isoliert zu betrachten',
+        'Kontextualisieren alles in ein kohärentes Bild, derselbe Standard wie First Light, nur mit mehr Tiefe',
       ], receive: [
         'Ein strukturiertes, kausal nachverfolgtes Bild, keine Liste isolierter Funde',
         'Genau den Fokus, den Sie angefragt haben, vollständig ausgearbeitet, nicht nur stichprobenartig',
@@ -256,9 +256,9 @@ export const DE: Content = {
         'Das Thema, und die Bereitschaft zu sehen, was passiert, wenn es in großem Maßstab auf die reale Welt trifft',
         'Keinen vorab festgelegten Umfang, wir binden das an keine einzelne Frage',
       ], mechanism: [
-        'Ihr Produkt eingesetzt in Dingir, unser reales Weltmodell, echte Daten, keine hypothetische Sandbox',
-        'Tausende simulierte Ereignisse laufen dagegen, jeder Agent, jeder Blickwinkel, kein Scoping, keine Ketten',
-        'Nichts wird zurückgehalten, um in ein vorgegebenes Liefermodell zu passen',
+        'Setzen Ihr Produkt in Dingir ein, unser reales Weltmodell, echte Daten, keine hypothetische Sandbox',
+        'Lassen Tausende simulierte Ereignisse dagegen laufen, jeder Agent, jeder Blickwinkel, kein Scoping, keine Ketten',
+        'Halten nichts zurück, nur um in ein vorgegebenes Liefermodell zu passen',
       ], receive: [
         'Das vollständige Bild, was auch immer dabei herauskommt',
         'Die Arbeitsmethode selbst unter NDA, nicht nur ein einmaliges Ergebnis, damit Ihr eigenes Team sie erneut anwenden kann, ohne uns ein zweites Mal zu brauchen',
@@ -796,6 +796,7 @@ export const DE: Content = {
     disclosurePolicyPrefix: 'Sie melden einen Sicherheitsfund? Siehe unsere ',
     disclosurePolicyLink: 'vollständige Richtlinie zum Umgang mit Offenlegungen',
     disclosurePolicySuffix: ' - Triage, Rechtsgrundlage und Ihre Wahl der Namensnennung.',
+    responseTime: 'Worum auch immer es geht, Sie erhalten binnen 12h nach Eingang eine Antwort von einem Menschen.',
     form: {
       topicAriaLabel: 'Thema',
       topicPlaceholder: 'Thema (optional)',
@@ -814,8 +815,6 @@ export const DE: Content = {
       creditAriaLabel: 'Namensnennung',
       creditOptions: {
         alias: 'Mit dem oben angegebenen Alias / Namen nennen',
-        anonymous: 'Nicht nennen - anonym halten',
-        fullName: 'Mit vollem rechtlichen Namen nennen',
       },
       findingPlaceholder: 'Worum geht es? Bitte angeben, was es ist, wo relevant, und wie man zu einer Schlussfolgerung kommt (z. B. wie sich ein Fund reproduzieren lässt).',
       lawfulLabel: 'Ich bestätige, dass diese Information auf rechtmäßige, autorisierte Weise erlangt wurde - öffentlich zugängliche Daten, meine eigenen Geräte oder Software, zu deren Testen ich befugt bin.',

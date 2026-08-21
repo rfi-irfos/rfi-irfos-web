@@ -3,7 +3,7 @@
 // handler live at the page level (PublicSite.tsx) since the Lighthouse tracking
 // pixel right below the form, and the abandonment beacon, both key off the same
 // state - so this section receives it all as props.
-import { FormStateIcon, TEAL, Reveal, ScrambleHeading } from './shared'
+import { FormStateIcon, TEAL, Reveal, ScrambleHeading, Select } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // Emails/hrefs are locale-independent; labels come from t.submit.contactCards.
@@ -87,9 +87,12 @@ export function SubmitSection({
                 (#p/security) - live feedback: this panel made the contact
                 section feel cluttered/security-intake-only rather than one
                 clean form. */}
-            <p style={{ fontSize: 12, color: 'var(--text)', marginBottom: 0, lineHeight: 1.7 }}>
+            <p style={{ fontSize: 12, color: 'var(--text)', marginBottom: 10, lineHeight: 1.7 }}>
               {t.submit.disclosurePolicyPrefix}
               <a href="#p/security" style={{ color: 'var(--accent-text)' }}>{t.submit.disclosurePolicyLink}</a>{t.submit.disclosurePolicySuffix}
+            </p>
+            <p style={{ fontSize: 12, color: 'var(--text)', marginBottom: 0, lineHeight: 1.7 }}>
+              {t.submit.responseTime}
             </p>
           </Reveal>
 
@@ -99,23 +102,17 @@ export function SubmitSection({
               <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
                 value={tipForm.botcheck} onChange={e => setTipForm(p => ({ ...p, botcheck: e.target.value }))}
                 style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
-              {/* Dark-mode "white bleed" on the popup list (live feedback 2026-08-21):
-                  color-scheme:dark on the theme root fixes most browsers, but not
-                  reliably every one - explicit background/color on each <option> is
-                  belt-and-suspenders against whichever renderer still ignores it. */}
-              <select value={tipForm.topic} onChange={e => setTipForm(p => ({ ...p, topic: e.target.value }))} aria-label={t.submit.form.topicAriaLabel} style={{
-                background: 'var(--input-bg)', border: '1px solid var(--border)',
-                borderRadius: 8, padding: '12px 16px', color: tipForm.topic ? 'var(--text)' : 'var(--text3)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
-              }}>
-                <option value="" style={{ background: 'var(--bg)', color: 'var(--text3)' }}>{t.submit.form.topicPlaceholder}</option>
-                <option value="Security Disclosure" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.securityDisclosure}</option>
-                <option value="Send APK" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.sendApk}</option>
-                <option value="Research Collaboration" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.researchCollaboration}</option>
-                <option value="Other" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.other}</option>
-                <option value="First Light" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.firstLight}</option>
-                <option value="Deep Field" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.deepField}</option>
-                <option value="You vs. the World" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.topicOptions.youVsWorld}</option>
-              </select>
+              <Select value={tipForm.topic} onChange={v => setTipForm(p => ({ ...p, topic: v }))}
+                ariaLabel={t.submit.form.topicAriaLabel} placeholder={t.submit.form.topicPlaceholder}
+                options={[
+                  { value: 'Security Disclosure', label: t.submit.form.topicOptions.securityDisclosure },
+                  { value: 'Send APK', label: t.submit.form.topicOptions.sendApk },
+                  { value: 'Research Collaboration', label: t.submit.form.topicOptions.researchCollaboration },
+                  { value: 'Other', label: t.submit.form.topicOptions.other },
+                  { value: 'First Light', label: t.submit.form.topicOptions.firstLight },
+                  { value: 'Deep Field', label: t.submit.form.topicOptions.deepField },
+                  { value: 'You vs. the World', label: t.submit.form.topicOptions.youVsWorld },
+                ]} />
               <input type="text" placeholder={t.submit.form.namePlaceholder}
                 value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
                 style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
@@ -125,14 +122,19 @@ export function SubmitSection({
               <input type="text" required placeholder={t.submit.form.targetPlaceholder}
                 value={tipForm.target} onChange={e => setTipForm(p => ({ ...p, target: e.target.value }))}
                 style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-              <select value={tipForm.credit} onChange={e => setTipForm(p => ({ ...p, credit: e.target.value }))} aria-label={t.submit.form.creditAriaLabel} style={{
-                background: 'var(--input-bg)', border: '1px solid var(--border)',
-                borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit',
-              }}>
-                <option value="alias" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.creditOptions.alias}</option>
-                <option value="anonymous" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.creditOptions.anonymous}</option>
-                <option value="full-name" style={{ background: 'var(--bg)', color: 'var(--text)' }}>{t.submit.form.creditOptions.fullName}</option>
-              </select>
+              {/* Only relevant once this is actually a disclosure - showing a credit
+                  preference on e.g. a "Send Us Your APK" or careers inquiry read as
+                  out of place (live feedback 2026-08-21). */}
+              {tipForm.topic === 'Security Disclosure' && (
+                <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
+                  <input type="checkbox" aria-label={t.submit.form.creditAriaLabel} checked={tipForm.credit === 'alias'}
+                    onChange={e => setTipForm(p => ({ ...p, credit: e.target.checked ? 'alias' : 'anonymous' }))}
+                    style={{ marginTop: 3, accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
+                  <span style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.6 }}>
+                    {t.submit.form.creditOptions.alias}
+                  </span>
+                </label>
+              )}
               <textarea required placeholder={t.submit.form.findingPlaceholder}
                 value={tipForm.finding} onChange={e => setTipForm(p => ({ ...p, finding: e.target.value }))}
                 rows={6} style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />

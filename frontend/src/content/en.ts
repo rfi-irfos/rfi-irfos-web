@@ -239,9 +239,9 @@ export const EN = {
         'What\'s riding on it, a signature, an investment, a decision, a story you\'re about to act on or publish',
         'Anything already public about it, we don\'t start from zero',
       ], mechanism: [
-        'Our core human team and our agent swarm run a non-classical review at the root level, through Dingir, our own world model',
-        'Everything found gets contextualised and brought into one coherent shape, never handed back as a raw finding list',
-        'Every claim traced back to real evidence, not a summary',
+        'Run a non-classical review at the root level, through Dingir, our own world model, with our core human team and agent swarm',
+        'Contextualise everything found and bring it into one coherent shape, never hand it back as only a raw finding list',
+        'Trace every claim back to real evidence, not a summary',
       ], receive: [
         'A clear verdict or findings report, not a plausible-sounding guess',
         'The evidence trail behind it, the same sourcing we\'d stand behind ourselves',
@@ -251,9 +251,9 @@ export const EN = {
         'The same subject, now with a specific angle, red teaming, path traversal, a competitor\'s whole portfolio, whatever the actual focus is',
         'What "done" looks like for your team, not just a single yes or no',
       ], mechanism: [
-        'The same process, scaled with more agents depending on what you actually need',
-        'Your subject placed into the wider world context around it, instead of reviewed in isolation',
-        'Everything contextualised into one coherent picture, same standard as First Light, at greater depth',
+        'Scale the same process with more agents, depending on what you actually need',
+        'Place your subject into the wider world context around it, instead of reviewing it in isolation',
+        'Contextualise everything into one coherent picture, same standard as First Light, at greater depth',
       ], receive: [
         'A structured, causality traced picture, not a list of isolated findings',
         'The specific angle you asked for, fully worked, not sampled',
@@ -263,9 +263,9 @@ export const EN = {
         'The subject, and the willingness to see what happens when it meets the real world at scale',
         'No pre-set scope, we\'re not chaining this to one question',
       ], mechanism: [
-        'Your product placed into Dingir, our real-world model, real data, not a hypothetical sandbox',
-        'Thousands of simulated events run against it, every agent, every angle, no scoping, no chains',
-        'Nothing held back to fit a predefined deliverable',
+        'Place your product into Dingir, our real-world model, real data, not a hypothetical sandbox',
+        'Run thousands of simulated events against it, every agent, every angle, no scoping, no chains',
+        'Hold nothing back to fit a predefined deliverable',
       ], receive: [
         'The complete picture, whatever it turns out to be',
         'The working method itself under NDA, not just a one time result, so your own team can run it again without needing us a second time',
@@ -809,6 +809,7 @@ export const EN = {
     disclosurePolicyPrefix: 'Sending a security finding? See our ',
     disclosurePolicyLink: 'full disclosure-handling policy',
     disclosurePolicySuffix: ' - triage, lawful basis, and your choice of credit.',
+    responseTime: "Whatever it's about, expect a reply from a human within 12h of us receiving it.",
     form: {
       topicAriaLabel: 'Topic',
       topicPlaceholder: 'Topic (optional)',
@@ -827,8 +828,6 @@ export const EN = {
       creditAriaLabel: 'Credit preference',
       creditOptions: {
         alias: 'Credit me by alias / name I provide above',
-        anonymous: 'Do not credit me - keep this anonymous',
-        fullName: 'Credit me by full legal name',
       },
       findingPlaceholder: "What's this about? Include what it is, where relevant, and how to reach a conclusion (e.g. how to reproduce a finding).",
       lawfulLabel: "I confirm this information was obtained through lawful, authorized means - publicly accessible data, my own devices, or software I'm authorized to test.",

@@ -236,7 +236,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   // type the old general form's Topic dropdown did; the disclosure-specific
   // fields (credit preference, lawful-basis attestation) stay, since those are
   // the compliance-relevant part and apply just as validly to any inquiry.
-  const [tipForm, setTipForm] = useState<TipForm>({ topic: '', handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false, botcheck: '' })
+  const [tipForm, setTipForm] = useState<TipForm>({ topic: '', handle: '', email: '', target: '', credit: 'anonymous', finding: '', lawful: false, botcheck: '' })
   const [tipFormState, setTipFormState] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
   useFormAbandonment('submit_tip', tipForm, tipFormState)
   const ledgerRef = useRef<HTMLDivElement>(null)
@@ -738,7 +738,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       if (!res.ok) throw new Error(String(res.status))
       beacon('lead_submitted')
       setTipFormState('ok')
-      setTipForm({ topic: '', handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false, botcheck: '' })
+      setTipForm({ topic: '', handle: '', email: '', target: '', credit: 'anonymous', finding: '', lawful: false, botcheck: '' })
     } catch {
       // CRM relay failed. Fall back to Web3Forms, which is an email-forwarding
       // service and is what actually delivered mail before this rewrite. Two
@@ -766,7 +766,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         if (!res2.ok) throw new Error(String(res2.status))
         beacon('lead_submitted_email_fallback')
         setTipFormState('ok')
-        setTipForm({ topic: '', handle: '', email: '', target: '', credit: 'alias', finding: '', lawful: false, botcheck: '' })
+        setTipForm({ topic: '', handle: '', email: '', target: '', credit: 'anonymous', finding: '', lawful: false, botcheck: '' })
       } catch {
         // Both paths down. Never report success on a failed send: the error state
         // carries a pre-filled mailto so the visitor can still reach us.

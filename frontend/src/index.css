@@ -266,6 +266,10 @@ h1, h2, h3, .rfi-display {
   .rfi-hover-card { transition: none; }
   .rfi-hover-card:hover { transform: none; }
 }
+/* Rows in the custom <Select> listbox (shared.tsx) - replaces the native <select>
+   popup, which is drawn by the OS/browser and can't be themed. */
+.rfi-select-option { transition: background-color var(--dur-colour) var(--ease-settle); }
+.rfi-select-option:hover { background-color: rgba(0,245,196,0.08); }
 
 /* ── CTA breathing pulse ─────────────────────────────────────────
    transform: scale() is compositor-only; the box-shadow ring does trigger paint,
