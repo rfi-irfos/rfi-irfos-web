@@ -518,9 +518,22 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     // itself should be fixed: release on the browser's own `scrollend` signal instead
     // of a guessed delay, with the old 1600ms bumped-up timeout only as a safety net
     // for browsers without `scrollend` or a same-position click that never scrolls.
+    // `scrollend` fires the instant the browser considers the scroll physically over,
+    // but Framer's own scroll-position pipeline (useScroll's passive listener) can still
+    // be a frame or two behind processing that final position. Flipping revealSuppressed
+    // off synchronously in scrollend's own handler raced that catch-up: the next
+    // `scrollYProgress` recompute could land BEFORE Framer had the true resting offset,
+    // producing a real (not suppressed) `settled` value slightly under 1 - visible as a
+    // small last-instant leftward/rightward correction right as the scroll stops (live
+    // feedback: "starts loading good, but then in last second nudges to the left").
+    // Fix: hold suppression through two animation frames after scrollend before releasing,
+    // so Framer's pipeline has caught up to the real final position while still suppressed -
+    // by the time release actually flips the flag, nothing left in flight recomputes it.
     let releaseTimer: ReturnType<typeof setTimeout>
     const release = () => {
-      revealSuppressed.current = false
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        revealSuppressed.current = false
+      }))
       window.removeEventListener('scrollend', release)
       clearTimeout(releaseTimer)
     }
