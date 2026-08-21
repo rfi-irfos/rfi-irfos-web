@@ -38,7 +38,7 @@ export const DE: Content = {
       openSourceProjectsSub: 'im Zusammenspiel',
       dataPointsMonitored: 'Datenpunkte überwacht',
       worldModel: 'evidenzbasiertes ML-Weltmodell',
-      agents: 'handgecodete Agents',
+      agents: 'hand-codierte Agents',
     },
     ctaTrackRecord: 'Track Record',
     ctaBookUs: 'Beauftragen!',

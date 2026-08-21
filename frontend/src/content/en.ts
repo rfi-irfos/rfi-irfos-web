@@ -41,7 +41,7 @@ export const EN = {
       openSourceProjectsSub: 'working together',
       dataPointsMonitored: 'data points monitored',
       worldModel: 'evidence-first ML world model',
-      agents: 'handcoded agents',
+      agents: 'hand-coded agents',
     },
     ctaTrackRecord: 'Track Record',
     ctaBookUs: 'Book us!',
