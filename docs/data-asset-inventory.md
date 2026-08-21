@@ -2,29 +2,29 @@
 
 > Automatisch aus `investigations/reports/*.md` extrahiert via `scripts/compute_corpus_stats.py`.
 > Neu berechnet bei jedem Lauf des Skripts, zuletzt regeneriert im Rahmen der Baumkonsolidierung 2026-08-21.
-> App-Anzahl kommt NICHT von hier, sondern direkt aus `AUDIT_HIGHLIGHTS.length` in `TrackRecord.tsx` (treibt dort die Live-KPI) - die 986 rohen Package-ID-Strings unten sind SDK-/Component-interne Namen mitgezaehlt, kein verlaesslicher App-Count, exakt wie in der Korrektur vom 2026-08-12 beschrieben.
+> App-Anzahl kommt NICHT von hier, sondern direkt aus `AUDIT_HIGHLIGHTS.length` in `TrackRecord.tsx` (treibt dort die Live-KPI) - die 994 rohen Package-ID-Strings unten sind SDK-/Component-interne Namen mitgezaehlt, kein verlaesslicher App-Count, exakt wie in der Korrektur vom 2026-08-12 beschrieben.
 
 ## Korpus-Umfang
 
-- **Report-Dateien (alle .md, kanonischer Baum):** 615
-- **Rohe com.x.y-Package-ID-Strings (SDK-Component-Namen inklusive, kein App-Count):** 986
+- **Report-Dateien (alle .md, kanonischer Baum):** 617
+- **Rohe com.x.y-Package-ID-Strings (SDK-Component-Namen inklusive, kein App-Count):** 994
 
 ## Technische Entitaetsebene (Layer 2)
 
 - **Smali-Klassen (summiert aus Total- + SDK/Integration-Class-Zahlen):** 1,026,899
   - davon aus 'Total smali classes'-Zeilen: 614,840 (aus 14 Reports)
   - davon aus einzelnen SDK/Integration-Class-Zahlen: 412,059 (aus 126 Treffern)
-- **SDK-Erwaehnungen (Wort "SDK"):** 1,654
-- **Permission-Erwaehnungen:** 1,597
-- **Tracker/Tracking-Erwaehnungen:** 753
-- **Distinkte Endpoint-/URL-Treffer:** 335
+- **SDK-Erwaehnungen (Wort "SDK"):** 1,681
+- **Permission-Erwaehnungen:** 1,621
+- **Tracker/Tracking-Erwaehnungen:** 759
+- **Distinkte Endpoint-/URL-Treffer:** 336
 
 ## Findings (Layer 7 / Enforcement-Beweis)
 
-- **Severity-Zeilen ausgewertet:** 2,506
-- **CRITICAL:** 704
-- **HIGH:** 1,256
-- **MEDIUM:** 441
+- **Severity-Zeilen ausgewertet:** 2,516
+- **CRITICAL:** 710
+- **HIGH:** 1,258
+- **MEDIUM:** 443
 - **LOW:** 105
 
 ## Quelle & Caveats
