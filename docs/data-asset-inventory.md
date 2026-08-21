@@ -1,85 +1,39 @@
 # RFI-IRFOS Data-Asset-Inventory (T0)
 
-> Automatisch aus `investigations/reports/*.md` extrahiert am 2026-08-12. **Nur echte, in den Reports stehende Zahlen — keine Schaetzung.**
-> App-Anzahl ueber Package-Identifikatoren (com.x.y) dedupliziert, nicht ueber Ordner — manche Targets (SAP, ORF, outfit7) umfassen mehrere Apps.
-
-> **Korrektur 2026-08-12 (nachtraeglich):** Die "649 eindeutige Package-IDs" unten sind **kein verlaesslicher App-Count** — die Sample-Liste am Dateiende zeigt, dass die com.x.y-Regex ueberwiegend SDK-/Component-interne Package-Namen mitzaehlt (z. B. `com.adjust.sdk.activityhandler`, ein FileProvider-Component, keine App), nicht nur Top-Level-App-Packages. Der verifizierte App-Count ist **311**, direkt aus `AUDIT_HIGHLIGHTS.length` in `frontend/src/components/sections/TrackRecord.tsx` gezaehlt (treibt dort auch die Live-KPI). Die 649 bitte nirgends als App-Zahl zitieren, bis die Extraktion auf Top-Level-Packages eingeschraenkt ist. Die Entity-Zahlen weiter unten (Smali-Klassen, SDK-/Tracker-Mentions etc.) sind davon unberuehrt — das ist eine andere Metrik (Korpustiefe, nicht App-Zahl).
+> Automatisch aus `investigations/reports/*.md` extrahiert via `scripts/compute_corpus_stats.py`.
+> Neu berechnet bei jedem Lauf des Skripts, zuletzt regeneriert im Rahmen der Baumkonsolidierung 2026-08-21.
+> App-Anzahl kommt NICHT von hier, sondern direkt aus `AUDIT_HIGHLIGHTS.length` in `TrackRecord.tsx` (treibt dort die Live-KPI) - die 986 rohen Package-ID-Strings unten sind SDK-/Component-interne Namen mitgezaehlt, kein verlaesslicher App-Count, exakt wie in der Korrektur vom 2026-08-12 beschrieben.
 
 ## Korpus-Umfang
 
-- **Apps (eindeutige Package-IDs, siehe Korrektur oben — vermutlich zu hoch):** 649
-- **Apps (verifiziert, aus dem Ledger):** 311
-- **Report-Dateien (alle .md):** 572
-- **Reports mit 'Apps Analyzed'-Tabelle:** 1
+- **Report-Dateien (alle .md, kanonischer Baum):** 615
+- **Rohe com.x.y-Package-ID-Strings (SDK-Component-Namen inklusive, kein App-Count):** 986
 
 ## Technische Entitaetsebene (Layer 2)
 
-- **Smali-Klassen (summiert aus Total- + SDK/Integration-Class-Zahlen):** 1,253,757
-  - davon aus 'Total smali classes': 609,840 (aus 13 Reports)
-  - davon aus einzelnen SDK/Integration-Class-Zahlen: 643,917 (aus 214 Matches)
-- **SDK-Class-Eintraege (einzeln gezaehlt):** 214
-- **SDK-Erwaehnungen (gesamt):** 1,553
-- **Permission-Erwaehnungen:** 1,811
-- **Tracker/Tracking-Erwaehnungen:** 662
-- **Data-Flow-/Exfiltration-Erwaehnungen:** 55
-- **Domain-/Endpoint-Erwaehnungen (URL-Matches):** 441
-- **App-Versionen (versionCode/code):** 132
-- **EU-Controller/Publisher-Angaben:** 2
+- **Smali-Klassen (summiert aus Total- + SDK/Integration-Class-Zahlen):** 1,026,899
+  - davon aus 'Total smali classes'-Zeilen: 614,840 (aus 14 Reports)
+  - davon aus einzelnen SDK/Integration-Class-Zahlen: 412,059 (aus 126 Treffern)
+- **SDK-Erwaehnungen (Wort "SDK"):** 1,654
+- **Permission-Erwaehnungen:** 1,597
+- **Tracker/Tracking-Erwaehnungen:** 753
+- **Distinkte Endpoint-/URL-Treffer:** 335
 
 ## Findings (Layer 7 / Enforcement-Beweis)
 
-- **Severity-Zeilen ausgewertet:** 296
-- **CRITICAL (summiert):** 80
-- **HIGH (summiert):** 146
-- **MEDIUM (summiert):** 57
-- **LOW (summiert):** 13
+- **Severity-Zeilen ausgewertet:** 2,506
+- **CRITICAL:** 704
+- **HIGH:** 1,256
+- **MEDIUM:** 441
+- **LOW:** 105
 
 ## Quelle & Caveats
 
-Alle Zahlen aus `Desktop/projects/investigations/reports/`.
-- App-Anzahl = deduplizierte Package-IDs (com.x.y) ueber ALLE .md Reports.
-- Smali-Summe ist eine Untergrenze (nur Reports mit expliziten Class-Zahlen).
+Alle Zahlen aus `~/Desktop/projects/investigations/reports/` (kanonischer Baum seit 2026-08-21, siehe
+`reference_investigations_reports_path` Memory - vorher zwei getrennte Baeume, die AI-Companion-Welle
+(RosyTalk/Blush/CycleAI/HerAI/TalkMe) fehlte in der Version vom 2026-08-12 komplett).
+- Smali-Summe ist eine Untergrenze (nur Reports mit expliziten Class-Zahlen), SDK-Class-Zahlen unter 4
+  werden als Rauschen verworfen (kein SDK, z. B. "(3 classes)" in unrelated Kontext).
 - Findings-Summe zaehlt Severity-Zeilen, nicht deduplizierte Findings.
-- SDK-/Tracker-/Datenfluss sind Text-Mentions, keine normalisierten Entities.
-
-### Sample Package-IDs (erste 40)
-- com.a9.fez.share.arfileprovider
-- com.abide.magellantv.facebookinitprovider
-- com.abide.magellantv.firebaseinitprovider
-- com.acesso.acessobio_android.activities.selfiexactivity
-- com.acesso.acessobio_android.document.documentxactivity
-- com.action.consumerapp.permission.push_provider
-- com.action.consumerapp.permission.push_write_provider
-- com.activision.callofduty.shooter
-- com.adjust.preinstall.read_permission
-- com.adjust.sdk.activityhandler
-- com.adjust.sdk.adjust
-- com.adjust.sdk.adjustconfig
-- com.adjust.sdk.adjustconfig.smali
-- com.adjust.sdk.adjustevent
-- com.adjust.sdk.adjustpreinstallreferrerreceiver
-- com.adjust.sdk.adjustreferrerreceiver
-- com.adjust.sdk.huawei.util
-- com.adjust.sdk.imei.util
-- com.adjust.sdk.meta.util
-- com.adjust.sdk.oaid.hmssdkclient
-- com.adjust.sdk.oaid.msasdkclient
-- com.adjust.sdk.oaid.util
-- com.adjust.sdk.packagehandler
-- com.adjust.sdk.samsung.clouddev.util
-- com.adjust.sdk.samsung.util
-- com.adjust.sdk.sdkclickhandler
-- com.adjust.sdk.systemlifecyclecontentprovider
-- com.adjust.sdk.vivo.util
-- com.adjust.sdk.xiaomi.util
-- com.adobe.marketing.mobile
-- com.adobe.marketing.mobile.analytics
-- com.adobe.marketing.mobile.assurance
-- com.adobe.marketing.mobile.core
-- com.adobe.marketing.mobile.edge
-- com.adobe.marketing.mobile.identity
-- com.adobe.marketing.mobile.launch
-- com.adobe.marketing.mobile.lifecycle
-- com.adobe.marketing.mobile.optimize
-- com.adobe.marketing.mobile.rulesengine
-- com.adobe.marketing.mobile.signal
+- SDK-/Tracker-/Permission-Erwaehnungen sind Text-Mentions, keine normalisierten Entities.
+- Re-run: `python3 scripts/compute_corpus_stats.py` nach jedem neuen R1 oder Watchtower-Re-Audit.
