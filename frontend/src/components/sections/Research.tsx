@@ -344,7 +344,7 @@ export const RESEARCH_AREAS = [
         <line x1="26.4" y1="2.6" x2="29.4" y2="5.6"/>
       </_I>
     ),
-    title: 'Model Welfare & Prompt Injection',
+    title: 'Model Welfare & Injection Robustness',
     desc: 'The behaviour, boundaries, failure modes, and dignity of intelligent systems, from jailbreak pressure to signs of distress.',
   },
 ]
