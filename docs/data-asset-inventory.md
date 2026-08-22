@@ -14,7 +14,7 @@
 - **Smali-Klassen (summiert aus Total- + SDK/Integration-Class-Zahlen):** 1,039,415
   - davon aus 'Total smali classes'-Zeilen: 614,840 (aus 14 Reports)
   - davon aus einzelnen SDK/Integration-Class-Zahlen: 424,575 (aus 128 Treffern)
-- **SDK-Erwaehnungen (Wort "SDK"):** 2,139
+- **SDK-Erwaehnungen (Wort "SDK"):** 2,140
 - **Permission-Erwaehnungen:** 2,043
 - **Tracker/Tracking-Erwaehnungen:** 868
 - **Distinkte Endpoint-/URL-Treffer:** 476
