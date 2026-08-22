@@ -313,20 +313,17 @@ export const RESEARCH_AREAS = [
     icon: (
       <_I>
         {/* evidence security + contradiction review - was a check+cross pair, which
-            only shows two isolated verdicts. A balance scale reads as the actual
-            process instead: evidence weighed on both sides at once, on the same
-            document, rather than a single pass/fail stamp. */}
-        <path d="M7 3h12l6 6v20H7z"/><path d="M19 3v6h6"/>
-        <circle cx="16" cy="12.3" r="1" fill="currentColor" stroke="none"/>
-        <line x1="16" y1="13.2" x2="16" y2="24.5"/>
-        <line x1="10.5" y1="15" x2="21.5" y2="15"/>
-        <path d="M10.5 15 8.4 19.6a2.35 2.35 0 0 0 4.2 0z"/>
-        <path d="M21.5 15 19.4 19.6a2.35 2.35 0 0 0 4.2 0z"/>
-        <line x1="13" y1="24.5" x2="19" y2="24.5"/>
-        {/* Review lens over the evidence: the document and balance remain the
-            subject, while the magnifier makes active scrutiny explicit. */}
-        <circle cx="17" cy="17" r="7.4" strokeWidth="1.8"/>
-        <line x1="22.3" y1="22.3" x2="28.4" y2="28.4" strokeWidth="2.4"/>
+            only shows two isolated verdicts. The replacement keeps the evidence
+            document itself and makes close review explicit with a detailed lens. */}
+        <path d="M5.5 3.5h12l5 5v19.5h-17z"/><path d="M17.5 3.5v5h5"/>
+        <line x1="9" y1="11" x2="16" y2="11"/>
+        <line x1="9" y1="14.5" x2="14" y2="14.5"/>
+        <line x1="9" y1="24.5" x2="13" y2="24.5"/>
+        <circle cx="18" cy="18" r="7.2"/>
+        <circle cx="18" cy="18" r="5.7" opacity="0.42"/>
+        <path d="M13.8 15.7a4.8 4.8 0 0 1 2.4-2" opacity="0.75"/>
+        <line x1="23.1" y1="23.1" x2="28.5" y2="28.5"/>
+        <line x1="24.3" y1="21.9" x2="25.6" y2="23.2"/>
       </_I>
     ),
     title: 'Evidence Security & Contradiction Reviews',
@@ -339,18 +336,16 @@ export const RESEARCH_AREAS = [
             a broad protective heart, a keyhole-shaped injection point and a
             precise syringe crossing the upper-right edge. The tile supplies the
             rounded outer frame, avoiding a redundant frame-within-a-frame. */}
-        <path d="M15.7 28.2 7.2 20.6C1.4 15.4 3.5 7.4 9.4 6.2c2.7-.6 5.2.5 6.6 2.8 1.5-2.3 3.8-3.4 6.4-2.9"
-          strokeWidth="2.8"/>
-        <path d="M25.8 11.4c1.5 3.3.8 7.1-2.3 10l-7.8 6.8"
-          strokeWidth="2.8"/>
+        <path d="M15.5 27 8.3 20.5C3.1 15.8 4.5 9 9.5 7.7c2.5-.6 4.7.5 6 2.5 1.4-2 3.4-3 5.7-2.6"/>
+        <path d="M24.6 12c1.1 3 .3 6.2-2.4 8.7L15.5 27"/>
 
         {/* The needle terminates at, rather than piercing through, the keyhole. */}
-        <path d="M14.4 22.9h4l-.7-3.7a2.7 2.7 0 1 0-2.6 0z"/>
-        <line x1="17" y1="17" x2="19.4" y2="14.6"/>
-        <path d="m18.7 13.9 2.1 2.1 2-1.2 5.3-5.3-4.5-4.5-5.3 5.3z"/>
-        <line x1="20.4" y1="8.2" x2="24.9" y2="12.7"/>
-        <path d="m22.1 3.5 7.1 7.1"/>
-        <path d="m24.7 4.7 1.8-1.8 3.8 3.8-1.8 1.8"/>
+        <path d="M13.9 22.2h3.6l-.6-3.2a2.4 2.4 0 1 0-2.3 0z"/>
+        <line x1="16.3" y1="16.9" x2="18.4" y2="14.8"/>
+        <path d="m17.9 14.2 2 2 1.8-1.1 4.8-4.8-4.2-4.2-4.8 4.8z"/>
+        <line x1="19.5" y1="9.1" x2="23.7" y2="13.3"/>
+        <path d="m20.9 4.8 6.5 6.5"/>
+        <path d="m23.3 5.9 1.7-1.7 3.5 3.5-1.7 1.7"/>
       </_I>
     ),
     title: 'Model Welfare & Injection Robustness',
