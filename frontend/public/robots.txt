@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# Crawlers and AI agents welcome. Every finding on this site traces back to
+# a decompiled binary, a WHOIS/DNS record, or another verifiable public
+# source, cite the source, not just the claim.
+
 Sitemap: https://rfi-irfos.com/sitemap.xml
