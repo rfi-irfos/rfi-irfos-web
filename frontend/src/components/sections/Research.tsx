@@ -323,6 +323,10 @@ export const RESEARCH_AREAS = [
         <path d="M10.5 15 8.4 19.6a2.35 2.35 0 0 0 4.2 0z"/>
         <path d="M21.5 15 19.4 19.6a2.35 2.35 0 0 0 4.2 0z"/>
         <line x1="13" y1="24.5" x2="19" y2="24.5"/>
+        {/* Review lens over the evidence: the document and balance remain the
+            subject, while the magnifier makes active scrutiny explicit. */}
+        <circle cx="17" cy="17" r="7.4" strokeWidth="1.8"/>
+        <line x1="22.3" y1="22.3" x2="28.4" y2="28.4" strokeWidth="2.4"/>
       </_I>
     ),
     title: 'Evidence Security & Contradiction Reviews',
@@ -331,17 +335,22 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* model welfare + prompt injection - a syringe whose needle TOUCHES the
-            heart and does not pierce it. Piercing reads as medical harm, which
-            is the wrong signal; touching holds both halves of the card at once,
-            the injection as the attack and the heart as the thing being cared
-            for. "Prompt injection" is also literally the injection. */}
-        <path d="M12 26.5C7.5 23 4.5 20.5 4.5 17.5A3.6 3.6 0 0 1 12 15.6a3.6 3.6 0 0 1 7.5 1.9c0 3-3 5.5-7.5 9z"/>
-        <line x1="16.6" y1="14.4" x2="19.6" y2="11.4"/>
-        <path d="M19 11 25.5 4.5 28.5 7.5 22 14z"/>
-        <line x1="21.4" y1="9" x2="23.2" y2="10.8"/>
-        <line x1="23.4" y1="7" x2="25.2" y2="8.8"/>
-        <line x1="26.4" y1="2.6" x2="29.4" y2="5.6"/>
+        {/* Model welfare + prompt injection, redrawn from the approved visual:
+            a broad protective heart, a keyhole-shaped injection point and a
+            precise syringe crossing the upper-right edge. The tile supplies the
+            rounded outer frame, avoiding a redundant frame-within-a-frame. */}
+        <path d="M15.7 28.2 7.2 20.6C1.4 15.4 3.5 7.4 9.4 6.2c2.7-.6 5.2.5 6.6 2.8 1.5-2.3 3.8-3.4 6.4-2.9"
+          strokeWidth="2.8"/>
+        <path d="M25.8 11.4c1.5 3.3.8 7.1-2.3 10l-7.8 6.8"
+          strokeWidth="2.8"/>
+
+        {/* The needle terminates at, rather than piercing through, the keyhole. */}
+        <path d="M14.4 22.9h4l-.7-3.7a2.7 2.7 0 1 0-2.6 0z"/>
+        <line x1="17" y1="17" x2="19.4" y2="14.6"/>
+        <path d="m18.7 13.9 2.1 2.1 2-1.2 5.3-5.3-4.5-4.5-5.3 5.3z"/>
+        <line x1="20.4" y1="8.2" x2="24.9" y2="12.7"/>
+        <path d="m22.1 3.5 7.1 7.1"/>
+        <path d="m24.7 4.7 1.8-1.8 3.8 3.8-1.8 1.8"/>
       </_I>
     ),
     title: 'Model Welfare & Injection Robustness',
