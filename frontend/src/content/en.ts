@@ -246,9 +246,9 @@ export const EN = {
         'A clear verdict or findings report, not a plausible-sounding guess',
         'The evidence trail behind it, the same sourcing we\'d stand behind ourselves',
         'Something you can sign off on, invest on, publish on, or act on',
-      ], delivery: '14 calendar days.' },
+      ], delivery: 'Delivered within 14 calendar days.' },
       { tier: 'Deep Field', bring: [
-        'The same subject, now with a specific angle, red teaming, path traversal, a competitor\'s whole portfolio, whatever the actual focus is',
+        'The same subject, now with a specific angle, regardless of its nature, red teaming, path traversal, a competitor\'s whole portfolio',
         'What "done" looks like for your team, not just a single yes or no',
       ], mechanism: [
         'Scale the same process with more agents, depending on what you actually need',
@@ -258,7 +258,7 @@ export const EN = {
         'A structured, causality traced picture, not a list of isolated findings',
         'The specific angle you asked for, fully worked, not sampled',
         'The same evidence trail, extended to cover the broader context',
-      ], delivery: 'Scoped with you, typically 21 calendar days.' },
+      ], delivery: 'Delivered within 21 calendar days.' },
       { tier: 'You vs. the World', bring: [
         'The subject, and the willingness to see what happens when it meets the real world at scale',
         'No pre-set scope, we\'re not chaining this to one question',
@@ -267,7 +267,7 @@ export const EN = {
         'Run thousands of simulated events against it, every agent, every angle, no scoping, no chains',
         'Hold nothing back to fit a predefined deliverable',
       ], receive: [
-        'The complete picture, whatever it turns out to be',
+        'The complete picture, regardless of its nature',
         'The working method itself under NDA, not just a one time result, so your own team can run it again without needing us a second time',
         'A standing engagement if you want one, continuous instead of one-off',
       ], delivery: 'Scoped together.' },

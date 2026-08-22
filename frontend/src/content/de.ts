@@ -239,9 +239,9 @@ export const DE: Content = {
         'Ein klares Urteil oder ein Befundbericht, keine plausibel klingende Vermutung',
         'Die Beweiskette dahinter, dieselbe Quellenlage, die wir selbst vertreten würden',
         'Etwas, das Sie unterschreiben, worauf Sie investieren, veröffentlichen oder handeln können',
-      ], delivery: '14 Kalendertage.' },
+      ], delivery: 'Lieferung innerhalb von 14 Kalendertagen.' },
       { tier: 'Deep Field', bring: [
-        'Dasselbe Thema, jetzt mit einem konkreten Fokus, Red Teaming, Path Traversal, das gesamte Portfolio eines Wettbewerbers, was auch immer der tatsächliche Schwerpunkt ist',
+        'Dasselbe Thema, jetzt mit einem konkreten Fokus, unabhängig von dessen Art, Red Teaming, Path Traversal, das gesamte Portfolio eines Wettbewerbers',
         'Was für Ihr Team "fertig" bedeutet, nicht nur ein einzelnes Ja oder Nein',
       ], mechanism: [
         'Skalieren denselben Prozess mit mehr Agenten, je nachdem was Sie tatsächlich brauchen',
@@ -251,7 +251,7 @@ export const DE: Content = {
         'Ein strukturiertes, kausal nachverfolgtes Bild, keine Liste isolierter Funde',
         'Genau den Fokus, den Sie angefragt haben, vollständig ausgearbeitet, nicht nur stichprobenartig',
         'Dieselbe Beweiskette, erweitert auf den breiteren Kontext',
-      ], delivery: 'Gemeinsam abgestimmt, typischerweise 21 Kalendertage.' },
+      ], delivery: 'Lieferung innerhalb von 21 Kalendertagen.' },
       { tier: 'You vs. the World', bring: [
         'Das Thema, und die Bereitschaft zu sehen, was passiert, wenn es in großem Maßstab auf die reale Welt trifft',
         'Keinen vorab festgelegten Umfang, wir binden das an keine einzelne Frage',
@@ -260,7 +260,7 @@ export const DE: Content = {
         'Lassen Tausende simulierte Ereignisse dagegen laufen, jeder Agent, jeder Blickwinkel, kein Scoping, keine Ketten',
         'Halten nichts zurück, nur um in ein vorgegebenes Liefermodell zu passen',
       ], receive: [
-        'Das vollständige Bild, was auch immer dabei herauskommt',
+        'Das vollständige Bild, unabhängig von seiner Art',
         'Die Arbeitsmethode selbst unter NDA, nicht nur ein einmaliges Ergebnis, damit Ihr eigenes Team sie erneut anwenden kann, ohne uns ein zweites Mal zu brauchen',
         'Eine dauerhafte Zusammenarbeit, wenn Sie das wollen, fortlaufend statt einmalig',
       ], delivery: 'Gemeinsam festgelegt.' },

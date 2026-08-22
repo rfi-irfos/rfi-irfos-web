@@ -68,6 +68,7 @@ function PricingOfferCard({
   mobile: boolean
   onSelectTier: (tier: string) => void
 }) {
+  const { t } = useLocale()
   return (
     <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: mobile ? '16px 14px' : '24px 24px' }}>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
@@ -78,10 +79,10 @@ function PricingOfferCard({
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginTop: 14 }}>
         {tier.delivery && (
           <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 6, flex: '0 0 auto', maxWidth: '100%',
+            display: 'inline-flex', alignItems: 'center', gap: 8, flex: '0 0 auto', maxWidth: '100%',
             background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
-            borderRadius: 10, padding: '6px 12px',
-            color: 'var(--accent-text)', fontSize: 12, fontWeight: 600, lineHeight: 1.5,
+            borderRadius: 8, padding: '9px 16px',
+            color: 'var(--accent-text)', fontSize: 14, fontWeight: 800, letterSpacing: '0.02em', lineHeight: 1.5,
           }}>
             <span style={{ minWidth: 0, whiteSpace: 'nowrap' }}>{tier.delivery}</span>
           </div>
@@ -90,7 +91,9 @@ function PricingOfferCard({
             kaufen button ausschaut" - this goes to the contact form now, not a
             checkout, so it shouldn't read as a "buy" button). Same teal, same
             shape, just dim against the background - same visual language as
-            the delivery pill beside it. */}
+            the delivery pill beside it. Same font-size/weight/padding as the
+            delivery pill too (live feedback 2026-08-22: the two used to be
+            visibly different sizes, which looked sloppy sitting side by side). */}
         <button type="button" onClick={() => onSelectTier(tier.tier)} style={{
           borderRadius: 8, cursor: 'pointer', padding: '9px 16px', flexShrink: 0,
           display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 800,
@@ -101,6 +104,9 @@ function PricingOfferCard({
           <span style={{ opacity: 0.7 }}>&gt;</span> {tier.price}
         </button>
       </div>
+      <p style={{ textAlign: 'center', margin: '10px 0 0', fontSize: 12, color: 'var(--text3)' }}>
+        <a href="#submit" style={{ color: 'inherit' }}>{t.checkoutModal.talkFirstInstead}</a>
+      </p>
     </div>
   )
 }
