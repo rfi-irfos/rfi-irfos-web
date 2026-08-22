@@ -1,21 +1,21 @@
 {
   "generatedFrom": "/home/eri-irfos/Desktop/projects/investigations/reports",
-  "reportFilesScanned": 655,
+  "reportFilesScanned": 663,
   "smaliClassesTotal": 1026899,
   "smaliClassesFromTotalsLines": 614840,
   "smaliClassesFromTotalsLinesFileCount": 14,
   "smaliClassesFromSdkCounts": 412059,
   "sdkClassCountEntries": 126,
-  "sdkMentions": 1987,
-  "trackerMentions": 825,
-  "permissionMentions": 1865,
-  "endpointMentionsDistinct": 421,
-  "severityLinesTotal": 2847,
+  "sdkMentions": 2080,
+  "trackerMentions": 833,
+  "permissionMentions": 1951,
+  "endpointMentionsDistinct": 452,
+  "severityLinesTotal": 2948,
   "severityCounts": {
-    "CRITICAL": 781,
-    "HIGH": 1380,
-    "MEDIUM": 561,
-    "LOW": 125
+    "CRITICAL": 806,
+    "HIGH": 1413,
+    "MEDIUM": 596,
+    "LOW": 133
   },
-  "distinctPackageIdStrings": 1130
+  "distinctPackageIdStrings": 1185
 }
