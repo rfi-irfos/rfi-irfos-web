@@ -2,29 +2,29 @@
 
 > Automatisch aus `investigations/reports/*.md` extrahiert via `scripts/compute_corpus_stats.py`.
 > Neu berechnet bei jedem Lauf des Skripts, zuletzt regeneriert im Rahmen der Baumkonsolidierung 2026-08-21.
-> App-Anzahl kommt NICHT von hier, sondern direkt aus `AUDIT_HIGHLIGHTS.length` in `TrackRecord.tsx` (treibt dort die Live-KPI) - die 1093 rohen Package-ID-Strings unten sind SDK-/Component-interne Namen mitgezaehlt, kein verlaesslicher App-Count, exakt wie in der Korrektur vom 2026-08-12 beschrieben.
+> App-Anzahl kommt NICHT von hier, sondern direkt aus `AUDIT_HIGHLIGHTS.length` in `TrackRecord.tsx` (treibt dort die Live-KPI) - die 1130 rohen Package-ID-Strings unten sind SDK-/Component-interne Namen mitgezaehlt, kein verlaesslicher App-Count, exakt wie in der Korrektur vom 2026-08-12 beschrieben.
 
 ## Korpus-Umfang
 
-- **Report-Dateien (alle .md, kanonischer Baum):** 645
-- **Rohe com.x.y-Package-ID-Strings (SDK-Component-Namen inklusive, kein App-Count):** 1093
+- **Report-Dateien (alle .md, kanonischer Baum):** 655
+- **Rohe com.x.y-Package-ID-Strings (SDK-Component-Namen inklusive, kein App-Count):** 1130
 
 ## Technische Entitaetsebene (Layer 2)
 
 - **Smali-Klassen (summiert aus Total- + SDK/Integration-Class-Zahlen):** 1,026,899
   - davon aus 'Total smali classes'-Zeilen: 614,840 (aus 14 Reports)
   - davon aus einzelnen SDK/Integration-Class-Zahlen: 412,059 (aus 126 Treffern)
-- **SDK-Erwaehnungen (Wort "SDK"):** 1,897
-- **Permission-Erwaehnungen:** 1,787
-- **Tracker/Tracking-Erwaehnungen:** 798
-- **Distinkte Endpoint-/URL-Treffer:** 406
+- **SDK-Erwaehnungen (Wort "SDK"):** 1,987
+- **Permission-Erwaehnungen:** 1,865
+- **Tracker/Tracking-Erwaehnungen:** 825
+- **Distinkte Endpoint-/URL-Treffer:** 421
 
 ## Findings (Layer 7 / Enforcement-Beweis)
 
-- **Severity-Zeilen ausgewertet:** 2,754
-- **CRITICAL:** 765
-- **HIGH:** 1,340
-- **MEDIUM:** 524
+- **Severity-Zeilen ausgewertet:** 2,847
+- **CRITICAL:** 781
+- **HIGH:** 1,380
+- **MEDIUM:** 561
 - **LOW:** 125
 
 ## Quelle & Caveats
