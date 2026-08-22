@@ -98,7 +98,7 @@ function PricingOfferCard({
           background: 'var(--accent-dim)', border: '1px solid var(--accent-border)', color: 'var(--accent-text)',
         }}>
           <CartIcon />
-          {tier.price}
+          <span style={{ opacity: 0.7 }}>&gt;</span> {tier.price}
         </button>
       </div>
     </div>

@@ -2635,11 +2635,11 @@ export function TrackRecordSection({
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 24 }}>
           {[
             { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,          sub: t.trackRecord.kpisSub.appsAudited,        from: 'left'   },
-            { n: `${(corpusStats.smaliClassesTotal / 1e6).toFixed(2)}M`, label: t.trackRecord.kpis.smaliClasses, sub: t.trackRecord.kpisSub.smaliClasses,     from: 'bottom' },
+            { n: `${(corpusStats.smaliClassesTotal / 1e6).toFixed(2)}M+`, label: t.trackRecord.kpis.smaliClasses, sub: t.trackRecord.kpisSub.smaliClasses,     from: 'bottom' },
             { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: t.trackRecord.kpis.criticalFindings, sub: t.trackRecord.kpisSub.criticalFindings, from: 'top' },
-            { n: `${corpusStats.trackerMentions}`,           label: t.trackRecord.kpis.trackersFound,          sub: t.trackRecord.kpisSub.trackersFound,    from: 'right'  },
-            { n: `${corpusStats.endpointMentionsDistinct}`,  label: t.trackRecord.kpis.endpointsInvestigated,  sub: t.trackRecord.kpisSub.endpointsInvestigated, from: 'left' },
-            { n: `${corpusStats.sdkClassCountEntries}`,      label: t.trackRecord.kpis.sdkClasses,             sub: t.trackRecord.kpisSub.sdkClasses,       from: 'bottom' },
+            { n: `${corpusStats.trackerMentions}+`,          label: t.trackRecord.kpis.trackersFound,          sub: t.trackRecord.kpisSub.trackersFound,    from: 'right'  },
+            { n: `${corpusStats.endpointMentionsDistinct}+`, label: t.trackRecord.kpis.endpointsInvestigated,  sub: t.trackRecord.kpisSub.endpointsInvestigated, from: 'left' },
+            { n: `${corpusStats.sdkClassCountEntries}+`,     label: t.trackRecord.kpis.sdkClasses,             sub: t.trackRecord.kpisSub.sdkClasses,       from: 'bottom' },
           ].map((s, i) => (
             <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
               <div style={{
@@ -2801,7 +2801,7 @@ export function TrackRecordSection({
             {!mobile && <span>{t.trackRecord.table.notified}</span>}
             <span style={{ textAlign: 'center' }}>{t.trackRecord.table.status}</span>
             {!mobile && <span style={{ textAlign: 'center' }}>{t.trackRecord.table.sev}</span>}
-            {!mobile && <span>{t.trackRecord.table.intel} <span style={{ color: 'var(--text4)', fontWeight: 400, textTransform: 'none', letterSpacing: 'normal' }}>({t.trackRecord.table.intelClickHint})</span></span>}
+            {!mobile && <span>{t.trackRecord.table.intel} <span style={{ color: 'var(--text2)', fontWeight: 400, textTransform: 'none', letterSpacing: 'normal' }}>({t.trackRecord.table.intelClickHint})</span></span>}
             {!mobile && <span>{t.trackRecord.table.statutes}</span>}
             {!mobile && <span style={{ textAlign: 'center' }}>{t.trackRecord.table.resolved}</span>}
             <span>{t.trackRecord.table.disclosure}</span>
@@ -2928,7 +2928,7 @@ export function TrackRecordSection({
                       <div className="intel-cell" role="button" tabIndex={0}
                         onClick={() => setIntelModal({ target: a.target, market: a.market, sev: a.sev, finding: findingText, headline: a.headline[locale] })}
                         onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setIntelModal({ target: a.target, market: a.market, sev: a.sev, finding: findingText, headline: a.headline[locale] }) }}
-                        style={{ cursor: 'pointer' }}>
+                        style={{ cursor: 'pointer', border: '1px solid var(--border)', borderRadius: 8, padding: '6px 8px', background: 'var(--surface-sunken)' }}>
                         {meaning && (
                           <div className="intel-meaning" style={{
                             color: 'var(--accent-text)', fontSize: 11, fontWeight: 600, lineHeight: 1.5,
@@ -2944,7 +2944,7 @@ export function TrackRecordSection({
                         }}>
                           {technical}
                         </div>
-                        <div className="intel-hint" style={{ fontSize: 9, color: 'var(--text4)', marginTop: 2 }}>{t.trackRecord.table.intelClickHint}</div>
+                        <div className="intel-hint" style={{ fontSize: 9, color: 'var(--text2)', marginTop: 2 }}>{t.trackRecord.table.intelClickHint}</div>
                       </div>
                     )
                   })()}
