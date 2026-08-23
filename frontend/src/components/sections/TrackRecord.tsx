@@ -2844,7 +2844,7 @@ export function TrackRecordSection({
 
         {/* Table */}
         <div data-native-scroll style={{ maxHeight: mobile ? '65vh' : 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
-          <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}@keyframes ekgPulse{0%{stroke-dashoffset:150;opacity:0}5%{opacity:1}85%{opacity:1}100%{stroke-dashoffset:-150;opacity:0}}.ekg-line{stroke-dasharray:150;animation:ekgPulse 3.6s linear infinite}@keyframes ddIn{from{opacity:0;transform:translateY(-6px) scaleY(0.97)}to{opacity:1;transform:none}}.ledger-dd-panel{transform-origin:top}.ledger-dd-opt:hover{background:rgba(0,245,196,0.12)!important;color:#00f5c4!important}.intel-cell{border:1px solid transparent;border-radius:6px;margin:-6px -8px;padding:6px 8px;transition:border-color 80ms,background 80ms}.intel-cell:hover{border-color:rgba(0,245,196,0.35);background:rgba(0,245,196,0.05)}.intel-cell:hover .intel-hint{color:#00f5c4}.ledger-grid>*{border-right:1px solid var(--border2);padding-right:8px;min-width:0}.ledger-grid>*:last-child{border-right:none;padding-right:0}`}</style>
+          <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}@keyframes ekgPulse{0%{stroke-dashoffset:150;opacity:0}5%{opacity:1}85%{opacity:1}100%{stroke-dashoffset:-150;opacity:0}}.ekg-line{stroke-dasharray:150;animation:ekgPulse 3.6s linear infinite}@keyframes ddIn{from{opacity:0;transform:translateY(-6px) scaleY(0.97)}to{opacity:1;transform:none}}.ledger-dd-panel{transform-origin:top}.ledger-dd-opt:hover{background:rgba(0,245,196,0.12)!important;color:#00f5c4!important}.intel-cell{border:1px solid transparent;border-radius:6px;margin:-6px -8px;padding:6px 8px;transition:border-color 80ms,background 80ms}.intel-cell:hover{border-color:rgba(0,245,196,0.35);background:rgba(0,245,196,0.05)}.intel-cell:hover .intel-hint{color:#00f5c4}.ledger-grid:not(.intel-row)>*{border-right:1px solid var(--border2);padding-right:8px;min-width:0}.ledger-grid:not(.intel-row)>*:last-child{border-right:none;padding-right:0}.intel-row>*{min-width:0}`}</style>
 
           {/* Sticky header */}
           <div className="ledger-grid" style={{
@@ -2955,8 +2955,10 @@ export function TrackRecordSection({
                     : 'minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 110px 70px 130px 130px 56px',
                   gap: '0 6px',
                   padding: '9px 14px',
-                  alignItems: 'start',
-                  borderBottom: '1px solid var(--border2)',
+                  alignItems: 'center',
+                  border: '1px solid var(--border2)',
+                  borderRadius: 8,
+                  marginBottom: 6,
                   background: i % 2 === 0 ? 'var(--bg2)' : 'transparent',
                   opacity: ledgerFired ? undefined : 0,
                   animation: ledgerFired ? `ledgerRowIn 0.38s cubic-bezier(0.22,1,0.36,1) ${delay}ms both` : 'none',
@@ -3012,7 +3014,7 @@ export function TrackRecordSection({
                       <div className="intel-cell" role="button" tabIndex={0}
                         onClick={() => setIntelModal({ target: a.target, market: a.market, sev: a.sev, finding: findingText, headline: a.headline[locale] })}
                         onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setIntelModal({ target: a.target, market: a.market, sev: a.sev, finding: findingText, headline: a.headline[locale] }) }}
-                        style={{ cursor: 'pointer', border: '1px solid var(--border)', borderRadius: 8, padding: '6px 8px', background: 'var(--surface-sunken)' }}>
+                        style={{ cursor: 'pointer', border: '1px solid var(--border)', borderRadius: 8, padding: '6px 8px', background: 'var(--surface-sunken)', boxSizing: 'border-box', overflow: 'hidden', width: '100%' }}>
                         {meaning && (
                           <div className="intel-meaning" style={{
                             color: 'var(--accent-text)', fontSize: 11, fontWeight: 600, lineHeight: 1.5,
