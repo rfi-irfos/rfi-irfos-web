@@ -2,30 +2,30 @@
 
 > Automatisch aus `investigations/reports/*.md` extrahiert via `scripts/compute_corpus_stats.py`.
 > Neu berechnet bei jedem Lauf des Skripts, zuletzt regeneriert im Rahmen der Baumkonsolidierung 2026-08-21.
-> App-Anzahl kommt NICHT von hier, sondern direkt aus `AUDIT_HIGHLIGHTS.length` in `TrackRecord.tsx` (treibt dort die Live-KPI) - die 1253 rohen Package-ID-Strings unten sind SDK-/Component-interne Namen mitgezaehlt, kein verlaesslicher App-Count, exakt wie in der Korrektur vom 2026-08-12 beschrieben.
+> App-Anzahl kommt NICHT von hier, sondern direkt aus `AUDIT_HIGHLIGHTS.length` in `TrackRecord.tsx` (treibt dort die Live-KPI) - die 1364 rohen Package-ID-Strings unten sind SDK-/Component-interne Namen mitgezaehlt, kein verlaesslicher App-Count, exakt wie in der Korrektur vom 2026-08-12 beschrieben.
 
 ## Korpus-Umfang
 
-- **Report-Dateien (alle .md, kanonischer Baum):** 679
-- **Rohe com.x.y-Package-ID-Strings (SDK-Component-Namen inklusive, kein App-Count):** 1253
+- **Report-Dateien (alle .md, kanonischer Baum):** 691
+- **Rohe com.x.y-Package-ID-Strings (SDK-Component-Namen inklusive, kein App-Count):** 1364
 
 ## Technische Entitaetsebene (Layer 2)
 
-- **Smali-Klassen (summiert aus Total- + SDK/Integration-Class-Zahlen):** 1,039,415
+- **Smali-Klassen (summiert aus Total- + SDK/Integration-Class-Zahlen):** 1,041,717
   - davon aus 'Total smali classes'-Zeilen: 614,840 (aus 14 Reports)
-  - davon aus einzelnen SDK/Integration-Class-Zahlen: 424,575 (aus 128 Treffern)
-- **SDK-Erwaehnungen (Wort "SDK"):** 2,188
-- **Permission-Erwaehnungen:** 2,108
-- **Tracker/Tracking-Erwaehnungen:** 888
-- **Distinkte Endpoint-/URL-Treffer:** 487
+  - davon aus einzelnen SDK/Integration-Class-Zahlen: 426,877 (aus 131 Treffern)
+- **SDK-Erwaehnungen (Wort "SDK"):** 2,402
+- **Permission-Erwaehnungen:** 2,281
+- **Tracker/Tracking-Erwaehnungen:** 934
+- **Distinkte Endpoint-/URL-Treffer:** 516
 
 ## Findings (Layer 7 / Enforcement-Beweis)
 
-- **Severity-Zeilen ausgewertet:** 3,170
-- **CRITICAL:** 875
-- **HIGH:** 1,494
-- **MEDIUM:** 662
-- **LOW:** 139
+- **Severity-Zeilen ausgewertet:** 3,339
+- **CRITICAL:** 913
+- **HIGH:** 1,559
+- **MEDIUM:** 726
+- **LOW:** 141
 
 ## Quelle & Caveats
 

@@ -161,13 +161,19 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
         {showArrows && !phone && <button onClick={() => go(-1)} aria-label={t.proof.carouselPrevAria} style={arrowStyle}>&larr;</button>}
         {/* overflowY visible (not hidden) - see identical note in Projects.tsx's
             ProjectsCarousel: the proximity glow needs room outside the card
-            box, and scrolling here is horizontal-only anyway. */}
+            box, and scrolling here is horizontal-only anyway.
+            paddingTop matches Projects.tsx's 2026-08-14 fix: overflowY:'visible'
+            alone doesn't work, CSS coerces it to 'auto' the moment overflowX
+            isn't 'visible' too, so the hover lift (.rfi-hover-card's
+            translateY(-4px) + shadow) still needs real padding to render
+            before it reaches the clip edge - this copy never got that fix
+            ported over, which is why the card top clipped on hover. */}
         <div style={{ overflowX: 'hidden', overflowY: 'visible', flex: 1, minWidth: 0 }}>
           <div
             ref={trackRef}
             style={{
               display: 'flex', gap: 20, overflowX: 'auto', overflowY: 'visible', scrollSnapType: 'x mandatory',
-              WebkitOverflowScrolling: 'touch', paddingBottom: 4,
+              WebkitOverflowScrolling: 'touch', padding: '8px 4px 4px',
             }}
           >
             {entries.map((entry, i) => (
