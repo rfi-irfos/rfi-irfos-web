@@ -32,7 +32,7 @@
 // pill beside it.
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ScopeTag, EngagementFlow, CartIcon, Reveal, ScrambleHeading, useMobile, prefersReducedMotion } from './shared'
+import { EngagementFlow, CartIcon, ZapIcon, Reveal, ScrambleHeading, useMobile, prefersReducedMotion } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // Technical metadata only, one entry per tier, same order as t.pricing.tiers
@@ -44,16 +44,21 @@ import { useLocale } from '../../hooks/useLocale'
 // Light and contact-only on the other two). First Light's Stripe Payment Link
 // stays defined here in case it comes back later, just not wired into the
 // card below anymore.
+// `amount` is locale-independent (the € figure never changes), but the "from"/
+// "ab" prefix is locale text - kept out of this array and prepended at
+// zip-time in PricingSection using t.pricing.priceFrom, so German never
+// shows the English word "from" (fixed 2026-08-25, live feedback: the price
+// button read "from €15,000" even with the DE locale active).
 const TIER_META = [
-  { price: 'from €9,500', stripeKey: 'first_light', directUrl: 'https://buy.stripe.com/aFacN7dd64rB0DHazC7N60J', contact: true },
-  { price: 'from €15,000', stripeKey: null as string | null, directUrl: null as string | null, contact: true },
-  { price: 'from €50,000', stripeKey: null as string | null, directUrl: null as string | null, contact: true },
+  { amount: '€9,500', stripeKey: 'first_light', directUrl: 'https://buy.stripe.com/aFacN7dd64rB0DHazC7N60J', contact: true },
+  { amount: '€15,000', stripeKey: null as string | null, directUrl: null as string | null, contact: true },
+  { amount: '€50,000', stripeKey: null as string | null, directUrl: null as string | null, contact: true },
 ] as const
 
 type PricingTier = {
   tier: string; delivery?: string
-  bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[]
-  price: string; stripeKey: string | null; directUrl: string | null; contact: boolean
+  bring?: string; mechanism?: string; receive?: string
+  price: string; amount: string; stripeKey: string | null; directUrl: string | null; contact: boolean
 }
 
 // One full, self-contained offer card - title, scope badge, the You bring /
@@ -69,44 +74,65 @@ function PricingOfferCard({
   onSelectTier: (tier: string) => void
 }) {
   const { t } = useLocale()
+  // FULL REDESIGN 2026-08-25 ("premium dark futuristic intelligence interface",
+  // Simeon's exact written spec + reference mockup, matched as closely as inline
+  // React styles + a few real CSS classes for the pseudo-element border/tilt
+  // allow - see .rfi-pricing-* in index.css). Card silhouette, icon-per-row
+  // sections (now in EngagementFlow itself), and this bottom price bar are the
+  // three pieces the spec called out as most load-bearing.
   return (
-    <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 20, padding: mobile ? '16px 14px' : '24px 24px' }}>
-      <div style={{ textAlign: 'center', marginBottom: 20 }}>
-        <p style={{ fontSize: 21, fontWeight: 900, color: 'var(--text)', margin: 0 }}>{tier.tier}</p>
-        <div style={{ marginTop: 8 }}><ScopeTag label={scopeTag} /></div>
-      </div>
-      <EngagementFlow bring={tier.bring} mechanism={tier.mechanism} receive={tier.receive} large />
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginTop: 14 }}>
-        {tier.delivery && (
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8, flex: '0 0 auto', maxWidth: '100%',
-            background: 'rgba(0,245,196,0.08)', border: '1px solid rgba(0,245,196,0.3)',
-            borderRadius: 8, padding: '9px 16px',
-            color: 'var(--accent-text)', fontSize: 14, fontWeight: 800, letterSpacing: '0.02em', lineHeight: 1.5,
+    <div className="rfi-pricing-scene">
+      <div className="rfi-pricing-glow" aria-hidden="true" />
+      {/* min-height + flex column + marginTop:auto on the bottom block anchors the
+          delivery/price bar and the "talk to us" line to the bottom of the card
+          consistently across all 3 tiers, even though their bring/mechanism/
+          receive prose runs to different lengths (live feedback 2026-08-25: "too
+          much differencies ... place this more down to the bottom of the card"). */}
+      <div className="rfi-pricing-card" style={{ padding: mobile ? '24px 20px' : '36px 34px', display: 'flex', flexDirection: 'column', minHeight: mobile ? undefined : 560 }}>
+        <div style={{ textAlign: 'center', marginBottom: 24 }}>
+          <p style={{ fontSize: mobile ? 26 : 32, fontWeight: 700, letterSpacing: '-0.03em', color: '#f4f6f6', margin: 0 }}>{tier.tier}</p>
+          <div style={{ marginTop: 10 }}><span className="rfi-pricing-badge">{scopeTag}</span></div>
+        </div>
+        <EngagementFlow bring={tier.bring} mechanism={tier.mechanism} receive={tier.receive} large />
+        <div style={{ marginTop: 'auto' }}>
+          {/* Recessed bottom panel: delivery split into a small label line + a bold
+              value line (the existing full sentence, wording untouched), price as
+              the strongest element on the card - "from"/"ab" in teal, the amount in
+              white, inside its own glowing outlined control. Sized down a step
+              2026-08-25 (live feedback: "delivery and from and all could be a tad
+              smaller") and no longer forced into JetBrains Mono for the label,
+              same reasoning as the badge above. */}
+          <div className="rfi-pricing-bar" style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12,
+            marginTop: 18, padding: mobile ? '10px 12px' : '11px 14px',
           }}>
-            <span style={{ minWidth: 0, whiteSpace: 'nowrap' }}>{tier.delivery}</span>
+            {tier.delivery && (
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, minWidth: 0, flex: '1 1 auto' }}>
+                <span style={{ color: 'var(--accent-text)', flexShrink: 0, display: 'flex' }}><ZapIcon size={18} /></span>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{
+                    fontSize: 9.5, fontWeight: 700,
+                    color: '#00e8d0', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 2,
+                  }}>{t.pricing.deliveryLabel}</div>
+                  <div style={{ color: '#f4f6f6', fontSize: 13, fontWeight: 800, letterSpacing: '0.01em', lineHeight: 1.3 }}>{tier.delivery}</div>
+                </div>
+              </div>
+            )}
+            <button type="button" onClick={() => onSelectTier(tier.tier)} className="rfi-pricing-price-btn" style={{
+              cursor: 'pointer', padding: '9px 16px', flexShrink: 0,
+              display: 'flex', alignItems: 'center', gap: 7, fontSize: 13.5, fontWeight: 800,
+              letterSpacing: '0.02em', whiteSpace: 'nowrap',
+            }}>
+              <span style={{ color: 'var(--accent-text)', display: 'flex' }}><CartIcon /></span>
+              <span style={{ color: 'var(--accent-text)', textTransform: 'uppercase' }}>{t.pricing.priceFrom}</span>
+              <span style={{ color: '#fff' }}>{tier.amount}</span>
+            </button>
           </div>
-        )}
-        {/* Translucent, not solid (live feedback 2026-08-21: "nicht direkt wie n
-            kaufen button ausschaut" - this goes to the contact form now, not a
-            checkout, so it shouldn't read as a "buy" button). Same teal, same
-            shape, just dim against the background - same visual language as
-            the delivery pill beside it. Same font-size/weight/padding as the
-            delivery pill too (live feedback 2026-08-22: the two used to be
-            visibly different sizes, which looked sloppy sitting side by side). */}
-        <button type="button" onClick={() => onSelectTier(tier.tier)} style={{
-          borderRadius: 8, cursor: 'pointer', padding: '9px 16px', flexShrink: 0,
-          display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 800,
-          letterSpacing: '0.02em', whiteSpace: 'nowrap',
-          background: 'var(--accent-dim)', border: '1px solid var(--accent-border)', color: 'var(--accent-text)',
-        }}>
-          <CartIcon />
-          <span style={{ opacity: 0.7 }}>&gt;</span> {tier.price}
-        </button>
+          <p style={{ textAlign: 'center', margin: '14px 0 0', fontSize: 12, color: 'var(--text3)' }}>
+            <a href="#submit" style={{ color: 'inherit' }}>{t.checkoutModal.talkFirstInstead}</a>
+          </p>
+        </div>
       </div>
-      <p style={{ textAlign: 'center', margin: '10px 0 0', fontSize: 12, color: 'var(--text3)' }}>
-        <a href="#submit" style={{ color: 'inherit' }}>{t.checkoutModal.talkFirstInstead}</a>
-      </p>
     </div>
   )
 }
@@ -117,7 +143,7 @@ export function PricingSection({
   onSelectTier: (tier: string) => void
 }) {
   const { t } = useLocale()
-  const tiers = t.pricing.tiers.map((tier, i) => ({ ...tier, ...TIER_META[i] }))
+  const tiers = t.pricing.tiers.map((tier, i) => ({ ...tier, ...TIER_META[i], price: `${t.pricing.priceFrom} ${TIER_META[i].amount}` }))
   const [active, setActive] = useState(0)
   const count = tiers.length
   const cycle = (direction: number) => setActive(current => (current + direction + count) % count)
@@ -166,7 +192,13 @@ export function PricingSection({
           </div>
         )}
 
-        <div id="pricing-offer" style={{ display: 'flex', alignItems: 'center', gap: 16, maxWidth: 720, margin: '0 auto', scrollMarginTop: 84 }}>
+        {/* Widened 720->1180 (live feedback 2026-08-25: "die karte darf den screen
+            fullen, rechteck format, dann passt alles rein" - paired with
+            EngagementFlow's 3-column grid for `large`, below, a wide rectangular
+            card replaces three stacked paragraph blocks with three side-by-side
+            columns, collapsing total card height instead of just wrapping text
+            differently). */}
+        <div id="pricing-offer" style={{ display: 'flex', alignItems: 'center', gap: 16, maxWidth: 1280, margin: '0 auto', scrollMarginTop: 84 }}>
           {!mobile && <button onClick={() => cycle(-1)} aria-label="Previous tier" style={arrowStyle}>&larr;</button>}
           <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
             {/* Soft cross-fade on tier change (2026-08-21 live feedback) - AnimatePresence

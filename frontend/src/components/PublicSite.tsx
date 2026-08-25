@@ -211,14 +211,24 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     const next = viewForSection(target)
     setView(next)
     window.history.replaceState(null, '', `#${target}`)
-    // The 'access' view used to jump straight to the offer card, skipping the
-    // section heading above it (live feedback 2026-08-16) - that made sense
-    // when a single product line's card ran several thousand px tall on a
-    // phone and the heading was real space wasted. Pricing.tsx no longer
-    // ships that shape (one compact three-stage card with prev/next arrows,
-    // 2026-08-21) - short enough that landing at the very top, header and
-    // heading and card together, reads better than skipping ahead (live
-    // feedback the same day: "muss oben alles mit dem header anzeigen").
+    if (target === 'access') {
+      // Jump straight to the offer card itself, skipping the section heading
+      // above it (live feedback 2026-08-25: "wenn man auf access klickt solls
+      // einfach nur die karte direkt zeigen"). This reverses the 2026-08-21
+      // decision to land at the very top - that made sense when the card was
+      // one compact three-stage layout, but the 2026-08-25 redesign (icon
+      // rows, full evidence-flow prose, bottom-anchored delivery bar) made it
+      // tall again, so the heading now just pushes the actual card further
+      // down out of view on first paint.
+      requestAnimationFrame(() => {
+        const card = document.getElementById('pricing-offer')
+        if (!card) return
+        const NAV_HEIGHT = 64
+        const abs = card.getBoundingClientRect().top + window.pageYOffset
+        window.scrollTo({ top: Math.max(0, abs - NAV_HEIGHT - 20), behavior: 'smooth' })
+      })
+      return
+    }
     // Falls through to the same plain scroll-to-top every other nav link uses.
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -261,7 +271,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   // Cards now show only tier/price/CTA - the full breakdown (what this tier actually
   // is) moved into this confirmation modal, shown above the B2B/ToS checkboxes, so
   // nothing gets lost by trimming the card itself.
-  const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[]; bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[] } | null>(null)
+  const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[]; bring?: string; mechanism?: string; receive?: string } | null>(null)
   const [reportModal, setReportModal]         = useState<string | null>(null)
   // Full plain-language writeup per ledger entry - the ledger row/cell only ever
   // summarizes (hover reveals the short "why it matters" line), this is where the
@@ -318,46 +328,19 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   }, [checkoutModal, reportModal, intelModal])
 
   // "ba-dum-tss" - Zabih's idea, live feedback 2026-08-14: the confetti pop needed a
-  // rimshot to sell the joke. Two low kick thumps (sine, pitch-dropping) then a
-  // cymbal crash (filtered noise burst, longer decay), synthesized via the Web
-  // Audio API, no audio file. This used to run alongside a separate "pop" sound and
-  // a scattered-clap sound (both removed 2026-08-14, live feedback: "ONLY badumm
-  // tss pls") - it is now the only sound on the cookie-banner-close/confetti
-  // moment. Timing widened slightly (0.18/0.32 -> 0.24/0.44) same feedback pass,
-  // "a bissl langsamer."
+  // rimshot to sell the joke. Originally synthesized via the Web Audio API (two sine
+  // kicks + a filtered noise cymbal, no audio file) - replaced 2026-08-24 (live
+  // feedback: "cheap ass badumm tss") with a real recorded sfx clip
+  // (public/sfx/badum-tss.mp3, "no copyright" licensed download, trimmed from 4.04s
+  // to 2.12s to cut the ~0.5s of leading silence in the original file that read as
+  // playback lag). Volume kept deliberately low (0.07, tuned down once more live
+  // 2026-08-24: "could be a tad more silent"), quieter than the old synthesized
+  // version's effective loudness, not louder - this is a wink, not a jump-scare.
   const playRimshotSound = () => {
     try {
-      const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
-      const ctx = new AC()
-      const kick = (startAt: number) => {
-        const now = ctx.currentTime + startAt
-        const osc = ctx.createOscillator()
-        const gain = ctx.createGain()
-        osc.type = 'sine'
-        osc.frequency.setValueAtTime(160, now)
-        osc.frequency.exponentialRampToValueAtTime(48, now + 0.09)
-        gain.gain.setValueAtTime(0.5, now)
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12)
-        osc.connect(gain); gain.connect(ctx.destination)
-        osc.start(now); osc.stop(now + 0.13)
-      }
-      kick(0)
-      kick(0.24)
-      const cymbalAt = 0.44
-      const now = ctx.currentTime + cymbalAt
-      const dur = 0.5
-      const buf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * dur), ctx.sampleRate)
-      const data = buf.getChannelData(0)
-      for (let n = 0; n < data.length; n++) data[n] = Math.random() * 2 - 1
-      const noise = ctx.createBufferSource(); noise.buffer = buf
-      const hp = ctx.createBiquadFilter()
-      hp.type = 'highpass'; hp.frequency.value = 6000
-      const gain = ctx.createGain()
-      gain.gain.setValueAtTime(0.22, now)
-      gain.gain.exponentialRampToValueAtTime(0.0008, now + dur)
-      noise.connect(hp); hp.connect(gain); gain.connect(ctx.destination)
-      noise.start(now); noise.stop(now + dur)
-      noise.onended = () => ctx.close()
+      const audio = new Audio('/sfx/badum-tss.mp3')
+      audio.volume = 0.07
+      void audio.play().catch(() => { /* autoplay can be blocked, never block the banner over it */ })
     } catch { /* never block the banner over audio */ }
   }
 
@@ -367,20 +350,33 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   // each piece doesn't read as a flat color chip, a wider/richer palette, and a slower
   // 3-phase fall (burst -> a mid-air sway checkpoint -> settle) instead of one straight
   // transition, so pieces flutter down instead of dropping on rails.
+  // Upgraded again 2026-08-24 (live feedback: "more high grade confetti too and
+  // slower fall"): richer palette (added two metallic-leaning tones), a fourth
+  // diamond-cut shape variant alongside ribbon/circle/square, a slightly larger size
+  // range, and both fall phases (sway + settle) slowed by roughly 45% so pieces read
+  // as fluttering down rather than being pulled through the air. The removal timeout
+  // below is extended to match, otherwise slower pieces get yanked away mid-fall.
   const fireConfettiFromRect = (rect: DOMRect, count: number) => {
-    const colors = ['#00f5c4', '#ef4444', '#f97316', '#eab308', '#e8e8f0', '#ec4899', '#facc15']
+    const colors = ['#00f5c4', '#ef4444', '#f97316', '#eab308', '#e8e8f0', '#ec4899', '#facc15', '#c9a227', '#b8c4d0']
     playRimshotSound()
     for (let i = 0; i < count; i++) {
       const el = document.createElement('div')
       const shapeRoll = Math.random()
-      const isRibbon = shapeRoll < 0.35
-      const isCircle = !isRibbon && shapeRoll < 0.65
-      const size = 9 + Math.random() * 9
+      const isRibbon = shapeRoll < 0.28
+      const isCircle = !isRibbon && shapeRoll < 0.56
+      const isDiamond = !isRibbon && !isCircle && shapeRoll < 0.74
+      const size = 9 + Math.random() * 11
       const w = isRibbon ? size * 0.42 : size
       const h = isRibbon ? size * 1.9 : size
       const color = colors[i % colors.length]
       const startX = rect.left + Math.random() * rect.width
       const startY = rect.top + Math.random() * rect.height
+      // diamond pieces are just squares with a baked-in 45deg starting rotation - the
+      // offset propagates through burstSpin -> swaySpin -> fallSpin below since each
+      // later spin is the previous one plus more random rotation, so a single offset
+      // at the source is enough to read as a diamond silhouette without special-casing
+      // every phase's transform.
+      const diamondOffset = isDiamond ? 45 : 0
       el.style.cssText = `position:fixed;left:${startX}px;top:${startY}px;width:${w}px;height:${h}px;background:${color};box-shadow:inset -2px -2px 3px rgba(0,0,0,0.22),inset 2px 2px 2px rgba(255,255,255,0.35);opacity:1;border-radius:${isCircle ? '50%' : '2px'};pointer-events:none;z-index:99999;transform:translate(0,0) scale(0.4) rotate(0deg);transition:transform 0.16s cubic-bezier(.2,.9,.35,1);`
       document.body.appendChild(el)
       // force a synchronous layout so the browser commits the starting transform
@@ -391,28 +387,31 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       const burstDist = 70 + Math.random() * 160
       const burstX = Math.cos(angle) * burstDist
       const burstY = Math.sin(angle) * burstDist - 34 // slight upward pop before gravity takes over
-      const burstSpin = (Math.random() - 0.5) * 560
+      const burstSpin = (Math.random() - 0.5) * 560 + diamondOffset
       el.style.transform = `translate(${burstX}px, ${burstY}px) scale(1.15) rotate(${burstSpin}deg)`
       setTimeout(() => {
         // phase 2 - a mid-air sway checkpoint, roughly a third of the way down, with a
         // slower transition than the burst - this is what reads as "flutter" instead of
         // a straight drop, since the piece visibly changes drift direction mid-fall.
+        // Durations scaled ~45% slower than the original pass (live feedback 2026-08-24:
+        // "slower fall") so the flutter reads unhurried instead of brisk.
         const totalFall = window.innerHeight - startY + 80 + Math.random() * 100
         const swayX = burstX + (Math.random() - 0.5) * 220
         const swayY = startY + totalFall * 0.4
         const swaySpin = burstSpin + (Math.random() - 0.5) * 500
-        el.style.transition = `transform ${0.7 + Math.random() * 0.35}s cubic-bezier(.45,0,.55,1)`
+        const swayDur = 1.0 + Math.random() * 0.5
+        el.style.transition = `transform ${swayDur}s cubic-bezier(.45,0,.55,1)`
         el.style.transform = `translate(${swayX}px, ${swayY - startY}px) scale(1) rotate(${swaySpin}deg)`
         setTimeout(() => {
           // phase 3 - settle the rest of the way down, fading out near the bottom.
           const fallX = swayX + (Math.random() - 0.5) * 160
           const fallSpin = swaySpin + (Math.random() - 0.5) * 700
-          el.style.transition = `transform ${1.1 + Math.random() * 0.5}s cubic-bezier(.45,0,.55,1), opacity 0.5s ease-in ${0.7 + Math.random() * 0.3}s`
+          el.style.transition = `transform ${1.6 + Math.random() * 0.7}s cubic-bezier(.45,0,.55,1), opacity 0.5s ease-in ${1.0 + Math.random() * 0.45}s`
           el.style.transform = `translate(${fallX}px, ${totalFall}px) scale(0.85) rotate(${fallSpin}deg)`
           el.style.opacity = '0'
-        }, (0.7 + Math.random() * 0.35) * 1000)
+        }, swayDur * 1000)
       }, 160)
-      setTimeout(() => el.remove(), 3400)
+      setTimeout(() => el.remove(), 4500)
     }
   }
 

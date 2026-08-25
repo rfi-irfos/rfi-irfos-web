@@ -81,8 +81,22 @@ import heroDingirEmbedDecade from '../../assets/hero-dingir-embed-decade.png'
 // opener. Repeating 2 of 8 shots once across a 31-slide rotation is the
 // honest tradeoff for having 10 neural shots and only 8 of the other two -
 // more of either would need new screenshots, not a code fix.
-const HERO_SOFTWARE_SHOTS = [heroDingir2, heroDingirMapDc, heroDingir7, heroDingirMapGrazDossier, heroDingir8, heroDingirGlobeAntarctica, heroDingir3, heroDingirGlobeAfricaThreats]
-const HERO_SATELLITE_SHOTS = [heroDingir4, heroDingir6, heroDingir12, heroDingir13, heroDingir5, heroDingir10, heroDingir11, heroDingirVesselsNl]
+// Re-ordered 2026-08-23 (live bug report: "two globes after each other") - the
+// 2026-08-23 hero-dingir-7 replacement (old flat 2D cyclone map -> new 3D
+// globe storm shot) pushed the software category to FOUR globe-perspective
+// frames (hero-dingir-7, hero-dingir-8's globe-backed reasoning panel,
+// globe-antarctica, globe-africa-threats) out of 8, and satellite already had
+// two (hero-dingir-12, hero-dingir-13) - the naive round-robin put a software
+// globe and a satellite globe in the SAME round (r=2), i.e. back to back in
+// the actual slide sequence. Fixed by placing every globe-perspective shot at
+// an EVEN index in its own array (0/2/4/6 for software's 4 globes, spaced by
+// exactly one flat/tilted shot each) and every satellite globe at an ODD
+// index that software's globes don't occupy (1/5, spaced 4 apart, the max
+// possible for 2 items in an 8-slot cycle) - so no round ever pairs two
+// globe shots, and no two globes sit closer than one other shot apart even
+// across the 8/10-round wrap.
+const HERO_SOFTWARE_SHOTS = [heroDingir7, heroDingir2, heroDingirGlobeAntarctica, heroDingirMapDc, heroDingirGlobeAfricaThreats, heroDingir3, heroDingir8, heroDingirMapGrazDossier]
+const HERO_SATELLITE_SHOTS = [heroDingir4, heroDingir12, heroDingir6, heroDingir5, heroDingir11, heroDingir13, heroDingir10, heroDingirVesselsNl]
 const HERO_NEURAL_SHOTS = [heroDingirEmbedStorm, heroDingirEmbedBuoy, heroDingirEmbedLanguage, heroDingirEmbedWater, heroDingirEmbedImpact, heroDingirEmbedHope, heroDingirEmbedCoast, heroDingirEmbedDecided, heroDingirEmbedIncident, heroDingirEmbedDecade]
 const HERO_IMAGES = [
   heroSoftware,
@@ -220,9 +234,14 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       // live feedback settled it: same principle regardless of dark or light mode,
       // hero always shows the photo in its own dark tint - only HC (which needs
       // near-opaque for its own contrast floor) stays different.
+      // Tint stepped down 2026-08-24 (live feedback: "shall we use like one or two
+      // stages less tint on the hero, so the colors pop a bit better?") - each of
+      // the three linear-gradient stops dropped roughly one notch (0.55->0.42,
+      // 0.32->0.22, 0.5->0.38), same shape, less overall darkening, so the globe's
+      // teal/orange markers read brighter without losing headline legibility.
       background: theme === 'hc'
         ? 'rgba(0,0,0,0.45)'
-        : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.55) 0%, rgba(5,7,14,0.32) 52%, rgba(5,7,14,0.5) 100%)',
+        : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.42) 0%, rgba(5,7,14,0.22) 52%, rgba(5,7,14,0.38) 100%)',
     }}>
       {/* Real screenshots of our own OSINT/monitoring software as the hero backdrop
           (reverted 2026-08-15, live feedback: back to a still image - the looping
@@ -423,7 +442,12 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
                   card only). Light theme: same #009e7a the icon tiles below use as
                   --accent (live feedback: the dark-theme green was hard to read on
                   the light glass card, use what's already proven legible there). */}
-              <div style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: theme === 'light' ? '#009e7a' : '#00c896', lineHeight: 1 }}><CountUp value={s.n} /></div>
+              {/* marginLeft: 2px nudge for the three "+"-suffixed numbers only (live
+                  feedback 2026-08-24: "53+ muss 2px weiter nach rechts... 58+k auch...
+                  und auch das 303+"), not the plain "8" or "1" cards - the plus sign's
+                  own optical weight was reading as slightly left-heavy against the
+                  centred label below it. */}
+              <div style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: theme === 'light' ? '#009e7a' : '#00c896', lineHeight: 1, marginLeft: s.n === '53+' ? 6 : ['58k+', '303+'].includes(s.n) ? 4 : 0 }}><CountUp value={s.n} /></div>
               {/* marginRight cancels the trailing letter-space that letter-spacing
                   appends after the final character. Centred text is otherwise
                   optically pushed right by half a tracking unit, which is what

@@ -8,7 +8,7 @@ html { scroll-padding-top: 72px; }
    touching JSX. The hero's big display line ("Rethink the Obvious.") isn't a heading
    tag (it's a plain <p>, pre-existing), so it gets the .rfi-display class instead. */
 h1, h2, h3, .rfi-display {
-  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  font-family: 'Archivo', system-ui, sans-serif;
 }
 
 /* ── Theme variables ──────────────────────────────────────────── */
@@ -207,7 +207,7 @@ h1, h2, h3, .rfi-display {
   border-radius: 6px;
   padding: 11px 14px;
   color: var(--input-text);
-  font-size: 14px;
+  font-size: 16px;
   font-family: inherit;
   outline: none;
   width: 100%;
@@ -222,7 +222,7 @@ h1, h2, h3, .rfi-display {
   border: 1px solid var(--border);
   color: var(--text3);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   padding: 4px 8px;
   cursor: pointer;
@@ -570,6 +570,96 @@ h1, h2, h3, .rfi-display {
   .cc-step-card { height: auto !important; min-height: 0 !important; }
   .cc-step-layout { grid-template-columns: 1fr !important; gap: 18px !important; }
   .cc-step-description { border-left: 0 !important; border-top: 1px solid var(--border); padding: 16px 0 0 !important; }
+}
+
+/* ── Pricing card: "intelligence instrument" redesign, 2026-08-25 ──────────
+   Exact spec from Simeon (reference mockup + a full 16-section written spec).
+   Needs real CSS (not inline styles) for the gradient-border pseudo-element
+   and the subtle static 3D tilt - inline React style objects can't do ::before
+   or non-dynamic transforms cleanly. Scoped to Pricing.tsx's featured tier
+   card only (className, not applied site-wide). */
+.rfi-pricing-scene { position: relative; perspective: 1400px; }
+/* Ambient glow "fog" behind the card, separate from the card's own edge -
+   live feedback 2026-08-25: "wie als ob ein nebel von glow hinter der karte
+   isch der ganz sanft morpht ... nich genereller glow an der karte". Sits
+   behind (z-index 0) and below (inset -60px) the card, drifts opacity/scale
+   very slowly, never reacts to the cursor - a passive ambient light source,
+   not a card effect. */
+.rfi-pricing-glow {
+  position: absolute; inset: -70px; z-index: 0; border-radius: 48px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0,255,220,0.20), transparent 62%);
+  filter: blur(46px); pointer-events: none;
+  animation: rfi-pricing-glow-morph 15s ease-in-out infinite alternate;
+}
+@keyframes rfi-pricing-glow-morph {
+  0%   { opacity: 0.45; transform: scale(0.94) translate(-1.5%, -1%); }
+  50%  { opacity: 0.9;  transform: scale(1.05) translate(1.5%, 1%); }
+  100% { opacity: 0.55; transform: scale(0.97) translate(0%, 1.5%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rfi-pricing-glow { animation: none; opacity: 0.6; }
+}
+.rfi-pricing-card {
+  position: relative;
+  z-index: 1;
+  border-radius: 24px;
+  border: 1px solid rgba(0,255,220,0.22);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.055), rgba(255,255,255,0.015) 40%, rgba(0,255,220,0.015)),
+    repeating-linear-gradient(120deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 4px),
+    rgba(9,15,17,0.94);
+  box-shadow:
+    0 0 0 1px rgba(0,255,220,0.20),
+    0 25px 80px rgba(0,0,0,0.65),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -1px 0 rgba(0,0,0,0.5);
+}
+/* Static, no hover motion (live feedback 2026-08-25: "soll nich bewegen wenn
+   man mit der maus drauf isch" - the spec's hover-tilt interaction is
+   intentionally dropped; the ambient glow behind the card, above, is the only
+   thing still moving, and it never reacts to the cursor). */
+.rfi-pricing-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(160,255,245,0.55), rgba(0,255,220,0.18) 30%, transparent 60%, rgba(0,255,220,0.12));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+/* font-family intentionally NOT overridden here (was 'JetBrains Mono' -
+   dropped 2026-08-25, live feedback: "same font not this roboto" - Simeon
+   wants this badge in the same font as the rest of the card, inherits body's
+   var(--font) like everything else, not a separate monospace face). */
+.rfi-pricing-badge {
+  display: inline-block; border: 1px solid rgba(0,255,220,0.22); background: rgba(0,255,220,0.025);
+  border-radius: 999px; padding: 7px 14px;
+  font-size: 12px; letter-spacing: 0.12em; color: #00e8d0; text-transform: uppercase;
+}
+.rfi-pricing-icon-box {
+  border-radius: 10px;
+  background: linear-gradient(145deg, rgba(0,255,220,0.08), rgba(255,255,255,0.02));
+  border: 1px solid rgba(0,255,220,0.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 8px 20px rgba(0,0,0,0.25);
+}
+.rfi-pricing-bar {
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.045), rgba(0,255,220,0.035));
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.035), inset 0 -8px 20px rgba(0,0,0,0.12);
+}
+.rfi-pricing-price-btn {
+  border: 1px solid rgba(0,255,220,0.65);
+  border-radius: 9px;
+  box-shadow: 0 0 12px rgba(0,255,220,0.18), inset 0 0 15px rgba(0,255,220,0.06);
+  background: linear-gradient(180deg, rgba(0,255,220,0.08), rgba(0,255,220,0.025));
+}
+@media (prefers-reduced-motion: reduce) {
+  .rfi-pricing-card, .rfi-pricing-card:hover { transition: none; transform: none; }
 }
 
 /* ── Hero letter-flip ─────────────────────────────────────────────

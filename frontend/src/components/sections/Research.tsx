@@ -88,7 +88,7 @@ function ResearchAreaModal({ index, onClose, onNavigate }: {
         background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
         backgroundBlendMode: 'overlay',
         boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
-        border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '40px 36px', maxWidth: 640, width: '100%', maxHeight: '85vh', overflowY: 'auto', position: 'relative',
+        border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '32px 32px', maxWidth: 640, width: '100%', maxHeight: '90vh', overflowY: 'auto', position: 'relative',
       }}>
         {/* Icon and close button share one row. The close button used to be
             absolutely positioned at top:8 while the icon sat inside the panel's
@@ -111,25 +111,38 @@ function ResearchAreaModal({ index, onClose, onNavigate }: {
             modal's punchline paragraph, for visual consistency across modals. */}
         {area.plain && (
           <p style={{
-            color: '#e8e8f0', fontSize: 15, fontWeight: 700, lineHeight: 1.6,
-            margin: 0, marginBottom: 20, paddingLeft: 14, borderLeft: '2px solid #00f5c4',
+            color: '#e8e8f0', fontSize: 14, fontWeight: 700, lineHeight: 1.5,
+            margin: 0, marginBottom: 16, paddingLeft: 14, borderLeft: '2px solid #00f5c4',
           }}>{area.plain}</p>
         )}
+        {/* Body paragraphs bumped from a dimmer grey (#c8c8d8) to near-white
+            (#e8e8f0, matching the title/anchor line) - live feedback 2026-08-25:
+            "sollte doch in weiss stehen ... nicht in grau". Font-size/line-height/
+            margin tightened at the same time (15->14, 1.85->1.7, 16->12) since the
+            same feedback pass also asked for less scrolling after the keyword-
+            density pass made every area's desc noticeably longer. */}
         {area.desc.split('\n\n').map((p, i) => (
-          <p key={i} style={{ color: '#c8c8d8', fontSize: 15, lineHeight: 1.85, margin: 0, marginBottom: 16 }}>{p}</p>
+          <p key={i} style={{ color: '#e8e8f0', fontSize: 14, lineHeight: 1.7, margin: 0, marginBottom: 12 }}>{p}</p>
         ))}
         {/* Deliberately unshowy (live feedback: "nicht so grell") - a low-fill teal
             pill, not a loud CTA button, so it reads as "there's more to explore"
             rather than competing with the actual close/primary actions elsewhere
-            on the page. */}
-        <button onClick={() => onNavigate(nextIndex)} style={{
-          marginTop: 8, display: 'inline-flex', alignItems: 'center', gap: 8,
-          background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)',
-          color: '#8fe8d0', fontSize: 12, fontFamily: "'JetBrains Mono', monospace",
-          letterSpacing: '0.04em', padding: '9px 16px', borderRadius: 999, cursor: 'pointer',
-        }}>
-          {t.research.areas[nextIndex].nextLabel} &rarr;
-        </button>
+            on the page. Centered with an explicit "Up next" eyebrow above it
+            (live feedback 2026-08-25: the pill's teaser copy alone read as a
+            cryptic slogan, not obviously a "go to the next area" link) and no
+            fontFamily override, so it inherits the same body font as the rest
+            of the card instead of the monospace fallback reading as "Roboto". */}
+        <div style={{ marginTop: 20, textAlign: 'center' }}>
+          <p style={{ fontSize: 10, color: '#6a6a80', textTransform: 'uppercase', letterSpacing: '0.14em', margin: 0, marginBottom: 8 }}>{t.research.upNext}</p>
+          <button onClick={() => onNavigate(nextIndex)} style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)',
+            color: '#8fe8d0', fontSize: 12,
+            letterSpacing: '0.01em', padding: '9px 16px', borderRadius: 999, cursor: 'pointer',
+          }}>
+            {t.research.areas[nextIndex].nextLabel} &rarr;
+          </button>
+        </div>
       </div>
     </div>
   )
@@ -199,12 +212,19 @@ export const RESEARCH_AREAS = [
         {/* ethics and minor protection - a plain umbrella. An earlier pass gave
             it a deeply scalloped hem, which made it read as a flower rather
             than a shelter (live feedback 2026-08-16: "can we just make a normal
-            freaking umbrella"). Flat hem, two panel seams, crook handle. */}
+            freaking umbrella"). Flat hem, two panel seams, crook handle.
+            Redrawn again 2026-08-24 (live feedback: "ein Regenschirm mit drei
+            Dividern das war die Idee... das muss ja durchgehen bis rauf") -
+            three dividers converging at the apex (16,5): the two curved rib
+            seams already reached the apex, but the centre divider used to stop
+            partway down inside the canopy instead of continuing all the way up
+            to meet them. Now one continuous line from the apex to the handle,
+            merging what used to be two separate short segments (a ferrule stub
+            above the canopy and a shaft below it) into a single spine. */}
         <path d="M16 5a12 12 0 0 0-12 11h24A12 12 0 0 0 16 5z"/>
         <path d="M10 16q0-8 6-11M22 16q0-8-6-11"/>
-        <line x1="16" y1="16" x2="16" y2="24"/>
+        <line x1="16" y1="2.5" x2="16" y2="24" strokeWidth="2.1"/>
         <path d="M16 24a3.3 3.3 0 0 1-6.6 0"/>
-        <line x1="16" y1="2.5" x2="16" y2="5"/>
       </_I>
     ),
     title: 'Ethic Audits & Minor Protection',
@@ -216,13 +236,20 @@ export const RESEARCH_AREAS = [
         {/* ternary tree - one root, three branches, and the three trit VALUES
             drawn inside the leaves (-1 / 0 / +1) instead of three identical
             empty circles. The detail carries the actual meaning of the word
-            "ternary" rather than just decorating the shape. */}
+            "ternary" rather than just decorating the shape.
+            Swapped from minus/dot/plus GLYPHS drawn as raw line segments to
+            actual "-1"/"0"/"+1" text 2026-08-24 (live feedback: "hier wollten
+            wir -1 0 +1 reinschreiben und das ternary computing besser
+            anzeigen") - the old plus/minus strokes read as generic math
+            symbols at tile scale, not specifically as the trit values this
+            icon exists to represent. Leaf circles bumped 3 -> 3.3 to give the
+            two-character "-1"/"+1" labels a little breathing room. */}
         <circle cx="16" cy="5" r="2.5"/>
         <line x1="16" y1="7.5" x2="7" y2="22.5"/><line x1="16" y1="7.5" x2="16" y2="22.5"/><line x1="16" y1="7.5" x2="25" y2="22.5"/>
-        <circle cx="7" cy="25" r="3"/><circle cx="16" cy="25" r="3"/><circle cx="25" cy="25" r="3"/>
-        <line x1="5.6" y1="25" x2="8.4" y2="25"/>
-        <circle cx="16" cy="25" r="1" fill="currentColor" stroke="none"/>
-        <line x1="23.6" y1="25" x2="26.4" y2="25"/><line x1="25" y1="23.6" x2="25" y2="26.4"/>
+        <circle cx="7" cy="25" r="3.8"/><circle cx="16" cy="25" r="3.8"/><circle cx="25" cy="25" r="3.8"/>
+        <text x="7" y="26.7" textAnchor="middle" fontSize="4.1" fontWeight="700" fontFamily="monospace" fill="currentColor" stroke="none">-1</text>
+        <text x="16" y="26.7" textAnchor="middle" fontSize="4.6" fontWeight="700" fontFamily="monospace" fill="currentColor" stroke="none">0</text>
+        <text x="25" y="26.7" textAnchor="middle" fontSize="4.1" fontWeight="700" fontFamily="monospace" fill="currentColor" stroke="none">+1</text>
       </_I>
     ),
     title: 'Ternary AI & Smart Computing',
@@ -231,20 +258,28 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
-        {/* world model - a GRAPH, not a star. The satellites are now linked to
-            each other as well as to the centre, and an enclosing boundary marks
-            it as one bounded model rather than a loose cluster: a world model is
-            defined by the relationships between things, so the icon has to show
-            edges that do not pass through the middle. */}
-        <circle cx="16" cy="16" r="13" strokeDasharray="2.5 3" opacity="0.5"/>
-        <circle cx="16" cy="16" r="4"/>
-        <circle cx="16" cy="16" r="1.2" fill="currentColor" stroke="none"/>
-        <circle cx="6" cy="8" r="2.5"/><circle cx="26" cy="8" r="2.5"/>
-        <circle cx="6" cy="24" r="2.5"/><circle cx="26" cy="24" r="2.5"/>
-        <line x1="12.5" y1="13.5" x2="8" y2="9.5"/><line x1="19.5" y1="13.5" x2="24" y2="9.5"/>
-        <line x1="12.5" y1="18.5" x2="8" y2="22.5"/><line x1="19.5" y1="18.5" x2="24" y2="22.5"/>
-        <line x1="6" y1="10.5" x2="6" y2="21.5"/><line x1="26" y1="10.5" x2="26" y2="21.5"/>
-        <line x1="8.5" y1="8" x2="23.5" y2="8"/>
+        {/* world model - redrawn 2026-08-24 as an actual GLOBE with domains
+            connected across its surface (live feedback: "cross domain ok aber
+            man sieht das world model nich, wär doch besser eine globus mit
+            domains conected drauf?"). Previous version was a pure abstract
+            graph (dashed boundary + satellite nodes) - correct in spirit but
+            didn't read as "world" to a first glance. Sphere outline plus a
+            flattened equator ellipse and a flattened meridian ellipse give the
+            3D-globe read, four small domain nodes and their connections sit on
+            top of it so the "relationships between things" idea from the old
+            design survives inside the new shape instead of being replaced by it. */}
+        <circle cx="16" cy="16" r="12"/>
+        <ellipse cx="16" cy="16" rx="12" ry="4.5" opacity="0.6"/>
+        <ellipse cx="16" cy="16" rx="4.5" ry="12" opacity="0.6"/>
+        <line x1="9" y1="10" x2="22" y2="9" strokeWidth="2"/>
+        <line x1="9" y1="10" x2="10" y2="22" strokeWidth="2"/>
+        <line x1="22" y1="9" x2="23" y2="21" strokeWidth="2"/>
+        <line x1="10" y1="22" x2="23" y2="21" strokeWidth="2"/>
+        <line x1="9" y1="10" x2="23" y2="21" strokeWidth="2" opacity="0.6"/>
+        <circle cx="9" cy="10" r="2" fill="currentColor" stroke="none"/>
+        <circle cx="22" cy="9" r="2" fill="currentColor" stroke="none"/>
+        <circle cx="10" cy="22" r="2" fill="currentColor" stroke="none"/>
+        <circle cx="23" cy="21" r="2" fill="currentColor" stroke="none"/>
       </_I>
     ),
     title: 'World Models & Cross-Domain Intelligence',
@@ -265,8 +300,18 @@ export const RESEARCH_AREAS = [
         <circle cx="16" cy="11" r="1.8"/><circle cx="22" cy="8" r="1.8"/><circle cx="22" cy="14" r="1.8"/>
         <line x1="17.6" y1="10.3" x2="20.4" y2="8.9"/><line x1="17.6" y1="11.7" x2="20.4" y2="13.1"/>
         <circle cx="27" cy="11" r="1.8" strokeDasharray="2 2"/>
-        <path d="M6 21c4.5 3.6 11.5 3.6 16 0"/>
-        <path d="M20.6 20.1 22 21.4l-1.4 1.3"/>
+        {/* Swapped the smile-shaped check-arrow for a crosshair 2026-08-24 (live
+            feedback: "the arrow does look cheap like amazon, so idk lets leave
+            the chain, and put a crosshair there somehow of some sort") - the
+            triad "chain" above is unchanged, only the downstream marker below
+            it changed, from an arrow reading as a logo wink to a reticle
+            reading as "this is the node the system is tracking." */}
+        <path d="M22 15.5c1.6 2.2 3 3.4 4.3 4" opacity="0.6"/>
+        <circle cx="26" cy="21" r="4" strokeDasharray="1.6 1.9" opacity="0.7"/>
+        <line x1="26" y1="15.3" x2="26" y2="17.6"/>
+        <line x1="26" y1="24.4" x2="26" y2="26.7"/>
+        <line x1="20.3" y1="21" x2="22.6" y2="21"/>
+        <line x1="29.4" y1="21" x2="31.7" y2="21"/>
         <circle cx="26" cy="21" r="2.3" fill="currentColor" stroke="none"/>
       </_I>
     ),
@@ -299,8 +344,13 @@ export const RESEARCH_AREAS = [
         <circle cx="16" cy="16" r="11"/>
         <circle cx="16" cy="16" r="6" strokeDasharray="2.5 3" opacity="0.6"/>
         <circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/>
+        {/* filled sweep wedge added 2026-08-24 (live feedback: "can be more of
+            a radar shape") - the sweep used to be a bare line plus a faint
+            outline arc for the forecast cone, which read as a compass bearing
+            more than a radar display. A translucent filled sector between the
+            same two directions reads as an actual sweeping beam. */}
+        <path d="M16 16 24.8 8.2A11 11 0 0 0 22.2 6.1Z" fill="currentColor" stroke="none" opacity="0.28"/>
         <path d="M16 16 24.8 8.2"/>
-        <path d="M16 16a11 11 0 0 1 6.2-9.9" opacity="0.55"/>
         <path d="M16 16 27 12.5M16 16 27 20" strokeDasharray="2 2.5" opacity="0.75"/>
         <circle cx="21.5" cy="10.5" r="1.6" fill="currentColor" stroke="none"/>
         <circle cx="24.5" cy="18.5" r="1.6" strokeDasharray="1.8 1.6"/>
@@ -321,7 +371,11 @@ export const RESEARCH_AREAS = [
         <line x1="9" y1="24.5" x2="13" y2="24.5"/>
         <circle cx="18" cy="18" r="7.2"/>
         <circle cx="18" cy="18" r="5.7" opacity="0.42"/>
-        <path d="M13.8 15.7a4.8 4.8 0 0 1 2.4-2" opacity="0.75"/>
+        {/* small hook arc swapped for a ">" chevron 2026-08-24 (live feedback:
+            "und da in die lupe rein ein '>' noch maginifiziert mit rein?") -
+            reads as "go deeper / expand" magnified inside the lens, rather
+            than an ambiguous partial curve. */}
+        <path d="M15.7 14 19.4 18 15.7 22" strokeWidth="1.8"/>
         <line x1="23.1" y1="23.1" x2="28.5" y2="28.5"/>
         <line x1="24.3" y1="21.9" x2="25.6" y2="23.2"/>
       </_I>
@@ -339,13 +393,22 @@ export const RESEARCH_AREAS = [
         <path d="M15.5 27 8.3 20.5C3.1 15.8 4.5 9 9.5 7.7c2.5-.6 4.7.5 6 2.5 1.4-2 3.4-3 5.7-2.6"/>
         <path d="M24.6 12c1.1 3 .3 6.2-2.4 8.7L15.5 27"/>
 
-        {/* The needle terminates at, rather than piercing through, the keyhole. */}
+        {/* The needle terminates at, rather than piercing through, the keyhole.
+            Barrel redrawn 2026-08-24 (live feedback: "die spritze muss dünner
+            sein das sieht man nich richtig das isch nich sauber gezeichnet") -
+            the old barrel was a closed zigzag path that read as a lightning
+            bolt rather than a syringe. Replaced with one thin diagonal line for
+            the barrel, three short perpendicular dose-mark hatches along it,
+            and a single perpendicular tick for the plunger cap at the top end -
+            the same visual grammar a real syringe icon uses, just thinner and
+            with no filled shapes to read as clutter at tile scale. */}
         <path d="M13.9 22.2h3.6l-.6-3.2a2.4 2.4 0 1 0-2.3 0z"/>
         <line x1="16.3" y1="16.9" x2="18.4" y2="14.8"/>
-        <path d="m17.9 14.2 2 2 1.8-1.1 4.8-4.8-4.2-4.2-4.8 4.8z"/>
-        <line x1="19.5" y1="9.1" x2="23.7" y2="13.3"/>
-        <path d="m20.9 4.8 6.5 6.5"/>
-        <path d="m23.3 5.9 1.7-1.7 3.5 3.5-1.7 1.7"/>
+        <line x1="18.4" y1="14.8" x2="26.2" y2="7"/>
+        <line x1="19.8" y1="13.4" x2="21.1" y2="12.1"/>
+        <line x1="22.3" y1="10.9" x2="23.6" y2="9.6"/>
+        <line x1="24.8" y1="8.4" x2="26.1" y2="7.1"/>
+        <line x1="24.9" y1="5.7" x2="27.5" y2="8.3"/>
       </_I>
     ),
     title: 'Model Welfare & Injection Robustness',

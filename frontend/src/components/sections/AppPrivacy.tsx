@@ -47,11 +47,20 @@ export function AppPrivacySection() {
             Header size 11 -> 13: the weight was already 800, but index.html loads JetBrains
             Mono at wght@400;500;600;700 only, so 800 silently falls back to 700 and cannot
             render any heavier. Size is the lever that actually adds visibility here. */}
-        {/* background: var(--glass-bg-solid) added (live feedback 2026-08-14: this
-            table had no fill of its own, so on light theme it sat directly over the
-            page's busy marble photo and was hard to read) - same solid-card token the
-            Research bento tiles use for exactly this "readable over the photo
-            backdrop" job.
+        {/* background: var(--glass-bg-solid) - reverted 2026-08-24. Tried removing this
+            so the "see through until assembled" fly-in effect would show the page
+            backdrop during the animation, but the individual cells' own backgrounds
+            (var(--bg2) / rgba tints below) turned out not to butt up flush at rest
+            either, so the marble backdrop kept bleeding through permanently, not just
+            during the animation (live feedback: "der BG ischt ganz weg bei der
+            Tabelle, das war nicht der Plan"). Back to the solid fill this comment
+            originally documented (live feedback 2026-08-14: this table had no fill of
+            its own, so on light theme it sat directly over the page's busy marble
+            photo and was hard to read) - same solid-card token the Research bento
+            tiles use for exactly this "readable over the photo backdrop" job. A real
+            see-through-while-assembling effect would need the outer fill to fade in
+            on its own delayed Reveal timed to land after the last cell, not just be
+            deleted outright - not attempted here.
             Reveal moved from wrapping the whole table to wrapping each CELL
             individually (2026-08-18, live feedback: the table should converge like
             the research tiles - left column flying in from the left, right column

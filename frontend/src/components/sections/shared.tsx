@@ -634,7 +634,12 @@ export function ArrowIcon() {
 // up on both the label and the list text there. The checkout/proposal modal's
 // usage (ModalTierBody) stays at the original tuned size, unchanged.
 export function EngagementFlow({ bring, mechanism, receive, large }: {
-  bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[]
+  // string = one flowing paragraph (Pricing.tsx's 3 main tiers, 2026-08-25 prose
+  // rewrite). readonly string[] = legacy short-bullet-phrase arrays, still used by
+  // TierCarousel/CarouselTier (Projects.tsx, Hero.tsx collaboration tiers) - both
+  // render as paragraphs now, array items just become one paragraph each instead
+  // of a single joined one.
+  bring?: string | readonly string[]; mechanism?: string | readonly string[]; receive?: string | readonly string[]
   large?: boolean
 }) {
   const { t: locale } = useLocale()
@@ -644,40 +649,61 @@ export function EngagementFlow({ bring, mechanism, receive, large }: {
   // as part of the 2026-08-16 squeezed-card fix - see the comment on the arrow
   // buttons in Pricing.tsx for the full chain.
   const mobile = useMobile(640)
-  if ((!bring || bring.length === 0) && (!mechanism || mechanism.length === 0) && (!receive || receive.length === 0)) return null
-  const groups: { label: string; items: readonly string[] | undefined }[] = [
-    { label: locale.modalTierBody.youBring, items: bring },
-    { label: locale.modalTierBody.we, items: mechanism },
-    { label: locale.modalTierBody.youReceive, items: receive },
+  const toParagraphs = (v?: string | readonly string[]) => !v ? undefined : typeof v === 'string' ? [v] : v
+  // REDESIGNED 2026-08-25 (reference mockup, matched exactly on request): an icon
+  // box per row instead of a centered pill label inside one shared bordered
+  // container - icon left, label + paragraphs left-aligned to its right, a thin
+  // divider between rows, no outer border/background box at all. Icon is fixed
+  // per position (bring/mechanism/receive is always this order everywhere this
+  // component is called), not data-driven.
+  const groups: { label: string; paragraphs: readonly string[] | undefined; icon: React.ReactNode }[] = [
+    { label: locale.modalTierBody.youBring, paragraphs: toParagraphs(bring), icon: <BringIcon size={large ? 24 : 20} /> },
+    { label: locale.modalTierBody.we, paragraphs: toParagraphs(mechanism), icon: <WeIcon size={large ? 24 : 20} /> },
+    { label: locale.modalTierBody.youReceive, paragraphs: toParagraphs(receive), icon: <ReceiveIcon size={large ? 24 : 20} /> },
   ]
+  if (groups.every(g => !g.paragraphs)) return null
+  // Stacked rows, NOT a 3-column grid (tried 2026-08-25, reverted same day -
+  // live feedback: "die icons sollten schon stacked ubereinander bleiben, you
+  // bring we you receive remains under each other" - the earlier "rechteck
+  // format" request was about the CARD's own width/shape, not about putting
+  // the three sections side by side. Widening the card (see the maxWidth bump
+  // in Pricing.tsx) still shortens the card because each stacked paragraph
+  // wraps into fewer lines, without restructuring the section layout itself.
+  const boxSize = large ? 52 : 44
   return (
-    <div style={{
-      display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16,
-      border: '1px solid rgba(0,245,196,0.16)', borderRadius: 12,
-      padding: mobile ? '12px 10px' : '14px 16px',
-      background: 'rgba(0,245,196,0.03)',
-    }}>
+    <div style={{ display: 'flex', flexDirection: 'column', marginBottom: 16 }}>
       {groups.map((g, gi) => (
-        (g.items && g.items.length > 0) && (
-          <div key={g.label} style={{
-            paddingTop: gi > 0 ? 10 : 0,
-            borderTop: gi > 0 ? '1px solid rgba(255,255,255,0.07)' : undefined,
-            textAlign: 'center',
-          }}>
-            <span style={{
-              display: 'inline-block', fontFamily: "'JetBrains Mono', monospace",
-              fontSize: large ? 11.5 : 9.5, fontWeight: 700,
-              color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.1em',
-              border: '1px solid rgba(0,245,196,0.3)', background: 'rgba(0,245,196,0.06)',
-              borderRadius: 999, padding: '4px 12px', marginBottom: 8,
-            }}>{g.label}</span>
-            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 4, textAlign: 'left' }}>
-              {g.items!.map((item, i) => (
-                <li key={i} style={{ fontSize: large ? 14.5 : 12.5, lineHeight: 1.5, color: 'var(--text)', display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                  <span style={{ color: TEAL, fontSize: large ? 10 : 8.5, lineHeight: 1, flexShrink: 0, marginTop: large ? 5 : 4 }}>&#9642;</span>{item}
-                </li>
-              ))}
-            </ul>
+        g.paragraphs && (
+          <div key={g.label} style={{ display: 'flex', gap: mobile ? 12 : 14, paddingTop: gi > 0 ? (large ? 16 : 12) : 0, paddingBottom: large ? 16 : 12, borderTop: gi > 0 ? '1px solid rgba(255,255,255,0.08)' : undefined }}>
+            <div className="rfi-pricing-icon-box" style={{
+              width: boxSize, height: boxSize, flexShrink: 0,
+              color: 'var(--accent-text)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>{g.icon}</div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              {/* font-family no longer forced to JetBrains Mono (live feedback
+                  2026-08-25: "same font as the rest ... not this roboto") - inherits
+                  the card's body font like everything else now. Also flipped the
+                  label/body size relationship: the label used to render SMALLER
+                  than the paragraph it introduces, backwards from what reads right
+                  ("you bring we you receive must be one font size bigger than what
+                  it describes"). */}
+              <div style={{
+                fontSize: large ? 15 : 10, fontWeight: large ? 700 : 700,
+                color: large ? '#00e8d0' : 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: large ? '0.04em' : '0.12em',
+                marginBottom: 6,
+              }}>{g.label}</div>
+              {/* Spec called for a softened rgba(235,240,240,0.78) body color here -
+                  dropped 2026-08-25, live feedback on the actual deployed card:
+                  "immer noch grau" (the research-modal grey complaint, again, this
+                  time on the pricing card). Solid near-white wins over the spec's
+                  own suggested opacity. */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {g.paragraphs.map((p, i) => (
+                  <p key={i} style={{ margin: 0, fontSize: large ? 13.5 : 12.5, lineHeight: large ? 1.55 : 1.5, color: large ? '#f4f6f6' : 'var(--text)' }}>{p}</p>
+                ))}
+              </div>
+            </div>
           </div>
         )
       ))}
@@ -793,6 +819,49 @@ export function ClockIcon() {
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="9" />
       <path d="M12 7v5l3.5 2" />
+    </svg>
+  )
+}
+// Added 2026-08-25 for the unified delivery+price bar on pricing cards
+// (PricingOfferCard) - live feedback wanted a lightning-bolt "fast delivery"
+// mark instead of the clock, one wide connected bar rather than two separate
+// pills, matching a reference mockup.
+export function ZapIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" />
+    </svg>
+  )
+}
+// Three icons for EngagementFlow's redesigned per-row icon boxes (2026-08-25,
+// reference mockup) - a viewfinder/reticle for "you bring" (what gets pointed
+// at), a hex network node for "we" (Dingir/agent-swarm processing), a
+// document for "you receive" (the deliverable). Same stroke language as the
+// other line icons in this file (fill none, currentColor, round joins).
+export function BringIcon({ size = 22 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 9V6a2 2 0 0 1 2-2h3" /><path d="M20 9V6a2 2 0 0 0-2-2h-3" />
+      <path d="M4 15v3a2 2 0 0 0 2 2h3" /><path d="M20 15v3a2 2 0 0 1-2 2h-3" />
+      <circle cx="12" cy="12" r="2.4" />
+    </svg>
+  )
+}
+export function WeIcon({ size = 22 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3.5 20 8v8l-8 4.5L4 16V8l8-4.5Z" />
+      <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
+      <path d="M12 10.4V8M12 13.6v2.4M10.6 12H8M15.6 12h-2.6" opacity="0.7" />
+    </svg>
+  )
+}
+export function ReceiveIcon({ size = 22 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
+      <path d="M14 3v4h4" />
+      <path d="M9 13h6M9 16h6M9 10h2" opacity="0.8" />
     </svg>
   )
 }
