@@ -1,9 +1,10 @@
 import { useLocale } from '../../hooks/useLocale'
 import { Reveal } from './shared'
-import { IconAdjustmentsCode, IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute } from '@tabler/icons-react'
+import { IconAdjustmentsCode, IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport } from '@tabler/icons-react'
 
 const PRODUCT_ICONS = [IconBuilding, IconFlask, IconGitBranch, IconShieldCheck, IconCode, IconAdjustmentsCode]
 const AGENT_ICONS = [IconRobot, IconBuilding, IconSearch, IconDeviceDesktop, IconBraces, IconTerminal2]
+const PIPELINE_ICONS = [IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport]
 
 const COPY = {
   en: {
@@ -127,13 +128,13 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2>{c.pipelineTitle}</h2></div></Reveal>
-      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => <Reveal key={n} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid"><span>{n}</span><div className="data-pipeline-icon"><IconRoute size={22} /></div><div><h3>{title}</h3><p>{body}</p></div></article></Reveal>)}</div>
+      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid"><div className="data-pipeline-icon"><Icon size={22} /></div><div className="data-pipeline-copy"><span>{n}</span><p><strong>{title}:</strong> {body}</p></div></article></Reveal> })}</div>
       <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><IconShieldCheck size={32} /><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2>{c.startTitle}</h2></div></Reveal>
-      <div className="data-start-grid">{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><span>{n}</span><IconDatabase size={30} stroke={1.5} /><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
+      <div className="data-start-grid">{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><span>{n}</span><div className="data-start-icon-stack" aria-hidden="true">{Array.from({ length: i + 1 }, (_, layer) => <IconDatabase key={layer} size={28} stroke={1.5} style={{ transform: `translateY(${layer * 8}px)` }} />)}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
     </div></section>
 
     <section className="data-experts data-wrap"><Reveal><p className="data-eyebrow">{c.expertsEyebrow}</p><h2>{c.expertsTitle}</h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>
