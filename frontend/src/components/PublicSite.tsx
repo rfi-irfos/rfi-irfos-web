@@ -13,6 +13,7 @@ import { AppPrivacySection } from './sections/AppPrivacy'
 import { CausalChainsSection } from './sections/CausalChains'
 import { PricingSection } from './sections/Pricing'
 import { JourneySection } from './sections/Journey'
+import { DataSolutionsSection } from './sections/DataSolutions'
 import { CoopPartnersSection } from './sections/CoopPartners'
 import { SubmitSection, type TipForm } from './sections/Submit'
 import { ZONE_ORDER, ZONE_LABELS, SYSTEMS } from '../content/systems'
@@ -140,11 +141,12 @@ function ThemeIcon({ t }: { t: 'light' | 'dark' | 'hc' }) {
   )
 }
 
-type PublicView = 'home' | 'systems' | 'evidence' | 'access'
+type PublicView = 'home' | 'systems' | 'evidence' | 'data-solutions' | 'access'
 
 function viewForSection(section?: string | null): PublicView {
   if (section === 'systems' || section === 'projects') return 'systems'
   if (section === 'evidence' || section === 'track-record') return 'evidence'
+  if (section === 'data-solutions' || section === 'datasets') return 'data-solutions'
   if (section === 'access' || section === 'pricing') return 'access'
   return 'home'
 }
@@ -159,6 +161,7 @@ function viewForSection(section?: string | null): PublicView {
 const NAV_HREFS = [
   { key: 'projects' as const, href: '#systems' },
   { key: 'trackRecord' as const, href: '#evidence' },
+  { key: 'dataSolutions' as const, href: '#data-solutions' },
   { key: 'pricing' as const, href: '#access' },
 ]
 
@@ -173,6 +176,8 @@ function sectionMeta(t: Content, section: string) {
     case 'projects': return { title: `${t.projects.heading} — RFI-IRFOS`, description: t.projects.subheading }
     case 'evidence':
     case 'track-record': return { title: `${t.trackRecord.heading} — RFI-IRFOS`, description: t.trackRecord.paragraph }
+    case 'data-solutions':
+    case 'datasets': return { title: 'Data Solutions — RFI-IRFOS', description: 'Reproducible environments, expert trajectories, evaluation datasets, and safety data for capable agents.' }
     case 'access':
     case 'pricing': return { title: `${t.pricing.heading} — RFI-IRFOS`, description: t.pricing.subheading }
     case 'submit': return { title: `${t.submit.heading} — RFI-IRFOS`, description: t.submit.paragraph }
@@ -1227,6 +1232,10 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             setIntelModal={setIntelModal}
           />
           <ProofSection setReportModal={setReportModal} />
+        </section>}
+
+        {view === 'data-solutions' && <section id="data-solutions" className="rfi-view-panel">
+          <DataSolutionsSection onContact={() => navigateTo('#access')} />
         </section>}
 
         {view === 'access' && <section id="access" className="rfi-view-panel">

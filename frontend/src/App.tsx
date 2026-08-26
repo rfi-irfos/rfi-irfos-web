@@ -13,7 +13,7 @@ const LEGAL_SLUGS = ['impressum', 'datenschutz', 'agb', 'security', 'standards',
 // View ids that also get a real, crawlable URL in addition to their homepage hash.
 // The legacy section slugs remain accepted so existing links do not break while
 // the public shell is reorganised into Home / Systems / Evidence / Access views.
-const SECTION_SLUGS = ['systems', 'evidence', 'access', 'submit', 'research', 'projects', 'track-record', 'pricing']
+const SECTION_SLUGS = ['systems', 'evidence', 'data-solutions', 'datasets', 'access', 'submit', 'research', 'projects', 'track-record', 'pricing']
 
 function pathSlug() {
   return window.location.pathname.replace(/^\/|\/$/g, '')

@@ -17,6 +17,7 @@ export const EN = {
       research: 'Research',
       projects: 'Systems',
       trackRecord: 'Evidence',
+      dataSolutions: 'Data Solutions',
       pricing: 'Access',
       submit: 'Submit',
     },

@@ -14,6 +14,7 @@ export const DE: Content = {
       research: 'Forschung',
       projects: 'Systeme',
       trackRecord: 'Evidenz',
+      dataSolutions: 'Data Solutions',
       pricing: 'Zugang',
       submit: 'Kontakt',
     },
