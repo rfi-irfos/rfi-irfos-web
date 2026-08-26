@@ -329,8 +329,7 @@ button { cursor: pointer; font-family: inherit; }
 .data-quality li { display: flex; align-items: flex-start; gap: 9px; font-size: 15px; }
 .data-quality li svg { flex: 0 0 auto; color: var(--accent); margin-top: 2px; }
 .data-start-grid article { min-height: 250px; display: flex; flex-direction: column; align-items: center; }
-.data-start-icon-stack { position: relative; width: 32px; height: 48px; margin: 18px 0 2px; color: var(--accent); }
-.data-start-icon-stack svg { position: absolute; inset: 0 auto auto 2px; filter: drop-shadow(0 4px 3px rgba(0, 0, 0, .65)); }
+.data-start-icons { height: 32px; margin: 22px 0 4px; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--accent); }
 .data-experts { padding-block: 72px 104px; text-align: center; }
 .data-experts > div > p:not(.data-eyebrow) { max-width: 760px; margin: 16px auto 0; color: var(--text2); font-size: 17px; line-height: 1.6; }
 .data-solutions p:not(.data-eyebrow) { color: var(--text); }

@@ -134,7 +134,7 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2>{c.startTitle}</h2></div></Reveal>
-      <div className="data-start-grid">{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><span>{n}</span><div className="data-start-icon-stack" aria-hidden="true">{Array.from({ length: i + 1 }, (_, layer) => <IconDatabase key={layer} size={28} stroke={1.5} style={{ transform: `translateY(${layer * 8}px)` }} />)}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
+      <div className="data-start-grid">{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><span>{n}</span><div className="data-start-icons" aria-hidden="true">{Array.from({ length: i + 1 }, (_, icon) => <IconDatabase key={icon} size={27} stroke={1.5} />)}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
     </div></section>
 
     <section className="data-experts data-wrap"><Reveal><p className="data-eyebrow">{c.expertsEyebrow}</p><h2>{c.expertsTitle}</h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>
