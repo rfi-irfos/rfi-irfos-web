@@ -209,7 +209,7 @@ export const DE: Content = {
   appPrivacy: {
     eyebrow: 'Hier beginnen',
     heading: 'Beobachtungen werden zu Intelligence',
-    paragraph: 'Die meisten Organisationen haben mehr Daten, als sie einordnen können: Systeme, Anbieter, Märkte, Ereignisse, Abhängigkeiten und Veränderungen aus verschiedenen Richtungen. Wir führen sie in einem evidenzbasierten Machine-Learning-World-Model zusammen, bewahren die Herkunft jeder Beobachtung und verfolgen Veränderungen durch die Beziehungen, die daran hängen. Jedes System, das wir bauen, ist erklärbar konstruiert, und das ist ein Mechanismus und kein Etikett: Man fragt es nach dem Warum und bekommt die konkreten Beobachtungen zurück, aus denen die Antwort entstanden ist, die Schritte dazwischen und wie sicher es sich bei jedem einzelnen ist. Whitebox ist das Ergebnis daraus, nicht eine Behauptung, die wir stattdessen aufstellen.',
+    paragraph: 'Die meisten Organisationen haben mehr Daten, als sie einordnen können: Systeme, Anbieter, Märkte, Ereignisse, Abhängigkeiten und Veränderungen aus verschiedenen Richtungen. Wir führen sie in einem evidenzbasierten Machine-Learning-World-Model zusammen, bewahren die Herkunft jeder Beobachtung und verfolgen Veränderungen durch die Beziehungen, die daran hängen.',
     comparisonClassicLabel: 'Was verloren geht',
     comparisonRfiLabel: 'Was das Modell bewahrt',
     comparisonRows: [
