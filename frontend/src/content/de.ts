@@ -790,6 +790,7 @@ export const DE: Content = {
         securityDisclosure: 'Sicherheitsmeldung',
         sendApk: 'APK Einschicken',
         researchCollaboration: 'Forschungskooperation',
+        dataSolutions: 'Data Solutions',
         other: 'Etwas Anderes',
       },
       namePlaceholder: 'Name oder Alias (optional - leer lassen, um anonym zu bleiben)',

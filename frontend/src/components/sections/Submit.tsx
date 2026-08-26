@@ -108,6 +108,7 @@ export function SubmitSection({
                   { value: 'Security Disclosure', label: t.submit.form.topicOptions.securityDisclosure },
                   { value: 'Send APK', label: t.submit.form.topicOptions.sendApk },
                   { value: 'Research Collaboration', label: t.submit.form.topicOptions.researchCollaboration },
+                  { value: 'Data Solutions', label: t.submit.form.topicOptions.dataSolutions },
                   { value: 'Other', label: t.submit.form.topicOptions.other },
                   { value: 'First Light', label: t.submit.form.topicOptions.firstLight },
                   { value: 'Deep Field', label: t.submit.form.topicOptions.deepField },
