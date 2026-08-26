@@ -1,5 +1,5 @@
 import { useLocale } from '../../hooks/useLocale'
-import { Reveal, ScrambleHeading } from './shared'
+import { Reveal } from './shared'
 import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconSparkles, IconTerminal2, IconRoute } from '@tabler/icons-react'
 
 const PRODUCT_ICONS = [IconBuilding, IconFlask, IconGitBranch, IconShieldCheck, IconCode, IconSparkles]
@@ -51,7 +51,7 @@ const COPY = {
     ],
     expertsEyebrow: 'Expert depth', expertsTitle: 'Not crowd work. Technical work.',
     expertsText: 'The work is produced and reviewed at the level where our own systems are built: Python, Rust, C/C++, JavaScript and TypeScript, Go, Java, Kotlin, SQL, Bash, mobile and ML stacks — across backend, frontend, systems, security, DevOps, data science, and model engineering.',
-    cta: 'Discuss a data programme',
+    cta: 'Talk to a data engineer',
   },
   de: {
     eyebrow: 'Data Solutions', title: 'Produktionsdaten für Agenten, die wirklich arbeiten müssen',
@@ -98,7 +98,7 @@ const COPY = {
     ],
     expertsEyebrow: 'Expertentiefe', expertsTitle: 'Keine Crowd-Arbeit. Technische Arbeit.',
     expertsText: 'Produktion und Review finden auf derselben Ebene statt, auf der wir unsere eigenen Systeme bauen: Python, Rust, C/C++, JavaScript und TypeScript, Go, Java, Kotlin, SQL, Bash, Mobile- und ML-Stacks — in Backend, Frontend, Systems, Security, DevOps, Data Science und Model Engineering.',
-    cta: 'Datenprogramm besprechen',
+    cta: 'Mit einem Data Engineer sprechen',
   },
 } as const
 
@@ -107,36 +107,36 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
   const c = COPY[locale]
   return <div className="data-solutions">
     <header className="data-hero data-wrap">
-      <Reveal><p className="data-eyebrow">{c.eyebrow}</p><h1><ScrambleHeading text={c.title} /></h1></Reveal>
+      <Reveal><p className="data-eyebrow">{c.eyebrow}</p><h1>{c.title}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{c.intro}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal>
     </header>
 
     <section className="data-section data-datasets"><div className="data-wrap">
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.datasetsEyebrow}</p><h2><ScrambleHeading text={c.datasetsTitle} /></h2></div></Reveal>
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.datasetsEyebrow}</p><h2>{c.datasetsTitle}</h2></div></Reveal>
       <div className="data-dataset-grid">{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.deliverEyebrow}</p><h2><ScrambleHeading text={c.deliverTitle} /></h2><p>{c.deliverIntro}</p></div></Reveal>
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.deliverEyebrow}</p><h2>{c.deliverTitle}</h2><p>{c.deliverIntro}</p></div></Reveal>
       <div className="data-product-grid">{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card"><div className="data-icon"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.agentsEyebrow}</p><h2><ScrambleHeading text={c.agentsTitle} /></h2></div></Reveal>
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.agentsEyebrow}</p><h2>{c.agentsTitle}</h2></div></Reveal>
       <div className="data-agent-grid">{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><Icon size={27} stroke={1.6} /><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2><ScrambleHeading text={c.pipelineTitle} /></h2></div></Reveal>
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2>{c.pipelineTitle}</h2></div></Reveal>
       <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => <Reveal key={n} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid"><span>{n}</span><div className="data-pipeline-icon"><IconRoute size={22} /></div><div><h3>{title}</h3><p>{body}</p></div></article></Reveal>)}</div>
       <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><IconShieldCheck size={32} /><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2><ScrambleHeading text={c.startTitle} /></h2></div></Reveal>
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2>{c.startTitle}</h2></div></Reveal>
       <div className="data-start-grid">{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><span>{n}</span><IconDatabase size={30} stroke={1.5} /><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
     </div></section>
 
-    <section className="data-experts data-wrap"><Reveal><p className="data-eyebrow">{c.expertsEyebrow}</p><h2><ScrambleHeading text={c.expertsTitle} /></h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>
+    <section className="data-experts data-wrap"><Reveal><p className="data-eyebrow">{c.expertsEyebrow}</p><h2>{c.expertsTitle}</h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>
   </div>
 }
