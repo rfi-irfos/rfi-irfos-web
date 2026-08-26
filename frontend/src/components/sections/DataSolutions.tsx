@@ -9,7 +9,6 @@ const COPY = {
   en: {
     eyebrow: 'Data Solutions', title: 'production data for agents that have to work',
     intro: 'The same discipline behind our systems and public evidence, delivered as data: reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Your corpus stays private; every delivered artefact stays traceable.',
-    datasetsEyebrow: 'Selected data products', datasetsTitle: 'Five corpora. One evidence standard.',
     datasets: [
       ['Mobile application behaviour', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],
       ['SDK & tracker graph', 'Reusable SDKs, tracker relationships, infrastructure, and cross-application recurrence mapped as connected evidence.'],
@@ -56,7 +55,6 @@ const COPY = {
   de: {
     eyebrow: 'Data Solutions', title: 'Produktionsdaten für Agenten, die wirklich arbeiten müssen',
     intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten geliefert: reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Ihr Korpus bleibt privat; jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
-    datasetsEyebrow: 'Ausgewählte Datenprodukte', datasetsTitle: 'Fünf Korpora. Ein Evidenzstandard.',
     datasets: [
       ['Verhalten mobiler Anwendungen', 'Quellcodebasiertes App-Verhalten, Berechtigungen, Endpunkte, Consent-Timing und beobachtete Datenflüsse.'],
       ['SDK- & Tracker-Graph', 'Wiederkehrende SDKs, Tracker-Beziehungen, Infrastruktur und App-übergreifende Zusammenhänge als verbundene Evidenz.'],
@@ -108,12 +106,12 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
   return <div className="data-solutions">
     <header className="data-hero data-wrap">
       <Reveal><p className="data-eyebrow">{c.eyebrow}</p><h1>{c.title}</h1></Reveal>
-      <Reveal delay={1}><p className="data-lede">{c.intro}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal>
+      <Reveal delay={1}><p className="data-lede">{c.intro}</p></Reveal>
     </header>
 
     <section className="data-section data-datasets"><div className="data-wrap">
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.datasetsEyebrow}</p><h2>{c.datasetsTitle}</h2></div></Reveal>
       <div className="data-dataset-grid">{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
+      <Reveal><div className="data-dataset-cta"><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></div></Reveal>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
