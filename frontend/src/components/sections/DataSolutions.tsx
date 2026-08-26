@@ -113,7 +113,6 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
 
     <section className="data-section data-datasets"><div className="data-wrap">
       <div className="data-dataset-grid">{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article> })}</div>
-      <Reveal><div className="data-dataset-cta"><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></div></Reveal>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
