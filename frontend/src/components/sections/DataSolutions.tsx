@@ -1,6 +1,13 @@
+import type { CSSProperties } from 'react'
+import { useRef } from 'react'
 import { useLocale } from '../../hooks/useLocale'
-import { Reveal } from './shared'
+import { Reveal, OUTPUT_TAG_HUES } from './shared'
 import { IconAdjustmentsCode, IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport } from '@tabler/icons-react'
+
+// One fixed hue per section (see HUE_* below), reusing the same calibrated hue set
+// OutputTags uses elsewhere on the site so this isn't a new, uncalibrated palette.
+const hue = (i: number) => OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
+const hueStyle = (i: number) => ({ '--hue-bg': hue(i).bg, '--hue-border': hue(i).border }) as CSSProperties
 
 const PRODUCT_ICONS = [IconBuilding, IconFlask, IconGitBranch, IconShieldCheck, IconCode, IconAdjustmentsCode]
 const AGENT_ICONS = [IconRobot, IconBuilding, IconSearch, IconDeviceDesktop, IconBraces, IconTerminal2]
@@ -11,7 +18,7 @@ const COPY = {
     eyebrow: 'Data Solutions', title: 'production data for agents that have to work',
     intro: 'The same discipline behind our systems and public evidence, delivered as data: reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Your corpus stays private. Every delivered artefact stays traceable.',
     datasets: [
-      ['Mobile application behaviour', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],
+      ['Mobile application behavior\ndatasets', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],
       ['SDK & tracker knowledge\ngraphs', 'Reusable SDKs, tracker relationships, infrastructure, and cross-application recurrence mapped as connected evidence.'],
       ['Agent safety\ntrajectories', 'Tool-use traces under injection, conflicting instructions, boundary pressure, recovery, and stop conditions.'],
       ['World-state & causality\nmapping', 'Multi-domain observations, entity relationships, change histories, and evidence-linked causal chains.'],
@@ -105,9 +112,29 @@ const COPY = {
   },
 } as const
 
+// One fixed hue per topic/section, not per card - a whole section is "the amber
+// one" or "the violet one", every card inside it matches. Rotating colour card-by-
+// card within a single, uniform list (six agent types, none more different from
+// each other than another) read as random confetti rather than a signal, live
+// feedback 2026-08-26 ("looks like a pinjata"). Section identity, not card identity.
+const HUE_DATASETS = hueStyle(0)  // teal - matches the pipeline's existing accent
+const HUE_PRODUCTS = hueStyle(2)  // blue
+const HUE_AGENTS = hueStyle(1)    // amber
+const HUE_STARTS = hueStyle(3)    // violet
+
 export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
   const { locale } = useLocale()
   const c = COPY[locale]
+  const datasetGridRef = useRef<HTMLDivElement>(null)
+  const updateDatasetGlow = (event: React.MouseEvent<HTMLDivElement>) => {
+    const grid = datasetGridRef.current
+    if (!grid) return
+    const rect = grid.getBoundingClientRect()
+    grid.style.setProperty('--spot-x', `${event.clientX - rect.left}px`)
+    grid.style.setProperty('--spot-y', `${event.clientY - rect.top}px`)
+    grid.style.setProperty('--spot-alpha', '1')
+  }
+  const hideDatasetGlow = () => datasetGridRef.current?.style.setProperty('--spot-alpha', '0')
   return <div className="data-solutions">
     <header className="data-hero data-wrap">
       <Reveal><p className="data-eyebrow">{c.eyebrow}</p><h1>{c.title}</h1></Reveal>
@@ -115,28 +142,28 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
     </header>
 
     <section className="data-section data-datasets"><div className="data-wrap">
-      <div className="data-dataset-grid">{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article> })}</div>
+      <div ref={datasetGridRef} className="data-dataset-grid" onMouseMove={updateDatasetGlow} onMouseLeave={hideDatasetGlow}>{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid" style={HUE_DATASETS}><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article> })}</div>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.deliverEyebrow}</p><h2>{c.deliverTitle}</h2><p>{c.deliverIntro}</p></div></Reveal>
-      <div className="data-product-grid">{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card"><div className="data-icon"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
+      <div className="data-product-grid">{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_PRODUCTS}><div className="data-icon"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.agentsEyebrow}</p><h2>{c.agentsTitle}</h2><p>{c.agentsIntro}</p></div></Reveal>
-      <div className="data-agent-grid">{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><Icon size={27} stroke={1.6} /><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
+      <div className="data-agent-grid">{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_AGENTS}><Icon size={27} stroke={1.6} /><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2>{c.pipelineTitle}</h2></div></Reveal>
-      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid" data-stage={i}><div className="data-pipeline-icon"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-stage"><span>{n}</span><small>{c.pipelineKinds[i]}</small></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
+      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid" data-stage={i}><div className="data-pipeline-icon"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-stage"><span>{n}</span></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
       <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><IconShieldCheck size={32} /><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2>{c.startTitle}</h2></div></Reveal>
-      <div className="data-start-grid">{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><span>{n}</span><div className="data-start-icons" aria-hidden="true">{Array.from({ length: i + 1 }, (_, icon) => <IconDatabase key={icon} size={27} stroke={1.5} />)}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
+      <div className="data-start-grid">{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_STARTS}><span>{n}</span><div className="data-start-icons" aria-hidden="true">{Array.from({ length: i + 1 }, (_, icon) => <IconDatabase key={icon} size={27} stroke={1.5} />)}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
     </div></section>
 
     <section className="data-experts data-wrap"><Reveal><p className="data-eyebrow">{c.expertsEyebrow}</p><h2>{c.expertsTitle}</h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>

@@ -428,7 +428,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
               // statt vollem Weiss, ganz zart").
               background: theme === 'light'
                 ? 'linear-gradient(155deg, rgba(255,255,255,0.82) 0%, rgba(246,247,248,0.78) 100%)'
-                : 'linear-gradient(155deg, #34343d 0%, #222228 28%, #1a1a1e 52%, #2c2c34 76%, #1e1e22 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 3px)',
+                : 'linear-gradient(145deg, rgba(107,82,146,0.18) 0%, rgba(42,40,52,0.04) 52%, rgba(89,68,126,0.12) 100%), linear-gradient(155deg, #34343d 0%, #222228 28%, #1a1a1e 52%, #2c2c34 76%, #1e1e22 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 3px)',
               backdropFilter: theme === 'light' ? 'blur(14px)' : undefined,
               WebkitBackdropFilter: theme === 'light' ? 'blur(14px)' : undefined,
               backgroundBlendMode: theme === 'light' ? 'normal' : 'overlay',
