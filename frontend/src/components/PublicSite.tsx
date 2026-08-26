@@ -332,20 +332,24 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     return () => { document.body.style.overflow = prevOverflow }
   }, [checkoutModal, reportModal, intelModal])
 
-  // "ba-dum-tss" - Zabih's idea, live feedback 2026-08-14: the confetti pop needed a
-  // rimshot to sell the joke. Originally synthesized via the Web Audio API (two sine
-  // kicks + a filtered noise cymbal, no audio file) - replaced 2026-08-24 (live
-  // feedback: "cheap ass badumm tss") with a real recorded sfx clip
-  // (public/sfx/badum-tss.mp3, "no copyright" licensed download, trimmed from 4.04s
-  // to 2.12s to cut the ~0.5s of leading silence in the original file that read as
-  // playback lag). Volume kept deliberately low (0.07, tuned down once more live
-  // 2026-08-24: "could be a tad more silent"), quieter than the old synthesized
-  // version's effective loudness, not louder - this is a wink, not a jump-scare.
-  const playRimshotSound = () => {
+  // A tiny, neutral confirmation pop for the confetti action. Synthesized locally so
+  // the interaction needs no audio asset or request; deliberately brief and quiet.
+  const playPopSound = () => {
     try {
-      const audio = new Audio('/sfx/badum-tss.mp3')
-      audio.volume = 0.07
-      void audio.play().catch(() => { /* autoplay can be blocked, never block the banner over it */ })
+      const ctx = new AudioContext()
+      const oscillator = ctx.createOscillator()
+      const gain = ctx.createGain()
+      const now = ctx.currentTime
+      oscillator.type = 'sine'
+      oscillator.frequency.setValueAtTime(420, now)
+      oscillator.frequency.exponentialRampToValueAtTime(180, now + 0.07)
+      gain.gain.setValueAtTime(0.018, now)
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07)
+      oscillator.connect(gain)
+      gain.connect(ctx.destination)
+      oscillator.start(now)
+      oscillator.stop(now + 0.07)
+      oscillator.addEventListener('ended', () => { void ctx.close() }, { once: true })
     } catch { /* never block the banner over audio */ }
   }
 
@@ -363,7 +367,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   // below is extended to match, otherwise slower pieces get yanked away mid-fall.
   const fireConfettiFromRect = (rect: DOMRect, count: number) => {
     const colors = ['#00f5c4', '#ef4444', '#f97316', '#eab308', '#e8e8f0', '#ec4899', '#facc15', '#c9a227', '#b8c4d0']
-    playRimshotSound()
+    playPopSound()
     for (let i = 0; i < count; i++) {
       const el = document.createElement('div')
       const shapeRoll = Math.random()
