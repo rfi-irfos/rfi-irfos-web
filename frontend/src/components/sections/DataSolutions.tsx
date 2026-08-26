@@ -1,8 +1,8 @@
 import { useLocale } from '../../hooks/useLocale'
 import { Reveal } from './shared'
-import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconSparkles, IconTerminal2, IconRoute } from '@tabler/icons-react'
+import { IconAdjustmentsCode, IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute } from '@tabler/icons-react'
 
-const PRODUCT_ICONS = [IconBuilding, IconFlask, IconGitBranch, IconShieldCheck, IconCode, IconSparkles]
+const PRODUCT_ICONS = [IconBuilding, IconFlask, IconGitBranch, IconShieldCheck, IconCode, IconAdjustmentsCode]
 const AGENT_ICONS = [IconRobot, IconBuilding, IconSearch, IconDeviceDesktop, IconBraces, IconTerminal2]
 
 const COPY = {
@@ -27,6 +27,7 @@ const COPY = {
       ['Synthetic enhancement', 'Domain adaptation, controlled variation, hard-negative generation, and dataset expansion without losing provenance or evaluation integrity.'],
     ],
     agentsEyebrow: 'Built for', agentsTitle: 'Agents across the whole tool chain',
+    agentsIntro: 'Task environments and data shaped around how each agent observes, reasons, uses tools, and recovers when the work stops going to plan.',
     agents: [
       ['Conversational agents', 'Natural-language dialogue grounded in evidence and policy.'], ['Corporate assistants', 'Internal tools, workflows, knowledge bases, and governed automation.'],
       ['Deep-research agents', 'Multi-source investigation, synthesis, and defensible conclusions.'], ['Computer-use agents', 'Browsers, applications, filesystems, and realistic interfaces.'],
@@ -73,6 +74,7 @@ const COPY = {
       ['Synthetische Erweiterung', 'Domänenanpassung, kontrollierte Variation, Hard Negatives und Korpus-Erweiterung ohne Verlust von Provenienz oder Evaluationsintegrität.'],
     ],
     agentsEyebrow: 'Gebaut für', agentsTitle: 'Agenten entlang der gesamten Toolchain',
+    agentsIntro: 'Aufgabenumgebungen und Daten, abgestimmt darauf, wie jeder Agent beobachtet, schlussfolgert, Werkzeuge nutzt und sich erholt, wenn die Arbeit vom Plan abweicht.',
     agents: [
       ['Conversational Agents', 'Natürlichsprachlicher Dialog, verankert in Evidenz und Richtlinien.'], ['Corporate Assistants', 'Interne Tools, Workflows, Wissensbasen und kontrollierte Automatisierung.'],
       ['Deep-Research-Agenten', 'Mehrquellen-Recherche, Synthese und belastbare Schlussfolgerungen.'], ['Computer-Use-Agenten', 'Browser, Anwendungen, Dateisysteme und realistische Oberflächen.'],
@@ -120,7 +122,7 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.agentsEyebrow}</p><h2>{c.agentsTitle}</h2></div></Reveal>
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.agentsEyebrow}</p><h2>{c.agentsTitle}</h2><p>{c.agentsIntro}</p></div></Reveal>
       <div className="data-agent-grid">{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><Icon size={27} stroke={1.6} /><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
     </div></section>
 
