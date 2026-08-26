@@ -447,7 +447,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
                   und auch das 303+"), not the plain "8" or "1" cards - the plus sign's
                   own optical weight was reading as slightly left-heavy against the
                   centred label below it. */}
-              <div style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: theme === 'light' ? '#009e7a' : '#00c896', lineHeight: 1, marginLeft: s.n === '53+' ? 6 : ['58k+', '303+'].includes(s.n) ? 4 : 0 }}><CountUp value={s.n} /></div>
+              <div className="rfi-hero-kpi-number" style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: theme === 'light' ? '#009e7a' : '#00c896', lineHeight: 1, marginLeft: s.n === '53+' ? 6 : ['58k+', '303+'].includes(s.n) ? 4 : 0 }}><CountUp value={s.n} /></div>
               {/* marginRight cancels the trailing letter-space that letter-spacing
                   appends after the final character. Centred text is otherwise
                   optically pushed right by half a tracking unit, which is what

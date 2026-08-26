@@ -11,7 +11,11 @@ h1, h2, h3, .rfi-display {
   font-family: 'Archivo', system-ui, sans-serif;
 }
 .rfi-display {
-  -webkit-text-stroke: 1px rgba(0, 0, 0, .82);
+  -webkit-text-stroke: 1.25px rgba(0, 0, 0, .82);
+  paint-order: stroke fill;
+}
+.rfi-hero-kpi-number {
+  -webkit-text-stroke: 1.25px rgba(0, 0, 0, .82);
   paint-order: stroke fill;
 }
 
