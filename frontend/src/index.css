@@ -576,8 +576,9 @@ h1, h2, h3, .rfi-display {
 
 @media (max-width: 640px) {
   .cc-step-card { height: auto !important; min-height: 0 !important; }
-  .cc-step-layout { grid-template-columns: 1fr !important; gap: 18px !important; }
-  .cc-step-description { border-left: 0 !important; border-top: 1px solid var(--border); padding: 16px 0 0 !important; }
+  .cc-step-layout { grid-template-columns: 1fr !important; gap: 16px !important; }
+  .cc-step-divider { width: 72% !important; height: 1px !important; justify-self: center !important; }
+  .cc-step-description { padding: 0 !important; }
 }
 
 /* ── Pricing card: "intelligence instrument" redesign, 2026-08-25 ──────────

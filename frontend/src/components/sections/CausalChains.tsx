@@ -393,18 +393,19 @@ export function CausalChainsSection() {
                 className="cc-step-card"
                 style={{
                   border: '1px solid var(--border)', borderRadius: 12, background: 'var(--bg2)',
-                  padding: '20px 28px', margin: '0 auto 14px', width: '100%', maxWidth: 660, height: 190, boxSizing: 'border-box',
+                  padding: '18px 24px', margin: '0 auto 14px', width: '100%', maxWidth: 580, height: 164, boxSizing: 'border-box',
                   textAlign: 'center', backdropFilter: 'blur(2px)',
                   animation: stepAnim ? `${stepAnim === 'left' ? 'ccFlipLeft' : 'ccFlipRight'} 1050ms cubic-bezier(0.22,1,0.36,1)` : undefined,
                 }}
               >
-                <div className="cc-step-layout" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: 24, alignItems: 'center', textAlign: 'left', height: '100%' }}>
+                <div className="cc-step-layout" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 1px minmax(0, 1fr)', gap: 24, alignItems: 'center', height: '100%' }}>
                   <div className="cc-step-left" style={{ textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 0 }}>
                     <div style={{ fontSize: 20, color: 'var(--text)', fontWeight: 800, lineHeight: 1.3, overflowWrap: 'anywhere' }}>
                       {current ? current.nodes[step] : ''}
                     </div>
                   </div>
-                  <div className="cc-step-description" style={{ borderLeft: '1px solid var(--border)', paddingLeft: 24, color: 'var(--text)', fontSize: 14, lineHeight: 1.6, minWidth: 0, overflowWrap: 'anywhere' }}>
+                  <div className="cc-step-divider" aria-hidden="true" style={{ width: 1, height: '72%', background: 'rgba(182, 190, 202, 0.28)', justifySelf: 'center' }} />
+                  <div className="cc-step-description" style={{ color: 'var(--text)', fontSize: 14, lineHeight: 1.6, minWidth: 0, overflowWrap: 'anywhere', textAlign: 'center' }}>
                     {current ? stepDescription(current.nodes[step], current.nodes[step + 1]) : ''}
                   </div>
                 </div>
