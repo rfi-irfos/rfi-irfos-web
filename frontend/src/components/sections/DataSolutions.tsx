@@ -35,6 +35,7 @@ const COPY = {
       ['Coding copilots', 'Code writing, debugging, repository work, testing, and review.'], ['OS & device agents', 'Desktop, mobile, embedded, wearable, and on-device environments.'],
     ],
     pipelineEyebrow: 'How it works', pipelineTitle: 'A managed pipeline, built by engineers for engineers',
+    pipelineKinds: ['Input', 'Execution', 'Validation', 'Review', 'Output'],
     pipeline: [
       ['01', 'Define', 'Objectives, constraints, rubrics, formats, and acceptance criteria become a testable specification.'],
       ['02', 'Build & execute', 'We create the environment and tasks. Experts perform the work while the complete raw trajectory is recorded.'],
@@ -82,6 +83,7 @@ const COPY = {
       ['Coding Copilots', 'Code, Debugging, Repository-Arbeit, Tests und Reviews.'], ['OS- & Device-Agenten', 'Desktop, Mobile, Embedded, Wearables und On-Device-Umgebungen.'],
     ],
     pipelineEyebrow: 'So funktioniert es', pipelineTitle: 'Eine gemanagte Pipeline, von Engineers für Engineers',
+    pipelineKinds: ['Eingabe', 'Ausführung', 'Validierung', 'Review', 'Ausgabe'],
     pipeline: [
       ['01', 'Definieren', 'Ziele, Grenzen, Rubrics, Formate und Akzeptanzkriterien werden zu einer testbaren Spezifikation.'],
       ['02', 'Bauen & ausführen', 'Wir erstellen Umgebung und Aufgaben. Experten führen sie aus. Die vollständige rohe Trajektorie wird erfasst.'],
@@ -128,7 +130,7 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2>{c.pipelineTitle}</h2></div></Reveal>
-      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid"><div className="data-pipeline-icon"><Icon size={22} /></div><div className="data-pipeline-copy"><span>{n}</span><p><strong>{title}:</strong> {body}</p></div></article></Reveal> })}</div>
+      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid" data-stage={i}><div className="data-pipeline-icon"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-stage"><span>{n}</span><small>{c.pipelineKinds[i]}</small></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div><div className="data-machine-port" aria-hidden="true"><i /><i /><i /></div></article></Reveal> })}</div>
       <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><IconShieldCheck size={32} /><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
     </div></section>
 
