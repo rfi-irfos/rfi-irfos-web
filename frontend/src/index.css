@@ -10,6 +10,10 @@ html { scroll-padding-top: 72px; }
 h1, h2, h3, .rfi-display {
   font-family: 'Archivo', system-ui, sans-serif;
 }
+.rfi-display {
+  -webkit-text-stroke: 1px rgba(0, 0, 0, .82);
+  paint-order: stroke fill;
+}
 
 /* ── Theme variables ──────────────────────────────────────────── */
 
