@@ -1,4 +1,9 @@
 import { useLocale } from '../../hooks/useLocale'
+import { Reveal, ScrambleHeading } from './shared'
+import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconSparkles, IconTerminal2, IconRoute } from '@tabler/icons-react'
+
+const PRODUCT_ICONS = [IconBuilding, IconFlask, IconGitBranch, IconShieldCheck, IconCode, IconSparkles]
+const AGENT_ICONS = [IconRobot, IconBuilding, IconSearch, IconDeviceDesktop, IconBraces, IconTerminal2]
 
 const COPY = {
   en: {
@@ -85,11 +90,32 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
   const { locale } = useLocale()
   const c = COPY[locale]
   return <div className="data-solutions">
-    <header className="data-hero"><p className="data-eyebrow">{c.eyebrow}</p><h1>{c.title}</h1><p className="data-lede">{c.intro}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></header>
-    <section className="data-section"><div className="data-section-head"><p className="data-eyebrow">{c.deliverEyebrow}</p><h2>{c.deliverTitle}</h2><p>{c.deliverIntro}</p></div><div className="data-product-grid">{c.products.map(([title, body], i) => <article className="data-product" key={title}><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article>)}</div></section>
-    <section className="data-section data-section-dark"><div className="data-section-head"><p className="data-eyebrow">{c.agentsEyebrow}</p><h2>{c.agentsTitle}</h2></div><div className="data-agent-grid">{c.agents.map(([title, body]) => <article key={title}><h3>{title}</h3><p>{body}</p></article>)}</div></section>
-    <section className="data-section"><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2>{c.pipelineTitle}</h2></div><div className="data-pipeline">{c.pipeline.map(([n, title, body]) => <article key={n}><span>{n}</span><div><h3>{title}</h3><p>{body}</p></div></article>)}</div><aside className="data-quality"><h3>{c.qualityTitle}</h3><ul>{c.quality.map(item => <li key={item}>{item}</li>)}</ul></aside></section>
-    <section className="data-section data-section-start"><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2>{c.startTitle}</h2></div><div className="data-start-grid">{c.starts.map(([n, title, body]) => <article key={n}><span>{n}</span><h3>{title}</h3><p>{body}</p></article>)}</div></section>
-    <section className="data-experts"><p className="data-eyebrow">{c.expertsEyebrow}</p><h2>{c.expertsTitle}</h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></section>
+    <header className="data-hero data-wrap">
+      <Reveal><p className="data-eyebrow">{c.eyebrow}</p><h1><ScrambleHeading text={c.title} /></h1></Reveal>
+      <Reveal delay={1}><p className="data-lede">{c.intro}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal>
+    </header>
+
+    <section className="data-section"><div className="data-wrap">
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.deliverEyebrow}</p><h2><ScrambleHeading text={c.deliverTitle} /></h2><p>{c.deliverIntro}</p></div></Reveal>
+      <div className="data-product-grid">{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-hover-card"><div className="data-icon"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
+    </div></section>
+
+    <section className="data-section"><div className="data-wrap">
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.agentsEyebrow}</p><h2><ScrambleHeading text={c.agentsTitle} /></h2></div></Reveal>
+      <div className="data-agent-grid">{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-hover-card"><Icon size={27} stroke={1.6} /><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
+    </div></section>
+
+    <section className="data-section"><div className="data-wrap">
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2><ScrambleHeading text={c.pipelineTitle} /></h2></div></Reveal>
+      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => <Reveal key={n} delay={(i % 3) + 1}><article className="rfi-glass-flat"><span>{n}</span><div className="data-pipeline-icon"><IconRoute size={22} /></div><div><h3>{title}</h3><p>{body}</p></div></article></Reveal>)}</div>
+      <Reveal><aside className="data-quality rfi-glass-flat"><div className="data-quality-title"><IconShieldCheck size={32} /><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
+    </div></section>
+
+    <section className="data-section"><div className="data-wrap">
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2><ScrambleHeading text={c.startTitle} /></h2></div></Reveal>
+      <div className="data-start-grid">{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-hover-card"><span>{n}</span><IconDatabase size={30} stroke={1.5} /><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
+    </div></section>
+
+    <section className="data-experts data-wrap"><Reveal><p className="data-eyebrow">{c.expertsEyebrow}</p><h2><ScrambleHeading text={c.expertsTitle} /></h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>
   </div>
 }

@@ -1235,7 +1235,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         </section>}
 
         {view === 'data-solutions' && <section id="data-solutions" className="rfi-view-panel">
-          <DataSolutionsSection onContact={() => navigateTo('#access')} />
+          <DataSolutionsSection onContact={() => navigateTo('#submit')} />
         </section>}
 
         {view === 'access' && <section id="access" className="rfi-view-panel">
