@@ -51,6 +51,31 @@ const ZONE_COL_START: Record<string, number> = (() => {
 })()
 const ZONE_TOTAL_COLUMNS = ZONE_ORDER.reduce((n, z) => n + zoneCols(z), 0)
 
+const FAQ_COPY = {
+  en: {
+    eyebrow: 'Questions worth answering',
+    title: 'A little more context',
+    items: [
+      ['What is RFI-IRFOS?', 'The Research Focus Institute — Interdisciplinary Research Facility for Open Sciences is a registered company in automatic data processing, carried by a not-for-profit research foundation established in 2020. We are a seven-person human team supported by a large in-house fleet of agents written in Rust.'],
+      ['What does “open” mean in our work?', 'It means the method is inspectable: the evidence, provenance, assumptions, and limits are made legible. It does not mean client data, private environments, or sensitive findings are published without permission.'],
+      ['How do you handle private or personal data?', 'We work from a client-approved handling plan, scrub PII where required, isolate credentials, and keep environments versioned and auditable. The exact boundary is agreed before production starts.'],
+      ['What can an organisation commission?', 'We build evidence-led systems, data warehouse and lakehouse foundations, evaluation suites, agent environments, and security or privacy research. Work can start from a defined brief or from a short scoping conversation.'],
+      ['How can a finding or correction be raised?', 'Use the disclosure route in Security or send the team a direct message. We preserve the original evidence, record the response, and update the public record when a claim is corrected or resolved.'],
+    ],
+  },
+  de: {
+    eyebrow: 'Fragen, die man beantworten sollte',
+    title: 'Etwas mehr Kontext',
+    items: [
+      ['Was ist RFI-IRFOS?', 'Das Research Focus Institute — Interdisciplinary Research Facility for Open Sciences ist ein registriertes Unternehmen der automatisierten Datenverarbeitung, getragen von einer 2020 gegründeten gemeinnützigen Forschungsstiftung. Wir sind ein siebenköpfiges menschliches Team, unterstützt von einer großen, in Rust geschriebenen Inhouse-Agentenflotte.'],
+      ['Was bedeutet „offen“ bei unserer Arbeit?', 'Die Methode bleibt prüfbar: Evidenz, Herkunft, Annahmen und Grenzen werden nachvollziehbar gemacht. Kundendaten, private Umgebungen und sensible Befunde werden dagegen nicht ohne Freigabe veröffentlicht.'],
+      ['Wie geht ihr mit privaten oder personenbezogenen Daten um?', 'Wir arbeiten mit einem freigegebenen Datenverarbeitungsplan, bereinigen PII wo nötig, isolieren Zugangsdaten und halten Umgebungen versioniert und auditierbar. Die genaue Grenze wird vor Produktionsbeginn vereinbart.'],
+      ['Was kann eine Organisation beauftragen?', 'Wir bauen evidenzbasierte Systeme, Data-Warehouse- und Lakehouse-Basen, Evaluationssuiten, Agentenumgebungen sowie Security- und Privacy-Forschung. Ein Briefing oder ein kurzes Scoping-Gespräch reicht für den Start.'],
+      ['Wie kann man einen Befund oder eine Korrektur melden?', 'Über den Disclosure-Weg unter Security oder direkt an das Team. Wir bewahren die ursprüngliche Evidenz, dokumentieren die Reaktion und aktualisieren den öffentlichen Eintrag, wenn sich eine Aussage korrigiert oder erledigt hat.'],
+    ],
+  },
+} as const
+
 // Nav logo's EKG line. Was one fixed blip shape looping identically forever - "measuring
 // the same heartbeat forever" per Simeon. A wider multi-beat path was tried and reverted
 // (he wanted the original short length/duration back, just varied). A bezier P-QRS-T
@@ -1072,7 +1097,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         <a href="#" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <picture>
             <source srcSet="/logo.webp" type="image/webp" />
-            <img className="rfi-nav-logo" src="/logo.png" alt="" style={{ width: 48, height: 48, objectFit: 'contain', flexShrink: 0 }} />
+            <img src="/logo.png" alt="" style={{ width: 42, height: 42, objectFit: 'contain', flexShrink: 0 }} />
           </picture>
           <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: overDarkHero ? '#e8e8f0' : 'var(--text)' }}>RFI-IRFOS</span>
           <EkgLine theme={theme} />
@@ -1247,6 +1272,21 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           <JourneySection />
         </section>}
       </main>
+
+      <section className="rfi-faq" aria-labelledby="rfi-faq-title">
+        <div className="rfi-faq-inner">
+          <p className="data-eyebrow">{FAQ_COPY[locale].eyebrow}</p>
+          <h2 id="rfi-faq-title">{FAQ_COPY[locale].title}</h2>
+          <div className="rfi-faq-list">
+            {FAQ_COPY[locale].items.map(([question, answer]) => (
+              <details key={question} className="rfi-faq-item">
+                <summary>{question}<span aria-hidden="true">+</span></summary>
+                <p>{answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* FOOTER */}
       {/* Live feedback 2026-08-14: with the repo directory added below, the page
