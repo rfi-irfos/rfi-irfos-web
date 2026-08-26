@@ -23,7 +23,7 @@ import {
   IconTruck, IconUsers, IconVirus, IconVolcano, IconWheat, IconWind, IconWorld,
   IconWorldDown,
 } from '@tabler/icons-react'
-import { Reveal, ScrambleHeading } from './shared'
+import { Reveal } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // Curated SVG map. Recognizable object silhouettes come from Tabler Icons (MIT);
@@ -364,7 +364,7 @@ export function CausalChainsSection() {
             {t.causalChains.eyebrow}
           </p>
           <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, textAlign: 'center' }}>
-            <ScrambleHeading text={t.causalChains.heading} />
+            {t.causalChains.heading}
           </h2>
           <p style={{ color: 'var(--text2)', fontSize: 15, marginBottom: 28, textAlign: 'center', maxWidth: 720, lineHeight: 1.7, marginLeft: 'auto', marginRight: 'auto' }}>
             {t.causalChains.subheading}

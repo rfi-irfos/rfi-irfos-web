@@ -1,6 +1,6 @@
 // "App Privacy" door-opener section (`#app-privacy`) - extracted verbatim from
 // PublicSite.tsx.
-import { Reveal, ScrambleHeading, useMobile } from './shared'
+import { Reveal, useMobile } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // APP PRIVACY DOOR-OPENER — Stage 1c (website-repositioning plan), moved
@@ -27,7 +27,7 @@ export function AppPrivacySection() {
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.appPrivacy.eyebrow}</p>
-          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, textAlign: 'center' }}><ScrambleHeading text={t.appPrivacy.heading} /></h2>
+          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, textAlign: 'center' }}>{t.appPrivacy.heading}</h2>
         </Reveal>
         <Reveal delay={1}>
           <p style={{ color: 'var(--text)', marginBottom: 40, maxWidth: 680, fontSize: 16, lineHeight: 1.9, textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
@@ -68,24 +68,25 @@ export function AppPrivacySection() {
             single bottom-reveal on the outer box couldn't express a per-column
             direction, since Reveal's transform applies to one element, not its
             children independently. */}
-        <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 72, maxWidth: 920, marginLeft: 'auto', marginRight: 'auto', background: 'var(--glass-bg-solid)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-            <Reveal from="left" dist={100} style={{ borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
+        <div className="rfi-comparison-table" style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', marginBottom: 72, maxWidth: 920, marginLeft: 'auto', marginRight: 'auto', background: 'var(--glass-bg-solid)' }}>
+          <div className="rfi-comparison-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+            <Reveal from="left" dist={44} style={{ borderBottom: '1px solid var(--border)', borderRight: '1px solid var(--border)', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
               <div style={{ padding: mobile ? '12px 10px' : '16px 24px', background: 'rgba(255,255,255,0.06)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text)' }}>{t.appPrivacy.comparisonClassicLabel}</div>
             </Reveal>
-            <Reveal from="right" dist={100} style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
+            <Reveal from="right" dist={44} style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
               <div style={{ padding: mobile ? '12px 10px' : '16px 24px', background: 'rgba(0,245,196,0.08)', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-text)' }}>{t.appPrivacy.comparisonRfiLabel}</div>
             </Reveal>
             {t.appPrivacy.comparisonRows.map((row, i) => (
               <div key={i} style={{ display: 'contents' }}>
-                <Reveal from="left" dist={100} delay={i + 1} style={{ borderRight: '1px solid var(--border)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, color: 'var(--text2)', height: '100%', boxSizing: 'border-box' }}>{row.classic}</div>
+                <Reveal from="left" dist={44} delay={i + 1} style={{ borderRight: '1px solid var(--border)', borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
+                  <div className="rfi-comparison-cell rfi-comparison-cell--loss" style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, color: 'var(--text2)', height: '100%', boxSizing: 'border-box' }}><span className="rfi-comparison-marker" aria-hidden>{String(i + 1).padStart(2, '0')}</span><span>{row.classic}</span></div>
                 </Reveal>
                 {/* No em-dash (site-wide rule) - a colon after the bold term instead.
                     Body copy bumped from --text2 (grey) to --text (live feedback:
                     "das sind Kernaussagen, die machma nicht in grau"). */}
-                <Reveal from="right" dist={100} delay={i + 1.35} style={{ borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, fontWeight: 400, color: 'var(--text)', height: '100%', boxSizing: 'border-box' }}>
+                <Reveal from="right" dist={44} delay={i + 1.35} style={{ borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
+                  <div className="rfi-comparison-cell rfi-comparison-cell--preserve" style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, fontWeight: 400, color: 'var(--text)', height: '100%', boxSizing: 'border-box' }}>
+                    <span className="rfi-comparison-marker" aria-hidden>↗</span>
                     <span><strong style={{ fontWeight: 800, color: 'var(--text)' }}>{row.rfiLabel}:</strong> {row.rfi}</span>
                   </div>
                 </Reveal>

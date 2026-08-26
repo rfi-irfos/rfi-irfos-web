@@ -10,7 +10,7 @@
 // (i.e. a PDF gets uploaded to the ledger), it appears here automatically -
 // no separate data entry, per Simeon's explicit ask.
 import { useState, useEffect, useRef } from 'react'
-import { prefersReducedMotion, beacon, TEAL, Reveal, ScrambleHeading } from './shared'
+import { prefersReducedMotion, beacon, TEAL, Reveal } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import { AUDIT_HIGHLIGHTS, AUDIT_META } from './TrackRecord'
 
@@ -211,7 +211,7 @@ export function ProofSection({ setReportModal }: { setReportModal: (url: string)
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="right">
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.proof.eyebrow}</p>
-          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.proof.heading} /></h2>
+          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}>{t.proof.heading}</h2>
         </Reveal>
         <Reveal from="left" delay={1}>
           <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 620 }}>{t.proof.subheading}</p>

@@ -1,7 +1,7 @@
 // "Projects" section (`#projects`, "what we build") - extracted verbatim from
 // PublicSite.tsx.
 import { useState, useEffect, useRef } from 'react'
-import { prefersReducedMotion, beacon, Reveal, ScrambleHeading, TEAL } from './shared'
+import { prefersReducedMotion, beacon, Reveal, TEAL } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import { AUDIT_HIGHLIGHTS } from './TrackRecord'
 
@@ -307,7 +307,6 @@ export const PROJECTS = [
 // showcase underneath it.
 export function ProjectsSection() {
   const { t } = useLocale()
-  const [headingRun, setHeadingRun] = useState(0)
   // Live ledger counts substituted into the Android Security Audit card's
   // {{APPS_COUNT}}/{{FINDINGS_COUNT}} placeholders (2026-08-21: a hardcoded
   // "308+ apps / 233+ findings" string had already drifted stale by the time
@@ -326,12 +325,8 @@ export function ProjectsSection() {
     <section id="projects" style={{ padding: '16px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <div style={{ alignSelf: 'flex-start' }}>
-          <h2
-            onClick={() => setHeadingRun(run => run + 1)}
-            title="Shuffle heading"
-            style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, cursor: 'pointer' }}
-          >
-            <ScrambleHeading key={headingRun} text={t.projects.heading} />
+          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}>
+            {t.projects.heading}
           </h2>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
             {t.projects.subheading}

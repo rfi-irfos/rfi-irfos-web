@@ -32,7 +32,7 @@
 // pill beside it.
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { EngagementFlow, CartIcon, ZapIcon, Reveal, ScrambleHeading, useMobile, prefersReducedMotion } from './shared'
+import { EngagementFlow, CartIcon, ZapIcon, Reveal, useMobile, prefersReducedMotion } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // Technical metadata only, one entry per tier, same order as t.pricing.tiers
@@ -168,7 +168,7 @@ export function PricingSection({
     <section id="pricing" style={{ padding: '16px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1120, margin: '0 auto' }}>
         <Reveal>
-          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}><ScrambleHeading text={t.pricing.heading} /></h2>
+          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}>{t.pricing.heading}</h2>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
             {t.pricing.subheading}
           </p>

@@ -507,7 +507,7 @@ export const revealSuppressed = { current: false }
 // shared default means every existing Reveal call across the site gets the
 // more dramatic version automatically, not just the ones touched directly.
 export function Reveal({
-  children, delay = 0, from = 'bottom', dist = 72, style: extra,
+  children, delay = 0, from = 'bottom', dist = 32, style: extra,
 }: {
   children: React.ReactNode
   delay?: number
@@ -530,12 +530,17 @@ export function Reveal({
   // still cascades instead of settling in lockstep.
   const settled = useTransform(scrollYProgress, latest => {
     if (prefersReducedMotion() || revealSuppressed.current) return 1
-    const inEnd = Math.min(0.45, 0.16 + delay * 0.025)
-    const outStart = Math.max(0.55, 0.84 - delay * 0.025)
+    // Every reveal follows the same broad, scroll-linked rhythm. `delay` is a
+    // tiny compositional offset only; it must not create different-sized
+    // visible bands or make neighbouring content flicker at different times.
+    const offset = Math.min(0.06, delay * 0.008)
+    const inEnd = 0.28 + offset
+    const outStart = 0.72 + offset
+    const smooth = (value: number) => value * value * (3 - 2 * value)
     if (latest <= 0) return 0
-    if (latest < inEnd) return latest / inEnd
+    if (latest < inEnd) return smooth(latest / inEnd)
     if (latest <= outStart) return 1
-    if (latest < 1) return 1 - (latest - outStart) / (1 - outStart)
+    if (latest < 1) return 1 - smooth((latest - outStart) / (1 - outStart))
     return 0
   })
   const transform = useTransform(settled, s => {
@@ -1055,7 +1060,7 @@ export function ScopeTag({ label }: { label: string }) {
 // low-opacity wash background and border - a thin border and a translucent
 // fill both tolerate a lot more color before contrast becomes a problem than
 // body text does.
-const OUTPUT_TAG_HUES = [
+export const OUTPUT_TAG_HUES = [
   { bg: 'rgba(0,245,196,0.09)',  border: 'rgba(0,245,196,0.35)' },  // teal (brand)
   { bg: 'rgba(255,180,90,0.09)', border: 'rgba(255,180,90,0.4)' },  // amber
   { bg: 'rgba(90,160,255,0.09)', border: 'rgba(90,160,255,0.4)' },  // soft blue

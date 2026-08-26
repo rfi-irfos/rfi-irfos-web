@@ -15,7 +15,7 @@ const PIPELINE_ICONS = [IconClipboardCheck, IconSettingsAutomation, IconListChec
 
 const COPY = {
   en: {
-    eyebrow: 'Data Solutions', title: 'production data for agents that have to work',
+    eyebrow: 'Data Solutions', title: 'production and data for agents that have to work',
     intro: 'The same discipline behind our systems and public evidence, delivered as data: reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Your corpus stays private. Every delivered artefact stays traceable.',
     datasets: [
       ['Mobile application behavior\ndatasets', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],

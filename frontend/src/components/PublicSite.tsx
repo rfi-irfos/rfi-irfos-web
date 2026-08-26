@@ -1072,7 +1072,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         <a href="#" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <picture>
             <source srcSet="/logo.webp" type="image/webp" />
-            <img src="/logo.png" alt="" style={{ width: 42, height: 42, objectFit: 'contain', flexShrink: 0 }} />
+            <img className="rfi-nav-logo" src="/logo.png" alt="" style={{ width: 48, height: 48, objectFit: 'contain', flexShrink: 0 }} />
           </picture>
           <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: overDarkHero ? '#e8e8f0' : 'var(--text)' }}>RFI-IRFOS</span>
           <EkgLine theme={theme} />

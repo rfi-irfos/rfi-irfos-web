@@ -134,6 +134,17 @@ button { cursor: pointer; font-family: inherit; }
    devtools. */
 .ekg-line-glow {}
 
+/* Slightly larger nav mark with a crisp halo around the transparent spikes.
+   Multiple 1px drops approximate a 2px contour without boxing the logo in. */
+.rfi-nav-logo {
+  filter: drop-shadow(1px 0 0 rgba(255,255,255,.9))
+          drop-shadow(-1px 0 0 rgba(255,255,255,.9))
+          drop-shadow(0 1px 0 rgba(255,255,255,.9))
+          drop-shadow(0 -1px 0 rgba(255,255,255,.9));
+  transition: filter .25s ease, transform .25s ease;
+}
+.rfi-nav-logo:hover { transform: scale(1.04); }
+
 .site-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 300;
   background: var(--nav-bg); backdrop-filter: blur(12px);
@@ -368,6 +379,21 @@ button { cursor: pointer; font-family: inherit; }
 }
 .data-dataset-grid article { z-index: 1; }
 .data-dataset-grid article::before { display: none; }
+
+/* Comparison table: a quiet visual index makes the five pairings scan as one
+   connected argument instead of a flat block of copy. The left markers stay
+   muted; the right markers carry the site's teal evidence signal. */
+.rfi-comparison-table { position: relative; box-shadow: 0 20px 70px rgba(0,0,0,.12); }
+.rfi-comparison-grid > div:nth-child(4n + 3),
+.rfi-comparison-grid > div:nth-child(4n + 4) { background: color-mix(in srgb, var(--bg2) 92%, var(--accent) 8%) !important; }
+.rfi-comparison-cell { gap: 14px; transition: background-color .35s ease, color .35s ease; }
+.rfi-comparison-cell:hover { background: color-mix(in srgb, var(--bg2) 82%, var(--accent) 18%); }
+.rfi-comparison-marker { flex: 0 0 25px; align-self: flex-start; margin-top: 2px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: var(--text3); opacity: .75; }
+.rfi-comparison-cell--preserve .rfi-comparison-marker { color: var(--accent-text); opacity: 1; font-size: 16px; line-height: 1; }
+@media (max-width: 640px) {
+  .rfi-comparison-cell { gap: 7px; }
+  .rfi-comparison-marker { flex-basis: 18px; font-size: 9px; }
+}
 .data-pipeline { max-width: 1160px; margin: 0 auto; display: grid; gap: 28px; }
 .data-pipeline-module { position: relative; display: grid; grid-template-columns: 72px 112px 1fr; align-items: center; gap: 22px; min-height: 116px; padding: 22px 26px; border-radius: 15px; background-image: linear-gradient(90deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 34%); }
 .data-pipeline-module::before { content: ''; position: absolute; inset: 12px auto 12px 0; width: 4px; border-radius: 0 4px 4px 0; background: var(--accent); box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 55%, transparent); opacity: calc(.48 + var(--stage-strength, .1)); }
