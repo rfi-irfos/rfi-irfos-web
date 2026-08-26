@@ -303,13 +303,13 @@ button { cursor: pointer; font-family: inherit; }
 .data-dataset-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; align-items: stretch; }
 .data-dataset-grid article { height: 100%; min-height: 250px; padding: 22px 18px; border-radius: 14px; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .data-dataset-grid .data-icon { width: 52px; height: 52px; margin-bottom: 17px; }
-.data-dataset-grid h3 { margin: 0 0 10px; font-size: 17px; }
+.data-dataset-grid h3 { margin: 0 0 10px; font-size: 17px; font-weight: 800; white-space: pre-line; }
 .data-dataset-grid p { margin: 0; color: var(--text2); font-size: 14px; line-height: 1.55; }
 .data-product, .data-agent-grid article, .data-start-grid article { height: 100%; border-radius: 14px; padding: 25px; text-align: center; }
 .data-product { min-height: 270px; display: flex; flex-direction: column; align-items: center; }
 .data-icon { width: 58px; height: 58px; margin-bottom: 17px; display: grid; place-items: center; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent); border-radius: 14px; background: color-mix(in srgb, var(--accent) 7%, transparent); }
 .data-product span, .data-pipeline-copy > span, .data-start-grid article > span { color: var(--accent); font: 700 10px 'JetBrains Mono', monospace; letter-spacing: .14em; }
-.data-product h3, .data-agent-grid h3, .data-pipeline h3, .data-start-grid h3, .data-quality h3 { margin: 12px 0 9px; font-size: 18px; }
+.data-product h3, .data-agent-grid h3, .data-pipeline h3, .data-start-grid h3, .data-quality h3 { margin: 12px 0 9px; font-size: 18px; font-weight: 800; }
 .data-product p, .data-agent-grid p, .data-pipeline p, .data-start-grid p { margin: 0; color: var(--text2); font-size: 15px; line-height: 1.6; }
 .data-agent-grid article { min-height: 155px; display: flex; align-items: flex-start; gap: 17px; text-align: left; }
 .data-agent-grid article > svg { flex: 0 0 auto; margin-top: 2px; color: var(--accent); }
@@ -321,7 +321,7 @@ button { cursor: pointer; font-family: inherit; }
 .data-pipeline-copy { display: flex; align-items: baseline; gap: 14px; }
 .data-pipeline-copy > span { flex: 0 0 22px; }
 .data-pipeline-copy p { line-height: 1.5; }
-.data-pipeline-copy strong { color: var(--text); font-size: 17px; }
+.data-pipeline-copy strong { color: var(--text); font-size: 17px; font-weight: 800; }
 .data-quality { margin: 34px auto 0; max-width: 1080px; padding: 28px; border-radius: 14px; }
 .data-quality-title { display: flex; align-items: center; justify-content: center; gap: 12px; color: var(--accent); }
 .data-quality-title h3 { margin: 0; color: var(--text); }
