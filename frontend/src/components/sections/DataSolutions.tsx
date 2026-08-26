@@ -9,6 +9,14 @@ const COPY = {
   en: {
     eyebrow: 'Data Solutions', title: 'production data for agents that have to work',
     intro: 'The same discipline behind our systems and public evidence, delivered as data: reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Your corpus stays private; every delivered artefact stays traceable.',
+    datasetsEyebrow: 'Selected data products', datasetsTitle: 'Five corpora. One evidence standard.',
+    datasets: [
+      ['Mobile application behaviour', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],
+      ['SDK & tracker graph', 'Reusable SDKs, tracker relationships, infrastructure, and cross-application recurrence mapped as connected evidence.'],
+      ['Agent safety trajectories', 'Tool-use traces under injection, conflicting instructions, boundary pressure, recovery, and stop conditions.'],
+      ['World-state & causality', 'Multi-domain observations, entity relationships, change histories, and evidence-linked causal chains.'],
+      ['Stressed benchmark variants', 'Controlled, reproducible perturbations of open benchmarks for robustness testing beyond clean inputs.'],
+    ],
     deliverEyebrow: 'What we deliver', deliverTitle: 'From environment to evaluation',
     deliverIntro: 'We define success criteria with your team, then build the data operation around the way your models are actually trained and evaluated. No anonymous task stream and no benchmark theatre: the environment, trace, label, and decision remain connected.',
     products: [
@@ -48,6 +56,14 @@ const COPY = {
   de: {
     eyebrow: 'Data Solutions', title: 'Produktionsdaten für Agenten, die wirklich arbeiten müssen',
     intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten geliefert: reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Ihr Korpus bleibt privat; jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
+    datasetsEyebrow: 'Ausgewählte Datenprodukte', datasetsTitle: 'Fünf Korpora. Ein Evidenzstandard.',
+    datasets: [
+      ['Verhalten mobiler Anwendungen', 'Quellcodebasiertes App-Verhalten, Berechtigungen, Endpunkte, Consent-Timing und beobachtete Datenflüsse.'],
+      ['SDK- & Tracker-Graph', 'Wiederkehrende SDKs, Tracker-Beziehungen, Infrastruktur und App-übergreifende Zusammenhänge als verbundene Evidenz.'],
+      ['Agent-Safety-Trajektorien', 'Tool-Use-Traces unter Injection, Zielkonflikten, Grenzdruck, Recovery und expliziten Stop-Bedingungen.'],
+      ['World-State & Kausalität', 'Domänenübergreifende Beobachtungen, Entitäten, Veränderungshistorien und evidenzgebundene Kausalketten.'],
+      ['Gestresste Benchmark-Varianten', 'Kontrollierte, reproduzierbare Störungen offener Benchmarks für Robustheitstests jenseits sauberer Inputs.'],
+    ],
     deliverEyebrow: 'Was wir liefern', deliverTitle: 'Von der Umgebung bis zur Evaluation',
     deliverIntro: 'Gemeinsam definieren wir belastbare Erfolgskriterien und bauen den Datenbetrieb passend zu Ihren realen Trainings- und Evaluationsabläufen. Kein anonymer Task-Stream und kein Benchmark-Theater: Umgebung, Trace, Label und Entscheidung bleiben verbunden.',
     products: [
@@ -95,25 +111,30 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
       <Reveal delay={1}><p className="data-lede">{c.intro}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal>
     </header>
 
+    <section className="data-section data-datasets"><div className="data-wrap">
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.datasetsEyebrow}</p><h2><ScrambleHeading text={c.datasetsTitle} /></h2></div></Reveal>
+      <div className="data-dataset-grid">{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
+    </div></section>
+
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.deliverEyebrow}</p><h2><ScrambleHeading text={c.deliverTitle} /></h2><p>{c.deliverIntro}</p></div></Reveal>
-      <div className="data-product-grid">{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-hover-card"><div className="data-icon"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
+      <div className="data-product-grid">{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card"><div className="data-icon"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.agentsEyebrow}</p><h2><ScrambleHeading text={c.agentsTitle} /></h2></div></Reveal>
-      <div className="data-agent-grid">{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-hover-card"><Icon size={27} stroke={1.6} /><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
+      <div className="data-agent-grid">{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><Icon size={27} stroke={1.6} /><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2><ScrambleHeading text={c.pipelineTitle} /></h2></div></Reveal>
-      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => <Reveal key={n} delay={(i % 3) + 1}><article className="rfi-glass-flat"><span>{n}</span><div className="data-pipeline-icon"><IconRoute size={22} /></div><div><h3>{title}</h3><p>{body}</p></div></article></Reveal>)}</div>
-      <Reveal><aside className="data-quality rfi-glass-flat"><div className="data-quality-title"><IconShieldCheck size={32} /><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
+      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => <Reveal key={n} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid"><span>{n}</span><div className="data-pipeline-icon"><IconRoute size={22} /></div><div><h3>{title}</h3><p>{body}</p></div></article></Reveal>)}</div>
+      <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><IconShieldCheck size={32} /><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2><ScrambleHeading text={c.startTitle} /></h2></div></Reveal>
-      <div className="data-start-grid">{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-hover-card"><span>{n}</span><IconDatabase size={30} stroke={1.5} /><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
+      <div className="data-start-grid">{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><span>{n}</span><IconDatabase size={30} stroke={1.5} /><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
     </div></section>
 
     <section className="data-experts data-wrap"><Reveal><p className="data-eyebrow">{c.expertsEyebrow}</p><h2><ScrambleHeading text={c.expertsTitle} /></h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>
