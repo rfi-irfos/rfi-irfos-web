@@ -329,6 +329,7 @@ button { cursor: pointer; font-family: inherit; }
 .data-start-grid article > svg { margin: 22px 0 4px; color: var(--accent); }
 .data-experts { padding-block: 72px 104px; text-align: center; }
 .data-experts > div > p:not(.data-eyebrow) { max-width: 760px; margin: 16px auto 0; color: var(--text2); font-size: 17px; line-height: 1.6; }
+.data-solutions p:not(.data-eyebrow) { color: var(--text); }
 @media (max-width: 820px) {
   .data-wrap { width: min(100% - 32px, 1320px); }
   .data-hero { padding-block: 42px 36px; }
