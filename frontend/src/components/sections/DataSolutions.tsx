@@ -8,7 +8,7 @@ const AGENT_ICONS = [IconRobot, IconBuilding, IconSearch, IconDeviceDesktop, Ico
 const COPY = {
   en: {
     eyebrow: 'Data Solutions', title: 'production data for agents that have to work',
-    intro: 'The same discipline behind our systems and public evidence, delivered as data: reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Your corpus stays private; every delivered artefact stays traceable.',
+    intro: 'The same discipline behind our systems and public evidence, delivered as data: reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Your corpus stays private. Every delivered artefact stays traceable.',
     datasets: [
       ['Mobile application behaviour', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],
       ['SDK & tracker graph', 'Reusable SDKs, tracker relationships, infrastructure, and cross-application recurrence mapped as connected evidence.'],
@@ -55,7 +55,7 @@ const COPY = {
   },
   de: {
     eyebrow: 'Data Solutions', title: 'Produktionsdaten für Agenten, die wirklich arbeiten müssen',
-    intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten geliefert: reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Ihr Korpus bleibt privat; jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
+    intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten geliefert: reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Ihr Korpus bleibt privat. Jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
     datasets: [
       ['Verhalten mobiler Anwendungen', 'Quellcodebasiertes App-Verhalten, Berechtigungen, Endpunkte, Consent-Timing und beobachtete Datenflüsse.'],
       ['SDK- & Tracker-Graph', 'Wiederkehrende SDKs, Tracker-Beziehungen, Infrastruktur und App-übergreifende Zusammenhänge als verbundene Evidenz.'],
@@ -83,7 +83,7 @@ const COPY = {
     pipelineEyebrow: 'So funktioniert es', pipelineTitle: 'Eine gemanagte Pipeline, von Engineers für Engineers',
     pipeline: [
       ['01', 'Definieren', 'Ziele, Grenzen, Rubrics, Formate und Akzeptanzkriterien werden zu einer testbaren Spezifikation.'],
-      ['02', 'Bauen & ausführen', 'Wir erstellen Umgebung und Aufgaben. Experten führen sie aus; die vollständige rohe Trajektorie wird erfasst.'],
+      ['02', 'Bauen & ausführen', 'Wir erstellen Umgebung und Aufgaben. Experten führen sie aus. Die vollständige rohe Trajektorie wird erfasst.'],
       ['03', 'Validieren', 'Automatische Checks prüfen Schema, Invarianten, logische Konsistenz, Rubric-Treue und Aufgabenerfüllung.'],
       ['04', 'Prüfen', 'Senior Reviewer auditieren schwierige und markierte Traces sowie eine statistisch belastbare Stichprobe.'],
       ['05', 'Ausliefern', 'Versionierte Datensätze, Eval-Reports, deterministische Umgebungen und Audit-Logs kommen workflow-fertig an.'],
@@ -112,7 +112,7 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
     </header>
 
     <section className="data-section data-datasets"><div className="data-wrap">
-      <div className="data-dataset-grid">{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
+      <div className="data-dataset-grid">{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article> })}</div>
       <Reveal><div className="data-dataset-cta"><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></div></Reveal>
     </div></section>
 
