@@ -130,7 +130,7 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2>{c.pipelineTitle}</h2></div></Reveal>
-      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid" data-stage={i}><div className="data-pipeline-icon"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-stage"><span>{n}</span><small>{c.pipelineKinds[i]}</small></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div><div className="data-machine-port" aria-hidden="true"><i /><i /><i /></div></article></Reveal> })}</div>
+      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid" data-stage={i}><div className="data-pipeline-icon"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-stage"><span>{n}</span><small>{c.pipelineKinds[i]}</small></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
       <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><IconShieldCheck size={32} /><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
     </div></section>
 
