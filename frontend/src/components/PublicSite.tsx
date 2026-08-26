@@ -160,8 +160,8 @@ function viewForSection(section?: string | null): PublicView {
 // since NAV_LINKS itself sits above PublicSite() and can't call useLocale().
 const NAV_HREFS = [
   { key: 'projects' as const, href: '#systems' },
-  { key: 'trackRecord' as const, href: '#evidence' },
   { key: 'dataSolutions' as const, href: '#data-solutions' },
+  { key: 'trackRecord' as const, href: '#evidence' },
   { key: 'pricing' as const, href: '#access' },
 ]
 

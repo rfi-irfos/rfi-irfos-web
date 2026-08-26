@@ -292,6 +292,9 @@ button { cursor: pointer; font-family: inherit; }
 .data-cta { margin-top: 28px; padding: 13px 21px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: var(--on-primary, #07110e); font-family: 'Archivo', system-ui, sans-serif; font-size: 14px; line-height: 1; font-weight: 800; letter-spacing: 0; cursor: pointer; box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 18%, transparent); transition: transform .2s, box-shadow .2s; }
 .data-cta:hover { transform: translateY(-2px); box-shadow: 0 0 34px color-mix(in srgb, var(--accent) 30%, transparent); }
 .data-section { padding: 72px 0; }
+.data-section:nth-of-type(even) {
+  background: linear-gradient(180deg, transparent 0%, rgba(5, 7, 10, .38) 12%, rgba(5, 7, 10, .38) 88%, transparent 100%);
+}
 .data-section-head { max-width: 680px; margin: 0 auto 48px; text-align: center; }
 .data-section-head > p:last-child { margin: 14px auto 0; color: var(--text2); font-size: 17px; line-height: 1.6; }
 .data-product-grid, .data-agent-grid, .data-start-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
