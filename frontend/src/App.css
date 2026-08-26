@@ -134,22 +134,22 @@ button { cursor: pointer; font-family: inherit; }
    devtools. */
 .ekg-line-glow {}
 
-.rfi-faq { padding: 88px var(--sec-pad-x) 96px; background: color-mix(in srgb, var(--bg) 88%, var(--accent) 12%); border-top: 1px solid var(--border); }
-.rfi-faq-inner { max-width: 920px; margin: 0 auto; }
+.rfi-faq { padding: 88px var(--sec-pad-x) 96px; background: transparent; }
+.rfi-faq-inner { max-width: 920px; margin: 0 auto; padding: 34px 42px 38px; border: 1px solid var(--border); border-radius: 18px; background: color-mix(in srgb, var(--glass-bg-solid) 88%, var(--accent) 12%); box-shadow: 0 22px 70px rgba(0,0,0,.14); }
 .rfi-faq .data-eyebrow { margin-bottom: 12px; text-align: center; }
 .rfi-faq h2 { margin: 0 0 32px; text-align: center; font-size: 32px; font-weight: 900; }
 .rfi-faq-list { border-top: 1px solid var(--border); }
-.rfi-faq-item { border-bottom: 1px solid var(--border); }
-.rfi-faq-item summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 21px 4px; color: var(--text); font-size: 17px; font-weight: 800; }
-.rfi-faq-item summary::-webkit-details-marker { display: none; }
-.rfi-faq-item summary span { color: var(--accent-text); font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 400; transition: transform .25s ease; }
-.rfi-faq-item[open] summary span { transform: rotate(45deg); }
-.rfi-faq-item p { max-width: 780px; margin: -3px 40px 22px 4px; color: var(--text2); font-size: 15px; line-height: 1.75; }
+.rfi-faq-question { width: 100%; border: 0; border-bottom: 1px solid var(--border); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 21px 4px; color: var(--text); font: inherit; font-size: 17px; font-weight: 800; text-align: left; }
+.rfi-faq-question > span:last-child { color: var(--accent-text); font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 400; }
+.rfi-faq-question.is-active { color: var(--accent-text); }
+.rfi-faq-answer { height: 124px; box-sizing: border-box; margin-top: 18px; padding: 19px 22px; border: 1px solid var(--border); border-radius: 10px; background: color-mix(in srgb, var(--bg2) 78%, var(--accent) 22%); color: var(--text); font-size: 15px; line-height: 1.7; overflow-y: auto; }
+.rfi-faq-placeholder { color: var(--text3); }
 @media (max-width: 640px) {
   .rfi-faq { padding-top: 64px; padding-bottom: 68px; }
+  .rfi-faq-inner { padding: 26px 20px 28px; }
   .rfi-faq h2 { font-size: 28px; }
-  .rfi-faq-item summary { font-size: 15px; }
-  .rfi-faq-item p { margin-right: 0; }
+  .rfi-faq-question { font-size: 15px; }
+  .rfi-faq-answer { height: 150px; margin-top: 14px; padding: 16px; }
 }
 
 .site-nav {

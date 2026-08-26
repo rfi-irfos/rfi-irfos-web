@@ -2,21 +2,21 @@ import type { CSSProperties } from 'react'
 import { useRef } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { Reveal, OUTPUT_TAG_HUES } from './shared'
-import { IconAdjustmentsCode, IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport } from '@tabler/icons-react'
+import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport } from '@tabler/icons-react'
 
 // One fixed hue per section (see HUE_* below), reusing the same calibrated hue set
 // OutputTags uses elsewhere on the site so this isn't a new, uncalibrated palette.
 const hue = (i: number) => OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
 const hueStyle = (i: number) => ({ '--hue-bg': hue(i).bg, '--hue-border': hue(i).border }) as CSSProperties
 
-const PRODUCT_ICONS = [IconDatabase, IconBuilding, IconFlask, IconGitBranch, IconShieldCheck, IconCode, IconAdjustmentsCode]
+const PRODUCT_ICONS = [IconDatabase, IconBuilding, IconFlask, IconGitBranch, IconShieldCheck, IconCode]
 const AGENT_ICONS = [IconRobot, IconBuilding, IconSearch, IconDeviceDesktop, IconBraces, IconTerminal2]
 const PIPELINE_ICONS = [IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport]
 
 const COPY = {
   en: {
     eyebrow: 'Data Solutions', title: 'production, data and agents that have to work',
-    intro: 'The same discipline behind our systems and public evidence, delivered as data and infrastructure: an open data warehouse and lakehouse foundation, reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Our Rust and Axum services connect through a SQL bridge to ternary-logic pipelines. Your corpus stays private. Every delivered artefact stays traceable.',
+    intro: 'The same discipline behind our systems and public evidence, delivered as data and infrastructure: a data warehouse, reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Our Rust and Axum services connect through a SQL bridge to ternary-logic pipelines. Your corpus stays private. Every delivered artefact stays traceable.',
     datasets: [
       ['Mobile application behavior\ndatasets', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],
       ['SDK & tracker knowledge\ngraphs', 'Reusable SDKs, tracker relationships, infrastructure, and cross-application recurrence mapped as connected evidence.'],
@@ -27,13 +27,12 @@ const COPY = {
     deliverEyebrow: 'What we deliver', deliverTitle: 'From environment to evaluation',
     deliverIntro: 'We define success criteria with your team, then build the data operation around the way your models are actually trained and evaluated. No anonymous task stream and no benchmark theatre: the environment, trace, label, and decision remain connected.',
     products: [
-      ['Data warehouse & lakehouse', 'An open, governed foundation for operational, training, and evaluation data, connected to our Rust/Axum services through a production SQL bridge.'],
+      ['Data warehouse', 'A governed foundation for operational, training, and evaluation data, connected to our Rust/Axum services through a production SQL bridge.'],
       ['Virtual environments', 'Human-simulated companies, computer-use and MCU mockups, deterministic resets, and controlled credentials for repeatable agent work.'],
       ['Capability evaluations', 'MCP-bench and TAU-bench extensions, TinyTAU for on-device agents, and task suites built around your real tools and constraints.'],
       ['Trajectory data', 'Expert demonstrations, step-level annotations, preference labels, failure taxonomies, and calibrated evaluations for training and reward shaping.'],
       ['Safety evaluation', 'Coding-agent safety, MCP injection assessment, computer-use injection red teaming, and adversarial trajectories with reproducible evidence.'],
       ['Coding data', 'Repository-scale generation, issue resolution, code review, testing, debugging, tool-use, data analysis, and visual frontend tasks.'],
-      ['Synthetic enhancement', 'Domain adaptation, controlled variation, hard-negative generation, and dataset expansion without losing provenance or evaluation integrity.'],
     ],
     agentsEyebrow: 'Built for', agentsTitle: 'Agents across the whole tool chain',
     agentsIntro: 'Task environments and data shaped around how each agent observes, reasons, uses tools, and recovers when the work stops going to plan.',
@@ -65,7 +64,7 @@ const COPY = {
   },
   de: {
     eyebrow: 'Data Solutions', title: 'Produktion, Daten und Agenten, die wirklich arbeiten müssen',
-    intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten und Infrastruktur geliefert: eine offene Data-Warehouse- und Lakehouse-Basis, reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Unsere Rust- und Axum-Services verbinden sich über eine produktive SQL-Brücke mit ternären Logik-Pipelines. Ihr Korpus bleibt privat. Jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
+    intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten und Infrastruktur geliefert: ein Data Warehouse, reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Unsere Rust- und Axum-Services verbinden sich über eine produktive SQL-Brücke mit ternären Logik-Pipelines. Ihr Korpus bleibt privat. Jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
     datasets: [
       ['Verhalten mobiler Anwendungen', 'Quellcodebasiertes App-Verhalten, Berechtigungen, Endpunkte, Consent-Timing und beobachtete Datenflüsse.'],
       ['SDK- & Tracker-\nWissensgraphen', 'Wiederkehrende SDKs, Tracker-Beziehungen, Infrastruktur und App-übergreifende Zusammenhänge als verbundene Evidenz.'],
@@ -76,13 +75,12 @@ const COPY = {
     deliverEyebrow: 'Was wir liefern', deliverTitle: 'Von der Umgebung bis zur Evaluation',
     deliverIntro: 'Gemeinsam definieren wir belastbare Erfolgskriterien und bauen den Datenbetrieb passend zu Ihren realen Trainings- und Evaluationsabläufen. Kein anonymer Task-Stream und kein Benchmark-Theater: Umgebung, Trace, Label und Entscheidung bleiben verbunden.',
     products: [
-      ['Data Warehouse & Lakehouse', 'Eine offene, kontrollierte Basis für Betriebs-, Trainings- und Evaluationsdaten, verbunden mit unseren Rust/Axum-Services über eine produktive SQL-Brücke.'],
+      ['Data Warehouse', 'Eine kontrollierte Basis für Betriebs-, Trainings- und Evaluationsdaten, verbunden mit unseren Rust/Axum-Services über eine produktive SQL-Brücke.'],
       ['Virtuelle Umgebungen', 'Von Menschen simulierte Unternehmen, Computer-Use- und MCU-Mockups, deterministische Resets und kontrollierte Zugangsdaten.'],
       ['Capability-Evaluationen', 'Erweiterungen für MCP-bench und TAU-bench, TinyTAU für On-Device-Agenten und Aufgabensuiten für Ihre echten Werkzeuge.'],
       ['Trajectory Data', 'Expertendemonstrationen, Schritt-Annotationen, Präferenzlabels, Fehlerklassen und kalibrierte Evaluationen für Training und Reward Shaping.'],
       ['Safety-Evaluation', 'Sicherheit von Coding-Agenten, MCP-Injection-Assessments, Computer-Use-Red-Teaming und reproduzierbare adversariale Trajektorien.'],
       ['Coding-Daten', 'Repository-Erzeugung, Issue Resolution, Code Review, Tests, Debugging, Tool-Nutzung, Datenanalyse und visuelle Frontend-Aufgaben.'],
-      ['Synthetische Erweiterung', 'Domänenanpassung, kontrollierte Variation, Hard Negatives und Korpus-Erweiterung ohne Verlust von Provenienz oder Evaluationsintegrität.'],
     ],
     agentsEyebrow: 'Gebaut für', agentsTitle: 'Agenten entlang der gesamten Toolchain',
     agentsIntro: 'Aufgabenumgebungen und Daten, abgestimmt darauf, wie jeder Agent beobachtet, schlussfolgert, Werkzeuge nutzt und sich erholt, wenn die Arbeit vom Plan abweicht.',

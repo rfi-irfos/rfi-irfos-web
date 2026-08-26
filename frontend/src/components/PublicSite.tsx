@@ -54,27 +54,48 @@ const ZONE_TOTAL_COLUMNS = ZONE_ORDER.reduce((n, z) => n + zoneCols(z), 0)
 const FAQ_COPY = {
   en: {
     eyebrow: 'Questions worth answering',
-    title: 'A little more context',
+    title: 'Who are we, and what do we do?',
     items: [
-      ['What is RFI-IRFOS?', 'The Research Focus Institute — Interdisciplinary Research Facility for Open Sciences is a registered company in automatic data processing, carried by a not-for-profit research foundation established in 2020. We are a seven-person human team supported by a large in-house fleet of agents written in Rust.'],
-      ['What does “open” mean in our work?', 'It means the method is inspectable: the evidence, provenance, assumptions, and limits are made legible. It does not mean client data, private environments, or sensitive findings are published without permission.'],
-      ['How do you handle private or personal data?', 'We work from a client-approved handling plan, scrub PII where required, isolate credentials, and keep environments versioned and auditable. The exact boundary is agreed before production starts.'],
-      ['What can an organisation commission?', 'We build evidence-led systems, data warehouse and lakehouse foundations, evaluation suites, agent environments, and security or privacy research. Work can start from a defined brief or from a short scoping conversation.'],
-      ['How can a finding or correction be raised?', 'Use the disclosure route in Security or send the team a direct message. We preserve the original evidence, record the response, and update the public record when a claim is corrected or resolved.'],
+      ['What is RFI-IRFOS?', 'We are a research and engineering company backed by a not-for-profit foundation, founded in 2020. Seven people work here, alongside a large in-house fleet of software agents written in Rust.'],
+      ['What are an agent, an LLM, and a world model?', 'An LLM is the part that understands and generates language. An agent is software that uses a model, tools, and observations to get something done. A world model is its working picture of what exists, what changed, and what might happen next.'],
+      ['What do we actually build?', 'We build a data warehouse, agent environments, evaluation tools, and security research that make complex AI systems testable and useful. Our stack combines Rust and Axum services, a SQL bridge, and ternary-logic components.'],
+      ['How do you handle private or personal data?', 'We agree the rules with you first, remove personal information where needed, keep credentials separated, and record what happened. Your private corpus stays private unless you explicitly approve something else.'],
+      ['What will RFI-IRFOS never build or negotiate?', 'Human rights are not a trade-off. We do not run social-engineering operations or build mass-surveillance systems for military, government, or private clients. Some requests are simply outside our boundary.'],
+      ['What does whitebox, explainable-by-design mean?', 'The system should be able to show where an answer came from, what happened between input and output, and how certain it is. Audit trails, provenance, human oversight, and clear explanations are built in from the start, with the EU AI Act Articles 13, 14, and 15 as design reference points.'],
     ],
   },
   de: {
     eyebrow: 'Fragen, die man beantworten sollte',
-    title: 'Etwas mehr Kontext',
+    title: 'Wer sind wir, und was machen wir?',
     items: [
       ['Was ist RFI-IRFOS?', 'Das Research Focus Institute — Interdisciplinary Research Facility for Open Sciences ist ein registriertes Unternehmen der automatisierten Datenverarbeitung, getragen von einer 2020 gegründeten gemeinnützigen Forschungsstiftung. Wir sind ein siebenköpfiges menschliches Team, unterstützt von einer großen, in Rust geschriebenen Inhouse-Agentenflotte.'],
-      ['Was bedeutet „offen“ bei unserer Arbeit?', 'Die Methode bleibt prüfbar: Evidenz, Herkunft, Annahmen und Grenzen werden nachvollziehbar gemacht. Kundendaten, private Umgebungen und sensible Befunde werden dagegen nicht ohne Freigabe veröffentlicht.'],
+      ['Was sind Agent, LLM und World Model?', 'Ein LLM erzeugt und interpretiert Sprache. Ein Agent nutzt ein Modell, um mit Werkzeugen, Beobachtungen und Aktionen ein Ziel zu verfolgen. Ein World Model hält ein strukturiertes, veränderliches Bild von Entitäten, Ursachen und Unsicherheit bereit, damit Handlungen an der Realität geprüft werden können.'],
+      ['Was bauen wir?', 'Wir bauen ein Data Warehouse, Agentenumgebungen, Evaluationssuiten sowie Security- und Privacy-Forschung auf einem Rust/Axum-Backend mit SQL-Brücke und ternären Logik-Komponenten.'],
       ['Wie geht ihr mit privaten oder personenbezogenen Daten um?', 'Wir arbeiten mit einem freigegebenen Datenverarbeitungsplan, bereinigen PII wo nötig, isolieren Zugangsdaten und halten Umgebungen versioniert und auditierbar. Die genaue Grenze wird vor Produktionsbeginn vereinbart.'],
-      ['Was kann eine Organisation beauftragen?', 'Wir bauen evidenzbasierte Systeme, Data-Warehouse- und Lakehouse-Basen, Evaluationssuiten, Agentenumgebungen sowie Security- und Privacy-Forschung. Ein Briefing oder ein kurzes Scoping-Gespräch reicht für den Start.'],
-      ['Wie kann man einen Befund oder eine Korrektur melden?', 'Über den Disclosure-Weg unter Security oder direkt an das Team. Wir bewahren die ursprüngliche Evidenz, dokumentieren die Reaktion und aktualisieren den öffentlichen Eintrag, wenn sich eine Aussage korrigiert oder erledigt hat.'],
+      ['Was werden wir niemals bauen oder verhandeln?', 'Menschenrechte sind keine Verhandlungsmasse. Wir führen keine Social-Engineering-Operationen durch und bauen keine Systeme für Massenüberwachung, weder für Militär, Behörden noch private Auftraggeber. Technische Machbarkeit überschreibt diese Grenze nicht.'],
+      ['Was bedeutet Whitebox und Explainability by Design?', 'Audit-Trails, Provenienz, Entscheidungskontext und Unsicherheit sind im Stack vorgesehen. Unsere Systeme orientieren sich an den Anforderungen an Erklärbarkeit und Nachvollziehbarkeit aus den Artikeln 13, 14 und 15 des EU AI Act; menschliche Aufsicht bleibt ausdrücklich verankert.'],
     ],
   },
 } as const
+
+function FaqWidget({ locale }: { locale: Locale }) {
+  const [active, setActive] = useState<number | null>(null)
+  const copy = FAQ_COPY[locale]
+  return <section className="rfi-faq" aria-labelledby="rfi-faq-title">
+    <div className="rfi-faq-inner">
+      <p className="data-eyebrow">{copy.eyebrow}</p>
+      <h2 id="rfi-faq-title">{copy.title}</h2>
+      <div className="rfi-faq-list">
+        {copy.items.map(([question], i) => <button key={question} className={`rfi-faq-question${active === i ? ' is-active' : ''}`} onClick={() => setActive(active === i ? null : i)} aria-expanded={active === i}>
+          <span>{question}</span><span aria-hidden="true">{active === i ? '−' : '+'}</span>
+        </button>)}
+      </div>
+      <div className="rfi-faq-answer" aria-live="polite">
+        {active === null ? <span className="rfi-faq-placeholder">Select a question to read the short version.</span> : copy.items[active][1]}
+      </div>
+    </div>
+  </section>
+}
 
 // Nav logo's EKG line. Was one fixed blip shape looping identically forever - "measuring
 // the same heartbeat forever" per Simeon. A wider multi-beat path was tried and reverted
@@ -1273,20 +1294,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         </section>}
       </main>
 
-      <section className="rfi-faq" aria-labelledby="rfi-faq-title">
-        <div className="rfi-faq-inner">
-          <p className="data-eyebrow">{FAQ_COPY[locale].eyebrow}</p>
-          <h2 id="rfi-faq-title">{FAQ_COPY[locale].title}</h2>
-          <div className="rfi-faq-list">
-            {FAQ_COPY[locale].items.map(([question, answer]) => (
-              <details key={question} className="rfi-faq-item">
-                <summary>{question}<span aria-hidden="true">+</span></summary>
-                <p>{answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
+      <FaqWidget locale={locale} />
 
       {/* FOOTER */}
       {/* Live feedback 2026-08-14: with the repo directory added below, the page
