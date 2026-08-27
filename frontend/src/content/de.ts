@@ -302,10 +302,10 @@ export const DE: Content = {
   coopPartners: {
     eyebrow: 'Forschungskooperation',
     heading: 'gebaut gemeinsam mit unserem Kooperationspartner',
-    subheading: 'Laura Serna Gaviria leitet die eigene Forschung und Agentenarchitektur des Emergent Interaction Lab - Lauras Team, Call Laura und Jarvis sind alle aus ihrer Methode entstanden. RFI-IRFOS baut, was sie anleitet, klar als ihres gekennzeichnet, damit stets nachvollziehbar bleibt, wer was gemacht hat.',
+    subheading: 'Das Emergent Interaction Lab und RFI-IRFOS sind eigenständige Einheiten mit klar getrennten Forschungs- und Engineering-Rollen. Laura Serna Gaviria verantwortet die Forschungsarchitektur des Labs; RFI-IRFOS entwickelt und betreibt technische Systeme nur dort, wo eine konkrete Zusammenarbeit vereinbart und entsprechend ausgewiesen ist.',
     role: 'Emergent Interaction Lab · Kooperationspartnerin',
     laura: {
-      desc: 'Forschung zu Mensch-KI-Interaktion seit 2023 - die Methode hinter Lauras Team. Es ist eine SWAT-Architektur: 15 spezialisierte Expertenagenten bilden das Leitteam und orchestrieren gemeinsam einen Schwarm aus 303 spezialisierten Subagenten. Das haben wir direkt getestet, nicht nur angenommen: Wann immer sich eine Aufgabe entweder auf unsere Art oder auf ihre lösen ließ, haben wir beides probiert, und ihre Art hat sich bisher in zehn von zehn Fällen bewährt. Das ist der eigentliche Grund, warum ihr Name auf allem steht, was dabei entsteht, keine Gefälligkeit.',
+      desc: 'Forschung zu Mensch-KI-Interaktion seit 2023 und die daraus entwickelte Agentenarchitektur des Emergent Interaction Lab. Die Forschungsumgebung umfasst 315 individuell geschriebene, spezialisierte Rust-Crates, die über einen Orchestrator für klar abgegrenzte Funktionen aufgerufen werden. Sie sind keine 315 Stimmen über dieselbe Frage: Ihre Ergebnisse bleiben attribuiert, evidenzgebunden und getrennt von der technischen Umsetzung.',
     },
     products: [
       { desc: 'Ein fokussiertes Audit eines einzelnen Systems nach Lauras Emergent-Interaction-/Case-Intelligence-Methode - Prozessrekonstruktion und Befunde, begrenzt auf ein einzelnes System.' },

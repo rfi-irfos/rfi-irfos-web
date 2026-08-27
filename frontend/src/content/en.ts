@@ -315,10 +315,10 @@ export const EN = {
   coopPartners: {
     eyebrow: 'Research Cooperation',
     heading: 'built alongside our coop partner',
-    subheading: "Laura Serna Gaviria directs the Emergent Interaction Lab's research and agent architecture. Lauras Team, Call Laura, and Jarvis all came out of her method. RFI-IRFOS builds what she directs. Her name stays on her work.",
+    subheading: "The Emergent Interaction Lab and RFI-IRFOS are independent entities with distinct research and engineering roles. Laura Serna Gaviria leads the Lab's research architecture; RFI-IRFOS develops and operates technical systems only where a specific collaboration is agreed and explicitly attributed.",
     role: 'Emergent Interaction Lab · Coop Partner',
     laura: {
-      desc: 'Research into human-AI interaction since 2023 - the method behind Lauras Team. It is a SWAT architecture: 15 specialised expert agents form the lead team, and together they orchestrate a swarm of 303 specialised sub-agents beneath them. We have tested this directly rather than assumed it: whenever a task could be solved our way or hers, we tried both, and her way has worked in ten out of ten cases so far. That is the actual reason her name stays on everything it produces, not a courtesy credit.',
+      desc: 'Research into human-AI interaction since 2023 and the agent architecture developed from it at the Emergent Interaction Lab. The research environment comprises 315 individually authored, specialized Rust crates invoked through an orchestrator for bounded functions. They are not 315 votes on one question: outputs remain attributed, evidence-bound and distinct from technical implementation.',
     },
     products: [
       { desc: "A focused audit of one system using Laura's Emergent Interaction / Case Intelligence method - process reconstruction and findings, scoped to a single system." },
