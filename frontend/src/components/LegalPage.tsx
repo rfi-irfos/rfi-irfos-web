@@ -206,7 +206,7 @@ export function LegalPage({ slug }: { slug: string }) {
               through the homepage footer each time. Client-side via `navigate`
               (was a full-reload <a href> - "das ist nicht clean, das ist
               increment"), real href kept for middle-click/SEO/no-JS. */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, flex: '1 1 auto', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, flex: '1 1 auto', justifyContent: 'center' }}>
             {LEGAL_QUICKLINKS.filter(q => q.slug !== slug).map(q => (
               // display: inline-flex + lineHeight: 1 (2026-08-19, live feedback:
               // "sollten die buttons net alle in einer reihe sauber sein?") -
@@ -216,9 +216,9 @@ export function LegalPage({ slug }: { slug: string }) {
               // exact same height regardless of label length.
               <a key={q.slug} href={`/${q.slug}`} onClick={e => navigate(e, `/${q.slug}`)} style={{
                 display: 'inline-flex', alignItems: 'center', lineHeight: 1,
-                fontFamily: 'monospace', fontSize: 10.5, fontWeight: 600, letterSpacing: '0.04em',
+                fontFamily: 'monospace', fontSize: 9.5, fontWeight: 600, letterSpacing: '0.035em',
                 color: '#8a8aa0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
-                borderRadius: 999, padding: '6px 11px', textDecoration: 'none',
+                borderRadius: 999, padding: '5px 8px', textDecoration: 'none',
               }}>
                 {locale === 'de' ? q.labelDe : q.labelEn}
               </a>

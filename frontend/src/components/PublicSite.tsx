@@ -1348,6 +1348,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                     { label: t.footer.groups.legal.links.agb, href: '/agb' },
                     { label: t.footer.groups.legal.links.security, href: '/security' },
                     { label: t.footer.groups.legal.links.standards, href: '/standards' },
+                    { label: 'FAQ', href: '/faq' },
                   ],
                 },
               ]
@@ -1359,6 +1360,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                     { label: t.footer.groups.legal.links.agb, href: '/agb' },
                     { label: t.footer.groups.legal.links.security, href: '/security' },
                     { label: t.footer.groups.legal.links.standards, href: '/standards' },
+                    { label: 'FAQ', href: '/faq' },
                   ],
                 },
                 {

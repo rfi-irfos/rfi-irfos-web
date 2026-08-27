@@ -152,7 +152,18 @@ button { cursor: pointer; font-family: inherit; }
 .legal-faq-item summary::-webkit-details-marker { display: none; }
 .legal-faq-item summary span { color: var(--accent-text); font: 20px/1 monospace; }
 .legal-faq-item[open] summary { color: var(--accent-text); }
-.legal-faq-item p { margin: 0 32px 19px 2px; }
+.legal-faq-item p {
+  margin: 0 32px 0 2px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .38s ease, margin .38s ease, opacity .24s ease;
+}
+.legal-faq-item[open] p {
+  max-height: 240px;
+  margin: 0 32px 19px 2px;
+  opacity: 1;
+}
 @media (max-width: 640px) {
   .rfi-faq { padding-top: 64px; padding-bottom: 68px; }
   .rfi-faq-inner { padding: 0; }
@@ -406,7 +417,7 @@ button { cursor: pointer; font-family: inherit; }
 .rfi-comparison-cell:hover { background: color-mix(in srgb, var(--bg2) 82%, var(--accent) 18%); }
 .rfi-comparison-marker { flex: 0 0 25px; align-self: flex-start; margin-top: 2px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; color: var(--text3); opacity: .75; }
 .rfi-comparison-cell--preserve .rfi-comparison-marker { color: var(--accent-text); opacity: 1; font-size: 16px; line-height: 1; }
-.cc-scenario-title { display: inline-block; padding: 5px 16px 6px; border: 1px solid rgba(190,198,208,.5); border-radius: 999px; background: linear-gradient(135deg, rgba(235,239,244,.16), rgba(125,135,148,.1)); box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
+.cc-scenario-title { display: inline-block; padding: 4px 12px 5px; border: 1px solid rgba(190,198,208,.5); border-radius: 999px; background: linear-gradient(135deg, rgba(235,239,244,.16), rgba(125,135,148,.1)); box-shadow: inset 0 1px 0 rgba(255,255,255,.14); font-size: 15px; font-weight: 700; }
 @media (max-width: 640px) {
   .rfi-comparison-cell { gap: 7px; }
   .rfi-comparison-marker { flex-basis: 18px; font-size: 9px; }
