@@ -25,7 +25,7 @@ const ROUTES = [
   '/research', '/systems', '/evidence', '/data-solutions', '/datasets', '/access', '/submit',
   // Legacy section URLs remain valid and should keep receiving static output.
   '/projects', '/track-record', '/pricing',
-  '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/team', '/methodology',
+  '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/team', '/methodology', '/faq',
 ]
 
 const MIME = {
