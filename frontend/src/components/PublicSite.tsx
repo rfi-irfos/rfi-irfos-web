@@ -79,19 +79,16 @@ const FAQ_COPY = {
 } as const
 
 function FaqWidget({ locale }: { locale: Locale }) {
-  const [active, setActive] = useState<number | null>(null)
   const copy = FAQ_COPY[locale]
   return <section className="rfi-faq" aria-labelledby="rfi-faq-title">
     <div className="rfi-faq-inner">
       <p className="data-eyebrow">{copy.eyebrow}</p>
       <h2 id="rfi-faq-title">{copy.title}</h2>
       <div className="rfi-faq-list">
-        {copy.items.map(([question], i) => <button key={question} className={`rfi-faq-question${active === i ? ' is-active' : ''}`} onClick={() => setActive(active === i ? null : i)} aria-expanded={active === i}>
-          <span>{question}</span><span aria-hidden="true">{active === i ? '−' : '+'}</span>
-        </button>)}
-      </div>
-      <div className="rfi-faq-answer" aria-live="polite">
-        {active === null ? <span className="rfi-faq-placeholder">Select a question to read the short version.</span> : copy.items[active][1]}
+        {copy.items.map(([question, answer]) => <details key={question} className="rfi-faq-item">
+          <summary><span>{question}</span><span aria-hidden="true">+</span></summary>
+          <p>{answer}</p>
+        </details>)}
       </div>
     </div>
   </section>
@@ -1294,7 +1291,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         </section>}
       </main>
 
-      <FaqWidget locale={locale} />
+      {view === 'home' && <FaqWidget locale={locale} />}
 
       {/* FOOTER */}
       {/* Live feedback 2026-08-14: with the repo directory added below, the page

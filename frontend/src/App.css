@@ -139,17 +139,19 @@ button { cursor: pointer; font-family: inherit; }
 .rfi-faq .data-eyebrow { display: none; }
 .rfi-faq h2 { margin: 0 0 30px; text-align: center; font-size: 32px; font-weight: 900; }
 .rfi-faq-list { border-top: 1px solid var(--border); }
-.rfi-faq-question { width: 100%; border: 0; border-bottom: 1px solid var(--border); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 2px; color: var(--text); font: inherit; font-size: 16px; font-weight: 700; text-align: left; }
-.rfi-faq-question > span:last-child { color: var(--accent-text); font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 400; }
-.rfi-faq-question.is-active { color: var(--accent-text); }
-.rfi-faq-answer { height: 104px; box-sizing: border-box; margin-top: 18px; padding: 14px 18px; border-left: 2px solid var(--accent); color: var(--text2); font-size: 15px; line-height: 1.7; overflow-y: auto; }
-.rfi-faq-placeholder { color: var(--text3); }
+.rfi-faq-item { border-bottom: 1px solid var(--border); }
+.rfi-faq-item summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 2px; color: var(--text); font-size: 16px; font-weight: 700; }
+.rfi-faq-item summary::-webkit-details-marker { display: none; }
+.rfi-faq-item summary > span:last-child { color: var(--accent-text); font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 400; transition: transform .2s ease; }
+.rfi-faq-item[open] summary { color: var(--accent-text); }
+.rfi-faq-item[open] summary > span:last-child { transform: rotate(45deg); }
+.rfi-faq-item p { margin: 0 40px 20px 2px; color: var(--text2); font-size: 15px; line-height: 1.7; }
 @media (max-width: 640px) {
   .rfi-faq { padding-top: 64px; padding-bottom: 68px; }
   .rfi-faq-inner { padding: 0; }
   .rfi-faq h2 { font-size: 28px; }
-  .rfi-faq-question { font-size: 15px; }
-  .rfi-faq-answer { height: 150px; margin-top: 14px; padding: 16px; }
+  .rfi-faq-item summary { font-size: 15px; }
+  .rfi-faq-item p { margin-right: 0; }
 }
 
 .site-nav {
