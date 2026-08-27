@@ -54,9 +54,9 @@ const ZONE_TOTAL_COLUMNS = ZONE_ORDER.reduce((n, z) => n + zoneCols(z), 0)
 const FAQ_COPY = {
   en: {
     eyebrow: 'Questions worth answering',
-    title: 'Who are we, and what do we do?',
+    title: 'Questions worth answering',
     items: [
-      ['What is RFI-IRFOS?', 'We are a research and engineering company backed by a not-for-profit foundation, founded in 2020. Seven people work here, alongside a large in-house fleet of software agents written in Rust.'],
+      ['Who are we, and what do we do?', 'We are a research and engineering company backed by a not-for-profit foundation, founded in 2020. Seven people work here, alongside a large in-house fleet of software agents written in Rust.'],
       ['What are an agent, an LLM, and a world model?', 'An LLM is the part that understands and generates language. An agent is software that uses a model, tools, and observations to get something done. A world model is its working picture of what exists, what changed, and what might happen next.'],
       ['What do we actually build?', 'We build a data warehouse, agent environments, evaluation tools, and security research that make complex AI systems testable and useful. Our stack combines Rust and Axum services, a SQL bridge, and ternary-logic components.'],
       ['How do you handle private or personal data?', 'We agree the rules with you first, remove personal information where needed, keep credentials separated, and record what happened. Your private corpus stays private unless you explicitly approve something else.'],
@@ -66,9 +66,9 @@ const FAQ_COPY = {
   },
   de: {
     eyebrow: 'Fragen, die man beantworten sollte',
-    title: 'Wer sind wir, und was machen wir?',
+    title: 'Fragen, die man beantworten sollte',
     items: [
-      ['Was ist RFI-IRFOS?', 'Das Research Focus Institute — Interdisciplinary Research Facility for Open Sciences ist ein registriertes Unternehmen der automatisierten Datenverarbeitung, getragen von einer 2020 gegründeten gemeinnützigen Forschungsstiftung. Wir sind ein siebenköpfiges menschliches Team, unterstützt von einer großen, in Rust geschriebenen Inhouse-Agentenflotte.'],
+      ['Wer sind wir, und was machen wir?', 'Das Research Focus Institute — Interdisciplinary Research Facility for Open Sciences ist ein registriertes Unternehmen der automatisierten Datenverarbeitung, getragen von einer 2020 gegründeten gemeinnützigen Forschungsstiftung. Wir sind ein siebenköpfiges menschliches Team, unterstützt von einer großen, in Rust geschriebenen Inhouse-Agentenflotte.'],
       ['Was sind Agent, LLM und World Model?', 'Ein LLM erzeugt und interpretiert Sprache. Ein Agent nutzt ein Modell, um mit Werkzeugen, Beobachtungen und Aktionen ein Ziel zu verfolgen. Ein World Model hält ein strukturiertes, veränderliches Bild von Entitäten, Ursachen und Unsicherheit bereit, damit Handlungen an der Realität geprüft werden können.'],
       ['Was bauen wir?', 'Wir bauen ein Data Warehouse, Agentenumgebungen, Evaluationssuiten sowie Security- und Privacy-Forschung auf einem Rust/Axum-Backend mit SQL-Brücke und ternären Logik-Komponenten.'],
       ['Wie geht ihr mit privaten oder personenbezogenen Daten um?', 'Wir arbeiten mit einem freigegebenen Datenverarbeitungsplan, bereinigen PII wo nötig, isolieren Zugangsdaten und halten Umgebungen versioniert und auditierbar. Die genaue Grenze wird vor Produktionsbeginn vereinbart.'],
