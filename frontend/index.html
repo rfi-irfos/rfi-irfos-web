@@ -22,6 +22,18 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Requesting the full variable range (100..900) in one stylesheet means Google
+         serves each weight as its own separate file, fetched only once something on
+         the page actually renders in that weight - not all at once. Headline weight
+         900 (h1s across the site, incl. Data Solutions) is visually the most obvious
+         casualty: it often finishes loading a couple of seconds after first paint,
+         and the swap from the fallback font to real Archivo-900 shifts line-height/
+         baseline slightly and reads as text "greying out and dropping a bit" for a
+         frame (live feedback 2026-08-27). This tiny dedicated request for just 400
+         (body) + 900 (headings) races ahead of the full-range request below so the
+         two weights actually visible above the fold on first paint are prioritised,
+         without touching the full-range link other weights still rely on. -->
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;900&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="canonical" href="https://rfi-irfos.com" />
