@@ -9,7 +9,7 @@ import './App.css'
 // the common case.
 const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ default: m.LegalPage })))
 
-const LEGAL_SLUGS = ['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology']
+const LEGAL_SLUGS = ['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq']
 // View ids that also get a real, crawlable URL in addition to their homepage hash.
 // The legacy section slugs remain accepted so existing links do not break while
 // the public shell is reorganised into Home / Systems / Evidence / Access views.

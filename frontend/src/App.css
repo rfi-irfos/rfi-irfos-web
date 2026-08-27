@@ -146,6 +146,13 @@ button { cursor: pointer; font-family: inherit; }
 .rfi-faq-item[open] summary { color: var(--accent-text); }
 .rfi-faq-item[open] summary > span:last-child { transform: rotate(45deg); }
 .rfi-faq-item p { margin: 0 40px 20px 2px; color: var(--text2); font-size: 15px; line-height: 1.7; }
+.legal-faq-list { margin-top: 34px; border-top: 1px solid rgba(255,255,255,.1); }
+.legal-faq-item { border-bottom: 1px solid rgba(255,255,255,.1); }
+.legal-faq-item summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 20px; padding: 17px 2px; color: #e8e8f0; font-size: 15px; font-weight: 700; }
+.legal-faq-item summary::-webkit-details-marker { display: none; }
+.legal-faq-item summary span { color: var(--accent-text); font: 20px/1 monospace; }
+.legal-faq-item[open] summary { color: var(--accent-text); }
+.legal-faq-item p { margin: 0 32px 19px 2px; }
 @media (max-width: 640px) {
   .rfi-faq { padding-top: 64px; padding-bottom: 68px; }
   .rfi-faq-inner { padding: 0; }

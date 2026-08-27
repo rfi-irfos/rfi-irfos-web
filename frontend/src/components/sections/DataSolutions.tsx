@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react'
 import { useRef } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { Reveal, OUTPUT_TAG_HUES } from './shared'
-import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport } from '@tabler/icons-react'
+import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport, IconArrowRight } from '@tabler/icons-react'
 
 // One fixed hue per section (see HUE_* below), reusing the same calibrated hue set
 // OutputTags uses elsewhere on the site so this isn't a new, uncalibrated palette.
@@ -163,7 +163,7 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2>{c.startTitle}</h2></div></Reveal>
-      <div className="data-start-grid">{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_STARTS}><span>{n}</span><div className="data-start-icons" aria-hidden="true">{Array.from({ length: i + 1 }, (_, icon) => <IconDatabase key={icon} size={27} stroke={1.5} />)}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
+      <div className="data-start-grid">{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_STARTS}><span>{n}</span><div className="data-start-icons" aria-hidden="true">{i === 0 && <><IconDatabase size={27} stroke={1.5} /><IconCircleCheck size={24} stroke={1.8} /></>}{i === 1 && <><IconDatabase size={27} stroke={1.5} /><IconSettingsAutomation size={25} stroke={1.6} /><IconDatabase size={27} stroke={1.5} /></>}{i === 2 && <><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /></>}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
     </div></section>
 
     <section className="data-experts data-wrap"><Reveal><p className="data-eyebrow">{c.expertsEyebrow}</p><h2>{c.expertsTitle}</h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>

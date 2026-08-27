@@ -51,7 +51,7 @@ const ZONE_COL_START: Record<string, number> = (() => {
 })()
 const ZONE_TOTAL_COLUMNS = ZONE_ORDER.reduce((n, z) => n + zoneCols(z), 0)
 
-const FAQ_COPY = {
+export const FAQ_COPY = {
   en: {
     eyebrow: 'Questions worth answering',
     title: 'Questions worth answering',
@@ -78,7 +78,7 @@ const FAQ_COPY = {
   },
 } as const
 
-function FaqWidget({ locale }: { locale: Locale }) {
+export function FaqWidget({ locale }: { locale: Locale }) {
   const copy = FAQ_COPY[locale]
   return <section className="rfi-faq" aria-labelledby="rfi-faq-title">
     <div className="rfi-faq-inner">
@@ -1291,7 +1291,6 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         </section>}
       </main>
 
-      {view === 'home' && <FaqWidget locale={locale} />}
 
       {/* FOOTER */}
       {/* Live feedback 2026-08-14: with the repo directory added below, the page

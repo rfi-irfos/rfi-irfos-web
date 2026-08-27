@@ -62,6 +62,10 @@ const META: Record<string, { title: string; description: string; titleDe?: strin
     title: 'Methodology — RFI-IRFOS', description: "The four principles governing RFI-IRFOS's research: sources, methods, handling results, and disclosure — the same rules regardless of who's paying.",
     titleDe: 'Methodik — RFI-IRFOS', descriptionDe: 'Die vier Prinzipien, die die Forschung von RFI-IRFOS bestimmen: Quellen, Methoden, Umgang mit Ergebnissen und Offenlegung — dieselben Regeln, unabhängig vom Kunden.',
   },
+  faq: {
+    title: 'Questions worth answering — RFI-IRFOS', description: 'Plain-language answers about RFI-IRFOS, agents, world models, data systems, safety, and our boundaries.',
+    titleDe: 'Fragen, die man beantworten sollte — RFI-IRFOS', descriptionDe: 'Verständliche Antworten zu RFI-IRFOS, Agenten, World Models, Datensystemen, Sicherheit und unseren Grenzen.',
+  },
 }
 
 // Short cross-links between the legal/reference pages themselves (2026-08-19,
@@ -81,7 +85,41 @@ const LEGAL_QUICKLINKS: { slug: string; labelEn: string; labelDe: string }[] = [
   { slug: 'standards', labelEn: 'Standards', labelDe: 'Standards' },
   { slug: 'team', labelEn: 'Team', labelDe: 'Team' },
   { slug: 'methodology', labelEn: 'Methodology', labelDe: 'Methodology' },
+  { slug: 'faq', labelEn: 'FAQ', labelDe: 'FAQ' },
 ]
+
+const FAQ_ITEMS: [string, string, string, string][] = [
+  ['Who are we and what do we do?', 'Wer sind wir und was machen wir?', 'RFI-IRFOS is a research and engineering company backed by a not-for-profit foundation, founded in 2020. We build data systems, agent environments, evaluations, and security research.', 'RFI-IRFOS ist ein Forschungs- und Engineering-Unternehmen, getragen von einer gemeinnützigen Stiftung und gegründet 2020. Wir bauen Datensysteme, Agentenumgebungen, Evaluationen und Security-Forschung.'],
+  ['What is an LLM?', 'Was ist ein LLM?', 'A large language model predicts and generates text. It is one component, not a complete autonomous system.', 'Ein Large Language Model sagt Text voraus und erzeugt ihn. Es ist eine Komponente, kein vollständiges autonomes System.'],
+  ['What is an agent?', 'Was ist ein Agent?', 'An agent uses a model, tools, and observations to pursue a goal and take actions.', 'Ein Agent nutzt ein Modell, Werkzeuge und Beobachtungen, um ein Ziel zu verfolgen und Handlungen auszuführen.'],
+  ['What is a world model?', 'Was ist ein World Model?', 'A world model keeps a structured picture of entities, changes, causes, and uncertainty so actions can be checked against reality.', 'Ein World Model hält ein strukturiertes Bild von Entitäten, Veränderungen, Ursachen und Unsicherheit bereit, damit Handlungen an der Realität geprüft werden.'],
+  ['What is a data warehouse?', 'Was ist ein Data Warehouse?', 'A data warehouse brings information from different sources into a consistent, queryable place for analysis and decisions.', 'Ein Data Warehouse führt Informationen aus verschiedenen Quellen an einem konsistenten, abfragbaren Ort für Analyse und Entscheidungen zusammen.'],
+  ['What do we build?', 'Was bauen wir?', 'Our stack combines a data warehouse, Rust and Axum services, a SQL bridge, ternary-logic components, agent environments, and evaluation tools.', 'Unser Stack verbindet ein Data Warehouse, Rust- und Axum-Services, eine SQL-Brücke, ternäre Logik-Komponenten, Agentenumgebungen und Evaluationstools.'],
+  ['What does whitebox mean?', 'Was bedeutet Whitebox?', 'A system can show where an answer came from, what happened between input and output, and how certain it is.', 'Ein System kann zeigen, woher eine Antwort kommt, was zwischen Input und Output passiert ist und wie sicher sie ist.'],
+  ['Do you keep audit trails?', 'Führt ihr Audit-Trails?', 'Yes. Provenance, decisions, inputs, outputs, and relevant changes are recorded by design.', 'Ja. Provenienz, Entscheidungen, Inputs, Outputs und relevante Änderungen werden standardmäßig aufgezeichnet.'],
+  ['How do you handle personal data?', 'Wie geht ihr mit personenbezogenen Daten um?', 'We agree the handling rules first, minimise collection, remove PII where required, and keep credentials isolated.', 'Wir vereinbaren die Regeln zuerst, minimieren die Erhebung, entfernen PII wo nötig und halten Zugangsdaten getrennt.'],
+  ['Is client data published?', 'Werden Kundendaten veröffentlicht?', 'No. Private data and environments stay private unless a client explicitly approves publication.', 'Nein. Private Daten und Umgebungen bleiben privat, außer ein Kunde gibt eine ausdrückliche Freigabe.'],
+  ['Do you build mass-surveillance systems?', 'Baut ihr Massenüberwachung?', 'No. We do not build mass-surveillance systems for military, governmental, or private entities.', 'Nein. Wir bauen keine Systeme für Massenüberwachung, weder für Militär, Behörden noch private Auftraggeber.'],
+  ['Do you do social engineering?', 'Macht ihr Social Engineering?', 'No. We do not run social-engineering operations or help manipulate people into surrendering access.', 'Nein. Wir führen keine Social-Engineering-Operationen durch und helfen nicht dabei, Menschen zur Herausgabe von Zugang zu manipulieren.'],
+  ['Are human rights negotiable?', 'Sind Menschenrechte verhandelbar?', 'No. Human rights are a hard boundary, not a project requirement to trade away.', 'Nein. Menschenrechte sind eine feste Grenze und keine Projektanforderung, die man wegverhandelt.'],
+  ['What does explainability by design mean?', 'Was bedeutet Explainability by Design?', 'Explanations, human oversight, uncertainty, and traceable decisions are planned before implementation, not added after an incident.', 'Erklärungen, menschliche Aufsicht, Unsicherheit und nachvollziehbare Entscheidungen werden vor der Umsetzung geplant, nicht erst nach einem Vorfall ergänzt.'],
+  ['How does the EU AI Act influence the stack?', 'Wie beeinflusst der EU AI Act den Stack?', 'Articles 13, 14, and 15 are design reference points for transparency, human oversight, and accuracy, robustness, and cybersecurity.', 'Die Artikel 13, 14 und 15 sind Referenzpunkte für Transparenz, menschliche Aufsicht sowie Genauigkeit, Robustheit und Cybersicherheit.'],
+  ['Can you evaluate an existing agent?', 'Könnt ihr einen bestehenden Agenten evaluieren?', 'Yes. We can build task suites, instrument tool use, label trajectories, and report failure and safety categories.', 'Ja. Wir können Aufgabensuiten bauen, Tool-Nutzung instrumentieren, Trajektorien labeln und Fehler- sowie Sicherheitsklassen ausweisen.'],
+  ['Can you build a private test environment?', 'Könnt ihr eine private Testumgebung bauen?', 'Yes. Environments can be containerised, reset deterministically, and run with controlled test credentials.', 'Ja. Umgebungen können containerisiert, deterministisch zurückgesetzt und mit kontrollierten Testzugängen betrieben werden.'],
+  ['What does reproducible mean?', 'Was bedeutet reproduzierbar?', 'The same versioned inputs and environment can be run again and produce an auditable trail of what changed.', 'Versionierte Inputs und dieselbe Umgebung können erneut ausgeführt werden und zeigen prüfbar, was sich verändert hat.'],
+  ['How do you report security findings?', 'Wie meldet ihr Security-Funde?', 'We preserve technical evidence, contact the affected party through a coordinated route, and document responses and resolution.', 'Wir bewahren technische Evidenz, kontaktieren Betroffene koordiniert und dokumentieren Reaktionen und Behebung.'],
+  ['How can an organisation start?', 'Wie kann eine Organisation starten?', 'Send us a concrete objective, constraint, or system you want to understand. We will scope the smallest useful first step.', 'Schickt uns ein konkretes Ziel, eine Grenze oder ein System, das ihr verstehen wollt. Wir definieren den kleinsten sinnvollen ersten Schritt.'],
+]
+
+function FaqPage({ locale }: { locale: 'en' | 'de' }) {
+  return <div style={PROSE}>
+    <h1 style={H1}>{locale === 'de' ? 'Fragen, die man beantworten sollte' : 'Questions worth answering'}</h1>
+    <p style={{ ...P, fontSize: 16 }}>{locale === 'de' ? 'Verständliche Antworten zu unserer Arbeit, unseren Systemen und unseren Grenzen.' : 'Plain-language answers about our work, our systems, and our boundaries.'}</p>
+    <div className="legal-faq-list">
+      {FAQ_ITEMS.map(([q, qDe, a, aDe]) => <details key={q} className="legal-faq-item"><summary>{locale === 'de' ? qDe : q}<span>+</span></summary><p style={P}>{locale === 'de' ? aDe : a}</p></details>)}
+    </div>
+  </div>
+}
 
 export function LegalPage({ slug }: { slug: string }) {
   const footerRef = useRef<HTMLDivElement>(null)
@@ -221,7 +259,8 @@ export function LegalPage({ slug }: { slug: string }) {
             {slug === 'standards'   && <Standards />}
             {slug === 'team'        && <Team />}
             {slug === 'methodology' && <Methodology />}
-            {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology'].includes(slug) && (
+            {slug === 'faq'         && <FaqPage locale={locale} />}
+            {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq'].includes(slug) && (
               <p style={P}>Seite nicht gefunden.</p>
             )}
           </motion.div>
