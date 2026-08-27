@@ -345,59 +345,46 @@ button { cursor: pointer; font-family: inherit; }
 .data-agent-grid article > svg { flex: 0 0 auto; margin-top: 2px; color: var(--accent); }
 .data-agent-grid h3 { margin-top: 0; }
 
-/* Per-section hue wash + hover glow. --hue-bg/--hue-border are set inline once per
-   section (HUE_DATASETS/HUE_PRODUCTS/HUE_AGENTS/HUE_STARTS in DataSolutions.tsx, one
-   fixed hue per topic, not per card - live feedback 2026-08-26 rejected a per-card
+/* Per-section hue wash. --hue-bg/--hue-border are set inline once per section
+   (HUE_DATASETS/HUE_PRODUCTS/HUE_AGENTS/HUE_STARTS in DataSolutions.tsx, one fixed
+   hue per topic, not per card - live feedback 2026-08-26 rejected a per-card
    rotation as "looks like a pinjata"), reusing the same rotating set OutputTags uses
-   site-wide so this doesn't introduce a new, uncalibrated colour system. The subtle
-   in-card wash stays on permanently (a quiet section identity); the bigger blurred
-   glow behind the card is hover-only, per the same feedback ("glow only on hover,
-   not permanent") - it sits behind the card (negative z-index, blurred, not clipped)
-   rather than tinting any foreground text, following the same contrast lesson
-   OutputTags already learned (2026-08-14: tinted foreground text broke contrast on
-   the light theme's mint card). */
+   site-wide so this doesn't introduce a new, uncalibrated colour system. This wash
+   stays on permanently (a quiet section identity), separate from the pointer
+   spotlight below (that one is hover-only and moves). */
 .data-dataset-grid article, .data-product, .data-agent-grid article, .data-start-grid article {
-  /* z-index: 0 (not just position: relative) is load-bearing: position: relative
-     alone leaves the box at z-index: auto, which does NOT establish its own stacking
-     context, so a negative-z-index ::before child is not reliably contained "just
-     behind this card" - it can escape to a distant ancestor's stacking context and
-     paint somewhere else entirely. Two earlier attempts without this both broke
-     visibly: a big bleed (-22px) smeared onto neighbouring cards (live feedback:
-     "glow is still over the boxes"), and a mouse-tracked spotlight rendered ON TOP
-     of the card's own text instead of behind it (live feedback: "glow is direkt aufm
-     cursor... überschattet den text"). z-index: 0 here fixes the actual cause, not
-     just the symptom - see https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context. */
-  position: relative; z-index: 0;
+  position: relative; z-index: 1;
   background-image: radial-gradient(120% 90% at 18% 0%, var(--hue-bg, transparent) 0%, transparent 62%);
 }
-.data-dataset-grid article::before, .data-product::before, .data-agent-grid article::before, .data-start-grid article::before {
-  content: ''; position: absolute; inset: -10px; z-index: -1; pointer-events: none; border-radius: inherit;
-  /* Fixed position (matches the in-card wash's own origin, top-left-ish), not
-     mouse-tracked - a moving spotlight fundamentally fights "stay behind an opaque
-     card": to visibly move, it has to shine ON the surface, not behind it. Bleed
-     (-10px) stays smaller than the smallest grid gap (14px) so it can never reach a
-     neighbouring card. */
-  background: radial-gradient(120% 90% at 18% 0%, var(--hue-border, transparent) 0%, transparent 70%);
-  filter: blur(16px); opacity: 0; transition: opacity .55s ease;
-}
-.data-dataset-grid article:hover::before, .data-product:hover::before, .data-agent-grid article:hover::before, .data-start-grid article:hover::before {
-  opacity: .55;
-}
-/* One ambient spotlight for the dataset showcase. It tracks the pointer on the
-   grid itself and stays behind the opaque cards instead of lighting each card. */
-.data-dataset-grid {
-  position: relative;
-  isolation: isolate;
+
+/* One ambient spotlight per grid (dataset/product/agent/start), tracking the
+   pointer and sitting behind the opaque cards rather than lighting each card
+   individually - see useSpotlight() in DataSolutions.tsx for the --spot-x/--spot-y
+   writer. inset: 0 here is load-bearing: the glow layer's own box must exactly
+   match the box the pixel coordinates were measured against, or "at var(--spot-x)
+   var(--spot-y))" resolves against the wrong origin. An earlier version used
+   inset: -90px on this layer while measuring the pointer against the grid's own
+   un-inset rect, which put the glow 90px up and to the left of the real cursor
+   (live feedback 2026-08-27: "glow center is far off left from the actual
+   cursor"). A large blur (30px) already reads as soft without needing the box
+   itself to bleed past the grid edge, so there is no offset to keep in sync. */
+.data-dataset-grid, .data-product-grid, .data-agent-grid, .data-start-grid {
+  position: relative; isolation: isolate;
   --spot-x: 50%; --spot-y: 50%; --spot-alpha: 0;
 }
-.data-dataset-grid::before {
-  content: ''; position: absolute; z-index: -1; pointer-events: none;
-  inset: -90px; border-radius: 36px;
-  background: radial-gradient(260px circle at var(--spot-x) var(--spot-y), rgba(0,245,196,.24), transparent 72%);
-  filter: blur(28px); opacity: var(--spot-alpha); transition: opacity .7s ease;
+.data-dataset-grid::before, .data-product-grid::before, .data-agent-grid::before, .data-start-grid::before {
+  content: ''; position: absolute; z-index: 0; pointer-events: none;
+  inset: 0; border-radius: 24px;
+  /* Two overlapping gradients, offset by a small fixed amount, read as one soft
+     amorphous orb instead of a flat perfect disc (live feedback 2026-08-27:
+     "kann sich schon bissl amorph verhalten auch bissl wie so n orb"). Both stay
+     anchored to --spot-x/--spot-y, so the offset moves with the cursor rather
+     than breaking the tracking fixed just above. */
+  background:
+    radial-gradient(200px circle at calc(var(--spot-x) - 26px) calc(var(--spot-y) + 18px), var(--hue-border, transparent), transparent 68%),
+    radial-gradient(380px circle at var(--spot-x) var(--spot-y), var(--hue-border, transparent), transparent 74%);
+  filter: blur(36px); opacity: var(--spot-alpha); transition: opacity .5s ease;
 }
-.data-dataset-grid article { z-index: 1; }
-.data-dataset-grid article::before { display: none; }
 
 /* Comparison table: a quiet visual index makes the five pairings scan as one
    connected argument instead of a flat block of copy. The left markers stay
