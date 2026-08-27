@@ -405,7 +405,7 @@ export function CausalChainsSection() {
                     </div>
                   </div>
                   <div className="cc-step-divider" aria-hidden="true" style={{ width: 1, height: '72%', background: 'rgba(182, 190, 202, 0.28)', justifySelf: 'center' }} />
-                  <div className="cc-step-description" style={{ color: 'var(--text)', fontSize: 14, lineHeight: 1.6, minWidth: 0, overflowWrap: 'anywhere', textAlign: 'center' }}>
+                  <div className="cc-step-description" style={{ color: 'var(--text)', fontSize: 14, lineHeight: 1.6, minWidth: 0, overflowWrap: 'anywhere', textAlign: 'left' }}>
                     {current ? stepDescription(current.nodes[step], current.nodes[step + 1]) : ''}
                   </div>
                 </div>
