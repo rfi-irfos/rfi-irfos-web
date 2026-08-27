@@ -5,7 +5,7 @@ const H2: React.CSSProperties = { fontSize: 12, fontWeight: 800, marginTop: 32, 
 const P = { color: '#a0a0b8', fontSize: 14, marginBottom: 12 }
 const A = { color: 'var(--accent-text)', textDecoration: 'none' }
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLocale } from '../hooks/useLocale'
 
@@ -112,11 +112,20 @@ const FAQ_ITEMS: [string, string, string, string][] = [
 ]
 
 function FaqPage({ locale }: { locale: 'en' | 'de' }) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
   return <div style={PROSE}>
     <h1 style={H1}>{locale === 'de' ? 'Fragen, die man beantworten sollte' : 'Questions worth answering'}</h1>
     <p style={{ ...P, fontSize: 16 }}>{locale === 'de' ? 'Verständliche Antworten zu unserer Arbeit, unseren Systemen und unseren Grenzen.' : 'Plain-language answers about our work, our systems, and our boundaries.'}</p>
     <div className="legal-faq-list">
-      {FAQ_ITEMS.map(([q, qDe, a, aDe]) => <details key={q} className="legal-faq-item"><summary>{locale === 'de' ? qDe : q}<span>+</span></summary><p style={P}>{locale === 'de' ? aDe : a}</p></details>)}
+      {FAQ_ITEMS.map(([q, qDe, a, aDe], index) => {
+        const open = openIndex === index
+        return <div key={q} className={`legal-faq-item${open ? ' is-open' : ''}`}>
+          <button type="button" className="legal-faq-question" aria-expanded={open} onClick={() => setOpenIndex(open ? null : index)}>
+            <span>{locale === 'de' ? qDe : q}</span><span aria-hidden="true">+</span>
+          </button>
+          <div className="legal-faq-answer"><p style={P}>{locale === 'de' ? aDe : a}</p></div>
+        </div>
+      })}
     </div>
   </div>
 }
