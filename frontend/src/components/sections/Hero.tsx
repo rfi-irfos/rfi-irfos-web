@@ -381,10 +381,10 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           // floor that stays true as the live count fluctuates rather than the
           // instantaneous reading. Re-verify before raising this number further.
           { n: '58k+',                        label: t.hero.stats.dataPointsMonitored, from: 'scale'  as const, sub: undefined as string | undefined },
-          { n: '303+',                        label: t.hero.stats.agents,             from: 'bottom' as const, sub: undefined as string | undefined },
+          { n: '315',                         label: t.hero.stats.agents,             from: 'bottom' as const, sub: undefined as string | undefined },
           { n: '1',                           label: t.hero.stats.worldModel,         from: 'bottom' as const, sub: undefined as string | undefined },
         ]).map((s, i) => (
-          // Mount-triggered fly-in, NOT `Reveal` (same fix pattern as the identity
+              // Mount-triggered fly-in, NOT `Reveal` (same fix pattern as the identity
           // paragraph above, same root cause): Reveal drives its transform off
           // scroll progress through the viewport, but this row is above the fold -
           // already fully in view at mount, so it never gets a scroll transit to
@@ -444,10 +444,10 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
                   the light glass card, use what's already proven legible there). */}
               {/* marginLeft: 2px nudge for the three "+"-suffixed numbers only (live
                   feedback 2026-08-24: "53+ muss 2px weiter nach rechts... 58+k auch...
-                  und auch das 303+"), not the plain "8" or "1" cards - the plus sign's
+                  and the 315 agent count), not the plain "8" or "1" cards - the plus sign's
                   own optical weight was reading as slightly left-heavy against the
                   centred label below it. */}
-              <div className="rfi-hero-kpi-number" style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: theme === 'light' ? '#009e7a' : '#00c896', lineHeight: 1, marginLeft: s.n === '53+' ? 6 : ['58k+', '303+'].includes(s.n) ? 4 : 0 }}><CountUp value={s.n} /></div>
+              <div className="rfi-hero-kpi-number" style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: theme === 'light' ? '#009e7a' : '#00c896', lineHeight: 1, marginLeft: s.n === '53+' ? 6 : ['58k+', '315'].includes(s.n) ? 4 : 0 }}><CountUp value={s.n} /></div>
               {/* marginRight cancels the trailing letter-space that letter-spacing
                   appends after the final character. Centred text is otherwise
                   optically pushed right by half a tracking unit, which is what
