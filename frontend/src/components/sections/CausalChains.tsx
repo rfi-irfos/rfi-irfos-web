@@ -384,7 +384,7 @@ export function CausalChainsSection() {
               }}
             >
               <div style={{ fontSize: 17, color: 'var(--text)', fontWeight: 800, marginBottom: 14, textAlign: 'center', lineHeight: 1.35 }}>
-                <span>{current?.title ?? ''}</span>
+                <span className="cc-scenario-title">{current?.title ?? ''}</span>
               </div>
 
               {/* Stable two-column step card: event on the left, explanation on the right.

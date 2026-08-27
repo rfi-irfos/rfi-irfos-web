@@ -86,7 +86,7 @@ export function AppPrivacySection() {
                     "das sind Kernaussagen, die machma nicht in grau"). */}
                 <Reveal from="right" dist={44} delay={i + 1.35} style={{ borderBottom: i < t.appPrivacy.comparisonRows.length - 1 ? '1px solid var(--border)' : 'none', background: 'var(--bg2)', willChange: 'transform, opacity' }}>
                   <div className="rfi-comparison-cell rfi-comparison-cell--preserve" style={{ display: 'flex', alignItems: 'center', padding: mobile ? '14px 10px' : '18px 24px', fontSize: 14, fontWeight: 400, color: 'var(--text)', height: '100%', boxSizing: 'border-box' }}>
-                    <span className="rfi-comparison-marker" aria-hidden>↗</span>
+                    <span className="rfi-comparison-marker" aria-hidden>✓</span>
                     <span><strong style={{ fontWeight: 800, color: 'var(--text)' }}>{row.rfiLabel}:</strong> {row.rfi}</span>
                   </div>
                 </Reveal>
