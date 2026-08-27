@@ -22,18 +22,26 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Requesting the full variable range (100..900) in one stylesheet means Google
-         serves each weight as its own separate file, fetched only once something on
-         the page actually renders in that weight - not all at once. Headline weight
-         900 (h1s across the site, incl. Data Solutions) is visually the most obvious
-         casualty: it often finishes loading a couple of seconds after first paint,
-         and the swap from the fallback font to real Archivo-900 shifts line-height/
-         baseline slightly and reads as text "greying out and dropping a bit" for a
-         frame (live feedback 2026-08-27). This tiny dedicated request for just 400
-         (body) + 900 (headings) races ahead of the full-range request below so the
-         two weights actually visible above the fold on first paint are prioritised,
-         without touching the full-range link other weights still rely on. -->
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;900&display=swap" rel="stylesheet" />
+    <!-- First fix attempt (2026-08-27, superseded below) assumed weight 400 vs 900
+         were separate font files fetched on demand, and tried to race a small
+         dedicated stylesheet request ahead of the full-range one. Checked the real
+         Google Fonts CSS response directly (`curl .../css2?family=Archivo:wght@400;900`)
+         and both weights' latin @font-face rules point at the exact same woff2 URL -
+         Archivo is served as one variable font file covering the whole range, so
+         there's no separate "weight 900" fetch to race. The dedicated stylesheet link
+         was therefore a no-op, confirmed by live feedback the swap still happened.
+         The real bottleneck is almost certainly contention: this font file competes
+         for bandwidth with the homepage's hero images (several 2-3MB PNGs), so on a
+         first/cold load it can lose out and finish downloading a couple of seconds
+         after first paint - the browser renders a fallback font until then per
+         `display=swap`, and the swap to real Archivo shifts line-height/baseline
+         slightly (live feedback: headline text "greying out and dropping a bit a
+         few seconds after load"). A real `rel=preload` for the actual font file
+         gives it top fetch priority regardless of what else is competing, which a
+         second <link rel=stylesheet> never did - that only affects when the browser
+         discovers the file is needed, not the priority it fetches it at. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="https://fonts.gstatic.com/s/archivo/v25/k3kPo8UDI-1M0wlSV9XAw6lQkqWY8Q82sLydOxI.woff2" />
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="canonical" href="https://rfi-irfos.com" />
