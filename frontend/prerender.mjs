@@ -22,9 +22,9 @@ const PORT = 4173
 // (App.tsx's SECTION_SLUGS) - keep the crawlable routes in sync with those lists.
 const ROUTES = [
   '/',
-  '/research', '/systems', '/evidence', '/data-solutions', '/datasets', '/access', '/submit',
+  '/research', '/world-model', '/evidence', '/data-solutions', '/datasets', '/access', '/submit',
   // Legacy section URLs remain valid and should keep receiving static output.
-  '/projects', '/track-record', '/pricing',
+  '/track-record', '/pricing',
   '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/team', '/methodology', '/faq',
 ]
 

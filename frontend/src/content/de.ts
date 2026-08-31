@@ -13,6 +13,7 @@ export const DE: Content = {
     links: {
       research: 'Forschung',
       projects: 'Systeme',
+      worldModel: 'World Model',
       trackRecord: 'Evidenz',
       dataSolutions: 'Data Solutions',
       pricing: 'Zugang',
@@ -758,6 +759,65 @@ export const DE: Content = {
         ],
       },
     ],
+  },
+
+  worldModel: {
+    eyebrow: 'DINGIR',
+    heading: 'Ein kontinuierlich wachsendes Weltmodell',
+    intro: 'DINGIR verbindet historische und Echtzeit-Beobachtungen aus über 20 Domänen zu einem lebendigen, kausal strukturierten Weltgraphen. Kein reiner Datenspeicher: ein System, das verfolgt, wie Dinge zusammenhängen, erkennt, was sich verändert, und ableitet, was diese Veränderung als Nächstes berührt.',
+    exploreCta: 'Erkunden', apiCta: 'API-Zugang anfragen',
+    liveStatus: 'Live-System aktiv',
+    liveStatusFallback: 'Beispieldaten (Live-Feed nicht erreichbar)',
+    statsAsOf: (date: string) => `Stand ${date}`,
+    heroExample: {
+      tag: 'Beispiel', title: 'Sumatra, Indonesien — Nachbebensequenz',
+      time: 'M6.2 Hauptbeben, 24.08.2026 · 07:24 UTC',
+      body: 'DINGIR verfolgt die Nachbeben-Wahrscheinlichkeit laufend nach dem Omori-Utsu-Modell, auf Basis von USGS-Erdbebendaten. Dies ist ein Rechenbeispiel, kein Live-Ereignis.',
+    },
+    stats: {
+      historical: { label: 'Historische Beobachtungen', value: '3.334.419', sub: 'seit 55.500 v. Chr. · Stand 19.08.2026' },
+      live: { label: 'Live-Beobachtungen', value: '7.854.538', sub: 'kumulativ, alle aktiven Streams · Stand 31.08.2026' },
+      nodes: { label: 'Weltgraph', value: '51.200', sub: 'Knoten · Stand 31.08.2026' },
+      edges: { label: 'Weltgraph-Kanten', value: '484.307', sub: 'kausale und relationale Verknüpfungen' },
+      streams: { label: 'Live-Streams', value: '21', sub: 'kontinuierlich laufend' },
+      domains: { label: 'Domänen', value: '20+', sub: 'Systeme und Themenfelder' },
+    },
+    comparison: {
+      heading: 'Language Model vs. Agent vs. World Model',
+      lm: { title: 'Language Model (LM)', body: 'Wird darauf trainiert, das nächste sprachlich plausible Token vorherzusagen.', tag: 'Versteht Sprache, nicht die Welt.', verdict: 'Antwortet wahrscheinlich.' },
+      agent: { title: 'Agent', body: 'Ein Language Model, verbunden mit Werkzeugen, das damit Aufgaben ausführen kann.', tag: 'Kann Aktionen ausführen und auf Daten zugreifen, um Arbeit zu erledigen.', verdict: 'Handelt wahrscheinlich.' },
+      wm: { title: 'World Model (DINGIR)', body: 'Bildet Zustände der Welt selbst ab, erhält Zusammenhänge über Zeit und Raum und leitet daraus ab, was als Nächstes passieren könnte.', tag: 'Lernt aus Beobachtungen, simuliert Szenarien und trifft begründete Vorhersagen.', verdict: 'Versteht die Welt.' },
+    },
+    chainsPreview: {
+      eyebrow: 'Kausalitätsketten', heading: 'Einblicke in Dingirs Denkweise', sub: 'Fünf Beispiele, wie DINGIR Ereignisse verbindet',
+      viewMore: 'Alle 20 Kausalketten ansehen',
+    },
+    liveFeed: {
+      heading: 'Live-Feed', sub: 'Aktuelle Ereignisse in Echtzeit',
+      newBadge: 'neu', viewAll: 'Alle Live-Ereignisse anzeigen',
+      empty: 'Keine Live-Ereignisse im aktuellen Zeitfenster.',
+      kinds: { seismic: 'Seismisch', weather: 'Wetter', maritime: 'Maritim', infrastructure: 'Infrastruktur', model: 'Modell' } as Record<string, string>,
+    },
+    useCases: {
+      eyebrow: 'Anwendungsbereiche', heading: 'Wofür DINGIR genutzt werden kann', sub: 'Ein queryable data warehouse of world knowledge.',
+      viewAll: 'Alle Anwendungsbereiche entdecken',
+      cards: [
+        { title: 'Frühwarnung & Risiko', body: 'Frühzeitige Erkennung von Naturereignissen, Krisen und Kaskaden.' },
+        { title: 'Infrastruktur & Logistik', body: 'Transparenz über Lieferketten, Verkehr, Schifffahrt und kritische Infrastruktur.' },
+        { title: 'Märkte & Ökonomie', body: 'Verstehen von Marktbewegungen, Makro-Signalen und sektoralen Zusammenhängen.' },
+        { title: 'Sicherheit & Geopolitik', body: 'Beobachtung geopolitischer Entwicklungen, Konfliktdynamiken und systemischer Risiken.' },
+        { title: 'Forschung & Wissenschaft', body: 'Offene Schnittstelle für Forschung, Hypothesen-Tests und Entdeckungen.' },
+        { title: 'Unternehmen & Systeme', body: 'Datengetriebene Entscheidungen mit Kontext über Zeit, Raum und Systeme hinweg.' },
+      ],
+    },
+    earlyAccess: {
+      heading: 'Early Access für API & Data Feeds',
+      sub: 'Sie möchten DINGIR in Ihren Prozessen testen oder regelmäßig auf unsere Weltmodell-Daten zugreifen? Tragen Sie sich in die Early-Access-Liste ein.',
+      emailPlaceholder: 'Ihre E-Mail-Adresse',
+      submitIdle: 'Jetzt eintragen', submitSending: 'Wird gesendet...', submitOk: 'Eingetragen. Danke.',
+      errorText: 'Auf unserer Seite ist etwas schiefgelaufen. Erreichen Sie uns stattdessen direkt:',
+      benefits: ['Zugang zu API & Data Feeds', 'Technische Dokumentation', 'Updates & Early Access'],
+    },
   },
 
   submit: {

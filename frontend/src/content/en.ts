@@ -16,6 +16,7 @@ export const EN = {
     links: {
       research: 'Research',
       projects: 'Systems',
+      worldModel: 'World Model',
       trackRecord: 'Evidence',
       dataSolutions: 'Data Solutions',
       pricing: 'Access',
@@ -771,6 +772,65 @@ export const EN = {
         ],
       },
     ],
+  },
+
+  worldModel: {
+    eyebrow: 'DINGIR',
+    heading: 'A continuously growing world model',
+    intro: 'DINGIR connects historical and real-time observations across more than 20 domains into one living, causally structured world graph. Not just a data store: a system that tracks how things relate, notices what changes, and reasons about what that change touches next.',
+    exploreCta: 'Explore', apiCta: 'Request API access',
+    liveStatus: 'Live system active',
+    liveStatusFallback: 'Example data (live feed not reachable)',
+    statsAsOf: (date: string) => `as of ${date}`,
+    heroExample: {
+      tag: 'Example', title: 'Sumatra, Indonesia — Aftershock sequence',
+      time: 'M6.2 mainshock, 2026-08-24 · 07:24 UTC',
+      body: 'DINGIR tracks aftershock probability continuously via the Omori-Utsu model, based on USGS earthquake data. This is a worked example, not a live event.',
+    },
+    stats: {
+      historical: { label: 'Historical observations', value: '3,334,419', sub: 'since 55,500 BCE · as of 2026-08-19' },
+      live: { label: 'Live observations', value: '7,854,538', sub: 'cumulative, all active streams · as of 2026-08-31' },
+      nodes: { label: 'World graph', value: '51,200', sub: 'nodes · as of 2026-08-31' },
+      edges: { label: 'World graph edges', value: '484,307', sub: 'causal and relational links' },
+      streams: { label: 'Live streams', value: '21', sub: 'continuously running' },
+      domains: { label: 'Domains', value: '20+', sub: 'systems and subject areas' },
+    },
+    comparison: {
+      heading: 'Language model vs. agent vs. world model',
+      lm: { title: 'Language model (LM)', body: 'Trained to predict the next linguistically plausible token.', tag: 'Understands language, not the world.', verdict: 'Answers plausibly.' },
+      agent: { title: 'Agent', body: 'A language model connected to tools, able to carry out tasks with them.', tag: 'Can take actions and access data to get work done.', verdict: 'Acts plausibly.' },
+      wm: { title: 'World model (DINGIR)', body: 'Represents the state of the world itself, keeps relationships across time and space, and infers what could happen next.', tag: 'Learns from observations, simulates scenarios, and reaches grounded predictions.', verdict: 'Understands the world.' },
+    },
+    chainsPreview: {
+      eyebrow: 'Causality Chains', heading: "A look into Dingir's Mind", sub: 'Five examples of how DINGIR connects events',
+      viewMore: 'View all 20 causality chains',
+    },
+    liveFeed: {
+      heading: 'Live Feed', sub: 'Current events in real time',
+      newBadge: 'new', viewAll: 'View all live events',
+      empty: 'No live events in the current window.',
+      kinds: { seismic: 'Seismic', weather: 'Weather', maritime: 'Maritime', infrastructure: 'Infrastructure', model: 'Model' } as Record<string, string>,
+    },
+    useCases: {
+      eyebrow: 'Applications', heading: 'What DINGIR can be used for', sub: 'A queryable data warehouse of world knowledge.',
+      viewAll: 'Discover all applications',
+      cards: [
+        { title: 'Early warning & risk', body: 'Early detection of natural events, crises, and cascading failures.' },
+        { title: 'Infrastructure & logistics', body: 'Visibility across supply chains, transport, shipping, and critical infrastructure.' },
+        { title: 'Markets & economy', body: 'Understanding market moves, macro signals, and sector-level connections.' },
+        { title: 'Security & geopolitics', body: 'Tracking geopolitical developments, conflict dynamics, and systemic risk.' },
+        { title: 'Research & science', body: 'An open interface for research, hypothesis testing, and discovery.' },
+        { title: 'Enterprise & systems', body: 'Data-driven decisions with context across time, geography, and systems.' },
+      ],
+    },
+    earlyAccess: {
+      heading: 'Early access to the API & data feeds',
+      sub: 'Want to run DINGIR against your own processes, or get regular access to our world-model data? Join the early-access list.',
+      emailPlaceholder: 'Your email address',
+      submitIdle: 'Join the list', submitSending: 'Sending...', submitOk: 'Signed up. Thank you.',
+      errorText: 'Something went wrong on our side. Reach us directly instead:',
+      benefits: ['API & data feed access', 'Technical documentation', 'Updates & early access'],
+    },
   },
 
   submit: {

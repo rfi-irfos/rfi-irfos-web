@@ -5,6 +5,7 @@ mod content;
 mod stripe;
 mod track;
 mod upload;
+mod worldmodel;
 
 use axum::{
     extract::Request,
@@ -223,6 +224,8 @@ async fn main() {
         .route("/api/content", get(content::get_content).put(content::update_content))
         .route("/api/upload", post(upload::upload_file))
         .route("/api/contact", post(contact::submit_contact))
+        .route("/api/early-access", post(worldmodel::submit_early_access))
+        .route("/api/worldmodel-feed", get(worldmodel::worldmodel_feed))
         .route("/api/analytics", get(analytics::stats))
         .route("/api/stripe/checkout", post(stripe::create_checkout))
         .route("/api/stripe/webhook", post(stripe::webhook))

@@ -516,6 +516,14 @@ h1, h2, h3, .rfi-display {
   --glass-underline:rgba(0,0,0,0.34);
   --glass-blur:     blur(24px) saturate(180%);
   --carbon-weave:   repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px);
+  /* "World Model" console surface - a distinct navy card tone, not a translucent
+     glass material, so cards read as opaque software widgets against the page's
+     near-black backdrop instead of smearing it. Same design philosophy as
+     Lighthouse's own dark theme (--surface #12172b rich navy over --bg #0a0e17
+     deep midnight, plain border, no blur, no drop shadow - see
+     lighthouse-design-system memory) rather than this site's own glass system. */
+  --wm-surface: linear-gradient(165deg, #141a2b 0%, #0d1119 100%);
+  --wm-border:  rgba(148,163,184,0.16);
 }
 [data-theme="light"] {
   --glass-bg:       rgba(255,255,255,0.62);
@@ -526,12 +534,15 @@ h1, h2, h3, .rfi-display {
   --glass-underline:rgba(0,0,0,0.07);
   --glass-blur:     blur(24px) saturate(180%);
   --carbon-weave:   repeating-linear-gradient(112deg, rgba(0,0,0,0.028) 0px, rgba(0,0,0,0.028) 1px, transparent 1px, transparent 3px);
+  --wm-surface: linear-gradient(165deg, #eef1f6 0%, #e3e8f0 100%);
+  --wm-border:  rgba(30,41,59,0.14);
 }
 /* High contrast stays opaque and hairline-free; blur would destroy the AAA guarantee. */
 [data-theme="hc"] {
   --glass-bg: #000000; --glass-bg-strong: #000000; --glass-bg-solid: #000000;
   --glass-border: #ffffff; --glass-hairline: transparent; --glass-underline: transparent;
   --glass-blur: none; --carbon-weave: none;
+  --wm-surface: #000000; --wm-border: #ffffff;
 }
 .rfi-glass, .rfi-glass-flat {
   background-color: var(--glass-bg);

@@ -5,12 +5,11 @@ import type { Content } from '../content/en'
 import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
-import { ProjectsSection } from './sections/Projects'
 import { TrackRecordSection } from './sections/TrackRecord'
 import { ProofSection } from './sections/Proof'
 import { ScrollSpine } from './sections/Spine'
 import { AppPrivacySection } from './sections/AppPrivacy'
-import { CausalChainsSection } from './sections/CausalChains'
+import { WorldModelSection } from './sections/WorldModel'
 import { PricingSection } from './sections/Pricing'
 import { JourneySection } from './sections/Journey'
 import { DataSolutionsSection } from './sections/DataSolutions'
@@ -184,10 +183,10 @@ function ThemeIcon({ t }: { t: 'light' | 'dark' | 'hc' }) {
   )
 }
 
-type PublicView = 'home' | 'systems' | 'evidence' | 'data-solutions' | 'access'
+type PublicView = 'home' | 'world-model' | 'evidence' | 'data-solutions' | 'access'
 
 function viewForSection(section?: string | null): PublicView {
-  if (section === 'systems' || section === 'projects') return 'systems'
+  if (section === 'world-model') return 'world-model'
   if (section === 'evidence' || section === 'track-record') return 'evidence'
   if (section === 'data-solutions' || section === 'datasets') return 'data-solutions'
   if (section === 'access' || section === 'pricing') return 'access'
@@ -202,7 +201,7 @@ function viewForSection(section?: string | null): PublicView {
 // Hrefs only - labels come from the current locale's content object (t.nav.links)
 // since NAV_LINKS itself sits above PublicSite() and can't call useLocale().
 const NAV_HREFS = [
-  { key: 'projects' as const, href: '#systems' },
+  { key: 'worldModel' as const, href: '#world-model' },
   { key: 'dataSolutions' as const, href: '#data-solutions' },
   { key: 'trackRecord' as const, href: '#evidence' },
   { key: 'pricing' as const, href: '#access' },
@@ -215,8 +214,7 @@ const NAV_HREFS = [
 function sectionMeta(t: Content, section: string) {
   switch (section) {
     case 'research': return { title: `${t.research.heading} — RFI-IRFOS`, description: t.research.subheading }
-    case 'systems':
-    case 'projects': return { title: `${t.projects.heading} — RFI-IRFOS`, description: t.projects.subheading }
+    case 'world-model': return { title: `${t.worldModel.heading} — RFI-IRFOS`, description: t.worldModel.intro }
     case 'evidence':
     case 'track-record': return { title: `${t.trackRecord.heading} — RFI-IRFOS`, description: t.trackRecord.paragraph }
     case 'data-solutions':
@@ -1258,13 +1256,12 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           <HeroSection mobile={mobile} theme={theme} />
           <ResearchSection />
           <AppPrivacySection />
-          <CausalChainsSection />
           <CoopPartnersSection mobile={mobile} openCheckoutModal={openCheckoutModal} />
           <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} />
         </>}
 
-        {view === 'systems' && <section id="systems" className="rfi-view-panel">
-          <ProjectsSection />
+        {view === 'world-model' && <section id="world-model" className="rfi-view-panel">
+          <WorldModelSection />
         </section>}
 
         {view === 'evidence' && <section id="evidence" className="rfi-view-panel">

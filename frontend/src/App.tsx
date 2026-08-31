@@ -12,8 +12,11 @@ const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ defau
 const LEGAL_SLUGS = ['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq']
 // View ids that also get a real, crawlable URL in addition to their homepage hash.
 // The legacy section slugs remain accepted so existing links do not break while
-// the public shell is reorganised into Home / Systems / Evidence / Access views.
-const SECTION_SLUGS = ['systems', 'evidence', 'data-solutions', 'datasets', 'access', 'submit', 'research', 'projects', 'track-record', 'pricing']
+// the public shell is reorganised into Home / World Model / Data Solutions /
+// Evidence / Access views. 'systems'/'projects' dropped from primary nav
+// (live feedback 2026-08-31: redundant with the footer's own repo directory) -
+// old bookmarks to those URLs still resolve gracefully, just to the homepage.
+const SECTION_SLUGS = ['world-model', 'evidence', 'data-solutions', 'datasets', 'access', 'submit', 'research', 'track-record', 'pricing']
 
 function pathSlug() {
   return window.location.pathname.replace(/^\/|\/$/g, '')
