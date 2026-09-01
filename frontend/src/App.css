@@ -697,13 +697,6 @@ button { cursor: pointer; font-family: inherit; }
 .wm-modal-icon { width: 44px; height: 44px; border-radius: 12px; margin-bottom: 4px; }
 .wm-modal-icon svg { width: 22px; height: 22px; }
 .wm-modal-title { margin: 4px 0 0; font-size: 19px; font-weight: 800; }
-/* Plain-language "what this category means" line, added 2026-09-01 (live
-   feedback: "and what does that mean even" about a raw ML-jargon detail
-   line like "embedding sits 5.732 from the mean of its 6121 neighbours") -
-   visually its own framed note, distinct from .wm-modal-detail's specific
-   technical measurement just below it: one explains the KIND, the other
-   the entry. */
-.wm-modal-hint { margin: 10px 0 0; padding: 10px 12px; border-radius: 8px; background: color-mix(in srgb, var(--wm-surface) 70%, var(--bg)); border: 1px solid var(--wm-border); font-size: 13px; color: var(--text2); line-height: 1.5; }
 .wm-modal-detail { margin: 10px 0 0; font-size: 14.5px; color: var(--text2); line-height: 1.6; }
 
 /* Early-access CTA: one centered column (live feedback 2026-08-31: the

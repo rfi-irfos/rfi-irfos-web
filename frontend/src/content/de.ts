@@ -798,13 +798,7 @@ export const DE: Content = {
       empty: 'Keine Live-Ereignisse im aktuellen Zeitfenster.',
       kinds: {
         seismic: 'Seismisch', weather: 'Wetter', maritime: 'Maritim', infrastructure: 'Infrastruktur', model: 'Modell',
-        ANOMALY: 'Anomalie', HUB: 'Hub', PREDICTION: 'Vorhersage', CHANGE: 'Änderung',
-      } as Record<string, string>,
-      kindHints: {
-        ANOMALY: 'Diese Entität weicht im Graphen ungewöhnlich stark von ähnlichen Entitäten ab — ein Hinweis, der einen genaueren Blick verdient, aber für sich allein kein Beweis.',
-        HUB: 'Eine der größten, am dichtesten vernetzten Strukturen im Graphen, gerade jetzt.',
-        PREDICTION: 'Eine vom Modell erwartete Beziehung, die (noch) nicht beobachtet wurde — eine Hypothese, keine Tatsache.',
-        CHANGE: 'Eine Zustandsänderung, die die Ingestion-Pipeline tatsächlich erfasst hat.',
+        security: 'Sicherheit', cyber: 'Cyber', fire: 'Feuer',
       } as Record<string, string>,
     },
     useCases: {

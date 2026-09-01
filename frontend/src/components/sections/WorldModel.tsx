@@ -11,9 +11,9 @@ import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as Rea
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-  IconActivity, IconAlertTriangle, IconBroadcast, IconBuildingSkyscraper, IconChartLine,
+  IconActivity, IconAlertTriangle, IconBroadcast, IconBug, IconBuildingSkyscraper, IconChartLine,
   IconChevronLeft, IconChevronRight,
-  IconCircleCheck, IconCloudRain, IconFlag, IconFlask, IconMail,
+  IconCircleCheck, IconCloudRain, IconFlag, IconFlame, IconFlask, IconMail,
   IconMessage2, IconMountain, IconRobot, IconRoute, IconShieldLock, IconShip, IconSnowflake, IconTrain,
   IconWorld, IconX,
 } from '@tabler/icons-react'
@@ -68,20 +68,24 @@ type FeedEntry = { id: string; kind: string; title: string; time: string; detail
 // Each category gets its own icon AND its own color (live feedback: uniform
 // teal icons "read as one thing" - a scanning eye needs color to tell seismic
 // from maritime from infrastructure at a glance, the way a real ops feed does).
-// ANOMALY/HUB/PREDICTION/CHANGE added 2026-09-01 - the real kind values
-// DINGIR's bi_api /reasoning/feed emits (see worldmodel_feed_relay.py),
-// distinct from the seismic/weather/maritime/infrastructure/model set below,
-// which stays as the illustrative FEED_FALLBACK's own domain taxonomy.
+// security/cyber/fire added 2026-09-01, ANOMALY/HUB/PREDICTION/CHANGE removed
+// same day - the relay first shipped bi_api's /reasoning/feed (graph-internal
+// entries like "SANCTIONED:NK-RKmRD2fUstkjpbfmxVoNg4 --SANCTIONED_UNDER?->
+// PROGRAM:US-RUSHAR"), which read as pure jargon (live feedback: "das sagt
+// mir genau gar nichts... war eig besser als beim livestream globale
+// echtzeitwarnungen drinnen standen nich das reasoning"). worldmodel_feed_
+// relay.py now reads world_model/datasets/live/{earthquakes,weather_events,
+// conflicts,cyber_attacks,fires} directly instead - real event data with a
+// place name and a magnitude, not a graph node ID.
 const FEED_META: Record<string, { icon: typeof IconActivity; color: string }> = {
-  seismic:        { icon: IconActivity,  color: '#ff6b5e' },
-  weather:        { icon: IconCloudRain, color: '#ffa94d' },
-  maritime:       { icon: IconShip,      color: '#4dabf7' },
-  infrastructure: { icon: IconTrain,     color: '#94a3b8' },
-  model:          { icon: IconBroadcast, color: 'var(--accent)' },
-  ANOMALY:        { icon: IconAlertTriangle, color: '#ff6b5e' },
-  HUB:            { icon: IconWorld,         color: '#4dabf7' },
-  PREDICTION:     { icon: IconChartLine,     color: '#c77dff' },
-  CHANGE:         { icon: IconActivity,      color: '#3ddc84' },
+  seismic:        { icon: IconActivity,   color: '#ff6b5e' },
+  weather:        { icon: IconCloudRain,  color: '#ffa94d' },
+  maritime:       { icon: IconShip,       color: '#4dabf7' },
+  infrastructure: { icon: IconTrain,      color: '#94a3b8' },
+  model:          { icon: IconBroadcast,  color: 'var(--accent)' },
+  security:       { icon: IconShieldLock, color: '#c77dff' },
+  cyber:          { icon: IconBug,        color: '#ff6b5e' },
+  fire:           { icon: IconFlame,      color: '#ff922b' },
 }
 
 // Illustrative fallback, shown only when GET /api/worldmodel-feed is unreachable
@@ -97,8 +101,8 @@ const FEED_FALLBACK: FeedEntry[] = [
   { id: 'ex-5', kind: 'model', title: 'Checkpoint evaluated, AUC 0.769', time: '06:58 UTC', detail: 'Nightly retraining run scored against the held-out validation split before acceptance.' },
 ]
 
-function FeedDetailModal({ entry, meta, kindLabel, kindHint, onClose }: {
-  entry: FeedEntry; meta: { icon: typeof IconActivity; color: string }; kindLabel: string; kindHint?: string; onClose: () => void
+function FeedDetailModal({ entry, meta, kindLabel, onClose }: {
+  entry: FeedEntry; meta: { icon: typeof IconActivity; color: string }; kindLabel: string; onClose: () => void
 }) {
   const Icon = meta.icon
   useEffect(() => {
@@ -118,7 +122,6 @@ function FeedDetailModal({ entry, meta, kindLabel, kindHint, onClose }: {
         <span className="wm-feed-tag">{kindLabel}</span>
         <h3 className="wm-modal-title">{entry.title}</h3>
         <div className="wm-feed-time">{entry.time}</div>
-        {kindHint && <p className="wm-modal-hint">{kindHint}</p>}
         {entry.detail && <p className="wm-modal-detail">{entry.detail}</p>}
       </div>
     </div>
@@ -182,7 +185,6 @@ function LiveFeedWidget() {
           entry={openEntry}
           meta={FEED_META[openEntry.kind] ?? FEED_META.model}
           kindLabel={w.liveFeed.kinds[openEntry.kind] ?? openEntry.kind}
-          kindHint={w.liveFeed.kindHints?.[openEntry.kind]}
           onClose={() => setOpenId(null)}
         />
       )}
