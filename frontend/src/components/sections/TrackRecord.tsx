@@ -445,7 +445,7 @@ export const AUDIT_META: Record<string, { notified?: string; disclosure: string;
   'SHEIN':                        { notified: '2026-06-21', disclosure: '2026-09-19' },
   "wo gibt's was":                { notified: '2026-06-25', disclosure: '2026-09-19' },
   'Disneyland EU':                { notified: '2026-06-21', disclosure: '2026-09-19' },
-  'Caritas / Carla (AT)':         { notified: '2026-01-14', disclosure: '2026-09-01' },
+  'Caritas / Carla (AT)':         { notified: '2026-01-14', disclosure: '2026-09-01', reportUrl: '/reports/caritas-carla-2026.pdf' },
   'EY Ecosystem':                 { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Samsung Health':               { notified: '2026-06-22', disclosure: '2026-09-20' },
   'WhatsApp':                     { notified: '2026-06-20', disclosure: '2026-09-19' },
