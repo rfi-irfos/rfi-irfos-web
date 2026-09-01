@@ -445,7 +445,7 @@ export const AUDIT_META: Record<string, { notified?: string; disclosure: string;
   'SHEIN':                        { notified: '2026-06-21', disclosure: '2026-09-19' },
   "wo gibt's was":                { notified: '2026-06-25', disclosure: '2026-09-19' },
   'Disneyland EU':                { notified: '2026-06-21', disclosure: '2026-09-19' },
-  'Caritas / Carla (AT)':         { notified: '2026-01-14', disclosure: '2026-09-01', reportUrl: '/reports/caritas-carla-2026.pdf' },
+  'Caritas / Carla (AT)':         { notified: '2026-01-14', disclosure: '2026-09-01', resolved: true, resolvedDate: '2026-09-01', reportUrl: '/reports/caritas-carla-2026.pdf' },
   'EY Ecosystem':                 { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Samsung Health':               { notified: '2026-06-22', disclosure: '2026-09-20' },
   'WhatsApp':                     { notified: '2026-06-20', disclosure: '2026-09-19' },
@@ -2893,7 +2893,7 @@ export function TrackRecordSection({
         })()}
 
         {/* Table */}
-        <div data-native-scroll style={{ maxHeight: mobile ? '65vh' : 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
+        <div data-native-scroll className="rfi-thin-scrollbar" style={{ maxHeight: mobile ? '65vh' : 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
           <style>{`@keyframes ledgerRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}.ledger-sel{color-scheme:dark}.ledger-sel option{background:#12121e;color:#e2e2f0}@keyframes ekgPulse{0%{stroke-dashoffset:150;opacity:0}5%{opacity:1}85%{opacity:1}100%{stroke-dashoffset:-150;opacity:0}}.ekg-line{stroke-dasharray:150;animation:ekgPulse 3.6s linear infinite}@keyframes ddIn{from{opacity:0;transform:translateY(-6px) scaleY(0.97)}to{opacity:1;transform:none}}.ledger-dd-panel{transform-origin:top}.ledger-dd-opt:hover{background:rgba(0,245,196,0.12)!important;color:#00f5c4!important}.intel-cell{border:1px solid transparent;border-radius:6px;margin:-6px -8px;padding:6px 8px;transition:border-color 80ms,background 80ms}.intel-cell:hover{border-color:rgba(0,245,196,0.35);background:rgba(0,245,196,0.05)}.intel-cell:hover .intel-hint{color:#00f5c4}.ledger-grid:not(.intel-row)>*{border-right:1px solid var(--border2);padding-right:8px;min-width:0}.ledger-grid:not(.intel-row)>*:last-child{border-right:none;padding-right:0}.intel-row>*{min-width:0}`}</style>
 
           {/* Sticky header */}

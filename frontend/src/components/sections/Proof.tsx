@@ -171,6 +171,7 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
         <div style={{ overflowX: 'hidden', overflowY: 'visible', flex: 1, minWidth: 0 }}>
           <div
             ref={trackRef}
+            className="rfi-thin-scrollbar"
             style={{
               display: 'flex', gap: 20, overflowX: 'auto', overflowY: 'visible', scrollSnapType: 'x mandatory',
               WebkitOverflowScrolling: 'touch', padding: '8px 4px 4px',

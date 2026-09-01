@@ -1659,3 +1659,25 @@ button { cursor: pointer; font-family: inherit; }
   /* timeline center-line becomes left-aligned */
   .rfi-public .rfi-timeline-line { display: none; }
 }
+
+/* Minimal scrollbar, used for horizontal-scroll containers (report carousel,
+   ledger table) that would otherwise fall back to the fat default OS/browser
+   scrollbar the moment overflow-y:auto silently coerces overflow-x to auto too. */
+.rfi-thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 245, 196, 0.25) transparent;
+}
+.rfi-thin-scrollbar::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+.rfi-thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.rfi-thin-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 245, 196, 0.25);
+  border-radius: 3px;
+}
+.rfi-thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 245, 196, 0.45);
+}
