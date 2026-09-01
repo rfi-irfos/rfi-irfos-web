@@ -15,8 +15,8 @@ import {
   IconWorld, IconX,
 } from '@tabler/icons-react'
 import { Reveal, OUTPUT_TAG_HUES, beacon } from './shared'
+import { HeroSlideshow, HERO_IMAGES } from './Hero'
 import { useLocale } from '../../hooks/useLocale'
-import dingirScreenshot from '../../assets/world-model/dingir-hero-screenshot.png'
 
 const hue = (i: number) => OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
 const hueStyle = (i: number) => ({ '--hue-bg': hue(i).bg, '--hue-border': hue(i).border }) as CSSProperties
@@ -205,15 +205,18 @@ function ChainsPreview() {
   )
 }
 
-// Real DINGIR interface screenshot (live globe view, alerts, markets panel) -
-// replaced an earlier abstract placeholder graphic once a genuine screenshot
-// became available. Screenshots and their own live status/alert count belong
-// to that internal build, not this page's own state - shown as-is, no overlay
-// card claiming a synced "example" event on top of it.
+// Was a single static DINGIR interface screenshot - swapped 2026-09-01 for the
+// same cross-fading slideshow the main homepage hero runs (live feedback:
+// "können wir da auch einfach die slideshow zeigen von den screenshots die
+// wir haben, wie draussen im main hero"), reusing HeroSlideshow/HERO_IMAGES
+// exported from Hero.tsx rather than a second copy of the same mechanic.
+// .wm-graph-panel is position:relative + overflow:hidden, so the slideshow's
+// absolutely-positioned layer fills and crops to this bounded box instead of
+// the full viewport it normally sits behind.
 function WorldGraphVisual() {
   return (
     <div className="wm-graph-panel">
-      <img src={dingirScreenshot} alt="DINGIR live interface" className="wm-graph-screenshot" />
+      <HeroSlideshow images={HERO_IMAGES} />
     </div>
   )
 }

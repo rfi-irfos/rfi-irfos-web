@@ -98,7 +98,11 @@ import heroDingirEmbedDecade from '../../assets/hero-dingir-embed-decade.png'
 const HERO_SOFTWARE_SHOTS = [heroDingir7, heroDingir2, heroDingirGlobeAntarctica, heroDingirMapDc, heroDingirGlobeAfricaThreats, heroDingir3, heroDingir8, heroDingirMapGrazDossier]
 const HERO_SATELLITE_SHOTS = [heroDingir4, heroDingir12, heroDingir6, heroDingir5, heroDingir11, heroDingir13, heroDingir10, heroDingirVesselsNl]
 const HERO_NEURAL_SHOTS = [heroDingirEmbedStorm, heroDingirEmbedBuoy, heroDingirEmbedLanguage, heroDingirEmbedWater, heroDingirEmbedImpact, heroDingirEmbedHope, heroDingirEmbedCoast, heroDingirEmbedDecided, heroDingirEmbedIncident, heroDingirEmbedDecade]
-const HERO_IMAGES = [
+// Exported for WorldModel.tsx's own hero panel (live feedback 2026-09-01:
+// "die slideshow zeigen von den screenshots die wir haben... wie draussen im
+// main hero") - same image pool and cross-fade mechanic reused inside a
+// bounded panel there instead of this section's full-viewport background.
+export const HERO_IMAGES = [
   heroSoftware,
   ...HERO_NEURAL_SHOTS.flatMap((neural, r) => [
     HERO_SOFTWARE_SHOTS[r % HERO_SOFTWARE_SHOTS.length],
@@ -169,7 +173,7 @@ const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 const SLIDE_INTERVAL_MS = 15000
 const CROSSFADE_S = 3.2
 
-function HeroSlideshow({ images }: { images: string[] }) {
+export function HeroSlideshow({ images }: { images: string[] }) {
   const [current, setCurrent] = useState(0)
   const reduced = prefersReducedMotion()
 
