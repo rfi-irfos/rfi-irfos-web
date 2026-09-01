@@ -1,5 +1,4 @@
-import type { CSSProperties, MouseEvent as ReactMouseEvent } from 'react'
-import { useRef } from 'react'
+import type { CSSProperties } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { Reveal, OUTPUT_TAG_HUES } from './shared'
 import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport, IconArrowRight } from '@tabler/icons-react'
@@ -122,35 +121,9 @@ const HUE_PRODUCTS = hueStyle(2)  // blue
 const HUE_AGENTS = hueStyle(1)    // amber
 const HUE_STARTS = hueStyle(3)    // violet
 
-// One ambient spotlight per grid, tracking the pointer and sitting behind the
-// opaque cards rather than lighting each card individually. inset:0 on the glow
-// layer (see App.css) means these pixel coordinates are relative to the exact
-// same box the gradient paints on, no offset math between JS and CSS to keep in
-// sync - the previous version used inset:-90px on the glow layer while computing
-// spot-x/spot-y against the grid's own un-inset rect, which put the glow 90px up
-// and to the left of the real cursor (live feedback 2026-08-27: "glow center is
-// far off left from the actual cursor").
-function useSpotlight<T extends HTMLElement>() {
-  const ref = useRef<T>(null)
-  const onMouseMove = (event: ReactMouseEvent<T>) => {
-    const el = ref.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    el.style.setProperty('--spot-x', `${event.clientX - rect.left}px`)
-    el.style.setProperty('--spot-y', `${event.clientY - rect.top}px`)
-    el.style.setProperty('--spot-alpha', '1')
-  }
-  const onMouseLeave = () => ref.current?.style.setProperty('--spot-alpha', '0')
-  return { ref, onMouseMove, onMouseLeave }
-}
-
 export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
   const { locale } = useLocale()
   const c = COPY[locale]
-  const datasetSpot = useSpotlight<HTMLDivElement>()
-  const productSpot = useSpotlight<HTMLDivElement>()
-  const agentSpot = useSpotlight<HTMLDivElement>()
-  const startSpot = useSpotlight<HTMLDivElement>()
   return <div className="data-solutions">
     <header className="data-hero data-wrap">
       <Reveal><p className="data-eyebrow">{c.eyebrow}</p><h1>{c.title}</h1></Reveal>
@@ -158,28 +131,28 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
     </header>
 
     <section className="data-section data-datasets"><div className="data-wrap">
-      <div ref={datasetSpot.ref} className="data-dataset-grid" style={HUE_DATASETS} onMouseMove={datasetSpot.onMouseMove} onMouseLeave={datasetSpot.onMouseLeave}>{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid" style={HUE_DATASETS}><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article> })}</div>
+      <div className="data-dataset-grid" style={HUE_DATASETS}>{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_DATASETS}><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article> })}</div>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.deliverEyebrow}</p><h2>{c.deliverTitle}</h2><p>{c.deliverIntro}</p></div></Reveal>
-      <div ref={productSpot.ref} className="data-product-grid" style={HUE_PRODUCTS} onMouseMove={productSpot.onMouseMove} onMouseLeave={productSpot.onMouseLeave}>{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_PRODUCTS}><div className="data-icon"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
+      <div className="data-product-grid" style={HUE_PRODUCTS}>{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_PRODUCTS}><div className="data-icon"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.agentsEyebrow}</p><h2>{c.agentsTitle}</h2><p>{c.agentsIntro}</p></div></Reveal>
-      <div ref={agentSpot.ref} className="data-agent-grid" style={HUE_AGENTS} onMouseMove={agentSpot.onMouseMove} onMouseLeave={agentSpot.onMouseLeave}>{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_AGENTS}><Icon size={27} stroke={1.6} /><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
+      <div className="data-agent-grid" style={HUE_AGENTS}>{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_AGENTS}><Icon size={27} stroke={1.6} /><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2>{c.pipelineTitle}</h2></div></Reveal>
-      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid" data-stage={i}><div className="data-pipeline-icon"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-stage"><span>{n}</span></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
+      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid rfi-hover-card" data-stage={i}><div className="data-pipeline-icon"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-stage"><span>{n}</span></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
       <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><IconShieldCheck size={32} /><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2>{c.startTitle}</h2></div></Reveal>
-      <div ref={startSpot.ref} className="data-start-grid" style={HUE_STARTS} onMouseMove={startSpot.onMouseMove} onMouseLeave={startSpot.onMouseLeave}>{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_STARTS}><span>{n}</span><div className="data-start-icons" aria-hidden="true">{i === 0 && <><IconDatabase size={27} stroke={1.5} /><IconCircleCheck size={24} stroke={1.8} /></>}{i === 1 && <><IconDatabase size={27} stroke={1.5} /><IconSettingsAutomation size={25} stroke={1.6} /><IconDatabase size={27} stroke={1.5} /></>}{i === 2 && <><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /></>}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
+      <div className="data-start-grid" style={HUE_STARTS}>{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_STARTS}><span>{n}</span><div className="data-start-icons" aria-hidden="true">{i === 0 && <><IconDatabase size={27} stroke={1.5} /><IconCircleCheck size={24} stroke={1.8} /></>}{i === 1 && <><IconDatabase size={27} stroke={1.5} /><IconSettingsAutomation size={25} stroke={1.6} /><IconDatabase size={27} stroke={1.5} /></>}{i === 2 && <><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /></>}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
     </div></section>
 
     <section className="data-experts data-wrap"><Reveal><p className="data-eyebrow">{c.expertsEyebrow}</p><h2>{c.expertsTitle}</h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>

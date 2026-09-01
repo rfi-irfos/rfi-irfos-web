@@ -357,34 +357,15 @@ button { cursor: pointer; font-family: inherit; }
   background-image: radial-gradient(120% 90% at 18% 0%, var(--hue-bg, transparent) 0%, transparent 62%);
 }
 
-/* One ambient spotlight per grid (dataset/product/agent/start), tracking the
-   pointer and sitting behind the opaque cards rather than lighting each card
-   individually - see useSpotlight() in DataSolutions.tsx for the --spot-x/--spot-y
-   writer. inset: 0 here is load-bearing: the glow layer's own box must exactly
-   match the box the pixel coordinates were measured against, or "at var(--spot-x)
-   var(--spot-y))" resolves against the wrong origin. An earlier version used
-   inset: -90px on this layer while measuring the pointer against the grid's own
-   un-inset rect, which put the glow 90px up and to the left of the real cursor
-   (live feedback 2026-08-27: "glow center is far off left from the actual
-   cursor"). A large blur (30px) already reads as soft without needing the box
-   itself to bleed past the grid edge, so there is no offset to keep in sync. */
-.data-dataset-grid, .data-product-grid, .data-agent-grid, .data-start-grid {
-  position: relative; isolation: isolate;
-  --spot-x: 50%; --spot-y: 50%; --spot-alpha: 0;
-}
-.data-dataset-grid::before, .data-product-grid::before, .data-agent-grid::before, .data-start-grid::before {
-  content: ''; position: absolute; z-index: 0; pointer-events: none;
-  inset: 0; border-radius: 24px;
-  /* Two overlapping gradients, offset by a small fixed amount, read as one soft
-     amorphous orb instead of a flat perfect disc (live feedback 2026-08-27:
-     "kann sich schon bissl amorph verhalten auch bissl wie so n orb"). Both stay
-     anchored to --spot-x/--spot-y, so the offset moves with the cursor rather
-     than breaking the tracking fixed just above. */
-  background:
-    radial-gradient(200px circle at calc(var(--spot-x) - 26px) calc(var(--spot-y) + 18px), var(--hue-border, transparent), transparent 68%),
-    radial-gradient(380px circle at var(--spot-x) var(--spot-y), var(--hue-border, transparent), transparent 74%);
-  filter: blur(36px); opacity: var(--spot-alpha); transition: opacity .5s ease;
-}
+/* The pointer-tracked ambient spotlight/orb behind these grids was reverted
+   2026-09-01 (live feedback: "this highlight effect where this orb is
+   behind each of em cards... looks terrible, pivot back to the old per
+   card highlight on top of the card when mouse is above it, a soft one is
+   enough") - .rfi-hover-card (applied to each article below) already gives
+   every card its own lift/shadow/border-colour on hover, which is that
+   "classical" per-card treatment. See git history for the old ::before
+   glow-layer + useSpotlight() pointer tracker if this needs resurrecting. */
+.data-dataset-grid, .data-product-grid, .data-agent-grid, .data-start-grid { position: relative; }
 
 /* Comparison table: a quiet visual index makes the five pairings scan as one
    connected argument instead of a flat block of copy. The left markers stay
@@ -477,7 +458,11 @@ button { cursor: pointer; font-family: inherit; }
 .wm-section-head h2 { margin: 0; font-size: 28px; font-weight: 900; line-height: 1.15; }
 .wm-section-head p { margin: 10px auto 0; color: var(--text2); font-size: 16px; line-height: 1.6; }
 
-.wm-hero { padding-block: 24px 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+/* 1fr 1.22fr (was 1fr 1fr, bumped 2026-09-01 "hero sogar noch ein bisschen
+   grösser machen, ohne den rest zu sehr bewegen") - the copy column's own
+   paragraph already caps at max-width: 480px, so giving it a narrower track
+   doesn't truncate anything, it just hands the extra width to the panel. */
+.wm-hero { padding-block: 24px 10px; display: grid; grid-template-columns: 1fr 1.22fr; gap: 40px; align-items: center; }
 .wm-hero h1 { margin: 10px 0 16px; font-size: 34px; font-weight: 900; line-height: 1.12; }
 .wm-hero-copy p { max-width: 480px; color: var(--text2); font-size: 16px; line-height: 1.65; margin: 0 0 24px; }
 .wm-hero-ctas { display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
@@ -490,8 +475,14 @@ button { cursor: pointer; font-family: inherit; }
 .wm-live-dot--muted { background: var(--text3); animation: none; }
 @keyframes wm-pulse { 0% { box-shadow: 0 0 0 0 rgba(61, 220, 132, .55); } 70% { box-shadow: 0 0 0 8px rgba(61, 220, 132, 0); } 100% { box-shadow: 0 0 0 0 rgba(61, 220, 132, 0); } }
 
-/* Hero visual: a real DINGIR interface screenshot, not an illustration. */
-.wm-graph-panel { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; border: 1px solid var(--wm-border); }
+/* Hero visual: a real DINGIR interface screenshot, not an illustration.
+   aspect-ratio: 1920/926 (was 16/9, changed 2026-09-01) - all twelve World
+   Model screenshots share that exact native size, so matching it here means
+   background-size: contain and cover become equivalent (no crop, no
+   letterbox bar) - the panel's own shape just IS the screenshot's shape.
+   background: var(--wm-surface) stays as a safety net for any future shot
+   that doesn't share this ratio. */
+.wm-graph-panel { position: relative; aspect-ratio: 1920 / 926; border-radius: 10px; overflow: hidden; border: 1px solid var(--wm-border); background: var(--wm-surface); }
 .wm-graph-screenshot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
 /* The panel is now a <button> (added 2026-09-01, opens the fullscreen lightbox)
    - reset the default button chrome, then re-add exactly what the plain div
@@ -499,41 +490,52 @@ button { cursor: pointer; font-family: inherit; }
    already live on .wm-graph-panel itself, font-family: inherit so the hint
    label below doesn't pick up the UA button font). */
 .wm-graph-panel--clickable { padding: 0; border: 1px solid var(--wm-border); background: none; font-family: inherit; cursor: pointer; display: block; width: 100%; }
+/* Always visible (was hover/focus-only, changed 2026-09-01 - "sollte immer
+   sichtbar sein nich nur bei mouse hover", the affordance needs to read on
+   touch devices too, which have no hover state at all). Hover/focus still
+   gets a small lift so the interaction still feels responsive. */
 .wm-graph-expand-hint {
   position: absolute; right: 12px; bottom: 12px; z-index: 1;
   display: flex; align-items: center; gap: 6px; padding: 6px 10px;
   background: rgba(8,10,16,0.72); border: 1px solid var(--wm-border); border-radius: 999px;
   font-size: 11px; font-weight: 700; color: var(--text2);
-  opacity: 0; transform: translateY(4px); transition: opacity 0.15s ease, transform 0.15s ease;
+  transition: transform 0.15s ease, background-color 0.15s ease;
 }
 .wm-graph-panel--clickable:hover .wm-graph-expand-hint,
-.wm-graph-panel--clickable:focus-visible .wm-graph-expand-hint { opacity: 1; transform: translateY(0); }
+.wm-graph-panel--clickable:focus-visible .wm-graph-expand-hint { transform: translateY(-2px); background: rgba(8,10,16,0.9); }
 
 /* Fullscreen lightbox (2026-09-01) - position:fixed unlike .wm-modal-backdrop
    above, which is deliberately scoped to its own panel by design. */
 .wm-lightbox-backdrop {
   position: fixed; inset: 0; z-index: 500; background: rgba(3,4,8,0.94);
-  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; gap: 16px; overflow: hidden;
   cursor: default; touch-action: none;
 }
+@media (max-width: 640px) { .wm-lightbox-backdrop { gap: 6px; } }
+/* A real <img>, not a background-image box (changed 2026-09-01) - sized to
+   its own natural aspect ratio via max-width/max-height rather than forced
+   into a fixed 16:9 crop, so nothing gets sliced off (live feedback: "es
+   soll eig direkt in den rahmen passen" - screenshots aren't all exactly
+   16:9, and cover was cropping the corner where the DINGIR logo sits). */
 .wm-lightbox-frame {
-  position: relative; width: min(94vw, 1400px); aspect-ratio: 16 / 9;
-  border-radius: 10px; overflow: hidden; border: 1px solid var(--wm-border);
-  transition: transform 0.05s linear; will-change: transform;
+  display: block; max-width: 94vw; max-height: 86vh; width: auto; height: auto;
+  border-radius: 10px; border: 1px solid var(--wm-border); background: var(--wm-surface);
+  transition: transform 0.05s linear; will-change: transform; user-select: none;
 }
 .wm-lightbox-close { position: fixed; top: 20px; right: 20px; z-index: 501; background: rgba(8,10,16,0.72); }
+/* Sit in normal flow right next to the frame (was position: fixed at the
+   viewport edges, changed 2026-09-01 - "die arrows näher an das foto" - the
+   frame doesn't span the full viewport width, so fixed-at-edge arrows read
+   as disconnected from the image they control). shrink: 0 keeps them from
+   being squeezed by the frame's own flex-basis. */
 .wm-lightbox-nav {
-  position: fixed; top: 50%; transform: translateY(-50%); z-index: 501;
+  flex: 0 0 auto; z-index: 501;
   width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%;
   background: rgba(8,10,16,0.72); border: 1px solid var(--wm-border); color: var(--text2); cursor: pointer;
 }
 .wm-lightbox-nav:hover { color: var(--text); border-color: var(--accent); }
-.wm-lightbox-nav--prev { left: 20px; }
-.wm-lightbox-nav--next { right: 20px; }
 @media (max-width: 640px) {
   .wm-lightbox-nav { width: 38px; height: 38px; }
-  .wm-lightbox-nav--prev { left: 8px; }
-  .wm-lightbox-nav--next { right: 8px; }
 }
 .wm-lightbox-hint {
   position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 501;
@@ -618,7 +620,13 @@ button { cursor: pointer; font-family: inherit; }
    sinkt") wrap to 2 lines far more often than the English original, and
    without a shared floor that made German rows look ragged next to English's
    evenly 1-line rows (live feedback 2026-08-31: "in german no ok"). */
-.wm-chain-step { position: relative; flex: 1 1 0; min-width: 0; min-height: 54px; display: flex; align-items: center; gap: 7px; font-size: 13.5px; font-weight: 600; color: var(--text); background: color-mix(in srgb, var(--wm-surface) 60%, var(--bg)); border: 1px solid var(--wm-border); border-radius: 8px; padding: 8px 10px; line-height: 1.35; }
+/* overflow-wrap: anywhere (added 2026-09-01, 5th report of the same bug) -
+   min-width: 0 alone only lets the FLEX ITEM shrink, it doesn't let long
+   words break. German compounds like "Versicherungsprämien" and
+   "Frühjahrsschmelze" are single unbroken words with no space or hyphen for
+   normal wrapping to grab onto, so they were pushed straight through the
+   box's right edge instead of wrapping - this is what actually stops that. */
+.wm-chain-step { position: relative; flex: 1 1 0; min-width: 0; min-height: 54px; display: flex; align-items: center; gap: 7px; font-size: 13.5px; font-weight: 600; color: var(--text); background: color-mix(in srgb, var(--wm-surface) 60%, var(--bg)); border: 1px solid var(--wm-border); border-radius: 8px; padding: 8px 10px; line-height: 1.35; overflow-wrap: anywhere; }
 .wm-chain-step--1 { color: var(--accent-text); border-color: color-mix(in srgb, var(--accent) 30%, var(--wm-border)); }
 .wm-chain-step--2 { color: #ffb454; border-color: color-mix(in srgb, #ffb454 35%, var(--wm-border)); padding-right: 26px; }
 .wm-chain-icon { flex: 0 0 auto; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }

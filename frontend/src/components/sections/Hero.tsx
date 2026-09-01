@@ -179,7 +179,12 @@ const CROSSFADE_S = 3.2
 // feedback: "it always shows the pictures fit to the actual size of this box...
 // no zoom in or zoom out", zoom/pan lives in the fullscreen lightbox instead,
 // user-driven via scroll/drag, not this component's own per-slide animation).
-export function HeroSlideshow({ images, zoomEffect = true }: { images: string[]; zoomEffect?: boolean }) {
+// `fit` (default 'cover', the homepage's own behaviour, photographic shots
+// that are fine being cropped to fill) - WorldModel's screenshots are real
+// UI captures where a crop can slice off the logo or a panel edge, so that
+// page passes 'contain' instead (live feedback 2026-09-01: "man sieht zb vo
+// logo oben rechts nur GIR sonsch nix, dews schlecht" - nothing may be cut off).
+export function HeroSlideshow({ images, zoomEffect = true, fit = 'cover' }: { images: string[]; zoomEffect?: boolean; fit?: 'cover' | 'contain' }) {
   const [current, setCurrent] = useState(0)
   const reduced = prefersReducedMotion()
 
@@ -206,7 +211,7 @@ export function HeroSlideshow({ images, zoomEffect = true }: { images: string[];
         transition={{ duration: reduced ? 0 : CROSSFADE_S, ease: 'easeInOut' }}
         style={{
           position: 'absolute', inset: 0, zIndex: -2,
-          backgroundImage: `url("${images[current]}")`, backgroundSize: 'cover', backgroundPosition: 'center',
+          backgroundImage: `url("${images[current]}")`, backgroundSize: fit, backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
         }}
       />
     </AnimatePresence>

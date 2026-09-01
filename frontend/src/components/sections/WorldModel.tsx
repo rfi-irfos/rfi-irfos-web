@@ -9,6 +9,7 @@
 // causality-chain presence here now, not a preview of something bigger.
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type WheelEvent as ReactWheelEvent } from 'react'
 import { createPortal } from 'react-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   IconActivity, IconAlertTriangle, IconBroadcast, IconBuildingSkyscraper, IconChartLine,
   IconChevronLeft, IconChevronRight,
@@ -17,8 +18,31 @@ import {
   IconWorld, IconX,
 } from '@tabler/icons-react'
 import { Reveal, OUTPUT_TAG_HUES, beacon } from './shared'
-import { HeroSlideshow, HERO_IMAGES } from './Hero'
+import { HeroSlideshow } from './Hero'
 import { useLocale } from '../../hooks/useLocale'
+// Real DINGIR interface screenshots, own set (added 2026-09-01, replacing the
+// shared HERO_IMAGES import) - live feedback: the main homepage hero's photo
+// set "passt nich" here, this page gets its own fresh screenshots rather than
+// borrowing the main hero's. Keep these two pools independent going forward,
+// don't re-merge them even if the counts happen to be similar later.
+import wmHeroGlobeOverview from '../../assets/world-model/wm-hero-globe-overview.png'
+import wmHeroBuoyDetail from '../../assets/world-model/wm-hero-buoy-detail.png'
+import wmHeroReasoningSanctions from '../../assets/world-model/wm-hero-reasoning-sanctions.png'
+import wmHeroEarthquakeDetail from '../../assets/world-model/wm-hero-earthquake-detail.png'
+import wmHeroLiveCamera from '../../assets/world-model/wm-hero-live-camera.png'
+import wmHeroTrafficIncident from '../../assets/world-model/wm-hero-traffic-incident.png'
+import wmHeroFireDetection from '../../assets/world-model/wm-hero-fire-detection.png'
+import wmHeroInfrastructureWeather from '../../assets/world-model/wm-hero-infrastructure-weather.png'
+import wmHeroGraphFlood from '../../assets/world-model/wm-hero-graph-flood.png'
+import wmHeroAircraftDetail from '../../assets/world-model/wm-hero-aircraft-detail.png'
+import wmHeroStormDetail from '../../assets/world-model/wm-hero-storm-detail.png'
+import wmHeroChatAnalyst from '../../assets/world-model/wm-hero-chat-analyst.png'
+
+const WORLD_MODEL_HERO_IMAGES = [
+  wmHeroGlobeOverview, wmHeroBuoyDetail, wmHeroReasoningSanctions, wmHeroEarthquakeDetail,
+  wmHeroLiveCamera, wmHeroTrafficIncident, wmHeroFireDetection, wmHeroInfrastructureWeather,
+  wmHeroGraphFlood, wmHeroAircraftDetail, wmHeroStormDetail, wmHeroChatAnalyst,
+]
 
 const hue = (i: number) => OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
 const hueStyle = (i: number) => ({ '--hue-bg': hue(i).bg, '--hue-border': hue(i).border }) as CSSProperties
@@ -237,8 +261,8 @@ function HeroLightbox({ startIndex, onClose }: { startIndex: number; onClose: ()
   const dragging = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null)
 
   const resetView = () => { setZoom(1); setPan({ x: 0, y: 0 }) }
-  const prev = () => { setCurrent(c => (c - 1 + HERO_IMAGES.length) % HERO_IMAGES.length); resetView() }
-  const next = () => { setCurrent(c => (c + 1) % HERO_IMAGES.length); resetView() }
+  const prev = () => { setCurrent(c => (c - 1 + WORLD_MODEL_HERO_IMAGES.length) % WORLD_MODEL_HERO_IMAGES.length); resetView() }
+  const next = () => { setCurrent(c => (c + 1) % WORLD_MODEL_HERO_IMAGES.length); resetView() }
 
   useEffect(() => {
     const onKey = (ev: KeyboardEvent) => {
@@ -292,17 +316,26 @@ function HeroLightbox({ startIndex, onClose }: { startIndex: number; onClose: ()
     >
       <button type="button" className="wm-modal-close wm-lightbox-close" onClick={onClose} aria-label="Close"><IconX size={20} /></button>
       <button type="button" className="wm-lightbox-nav wm-lightbox-nav--prev" onClick={ev => { ev.stopPropagation(); prev() }} aria-label="Previous"><IconChevronLeft size={22} /></button>
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={current}
+          src={WORLD_MODEL_HERO_IMAGES[current]}
+          alt=""
+          className="wm-lightbox-frame"
+          onClick={ev => ev.stopPropagation()}
+          onMouseDown={onMouseDown}
+          draggable={false}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.28, ease: 'easeInOut' }}
+          style={{
+            transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+            cursor: zoom > ZOOM_MIN ? (dragging.current ? 'grabbing' : 'grab') : 'default',
+          }}
+        />
+      </AnimatePresence>
       <button type="button" className="wm-lightbox-nav wm-lightbox-nav--next" onClick={ev => { ev.stopPropagation(); next() }} aria-label="Next"><IconChevronRight size={22} /></button>
-      <div
-        className="wm-lightbox-frame"
-        onClick={ev => ev.stopPropagation()}
-        onMouseDown={onMouseDown}
-        style={{
-          transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-          cursor: zoom > ZOOM_MIN ? (dragging.current ? 'grabbing' : 'grab') : 'default',
-          backgroundImage: `url("${HERO_IMAGES[current]}")`, backgroundSize: 'cover', backgroundPosition: 'center',
-        }}
-      />
       <span className="wm-lightbox-hint">&larr; &rarr; to browse &middot; scroll to zoom &middot; drag to pan &middot; esc to close</span>
     </div>,
     document.body
@@ -324,7 +357,7 @@ function WorldGraphVisual() {
   return (
     <>
       <button type="button" className="wm-graph-panel wm-graph-panel--clickable" onClick={() => setOpen(true)} aria-label="View screenshots fullscreen">
-        <HeroSlideshow images={HERO_IMAGES} zoomEffect={false} />
+        <HeroSlideshow images={WORLD_MODEL_HERO_IMAGES} zoomEffect={false} fit="contain" />
         <span className="wm-graph-expand-hint"><IconWorld size={13} stroke={1.8} /> view fullscreen</span>
       </button>
       {open && <HeroLightbox startIndex={0} onClose={() => setOpen(false)} />}
@@ -340,7 +373,6 @@ function HeroBlock({ onApiRequest }: { onApiRequest: () => void }) {
     <div className="wm-wrap wm-hero">
       <Reveal dist={14}>
         <div className="wm-hero-copy">
-          <p className="wm-eyebrow">{w.eyebrow}</p>
           <h1>{w.heading}</h1>
           <p>{w.intro}</p>
           <div className="wm-hero-ctas">
