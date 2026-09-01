@@ -586,7 +586,19 @@ button { cursor: pointer; font-family: inherit; }
 .wm-compare-tag { margin: 0; font-size: 13px; color: var(--text2); line-height: 1.5; }
 .wm-compare-verdict { margin-top: auto; font-size: 14px; font-weight: 700; color: var(--accent-text); }
 
-.wm-split { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; align-items: stretch; }
+/* minmax(0, 1fr), not bare 1fr (fixed 2026-09-01) - a grid track's default
+   min-width is auto (its content's own min-content size), not 0, so "1fr
+   1fr" only splits evenly once BOTH tracks already fit their content at an
+   even split. The live feed's real PREDICTION titles ("SANCTIONED:NK-...
+   --SANCTIONED_UNDER?-> PROGRAM:US-RUSHAR", one long unbroken string) have
+   a huge min-content width despite .wm-feed-title's own overflow: hidden;
+   text-overflow: ellipsis - that truncation happens inside a nested flex
+   child, it never shrinks the GRID track's own min-content calculation.
+   Result: 513px / 963px instead of an even split (live feedback: "die
+   boxen sind nicht gleich breit, die waren geanu gleich breit"). minmax(0,
+   1fr) caps each track's minimum at 0 so ellipsis truncation actually gets
+   to kick in instead of the track growing to avoid it. */
+.wm-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px; align-items: stretch; }
 /* max-height: 830px added 2026-09-01 - height: 100% + align-items: stretch
    alone doesn't cap anything: CSS Grid rows with no explicit height auto-
    size to the TALLEST item's own natural content height, so once the live
