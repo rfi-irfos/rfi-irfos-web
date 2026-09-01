@@ -587,15 +587,20 @@ button { cursor: pointer; font-family: inherit; }
 .wm-compare-verdict { margin-top: auto; font-size: 14px; font-weight: 700; color: var(--accent-text); }
 
 .wm-split { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; align-items: stretch; }
-/* max-height: 560px added 2026-09-01 - height: 100% + align-items: stretch
+/* max-height: 830px added 2026-09-01 - height: 100% + align-items: stretch
    alone doesn't cap anything: CSS Grid rows with no explicit height auto-
    size to the TALLEST item's own natural content height, so once the live
    feed carries 25 real entries instead of 5 placeholder ones, the whole row
    grew to match it and dragged Einblicke in Dingirs Denkweise's rows apart
    with it (its own justify-content: space-between stretched right along).
    This is the actual constraint .wm-feed-list's overflow-y: auto needed all
-   along to have anything to scroll against. */
-.wm-panel { position: relative; padding: 20px; display: flex; flex-direction: column; height: 100%; max-height: 560px; overflow: hidden; }
+   along to have anything to scroll against. 830px, not a smaller guess
+   (560px shipped first and clipped two of the five chains) - measured via
+   .scrollHeight on Einblicke in Dingirs Denkweise's own unclipped content
+   (828px with all 5 chains + hyphenated German text), so both panels stay
+   equal-height AND the chains panel never needs to scroll its own fixed
+   five rows, only the live feed's unbounded, always-growing list does. */
+.wm-panel { position: relative; padding: 20px; display: flex; flex-direction: column; height: 100%; max-height: 830px; overflow: hidden; }
 .wm-panel-head { margin-bottom: 8px; }
 .wm-panel-head-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .wm-panel-head h3 { margin: 0 0 4px; font-size: 19px; font-weight: 800; }
