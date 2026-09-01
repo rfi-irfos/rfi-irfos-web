@@ -775,12 +775,12 @@ export const DE: Content = {
       body: 'DINGIR verfolgt die Nachbeben-Wahrscheinlichkeit laufend nach dem Omori-Utsu-Modell, auf Basis von USGS-Erdbebendaten. Dies ist ein Rechenbeispiel, kein Live-Ereignis.',
     },
     stats: {
-      historical: { label: 'Historische Beobachtungen', value: '3.334.419', sub: 'seit 55.500 v. Chr. · Stand 19.08.2026' },
-      live: { label: 'Live-Beobachtungen', value: '7.854.538', sub: 'kumulativ, alle aktiven Streams · Stand 31.08.2026' },
-      nodes: { label: 'Weltgraph', value: '51.200', sub: 'Knoten · Stand 31.08.2026' },
-      edges: { label: 'Weltgraph-Kanten', value: '484.307', sub: 'kausale und relationale Verknüpfungen' },
-      streams: { label: 'Live-Streams', value: '21', sub: 'kontinuierlich laufend' },
-      domains: { label: 'Domänen', value: '20+', sub: 'Systeme und Themenfelder' },
+      historical: { label: 'Historische Beobachtungen', value: '3.334.419', sub: 'der vollständige historische Datenbestand, reicht zurück bis 55.500 v. Chr. · Stand 19.08.2026' },
+      live: { label: 'Live-Beobachtungen', value: '7.854.538', sub: 'Echtzeit-Datenpunkte aus allen aktiven Streams, kumulativ · Stand 31.08.2026' },
+      nodes: { label: 'Weltgraph', value: '51.200', sub: 'einzelne Entitäten im Graphen erfasst, Orte, Systeme und Ereignisse · Stand 31.08.2026' },
+      edges: { label: 'Weltgraph-Kanten', value: '484.307', sub: 'die kausalen und relationalen Verknüpfungen zwischen diesen Entitäten' },
+      streams: { label: 'Live-Streams', value: '21', sub: 'unabhängige Live-Feeds, die gerade neue Beobachtungen einspeisen' },
+      domains: { label: 'Domänen', value: '20+', sub: 'eigenständige Themenfelder, die DINGIR abdeckt, von Erdbeben bis Märkten' },
     },
     comparison: {
       heading: 'Language Model vs. Agent vs. World Model',

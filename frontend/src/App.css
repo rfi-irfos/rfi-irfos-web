@@ -493,6 +493,54 @@ button { cursor: pointer; font-family: inherit; }
 /* Hero visual: a real DINGIR interface screenshot, not an illustration. */
 .wm-graph-panel { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; border: 1px solid var(--wm-border); }
 .wm-graph-screenshot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+/* The panel is now a <button> (added 2026-09-01, opens the fullscreen lightbox)
+   - reset the default button chrome, then re-add exactly what the plain div
+   version had (padding: 0, no border-radius/border duplication since those
+   already live on .wm-graph-panel itself, font-family: inherit so the hint
+   label below doesn't pick up the UA button font). */
+.wm-graph-panel--clickable { padding: 0; border: 1px solid var(--wm-border); background: none; font-family: inherit; cursor: pointer; display: block; width: 100%; }
+.wm-graph-expand-hint {
+  position: absolute; right: 12px; bottom: 12px; z-index: 1;
+  display: flex; align-items: center; gap: 6px; padding: 6px 10px;
+  background: rgba(8,10,16,0.72); border: 1px solid var(--wm-border); border-radius: 999px;
+  font-size: 11px; font-weight: 700; color: var(--text2);
+  opacity: 0; transform: translateY(4px); transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.wm-graph-panel--clickable:hover .wm-graph-expand-hint,
+.wm-graph-panel--clickable:focus-visible .wm-graph-expand-hint { opacity: 1; transform: translateY(0); }
+
+/* Fullscreen lightbox (2026-09-01) - position:fixed unlike .wm-modal-backdrop
+   above, which is deliberately scoped to its own panel by design. */
+.wm-lightbox-backdrop {
+  position: fixed; inset: 0; z-index: 500; background: rgba(3,4,8,0.94);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  cursor: default; touch-action: none;
+}
+.wm-lightbox-frame {
+  position: relative; width: min(94vw, 1400px); aspect-ratio: 16 / 9;
+  border-radius: 10px; overflow: hidden; border: 1px solid var(--wm-border);
+  transition: transform 0.05s linear; will-change: transform;
+}
+.wm-lightbox-close { position: fixed; top: 20px; right: 20px; z-index: 501; background: rgba(8,10,16,0.72); }
+.wm-lightbox-nav {
+  position: fixed; top: 50%; transform: translateY(-50%); z-index: 501;
+  width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%;
+  background: rgba(8,10,16,0.72); border: 1px solid var(--wm-border); color: var(--text2); cursor: pointer;
+}
+.wm-lightbox-nav:hover { color: var(--text); border-color: var(--accent); }
+.wm-lightbox-nav--prev { left: 20px; }
+.wm-lightbox-nav--next { right: 20px; }
+@media (max-width: 640px) {
+  .wm-lightbox-nav { width: 38px; height: 38px; }
+  .wm-lightbox-nav--prev { left: 8px; }
+  .wm-lightbox-nav--next { right: 8px; }
+}
+.wm-lightbox-hint {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 501;
+  font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--text3);
+  background: rgba(8,10,16,0.72); border: 1px solid var(--wm-border); border-radius: 999px; padding: 6px 14px;
+  pointer-events: none;
+}
 
 /* Base "software card": opaque navy surface, hairline border, no blur, no
    drop shadow - the one wm-card recipe every widget below reuses. */

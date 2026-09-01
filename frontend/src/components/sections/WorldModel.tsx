@@ -7,9 +7,11 @@
 // tried on this page and pulled again (live feedback 2026-08-31:
 // "overstimulates ppl") - this compact five-chain view is the only
 // causality-chain presence here now, not a preview of something bigger.
-import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type WheelEvent as ReactWheelEvent } from 'react'
+import { createPortal } from 'react-dom'
 import {
   IconActivity, IconAlertTriangle, IconBroadcast, IconBuildingSkyscraper, IconChartLine,
+  IconChevronLeft, IconChevronRight,
   IconCircleCheck, IconCloudRain, IconFlag, IconFlask, IconMail,
   IconMessage2, IconMountain, IconRobot, IconRoute, IconShieldLock, IconShip, IconSnowflake, IconTrain,
   IconWorld, IconX,
@@ -205,6 +207,108 @@ function ChainsPreview() {
   )
 }
 
+const ZOOM_MIN = 1
+const ZOOM_MAX = 4
+
+// Full-viewport lightbox opened by clicking the hero panel (live feedback
+// 2026-09-01: "click on the hero... expand into a fullscreen view with
+// slideshow effect and an option to scroll in n out and pan around so
+// people can discover it uncut"). Reuses HeroSlideshow itself for the
+// cycling/cross-fade, just at viewport scale instead of inside the bounded
+// panel - the zoom/pan layer wraps it rather than reimplementing the
+// slideshow a third time. `position: fixed`, not the `.wm-modal-backdrop`
+// pattern used elsewhere on this page (FeedDetailModal) - that one is
+// `position: absolute` scoped to its own panel by design, this needs the
+// whole screen.
+// Manual left/right navigation, no auto-advance and no cross-fade blend
+// (live feedback 2026-09-01, after the first cut reused HeroSlideshow's own
+// auto-cycling here too: "when fullscreen modal is on, obv the blend over
+// effect is gone, this is the preview where the user can use it as he wants,
+// with no interruptions") - a hard cut on manual navigation, not the panel's
+// own atmospheric timed crossfade. Deliberately NOT HeroSlideshow reused a
+// second time here; the two components now want genuinely different
+// interaction models (auto/blended vs. manual/instant), forcing one to serve
+// both would mean threading a disable-autoplay flag through a component this
+// page doesn't otherwise control.
+function HeroLightbox({ startIndex, onClose }: { startIndex: number; onClose: () => void }) {
+  const [current, setCurrent] = useState(startIndex)
+  const [zoom, setZoom] = useState(1)
+  const [pan, setPan] = useState({ x: 0, y: 0 })
+  const dragging = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null)
+
+  const resetView = () => { setZoom(1); setPan({ x: 0, y: 0 }) }
+  const prev = () => { setCurrent(c => (c - 1 + HERO_IMAGES.length) % HERO_IMAGES.length); resetView() }
+  const next = () => { setCurrent(c => (c + 1) % HERO_IMAGES.length); resetView() }
+
+  useEffect(() => {
+    const onKey = (ev: KeyboardEvent) => {
+      if (ev.key === 'Escape') onClose()
+      if (ev.key === 'ArrowLeft') prev()
+      if (ev.key === 'ArrowRight') next()
+    }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = '' }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onClose])
+
+  const onWheel = (ev: ReactWheelEvent) => {
+    ev.preventDefault()
+    setZoom(z => {
+      const nextZoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z - ev.deltaY * 0.0018))
+      if (nextZoom === ZOOM_MIN) setPan({ x: 0, y: 0 })
+      return nextZoom
+    })
+  }
+  const onMouseDown = (ev: ReactMouseEvent) => {
+    if (zoom <= ZOOM_MIN) return
+    dragging.current = { x: ev.clientX, y: ev.clientY, panX: pan.x, panY: pan.y }
+  }
+  const onMouseMove = (ev: ReactMouseEvent) => {
+    if (!dragging.current) return
+    const d = dragging.current
+    setPan({ x: d.panX + (ev.clientX - d.x), y: d.panY + (ev.clientY - d.y) })
+  }
+  const endDrag = () => { dragging.current = null }
+
+  // Rendered via a portal straight onto document.body (added 2026-09-01,
+  // fixing a real bug the first cut of this shipped with) - `position: fixed`
+  // only escapes to the true viewport when NO ancestor sets `transform`
+  // (or filter/perspective/will-change: transform), and nearly every element
+  // on this page is wrapped in <Reveal>, whose motion.div sets `transform`
+  // unconditionally as part of its own scroll-linked animation. Left un-
+  // portaled, the "fullscreen" lightbox rendered pinned inside the hero
+  // panel's own small box instead of covering the viewport - portaling out
+  // of the whole Reveal-wrapped tree is what actually gets a real containing
+  // block back.
+  return createPortal(
+    <div
+      className="wm-lightbox-backdrop"
+      onClick={onClose}
+      onWheel={onWheel}
+      onMouseMove={onMouseMove}
+      onMouseUp={endDrag}
+      onMouseLeave={endDrag}
+    >
+      <button type="button" className="wm-modal-close wm-lightbox-close" onClick={onClose} aria-label="Close"><IconX size={20} /></button>
+      <button type="button" className="wm-lightbox-nav wm-lightbox-nav--prev" onClick={ev => { ev.stopPropagation(); prev() }} aria-label="Previous"><IconChevronLeft size={22} /></button>
+      <button type="button" className="wm-lightbox-nav wm-lightbox-nav--next" onClick={ev => { ev.stopPropagation(); next() }} aria-label="Next"><IconChevronRight size={22} /></button>
+      <div
+        className="wm-lightbox-frame"
+        onClick={ev => ev.stopPropagation()}
+        onMouseDown={onMouseDown}
+        style={{
+          transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+          cursor: zoom > ZOOM_MIN ? (dragging.current ? 'grabbing' : 'grab') : 'default',
+          backgroundImage: `url("${HERO_IMAGES[current]}")`, backgroundSize: 'cover', backgroundPosition: 'center',
+        }}
+      />
+      <span className="wm-lightbox-hint">&larr; &rarr; to browse &middot; scroll to zoom &middot; drag to pan &middot; esc to close</span>
+    </div>,
+    document.body
+  )
+}
+
 // Was a single static DINGIR interface screenshot - swapped 2026-09-01 for the
 // same cross-fading slideshow the main homepage hero runs (live feedback:
 // "können wir da auch einfach die slideshow zeigen von den screenshots die
@@ -212,12 +316,19 @@ function ChainsPreview() {
 // exported from Hero.tsx rather than a second copy of the same mechanic.
 // .wm-graph-panel is position:relative + overflow:hidden, so the slideshow's
 // absolutely-positioned layer fills and crops to this bounded box instead of
-// the full viewport it normally sits behind.
+// the full viewport it normally sits behind. Clicking it opens HeroLightbox
+// (added same session, same live-feedback round) for the uncropped fullscreen
+// view.
 function WorldGraphVisual() {
+  const [open, setOpen] = useState(false)
   return (
-    <div className="wm-graph-panel">
-      <HeroSlideshow images={HERO_IMAGES} />
-    </div>
+    <>
+      <button type="button" className="wm-graph-panel wm-graph-panel--clickable" onClick={() => setOpen(true)} aria-label="View screenshots fullscreen">
+        <HeroSlideshow images={HERO_IMAGES} zoomEffect={false} />
+        <span className="wm-graph-expand-hint"><IconWorld size={13} stroke={1.8} /> view fullscreen</span>
+      </button>
+      {open && <HeroLightbox startIndex={0} onClose={() => setOpen(false)} />}
+    </>
   )
 }
 

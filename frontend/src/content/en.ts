@@ -788,12 +788,12 @@ export const EN = {
       body: 'DINGIR tracks aftershock probability continuously via the Omori-Utsu model, based on USGS earthquake data. This is a worked example, not a live event.',
     },
     stats: {
-      historical: { label: 'Historical observations', value: '3,334,419', sub: 'since 55,500 BCE · as of 2026-08-19' },
-      live: { label: 'Live observations', value: '7,854,538', sub: 'cumulative, all active streams · as of 2026-08-31' },
-      nodes: { label: 'World graph', value: '51,200', sub: 'nodes · as of 2026-08-31' },
-      edges: { label: 'World graph edges', value: '484,307', sub: 'causal and relational links' },
-      streams: { label: 'Live streams', value: '21', sub: 'continuously running' },
-      domains: { label: 'Domains', value: '20+', sub: 'systems and subject areas' },
+      historical: { label: 'Historical observations', value: '3,334,419', sub: 'the full historical corpus ingested so far, reaching back to 55,500 BCE · as of 2026-08-19' },
+      live: { label: 'Live observations', value: '7,854,538', sub: 'real-time data points collected across every active stream, cumulative · as of 2026-08-31' },
+      nodes: { label: 'World graph', value: '51,200', sub: 'distinct entities tracked in the graph, places, systems and events · as of 2026-08-31' },
+      edges: { label: 'World graph edges', value: '484,307', sub: 'the causal and relational links connecting those entities to each other' },
+      streams: { label: 'Live streams', value: '21', sub: 'independent live feeds ingesting new observations right now' },
+      domains: { label: 'Domains', value: '20+', sub: 'distinct subject areas DINGIR spans, from seismic activity to markets' },
     },
     comparison: {
       heading: 'Language model vs. agent vs. world model',

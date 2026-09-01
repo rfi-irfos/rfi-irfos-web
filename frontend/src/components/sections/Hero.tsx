@@ -173,7 +173,13 @@ const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 const SLIDE_INTERVAL_MS = 15000
 const CROSSFADE_S = 3.2
 
-export function HeroSlideshow({ images }: { images: string[] }) {
+// `zoomEffect` (default true, the homepage's own behaviour) toggles the Ken
+// Burns .rfi-hero-zoom animation - added 2026-09-01 for WorldModel.tsx's small
+// bounded panel, which wants a plain crossfade only, no zoom motion (live
+// feedback: "it always shows the pictures fit to the actual size of this box...
+// no zoom in or zoom out", zoom/pan lives in the fullscreen lightbox instead,
+// user-driven via scroll/drag, not this component's own per-slide animation).
+export function HeroSlideshow({ images, zoomEffect = true }: { images: string[]; zoomEffect?: boolean }) {
   const [current, setCurrent] = useState(0)
   const reduced = prefersReducedMotion()
 
@@ -193,7 +199,7 @@ export function HeroSlideshow({ images }: { images: string[] }) {
       <motion.div
         key={current}
         aria-hidden="true"
-        className="rfi-hero-zoom"
+        className={zoomEffect ? 'rfi-hero-zoom' : undefined}
         initial={reduced ? undefined : { opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={reduced ? undefined : { opacity: 0 }}
