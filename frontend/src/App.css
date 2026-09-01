@@ -620,13 +620,20 @@ button { cursor: pointer; font-family: inherit; }
    sinkt") wrap to 2 lines far more often than the English original, and
    without a shared floor that made German rows look ragged next to English's
    evenly 1-line rows (live feedback 2026-08-31: "in german no ok"). */
-/* overflow-wrap: anywhere (added 2026-09-01, 5th report of the same bug) -
-   min-width: 0 alone only lets the FLEX ITEM shrink, it doesn't let long
-   words break. German compounds like "Versicherungsprämien" and
-   "Frühjahrsschmelze" are single unbroken words with no space or hyphen for
-   normal wrapping to grab onto, so they were pushed straight through the
-   box's right edge instead of wrapping - this is what actually stops that. */
-.wm-chain-step { position: relative; flex: 1 1 0; min-width: 0; min-height: 54px; display: flex; align-items: center; gap: 7px; font-size: 13.5px; font-weight: 600; color: var(--text); background: color-mix(in srgb, var(--wm-surface) 60%, var(--bg)); border: 1px solid var(--wm-border); border-radius: 8px; padding: 8px 10px; line-height: 1.35; overflow-wrap: anywhere; }
+/* hyphens: auto (was overflow-wrap: anywhere, changed 2026-09-01 - 6th
+   report of the same underlying bug) - min-width: 0 alone only lets the
+   FLEX ITEM shrink, it doesn't let long words break, and German compounds
+   like "Versicherungsprämien"/"Frühjahrsschmelze" are single unbroken words
+   with no space for normal wrapping to grab onto. overflow-wrap: anywhere
+   "fixed" the overflow but broke words at arbitrary letters with no hyphen
+   ("Hafeninfra" / "ruktur" - live feedback: "man muss das sauber trennen").
+   hyphens: auto asks the browser's real German hyphenation dictionary for
+   correct syllable breaks and inserts a visible "-" at the split - it only
+   works once the element's language is actually German, which is what
+   useLocale.tsx's new document.documentElement.lang sync (same commit)
+   provides; overflow-wrap: break-word stays as a fallback for the rare
+   word the dictionary itself can't break. */
+.wm-chain-step { position: relative; flex: 1 1 0; min-width: 0; min-height: 54px; display: flex; align-items: center; gap: 7px; font-size: 13.5px; font-weight: 600; color: var(--text); background: color-mix(in srgb, var(--wm-surface) 60%, var(--bg)); border: 1px solid var(--wm-border); border-radius: 8px; padding: 8px 10px; line-height: 1.35; hyphens: auto; overflow-wrap: break-word; }
 .wm-chain-step--1 { color: var(--accent-text); border-color: color-mix(in srgb, var(--accent) 30%, var(--wm-border)); }
 .wm-chain-step--2 { color: #ffb454; border-color: color-mix(in srgb, #ffb454 35%, var(--wm-border)); padding-right: 26px; }
 .wm-chain-icon { flex: 0 0 auto; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }

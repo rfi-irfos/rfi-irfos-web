@@ -30,6 +30,13 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     try { localStorage.setItem(KEY, locale) } catch { /* private mode */ }
   }, [locale])
 
+  // Kept in sync with the active locale (was hardcoded "en" in index.html and
+  // never touched again, added 2026-09-01) - CSS hyphens: auto picks its
+  // hyphenation dictionary from the nearest lang attribute, so German
+  // compounds never got a real dictionary break, only <html lang="en">'s
+  // (nonexistent) rules for them.
+  useEffect(() => { document.documentElement.lang = locale }, [locale])
+
   const setLocale = (l: Locale) => setLocaleState(l)
 
   return (

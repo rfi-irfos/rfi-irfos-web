@@ -264,6 +264,17 @@ function HeroLightbox({ startIndex, onClose }: { startIndex: number; onClose: ()
   const prev = () => { setCurrent(c => (c - 1 + WORLD_MODEL_HERO_IMAGES.length) % WORLD_MODEL_HERO_IMAGES.length); resetView() }
   const next = () => { setCurrent(c => (c + 1) % WORLD_MODEL_HERO_IMAGES.length); resetView() }
 
+  // Warm the browser cache for every shot up front (added 2026-09-01, live
+  // feedback: "die pfeile... sieht man kurz erscheinen in der mitte vom
+  // bild wärend es wächselt" - the browser's broken-image glyph flashing
+  // centered while a fresh 1-3MB PNG was still downloading). Only 12 images,
+  // and the lightbox only mounts once someone has already opened it, so
+  // eagerly loading all of them here is cheap relative to the confusion of
+  // a half-loaded frame mid-crossfade.
+  useEffect(() => {
+    WORLD_MODEL_HERO_IMAGES.forEach(src => { const img = new Image(); img.src = src })
+  }, [])
+
   useEffect(() => {
     const onKey = (ev: KeyboardEvent) => {
       if (ev.key === 'Escape') onClose()
