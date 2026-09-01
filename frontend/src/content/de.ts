@@ -796,7 +796,10 @@ export const DE: Content = {
       heading: 'Live-Feed', sub: 'Aktuelle Ereignisse in Echtzeit',
       newBadge: 'neu', viewAll: 'Alle Live-Ereignisse anzeigen',
       empty: 'Keine Live-Ereignisse im aktuellen Zeitfenster.',
-      kinds: { seismic: 'Seismisch', weather: 'Wetter', maritime: 'Maritim', infrastructure: 'Infrastruktur', model: 'Modell' } as Record<string, string>,
+      kinds: {
+        seismic: 'Seismisch', weather: 'Wetter', maritime: 'Maritim', infrastructure: 'Infrastruktur', model: 'Modell',
+        ANOMALY: 'Anomalie', HUB: 'Hub', PREDICTION: 'Vorhersage', CHANGE: 'Änderung',
+      } as Record<string, string>,
     },
     useCases: {
       eyebrow: 'Anwendungsbereiche', heading: 'Wofür DINGIR genutzt werden kann', sub: 'Ein queryable data warehouse of world knowledge.',

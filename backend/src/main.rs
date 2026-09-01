@@ -225,7 +225,7 @@ async fn main() {
         .route("/api/upload", post(upload::upload_file))
         .route("/api/contact", post(contact::submit_contact))
         .route("/api/early-access", post(worldmodel::submit_early_access))
-        .route("/api/worldmodel-feed", get(worldmodel::worldmodel_feed))
+        .route("/api/worldmodel-feed", get(worldmodel::worldmodel_feed).post(worldmodel::ingest_worldmodel_feed))
         .route("/api/analytics", get(analytics::stats))
         .route("/api/stripe/checkout", post(stripe::create_checkout))
         .route("/api/stripe/webhook", post(stripe::webhook))

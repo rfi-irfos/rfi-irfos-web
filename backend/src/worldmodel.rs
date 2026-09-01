@@ -7,35 +7,71 @@ use crate::AppState;
 
 // ── Live feed ────────────────────────────────────────────────────────────
 //
-// Placeholder only. The real source (DINGIR's ReasoningFeed, OBSERVED/
-// DERIVED/PREDICTED entries from the world graph, plus curated world-model
-// events) lives on a separate machine and isn't network-reachable from this
-// Fly.io app (bi_api only binds 127.0.0.1). The intended real architecture,
-// same shape as contact.rs's own outbound relay just reversed: a small
-// script next to DINGIR's nightly_bake.sh periodically POSTs curated
-// entries here with a shared-secret header, this handler stores the latest
-// batch in memory, and this GET route serves it - never reaching into any
-// of the three existing ntfy topics, which mix in unrelated case/embargo
-// data that must never become public. Not built yet; this route ships the
-// wire shape now so the frontend has something real to render against.
-#[derive(Serialize)]
-struct FeedEntry {
-    id: &'static str,
-    kind: &'static str,
-    title: &'static str,
-    time: &'static str,
-    detail: &'static str,
+// Built 2026-09-01, replacing the placeholder five-example array this route
+// shipped with. The real source is DINGIR's bi_api /reasoning/feed (ANOMALY/
+// HUB/PREDICTION/CHANGE entries derived from the already-trained world
+// graph), which only binds 127.0.0.1 on DINGIR's own machine and is not
+// network-reachable from this Fly.io app. worldmodel_feed_relay.py (next to
+// nightly_bake.sh, same machine, run every 5 minutes by a systemd user timer)
+// reads that local endpoint and POSTs the curated batch here with a
+// shared-secret header - same outbound-relay shape as contact.rs's own
+// relay_to_crm, just reversed. Deliberately NOT reaching into any of the
+// three existing ntfy topics, which mix in unrelated case/embargo data that
+// must never become public.
+//
+// LIVE_FEED starts empty and stays empty until the relay's first successful
+// POST. GET intentionally returns [] rather than canned examples in that
+// window - the frontend's own FEED_FALLBACK + "BEISPIELDATEN (LIVE-FEED
+// NICHT ERREICHBAR)" state is what a visitor should see, not this route
+// quietly claiming success with fake data.
+#[derive(Serialize, Deserialize, Clone)]
+pub struct FeedEntry {
+    id: String,
+    kind: String,
+    title: String,
+    time: String,
+    detail: String,
+}
+
+static LIVE_FEED: OnceLock<Mutex<Vec<FeedEntry>>> = OnceLock::new();
+
+fn live_feed_store() -> &'static Mutex<Vec<FeedEntry>> {
+    LIVE_FEED.get_or_init(|| Mutex::new(Vec::new()))
 }
 
 pub async fn worldmodel_feed() -> impl IntoResponse {
-    let entries = [
-        FeedEntry { id: "ex-1", kind: "seismic", title: "M4.8 aftershock, Sumatra region", time: "07:24 UTC", detail: "Aftershock probability updated continuously via the Omori-Utsu model against the USGS earthquake feed." },
-        FeedEntry { id: "ex-2", kind: "weather", title: "Heavy rainfall system, Southeast Asia", time: "07:18 UTC", detail: "Precipitation intensity cross-checked against the affected region's historical flood threshold." },
-        FeedEntry { id: "ex-3", kind: "maritime", title: "Vessel reroute, Strait of Hormuz", time: "07:16 UTC", detail: "AIS position change flagged against the shipping-lane baseline for this route." },
-        FeedEntry { id: "ex-4", kind: "infrastructure", title: "Rail delay cluster, DB network", time: "07:11 UTC", detail: "Multiple correlated delays on the same line segment within a short window." },
-        FeedEntry { id: "ex-5", kind: "model", title: "Checkpoint evaluated, AUC 0.769", time: "06:58 UTC", detail: "Nightly retraining run scored against the held-out validation split before acceptance." },
-    ];
+    let entries = live_feed_store().lock().unwrap_or_else(|e| e.into_inner()).clone();
     Json(entries)
+}
+
+// Same inbound-secret pattern as contact.rs/relay_to_crm use outbound: reuse
+// LIGHTHOUSE_INBOX_KEY rather than mint a dedicated secret, since this app
+// already has exactly one trusted server-to-server caller. Cap at 100
+// entries - the relay only ever sends ~40, so anything past that is either a
+// bug on the sending side or someone else entirely, not a batch to trust.
+const MAX_FEED_ENTRIES: usize = 100;
+
+pub async fn ingest_worldmodel_feed(headers: HeaderMap, Json(body): Json<Vec<FeedEntry>>) -> impl IntoResponse {
+    let expected = std::env::var("LIGHTHOUSE_INBOX_KEY").unwrap_or_default();
+    if expected.is_empty() {
+        tracing::error!("worldmodel-feed ingest rejected: LIGHTHOUSE_INBOX_KEY not set on this app");
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    }
+    let provided = headers.get("x-inbox-key").and_then(|v| v.to_str().ok()).unwrap_or_default();
+    if provided != expected {
+        return StatusCode::UNAUTHORIZED.into_response();
+    }
+    if body.len() > MAX_FEED_ENTRIES {
+        return (StatusCode::BAD_REQUEST, format!("at most {MAX_FEED_ENTRIES} entries per batch")).into_response();
+    }
+
+    let mut store = live_feed_store().lock().unwrap_or_else(|e| e.into_inner());
+    let count = body.len();
+    *store = body;
+    drop(store);
+
+    tracing::info!("worldmodel-feed ingest: stored {count} live entries");
+    StatusCode::OK.into_response()
 }
 
 // ── Early access signup ─────────────────────────────────────────────────

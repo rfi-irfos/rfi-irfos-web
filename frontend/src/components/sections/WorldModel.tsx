@@ -68,12 +68,20 @@ type FeedEntry = { id: string; kind: string; title: string; time: string; detail
 // Each category gets its own icon AND its own color (live feedback: uniform
 // teal icons "read as one thing" - a scanning eye needs color to tell seismic
 // from maritime from infrastructure at a glance, the way a real ops feed does).
+// ANOMALY/HUB/PREDICTION/CHANGE added 2026-09-01 - the real kind values
+// DINGIR's bi_api /reasoning/feed emits (see worldmodel_feed_relay.py),
+// distinct from the seismic/weather/maritime/infrastructure/model set below,
+// which stays as the illustrative FEED_FALLBACK's own domain taxonomy.
 const FEED_META: Record<string, { icon: typeof IconActivity; color: string }> = {
   seismic:        { icon: IconActivity,  color: '#ff6b5e' },
   weather:        { icon: IconCloudRain, color: '#ffa94d' },
   maritime:       { icon: IconShip,      color: '#4dabf7' },
   infrastructure: { icon: IconTrain,     color: '#94a3b8' },
   model:          { icon: IconBroadcast, color: 'var(--accent)' },
+  ANOMALY:        { icon: IconAlertTriangle, color: '#ff6b5e' },
+  HUB:            { icon: IconWorld,         color: '#4dabf7' },
+  PREDICTION:     { icon: IconChartLine,     color: '#c77dff' },
+  CHANGE:         { icon: IconActivity,      color: '#3ddc84' },
 }
 
 // Illustrative fallback, shown only when GET /api/worldmodel-feed is unreachable

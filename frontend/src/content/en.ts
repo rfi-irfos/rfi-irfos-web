@@ -809,7 +809,10 @@ export const EN = {
       heading: 'Live Feed', sub: 'Current events in real time',
       newBadge: 'new', viewAll: 'View all live events',
       empty: 'No live events in the current window.',
-      kinds: { seismic: 'Seismic', weather: 'Weather', maritime: 'Maritime', infrastructure: 'Infrastructure', model: 'Model' } as Record<string, string>,
+      kinds: {
+        seismic: 'Seismic', weather: 'Weather', maritime: 'Maritime', infrastructure: 'Infrastructure', model: 'Model',
+        ANOMALY: 'Anomaly', HUB: 'Hub', PREDICTION: 'Prediction', CHANGE: 'Change',
+      } as Record<string, string>,
     },
     useCases: {
       eyebrow: 'Applications', heading: 'What DINGIR can be used for', sub: 'A queryable data warehouse of world knowledge.',
