@@ -318,34 +318,34 @@ function ComparisonBlock() {
   const c = t.worldModel.comparison
   return (
     <div className="wm-wrap">
-      <Reveal><div className="wm-section-box">
-      <h2 style={{ textAlign: 'center', fontSize: 26, fontWeight: 900, marginBottom: 28 }}>{c.heading}</h2>
+      <div className="wm-section-box">
+      <Reveal dist={14}><h2 style={{ textAlign: 'center', fontSize: 26, fontWeight: 900, marginBottom: 28 }}>{c.heading}</h2></Reveal>
         <div className="wm-compare-grid">
-          <div className="wm-compare-card wm-card">
+          <Reveal dist={14} style={{ height: '100%' }}><div className="wm-compare-card wm-card">
             <div className="wm-compare-icon"><IconMessage2 size={19} stroke={1.7} /></div>
             <h3>{c.lm.title}</h3>
             <p>{c.lm.body}</p>
             <p className="wm-compare-tag">{c.lm.tag}</p>
             <span className="wm-compare-verdict">{c.lm.verdict}</span>
-          </div>
+          </div></Reveal>
           <span className="wm-compare-vs">vs.</span>
-          <div className="wm-compare-card wm-card">
+          <Reveal dist={14} delay={1} style={{ height: '100%' }}><div className="wm-compare-card wm-card">
             <div className="wm-compare-icon"><IconRobot size={19} stroke={1.7} /></div>
             <h3>{c.agent.title}</h3>
             <p>{c.agent.body}</p>
             <p className="wm-compare-tag">{c.agent.tag}</p>
             <span className="wm-compare-verdict">{c.agent.verdict}</span>
-          </div>
+          </div></Reveal>
           <span className="wm-compare-vs">vs.</span>
-          <div className="wm-compare-card wm-compare-card--wm wm-card">
+          <Reveal dist={14} delay={2} style={{ height: '100%' }}><div className="wm-compare-card wm-compare-card--wm wm-card">
             <div className="wm-compare-icon"><IconWorld size={19} stroke={1.7} /></div>
             <h3>{c.wm.title}</h3>
             <p>{c.wm.body}</p>
             <p className="wm-compare-tag">{c.wm.tag}</p>
             <span className="wm-compare-verdict">{c.wm.verdict}</span>
-          </div>
+          </div></Reveal>
         </div>
-      </div></Reveal>
+      </div>
     </div>
   )
 }
@@ -358,21 +358,23 @@ function UseCasesGrid() {
   const spot = useSpotlight<HTMLDivElement>()
   return (
     <div id="wm-usecases" className="wm-wrap">
-      <Reveal><div className="wm-section-box">
-      <div className="wm-section-head"><p className="wm-eyebrow">{u.eyebrow}</p><h2>{u.heading}</h2><p>{u.sub}</p></div>
+      <div className="wm-section-box">
+      <Reveal dist={14}><div className="wm-section-head"><p className="wm-eyebrow">{u.eyebrow}</p><h2>{u.heading}</h2><p>{u.sub}</p></div></Reveal>
       <div ref={spot.ref} className="wm-usecase-grid" style={HUE_MAIN} onMouseMove={spot.onMouseMove}>
         {u.cards.map((card, i) => {
           const Icon = USE_CASE_ICONS[i]
           return (
-            <article key={card.title} className="wm-card">
-              <div className="wm-compare-icon"><Icon size={19} stroke={1.6} /></div>
-              <h3>{card.title}</h3>
-              <p>{card.body}</p>
-            </article>
+            <Reveal key={card.title} dist={14} delay={(i % 3) + 1} style={{ height: '100%' }}>
+              <article className="wm-card">
+                <div className="wm-compare-icon"><Icon size={19} stroke={1.6} /></div>
+                <h3>{card.title}</h3>
+                <p>{card.body}</p>
+              </article>
+            </Reveal>
           )
         })}
       </div>
-      </div></Reveal>
+      </div>
     </div>
   )
 }
@@ -466,7 +468,7 @@ export function WorldModelSection() {
         </div>
       </section>
       <section className="wm-section"><UseCasesGrid /></section>
-      <section className="wm-section"><EarlyAccessForm /></section>
+      <section className="wm-section wm-section--last"><EarlyAccessForm /></section>
     </div>
   )
 }

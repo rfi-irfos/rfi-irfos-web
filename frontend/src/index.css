@@ -522,7 +522,11 @@ h1, h2, h3, .rfi-display {
      Lighthouse's own dark theme (--surface #12172b rich navy over --bg #0a0e17
      deep midnight, plain border, no blur, no drop shadow - see
      lighthouse-design-system memory) rather than this site's own glass system. */
-  --wm-surface: linear-gradient(165deg, #141a2b 0%, #0d1119 100%);
+  /* Slight alpha added 2026-09-01 (live feedback: card content read too close in
+     tone to the card surface, wanted "ein bisl mehr grauisch dass es sich abhebt")
+     - stays opaque-reading at this alpha, still not the site's glass material,
+     just enough give for the page backdrop to lift the card away from its content. */
+  --wm-surface: linear-gradient(165deg, rgba(20,26,43,0.94) 0%, rgba(13,17,25,0.94) 100%);
   --wm-border:  rgba(148,163,184,0.16);
 }
 [data-theme="light"] {
