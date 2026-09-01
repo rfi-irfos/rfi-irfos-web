@@ -813,6 +813,12 @@ export const EN = {
         seismic: 'Seismic', weather: 'Weather', maritime: 'Maritime', infrastructure: 'Infrastructure', model: 'Model',
         ANOMALY: 'Anomaly', HUB: 'Hub', PREDICTION: 'Prediction', CHANGE: 'Change',
       } as Record<string, string>,
+      kindHints: {
+        ANOMALY: 'This entity sits unusually far from similar entities in the graph — a signal worth a closer look, not proof of anything by itself.',
+        HUB: 'One of the largest, most densely connected structures in the graph right now.',
+        PREDICTION: 'A relation the model expects but has not observed — a hypothesis, not a fact.',
+        CHANGE: 'A state change the ingestion pipeline actually recorded.',
+      } as Record<string, string>,
     },
     useCases: {
       eyebrow: 'Applications', heading: 'What DINGIR can be used for', sub: 'A queryable data warehouse of world knowledge.',

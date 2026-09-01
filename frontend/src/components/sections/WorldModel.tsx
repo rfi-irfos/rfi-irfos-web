@@ -97,8 +97,8 @@ const FEED_FALLBACK: FeedEntry[] = [
   { id: 'ex-5', kind: 'model', title: 'Checkpoint evaluated, AUC 0.769', time: '06:58 UTC', detail: 'Nightly retraining run scored against the held-out validation split before acceptance.' },
 ]
 
-function FeedDetailModal({ entry, meta, kindLabel, onClose }: {
-  entry: FeedEntry; meta: { icon: typeof IconActivity; color: string }; kindLabel: string; onClose: () => void
+function FeedDetailModal({ entry, meta, kindLabel, kindHint, onClose }: {
+  entry: FeedEntry; meta: { icon: typeof IconActivity; color: string }; kindLabel: string; kindHint?: string; onClose: () => void
 }) {
   const Icon = meta.icon
   useEffect(() => {
@@ -118,6 +118,7 @@ function FeedDetailModal({ entry, meta, kindLabel, onClose }: {
         <span className="wm-feed-tag">{kindLabel}</span>
         <h3 className="wm-modal-title">{entry.title}</h3>
         <div className="wm-feed-time">{entry.time}</div>
+        {kindHint && <p className="wm-modal-hint">{kindHint}</p>}
         {entry.detail && <p className="wm-modal-detail">{entry.detail}</p>}
       </div>
     </div>
@@ -181,6 +182,7 @@ function LiveFeedWidget() {
           entry={openEntry}
           meta={FEED_META[openEntry.kind] ?? FEED_META.model}
           kindLabel={w.liveFeed.kinds[openEntry.kind] ?? openEntry.kind}
+          kindHint={w.liveFeed.kindHints?.[openEntry.kind]}
           onClose={() => setOpenId(null)}
         />
       )}
