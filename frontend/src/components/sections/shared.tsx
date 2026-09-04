@@ -1290,12 +1290,44 @@ export function useMobile(bp = 768) {
 //   proposal_request:<tier> → user hit REQUEST PROPOSAL (contact-only tiers)
 // That gives click → cancel → attempt → paid without any cookies or PII — it's a
 // 1x1 beacon on our own infra, not third-party ad tracking.
+// gclid/utm_* only exist on the URL a paid click actually lands on. PublicSite.tsx's
+// own initial page-load beacon (its 'beacon on page load' effect) already reads and
+// forwards them for that one event - added 2026-08-07 (commit 0caa889) alongside the
+// matching fix in Lighthouse's own track.rs (found chasing an unexplained Organic
+// Search spike that actually traced to Ads). This beacon() function is the OTHER path:
+// every named funnel/lead event (offer_click, lead_submitted, etc.) it sends still went
+// out with no attribution at all, so even when a visit's initial page-load correctly
+// reads "paid", nothing downstream in the funnel could be traced back to that same
+// paid session. Cached in a plain module-scope variable, not sessionStorage/localStorage
+// - the site's privacy policy (LegalPage.tsx, /datenschutz) explicitly and repeatedly
+// states nothing is written to any browser storage, only kept in memory for the
+// current page load. Matches the existing section-view hit-counter's own pattern
+// (PublicSite.tsx: "lives only in this component's memory... gone the moment the page
+// reloads"). Read once, from the real landing URL, before any client-side nav can
+// replace it (navigateHome's `history.replaceState(null, '', '/')` does drop it, same
+// limitation the in-memory hit-counter already accepts on a hard reload).
+const ATTRIBUTION_KEYS = ['gclid', 'utm_source', 'utm_medium', 'utm_campaign'] as const
+let cachedAttribution: Record<string, string> | null = null
+
+export function attributionParams(): Record<string, string> {
+  if (cachedAttribution) return cachedAttribution
+  const q = new URLSearchParams(location.search)
+  const attrib: Record<string, string> = {}
+  for (const key of ATTRIBUTION_KEYS) {
+    const value = q.get(key)
+    if (value) attrib[key] = value
+  }
+  cachedAttribution = attrib
+  return attrib
+}
+
 export function beacon(section: string, extra?: Record<string, string>) {
   const body: Record<string, string> = {
     path: location.pathname,
     referrer: document.referrer,
     site: 'rfi-irfos',
     section,
+    ...attributionParams(),
     ...extra,
   }
   fetch(LIGHTHOUSE_BEACON, {

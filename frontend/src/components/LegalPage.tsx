@@ -9,6 +9,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLocale } from '../hooks/useLocale'
 import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd } from '../lib/structuredData'
+import { attributionParams } from './sections/shared'
 
 const LIGHTHOUSE_PIXEL = '/api/track/pixel.gif'
 const LIGHTHOUSE_TRACK = '/api/track'
@@ -297,8 +298,11 @@ export function LegalPage({ slug }: { slug: string }) {
           RFI-IRFOS &nbsp;&middot;&nbsp; ZVR 1015608684 &nbsp;&middot;&nbsp; GISA 39261441 &nbsp;&middot;&nbsp; GLN 9110038490191 &nbsp;&middot;&nbsp; UID ATU83405245 &nbsp;&middot;&nbsp; Steuernummer 68 696/8736 &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz
         </div>
         </div>
-        {/* Lighthouse monitoring pixel — page-view only, same mechanism disclosed in the privacy policy below */}
-        <img src={`${LIGHTHOUSE_PIXEL}?site=rfi-irfos&p=${encodeURIComponent(`/${slug}`)}&r=${encodeURIComponent(document.referrer)}`}
+        {/* Lighthouse monitoring pixel — page-view only, same mechanism disclosed in the privacy policy below.
+            Carries the same first-touch gclid/utm_* attribution as the JSON beacon (see shared.tsx's
+            attributionParams doc comment) - a visitor landing straight on a legal/FAQ page from a paid
+            ad deserves the same "paid" classification a homepage landing gets, not "direct". */}
+        <img src={`${LIGHTHOUSE_PIXEL}?${new URLSearchParams({ site: 'rfi-irfos', p: `/${slug}`, r: document.referrer, ...attributionParams() })}`}
           alt="" width="1" height="1" style={{ display: 'none' }} />
       </div>
     </div>
