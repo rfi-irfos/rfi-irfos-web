@@ -764,7 +764,7 @@ export const DE: Content = {
   worldModel: {
     eyebrow: 'DINGIR',
     heading: 'Ein kontinuierlich wachsendes Weltmodell',
-    intro: 'DINGIR verbindet historische und Echtzeit-Beobachtungen aus über 20 Domänen zu einem lebendigen, kausal strukturierten Weltgraphen. Kein reiner Datenspeicher: ein System, das verfolgt, wie Dinge zusammenhängen, erkennt, was sich verändert, und ableitet, was diese Veränderung als Nächstes berührt.',
+    intro: 'DINGIR (Dynamic Interaction Network & Graph Intelligence Runtime) verbindet historische und Echtzeit-Beobachtungen aus über 20 Domänen zu einem lebendigen, kausal strukturierten Weltgraphen. Kein reiner Datenspeicher: ein System, das verfolgt, wie Dinge zusammenhängen, erkennt, was sich verändert, und ableitet, was diese Veränderung als Nächstes berührt.',
     exploreCta: 'Erkunden', apiCta: 'API-Zugang anfragen',
     liveStatus: 'Live-System aktiv',
     liveStatusFallback: 'Beispieldaten (Live-Feed nicht erreichbar)',
