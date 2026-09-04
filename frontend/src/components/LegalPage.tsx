@@ -8,6 +8,7 @@ const A = { color: 'var(--accent-text)', textDecoration: 'none' }
 import React, { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLocale } from '../hooks/useLocale'
+import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd } from '../lib/structuredData'
 
 const LIGHTHOUSE_PIXEL = '/api/track/pixel.gif'
 const LIGHTHOUSE_TRACK = '/api/track'
@@ -137,8 +138,26 @@ export function LegalPage({ slug }: { slug: string }) {
   useEffect(() => {
     const meta = META[slug]
     if (!meta) return
-    document.title = (locale === 'de' && meta.titleDe) ? meta.titleDe : meta.title
-    document.querySelector('meta[name="description"]')?.setAttribute('content', (locale === 'de' && meta.descriptionDe) ? meta.descriptionDe : meta.description)
+    const title = (locale === 'de' && meta.titleDe) ? meta.titleDe : meta.title
+    const description = (locale === 'de' && meta.descriptionDe) ? meta.descriptionDe : meta.description
+    document.title = title
+    document.querySelector('meta[name="description"]')?.setAttribute('content', description)
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', title)
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', description)
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', title)
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description)
+
+    const quicklink = LEGAL_QUICKLINKS.find(q => q.slug === slug)
+    if (quicklink) {
+      upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(locale === 'de' ? quicklink.labelDe : quicklink.labelEn, `/${slug}`))
+    }
+    // The 20 real Q&A pairs below are the only ones that exist for this site - not
+    // a sample, the actual FAQPage content a crawler landing on /faq would see.
+    if (slug === 'faq') {
+      upsertJsonLd('ld-faqpage', faqPageJsonLd(FAQ_ITEMS.map(([q, qDe, a, aDe]) => locale === 'de' ? [qDe, aDe] : [q, a])))
+    } else {
+      document.getElementById('ld-faqpage')?.remove()
+    }
   }, [slug, locale])
 
   // Same privacy-safe mechanism as the main site's section tracker: an in-memory-only

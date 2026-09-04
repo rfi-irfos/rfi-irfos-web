@@ -18,6 +18,7 @@ import { SubmitSection, type TipForm } from './sections/Submit'
 import { ZONE_ORDER, ZONE_LABELS, SYSTEMS } from '../content/systems'
 import { SystemCardModal } from './sections/SystemCardModal'
 import { RFI_REPOS, SIMEON_REPOS, CRATES, CRATES_IO_PROFILE } from '../content/repos'
+import { upsertJsonLd, breadcrumbJsonLd } from '../lib/structuredData'
 
 // Footer's overflow repo/crate directory (2026-08-15) is rendered as literal
 // grid-column chunks, not CSS column-count, so it lines up as flat siblings
@@ -200,11 +201,19 @@ function viewForSection(section?: string | null): PublicView {
 // Company group - see the removed `<section id="team">` in this file.
 // Hrefs only - labels come from the current locale's content object (t.nav.links)
 // since NAV_LINKS itself sits above PublicSite() and can't call useLocale().
+// Real absolute paths, not '#'-only in-page anchors (found 2026-09-05 via a
+// discovery/crawlability sweep: an <a href="#world-model"> is invisible to a
+// crawler's link graph inside a client-rendered SPA, so /world-model, /evidence,
+// /data-solutions, /access were only ever discoverable via the sitemap, never via
+// an actual internal link from the homepage - the single strongest orphaned-page
+// class the sweep found). The onClick below still calls preventDefault + does the
+// real client-side view switch, so this changes nothing about how a real click
+// behaves - it only changes what a non-JS crawler parses out of the raw href.
 const NAV_HREFS = [
-  { key: 'worldModel' as const, href: '#world-model' },
-  { key: 'dataSolutions' as const, href: '#data-solutions' },
-  { key: 'trackRecord' as const, href: '#evidence' },
-  { key: 'pricing' as const, href: '#access' },
+  { key: 'worldModel' as const, href: '/world-model/' },
+  { key: 'dataSolutions' as const, href: '/data-solutions/' },
+  { key: 'trackRecord' as const, href: '/evidence/' },
+  { key: 'pricing' as const, href: '/access/' },
 ]
 
 // Section-specific <title>/meta description for visitors (and crawlers) landing
@@ -226,6 +235,19 @@ function sectionMeta(t: Content, section: string) {
   }
 }
 
+// Breadcrumb label + canonical path per real distinct view - keyed by `view`
+// (already the canonical/alias-collapsed value from viewForSection) rather than by
+// the raw initialSection slug, so /track-record, /datasets, /pricing land on the
+// exact same breadcrumb as /evidence, /data-solutions, /access respectively. No
+// entry for 'home': /research and /submit canonicalize to / (see prerender.mjs's
+// CANONICAL_ALIAS), and a Home > Home breadcrumb has nothing to say.
+const BREADCRUMB_BY_VIEW: Partial<Record<PublicView, { navKey: keyof Content['nav']['links']; path: string }>> = {
+  'world-model': { navKey: 'worldModel', path: '/world-model' },
+  'evidence': { navKey: 'trackRecord', path: '/evidence' },
+  'data-solutions': { navKey: 'dataSolutions', path: '/data-solutions' },
+  'access': { navKey: 'pricing', path: '/access' },
+}
+
 export function PublicSite({ initialSection }: { initialSection?: string | null } = {}) {
   const { locale, setLocale, t } = useLocale()
   const NAV_LINKS = NAV_HREFS.map(n => ({ label: t.nav.links[n.key], href: n.href }))
@@ -239,7 +261,17 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     if (meta) {
       document.title = meta.title
       document.querySelector('meta[name="description"]')?.setAttribute('content', meta.description)
+      // og:*/twitter:* never had their own per-route update (only document.title
+      // and meta[name=description] did) - every non-home route's prerendered
+      // output shipped the homepage's og:title/og:description regardless of
+      // which page a link actually pointed at.
+      document.querySelector('meta[property="og:title"]')?.setAttribute('content', meta.title)
+      document.querySelector('meta[property="og:description"]')?.setAttribute('content', meta.description)
+      document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', meta.title)
+      document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', meta.description)
     }
+    const crumb = BREADCRUMB_BY_VIEW[viewForSection(initialSection)]
+    if (crumb) upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(t.nav.links[crumb.navKey], crumb.path))
     if (initialSection === 'submit') {
       requestAnimationFrame(() => document.getElementById('submit')?.scrollIntoView({ block: 'start' }))
     }
@@ -247,7 +279,10 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   }, [])
 
   function navigateTo(href: string) {
-    const target = href.slice(1)
+    // NAV_HREFS now passes real paths ('/world-model/'), while the two Submit
+    // call sites below still pass the literal '#submit' - strip either form down
+    // to the bare slug rather than assuming one fixed prefix.
+    const target = href.replace(/^#|^\/|\/$/g, '')
     if (target === 'submit') {
       setView('home')
       window.history.replaceState(null, '', '#submit')

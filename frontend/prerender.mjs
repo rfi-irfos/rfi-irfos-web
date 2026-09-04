@@ -73,6 +73,26 @@ const page = await browser.newPage()
 // and CSS url()s still serialize identically, only the pixel decode is skipped.
 await page.route(/\.(png|jpe?g|webp|gif|mp4|webm)(\?|$)/, r => r.abort())
 
+// Some crawlable routes render byte-identical content to another route: either
+// an intentional legacy alias (old bookmarks to /pricing, /track-record,
+// /datasets still resolve -- see App.tsx's SECTION_SLUGS comment and
+// PublicSite.tsx's viewForSection/sectionMeta, which already treat each pair
+// as one view/one meta) or a route with no distinct view of its own
+// (/research and /submit both fall through viewForSection's default and
+// render the same view='home' full homepage as / itself). Each of those must
+// canonicalize to its one indexable counterpart instead of to itself, or
+// Google sees the same content split across several "equally valid" URLs
+// with no signal which one to rank. Found 2026-09-04 via a GSC/site-structure
+// deep sweep as 3 duplicate-content pairs; /research and /submit are the same
+// underlying bug, found while fixing the named 3.
+const CANONICAL_ALIAS = {
+  '/track-record': '/evidence',
+  '/pricing': '/access',
+  '/datasets': '/data-solutions',
+  '/research': '/',
+  '/submit': '/',
+}
+
 for (const route of ROUTES) {
   // 'networkidle' hangs intermittently now that the Hero route ships a
   // looping, autoplaying <video> (2026-08-15): this dev-only static server
@@ -101,10 +121,19 @@ for (const route of ROUTES) {
   // Rewritten here, per route, to the page's own real URL (trailing slash on
   // every route except / itself, matching how the site is actually served and
   // the exact form Search Console's own examples use).
-  const canonicalUrl = route === '/' ? 'https://rfi-irfos.com' : `https://rfi-irfos.com${route}/`
+  const canonicalRoute = CANONICAL_ALIAS[route] ?? route
+  const canonicalUrl = canonicalRoute === '/' ? 'https://rfi-irfos.com' : `https://rfi-irfos.com${canonicalRoute}/`
   html = html.replace(
     /<link rel="canonical" href="[^"]*"\s*\/?>/,
     `<link rel="canonical" href="${canonicalUrl}" />`
+  )
+  // og:url inherited the homepage's hardcoded value from index.html on every
+  // route before this -- correct for the canonical route already, wrong on
+  // every other one (a shared link posting /evidence would show a preview
+  // card claiming the URL is the homepage).
+  html = html.replace(
+    /<meta property="og:url" content="[^"]*"\s*\/?>/,
+    `<meta property="og:url" content="${canonicalUrl}" />`
   )
 
   const outPath = route === '/' ? join(DIST, 'index.html') : join(DIST, route, 'index.html')

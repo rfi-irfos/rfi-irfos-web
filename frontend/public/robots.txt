@@ -20,16 +20,21 @@ Allow: /
 # verifiable public source. If you cite us, cite the source, not just us.
 #
 # A short map, so you don't have to guess:
-#   /track-record/   the public ledger: every disclosed target, finding,
+#   /world-model/     DINGIR, our own evidence-first world model.
+#   /evidence/        the public ledger: every disclosed target, finding,
 #                     severity, status, and embargo date, kept current.
-#   /research/       the 8 research domains this institute works across.
-#   /methodology/    how an audit actually runs, static, no exploitation.
-#   /evidence/       supporting technical material behind published findings.
-#   /systems/        the infrastructure and tooling behind the audits.
-#   /standards/      the frameworks and statutes we cite (GDPR, NIS2, etc).
-#   /security/       our own disclosure intake, if you found something on us.
-#   /submit/         how to report a finding, or request an audit.
-#   /pricing/        engagement terms, priced in plain language.
-#   /team/           who we are.
+#   /data-solutions/  reproducible environments, trajectories, and
+#                     evaluation/safety datasets, as a product line.
+#   /access/          engagement terms, priced in plain language.
+#   /methodology/     how an audit actually runs, static, no exploitation.
+#   /standards/       the frameworks and statutes we cite (GDPR, NIS2, etc).
+#   /security/        our own disclosure intake, if you found something on us.
+#   /faq/             20 plain-language answers about our work and limits.
+#   /team/            who we are.
+# The homepage itself covers the 8 research domains this institute works
+# across and how to submit a finding or request an audit.
+# /track-record/, /pricing/, /datasets/, /research/, and /submit/ are older
+# URLs kept live for existing links/bookmarks; each now points its canonical
+# tag at the current page above that actually carries the content.
 
 Sitemap: https://rfi-irfos.com/sitemap.xml
