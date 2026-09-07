@@ -8,7 +8,7 @@
 // out of sync across two pages) and does NOT show a "recent signals" feed with
 // fictional company names (the original mockup's placeholder data).
 import { useState, type CSSProperties, type FormEvent } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
   IconTrendingUp, IconCoin, IconGitCompare, IconCircleCheck, IconSearch, IconShieldLock,
   IconDatabase, IconPlug, IconTerminal2, IconLayoutDashboard, IconRobot, IconWorld,
@@ -151,21 +151,20 @@ function SquadOverview({
           )}
 
           <div className="sq-spec-sheet wm-card">
-            {/* Crossfade on agent switch instead of an instant content swap (live
-                feedback 2026-09-07). mode="wait" so the outgoing agent finishes
-                clearing before the next one arrives - with both fading at once
-                the two sets of bullets briefly overlap and read as garbled. Kept
-                short (0.14s out, 0.2s in) so switching still feels responsive.
-                The head/description/columns share one key so they move together;
-                the trust badges and CTA below are identical for every agent and
-                deliberately stay put rather than flickering on each switch. */}
-            <AnimatePresence mode="wait" initial={false}>
+            {/* Fade the new agent in on key change, deliberately WITHOUT
+                AnimatePresence. The first cut used AnimatePresence mode="wait",
+                which only mounts the incoming child once the outgoing one
+                reports its exit animation complete - that callback never fired
+                here, so the sheet froze on ATLAS while the sidebar highlight
+                moved (caught by measuring: sidebar active index 3, sheet still
+                showing ATLAS, on a hard reload). Keying a plain motion.div lets
+                React swap the subtree immediately and the new content fades in,
+                which is smooth and cannot deadlock on an exit callback. */}
               <motion.div
                 key={selectedKey}
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.2, ease: 'easeOut', exit: { duration: 0.14 } }}
+                transition={{ duration: 0.22, ease: 'easeOut' }}
               >
                 <div className="sq-spec-head">
                   <SelectedIcon size={22} color={selected.color} />
@@ -188,7 +187,6 @@ function SquadOverview({
                   </div>
                 </div>
               </motion.div>
-            </AnimatePresence>
             {/* Fixed trust badges, same three regardless of which agent is selected
                 (not per-agent content like the three columns above) - live feedback:
                 three green checkmarks right above the CTA, separate from the "You
