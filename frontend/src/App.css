@@ -721,7 +721,12 @@ button { cursor: pointer; font-family: inherit; }
    six stay in one row, the size bump is font/padding/icon only, not fewer
    columns). */
 .sq-cards-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; align-items: stretch; }
-.sq-card { height: 100%; padding: 22px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 9px; border-color: color-mix(in srgb, var(--card-color, var(--border)) 45%, var(--wm-border)); transition: border-color .2s, box-shadow .2s, transform .2s; }
+/* Neutral border at rest, agent colour only on hover (live feedback 2026-09-07:
+   "render the colors around those boxes only after we actually hover on them,
+   else only the symbols have those colors") - six differently-tinted borders
+   sitting side by side read as noise; the icon alone carries the colour cue
+   until the row is actually being interacted with. */
+.sq-card { height: 100%; padding: 22px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 9px; border-color: var(--wm-border); transition: border-color .2s, box-shadow .2s, transform .2s; }
 .sq-card:hover { border-color: var(--card-color, var(--accent)); box-shadow: 0 0 0 1px color-mix(in srgb, var(--card-color, var(--accent)) 50%, transparent), 0 8px 28px color-mix(in srgb, var(--card-color, var(--accent)) 18%, transparent); transform: translateY(-2px); }
 /* Plain text colour (was inline per-agent hue on both the heading and the
    tags below) - live feedback: "zu farbig", only the icon stays coloured per
