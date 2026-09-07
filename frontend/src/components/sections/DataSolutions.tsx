@@ -16,6 +16,7 @@ const COPY = {
   en: {
     eyebrow: 'Data Solutions', title: 'production, data and agents that have to work',
     intro: 'The same discipline behind our systems and public evidence, delivered as data and infrastructure: a data warehouse, reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Our Rust and Axum services connect through a SQL bridge to ternary-logic pipelines. Your corpus stays private. Every delivered artefact stays traceable.',
+    datasetsEyebrow: 'Datasets', datasetsTitle: 'What we already hold',
     datasets: [
       ['Mobile application behavior\ndatasets', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],
       ['SDK & tracker knowledge\ngraphs', 'Reusable SDKs, tracker relationships, infrastructure, and cross-application recurrence mapped as connected evidence.'],
@@ -65,6 +66,7 @@ const COPY = {
   de: {
     eyebrow: 'Data Solutions', title: 'Produktion, Daten und Agenten, die wirklich arbeiten müssen',
     intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten und Infrastruktur geliefert: ein Data Warehouse, reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Unsere Rust- und Axum-Services verbinden sich über eine produktive SQL-Brücke mit ternären Logik-Pipelines. Ihr Korpus bleibt privat. Jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
+    datasetsEyebrow: 'Datensätze', datasetsTitle: 'Was wir bereits vorhalten',
     datasets: [
       ['Verhalten mobiler Anwendungen', 'Quellcodebasiertes App-Verhalten, Berechtigungen, Endpunkte, Consent-Timing und beobachtete Datenflüsse.'],
       ['SDK- & Tracker-\nWissensgraphen', 'Wiederkehrende SDKs, Tracker-Beziehungen, Infrastruktur und App-übergreifende Zusammenhänge als verbundene Evidenz.'],
@@ -133,6 +135,11 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
     </header>
 
     <section className="data-section data-datasets"><div className="data-wrap">
+      {/* This was the one section on the page with no heading at all, while every
+          other one carries an eyebrow + h2. That made it both visually inconsistent
+          with its siblings and an accessibility problem: the page jumped straight
+          from h1 to the h3 card titles, skipping h2 entirely (measured 2026-09-07). */}
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.datasetsEyebrow}</p><h2>{c.datasetsTitle}</h2></div></Reveal>
       <div className="data-dataset-grid" style={HUE_DATASETS}>{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_DATASETS}><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article> })}</div>
     </div></section>
 
