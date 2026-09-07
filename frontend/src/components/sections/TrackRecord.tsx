@@ -2753,7 +2753,7 @@ export function TrackRecordSection({
             renders on the evidence view, never on the homepage, so there is no
             competing h1. Sized one step above the h2s below it to make the
             hierarchy visible, not just semantic. */}
-        <h1 style={{ fontSize: 36, fontWeight: 900, marginBottom: 12 }}>{t.trackRecord.heading}</h1>
+        <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.trackRecord.heading}</h1>
         {/* Solid backing added 2026-08-06 (spine feedback): this paragraph sits
             directly on the page background with nothing behind it, and its
             720px max-width crosses the page's horizontal center where the

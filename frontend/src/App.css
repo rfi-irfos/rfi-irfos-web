@@ -55,7 +55,7 @@ button { cursor: pointer; font-family: inherit; }
 .rfi-faq { padding: 88px var(--sec-pad-x) 96px; background: transparent; }
 .rfi-faq-inner { max-width: 820px; margin: 0 auto; }
 .rfi-faq .data-eyebrow { display: none; }
-.rfi-faq h2 { margin: 0 0 30px; text-align: center; font-size: 32px; font-weight: 900; }
+.rfi-faq h2 { margin: 0 0 30px; text-align: center; }
 .rfi-faq-list { border-top: 1px solid var(--border); }
 .rfi-faq-item { border-bottom: 1px solid var(--border); }
 .rfi-faq-item summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 2px; color: var(--text); font-size: 16px; font-weight: 700; }
@@ -107,11 +107,11 @@ button { cursor: pointer; font-family: inherit; }
 .data-wrap { width: min(1320px, calc(100% - 2 * var(--sec-pad-x))); margin-inline: auto; }
 .data-hero { padding-block: 56px 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 .data-eyebrow { margin: 0 0 12px; color: var(--text3); font: 700 11px/1.3 'JetBrains Mono', monospace; letter-spacing: .2em; text-transform: uppercase; text-align: center; }
-/* h1 split out one step above the h2s (was all three at an identical 32px, so
-   the page had no visible heading hierarchy at all - UX audit 2026-09-07).
-   36px matches the page-level h1 on /evidence/ and /access/. */
-.data-hero h1 { margin: 0; font-size: 36px; font-weight: 900; line-height: 1.12; text-align: center; }
-.data-section h2, .data-experts h2 { margin: 0; font-size: 32px; font-weight: 900; line-height: 1.12; text-align: center; }
+/* h1 no longer shares a rule with the h2s below it (all three sat at an
+   identical 32px, so the page had no visible heading hierarchy at all).
+   Size now comes from the canonical page-h1 rule above. */
+.data-hero h1 { margin: 0; text-align: center; }
+.data-section h2, .data-experts h2 { margin: 0; text-align: center; }
 .data-lede { max-width: 680px; margin: 16px auto 0; color: var(--text2); font-size: 17px; line-height: 1.6; }
 .data-cta { margin-top: 28px; padding: 13px 21px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: var(--on-primary, #07110e); font-family: 'Archivo', system-ui, sans-serif; font-size: 14px; line-height: 1; font-weight: 800; letter-spacing: 0; cursor: pointer; box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 18%, transparent); transition: transform .2s, box-shadow .2s; }
 .data-cta:hover { transform: translateY(-2px); box-shadow: 0 0 34px color-mix(in srgb, var(--accent) 30%, transparent); }
@@ -254,8 +254,22 @@ button { cursor: pointer; font-family: inherit; }
    nothing - the fix was never the number, it was the order. */
 .wm-section--last { padding-bottom: 96px; }
 .wm-section-head { max-width: 680px; margin: 0 auto 16px; text-align: center; }
-.wm-section-head h2 { margin: 0; font-size: 28px; font-weight: 900; line-height: 1.15; }
-.wm-section-head p { margin: 10px auto 0; color: var(--text2); font-size: 16px; line-height: 1.6; }
+/* CANONICAL SECTION-LEVEL H2. Same rule as the page-h1 above: one declaration
+   for every section title on the site. Measured 2026-09-07 on the rendered DOM,
+   these had split into two families - 32px on Home/Data Solutions/Evidence/
+   Access/FAQ and 28px on World Model/Squad - purely because the wm- family
+   declared its own size. Add new section titles to this selector list or give
+   them .rfi-section-h2; do not re-declare a font-size per section. */
+.rfi-section-h2, .wm-section-head h2, .data-section h2, .data-experts h2, .rfi-faq h2 { font-size: 32px; font-weight: 900; line-height: 1.15; }
+
+.wm-section-head h2 { margin: 0; }
+/* `> p:last-child`, not a bare `p` (fixed 2026-09-07, found by measuring the
+   rendered DOM rather than reading the CSS): a bare `.wm-section-head p` is
+   specificity 0,1,1 and beat `.wm-eyebrow`'s 0,1,0, so every eyebrow sitting
+   inside a section head silently rendered at 16px instead of its declared
+   11px. `.data-section-head` already used this narrower selector, which is
+   exactly why `.data-eyebrow` measured correctly and this one did not. */
+.wm-section-head > p:last-child { margin: 10px auto 0; color: var(--text2); font-size: 16px; line-height: 1.6; }
 
 /* 1fr 1.22fr (was 1fr 1fr, bumped 2026-09-01 "hero sogar noch ein bisschen
    grösser machen, ohne den rest zu sehr bewegen") - the copy column's own
@@ -265,7 +279,16 @@ button { cursor: pointer; font-family: inherit; }
    hero visual should be as large as the Squad one, which reads better) - the
    two pages' heroes are the same shape, so they should not be sized differently. */
 .wm-hero { padding-block: 24px 10px; display: grid; grid-template-columns: 0.85fr 1.35fr; gap: 40px; align-items: center; }
-.wm-hero h1 { margin: 10px 0 16px; font-size: 34px; font-weight: 900; line-height: 1.12; }
+/* CANONICAL PAGE-LEVEL H1. One rule for every top-level page heading on the
+   site. Before 2026-09-07 these had drifted to five different values across
+   five pages (Squad 44, Data Solutions 36, Evidence 36, Access 36, World
+   Model 34) because each page declared its own size independently - the UX
+   audit flagged it only as "4 page-hero implementations", with no numbers,
+   so it survived a consistency pass. Add new page headings to THIS selector
+   list or give them .rfi-page-h1; do not re-declare a font-size per page. */
+.sq-heading, .wm-hero h1, .data-hero h1, .rfi-page-h1 { font-size: 44px; font-weight: 900; line-height: 1.1; }
+
+.wm-hero h1 { margin: 10px 0 16px; }
 .wm-hero-copy p { max-width: 480px; color: var(--text2); font-size: 16px; line-height: 1.65; margin: 0 0 24px; }
 .wm-hero-ctas { display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
 .wm-btn-primary { padding: 13px 22px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: var(--on-primary, #07110e); font-family: 'Archivo', system-ui, sans-serif; font-size: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 18%, transparent); transition: transform .2s, box-shadow .2s; }
@@ -561,7 +584,7 @@ button { cursor: pointer; font-family: inherit; }
    physically bigger, "mehr reingehn", not just keep the 2:1 ratio in a
    small box. */
 .sq-hero-grid { display: grid; grid-template-columns: 0.85fr 1.35fr; gap: 48px; align-items: center; }
-.sq-heading { margin: 0 0 12px; font-size: 44px; font-weight: 900; line-height: 1.05; }
+.sq-heading { margin: 0 0 12px; }
 .sq-subheading { margin: 0 0 14px; font-size: 19px; color: var(--text); font-weight: 700; }
 .sq-intro { margin: 0 0 10px; max-width: 480px; color: var(--text2); line-height: 1.6; }
 .sq-worldmodel-link { display: inline-block; margin-bottom: 22px; color: var(--accent-text); font-size: 13px; font-weight: 700; text-decoration: none; }

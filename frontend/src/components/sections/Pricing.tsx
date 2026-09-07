@@ -171,7 +171,7 @@ export function PricingSection({
           {/* h1, not h2 - same CRITICAL audit finding as TrackRecord.tsx: /access/
               rendered zero h1 elements. This section only renders on the access
               view, so there is no competing h1 on the homepage. */}
-          <h1 style={{ fontSize: 36, fontWeight: 900, marginBottom: 12 }}>{t.pricing.heading}</h1>
+          <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.pricing.heading}</h1>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
             {t.pricing.subheading}
           </p>

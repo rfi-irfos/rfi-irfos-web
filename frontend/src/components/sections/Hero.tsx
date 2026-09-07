@@ -290,10 +290,15 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       {/* color fixed here too (not inherited var(--text)) - same always-dark-hero
           reasoning as the identity bar/KPIs below: light theme's near-black
           default text went illegible once the hero stopped following theme. */}
-      <p className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32, color: '#e8e8f0' }}>
+      {/* h1, not p (fixed 2026-09-07): the homepage rendered ZERO h1 elements, so
+          the site's most important page had no top-level landmark at all. Caught
+          by measuring the live DOM - the UX audit had only flagged /evidence/ and
+          /access/ and missed this one. Every size/weight/margin here is set
+          inline, so the tag change is purely semantic. */}
+      <h1 className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32, color: '#e8e8f0' }}>
         <HeroFlipWord word="Rethink" delay={0.2} />{' '}
         <RevealWords text="the Obvious." delayStart={0.36} emphasizeIndices={[1]} />
-      </p>
+      </h1>
       {/* Mount-triggered fly-in, not the scroll-linked `Reveal` (used elsewhere below
           the fold) - Reveal drives its animation off scroll progress through the
           viewport, so content already in view at page load (everything in the Hero)

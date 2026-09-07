@@ -435,7 +435,7 @@ export function ResearchSection() {
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal>
           <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.research.eyebrow}</p>
-          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12, textAlign: 'center' }}>{t.research.heading}</h2>
+          <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center' }}>{t.research.heading}</h2>
         </Reveal>
         <Reveal delay={1}>
           <p style={{ color: 'var(--text2)', fontSize: 17, marginBottom: 56, maxWidth: 560, textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
