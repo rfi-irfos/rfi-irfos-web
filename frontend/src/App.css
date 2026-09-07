@@ -631,7 +631,12 @@ button { cursor: pointer; font-family: inherit; }
 .sq-chip { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--wm-surface); color: var(--text); font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; }
 .sq-chip--active { background: color-mix(in srgb, var(--accent) 12%, var(--wm-surface)); }
 
-.sq-agent-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+/* space-between so the eight rows spread across the full column height. The
+   list already stretches to match the spec sheet beside it, but its rows
+   stacked from the top, so once the sheet grew to eight bullets per column the
+   leftover height showed as dead space in the frame's bottom-left corner
+   (live feedback 2026-09-07). Same treatment as .sq-spec-panel ul. */
+.sq-agent-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; }
 .sq-agent-row { width: 100%; display: flex; align-items: center; gap: 12px; padding: 13px 15px; border-radius: 10px; border: 1px solid var(--border); background: var(--wm-surface); cursor: pointer; text-align: left; transition: border-color .2s, background .2s, transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
 .sq-agent-row:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); transform: translateX(2px); }
 .sq-agent-row--active { background: color-mix(in srgb, var(--accent) 8%, var(--wm-surface)); box-shadow: 0 0 0 1px var(--row-color, var(--accent)), 0 4px 16px rgba(0,0,0,0.3); }
@@ -660,9 +665,15 @@ button { cursor: pointer; font-family: inherit; }
 /* h4 is now just a centering wrapper - the visible pill styling moved onto the
    .sq-tag--column span inside it (live feedback: wrap MONITORS/DETECTS/YOU GET
    in a silver pill like the agent tags, for the same visual language). */
-.sq-spec-panel h4 { margin: 0 0 10px; text-align: center; }
-.sq-tag--column { font-size: 12.5px; padding: 5px 15px; }
-.sq-spec-panel ul { margin: 0; padding-left: 18px; color: var(--text); font-size: 14px; line-height: 1.75; }
+.sq-spec-panel h4 { margin: 0 0 20px; text-align: center; }
+/* The list grows to fill its panel and spreads its items across that height
+   (live feedback 2026-09-07: "no empty spaces in those three tables"). All three
+   panels are the same height via the grid's stretch, but the columns wrap to
+   different line counts, so without this the two shorter ones left visible dead
+   space at the bottom. display: list-item on the li keeps the bullet markers,
+   which a plain flex container would otherwise drop. */
+.sq-spec-panel ul { margin: 0; padding-left: 18px; color: var(--text); font-size: 14px; line-height: 1.6; flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 6px; }
+.sq-spec-panel ul li { display: list-item; }
 /* Fixed trust-badge row above the Request Access button, same three for every
    agent (not per-agent content) - green checkmarks, distinct from the three
    bulleted columns above it. */
@@ -738,6 +749,13 @@ button { cursor: pointer; font-family: inherit; }
    - live feedback: the mixed colours "passen nicht sauber rein", one neutral tone
    reads as a consistent tag system regardless of which agents a card names. */
 .sq-tag { padding: 2px 7px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--text3) 55%, transparent); color: var(--text3); font-size: 9.5px; font-weight: 800; letter-spacing: .02em; }
+/* MUST stay after .sq-tag: both are single-class selectors, so the modifier only
+   wins on source order. It sat above the base rule at first and was silently
+   overridden - the column badges kept rendering at .sq-tag's 9.5px muted grey.
+   Bigger and full-strength text here (live feedback: "lets make the writing
+   inside the silver badges white font, or black in whitemode, and bigger too");
+   var(--text) resolves white in dark/hc and near-black in light. */
+.sq-tag--column { font-size: 14px; padding: 6px 18px; color: var(--text); }
 .sq-link-btn { background: none; border: none; padding: 0; margin-top: 4px; color: var(--accent-text); font-size: 12.5px; font-weight: 700; cursor: pointer; }
 .sq-link-btn:hover { text-decoration: underline; }
 

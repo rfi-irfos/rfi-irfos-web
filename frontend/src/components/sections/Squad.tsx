@@ -8,6 +8,7 @@
 // out of sync across two pages) and does NOT show a "recent signals" feed with
 // fictional company names (the original mockup's placeholder data).
 import { useState, type CSSProperties, type FormEvent } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   IconTrendingUp, IconCoin, IconGitCompare, IconCircleCheck, IconSearch, IconShieldLock,
   IconDatabase, IconPlug, IconTerminal2, IconLayoutDashboard, IconRobot, IconWorld,
@@ -150,26 +151,44 @@ function SquadOverview({
           )}
 
           <div className="sq-spec-sheet wm-card">
-            <div className="sq-spec-head">
-              <SelectedIcon size={22} color={selected.color} />
-              <h3>{selected.name}</h3>
-              <span className="sq-pill" style={{ borderColor: selected.color, color: selected.color }}>{s.statusLine}</span>
-            </div>
-            <p className="sq-spec-desc">{content.description}</p>
-            <div className="sq-spec-stack">
-              <div className="sq-spec-panel">
-                <h4><span className="sq-tag sq-tag--column">{s.overview.columns.monitors}</span></h4>
-                <ul>{content.monitors.map(m => <li key={m}>{m}</li>)}</ul>
-              </div>
-              <div className="sq-spec-panel">
-                <h4><span className="sq-tag sq-tag--column">{s.overview.columns.detects}</span></h4>
-                <ul>{content.detects.map(d => <li key={d}>{d}</li>)}</ul>
-              </div>
-              <div className="sq-spec-panel">
-                <h4><span className="sq-tag sq-tag--column">{s.overview.columns.output}</span></h4>
-                <ul>{content.output.map(o => <li key={o}>{o}</li>)}</ul>
-              </div>
-            </div>
+            {/* Crossfade on agent switch instead of an instant content swap (live
+                feedback 2026-09-07). mode="wait" so the outgoing agent finishes
+                clearing before the next one arrives - with both fading at once
+                the two sets of bullets briefly overlap and read as garbled. Kept
+                short (0.14s out, 0.2s in) so switching still feels responsive.
+                The head/description/columns share one key so they move together;
+                the trust badges and CTA below are identical for every agent and
+                deliberately stay put rather than flickering on each switch. */}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={selectedKey}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2, ease: 'easeOut', exit: { duration: 0.14 } }}
+              >
+                <div className="sq-spec-head">
+                  <SelectedIcon size={22} color={selected.color} />
+                  <h3>{selected.name}</h3>
+                  <span className="sq-pill" style={{ borderColor: selected.color, color: selected.color }}>{s.statusLine}</span>
+                </div>
+                <p className="sq-spec-desc">{content.description}</p>
+                <div className="sq-spec-stack">
+                  <div className="sq-spec-panel">
+                    <h4><span className="sq-tag sq-tag--column">{s.overview.columns.monitors}</span></h4>
+                    <ul>{content.monitors.map(m => <li key={m}>{m}</li>)}</ul>
+                  </div>
+                  <div className="sq-spec-panel">
+                    <h4><span className="sq-tag sq-tag--column">{s.overview.columns.detects}</span></h4>
+                    <ul>{content.detects.map(d => <li key={d}>{d}</li>)}</ul>
+                  </div>
+                  <div className="sq-spec-panel">
+                    <h4><span className="sq-tag sq-tag--column">{s.overview.columns.output}</span></h4>
+                    <ul>{content.output.map(o => <li key={o}>{o}</li>)}</ul>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
             {/* Fixed trust badges, same three regardless of which agent is selected
                 (not per-agent content like the three columns above) - live feedback:
                 three green checkmarks right above the CTA, separate from the "You
