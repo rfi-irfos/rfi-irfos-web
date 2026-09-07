@@ -16,7 +16,7 @@ const LEGAL_SLUGS = ['impressum', 'datenschutz', 'agb', 'security', 'standards',
 // Evidence / Access views. 'systems'/'projects' dropped from primary nav
 // (live feedback 2026-08-31: redundant with the footer's own repo directory) -
 // old bookmarks to those URLs still resolve gracefully, just to the homepage.
-const SECTION_SLUGS = ['world-model', 'evidence', 'data-solutions', 'datasets', 'access', 'submit', 'research', 'track-record', 'pricing']
+const SECTION_SLUGS = ['world-model', 'squad', 'evidence', 'data-solutions', 'datasets', 'access', 'submit', 'research', 'track-record', 'pricing']
 
 function pathSlug() {
   return window.location.pathname.replace(/^\/|\/$/g, '')

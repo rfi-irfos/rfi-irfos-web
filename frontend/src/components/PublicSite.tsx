@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
 import type { Content } from '../content/en'
@@ -10,6 +11,7 @@ import { ProofSection } from './sections/Proof'
 import { ScrollSpine } from './sections/Spine'
 import { AppPrivacySection } from './sections/AppPrivacy'
 import { WorldModelSection } from './sections/WorldModel'
+import { SquadSection } from './sections/Squad'
 import { PricingSection } from './sections/Pricing'
 import { JourneySection } from './sections/Journey'
 import { DataSolutionsSection } from './sections/DataSolutions'
@@ -184,10 +186,11 @@ function ThemeIcon({ t }: { t: 'light' | 'dark' | 'hc' }) {
   )
 }
 
-type PublicView = 'home' | 'world-model' | 'evidence' | 'data-solutions' | 'access'
+type PublicView = 'home' | 'world-model' | 'squad' | 'evidence' | 'data-solutions' | 'access'
 
 function viewForSection(section?: string | null): PublicView {
   if (section === 'world-model') return 'world-model'
+  if (section === 'squad') return 'squad'
   if (section === 'evidence' || section === 'track-record') return 'evidence'
   if (section === 'data-solutions' || section === 'datasets') return 'data-solutions'
   if (section === 'access' || section === 'pricing') return 'access'
@@ -211,6 +214,7 @@ function viewForSection(section?: string | null): PublicView {
 // behaves - it only changes what a non-JS crawler parses out of the raw href.
 const NAV_HREFS = [
   { key: 'worldModel' as const, href: '/world-model/' },
+  { key: 'squad' as const, href: '/squad/' },
   { key: 'dataSolutions' as const, href: '/data-solutions/' },
   { key: 'trackRecord' as const, href: '/evidence/' },
   { key: 'pricing' as const, href: '/access/' },
@@ -224,6 +228,7 @@ function sectionMeta(t: Content, section: string) {
   switch (section) {
     case 'research': return { title: `${t.research.heading} — RFI-IRFOS`, description: t.research.subheading }
     case 'world-model': return { title: `${t.worldModel.heading} — RFI-IRFOS`, description: t.worldModel.intro }
+    case 'squad': return { title: `${t.squad.heading} — RFI-IRFOS`, description: t.squad.intro }
     case 'evidence':
     case 'track-record': return { title: `${t.trackRecord.heading} — RFI-IRFOS`, description: t.trackRecord.paragraph }
     case 'data-solutions':
@@ -243,6 +248,7 @@ function sectionMeta(t: Content, section: string) {
 // CANONICAL_ALIAS), and a Home > Home breadcrumb has nothing to say.
 const BREADCRUMB_BY_VIEW: Partial<Record<PublicView, { navKey: keyof Content['nav']['links']; path: string }>> = {
   'world-model': { navKey: 'worldModel', path: '/world-model' },
+  'squad': { navKey: 'squad', path: '/squad' },
   'evidence': { navKey: 'trackRecord', path: '/evidence' },
   'data-solutions': { navKey: 'dataSolutions', path: '/data-solutions' },
   'access': { navKey: 'pricing', path: '/access' },
@@ -1164,19 +1170,50 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               Hero.tsx) - so a fixed light color while unscrolled, falling back to
               the normal theme-following color once `scrolled` puts a solid
               theme-colored bar behind it, keeps these readable without a pill. */}
-          {NAV_LINKS.map(n => (
+          {NAV_LINKS.map(n => {
+            // n.href is a real path like "/world-model/" (both leading AND
+            // trailing slash, see NAV_HREFS comment above) - slice(1) alone
+            // left the trailing slash in place, so viewForSection() never
+            // matched any of its exact-string checks and silently fell
+            // through to 'home' for every link. That's what made every nav
+            // item light up together on 'home' and none light up anywhere
+            // else - fixed by stripping both slashes.
+            const isActive = viewForSection(n.href.slice(1, -1)) === view
+            return (
             <a key={n.href} href={n.href} style={{
-              color: overDarkHero ? '#a0a0b8' : 'var(--text2)', fontSize: 15, fontWeight: 600,
+              position: 'relative',
+              color: isActive ? (overDarkHero ? '#e8e8f0' : 'var(--text)') : (overDarkHero ? '#a0a0b8' : 'var(--text2)'),
+              fontSize: 15, fontWeight: 600,
               textDecoration: 'none', letterSpacing: '0.04em',
               transition: 'color 0.18s',
+              paddingBottom: 4,
             }}
               onMouseEnter={e => (e.currentTarget.style.color = overDarkHero ? '#e8e8f0' : 'var(--text)')}
-              onMouseLeave={e => (e.currentTarget.style.color = overDarkHero ? '#a0a0b8' : 'var(--text2)')}
+              onMouseLeave={e => (e.currentTarget.style.color = isActive ? (overDarkHero ? '#e8e8f0' : 'var(--text)') : (overDarkHero ? '#a0a0b8' : 'var(--text2)'))}
               onClick={e => { e.preventDefault(); navigateTo(n.href) }}
-              aria-current={viewForSection(n.href.slice(1)) === view ? 'page' : undefined}>
+              aria-current={isActive ? 'page' : undefined}>
               {n.label}
+              {/* Soft animated underline for the active nav item (live feedback:
+                  "kann man die anklicken und dann soll ne soft animierte underline
+                  drunter erscheinen... dass man sieht wo man sich grad aktiv
+                  befindet"). Shared layoutId means framer-motion animates it
+                  sliding to the new position instead of popping in fresh each
+                  time. var(--accent) so it's theme-aware, works in light mode too. */}
+              {isActive && (
+                <motion.span
+                  layoutId="nav-active-underline"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  style={{
+                    position: 'absolute', left: 0, right: 0, bottom: 0, height: 2,
+                    borderRadius: 999, background: 'var(--accent)', transformOrigin: 'left',
+                  }}
+                  transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                />
+              )}
             </a>
-          ))}
+            )
+          })}
 
           {/* Theme + Contact - same 38x38 square, same radius, sit flush together as one
               pair (their own tight-gap group, not the wide nav-link gap). Theme toggle is
@@ -1297,6 +1334,10 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
 
         {view === 'world-model' && <section id="world-model" className="rfi-view-panel">
           <WorldModelSection />
+        </section>}
+
+        {view === 'squad' && <section id="squad" className="rfi-view-panel">
+          <SquadSection />
         </section>}
 
         {view === 'evidence' && <section id="evidence" className="rfi-view-panel">

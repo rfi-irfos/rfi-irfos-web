@@ -679,7 +679,7 @@ export function EngagementFlow({ bring, mechanism, receive, large }: {
     <div style={{ display: 'flex', flexDirection: 'column', marginBottom: 16 }}>
       {groups.map((g, gi) => (
         g.paragraphs && (
-          <div key={g.label} style={{ display: 'flex', gap: mobile ? 12 : 14, paddingTop: gi > 0 ? (large ? 16 : 12) : 0, paddingBottom: large ? 16 : 12, borderTop: gi > 0 ? '1px solid rgba(255,255,255,0.08)' : undefined }}>
+          <div key={g.label} style={{ display: 'flex', gap: mobile ? 12 : 14, paddingTop: gi > 0 ? (large ? 16 : 12) : 0, paddingBottom: large ? 16 : 12, borderTop: gi > 0 ? '1px solid var(--wm-border)' : undefined }}>
             <div className="rfi-pricing-icon-box" style={{
               width: boxSize, height: boxSize, flexShrink: 0,
               color: 'var(--accent-text)',
@@ -695,17 +695,21 @@ export function EngagementFlow({ bring, mechanism, receive, large }: {
                   it describes"). */}
               <div style={{
                 fontSize: large ? 15 : 10, fontWeight: large ? 700 : 700,
-                color: large ? '#00e8d0' : 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: large ? '0.04em' : '0.12em',
+                color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: large ? '0.04em' : '0.12em',
                 marginBottom: 6,
               }}>{g.label}</div>
-              {/* Spec called for a softened rgba(235,240,240,0.78) body color here -
-                  dropped 2026-08-25, live feedback on the actual deployed card:
-                  "immer noch grau" (the research-modal grey complaint, again, this
-                  time on the pricing card). Solid near-white wins over the spec's
-                  own suggested opacity. */}
+              {/* Was hardcoded #f4f6f6/#00e8d0 for `large` (live feedback 2026-08-25:
+                  "immer noch grau" on dark, fixed by going near-white/bright-teal
+                  instead of var(--text)/var(--accent-text)) - that hardcoding is
+                  exactly why this text went invisible in light mode (found
+                  2026-09-07: near-white text on a white card). var(--text) already
+                  resolves solid/high-contrast in dark theme too, so dropping the
+                  large-specific override doesn't reopen the original "immer noch
+                  grau" complaint, it was never about the variable, it was about an
+                  actually-grey value being used at the time. */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {g.paragraphs.map((p, i) => (
-                  <p key={i} style={{ margin: 0, fontSize: large ? 13.5 : 12.5, lineHeight: large ? 1.55 : 1.5, color: large ? '#f4f6f6' : 'var(--text)' }}>{p}</p>
+                  <p key={i} style={{ margin: 0, fontSize: large ? 13.5 : 12.5, lineHeight: large ? 1.55 : 1.5, color: 'var(--text)' }}>{p}</p>
                 ))}
               </div>
             </div>

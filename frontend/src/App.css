@@ -317,7 +317,11 @@ button { cursor: pointer; font-family: inherit; }
 .data-wrap { width: min(1320px, calc(100% - 2 * var(--sec-pad-x))); margin-inline: auto; }
 .data-hero { padding-block: 56px 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 .data-eyebrow { margin: 0 0 12px; color: var(--text3); font: 700 11px/1.3 'JetBrains Mono', monospace; letter-spacing: .2em; text-transform: uppercase; text-align: center; }
-.data-hero h1, .data-section h2, .data-experts h2 { margin: 0; font-size: 32px; font-weight: 900; line-height: 1.12; text-align: center; }
+/* h1 split out one step above the h2s (was all three at an identical 32px, so
+   the page had no visible heading hierarchy at all - UX audit 2026-09-07).
+   36px matches the page-level h1 on /evidence/ and /access/. */
+.data-hero h1 { margin: 0; font-size: 36px; font-weight: 900; line-height: 1.12; text-align: center; }
+.data-section h2, .data-experts h2 { margin: 0; font-size: 32px; font-weight: 900; line-height: 1.12; text-align: center; }
 .data-lede { max-width: 680px; margin: 16px auto 0; color: var(--text2); font-size: 17px; line-height: 1.6; }
 .data-cta { margin-top: 28px; padding: 13px 21px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: var(--on-primary, #07110e); font-family: 'Archivo', system-ui, sans-serif; font-size: 14px; line-height: 1; font-weight: 800; letter-spacing: 0; cursor: pointer; box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 18%, transparent); transition: transform .2s, box-shadow .2s; }
 .data-cta:hover { transform: translateY(-2px); box-shadow: 0 0 34px color-mix(in srgb, var(--accent) 30%, transparent); }
@@ -447,13 +451,18 @@ button { cursor: pointer; font-family: inherit; }
    float in their own whitespace bubble). Vertical rhythm now lives ENTIRELY in
    this one small gap, not in each section's own padding. */
 .wm { color: var(--text); display: flex; flex-direction: column; gap: 10px; }
-/* Breathing room before the footer, added 2026-09-01 (live feedback: early-access
-   box sat right on top of the footer) - only the page's last section, not every
-   .wm-section gap, which stays at the shared 10px rhythm above. */
-.wm-section--last { padding-bottom: 96px; } /* bumped further 2026-09-01, 64px still read as touching the footer */
 .wm-wrap { width: min(1320px, calc(100% - 2 * var(--sec-pad-x))); margin-inline: auto; }
 .wm-eyebrow { margin: 0 0 12px; color: var(--text3); font: 700 11px/1.3 'JetBrains Mono', monospace; letter-spacing: .2em; text-transform: uppercase; }
 .wm-section { padding: 0; }
+/* Breathing room before the footer, added 2026-09-01 (live feedback: early-access
+   box sat right on top of the footer). MUST come after .wm-section in source
+   order (found 2026-09-07, via getComputedStyle: this rule's own padding-bottom
+   was resolving to 0px live) - both selectors tie at the same specificity, and
+   .wm-section's `padding: 0` shorthand resets all four sides, so whichever rule
+   is declared LATER wins the cascade. This rule used to sit BEFORE .wm-section
+   in the file, so every bump to its value (64px -> 96px, twice) silently did
+   nothing - the fix was never the number, it was the order. */
+.wm-section--last { padding-bottom: 96px; }
 .wm-section-head { max-width: 680px; margin: 0 auto 16px; text-align: center; }
 .wm-section-head h2 { margin: 0; font-size: 28px; font-weight: 900; line-height: 1.15; }
 .wm-section-head p { margin: 10px auto 0; color: var(--text2); font-size: 16px; line-height: 1.6; }
@@ -462,7 +471,10 @@ button { cursor: pointer; font-family: inherit; }
    grösser machen, ohne den rest zu sehr bewegen") - the copy column's own
    paragraph already caps at max-width: 480px, so giving it a narrower track
    doesn't truncate anything, it just hands the extra width to the panel. */
-.wm-hero { padding-block: 24px 10px; display: grid; grid-template-columns: 1fr 1.22fr; gap: 40px; align-items: center; }
+/* Column split matched to .sq-hero-grid (live feedback 2026-09-07: World Model's
+   hero visual should be as large as the Squad one, which reads better) - the
+   two pages' heroes are the same shape, so they should not be sized differently. */
+.wm-hero { padding-block: 24px 10px; display: grid; grid-template-columns: 0.85fr 1.35fr; gap: 40px; align-items: center; }
 .wm-hero h1 { margin: 10px 0 16px; font-size: 34px; font-weight: 900; line-height: 1.12; }
 .wm-hero-copy p { max-width: 480px; color: var(--text2); font-size: 16px; line-height: 1.65; margin: 0 0 24px; }
 .wm-hero-ctas { display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
@@ -575,7 +587,12 @@ button { cursor: pointer; font-family: inherit; }
 .wm-compare-grid { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 6px; align-items: stretch; }
 .wm-compare-vs { align-self: center; color: var(--text3); font: 700 11px 'JetBrains Mono', monospace; }
 .wm-compare-card { padding: 20px; display: flex; flex-direction: column; gap: 9px; }
-.wm-compare-card--wm { border-color: color-mix(in srgb, var(--accent) 55%, transparent) !important; background: linear-gradient(165deg, color-mix(in srgb, var(--accent) 10%, rgba(20,26,43,0.94)) 0%, rgba(13,17,25,0.94) 100%); box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent) inset; }
+/* Accent tint layered over var(--wm-surface) itself (was a hardcoded dark-only
+   gradient copy-pasted from --wm-surface's dark value) - live feedback: this
+   card "not even translated into light mode", stayed navy regardless of
+   theme. The accent overlay is a separate, theme-independent transparent
+   layer, the base underneath is the real theme variable. */
+.wm-compare-card--wm { border-color: color-mix(in srgb, var(--accent) 55%, transparent) !important; background: linear-gradient(165deg, color-mix(in srgb, var(--accent) 10%, transparent) 0%, transparent 100%), var(--wm-surface); box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent) inset; }
 .wm-compare-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); background: color-mix(in srgb, var(--accent) 7%, transparent); }
 .wm-compare-card h3 { margin: 0; font-size: 16px; font-weight: 800; }
 /* Body copy is the actual explanatory content, not secondary metadata - it
@@ -715,7 +732,9 @@ button { cursor: pointer; font-family: inherit; }
    - same recipe as .wm-compare-card--wm's own accent-mixed surface, small
    enough percentage to read as a tint on the existing navy card, not a
    different card colour. */
-.wm-early { padding: 36px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; text-align: left; background: linear-gradient(165deg, color-mix(in srgb, var(--accent) 8%, rgba(20,26,43,0.94)) 0%, rgba(13,17,25,0.94) 100%); }
+/* Same fix as .wm-compare-card--wm above: accent overlay layered over the
+   real var(--wm-surface), not a hardcoded dark-only gradient. */
+.wm-early { padding: 36px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; text-align: left; background: linear-gradient(165deg, color-mix(in srgb, var(--accent) 8%, transparent) 0%, transparent 100%), var(--wm-surface); }
 .wm-early-copy { display: flex; flex-direction: column; align-items: flex-start; }
 .wm-early-icon { margin-bottom: 10px; }
 .wm-early h3 { margin: 0 0 8px; font-size: 21px; font-weight: 800; }
@@ -739,6 +758,209 @@ button { cursor: pointer; font-family: inherit; }
 @media (max-width: 640px) {
   .wm-stats-grid, .wm-usecase-grid { grid-template-columns: repeat(2, 1fr); }
   .wm-chain-row { flex-wrap: wrap; }
+}
+
+/* ── THE SQUAD / KADER page - a `.sq-` namespace under the same `.wm-wrap`/
+   `.wm-btn-primary`/`.wm-card` tokens as World Model, reusing rather than
+   re-declaring the shared container/button/card treatment. All 8 agents are
+   badged "Early Access" via `.sq-pill`/`.sq-status-dot` - deliberately NOT
+   `.wm-live-dot` (that one pulses green to signal a real live feed; this page
+   is honest about not being that yet). ────────────────────────────────────── */
+/* Visual column wider than the text column, more skewed than World Model's
+   own 1fr/1.22fr hero split - live feedback: the panel needed to be
+   physically bigger, "mehr reingehn", not just keep the 2:1 ratio in a
+   small box. */
+.sq-hero-grid { display: grid; grid-template-columns: 0.85fr 1.35fr; gap: 48px; align-items: center; }
+.sq-heading { margin: 0 0 12px; font-size: 44px; font-weight: 900; line-height: 1.05; }
+.sq-subheading { margin: 0 0 14px; font-size: 19px; color: var(--text); font-weight: 700; }
+.sq-intro { margin: 0 0 10px; max-width: 480px; color: var(--text2); line-height: 1.6; }
+.sq-worldmodel-link { display: inline-block; margin-bottom: 22px; color: var(--accent-text); font-size: 13px; font-weight: 700; text-decoration: none; }
+.sq-worldmodel-link:hover { text-decoration: underline; }
+.sq-hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+.sq-status-line { display: flex; align-items: center; gap: 8px; margin: 0; font: 700 11px 'JetBrains Mono', monospace; letter-spacing: .08em; color: var(--text3); text-transform: uppercase; }
+.sq-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); opacity: .7; }
+
+/* Same box as World Model's .wm-graph-panel (aspect-ratio 1920/926, border,
+   radius, --wm-surface background) - live feedback: the constellation needs
+   "genau den gleich grossen viewport wie das preview in world model" so the
+   two hero visuals read as one matched pair across the two pages, not one
+   wide screenshot frame next to one small floating diagram. The SVG itself
+   keeps its own near-square viewBox aspect (480:440) and just sits centered
+   and inset inside the wider panel via flex, the way a portrait shot sits
+   letterboxed in a widescreen frame. */
+/* Same 1920/926 wide ratio as World Model's .wm-graph-panel (live feedback:
+   this stays 2:1, not taller - the fix for "sieht man garnix" is a bigger,
+   wider physical box via .sq-hero-grid's column split below, not a squarer
+   panel). Meant to hold either the diagram or, once supplied, a photo via
+   .sq-hub-photo (same object-fit: cover pattern as .wm-graph-screenshot). */
+/* background: var(--bg), not --wm-surface - live feedback: the lighter panel
+   surface read as a visible box sitting on the page instead of the graph
+   just living on the actual page background. */
+.sq-hub-panel { position: relative; aspect-ratio: 1920 / 926; border-radius: 10px; overflow: hidden; border: 1px solid var(--wm-border); background: var(--bg); width: 100%; display: flex; align-items: center; justify-content: center; }
+.sq-hub-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+
+/* .sq-hero had no vertical padding of its own (unlike .wm-hero's padding-block:
+   24px 10px) - live feedback: the overview section "clips" against the hero,
+   too tight. */
+.sq-hero { padding-block: 40px 32px; }
+.sq-overview { padding-top: 40px; padding-bottom: 56px; }
+.sq-overview-frame { border: 1.5px solid color-mix(in srgb, var(--accent) 45%, var(--border)); border-radius: 16px; padding: 18px; box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent), 0 16px 40px rgba(0,0,0,0.3); }
+/* align-items: stretch (was start) - live feedback: switching agents changed
+   the spec-sheet's content length (description, list wraps), so the trust
+   badges + Request Access button drifted to a different vertical position
+   per agent. Stretch locks the card to the sidebar's fixed height (the agent
+   list never changes length), and .sq-trust-badges below gets margin-top:
+   auto to pin the badges+button flush to the bottom of that now-fixed card
+   every time, regardless of how much content sits above them. */
+.sq-overview-grid { display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: stretch; }
+.sq-overview-mobile { display: flex; flex-direction: column; gap: 18px; }
+.sq-chip-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+.sq-chip { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--wm-surface); color: var(--text); font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; }
+.sq-chip--active { background: color-mix(in srgb, var(--accent) 12%, var(--wm-surface)); }
+
+.sq-agent-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.sq-agent-row { width: 100%; display: flex; align-items: center; gap: 12px; padding: 13px 15px; border-radius: 10px; border: 1px solid var(--border); background: var(--wm-surface); cursor: pointer; text-align: left; transition: border-color .2s, background .2s, transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+.sq-agent-row:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); transform: translateX(2px); }
+.sq-agent-row--active { background: color-mix(in srgb, var(--accent) 8%, var(--wm-surface)); box-shadow: 0 0 0 1px var(--row-color, var(--accent)), 0 4px 16px rgba(0,0,0,0.3); }
+.sq-agent-row-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.sq-agent-row-text strong { font-size: 14px; font-weight: 800; }
+/* White, not muted grey (live feedback: job title under the agent name needs
+   to actually read easily, not squint-worthy). */
+.sq-agent-row-text span { font-size: 12.5px; color: var(--text); }
+.sq-pill { flex: 0 0 auto; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); font: 700 10px 'JetBrains Mono', monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--text2); }
+
+.sq-spec-sheet { padding: 28px; display: flex; flex-direction: column; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 12px 32px rgba(0,0,0,0.28); }
+.sq-spec-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.sq-spec-head h3 { margin: 0; font-size: 22px; font-weight: 900; flex: 1; }
+.sq-spec-desc { margin: 0 0 22px; color: var(--text); line-height: 1.6; font-size: 15px; }
+/* align-items: stretch (was start) - live feedback: the three columns sized to
+   their own content, so Monitors/Detects/You get ended up different heights
+   per agent (line-wrap differences), and the Request Access button below
+   shifted up/down depending on which column happened to be tallest. Stretch
+   makes all three match the tallest column every time, button position now
+   fixed relative to the card regardless of which agent is selected. */
+.sq-spec-stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; align-items: stretch; }
+.sq-spec-panel { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; }
+/* Centered, bold, white, larger (was small grey left-aligned caps) - live
+   feedback: the column headers should anchor and fill the top of each box,
+   not read as a faint label. */
+/* h4 is now just a centering wrapper - the visible pill styling moved onto the
+   .sq-tag--column span inside it (live feedback: wrap MONITORS/DETECTS/YOU GET
+   in a silver pill like the agent tags, for the same visual language). */
+.sq-spec-panel h4 { margin: 0 0 10px; text-align: center; }
+.sq-tag--column { font-size: 12.5px; padding: 5px 15px; }
+.sq-spec-panel ul { margin: 0; padding-left: 18px; color: var(--text); font-size: 14px; line-height: 1.75; }
+/* Fixed trust-badge row above the Request Access button, same three for every
+   agent (not per-agent content) - green checkmarks, distinct from the three
+   bulleted columns above it. */
+.sq-trust-badges { list-style: none; padding: 0; margin: auto 0 16px; display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 24px; }
+.sq-trust-badges li { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; color: var(--text); }
+.sq-trust-badges li svg { flex-shrink: 0; color: var(--accent-text); }
+
+/* "How It Connects" flow diagram (live feedback 2026-09-07 - rejected first
+   cut, "four disjointed cards" with a plain chevron between them, was not a
+   diagram: "an actual diagram, showing the actual how it connects... like a
+   schoolbook diagram"). Rebuilt as one real SVG: colored zone bands +
+   rectangular icon boxes wired together with actual arrows (see the
+   HIC_BOX/HIC_ARROWS layout in Squad.tsx), plus a text legend below spelling
+   out each box in full since the SVG boxes themselves only carry icon+short
+   title. Zone hue from OUTPUT_TAG_HUES (same calibrated palette
+   DataSolutions/Research already use), not new colors. */
+.sq-connects { padding-top: 16px; padding-bottom: 40px; }
+.hic-diagram { overflow-x: auto; margin-bottom: 12px; }
+/* Inner wrapper carries the min-width and the positioning context, so the
+   popover's percentage coordinates resolve against the SVG's real rendered
+   width rather than the scroll viewport (otherwise it drifts off its box once
+   the diagram is scrolled horizontally on a narrow screen). */
+.hic-canvas { position: relative; min-width: 640px; }
+.hic-svg { display: block; width: 100%; height: auto; }
+.hic-box-content { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center; font-family: inherit; }
+.hic-box-icon { color: var(--accent-text); display: flex; }
+.hic-box-title { font-size: 12px; font-weight: 800; color: var(--text); line-height: 1.2; }
+/* fill: none is load-bearing, not cosmetic - an SVG <polyline> defaults to
+   fill: black, so without this the pulse overlays render as huge filled black
+   wedges across the diagram (exactly what shipped for one broken frame on
+   2026-09-07 when the class was referenced before this rule existed). */
+.hic-pulse {
+  fill: none; stroke: var(--accent-text); stroke-width: 3.5;
+  stroke-linecap: round; stroke-dasharray: 4 96;
+  animation: hic-flow 3.5s linear infinite;
+}
+@keyframes hic-flow { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .hic-pulse { display: none; } }
+
+.hic-box-group { cursor: pointer; }
+.hic-box-group:focus { outline: none; }
+.hic-box-group:focus-visible rect { stroke: var(--accent-text); stroke-width: 2.5; }
+
+/* Click-triggered detail popover, replacing the old always-on legend block. */
+.hic-pop { position: absolute; z-index: 2; width: 240px; max-width: 80vw; padding: 12px 14px; border-radius: 10px; background: var(--wm-surface); border: 1px solid var(--accent-border); box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+.hic-pop-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.hic-pop-title { font-size: 13px; font-weight: 800; color: var(--text); flex: 1; }
+.hic-pop-close { background: none; border: none; padding: 0; font-size: 18px; line-height: 1; color: var(--text3); cursor: pointer; font-family: inherit; }
+.hic-pop-close:hover { color: var(--text); }
+.hic-pop-body { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--text2); }
+.hic-legend-num { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; background: var(--accent-text); color: var(--bg); font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+.hic-hint { margin: 4px 0 0; text-align: center; font-size: 12.5px; color: var(--text3); }
+
+.sq-need-to-know { padding-top: 8px; padding-bottom: 56px; }
+/* Back to 6-across (live feedback: "aber NEBENEINANDER lassen alle 6" - all
+   six stay in one row, the size bump is font/padding/icon only, not fewer
+   columns). */
+.sq-cards-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; align-items: stretch; }
+.sq-card { height: 100%; padding: 22px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 9px; border-color: color-mix(in srgb, var(--card-color, var(--border)) 45%, var(--wm-border)); transition: border-color .2s, box-shadow .2s, transform .2s; }
+.sq-card:hover { border-color: var(--card-color, var(--accent)); box-shadow: 0 0 0 1px color-mix(in srgb, var(--card-color, var(--accent)) 50%, transparent), 0 8px 28px color-mix(in srgb, var(--card-color, var(--accent)) 18%, transparent); transform: translateY(-2px); }
+/* Plain text colour (was inline per-agent hue on both the heading and the
+   tags below) - live feedback: "zu farbig", only the icon stays coloured per
+   agent, everything else in the card reads as one consistent card style. */
+.sq-card h3 { margin: 4px 0 0; width: 100%; font-size: 17px; font-weight: 800; letter-spacing: .01em; color: var(--text); }
+.sq-card p { margin: 0; width: 100%; color: var(--text2); font-size: 14px; line-height: 1.55; flex: 1; }
+.sq-tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0; }
+/* Uniform silver (was a per-agent colour + border pulled from agentByKey(tag).color)
+   - live feedback: the mixed colours "passen nicht sauber rein", one neutral tone
+   reads as a consistent tag system regardless of which agents a card names. */
+.sq-tag { padding: 2px 7px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--text3) 55%, transparent); color: var(--text3); font-size: 9.5px; font-weight: 800; letter-spacing: .02em; }
+.sq-link-btn { background: none; border: none; padding: 0; margin-top: 4px; color: var(--accent-text); font-size: 12.5px; font-weight: 700; cursor: pointer; }
+.sq-link-btn:hover { text-decoration: underline; }
+
+.sq-request-card { padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+.sq-request-text { flex: 1; min-width: 240px; }
+.sq-request-card h2 { margin: 0; font-size: 22px; font-weight: 900; }
+.sq-request-desc { margin: 6px 0 0; color: var(--text2); font-size: 14px; }
+.sq-interest-line { margin: 6px 0 0; font-size: 13px; color: var(--accent-text); font-weight: 700; }
+.sq-request-form { display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; flex: 0 0 auto; }
+.sq-request-form input.rfi-input { width: 260px; flex: 0 0 auto; }
+.sq-form-ok { margin: 0; color: var(--accent-text); font-weight: 700; }
+.sq-form-err { margin: 8px 0 0; color: var(--sev-crit); font-size: 13px; }
+.sq-form-err a { color: inherit; }
+/* Was a standalone <a href="/data-solutions/"> decoupled below the request card
+   (live feedback: needs to live inside the "start with one agent" box, and lead
+   into the same form right there instead of navigating away) - now a <button>
+   inline in .sq-request-text that clears the interest selection and focuses the
+   email field in this same form. */
+.sq-custom-link-inline { display: block; margin: 10px 0 0; padding: 0; border: none; background: none; color: var(--accent-text); font-size: 13px; font-weight: 700; font-family: inherit; text-align: left; cursor: pointer; }
+.sq-custom-link-inline:hover { text-decoration: underline; }
+
+@media (max-width: 1200px) {
+  .sq-cards-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 980px) {
+  .sq-hero-grid { grid-template-columns: 1fr; }
+  .sq-hub-panel { max-width: 420px; margin: 0 auto; }
+  .sq-overview-frame { padding: 14px; }
+}
+@media (max-width: 900px) {
+  .sq-cards-grid { grid-template-columns: repeat(2, 1fr); }
+  .sq-request-card { flex-direction: column; align-items: stretch; }
+  .sq-request-form { flex-wrap: wrap; }
+  .sq-request-form input.rfi-input { width: 100%; }
+}
+@media (max-width: 700px) {
+  .sq-spec-stack { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .sq-cards-grid { grid-template-columns: 1fr; }
+  .sq-overview-grid { grid-template-columns: 1fr; }
 }
 
 /* ── CATEGORIES / DRILL-DOWN BROWSER ─────────────────────────────────────── */
@@ -960,7 +1182,12 @@ button { cursor: pointer; font-family: inherit; }
 @media (max-width: 600px) { .site-ssp-cta { padding: 52px 24px; } }
 
 /* ── FOOTER (warm deep sage, readable light text — no grey) ───────────────── */
-.site-footer { background: #353F37; padding: 56px 60px 30px; }
+/* margin-top added (live feedback: the Squad and World Model CTA cards sit
+   flush against the footer with no gap, "sticking directly on top" - relying
+   on the preceding section's own padding-bottom wasn't reliably producing a
+   gap on these routes, margin on the footer itself is unconditional
+   regardless of what precedes it). */
+.site-footer { margin-top: 48px; background: #353F37; padding: 56px 60px 30px; }
 .site-footer-grid {
   display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
   padding-bottom: 44px; border-bottom: 1px solid rgba(255,255,255,.12); margin-bottom: 24px;
@@ -974,9 +1201,14 @@ button { cursor: pointer; font-family: inherit; }
 }
 .site-footer-col a { display: block; font-size: 15px; color: rgba(255,255,255,.74); margin-bottom: 10px; transition: color .2s; }
 .site-footer-col a:hover { color: var(--primary); }
+/* margin/padding-top + divider added (live feedback: "unter dem widget...
+   BEVOR die abschliessende bottom bar kommt" - the closing legal/copyright
+   row sat flush against the last row of footer link columns with no gap at
+   all, not the space above the footer that was fixed instead first time). */
 .site-footer-bottom {
   display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 12px; font-size: 14px; color: rgba(255,255,255,.6);
+  margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.12);
 }
 .site-footer-links { display: flex; gap: 20px; }
 .site-footer-links a { color: rgba(255,255,255,.6); transition: color .2s; }

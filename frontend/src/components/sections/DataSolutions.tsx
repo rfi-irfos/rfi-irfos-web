@@ -52,6 +52,7 @@ const COPY = {
     qualityTitle: 'Privacy, security, reproducibility',
     quality: ['PII scrubbing and client-approved handling', 'Containerized environments and controlled test credentials', 'Versioned inputs, deterministic resets, and exact replay', 'Per-step safety, quality, and failure labels'],
     startEyebrow: 'Three ways to start', startTitle: 'Data that meets you where the work is',
+    startIntro: 'Whatever stage your work is at, from a first experiment to a standing production pipeline, there is an entry point sized to match it.',
     starts: [
       ['01', 'Ready to deliver', 'Use an already produced and validated dataset. We align the format and delivery boundary with your stack.'],
       ['02', 'Pipeline-ready', 'Start a prepared collection or evaluation pipeline, adjusted to your volume, domain, and acceptance criteria.'],
@@ -100,6 +101,7 @@ const COPY = {
     qualityTitle: 'Datenschutz, Sicherheit, Reproduzierbarkeit',
     quality: ['PII-Bereinigung und freigegebene Datenverarbeitung', 'Containerisierte Umgebungen und kontrollierte Testzugänge', 'Versionierte Inputs, deterministische Resets und exakte Replays', 'Safety-, Qualitäts- und Fehlerlabels pro Schritt'],
     startEyebrow: 'Drei Einstiege', startTitle: 'Daten passend zum Stand Ihres Vorhabens',
+    startIntro: 'Ganz gleich in welcher Phase Ihr Vorhaben steckt, vom ersten Experiment bis zur laufenden Produktionspipeline, es gibt einen passend dimensionierten Einstieg.',
     starts: [
       ['01', 'Sofort lieferbar', 'Nutzen Sie einen bereits produzierten und validierten Datensatz, abgestimmt auf Format und Liefergrenze Ihres Stacks.'],
       ['02', 'Pipeline-ready', 'Starten Sie eine vorbereitete Collection- oder Eval-Pipeline, angepasst an Volumen, Domäne und Kriterien.'],
@@ -151,7 +153,7 @@ export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2>{c.startTitle}</h2></div></Reveal>
+      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2>{c.startTitle}</h2><p>{c.startIntro}</p></div></Reveal>
       <div className="data-start-grid" style={HUE_STARTS}>{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_STARTS}><span>{n}</span><div className="data-start-icons" aria-hidden="true">{i === 0 && <><IconDatabase size={27} stroke={1.5} /><IconCircleCheck size={24} stroke={1.8} /></>}{i === 1 && <><IconDatabase size={27} stroke={1.5} /><IconSettingsAutomation size={25} stroke={1.6} /><IconDatabase size={27} stroke={1.5} /></>}{i === 2 && <><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /></>}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
     </div></section>
 

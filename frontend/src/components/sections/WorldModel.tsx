@@ -380,7 +380,7 @@ function WorldGraphVisual() {
   return (
     <>
       <button type="button" className="wm-graph-panel wm-graph-panel--clickable" onClick={() => setOpen(true)} aria-label="View screenshots fullscreen">
-        <HeroSlideshow images={WORLD_MODEL_HERO_IMAGES} zoomEffect={false} fit="contain" />
+        <HeroSlideshow images={WORLD_MODEL_HERO_IMAGES} zoomEffect={false} fit="contain" intervalMs={4500} />
         <span className="wm-graph-expand-hint"><IconWorld size={13} stroke={1.8} /> view fullscreen</span>
       </button>
       {open && <HeroLightbox startIndex={0} onClose={() => setOpen(false)} />}
@@ -488,7 +488,7 @@ function ComparisonBlock() {
   return (
     <div className="wm-wrap">
       <div className="wm-section-box">
-      <Reveal dist={14}><h2 style={{ textAlign: 'center', fontSize: 26, fontWeight: 900, marginBottom: 28 }}>{c.heading}</h2></Reveal>
+      <Reveal dist={14}><div className="wm-section-head" style={{ marginBottom: 28 }}><p className="wm-eyebrow">{c.eyebrow}</p><h2>{c.heading}</h2><p>{c.sub}</p></div></Reveal>
         <div className="wm-compare-grid">
           <Reveal dist={14} style={{ height: '100%' }}><div className="wm-compare-card wm-card">
             <div className="wm-compare-icon"><IconMessage2 size={19} stroke={1.7} /></div>
@@ -617,6 +617,8 @@ function EarlyAccessForm() {
 }
 
 export function WorldModelSection() {
+  const { t } = useLocale()
+  const w = t.worldModel
   const scrollToApi = () => document.querySelector('.wm-early')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   return (
     <div className="wm">
@@ -625,6 +627,19 @@ export function WorldModelSection() {
       <section className="wm-section"><ComparisonBlock /></section>
       <section className="wm-section">
         <div className="wm-wrap">
+          {/* Overall section head above the two-panel split (live feedback:
+              every other section on this page got an eyebrow+heading+sub,
+              this block went straight from Comparison into the split box
+              with nothing framing it - inconsistent). The two panels below
+              keep their own smaller headings (chainsPreview/liveFeed), this
+              is the umbrella head for the pair. */}
+          <Reveal dist={14}>
+            <div className="wm-section-head">
+              <p className="wm-eyebrow">{w.reasoningIntro.eyebrow}</p>
+              <h2>{w.reasoningIntro.heading}</h2>
+              <p>{w.reasoningIntro.sub}</p>
+            </div>
+          </Reveal>
           <div className="wm-section-box wm-split">
             {/* Same two-tier contrast as the comparison box (live feedback
                 2026-08-31: without a darker outer frame, the navy card

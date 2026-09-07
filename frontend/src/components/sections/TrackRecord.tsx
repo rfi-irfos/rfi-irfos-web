@@ -2747,7 +2747,13 @@ export function TrackRecordSection({
             that working pattern here (no Reveal, always fully rendered) is more robust than
             chasing the timing race further. ScrambleHeading's own scramble-in effect is
             untouched, still plays on both natural scroll-into-view and nav-jump. */}
-        <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}>{t.trackRecord.heading}</h2>
+        {/* h1, not h2 (fixed 2026-09-07 from the UX audit's one CRITICAL finding:
+            /evidence/ rendered zero h1 elements, so the page had no top-level
+            landmark for screen readers or search engines). This section only
+            renders on the evidence view, never on the homepage, so there is no
+            competing h1. Sized one step above the h2s below it to make the
+            hierarchy visible, not just semantic. */}
+        <h1 style={{ fontSize: 36, fontWeight: 900, marginBottom: 12 }}>{t.trackRecord.heading}</h1>
         {/* Solid backing added 2026-08-06 (spine feedback): this paragraph sits
             directly on the page background with nothing behind it, and its
             720px max-width crosses the page's horizontal center where the

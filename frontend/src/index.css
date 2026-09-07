@@ -638,6 +638,22 @@ h1, h2, h3, .rfi-display {
     inset 0 1px 0 rgba(255,255,255,0.08),
     inset 0 -1px 0 rgba(0,0,0,0.5);
 }
+/* Light theme override (found 2026-09-07: this card had no light-mode variant
+   at all - every layer here assumes a dark base, white-tinted highlight
+   overlays that read as texture on black just vanish or muddy on a light
+   page). Base flips to a light surface, the noise/highlight overlays invert
+   to dark-tinted so they still read as subtle depth instead of nothing. */
+[data-theme="light"] .rfi-pricing-card {
+  background:
+    linear-gradient(135deg, rgba(0,0,0,0.035), rgba(0,0,0,0.01) 40%, rgba(0,180,160,0.02)),
+    repeating-linear-gradient(120deg, rgba(0,0,0,0.012) 0px, rgba(0,0,0,0.012) 1px, transparent 1px, transparent 4px),
+    #ffffff;
+  box-shadow:
+    0 0 0 1px rgba(0,180,160,0.28),
+    0 20px 60px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.6),
+    inset 0 -1px 0 rgba(0,0,0,0.05);
+}
 /* Static, no hover motion (live feedback 2026-08-25: "soll nich bewegen wenn
    man mit der maus drauf isch" - the spec's hover-tilt interaction is
    intentionally dropped; the ambient glow behind the card, above, is the only
@@ -681,6 +697,26 @@ h1, h2, h3, .rfi-display {
   border-radius: 9px;
   box-shadow: 0 0 12px rgba(0,255,220,0.18), inset 0 0 15px rgba(0,255,220,0.06);
   background: linear-gradient(180deg, rgba(0,255,220,0.08), rgba(0,255,220,0.025));
+}
+/* Light theme: darker accent teal for AA text contrast on white (#00e8d0 is
+   too pale on a white badge), and the white-tinted highlight overlays on the
+   icon box / bar / price button invert to dark-tinted for the same reason as
+   the card above - they're depth cues, and a "highlight" that's lighter than
+   the page itself doesn't read as anything. */
+[data-theme="light"] .rfi-pricing-badge { color: #00a390; background: rgba(0,163,144,0.06); }
+[data-theme="light"] .rfi-pricing-icon-box {
+  background: linear-gradient(145deg, rgba(0,180,160,0.1), rgba(0,0,0,0.015));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 6px 16px rgba(0,0,0,0.08);
+}
+[data-theme="light"] .rfi-pricing-bar {
+  background: linear-gradient(135deg, rgba(0,0,0,0.03), rgba(0,180,160,0.045));
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -6px 16px rgba(0,0,0,0.04);
+}
+[data-theme="light"] .rfi-pricing-price-btn {
+  border: 1px solid rgba(0,180,160,0.55);
+  box-shadow: 0 0 10px rgba(0,180,160,0.14), inset 0 0 12px rgba(0,180,160,0.05);
+  background: linear-gradient(180deg, rgba(0,180,160,0.1), rgba(0,180,160,0.03));
 }
 @media (prefers-reduced-motion: reduce) {
   .rfi-pricing-card, .rfi-pricing-card:hover { transition: none; transform: none; }

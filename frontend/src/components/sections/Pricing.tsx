@@ -90,7 +90,7 @@ function PricingOfferCard({
           much differencies ... place this more down to the bottom of the card"). */}
       <div className="rfi-pricing-card" style={{ padding: mobile ? '24px 20px' : '36px 34px', display: 'flex', flexDirection: 'column', minHeight: mobile ? undefined : 560 }}>
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <p style={{ fontSize: mobile ? 26 : 32, fontWeight: 700, letterSpacing: '-0.03em', color: '#f4f6f6', margin: 0 }}>{tier.tier}</p>
+          <p style={{ fontSize: mobile ? 26 : 32, fontWeight: 700, letterSpacing: '-0.03em', color: 'var(--text)', margin: 0 }}>{tier.tier}</p>
           <div style={{ marginTop: 10 }}><span className="rfi-pricing-badge">{scopeTag}</span></div>
         </div>
         <EngagementFlow bring={tier.bring} mechanism={tier.mechanism} receive={tier.receive} large />
@@ -112,9 +112,9 @@ function PricingOfferCard({
                 <div style={{ minWidth: 0 }}>
                   <div style={{
                     fontSize: 9.5, fontWeight: 700,
-                    color: '#00e8d0', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 2,
+                    color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 2,
                   }}>{t.pricing.deliveryLabel}</div>
-                  <div style={{ color: '#f4f6f6', fontSize: 13, fontWeight: 800, letterSpacing: '0.01em', lineHeight: 1.3 }}>{tier.delivery}</div>
+                  <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: 800, letterSpacing: '0.01em', lineHeight: 1.3 }}>{tier.delivery}</div>
                 </div>
               </div>
             )}
@@ -125,7 +125,7 @@ function PricingOfferCard({
             }}>
               <span style={{ color: 'var(--accent-text)', display: 'flex' }}><CartIcon /></span>
               <span style={{ color: 'var(--accent-text)', textTransform: 'uppercase' }}>{t.pricing.priceFrom}</span>
-              <span style={{ color: '#fff' }}>{tier.amount}</span>
+              <span style={{ color: 'var(--text)' }}>{tier.amount}</span>
             </button>
           </div>
           <p style={{ textAlign: 'center', margin: '14px 0 0', fontSize: 12, color: 'var(--text3)' }}>
@@ -168,7 +168,10 @@ export function PricingSection({
     <section id="pricing" style={{ padding: '16px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1120, margin: '0 auto' }}>
         <Reveal>
-          <h2 style={{ fontSize: 32, fontWeight: 900, marginBottom: 12 }}>{t.pricing.heading}</h2>
+          {/* h1, not h2 - same CRITICAL audit finding as TrackRecord.tsx: /access/
+              rendered zero h1 elements. This section only renders on the access
+              view, so there is no competing h1 on the homepage. */}
+          <h1 style={{ fontSize: 36, fontWeight: 900, marginBottom: 12 }}>{t.pricing.heading}</h1>
           <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 560 }}>
             {t.pricing.subheading}
           </p>

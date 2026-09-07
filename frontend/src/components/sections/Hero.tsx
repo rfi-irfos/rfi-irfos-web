@@ -184,7 +184,13 @@ const CROSSFADE_S = 3.2
 // UI captures where a crop can slice off the logo or a panel edge, so that
 // page passes 'contain' instead (live feedback 2026-09-01: "man sieht zb vo
 // logo oben rechts nur GIR sonsch nix, dews schlecht" - nothing may be cut off).
-export function HeroSlideshow({ images, zoomEffect = true, fit = 'cover' }: { images: string[]; zoomEffect?: boolean; fit?: 'cover' | 'contain' }) {
+// `intervalMs` (default 15s, the homepage hero's own slow ambient pace) - added
+// 2026-09-07 for WorldModel.tsx's bounded preview panel, which needs a visibly
+// faster cycle so a visitor registers that there are several screenshots at all
+// (live feedback: "die bildansicht muss sich schneller abwechseln dort in world
+// model dass leute sehen dass da mehrere bilder sind"). The homepage hero keeps
+// the slow pace, where a fast cycle would fight the copy for attention.
+export function HeroSlideshow({ images, zoomEffect = true, fit = 'cover', intervalMs = SLIDE_INTERVAL_MS }: { images: string[]; zoomEffect?: boolean; fit?: 'cover' | 'contain'; intervalMs?: number }) {
   const [current, setCurrent] = useState(0)
   const reduced = prefersReducedMotion()
 
@@ -195,9 +201,9 @@ export function HeroSlideshow({ images, zoomEffect = true, fit = 'cover' }: { im
     const preload = new Image()
     preload.src = images[(current + 1) % images.length]
 
-    const id = setTimeout(() => setCurrent(c => (c + 1) % images.length), SLIDE_INTERVAL_MS)
+    const id = setTimeout(() => setCurrent(c => (c + 1) % images.length), intervalMs)
     return () => clearTimeout(id)
-  }, [current, images, reduced])
+  }, [current, images, reduced, intervalMs])
 
   return (
     <AnimatePresence>

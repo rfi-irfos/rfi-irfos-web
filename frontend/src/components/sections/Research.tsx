@@ -35,9 +35,16 @@ function BentoTile({ icon, title, onOpen, from, delay }: {
         whileHover={prefersReducedMotion() ? undefined : { y: -4, scale: 1.012 }}
         transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
       >
+        {/* Depth added 2026-09-07 (live feedback: "so 2D and flat sorta") - a
+            diagonal gradient instead of the flat accent-dim fill, a bright inset
+            edge along the top-left (light source) fading to a darker inset
+            bottom-right, and a soft coloured drop shadow lifting the badge off
+            the card. Same accent hue throughout, no new colour introduced. */}
         <div style={{
           width: 60, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'var(--accent-dim)', border: '1px solid var(--accent-border)', borderRadius: 16, lineHeight: 0,
+          background: 'linear-gradient(155deg, color-mix(in srgb, var(--accent) 26%, transparent), color-mix(in srgb, var(--accent) 8%, transparent))',
+          border: '1px solid var(--accent-border)', borderRadius: 16, lineHeight: 0,
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.14), inset -1px -1px 3px rgba(0,0,0,0.3), 0 6px 16px color-mix(in srgb, var(--accent) 22%, transparent)',
         }}>
           {icon}
         </div>
