@@ -636,15 +636,21 @@ button { cursor: pointer; font-family: inherit; }
    stacked from the top, so once the sheet grew to eight bullets per column the
    leftover height showed as dead space in the frame's bottom-left corner
    (live feedback 2026-09-07). Same treatment as .sq-spec-panel ul. */
-.sq-agent-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; }
-.sq-agent-row { width: 100%; display: flex; align-items: center; gap: 12px; padding: 13px 15px; border-radius: 10px; border: 1px solid var(--border); background: var(--wm-surface); cursor: pointer; text-align: left; transition: border-color .2s, background .2s, transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+.sq-agent-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+/* Each row grows to share the column height instead of the list distributing
+   leftover space as large gaps between fixed-height rows. space-between filled
+   the column but pushed the rows 26px apart, which read as too airy once the
+   card became a fixed 745px (live feedback 2026-09-07: "die karten bissl tighter
+   beieinander"). Growing the rows keeps the column full AND the gaps tight. */
+.sq-agent-list > li { flex: 1; display: flex; }
+.sq-agent-row { width: 100%; display: flex; align-items: center; gap: 13px; padding: 15px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--wm-surface); cursor: pointer; text-align: left; transition: border-color .2s, background .2s, transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
 .sq-agent-row:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); transform: translateX(2px); }
 .sq-agent-row--active { background: color-mix(in srgb, var(--accent) 8%, var(--wm-surface)); box-shadow: 0 0 0 1px var(--row-color, var(--accent)), 0 4px 16px rgba(0,0,0,0.3); }
 .sq-agent-row-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.sq-agent-row-text strong { font-size: 14px; font-weight: 800; }
+.sq-agent-row-text strong { font-size: 16px; font-weight: 800; }
 /* White, not muted grey (live feedback: job title under the agent name needs
    to actually read easily, not squint-worthy). */
-.sq-agent-row-text span { font-size: 12.5px; color: var(--text); }
+.sq-agent-row-text span { font-size: 13.5px; color: var(--text); }
 .sq-pill { flex: 0 0 auto; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); font: 700 10px 'JetBrains Mono', monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--text2); }
 
 .sq-spec-sheet { padding: 28px; display: flex; flex-direction: column; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 12px 32px rgba(0,0,0,0.28); }
