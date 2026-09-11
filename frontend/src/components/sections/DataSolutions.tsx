@@ -15,7 +15,7 @@ const PIPELINE_ICONS = [IconClipboardCheck, IconSettingsAutomation, IconListChec
 const COPY = {
   en: {
     eyebrow: 'Data Solutions', title: 'production, data and agents that have to work',
-    intro: 'The same discipline behind our systems and public evidence, delivered as data and infrastructure: a data warehouse, reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Our Rust and Axum services connect through a SQL bridge to ternary-logic pipelines. Your corpus stays private. Every delivered artefact stays traceable.',
+    intro: 'The same discipline behind our systems and public evidence, delivered as data and infrastructure: a data warehouse, reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Our services connect to ternary-logic pipelines through a governed data layer. Your corpus stays private. Every delivered artefact stays traceable.',
     datasetsEyebrow: 'Datasets', datasetsTitle: 'What we already hold',
     datasets: [
       ['Mobile application behavior\ndatasets', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],
@@ -27,7 +27,7 @@ const COPY = {
     deliverEyebrow: 'What we deliver', deliverTitle: 'From environment to evaluation',
     deliverIntro: 'We define success criteria with your team, then build the data operation around the way your models are actually trained and evaluated. No anonymous task stream and no benchmark theatre: the environment, trace, label, and decision remain connected.',
     products: [
-      ['Data warehouse', 'A governed foundation for operational, training, and evaluation data, connected to our Rust/Axum services through a production SQL bridge.'],
+      ['Data warehouse', 'A governed foundation for operational, training, and evaluation data, connected through a production data pipeline to our reasoning services.'],
       ['Virtual environments', 'Human-simulated companies, computer-use and MCU mockups, deterministic resets, and controlled credentials for repeatable agent work.'],
       ['Capability evaluations', 'MCP-bench and TAU-bench extensions, TinyTAU for on-device agents, and task suites built around your real tools and constraints.'],
       ['Trajectory data', 'Expert demonstrations, step-level annotations, preference labels, failure taxonomies, and calibrated evaluations for training and reward shaping.'],
@@ -65,7 +65,7 @@ const COPY = {
   },
   de: {
     eyebrow: 'Data Solutions', title: 'Produktion, Daten und Agenten, die wirklich arbeiten müssen',
-    intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten und Infrastruktur geliefert: ein Data Warehouse, reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Unsere Rust- und Axum-Services verbinden sich über eine produktive SQL-Brücke mit ternären Logik-Pipelines. Ihr Korpus bleibt privat. Jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
+    intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten und Infrastruktur geliefert: ein Data Warehouse, reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Unsere Services verbinden sich über eine kontrollierte Datenschicht mit ternären Logik-Pipelines. Ihr Korpus bleibt privat. Jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
     datasetsEyebrow: 'Datensätze', datasetsTitle: 'Was wir bereits vorhalten',
     datasets: [
       ['Verhalten mobiler Anwendungen', 'Quellcodebasiertes App-Verhalten, Berechtigungen, Endpunkte, Consent-Timing und beobachtete Datenflüsse.'],
@@ -77,7 +77,7 @@ const COPY = {
     deliverEyebrow: 'Was wir liefern', deliverTitle: 'Von der Umgebung bis zur Evaluation',
     deliverIntro: 'Gemeinsam definieren wir belastbare Erfolgskriterien und bauen den Datenbetrieb passend zu Ihren realen Trainings- und Evaluationsabläufen. Kein anonymer Task-Stream und kein Benchmark-Theater: Umgebung, Trace, Label und Entscheidung bleiben verbunden.',
     products: [
-      ['Data Warehouse', 'Eine kontrollierte Basis für Betriebs-, Trainings- und Evaluationsdaten, verbunden mit unseren Rust/Axum-Services über eine produktive SQL-Brücke.'],
+      ['Data Warehouse', 'Eine kontrollierte Basis für Betriebs-, Trainings- und Evaluationsdaten, verbunden über eine produktive Datenpipeline mit unseren Reasoning-Services.'],
       ['Virtuelle Umgebungen', 'Von Menschen simulierte Unternehmen, Computer-Use- und MCU-Mockups, deterministische Resets und kontrollierte Zugangsdaten.'],
       ['Capability-Evaluationen', 'Erweiterungen für MCP-bench und TAU-bench, TinyTAU für On-Device-Agenten und Aufgabensuiten für Ihre echten Werkzeuge.'],
       ['Trajectory Data', 'Expertendemonstrationen, Schritt-Annotationen, Präferenzlabels, Fehlerklassen und kalibrierte Evaluationen für Training und Reward Shaping.'],
