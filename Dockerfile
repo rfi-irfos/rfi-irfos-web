@@ -5,17 +5,12 @@ COPY frontend/package*.json ./
 RUN npm ci
 RUN npx playwright install --with-deps chromium
 COPY frontend/ ./
-# Vite inlines import.meta.env.VITE_* at BUILD time. This build never received
-# VITE_WEB3FORMS_KEY, so on the Fly-served site the constant was undefined, the
-# form's send branch was dead-code-eliminated, and submissions were silently
-# discarded while still showing a success message. The GitHub Actions workflow
-# does set the secret, but it builds for GitHub Pages, and rfi-irfos.com is
-# served by Fly - the key was wired to a pipeline nobody serves from.
-# Pass it through with:  fly deploy --build-arg VITE_WEB3FORMS_KEY=<key>
-# Not a secret in any meaningful sense: a Web3Forms access key is a public
-# per-form endpoint id and ends up readable in the client bundle either way.
-ARG VITE_WEB3FORMS_KEY=""
-ENV VITE_WEB3FORMS_KEY=$VITE_WEB3FORMS_KEY
+# The contact form no longer needs any *_WEB3FORMS_KEY at build time - the
+# Web3Forms fallback now runs server side in backend/src/contact.rs, reading
+# VITE_WEB3FORMS_KEY as an ordinary runtime env var (a `fly secrets set`
+# already reaches the running container; it just never reached this build
+# stage, which is what silently broke the form before). Name kept as-is to
+# match the Fly secret already deployed under it.
 RUN npm run build
 
 # ── backend ───────────────────────────────────────────────────────────────────

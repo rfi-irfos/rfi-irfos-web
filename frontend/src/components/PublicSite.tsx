@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
 import type { Content } from '../content/en'
-import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
+import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_BEACON, ModalTierBody, revealSuppressed } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
 import { TrackRecordSection } from './sections/TrackRecord'
@@ -793,17 +793,11 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     if (!tipForm.lawful) return
     if (tipForm.botcheck) { setTipFormState('ok'); return }
     setTipFormState('sending')
-    // Posts same-origin to our own backend, which relays into the Lighthouse CRM with
-    // the key held server side. This replaced a direct call to Web3Forms that was gated
-    // behind `if (WEB3FORMS_KEY)`. That key comes from import.meta.env, Vite inlines it
-    // at BUILD time, and the Dockerfile never passed it, so in production the constant
-    // was undefined, the whole branch was dead-code-eliminated, and the code below still
-    // reported success. Every submission since that deploy was shown a confirmation and
-    // thrown away. Verified against the live bundle: zero occurrences of "web3forms".
-    //
-    // The GitHub Actions workflow does set VITE_WEB3FORMS_KEY, but it builds for GitHub
-    // Pages, and rfi-irfos.com is served by Fly. The secret was wired to a pipeline
-    // nobody serves from.
+    // Posts same-origin to our own backend, which relays into the Lighthouse CRM and,
+    // if that fails, into Web3Forms - both with keys held server side. An earlier
+    // version called Web3Forms directly from the browser, gated behind a Vite
+    // build-time constant that a Fly runtime secret can never populate; see
+    // backend/src/contact.rs for why that class of bug can't recur now.
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -812,6 +806,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           name: tipForm.handle || 'anonymous',
           email: tipForm.email,
           phone: tipForm.target,
+          subject: `[rfi-irfos.com] ${tipForm.topic || 'Enquiry'} - ${tipForm.target || 'unspecified'}`,
           // The client-side botcheck gate above (line ~497) only stops a browser
           // running this exact JS - anything posting straight to /api/contact skips it
           // entirely. Sending the honeypot value through lets the backend enforce it too.
@@ -830,38 +825,10 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       setTipFormState('ok')
       setTipForm({ topic: '', handle: '', email: '', target: '', credit: 'anonymous', finding: '', lawful: false, botcheck: '' })
     } catch {
-      // CRM relay failed. Fall back to Web3Forms, which is an email-forwarding
-      // service and is what actually delivered mail before this rewrite. Two
-      // independent paths to a lead, so one being down never loses it: CRM first
-      // because it is what the leads counter reads, email second because it
-      // reaches a human immediately, and the mailto in the error state third.
-      // Requires VITE_WEB3FORMS_KEY at build time, now passed via the Dockerfile.
-      try {
-        if (!WEB3FORMS_KEY) throw new Error('no web3forms key in this build')
-        const res2 = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            access_key: WEB3FORMS_KEY,
-            subject: `[rfi-irfos.com] ${tipForm.topic || 'Enquiry'} - ${tipForm.target || 'unspecified'}`,
-            name: tipForm.handle || 'anonymous',
-            email: tipForm.email,
-            replyto: tipForm.email || undefined,
-            topic: tipForm.topic,
-            target: tipForm.target,
-            credit_preference: tipForm.credit,
-            message: tipForm.finding,
-          }),
-        })
-        if (!res2.ok) throw new Error(String(res2.status))
-        beacon('lead_submitted_email_fallback')
-        setTipFormState('ok')
-        setTipForm({ topic: '', handle: '', email: '', target: '', credit: 'anonymous', finding: '', lawful: false, botcheck: '' })
-      } catch {
-        // Both paths down. Never report success on a failed send: the error state
-        // carries a pre-filled mailto so the visitor can still reach us.
-        setTipFormState('err')
-      }
+      // Both CRM and Web3Forms fallback (server side) failed. Never report success on
+      // a failed send: the error state carries a pre-filled mailto so the visitor can
+      // still reach us.
+      setTipFormState('err')
     }
   }
 

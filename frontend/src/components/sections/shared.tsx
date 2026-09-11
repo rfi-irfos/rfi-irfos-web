@@ -14,7 +14,6 @@ export const TEAL = 'var(--accent)'
 // noisy red line in DevTools.
 export const LIGHTHOUSE_PIXEL = '/api/track/pixel.gif'
 export const LIGHTHOUSE_BEACON = '/api/track'
-export const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
 
 export const prefersReducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
