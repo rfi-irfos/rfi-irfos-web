@@ -14,6 +14,10 @@ export const TEAL = 'var(--accent)'
 // noisy red line in DevTools.
 export const LIGHTHOUSE_PIXEL = '/api/track/pixel.gif'
 export const LIGHTHOUSE_BEACON = '/api/track'
+// Web3Forms explicitly designs this as a client-side key ("safely use it in client side
+// code" per their own dashboard) - their free tier rejects server-to-server submissions
+// outright, so this fallback has to run in the browser, not proxied through our backend.
+export const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
 
 export const prefersReducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches

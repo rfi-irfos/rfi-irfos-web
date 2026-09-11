@@ -15,7 +15,7 @@ import {
   IconSend,
 } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
-import { Reveal, useMobile, beacon, OUTPUT_TAG_HUES } from './shared'
+import { Reveal, useMobile, beacon, WEB3FORMS_KEY, OUTPUT_TAG_HUES } from './shared'
 import { SQUAD_AGENTS, agentByKey, type AgentKey } from '../../content/squadAgents'
 import squadHeroPlexus from '../../assets/squad/sq-hero-plexus.avif'
 
@@ -446,7 +446,6 @@ function SquadRequestForm({
           name: 'The Squad inquiry',
           email: form.email,
           phone: null,
-          subject: `[rfi-irfos.com] The Squad — ${form.interest.join(', ') || 'general'} inquiry`,
           botcheck: form.botcheck,
           message,
         }),
@@ -455,9 +454,27 @@ function SquadRequestForm({
       beacon('squad_lead_submitted', { agents: form.interest.join(',') || 'general' })
       setFormState('ok')
     } catch {
-      // CRM relay and the Web3Forms fallback (both server side, see
-      // backend/src/contact.rs) failed.
-      setFormState('err')
+      // Same CRM-relay-fail -> Web3Forms fallback as submitTip (PublicSite.tsx).
+      try {
+        if (!WEB3FORMS_KEY) throw new Error('no web3forms key in this build')
+        const res2 = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: `[rfi-irfos.com] The Squad — ${form.interest.join(', ') || 'general'} inquiry`,
+            name: 'The Squad inquiry',
+            email: form.email,
+            replyto: form.email || undefined,
+            message,
+          }),
+        })
+        if (!res2.ok) throw new Error(String(res2.status))
+        beacon('squad_lead_submitted_email_fallback')
+        setFormState('ok')
+      } catch {
+        setFormState('err')
+      }
     }
   }
 

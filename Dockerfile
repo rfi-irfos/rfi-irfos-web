@@ -5,12 +5,17 @@ COPY frontend/package*.json ./
 RUN npm ci
 RUN npx playwright install --with-deps chromium
 COPY frontend/ ./
-# The contact form no longer needs any *_WEB3FORMS_KEY at build time - the
-# Web3Forms fallback now runs server side in backend/src/contact.rs, reading
-# VITE_WEB3FORMS_KEY as an ordinary runtime env var (a `fly secrets set`
-# already reaches the running container; it just never reached this build
-# stage, which is what silently broke the form before). Name kept as-is to
-# match the Fly secret already deployed under it.
+# Vite inlines import.meta.env.VITE_* at BUILD time, not runtime. Web3Forms'
+# free tier also rejects server-to-server submissions outright ("Pro plan
+# required" - confirmed against their API), so this key can't be moved into
+# the backend either: it has to be baked into the client bundle here.
+# `fly secrets set VITE_WEB3FORMS_KEY=...` alone does NOT do this - it only
+# reaches the running container's env, never this build stage. Pass it with:
+#   fly deploy --build-arg VITE_WEB3FORMS_KEY=<key>
+# Not a secret in any meaningful sense: Web3Forms documents this key as safe
+# to use in client-side code, and it ends up readable in the bundle either way.
+ARG VITE_WEB3FORMS_KEY=""
+ENV VITE_WEB3FORMS_KEY=$VITE_WEB3FORMS_KEY
 RUN npm run build
 
 # ── backend ───────────────────────────────────────────────────────────────────

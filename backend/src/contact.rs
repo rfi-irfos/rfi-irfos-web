@@ -29,7 +29,6 @@ pub struct ContactRequest {
     pub email: String,
     pub phone: Option<String>,
     pub message: String,
-    pub subject: Option<String>,
     /// Honeypot field. Hidden from real visitors via the form's own CSS/tabIndex/
     /// aria-hidden, so only an automated filler that submits every input populates it.
     /// The frontend already no-ops on a non-empty value, but that check runs in the
@@ -81,7 +80,6 @@ pub async fn submit_contact(
         return (StatusCode::BAD_REQUEST, "Eingabe zu lang.").into_response();
     }
 
-    let subject = body.subject.unwrap_or_default().trim().to_string();
     let entry = ContactEntry {
         name: body.name.trim().to_string(),
         email: body.email.trim().to_string(),
@@ -135,94 +133,44 @@ pub async fn submit_contact(
     match relay_to_crm(&entry).await {
         Ok(()) => {
             tracing::info!("Contact from {} ({}) relayed to CRM", entry.name, entry.email);
-            return StatusCode::OK.into_response();
-        }
-        Err(e) => {
-            tracing::error!("Contact relay to CRM failed for {}: {e}", entry.email);
-        }
-    }
-
-    // CRM relay failed. Fall back to Web3Forms (an email-forwarding service) so one path
-    // being down never loses the lead. This used to be a client-side fetch gated on
-    // VITE_WEB3FORMS_KEY, a Vite build-time constant - Fly secrets are runtime-only and
-    // never reach the Docker build stage, so that branch was silently dead every time the
-    // key was set the normal way (`fly secrets set`) instead of passed as a
-    // `--build-arg`. Doing it here instead means the already-deployed runtime secret just
-    // works, and the class of bug (right secret, wrong lifecycle) can't recur.
-    match relay_to_web3forms(&entry, &subject).await {
-        Ok(()) => {
-            tracing::info!("Contact from {} ({}) relayed via Web3Forms fallback", entry.name, entry.email);
             StatusCode::OK.into_response()
         }
         Err(e) => {
-            // Both delivery paths are down: the CRM relay (which Lighthouse's lead count
-            // reads) and Web3Forms (which is what actually reaches a human inbox). The
-            // entry.jsonl append above is the only remaining copy of this lead, and it
-            // lives on the Fly machine's local disk, not a mounted volume - it is wiped on
-            // the next restart. tracing::error alone was exactly how the original bug went
-            // unnoticed for as long as it did: nobody was watching stdout. Ping ntfy so a
-            // human sees this within minutes instead of finding it during the next
-            // "why no leads" audit.
-            tracing::error!("Contact Web3Forms fallback also failed for {}: {e}", entry.email);
-            notify_total_failure(&entry).await;
-            (StatusCode::BAD_GATEWAY, "could not deliver the message").into_response()
+            // The submission is already durably appended above, so it is not lost, and the
+            // frontend still tries a direct client-side Web3Forms send as a second path
+            // (see PublicSite.tsx / Squad.tsx) - Web3Forms' free tier rejects server-to-
+            // server calls outright ("Pro plan required"), so that fallback has to live in
+            // the browser, not here. We still fail loudly rather than returning 200: a form
+            // that reports success while the CRM lead count goes nowhere is exactly the
+            // failure this endpoint exists to end. Ping ntfy so a human sees the CRM outage
+            // within minutes instead of finding it during the next "why no leads" audit -
+            // tracing::error alone was how the original bug went unnoticed for months.
+            tracing::error!("Contact relay to CRM failed for {}: {e}", entry.email);
+            notify_crm_failure(&entry, &e).await;
+            (StatusCode::BAD_GATEWAY, "could not reach the CRM").into_response()
         }
     }
 }
 
-async fn notify_total_failure(entry: &ContactEntry) {
+async fn notify_crm_failure(entry: &ContactEntry, err: &str) {
     let Ok(client) = reqwest::Client::builder()
         .timeout(std::time::Duration::from_secs(5))
         .build()
     else { return };
     let body = format!(
-        "rfi-irfos.com contact form: both CRM and Web3Forms delivery failed for {} <{}>. \
-         Only copy is contacts.jsonl on the web machine's local (unmounted) disk - check it \
-         before the machine restarts.",
+        "rfi-irfos.com contact form: CRM relay failed for {} <{}> ({err}). The visitor's \
+         browser still tries a direct Web3Forms send, but that lead won't show up in \
+         Lighthouse's count. Backup copy: contacts.jsonl on the web machine's local \
+         (unmounted) disk - check it before the machine restarts.",
         entry.name, entry.email,
     );
     let _ = client
         .post("https://ntfy.sh/rfi-irfos-web-contact")
-        .header("Title", "Contact form delivery failed")
+        .header("Title", "Contact form CRM relay failed")
         .header("Priority", "urgent")
         .body(body)
         .send()
         .await;
-}
-
-async fn relay_to_web3forms(entry: &ContactEntry, subject: &str) -> Result<(), String> {
-    let key = std::env::var("VITE_WEB3FORMS_KEY").unwrap_or_default();
-    if key.is_empty() {
-        return Err("VITE_WEB3FORMS_KEY not set on this app".into());
-    }
-
-    let payload = serde_json::json!({
-        "access_key": key,
-        "subject": if subject.is_empty() { format!("[rfi-irfos.com] Contact form — {}", entry.name) } else { subject.to_string() },
-        "name": entry.name,
-        "email": entry.email,
-        "replyto": entry.email,
-        "phone": entry.phone,
-        "message": entry.message,
-    });
-
-    let client = reqwest::Client::builder()
-        .timeout(std::time::Duration::from_secs(10))
-        .build()
-        .map_err(|e| e.to_string())?;
-
-    let res = client
-        .post("https://api.web3forms.com/submit")
-        .json(&payload)
-        .send()
-        .await
-        .map_err(|e| e.to_string())?;
-
-    if res.status().is_success() {
-        Ok(())
-    } else {
-        Err(format!("Web3Forms returned {}", res.status()))
-    }
 }
 
 async fn relay_to_crm(entry: &ContactEntry) -> Result<(), String> {
