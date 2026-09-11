@@ -174,11 +174,16 @@ async fn notify_crm_failure(entry: &ContactEntry, err: &str) {
 }
 
 async fn relay_to_crm(entry: &ContactEntry) -> Result<(), String> {
-    let key = std::env::var("LIGHTHOUSE_INBOX_KEY")
-        .or_else(|_| std::env::var("LIGHTHOUSE_SIGNUP_KEY"))
+    // Lighthouse's own signup() checks LIGHTHOUSE_SIGNUP_KEY first, falling back to
+    // LIGHTHOUSE_INBOX_KEY - mirror that order here. A stale/mismatched
+    // LIGHTHOUSE_INBOX_KEY (401 as of 2026-09-11) is why this reads SIGNUP_KEY first:
+    // a dedicated key set on both sides can't collide with whatever INBOX_KEY is doing
+    // for the unrelated Gmail-push webhook.
+    let key = std::env::var("LIGHTHOUSE_SIGNUP_KEY")
+        .or_else(|_| std::env::var("LIGHTHOUSE_INBOX_KEY"))
         .unwrap_or_default();
     if key.is_empty() {
-        return Err("LIGHTHOUSE_INBOX_KEY not set on this app".into());
+        return Err("neither LIGHTHOUSE_SIGNUP_KEY nor LIGHTHOUSE_INBOX_KEY set on this app".into());
     }
 
     let base = std::env::var("LIGHTHOUSE_BASE_URL")
