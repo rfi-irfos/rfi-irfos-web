@@ -126,9 +126,9 @@ export const DE: Content = {
   },
 
   trackRecord: {
-    eyebrow: 'Track Record',
+    eyebrow: 'Permanentes Offenlegungsledger',
     heading: 'die Disziplin, bewiesen',
-    paragraph: 'Wir lesen Apps auf Quellcode-Ebene, nicht nur von außen. Die Unternehmen auf diesem Ledger landen aus ganz unterschiedlichen Gründen hier: Sie geben Daten still an Dritte weiter, tracken ohne Zustimmung oder lassen Sicherheitslücken offen. Jede Organisation wird nach demselben Maßstab behandelt, unabhängig davon, ob sie uns bezahlt oder nicht.',
+    paragraph: 'Wir dekompilieren öffentlich verbreitete Android- und iOS-Apps und verfolgen ihre Datenflüsse zu echten Endpunkten in echten Ländern. Unternehmen landen aus ganz unterschiedlichen Gründen auf diesem Ledger: Sie geben Ihre Daten an Dritte weiter, tracken ohne Einwilligung, oder lassen die Tür offen. Jede Organisation wird nach demselben Maßstab behandelt, unabhängig davon, ob sie uns bezahlt oder nicht.',
     kpis: {
       appsAudited: 'Android/iOS Apps geprüft',
       smaliClasses: 'Smali-Klassen gelesen',
@@ -225,8 +225,8 @@ export const DE: Content = {
   },
 
   pricing: {
-    eyebrow: 'Zugang',
-    heading: 'unser Kernangebot',
+    eyebrow: 'Kernangebot',
+    heading: 'klar kalkuliert',
     subheading: 'F\u00fcnf Bereiche auf einem gemeinsamen, evidenzbasierten Weltmodell. Kombinieren Sie so viele, wie Ihre Frage braucht.',
     deliveryLabel: 'Lieferung',
     domains: [

@@ -129,9 +129,9 @@ export const EN = {
   },
 
   trackRecord: {
-    eyebrow: 'Track Record',
+    eyebrow: 'Permanent Disclosure Ledger',
     heading: 'the discipline, demonstrated',
-    paragraph: 'We decompile shipped apps and trace their data flows to real endpoints in real countries. Companies land on this ledger for many different reasons: they hand your data to third parties, they track without consent, or they leave the door open. Every organisation is held to the same standard, whether it pays us or not.',
+    paragraph: 'We decompile publicly distributed Android/iOS apps and trace their data flows to real endpoints in real countries. Companies land on this ledger for many different reasons: they hand your data to third parties, they track without consent, or they leave the door open. Every organisation is held to the same standard, whether it pays us or not.',
     kpis: {
       appsAudited: 'Android/iOS apps audited',
       smaliClasses: 'Smali classes read',
@@ -232,8 +232,8 @@ export const EN = {
   },
 
   pricing: {
-    eyebrow: 'Access',
-    heading: 'our core offer',
+    eyebrow: 'Core Offer',
+    heading: 'priced in plain terms',
     subheading: 'Five domains built on one evidence-first world model. Combine as many as your question needs.',
     deliveryLabel: 'Delivery',
     domains: [

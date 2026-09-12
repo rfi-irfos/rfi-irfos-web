@@ -103,6 +103,7 @@ export function PricingSection({
               consistently across the site instead of Access/Evidence sitting
               left-aligned while Data Solutions centers. */}
           <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <p className="wm-eyebrow">{t.pricing.eyebrow}</p>
             <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.pricing.heading}</h1>
             <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 640 }}>
               {t.pricing.subheading}
@@ -122,8 +123,14 @@ export function PricingSection({
             overlapping-stack look; spacing between cards comes entirely from
             each card's own height plus the top-offset stagger. */}
         <div id="pricing-offer" style={{ display: 'flex', flexDirection: 'column', maxWidth: 900, margin: '0 auto', scrollMarginTop: 84 }}>
+          {/* The last card gets a much longer dwell (paddingBottom) than the
+              rest - live feedback 2026-09-13: it used to release into the
+              closing CTA almost the instant it finished climbing into the
+              stack, which felt abrupt next to how deliberately the other
+              four build up. This holds the completed five-card stack on
+              screen for a beat before it finally scrolls away. */}
           {domains.map((domain, i) => (
-            <div key={domain.name} style={{ position: 'sticky', top: `${80 + i * 76}px`, zIndex: i + 1, paddingBottom: 40 }}>
+            <div key={domain.name} style={{ position: 'sticky', top: `${80 + i * 76}px`, zIndex: i + 1, paddingBottom: i === domains.length - 1 ? 320 : 40 }}>
               <Reveal delay={i * 0.05}>
                 <DomainCard domain={domain} mobile={mobile} onSelectTier={onSelectTier} />
               </Reveal>

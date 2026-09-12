@@ -297,25 +297,11 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     const next = viewForSection(target)
     setView(next)
     window.history.replaceState(null, '', `#${target}`)
-    if (target === 'access') {
-      // Jump straight to the offer card itself, skipping the section heading
-      // above it (live feedback 2026-08-25: "wenn man auf access klickt solls
-      // einfach nur die karte direkt zeigen"). This reverses the 2026-08-21
-      // decision to land at the very top - that made sense when the card was
-      // one compact three-stage layout, but the 2026-08-25 redesign (icon
-      // rows, full evidence-flow prose, bottom-anchored delivery bar) made it
-      // tall again, so the heading now just pushes the actual card further
-      // down out of view on first paint.
-      requestAnimationFrame(() => {
-        const card = document.getElementById('pricing-offer')
-        if (!card) return
-        const NAV_HEIGHT = 64
-        const abs = card.getBoundingClientRect().top + window.pageYOffset
-        window.scrollTo({ top: Math.max(0, abs - NAV_HEIGHT - 20), behavior: 'smooth' })
-      })
-      return
-    }
-    // Falls through to the same plain scroll-to-top every other nav link uses.
+    // Access used to jump straight to the offer card, skipping the heading
+    // above it (2026-08-25). Reversed 2026-09-13, live direction: clicking
+    // Access should land at the very top of the page like every other nav
+    // link, heading (with its new eyebrow) visible first - falls through to
+    // the same plain scroll-to-top every other nav link uses.
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
   function navigateHome() {
