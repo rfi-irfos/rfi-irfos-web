@@ -97,18 +97,37 @@ export function PricingSection({
         <Reveal>
           {/* h1, not h2 - same CRITICAL audit finding as TrackRecord.tsx: /access/
               rendered zero h1 elements. This section only renders on the access
-              view, so there is no competing h1 on the homepage. */}
-          <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.pricing.heading}</h1>
-          <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 640 }}>
-            {t.pricing.subheading}
-          </p>
+              view, so there is no competing h1 on the homepage. Centered to match
+              Data Solutions' .data-hero treatment and Evidence's heading block -
+              live direction 2026-09-13: page headers/subheaders should read
+              consistently across the site instead of Access/Evidence sitting
+              left-aligned while Data Solutions centers. */}
+          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.pricing.heading}</h1>
+            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 640 }}>
+              {t.pricing.subheading}
+            </p>
+          </div>
         </Reveal>
 
-        <div id="pricing-offer" style={{ display: 'flex', flexDirection: 'column', gap: 28, maxWidth: 900, margin: '0 auto', scrollMarginTop: 84 }}>
+        {/* Sticky card-stack effect (live direction 2026-09-13, "wie beim
+            Durchblättern von Akten"): each card sticks a little lower than the
+            one before it as you scroll, so the next card slides up and covers
+            it, leaving only its title strip peeking out above - by the last
+            card the whole stack reads as a deck of files with just the domain
+            names showing. Pure CSS `position: sticky` per card + an
+            increasing `top` offset and z-index, no scroll-tracking JS needed.
+            `gap` is 0 here on purpose - any gap would leave a permanent seam
+            between cards regardless of scroll position and break the
+            overlapping-stack look; spacing between cards comes entirely from
+            each card's own height plus the top-offset stagger. */}
+        <div id="pricing-offer" style={{ display: 'flex', flexDirection: 'column', maxWidth: 900, margin: '0 auto', scrollMarginTop: 84 }}>
           {domains.map((domain, i) => (
-            <Reveal key={domain.name} delay={i * 0.05}>
-              <DomainCard domain={domain} mobile={mobile} onSelectTier={onSelectTier} />
-            </Reveal>
+            <div key={domain.name} style={{ position: 'sticky', top: `${80 + i * 76}px`, zIndex: i + 1, paddingBottom: 40 }}>
+              <Reveal delay={i * 0.05}>
+                <DomainCard domain={domain} mobile={mobile} onSelectTier={onSelectTier} />
+              </Reveal>
+            </div>
           ))}
         </div>
 

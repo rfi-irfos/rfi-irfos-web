@@ -868,8 +868,20 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       // in front of it, i.e. invisible. Everything else in the page (nav, modals,
       // dropdowns) already carries its own explicit positive z-index and is
       // unaffected by this - they paint above the spine exactly as before.
+      // overflowX: 'clip', not 'hidden' (fixed 2026-09-13) - per spec, setting
+      // overflow-x to anything but visible while overflow-y is left at its
+      // default forces overflow-y to compute as 'auto' too, which makes this
+      // div a scroll container for `position: sticky` purposes even though it
+      // never actually scrolls (its own scrollHeight always equals its
+      // clientHeight - the real page scroll happens on the document). Every
+      // sticky element anywhere on the site was silently computing its stuck
+      // position against this div's inert scrollport instead of the viewport,
+      // so it just moved with the page like a normal static element (found via
+      // Pricing.tsx's card-stack effect never sticking). `overflow: clip`
+      // clips the same way `hidden` does but isn't a scrolling mechanism, so
+      // it doesn't trigger the overflow-y auto-computation at all.
       position: 'relative', zIndex: 0,
-      color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'hidden', maxWidth: '100vw' }}>
+      color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'clip', maxWidth: '100vw' }}>
 
       {/* Photo backdrop, on its own layer (live feedback 2026-08-14: "it takes too
           much attention, like a drummer overshadowing the band, not carrying it" -

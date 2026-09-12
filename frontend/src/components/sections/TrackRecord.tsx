@@ -2753,18 +2753,21 @@ export function TrackRecordSection({
             renders on the evidence view, never on the homepage, so there is no
             competing h1. Sized one step above the h2s below it to make the
             hierarchy visible, not just semantic. */}
-        <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.trackRecord.heading}</h1>
-        {/* Solid backing added 2026-08-06 (spine feedback): this paragraph sits
-            directly on the page background with nothing behind it, and its
-            720px max-width crosses the page's horizontal center where the
-            spine/orb live. Padding + a matching negative margin keep the text
-            itself pixel-aligned with before - only the panel is new. */}
-        <p style={{
-          color: 'var(--text2)', marginBottom: 40, maxWidth: 720, fontSize: 15, lineHeight: 1.9,
-          background: 'var(--glass-bg-solid)', borderRadius: 8, padding: '8px 12px', marginLeft: -12, marginTop: -8,
-        }}>
-          {t.trackRecord.paragraph}
-        </p>
+        {/* Centered to match Data Solutions' .data-hero treatment and the
+            reworked Access heading block - live direction 2026-09-13: page
+            headers/subheaders should read consistently across the site. The
+            background panel below now sizes to its own content and centers
+            with it, rather than the old left-pixel-alignment offset (which
+            assumed a left-aligned page). */}
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.trackRecord.heading}</h1>
+          <p style={{
+            color: 'var(--text2)', marginBottom: 40, maxWidth: 720, fontSize: 15, lineHeight: 1.9,
+            background: 'var(--glass-bg-solid)', borderRadius: 8, padding: '8px 12px',
+          }}>
+            {t.trackRecord.paragraph}
+          </p>
+        </div>
         {/* Permanent disclosure ledger — KPI row + search/table panel now share
             ONE outer frame (live feedback 2026-08-12: the two used to be
             separate floating blocks with a gap between them, which read as
