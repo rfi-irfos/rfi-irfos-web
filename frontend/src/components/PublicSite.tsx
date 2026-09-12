@@ -13,7 +13,6 @@ import { AppPrivacySection } from './sections/AppPrivacy'
 import { WorldModelSection } from './sections/WorldModel'
 import { SquadSection } from './sections/Squad'
 import { PricingSection } from './sections/Pricing'
-import { JourneySection } from './sections/Journey'
 import { DataSolutionsSection } from './sections/DataSolutions'
 import { CoopPartnersSection } from './sections/CoopPartners'
 import { SubmitSection, type TipForm } from './sections/Submit'
@@ -1355,7 +1354,6 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
 
         {view === 'access' && <section id="access" className="rfi-view-panel">
           <PricingSection onSelectTier={selectTier} />
-          <JourneySection />
         </section>}
       </main>
 

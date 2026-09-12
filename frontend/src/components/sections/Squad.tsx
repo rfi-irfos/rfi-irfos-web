@@ -392,11 +392,10 @@ function SquadNeedToKnow({ onRequestAccess }: { onRequestAccess: (keys: AgentKey
           {s.needToKnow.cards.map((card, i) => {
             const Icon = NEED_TO_KNOW_ICONS[i % NEED_TO_KNOW_ICONS.length]
             const tags = card.tags as AgentKey[]
-            const cardColor = agentByKey(tags[0]).color
             return (
               <Reveal key={card.question} delay={i * 0.05}>
-                <div className="sq-card wm-card" style={{ '--card-color': cardColor } as CSSProperties}>
-                  <Icon size={26} color={cardColor} style={{ alignSelf: 'center' }} />
+                <div className="sq-card wm-card">
+                  <Icon size={26} color="var(--icon-neutral)" style={{ alignSelf: 'center' }} />
                   <h3>{card.question}</h3>
                   <p>{card.body}</p>
                   <div className="sq-tag-row">

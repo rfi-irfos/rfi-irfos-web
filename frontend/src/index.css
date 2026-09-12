@@ -76,6 +76,11 @@ h1, h2, h3, .rfi-display {
   --input-ph:     #606080;
   --timeline-line:rgba(0,245,196,0.2);
   --surface-sunken: var(--bg3);
+  /* Neutral cream tone for icons that used to be colour-coded per agent (Squad
+     "What do you need to know?" cards) - live direction 2026-09-12: the
+     rainbow of agent brand colours per icon read as noisy, one calm neutral
+     highlight for all of them instead. */
+  --icon-neutral: #ddd0ac;
 }
 
 /* Phone gutter. Theme-independent, so it deliberately sits outside the
@@ -121,6 +126,7 @@ h1, h2, h3, .rfi-display {
   --input-text:   #0a0a0a;
   --input-ph:     #999999;
   --timeline-line:rgba(0,0,0,0.12);
+  --icon-neutral: #8a7548;   /* muted warm tone, readable on white (cream is too pale here) */
   --surface-sunken: var(--bg3);
 }
 
