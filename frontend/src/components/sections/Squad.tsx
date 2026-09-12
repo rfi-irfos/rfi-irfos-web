@@ -17,7 +17,7 @@ import {
 import { useLocale } from '../../hooks/useLocale'
 import { Reveal, useMobile, beacon, WEB3FORMS_KEY, OUTPUT_TAG_HUES } from './shared'
 import { SQUAD_AGENTS, agentByKey, type AgentKey } from '../../content/squadAgents'
-import squadHeroPlexus from '../../assets/squad/sq-hero-plexus.avif'
+import squadHeroWorkflow from '../../assets/squad/sq-hero-agent-workflow.png'
 
 const NEED_TO_KNOW_ICONS = [IconTrendingUp, IconCoin, IconGitCompare, IconCircleCheck, IconSearch, IconShieldLock]
 
@@ -83,7 +83,7 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
         </Reveal>
         <Reveal from="right">
           <div className="sq-hub-panel">
-            <img className="sq-hub-photo" src={squadHeroPlexus} alt="" />
+            <img className="sq-hub-photo" src={squadHeroWorkflow} alt="" />
           </div>
         </Reveal>
       </div>
