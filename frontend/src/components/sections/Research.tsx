@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion } from 'framer-motion'
-import { prefersReducedMotion, useTilt, Reveal } from './shared'
+import { prefersReducedMotion, useTilt, Reveal, useModalExit } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // Live feedback 2026-08-14: cards used to show the full two-paragraph
@@ -70,8 +70,9 @@ const RESEARCH_GRID_COLS = 4
 // needed) so it reads as the same canonical modal template site-wide instead of a
 // one-off. Always-dark chrome independent of the site theme toggle, same reasoning
 // as the checkout modal: fixed light hex text colors, not var(--text*) tokens.
-function ResearchAreaModal({ index, onClose, onNavigate }: {
+function ResearchAreaModal({ index, closing, onClose, onNavigate }: {
   index: number
+  closing?: boolean
   onClose: () => void
   onNavigate: (i: number) => void
 }) {
@@ -87,15 +88,15 @@ function ResearchAreaModal({ index, onClose, onNavigate }: {
   }, [onClose])
 
   return (
-    <div className="rfi-modal-backdrop" onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+    <div className={`rfi-modal-backdrop${closing ? ' rfi-modal-backdrop-out' : ''}`} onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
       {/* key={index} forces a remount on every cross-link click, re-triggering the
           panel's CSS mount animation - a smooth swap between two areas' content
           instead of an abrupt content swap inside a static box. */}
-      <div key={index} className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{
+      <div key={index} className={`rfi-modal-panel${closing ? ' rfi-modal-panel-out' : ''}`} onClick={e => e.stopPropagation()} style={{
         background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
         backgroundBlendMode: 'overlay',
         boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
-        border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '32px 32px', maxWidth: 640, width: '100%', maxHeight: '90vh', overflowY: 'auto', position: 'relative',
+        border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '44px 44px', maxWidth: 780, width: '100%', maxHeight: '90vh', overflowY: 'auto', position: 'relative',
       }}>
         {/* Icon and close button share one row. The close button used to be
             absolutely positioned at top:8 while the icon sat inside the panel's
@@ -110,7 +111,7 @@ function ResearchAreaModal({ index, onClose, onNavigate }: {
             fontSize: 20, lineHeight: 1, padding: 10, margin: '-10px -10px 0 0',
           }}>&#x2715;</button>
         </div>
-        <h3 style={{ fontSize: 26, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2, marginBottom: 20 }}>{area.title}</h3>
+        <h3 style={{ fontSize: 30, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2, marginBottom: 22 }}>{area.title}</h3>
         {/* Plain-language anchor line (2026-08-15, live feedback: the two prose
             paragraphs below assume a reader already knows what a "world model" or
             a "trit" is - this line never does, one concrete sentence before the
@@ -118,8 +119,8 @@ function ResearchAreaModal({ index, onClose, onNavigate }: {
             modal's punchline paragraph, for visual consistency across modals. */}
         {area.plain && (
           <p style={{
-            color: '#e8e8f0', fontSize: 14, fontWeight: 700, lineHeight: 1.5,
-            margin: 0, marginBottom: 16, paddingLeft: 14, borderLeft: '2px solid #00f5c4',
+            color: '#e8e8f0', fontSize: 16, fontWeight: 700, lineHeight: 1.55,
+            margin: 0, marginBottom: 18, paddingLeft: 16, borderLeft: '2px solid #00f5c4',
           }}>{area.plain}</p>
         )}
         {/* Body paragraphs bumped from a dimmer grey (#c8c8d8) to near-white
@@ -129,7 +130,7 @@ function ResearchAreaModal({ index, onClose, onNavigate }: {
             same feedback pass also asked for less scrolling after the keyword-
             density pass made every area's desc noticeably longer. */}
         {area.desc.split('\n\n').map((p, i) => (
-          <p key={i} style={{ color: '#e8e8f0', fontSize: 14, lineHeight: 1.7, margin: 0, marginBottom: 12 }}>{p}</p>
+          <p key={i} style={{ color: '#e8e8f0', fontSize: 16, lineHeight: 1.75, margin: 0, marginBottom: 14 }}>{p}</p>
         ))}
         {/* Deliberately unshowy (live feedback: "nicht so grell") - a low-fill teal
             pill, not a loud CTA button, so it reads as "there's more to explore"
@@ -139,13 +140,13 @@ function ResearchAreaModal({ index, onClose, onNavigate }: {
             cryptic slogan, not obviously a "go to the next area" link) and no
             fontFamily override, so it inherits the same body font as the rest
             of the card instead of the monospace fallback reading as "Roboto". */}
-        <div style={{ marginTop: 20, textAlign: 'center' }}>
-          <p style={{ fontSize: 10, color: '#6a6a80', textTransform: 'uppercase', letterSpacing: '0.14em', margin: 0, marginBottom: 8 }}>{t.research.upNext}</p>
+        <div style={{ marginTop: 24, textAlign: 'center' }}>
+          <p style={{ fontSize: 11, color: '#6a6a80', textTransform: 'uppercase', letterSpacing: '0.14em', margin: 0, marginBottom: 9 }}>{t.research.upNext}</p>
           <button onClick={() => onNavigate(nextIndex)} style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
             background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)',
-            color: '#8fe8d0', fontSize: 12,
-            letterSpacing: '0.01em', padding: '9px 16px', borderRadius: 999, cursor: 'pointer',
+            color: '#8fe8d0', fontSize: 13,
+            letterSpacing: '0.01em', padding: '10px 18px', borderRadius: 999, cursor: 'pointer',
           }}>
             {t.research.areas[nextIndex].nextLabel} &rarr;
           </button>
@@ -160,6 +161,7 @@ function ResearchAreaModal({ index, onClose, onNavigate }: {
 function ResearchAreasGrid() {
   const { t } = useLocale()
   const [selected, setSelected] = useState<number | null>(null)
+  const selectedExit = useModalExit(selected)
   // Scroll lock while open - the other 4 modals on the page (checkout, proposal,
   // report, intel) all get this from a shared effect in PublicSite.tsx keyed off
   // their own state; this modal's state lives locally here instead, so it needs
@@ -197,8 +199,8 @@ function ResearchAreasGrid() {
           PublicSite.tsx) happen to render as siblings of <main> rather than
           descendants, so they were never exposed to this. A portal sidesteps it
           outright regardless of where this component lives in the tree. */}
-      {selected !== null && createPortal(
-        <ResearchAreaModal index={selected} onClose={() => setSelected(null)} onNavigate={setSelected} />,
+      {selectedExit.rendered !== null && createPortal(
+        <ResearchAreaModal index={selectedExit.rendered} closing={selectedExit.closing} onClose={() => setSelected(null)} onNavigate={setSelected} />,
         document.body
       )}
     </>

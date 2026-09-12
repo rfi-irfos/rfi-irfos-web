@@ -103,8 +103,9 @@ const LABELS = {
   },
 } as const
 
-export function SystemCardModal({ systemKey, onClose, onNavigate }: {
+export function SystemCardModal({ systemKey, closing, onClose, onNavigate }: {
   systemKey: string
+  closing?: boolean
   onClose: () => void
   onNavigate: (key: string) => void
 }) {
@@ -130,12 +131,12 @@ export function SystemCardModal({ systemKey, onClose, onNavigate }: {
   const accent = STATUS_COLOR[sys.status]
 
   return createPortal(
-    <div className="rfi-modal-backdrop" onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-      <div key={systemKey} className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{
+    <div className={`rfi-modal-backdrop${closing ? ' rfi-modal-backdrop-out' : ''}`} onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+      <div key={systemKey} className={`rfi-modal-panel${closing ? ' rfi-modal-panel-out' : ''}`} onClick={e => e.stopPropagation()} style={{
         background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
         backgroundBlendMode: 'overlay',
         boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
-        border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '36px 32px', maxWidth: 820, width: '100%', maxHeight: '85vh', overflowY: 'auto', position: 'relative',
+        border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '46px 42px', maxWidth: 980, width: '100%', maxHeight: '85vh', overflowY: 'auto', position: 'relative',
       }}>
         <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 8, right: 8, background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 20, lineHeight: 1, padding: 10, zIndex: 1 }}>&#x2715;</button>
 
@@ -173,27 +174,27 @@ export function SystemCardModal({ systemKey, onClose, onNavigate }: {
 
           <div style={{ flex: '1 1 0', minWidth: 280 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 4, marginTop: 0 }}>
-              <h3 style={{ fontSize: 24, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2, margin: 0 }}>{sys.name}</h3>
+              <h3 style={{ fontSize: 27, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2, margin: 0 }}>{sys.name}</h3>
               <StatusBadge status={sys.status} />
             </div>
 
             <SectionLabel>{l.problem}</SectionLabel>
-            <p style={{ color: '#e8e8f0', fontSize: 14.5, lineHeight: 1.7, margin: 0 }}>{sys.problem[locale]}</p>
+            <p style={{ color: '#e8e8f0', fontSize: 16, lineHeight: 1.75, margin: 0 }}>{sys.problem[locale]}</p>
 
             <SectionLabel>{l.why}</SectionLabel>
-            <p style={{ color: '#c8c8d8', fontSize: 14, lineHeight: 1.7, margin: 0 }}>{sys.why[locale]}</p>
+            <p style={{ color: '#c8c8d8', fontSize: 15.5, lineHeight: 1.75, margin: 0 }}>{sys.why[locale]}</p>
 
             <SectionLabel>{l.different}</SectionLabel>
-            <p style={{ color: '#c8c8d8', fontSize: 14, lineHeight: 1.7, margin: 0 }}>{sys.different[locale]}</p>
+            <p style={{ color: '#c8c8d8', fontSize: 15.5, lineHeight: 1.75, margin: 0 }}>{sys.different[locale]}</p>
 
             <SectionLabel>{l.fit}</SectionLabel>
-            <p style={{ color: '#c8c8d8', fontSize: 14, lineHeight: 1.7, margin: 0 }}>{sys.fit[locale]}</p>
+            <p style={{ color: '#c8c8d8', fontSize: 15.5, lineHeight: 1.75, margin: 0 }}>{sys.fit[locale]}</p>
 
             <SectionLabel>{l.proof}</SectionLabel>
-            <p style={{ color: '#a0a0b8', fontSize: 13, lineHeight: 1.65, margin: 0 }}>{sys.proof[locale]}</p>
+            <p style={{ color: '#a0a0b8', fontSize: 14.5, lineHeight: 1.7, margin: 0 }}>{sys.proof[locale]}</p>
 
             <SectionLabel>{l.technical}</SectionLabel>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", color: '#a0a0b8', fontSize: 12, lineHeight: 1.6, margin: 0 }}>{sys.technical[locale]}</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", color: '#a0a0b8', fontSize: 13, lineHeight: 1.65, margin: 0 }}>{sys.technical[locale]}</p>
 
             {connected.length > 0 && (
               <>

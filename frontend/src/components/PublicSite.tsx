@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
 import type { Content } from '../content/en'
-import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed } from './sections/shared'
+import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed, useModalExit } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
 import { TrackRecordSection } from './sections/TrackRecord'
@@ -344,14 +344,22 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   // is) moved into this confirmation modal, shown above the B2B/ToS checkboxes, so
   // nothing gets lost by trimming the card itself.
   const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[]; bring?: string; mechanism?: string; receive?: string } | null>(null)
+  const checkoutModalExit = useModalExit(checkoutModal)
   const [reportModal, setReportModal]         = useState<string | null>(null)
+  // Delays each modal's actual unmount so its CSS exit animation can play -
+  // see useModalExit (shared.tsx). Callers keep calling setXModal(null)
+  // exactly as before; this only affects how long the closing modal stays
+  // rendered and which class it wears while it does.
+  const reportModalExit = useModalExit(reportModal)
   // Full plain-language writeup per ledger entry - the ledger row/cell only ever
   // summarizes (hover reveals the short "why it matters" line), this is where the
   // complete article-style explanation lives, opened by clicking the Intel cell.
   const [intelModal, setIntelModal]           = useState<{ target: string; market: string; sev: string; finding: string; headline?: string } | null>(null)
+  const intelModalExit = useModalExit(intelModal)
   // Footer's zone-grouped system links open this instead of linking straight to
   // GitHub/crates.io - see SystemCardModal.tsx.
   const [systemModal, setSystemModal]         = useState<string | null>(null)
+  const systemModalExit = useModalExit(systemModal)
   const [agbChecked, setAgbChecked]           = useState(false)
   const [b2bChecked, setB2bChecked]           = useState(false)
   const { theme, cycle } = useTheme()
@@ -932,15 +940,15 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       <ScrollSpine theme={theme} />
 
       {/* REPORT PDF MODAL */}
-      {reportModal && (
+      {reportModalExit.rendered && (
         // Blurred backdrop to match the checkout/proposal modals (live feedback
         // 2026-08-14: that's "the canonical template", this one was still the older
         // flat rgba(0,0,0,0.85) dim with no blur - now the same blur(14px) treatment).
-        <div className="rfi-modal-backdrop" onClick={() => setReportModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+        <div className={`rfi-modal-backdrop${reportModalExit.closing ? ' rfi-modal-backdrop-out' : ''}`} onClick={() => setReportModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
           {/* Same always-dark carbon chrome as the checkout/intel modals (live
               feedback 2026-08-14) - fixed light hex text, not var(--text*)/var(--accent-text),
               which resolve dark in light mode and went illegible against this panel. */}
-          <div className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{
+          <div className={`rfi-modal-panel${reportModalExit.closing ? ' rfi-modal-panel-out' : ''}`} onClick={e => e.stopPropagation()} style={{
             width: '100%', maxWidth: 900, height: '85vh', overflow: 'hidden', display: 'flex', flexDirection: 'column',
             background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
             backgroundBlendMode: 'overlay',
@@ -973,7 +981,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 </svg>
                 <p style={{ color: '#a0a0b8', fontSize: 13.5, lineHeight: 1.6, margin: 0, maxWidth: 320 }}>{t.reportModal.mobileFallbackHint}</p>
                 <a
-                  href={reportModal}
+                  href={reportModalExit.rendered}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => beacon('report_modal_mobile_open')}
@@ -988,7 +996,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 </a>
               </div>
             ) : (
-              <iframe src={reportModal} style={{ flex: 1, border: 'none', width: '100%' }} title={t.reportModal.iframeTitle} />
+              <iframe src={reportModalExit.rendered} style={{ flex: 1, border: 'none', width: '100%' }} title={t.reportModal.iframeTitle} />
             )}
           </div>
         </div>
@@ -999,7 +1007,8 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           "nicht mit den headers, aber halt einfach total sauberer artikel") - only the
           technical finding at the bottom is visually separated, kept for anyone who wants
           to verify the plain-language explanation against the actual audit evidence. */}
-      {intelModal && (() => {
+      {intelModalExit.rendered && (() => {
+        const intelModal = intelModalExit.rendered
         const sep = ' — meaning '
         const si = intelModal.finding.indexOf(sep)
         const technical = si === -1 ? intelModal.finding : intelModal.finding.slice(0, si)
@@ -1007,7 +1016,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         return (
           // Blurred backdrop to match the checkout/proposal modals - same reasoning
           // as the Report PDF modal above.
-          <div className="rfi-modal-backdrop" onClick={() => setIntelModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+          <div className={`rfi-modal-backdrop${intelModalExit.closing ? ' rfi-modal-backdrop-out' : ''}`} onClick={() => setIntelModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
             {/* Same canonical carbon-gradient template as the checkout/proposal modals
                 (live feedback 2026-08-14: this one was still on a flat hardcoded navy
                 panel, "auch nichtmal in dem carbon style") - and, same as those, this
@@ -1015,29 +1024,29 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 toggle, so every text color inside is a fixed light hex, NOT a
                 var(--text*) token (those resolve to near-black in light mode and read
                 as illegible dark-on-navy - the actual light-mode contrast bug). */}
-            <div className="rfi-modal-panel" onClick={e => e.stopPropagation()} style={{
-              width: '100%', maxWidth: 640, maxHeight: '85vh', overflow: 'hidden', display: 'flex', flexDirection: 'column',
+            <div className={`rfi-modal-panel${intelModalExit.closing ? ' rfi-modal-panel-out' : ''}`} onClick={e => e.stopPropagation()} style={{
+              width: '100%', maxWidth: 780, maxHeight: '85vh', overflow: 'hidden', display: 'flex', flexDirection: 'column',
               background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
               backgroundBlendMode: 'overlay',
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
               border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14,
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{intelModal.target} · {intelModal.market} · {intelModal.sev}</div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{intelModal.target} · {intelModal.market} · {intelModal.sev}</div>
                 <button onClick={() => setIntelModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '9px 11px' }}>&#x2715;</button>
               </div>
-              <div style={{ padding: '20px 22px', overflowY: 'auto' }}>
+              <div style={{ padding: '26px 28px', overflowY: 'auto' }}>
                 {/* Newspaper-style headline - the thing a visitor with zero technical
                     background reads first and instantly understands. Falls back to
                     nothing (meaning paragraph just runs first, as before) until every
                     ledger entry has one written - Simeon, 2026-08-08. */}
                 {intelModal.headline && (
-                  <h3 style={{ fontSize: 22, lineHeight: 1.3, fontWeight: 800, color: '#e8e8f0', margin: '0 0 12px' }}>{intelModal.headline}</h3>
+                  <h3 style={{ fontSize: 25, lineHeight: 1.3, fontWeight: 800, color: '#e8e8f0', margin: '0 0 14px' }}>{intelModal.headline}</h3>
                 )}
-                <p style={{ fontSize: 15, lineHeight: 1.7, color: '#e8e8f0', margin: 0 }}>{meaning}</p>
-                <div style={{ marginTop: 20, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>{t.intelModal.evidenceLabel}</div>
-                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, lineHeight: 1.6, color: '#a0a0b8', margin: 0 }}>{technical}</p>
+                <p style={{ fontSize: 17, lineHeight: 1.75, color: '#e8e8f0', margin: 0 }}>{meaning}</p>
+                <div style={{ marginTop: 22, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 7 }}>{t.intelModal.evidenceLabel}</div>
+                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12.5, lineHeight: 1.65, color: '#a0a0b8', margin: 0 }}>{technical}</p>
                 </div>
               </div>
             </div>
@@ -1047,17 +1056,19 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
 
       {/* B2B CHECKOUT CONFIRMATION MODAL - cards on the page only show tier/price/CTA now;
           this is where the full breakdown actually lives, right above the terms. */}
-      {checkoutModal && (
+      {checkoutModalExit.rendered && (() => {
+        const checkoutModal = checkoutModalExit.rendered
+        return (
         // Backdrop now blurs the page behind it (same idea as the header's scroll blur)
         // so the modal visually pops forward instead of just dimming - added 2026-07-31
         // alongside the carbon-gradient panel below, same technique as the cookie banner
         // but pushed darker for contrast against a blurred page.
-        <div className="rfi-modal-backdrop" style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
-          <div className="rfi-modal-panel" style={{
+        <div className={`rfi-modal-backdrop${checkoutModalExit.closing ? ' rfi-modal-backdrop-out' : ''}`} style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent: 'center', padding: mobile ? 0 : '1rem' }}>
+          <div className={`rfi-modal-panel${checkoutModalExit.closing ? ' rfi-modal-panel-out' : ''}`} style={{
             background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
             backgroundBlendMode: 'overlay',
             boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
-            border: '1px solid rgba(255,255,255,0.08)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '18px 16px 26px' : '24px 20px', maxWidth: mobile ? '100%' : 640, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
+            border: '1px solid rgba(255,255,255,0.08)', borderRadius: mobile ? '14px 14px 0 0' : 14, padding: mobile ? '18px 16px 26px' : '32px 28px', maxWidth: mobile ? '100%' : 780, width: '100%', maxHeight: mobile ? '92vh' : '88vh', overflowY: 'auto' }}>
             {/* This modal's chrome is deliberately always-dark (carbon gradient, same family as
                 the cookie banner but darker), independent of the
                 site theme toggle - so every text color inside it is a fixed light hex, NOT a
@@ -1120,7 +1131,8 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             </div>
           </div>
         </div>
-      )}
+        )
+      })()}
 
       {/* Live feedback 2026-08-14: nav wordmark/links were invisible in light
           theme on the Systems/Evidence/Access views ("in white mode the name is
@@ -1611,7 +1623,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           </div>
           </>)}
         </div>
-        {systemModal && <SystemCardModal systemKey={systemModal} onClose={() => setSystemModal(null)} onNavigate={setSystemModal} />}
+        {systemModalExit.rendered && <SystemCardModal systemKey={systemModalExit.rendered} closing={systemModalExit.closing} onClose={() => setSystemModal(null)} onNavigate={setSystemModal} />}
       </footer>
       {cookieBannerOpen && (
         // background/border/box-shadow come from .rfi-glass-flat now, not hand-rolled per

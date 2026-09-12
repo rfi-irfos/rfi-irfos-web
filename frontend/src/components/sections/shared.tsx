@@ -90,6 +90,36 @@ export function Select({
   )
 }
 
+// Delays a modal/overlay's actual unmount so its CSS exit animation (the
+// "-out" class variant, see index.css .rfi-modal-backdrop-out/-panel-out) has
+// time to play (animation audit 2026-09-13: every modal on the site - report
+// PDF, intel article, checkout, system card - animated IN via CSS keyframes
+// but vanished INSTANTLY on close, no exit at all). Wraps the read side only:
+// callers keep calling their existing setXModal(null) exactly as before, this
+// just keeps rendering the last non-null value for `exitMs` longer and
+// exposes `closing` so the caller can swap in the "-out" class during that
+// window. No change needed anywhere a modal is opened or closed, including
+// child components that call the raw setter directly.
+export function useModalExit<T>(value: T | null, exitMs = 220) {
+  const [rendered, setRendered] = useState(value)
+  const [closing, setClosing] = useState(false)
+  useEffect(() => {
+    if (value !== null) {
+      setRendered(value)
+      setClosing(false)
+      return
+    }
+    if (rendered === null) return
+    setClosing(true)
+    const t = setTimeout(() => { setRendered(null); setClosing(false) }, exitMs)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally
+    // excludes `rendered`, which this effect itself sets; including it would
+    // re-fire the exit timer on every render while closing.
+  }, [value, exitMs])
+  return { rendered, closing }
+}
+
 // Whole-page scroll fraction (0-1), for the top progress bar - distinct from
 // useScrollProgress below, which is per-element activation, not total page position.
 export function usePageScrollProgress() {
@@ -821,8 +851,8 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets, br
           baselines. Baseline alignment fixes that regardless of the size difference,
           no manual marginTop nudge needed any more. */}
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
-        <h3 style={{ fontSize: mobile ? 22 : 28, fontWeight: 800, color: 'var(--text)', lineHeight: 1.2, margin: 0 }}>{tier}</h3>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, flexShrink: 0, color: '#8a8aa0', fontSize: 12 }}>
+        <h3 style={{ fontSize: mobile ? 24 : 32, fontWeight: 800, color: 'var(--text)', lineHeight: 1.2, margin: 0 }}>{tier}</h3>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, flexShrink: 0, color: '#8a8aa0', fontSize: 13 }}>
           <ClockIcon /> {t.modalTierBody.inTouchWithin12h}
         </div>
       </div>
