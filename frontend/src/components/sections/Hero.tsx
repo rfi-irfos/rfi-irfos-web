@@ -295,7 +295,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           by measuring the live DOM - the UX audit had only flagged /evidence/ and
           /access/ and missed this one. Every size/weight/margin here is set
           inline, so the tag change is purely semantic. */}
-      <h1 className="rfi-display" style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32, color: '#e8e8f0' }}>
+      <h1 className="rfi-display" style={{ fontSize: 'clamp(2.4rem, 6.2vw, 5.2rem)', fontWeight: 900, lineHeight: 1.06, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32, color: '#e8e8f0' }}>
         <HeroFlipWord word="Rethink" delay={0.2} />{' '}
         <RevealWords text="the Obvious." delayStart={0.36} emphasizeIndices={[1]} />
       </h1>
@@ -345,7 +345,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           initial={prefersReducedMotion() ? undefined : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-          style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(0.95rem, 1.7vw, 1.2rem)', fontWeight: 400, color: theme === 'light' ? '#1a1a20' : '#ffffff', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0 }}
+          style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.1rem, 2.05vw, 1.4rem)', fontWeight: 400, color: theme === 'light' ? '#1a1a20' : '#ffffff', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0 }}
         >
           {t.hero.identity}
         </motion.p>

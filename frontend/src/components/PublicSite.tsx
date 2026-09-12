@@ -653,7 +653,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
       // `settled` value (shared.tsx) computing well below 1 for a short element sitting
       // that close to the very top of the transit it tracks - both read as "greys out"
       // right after a nav click. Scrolling to clear the nav with real margin fixes both.
-      const NAV_HEIGHT = 64
+      const NAV_HEIGHT = 74 // floating pill nav: 14px top inset + 60px bar height
       const abs = target.getBoundingClientRect().top + window.pageYOffset
       window.scrollTo({ top: Math.max(0, abs - NAV_HEIGHT - 20), behavior: 'smooth' })
       // Explicit signal for ScrambleHeading (2026-08-05): fires deterministically at
@@ -1145,15 +1145,33 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           switch (no hero to scroll past). Gated on the view too now, so the
           light-text fallback only ever applies where the dark hero actually is. */}
       {(() => { const overDarkHero = !scrolled && view === 'home'
+      // Floating glass pill (live direction 2026-09-13, "wie bei n8n") - the
+      // nav no longer runs flush edge-to-edge; it's inset from the top and
+      // sides with rounded corners, so it reads as one distinct floating
+      // element instead of a full-width bar. All existing elements/logic are
+      // unchanged, just pushed further in - the transparent-over-hero vs.
+      // solid-blur-elsewhere background logic above this block is untouched
+      // (that contrast tuning was its own hard-won live feedback round), the
+      // pill shape and inset now apply in both states.
       return (
+      <div style={{ position: 'fixed', top: 14, left: 0, right: 0, zIndex: 100, display: 'flex', justifyContent: 'center', padding: '0 16px', pointerEvents: 'none' }}>
+      {/* Reversed from the original transparent-at-top/solid-once-scrolled
+          logic (live direction 2026-09-13): the floating pill should look
+          like a solid, grounded object at rest, and only turn into frosted
+          glass once scrolling brings page content up underneath it. Keyed on
+          scroll position alone (any view), independent of `overDarkHero`
+          (which still only drives the light-text-on-hero-photo logic below,
+          unchanged). */}
       <nav style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: overDarkHero ? 'transparent' : 'var(--nav-bg)',
-        backdropFilter: overDarkHero ? 'none' : 'blur(16px)',
-        borderBottom: overDarkHero ? 'none' : '1px solid var(--nav-border)',
-        transition: 'background 0.3s, backdrop-filter 0.3s, border-color 0.3s',
+        pointerEvents: 'auto', width: '100%', maxWidth: 1320,
+        background: scrolled ? (theme === 'light' ? 'rgba(255,255,255,0.55)' : 'rgba(8,10,16,0.45)') : 'var(--nav-bg)',
+        backdropFilter: scrolled ? 'blur(16px)' : 'none', WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
+        border: `1px solid ${overDarkHero ? 'rgba(255,255,255,0.08)' : 'var(--nav-border)'}`,
+        borderRadius: 18,
+        boxShadow: scrolled ? '0 8px 32px rgba(0,0,0,0.28)' : '0 8px 24px rgba(0,0,0,0.16)',
+        transition: 'background 0.3s, backdrop-filter 0.3s, border-color 0.3s, box-shadow 0.3s',
         padding: '0 1.5rem',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px',
+        display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', columnGap: 12, height: '60px',
       }}>
         <a href="#" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <picture>
@@ -1164,8 +1182,13 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           <EkgLine theme={theme} />
         </a>
 
-        {/* Desktop nav - React inline styles can't do media queries, so gate on the useMobile() hook */}
-        <div style={{ display: mobile ? 'none' : 'flex', gap: '1.75rem', alignItems: 'center' }}>
+        {/* Desktop nav - React inline styles can't do media queries, so gate on the useMobile() hook.
+            Its own centre grid column + internal justify-content: center (live feedback
+            2026-09-13, "die nav elemente müssen center aligned sein") - previously grouped
+            with the locale/theme toggles in one right-hand flex block, which visibly pulled
+            the links off-centre once the nav became a narrower floating pill instead of a
+            full-width bar. */}
+        <div style={{ display: mobile ? 'none' : 'flex', gap: '1.75rem', alignItems: 'center', justifyContent: 'center' }}>
           {/* Live feedback 2026-08-14: pill treatment ("schaut billig aus") reverted
               back to plain text. Contrast against the hero photo (the original
               problem the pills were solving) is handled differently now: at the top
@@ -1218,7 +1241,11 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             </a>
             )
           })}
+        </div>
 
+        {/* Right-hand grid column: locale/theme toggles + mobile hamburger, grouped
+            together now that the centre column above belongs to the nav links alone. */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, justifySelf: 'end' }}>
           {/* Theme + Contact - same 38x38 square, same radius, sit flush together as one
               pair (their own tight-gap group, not the wide nav-link gap). Theme toggle is
               deliberately minimal/neutral (ghost button, no color fill) - Contact is the one
@@ -1228,7 +1255,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               two stark white squares floating on the hero photo. Idle state now
               transparent specifically in light theme; hover still fills for
               affordance, dark/hc keep their original ghost-grey fill throughout. */}
-          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          <div style={{ display: mobile ? 'none' : 'flex', gap: 6, alignItems: 'center' }}>
             {/* color/border follow overDarkHero same as NAV_LINKS above - these sit on
                 the same always-dark hero photo unscrolled, so var(--text2) (tuned for
                 a white light-theme background) went near-invisible there (live bug
@@ -1260,10 +1287,9 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 contact/disclosure section, so this was a second, visually louder
                 route to the identical destination. */}
           </div>
-        </div>
 
-        {/* Hamburger - shown only on mobile (media queries don't work in inline styles) */}
-        <button onClick={() => setMobileOpen(o => !o)} style={{
+          {/* Hamburger - shown only on mobile (media queries don't work in inline styles) */}
+          <button onClick={() => setMobileOpen(o => !o)} style={{
           display: mobile ? 'flex' : 'none',
           background: 'none', border: 'none', cursor: 'pointer',
           padding: '8px', color: 'var(--text)',
@@ -1273,13 +1299,15 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
           ) : (
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="16" x2="21" y2="16"/></svg>
           )}
-        </button>
+          </button>
+        </div>
       </nav>
+      </div>
       ) })()}
 
       {/* Mobile menu overlay — always mounted, drops down from the top (partial height) */}
       <div style={{
-        position: 'fixed', top: 64, left: 'auto', right: 0, bottom: 'auto', zIndex: 99,
+        position: 'fixed', top: 74, left: 'auto', right: 0, bottom: 'auto', zIndex: 99,
         width: 'min(50%, 320px)', height: 'auto',
         background: theme === 'dark'
           ? 'radial-gradient(120% 90% at 50% 0%, rgba(0,245,196,0.12) 0%, transparent 55%), linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.09) 0px, rgba(255,255,255,0.09) 1px, transparent 1px, transparent 3px)'
@@ -1295,11 +1323,12 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         padding: '1.5rem 1.5rem 1.75rem', gap: 4,
         // Fixed bug (live feedback, 2026-08-03): translateY(-110%) only clears
         // 110% of the panel's OWN height, but the panel also sits 64px down
-        // from the viewport top (`top: 64`) - for any panel shorter than ~640px
+        // from the viewport top (`top: 74`, updated for the floating pill nav's
+        // own 14px inset - 2026-09-13) - for any panel shorter than ~640px
         // tall, that left a visible sliver of the carbon-textured background
         // peeking in at the very top of the page. Adding the top offset itself
         // to the translate distance guarantees the whole panel clears y=0.
-        transform: mobileOpen ? 'translateY(0)' : 'translateY(calc(-100% - 64px))',
+        transform: mobileOpen ? 'translateY(0)' : 'translateY(calc(-100% - 74px))',
         transition: 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
         pointerEvents: mobileOpen ? 'auto' : 'none',
         textAlign: 'right',

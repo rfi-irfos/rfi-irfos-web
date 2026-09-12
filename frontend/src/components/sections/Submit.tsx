@@ -106,15 +106,14 @@ export function SubmitSection({
                 ariaLabel={t.submit.form.topicAriaLabel} placeholder={t.submit.form.topicPlaceholder}
                 options={[
                   { value: 'Security Disclosure', label: t.submit.form.topicOptions.securityDisclosure },
-                  { value: 'Send APK', label: t.submit.form.topicOptions.sendApk },
                   { value: 'Research Collaboration', label: t.submit.form.topicOptions.researchCollaboration },
                   { value: 'Data Solutions', label: t.submit.form.topicOptions.dataSolutions },
-                  { value: 'Other', label: t.submit.form.topicOptions.other },
                   { value: 'Intelligence', label: t.submit.form.topicOptions.intelligence },
                   { value: 'Security', label: t.submit.form.topicOptions.security },
                   { value: 'Data', label: t.submit.form.topicOptions.data },
                   { value: 'Business & Market', label: t.submit.form.topicOptions.businessMarket },
                   { value: 'Engineering', label: t.submit.form.topicOptions.engineering },
+                  { value: 'Other', label: t.submit.form.topicOptions.other },
                 ]} />
               <input type="text" placeholder={t.submit.form.namePlaceholder}
                 value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}

@@ -210,13 +210,17 @@ export function ProofSection({ setReportModal }: { setReportModal: (url: string)
   return (
     <section id="proof" style={{ padding: '0 var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-        <Reveal from="right">
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.proof.eyebrow}</p>
-          <h2 className="rfi-section-h2" style={{ marginBottom: 12 }}>{t.proof.heading}</h2>
-        </Reveal>
-        <Reveal from="left" delay={1}>
-          <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 620 }}>{t.proof.subheading}</p>
-        </Reveal>
+        {/* Centered to match Data Solutions/Access/Evidence's heading treatment -
+            live feedback 2026-09-13: this was still left-aligned. */}
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Reveal from="right">
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.proof.eyebrow}</p>
+            <h2 className="rfi-section-h2" style={{ marginBottom: 12 }}>{t.proof.heading}</h2>
+          </Reveal>
+          <Reveal from="left" delay={1}>
+            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 620 }}>{t.proof.subheading}</p>
+          </Reveal>
+        </div>
         <Reveal from="bottom" delay={1}>
           <ProofCarousel entries={entries} onOpen={setReportModal} />
         </Reveal>

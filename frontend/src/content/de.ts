@@ -1011,7 +1011,6 @@ export const DE: Content = {
         businessMarket: 'Business & Market',
         engineering: 'Engineering',
         securityDisclosure: 'Sicherheitsmeldung',
-        sendApk: 'APK Einschicken',
         researchCollaboration: 'Forschungskooperation',
         dataSolutions: 'Data Solutions',
         other: 'Etwas Anderes',

@@ -1024,7 +1024,6 @@ export const EN = {
         businessMarket: 'Business & Market',
         engineering: 'Engineering',
         securityDisclosure: 'Security Disclosure',
-        sendApk: 'Send Us Your APK',
         researchCollaboration: 'Research Collaboration',
         dataSolutions: 'Data Solutions',
         other: 'Something Else',

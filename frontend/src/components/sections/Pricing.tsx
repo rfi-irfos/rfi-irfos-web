@@ -52,7 +52,11 @@ function DomainCard({
   return (
     <div className="rfi-pricing-scene">
       <div className="rfi-pricing-glow" aria-hidden="true" />
-      <div className="rfi-pricing-card" style={{ padding: mobile ? '24px 20px' : '36px 34px' }}>
+      {/* Top padding trimmed down from the card's own edge - live feedback
+          2026-09-13: "the space above each header ... is too much", wanted
+          the title pulled up closer to the card's top edge. Left/right/bottom
+          padding unchanged. */}
+      <div className="rfi-pricing-card" style={{ padding: mobile ? '16px 20px 24px' : '20px 34px 36px' }}>
         <p style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', margin: '0 0 10px' }}>{domain.name}</p>
         <p style={{ fontSize: 13.5, lineHeight: 1.55, color: 'var(--text)', margin: '0 0 20px', maxWidth: 760 }}>{domain.scope}</p>
         <EngagementFlow bring={domain.bring} mechanism={domain.we} receive={domain.receive} large />
@@ -123,19 +127,43 @@ export function PricingSection({
             overlapping-stack look; spacing between cards comes entirely from
             each card's own height plus the top-offset stagger. */}
         <div id="pricing-offer" style={{ display: 'flex', flexDirection: 'column', maxWidth: 900, margin: '0 auto', scrollMarginTop: 84 }}>
-          {/* The last card gets a much longer dwell (paddingBottom) than the
-              rest - live feedback 2026-09-13: it used to release into the
-              closing CTA almost the instant it finished climbing into the
-              stack, which felt abrupt next to how deliberately the other
-              four build up. This holds the completed five-card stack on
-              screen for a beat before it finally scrolls away. */}
-          {domains.map((domain, i) => (
-            <div key={domain.name} style={{ position: 'sticky', top: `${80 + i * 76}px`, zIndex: i + 1, paddingBottom: i === domains.length - 1 ? 320 : 40 }}>
+          {/* Each card's `paddingBottom` is how long it stays glued in place before
+              releasing. A first attempt gave every card the SAME dwell as the
+              last (padding = its own natural handoff + the last card's dwell),
+              cascaded per remaining card - mathematically sound but produced an
+              absurdly long dead scroll before anything visibly happened (live
+              feedback 2026-09-13: "totally kaputt"). Corrected direction: keep
+              the original per-card pacing (each hands off to the next quickly,
+              same as before) and ONLY give every card enough extra padding to
+              survive through the LAST card's own short dwell (DWELL, not the
+              full cascading construction of every card after it) - so the
+              five-card stack stays intact for exactly as long as Engineering
+              pauses, then the whole assembled deck releases and scrolls to the
+              CTA together, instead of individual cards falling back out mid-dwell. */}
+          {domains.map((domain, i) => {
+            const isLast = i === domains.length - 1
+            // Lowered from 320 - live bug report 2026-09-13: this padding is
+            // invisible while the card is still stuck, but once it releases
+            // this exact amount becomes real, visible blank space in the
+            // document before the closing CTA - 320px read as "a huge empty
+            // gap" right before "Didn't find the right fit". 120 is still
+            // enough for the other four cards to survive Engineering's own
+            // brief dwell without the gap being the dominant thing on screen.
+            const DWELL = 120
+            const paddingBottom = isLast ? DWELL : 40 + DWELL
+            // Base offset and per-card step both trimmed to match the card's
+            // own reduced top padding (live feedback 2026-09-13) - the peek
+            // window used to be tuned for the old, taller header block, so
+            // after the padding cut it exposed a sliver of the scope
+            // sentence below the title instead of ending cleanly at it.
+            return (
+            <div key={domain.name} style={{ position: 'sticky', top: `${72 + i * 68}px`, zIndex: i + 1, paddingBottom }}>
               <Reveal delay={i * 0.05}>
                 <DomainCard domain={domain} mobile={mobile} onSelectTier={onSelectTier} />
               </Reveal>
             </div>
-          ))}
+            )
+          })}
         </div>
 
         {/* Closing CTA - a real, visible button, not a small muted footnote link
