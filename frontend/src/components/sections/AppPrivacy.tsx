@@ -7,7 +7,7 @@ import { useLocale } from '../../hooks/useLocale'
 // here after Track Record per live feedback: the pitch reads better once
 // a visitor has already seen the ledger of real, disclosed findings,
 // rather than immediately after the hero before any proof exists.
-export function AppPrivacySection() {
+export function AppPrivacySection({ onNavigateAccess }: { onNavigateAccess: () => void }) {
   const { t } = useLocale()
   // The comparison table below stays two columns at every width on purpose - a
   // side-by-side comparison collapsed to one column stops being a comparison.
@@ -108,10 +108,15 @@ export function AppPrivacySection() {
                 signal setting off a chain, matching the CTA copy. */}
             {/* Icon 20->24, font 13->15 (live feedback) - pill padding left
                 untouched on purpose, so the button footprint stays the same. */}
-            <a href="#submit" className="rfi-cta-pulse" style={{
+            {/* Was `<a href="#submit">` straight to the contact form - live audit
+                2026-09-13 (positioning audit, top finding #1): the homepage never
+                named the five core offers or linked to /access at all, so a
+                first-time visitor had nowhere to learn what they could actually
+                buy before being asked to fill in a form. Now routes to Access. */}
+            <button type="button" onClick={onNavigateAccess} className="rfi-cta-pulse" style={{
               display: 'inline-flex', alignItems: 'center', gap: 9, background: '#f97316', color: '#1a0f00', padding: '11px 28px', borderRadius: 8,
               fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
-              textTransform: 'uppercase', transition: 'opacity 0.15s',
+              textTransform: 'uppercase', transition: 'opacity 0.15s', border: 'none', cursor: 'pointer',
             }}
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
@@ -122,7 +127,7 @@ export function AppPrivacySection() {
                 <rect x="22" y="6" width="6" height="20" rx="1.5" />
               </svg>
               {t.appPrivacy.cta}
-            </a>
+            </button>
           </div>
         </Reveal>
         {/* "Beyond app privacy" (OTHER_DOMAINS grid) + the closing "same three

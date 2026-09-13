@@ -1360,7 +1360,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         {view === 'home' && <>
           <HeroSection mobile={mobile} theme={theme} />
           <ResearchSection />
-          <AppPrivacySection />
+          <AppPrivacySection onNavigateAccess={() => navigateTo('access')} />
           <CoopPartnersSection mobile={mobile} openCheckoutModal={openCheckoutModal} />
           <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} />
         </>}
