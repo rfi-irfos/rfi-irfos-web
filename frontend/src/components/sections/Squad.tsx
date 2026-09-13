@@ -17,7 +17,7 @@ import {
 import { useLocale } from '../../hooks/useLocale'
 import { Reveal, useMobile, beacon, WEB3FORMS_KEY, OUTPUT_TAG_HUES } from './shared'
 import { SQUAD_AGENTS, agentByKey, type AgentKey } from '../../content/squadAgents'
-import squadHeroWorkflow from '../../assets/squad/sq-hero-agent-workflow.png'
+import squadHeroWorkflow from '../../assets/squad/sq-hero-agent-workflow.mp4'
 
 const NEED_TO_KNOW_ICONS = [IconTrendingUp, IconCoin, IconGitCompare, IconCircleCheck, IconSearch, IconShieldLock]
 
@@ -83,7 +83,11 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
         </Reveal>
         <Reveal from="right">
           <div className="sq-hub-panel">
-            <img className="sq-hub-photo" src={squadHeroWorkflow} alt="" />
+            {/* Swapped from a static screenshot to a real screencast of the agent
+                workflow builder in motion (Simeon, 2026-09-13) - autoplay/muted/
+                loop/playsInline is required for iOS Safari to autoplay at all;
+                no controls, this is a hero backdrop, not a media player. */}
+            <video className="sq-hub-photo" src={squadHeroWorkflow} autoPlay muted loop playsInline />
           </div>
         </Reveal>
       </div>
