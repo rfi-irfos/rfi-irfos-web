@@ -498,7 +498,7 @@ function ComparisonBlock() {
   const c = t.worldModel.comparison
   return (
     <div className="wm-wrap">
-      <Reveal dist={14}><div className="wm-section-head" style={{ marginBottom: 28 }}><p className="wm-eyebrow">{c.eyebrow}</p><h2>{c.heading}</h2><p>{c.sub}</p></div></Reveal>
+      <Reveal dist={14}><div className="wm-section-head wm-section-head--gapped"><p className="wm-eyebrow">{c.eyebrow}</p><h2>{c.heading}</h2><p>{c.sub}</p></div></Reveal>
       <div className="wm-section-box">
         <div className="wm-compare-grid">
           <Reveal dist={14} style={{ height: '100%' }}><div className="wm-compare-card wm-card">
@@ -538,7 +538,7 @@ function UseCasesGrid() {
   const spot = useSpotlight<HTMLDivElement>()
   return (
     <div id="wm-usecases" className="wm-wrap">
-      <Reveal dist={14}><div className="wm-section-head"><p className="wm-eyebrow">{u.eyebrow}</p><h2>{u.heading}</h2><p>{u.sub}</p></div></Reveal>
+      <Reveal dist={14}><div className="wm-section-head wm-section-head--gapped"><p className="wm-eyebrow">{u.eyebrow}</p><h2>{u.heading}</h2><p>{u.sub}</p></div></Reveal>
       <div className="wm-section-box">
       <div ref={spot.ref} className="wm-usecase-grid" style={HUE_MAIN} onMouseMove={spot.onMouseMove}>
         {u.cards.map((card, i) => {
@@ -647,7 +647,7 @@ export function WorldModelSection() {
               page background - only the actual content grid gets the framed
               .wm-section-box. */}
           <Reveal dist={14}>
-            <div className="wm-section-head" style={{ marginBottom: 28 }}>
+            <div className="wm-section-head wm-section-head--gapped">
               <p className="wm-eyebrow">{w.reasoningIntro.eyebrow}</p>
               <h2>{w.reasoningIntro.heading}</h2>
               <p>{w.reasoningIntro.sub}</p>

@@ -851,7 +851,7 @@ export const DE: Content = {
     heading: 'Der Kader',
     subheading: 'Spezialisierte Agenten. Für jeden Einsatzbereich.',
     intro: 'Jeder Agent ist ein spezialisiertes System aus eigener Entwicklung, auf genau eine Frage ausgerichtet und auf nichts sonst. Setzen Sie einen einzelnen Agenten auf ein konkretes Problem an oder den gesamten Kader als eine Produktionspipeline mit gemeinsamem Lagebild. Wir begleiten das vom Konzept über die Integration in Ihren bestehenden Stack bis zum Monitoring, das den laufenden Betrieb ehrlich hält.',
-    worldModelLinkLabel: 'So funktioniert DINGIR →',
+    worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Finden Sie den passenden Agenten →',
     statusLine: 'Early Access',

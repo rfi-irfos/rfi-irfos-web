@@ -236,13 +236,13 @@ button { cursor: pointer; font-family: inherit; }
    glass. Cards stay individually boxed with real gaps between them (reverted
    from an earlier single-merged-strip pass that read as "too disjointed" the
    other direction - live feedback wanted "every element its own card"). */
-/* Reverted from the 2026-08-31 "bund an bund" 10px flush gap (live feedback
-   2026-09-13: with section heads now sitting bare on the page background
-   instead of boxed - see .wm-section-box moves below - that 10px read as
-   genuinely too cramped, not intentionally tight). 64px matches the
-   breathing room other pages give a full section (.data-section's own
-   72px top+bottom padding is the closest sibling value on this site). */
-.wm { color: var(--text); display: flex; flex-direction: column; gap: 64px; }
+/* Back to the 2026-08-31 "bund an bund" 10px flush gap (live feedback
+   2026-09-13, second look): a blanket 64px here also pushed Hero away from
+   StatsRow and UseCasesGrid away from EarlyAccessForm - neither has its own
+   .wm-section-head, and neither was ever the complaint. The breathing room
+   those DO need now lives on .wm-section-head's own margin-top below,
+   which only exists on the three sections that actually got unboxed. */
+.wm { color: var(--text); display: flex; flex-direction: column; gap: 10px; }
 .wm-wrap { width: min(1320px, calc(100% - 2 * var(--sec-pad-x))); margin-inline: auto; }
 .wm-eyebrow { margin: 0 0 12px; color: var(--text3); font: 700 11px/1.3 'JetBrains Mono', monospace; letter-spacing: .2em; text-transform: uppercase; }
 .wm-section { padding: 0; }
@@ -256,6 +256,12 @@ button { cursor: pointer; font-family: inherit; }
    nothing - the fix was never the number, it was the order. */
 .wm-section--last { padding-bottom: 96px; }
 .wm-section-head { max-width: 680px; margin: 0 auto 28px; text-align: center; }
+/* Breathing room for the three World Model sections whose head now sits bare
+   on the page background (live feedback 2026-09-13) instead of margin-top on
+   the shared .wm-section-head class itself - that class is also reused by
+   Squad's sq-overview/sq-connects heads, which were never part of this
+   complaint and already read fine against the tight 10px .wm gap. */
+.wm-section-head--gapped { margin-top: 56px; }
 /* CANONICAL SECTION-LEVEL H2. Same rule as the page-h1 above: one declaration
    for every section title on the site. Measured 2026-09-07 on the rendered DOM,
    these had split into two families - 32px on Home/Data Solutions/Evidence/

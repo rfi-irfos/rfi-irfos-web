@@ -864,7 +864,7 @@ export const EN = {
     heading: 'The Squad',
     subheading: 'Specialized agents. For every use case.',
     intro: 'Each agent is a specialized system built in-house, pointed at one clear question and nothing else. Run a single agent against one problem, or the whole squad as one production pipeline feeding a shared picture. We take it from concept through integration into your existing stack, up to the monitoring that keeps it honest once it is actually running.',
-    worldModelLinkLabel: 'See how DINGIR works →',
+    worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'See which agent fits your problem →',
     statusLine: 'Early Access',
