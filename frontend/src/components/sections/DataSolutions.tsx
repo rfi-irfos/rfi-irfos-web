@@ -134,13 +134,6 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
     <header className="data-hero data-wrap">
       <Reveal><p className="data-eyebrow">{c.eyebrow}</p><h1>{c.title}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{c.intro}</p></Reveal>
-      {/* Cross-link to the Data offer card on Access (Simeon, 2026-09-13) -
-          this page and the Access "Data" card explain the same offer with no
-          connection between them; a visitor who wants scope/price/delivery
-          terms had no way to get there from here except the generic nav. The
-          existing bottom-of-page CTA (onContact) stays untouched, still a
-          direct path to the contact form for someone who's already decided. */}
-      <Reveal delay={2}><button type="button" className="data-cta" onClick={onNavigateAccessData} style={{ marginTop: 20 }}>{c.accessCta} <span aria-hidden="true">→</span></button></Reveal>
     </header>
 
     <section className="data-section data-datasets"><div className="data-wrap">
@@ -156,6 +149,17 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.deliverEyebrow}</p><h2>{c.deliverTitle}</h2><p>{c.deliverIntro}</p></div></Reveal>
       <div className="data-product-grid" style={HUE_PRODUCTS}>{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_PRODUCTS}><div className="data-icon"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
     </div></section>
+
+    {/* Cross-link to the Data offer card on Access (Simeon, 2026-09-13, moved
+        here from the hero on second look) - by this point a visitor has seen
+        what's already held AND what gets delivered, the two decision-relevant
+        sections; everything below (agent types, pipeline, quality) is more
+        implementation depth than a buying decision needs. The existing
+        bottom-of-page CTA (onContact) stays untouched, still a direct path
+        to the contact form for someone who's already decided. */}
+    <div className="data-wrap" style={{ textAlign: 'center', margin: '0 0 56px' }}>
+      <Reveal><button type="button" className="data-cta" onClick={onNavigateAccessData} style={{ margin: 0 }}>{c.accessCta} <span aria-hidden="true">→</span></button></Reveal>
+    </div>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.agentsEyebrow}</p><h2>{c.agentsTitle}</h2><p>{c.agentsIntro}</p></div></Reveal>
