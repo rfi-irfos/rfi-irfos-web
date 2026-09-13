@@ -115,7 +115,7 @@ export function PricingSection({
   // 2026-09-13: Access/Evidence/Data Solutions each had a different gap
   // under the floating nav pill; they should all read the same.
   return (
-    <section id="pricing" style={{ padding: '56px var(--sec-pad-x) 72px' }}>
+    <section id="pricing" style={{ padding: '56px var(--sec-pad-x) 120px' }}>
       <div style={{ maxWidth: 1120, margin: '0 auto' }}>
         <Reveal>
           {/* h1, not h2 - same CRITICAL audit finding as TrackRecord.tsx: /access/
@@ -191,7 +191,13 @@ export function PricingSection({
             is where that conversation starts. The entry price stays as a small
             trust anchor underneath, not the focus of the block. */}
         <Reveal delay={domains.length * 0.05}>
-          <div style={{ maxWidth: 620, margin: '48px auto 0', textAlign: 'center' }}>
+          {/* margin-top removed (Zabih, 2026-09-13): the last card's own DWELL
+              padding-bottom (120px, for the sticky-stack release effect) already
+              provided the top clearance - the extra 48px on top of that made the
+              gap above this button visibly bigger than the section's bottom
+              padding below it. Section bottom padding raised to match (72->120)
+              instead, so both sides read as the same amount of breathing room. */}
+          <div style={{ maxWidth: 620, margin: '0 auto', textAlign: 'center' }}>
             <button type="button" onClick={() => onSelectTier('Other')} className="rfi-pricing-price-btn" style={{
               cursor: 'pointer', padding: mobile ? '14px 22px' : '16px 32px', width: mobile ? '100%' : undefined,
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 10,
