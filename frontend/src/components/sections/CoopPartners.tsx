@@ -129,6 +129,14 @@ export function CoopPartnersSection({
             </div>
           </div>
           <div style={{ maxWidth: 820, margin: '16px auto 0' }}>
+            {/* Label right at the price table, not just in the subheading far
+                above it - live audit 2026-09-13 (positioning audit, top-5-
+                this-week #4): these are Laura's own Emergent Interaction Lab
+                prices, not RFI-IRFOS's, and a visitor scanning straight to a
+                price grid could otherwise miss the entity distinction. */}
+            <p style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8, textAlign: mobile ? 'left' : 'center' }}>
+              {t.coopPartners.pricingLabel}
+            </p>
             <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(4, minmax(0, 1fr))', gap: 10, alignItems: 'stretch' }}>
               {[
                 { name: 'Systemaudit', price: '€4.500', href: 'https://buy.stripe.com/14AdRbgpi1fpdqt6jm7N60r' },

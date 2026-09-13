@@ -2707,7 +2707,7 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
 export function TrackRecordSection({
   mobile, theme, now, ledgerFired, ledgerRef,
   searchQuery, setSearchQuery, activeStatus, setActiveStatus, activeSev, setActiveSev,
-  sortBy, setSortBy, openDD, setOpenDD, setReportModal, setIntelModal,
+  sortBy, setSortBy, openDD, setOpenDD, setReportModal, setIntelModal, onNavigateAccess,
 }: {
   mobile: boolean
   theme: Theme
@@ -2726,6 +2726,7 @@ export function TrackRecordSection({
   setOpenDD: (v: string | null) => void
   setReportModal: (v: string) => void
   setIntelModal: (v: { target: string; market: string; sev: string; finding: string; headline?: string } | null) => void
+  onNavigateAccess: () => void
 }) {
   const { t, locale } = useLocale()
   // Top padding matched to Data Solutions' .data-hero (56px) - live feedback
@@ -2772,8 +2773,19 @@ export function TrackRecordSection({
               so it sat right under the h1's own 12px marginBottom alone. */}
           {/* White + 17px to match Data Solutions' .data-lede exactly (live
               feedback 2026-09-13) - was var(--text2) grey at 15px. */}
-          <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 40, maxWidth: 720, fontSize: 17, lineHeight: 1.6 }}>
+          <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 12, maxWidth: 720, fontSize: 17, lineHeight: 1.6 }}>
             {t.trackRecord.paragraph}
+          </p>
+          {/* Bridge sentence to the Security offer - live audit 2026-09-13
+              (positioning audit, top-5-this-week #3): the ledger is the
+              strongest trust asset on the site but sat disconnected from
+              anything purchasable, reading as unsolicited research output
+              instead of a sample of what a paying Security client receives. */}
+          <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 720, fontSize: 15, lineHeight: 1.6 }}>
+            {t.trackRecord.securityBridgeLead}{' '}
+            <button type="button" onClick={onNavigateAccess} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent-text)', fontWeight: 700, fontSize: 15, cursor: 'pointer', textDecoration: 'underline' }}>
+              {t.trackRecord.securityBridgeCta}
+            </button>
           </p>
         </div>
         {/* Permanent disclosure ledger — KPI row + search/table panel now share

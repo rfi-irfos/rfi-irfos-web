@@ -129,6 +129,8 @@ export const DE: Content = {
     eyebrow: 'Permanentes Offenlegungsledger',
     heading: 'die Disziplin, bewiesen',
     paragraph: 'Wir dekompilieren öffentlich verbreitete Android- und iOS-Apps und verfolgen ihre Datenflüsse zu echten Endpunkten in echten Ländern. Unternehmen landen aus ganz unterschiedlichen Gründen auf diesem Ledger: Sie geben Ihre Daten an Dritte weiter, tracken ohne Einwilligung, oder lassen die Tür offen. Jede Organisation wird nach demselben Maßstab behandelt, unabhängig davon, ob sie uns bezahlt oder nicht.',
+    securityBridgeLead: 'Das ist es, was ein Security-Auftrag liefert.',
+    securityBridgeCta: 'Sehen Sie, was Sie erhalten →',
     kpis: {
       appsAudited: 'Android/iOS Apps geprüft',
       smaliClasses: 'Smali-Klassen gelesen',
@@ -265,7 +267,7 @@ export const DE: Content = {
         bring: 'Ein Repository, ein System, eine Architektur, eine technische Spezifikation, eine Implementierung, ein Digital Twin, eine Telemetrie-Pipeline oder eine Produktionsreife-Behauptung, die \u00fcber die Dokumentation hinaus verstanden werden muss.',
         we: 'Wir untersuchen die Implementierung und ihre Abh\u00e4ngigkeiten, rekonstruieren, wie sich das System tats\u00e4chlich verh\u00e4lt, verfolgen Daten- und Ausf\u00fchrungspfade und vergleichen die technische Realit\u00e4t mit Spezifikationen, Anforderungen oder Behauptungen. Wo das System Dom\u00e4nengrenzen \u00fcberschreitet, verbinden wir die technische Evidenz mit Dingir, unserem abfragbaren Data Warehouse und Weltmodell, sodass die Engineering-Untersuchung im Zusammenhang mit den umgebenden Systemen, Entit\u00e4ten und Ereignissen verstanden werden kann.',
         receive: 'Eine evidenzbasierte technische Rekonstruktion, mit der Ihre Ingenieurinnen und Ingenieure arbeiten k\u00f6nnen: was tats\u00e4chlich implementiert ist, wie die Teile voneinander abh\u00e4ngen, was das System exponiert, wo die Realit\u00e4t von der Spezifikation abweicht und welche technischen Annahmen einer Pr\u00fcfung standhalten.',
-        cta: 'Fordern Sie ein Engineering-Review an \u2192', delivery: 'Lieferung je nach Umfang.', startingFrom: 'ab \u20ac9.500' },
+        cta: 'Fordern Sie ein Engineering-Review an \u2192', delivery: 'Lieferung innerhalb von 10-20 Werktagen, je nach Umfang.', startingFrom: 'ab \u20ac9.500' },
     ],
   },
 
@@ -287,7 +289,7 @@ export const DE: Content = {
     agreementSuffix: ' zu. Die Leistung beginnt sofort mit Zahlungseingang; es besteht kein Widerrufsrecht, Rückerstattungen sind ausgeschlossen.',
     payButton: (price: string) => `${price} zahlen →`,
     cancel: 'Abbrechen',
-    talkFirstInstead: 'Nicht das Richtige dabei? Sprechen Sie mit uns - individuelles Angebot →',
+    talkFirstInstead: 'Nicht sicher, welches der fünf passt? Schildern Sie uns das Problem →',
   },
 
   reportModal: {
@@ -330,6 +332,7 @@ export const DE: Content = {
       { desc: 'Vollständiger Auftrag von Design bis Deployment: Architektur, Bau und Launch eines Multi-Agenten-Systems nach Lauras Methode.' },
     ],
     productsDeliveryNote: 'Antwort innerhalb von 24h nach Kauf; Kick-off wird auf Anfrage abgestimmt.',
+    pricingLabel: 'Preise des Emergent Interaction Lab',
     footerNotePrefix: '4 ihrer Pakete, gezeigt als Einstiegspunkte über verschiedene Phasen der Zusammenarbeit - die vollständige Liste hängt davon ab, wo ein Unternehmen in seinem Prozess steht. Vollständige Preise auf Anfrage über',
   },
 
@@ -850,8 +853,8 @@ export const DE: Content = {
     intro: 'Jeder Agent ist ein spezialisiertes System aus eigener Entwicklung, auf genau eine Frage ausgerichtet und auf nichts sonst. Setzen Sie einen einzelnen Agenten auf ein konkretes Problem an oder den gesamten Kader als eine Produktionspipeline mit gemeinsamem Lagebild. Wir begleiten das vom Konzept über die Integration in Ihren bestehenden Stack bis zum Monitoring, das den laufenden Betrieb ehrlich hält.',
     worldModelLinkLabel: 'So funktioniert DINGIR →',
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
-    primaryCta: 'Zugang anfragen',
-    secondaryCta: 'System erkunden',
+    primaryCta: 'Finden Sie den passenden Agenten →',
+    secondaryCta: 'Sehen Sie einen Agenten live →',
     statusLine: 'Early Access',
     trustBadges: ['EU-KI-Verordnung-konform', 'Nachvollziehbar durch Design', 'Jede Entscheidung rückverfolgbar'],
     overview: {

@@ -61,7 +61,7 @@ const COPY = {
     ],
     expertsEyebrow: 'Expert depth', expertsTitle: 'Not crowd work. Technical work.',
     expertsText: 'The work is produced and reviewed at the level where our own systems are built: Python, Rust, C/C++, JavaScript and TypeScript, Go, Java, Kotlin, SQL, Bash, mobile and ML stacks — across backend, frontend, systems, security, DevOps, data science, and model engineering.',
-    cta: 'Talk to a data engineer',
+    cta: 'Start a data infrastructure project',
   },
   de: {
     eyebrow: 'Data Solutions', title: 'Produktion, Daten und Agenten, die wirklich arbeiten müssen',
@@ -111,7 +111,7 @@ const COPY = {
     ],
     expertsEyebrow: 'Expertentiefe', expertsTitle: 'Keine Crowd-Arbeit. Technische Arbeit.',
     expertsText: 'Produktion und Review finden auf derselben Ebene statt, auf der wir unsere eigenen Systeme bauen: Python, Rust, C/C++, JavaScript und TypeScript, Go, Java, Kotlin, SQL, Bash, Mobile- und ML-Stacks — in Backend, Frontend, Systems, Security, DevOps, Data Science und Model Engineering.',
-    cta: 'Mit einem Data Engineer sprechen',
+    cta: 'Starten Sie ein Daten-Infrastruktur-Projekt',
   },
 } as const
 

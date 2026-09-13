@@ -132,6 +132,8 @@ export const EN = {
     eyebrow: 'Permanent Disclosure Ledger',
     heading: 'the discipline, demonstrated',
     paragraph: 'We decompile publicly distributed Android/iOS apps and trace their data flows to real endpoints in real countries. Companies land on this ledger for many different reasons: they hand your data to third parties, they track without consent, or they leave the door open. Every organisation is held to the same standard, whether it pays us or not.',
+    securityBridgeLead: 'This is what a Security engagement produces.',
+    securityBridgeCta: 'See what you’d receive →',
     kpis: {
       appsAudited: 'Android/iOS apps audited',
       smaliClasses: 'Smali classes read',
@@ -272,7 +274,7 @@ export const EN = {
         bring: 'A repository, system, architecture, technical specification, implementation, Digital Twin, telemetry pipeline or production-readiness claim that needs to be understood beyond the documentation.',
         we: 'Inspect the implementation and its dependencies, reconstruct how the system behaves, trace data and execution paths and compare the technical reality against specifications, requirements or claims. Where the system crosses domains, we connect the technical evidence to Dingir, our queryable data warehouse and world model, so the engineering investigation can be understood alongside the systems, entities and events around it.',
         receive: 'An evidence-backed technical reconstruction your engineers can work from: what is actually implemented, how the pieces depend on each other, what the system exposes, where reality diverges from the specification and which technical assumptions survive investigation.',
-        cta: 'Request an engineering review \u2192', delivery: 'Delivered depending on scope.', startingFrom: 'from \u20ac9,500' },
+        cta: 'Request an engineering review \u2192', delivery: 'Delivered within 10-20 business days, depending on scope.', startingFrom: 'from \u20ac9,500' },
     ],
   },
 
@@ -294,7 +296,7 @@ export const EN = {
     agreementSuffix: '. The service begins immediately upon payment; no right of withdrawal applies and refunds are excluded.',
     payButton: (price: string) => `Pay ${price} →`,
     cancel: 'Cancel',
-    talkFirstInstead: 'Didn\'t find the right fit? Talk to us - get a custom quote →',
+    talkFirstInstead: 'Not sure which of the five fits? Tell us the problem →',
   },
 
   reportModal: {
@@ -343,6 +345,7 @@ export const EN = {
       { desc: "Full design-to-deployment engagement: architecture, build, and launch of a multi-agent system on Laura's method." },
     ],
     productsDeliveryNote: 'Answered within 24h after purchase; kick-off aligned on request.',
+    pricingLabel: 'Emergent Interaction Lab pricing',
     footerNotePrefix: '4 of her packages, shown as entry points across engagement phases - the full list depends on where a company is in its process. Full pricing on request via',
   },
 
@@ -863,8 +866,8 @@ export const EN = {
     intro: 'Each agent is a specialized system built in-house, pointed at one clear question and nothing else. Run a single agent against one problem, or the whole squad as one production pipeline feeding a shared picture. We take it from concept through integration into your existing stack, up to the monitoring that keeps it honest once it is actually running.',
     worldModelLinkLabel: 'See how DINGIR works →',
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
-    primaryCta: 'Request Access',
-    secondaryCta: 'Explore the system',
+    primaryCta: 'See which agent fits your problem →',
+    secondaryCta: 'Watch an agent run →',
     statusLine: 'Early Access',
     trustBadges: ['EU AI Act Compliant', 'Explainable by Design', 'Every Decision Traceable'],
     overview: {

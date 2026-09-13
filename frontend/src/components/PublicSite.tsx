@@ -1383,6 +1383,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
             openDD={openDD} setOpenDD={setOpenDD}
             setReportModal={setReportModal}
             setIntelModal={setIntelModal}
+            onNavigateAccess={() => navigateTo('access')}
           />
           <ProofSection setReportModal={setReportModal} />
         </section>}
