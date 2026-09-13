@@ -93,6 +93,8 @@ const FEED_META: Record<string, { icon: typeof IconActivity; color: string }> = 
 // entries yet. The live-status dot and heading both switch to an explicit
 // "example data" state whenever this path is the one actually rendering, so a
 // visitor is never shown a placeholder disguised as a live feed.
+const FEED_DISPLAY_COUNT = 10
+
 const FEED_FALLBACK: FeedEntry[] = [
   { id: 'ex-1', kind: 'seismic', title: 'M4.8 aftershock, Sumatra region', time: '07:24 UTC', detail: 'Aftershock probability updated continuously via the Omori-Utsu model against the USGS earthquake feed.' },
   { id: 'ex-2', kind: 'weather', title: 'Heavy rainfall system, Southeast Asia', time: '07:18 UTC', detail: 'Precipitation intensity cross-checked against the affected region\'s historical flood threshold.' },
@@ -148,7 +150,12 @@ function LiveFeedWidget() {
     return () => { cancelled = true }
   }, [])
 
-  const rows = entries ?? FEED_FALLBACK
+  // Capped display (live feedback 2026-09-13): the relay posts up to 25 real
+  // entries, but the panel was designed around the 5-item fallback list -
+  // showing all 25 turns it into a dense, constantly-scrolling list next to
+  // the calmer 5-row chains panel. Slice to the newest FEED_DISPLAY_COUNT
+  // instead of the full batch; ingestion/storage still keeps all of them.
+  const rows = (entries ?? FEED_FALLBACK).slice(0, FEED_DISPLAY_COUNT)
   const openEntry = rows.find(r => r.id === openId) ?? null
 
   return (
@@ -491,8 +498,8 @@ function ComparisonBlock() {
   const c = t.worldModel.comparison
   return (
     <div className="wm-wrap">
-      <div className="wm-section-box">
       <Reveal dist={14}><div className="wm-section-head" style={{ marginBottom: 28 }}><p className="wm-eyebrow">{c.eyebrow}</p><h2>{c.heading}</h2><p>{c.sub}</p></div></Reveal>
+      <div className="wm-section-box">
         <div className="wm-compare-grid">
           <Reveal dist={14} style={{ height: '100%' }}><div className="wm-compare-card wm-card">
             <div className="wm-compare-icon"><IconMessage2 size={19} stroke={1.7} /></div>
@@ -531,8 +538,8 @@ function UseCasesGrid() {
   const spot = useSpotlight<HTMLDivElement>()
   return (
     <div id="wm-usecases" className="wm-wrap">
-      <div className="wm-section-box">
       <Reveal dist={14}><div className="wm-section-head"><p className="wm-eyebrow">{u.eyebrow}</p><h2>{u.heading}</h2><p>{u.sub}</p></div></Reveal>
+      <div className="wm-section-box">
       <div ref={spot.ref} className="wm-usecase-grid" style={HUE_MAIN} onMouseMove={spot.onMouseMove}>
         {u.cards.map((card, i) => {
           const Icon = USE_CASE_ICONS[i]
@@ -543,8 +550,7 @@ function UseCasesGrid() {
                   <div className="wm-compare-icon"><Icon size={19} stroke={1.6} /></div>
                   <h3>{card.title}</h3>
                 </div>
-                <p>{card.body}</p>
-                <p className="wm-usecase-body2">{card.body2}</p>
+                <p>{card.body} {card.body2}</p>
               </article>
             </Reveal>
           )
@@ -634,23 +640,20 @@ export function WorldModelSection() {
       <section className="wm-section"><ComparisonBlock /></section>
       <section className="wm-section">
         <div className="wm-wrap">
-          {/* Head moved inside .wm-section-box (Simeon, 2026-09-13 spotted it):
-              was a bare sibling above the box with no panel of its own - the
-              one section on this page whose heading sat in open background
-              instead of the same framed box as everything below it, unlike
-              ComparisonBlock/UseCasesGrid which both wrap head + content in
-              one .wm-section-box. .wm-split now only wraps the two panels
-              themselves, matching .wm-compare-grid's role inside
-              ComparisonBlock, so the grid-column math isn't disturbed by a
-              third (heading) child. */}
+          {/* Reverted 2026-09-13 (Simeon, second look): boxing the heading
+              matched ComparisonBlock/UseCasesGrid's own framed-head pattern,
+              but read as too much "boxed software chrome" once live. Every
+              section head on this page (and Squad's) now sits bare on the
+              page background - only the actual content grid gets the framed
+              .wm-section-box. */}
+          <Reveal dist={14}>
+            <div className="wm-section-head" style={{ marginBottom: 28 }}>
+              <p className="wm-eyebrow">{w.reasoningIntro.eyebrow}</p>
+              <h2>{w.reasoningIntro.heading}</h2>
+              <p>{w.reasoningIntro.sub}</p>
+            </div>
+          </Reveal>
           <div className="wm-section-box">
-            <Reveal dist={14}>
-              <div className="wm-section-head" style={{ marginBottom: 28 }}>
-                <p className="wm-eyebrow">{w.reasoningIntro.eyebrow}</p>
-                <h2>{w.reasoningIntro.heading}</h2>
-                <p>{w.reasoningIntro.sub}</p>
-              </div>
-            </Reveal>
             <div className="wm-split">
               {/* Same two-tier contrast as the comparison box (live feedback
                   2026-08-31: without a darker outer frame, the navy card

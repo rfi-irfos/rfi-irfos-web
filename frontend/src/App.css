@@ -521,13 +521,6 @@ button { cursor: pointer; font-family: inherit; }
 .wm-usecase-grid .wm-compare-icon { flex: 0 0 auto; }
 .wm-usecase-grid h3 { margin: 0; font-size: 16px; font-weight: 800; }
 .wm-usecase-grid p { margin: 0; font-size: 14px; color: var(--text2); line-height: 1.5; }
-/* Second, longer sentence (live feedback 2026-09-13: name the concrete systems
-   the model actually connects to, per domain) - own top margin so it reads as
-   a distinct second beat rather than one run-on paragraph with the first.
-   .wm-usecase-grid p (class+element, specificity 0,1,1) beats a bare class
-   selector (0,1,0) regardless of source order - margin-top alone here was
-   silently overridden back to 0 by that rule, this needs to win the same way. */
-.wm-usecase-grid p.wm-usecase-body2 { margin-top: 10px; }
 
 /* Live-feed detail modal - deliberately scoped to the .wm-panel card it
    opened from (position:relative there), not the viewport (live feedback
