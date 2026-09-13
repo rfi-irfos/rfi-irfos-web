@@ -568,7 +568,11 @@ button { cursor: pointer; font-family: inherit; }
 .wm-early-form { display: flex; flex-direction: column; gap: 14px; width: 100%; }
 .wm-early-row { display: flex; gap: 10px; width: 100%; }
 .wm-early-row input { flex: 1; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--wm-border); background: color-mix(in srgb, var(--wm-surface) 70%, var(--bg)); color: var(--text); font-size: 14px; font-family: inherit; }
-.wm-early-benefits { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--text2); margin: 0; padding: 0; list-style: none; }
+/* justify-content: center added (live feedback 2026-09-13) - this row sat
+   left-aligned under the email+button row above it, its own natural content
+   width narrower than that row's, so it read as offset instead of centered
+   under the combined input+button span. */
+.wm-early-benefits { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--text2); margin: 0; padding: 0; list-style: none; }
 .wm-early-benefits li { display: inline-flex; align-items: center; gap: 5px; }
 .wm-early-benefits svg { color: var(--accent); flex: 0 0 auto; }
 

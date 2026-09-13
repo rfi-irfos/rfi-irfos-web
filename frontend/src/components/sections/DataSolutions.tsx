@@ -14,8 +14,9 @@ const PIPELINE_ICONS = [IconClipboardCheck, IconSettingsAutomation, IconListChec
 
 const COPY = {
   en: {
-    eyebrow: 'Data Solutions', title: 'production, data and agents that have to work',
+    eyebrow: 'Data Solutions', title: 'Production, data and agents that have to work',
     intro: 'The same discipline behind our systems and public evidence, delivered as data and infrastructure: a data warehouse, reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Our services connect to ternary-logic pipelines through a governed data layer. Your corpus stays private. Every delivered artefact stays traceable.',
+    bridgeLead: 'This is what a Data engagement produces.', bridgeCta: 'See what you’d receive →',
     datasetsEyebrow: 'Datasets', datasetsTitle: 'What we already hold',
     datasets: [
       ['Mobile application behavior\ndatasets', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],
@@ -67,6 +68,7 @@ const COPY = {
   de: {
     eyebrow: 'Data Solutions', title: 'Produktion, Daten und Agenten, die wirklich arbeiten müssen',
     intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten und Infrastruktur geliefert: ein Data Warehouse, reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Unsere Services verbinden sich über eine kontrollierte Datenschicht mit ternären Logik-Pipelines. Ihr Korpus bleibt privat. Jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
+    bridgeLead: 'Das ist es, was ein Data-Auftrag liefert.', bridgeCta: 'Sehen Sie, was Sie erhalten →',
     datasetsEyebrow: 'Datensätze', datasetsTitle: 'Was wir bereits vorhalten',
     datasets: [
       ['Verhalten mobiler Anwendungen', 'Quellcodebasiertes App-Verhalten, Berechtigungen, Endpunkte, Consent-Timing und beobachtete Datenflüsse.'],
@@ -134,6 +136,18 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
     <header className="data-hero data-wrap">
       <Reveal><p className="data-eyebrow">{c.eyebrow}</p><h1>{c.title}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{c.intro}</p></Reveal>
+      {/* Bridge sentence to the Data offer on Access, same pattern as Evidence's
+          own securityBridgeLead/Cta (live feedback 2026-09-13: "das kann man
+          auch noch einbaun das konsistent isch") - this page was the one
+          hero-first section with no cross-link back to what's purchasable. */}
+      <Reveal delay={1}>
+        <p style={{ color: 'var(--text2)', marginTop: 12, fontSize: 15, lineHeight: 1.6 }}>
+          {c.bridgeLead}{' '}
+          <button type="button" onClick={onNavigateAccessData} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent-text)', fontWeight: 700, fontSize: 15, cursor: 'pointer', textDecoration: 'underline' }}>
+            {c.bridgeCta}
+          </button>
+        </p>
+      </Reveal>
     </header>
 
     <section className="data-section data-datasets"><div className="data-wrap">

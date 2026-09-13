@@ -52,7 +52,7 @@ export const EN = {
 
   research: {
     eyebrow: 'Areas of Magnification',
-    heading: 'where our attention falls',
+    heading: 'Where our attention falls',
     subheading: 'How complex systems behave: how evidence becomes structure, how relationships change over time, and where one butterfly can move an entire network.',
     upNext: 'Up next',
     areas: [
@@ -69,7 +69,7 @@ export const EN = {
 
   projects: {
     eyebrow: 'Systems',
-    heading: 'what we build',
+    heading: 'What we build',
     subheading: 'Every project is a proof of concept for a specific research question. All built on the same stack.',
     carouselPrevAria: 'previous projects',
     carouselNextAria: 'next projects',
@@ -130,7 +130,7 @@ export const EN = {
 
   trackRecord: {
     eyebrow: 'Permanent Disclosure Ledger',
-    heading: 'the discipline, demonstrated',
+    heading: 'The discipline, demonstrated',
     paragraph: 'We decompile publicly distributed Android/iOS apps and trace their data flows to real endpoints in real countries. Companies land on this ledger for many different reasons: they hand your data to third parties, they track without consent, or they leave the door open. Every organisation is held to the same standard, whether it pays us or not.',
     securityBridgeLead: 'This is what a Security engagement produces.',
     securityBridgeCta: 'See what you’d receive →',
@@ -219,7 +219,7 @@ export const EN = {
 
   appPrivacy: {
     eyebrow: 'Start Here',
-    heading: 'turning observations into intelligence',
+    heading: 'Turning observations into intelligence',
     paragraph: 'Most organizations have more data than they can interpret: systems, vendors, markets, events, dependencies, and changes arriving from different directions. We bring them into one evidence-first machine learning world model, preserve where every observation came from, and trace what changes through the relationships around it.',
     comparisonClassicLabel: 'What gets lost',
     comparisonRfiLabel: 'What the model preserves',
@@ -235,7 +235,7 @@ export const EN = {
 
   pricing: {
     eyebrow: 'Core Offer',
-    heading: 'priced in plain terms',
+    heading: 'Priced in plain terms',
     subheading: 'Five domains built on one evidence-first world model. Combine as many as your question needs.',
     deliveryLabel: 'Delivery',
     startingFromLabel: 'Starting from',
@@ -319,7 +319,7 @@ export const EN = {
 
   journey: {
     eyebrow: 'How Engagements Work',
-    heading: 'what happens after you start',
+    heading: 'What happens after you start',
     subheading: 'Five steps from your first handover to the final investigation.',
     steps: [
       { stage: 'Define', body: 'You give us the thing and tell us what you need to know. We establish what is being investigated, what decision it supports, what material is available and what still needs to be obtained.\n\nThat can be source code, binaries, APIs, infrastructure, datasets, telemetry, technical documentation, company records, public claims or market information. You know exactly what we are investigating before we start.' },
@@ -332,7 +332,7 @@ export const EN = {
 
   coopPartners: {
     eyebrow: 'Research Cooperation',
-    heading: 'built alongside our coop partner',
+    heading: 'Built alongside our coop partner',
     subheading: "The Emergent Interaction Lab and RFI-IRFOS are independent entities with distinct research and engineering roles. Laura Serna Gaviria leads the Lab's research architecture; RFI-IRFOS develops and operates technical systems only where a specific collaboration is agreed and explicitly attributed.",
     role: 'Emergent Interaction Lab · Coop Partner',
     laura: {
@@ -1001,7 +1001,7 @@ export const EN = {
 
   submit: {
     eyebrow: 'Contact & Disclosures',
-    heading: 'reach out',
+    heading: 'Reach out',
     paragraph: "One form, even if it's just a first talk: a question, a service inquiry, research collaboration, or a security finding. Findings come to us directly, never through a third-party bug bounty platform. We would refuse to be routed through one ourselves.",
     notSurePrefix: 'Not sure what to pick on the right? ',
     notSureStrong: 'General inquiries',

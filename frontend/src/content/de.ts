@@ -49,7 +49,7 @@ export const DE: Content = {
 
   research: {
     eyebrow: 'Unter der Lupe',
-    heading: 'worauf unser Blick fällt',
+    heading: 'Worauf unser Blick fällt',
     subheading: 'Wie komplexe Systeme sich verhalten: wie Evidenz zu Struktur wird, wie sich Beziehungen über die Zeit verändern und wo ein Schmetterling ein ganzes Netzwerk bewegen kann.',
     upNext: 'Als Nächstes',
     areas: [
@@ -66,7 +66,7 @@ export const DE: Content = {
 
   projects: {
     eyebrow: 'Systeme',
-    heading: 'was wir bauen',
+    heading: 'Was wir bauen',
     subheading: 'Jedes Projekt beantwortet eine konkrete Forschungsfrage. Alle laufen auf demselben Stack.',
     carouselPrevAria: 'vorherige Projekte',
     carouselNextAria: 'nächste Projekte',
@@ -127,7 +127,7 @@ export const DE: Content = {
 
   trackRecord: {
     eyebrow: 'Permanentes Offenlegungsledger',
-    heading: 'die Disziplin, bewiesen',
+    heading: 'Die Disziplin, bewiesen',
     paragraph: 'Wir dekompilieren öffentlich verbreitete Android- und iOS-Apps und verfolgen ihre Datenflüsse zu echten Endpunkten in echten Ländern. Unternehmen landen aus ganz unterschiedlichen Gründen auf diesem Ledger: Sie geben Ihre Daten an Dritte weiter, tracken ohne Einwilligung, oder lassen die Tür offen. Jede Organisation wird nach demselben Maßstab behandelt, unabhängig davon, ob sie uns bezahlt oder nicht.',
     securityBridgeLead: 'Das ist es, was ein Security-Auftrag liefert.',
     securityBridgeCta: 'Sehen Sie, was Sie erhalten →',
@@ -202,7 +202,7 @@ export const DE: Content = {
 
   proof: {
     eyebrow: 'Das Ergebnis',
-    heading: 'das, was Sie tatsächlich in der Hand hätten',
+    heading: 'Das, was Sie tatsächlich in der Hand hätten',
     subheading: 'Jeder Fall im Ledger endet in genau so einem Dokument: einem vollständigen, evidenzbasierten Offenlegungsbericht, nach Ablauf des Embargos öffentlich einsehbar - gleiches Format, gleiche Tiefe, unabhängig davon, ob das Unternehmen uns darüber hinaus beauftragt. Jede Behauptung darin lässt sich bis zur zugrundeliegenden Evidenz zurückverfolgen, Sie können es selbst nachprüfen, statt uns einfach zu glauben.',
     viewReport: 'vollständigen Bericht lesen',
     resolvedOn: (date: string) => `behoben am ${date}`,
@@ -228,7 +228,7 @@ export const DE: Content = {
 
   pricing: {
     eyebrow: 'Kernangebot',
-    heading: 'klar kalkuliert',
+    heading: 'Klar kalkuliert',
     subheading: 'F\u00fcnf Bereiche auf einem gemeinsamen, evidenzbasierten Weltmodell. Kombinieren Sie so viele, wie Ihre Frage braucht.',
     deliveryLabel: 'Lieferung',
     startingFromLabel: 'Ab',
@@ -306,7 +306,7 @@ export const DE: Content = {
 
   journey: {
     eyebrow: 'Wie Engagements ablaufen',
-    heading: 'was nach dem Start passiert',
+    heading: 'Was nach dem Start passiert',
     subheading: 'Fünf Schritte von der ersten Übergabe bis zur fertigen Untersuchung.',
     steps: [
       { stage: 'Definieren', body: 'Sie geben uns die Sache und sagen uns, was Sie wissen müssen. Wir klären, was untersucht wird, welche Entscheidung die Untersuchung stützt, welches Material vorliegt und was noch beschafft werden muss.\n\nDas kann Quellcode, Binaries, APIs, Infrastruktur, Datensätze, Telemetrie, technische Dokumentation, Unternehmensunterlagen, öffentliche Behauptungen oder Marktinformationen sein. Sie wissen genau, was wir untersuchen, bevor wir anfangen.' },
@@ -319,7 +319,7 @@ export const DE: Content = {
 
   coopPartners: {
     eyebrow: 'Forschungskooperation',
-    heading: 'gebaut gemeinsam mit unserem Kooperationspartner',
+    heading: 'Gebaut gemeinsam mit unserem Kooperationspartner',
     subheading: 'Das Emergent Interaction Lab und RFI-IRFOS sind eigenständige Einheiten mit klar getrennten Forschungs- und Engineering-Rollen. Laura Serna Gaviria verantwortet die Forschungsarchitektur des Labs; RFI-IRFOS entwickelt und betreibt technische Systeme nur dort, wo eine konkrete Zusammenarbeit vereinbart und entsprechend ausgewiesen ist.',
     role: 'Emergent Interaction Lab · Kooperationspartnerin',
     laura: {
@@ -988,7 +988,7 @@ export const DE: Content = {
 
   submit: {
     eyebrow: 'Kontakt & Offenlegungen',
-    heading: 'direkter draht',
+    heading: 'Direkter Draht',
     paragraph: 'Ein Formular, auch wenn es erstmal nur ein erstes Gespräch sein soll: eine allgemeine Frage, eine Serviceanfrage, eine Forschungskooperation - oder ein Sicherheitsfund. Bei Letzterem betreiben wir einen eigenen Aufnahmekanal, statt ihn an eine Drittanbieter-Bug-Bounty-Plattform weiterzuleiten - aus demselben Grund, aus dem wir uns weigern würden, selbst an eine solche verwiesen zu werden.',
     notSurePrefix: 'Im Zweifel: ',
     notSureStrong: 'Allgemeine Anfragen',
