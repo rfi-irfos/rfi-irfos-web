@@ -139,7 +139,11 @@ function LiveFeedWidget() {
     let cancelled = false
     fetch('/api/worldmodel-feed')
       .then(res => { if (!res.ok) throw new Error(String(res.status)); return res.json() })
-      .then((data: FeedEntry[]) => { if (!cancelled && Array.isArray(data) && data.length) { setEntries(data); setLive(true) } })
+      // A successful, empty array (e.g. right after a backend restart, before
+      // the relay's next 5-minute tick lands) is still "live" - it's a real,
+      // reachable response, just momentarily empty. Only a thrown error
+      // (network failure or non-2xx below) means "not reachable".
+      .then((data: FeedEntry[]) => { if (!cancelled && Array.isArray(data)) { setEntries(data); setLive(true) } })
       .catch(() => { if (!cancelled) { setEntries(FEED_FALLBACK); setLive(false) } })
     return () => { cancelled = true }
   }, [])
