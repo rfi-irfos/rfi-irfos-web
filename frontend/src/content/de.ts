@@ -325,15 +325,6 @@ export const DE: Content = {
     laura: {
       desc: 'Forschung zu Mensch-KI-Interaktion seit 2023 und die daraus entwickelte Agentenarchitektur des Emergent Interaction Lab. Die Forschungsumgebung umfasst 315 individuell geschriebene, spezialisierte Rust-Crates, die über einen Orchestrator für klar abgegrenzte Funktionen aufgerufen werden. Sie sind keine 315 Stimmen über dieselbe Frage: Ihre Ergebnisse bleiben attribuiert, evidenzgebunden und getrennt von der technischen Umsetzung.',
     },
-    products: [
-      { desc: 'Ein fokussiertes Audit eines einzelnen Systems nach Lauras Emergent-Interaction-/Case-Intelligence-Methode - Prozessrekonstruktion und Befunde, begrenzt auf ein einzelnes System.' },
-      { desc: 'Ein kurzer, intensiver Sprint, der Lauras Case-Intelligence-Methode End-to-End auf einen realen Fall oder Prozess anwendet.' },
-      { desc: 'Architektur und Design für ein Multi-Agenten-System, aufgebaut auf Lauras Emergent-Interaction-Methode, zugeschnitten auf Ihre Organisation.' },
-      { desc: 'Vollständiger Auftrag von Design bis Deployment: Architektur, Bau und Launch eines Multi-Agenten-Systems nach Lauras Methode.' },
-    ],
-    productsDeliveryNote: 'Antwort innerhalb von 24h nach Kauf; Kick-off wird auf Anfrage abgestimmt.',
-    pricingLabel: 'Preise des Emergent Interaction Lab',
-    footerNotePrefix: '4 ihrer Pakete, gezeigt als Einstiegspunkte über verschiedene Phasen der Zusammenarbeit - die vollständige Liste hängt davon ab, wo ein Unternehmen in seinem Prozess steht. Vollständige Preise auf Anfrage über',
   },
 
   causalChains: {

@@ -338,15 +338,6 @@ export const EN = {
     laura: {
       desc: 'Research into human-AI interaction since 2023 and the agent architecture developed from it at the Emergent Interaction Lab. The research environment comprises 315 individually authored, specialized Rust crates invoked through an orchestrator for bounded functions. They are not 315 votes on one question: outputs remain attributed, evidence-bound and distinct from technical implementation.',
     },
-    products: [
-      { desc: "A focused audit of one system using Laura's Emergent Interaction / Case Intelligence method - process reconstruction and findings, scoped to a single system." },
-      { desc: "A short, intensive sprint applying Laura's Case Intelligence method to a real case or process, end to end." },
-      { desc: "Architecture and design for a multi-agent system built on Laura's Emergent Interaction method, tailored to your organization." },
-      { desc: "Full design-to-deployment engagement: architecture, build, and launch of a multi-agent system on Laura's method." },
-    ],
-    productsDeliveryNote: 'Answered within 24h after purchase; kick-off aligned on request.',
-    pricingLabel: 'Emergent Interaction Lab pricing',
-    footerNotePrefix: '4 of her packages, shown as entry points across engagement phases - the full list depends on where a company is in its process. Full pricing on request via',
   },
 
   causalChains: {

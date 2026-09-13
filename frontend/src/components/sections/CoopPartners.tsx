@@ -1,10 +1,7 @@
 // "Research Cooperation" / coop partner section (`#coop-partners`) - extracted
-// verbatim from PublicSite.tsx. Its buy buttons open the same page-level
-// checkout modal as Pricing, so `openCheckoutModal` is passed in as a prop.
+// verbatim from PublicSite.tsx.
 import { Reveal } from './shared'
 import { useLocale } from '../../hooks/useLocale'
-
-type CheckoutInfo = { key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string }
 
 // The four separate "GitHub · <repo>" pills used to sit in the same badge row as
 // every crates.io/OSF/live-link badge - live feedback: that read as "just a pile
@@ -27,10 +24,9 @@ function GithubMark() {
 // directs her own research and agent architecture; RFI-IRFOS builds
 // on her direction, not the reverse).
 export function CoopPartnersSection({
-  mobile, openCheckoutModal,
+  mobile,
 }: {
   mobile: boolean
-  openCheckoutModal: (info: CheckoutInfo) => void
 }) {
   const { t } = useLocale()
   return (
@@ -127,39 +123,6 @@ export function CoopPartnersSection({
                 ))}
               </p>
             </div>
-          </div>
-          <div style={{ maxWidth: 820, margin: '16px auto 0' }}>
-            {/* Label right at the price table, not just in the subheading far
-                above it - live audit 2026-09-13 (positioning audit, top-5-
-                this-week #4): these are Laura's own Emergent Interaction Lab
-                prices, not RFI-IRFOS's, and a visitor scanning straight to a
-                price grid could otherwise miss the entity distinction. */}
-            <p style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8, textAlign: mobile ? 'left' : 'center' }}>
-              {t.coopPartners.pricingLabel}
-            </p>
-            <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(4, minmax(0, 1fr))', gap: 10, alignItems: 'stretch' }}>
-              {[
-                { name: 'Systemaudit', price: '€4.500', href: 'https://buy.stripe.com/14AdRbgpi1fpdqt6jm7N60r' },
-                { name: 'Emergent Case Intelligence Sprint', price: '€12.500', href: 'https://buy.stripe.com/bJe9AVc927DNdqtePS7N60m' },
-                { name: 'Multi-Agent System Design', price: '€24.500', href: 'https://buy.stripe.com/00w3cxc92bU30DH2367N60n' },
-                { name: 'System Design & Deployment', price: '€55.000', href: 'https://buy.stripe.com/dRm9AVgpi7DNdqt37a7N60A' },
-              ].map((p, i) => (
-                <button key={i}
-                  onClick={() => openCheckoutModal({ key: `coop_${i}`, tier: p.name, desc: t.coopPartners.products[i].desc, price: p.price, delivery: t.coopPartners.productsDeliveryNote, directUrl: p.href })}
-                  className="rfi-hover-card rfi-glass-flat rfi-glass-solid"
-                  style={{
-                    display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 8, padding: '14px 16px', minHeight: 76, boxSizing: 'border-box',
-                    borderRadius: 10, textAlign: 'left', cursor: 'pointer',
-                  }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{p.name}</span>
-                  <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-text)', marginTop: 'auto' }}>{p.price}</span>
-                </button>
-              ))}
-            </div>
-            <p style={{ fontSize: 11, color: 'var(--text3)', marginTop: 10 }}>
-              {t.coopPartners.footerNotePrefix}{' '}
-              <a href="https://emergent-interaction-lab.fly.dev" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text2)' }}>emergent-interaction-lab.fly.dev</a>.
-            </p>
           </div>
         </Reveal>
       </div>
