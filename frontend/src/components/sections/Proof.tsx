@@ -25,6 +25,10 @@ function getProofEntries(locale: 'en' | 'de'): ProofEntry[] {
       finding: a.finding[locale].split(' — meaning ')[0], // drop the plain-language restatement, keep the technical lede
       reportUrl: meta.reportUrl, resolvedDate: meta.resolvedDate,
     }))
+    // Freshest publish leads the carousel - live feedback 2026-09-13: the
+    // newest report (Foodora) was sitting third, buried behind older ones,
+    // because entries just followed AUDIT_HIGHLIGHTS' own array order.
+    .sort((a, b) => (b.resolvedDate ?? '').localeCompare(a.resolvedDate ?? ''))
 }
 
 function useCarouselSize() {
