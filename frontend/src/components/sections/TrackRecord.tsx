@@ -2728,8 +2728,11 @@ export function TrackRecordSection({
   setIntelModal: (v: { target: string; market: string; sev: string; finding: string; headline?: string } | null) => void
 }) {
   const { t, locale } = useLocale()
+  // Top padding matched to Data Solutions' .data-hero (56px) - live feedback
+  // 2026-09-13: Access/Evidence/Data Solutions each had a different gap
+  // under the floating nav pill; they should all read the same.
   return (
-    <section id="track-record" style={{ padding: '16px var(--sec-pad-x) 72px' }}>
+    <section id="track-record" style={{ padding: '56px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         {/* Reveal removed from heading+paragraph 2026-08-21 (live feedback: "nudges to
             the left" right as the nav-jump scroll settled) - this pair sits exactly at

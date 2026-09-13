@@ -95,8 +95,11 @@ export function PricingSection({
   const domains = t.pricing.domains
   const mobile = useMobile(640)
 
+  // Top padding matched to Data Solutions' .data-hero (56px) - live feedback
+  // 2026-09-13: Access/Evidence/Data Solutions each had a different gap
+  // under the floating nav pill; they should all read the same.
   return (
-    <section id="pricing" style={{ padding: '16px var(--sec-pad-x) 72px' }}>
+    <section id="pricing" style={{ padding: '56px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1120, margin: '0 auto' }}>
         <Reveal>
           {/* h1, not h2 - same CRITICAL audit finding as TrackRecord.tsx: /access/
@@ -157,7 +160,7 @@ export function PricingSection({
             // after the padding cut it exposed a sliver of the scope
             // sentence below the title instead of ending cleanly at it.
             return (
-            <div key={domain.name} style={{ position: 'sticky', top: `${72 + i * 68}px`, zIndex: i + 1, paddingBottom }}>
+            <div key={domain.name} style={{ position: 'sticky', top: `${78 + i * 68}px`, zIndex: i + 1, paddingBottom }}>
               <Reveal delay={i * 0.05}>
                 <DomainCard domain={domain} mobile={mobile} onSelectTier={onSelectTier} />
               </Reveal>
