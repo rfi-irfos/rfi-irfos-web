@@ -58,7 +58,22 @@ function DomainCard({
           the title pulled up closer to the card's top edge. Left/right/bottom
           padding unchanged. */}
       <div className="rfi-pricing-card" style={{ padding: mobile ? '16px 20px 24px' : '20px 34px 36px' }}>
-        <p style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', margin: '0 0 10px' }}>{domain.name}</p>
+        {/* Starting price moved up next to the title (Simeon, 2026-09-13) -
+            was sharing the bottom bar with delivery/CTA, which made the bar
+            crowded and buried the price. Top-right, aligned with the title's
+            own row, so it reads immediately without competing with the CTA. */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 10 }}>
+          <p style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', margin: 0 }}>{domain.name}</p>
+          {domain.startingFrom && (
+            <div style={{ textAlign: 'right', flexShrink: 0 }}>
+              <div style={{
+                fontSize: 9.5, fontWeight: 700,
+                color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 2,
+              }}>{t.pricing.startingFromLabel}</div>
+              <div style={{ color: 'var(--text)', fontSize: mobile ? 16 : 18, fontWeight: 800, letterSpacing: '0.01em', lineHeight: 1.3, whiteSpace: 'nowrap' }}>{domain.startingFrom}</div>
+            </div>
+          )}
+        </div>
         <p style={{ fontSize: 13.5, lineHeight: 1.55, color: 'var(--text)', margin: '0 0 20px', maxWidth: 760 }}>{domain.scope}</p>
         <EngagementFlow bring={domain.bring} mechanism={domain.we} receive={domain.receive} large />
         <div className="rfi-pricing-bar" style={{
@@ -75,21 +90,6 @@ function DomainCard({
               <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: 800, letterSpacing: '0.01em', lineHeight: 1.3 }}>{domain.delivery}</div>
             </div>
           </div>
-          {/* Starting price - live audit 2026-09-13 (positioning audit, opportunity
-              #3): "priced in plain terms" promised pricing and delivered none, and
-              the only real Euro figures visible anywhere on the homepage belonged
-              to a coop partner's separate pricing (Laura/EIL), risking direct
-              misattribution. This is a floor, not a fixed quote - real scope
-              still varies per engagement, same as the delivery estimate next to it. */}
-          {domain.startingFrom && (
-            <div style={{ minWidth: 0, borderLeft: '1px solid var(--border)', paddingLeft: 16 }}>
-              <div style={{
-                fontSize: 9.5, fontWeight: 700,
-                color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 2,
-              }}>{t.pricing.startingFromLabel}</div>
-              <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: 800, letterSpacing: '0.01em', lineHeight: 1.3, whiteSpace: 'nowrap' }}>{domain.startingFrom}</div>
-            </div>
-          )}
           <button type="button" onClick={() => onSelectTier(domain.name)} className="rfi-pricing-price-btn" style={{
             cursor: 'pointer', padding: '9px 16px', flexShrink: 0,
             display: 'flex', alignItems: 'center', gap: 7, fontSize: 13.5, fontWeight: 800,
