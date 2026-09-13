@@ -839,15 +839,15 @@ export const EN = {
       } as Record<string, string>,
     },
     useCases: {
-      eyebrow: 'Applications', heading: 'What DINGIR can be used for', sub: 'A queryable data warehouse of world knowledge.',
+      eyebrow: 'Applications', heading: 'What the model can be used for', sub: 'A queryable data warehouse of world knowledge.',
       viewAll: 'Discover all applications',
       cards: [
-        { title: 'Early warning & risk', body: 'Early detection of natural events, crises, and cascading failures.' },
-        { title: 'Infrastructure & logistics', body: 'Visibility across supply chains, transport, shipping, and critical infrastructure.' },
-        { title: 'Markets & economy', body: 'Understanding market moves, macro signals, and sector-level connections.' },
-        { title: 'Security & geopolitics', body: 'Tracking geopolitical developments, conflict dynamics, and systemic risk.' },
-        { title: 'Research & science', body: 'An open interface for research, hypothesis testing, and discovery.' },
-        { title: 'Enterprise & systems', body: 'Data-driven decisions with context across time, geography, and systems.' },
+        { title: 'Early warning & risk', body: 'Early detection of natural events, crises, and cascading failures.', body2: 'Bring together weather, seismic, satellite, infrastructure, and operational signals to spot changing conditions before they become critical.' },
+        { title: 'Infrastructure & logistics', body: 'Visibility across supply chains, transport, shipping, and critical infrastructure.', body2: 'Work across ERP, fleet management, AIS, GIS, warehouse systems, and infrastructure feeds to trace dependencies from supplier to physical asset.' },
+        { title: 'Markets & economy', body: 'Understanding market moves, macro signals, and sector-level connections.', body2: 'Combine market feeds, economic indicators, company data, forecasts, and internal planning systems to understand what is moving the numbers and why.' },
+        { title: 'Security & geopolitics', body: 'Tracking geopolitical developments, conflict dynamics, and systemic risk.', body2: 'Link threat intelligence, SIEM data, geopolitical events, infrastructure records, and internal risk systems to see how external developments reach your organisation.' },
+        { title: 'Research & science', body: 'An open interface for research, hypothesis testing, and discovery.', body2: 'Use scientific datasets, laboratory results, public APIs, simulations, sensor networks, and institutional research as part of the same evolving evidence base.' },
+        { title: 'Enterprise & systems', body: 'Data-driven decisions with context across time, geography, and systems.', body2: 'Put SAP, ERP, CRM, data warehouses, Kafka streams, internal APIs, and operational data into the wider context of the real world.' },
       ],
     },
     earlyAccess: {

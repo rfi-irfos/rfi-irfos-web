@@ -514,9 +514,17 @@ button { cursor: pointer; font-family: inherit; }
    content is a short label/number, not a full title. */
 .wm-usecase-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .wm-usecase-grid article { padding: 20px 18px; text-align: left; height: 100%; }
-.wm-usecase-grid .wm-compare-icon { margin-bottom: 12px; }
-.wm-usecase-grid h3 { margin: 0 0 6px; font-size: 16px; font-weight: 800; }
+/* Icon sits beside the title, not stacked above it (live feedback 2026-09-13) -
+   .wm-compare-icon keeps its own fixed 36px box, the row just centers it
+   against the title's cap-height instead of letting it float on its own line. */
+.wm-usecase-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.wm-usecase-grid .wm-compare-icon { flex: 0 0 auto; }
+.wm-usecase-grid h3 { margin: 0; font-size: 16px; font-weight: 800; }
 .wm-usecase-grid p { margin: 0; font-size: 14px; color: var(--text2); line-height: 1.5; }
+/* Second, longer sentence (live feedback 2026-09-13: name the concrete systems
+   the model actually connects to, per domain) - own top margin so it reads as
+   a distinct second beat rather than one run-on paragraph with the first. */
+.wm-usecase-body2 { margin-top: 8px; }
 
 /* Live-feed detail modal - deliberately scoped to the .wm-panel card it
    opened from (position:relative there), not the viewport (live feedback

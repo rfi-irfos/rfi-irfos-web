@@ -539,9 +539,12 @@ function UseCasesGrid() {
           return (
             <Reveal key={card.title} dist={14} delay={(i % 3) + 1} style={{ height: '100%' }}>
               <article className="wm-card">
-                <div className="wm-compare-icon"><Icon size={19} stroke={1.6} /></div>
-                <h3>{card.title}</h3>
+                <div className="wm-usecase-head">
+                  <div className="wm-compare-icon"><Icon size={19} stroke={1.6} /></div>
+                  <h3>{card.title}</h3>
+                </div>
                 <p>{card.body}</p>
+                <p className="wm-usecase-body2">{card.body2}</p>
               </article>
             </Reveal>
           )

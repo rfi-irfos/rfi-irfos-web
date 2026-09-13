@@ -826,15 +826,15 @@ export const DE: Content = {
       } as Record<string, string>,
     },
     useCases: {
-      eyebrow: 'Anwendungsbereiche', heading: 'Wofür DINGIR genutzt werden kann', sub: 'Ein abfragbares Data Warehouse des Weltwissens.',
+      eyebrow: 'Anwendungsbereiche', heading: 'Wofür das Modell genutzt werden kann', sub: 'Ein abfragbares Data Warehouse des Weltwissens.',
       viewAll: 'Alle Anwendungsbereiche entdecken',
       cards: [
-        { title: 'Frühwarnung & Risiko', body: 'Frühzeitige Erkennung von Naturereignissen, Krisen und Kaskaden.' },
-        { title: 'Infrastruktur & Logistik', body: 'Transparenz über Lieferketten, Verkehr, Schifffahrt und kritische Infrastruktur.' },
-        { title: 'Märkte & Ökonomie', body: 'Verstehen von Marktbewegungen, Makro-Signalen und sektoralen Zusammenhängen.' },
-        { title: 'Sicherheit & Geopolitik', body: 'Beobachtung geopolitischer Entwicklungen, Konfliktdynamiken und systemischer Risiken.' },
-        { title: 'Forschung & Wissenschaft', body: 'Offene Schnittstelle für Forschung, Hypothesen-Tests und Entdeckungen.' },
-        { title: 'Unternehmen & Systeme', body: 'Datengetriebene Entscheidungen mit Kontext über Zeit, Raum und Systeme hinweg.' },
+        { title: 'Frühwarnung & Risiko', body: 'Frühzeitige Erkennung von Naturereignissen, Krisen und Kaskaden.', body2: 'Wetter-, Seismik-, Satelliten-, Infrastruktur- und Betriebssignale werden zusammengeführt, um sich verändernde Bedingungen zu erkennen, bevor sie kritisch werden.' },
+        { title: 'Infrastruktur & Logistik', body: 'Transparenz über Lieferketten, Verkehr, Schifffahrt und kritische Infrastruktur.', body2: 'ERP, Flottenmanagement, AIS, GIS, Lagersysteme und Infrastruktur-Feeds werden verknüpft, um Abhängigkeiten vom Lieferanten bis zur physischen Anlage nachzuverfolgen.' },
+        { title: 'Märkte & Ökonomie', body: 'Verstehen von Marktbewegungen, Makro-Signalen und sektoralen Zusammenhängen.', body2: 'Marktdaten, Wirtschaftsindikatoren, Unternehmensdaten, Prognosen und interne Planungssysteme werden kombiniert, um zu verstehen, was die Zahlen bewegt und warum.' },
+        { title: 'Sicherheit & Geopolitik', body: 'Beobachtung geopolitischer Entwicklungen, Konfliktdynamiken und systemischer Risiken.', body2: 'Threat Intelligence, SIEM-Daten, geopolitische Ereignisse, Infrastrukturdaten und interne Risikosysteme werden verknüpft, um zu erkennen, wie externe Entwicklungen die eigene Organisation erreichen.' },
+        { title: 'Forschung & Wissenschaft', body: 'Offene Schnittstelle für Forschung, Hypothesen-Tests und Entdeckungen.', body2: 'Wissenschaftliche Datensätze, Laborergebnisse, öffentliche APIs, Simulationen, Sensornetzwerke und institutionelle Forschung werden Teil derselben wachsenden Evidenzbasis.' },
+        { title: 'Unternehmen & Systeme', body: 'Datengetriebene Entscheidungen mit Kontext über Zeit, Raum und Systeme hinweg.', body2: 'SAP, ERP, CRM, Data Warehouses, Kafka-Streams, interne APIs und Betriebsdaten werden in den größeren Kontext der realen Welt eingeordnet.' },
       ],
     },
     earlyAccess: {
