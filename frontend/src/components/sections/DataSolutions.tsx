@@ -157,7 +157,9 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
         implementation depth than a buying decision needs. The existing
         bottom-of-page CTA (onContact) stays untouched, still a direct path
         to the contact form for someone who's already decided. */}
-    <section className="data-section"><div className="data-wrap" style={{ display: 'flex', justifyContent: 'center' }}>
+    {/* padding override - .data-section's default 72px top+bottom is sized for
+        a heading + grid, way too much air around a single button. */}
+    <section className="data-section" style={{ padding: '16px 0' }}><div className="data-wrap" style={{ display: 'flex', justifyContent: 'center' }}>
       <Reveal><button type="button" className="data-cta" onClick={onNavigateAccessData} style={{ margin: 0 }}>{c.accessCta} <span aria-hidden="true">→</span></button></Reveal>
     </div></section>
 
