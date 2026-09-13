@@ -274,7 +274,7 @@ export const EN = {
         bring: 'A repository, system, architecture, technical specification, implementation, Digital Twin, telemetry pipeline or production-readiness claim that needs to be understood beyond the documentation.',
         we: 'Inspect the implementation and its dependencies, reconstruct how the system behaves, trace data and execution paths and compare the technical reality against specifications, requirements or claims. Where the system crosses domains, we connect the technical evidence to Dingir, our queryable data warehouse and world model, so the engineering investigation can be understood alongside the systems, entities and events around it.',
         receive: 'An evidence-backed technical reconstruction your engineers can work from: what is actually implemented, how the pieces depend on each other, what the system exposes, where reality diverges from the specification and which technical assumptions survive investigation.',
-        cta: 'Request an engineering review \u2192', delivery: 'Delivered within 10-20 business days, depending on scope.', startingFrom: 'from \u20ac9,500' },
+        cta: 'Request an engineering review \u2192', delivery: 'Delivered depending on scope.', startingFrom: 'from \u20ac9,500' },
     ],
   },
 

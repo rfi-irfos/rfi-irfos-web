@@ -58,24 +58,14 @@ function DomainCard({
           the title pulled up closer to the card's top edge. Left/right/bottom
           padding unchanged. */}
       <div className="rfi-pricing-card" style={{ padding: mobile ? '16px 20px 24px' : '20px 34px 36px' }}>
-        {/* Starting price moved up next to the title (Simeon, 2026-09-13) -
-            was sharing the bottom bar with delivery/CTA, which made the bar
-            crowded and buried the price. Top-right, aligned with the title's
-            own row, so it reads immediately without competing with the CTA. */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 10 }}>
-          <p style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', margin: 0 }}>{domain.name}</p>
-          {domain.startingFrom && (
-            <div style={{ textAlign: 'right', flexShrink: 0 }}>
-              <div style={{
-                fontSize: 9.5, fontWeight: 700,
-                color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 2,
-              }}>{t.pricing.startingFromLabel}</div>
-              <div style={{ color: 'var(--text)', fontSize: mobile ? 16 : 18, fontWeight: 800, letterSpacing: '0.01em', lineHeight: 1.3, whiteSpace: 'nowrap' }}>{domain.startingFrom}</div>
-            </div>
-          )}
-        </div>
+        <p style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', margin: '0 0 10px' }}>{domain.name}</p>
         <p style={{ fontSize: 13.5, lineHeight: 1.55, color: 'var(--text)', margin: '0 0 20px', maxWidth: 760 }}>{domain.scope}</p>
         <EngagementFlow bring={domain.bring} mechanism={domain.we} receive={domain.receive} large />
+        {/* Delivery / starting price / CTA back in one bar (Simeon, 2026-09-13,
+            second look) - the top-right price placement read fine on its own
+            but front-loaded a number before the offer text, and the audit's
+            actual intent was to anchor price right before the CTA, not up by
+            the title. Three columns: delivery left, price middle, CTA right. */}
         <div className="rfi-pricing-bar" style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12,
           marginTop: 18, padding: mobile ? '10px 12px' : '11px 14px',
@@ -90,6 +80,15 @@ function DomainCard({
               <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: 800, letterSpacing: '0.01em', lineHeight: 1.3 }}>{domain.delivery}</div>
             </div>
           </div>
+          {domain.startingFrom && (
+            <div style={{ minWidth: 0, borderLeft: '1px solid var(--border)', paddingLeft: 16 }}>
+              <div style={{
+                fontSize: 9.5, fontWeight: 700,
+                color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 2,
+              }}>{t.pricing.startingFromLabel}</div>
+              <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: 800, letterSpacing: '0.01em', lineHeight: 1.3, whiteSpace: 'nowrap' }}>{domain.startingFrom}</div>
+            </div>
+          )}
           <button type="button" onClick={() => onSelectTier(domain.name)} className="rfi-pricing-price-btn" style={{
             cursor: 'pointer', padding: '9px 16px', flexShrink: 0,
             display: 'flex', alignItems: 'center', gap: 7, fontSize: 13.5, fontWeight: 800,

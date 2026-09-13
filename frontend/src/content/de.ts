@@ -267,7 +267,7 @@ export const DE: Content = {
         bring: 'Ein Repository, ein System, eine Architektur, eine technische Spezifikation, eine Implementierung, ein Digital Twin, eine Telemetrie-Pipeline oder eine Produktionsreife-Behauptung, die \u00fcber die Dokumentation hinaus verstanden werden muss.',
         we: 'Wir untersuchen die Implementierung und ihre Abh\u00e4ngigkeiten, rekonstruieren, wie sich das System tats\u00e4chlich verh\u00e4lt, verfolgen Daten- und Ausf\u00fchrungspfade und vergleichen die technische Realit\u00e4t mit Spezifikationen, Anforderungen oder Behauptungen. Wo das System Dom\u00e4nengrenzen \u00fcberschreitet, verbinden wir die technische Evidenz mit Dingir, unserem abfragbaren Data Warehouse und Weltmodell, sodass die Engineering-Untersuchung im Zusammenhang mit den umgebenden Systemen, Entit\u00e4ten und Ereignissen verstanden werden kann.',
         receive: 'Eine evidenzbasierte technische Rekonstruktion, mit der Ihre Ingenieurinnen und Ingenieure arbeiten k\u00f6nnen: was tats\u00e4chlich implementiert ist, wie die Teile voneinander abh\u00e4ngen, was das System exponiert, wo die Realit\u00e4t von der Spezifikation abweicht und welche technischen Annahmen einer Pr\u00fcfung standhalten.',
-        cta: 'Fordern Sie ein Engineering-Review an \u2192', delivery: 'Lieferung innerhalb von 10-20 Werktagen, je nach Umfang.', startingFrom: 'ab \u20ac9.500' },
+        cta: 'Fordern Sie ein Engineering-Review an \u2192', delivery: 'Lieferung je nach Umfang.', startingFrom: 'ab \u20ac9.500' },
     ],
   },
 
