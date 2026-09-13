@@ -854,7 +854,6 @@ export const DE: Content = {
     worldModelLinkLabel: 'So funktioniert DINGIR →',
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Finden Sie den passenden Agenten →',
-    secondaryCta: 'Sehen Sie einen Agenten live →',
     statusLine: 'Early Access',
     trustBadges: ['EU-KI-Verordnung-konform', 'Nachvollziehbar durch Design', 'Jede Entscheidung rückverfolgbar'],
     overview: {

@@ -68,16 +68,15 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
           <h1 className="sq-heading">{s.heading}</h1>
           <p className="sq-subheading">{s.subheading}</p>
           <p className="sq-intro">{s.intro}</p>
-          <a href="/world-model/" className="sq-worldmodel-link">{s.worldModelLinkLabel}</a>
           <div className="sq-hero-ctas">
             <button type="button" className="wm-btn-primary" onClick={onRequestAccess}>{s.primaryCta}</button>
-            <button
-              type="button"
-              className="wm-btn-secondary"
-              onClick={() => document.getElementById('squad-overview')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              {s.secondaryCta}
-            </button>
+            {/* Was a plain text link above the buttons + a separate "Watch an
+                agent run" ghost button below them (live feedback 2026-09-13:
+                inconsistent with World Model's own hero, which pairs one
+                primary and one secondary button side by side - "Explore" +
+                "Request API access"). Reuses that same two-button shape here:
+                this real link-as-button replaces both. */}
+            <a href="/world-model/" className="wm-btn-secondary">{s.worldModelLinkLabel}</a>
           </div>
           <p className="sq-status-line"><span className="sq-status-dot" />{s.statusLine}</p>
         </Reveal>

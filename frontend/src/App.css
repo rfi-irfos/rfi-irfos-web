@@ -236,11 +236,13 @@ button { cursor: pointer; font-family: inherit; }
    glass. Cards stay individually boxed with real gaps between them (reverted
    from an earlier single-merged-strip pass that read as "too disjointed" the
    other direction - live feedback wanted "every element its own card"). */
-/* Flush, "one cast piece" flow (live feedback 2026-08-31: "bund an bund, wie
-   ne software, kein space zwischen den elementen" - sections must touch, not
-   float in their own whitespace bubble). Vertical rhythm now lives ENTIRELY in
-   this one small gap, not in each section's own padding. */
-.wm { color: var(--text); display: flex; flex-direction: column; gap: 10px; }
+/* Reverted from the 2026-08-31 "bund an bund" 10px flush gap (live feedback
+   2026-09-13: with section heads now sitting bare on the page background
+   instead of boxed - see .wm-section-box moves below - that 10px read as
+   genuinely too cramped, not intentionally tight). 64px matches the
+   breathing room other pages give a full section (.data-section's own
+   72px top+bottom padding is the closest sibling value on this site). */
+.wm { color: var(--text); display: flex; flex-direction: column; gap: 64px; }
 .wm-wrap { width: min(1320px, calc(100% - 2 * var(--sec-pad-x))); margin-inline: auto; }
 .wm-eyebrow { margin: 0 0 12px; color: var(--text3); font: 700 11px/1.3 'JetBrains Mono', monospace; letter-spacing: .2em; text-transform: uppercase; }
 .wm-section { padding: 0; }
@@ -253,7 +255,7 @@ button { cursor: pointer; font-family: inherit; }
    in the file, so every bump to its value (64px -> 96px, twice) silently did
    nothing - the fix was never the number, it was the order. */
 .wm-section--last { padding-bottom: 96px; }
-.wm-section-head { max-width: 680px; margin: 0 auto 16px; text-align: center; }
+.wm-section-head { max-width: 680px; margin: 0 auto 28px; text-align: center; }
 /* CANONICAL SECTION-LEVEL H2. Same rule as the page-h1 above: one declaration
    for every section title on the site. Measured 2026-09-07 on the rendered DOM,
    these had split into two families - 32px on Home/Data Solutions/Evidence/
@@ -591,10 +593,13 @@ button { cursor: pointer; font-family: inherit; }
 .sq-hero-grid { display: grid; grid-template-columns: 0.85fr 1.35fr; gap: 48px; align-items: center; }
 .sq-heading { margin: 0 0 12px; }
 .sq-subheading { margin: 0 0 14px; font-size: 19px; color: var(--text); font-weight: 700; }
-.sq-intro { margin: 0 0 10px; max-width: 480px; color: var(--text); line-height: 1.6; }
-.sq-worldmodel-link { display: inline-block; margin-bottom: 22px; color: var(--accent-text); font-size: 13px; font-weight: 700; text-decoration: none; }
-.sq-worldmodel-link:hover { text-decoration: underline; }
+.sq-intro { margin: 0 0 18px; max-width: 480px; color: var(--text); line-height: 1.6; }
 .sq-hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+/* Anchor, not <button> (unlike World Model's own pair) - a real link to
+   /world-model/, not a JS-driven scroll/navigate. .wm-btn-secondary has no
+   display rule of its own, so this needs one now that it's not always a
+   flex-item sibling of a <button> with matching box-sizing by default. */
+.sq-hero-ctas a.wm-btn-secondary { display: inline-flex; align-items: center; text-decoration: none; }
 .sq-status-line { display: flex; align-items: center; gap: 8px; margin: 0; font: 700 11px 'JetBrains Mono', monospace; letter-spacing: .08em; color: var(--text3); text-transform: uppercase; }
 .sq-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); opacity: .7; }
 

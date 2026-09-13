@@ -867,7 +867,6 @@ export const EN = {
     worldModelLinkLabel: 'See how DINGIR works →',
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'See which agent fits your problem →',
-    secondaryCta: 'Watch an agent run →',
     statusLine: 'Early Access',
     trustBadges: ['EU AI Act Compliant', 'Explainable by Design', 'Every Decision Traceable'],
     overview: {
