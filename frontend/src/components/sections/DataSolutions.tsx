@@ -62,6 +62,7 @@ const COPY = {
     expertsEyebrow: 'Expert depth', expertsTitle: 'Not crowd work. Technical work.',
     expertsText: 'The work is produced and reviewed at the level where our own systems are built: Python, Rust, C/C++, JavaScript and TypeScript, Go, Java, Kotlin, SQL, Bash, mobile and ML stacks — across backend, frontend, systems, security, DevOps, data science, and model engineering.',
     cta: 'Start a data infrastructure project',
+    accessCta: 'See scope, delivery and price on Access',
   },
   de: {
     eyebrow: 'Data Solutions', title: 'Produktion, Daten und Agenten, die wirklich arbeiten müssen',
@@ -112,6 +113,7 @@ const COPY = {
     expertsEyebrow: 'Expertentiefe', expertsTitle: 'Keine Crowd-Arbeit. Technische Arbeit.',
     expertsText: 'Produktion und Review finden auf derselben Ebene statt, auf der wir unsere eigenen Systeme bauen: Python, Rust, C/C++, JavaScript und TypeScript, Go, Java, Kotlin, SQL, Bash, Mobile- und ML-Stacks — in Backend, Frontend, Systems, Security, DevOps, Data Science und Model Engineering.',
     cta: 'Starten Sie ein Daten-Infrastruktur-Projekt',
+    accessCta: 'Umfang, Lieferzeit und Preis auf Access ansehen',
   },
 } as const
 
@@ -125,13 +127,20 @@ const HUE_PRODUCTS = hueStyle(2)  // blue
 const HUE_AGENTS = hueStyle(1)    // amber
 const HUE_STARTS = hueStyle(3)    // violet
 
-export function DataSolutionsSection({ onContact }: { onContact: () => void }) {
+export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onContact: () => void; onNavigateAccessData: () => void }) {
   const { locale } = useLocale()
   const c = COPY[locale]
   return <div className="data-solutions">
     <header className="data-hero data-wrap">
       <Reveal><p className="data-eyebrow">{c.eyebrow}</p><h1>{c.title}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{c.intro}</p></Reveal>
+      {/* Cross-link to the Data offer card on Access (Simeon, 2026-09-13) -
+          this page and the Access "Data" card explain the same offer with no
+          connection between them; a visitor who wants scope/price/delivery
+          terms had no way to get there from here except the generic nav. The
+          existing bottom-of-page CTA (onContact) stays untouched, still a
+          direct path to the contact form for someone who's already decided. */}
+      <Reveal delay={2}><button type="button" className="data-cta" onClick={onNavigateAccessData} style={{ marginTop: 20 }}>{c.accessCta} <span aria-hidden="true">→</span></button></Reveal>
     </header>
 
     <section className="data-section data-datasets"><div className="data-wrap">

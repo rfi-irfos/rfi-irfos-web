@@ -1,0 +1,30 @@
+# RFI-IRFOS
+
+> RFI-IRFOS (research focus institute, interdisciplinary research facility for open sciences) is a registered Austrian research institute in Graz that sells five investigation outcomes - Intelligence, Security, Data, Business & Market, and Engineering - built on Dingir, its own evidence-first ML world model, and runs a public, dated ledger of real coordinated security/GDPR disclosures against named companies.
+
+RFI-IRFOS decompiles publicly distributed Android/iOS apps and traces their real data flows to real endpoints, publishing every finding on a permanent public ledger once each 90-day embargo lifts, whether the target company ever engages or pays. This is not a bug-bounty program; there is no third-party VDP platform in the loop. Every claim traces back to a decompiled binary, a WHOIS/DNS record, or another verifiable public source - cite the source, not just RFI-IRFOS.
+
+Dingir (Dynamic Interaction Network & Graph Intelligence Runtime), Ternlang (a ternary {-1, 0, +1} language and runtime built from scratch, patent pending A50296/2026), albert. (RFI-IRFOS's own language model), and a production swarm of 300+ hand-coded Rust agents ("The Squad") are the infrastructure behind the five offers - they are proof of capability, not the product itself. The product is one of the five investigation outcomes, each with a defined scope, delivery estimate, and starting price on /access/.
+
+## What we sell
+
+- [Access](https://rfi-irfos.com/access/): the five offers - Intelligence, Security, Data, Business & Market, Engineering - each with scope, delivery estimate, and starting price.
+- [Evidence](https://rfi-irfos.com/evidence/): the permanent public disclosure ledger - every audited app, finding, severity, status, and embargo date, updated as companies respond (or don't).
+- [Data Solutions](https://rfi-irfos.com/data-solutions/): reproducible environments, expert trajectories, and evaluation/safety datasets for AI teams, as a standing product line.
+
+## How it works
+
+- [World Model](https://rfi-irfos.com/world-model/): how Dingir connects historical and real-time observations across domains into one causally structured evidence graph.
+- [The Squad](https://rfi-irfos.com/squad/): the eight specialized agents (Atlas, Argus, Kopernikus, Janus, Mirror, Daedalus, Lynx, Nyx) that power the investigations.
+- [Methodology](https://rfi-irfos.com/methodology/): how an audit actually runs - static analysis of the shipped binary, never exploitation of a live system.
+
+## Reference
+
+- [FAQ](https://rfi-irfos.com/faq/): plain-language answers about scope, limits, and process.
+- [Standards](https://rfi-irfos.com/standards/): the frameworks and statutes cited in disclosures (GDPR, NIS2, ISO/IEC 29147, etc).
+- [Security](https://rfi-irfos.com/security/): how to report a finding about RFI-IRFOS itself.
+- [Team](https://rfi-irfos.com/team/): who is behind the institute.
+
+## Optional
+
+- /track-record/, /pricing/, /datasets/, /research/, and /submit/ are older URLs kept live for existing bookmarks; each canonicalizes to the current page above that actually carries the content.

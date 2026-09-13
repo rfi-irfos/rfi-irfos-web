@@ -304,6 +304,16 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
     // the same plain scroll-to-top every other nav link uses.
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+  // Deep-link to one specific offer card on Access, distinct from navigateTo
+  // above - that function deliberately always lands at the page top (reversed
+  // 2026-08-25, live direction). This is a narrower, intentional exception:
+  // Data Solutions' cross-link (2026-09-13) wants a visitor who already knows
+  // they want the Data offer to land on that exact card, not scroll past it.
+  function navigateToOffer(slug: string) {
+    setView('access')
+    window.history.replaceState(null, '', '#access')
+    requestAnimationFrame(() => document.getElementById(`pricing-${slug}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+  }
   function navigateHome() {
     setView('home')
     window.history.replaceState(null, '', '/')
@@ -1389,7 +1399,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         </section>}
 
         {view === 'data-solutions' && <section id="data-solutions" className="rfi-view-panel">
-          <DataSolutionsSection onContact={() => selectTier('Data Solutions')} />
+          <DataSolutionsSection onContact={() => selectTier('Data Solutions')} onNavigateAccessData={() => navigateToOffer('data')} />
         </section>}
 
         {view === 'access' && <section id="access" className="rfi-view-panel">

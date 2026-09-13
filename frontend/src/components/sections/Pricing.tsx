@@ -174,8 +174,12 @@ export function PricingSection({
             // window used to be tuned for the old, taller header block, so
             // after the padding cut it exposed a sliver of the scope
             // sentence below the title instead of ending cleanly at it.
+            // Slug-based id per card (e.g. "pricing-data") so other pages can
+            // deep-link straight to one offer instead of just the top of
+            // Access - added for Data Solutions' new cross-link (2026-09-13).
+            const slug = domain.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
             return (
-            <div key={domain.name} style={{ position: 'sticky', top: `${78 + i * 68}px`, zIndex: i + 1, paddingBottom }}>
+            <div key={domain.name} id={`pricing-${slug}`} style={{ position: 'sticky', top: `${78 + i * 68}px`, zIndex: i + 1, paddingBottom, scrollMarginTop: 84 }}>
               <Reveal delay={i * 0.05}>
                 <DomainCard domain={domain} mobile={mobile} onSelectTier={onSelectTier} />
               </Reveal>
