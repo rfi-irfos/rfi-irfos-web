@@ -627,27 +627,32 @@ export function WorldModelSection() {
       <section className="wm-section"><ComparisonBlock /></section>
       <section className="wm-section">
         <div className="wm-wrap">
-          {/* Overall section head above the two-panel split (live feedback:
-              every other section on this page got an eyebrow+heading+sub,
-              this block went straight from Comparison into the split box
-              with nothing framing it - inconsistent). The two panels below
-              keep their own smaller headings (chainsPreview/liveFeed), this
-              is the umbrella head for the pair. */}
-          <Reveal dist={14}>
-            <div className="wm-section-head">
-              <p className="wm-eyebrow">{w.reasoningIntro.eyebrow}</p>
-              <h2>{w.reasoningIntro.heading}</h2>
-              <p>{w.reasoningIntro.sub}</p>
+          {/* Head moved inside .wm-section-box (Simeon, 2026-09-13 spotted it):
+              was a bare sibling above the box with no panel of its own - the
+              one section on this page whose heading sat in open background
+              instead of the same framed box as everything below it, unlike
+              ComparisonBlock/UseCasesGrid which both wrap head + content in
+              one .wm-section-box. .wm-split now only wraps the two panels
+              themselves, matching .wm-compare-grid's role inside
+              ComparisonBlock, so the grid-column math isn't disturbed by a
+              third (heading) child. */}
+          <div className="wm-section-box">
+            <Reveal dist={14}>
+              <div className="wm-section-head" style={{ marginBottom: 28 }}>
+                <p className="wm-eyebrow">{w.reasoningIntro.eyebrow}</p>
+                <h2>{w.reasoningIntro.heading}</h2>
+                <p>{w.reasoningIntro.sub}</p>
+              </div>
+            </Reveal>
+            <div className="wm-split">
+              {/* Same two-tier contrast as the comparison box (live feedback
+                  2026-08-31: without a darker outer frame, the navy card
+                  surface reads as flat grey instead of blue - the darker
+                  --bg box around it is what makes --wm-surface read as blue
+                  by contrast, not the card colour itself). */}
+              <Reveal dist={14}><ChainsPreview /></Reveal>
+              <Reveal dist={14} delay={1}><LiveFeedWidget /></Reveal>
             </div>
-          </Reveal>
-          <div className="wm-section-box wm-split">
-            {/* Same two-tier contrast as the comparison box (live feedback
-                2026-08-31: without a darker outer frame, the navy card
-                surface reads as flat grey instead of blue - the darker
-                --bg box around it is what makes --wm-surface read as blue
-                by contrast, not the card colour itself). */}
-            <Reveal dist={14}><ChainsPreview /></Reveal>
-            <Reveal dist={14} delay={1}><LiveFeedWidget /></Reveal>
           </div>
         </div>
       </section>
