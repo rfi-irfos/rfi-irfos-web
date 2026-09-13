@@ -323,7 +323,7 @@ export const DE: Content = {
     subheading: 'Das Emergent Interaction Lab und RFI-IRFOS sind eigenständige Einheiten mit klar getrennten Forschungs- und Engineering-Rollen. Laura Serna Gaviria verantwortet die Forschungsarchitektur des Labs; RFI-IRFOS entwickelt und betreibt technische Systeme nur dort, wo eine konkrete Zusammenarbeit vereinbart und entsprechend ausgewiesen ist.',
     role: 'Emergent Interaction Lab · Kooperationspartnerin',
     laura: {
-      desc: 'Forschung zu Mensch-KI-Interaktion seit 2023 und die daraus entwickelte Agentenarchitektur des Emergent Interaction Lab. Die Forschungsumgebung umfasst 315 individuell geschriebene, spezialisierte Rust-Crates, die über einen Orchestrator für klar abgegrenzte Funktionen aufgerufen werden. Sie sind keine 315 Stimmen über dieselbe Frage: Ihre Ergebnisse bleiben attribuiert, evidenzgebunden und getrennt von der technischen Umsetzung.',
+      desc: 'Forschung zu Mensch-KI-Interaktion seit 2023, heute eine arbeitende SWAT-Architektur: 18 handgeschriebene Kern-Agenten führen einen 292er-Pool an, der über ein Mission-Control-Turntable nacheinander angesteuert wird, damit nichts überstürzt oder übersehen wird. Jeder Lauf durchläuft eine gehärtete Review-Schleife, bevor etwas ausgeliefert wird, mit call-laura als letztem Gate. Ihr Name bleibt auf dem, was dabei entsteht, weil sie das Urteilsvermögen dahinter gebaut hat, nicht aus Höflichkeit.',
     },
   },
 

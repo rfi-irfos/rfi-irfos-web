@@ -336,7 +336,7 @@ export const EN = {
     subheading: "The Emergent Interaction Lab and RFI-IRFOS are independent entities with distinct research and engineering roles. Laura Serna Gaviria leads the Lab's research architecture; RFI-IRFOS develops and operates technical systems only where a specific collaboration is agreed and explicitly attributed.",
     role: 'Emergent Interaction Lab · Coop Partner',
     laura: {
-      desc: 'Research into human-AI interaction since 2023 and the agent architecture developed from it at the Emergent Interaction Lab. The research environment comprises 315 individually authored, specialized Rust crates invoked through an orchestrator for bounded functions. They are not 315 votes on one question: outputs remain attributed, evidence-bound and distinct from technical implementation.',
+      desc: 'Research into human-AI interaction since 2023, now a working SWAT architecture: 18 hand-authored core agents lead a 292-agent pool, dispatched one at a time through a Mission Control turntable so nothing gets rushed or dropped. Every run passes a hardened review loop before anything ships, with call-laura as the final gate. Her name stays on what it produces because she built the judgment it runs on, not as a courtesy credit.',
     },
   },
 
