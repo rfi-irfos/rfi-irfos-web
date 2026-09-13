@@ -16,8 +16,37 @@ import { AUDIT_HIGHLIGHTS, AUDIT_META } from './TrackRecord'
 
 type ProofEntry = { target: string; market: string; finding: string; reportUrl: string; resolvedDate?: string }
 
+// Multiple ledger rows can point at the same published PDF (one consolidated
+// report covering several app variants, e.g. foodora Consumer/Rider/Partner).
+// Live feedback 2026-09-13: that showed up as 3 near-duplicate cards for one
+// report. Merge rows sharing a reportUrl into a single card: title becomes
+// "<common prefix> (<distinguishing part> / <distinguishing part> / ...)",
+// finding text comes from whichever row has the longest (most complete) lede.
+function mergeSharedReports(rows: ProofEntry[]): ProofEntry[] {
+  const byUrl = new Map<string, ProofEntry[]>()
+  for (const row of rows) {
+    const group = byUrl.get(row.reportUrl) ?? []
+    group.push(row)
+    byUrl.set(row.reportUrl, group)
+  }
+  return [...byUrl.values()].map(group => {
+    if (group.length === 1) return group[0]
+    const names = group.map(g => g.target)
+    let prefixLen = names[0].length
+    for (const name of names.slice(1)) {
+      let i = 0
+      while (i < prefixLen && i < name.length && name[i] === names[0][i]) i++
+      prefixLen = i
+    }
+    const prefix = names[0].slice(0, prefixLen).trim()
+    const parts = names.map(n => n.slice(prefixLen).replace(/^[\s()]+|[)\s]+$/g, '') || 'Consumer')
+    const richest = group.reduce((a, b) => (b.finding.length > a.finding.length ? b : a))
+    return { ...richest, target: `${prefix} (${parts.join(' / ')})` }
+  })
+}
+
 function getProofEntries(locale: 'en' | 'de'): ProofEntry[] {
-  return AUDIT_HIGHLIGHTS
+  const rows = AUDIT_HIGHLIGHTS
     .map(a => ({ a, meta: AUDIT_META[a.target] }))
     .filter((x): x is { a: typeof AUDIT_HIGHLIGHTS[number]; meta: NonNullable<typeof x.meta> & { reportUrl: string } } => !!x.meta?.reportUrl)
     .map(({ a, meta }) => ({
@@ -25,6 +54,7 @@ function getProofEntries(locale: 'en' | 'de'): ProofEntry[] {
       finding: a.finding[locale].split(' — meaning ')[0], // drop the plain-language restatement, keep the technical lede
       reportUrl: meta.reportUrl, resolvedDate: meta.resolvedDate,
     }))
+  return mergeSharedReports(rows)
     // Freshest publish leads the carousel - live feedback 2026-09-13: the
     // newest report (Foodora) was sitting third, buried behind older ones,
     // because entries just followed AUDIT_HIGHLIGHTS' own array order.
