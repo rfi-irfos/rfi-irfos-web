@@ -1,8 +1,15 @@
 import { useEffect, useState } from 'react'
 
-// EU accessibility mandate: every public page ships these three themes.
+// Light dropped from the selectable set (Simeon, 2026-09-14: "nur dark und
+// high contrast supported") - 'light' stays in the Theme union rather than
+// being deleted outright, since every visual component still branches on
+// `theme === 'light'` for its own (now unreachable) light-mode styling;
+// removing the type value would force cleaning up every one of those
+// branches instead of just making the state unreachable through the UI.
+// THEMES below is what the toggle actually cycles and what a stale
+// localStorage value gets validated against.
 export type Theme = 'light' | 'dark' | 'hc'
-export const THEMES: Theme[] = ['light', 'dark', 'hc']
+export const THEMES: Theme[] = ['dark', 'hc']
 
 const KEY = 'rfi-theme'
 
