@@ -564,7 +564,7 @@ export const AUDIT_META: Record<string, { notified?: string; disclosure: string;
   'Meine Allianz (AT)':           { notified: '2026-06-26', disclosure: '2026-09-24' },
   'Bitpanda (AT)':                { notified: '2026-06-26', disclosure: '2026-09-24' },
   'ChatGPT (OpenAI)':             { notified: '2026-06-26', disclosure: '2026-09-24' },
-  'a-Trust (AT)':                 { notified: '2026-06-19', disclosure: '2026-09-17' },
+  'a-Trust (AT)':                 { notified: '2026-06-19', disclosure: '2026-09-17', resolved: true, resolvedDate: '2026-09-18', reportUrl: '/reports/atrust-2026.pdf' },
   'Drei (AT)':                    { notified: '2026-06-21', disclosure: '2026-09-19' },
   'Gemini (Google)':              { notified: '2026-06-26', disclosure: '2026-09-24' },
   'Eustella (AT)':                { notified: '2026-06-25', disclosure: '2026-09-23' },
