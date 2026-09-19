@@ -51,7 +51,15 @@ function mergeSharedReports(rows: ProofEntry[]): ProofEntry[] {
       return s || 'Consumer'
     })
     const richest = group.reduce((a, b) => (b.finding.length > a.finding.length ? b : a))
-    return { ...richest, target: `${prefix} (${parts.join(' / ')})` }
+    // A title listing every distinguishing part blows up past 3-4 members
+    // (StoryToys: 10 apps, the Outfit7/Talking Tom franchise: 17) and forces
+    // every other card in the same carousel row to match its height, so cap
+    // what's spelled out and fold the rest into a count instead.
+    const MAX_NAMED = 3
+    const shownParts = parts.length > MAX_NAMED
+      ? [...parts.slice(0, MAX_NAMED), `+${parts.length - MAX_NAMED} more`]
+      : parts
+    return { ...richest, target: `${prefix} (${shownParts.join(' / ')})` }
   })
 }
 
