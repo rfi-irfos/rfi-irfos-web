@@ -1459,29 +1459,29 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
               ? [
                 {
                   heading: t.footer.groups.legal.heading, links: [
-                    { label: t.footer.groups.legal.links.impressum, href: '/impressum' },
-                    { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz' },
-                    { label: t.footer.groups.legal.links.agb, href: '/agb' },
-                    { label: t.footer.groups.legal.links.security, href: '/security' },
-                    { label: t.footer.groups.legal.links.standards, href: '/standards' },
-                    { label: 'FAQ', href: '/faq' },
+                    { label: t.footer.groups.legal.links.impressum, href: '/impressum/' },
+                    { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz/' },
+                    { label: t.footer.groups.legal.links.agb, href: '/agb/' },
+                    { label: t.footer.groups.legal.links.security, href: '/security/' },
+                    { label: t.footer.groups.legal.links.standards, href: '/standards/' },
+                    { label: 'FAQ', href: '/faq/' },
                   ],
                 },
               ]
               : [
                 {
                   heading: t.footer.groups.legal.heading, links: [
-                    { label: t.footer.groups.legal.links.impressum, href: '/impressum' },
-                    { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz' },
-                    { label: t.footer.groups.legal.links.agb, href: '/agb' },
-                    { label: t.footer.groups.legal.links.security, href: '/security' },
-                    { label: t.footer.groups.legal.links.standards, href: '/standards' },
-                    { label: 'FAQ', href: '/faq' },
+                    { label: t.footer.groups.legal.links.impressum, href: '/impressum/' },
+                    { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz/' },
+                    { label: t.footer.groups.legal.links.agb, href: '/agb/' },
+                    { label: t.footer.groups.legal.links.security, href: '/security/' },
+                    { label: t.footer.groups.legal.links.standards, href: '/standards/' },
+                    { label: 'FAQ', href: '/faq/' },
                   ],
                 },
                 {
                   heading: t.footer.groups.company.heading, links: [
-                    { label: t.footer.groups.company.links.team, href: '/team' },
+                    { label: t.footer.groups.company.links.team, href: '/team/' },
                     { label: t.footer.groups.company.links.careers, href: 'mailto:career@rfi-irfos.com' },
                     { label: t.footer.groups.company.links.ternlang, href: 'https://ternlang.com' },
                     { label: t.footer.groups.company.links.github, href: 'https://github.com/rfi-irfos' },
@@ -1491,7 +1491,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                   heading: t.footer.groups.research.heading, links: [
                     { label: t.footer.groups.research.links.research, href: '#research' },
                     { label: t.footer.groups.research.links.trackRecord, href: '#track-record' },
-                    { label: t.footer.groups.research.links.methodology, href: '/methodology' },
+                    { label: t.footer.groups.research.links.methodology, href: '/methodology/' },
                   ],
                 },
               ]
