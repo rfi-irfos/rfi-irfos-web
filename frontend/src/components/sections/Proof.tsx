@@ -131,6 +131,7 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
   const carouselUsed = useRef(false)
   const [activeIdx, setActiveIdx] = useState(0)
+  const [paused, setPaused] = useState(false)
 
   const markUsed = () => {
     if (!carouselUsed.current) { carouselUsed.current = true; beacon('proof_carousel_used') }
@@ -157,9 +158,11 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
   }, [n])
 
   // Wraps at both ends - see the identical comment on ProjectsCarousel's go()
-  // in Projects.tsx for why a plain scrollBy needed this.
-  const go = (dir: number) => {
-    markUsed()
+  // in Projects.tsx for why a plain scrollBy needed this. `silent` skips
+  // markUsed() - the autoplay tick advances the track without counting as
+  // the "user touched the carousel" signal that autoplay itself listens for.
+  const go = (dir: number, silent = false) => {
+    if (!silent) markUsed()
     const track = trackRef.current
     if (!track) return
     const cardWidth = track.firstElementChild?.clientWidth ?? 300
@@ -174,6 +177,20 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
       track.scrollBy({ left: cardWidth * dir, behavior: reduced ? 'auto' : 'smooth' })
     }
   }
+
+  // Slow auto-rotate, showcase-style (Simeon, 2026-09-19: "langsam durchrotiert
+  // wie so n showcase"). Stops for good the moment a visitor actually touches
+  // the carousel (arrow click or manual scroll both flip carouselUsed) - once
+  // someone is steering, autoplay fighting them is the failure mode. Also
+  // pauses on hover/focus and respects prefers-reduced-motion outright.
+  useEffect(() => {
+    if (reduced || n <= perView) return
+    const id = window.setInterval(() => {
+      if (paused || carouselUsed.current || document.hidden) return
+      go(1, true)
+    }, 4500)
+    return () => window.clearInterval(id)
+  }, [reduced, n, perView, paused])
 
   const arrowSize = perView === 1 ? 36 : 44
   const arrowStyle: React.CSSProperties = {
@@ -202,7 +219,13 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
             translateY(-4px) + shadow) still needs real padding to render
             before it reaches the clip edge - this copy never got that fix
             ported over, which is why the card top clipped on hover. */}
-        <div style={{ overflowX: 'hidden', overflowY: 'visible', flex: 1, minWidth: 0 }}>
+        <div
+          style={{ overflowX: 'hidden', overflowY: 'visible', flex: 1, minWidth: 0 }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocus={() => setPaused(true)}
+          onBlur={() => setPaused(false)}
+        >
           <div
             ref={trackRef}
             className="rfi-thin-scrollbar"
