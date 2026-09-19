@@ -312,7 +312,26 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   function navigateToOffer(slug: string) {
     setView('access')
     window.history.replaceState(null, '', '#access')
-    requestAnimationFrame(() => document.getElementById(`pricing-${slug}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+    // Bug fixed 2026-09-19 (live report: Evidence's Security bridge CTA landed
+    // on the Intelligence card instead of Security's). A single
+    // requestAnimationFrame after setView() fires before Access' five-card
+    // sticky stack (each card's height feeds the next one's scroll-linked
+    // Reveal position) has actually committed and laid out - scrollIntoView
+    // then reads stale/zero geometry and silently scrolls to nowhere, leaving
+    // the page wherever the top-of-view Intelligence card already was.
+    // Retrying across frames until the target element has real layout (a
+    // non-zero height) makes this robust regardless of how many render passes
+    // the new view needs, without hardcoding a guessed delay.
+    let attempts = 0
+    const tryScroll = () => {
+      const el = document.getElementById(`pricing-${slug}`)
+      if (el && el.getBoundingClientRect().height > 0) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        return
+      }
+      if (attempts++ < 30) requestAnimationFrame(tryScroll)
+    }
+    requestAnimationFrame(tryScroll)
   }
   function navigateHome() {
     setView('home')
