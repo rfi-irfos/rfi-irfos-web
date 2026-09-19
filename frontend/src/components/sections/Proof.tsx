@@ -39,7 +39,17 @@ function mergeSharedReports(rows: ProofEntry[]): ProofEntry[] {
       prefixLen = i
     }
     const prefix = names[0].slice(0, prefixLen).trim()
-    const parts = names.map(n => n.slice(prefixLen).replace(/^[\s()]+|[)\s]+$/g, '') || 'Consumer')
+    // Only strip parens when the whole remainder is wrapped in them (the
+    // Foodora case: "Foodora (Rider)" -> "Rider"). Don't touch a trailing
+    // paren that's part of the distinguishing text itself (the StoryToys
+    // case: "LEGO Bluey (IE)" must keep its own closing paren, or ten of
+    // these joined by ' / ' turn into one run-on string of dangling "(IE"s
+    // with a single stray ")" tacked on at the very end).
+    const parts = names.map(n => {
+      let s = n.slice(prefixLen).trim()
+      if (s.startsWith('(') && s.endsWith(')')) s = s.slice(1, -1).trim()
+      return s || 'Consumer'
+    })
     const richest = group.reduce((a, b) => (b.finding.length > a.finding.length ? b : a))
     return { ...richest, target: `${prefix} (${parts.join(' / ')})` }
   })
