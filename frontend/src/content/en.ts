@@ -204,7 +204,7 @@ export const EN = {
       no: 'NO',
       pdf: 'PDF',
     },
-    footerNote: 'this ledger is updated in real time as companies respond. silence is public. · ',
+    footerNote: 'this ledger is updated in real time as companies respond. silence is public. severity is scored primarily by CVSS v4.0, we reserve the right to deviate based on blast radius. · ',
   },
 
   proof: {

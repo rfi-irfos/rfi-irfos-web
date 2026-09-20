@@ -197,7 +197,7 @@ export const DE: Content = {
       no: 'NEIN',
       pdf: 'PDF',
     },
-    footerNote: 'dieses Ledger wird in Echtzeit aktualisiert, sobald Unternehmen reagieren. Schweigen ist öffentlich. · ',
+    footerNote: 'dieses Ledger wird in Echtzeit aktualisiert, sobald Unternehmen reagieren. Schweigen ist öffentlich. severity wird primär nach CVSS v4.0 bewertet, wir behalten uns vor, je nach Blast-Radius davon abzuweichen. · ',
   },
 
   proof: {
