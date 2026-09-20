@@ -478,13 +478,19 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
                   appends after the final character. Centred text is otherwise
                   optically pushed right by half a tracking unit, which is what
                   made the longest label look off-centre. */}
-              <div style={{ fontSize: 11, color: theme === 'light' ? '#3a3a42' : '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8, marginRight: '-0.08em' }}>{s.label}</div>
+              {/* hyphens:auto + lang sync (useLocale.tsx sets document.documentElement.lang):
+                  German compound labels (e.g. "Forschungsdomänen") have no space to wrap
+                  at, unlike their English equivalents ("RESEARCH AREAS") - without this,
+                  the word overflowed the card's edge on narrow cards instead of breaking
+                  at a syllable boundary (live feedback, screenshot). overflowWrap/wordBreak
+                  stay as a fallback for browsers/words hyphens can't hyphenate. */}
+              <div style={{ fontSize: 11, color: theme === 'light' ? '#3a3a42' : '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8, marginRight: '-0.08em', overflowWrap: 'break-word', wordBreak: 'break-word', WebkitHyphens: 'auto', hyphens: 'auto' }}>{s.label}</div>
               {/* Connective caption under just these two cards (2026-08-18, live
                   feedback: signals research areas and systems aren't counted in
                   isolation, they operate as one whole) - styled identically to
                   the label line above it, not as a smaller/muted footnote
                   (live feedback: "genau so wie der rest"). */}
-              {s.sub && <div style={{ fontSize: 11, color: theme === 'light' ? '#3a3a42' : '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 2, marginRight: '-0.08em' }}>{s.sub}</div>}
+              {s.sub && <div style={{ fontSize: 11, color: theme === 'light' ? '#3a3a42' : '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 2, marginRight: '-0.08em', overflowWrap: 'break-word', wordBreak: 'break-word', WebkitHyphens: 'auto', hyphens: 'auto' }}>{s.sub}</div>}
             </div>
           </motion.div>
         ))}

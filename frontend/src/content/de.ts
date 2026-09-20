@@ -35,7 +35,7 @@ export const DE: Content = {
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
     identity: 'Wir formen, was unter Last hält, und legen offen, was zum Scheitern bestimmt war. Kein Theater, keine Warnwesten.',
     stats: {
-      researchAreas: 'Forschungsdomänen',
+      researchAreas: 'Forschungs­domänen',
       researchAreasSub: 'kombiniert',
       openSourceProjects: 'Systeme',
       openSourceProjectsSub: 'im Zusammenspiel',
