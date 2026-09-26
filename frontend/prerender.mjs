@@ -10,11 +10,13 @@
 // already serves a directory's index.html for its path, same convention
 // this repo's /humanrights static page relies on - no backend change needed.
 import { chromium } from 'playwright'
-import { createServer } from 'node:http'
+import { createServer as createHttpServer } from 'node:http'
+import { createServer as createViteServer } from 'vite'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, extname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+const ROOT = fileURLToPath(new URL('./', import.meta.url))
 const DIST = fileURLToPath(new URL('./dist/', import.meta.url))
 const PORT = 4173
 
@@ -28,6 +30,22 @@ const ROUTES = [
   '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/team', '/methodology', '/faq',
 ]
 
+// Individual disclosure-report routes (2026-09-25 crawlability sweep) - every
+// published PDF behind the ledger gets its own real /evidence/<slug>/ page instead
+// of only a ?report=<slug> deep link into the shared /evidence/ page. Slugs are
+// read straight out of TrackRecord.tsx's REPORT_URL_BY_SLUG via a throwaway Vite
+// SSR module load (the same transform Vite already uses for `vite dev`/`vite build`,
+// just invoked once here in Node rather than through the dev server) rather than
+// hand-listed, so a new report gets a working crawlable page automatically the
+// moment its PDF lands in AUDIT_META - same reasoning as REPORT_URL_BY_SLUG itself
+// being derived instead of hand-maintained (see TrackRecord.tsx's own comment).
+const viteServer = await createViteServer({ root: ROOT, server: { middlewareMode: true }, appType: 'custom' })
+const trackRecordModule = await viteServer.ssrLoadModule('/src/components/sections/TrackRecord.tsx')
+const REPORT_SLUGS = Object.keys(trackRecordModule.REPORT_URL_BY_SLUG)
+const REPORT_META_BY_SLUG = trackRecordModule.REPORT_META_BY_SLUG
+await viteServer.close()
+console.log(`discovered ${REPORT_SLUGS.length} individual report routes from AUDIT_META`)
+
 const MIME = {
   '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json',
@@ -35,7 +53,7 @@ const MIME = {
   '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.mp4': 'video/mp4',
 }
 
-const server = createServer(async (req, res) => {
+const server = createHttpServer(async (req, res) => {
   const reqPath = req.url.split('?')[0]
   const filePath = join(DIST, reqPath === '/' ? 'index.html' : reqPath)
   try {
@@ -61,8 +79,22 @@ await new Promise((resolve) => server.listen(PORT, resolve))
 // exception, which is why this surfaced as a silent page-closed crash with
 // no console output. This flag is cheap and harmless either way; the actual
 // fix if it recurs is freeing real memory on the machine, not this flag.
-const browser = await chromium.launch({ args: ['--disable-dev-shm-usage'] })
-const page = await browser.newPage()
+// A single Chromium process rendering all ~190 routes back-to-back never
+// gives the OS anything back - renderer heap, DevTools protocol buffers, and
+// Playwright's own page handles all accumulate for the process's lifetime.
+// Found 2026-09-26: the ~165+ individual /evidence/<slug>/ report routes
+// (added same day this got long enough to matter) pushed that accumulation
+// past what both Fly's remote builder AND this machine's own free RAM could
+// absorb, surfacing as the same "Target crashed" this file already documents
+// below - just later in the run each time, since it's a slow leak, not a
+// single expensive route. Restarting the browser process itself every
+// ROUTES_PER_BROWSER routes is the actual fix: it returns everything to the
+// OS on each restart instead of only ever growing, independent of which
+// machine ends up building this.
+const ROUTES_PER_BROWSER = 25
+let browser = await chromium.launch({ args: ['--disable-dev-shm-usage'] })
+let page = await browser.newPage()
+let routesSinceRestart = 0
 
 // Prerender output is serialized DOM only - decoded image/video pixels never
 // end up in it, but they dominate the renderer's memory (the hero PNGs are
@@ -71,7 +103,21 @@ const page = await browser.newPage()
 // "Target crashed" with no console output) that's exactly what pushed the
 // renderer over the edge. Abort those requests here - <img> src attributes
 // and CSS url()s still serialize identically, only the pixel decode is skipped.
-await page.route(/\.(png|jpe?g|webp|gif|mp4|webm)(\?|$)/, r => r.abort())
+async function abortMedia() {
+  await page.route(/\.(png|jpe?g|webp|gif|mp4|webm)(\?|$)/, r => r.abort())
+}
+await abortMedia()
+
+async function restartBrowserIfDue() {
+  routesSinceRestart += 1
+  if (routesSinceRestart < ROUTES_PER_BROWSER) return
+  routesSinceRestart = 0
+  await page.close()
+  await browser.close()
+  browser = await chromium.launch({ args: ['--disable-dev-shm-usage'] })
+  page = await browser.newPage()
+  await abortMedia()
+}
 
 // Some crawlable routes render byte-identical content to another route: either
 // an intentional legacy alias (old bookmarks to /pricing, /track-record,
@@ -93,22 +139,20 @@ const CANONICAL_ALIAS = {
   '/submit': '/',
 }
 
-for (const route of ROUTES) {
-  // 'networkidle' hangs intermittently now that the Hero route ships a
-  // looping, autoplaying <video> (2026-08-15): this dev-only static server
-  // has no HTTP Range support, so Chrome's video-streaming requests for it
-  // never resolve the way the browser expects, and 'networkidle' waits for
-  // network quiet that a continuously-looping video's own requests keep
-  // preventing. Switching outright to 'load' broke OTHER routes instead
-  // (some lazy-loaded chunks/async content genuinely need the extra
-  // settle time networkidle used to provide, confirmed by /evidence
-  // failing its content check under 'load'). Keeping 'networkidle' as the
-  // primary wait but swallowing just its timeout - if the network never
-  // quiets down within 12s, proceed anyway; the waitForSelector below
-  // (with visibility, not just DOM presence) is the actual correctness
-  // gate regardless of which path got us here.
+// Factored out (2026-09-25) so the ~160 individual /evidence/<slug>/ report
+// routes below can reuse the exact same goto/wait/canonicalize/write pipeline
+// as the hand-listed ROUTES above, instead of a second copy drifting from it.
+// `waitSelector` is the one real difference: report routes render the same
+// #root h1/h2 content as /evidence/ itself (the ledger underneath the open
+// modal), so that alone can't distinguish "loaded" from "loaded but the
+// modal never opened" - waiting on the modal backdrop is the real
+// correctness gate for those routes specifically.
+async function renderRoute(route, canonicalRoute, waitSelector = '#root h1, #root h2') {
+  // See the original inline comment (still applies): 'networkidle' hangs
+  // intermittently because of the Hero route's looping <video>; swallow just
+  // its timeout and fall back to the waitForSelector gate below.
   await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'networkidle', timeout: 12000 }).catch(() => {})
-  await page.waitForSelector('#root h1, #root h2', { state: 'visible', timeout: 20000 })
+  await page.waitForSelector(waitSelector, { state: 'visible', timeout: 20000 })
   let html = await page.content() // already includes the doctype
 
   // FOUND 2026-08-19 via Search Console flagging /methodology/ as "Alternative
@@ -121,7 +165,6 @@ for (const route of ROUTES) {
   // Rewritten here, per route, to the page's own real URL (trailing slash on
   // every route except / itself, matching how the site is actually served and
   // the exact form Search Console's own examples use).
-  const canonicalRoute = CANONICAL_ALIAS[route] ?? route
   const canonicalUrl = canonicalRoute === '/' ? 'https://rfi-irfos.com' : `https://rfi-irfos.com${canonicalRoute}/`
   html = html.replace(
     /<link rel="canonical" href="[^"]*"\s*\/?>/,
@@ -140,7 +183,49 @@ for (const route of ROUTES) {
   await mkdir(dirname(outPath), { recursive: true })
   await writeFile(outPath, html)
   console.log(`prerendered ${route === '/' ? '/' : route + '/'} (canonical: ${canonicalUrl})`)
+  await restartBrowserIfDue()
+}
+
+for (const route of ROUTES) {
+  await renderRoute(route, CANONICAL_ALIAS[route] ?? route)
+}
+
+// Individual /evidence/<slug>/ report pages - each is its own indexable page
+// (own <title>/description/JSON-LD, set client-side by PublicSite.tsx's
+// initialReportSlug effect before this snapshot happens), canonical to itself
+// rather than aliased back to /evidence/ - these are NOT duplicate content of
+// the ledger, each one is about one specific disclosure.
+for (const slug of REPORT_SLUGS) {
+  const route = `/evidence/${slug}`
+  await renderRoute(route, route, '.rfi-modal-backdrop')
 }
 
 await browser.close()
 server.close()
+
+// sitemap.xml (2026-09-25 crawlability sweep) - frontend/public/sitemap.xml is
+// the hand-maintained source of truth for the site's top-level static routes
+// (rarely change, worth reviewing by hand), but the ~160 individual report
+// routes above would immediately go stale as a hand-maintained list the moment
+// a new disclosure report is published. Read the static file, splice in one
+// <url> per REPORT_SLUGS entry (lastmod = that report's disclosure date, where
+// known) before the closing </urlset>, and ship the combined result as the
+// actual dist/sitemap.xml Google/Bing fetch - vite's own build already copied
+// public/sitemap.xml into dist/ verbatim before this script ran, so this
+// intentionally overwrites that with the complete version.
+const staticSitemap = await readFile(join(ROOT, 'public/sitemap.xml'), 'utf8')
+const reportUrls = REPORT_SLUGS.map(slug => {
+  const meta = REPORT_META_BY_SLUG[slug]
+  const lastmod = meta?.resolvedDate ?? meta?.disclosure
+  return [
+    '  <url>',
+    `    <loc>https://rfi-irfos.com/evidence/${slug}/</loc>`,
+    ...(lastmod ? [`    <lastmod>${lastmod}</lastmod>`] : []),
+    '    <changefreq>yearly</changefreq>',
+    '    <priority>0.4</priority>',
+    '  </url>',
+  ].join('\n')
+}).join('\n')
+const combinedSitemap = staticSitemap.replace('</urlset>', `${reportUrls}\n</urlset>`)
+await writeFile(join(DIST, 'sitemap.xml'), combinedSitemap)
+console.log(`sitemap.xml: ${ROUTES.length} static routes + ${REPORT_SLUGS.length} report routes`)

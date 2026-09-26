@@ -12,7 +12,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { prefersReducedMotion, beacon, TEAL, Reveal } from './shared'
 import { useLocale } from '../../hooks/useLocale'
-import { AUDIT_HIGHLIGHTS, AUDIT_META } from './TrackRecord'
+import { AUDIT_HIGHLIGHTS, AUDIT_META, reportSlug } from './TrackRecord'
 
 type ProofEntry = { target: string; market: string; finding: string; reportUrl: string; resolvedDate?: string }
 
@@ -96,12 +96,19 @@ function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string)
   // than needed; a thin border around the whole card reads as "featured
   // document" without dominating it).
   return (
-    <button
-      onClick={() => { beacon('proof_card_click:' + entry.target); onOpen(entry.reportUrl) }}
+    // Real <a href="/evidence/<slug>/"> (was <button onClick>) - 2026-09-25
+    // crawlability sweep: this carousel is the site's own highlight reel of its
+    // strongest evidence, yet every card was a button, contributing zero real
+    // internal links to any of the individual report pages. preventDefault +
+    // the same onOpen callback keeps the in-app click (opens the ledger's
+    // report modal) identical to before.
+    <a
+      href={`/evidence/${reportSlug(entry.reportUrl)}/`}
+      onClick={e => { e.preventDefault(); beacon('proof_card_click:' + entry.target); onOpen(entry.reportUrl) }}
       className="rfi-hover-card rfi-glass-flat rfi-glass-solid"
       style={{
         borderRadius: 16, padding: 0, display: 'flex', flexDirection: 'column', gap: 0,
-        flex: '1 1 0', minWidth: 0, textAlign: 'left', cursor: 'pointer',
+        flex: '1 1 0', minWidth: 0, textAlign: 'left', cursor: 'pointer', textDecoration: 'none',
         border: `1.5px solid ${TEAL}`, font: 'inherit', color: 'inherit', overflow: 'hidden',
       }}
     >
@@ -131,7 +138,7 @@ function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string)
           {t.proof.viewReport} &rarr;
         </div>
       </div>
-    </button>
+    </a>
   )
 }
 

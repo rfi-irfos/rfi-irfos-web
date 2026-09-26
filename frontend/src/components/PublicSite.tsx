@@ -6,7 +6,7 @@ import type { Content } from '../content/en'
 import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed, useModalExit } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
-import { TrackRecordSection } from './sections/TrackRecord'
+import { TrackRecordSection, REPORT_URL_BY_SLUG, REPORT_META_BY_SLUG, reportSlug } from './sections/TrackRecord'
 import { ProofSection } from './sections/Proof'
 import { ScrollSpine } from './sections/Spine'
 import { AppPrivacySection } from './sections/AppPrivacy'
@@ -19,7 +19,7 @@ import { SubmitSection, type TipForm } from './sections/Submit'
 import { ZONE_ORDER, ZONE_LABELS, SYSTEMS } from '../content/systems'
 import { SystemCardModal } from './sections/SystemCardModal'
 import { RFI_REPOS, SIMEON_REPOS, CRATES, CRATES_IO_PROFILE } from '../content/repos'
-import { upsertJsonLd, breadcrumbJsonLd } from '../lib/structuredData'
+import { upsertJsonLd, breadcrumbJsonLd, reportBreadcrumbJsonLd, reportArticleJsonLd } from '../lib/structuredData'
 
 // Footer's overflow repo/crate directory (2026-08-15) is rendered as literal
 // grid-column chunks, not CSS column-count, so it lines up as flat siblings
@@ -253,7 +253,7 @@ const BREADCRUMB_BY_VIEW: Partial<Record<PublicView, { navKey: keyof Content['na
   'access': { navKey: 'pricing', path: '/access' },
 }
 
-export function PublicSite({ initialSection }: { initialSection?: string | null } = {}) {
+export function PublicSite({ initialSection, initialReportSlug }: { initialSection?: string | null; initialReportSlug?: string | null } = {}) {
   const { locale, setLocale, t } = useLocale()
   const NAV_LINKS = NAV_HREFS.map(n => ({ label: t.nav.links[n.key], href: n.href }))
   const [view, setView] = useState<PublicView>(() => viewForSection(initialSection))
@@ -380,6 +380,64 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
   // exactly as before; this only affects how long the closing modal stays
   // rendered and which class it wears while it does.
   const reportModalExit = useModalExit(reportModal)
+  // rfi-irfos.com/?report=<slug> deep link (every closure email now points here instead of
+  // a bare PDF, so the link actually lands back on the ledger entry it belongs to). App.tsx
+  // already forced sectionFocus to 'track-record' for this case, so `view` is already
+  // 'evidence' by the time this runs - this effect only has to resolve the slug and open
+  // the modal, same one-time-on-mount pattern as the initialSection effect above.
+  useEffect(() => {
+    if (!initialReportSlug) return
+    const url = REPORT_URL_BY_SLUG[initialReportSlug]
+    if (!url) return
+    setReportModal(url)
+    requestAnimationFrame(() => document.getElementById('evidence')?.scrollIntoView({ block: 'start' }))
+    // Per-report <title>/meta description + JSON-LD (2026-09-25 crawlability sweep) -
+    // landing directly on /evidence/<slug>/ (or the older ?report=<slug> form) used to
+    // ship the generic /evidence/ page's own meta repeated identically for every one
+    // of these ~160 report pages, which is useless-to-harmful for SEO (duplicate title/
+    // description across every indexed report). REPORT_META_BY_SLUG carries the target
+    // name(s) + dates already grouped by slug (see TrackRecord.tsx); this mirrors the
+    // sectionMeta()/BREADCRUMB_BY_VIEW pattern the initialSection effect above already
+    // uses for the coarser section-level routes.
+    const meta = REPORT_META_BY_SLUG[initialReportSlug]
+    if (meta) {
+      const names = meta.targets.join(', ')
+      const title = `${names} — Disclosure Report — RFI-IRFOS`
+      const description = `RFI-IRFOS GDPR/security disclosure report for ${names}.${meta.disclosure ? ` Disclosed ${meta.disclosure}.` : ''}${meta.resolved ? ' Resolved.' : ''}`
+      document.title = title
+      document.querySelector('meta[name="description"]')?.setAttribute('content', description)
+      document.querySelector('meta[property="og:title"]')?.setAttribute('content', title)
+      document.querySelector('meta[property="og:description"]')?.setAttribute('content', description)
+      document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', title)
+      document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description)
+      upsertJsonLd('ld-breadcrumb', reportBreadcrumbJsonLd(names, initialReportSlug, t.nav.links.trackRecord))
+      upsertJsonLd('ld-report-article', reportArticleJsonLd({
+        slug: initialReportSlug, targets: meta.targets, disclosure: meta.disclosure,
+        resolved: meta.resolved, resolvedDate: meta.resolvedDate,
+      }))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  // Keep the URL's ?report= param in sync with whichever report is actually open, for
+  // EVERY way the modal can change, not just the initial deep-link landing above: clicking
+  // a different ledger row's PDF button while one is already open, clicking the Proof
+  // carousel's report button, or closing the modal entirely. Without this, only the report
+  // that was open on page load ever showed up in the address bar - every other report a
+  // visitor opened from here left the URL pointing at the wrong (or no) report, so sharing
+  // "the link I'm looking at" never worked except by accident, on the very first click.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    // A /evidence/<slug>/ path landing (2026-09-25) already names the open report in
+    // the path itself - skip appending the redundant ?report= for that one report
+    // (still used for every other case: switching reports from within an already-open
+    // ledger, or the older ?report= deep-link form on any other path).
+    const pathSlugAlreadyMatches = reportModal && window.location.pathname.replace(/^\/|\/$/g, '') === `evidence/${reportSlug(reportModal)}`
+    if (reportModal && !pathSlugAlreadyMatches) params.set('report', reportSlug(reportModal))
+    else params.delete('report')
+    const qs = params.toString()
+    const next = `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`
+    window.history.replaceState(null, '', next)
+  }, [reportModal])
   // Full plain-language writeup per ledger entry - the ledger row/cell only ever
   // summarizes (hover reveals the short "why it matters" line), this is where the
   // complete article-style explanation lives, opened by clicking the Intel cell.
@@ -1202,7 +1260,7 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
         padding: '0 1.5rem',
         display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', columnGap: 12, height: '60px',
       }}>
-        <a href="#" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
+        <a href="/" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <picture>
             <source srcSet="/logo.webp" type="image/webp" />
             <img src="/logo.png" alt="" style={{ width: 42, height: 42, objectFit: 'contain', flexShrink: 0 }} />
@@ -1508,8 +1566,8 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                 },
                 {
                   heading: t.footer.groups.research.heading, links: [
-                    { label: t.footer.groups.research.links.research, href: '#research' },
-                    { label: t.footer.groups.research.links.trackRecord, href: '#track-record' },
+                    { label: t.footer.groups.research.links.research, href: '/research/' },
+                    { label: t.footer.groups.research.links.trackRecord, href: '/evidence/' },
                     { label: t.footer.groups.research.links.methodology, href: '/methodology/' },
                   ],
                 },
@@ -1522,6 +1580,24 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                     onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}
                     onClick={e => {
+                      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+                      // Research/Track Record used to be bare `#research`/`#track-record`
+                      // in-page anchors (found 2026-09-25 sweep - same defect class as the
+                      // NAV_HREFS fix above: invisible to a crawler's link graph, and
+                      // actually broken for Track Record specifically whenever clicked
+                      // from any view other than 'evidence', since id="track-record" only
+                      // exists in the DOM once that view is already showing). Hrefs are now
+                      // the real paths ('/research/', '/evidence/') so a crawler can follow
+                      // them; a left-click still goes through the same in-app view switch
+                      // as the top nav (navigateTo), then scrolls to the specific in-page
+                      // section rather than just the view's top.
+                      const target = l.href.replace(/^\/|\/$/g, '')
+                      if (target === 'research' || target === 'track-record') {
+                        e.preventDefault()
+                        navigateTo(target)
+                        requestAnimationFrame(() => document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+                        return
+                      }
                       // Client-side into a legal page too now (2026-08-19, live
                       // feedback: entering was still a full reload while every
                       // OTHER leg of the trip - legal<->legal, legal->home -
@@ -1534,7 +1610,6 @@ export function PublicSite({ initialSection }: { initialSection?: string | null 
                       // fail this check and fall through to normal navigation
                       // unchanged, so this only touches the routes that
                       // actually go through App.tsx's slug state.
-                      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
                       if (!l.href.startsWith('/') || l.href.startsWith('//')) return
                       e.preventDefault()
                       history.pushState(null, '', l.href)

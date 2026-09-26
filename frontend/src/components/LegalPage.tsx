@@ -1031,7 +1031,7 @@ function StandardsEN() {
     <p style={P}>Digital Services Act. Systemic-risk and illegal-content obligations. Filed directly with the Irish Digital Services Coordinator (Coimisiún na Meán) on platform findings.</p>
 
     <h2 style={H2}>ISO/IEC 29147 &middot; International</h2>
-    <p style={P}>Vulnerability disclosure. Our coordinated framework follows the 90-day embargo + regulator-notification standard — see our <a href="#" onClick={e => { e.preventDefault(); location.hash = '#p/security' }} style={A}>Security Policy</a> for the process itself.</p>
+    <p style={P}>Vulnerability disclosure. Our coordinated framework follows the 90-day embargo + regulator-notification standard — see our <a href="/security/" onClick={e => navigate(e, '/security/')} style={A}>Security Policy</a> for the process itself.</p>
 
     <h2 style={H2}>ISO/IEC 30111 &middot; International</h2>
     <p style={P}>Vulnerability handling processes. The internal triage, validation, and remediation-tracking workflow behind every coordinated disclosure we run.</p>
@@ -1080,7 +1080,7 @@ function StandardsDE() {
     <p style={P}>Digital Services Act. Pflichten zu systemischen Risiken und illegalen Inhalten. Bei Plattform-Funden direkt beim irischen Digital Services Coordinator (Coimisiún na Meán) eingereicht.</p>
 
     <h2 style={H2}>ISO/IEC 29147 &middot; International</h2>
-    <p style={P}>Offenlegung von Schwachstellen. Unser koordinierter Rahmen folgt dem Standard aus 90-Tage-Embargo und Behördenbenachrichtigung — siehe unsere <a href="#" onClick={e => { e.preventDefault(); location.hash = '#p/security' }} style={A}>Sicherheitsrichtlinie</a> für den Prozess selbst.</p>
+    <p style={P}>Offenlegung von Schwachstellen. Unser koordinierter Rahmen folgt dem Standard aus 90-Tage-Embargo und Behördenbenachrichtigung — siehe unsere <a href="/security/" onClick={e => navigate(e, '/security/')} style={A}>Sicherheitsrichtlinie</a> für den Prozess selbst.</p>
 
     <h2 style={H2}>ISO/IEC 30111 &middot; International</h2>
     <p style={P}>Prozesse zur Behandlung von Schwachstellen. Der interne Triage-, Validierungs- und Nachverfolgungs-Workflow hinter jeder koordinierten Offenlegung, die wir durchführen.</p>

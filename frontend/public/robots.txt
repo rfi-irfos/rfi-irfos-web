@@ -23,6 +23,8 @@ Allow: /
 #   /world-model/     DINGIR, our own evidence-first world model.
 #   /evidence/        the public ledger: every disclosed target, finding,
 #                     severity, status, and embargo date, kept current.
+#   /evidence/<slug>/ every published disclosure report also has its own page
+#                     under here (e.g. /evidence/gemini/) - see sitemap.xml.
 #   /data-solutions/  reproducible environments, trajectories, and
 #                     evaluation/safety datasets, as a product line.
 #   /access/          engagement terms, priced in plain language.

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { PublicSite } from './components/PublicSite'
 import { LocaleProvider } from './hooks/useLocale'
+import { REPORT_URL_BY_SLUG } from './components/sections/TrackRecord'
 import './App.css'
 
 // Lazy-loaded: legal pages are a secondary route homepage visitors never hit, so there's
@@ -34,12 +35,37 @@ function getSectionFocus() {
   return SECTION_SLUGS.includes(p) ? p : null
 }
 
+// rfi-irfos.com/?report=<slug> (e.g. a link out of a closure email) always means "take me
+// to the ledger and open this report" regardless of what path it landed on - so a report
+// param overrides whatever pathSlug() would otherwise have picked as the section focus.
+// Read once on mount alongside sectionFocus, same reasoning: this is a landing decision,
+// not something later in-page nav should re-trigger.
+function getReportSlug() {
+  return new URLSearchParams(window.location.search).get('report')
+}
+
+// rfi-irfos.com/evidence/<slug>/ (2026-09-25 crawlability sweep) - each published
+// disclosure report's own real, crawlable, indexable URL, one path segment below
+// /evidence/ itself. Resolves to exactly the same landing as the older ?report=
+// query form (open the ledger with that report's modal already showing) - this
+// only adds a second, real-path way to reach the identical state, it doesn't
+// replace the query form (existing closure-email links keep working unchanged).
+// Validated against REPORT_URL_BY_SLUG (built once from AUDIT_META in
+// TrackRecord.tsx) rather than accepted blindly, so an unknown/typo'd slug falls
+// through to the normal /evidence/ ledger landing instead of silently no-oping.
+function getEvidencePathReportSlug() {
+  const seg = window.location.pathname.split('/').filter(Boolean)
+  if (seg.length === 2 && seg[0] === 'evidence' && REPORT_URL_BY_SLUG[seg[1]]) return seg[1]
+  return null
+}
+
 export default function App() {
   const [slug, setSlug] = useState(getSlug)
   // Read once on mount, not reactive to hashchange - a direct-path landing like
   // /pricing decides the initial scroll target and meta tags, the homepage's own
   // #hash nav clicks are unrelated native browser scrolling, not a slug change.
-  const [sectionFocus] = useState(getSectionFocus)
+  const [reportSlug] = useState(() => getReportSlug() || getEvidencePathReportSlug())
+  const [sectionFocus] = useState(() => reportSlug ? 'track-record' : getSectionFocus())
 
   useEffect(() => {
     // Take over scroll restoration ourselves so the browser's own (which fires
@@ -107,5 +133,5 @@ export default function App() {
   // Impressum/Datenschutz/AGB left open) - the DE/EN toggle reaches this
   // route the same way it reaches the homepage.
   if (slug) return <LocaleProvider><Suspense fallback={null}><LegalPage slug={slug} /></Suspense></LocaleProvider>
-  return <LocaleProvider><PublicSite initialSection={sectionFocus} /></LocaleProvider>
+  return <LocaleProvider><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} /></LocaleProvider>
 }

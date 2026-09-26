@@ -194,7 +194,7 @@ export const EN = {
       daysAgo: (d: number) => `${d}d ago`,
       closed: 'CLOSED',
       disclosureLabel: 'DISCLOSURE',
-      respondedLabel: 'RESPONDED',
+      respondedLabel: 'PUBLISHED',
       // Renamed from 'ELAPSED' 2026-08-05 - the underlying number (time since notification,
       // still ticking for anything not marked resolved) is a "days silent" count; "ELAPSED"
       // was accurate but neutral, "SILENT" says what an open row actually means without

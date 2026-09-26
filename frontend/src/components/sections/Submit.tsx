@@ -89,7 +89,18 @@ export function SubmitSection({
                 clean form. */}
             <p style={{ fontSize: 12, color: 'var(--text)', marginBottom: 10, lineHeight: 1.7 }}>
               {t.submit.disclosurePolicyPrefix}
-              <a href="#p/security" style={{ color: 'var(--accent-text)' }}>{t.submit.disclosurePolicyLink}</a>{t.submit.disclosurePolicySuffix}
+              <a href="/security/" onClick={e => {
+                // Real crawlable path (was `#p/security`, a same-document fragment
+                // invisible to a crawler's link graph - same defect class as the
+                // NAV_HREFS fix in PublicSite.tsx, 2026-09-05 sweep). pushState +
+                // dispatched popstate keeps the in-app click SPA-smooth; App.tsx's
+                // own popstate listener (LEGAL_SLUGS via pathSlug()) picks the
+                // real path up exactly the way a direct /security/ landing would.
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+                e.preventDefault()
+                history.pushState(null, '', '/security/')
+                window.dispatchEvent(new PopStateEvent('popstate'))
+              }} style={{ color: 'var(--accent-text)' }}>{t.submit.disclosurePolicyLink}</a>{t.submit.disclosurePolicySuffix}
             </p>
             <p style={{ fontSize: 12, color: 'var(--text)', marginBottom: 0, lineHeight: 1.7 }}>
               {t.submit.responseTime}

@@ -143,9 +143,11 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
       <Reveal delay={1}>
         <p style={{ color: 'var(--text2)', marginTop: 12, fontSize: 15, lineHeight: 1.6 }}>
           {c.bridgeLead}{' '}
-          <button type="button" onClick={onNavigateAccessData} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent-text)', fontWeight: 700, fontSize: 15, cursor: 'pointer', textDecoration: 'underline' }}>
+          {/* Real <a href> (was <button onClick>) - 2026-09-25 crawlability sweep: a
+              button carries no href a crawler can follow, unlike an anchor. */}
+          <a href="/access/" onClick={e => { e.preventDefault(); onNavigateAccessData() }} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent-text)', fontWeight: 700, fontSize: 15, cursor: 'pointer', textDecoration: 'underline' }}>
             {c.bridgeCta}
-          </button>
+          </a>
         </p>
       </Reveal>
     </header>
@@ -174,7 +176,7 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
     {/* padding override - .data-section's default 72px top+bottom is sized for
         a heading + grid, way too much air around a single button. */}
     <section className="data-section" style={{ padding: '16px 0' }}><div className="data-wrap" style={{ display: 'flex', justifyContent: 'center' }}>
-      <Reveal><button type="button" className="data-cta" onClick={onNavigateAccessData} style={{ margin: 0 }}>{c.accessCta} <span aria-hidden="true">→</span></button></Reveal>
+      <Reveal><a href="/access/" onClick={e => { e.preventDefault(); onNavigateAccessData() }} className="data-cta" style={{ margin: 0, display: 'inline-block', textDecoration: 'none' }}>{c.accessCta} <span aria-hidden="true">→</span></a></Reveal>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">

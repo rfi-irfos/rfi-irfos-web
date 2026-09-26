@@ -3,7 +3,6 @@
 .codex
 node_modules
 frontend/node_modules
-frontend/dist
 backend/target
 target
 *.log

@@ -113,7 +113,12 @@ export function AppPrivacySection({ onNavigateAccess }: { onNavigateAccess: () =
                 named the five core offers or linked to /access at all, so a
                 first-time visitor had nowhere to learn what they could actually
                 buy before being asked to fill in a form. Now routes to Access. */}
-            <button type="button" onClick={onNavigateAccess} className="rfi-cta-pulse" style={{
+            {/* Real <a href> (was <button onClick>) - 2026-09-25 crawlability sweep:
+                a button has no href a crawler can follow, so this internal link to
+                /access/ contributed nothing to that page's link graph even though
+                it points at real, already-crawlable content. preventDefault + the
+                same onNavigateAccess callback keeps the in-app click identical. */}
+            <a href="/access/" onClick={e => { e.preventDefault(); onNavigateAccess() }} className="rfi-cta-pulse" style={{
               display: 'inline-flex', alignItems: 'center', gap: 9, background: '#f97316', color: '#1a0f00', padding: '11px 28px', borderRadius: 8,
               fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em',
               textTransform: 'uppercase', transition: 'opacity 0.15s', border: 'none', cursor: 'pointer',
@@ -127,7 +132,7 @@ export function AppPrivacySection({ onNavigateAccess }: { onNavigateAccess: () =
                 <rect x="22" y="6" width="6" height="20" rx="1.5" />
               </svg>
               {t.appPrivacy.cta}
-            </button>
+            </a>
           </div>
         </Reveal>
         {/* "Beyond app privacy" (OTHER_DOMAINS grid) + the closing "same three

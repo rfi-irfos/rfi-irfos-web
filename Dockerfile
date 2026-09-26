@@ -1,22 +1,21 @@
 # ── frontend ──────────────────────────────────────────────────────────────────
-FROM node:22-slim AS frontend
-WORKDIR /app
-COPY frontend/package*.json ./
-RUN npm ci
-RUN npx playwright install --with-deps chromium
-COPY frontend/ ./
-# Vite inlines import.meta.env.VITE_* at BUILD time, not runtime. Web3Forms'
-# free tier also rejects server-to-server submissions outright ("Pro plan
-# required" - confirmed against their API), so this key can't be moved into
-# the backend either: it has to be baked into the client bundle here.
-# `fly secrets set VITE_WEB3FORMS_KEY=...` alone does NOT do this - it only
-# reaches the running container's env, never this build stage. Pass it with:
-#   fly deploy --build-arg VITE_WEB3FORMS_KEY=<key>
-# Not a secret in any meaningful sense: Web3Forms documents this key as safe
-# to use in client-side code, and it ends up readable in the bundle either way.
-ARG VITE_WEB3FORMS_KEY=""
-ENV VITE_WEB3FORMS_KEY=$VITE_WEB3FORMS_KEY
-RUN npm run build
+# Built OUTSIDE Docker now (run `npm run build` in frontend/ before `flyctl
+# deploy`, so frontend/dist is current on disk before this Dockerfile runs).
+# Found 2026-09-26: `npm run build` runs prerender.mjs, which drives ~190
+# routes (19 static + ~170 individual /evidence/<slug>/ report pages, one per
+# published disclosure) through a real headless Chromium instance. That
+# workload repeatedly hit "Target crashed" (Chromium OOM-killed) on Fly's
+# remote builder - 5 straight deploy failures, at a different route each time,
+# confirming a resource ceiling on the builder machine rather than a code bug
+# (prerender.mjs's own browser-restart-every-25-routes mitigation still didn't
+# help, since some failures happened within the first ~19 static routes,
+# before the restart threshold was ever reached). The build stage below only
+# ever needed frontend/dist's contents, never Docker's own CPU/RAM to produce
+# them - building locally (this box has more headroom, and it's already where
+# report PDFs and ledger updates get produced by hand for every published
+# disclosure) and copying the result in sidesteps the builder's memory ceiling
+# entirely, independent of how large /evidence/ grows in the future.
+# ─────────────────────────────────────────────────────────────────────────────
 
 # ── backend ───────────────────────────────────────────────────────────────────
 FROM rust:1.88-slim AS backend
@@ -32,7 +31,7 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=backend  /app/target/release/backend   ./backend
-COPY --from=frontend /app/dist                     ./dist
+COPY frontend/dist                                 ./dist
 ENV STATIC_DIR=/app/dist PORT=3000
 EXPOSE 3000
 CMD ["./backend"]

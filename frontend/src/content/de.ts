@@ -191,7 +191,7 @@ export const DE: Content = {
       daysAgo: (d: number) => `vor ${d} Tagen`,
       closed: 'GESCHLOSSEN',
       disclosureLabel: 'OFFENLEGUNG',
-      respondedLabel: 'REAGIERT',
+      respondedLabel: 'VERÖFFENTLICHT',
       elapsedLabel: 'TAGE STILLE',
       yes: 'JA',
       no: 'NEIN',
