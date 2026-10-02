@@ -840,8 +840,8 @@ export const DE: Content = {
 
   squad: {
     heading: 'Der Kader',
-    subheading: 'Spezialisierte Agenten. Für jeden Einsatzbereich.',
-    intro: 'Jeder Agent ist ein spezialisiertes System aus eigener Entwicklung, auf genau eine Frage ausgerichtet und auf nichts sonst. Setzen Sie einen einzelnen Agenten auf ein konkretes Problem an oder den gesamten Kader als eine Produktionspipeline mit gemeinsamem Lagebild. Wir begleiten das vom Konzept über die Integration in Ihren bestehenden Stack bis zum Monitoring, das den laufenden Betrieb ehrlich hält.',
+    subheading: 'Spezialisierte Agenten, die prüfen, was Sie uns senden.',
+    intro: 'Senden Sie uns ein Repository, eine APK oder eine API-Spezifikation. Ein ausgewähltes Team spezialisierter Agenten und unsere Expertinnen und Experten arbeiten es gemeinsam durch, jeder Befund wird von einem zweiten, unabhängig instruierten Agenten erneut verifiziert, und Sie erhalten einen schriftlichen Bericht mit den Belegen zu jedem Ergebnis. Setzen Sie einen einzelnen Agenten auf ein Problem an oder den gesamten Kader als eine Pipeline. Reviews laufen auf Infrastruktur in Europa, die Verarbeitung findet in Graz statt.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Finden Sie den passenden Agenten →',

@@ -853,8 +853,8 @@ export const EN = {
 
   squad: {
     heading: 'The Squad',
-    subheading: 'Specialized agents. For every use case.',
-    intro: 'Each agent is a specialized system built in-house, pointed at one clear question and nothing else. Run a single agent against one problem, or the whole squad as one production pipeline feeding a shared picture. We take it from concept through integration into your existing stack, up to the monitoring that keeps it honest once it is actually running.',
+    subheading: 'Specialized agents that review what you send us.',
+    intro: 'Send us a repository, an APK or an API spec. A selected team of specialized agents and our experts work through it together, every finding is re-verified by a second, independently instructed agent, and you receive a written report with the evidence behind each result. Run a single agent against one problem, or the whole squad as one pipeline. Reviews run on infrastructure in Europe, with processing in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'See which agent fits your problem →',
