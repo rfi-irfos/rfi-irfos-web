@@ -27,7 +27,7 @@ export const EN = {
       worldModel: { differs: 'How DINGIR Differs', practice: 'In Practice', applications: 'Applications' },
       squad: { lineup: 'The Lineup', integration: 'Integration', faq: 'Common Questions' },
       dataSolutions: { datasets: 'Datasets', deliver: 'What We Deliver', pipeline: 'How It Works' },
-      trackRecord: { overview: 'Disclosure Ledger', methodology: 'Methodology', research: 'Security Reports' },
+      trackRecord: { overview: 'Disclosure Ledger', research: 'Security Reports' },
       pricing: { overview: 'Overview', offer: 'The Offer', contact: 'Get in Touch' },
     },
     themeLabel: { light: 'Light', dark: 'Dark', hc: 'High contrast' } as Record<'light' | 'dark' | 'hc', string>,

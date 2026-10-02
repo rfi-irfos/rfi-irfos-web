@@ -2845,7 +2845,7 @@ export function TrackRecordSection({
             their own individual bordered-card treatment from the prior pass
             (2026-08-12 revert of the shared-description-box experiment) -
             only the outer boundary changed, not the cards themselves. */}
-        <div style={{ background: 'var(--glass-bg-solid)', border: '1px solid var(--accent-text)', borderRadius: 20, padding: '24px 20px 20px', marginBottom: 32 }}>
+        <div id="track-record-reports" style={{ background: 'var(--glass-bg-solid)', border: '1px solid var(--accent-text)', borderRadius: 20, padding: '24px 20px 20px', marginBottom: 32, scrollMarginTop: 84 }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 24 }}>
           {[
             { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,          sub: t.trackRecord.kpisSub.appsAudited,        from: 'left'   },

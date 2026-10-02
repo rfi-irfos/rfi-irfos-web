@@ -24,7 +24,7 @@ export const DE: Content = {
       worldModel: { differs: 'Der Unterschied', practice: 'In der Praxis', applications: 'Anwendungsbereiche' },
       squad: { lineup: 'Der Kader', integration: 'Integration', faq: 'Häufige Fragen' },
       dataSolutions: { datasets: 'Datensätze', deliver: 'Was wir liefern', pipeline: 'So funktioniert es' },
-      trackRecord: { overview: 'Disclosure Ledger', methodology: 'Methodik', research: 'Security Reports' },
+      trackRecord: { overview: 'Disclosure Ledger', research: 'Security Reports' },
       pricing: { overview: 'Überblick', offer: 'Das Angebot', contact: 'Kontakt Aufnehmen' },
     },
     themeLabel: { light: 'Hell', dark: 'Dunkel', hc: 'Hoher Kontrast' },

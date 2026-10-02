@@ -112,7 +112,11 @@ await new Promise((resolve) => server.listen(PORT, resolve))
 // ROUTES_PER_BROWSER routes is the actual fix: it returns everything to the
 // OS on each restart instead of only ever growing, independent of which
 // machine ends up building this.
-const ROUTES_PER_BROWSER = 25
+// 25 is the default; override with PRERENDER_ROUTES_PER_BROWSER=N on a
+// machine that's tight on RAM at build time (confirmed 2026-10-02: lowering
+// to 6 was what got a build past "Target crashed" on a box with <1.5G free -
+// more restarts cost build time, not correctness, so it's a dial, not a fix).
+const ROUTES_PER_BROWSER = Number(process.env.PRERENDER_ROUTES_PER_BROWSER) || 25
 let browser = await chromium.launch({ args: ['--disable-dev-shm-usage'] })
 let page = await browser.newPage()
 let routesSinceRestart = 0
