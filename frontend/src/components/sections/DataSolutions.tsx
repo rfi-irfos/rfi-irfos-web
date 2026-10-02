@@ -152,7 +152,7 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
       </Reveal>
     </header>
 
-    <section className="data-section data-datasets"><div className="data-wrap">
+    <section id="data-datasets" className="data-section data-datasets"><div className="data-wrap">
       {/* This was the one section on the page with no heading at all, while every
           other one carries an eyebrow + h2. That made it both visually inconsistent
           with its siblings and an accessibility problem: the page jumped straight
@@ -161,7 +161,7 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
       <div className="data-dataset-grid" style={HUE_DATASETS}>{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_DATASETS}><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article> })}</div>
     </div></section>
 
-    <section className="data-section"><div className="data-wrap">
+    <section id="data-deliver" className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.deliverEyebrow}</p><h2>{c.deliverTitle}</h2><p>{c.deliverIntro}</p></div></Reveal>
       <div className="data-product-grid" style={HUE_PRODUCTS}>{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_PRODUCTS}><div className="data-icon"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
     </div></section>
@@ -184,7 +184,7 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
       <div className="data-agent-grid" style={HUE_AGENTS}>{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_AGENTS}><Icon size={27} stroke={1.6} /><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
     </div></section>
 
-    <section className="data-section"><div className="data-wrap">
+    <section id="data-pipeline" className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2>{c.pipelineTitle}</h2></div></Reveal>
       <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid rfi-hover-card" data-stage={i}><div className="data-pipeline-icon"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-stage"><span>{n}</span></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
       <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><IconShieldCheck size={32} /><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>

@@ -17,7 +17,11 @@ import { dirname, extname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('./', import.meta.url))
-const DIST = fileURLToPath(new URL('./dist/', import.meta.url))
+// PRERENDER_DIST: render into/serve from another build directory (used to test a change without
+// touching the production dist, see `npm run build:test`). Default stays ./dist/.
+const DIST = process.env.PRERENDER_DIST
+  ? (process.env.PRERENDER_DIST.endsWith('/') ? process.env.PRERENDER_DIST : process.env.PRERENDER_DIST + '/')
+  : fileURLToPath(new URL('./dist/', import.meta.url))
 const PORT = 4173
 
 // Legal pages (own standalone content, App.tsx's LEGAL_SLUGS) + public views
@@ -45,6 +49,23 @@ const REPORT_SLUGS = Object.keys(trackRecordModule.REPORT_URL_BY_SLUG)
 const REPORT_META_BY_SLUG = trackRecordModule.REPORT_META_BY_SLUG
 await viteServer.close()
 console.log(`discovered ${REPORT_SLUGS.length} individual report routes from AUDIT_META`)
+
+// --only=/squad,/evidence/outfit7 : render just these routes (plus '/', which a plain `vite build`
+// always overwrites with the empty SPA shell). Added 2026-10-02 so a one-page change no longer
+// needs all ~190 routes through Chromium. Unknown routes abort instead of being silently skipped.
+// Pages that are not re-rendered keep their old HTML and the old hashed bundle, which `npm run
+// build:fast` therefore leaves in dist/assets; `npm run stale` lists them.
+const onlyArg = process.argv.find(a => a.startsWith('--only='))
+const ONLY = onlyArg ? onlyArg.slice('--only='.length).split(',').map(r => r.trim().replace(/\/$/, '')).filter(Boolean) : null
+if (ONLY) {
+  const known = new Set([...ROUTES, ...REPORT_SLUGS.map(slug => `/evidence/${slug}`)])
+  const unknown = ONLY.filter(r => !known.has(r))
+  if (unknown.length) {
+    console.error(`ERROR: unknown route(s) in --only: ${unknown.join(', ')}`)
+    process.exit(1)
+  }
+  console.log(`--only: rendering ${ONLY.length} route(s) plus / (partial run, sitemap.xml is left untouched)`)
+}
 
 const MIME = {
   '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
@@ -187,6 +208,7 @@ async function renderRoute(route, canonicalRoute, waitSelector = '#root h1, #roo
 }
 
 for (const route of ROUTES) {
+  if (ONLY && route !== '/' && !ONLY.includes(route)) continue
   await renderRoute(route, CANONICAL_ALIAS[route] ?? route)
 }
 
@@ -197,35 +219,38 @@ for (const route of ROUTES) {
 // the ledger, each one is about one specific disclosure.
 for (const slug of REPORT_SLUGS) {
   const route = `/evidence/${slug}`
+  if (ONLY && !ONLY.includes(route)) continue
   await renderRoute(route, route, '.rfi-modal-backdrop')
 }
 
 await browser.close()
 server.close()
 
+if (!ONLY) {
 // sitemap.xml (2026-09-25 crawlability sweep) - frontend/public/sitemap.xml is
-// the hand-maintained source of truth for the site's top-level static routes
-// (rarely change, worth reviewing by hand), but the ~160 individual report
-// routes above would immediately go stale as a hand-maintained list the moment
-// a new disclosure report is published. Read the static file, splice in one
-// <url> per REPORT_SLUGS entry (lastmod = that report's disclosure date, where
-// known) before the closing </urlset>, and ship the combined result as the
-// actual dist/sitemap.xml Google/Bing fetch - vite's own build already copied
-// public/sitemap.xml into dist/ verbatim before this script ran, so this
-// intentionally overwrites that with the complete version.
-const staticSitemap = await readFile(join(ROOT, 'public/sitemap.xml'), 'utf8')
-const reportUrls = REPORT_SLUGS.map(slug => {
-  const meta = REPORT_META_BY_SLUG[slug]
-  const lastmod = meta?.resolvedDate ?? meta?.disclosure
-  return [
-    '  <url>',
-    `    <loc>https://rfi-irfos.com/evidence/${slug}/</loc>`,
-    ...(lastmod ? [`    <lastmod>${lastmod}</lastmod>`] : []),
-    '    <changefreq>yearly</changefreq>',
-    '    <priority>0.4</priority>',
-    '  </url>',
-  ].join('\n')
-}).join('\n')
-const combinedSitemap = staticSitemap.replace('</urlset>', `${reportUrls}\n</urlset>`)
-await writeFile(join(DIST, 'sitemap.xml'), combinedSitemap)
-console.log(`sitemap.xml: ${ROUTES.length} static routes + ${REPORT_SLUGS.length} report routes`)
+  // the hand-maintained source of truth for the site's top-level static routes
+  // (rarely change, worth reviewing by hand), but the ~160 individual report
+  // routes above would immediately go stale as a hand-maintained list the moment
+  // a new disclosure report is published. Read the static file, splice in one
+  // <url> per REPORT_SLUGS entry (lastmod = that report's disclosure date, where
+  // known) before the closing </urlset>, and ship the combined result as the
+  // actual dist/sitemap.xml Google/Bing fetch - vite's own build already copied
+  // public/sitemap.xml into dist/ verbatim before this script ran, so this
+  // intentionally overwrites that with the complete version.
+  const staticSitemap = await readFile(join(ROOT, 'public/sitemap.xml'), 'utf8')
+  const reportUrls = REPORT_SLUGS.map(slug => {
+    const meta = REPORT_META_BY_SLUG[slug]
+    const lastmod = meta?.resolvedDate ?? meta?.disclosure
+    return [
+      '  <url>',
+      `    <loc>https://rfi-irfos.com/evidence/${slug}/</loc>`,
+      ...(lastmod ? [`    <lastmod>${lastmod}</lastmod>`] : []),
+      '    <changefreq>yearly</changefreq>',
+      '    <priority>0.4</priority>',
+      '  </url>',
+    ].join('\n')
+  }).join('\n')
+  const combinedSitemap = staticSitemap.replace('</urlset>', `${reportUrls}\n</urlset>`)
+  await writeFile(join(DIST, 'sitemap.xml'), combinedSitemap)
+  console.log(`sitemap.xml: ${ROUTES.length} static routes + ${REPORT_SLUGS.length} report routes`)
+}

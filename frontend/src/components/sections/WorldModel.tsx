@@ -637,8 +637,8 @@ export function WorldModelSection() {
     <div className="wm">
       <section className="wm-section"><HeroBlock onApiRequest={scrollToApi} /></section>
       <section className="wm-section"><StatsRow /></section>
-      <section className="wm-section"><ComparisonBlock /></section>
-      <section className="wm-section">
+      <section id="wm-comparison" className="wm-section"><ComparisonBlock /></section>
+      <section id="wm-reasoning" className="wm-section">
         <div className="wm-wrap">
           {/* Reverted 2026-09-13 (Simeon, second look): boxing the heading
               matched ComparisonBlock/UseCasesGrid's own framed-head pattern,

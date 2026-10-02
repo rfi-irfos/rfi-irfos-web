@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node prerender.mjs",
+    "build:fast": "VITE_KEEP_DIST=1 vite build && node prerender.mjs",
+    "build:test": "vite build --outDir /tmp/rfi-dist-test --emptyOutDir && PRERENDER_DIST=/tmp/rfi-dist-test node prerender.mjs",
+    "stale": "node scripts/stale-pages.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

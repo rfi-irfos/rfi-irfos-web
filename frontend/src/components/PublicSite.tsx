@@ -7,6 +7,7 @@ import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_BEACON, WEB3FOR
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
 import { TrackRecordSection, REPORT_URL_BY_SLUG, REPORT_META_BY_SLUG, reportSlug } from './sections/TrackRecord'
+import { NavMegaMenu, type MegaMenuKey } from './NavMegaMenu'
 import { ProofSection } from './sections/Proof'
 import { ScrollSpine } from './sections/Spine'
 import { AppPrivacySection } from './sections/AppPrivacy'
@@ -255,8 +256,33 @@ const BREADCRUMB_BY_VIEW: Partial<Record<PublicView, { navKey: keyof Content['na
 
 export function PublicSite({ initialSection, initialReportSlug }: { initialSection?: string | null; initialReportSlug?: string | null } = {}) {
   const { locale, setLocale, t } = useLocale()
-  const NAV_LINKS = NAV_HREFS.map(n => ({ label: t.nav.links[n.key], href: n.href }))
+  const NAV_LINKS = NAV_HREFS.map(n => ({ key: n.key, label: t.nav.links[n.key], href: n.href }))
   const [view, setView] = useState<PublicView>(() => viewForSection(initialSection))
+  // On-hover glass mega menu (live direction 2026-10-02: "on mouse hover so
+  // dass man schneller navigieren und sich zurechtfinden kann", modeled on a
+  // shared-panel reference mega menu). A short close delay, armed on leaving
+  // either the nav row or the panel and cancelled on re-entering either one,
+  // is what lets the mouse travel the small vertical gap between the nav
+  // link and the panel below it without the panel closing mid-way.
+  const [hoveredNavKey, setHoveredNavKey] = useState<MegaMenuKey | null>(null)
+  const [navMenuAnchorX, setNavMenuAnchorX] = useState<number | null>(null)
+  const navMenuCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // x is the hovered nav link's own horizontal center, in viewport px - the
+  // panel positions itself under whichever link is actually hovered instead
+  // of always centering on the nav row (bug report 2026-10-02: "muss
+  // relativ richtig zur position im nav element angezeigt werden").
+  function armNavMenuOpen(key: MegaMenuKey, x: number) {
+    if (navMenuCloseTimer.current) clearTimeout(navMenuCloseTimer.current)
+    setHoveredNavKey(key)
+    setNavMenuAnchorX(x)
+  }
+  function armNavMenuStayOpen() {
+    if (navMenuCloseTimer.current) clearTimeout(navMenuCloseTimer.current)
+  }
+  function armNavMenuClose() {
+    if (navMenuCloseTimer.current) clearTimeout(navMenuCloseTimer.current)
+    navMenuCloseTimer.current = setTimeout(() => setHoveredNavKey(null), 160)
+  }
 
   // Landed on a section's own URL (crawler or external link, not an in-page nav
   // click) - set that section's meta tags and scroll to it once on mount.
@@ -303,6 +329,29 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     // link, heading (with its new eyebrow) visible first - falls through to
     // the same plain scroll-to-top every other nav link uses.
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+  // Mega menu items can carry an in-page anchor on top of the path
+  // ('/world-model/#wm-usecases') - navigateTo() itself only strips leading
+  // '#'/'/' and a trailing '/', so an embedded '#' would survive into the
+  // slug untouched and fail every viewForSection() match. Split the anchor
+  // off here, navigate the base path first, then scroll to the anchor once
+  // the target view has had a chance to mount (cross-view anchors need the
+  // section component to render before its id exists in the DOM at all).
+  function navigateToMegaMenuItem(href: string) {
+    // Closing on click, not just on mouseleave, matters because a click
+    // navigates to a new view without the mouse ever leaving the panel's
+    // screen position - left open, the panel kept rendering at its old
+    // anchorX/activeKey against the new page underneath it until a manual
+    // refresh reset the component state (live bug report 2026-10-02: "die
+    // dropdowns die bleiben nich an der richtigen stelle").
+    if (navMenuCloseTimer.current) clearTimeout(navMenuCloseTimer.current)
+    setHoveredNavKey(null)
+    if (href === '#submit') { navigateTo('#submit'); return }
+    const [path, hash] = href.split('#')
+    navigateTo(path)
+    if (hash) {
+      setTimeout(() => document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 260)
+    }
   }
   // Deep-link to one specific offer card on Access, distinct from navigateTo
   // above - that function deliberately always lands at the page top (reversed
@@ -353,10 +402,22 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   const ledgerRef = useRef<HTMLDivElement>(null)
   const [ledgerFired, setLedgerFired] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  // /evidence/<slug>/ landing: show only that report's ledger entries (and no Proof carousel) instead of
+  // the whole ledger, see TrackRecordSection's focusTargets note. Cleared by the banner button, by any
+  // search/filter use and by leaving the evidence view, so the normal ledger behaves exactly as before.
+  const [reportFocus, setReportFocus] = useState<string[] | null>(
+    () => (initialReportSlug ? REPORT_META_BY_SLUG[initialReportSlug]?.targets ?? null : null),
+  )
   const [activeStatus, setActiveStatus] = useState<string | null>(null)
   const [activeSev, setActiveSev] = useState<string | null>(null)
   const [sortBy, setSortBy] = useState<string>('elapsed-desc')
   const [openDD, setOpenDD] = useState<string | null>(null)
+  useEffect(() => {
+    if (searchQuery.trim() || activeStatus || activeSev) setReportFocus(null)
+  }, [searchQuery, activeStatus, activeSev])
+  useEffect(() => {
+    if (view !== 'evidence') setReportFocus(null)
+  }, [view])
   // Restored 2026-07-31: an earlier "performance fix" removed this assuming MoonPhase
   // was its only consumer - it wasn't. The Track Record ledger's live per-row countdown
   // timers (disclosure countdown, elapsed-since-notification, embargo progress bar,
@@ -1275,7 +1336,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             with the locale/theme toggles in one right-hand flex block, which visibly pulled
             the links off-centre once the nav became a narrower floating pill instead of a
             full-width bar. */}
-        <div style={{ display: mobile ? 'none' : 'flex', gap: '1.75rem', alignItems: 'center', justifyContent: 'center' }}>
+        <div onMouseLeave={armNavMenuClose} style={{ display: mobile ? 'none' : 'flex', gap: '1.75rem', alignItems: 'center', justifyContent: 'center' }}>
           {/* Live feedback 2026-08-14: pill treatment ("schaut billig aus") reverted
               back to plain text. Contrast against the hero photo (the original
               problem the pills were solving) is handled differently now: at the top
@@ -1302,7 +1363,11 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               transition: 'color 0.18s',
               paddingBottom: 4,
             }}
-              onMouseEnter={e => (e.currentTarget.style.color = overDarkHero ? '#e8e8f0' : 'var(--text)')}
+              onMouseEnter={e => {
+                e.currentTarget.style.color = overDarkHero ? '#e8e8f0' : 'var(--text)'
+                const rect = e.currentTarget.getBoundingClientRect()
+                armNavMenuOpen(n.key, rect.left + rect.width / 2)
+              }}
               onMouseLeave={e => (e.currentTarget.style.color = isActive ? (overDarkHero ? '#e8e8f0' : 'var(--text)') : (overDarkHero ? '#a0a0b8' : 'var(--text2)'))}
               onClick={e => { e.preventDefault(); navigateTo(n.href) }}
               aria-current={isActive ? 'page' : undefined}>
@@ -1328,6 +1393,19 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             </a>
             )
           })}
+        </div>
+
+        {/* display:contents - a real grid child here (even an empty wrapper)
+            silently breaks the 3-column 'auto 1fr auto' grid above by
+            adding a 4th implicit-track item, which is what pushed the
+            locale/theme toggles out of place the first time this shipped
+            (live bug report 2026-10-02, screenshot showed the whole header
+            row mis-laid-out). display:contents removes this wrapper from
+            grid participation entirely while keeping its mouse handlers -
+            the actual panel inside is position:fixed anyway, so it never
+            needed a grid slot to begin with. */}
+        <div style={{ display: 'contents' }} onMouseEnter={armNavMenuStayOpen} onMouseLeave={armNavMenuClose}>
+          <NavMegaMenu activeKey={hoveredNavKey} anchorX={navMenuAnchorX} t={t} onNavigate={navigateToMegaMenuItem} mobile={mobile} />
         </div>
 
         {/* Right-hand grid column: locale/theme toggles + mobile hamburger, grouped
@@ -1471,8 +1549,10 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             setReportModal={setReportModal}
             setIntelModal={setIntelModal}
             onNavigateAccess={() => navigateToOffer('security')}
+            focusTargets={reportFocus}
+            onShowFullLedger={() => setReportFocus(null)}
           />
-          <ProofSection setReportModal={setReportModal} />
+          {!reportFocus && <ProofSection setReportModal={setReportModal} />}
         </section>}
 
         {view === 'data-solutions' && <section id="data-solutions" className="rfi-view-panel">

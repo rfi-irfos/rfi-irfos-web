@@ -2749,6 +2749,7 @@ export function TrackRecordSection({
   mobile, theme, now, ledgerFired, ledgerRef,
   searchQuery, setSearchQuery, activeStatus, setActiveStatus, activeSev, setActiveSev,
   sortBy, setSortBy, openDD, setOpenDD, setReportModal, setIntelModal, onNavigateAccess,
+  focusTargets, onShowFullLedger,
 }: {
   mobile: boolean
   theme: Theme
@@ -2768,6 +2769,12 @@ export function TrackRecordSection({
   setReportModal: (v: string) => void
   setIntelModal: (v: { target: string; market: string; sev: string; finding: string; headline?: string } | null) => void
   onNavigateAccess: () => void
+  // Set on the individual /evidence/<slug>/ report pages (2026-10-02): only the entries of that one
+  // report are rendered instead of the whole ledger. Each report page used to ship all ~389 ledger
+  // rows (~2.8 MB of HTML, identical on 168 pages), which made every build re-render and re-upload
+  // ~1 GB. onShowFullLedger lifts the focus (banner button, or any search/filter use).
+  focusTargets?: string[] | null
+  onShowFullLedger?: () => void
 }) {
   const { t, locale } = useLocale()
   // Top padding matched to Data Solutions' .data-hero (56px) - live feedback
@@ -2946,6 +2953,7 @@ export function TrackRecordSection({
         </div>
         {(searchQuery.trim() || activeStatus || activeSev || sortBy !== 'default') && (() => {
           const n = AUDIT_HIGHLIGHTS.filter(a =>
+            (!focusTargets || focusTargets.includes(a.target)) &&
             (!searchQuery.trim() ||
               a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
               a.finding[locale].toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -2964,6 +2972,16 @@ export function TrackRecordSection({
             </div>
           )
         })()}
+
+        {focusTargets && onShowFullLedger && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', marginBottom: 12, fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: '0.06em', color: TEAL }}>
+            <span>{t.trackRecord.focusBanner(focusTargets.join(', '))}</span>
+            <button type="button" onClick={onShowFullLedger}
+              style={{ background: 'transparent', border: '1px solid rgba(0,245,196,0.45)', color: TEAL, borderRadius: 6, padding: '6px 12px', cursor: 'pointer', fontFamily: 'inherit', fontSize: 11, letterSpacing: '0.06em' }}>
+              {t.trackRecord.showFullLedger}
+            </button>
+          </div>
+        )}
 
         {/* Table */}
         <div data-native-scroll className="rfi-thin-scrollbar" style={{ maxHeight: mobile ? '65vh' : 900, overflowY: 'auto', borderRadius: 8, scrollbarWidth: 'thin', scrollbarColor: 'rgba(0,245,196,0.2) transparent', border: '1px solid var(--border2)' }}>
@@ -3019,6 +3037,7 @@ export function TrackRecordSection({
           {/* Rows */}
           <div ref={ledgerRef}>
             {AUDIT_HIGHLIGHTS.filter(a =>
+              (!focusTargets || focusTargets.includes(a.target)) &&
               (!searchQuery.trim() ||
                 a.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 a.finding[locale].toLowerCase().includes(searchQuery.toLowerCase()) ||

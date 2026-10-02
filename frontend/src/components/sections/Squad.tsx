@@ -138,7 +138,7 @@ function SquadOverview({
                     style={{ borderColor: a.key === selectedKey ? a.color : undefined, '--row-color': a.color } as CSSProperties}
                     onClick={() => setSelectedKey(a.key)}
                   >
-                    <a.icon size={18} color={a.color} />
+                    <a.icon size={26} color={a.color} />
                     <span className="sq-agent-row-text">
                       <strong>{a.name}</strong>
                       {/* Job title only (live feedback: sidebar stays icon + name
@@ -284,7 +284,7 @@ function HowItConnects() {
   // diagram's own scroll box.
   const openAbove = openBox ? openBox.y + openBox.h > 300 : false
   return (
-    <section className="sq-connects wm-section">
+    <section id="sq-connects" className="sq-connects wm-section">
       <div className="wm-wrap">
         <Reveal><div className="wm-section-head"><p className="wm-eyebrow">{s.eyebrow}</p><h2>{s.heading}</h2><p>{s.sub}</p></div></Reveal>
         <Reveal>
@@ -388,7 +388,7 @@ function SquadNeedToKnow({ onRequestAccess }: { onRequestAccess: (keys: AgentKey
   const { t } = useLocale()
   const s = t.squad
   return (
-    <section className="sq-need-to-know wm-section">
+    <section id="sq-need-to-know" className="sq-need-to-know wm-section">
       <div className="wm-wrap">
         <Reveal><div className="wm-section-head"><p className="wm-eyebrow">{s.needToKnow.eyebrow}</p><h2>{s.needToKnow.heading}</h2><p>{s.needToKnow.sub}</p></div></Reveal>
         <div className="sq-cards-grid">

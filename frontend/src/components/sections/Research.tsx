@@ -242,6 +242,30 @@ export const RESEARCH_AREAS = [
   {
     icon: (
       <_I>
+        {/* evidence security + contradiction review - was a check+cross pair, which
+            only shows two isolated verdicts. The replacement keeps the evidence
+            document itself and makes close review explicit with a detailed lens. */}
+        <path d="M5.5 3.5h12l5 5v19.5h-17z"/><path d="M17.5 3.5v5h5"/>
+        <line x1="9" y1="11" x2="16" y2="11"/>
+        <line x1="9" y1="14.5" x2="14" y2="14.5"/>
+        <line x1="9" y1="24.5" x2="13" y2="24.5"/>
+        <circle cx="18" cy="18" r="7.2"/>
+        <circle cx="18" cy="18" r="5.7" opacity="0.42"/>
+        {/* small hook arc swapped for a ">" chevron 2026-08-24 (live feedback:
+            "und da in die lupe rein ein '>' noch maginifiziert mit rein?") -
+            reads as "go deeper / expand" magnified inside the lens, rather
+            than an ambiguous partial curve. */}
+        <path d="M15.7 14 19.4 18 15.7 22" strokeWidth="1.8"/>
+        <line x1="23.1" y1="23.1" x2="28.5" y2="28.5"/>
+        <line x1="24.3" y1="21.9" x2="25.6" y2="23.2"/>
+      </_I>
+    ),
+    title: 'Evidence Security & Contradiction Reviews',
+    desc: 'Supporting and conflicting evidence, provenance, confidence, and unresolved questions kept together.',
+  },
+  {
+    icon: (
+      <_I>
         {/* ternary tree - one root, three branches, and the three trit VALUES
             drawn inside the leaves (-1 / 0 / +1) instead of three identical
             empty circles. The detail carries the actual meaning of the word
@@ -367,30 +391,6 @@ export const RESEARCH_AREAS = [
     ),
     title: 'Early Warning & Scenario Prediction',
     desc: 'Hazard chains computed before they arrive, with alternative futures and propagated consequences, every forecast explicitly marked as simulated.',
-  },
-  {
-    icon: (
-      <_I>
-        {/* evidence security + contradiction review - was a check+cross pair, which
-            only shows two isolated verdicts. The replacement keeps the evidence
-            document itself and makes close review explicit with a detailed lens. */}
-        <path d="M5.5 3.5h12l5 5v19.5h-17z"/><path d="M17.5 3.5v5h5"/>
-        <line x1="9" y1="11" x2="16" y2="11"/>
-        <line x1="9" y1="14.5" x2="14" y2="14.5"/>
-        <line x1="9" y1="24.5" x2="13" y2="24.5"/>
-        <circle cx="18" cy="18" r="7.2"/>
-        <circle cx="18" cy="18" r="5.7" opacity="0.42"/>
-        {/* small hook arc swapped for a ">" chevron 2026-08-24 (live feedback:
-            "und da in die lupe rein ein '>' noch maginifiziert mit rein?") -
-            reads as "go deeper / expand" magnified inside the lens, rather
-            than an ambiguous partial curve. */}
-        <path d="M15.7 14 19.4 18 15.7 22" strokeWidth="1.8"/>
-        <line x1="23.1" y1="23.1" x2="28.5" y2="28.5"/>
-        <line x1="24.3" y1="21.9" x2="25.6" y2="23.2"/>
-      </_I>
-    ),
-    title: 'Evidence Security & Contradiction Reviews',
-    desc: 'Supporting and conflicting evidence, provenance, confidence, and unresolved questions kept together.',
   },
   {
     icon: (

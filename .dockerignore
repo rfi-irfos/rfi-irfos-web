@@ -7,3 +7,8 @@ backend/target
 target
 *.log
 humanrights_review_queue
+# The Dockerfile only copies frontend/dist (built locally by `npm run build`), never the frontend
+# sources, public assets (their PDFs are already copied into dist/reports) or node_modules.
+# Added 2026-10-02: a full deploy uploaded ~1.4 GB of build context, ~390 MB of it never used.
+frontend/*
+!frontend/dist
