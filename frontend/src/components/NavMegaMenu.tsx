@@ -52,8 +52,8 @@ function buildItems(t: Content, key: MegaMenuKey): MegaMenuItem[] {
       ]
     case 'trackRecord':
       return [
-        { icon: Icons.list, label: m.trackRecord.overview, href: '/evidence/' },
-        { icon: Icons.flask, label: m.trackRecord.research, href: '/evidence/#track-record-reports' },
+        { icon: Icons.list, label: m.trackRecord.overview, href: '/evidence/#track-record-reports' },
+        { icon: Icons.flask, label: m.trackRecord.research, href: '/evidence/#proof' },
       ]
     case 'pricing':
       return [
