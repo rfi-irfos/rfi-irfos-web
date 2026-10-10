@@ -220,19 +220,40 @@ export const DE: Content = {
   },
 
   appPrivacy: {
-    eyebrow: 'Hier beginnen',
-    heading: 'Beobachtungen werden zu Intelligence',
-    paragraph: 'Die meisten Organisationen haben mehr Daten, als sie einordnen können: Systeme, Anbieter, Märkte, Ereignisse, Abhängigkeiten und Veränderungen aus verschiedenen Richtungen. Wir führen sie in einem evidenzbasierten Machine-Learning-World-Model zusammen, bewahren die Herkunft jeder Beobachtung und verfolgen Veränderungen durch die Beziehungen, die daran hängen.',
-    comparisonClassicLabel: 'Was verloren geht',
-    comparisonRfiLabel: 'Was das Modell bewahrt',
-    comparisonRows: [
-      { classic: 'Ihr erfahrenster Ingenieur verlässt das Unternehmen. Sechs Monate später verhält sich ein kritisches System unerwartet, und niemand weiß mehr, warum es so entworfen wurde.', rfiLabel: 'Institutionelle Intelligence', rfi: 'Operatives Wissen, Designentscheidungen, Abhängigkeiten und Ergebnisse bleiben mit ihrem ursprünglichen Kontext und ihrer Herkunft verbunden.' },
-      { classic: 'Ein Lieferant in Asien verpasst eine Lieferung. Gleichzeitig ist ein Hafen überlastet und die Energiepreise steigen. Jedes Ereignis für sich sieht beherrschbar aus. Drei Wochen später steht die Produktion still.', rfiLabel: 'Domänenübergreifende Intelligence', rfi: 'Lieferantenaktivität, Logistik, Infrastruktur, Märkte und externe Ereignisse werden verbunden, um zusammengesetzte Risiken sichtbar zu machen, bevor sie den Betrieb erreichen.' },
-      { classic: 'Der Vorstand fragt, warum eine größere Investition genehmigt wurde. Die Entscheidungsträger erinnern sich an das Ergebnis, aber nicht mehr an die Evidenz, die es überzeugend gemacht hat.', rfiLabel: 'Entscheidungs-Intelligence', rfi: 'Evidenz, Annahmen, Alternativen, Bedingungen und Folgeergebnisse bleiben verbunden, sodass die Entscheidung auch nach Monaten oder Jahren rekonstruierbar bleibt.' },
-      { classic: 'Ein Sturm legt einen Hafen auf der anderen Seite der Welt lahm. Sie verschiffen selbst gar nichts darüber. Sechs Wochen später verzögern sich Ihre eigenen Lieferungen, und niemand weiß warum.', rfiLabel: 'World Intelligence', rfi: 'Geopolitische Ereignisse, Handelsrouten, Rohstoffe, Infrastruktur, Lieferanten und geschäftliche Abhängigkeiten werden fortlaufend über die ganze Außenwelt hinweg verbunden.' },
-      { classic: 'Kraftstoff wird teurer. Dann steigen die Frachtkosten. Dann steigt still der Preis auf Ihrer eigenen Rechnung mit, und niemand weiß mehr, wann es angefangen hat.', rfiLabel: 'Kausale Intelligence', rfi: 'Umwelt-, wirtschaftliche und operative Signale werden über die Zeit verfolgt, sodass das Modell nachvollziehen kann, wie weit entfernte Ereignisse in geschäftliche Bedingungen hineinwirken.' },
+    eyebrow: 'Was wir am besten können',
+    heading: 'Material senden. Gründliche Prüfung erhalten.',
+    paragraph: 'Unser Team und eine Auswahl spezialisierter Agenten gehen Ihr Material gemeinsam durch. Geprüft wird nur, was Sie uns senden, auf Ihre Live-Systeme greifen wir nicht zu. Der Review läuft auf Infrastruktur in Europa, die Verarbeitung findet in Graz statt, und das gesendete Material verlässt die Europäische Union nicht. Die erste Prüfung ist kostenlos und wird schriftlich dokumentiert, ganz ohne Meeting.',
+    steps: [
+      { title: 'Senden', text: 'Ein GitHub-Link, ein Repository-Archiv, ein Paket-Build oder eine API-Spezifikation.' },
+      { title: 'Prüfen', text: 'Unser Team und spezialisierte Agenten arbeiten Quellcode, Konfiguration und Datenflüsse gemeinsam durch.' },
+      { title: 'Gegenprüfen', text: 'Jeder Fund wird von einem zweiten, unabhängig instruierten Agenten erneut verifiziert.' },
+      { title: 'Nachweis', text: 'Wir dokumentieren die Prüfung schriftlich, mit der Evidenz zu jedem Fund.' },
     ],
-    cta: 'Sehen Sie, was Sie beauftragen können →',
+    scopeLabel: 'Das prüfen wir',
+    scope: [
+      { title: 'Quellcode und Abhängigkeiten', text: 'Code, Bibliotheken und deren Versionen.' },
+      { title: 'Autorisierung und Aktionen', text: 'Berechtigungen, Datenzugriff, Missbrauchspfade.' },
+      { title: 'Autorisierungslogik der API', text: 'Authentifizierung, Zugriffskontrolle, Vertrauensgrenzen.' },
+      { title: 'Zugangsdaten und Datenflüsse', text: 'Offene Schlüssel, SDKs, Datenflüsse an Dritte.' },
+      { title: 'Fehlkonfigurationen', text: 'Unsichere Voreinstellungen, zu weite Berechtigungen.' },
+    ],
+    report: {
+      title: 'Der Nachweis',
+      sub: 'Unsere Arbeit, dokumentiert und überprüfbar.',
+      items: ['Jeder Fund mit der zugehörigen Evidenz', 'Schweregrad und Priorität je Fund', 'Konkrete Empfehlungen zur Behebung', 'Für Ihr Entwicklungsteam reproduzierbar'],
+      freeLabel: 'Erste Prüfung',
+      freeTitle: 'Kostenlos',
+      freeText: 'Schriftlich dokumentiert, ganz ohne Meeting.',
+    },
+    trust: [
+      { title: 'Ihr Material, Ihr Umfang', text: 'Sie entscheiden, was wir prüfen. Auf Ihre Live-Systeme greifen wir nicht zu.' },
+      { title: 'Verarbeitung in Europa', text: 'Die Verarbeitung findet in Graz statt, auf Infrastruktur in Europa. Das gesendete Material verlässt die Europäische Union nicht.' },
+      { title: 'Ohne Verpflichtung', text: 'Findet die Prüfung ein wesentliches Problem, können wir einen Folgeauftrag vereinbaren. Wenn nicht, steht der Bericht für sich.' },
+    ],
+    evidenceHeading: 'Unsere Forschung ist öffentlich. Unsere Methodik ist nachprüfbar.',
+    evidenceNote: 'Zahlen aus dem öffentlichen Evidence Ledger, mit jeder Offenlegung aktualisiert.',
+    evidenceCta: 'Evidence Ledger ansehen →',
+    cta: 'Kostenlose Erstprüfung anfragen',
   },
 
   pricing: {
@@ -328,8 +349,8 @@ export const DE: Content = {
 
   coopPartners: {
     eyebrow: 'Forschungskooperation',
-    heading: 'Gebaut gemeinsam mit unserem Kooperationspartner',
-    subheading: 'Das Emergent Interaction Lab und RFI-IRFOS sind eigenständige Einheiten mit klar getrennten Forschungs- und Engineering-Rollen. Laura Serna Gaviria verantwortet die Forschungsarchitektur des Labs; RFI-IRFOS entwickelt und betreibt technische Systeme nur dort, wo eine konkrete Zusammenarbeit vereinbart und entsprechend ausgewiesen ist.',
+    heading: 'Gemeinsam mit dem Emergent Interaction Lab',
+    subheading: 'Das Emergent Interaction Lab und RFI-IRFOS arbeiten als eigenständige Partner. Das Lab forscht, wir bauen und betreiben die Systeme. Laura Serna Gaviria verantwortet die Forschungsarchitektur des Labs. Wo wir zusammenarbeiten, weisen wir es aus.',
     role: 'Emergent Interaction Lab · Kooperationspartnerin',
     laura: {
       desc: 'Forschung zu Mensch-KI-Interaktion seit 2023, heute eine arbeitende SWAT-Architektur: 18 handgeschriebene Kern-Agenten führen einen 292er-Pool an, der über ein Mission-Control-Turntable nacheinander angesteuert wird, damit nichts überstürzt oder übersehen wird. Jeder Lauf durchläuft eine gehärtete Review-Schleife, bevor etwas ausgeliefert wird, mit call-laura als letztem Gate. Ihr Name bleibt auf dem, was dabei entsteht, weil sie das Urteilsvermögen dahinter gebaut hat, nicht aus Höflichkeit.',

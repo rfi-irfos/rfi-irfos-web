@@ -39,7 +39,7 @@ export function CoopPartnersSection({
             {t.coopPartners.subheading}
           </p>
         </Reveal>
-        <Reveal from="bottom" delay={1}>
+        <>
           {/* Card narrowed (2026-08-18, live feedback: "die karten schmaler, zu viel
               unused space") - was stretching to the full 1000px section width, most
               of it blank once the text and badge columns settled at their natural
@@ -56,7 +56,8 @@ export function CoopPartnersSection({
                 middle of a tall pill stack instead of anchoring it at the top-left
                 of the card (live feedback 2026-08-16). Her name is the heading of
                 this card, so it starts where a heading starts. */}
-            <div style={{ flex: '1 1 auto', minWidth: 0 }}>
+            <Reveal from="left" dist={60} delay={1} style={{ flex: '1 1 auto', minWidth: 0 }}>
+            <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
                 <p style={{ fontSize: 19, fontWeight: 800, color: 'var(--text)' }}>Laura Serna Gaviria</p>
                 {/* The one badge worth promoting out of the pill cloud: a live
@@ -81,7 +82,9 @@ export function CoopPartnersSection({
                 {t.coopPartners.laura.desc}
               </p>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8, flex: '0 0 260px', maxWidth: 260 }}>
+            </Reveal>
+            <Reveal from="right" dist={60} delay={2} style={{ flex: '0 0 260px', maxWidth: 260 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 8 }}>
                 {[
                   { label: 'GitHub · rfi-irfos', href: 'https://github.com/rfi-irfos', icon: true },
@@ -123,8 +126,9 @@ export function CoopPartnersSection({
                 ))}
               </p>
             </div>
+            </Reveal>
           </div>
-        </Reveal>
+        </>
       </div>
 
     </section>

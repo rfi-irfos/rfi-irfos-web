@@ -245,6 +245,8 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
   return (
     <section style={{
       display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden',
+      // minHeight keeps the hero at its pre-2026-10-10 size (live: 551px at 2133x964) now that the KPI row is gone, then trimmed 64px (~1.7cm) off the bottom.
+      minHeight: 'clamp(416px, calc(57vh - 64px), 616px)',
       alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
       padding: 'calc(72px + 6vh) var(--sec-pad-x) 72px',
       // Tint gradient only - the actual photo is the dedicated zoom layer below,
@@ -295,7 +297,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           by measuring the live DOM - the UX audit had only flagged /evidence/ and
           /access/ and missed this one. Every size/weight/margin here is set
           inline, so the tag change is purely semantic. */}
-      <h1 className="rfi-display" style={{ fontSize: 'clamp(2.4rem, 6.2vw, 5.2rem)', fontWeight: 900, lineHeight: 1.06, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32, color: '#e8e8f0' }}>
+      <h1 className="rfi-display" style={{ fontSize: 'clamp(2.6rem, 6.8vw, 5.8rem)', fontWeight: 900, lineHeight: 1.06, marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32, color: '#e8e8f0' }}>
         <HeroFlipWord word="Rethink" delay={0.2} />{' '}
         <RevealWords text="the Obvious." delayStart={0.36} emphasizeIndices={[1]} />
       </h1>
@@ -345,156 +347,15 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           initial={prefersReducedMotion() ? undefined : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-          style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.1rem, 2.05vw, 1.4rem)', fontWeight: 400, color: theme === 'light' ? '#1a1a20' : '#ffffff', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0 }}
+          style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.2rem, 2.2vw, 1.6rem)', fontWeight: 400, color: theme === 'light' ? '#1a1a20' : '#ffffff', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0 }}
         >
           {t.hero.identity}
         </motion.p>
       </div>
 
-      {/* Stats moved up, directly after the identity paragraph (live feedback:
-          the hero read as a wall of text with too many stacked lines before
-          anything concrete landed). Problem/solution carousel now sits after
-          the stats, as a single slower-cycling line rather than competing with
-          a second static teal headline underneath it (that redundant "Most
-          technology decisions..." line has been removed entirely). */}
-      {/* FIXED (live bug report, mobile Safari, 2026-08-15): was a hard `repeat(5,
-          1fr)` - 5 equal columns at every viewport width, with `mobile` only
-          ever touching the gap, never the column count. On a ~390px phone that
-          forces 5 columns down to ~50px each, well under the card's own min
-          content width (the number alone floors at clamp()'s 2rem/32px), so
-          the row just crushed/overflowed - not "a bit too big," no responsive
-          logic was actually sizing it to the viewport at all. `auto-fit` +
-          `minmax` (same pattern already used for TierCarousel's secondary row
-          below in this file) reflows continuously by available width instead
-          of a single mobile/desktop toggle: 5-across at the 980px desktop
-          maxWidth, 2 or 3-across on a phone, 1-across only once a column would
-          otherwise drop under the readable floor - correct at 360/390/430px
-          and everything between, not just the one width someone last tested. */}
-      {/* FIXED (live bug report, mobile Chrome screenshot, 2026-08-16): the auto-fit/
-          minmax fix above was still overflowing off the right edge on real mobile
-          viewports ("die kpis gehn rechts am rand raus"). Root cause: this section's
-          own flex container sets `alignItems: 'center'` (not the flex default
-          `stretch`), so without an explicit `width` this grid was sized via
-          shrink-to-fit/max-content instead of being constrained to the actually
-          available cross-axis space - `auto-fit` was then computing its column count
-          against that unconstrained max-content width, not the real ~310px viewport
-          budget, so a 3rd column got created and spilled past the screen edge.
-          `width: '100%'` (bounded by the existing maxWidth: 980) forces layout to use
-          the real available width, so auto-fit wraps to 2/1 columns correctly. */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: mobile ? '1.25rem' : '3rem', margin: '0 auto 24px', width: '100%', maxWidth: 980, justifyContent: 'center' }}>
-        {/* Deliberately NOT the same numbers as the Track Record stat row further down -
-            that one is audit-specific (apps/findings/companies/regulators), this one is
-            the breadth story: research areas, systems and projects, live monitoring
-            scale, team, years. Showing the same five numbers twice wastes the hero's
-            one shot at explaining why the institute matters beyond appsec. */}
-        {([
-          { n: `${RESEARCH_AREAS.length}`,    label: t.hero.stats.researchAreas,      from: 'left'   as const, sub: t.hero.stats.researchAreasSub },
-          // Was `${PROJECTS.length}+` (18+) - only counted the curated highlight
-          // cards in the Systems section, not RFI-IRFOS's actual system count.
-          // Live-counted via `gh repo list` across both accounts (2026-08-15):
-          // 53 original (non-fork) repositories - see rfi-irfos-architecture-
-          // synthesis.md for the full breakdown. Re-count periodically, same
-          // caveat as the footer's repo directory (content/repos.ts).
-          { n: '53+',                         label: t.hero.stats.openSourceProjects, from: 'bottom' as const, sub: t.hero.stats.openSourceProjectsSub },
-          // Replaced the old "9+ publications" count (2026-08-18, live feedback:
-          // wanted a "hitter metric nobody else can reproduce") with DINGIR's live
-          // tracked-entity count instead - satellites, ships, flights, CCTV cameras,
-          // wildfires, buoys, earthquakes, GDELT events and more, individually
-          // counted, not a fabricated throughput number (the dashboard's own source
-          // comment: "Real entity count — no fake throughput metrics"). Verified live
-          // against dingir-osint.fly.dev on 2026-08-18: summing every entity type the
-          // dashboard tracks came to ~61k at query time; "58k+" is a conservative
-          // floor that stays true as the live count fluctuates rather than the
-          // instantaneous reading. Re-verify before raising this number further.
-          { n: '58k+',                        label: t.hero.stats.dataPointsMonitored, from: 'scale'  as const, sub: undefined as string | undefined },
-          { n: '315',                         label: t.hero.stats.agents,             from: 'bottom' as const, sub: undefined as string | undefined },
-          { n: '1',                           label: t.hero.stats.worldModel,         from: 'bottom' as const, sub: undefined as string | undefined },
-        ]).map((s, i) => (
-              // Mount-triggered fly-in, NOT `Reveal` (same fix pattern as the identity
-          // paragraph above, same root cause): Reveal drives its transform off
-          // scroll progress through the viewport, but this row is above the fold -
-          // already fully in view at mount, so it never gets a scroll transit to
-          // animate through and Reveal's animation silently never played (live bug
-          // report: "die KPI cards brauchen den Effekt auch, der fehlt komplett").
-          <motion.div
-            key={s.label}
-            initial={prefersReducedMotion() ? undefined : {
-              opacity: 0,
-              x: s.from === 'left' ? -32 : s.from === 'right' ? 32 : 0,
-              y: s.from === 'bottom' ? 32 : s.from === 'top' ? -32 : 0,
-              scale: s.from === 'scale' ? 0.84 : 1,
-            }}
-            animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-            style={{ height: '100%' }}
-          >
-            {/* Carbon-gradient card in dark/hc (same family as the ledger/checkout
-                modals), given more grey than the original near-black mix + a plain
-                white card in light theme (live feedback: light theme needs its own
-                treatment here, not the fixed always-dark card - unlike the identity
-                bar/nav, these sit low enough in the hero that a white card reads
-                fine against the dark photo tint above them).
-                height: 100% + flex centering (live feedback: "kpi cards are not
-                the same size") - labels wrap to a different number of lines
-                ("SYSTEMS & PROJECTS" vs "DATA POINTS MONITORED"), so without a shared
-                height each card just hugged its own content and the row looked
-                uneven. */}
-            {/* justifyContent was 'center', which vertically centred the whole
-                number+label block - so the two cards whose label wraps to two
-                lines pushed their NUMBER up relative to the single-line cards and
-                the row read as misaligned (live feedback 2026-08-16). Top-aligned
-                instead: every number sits on one line, every first label line
-                sits on one line, and only the wrapping cards extend a second line
-                downward. height:100% still equalises the card sizes themselves. */}
-            <div style={{
-              height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start',
-              textAlign: 'center', padding: '20px 12px', borderRadius: 12,
-              // Light theme: soft glass, not solid white - a hint of the dark hero
-              // photo still shows through (live feedback: "leichter Glass-Effekt
-              // statt vollem Weiss, ganz zart").
-              background: theme === 'light'
-                ? 'linear-gradient(155deg, rgba(255,255,255,0.82) 0%, rgba(246,247,248,0.78) 100%)'
-                : 'linear-gradient(145deg, rgba(107,82,146,0.18) 0%, rgba(42,40,52,0.04) 52%, rgba(89,68,126,0.12) 100%), linear-gradient(155deg, #34343d 0%, #222228 28%, #1a1a1e 52%, #2c2c34 76%, #1e1e22 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 3px)',
-              backdropFilter: theme === 'light' ? 'blur(14px)' : undefined,
-              WebkitBackdropFilter: theme === 'light' ? 'blur(14px)' : undefined,
-              backgroundBlendMode: theme === 'light' ? 'normal' : 'overlay',
-              boxShadow: theme === 'light'
-                ? '0 12px 30px rgba(0,0,0,0.35)'
-                : 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 30px rgba(0,0,0,0.5), 0 12px 30px rgba(0,0,0,0.5)',
-              border: theme === 'light' ? '1px solid rgba(0,0,0,0.06)' : '1px solid rgba(255,255,255,0.09)',
-            }}>
-              {/* Dark theme: deeper, less cyan-bright green than the site's usual
-                  #00f5c4 accent (live feedback: better visibility, scoped to this
-                  card only). Light theme: same #009e7a the icon tiles below use as
-                  --accent (live feedback: the dark-theme green was hard to read on
-                  the light glass card, use what's already proven legible there). */}
-              {/* marginLeft: 2px nudge for the three "+"-suffixed numbers only (live
-                  feedback 2026-08-24: "53+ muss 2px weiter nach rechts... 58+k auch...
-                  and the 315 agent count), not the plain "8" or "1" cards - the plus sign's
-                  own optical weight was reading as slightly left-heavy against the
-                  centred label below it. */}
-              <div className="rfi-hero-kpi-number" style={{ fontSize: 'clamp(2rem, 3.3vw, 2.75rem)', fontWeight: 900, color: theme === 'light' ? '#009e7a' : '#00c896', lineHeight: 1, marginLeft: s.n === '53+' ? 6 : ['58k+', '315'].includes(s.n) ? 4 : 0 }}><CountUp value={s.n} /></div>
-              {/* marginRight cancels the trailing letter-space that letter-spacing
-                  appends after the final character. Centred text is otherwise
-                  optically pushed right by half a tracking unit, which is what
-                  made the longest label look off-centre. */}
-              {/* hyphens:auto + lang sync (useLocale.tsx sets document.documentElement.lang):
-                  German compound labels (e.g. "Forschungsdomänen") have no space to wrap
-                  at, unlike their English equivalents ("RESEARCH AREAS") - without this,
-                  the word overflowed the card's edge on narrow cards instead of breaking
-                  at a syllable boundary (live feedback, screenshot). overflowWrap/wordBreak
-                  stay as a fallback for browsers/words hyphens can't hyphenate. */}
-              <div style={{ fontSize: 11, color: theme === 'light' ? '#3a3a42' : '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 8, marginRight: '-0.08em', overflowWrap: 'break-word', wordBreak: 'break-word', WebkitHyphens: 'auto', hyphens: 'auto' }}>{s.label}</div>
-              {/* Connective caption under just these two cards (2026-08-18, live
-                  feedback: signals research areas and systems aren't counted in
-                  isolation, they operate as one whole) - styled identically to
-                  the label line above it, not as a smaller/muted footnote
-                  (live feedback: "genau so wie der rest"). */}
-              {s.sub && <div style={{ fontSize: 11, color: theme === 'light' ? '#3a3a42' : '#e8e8f0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 1.35, marginTop: 2, marginRight: '-0.08em', overflowWrap: 'break-word', wordBreak: 'break-word', WebkitHyphens: 'auto', hyphens: 'auto' }}>{s.sub}</div>}
-            </div>
-          </motion.div>
-        ))}
-      </div>
+      {/* KPI card row removed 2026-10-10 (breadth numbers, hand-typed literals, off-message
+          next to the security-review widget below). Ledger figures now live in the
+          evidence strip of AppPrivacySection. */}
 
       {/* Problem/solution carousel moved out of the hero entirely - live
           feedback: it works better as content, not decoration, so it now lives

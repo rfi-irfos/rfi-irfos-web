@@ -1524,9 +1524,9 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       <main className="rfi-view-stage" key={view} aria-live="polite">
         {view === 'home' && <>
           <HeroSection mobile={mobile} theme={theme} />
-          <ResearchSection />
-          <AppPrivacySection onNavigateAccess={() => navigateTo('access')} />
+          <AppPrivacySection onNavigateEvidence={() => navigateTo('evidence')} />
           <CoopPartnersSection mobile={mobile} />
+          <ResearchSection />
           <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} />
         </>}
 

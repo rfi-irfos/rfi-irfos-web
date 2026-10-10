@@ -227,19 +227,40 @@ export const EN = {
   },
 
   appPrivacy: {
-    eyebrow: 'Start Here',
-    heading: 'Turning observations into intelligence',
-    paragraph: 'Most organizations have more data than they can interpret: systems, vendors, markets, events, dependencies, and changes arriving from different directions. We bring them into one evidence-first machine learning world model, preserve where every observation came from, and trace what changes through the relationships around it.',
-    comparisonClassicLabel: 'What gets lost',
-    comparisonRfiLabel: 'What the model preserves',
-    comparisonRows: [
-      { classic: 'Your most experienced engineer leaves. Six months later, a critical system behaves unexpectedly, and nobody knows why it was designed that way.', rfiLabel: 'Institutional intelligence', rfi: 'operational knowledge, design decisions, dependencies and outcomes remain connected to their original context and provenance.' },
-      { classic: 'A supplier in Asia misses one shipment. At the same time, a port is congested and energy prices spike. Each event looks manageable on its own. Production stops three weeks later.', rfiLabel: 'Cross-domain intelligence', rfi: 'supplier activity, logistics, infrastructure, markets and external events are connected to reveal compound risks before they reach operations.' },
-      { classic: 'Your board asks why a major investment was approved. The people who made the decision remember the conclusion, but not the evidence that made it compelling.', rfiLabel: 'Decision intelligence', rfi: 'evidence, assumptions, alternatives, conditions and subsequent outcomes remain connected, making the decision reconstructable months or years later.' },
-      { classic: 'A storm shuts down a port on the other side of the world. You do not ship anything through it yourself. Six weeks later your own delivery times start slipping, and nobody can say why.', rfiLabel: 'World intelligence', rfi: 'geopolitical events, trade routes, commodities, infrastructure, suppliers and business dependencies are continuously connected across the external world.' },
-      { classic: 'Fuel gets more expensive. Then shipping costs creep up. Then the price on your own invoice quietly rises with it, and nobody remembers when it started.', rfiLabel: 'Causal intelligence', rfi: 'environmental, economic and operational signals are tracked through time so the model can trace how distant events propagate into business conditions.' },
+    eyebrow: 'What we do best',
+    heading: 'Send us the material. Get a thorough examination.',
+    paragraph: 'Our experts and a selected team of specialized agents work through your material together. Only what you send is examined, and no live system of yours is accessed. The review runs on infrastructure in Europe, processing takes place in Graz, and the material you send does not leave the European Union. The initial examination is provided without charge and documented in writing, no meeting required.',
+    steps: [
+      { title: 'Send', text: 'A GitHub link, a repository archive, a package build or an API specification.' },
+      { title: 'Examine', text: 'Experts and specialized agents work through source, configuration and data flows together.' },
+      { title: 'Re-verify', text: 'Every finding is re-verified by a second, independently instructed agent.' },
+      { title: 'Evidence', text: 'We document the examination in writing, with the evidence for each finding.' },
     ],
-    cta: 'See what you can commission →',
+    scopeLabel: 'What we examine',
+    scope: [
+      { title: 'Source and dependencies', text: 'Code, third-party libraries and their versions.' },
+      { title: 'Authorization and actions', text: 'Permissions, data access and abuse paths.' },
+      { title: 'API authorization logic', text: 'Authentication, access control and trust boundaries.' },
+      { title: 'Credentials and data flows', text: 'Exposed keys, embedded SDKs, flows to third parties.' },
+      { title: 'Misconfigurations', text: 'Insecure defaults and overly broad permissions.' },
+    ],
+    report: {
+      title: 'The evidence',
+      sub: 'Our work, documented and checkable.',
+      items: ['Every finding with its supporting evidence', 'Severity and priority per finding', 'Concrete recommendations for remediation', 'Reproducible by your own engineers'],
+      freeLabel: 'Initial examination',
+      freeTitle: 'Free of charge',
+      freeText: 'Documented in writing, no meeting required.',
+    },
+    trust: [
+      { title: 'Your material, your scope', text: 'You decide what we examine. No live system of yours is accessed.' },
+      { title: 'Processed in Europe', text: 'Processing takes place in Graz, on infrastructure in Europe. The material you send does not leave the European Union.' },
+      { title: 'No obligation', text: 'If the examination finds a material issue, we can define a follow-on engagement. If it does not, the report stands on its own.' },
+    ],
+    evidenceHeading: 'Our research is public. Our methodology is inspectable.',
+    evidenceNote: 'Figures from the public Evidence Ledger, updated with every disclosure.',
+    evidenceCta: 'Explore the Evidence Ledger →',
+    cta: 'Request a free initial review',
   },
 
   pricing: {
@@ -341,8 +362,8 @@ export const EN = {
 
   coopPartners: {
     eyebrow: 'Research Cooperation',
-    heading: 'Built alongside our coop partner',
-    subheading: "The Emergent Interaction Lab and RFI-IRFOS are independent entities with distinct research and engineering roles. Laura Serna Gaviria leads the Lab's research architecture; RFI-IRFOS develops and operates technical systems only where a specific collaboration is agreed and explicitly attributed.",
+    heading: 'Together with the Emergent Interaction Lab',
+    subheading: "The Emergent Interaction Lab and RFI-IRFOS work as independent partners. The Lab does the research, we build and operate the systems. Laura Serna Gaviria leads the Lab's research architecture. Where we work together, we say so.",
     role: 'Emergent Interaction Lab · Coop Partner',
     laura: {
       desc: 'Research into human-AI interaction since 2023, now a working SWAT architecture: 18 hand-authored core agents lead a 292-agent pool, dispatched one at a time through a Mission Control turntable so nothing gets rushed or dropped. Every run passes a hardened review loop before anything ships, with call-laura as the final gate. Her name stays on what it produces because she built the judgment it runs on, not as a courtesy credit.',
