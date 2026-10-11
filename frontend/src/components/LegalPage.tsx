@@ -1127,47 +1127,60 @@ function StandardsDE() {
 // scale" (research-org leadership); Brennan's letter has him owning "the model safety
 // research agenda" specifically plus "collaboration with... external academic
 // partners" (he's PhD-track and publishing - the academic-facing safety-research seat).
+// One grid, no group labels: the team first, the co-founders underneath.
 const TEAM = [
-  { name: 'Simeon Kepp',      gh: 'simeon-kepp',   focus: 'Founder and CTO' },
-  { name: 'Zabih Karimi',     gh: 'zabih-sudo',     focus: 'Founder and CEO' },
-  { name: 'Louis Ehrig',      gh: 'louisuhr',       focus: 'Press and Public Affairs' },
-  { name: 'Ana Diez',         gh: 'anadiezmartini', focus: 'Model Safety and Wellbeing' },
-  { name: 'Brennan Bell',     gh: '496crows',       focus: 'Safety Research and Academic Partnerships' },
-  { name: 'Mariano Sosa',     gh: '',               focus: 'Trust and Public Perception' },
+  { name: 'Louis Ehrig',         gh: 'louisuhr',               focus: 'Press & Public Affairs' },
+  { name: 'Ana Diez',            gh: 'anadiezmartini',         focus: 'Model Safety & Wellbeing' },
+  { name: 'Brennan Bell',        gh: '496crows',               focus: 'Safety Research & Academic Partnerships' },
+  { name: 'Mariano Sosa',        gh: '',                       focus: 'Trust & Public Perception' },
+  { name: 'Simeon Kepp',         gh: 'simeon-kepp',            focus: 'Co-Founder & CTO' },
+  { name: 'Zabih Karimi',        gh: 'zabih-sudo',             focus: 'Co-Founder & CEO' },
+  { name: 'Laura Serna Gaviria', gh: 'emergentinteractionlab', focus: 'Co-Founder & COO' },
 ]
 
+const PAST = [
+  { name: 'Nikoletta Csonka', gh: 'csonikoletta', focus: 'Past contributor' },
+  { name: 'Lisa Scharler',    gh: 'aiqueenofaustria',             focus: 'Past contributor' },
+]
+
+function TeamCard({ p }: { p: { name: string; gh: string; focus: string } }) {
+  return (
+    <a href={p.gh ? `https://github.com/${p.gh}` : undefined} target="_blank" rel="noopener"
+       style={{
+         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+         background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.09)',
+         borderRadius: 14, padding: 20, textAlign: 'center', textDecoration: 'none',
+         transition: 'border-color 0.15s', cursor: p.gh ? 'pointer' : 'default',
+       }}
+       onMouseEnter={e => { if (p.gh) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.4)' }}
+       onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)' }}>
+      {p.gh ? (
+        <img src={`/team/${p.gh}.png`} alt="" loading="lazy"
+             style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)', objectFit: 'cover' }} />
+      ) : (
+        <div style={{
+          width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 20, fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
+        }}>{p.name[0]}</div>
+      )}
+      <div>
+        <p style={{ fontSize: 14, fontWeight: 800, color: '#e8e8f0' }}>{p.name}</p>
+        <p style={{ fontSize: 11, color: 'var(--accent-text)', marginTop: 4, fontWeight: 600 }}>{p.focus}</p>
+        {p.gh && <p style={{ fontSize: 10.5, color: '#7a7aa0', marginTop: 6, fontFamily: 'monospace' }}>@{p.gh}</p>}
+      </div>
+    </a>
+  )
+}
+
 function Team() {
+  const grid = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginTop: 32 } as const
   return <>
     <h1 style={H1}>Team</h1>
     <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>One team, everything in-house</p>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginTop: 32 }}>
-      {TEAM.map(p => (
-        <a key={p.name} href={p.gh ? `https://github.com/${p.gh}` : undefined} target="_blank" rel="noopener"
-           style={{
-             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
-             background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.09)',
-             borderRadius: 14, padding: 20, textAlign: 'center', textDecoration: 'none',
-             transition: 'border-color 0.15s', cursor: p.gh ? 'pointer' : 'default',
-           }}
-           onMouseEnter={e => { if (p.gh) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.4)' }}
-           onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)' }}>
-          {p.gh ? (
-            <img src={`/team/${p.gh}.png`} alt="" loading="lazy"
-                 style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)', objectFit: 'cover' }} />
-          ) : (
-            <div style={{
-              width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 20, fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
-            }}>{p.name[0]}</div>
-          )}
-          <div>
-            <p style={{ fontSize: 14, fontWeight: 800, color: '#e8e8f0' }}>{p.name}</p>
-            <p style={{ fontSize: 11, color: 'var(--accent-text)', marginTop: 4, fontWeight: 600 }}>{p.focus}</p>
-          </div>
-        </a>
-      ))}
-    </div>
+    <div style={grid}>{TEAM.map(p => <TeamCard key={p.name} p={p} />)}</div>
+    <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.18em', marginTop: 48 }}>Past contributors</p>
+    <div style={{ ...grid, marginTop: 16, opacity: 0.45, filter: 'grayscale(1)' }}>{PAST.map(p => <TeamCard key={p.name} p={p} />)}</div>
   </>
 }
 

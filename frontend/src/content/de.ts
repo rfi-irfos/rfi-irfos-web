@@ -350,8 +350,8 @@ export const DE: Content = {
   coopPartners: {
     eyebrow: 'Forschungskooperation',
     heading: 'Gemeinsam mit dem Emergent Interaction Lab',
-    subheading: 'Das Emergent Interaction Lab und RFI-IRFOS arbeiten als eigenständige Partner. Das Lab forscht, wir bauen und betreiben die Systeme. Laura Serna Gaviria verantwortet die Forschungsarchitektur des Labs. Wo wir zusammenarbeiten, weisen wir es aus.',
-    role: 'Emergent Interaction Lab · Kooperationspartnerin',
+    subheading: 'Das Emergent Interaction Lab ist unser Forschungspartner. Das Lab forscht, wir bauen und betreiben die Systeme. Seine Leiterin, Laura Serna Gaviria, gehört dem Board unserer Mitgründer:innen an. Wo wir zusammenarbeiten, weisen wir es aus.',
+    role: 'Mitgründerin & COO, RFI-IRFOS · Leitung Emergent Interaction Lab',
     laura: {
       desc: 'Forschung zu Mensch-KI-Interaktion seit 2023, heute eine arbeitende SWAT-Architektur: 18 handgeschriebene Kern-Agenten führen einen 292er-Pool an, der über ein Mission-Control-Turntable nacheinander angesteuert wird, damit nichts überstürzt oder übersehen wird. Jeder Lauf durchläuft eine gehärtete Review-Schleife, bevor etwas ausgeliefert wird, mit call-laura als letztem Gate. Ihr Name bleibt auf dem, was dabei entsteht, weil sie das Urteilsvermögen dahinter gebaut hat, nicht aus Höflichkeit.',
     },

@@ -246,7 +246,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
     <section style={{
       display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden',
       // minHeight keeps the hero at its pre-2026-10-10 size (live: 551px at 2133x964) now that the KPI row is gone, then trimmed 64px (~1.7cm) off the bottom.
-      minHeight: 'clamp(416px, calc(57vh - 64px), 616px)',
+      minHeight: 'clamp(396px, calc(57vh - 84px), 596px)',
       alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
       padding: 'calc(72px + 6vh) var(--sec-pad-x) 72px',
       // Tint gradient only - the actual photo is the dedicated zoom layer below,
