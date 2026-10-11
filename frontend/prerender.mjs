@@ -177,7 +177,7 @@ async function renderRoute(route, canonicalRoute, waitSelector = '#root h1, #roo
   // intermittently because of the Hero route's looping <video>; swallow just
   // its timeout and fall back to the waitForSelector gate below.
   await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'networkidle', timeout: 12000 }).catch(() => {})
-  await page.waitForSelector(waitSelector, { state: 'visible', timeout: 20000 })
+  await page.waitForSelector(waitSelector, { state: 'visible', timeout: 60000 })
   let html = await page.content() // already includes the doctype
 
   // FOUND 2026-08-19 via Search Console flagging /methodology/ as "Alternative
