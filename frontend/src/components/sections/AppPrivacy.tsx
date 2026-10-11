@@ -4,7 +4,7 @@
 // arriving from the mail finds the same offer in the same order. The frame is
 // static and every cell reveals on its own (same converge-from-the-sides pattern
 // as the old table), because one Reveal around the whole panel is barely visible.
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Reveal, useMobile } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import { AUDIT_HIGHLIGHTS } from './TrackRecord'
@@ -44,6 +44,25 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
   const stacked = useMobile(900)
   const phone = useMobile(640)
   const [active, setActive] = useState(0)
+  // Autoplay walks through the four steps until the visitor clicks one; skipped for reduced motion.
+  const [playing, setPlaying] = useState(
+    () => typeof window === 'undefined' || !window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
+  const stepsRef = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
+  useEffect(() => {
+    const el = stepsRef.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.3 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  useEffect(() => {
+    if (!playing || !visible) return
+    const id = window.setInterval(() => setActive(a => (a + 1) % c.steps.length), 3200)
+    return () => window.clearInterval(id)
+  }, [playing, visible, c.steps.length])
+  const pick = (i: number) => { setPlaying(false); setActive(i) }
   const kpis = [
     { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited, from: 'left' as const },
     { n: `${(corpusStats.smaliClassesTotal / 1e6).toFixed(2)}M+`, label: t.trackRecord.kpis.smaliClasses, from: 'bottom' as const },
@@ -64,20 +83,22 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 320px', gap: stacked ? 28 : 44, maxWidth: 1320, margin: '0 auto 56px' }}>
           {/* Left: ONE framed card holding process, scope and evidence (frame static, cells reveal) */}
           <div style={{ minWidth: 0, border: '1px solid var(--border)', borderRadius: 20, padding: phone ? 18 : 28, background: 'var(--glass-bg-solid)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 18, marginBottom: 28, alignItems: 'start' }}>
+            <div ref={stepsRef} style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 18, marginBottom: 28, alignItems: 'start' }}>
               {c.steps.map((s, i) => (
                 <Reveal key={s.title} from="bottom" dist={48} delay={i}>
-                  <div role="button" tabIndex={0} onClick={() => setActive(i)} aria-pressed={active === i}
-                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(i) } }}
+                  <div role="button" tabIndex={0} onClick={() => pick(i)} aria-pressed={active === i}
+                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(i) } }}
                     style={{ cursor: 'pointer', textAlign: 'left' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                      <span style={{ width: 38, height: 38, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 15, flexShrink: 0, transition: 'all 0.2s',
+                      <span style={{ width: 38, height: 38, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 15, flexShrink: 0, transition: 'all 0.4s', transform: active === i ? 'scale(1.12)' : 'scale(1)',
                         background: active === i ? 'var(--accent-text)' : 'var(--bg2)', color: active === i ? '#02110d' : 'var(--text2)',
                         border: '1px solid ' + (active === i ? 'var(--accent-text)' : 'var(--border)'),
                         boxShadow: active === i ? '0 0 18px rgba(0,245,196,0.35)' : 'none' }}>{i + 1}</span>
-                      {i < c.steps.length - 1 && !phone && <span style={{ flex: 1, height: 2, background: i < active ? 'var(--accent-text)' : 'var(--border)' }} />}
+                      {i < c.steps.length - 1 && !phone && <span style={{ flex: 1, height: 2, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
+                        <span style={{ display: 'block', height: '100%', background: 'var(--accent-text)', transformOrigin: 'left', transform: i < active ? 'scaleX(1)' : 'scaleX(0)', transition: 'transform 0.6s ease' }} />
+                      </span>}
                     </div>
-                    <div style={{ fontWeight: 700, fontSize: 14.5, color: 'var(--text)', marginBottom: 4 }}>{s.title}</div>
+                    <div style={{ fontWeight: 700, fontSize: 14.5, color: active === i ? 'var(--accent-text)' : 'var(--text)', marginBottom: 4, transition: 'color 0.4s' }}>{s.title}</div>
                     <div style={{ fontSize: 12.5, lineHeight: 1.55, color: active === i ? 'var(--text)' : 'var(--text2)' }}>{s.text}</div>
                   </div>
                 </Reveal>

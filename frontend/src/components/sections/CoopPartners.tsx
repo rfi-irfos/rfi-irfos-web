@@ -16,7 +16,7 @@ const GROUPS = [
     { label: 'lauras-core v0.2.0', href: 'https://crates.io/crates/lauras-core' },
     { label: 'lauras-mcp v0.2.0', href: 'https://crates.io/crates/lauras-mcp' },
     { label: 'lauras-api v0.2.0', href: 'https://crates.io/crates/lauras-api' },
-    { label: 'lauras-team v0.2.0 (auf Anfrage)', href: 'https://crates.io/crates/lauras-team' },
+    { label: 'lauras-team v0.2.0', onRequest: true, href: 'https://crates.io/crates/lauras-team' },
   ] },
   { title: 'Research (OSF)', kind: 'research' as const, links: [
     { label: 'HC9ZB', href: 'https://doi.org/10.17605/OSF.IO/HC9ZB' },
@@ -98,7 +98,7 @@ export function CoopPartnersSection({
                     {g.links.map(l => (
                       <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
                          style={{ fontSize: 12.5, color: 'var(--text2)', textDecoration: 'underline', textUnderlineOffset: 3 }}>
-                        {l.label}
+                        {l.label}{'onRequest' in l && l.onRequest ? ` ${t.coopPartners.onRequest}` : ''}
                       </a>
                     ))}
                   </div>

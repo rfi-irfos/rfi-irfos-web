@@ -364,6 +364,7 @@ export const EN = {
     eyebrow: 'Research Cooperation',
     heading: 'Together with the Emergent Interaction Lab',
     subheading: "The Emergent Interaction Lab is our research partner. The Lab does the research, we build and operate the systems. Its lead, Laura Serna Gaviria, sits on our board of co-founders. Where we work together, we say so.",
+    onRequest: '(on request)',
     role: 'Co-Founder & COO, RFI-IRFOS · Lead, Emergent Interaction Lab',
     laura: {
       desc: 'Research into human-AI interaction since 2023, now a working SWAT architecture: 18 hand-authored core agents lead a 292-agent pool, dispatched one at a time through a Mission Control turntable so nothing gets rushed or dropped. Every run passes a hardened review loop before anything ships, with call-laura as the final gate. Her name stays on what it produces because she built the judgment it runs on, not as a courtesy credit.',
