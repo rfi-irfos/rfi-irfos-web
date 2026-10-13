@@ -79,9 +79,11 @@ export function CoopPartnersSection({
             </div>
           </Reveal>
           <Reveal from="bottom" dist={40} delay={2}>
-            <p style={{ fontSize: 14.5, color: 'var(--text)', lineHeight: 1.65, margin: 0, padding: '20px 28px', borderTop: '1px solid var(--border)' }}>
-              {t.coopPartners.laura.desc}
-            </p>
+            <div style={{ padding: '24px 28px', borderTop: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {t.coopPartners.laura.paragraphs.map((para, i) => (
+                <p key={i} style={{ margin: 0, color: 'var(--text)', lineHeight: 1.65, fontSize: i === 0 ? 15.5 : 14.5, fontWeight: 400, opacity: i === 0 ? 1 : 0.88 }}>{para}</p>
+              ))}
+            </div>
           </Reveal>
           <Reveal from="right" dist={60} delay={3}>
             <div style={{
@@ -97,7 +99,7 @@ export function CoopPartnersSection({
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
                     {g.links.map(l => (
                       <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-                         style={{ fontSize: 12.5, color: 'var(--text2)', textDecoration: 'underline', textUnderlineOffset: 3 }}>
+                         style={{ fontSize: 12.5, color: 'var(--text)', textDecoration: 'none' }}>
                         {l.label}{'onRequest' in l && l.onRequest ? ` ${t.coopPartners.onRequest}` : ''}
                       </a>
                     ))}

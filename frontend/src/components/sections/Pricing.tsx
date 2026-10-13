@@ -31,7 +31,6 @@ import { useLocale } from '../../hooks/useLocale'
 type PricingDomain = {
   name: string; badge: string; scope: string
   bring?: string; we?: string; receive?: string; cta: string; delivery: string
-  startingFrom?: string
 }
 
 // One full domain card - number + name, a domain-specific scope badge (each
@@ -80,15 +79,6 @@ function DomainCard({
               <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: 800, letterSpacing: '0.01em', lineHeight: 1.3 }}>{domain.delivery}</div>
             </div>
           </div>
-          {domain.startingFrom && (
-            <div style={{ minWidth: 0, borderLeft: '1px solid var(--border)', paddingLeft: 16 }}>
-              <div style={{
-                fontSize: 9.5, fontWeight: 700,
-                color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 2,
-              }}>{t.pricing.startingFromLabel}</div>
-              <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: 800, letterSpacing: '0.01em', lineHeight: 1.3, whiteSpace: 'nowrap' }}>{domain.startingFrom}</div>
-            </div>
-          )}
           <button type="button" onClick={() => onSelectTier(domain.name)} className="rfi-pricing-price-btn" style={{
             cursor: 'pointer', padding: '9px 16px', flexShrink: 0,
             display: 'flex', alignItems: 'center', gap: 7, fontSize: 13.5, fontWeight: 800,

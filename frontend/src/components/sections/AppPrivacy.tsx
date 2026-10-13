@@ -77,7 +77,9 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
           <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center', fontWeight: 700 }}>{c.heading}</h2>
         </Reveal>
         <Reveal delay={1}>
-          <p style={{ color: 'var(--text)', marginBottom: 40, maxWidth: 680, fontSize: 16, lineHeight: 1.9, textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>{c.paragraph}</p>
+          <div style={{ maxWidth: 760, margin: '0 auto 40px', textAlign: 'center' }}>
+            <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.9, margin: 0 }}>{c.paragraph}</p>
+          </div>
         </Reveal>
 
         <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 320px', gap: stacked ? 28 : 44, maxWidth: 1320, margin: '0 auto 56px' }}>
@@ -91,8 +93,8 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                     style={{ cursor: 'pointer', textAlign: 'left' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                       <span style={{ width: 38, height: 38, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 15, flexShrink: 0, transition: 'all 0.4s', transform: active === i ? 'scale(1.12)' : 'scale(1)',
-                        background: active === i ? 'var(--accent-text)' : 'var(--bg2)', color: active === i ? '#02110d' : 'var(--text2)',
-                        border: '1px solid ' + (active === i ? 'var(--accent-text)' : 'var(--border)'),
+                        background: i <= active ? 'var(--accent-text)' : 'var(--bg2)', color: i <= active ? '#02110d' : 'var(--text2)',
+                        border: '1px solid ' + (i <= active ? 'var(--accent-text)' : 'var(--border)'),
                         boxShadow: active === i ? '0 0 18px rgba(0,245,196,0.35)' : 'none' }}>{i + 1}</span>
                       {i < c.steps.length - 1 && !phone && <span style={{ flex: 1, height: 2, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
                         <span style={{ display: 'block', height: '100%', background: 'var(--accent-text)', transformOrigin: 'left', transform: i < active ? 'scaleX(1)' : 'scaleX(0)', transition: 'transform 0.6s ease' }} />
