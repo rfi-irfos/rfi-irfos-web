@@ -26,17 +26,18 @@ const SCOPE_ICONS = [
   <Icon key="code"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></Icon>,
   <Icon key="plug"><path d="M12 22v-5M9 8V2M15 8V2M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z" /></Icon>,
   <Icon key="cloud"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" /></Icon>,
-  <Icon key="db"><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5v14a9 3 0 0 0 18 0V5M3 12a9 3 0 0 0 18 0" /></Icon>,
   <Icon key="shield"><path d={SHIELD} /></Icon>,
+  <Icon key="bug"><path d="m8 2 1.88 1.88M14.12 3.88 16 2M9 7.13v-1a3.003 3.003 0 1 1 6 0v1" /><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6" /><path d="M12 20v-9M6.53 9C4.6 8.8 3 7.1 3 5M6 13H2M3 21c0-2.1 1.7-3.9 3.8-4M20.97 5c0 2.1-1.6 3.8-3.5 4M22 13h-4M17.2 17c2.1.1 3.8 1.9 3.8 4" /></Icon>,
 ]
 
 const TRUST_ICONS = [
-  <Icon key="a" size={30}><path d={SHIELD} /><polyline points="9 12 11 14 15 10" /></Icon>,
-  <Icon key="b" size={30}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></Icon>,
-  <Icon key="c" size={30}><circle cx="12" cy="12" r="10" /><polyline points="9 12 11 14 15 10" /></Icon>,
+  <Icon key="a" size={24}><path d={SHIELD} /><polyline points="9 12 11 14 15 10" /></Icon>,
+  <Icon key="b" size={24}><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4" /></Icon>,
+  <Icon key="c" size={24}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></Icon>,
+  <Icon key="d" size={24}><circle cx="12" cy="12" r="10" /><polyline points="9 12 11 14 15 10" /></Icon>,
 ]
 
-const tile = { width: 44, height: 44, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,245,196,0.10)', color: 'var(--accent-text)', flexShrink: 0 } as const
+const tile = { width: 44, height: 44, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-text)', flexShrink: 0 } as const
 
 export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: () => void }) {
   const { t } = useLocale()
@@ -78,11 +79,15 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         </Reveal>
         <Reveal delay={1}>
           <div style={{ maxWidth: 760, margin: '0 auto 40px', textAlign: 'center' }}>
-            <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.9, margin: 0 }}><strong style={{ fontWeight: 700 }}>{c.lead}</strong> {c.paragraph}</p>
+            {c.paragraphs.map((para, i) => (
+              <p key={i} style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.85, margin: i === 0 ? 0 : '14px 0 0' }}>
+                {i === 0 && <strong style={{ fontWeight: 700 }}>{c.lead} </strong>}{para}
+              </p>
+            ))}
           </div>
         </Reveal>
 
-        <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 320px', gap: stacked ? 28 : 44, maxWidth: 1320, margin: '0 auto 56px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 380px', gap: stacked ? 28 : 44, maxWidth: 1320, margin: '0 auto 56px' }}>
           {/* Left: ONE framed card holding process, scope and evidence (frame static, cells reveal) */}
           <div style={{ minWidth: 0, border: '1px solid var(--border)', borderRadius: 20, padding: phone ? 18 : 28, background: 'var(--glass-bg-solid)' }}>
             <div ref={stepsRef} style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 18, marginBottom: 28, alignItems: 'start' }}>
@@ -113,7 +118,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                 {c.scope.map((row, i) => (
                   <Reveal key={row.title} from="left" dist={64} delay={i + 1}>
                     <div style={{ display: 'flex', gap: 14, padding: '10px 0', borderBottom: i < c.scope.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                      <span style={tile}>{SCOPE_ICONS[i]}</span>
+                      <span className="rfi-glass-icon" style={tile}>{SCOPE_ICONS[i]}</span>
                       <div style={{ minWidth: 0 }}>
                         <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--text)' }}>{row.title}</div>
                         <div style={{ fontSize: 12.5, lineHeight: 1.5, color: 'var(--text2)', marginTop: 2 }}>{row.text}</div>
@@ -125,7 +130,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
               <Reveal from="right" dist={64} delay={2} style={{ height: '100%' }}>
                 <div style={{ border: '1px solid var(--accent-text)', borderRadius: 16, padding: 20, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box', background: 'rgba(0,245,196,0.05)' }}>
                   <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 16 }}>
-                    <span style={{ ...tile, width: 48, height: 48 }}>
+                    <span className="rfi-glass-icon" style={{ ...tile, width: 48, height: 48 }}>
                       <Icon size={26}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="14" y2="17" /></Icon>
                     </span>
                     <div>
@@ -133,10 +138,11 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                       <div style={{ fontSize: 12.5, color: 'var(--text2)' }}>{c.report.sub}</div>
                     </div>
                   </div>
-                  <ul style={{ listStyle: 'none', margin: '0 0 18px', padding: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 18 }}>
+                  <ul style={{ listStyle: 'none', margin: '0 0 18px', padding: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 14 }}>
                     {c.report.items.map(item => (
-                      <li key={item} style={{ display: 'flex', gap: 12, fontSize: 15, lineHeight: 1.4, color: 'var(--text)' }}>
-                        <span aria-hidden style={{ color: 'var(--accent-text)', fontWeight: 800, fontSize: 18, lineHeight: 1.2 }}>✓</span>{item}
+                      <li key={item.lead} style={{ display: 'flex', gap: 12, fontSize: 13.5, lineHeight: 1.5, color: 'var(--text2)' }}>
+                        <span aria-hidden style={{ color: 'var(--accent-text)', fontWeight: 800, fontSize: 16, lineHeight: 1.3 }}>✓</span>
+                        <span><strong style={{ color: 'var(--text)', fontWeight: 700 }}>{item.lead}</strong> {item.text}</span>
                       </li>
                     ))}
                   </ul>
@@ -150,12 +156,16 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
             </div>
           </div>
 
-          {/* Right: unframed trust points, thin rule, then the single call to action */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 28, alignSelf: stacked ? 'stretch' : 'center' }}>
+          {/* Right: glass panel with the four trust points, then the single call to action */}
+          <div style={{
+            display: 'flex', flexDirection: 'column', gap: 22, alignSelf: stacked ? 'stretch' : 'center', padding: phone ? 18 : 24, borderRadius: 20,
+            background: 'linear-gradient(165deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02))', border: '1px solid rgba(255,255,255,0.12)',
+            WebkitBackdropFilter: 'blur(14px)', backdropFilter: 'blur(14px)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.14), 0 14px 36px rgba(0,0,0,0.25)',
+          }}>
             {c.trust.map((item, i) => (
               <Reveal key={item.title} from="right" dist={64} delay={i + 1}>
                 <div style={{ display: 'flex', gap: 14 }}>
-                  <span style={{ color: 'var(--accent-text)', flexShrink: 0 }}>{TRUST_ICONS[i]}</span>
+                  <span className="rfi-glass-icon" style={{ ...tile, width: 44, height: 44 }}>{TRUST_ICONS[i]}</span>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 14.5, color: 'var(--text)', marginBottom: 3 }}>{item.title}</div>
                     <div style={{ fontSize: 12.5, lineHeight: 1.55, color: 'var(--text2)' }}>{item.text}</div>

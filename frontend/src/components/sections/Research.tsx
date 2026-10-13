@@ -40,12 +40,7 @@ function BentoTile({ icon, title, onOpen, from, delay }: {
             edge along the top-left (light source) fading to a darker inset
             bottom-right, and a soft coloured drop shadow lifting the badge off
             the card. Same accent hue throughout, no new colour introduced. */}
-        <div style={{
-          width: 60, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'linear-gradient(155deg, color-mix(in srgb, var(--accent) 26%, transparent), color-mix(in srgb, var(--accent) 8%, transparent))',
-          border: '1px solid var(--accent-border)', borderRadius: 16, lineHeight: 0,
-          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.14), inset -1px -1px 3px rgba(0,0,0,0.3), 0 6px 16px color-mix(in srgb, var(--accent) 22%, transparent)',
-        }}>
+        <div className="rfi-glass-icon" style={{ width: 60, height: 60, borderRadius: 16 }}>
           {icon}
         </div>
         <div style={{ fontWeight: 800, fontSize: 15, lineHeight: 1.25, whiteSpace: 'pre-line' }}>{title}</div>

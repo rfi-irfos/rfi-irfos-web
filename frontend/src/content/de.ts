@@ -223,7 +223,11 @@ export const DE: Content = {
     eyebrow: 'Was wir am besten können',
     heading: 'Multi-Agent Software Security Investigations',
     lead: 'Software verstehen. Schwachstellen aufdecken.',
-    paragraph: "Wir untersuchen Software an der Wurzel, vom Quellcode und seinen Abhängigkeiten über APIs und Konfigurationen bis zu Angriffsflächen, Bugs und Schwachstellen. Unser Team arbeitet dafür mit spezialisierten KI-Agenten, die Befunde untersuchen, gegeneinander prüfen und Zusammenhänge aufdecken. Sie senden uns das Material und erhalten einen schriftlichen Erstbericht, kostenlos und ohne Meeting.",
+    paragraphs: [
+      "Wir schicken digitale Produkte durch eine eigens entwickelte Multi-Agenten-Pipeline für Sicherheitsuntersuchungen. Hunderte spezialisierte Agenten können verschiedene Teile eines Systems parallel untersuchen und dabei Code, Abhängigkeiten, APIs, Konfigurationen und offene Angriffsflächen erkunden.",
+      "Mit gelernten Angriffsmustern und koordinierten Untersuchungsabläufen erkundet das System mögliche Schwachstellen, prüft Spuren, verfolgt Zusammenhänge und macht auffälliges Verhalten für die weitere Untersuchung sichtbar. Befunde werden über die gesamte Untersuchung hinweg korreliert, sodass unsere menschlichen Fachleute technische Belege und Kontext erhalten, um zu entscheiden, was zählt.",
+      "Von einzelnen Schwachstellen bis zu verbundenen Angriffspfaden verwandeln wir groß angelegte automatisierte Untersuchung in Befunde, die Entwicklungsteams verstehen, überprüfen und umsetzen können.",
+    ],
     steps: [
       { title: 'Senden', text: 'Ein GitHub-Link, ein Repository-Archiv, ein Paket-Build oder eine API-Spezifikation.' },
       { title: 'Prüfen', text: 'Unser Team und einer, mehrere oder alle unserer Agenten arbeiten Quellcode, Konfiguration und Datenflüsse gemeinsam durch.' },
@@ -241,15 +245,21 @@ export const DE: Content = {
     report: {
       title: 'Der Nachweis',
       sub: 'Unsere Arbeit, dokumentiert und überprüfbar.',
-      items: ['Jeder Fund mit der zugehörigen Evidenz', 'Schweregrad und Priorität je Fund', 'Konkrete Empfehlungen zur Behebung', 'Für Ihr Entwicklungsteam reproduzierbar'],
+      items: [
+        { lead: "Breite technische Abdeckung", text: "über Softwarefehler, Abhängigkeitsrisiken, Fehlkonfigurationen, offengelegte Daten und Angriffsflächen." },
+        { lead: "Ausnutzbarkeitsanalyse", text: "um festzustellen, ob sich gefundene Schwachstellen zu praktischen Angriffspfaden verketten lassen, bei Bedarf und mit Genehmigung mit Proof-of-Concept-Exploits." },
+        { lead: "Normbasierte Methodik", text: "auf Grundlage etablierter Rahmenwerke wie OWASP ASVS, OWASP Top 10 und CWE, mit Schweregradbewertung nach CVSS, wo anwendbar." },
+        { lead: "Belegbasierte Berichte", text: "mit technischen Details, Reproduktionsschritten, Risikokontext und konkreten Empfehlungen zur Behebung." },
+      ],
       freeLabel: 'Erste Prüfung',
       freeTitle: 'Kostenlos',
       freeText: 'Schriftlich dokumentiert, ganz ohne Meeting.',
     },
     trust: [
-      { title: 'Ihr Material, Ihr Umfang', text: 'Sie entscheiden, was wir prüfen. Auf Ihre Live-Systeme greifen wir nicht zu.' },
-      { title: 'Verarbeitung in Europa', text: 'Die Verarbeitung findet in Graz statt, auf Infrastruktur in Europa. Das gesendete Material verlässt die Europäische Union nicht.' },
-      { title: 'Ohne Verpflichtung', text: 'Findet die Prüfung ein wesentliches Problem, können wir einen Folgeauftrag vereinbaren. Wenn nicht, steht der Bericht für sich.' },
+      { title: "Ihr Material. Ihr Umfang.", text: "Sie entscheiden, was Sie zur Prüfung einreichen. Wir untersuchen den bereitgestellten Code, die Abhängigkeiten, APIs und weiteres technisches Material, ohne auf Ihre Live-Systeme zuzugreifen." },
+      { title: "Eigens entwickelt. Multi-Agent.", text: "Spezialisierte Agenten untersuchen verschiedene Teile Ihrer Software, erkunden mögliche Angriffspfade und verbinden Befunde über das gesamte System hinweg. Das Ergebnis ist eine dokumentierte Untersuchung mit Belegen zu jedem Befund." },
+      { title: "In Europa verarbeitet.", text: "Die Verarbeitung findet in Graz auf Infrastruktur in Europa statt. Das eingereichte Material verlässt die Europäische Union nicht." },
+      { title: "Erst der Befund. Ohne Verpflichtung.", text: "Ihre Erstprüfung ist kostenlos und wird schriftlich dokumentiert. Wenn wir Auffälligkeiten finden, die eine vertiefte Untersuchung lohnen, entscheiden Sie, ob Sie eine ausführlichere Prüfung beauftragen. Der Erstbericht steht für sich." },
     ],
     evidenceHeading: 'Unsere Forschung ist öffentlich. Unsere Methodik ist nachprüfbar.',
     evidenceNote: 'Zahlen aus dem öffentlichen Evidence Ledger, mit jeder Offenlegung aktualisiert.',

@@ -138,7 +138,7 @@ function SquadOverview({
                     style={{ borderColor: a.key === selectedKey ? a.color : undefined, '--row-color': a.color } as CSSProperties}
                     onClick={() => setSelectedKey(a.key)}
                   >
-                    <a.icon size={26} color={a.color} />
+                    <span className="rfi-glass-icon" style={{ width: 44, height: 44, borderRadius: 12, borderColor: `color-mix(in srgb, ${a.color} 32%, rgba(255,255,255,0.14))` }}><a.icon size={22} color={a.color} /></span>
                     <span className="sq-agent-row-text">
                       <strong>{a.name}</strong>
                       {/* Job title only (live feedback: sidebar stays icon + name
