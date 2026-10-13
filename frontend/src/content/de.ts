@@ -221,7 +221,8 @@ export const DE: Content = {
 
   appPrivacy: {
     eyebrow: 'Was wir am besten können',
-    heading: 'Software verstehen. Schwachstellen aufdecken.',
+    heading: 'Multi-Agent Software Security Investigations',
+    lead: 'Software verstehen. Schwachstellen aufdecken.',
     paragraph: "Wir untersuchen Software an der Wurzel, vom Quellcode und seinen Abhängigkeiten über APIs und Konfigurationen bis zu Angriffsflächen, Bugs und Schwachstellen. Unser Team arbeitet dafür mit spezialisierten KI-Agenten, die Befunde untersuchen, gegeneinander prüfen und Zusammenhänge aufdecken. Sie senden uns das Material und erhalten einen schriftlichen Erstbericht, kostenlos und ohne Meeting.",
     steps: [
       { title: 'Senden', text: 'Ein GitHub-Link, ein Repository-Archiv, ein Paket-Build oder eine API-Spezifikation.' },

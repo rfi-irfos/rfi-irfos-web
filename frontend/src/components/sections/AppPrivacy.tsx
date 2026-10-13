@@ -78,7 +78,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         </Reveal>
         <Reveal delay={1}>
           <div style={{ maxWidth: 760, margin: '0 auto 40px', textAlign: 'center' }}>
-            <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.9, margin: 0 }}>{c.paragraph}</p>
+            <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.9, margin: 0 }}><strong style={{ fontWeight: 700 }}>{c.lead}</strong> {c.paragraph}</p>
           </div>
         </Reveal>
 

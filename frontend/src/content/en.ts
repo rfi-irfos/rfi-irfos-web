@@ -228,7 +228,8 @@ export const EN = {
 
   appPrivacy: {
     eyebrow: 'What we do best',
-    heading: 'Understand software. Uncover vulnerabilities.',
+    heading: 'Multi-Agent Software Security Investigations',
+    lead: 'Understand software. Uncover vulnerabilities.',
     paragraph: "We examine software at the root, from source code and its dependencies through APIs and configurations to attack surfaces, bugs and vulnerabilities. Our team works with specialized AI agents that investigate findings, cross-check them against each other and uncover connections. You send us the material and receive a written initial report, free of charge and without a meeting.",
     steps: [
       { title: 'Send', text: 'A GitHub link, a repository archive, a package build or an API specification.' },
