@@ -227,7 +227,7 @@ export const DE: Content = {
     steps: [
       { title: 'Senden', text: 'Ein GitHub-Link, ein Repository-Archiv, ein Paket-Build oder eine API-Spezifikation.' },
       { title: 'Prüfen', text: 'Unser Team und spezialisierte Agenten arbeiten Quellcode, Konfiguration und Datenflüsse gemeinsam durch.' },
-      { title: 'Gegenprüfen', text: 'Jeder Fund wird von einem zweiten, unabhängig instruierten Agenten erneut verifiziert.' },
+      { title: 'Gegenprüfen', text: 'Jeder Fund wird immer von unseren menschlichen Fachleuten erneut geprüft, bevor er in den Bericht kommt.' },
       { title: 'Nachweis', text: 'Wir dokumentieren die Prüfung schriftlich, mit der Evidenz zu jedem Fund.' },
     ],
     scopeLabel: 'Das prüfen wir',
@@ -876,7 +876,7 @@ export const DE: Content = {
   squad: {
     heading: 'Der Kader',
     subheading: 'Spezialisierte Agenten, die prüfen, was Sie uns senden.',
-    intro: 'Senden Sie uns ein Repository, eine APK oder eine API-Spezifikation. Ein ausgewähltes Team spezialisierter Agenten und unsere Expertinnen und Experten arbeiten es gemeinsam durch, jeder Befund wird von einem zweiten, unabhängig instruierten Agenten erneut verifiziert, und Sie erhalten einen schriftlichen Bericht mit den Belegen zu jedem Ergebnis. Setzen Sie einen einzelnen Agenten auf ein Problem an oder den gesamten Kader als eine Pipeline. Reviews laufen auf Infrastruktur in Europa, die Verarbeitung findet in Graz statt.',
+    intro: 'Senden Sie uns ein Repository, eine APK oder eine API-Spezifikation. Ein ausgewähltes Team spezialisierter Agenten und unsere Expertinnen und Experten arbeiten es gemeinsam durch, jeder Befund wird immer von unseren menschlichen Fachleuten erneut geprüft, und Sie erhalten einen schriftlichen Bericht mit den Belegen zu jedem Ergebnis. Setzen Sie einen einzelnen Agenten auf ein Problem an oder den gesamten Kader als eine Pipeline. Reviews laufen auf Infrastruktur in Europa, die Verarbeitung findet in Graz statt.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Finden Sie den passenden Agenten →',

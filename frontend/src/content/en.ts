@@ -234,7 +234,7 @@ export const EN = {
     steps: [
       { title: 'Send', text: 'A GitHub link, a repository archive, a package build or an API specification.' },
       { title: 'Examine', text: 'Experts and specialized agents work through source, configuration and data flows together.' },
-      { title: 'Re-verify', text: 'Every finding is re-verified by a second, independently instructed agent.' },
+      { title: 'Re-verify', text: 'Every finding is always re-verified by our human specialists before it reaches the report.' },
       { title: 'Evidence', text: 'We document the examination in writing, with the evidence for each finding.' },
     ],
     scopeLabel: 'What we examine',
@@ -889,7 +889,7 @@ export const EN = {
   squad: {
     heading: 'The Squad',
     subheading: 'Specialized agents that review what you send us.',
-    intro: 'Send us a repository, an APK or an API spec. A selected team of specialized agents and our experts work through it together, every finding is re-verified by a second, independently instructed agent, and you receive a written report with the evidence behind each result. Run a single agent against one problem, or the whole squad as one pipeline. Reviews run on infrastructure in Europe, with processing in Graz.',
+    intro: 'Send us a repository, an APK or an API spec. A selected team of specialized agents and our experts work through it together, every finding is always re-verified by our human specialists, and you receive a written report with the evidence behind each result. Run a single agent against one problem, or the whole squad as one pipeline. Reviews run on infrastructure in Europe, with processing in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'See which agent fits your problem →',
