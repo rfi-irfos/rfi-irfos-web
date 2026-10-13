@@ -233,7 +233,7 @@ export const EN = {
     paragraph: "We examine software at the root, from source code and its dependencies through APIs and configurations to attack surfaces, bugs and vulnerabilities. Our team works with specialized AI agents that investigate findings, cross-check them against each other and uncover connections. You send us the material and receive a written initial report, free of charge and without a meeting.",
     steps: [
       { title: 'Send', text: 'A GitHub link, a repository archive, a package build or an API specification.' },
-      { title: 'Examine', text: 'Experts and specialized agents work through source, configuration and data flows together.' },
+      { title: 'Examine', text: 'Our team and one, several or all of our agents work through source, configuration and data flows together.' },
       { title: 'Re-verify', text: 'Every finding is always re-verified by our human specialists before it reaches the report.' },
       { title: 'Evidence', text: 'We document the examination in writing, with the evidence for each finding.' },
     ],

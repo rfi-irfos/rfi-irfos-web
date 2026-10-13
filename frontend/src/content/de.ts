@@ -226,7 +226,7 @@ export const DE: Content = {
     paragraph: "Wir untersuchen Software an der Wurzel, vom Quellcode und seinen Abhängigkeiten über APIs und Konfigurationen bis zu Angriffsflächen, Bugs und Schwachstellen. Unser Team arbeitet dafür mit spezialisierten KI-Agenten, die Befunde untersuchen, gegeneinander prüfen und Zusammenhänge aufdecken. Sie senden uns das Material und erhalten einen schriftlichen Erstbericht, kostenlos und ohne Meeting.",
     steps: [
       { title: 'Senden', text: 'Ein GitHub-Link, ein Repository-Archiv, ein Paket-Build oder eine API-Spezifikation.' },
-      { title: 'Prüfen', text: 'Unser Team und spezialisierte Agenten arbeiten Quellcode, Konfiguration und Datenflüsse gemeinsam durch.' },
+      { title: 'Prüfen', text: 'Unser Team und einer, mehrere oder alle unserer Agenten arbeiten Quellcode, Konfiguration und Datenflüsse gemeinsam durch.' },
       { title: 'Gegenprüfen', text: 'Jeder Fund wird immer von unseren menschlichen Fachleuten erneut geprüft, bevor er in den Bericht kommt.' },
       { title: 'Nachweis', text: 'Wir dokumentieren die Prüfung schriftlich, mit der Evidenz zu jedem Fund.' },
     ],
