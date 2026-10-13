@@ -229,12 +229,7 @@ export const EN = {
   appPrivacy: {
     eyebrow: 'What we do best',
     heading: 'Multi-Agent Software Security Investigations',
-    lead: 'Understand software. Uncover vulnerabilities.',
-    paragraphs: [
-      "We run digital products through a purpose-built, multi-agent security investigation pipeline. Hundreds of specialized agents can investigate different parts of a system in parallel, exploring code, dependencies, APIs, configurations and exposed attack surfaces.",
-      "Using learned attack patterns and coordinated investigative workflows, the system explores potential weaknesses, tests leads, traces connections and surfaces suspicious behavior for further examination. Findings are correlated across the investigation, giving human reviewers technical evidence and context to determine what matters.",
-      "From individual vulnerabilities to connected attack paths, we turn large-scale automated investigation into findings developers can understand, verify and act on.",
-    ],
+    paragraph: "We run digital products through a purpose-built, multi-agent investigation pipeline. Hundreds of specialized agents examine code, dependencies, APIs, configurations and attack surfaces in parallel, trace connections and flag suspicious behavior. Our human specialists then use the correlated evidence to decide what matters, so developers get findings they can understand, verify and act on.",
     steps: [
       { title: 'Send', text: 'A GitHub link, a repository archive, a package build or an API specification.' },
       { title: 'Examine', text: 'Our team and one, several or all of our agents work through source, configuration and data flows together.' },
@@ -253,10 +248,10 @@ export const EN = {
       title: 'The evidence',
       sub: 'Our work, documented and checkable.',
       items: [
-        { lead: "Broad technical coverage", text: "across software defects, dependency risks, misconfigurations, exposed data and attack surfaces." },
-        { lead: "Exploitability analysis", text: "to determine whether identified weaknesses can be turned into practical attack paths, with proof-of-concept exploits where appropriate and authorized." },
-        { lead: "Standards-informed methodology", text: "drawing on established frameworks such as OWASP ASVS, the OWASP Top 10 and CWE, with severity assessment informed by CVSS where applicable." },
-        { lead: "Evidence-backed reporting", text: "with technical details, reproduction steps, risk context and concrete remediation guidance." },
+        "Broad technical coverage",
+        "Exploitability analysis",
+        "Standards-informed methodology",
+        "Evidence-backed reporting",
       ],
       freeLabel: 'Initial examination',
       freeTitle: 'Free of charge',
@@ -266,12 +261,12 @@ export const EN = {
       { title: "Your material. Your scope.", text: "You decide what to submit for examination. We investigate the supplied code, dependencies, APIs and other technical material without accessing your live systems." },
       { title: "Purpose-built. Multi-agent.", text: "Specialized agents investigate different parts of your software, explore potential attack paths and connect findings across the system. The result is a documented investigation with evidence behind every finding." },
       { title: "Processed in Europe.", text: "Processing takes place in Graz on infrastructure in Europe. The material you submit does not leave the European Union." },
-      { title: "Findings first. No obligation.", text: "Your initial examination is free and documented in writing. If we identify issues worth investigating further, you can decide whether to commission a deeper review. The initial report stands on its own." },
+      { title: "Standards-informed methodology.", text: "Drawing on established frameworks such as OWASP ASVS, the OWASP Top 10 and CWE, with severity assessment informed by CVSS where applicable." },
     ],
     evidenceHeading: 'Our research is public. Our methodology is inspectable.',
     evidenceNote: 'Figures from the public Evidence Ledger, updated with every disclosure.',
     evidenceCta: 'Explore the Evidence Ledger →',
-    cta: 'Request a free initial review',
+    cta: 'Request an Initial Review',
   },
 
   pricing: {

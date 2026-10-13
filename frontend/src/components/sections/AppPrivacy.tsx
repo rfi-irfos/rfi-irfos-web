@@ -34,7 +34,7 @@ const TRUST_ICONS = [
   <Icon key="a" size={24}><path d={SHIELD} /><polyline points="9 12 11 14 15 10" /></Icon>,
   <Icon key="b" size={24}><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4" /></Icon>,
   <Icon key="c" size={24}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></Icon>,
-  <Icon key="d" size={24}><circle cx="12" cy="12" r="10" /><polyline points="9 12 11 14 15 10" /></Icon>,
+  <Icon key="d" size={24}><rect x="8" y="2" width="8" height="4" rx="1" /><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><path d="m9 14 2 2 4-4" /></Icon>,
 ]
 
 const tile = { width: 44, height: 44, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-text)', flexShrink: 0 } as const
@@ -78,16 +78,14 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
           <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center', fontWeight: 700 }}>{c.heading}</h2>
         </Reveal>
         <Reveal delay={1}>
-          <div style={{ maxWidth: 760, margin: '0 auto 40px', textAlign: 'center' }}>
-            {c.paragraphs.map((para, i) => (
-              <p key={i} style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.85, margin: i === 0 ? 0 : '14px 0 0' }}>
-                {i === 0 && <strong style={{ fontWeight: 700 }}>{c.lead} </strong>}{para}
-              </p>
-            ))}
+          <div style={{ maxWidth: 720, margin: '0 auto 36px', textAlign: 'center' }}>
+            <p style={{ color: 'var(--text)', fontSize: 15.5, lineHeight: 1.8, margin: 0 }}>
+              {c.paragraph}
+            </p>
           </div>
         </Reveal>
 
-        <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 380px', gap: stacked ? 28 : 44, maxWidth: 1320, margin: '0 auto 56px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 350px', gap: stacked ? 28 : 24, maxWidth: 1320, margin: '0 auto 56px' }}>
           {/* Left: ONE framed card holding process, scope and evidence (frame static, cells reveal) */}
           <div style={{ minWidth: 0, border: '1px solid var(--border)', borderRadius: 20, padding: phone ? 18 : 28, background: 'var(--glass-bg-solid)' }}>
             <div ref={stepsRef} style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 18, marginBottom: 28, alignItems: 'start' }}>
@@ -138,11 +136,10 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                       <div style={{ fontSize: 12.5, color: 'var(--text2)' }}>{c.report.sub}</div>
                     </div>
                   </div>
-                  <ul style={{ listStyle: 'none', margin: '0 0 18px', padding: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 14 }}>
+                  <ul style={{ listStyle: 'none', margin: '0 0 18px', padding: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 18 }}>
                     {c.report.items.map(item => (
-                      <li key={item.lead} style={{ display: 'flex', gap: 12, fontSize: 13.5, lineHeight: 1.5, color: 'var(--text2)' }}>
-                        <span aria-hidden style={{ color: 'var(--accent-text)', fontWeight: 800, fontSize: 16, lineHeight: 1.3 }}>✓</span>
-                        <span><strong style={{ color: 'var(--text)', fontWeight: 700 }}>{item.lead}</strong> {item.text}</span>
+                      <li key={item} style={{ display: 'flex', gap: 12, fontSize: 15, lineHeight: 1.4, color: 'var(--text)' }}>
+                        <span aria-hidden style={{ color: 'var(--accent-text)', fontWeight: 800, fontSize: 18, lineHeight: 1.2 }}>✓</span>{item}
                       </li>
                     ))}
                   </ul>
@@ -156,17 +153,15 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
             </div>
           </div>
 
-          {/* Right: glass panel with the four trust points, then the single call to action */}
+          {/* Right: frameless column with the four trust points, then the single call to action */}
           <div style={{
-            display: 'flex', flexDirection: 'column', gap: 22, alignSelf: stacked ? 'stretch' : 'center', padding: phone ? 18 : 24, borderRadius: 20,
-            background: 'linear-gradient(165deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02))', border: '1px solid rgba(255,255,255,0.12)',
-            WebkitBackdropFilter: 'blur(14px)', backdropFilter: 'blur(14px)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.14), 0 14px 36px rgba(0,0,0,0.25)',
+            display: 'flex', flexDirection: 'column', gap: 22, alignSelf: stacked ? 'stretch' : 'center', padding: stacked ? 0 : '0 4px',
           }}>
             {c.trust.map((item, i) => (
               <Reveal key={item.title} from="right" dist={64} delay={i + 1}>
-                <div style={{ display: 'flex', gap: 14 }}>
+                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
                   <span className="rfi-glass-icon" style={{ ...tile, width: 44, height: 44 }}>{TRUST_ICONS[i]}</span>
-                  <div>
+                  <div style={{ flex: 1, minWidth: 0, padding: '12px 14px', borderRadius: 14, border: '1px solid var(--border)', background: 'color-mix(in srgb, var(--glass-bg-solid) 88%, transparent)' }}>
                     <div style={{ fontWeight: 700, fontSize: 14.5, color: 'var(--text)', marginBottom: 3 }}>{item.title}</div>
                     <div style={{ fontSize: 12.5, lineHeight: 1.55, color: 'var(--text2)' }}>{item.text}</div>
                   </div>

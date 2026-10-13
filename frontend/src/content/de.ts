@@ -222,12 +222,7 @@ export const DE: Content = {
   appPrivacy: {
     eyebrow: 'Was wir am besten können',
     heading: 'Multi-Agent Software Security Investigations',
-    lead: 'Software verstehen. Schwachstellen aufdecken.',
-    paragraphs: [
-      "Wir schicken digitale Produkte durch eine eigens entwickelte Multi-Agenten-Pipeline für Sicherheitsuntersuchungen. Hunderte spezialisierte Agenten können verschiedene Teile eines Systems parallel untersuchen und dabei Code, Abhängigkeiten, APIs, Konfigurationen und offene Angriffsflächen erkunden.",
-      "Mit gelernten Angriffsmustern und koordinierten Untersuchungsabläufen erkundet das System mögliche Schwachstellen, prüft Spuren, verfolgt Zusammenhänge und macht auffälliges Verhalten für die weitere Untersuchung sichtbar. Befunde werden über die gesamte Untersuchung hinweg korreliert, sodass unsere menschlichen Fachleute technische Belege und Kontext erhalten, um zu entscheiden, was zählt.",
-      "Von einzelnen Schwachstellen bis zu verbundenen Angriffspfaden verwandeln wir groß angelegte automatisierte Untersuchung in Befunde, die Entwicklungsteams verstehen, überprüfen und umsetzen können.",
-    ],
+    paragraph: "Wir schicken digitale Produkte durch eine eigens entwickelte Multi-Agenten-Pipeline. Hunderte spezialisierte Agenten untersuchen Code, Abhängigkeiten, APIs, Konfigurationen und Angriffsflächen parallel, verfolgen Zusammenhänge und markieren auffälliges Verhalten. Unsere menschlichen Fachleute entscheiden anhand der korrelierten Belege, was zählt, damit Entwicklungsteams Befunde erhalten, die sie verstehen, überprüfen und umsetzen können.",
     steps: [
       { title: 'Senden', text: 'Ein GitHub-Link, ein Repository-Archiv, ein Paket-Build oder eine API-Spezifikation.' },
       { title: 'Prüfen', text: 'Unser Team und einer, mehrere oder alle unserer Agenten arbeiten Quellcode, Konfiguration und Datenflüsse gemeinsam durch.' },
@@ -246,10 +241,10 @@ export const DE: Content = {
       title: 'Der Nachweis',
       sub: 'Unsere Arbeit, dokumentiert und überprüfbar.',
       items: [
-        { lead: "Breite technische Abdeckung", text: "über Softwarefehler, Abhängigkeitsrisiken, Fehlkonfigurationen, offengelegte Daten und Angriffsflächen." },
-        { lead: "Ausnutzbarkeitsanalyse", text: "um festzustellen, ob sich gefundene Schwachstellen zu praktischen Angriffspfaden verketten lassen, bei Bedarf und mit Genehmigung mit Proof-of-Concept-Exploits." },
-        { lead: "Normbasierte Methodik", text: "auf Grundlage etablierter Rahmenwerke wie OWASP ASVS, OWASP Top 10 und CWE, mit Schweregradbewertung nach CVSS, wo anwendbar." },
-        { lead: "Belegbasierte Berichte", text: "mit technischen Details, Reproduktionsschritten, Risikokontext und konkreten Empfehlungen zur Behebung." },
+        "Breite technische Abdeckung",
+        "Ausnutzbarkeitsanalyse",
+        "Normbasierte Methodik",
+        "Belegbasierte Berichte",
       ],
       freeLabel: 'Erste Prüfung',
       freeTitle: 'Kostenlos',
@@ -259,12 +254,12 @@ export const DE: Content = {
       { title: "Ihr Material. Ihr Umfang.", text: "Sie entscheiden, was Sie zur Prüfung einreichen. Wir untersuchen den bereitgestellten Code, die Abhängigkeiten, APIs und weiteres technisches Material, ohne auf Ihre Live-Systeme zuzugreifen." },
       { title: "Eigens entwickelt. Multi-Agent.", text: "Spezialisierte Agenten untersuchen verschiedene Teile Ihrer Software, erkunden mögliche Angriffspfade und verbinden Befunde über das gesamte System hinweg. Das Ergebnis ist eine dokumentierte Untersuchung mit Belegen zu jedem Befund." },
       { title: "In Europa verarbeitet.", text: "Die Verarbeitung findet in Graz auf Infrastruktur in Europa statt. Das eingereichte Material verlässt die Europäische Union nicht." },
-      { title: "Erst der Befund. Ohne Verpflichtung.", text: "Ihre Erstprüfung ist kostenlos und wird schriftlich dokumentiert. Wenn wir Auffälligkeiten finden, die eine vertiefte Untersuchung lohnen, entscheiden Sie, ob Sie eine ausführlichere Prüfung beauftragen. Der Erstbericht steht für sich." },
+      { title: "Normbasierte Methodik.", text: "Auf Grundlage etablierter Rahmenwerke wie OWASP ASVS, OWASP Top 10 und CWE, mit Schweregradbewertung nach CVSS, wo anwendbar." },
     ],
     evidenceHeading: 'Unsere Forschung ist öffentlich. Unsere Methodik ist nachprüfbar.',
     evidenceNote: 'Zahlen aus dem öffentlichen Evidence Ledger, mit jeder Offenlegung aktualisiert.',
     evidenceCta: 'Evidence Ledger ansehen →',
-    cta: 'Kostenlose Erstprüfung anfragen',
+    cta: 'Erstprüfung anfragen',
   },
 
   pricing: {
