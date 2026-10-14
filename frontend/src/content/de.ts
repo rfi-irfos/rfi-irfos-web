@@ -262,6 +262,27 @@ export const DE: Content = {
     cta: 'Erstprüfung anfragen',
   },
 
+  initialReview: {
+    step1Label: 'Schritt 1 von 2',
+    domainLabel: 'Ihre Website',
+    domainPlaceholder: 'ihreseite.com',
+    continueCta: 'Weiter',
+    step2Label: 'Schritt 2 von 2',
+    backCta: 'Zurück',
+    emailLabel: 'Ihre Arbeits-E-Mail',
+    emailPlaceholder: 'sie@firma.com',
+    consentLabel: 'Ich besitze diese Domain oder bin autorisiert, sie zu testen, und stimme diesem einen Read-only-Check zu. Ein Wort genügt, wir sehen sie nie wieder an — dauerhafter Opt-out.',
+    submitCta: 'Report anfordern, unverbindlich',
+    submitSending: 'Wird gesendet…',
+    submitOk: 'Anfrage erhalten',
+    gateNote: 'Es wird nichts gescannt, bevor ein:e Researcher:in Ihre Anfrage bestätigt hat. Wir melden uns innerhalb eines Werktags.',
+    scopeDisclaimer: 'Externer Read-only-Signal-Check — keine Quellcode-Prüfung und keine Aussage, dass die Anwendung sicher ist.',
+    priceTeaser: 'Ab €99',
+    priceSubline: 'Pläne ab €99/Monat · kostenloser Read-only-Check · ~20 Min · dauerhafter Opt-out · oder einen Plan wählen',
+    errorText: 'Beim Senden ist etwas schiefgegangen.',
+    errorMailtoCta: 'Stattdessen direkt per E-Mail →',
+  },
+
   pricing: {
     eyebrow: 'Kernangebot',
     heading: 'Klar kalkuliert',

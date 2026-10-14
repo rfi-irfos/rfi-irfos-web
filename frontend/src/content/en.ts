@@ -269,6 +269,27 @@ export const EN = {
     cta: 'Request an Initial Review',
   },
 
+  initialReview: {
+    step1Label: 'Step 1 of 2',
+    domainLabel: 'Your site',
+    domainPlaceholder: 'yoursite.com',
+    continueCta: 'Continue',
+    step2Label: 'Step 2 of 2',
+    backCta: 'Back',
+    emailLabel: 'Your work email',
+    emailPlaceholder: 'you@company.com',
+    consentLabel: 'I own this domain or am authorized to test it, and I agree to this one read-only check. One word, we never look at it again — permanent opt-out.',
+    submitCta: 'Send my report, no commitment',
+    submitSending: 'Sending…',
+    submitOk: 'Request received',
+    gateNote: 'Nothing scans until a researcher confirms your request. We reply within one business day.',
+    scopeDisclaimer: 'External, read-only signal check — not a source code review, and not a statement that the application is secure.',
+    priceTeaser: 'Start from €99',
+    priceSubline: 'plans from €99/mo · read-only free check · ~20 min · permanent opt-out · or pick a plan',
+    errorText: 'Something went wrong sending that.',
+    errorMailtoCta: 'Email us directly instead →',
+  },
+
   pricing: {
     eyebrow: 'Core Offer',
     heading: 'Priced in plain terms',
