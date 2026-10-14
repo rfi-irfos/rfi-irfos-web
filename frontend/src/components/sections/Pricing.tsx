@@ -210,7 +210,7 @@ export function PricingSection({
 
   return (
     <section id="pricing" style={{ padding: '56px var(--sec-pad-x) 120px' }}>
-      <div style={{ maxWidth: 1900, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1440, margin: '0 auto' }}>
         <Reveal>
           <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <p className="wm-eyebrow">{t.pricing.eyebrow}</p>
