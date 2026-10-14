@@ -82,8 +82,6 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
             style={{ marginTop: 3, accentColor: 'var(--accent)', width: 16, height: 16, flexShrink: 0 }} />
           <span style={{ color: 'var(--text2)', fontSize: 11.5, lineHeight: 1.6 }}>{c.consentLabel}</span>
         </label>
-        <p style={{ fontSize: 11, color: 'var(--text3)', lineHeight: 1.6, margin: 0 }}>{c.gateNote}</p>
-        <p style={{ fontSize: 10.5, color: 'var(--text3)', lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>{c.scopeDisclaimer}</p>
         {state === 'err' && (
           <p style={{ color: 'var(--sev-crit)', fontSize: 12.5, lineHeight: 1.6 }}>
             {c.errorText}{' '}
