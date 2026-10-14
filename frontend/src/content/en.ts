@@ -230,6 +230,7 @@ export const EN = {
     eyebrow: 'What we do best',
     heading: 'Multi-Agent Software Security Investigations',
     paragraph: "We run digital products through a purpose-built, multi-agent investigation pipeline. Hundreds of specialized agents examine code, dependencies, APIs, configurations and attack surfaces in parallel, trace connections and flag suspicious behavior. Our human specialists then use the correlated evidence to decide what matters, so developers get findings they can understand, verify and act on.",
+    processLabel: 'How a review happens',
     steps: [
       { title: 'Send', text: 'A GitHub link, a repository archive, a package build or an API specification.' },
       { title: 'Examine', text: 'Our team and one, several or all of our agents work through source, configuration and data flows together.' },
@@ -248,14 +249,11 @@ export const EN = {
       title: 'The evidence',
       sub: 'Our work, documented and checkable.',
       items: [
-        "Broad technical coverage",
-        "Exploitability analysis",
-        "Standards-informed methodology",
-        "Evidence-backed reporting",
+        { title: "Broad technical coverage", text: "Code, dependencies, APIs, configurations and data flows, examined together." },
+        { title: "Exploitability analysis", text: "Findings checked for what an attacker could realistically do with them." },
+        { title: "Standards-informed methodology", text: "Testing grounded in recognized security frameworks." },
+        { title: "Evidence-backed reporting", text: "Every claim backed by the actual proof behind it." },
       ],
-      freeLabel: 'Initial examination',
-      freeTitle: 'Free of charge',
-      freeText: 'Documented in writing, no meeting required.',
     },
     trust: [
       { title: "Your material. Your scope.", text: "You choose what we examine. No access to your live systems." },
@@ -270,6 +268,11 @@ export const EN = {
   },
 
   initialReview: {
+    badge: 'Free check',
+    introTitle: 'RFI-IRFOS Review',
+    introSubtitle: 'Evidence-backed · Read-only · Human-verified.',
+    introHeading: 'Find out what your security tools might be missing.',
+    introText: 'A read-only check from a European IP address — no login, no payloads, your systems stay untouched.',
     step1Label: 'Step 1 of 2',
     domainLabel: 'Your site',
     domainPlaceholder: 'yoursite.com',
@@ -338,7 +341,7 @@ export const EN = {
       { name: 'Pro', price: '\u20ac799', features: ['Everything in Growth.', 'Up to three defined surfaces.', 'Priority scheduling.'], cta: 'Choose Pro', stripeKey: 'review_pro' },
       { name: 'Business', price: '\u20ac1,999', features: ['Everything in Pro.', 'Up to ten surfaces.', 'Dedicated success channel.'], cta: 'Choose Business', stripeKey: 'review_business' },
     ],
-    freeCard: { label: 'Free', price: '\u20ac0', tagline: 'Initial review \u00b7 Self-serve entry point.' },
+    freeCard: { label: 'Free', price: 'Free', tagline: 'Initial review \u00b7 Self-serve entry point.' },
     enterprise: { heading: 'Enterprise', text: 'Custom surfaces, MSP, multi-tenant deployments, white-label and negotiated SLAs. Price in writing.', cta: 'Talk to us' },
     needSomethingElse: 'Need something else?',
   },

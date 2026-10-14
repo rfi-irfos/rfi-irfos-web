@@ -7,4 +7,10 @@ export default defineConfig({
   // VITE_KEEP_DIST=1 (npm run build:fast) keeps the existing dist/ and its prerendered pages, so only
   // the routes passed to prerender.mjs --only= get re-rendered. Default is vite's normal behaviour.
   build: { emptyOutDir: process.env.VITE_KEEP_DIST !== '1' },
+  server: {
+    proxy: {
+      '/api': 'http://localhost:3000',
+      '/auth': 'http://localhost:3000',
+    },
+  },
 })

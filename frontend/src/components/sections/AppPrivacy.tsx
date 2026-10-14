@@ -31,13 +31,6 @@ const SCOPE_ICONS = [
   <Icon key="bug"><path d="m8 2 1.88 1.88M14.12 3.88 16 2M9 7.13v-1a3.003 3.003 0 1 1 6 0v1" /><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6" /><path d="M12 20v-9M6.53 9C4.6 8.8 3 7.1 3 5M6 13H2M3 21c0-2.1 1.7-3.9 3.8-4M20.97 5c0 2.1-1.6 3.8-3.5 4M22 13h-4M17.2 17c2.1.1 3.8 1.9 3.8 4" /></Icon>,
 ]
 
-const TRUST_ICONS = [
-  <Icon key="a" size={24}><path d={SHIELD} /><polyline points="9 12 11 14 15 10" /></Icon>,
-  <Icon key="b" size={24}><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4" /></Icon>,
-  <Icon key="c" size={24}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></Icon>,
-  <Icon key="d" size={24}><rect x="8" y="2" width="8" height="4" rx="1" /><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><path d="m9 14 2 2 4-4" /></Icon>,
-]
-
 const tile = { width: 44, height: 44, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-text)', flexShrink: 0 } as const
 
 export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: () => void }) {
@@ -89,6 +82,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 350px', gap: stacked ? 28 : 24, maxWidth: 1320, margin: '0 auto 56px' }}>
           {/* Left: ONE framed card holding process, scope and evidence (frame static, cells reveal) */}
           <div style={{ minWidth: 0, border: '1px solid var(--border)', borderRadius: 20, padding: phone ? 18 : 28, background: 'var(--glass-bg-solid)' }}>
+            <p style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text3)', marginBottom: 14 }}>{c.processLabel}</p>
             <div ref={stepsRef} style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 18, marginBottom: 28, alignItems: 'start' }}>
               {c.steps.map((s, i) => (
                 <Reveal key={s.title} from="bottom" dist={48} delay={i}>
@@ -137,18 +131,17 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                       <div style={{ fontSize: 12.5, color: 'var(--text2)' }}>{c.report.sub}</div>
                     </div>
                   </div>
-                  <ul style={{ listStyle: 'none', margin: '0 0 18px', padding: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 18 }}>
+                  <ul style={{ listStyle: 'none', margin: 0, padding: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
                     {c.report.items.map(item => (
-                      <li key={item} style={{ display: 'flex', gap: 12, fontSize: 15, lineHeight: 1.4, color: 'var(--text)' }}>
-                        <span aria-hidden style={{ color: 'var(--accent-text)', fontWeight: 800, fontSize: 18, lineHeight: 1.2 }}>✓</span>{item}
+                      <li key={item.title} style={{ display: 'flex', gap: 12 }}>
+                        <span aria-hidden style={{ color: 'var(--accent-text)', fontWeight: 800, fontSize: 18, lineHeight: 1.3, flexShrink: 0 }}>✓</span>
+                        <div>
+                          <div style={{ fontSize: 15, lineHeight: 1.3, fontWeight: 700, color: 'var(--text)' }}>{item.title}</div>
+                          <div style={{ fontSize: 12.5, lineHeight: 1.5, color: 'var(--text2)', marginTop: 3 }}>{item.text}</div>
+                        </div>
                       </li>
                     ))}
                   </ul>
-                  <div style={{ borderTop: '1px solid var(--border)', marginTop: 'auto', paddingTop: 14 }}>
-                    <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text3)' }}>{c.report.freeLabel}</div>
-                    <div style={{ fontWeight: 800, fontSize: 20, color: 'var(--text)', margin: '2px 0 4px' }}>{c.report.freeTitle}</div>
-                    <div style={{ fontSize: 12.5, lineHeight: 1.5, color: 'var(--text2)' }}>{c.report.freeText}</div>
-                  </div>
                 </div>
               </Reveal>
             </div>
@@ -157,23 +150,12 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
           {/* Right: the embedded review flow (2026-10-14 redesign — this
               used to be four trust-point cards stacked above a CTA link to
               #submit; live direction moved the actual intake flow onto the
-              page itself instead of behind a click, so the trust points
-              compress into a slim icon row and the reclaimed space holds
-              the real step1/step2 form). */}
+              page itself instead of behind a click). */}
           <div style={{
             display: 'flex', flexDirection: 'column', gap: 16, alignSelf: 'stretch', padding: stacked ? 0 : '0 4px',
           }}>
             <Reveal from="right" dist={64} delay={1} style={{ flex: 1 }}>
               <InitialReviewFlow variant="embedded" />
-            </Reveal>
-            <Reveal from="bottom" dist={48} delay={4}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, borderTop: '1px solid var(--border)', paddingTop: 14 }}>
-                {c.trust.map((item, i) => (
-                  <span key={item.title} className="rfi-glass-icon" title={item.title} style={{ ...tile, width: 36, height: 36 }}>
-                    {TRUST_ICONS[i]}
-                  </span>
-                ))}
-              </div>
             </Reveal>
           </div>
         </div>

@@ -223,6 +223,7 @@ export const DE: Content = {
     eyebrow: 'Was wir am besten können',
     heading: 'Multi-Agent Software Security Investigations',
     paragraph: "Wir schicken digitale Produkte durch eine eigens entwickelte Multi-Agenten-Pipeline. Hunderte spezialisierte Agenten untersuchen Code, Abhängigkeiten, APIs, Konfigurationen und Angriffsflächen parallel, verfolgen Zusammenhänge und markieren auffälliges Verhalten. Unsere menschlichen Fachleute entscheiden anhand der korrelierten Belege, was zählt, damit Entwicklungsteams Befunde erhalten, die sie verstehen, überprüfen und umsetzen können.",
+    processLabel: 'So läuft eine Prüfung ab',
     steps: [
       { title: 'Senden', text: 'Ein GitHub-Link, ein Repository-Archiv, ein Paket-Build oder eine API-Spezifikation.' },
       { title: 'Prüfen', text: 'Unser Team und einer, mehrere oder alle unserer Agenten arbeiten Quellcode, Konfiguration und Datenflüsse gemeinsam durch.' },
@@ -241,14 +242,11 @@ export const DE: Content = {
       title: 'Der Nachweis',
       sub: 'Unsere Arbeit, dokumentiert und überprüfbar.',
       items: [
-        "Breite technische Abdeckung",
-        "Ausnutzbarkeitsanalyse",
-        "Normbasierte Methodik",
-        "Belegbasierte Berichte",
+        { title: "Breite technische Abdeckung", text: "Code, Abhängigkeiten, APIs, Konfigurationen und Datenflüsse, gemeinsam untersucht." },
+        { title: "Ausnutzbarkeitsanalyse", text: "Jeder Fund geprüft darauf, was ein Angreifer damit real anfangen könnte." },
+        { title: "Normbasierte Methodik", text: "Prüfung auf Basis anerkannter Security-Frameworks." },
+        { title: "Belegbasierte Berichte", text: "Jede Aussage mit dem tatsächlichen Beleg dahinter." },
       ],
-      freeLabel: 'Erste Prüfung',
-      freeTitle: 'Kostenlos',
-      freeText: 'Schriftlich dokumentiert, ganz ohne Meeting.',
     },
     trust: [
       { title: "Ihr Material. Ihr Umfang.", text: "Sie bestimmen, was wir prüfen. Kein Zugriff auf Ihre Live-Systeme." },
@@ -263,6 +261,11 @@ export const DE: Content = {
   },
 
   initialReview: {
+    badge: 'Kostenloser Check',
+    introTitle: 'RFI-IRFOS Review',
+    introSubtitle: 'Evidenzbasiert · Read-only · Menschlich verifiziert.',
+    introHeading: 'Finden Sie heraus, was Ihre Security-Tools übersehen könnten.',
+    introText: 'Ein Read-only-Check von einer europäischen IP-Adresse — kein Login, keine Payloads, Ihre Systeme bleiben unberührt.',
     step1Label: 'Schritt 1 von 2',
     domainLabel: 'Ihre Website',
     domainPlaceholder: 'ihreseite.com',
@@ -331,7 +334,7 @@ export const DE: Content = {
       { name: 'Pro', price: '\u20ac799', features: ['Alles aus Growth.', 'Bis zu drei definierte Oberfl\u00e4chen.', 'Priorisierte Terminierung.'], cta: 'Pro w\u00e4hlen', stripeKey: 'review_pro' },
       { name: 'Business', price: '\u20ac1.999', features: ['Alles aus Pro.', 'Bis zu zehn Oberfl\u00e4chen.', 'Dedizierter Success-Kanal.'], cta: 'Business w\u00e4hlen', stripeKey: 'review_business' },
     ],
-    freeCard: { label: 'Free', price: '\u20ac0', tagline: 'Erstpr\u00fcfung \u00b7 Self-Serve-Einstieg.' },
+    freeCard: { label: 'Free', price: 'Kostenlos', tagline: 'Erstpr\u00fcfung \u00b7 Self-Serve-Einstieg.' },
     enterprise: { heading: 'Enterprise', text: 'Individuelle Oberfl\u00e4chen, MSP, Multi-Tenant-Deployments, White-Label und verhandelte SLAs. Preis auf Anfrage.', cta: 'Kontakt aufnehmen' },
     needSomethingElse: 'Etwas anderes gesucht?',
   },
