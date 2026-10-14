@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useLocale } from '../../hooks/useLocale'
+import { WEB3FORMS_KEY } from './shared'
 
 type FormState = 'idle' | 'sending' | 'ok' | 'err'
 
@@ -28,6 +29,26 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
         body: JSON.stringify({ domain, email, consent, botcheck }),
       })
       setState(res.ok ? 'ok' : 'err')
+      // The backend already persists the request and pings ntfy regardless of this
+      // call, but Web3Forms' free tier rejects the equivalent server-to-server send
+      // outright ("Pro plan required" - see notify.rs) - this client-side call is the
+      // only path that actually reaches an inbox. Fire-and-forget: a failure here
+      // never blocks the visitor's already-saved submission (live feedback
+      // 2026-10-14: "ich hab ne ntfy bekommen, aber keine email").
+      if (res.ok && WEB3FORMS_KEY) {
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: `[rfi-irfos.com] New initial review request — ${domain}`,
+            name: 'Initial review request',
+            email,
+            replyto: email,
+            message: `domain=${domain}\nemail=${email}`,
+          }),
+        }).catch(() => {})
+      }
     } catch {
       setState('err')
     }
