@@ -2,6 +2,7 @@ mod analytics;
 mod auth;
 mod contact;
 mod content;
+mod notify;
 mod review;
 mod stripe;
 mod track;

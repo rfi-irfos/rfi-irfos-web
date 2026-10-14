@@ -127,6 +127,16 @@ async fn notify_new_request(domain: &str, email: &str) {
         .header("Title", "New initial review request")
         .body(format!("domain={domain} email={email} — approve via POST /api/initial-review/:id/approve"))
         .send().await;
+
+    // ntfy alone is a push notification, not an inbox record - live feedback
+    // 2026-10-14: "ich hab ne ntfy bekommen, aber keine email". Reply-To is the
+    // visitor's own address so replying to this mail reaches them directly.
+    crate::notify::web3forms_email(
+        &format!("[rfi-irfos.com] New initial review request — {domain}"),
+        "Initial review request",
+        email,
+        &format!("domain={domain}\nemail={email}\n\nApprove via POST /api/initial-review/:id/approve"),
+    ).await;
 }
 
 #[derive(Serialize)]

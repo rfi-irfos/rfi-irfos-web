@@ -119,6 +119,21 @@ pub async fn submit_contact(
         }
     }
 
+    // Actual mail delivery, independent of the CRM relay below - the CRM relay
+    // only feeds Lighthouse's lead counter, it does not put anything in an
+    // inbox. Restores the server-side Web3Forms send from the 2026-09-11 fix,
+    // which was lost in a later refactor (contact.rs stopped calling it, while
+    // the client-side fallback in PublicSite.tsx/Squad.tsx has been dead code
+    // the whole time - see notify.rs for why). Fire-and-forget: a visitor's
+    // submission is already durably appended to contacts.jsonl above regardless
+    // of whether this succeeds.
+    crate::notify::web3forms_email(
+        &format!("[rfi-irfos.com] Contact form — {}", entry.name),
+        &entry.name,
+        &entry.email,
+        &entry.message,
+    ).await;
+
     // Relay the lead into the Lighthouse CRM. This is the whole point of the endpoint:
     // Lighthouse computes its "leads" figure as COUNT(*) FROM contacts, so a submission
     // that never reaches that table is invisible no matter how many people send it. Until
