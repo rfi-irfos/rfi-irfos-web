@@ -693,7 +693,9 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tier }),
       })
+      if (!res.ok) throw new Error(`checkout ${res.status}`)
       const { url } = await res.json()
+      if (!url) throw new Error('checkout response missing url')
       window.location.href = url
     } catch {
       alert(t.alerts.checkoutUnavailable)
