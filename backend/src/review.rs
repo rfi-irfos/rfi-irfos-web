@@ -24,6 +24,32 @@ fn review_rate_limited(ip: &str) -> bool {
     false
 }
 
+// The per-minute burst limiter above stops scripted spam but not a human
+// spacing out submissions over a day - the domain-dedup check only blocks
+// re-submitting the SAME still-pending domain, so a new domain + throwaway
+// email sails through it every time. This caps how many free checks one IP
+// can queue up in 24h, independent of domain/email (live direction
+// 2026-10-14: "what hinders somebody now to everyday check his website for
+// free, taking another work email"). In-memory like the limiter above, so it
+// resets on redeploy - that's fine, this is abuse-dampening, not a hard quota.
+static REVIEW_DAILY_LIMITER: OnceLock<Mutex<HashMap<String, Vec<Instant>>>> = OnceLock::new();
+
+fn review_daily_limiter() -> &'static Mutex<HashMap<String, Vec<Instant>>> {
+    REVIEW_DAILY_LIMITER.get_or_init(|| Mutex::new(HashMap::new()))
+}
+
+fn review_daily_limited(ip: &str) -> bool {
+    const MAX: usize = 3;
+    const WINDOW: std::time::Duration = std::time::Duration::from_secs(60 * 60 * 24);
+    let now = Instant::now();
+    let mut map = review_daily_limiter().lock().unwrap_or_else(|e| e.into_inner());
+    let ts = map.entry(ip.to_string()).or_default();
+    ts.retain(|t| now.duration_since(*t) < WINDOW);
+    if ts.len() >= MAX { return true; }
+    ts.push(now);
+    false
+}
+
 /// Strips scheme, path, query and port from a user-entered site string,
 /// returning a bare lowercase hostname. A visitor pasting a full URL
 /// (https://foo.com/bar) is the common case, not something to reject.
@@ -78,6 +104,9 @@ pub async fn submit_review(
 
     if review_rate_limited(&ip) {
         return (StatusCode::TOO_MANY_REQUESTS, "rate limit exceeded — 5 submissions per minute per IP\n").into_response();
+    }
+    if review_daily_limited(&ip) {
+        return (StatusCode::TOO_MANY_REQUESTS, "daily limit exceeded — try again tomorrow\n").into_response();
     }
 
     if body.botcheck.as_deref().is_some_and(|v| !v.trim().is_empty()) {
@@ -398,6 +427,7 @@ mod tests {
             .oneshot(Request::builder()
                 .method("POST").uri("/api/initial-review")
                 .header("content-type", "application/json")
+                .header("x-forwarded-for", "10.0.0.1")
                 .body(Body::from(body.to_string())).unwrap())
             .await.unwrap();
         assert_eq!(res.status(), StatusCode::BAD_REQUEST);
@@ -414,6 +444,7 @@ mod tests {
             .oneshot(Request::builder()
                 .method("POST").uri("/api/initial-review")
                 .header("content-type", "application/json")
+                .header("x-forwarded-for", "10.0.0.2")
                 .body(Body::from(body.to_string())).unwrap())
             .await.unwrap();
         assert_eq!(res.status(), StatusCode::OK);
@@ -435,6 +466,7 @@ mod tests {
             .oneshot(Request::builder()
                 .method("POST").uri("/api/initial-review")
                 .header("content-type", "application/json")
+                .header("x-forwarded-for", "10.0.0.3")
                 .body(Body::from(body.to_string())).unwrap())
             .await.unwrap();
         assert_eq!(res.status(), StatusCode::OK);
@@ -453,6 +485,7 @@ mod tests {
         let make_req = || Request::builder()
             .method("POST").uri("/api/initial-review")
             .header("content-type", "application/json")
+            .header("x-forwarded-for", "10.0.0.4")
             .body(Body::from(body.to_string())).unwrap();
 
         let app1 = app(state.clone());
@@ -467,6 +500,28 @@ mod tests {
             "SELECT COUNT(*) FROM initial_reviews WHERE domain = 'foo.com' AND status = 'pending_approval'"
         ).fetch_one(&db).await.unwrap();
         assert_eq!(count.0, 1);
+    }
+
+    #[tokio::test]
+    async fn fourth_submission_from_same_ip_in_a_day_is_rate_limited() {
+        // Distinct domains per request so the domain-dedup check above isn't
+        // what's blocking the 4th one - this is specifically about one IP
+        // queuing up unlimited free checks via different domains/emails.
+        let state = test_state().await;
+        let make_req = |domain: &str| Request::builder()
+            .method("POST").uri("/api/initial-review")
+            .header("content-type", "application/json")
+            .header("x-forwarded-for", "10.0.0.5")
+            .body(Body::from(serde_json::json!({
+                "domain": domain, "email": "a@b.com", "consent": true, "botcheck": null
+            }).to_string())).unwrap();
+
+        for domain in ["one.com", "two.com", "three.com"] {
+            let res = app(state.clone()).oneshot(make_req(domain)).await.unwrap();
+            assert_eq!(res.status(), StatusCode::OK, "domain {domain} should be accepted");
+        }
+        let res = app(state.clone()).oneshot(make_req("four.com")).await.unwrap();
+        assert_eq!(res.status(), StatusCode::TOO_MANY_REQUESTS);
     }
 
     #[tokio::test]
