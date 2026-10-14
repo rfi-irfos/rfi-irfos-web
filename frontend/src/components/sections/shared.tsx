@@ -467,14 +467,39 @@ export function Reveal({
   // ramps sit (not a time delay - there's no fixed-duration animation left to
   // delay), so a row of grid items sharing nearly the same vertical position
   // still cascades instead of settling in lockstep.
+  // inEnd/outStart used to be fixed fractions (0.28/0.72) of the element's OWN
+  // transit, regardless of its height. That transit (`scrollYProgress` above)
+  // spans from "top enters viewport bottom" to "bottom leaves viewport top",
+  // i.e. a distance of (viewport height + element height) - so the same 0.28/
+  // 0.72 split lands at wildly different actual on-screen positions depending
+  // on how tall the element is. A short element (a toggle, a button row) has
+  // transit ~= viewport height, so 72% of it is reached while the element is
+  // still fully and comfortably on screen - it was starting to fade out long
+  // before it was anywhere near the top edge (live bug report 2026-10-14:
+  // "schon wieder halb verschwunden" while sibling content lower on the page
+  // was still revealing). A tall element (a multi-row grid/widget) has transit
+  // much larger than the viewport, so 28% of it can already be past the point
+  // where its top has scrolled above the viewport - it was never reaching
+  // "settled" before its own top edge started clipping (same report: a grid
+  // tile "noch nicht ganz reingeflogen" while already cut off above). Fixed by
+  // deriving inEnd/outStart from where the element's top edge actually sits
+  // relative to the viewport, using its real height - so "settled" always
+  // means "comfortably visible", for any element size.
   const settled = useTransform(scrollYProgress, latest => {
     if (prefersReducedMotion() || revealSuppressed.current) return 1
-    // Every reveal follows the same broad, scroll-linked rhythm. `delay` is a
-    // tiny compositional offset only; it must not create different-sized
-    // visible bands or make neighbouring content flicker at different times.
+    const el = ref.current
+    const viewportH = typeof window !== 'undefined' ? window.innerHeight : 800
+    const elH = el?.offsetHeight ?? viewportH
+    const total = viewportH + elH
+    // `delay` nudges a row of grid items into a cascade rather than settling
+    // in lockstep, same intent as before, just a smaller absolute nudge now
+    // that the bands themselves are no longer a fixed fraction of transit.
     const offset = Math.min(0.06, delay * 0.008)
-    const inEnd = 0.28 + offset
-    const outStart = 0.72 + offset
+    // Settled once the element's top has scrolled to ~78% down the viewport
+    // (solidly on screen); exits once its top nears ~8% down (about to clip).
+    // Clamped so very tall/very short elements still get a real, non-zero band.
+    const inEnd = Math.min(0.9, Math.max(0.05, (viewportH * 0.22) / total + offset))
+    const outStart = Math.min(0.95, Math.max(inEnd + 0.04, (viewportH * 0.92) / total + offset))
     const smooth = (value: number) => value * value * (3 - 2 * value)
     if (latest <= 0) return 0
     if (latest < inEnd) return smooth(latest / inEnd)
