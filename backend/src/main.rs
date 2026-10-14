@@ -2,6 +2,7 @@ mod analytics;
 mod auth;
 mod contact;
 mod content;
+mod review;
 mod stripe;
 mod track;
 mod upload;
@@ -189,6 +190,7 @@ async fn main() {
         .execute(&db).await.ok();
     sqlx::query("CREATE INDEX IF NOT EXISTS idx_wv_source ON web_visits(source, created_at)")
         .execute(&db).await.ok();
+    review::create_tables(&db).await;
 
     let state = AppState {
         sessions: Arc::new(RwLock::new(HashMap::new())),
@@ -224,6 +226,7 @@ async fn main() {
         .route("/api/content", get(content::get_content).put(content::update_content))
         .route("/api/upload", post(upload::upload_file))
         .route("/api/contact", post(contact::submit_contact))
+        .route("/api/initial-review", post(review::submit_review))
         .route("/api/early-access", post(worldmodel::submit_early_access))
         .route("/api/worldmodel-feed", get(worldmodel::worldmodel_feed).post(worldmodel::ingest_worldmodel_feed))
         .route("/api/analytics", get(analytics::stats))
