@@ -1,4 +1,4 @@
-app = "rfi-irfos-web"
+app = "rfi-irfos-web-2"
 primary_region = "fra"
 
 [build]
