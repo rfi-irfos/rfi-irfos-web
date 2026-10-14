@@ -222,7 +222,7 @@ export const DE: Content = {
   appPrivacy: {
     eyebrow: 'Was wir am besten können',
     heading: 'Multi-Agent Software Security Investigations',
-    paragraph: "Wir schicken digitale Produkte durch eine eigens entwickelte Multi-Agenten-Pipeline. Hunderte spezialisierte Agenten untersuchen Code, Abhängigkeiten, APIs, Konfigurationen und Angriffsflächen parallel, verfolgen Zusammenhänge und markieren auffälliges Verhalten. Unsere menschlichen Fachleute entscheiden anhand der korrelierten Belege, was zählt, damit Entwicklungsteams Befunde erhalten, die sie verstehen, überprüfen und umsetzen können.",
+    paragraph: "Wir schicken digitale Produkte durch eine eigens entwickelte Multi-Agenten-Pipeline. Hunderte spezialisierte Agenten untersuchen Code, Abhängigkeiten, APIs, Konfigurationen und Angriffsflächen parallel, verfolgen Zusammenhänge und markieren auffälliges Verhalten. Unsere menschlichen Fachleute verwandeln die korrelierten Belege anschließend in eine detaillierte Übersicht der Befunde, damit Entwicklungsteams ein klares Bild erhalten, das sie überprüfen und umsetzen können.",
     processLabel: 'So läuft eine Prüfung ab',
     steps: [
       { title: 'Senden', text: 'Ein GitHub-Link, ein Repository-Archiv, ein Paket-Build oder eine API-Spezifikation.' },
