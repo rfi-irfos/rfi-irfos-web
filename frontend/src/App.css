@@ -735,15 +735,20 @@ button { cursor: pointer; font-family: inherit; }
    DataSolutions/Research already use), not new colors. */
 .sq-connects { padding-top: 16px; padding-bottom: 40px; }
 .hic-diagram { overflow-x: auto; margin-bottom: 12px; }
-/* Inner wrapper carries the min-width and the positioning context, so the
-   popover's percentage coordinates resolve against the SVG's real rendered
-   width rather than the scroll viewport (otherwise it drifts off its box once
-   the diagram is scrolled horizontally on a narrow screen). */
-.hic-canvas { position: relative; min-width: 640px; }
+.hic-canvas { position: relative; min-width: 760px; }
 .hic-svg { display: block; width: 100%; height: auto; }
-.hic-box-content { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center; font-family: inherit; }
+/* Full title + body live inside the box now (live feedback 2026-10-14: no
+   click-to-reveal popups, put the text directly in the box) - top-aligned
+   rather than centered, since body copy can run 2-3 lines and centering made
+   boxes with short vs. long bodies look inconsistent. */
+.hic-box-content { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; text-align: center; font-family: inherit; padding-top: 10px; box-sizing: border-box; }
 .hic-box-icon { color: var(--accent-text); display: flex; }
 .hic-box-title { font-size: 12px; font-weight: 800; color: var(--text); line-height: 1.2; }
+.hic-box-body { font-size: 10.5px; line-height: 1.45; color: var(--text2); }
+/* The Agent OS hub box is visually the control plane the three entry points
+   feed into - heavier border + tinted fill sets it apart from a plain step. */
+.hic-hub-box rect { fill: color-mix(in srgb, var(--accent-text) 10%, var(--bg)); }
+.hic-hub-box .hic-box-title { color: var(--accent-text); }
 /* fill: none is load-bearing, not cosmetic - an SVG <polyline> defaults to
    fill: black, so without this the pulse overlays render as huge filled black
    wedges across the diagram (exactly what shipped for one broken frame on
@@ -755,20 +760,6 @@ button { cursor: pointer; font-family: inherit; }
 }
 @keyframes hic-flow { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) { .hic-pulse { display: none; } }
-
-.hic-box-group { cursor: pointer; }
-.hic-box-group:focus { outline: none; }
-.hic-box-group:focus-visible rect { stroke: var(--accent-text); stroke-width: 2.5; }
-
-/* Click-triggered detail popover, replacing the old always-on legend block. */
-.hic-pop { position: absolute; z-index: 2; width: 240px; max-width: 80vw; padding: 12px 14px; border-radius: 10px; background: var(--wm-surface); border: 1px solid var(--accent-border); box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
-.hic-pop-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-.hic-pop-title { font-size: 13px; font-weight: 800; color: var(--text); flex: 1; }
-.hic-pop-close { background: none; border: none; padding: 0; font-size: 18px; line-height: 1; color: var(--text3); cursor: pointer; font-family: inherit; }
-.hic-pop-close:hover { color: var(--text); }
-.hic-pop-body { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--text2); }
-.hic-legend-num { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; background: var(--accent-text); color: var(--bg); font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
-.hic-hint { margin: 4px 0 0; text-align: center; font-size: 12.5px; color: var(--text3); }
 
 .sq-need-to-know { padding-top: 8px; padding-bottom: 56px; }
 /* Back to 6-across (live feedback: "aber NEBENEINANDER lassen alle 6" - all

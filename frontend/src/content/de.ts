@@ -265,7 +265,7 @@ export const DE: Content = {
     introTitle: 'Website-Live-Test',
     introSubtitle: 'Finden Sie heraus, was Ihre Security-Tools übersehen könnten.',
     introText: [
-      'Wir prüfen, welche sicherheitsrelevanten Informationen Ihre Anwendung von außen preisgibt. Der erste Check erfolgt ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ihre Systeme bleiben dabei unverändert.',
+      'Der erste Check erfolgt ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ihre Systeme bleiben dabei unverändert.',
       'Bevor die Prüfung beginnt, bestätigt ein Researcher Ihre Anfrage. Innerhalb eines Werktags melden wir uns bei Ihnen. Sie erhalten einen kurzen schriftlichen Report mit unseren Beobachtungen, möglichen Angriffsszenarien, einer fachlichen Einschätzung der potenziellen wirtschaftlichen Schäden und konkreten Empfehlungen für die nächsten Schritte.',
       'Der Check liefert eine erste externe Einschätzung. Er umfasst keine Quellcode-Analyse und ist keine Garantie für die Sicherheit Ihrer Anwendung.',
     ],
@@ -1011,23 +1011,24 @@ export const DE: Content = {
       eyebrow: 'Integration',
       heading: 'So bindet sich der Kader ein',
       sub: 'Vier Schritte von einem rohen Signal in Ihren Systemen bis zur geprüften Handlung, der Sie vertrauen können.',
-      hint: 'Klicken Sie auf eine nummerierte Station für Details.',
+      feedbackLabel: 'Feedback & aktualisierter Kontext',
       zones: [
         { label: 'Ihre Systeme', steps: [
-          { icon: 'data', title: 'Ihre Daten', body: 'Code, Marktdaten, Förderdatenbanken, was der zuständige Agent eben beobachten muss.' },
+          { icon: 'data', title: 'Ihre Daten & Tools', body: 'Code, Marktdaten, Förderdatenbanken, was der zuständige Agent eben beobachten muss.' },
         ] },
-        { label: 'Verbinden', steps: [
-          { icon: 'mcp', title: 'MCP-Server', body: 'Direkt in Ihr bestehendes Agenten-Tooling einklinken.' },
-          { icon: 'cli', title: 'CLI', body: 'In Ihre eigenen Pipelines und CI einbinden.' },
-          { icon: 'dashboard', title: 'Dashboard', body: 'Keine Integration nötig, einfach einloggen.' },
+        { label: 'Agent OS', steps: [
+          { icon: 'mcp', title: 'MCP & Integrationen', body: 'Direkt in Ihr bestehendes Agenten-Tooling einklinken.' },
+          { icon: 'cli', title: 'CLI & API', body: 'In Ihre eigenen Pipelines und CI einbinden.' },
+          { icon: 'dashboard', title: 'Dashboard & Steuerung', body: 'Keine Integration nötig, einfach einloggen.' },
+          { icon: 'hub', title: 'Agent OS', body: 'Die Leitstelle: Orchestrierung, Routing und geteilter Kontext über jeden Zugangspunkt hinweg.' },
         ] },
         { label: 'Der Kader', steps: [
-          { icon: 'process', title: 'Agent verarbeitet', body: 'Der zuständige Spezialist übernimmt und prüft.' },
-          { icon: 'crosscheck', title: 'Gegengeprüft', body: 'Verifiziert gegen DINGIRs Weltmodell, nicht isoliert beurteilt.' },
+          { icon: 'process', title: 'Spezialisierte Agenten', body: 'Der zuständige Spezialist übernimmt und prüft.' },
+          { icon: 'crosscheck', title: 'Gegengeprüfte Evidenz', body: 'Verifiziert gegen DINGIRs Weltmodell, nicht isoliert beurteilt.' },
         ] },
-        { label: 'Auslieferung', steps: [
-          { icon: 'deliver', title: 'Geliefert', body: 'Über denselben Kanal zurück: Webhook, CLI-Ausgabe oder Dashboard-Alert.' },
-          { icon: 'act', title: 'Sie handeln', body: 'Ein priorisierter, konkreter nächster Schritt, kein weiteres Rauschen.' },
+        { label: 'Geprüfte Auslieferung', steps: [
+          { icon: 'deliver', title: 'Befunde & Maßnahmen', body: 'Über denselben Kanal zurück: Webhook, CLI-Ausgabe oder Dashboard-Alert.' },
+          { icon: 'act', title: 'Freigabe & Handlung', body: 'Ein priorisierter, konkreter nächster Schritt, kein weiteres Rauschen.' },
         ] },
       ],
     },

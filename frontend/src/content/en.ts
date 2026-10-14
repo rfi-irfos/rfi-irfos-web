@@ -272,7 +272,7 @@ export const EN = {
     introTitle: 'Website Live Testing',
     introSubtitle: 'Find out what your security tools might be missing.',
     introText: [
-      'We examine what your application reveals from the outside. The initial check is read-only, performed from a European IP address, with no login and no payloads. Your systems remain unchanged.',
+      'The initial check is read-only, performed from a European IP address, with no login and no payloads. Your systems remain unchanged.',
       "A researcher reviews and approves your request before any checks begin. We'll get back to you within one business day. You'll receive a short written report covering our observations, potential attack scenarios, an expert assessment of the potential financial impact, and concrete recommendations for what to do next.",
       'This is an initial external assessment, not a source-code review or a guarantee that your application is secure.',
     ],
@@ -1024,23 +1024,24 @@ export const EN = {
       eyebrow: 'Integration',
       heading: 'How It Connects',
       sub: 'Four steps from a raw signal in your systems to a verified action you can trust.',
-      hint: 'Click any numbered step for detail.',
+      feedbackLabel: 'Feedback & updated context',
       zones: [
         { label: 'Your Systems', steps: [
-          { icon: 'data', title: 'Your Data', body: 'Code, market feeds, funding databases, whatever the relevant agent needs to watch.' },
+          { icon: 'data', title: 'Your Data & Tools', body: 'Code, market feeds, funding databases, whatever the relevant agent needs to watch.' },
         ] },
-        { label: 'Connect', steps: [
-          { icon: 'mcp', title: 'MCP Server', body: 'Plug directly into your existing agent tooling.' },
-          { icon: 'cli', title: 'CLI', body: 'Script it into your own pipelines and CI.' },
-          { icon: 'dashboard', title: 'Dashboard', body: 'No integration needed, just log in.' },
+        { label: 'Agent OS', steps: [
+          { icon: 'mcp', title: 'MCP & Integrations', body: 'Plug directly into your existing agent tooling.' },
+          { icon: 'cli', title: 'CLI & API', body: 'Script it into your own pipelines and CI.' },
+          { icon: 'dashboard', title: 'Dashboard & Control', body: 'No integration needed, just log in.' },
+          { icon: 'hub', title: 'Agent OS', body: 'The control plane: orchestration, routing and shared memory across every entry point.' },
         ] },
         { label: 'The Squad', steps: [
-          { icon: 'process', title: 'Agent Processes', body: 'The right specialist picks it up and runs its check.' },
-          { icon: 'crosscheck', title: 'Cross-Checked', body: "Verified against DINGIR's world model, not judged in isolation." },
+          { icon: 'process', title: 'Specialist Agents', body: 'The right specialist picks it up and runs its check.' },
+          { icon: 'crosscheck', title: 'Cross-Checked Evidence', body: "Verified against DINGIR's world model, not judged in isolation." },
         ] },
-        { label: 'Delivery', steps: [
-          { icon: 'deliver', title: 'Delivered', body: 'Back through the same channel: webhook, CLI output, or dashboard alert.' },
-          { icon: 'act', title: 'You Act', body: 'One ranked, concrete next step, not more raw noise.' },
+        { label: 'Verified Delivery', steps: [
+          { icon: 'deliver', title: 'Findings & Actions', body: 'Back through the same channel: webhook, CLI output, or dashboard alert.' },
+          { icon: 'act', title: 'Human Approval & Action', body: 'One ranked, concrete next step, not more raw noise.' },
         ] },
       ],
     },
