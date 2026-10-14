@@ -213,9 +213,9 @@ function viewForSection(section?: string | null): PublicView {
 // real client-side view switch, so this changes nothing about how a real click
 // behaves - it only changes what a non-JS crawler parses out of the raw href.
 const NAV_HREFS = [
-  { key: 'worldModel' as const, href: '/world-model/' },
   { key: 'squad' as const, href: '/squad/' },
   { key: 'dataSolutions' as const, href: '/data-solutions/' },
+  { key: 'worldModel' as const, href: '/world-model/' },
   { key: 'trackRecord' as const, href: '/evidence/' },
   { key: 'pricing' as const, href: '/access/' },
 ]
