@@ -7,12 +7,28 @@
 // REBUILT 2026-10-14 (initial-review/pricing redesign): the sticky
 // five-card domain stack was the whole hero. It's now a secondary
 // "Need something else?" row below the real hero: a standalone Free
-// card, a 4-tier subscription grid (Starter/Growth/Pro/Business) and an
+// card, a 4-tier subscription stack (Starter/Growth/Pro/Business) and an
 // Enterprise band. The five domains (Intelligence/Security/Data/
 // Business & Market/Engineering) still exist and still route into the
 // contact form via onSelectTier - they're the second commercial motion
 // (custom intelligence/engineering work) sitting alongside the new
 // productized-appsec subscription product, not replaced by it.
+//
+// REVISED same day (live direction, second pass): the first cut of this
+// rebuild rendered the four tiers as a static 4-column grid - flagged as
+// unclear and "can't go live" because nothing on the page said what you
+// were looking at.
+//
+// REVISED again same day (live direction, third pass): tried reusing the
+// five-domain DomainCard stack's sticky-overlap effect (each tier sticks a
+// little lower than the one before it, next price slides over the last) -
+// flagged as "absolute crap" once live, because a compact pricing card has
+// no natural tall header the way a domain card does: the peeking strip
+// compressed down to just name+price with the "Most popular" badge cutting
+// through the seam, reading as broken cards rather than a deck of files.
+// Settled on a plain vertical stack instead - every tier card fully
+// visible, full price, full checkmark list, no overlap at any scroll
+// position.
 import { EngagementFlow, Reveal, useMobile } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import { InitialReviewFlow } from './InitialReviewFlow'
@@ -33,7 +49,15 @@ function TierCard({ tier, mobile, onCheckout }: { tier: PricingTier; mobile: boo
     <div style={{
       border: tier.popular ? '1px solid #f97316' : '1px solid var(--border)',
       borderRadius: 16, padding: mobile ? '18px 20px' : '22px 24px',
-      background: tier.popular ? 'rgba(249,115,22,0.06)' : 'var(--glass-bg-solid)',
+      // Opaque, not translucent - these cards sit in a sticky stack and need
+      // to fully cover the card scrolling in underneath them. The popular
+      // tier's orange tint is baked into an opaque gradient layer over the
+      // same solid base instead of a semi-transparent background, or the
+      // card behind it would show through.
+      background: tier.popular
+        ? 'linear-gradient(rgba(249,115,22,0.07), rgba(249,115,22,0.07)), var(--glass-bg-solid)'
+        : 'var(--glass-bg-solid)',
+      boxShadow: '0 20px 60px rgba(0,0,0,0.45)',
       display: 'flex', flexDirection: 'column', gap: 14, position: 'relative',
     }}>
       {tier.popular && (
@@ -116,12 +140,23 @@ export function PricingSection({
             </button>
           </Reveal>
 
-          <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(4, 1fr)', gap: 16 }}>
-            {t.pricing.tiers.map((tier, i) => (
-              <Reveal key={tier.name} from="bottom" dist={48} delay={i}>
-                <TierCard tier={tier} mobile={mobile} onCheckout={onCheckout} />
-              </Reveal>
-            ))}
+          {/* Tried the five-domain stack's sticky-overlap effect here first
+              (see git history) - with a compact pricing card the peeking
+              strip compressed to just name+price and read as broken, not
+              as a deck of files. Reverted to a plain vertical stack: every
+              card stays fully visible, full price and full checkmark list,
+              no overlap. */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {t.pricing.tiers.map((tier, i) => {
+              const slug = tier.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+              return (
+                <div key={tier.name} id={`pricing-${slug}`} style={{ scrollMarginTop: 84 }}>
+                  <Reveal from="bottom" dist={48} delay={i}>
+                    <TierCard tier={tier} mobile={mobile} onCheckout={onCheckout} />
+                  </Reveal>
+                </div>
+              )
+            })}
           </div>
 
           <Reveal delay={4}>

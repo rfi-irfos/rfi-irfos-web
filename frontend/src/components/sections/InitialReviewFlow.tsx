@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 
-const MONO = "'JetBrains Mono', monospace"
-
 type FormState = 'idle' | 'sending' | 'ok' | 'err'
 
+// Single-step form (2026-10-14, live direction: "why make it a two step
+// process, lets make it as easy as possible") - site, work email and the
+// consent checkbox all sit on one screen instead of splitting domain entry
+// from email+consent across two steps. Same /api/initial-review contract,
+// unchanged on the backend.
 export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }) {
   const { t } = useLocale()
   const c = t.initialReview
-  const [step, setStep] = useState<1 | 2>(1)
   const [domain, setDomain] = useState('')
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
@@ -62,62 +64,46 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
       <p style={{ fontSize: 12.5, color: 'var(--text2)', lineHeight: 1.55, margin: 0 }}>{c.introText}</p>
       <div style={{ borderTop: '1px solid var(--border)' }} />
 
-      <p style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text3)', margin: 0 }}>
-        {step === 1 ? c.step1Label : c.step2Label}
-      </p>
-
-      {step === 1 ? (
-        <form onSubmit={e => { e.preventDefault(); if (domain.trim()) setStep(2) }} style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
-          <label style={{ fontSize: 12.5, color: 'var(--text2)' }}>{c.domainLabel}</label>
+      <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
+        <div>
+          <label style={{ fontSize: 12.5, color: 'var(--text2)', display: 'block', marginBottom: 6 }}>{c.domainLabel}</label>
           <input type="text" required placeholder={c.domainPlaceholder} value={domain}
             onChange={e => setDomain(e.target.value)}
-            style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-          <p style={{ fontSize: 11, color: 'var(--text3)', lineHeight: 1.6, margin: 0 }}>{c.gateNote}</p>
-          <p style={{ fontSize: 10.5, color: 'var(--text3)', lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>{c.scopeDisclaimer}</p>
-          <button type="submit" style={{ background: '#f97316', color: '#1a0f00', padding: '12px 20px', borderRadius: 8, fontWeight: 800, fontSize: 13, border: 'none', cursor: 'pointer', marginTop: 'auto' }}>
-            {c.continueCta}
-          </button>
-        </form>
-      ) : (
-        <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
-          <button type="button" onClick={() => setStep(1)} style={{ alignSelf: 'flex-start', background: 'none', border: 'none', color: 'var(--text3)', fontSize: 12, cursor: 'pointer', padding: 0 }}>
-            ← {c.backCta}
-          </button>
-          <div>
-            <div style={{ fontSize: 10, fontFamily: MONO, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>{c.domainLabel}</div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)' }}>{domain}</div>
-          </div>
+            style={{ width: '100%', background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+        </div>
+        <div>
+          <label style={{ fontSize: 12.5, color: 'var(--text2)', display: 'block', marginBottom: 6 }}>{c.emailLabel}</label>
           <input type="email" required placeholder={c.emailPlaceholder} value={email}
             onChange={e => setEmail(e.target.value)}
-            style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
-          <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
-            <input type="checkbox" required checked={consent} onChange={e => setConsent(e.target.checked)}
-              style={{ marginTop: 3, accentColor: 'var(--accent)', width: 16, height: 16, flexShrink: 0 }} />
-            <span style={{ color: 'var(--text2)', fontSize: 11.5, lineHeight: 1.6 }}>{c.consentLabel}</span>
-          </label>
-          <p style={{ fontSize: 11, color: 'var(--text3)', lineHeight: 1.6, margin: 0 }}>{c.gateNote}</p>
-          <p style={{ fontSize: 10.5, color: 'var(--text3)', lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>{c.scopeDisclaimer}</p>
-          {state === 'err' && (
-            <p style={{ color: 'var(--sev-crit)', fontSize: 12.5, lineHeight: 1.6 }}>
-              {c.errorText}{' '}
-              <a href={`mailto:contact@rfi-irfos.com?subject=${encodeURIComponent('Initial Review — ' + domain)}&body=${encodeURIComponent(`Domain: ${domain}\nEmail: ${email}`)}`} style={{ color: 'var(--accent-text)', fontWeight: 700 }}>
-                {c.errorMailtoCta}
-              </a>
-            </p>
-          )}
-          <button type="submit" disabled={state === 'sending' || !consent} style={{
-            background: state === 'ok' ? 'rgba(0,245,196,0.2)' : '#f97316',
-            color: state === 'ok' ? 'var(--accent-text)' : '#1a0f00',
-            border: state === 'ok' ? '1px solid var(--accent-text)' : 'none',
-            padding: '13px 20px', borderRadius: 8, fontWeight: 800, fontSize: 13,
-            cursor: state === 'sending' ? 'wait' : !consent ? 'not-allowed' : 'pointer',
-            opacity: !consent && state === 'idle' ? 0.5 : 1,
-            marginTop: 'auto',
-          }}>
-            {state === 'sending' ? c.submitSending : state === 'ok' ? c.submitOk : c.submitCta}
-          </button>
-        </form>
-      )}
+            style={{ width: '100%', background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+        </div>
+        <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
+          <input type="checkbox" required checked={consent} onChange={e => setConsent(e.target.checked)}
+            style={{ marginTop: 3, accentColor: 'var(--accent)', width: 16, height: 16, flexShrink: 0 }} />
+          <span style={{ color: 'var(--text2)', fontSize: 11.5, lineHeight: 1.6 }}>{c.consentLabel}</span>
+        </label>
+        <p style={{ fontSize: 11, color: 'var(--text3)', lineHeight: 1.6, margin: 0 }}>{c.gateNote}</p>
+        <p style={{ fontSize: 10.5, color: 'var(--text3)', lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>{c.scopeDisclaimer}</p>
+        {state === 'err' && (
+          <p style={{ color: 'var(--sev-crit)', fontSize: 12.5, lineHeight: 1.6 }}>
+            {c.errorText}{' '}
+            <a href={`mailto:contact@rfi-irfos.com?subject=${encodeURIComponent('Initial Review — ' + domain)}&body=${encodeURIComponent(`Domain: ${domain}\nEmail: ${email}`)}`} style={{ color: 'var(--accent-text)', fontWeight: 700 }}>
+              {c.errorMailtoCta}
+            </a>
+          </p>
+        )}
+        <button type="submit" disabled={state === 'sending' || !consent} style={{
+          background: state === 'ok' ? 'rgba(0,245,196,0.2)' : '#f97316',
+          color: state === 'ok' ? 'var(--accent-text)' : '#1a0f00',
+          border: state === 'ok' ? '1px solid var(--accent-text)' : 'none',
+          padding: '13px 20px', borderRadius: 8, fontWeight: 800, fontSize: 13,
+          cursor: state === 'sending' ? 'wait' : !consent ? 'not-allowed' : 'pointer',
+          opacity: !consent && state === 'idle' ? 0.5 : 1,
+          marginTop: 'auto',
+        }}>
+          {state === 'sending' ? c.submitSending : state === 'ok' ? c.submitOk : c.submitCta}
+        </button>
+      </form>
     </div>
   )
 }
