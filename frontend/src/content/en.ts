@@ -138,7 +138,7 @@ export const EN = {
   trackRecord: {
     eyebrow: 'Permanent Disclosure Ledger',
     heading: 'The discipline, demonstrated',
-    paragraph: 'We decompile publicly distributed Android/iOS apps and trace their data flows to real endpoints in real countries. Companies land on this ledger for many different reasons: they hand your data to third parties, they track without consent, or they leave the door open. Every organisation is held to the same standard, whether it pays us or not.',
+    paragraph: 'We decompile publicly distributed Android and iOS apps and trace their data flows to real endpoints in real countries. We document what we observe, distinguish verified findings from interpretation, and preserve the evidence behind every conclusion. No company can buy a better result — every organisation is held to the same standard, whether it pays us or not. This permanent disclosure ledger puts that principle into practice.',
     securityBridgeLead: 'This is what a Security engagement produces.',
     focusBanner: (names: string) => `Showing the report for ${names}.`,
     showFullLedger: 'Show the full ledger',
@@ -219,7 +219,7 @@ export const EN = {
   proof: {
     eyebrow: 'The Deliverable',
     heading: "what you'd actually hold in your hands",
-    subheading: 'Every case on the ledger ends in one of these: a complete, evidence-backed disclosure report, published in full once the embargo lifts - same format and depth regardless of whether the company ever engages us further. Every claim in it traces back to the evidence behind it, so you can verify it yourself instead of taking our word for it.',
+    subheading: 'Every report documents what we found, how we verified it, and what the evidence reveals about the product. Follow the investigation from individual observations to connected findings, with the technical evidence behind each claim. Browse our published cases and examine the results yourself - every report follows the same evidentiary standard, regardless of whether the organisation ever becomes our client.',
     viewReport: 'read the full report',
     resolvedOn: (date: string) => `resolved ${date}`,
     carouselPrevAria: 'Previous report',

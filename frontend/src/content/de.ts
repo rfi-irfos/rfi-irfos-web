@@ -135,7 +135,7 @@ export const DE: Content = {
   trackRecord: {
     eyebrow: 'Permanentes Offenlegungsledger',
     heading: 'Die Disziplin, bewiesen',
-    paragraph: 'Wir dekompilieren öffentlich verbreitete Android- und iOS-Apps und verfolgen ihre Datenflüsse zu echten Endpunkten in echten Ländern. Unternehmen landen aus ganz unterschiedlichen Gründen auf diesem Ledger: Sie geben Ihre Daten an Dritte weiter, tracken ohne Einwilligung, oder lassen die Tür offen. Jede Organisation wird nach demselben Maßstab behandelt, unabhängig davon, ob sie uns bezahlt oder nicht.',
+    paragraph: 'Wir dekompilieren öffentlich verbreitete Android- und iOS-Apps und verfolgen ihre Datenflüsse zu echten Endpunkten in echten Ländern. Wir dokumentieren, was wir beobachten, trennen verifizierte Befunde von Interpretation und bewahren die Beweise hinter jeder Schlussfolgerung. Kein Unternehmen kann sich ein besseres Ergebnis erkaufen — jede Organisation wird nach demselben Maßstab behandelt, unabhängig davon, ob sie uns bezahlt oder nicht. Dieses permanente Offenlegungsledger setzt genau dieses Prinzip um.',
     securityBridgeLead: 'Das ist es, was ein Security-Auftrag liefert.',
     focusBanner: (names: string) => `Angezeigt wird der Report zu ${names}.`,
     showFullLedger: 'Gesamtes Ledger anzeigen',
@@ -212,7 +212,7 @@ export const DE: Content = {
   proof: {
     eyebrow: 'Das Ergebnis',
     heading: 'Das, was Sie tatsächlich in der Hand hätten',
-    subheading: 'Jeder Fall im Ledger endet in genau so einem Dokument: einem vollständigen, evidenzbasierten Offenlegungsbericht, nach Ablauf des Embargos öffentlich einsehbar - gleiches Format, gleiche Tiefe, unabhängig davon, ob das Unternehmen uns darüber hinaus beauftragt. Jede Behauptung darin lässt sich bis zur zugrundeliegenden Evidenz zurückverfolgen, Sie können es selbst nachprüfen, statt uns einfach zu glauben.',
+    subheading: 'Jeder Bericht dokumentiert, was wir gefunden haben, wie wir es verifiziert haben und was die Evidenz über das Produkt aussagt. Verfolgen Sie die Untersuchung von einzelnen Beobachtungen bis zu verknüpften Befunden, mit den technischen Nachweisen hinter jeder Behauptung. Durchstöbern Sie unsere veröffentlichten Fälle und prüfen Sie die Ergebnisse selbst - jeder Bericht folgt demselben Evidenzstandard, unabhängig davon, ob die Organisation jemals unser Kunde wird.',
     viewReport: 'vollständigen Bericht lesen',
     resolvedOn: (date: string) => `behoben am ${date}`,
     carouselPrevAria: 'Vorheriger Bericht',
