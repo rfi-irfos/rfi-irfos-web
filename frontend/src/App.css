@@ -722,11 +722,13 @@ button { cursor: pointer; font-family: inherit; }
    which a plain flex container would otherwise drop. */
 .sq-spec-panel ul { margin: 0; padding-left: 18px; color: var(--text); font-size: 14px; line-height: 1.6; flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 6px; }
 .sq-spec-panel ul li { display: list-item; }
-/* Fixed trust-badge row above the Request Access button, same three for every
-   agent (not per-agent content) - green checkmarks, distinct from the three
-   bulleted columns above it. */
-.sq-trust-badges { list-style: none; padding: 0; margin: auto 0 16px; display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 24px; }
-.sq-trust-badges li { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; color: var(--text); }
+/* Fixed trust-badge row above the Request Access button, same four for every
+   agent (not per-agent content) - a distinct icon per badge, not the same
+   checkmark four times over. Gap/font bumped up to match the larger icons
+   (live feedback 2026-10-14: after the overview card's zoom:0.95, these read
+   too small - "change them a bit to be more expressive... make them bigger"). */
+.sq-trust-badges { list-style: none; padding: 0; margin: auto 0 16px; display: flex; flex-wrap: wrap; justify-content: center; gap: 18px 28px; }
+.sq-trust-badges li { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--text); }
 .sq-trust-badges li svg { flex-shrink: 0; color: var(--accent-text); }
 
 /* "How It Connects" flow diagram (live feedback 2026-09-07 - rejected first

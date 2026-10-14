@@ -938,7 +938,7 @@ export const EN = {
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'See which agent fits your problem →',
     statusLine: 'Early Access',
-    trustBadges: ['EU AI Act Compliant', 'Explainable by Design', 'Every Decision Traceable'],
+    trustBadges: ['EU AI Act Compliant', 'Explainable by Design', 'Every Decision Traceable', 'Human-Verified'],
     overview: {
       eyebrow: 'The Lineup',
       heading: 'Selected From Our Own Production',

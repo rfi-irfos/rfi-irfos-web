@@ -925,7 +925,7 @@ export const DE: Content = {
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Finden Sie den passenden Agenten →',
     statusLine: 'Early Access',
-    trustBadges: ['EU-KI-Verordnung-konform', 'Nachvollziehbar durch Design', 'Jede Entscheidung rückverfolgbar'],
+    trustBadges: ['EU-KI-Verordnung-konform', 'Nachvollziehbar durch Design', 'Jede Entscheidung rückverfolgbar', 'Von Menschen geprüft'],
     overview: {
       eyebrow: 'Der Kader',
       heading: 'Direkt aus unserer eigenen Produktion',

@@ -12,7 +12,7 @@ import { motion } from 'framer-motion'
 import {
   IconTrendingUp, IconCoin, IconGitCompare, IconCircleCheck, IconSearch, IconShieldLock,
   IconDatabase, IconPlug, IconTerminal2, IconRobot, IconWorld,
-  IconSend, IconCpu,
+  IconSend, IconCpu, IconScale, IconBulb, IconHistory, IconUserCheck,
 } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
 import { Reveal, useMobile, beacon, WEB3FORMS_KEY, OUTPUT_TAG_HUES } from './shared'
@@ -20,6 +20,10 @@ import { SQUAD_AGENTS, agentByKey, type AgentKey } from '../../content/squadAgen
 import squadHeroWorkflow from '../../assets/squad/sq-hero-agent-workflow.mp4'
 
 const NEED_TO_KNOW_ICONS = [IconTrendingUp, IconCoin, IconGitCompare, IconCircleCheck, IconSearch, IconShieldLock]
+// One distinct icon per trust badge instead of the same checkmark four times
+// over (live feedback 2026-10-14: "change them a bit to be more expressive"),
+// same locale-independent, position-keyed convention as NEED_TO_KNOW_ICONS.
+const TRUST_BADGE_ICONS = [IconScale, IconBulb, IconHistory, IconUserCheck]
 
 // Icons are locale-independent (module-level, matches the SQUAD_AGENTS convention
 // in content/squadAgents.ts) - one icon per step, keyed by a stable id so content/
@@ -195,7 +199,10 @@ function SquadOverview({
                 three green checkmarks right above the CTA, separate from the "You
                 get" list. */}
             <ul className="sq-trust-badges">
-              {s.trustBadges.map(badge => <li key={badge}><IconCircleCheck size={14} />{badge}</li>)}
+              {s.trustBadges.map((badge, i) => {
+                const Icon = TRUST_BADGE_ICONS[i % TRUST_BADGE_ICONS.length]
+                return <li key={badge}><Icon size={19} stroke={1.8} />{badge}</li>
+              })}
             </ul>
             <button type="button" className="wm-btn-primary" onClick={() => onRequestAccess([selectedKey])}>
               {s.primaryCta}
