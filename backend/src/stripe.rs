@@ -42,6 +42,11 @@ fn tier_info(tier: &str) -> Option<TierInfo> {
         // Web development: proposal-only since 2026-08-12 (custom-scoped "from
         // €10k" base tier, price varies by scope - same pattern Mobile always
         // used). No direct Stripe checkout for this line anymore.
+        // Initial Review subscription tiers (2026-10-14 pricing redesign)
+        "review_starter"  => Some(TierInfo { label: "RFI-IRFOS Initial Review — Starter",  amount:   9_900, recurring: true }),
+        "review_growth"   => Some(TierInfo { label: "RFI-IRFOS Initial Review — Growth",   amount:  39_900, recurring: true }),
+        "review_pro"      => Some(TierInfo { label: "RFI-IRFOS Initial Review — Pro",      amount:  79_900, recurring: true }),
+        "review_business" => Some(TierInfo { label: "RFI-IRFOS Initial Review — Business", amount: 199_900, recurring: true }),
         _ => None,
     }
 }
@@ -185,4 +190,18 @@ pub async fn webhook(
     }
 
     StatusCode::OK.into_response()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn review_tiers_have_correct_amounts() {
+        assert_eq!(tier_info("review_starter").unwrap().amount, 9_900);
+        assert_eq!(tier_info("review_growth").unwrap().amount, 39_900);
+        assert_eq!(tier_info("review_pro").unwrap().amount, 79_900);
+        assert_eq!(tier_info("review_business").unwrap().amount, 199_900);
+        assert!(tier_info("review_starter").unwrap().recurring);
+    }
 }
