@@ -210,7 +210,7 @@ export function PricingSection({
 
   return (
     <section id="pricing" style={{ padding: '56px var(--sec-pad-x) 120px' }}>
-      <div style={{ maxWidth: 1120, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1900, margin: '0 auto' }}>
         <Reveal>
           <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <p className="wm-eyebrow">{t.pricing.eyebrow}</p>
@@ -219,7 +219,7 @@ export function PricingSection({
           </div>
         </Reveal>
 
-        <div style={{ maxWidth: 1900, margin: '0 auto' }}>
+        <div>
           <Reveal>
             <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 20 }}>
               <BillingToggle billing={billing} onChange={setBilling} />
