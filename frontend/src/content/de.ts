@@ -261,15 +261,15 @@ export const DE: Content = {
 
   initialReview: {
     badge: 'Kostenloser Check',
-    introTitle: 'Website-Live-Test',
+    introTitle: 'Domain-Live-Test',
     introSubtitle: 'Finden Sie heraus, was Ihre Security-Tools übersehen könnten.',
     introText: [
       'Der erste Check erfolgt ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ihre Systeme bleiben dabei unverändert.',
       'Bevor die Prüfung beginnt, bestätigt ein Researcher Ihre Anfrage. Innerhalb eines Werktags melden wir uns bei Ihnen. Sie erhalten einen kurzen schriftlichen Report mit unseren Beobachtungen, möglichen Angriffsszenarien, einer fachlichen Einschätzung der potenziellen wirtschaftlichen Schäden und konkreten Empfehlungen für die nächsten Schritte.',
       'Der Check liefert eine erste externe Einschätzung. Er umfasst keine Quellcode-Analyse und ist keine Garantie für die Sicherheit Ihrer Anwendung.',
     ],
-    domainLabel: 'Ihre Website',
-    domainPlaceholder: 'ihreseite.com',
+    domainLabel: 'Ihre Domain',
+    domainPlaceholder: 'ihredomain.com',
     emailLabel: 'Ihre Arbeits-E-Mail',
     emailPlaceholder: 'sie@firma.com',
     consentLabel: 'Ich besitze diese Domain oder bin autorisiert, sie zu testen, und stimme diesem einen Read-only-Check zu. Ein Wort genügt, wir sehen sie nie wieder an, dauerhafter Opt-out.',

@@ -268,15 +268,15 @@ export const EN = {
 
   initialReview: {
     badge: 'Free check',
-    introTitle: 'Website Live Testing',
+    introTitle: 'Domain Live Testing',
     introSubtitle: 'Find out what your security tools might be missing.',
     introText: [
       'The initial check is read-only, performed from a European IP address, with no login and no payloads. Your systems remain unchanged.',
       "A researcher reviews and approves your request before any checks begin. We'll get back to you within one business day. You'll receive a short written report covering our observations, potential attack scenarios, an expert assessment of the potential financial impact, and concrete recommendations for what to do next.",
       'This is an initial external assessment, not a source-code review or a guarantee that your application is secure.',
     ],
-    domainLabel: 'Your site',
-    domainPlaceholder: 'yoursite.com',
+    domainLabel: 'Your domain',
+    domainPlaceholder: 'yourdomain.com',
     emailLabel: 'Your work email',
     emailPlaceholder: 'you@company.com',
     consentLabel: 'I own this domain or am authorized to test it, and I agree to this one read-only check. One word, we never look at it again, permanent opt-out.',
