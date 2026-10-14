@@ -6,9 +6,10 @@ import { useLocale } from '../../hooks/useLocale'
 const GH = 'https://github.com/rfi-irfos/'
 
 const ICON = { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true } as const
-function GroupIcon({ kind }: { kind: 'software' | 'research' | 'repos' }) {
+function GroupIcon({ kind }: { kind: 'software' | 'research' | 'repos' | 'website' }) {
   if (kind === 'repos') return <GithubMark size={20} />
   if (kind === 'research') return <svg {...ICON}><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z" /><path d="M4 21V5M8 7h6M8 11h6" /></svg>
+  if (kind === 'website') return <svg {...ICON}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z" /></svg>
   return <svg {...ICON}><path d="M12 3 3.5 7.5v9L12 21l8.5-4.5v-9z" /><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9" /></svg>
 }
 const GROUPS = [
@@ -26,6 +27,9 @@ const GROUPS = [
   { title: 'Repositories', kind: 'repos' as const, links: [
     'call-laura', 'lauras-agents', 'lauras-agents-public', 'coevolution-factory',
   ].map(r => ({ label: r, href: GH + r })) },
+  { title: 'Website', kind: 'website' as const, links: [
+    { label: 'emergent-interaction-lab.com', href: 'https://emergent-interaction-lab.com' },
+  ] },
 ]
 
 function GithubMark({ size = 13 }: { size?: number }) {
@@ -87,11 +91,16 @@ export function CoopPartnersSection({
           </Reveal>
           <Reveal from="right" dist={60} delay={3}>
             <div style={{
-              display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 0,
-              borderTop: '1px solid var(--border)',
+              display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(4, minmax(0, 1fr))', gap: 10,
+              borderTop: '1px solid var(--border)', padding: '14px',
             }}>
-              {GROUPS.map((g, gi) => (
-                <div key={g.title} style={{ padding: '22px 24px', textAlign: 'center', borderLeft: gi > 0 && !mobile ? '1px solid var(--border)' : 'none', borderTop: gi > 0 && mobile ? '1px solid var(--border)' : 'none' }}>
+              {GROUPS.map(g => (
+                <div key={g.title} style={{
+                  padding: '20px 18px', textAlign: 'center', borderRadius: 10,
+                  background: 'linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.015) 55%, rgba(255,255,255,0.05))',
+                  border: '1px solid rgba(255,255,255,0.14)',
+                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 6px 16px rgba(0,0,0,0.25)',
+                }}>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, color: 'var(--accent-text)', marginBottom: 12 }}>
                     <GroupIcon kind={g.kind} />
                     <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.16em', margin: 0 }}>{g.title}</p>
