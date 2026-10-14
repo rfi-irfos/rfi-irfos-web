@@ -265,7 +265,11 @@ export const DE: Content = {
     introTitle: 'RFI-IRFOS Review',
     introSubtitle: 'Evidenzbasiert · Read-only · Menschlich verifiziert.',
     introHeading: 'Finden Sie heraus, was Ihre Security-Tools übersehen könnten.',
-    introText: 'Ein Read-only-Check von einer europäischen IP-Adresse: kein Login, keine Payloads, Ihre Systeme bleiben unberührt. Es wird nichts gescannt, bevor ein:e Researcher:in Ihre Anfrage bestätigt hat, und wir melden uns innerhalb eines Werktags. Sie erhalten einen kurzen schriftlichen Report: was wir gesehen haben, was ein Angreifer damit anfangen könnte, und was es Sie kosten würde, Ihrer so oder so. Das ist ein externer Read-only-Signal-Check, keine Quellcode-Prüfung und keine Aussage, dass die Anwendung sicher ist.',
+    introText: [
+      'Wir prüfen, welche sicherheitsrelevanten Informationen Ihre Anwendung von außen preisgibt. Der erste Check erfolgt ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ihre Systeme bleiben dabei unverändert.',
+      'Bevor die Prüfung beginnt, bestätigt ein Researcher Ihre Anfrage. Innerhalb eines Werktags melden wir uns bei Ihnen. Sie erhalten einen kurzen schriftlichen Report mit unseren Beobachtungen, möglichen Angriffsszenarien, einer fachlichen Einschätzung der potenziellen wirtschaftlichen Schäden und konkreten Empfehlungen für die nächsten Schritte.',
+      'Der Check liefert eine erste externe Einschätzung. Er umfasst keine Quellcode-Analyse und ist keine Garantie für die Sicherheit Ihrer Anwendung.',
+    ],
     domainLabel: 'Ihre Website',
     domainPlaceholder: 'ihreseite.com',
     emailLabel: 'Ihre Arbeits-E-Mail',

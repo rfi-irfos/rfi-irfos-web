@@ -79,7 +79,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
           </div>
         </Reveal>
 
-        <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 350px', gap: stacked ? 28 : 24, maxWidth: 1320, margin: '0 auto 56px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 350px', gap: stacked ? 28 : 16, maxWidth: 1320, margin: '0 auto 56px' }}>
           {/* Left: ONE framed card holding process, scope and evidence (frame static, cells reveal) */}
           <div style={{ minWidth: 0, border: '1px solid var(--border)', borderRadius: 20, padding: phone ? 18 : 28, background: 'var(--glass-bg-solid)' }}>
             <p style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text3)', marginBottom: 14 }}>{c.processLabel}</p>
@@ -152,7 +152,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
               #submit; live direction moved the actual intake flow onto the
               page itself instead of behind a click). */}
           <div style={{
-            display: 'flex', flexDirection: 'column', gap: 16, alignSelf: 'stretch', padding: stacked ? 0 : '0 4px',
+            display: 'flex', flexDirection: 'column', gap: 16, alignSelf: 'stretch',
           }}>
             <Reveal from="right" dist={64} delay={1} style={{ flex: 1 }}>
               <InitialReviewFlow variant="embedded" />

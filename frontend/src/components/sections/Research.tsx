@@ -435,7 +435,7 @@ export function ResearchSection() {
           <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center' }}>{t.research.heading}</h2>
         </Reveal>
         <Reveal delay={1}>
-          <p style={{ color: 'var(--text2)', fontSize: 17, marginBottom: 56, maxWidth: 560, textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
+          <p style={{ color: 'var(--text)', fontSize: 17, marginBottom: 56, maxWidth: 560, textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
             {t.research.subheading}
           </p>
         </Reveal>
