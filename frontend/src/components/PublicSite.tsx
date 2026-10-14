@@ -1560,7 +1560,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         </section>}
 
         {view === 'access' && <section id="access" className="rfi-view-panel">
-          <PricingSection onSelectTier={selectTier} />
+          <PricingSection onSelectTier={selectTier} onCheckout={handleCheckout} />
         </section>}
       </main>
 

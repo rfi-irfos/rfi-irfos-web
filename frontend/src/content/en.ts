@@ -332,6 +332,15 @@ export const EN = {
         receive: 'An evidence-backed technical reconstruction your engineers can work from: what is actually implemented, how the pieces depend on each other, what the system exposes, where reality diverges from the specification and which technical assumptions survive investigation.',
         cta: 'Request an engineering review \u2192', delivery: 'Delivered depending on scope.' },
     ],
+    tiers: [
+      { name: 'Starter', price: '\u20ac99', features: ['One defined investigation per billing month.', 'Validated findings with PoC.', 'PDF report.', 'Free retest of fixed findings.'], cta: 'Choose Starter', stripeKey: 'review_starter' },
+      { name: 'Growth', price: '\u20ac399', popular: true, features: ['Continuous monitoring: scheduled re-examination at a fixed interval within the agreed scope.', 'Unlimited retests on this surface.', 'Validated findings with PoC.'], cta: 'Choose Growth', stripeKey: 'review_growth' },
+      { name: 'Pro', price: '\u20ac799', features: ['Everything in Growth.', 'Up to three defined surfaces.', 'Priority scheduling.'], cta: 'Choose Pro', stripeKey: 'review_pro' },
+      { name: 'Business', price: '\u20ac1,999', features: ['Everything in Pro.', 'Up to ten surfaces.', 'Dedicated success channel.'], cta: 'Choose Business', stripeKey: 'review_business' },
+    ],
+    freeCard: { label: 'Free', price: '\u20ac0', tagline: 'Initial review \u00b7 Self-serve entry point.' },
+    enterprise: { heading: 'Enterprise', text: 'Custom surfaces, MSP, multi-tenant deployments, white-label and negotiated SLAs. Price in writing.', cta: 'Talk to us' },
+    needSomethingElse: 'Need something else?',
   },
 
   modalTierBody: {

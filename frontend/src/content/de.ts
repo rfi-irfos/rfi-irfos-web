@@ -325,6 +325,15 @@ export const DE: Content = {
         receive: 'Eine evidenzbasierte technische Rekonstruktion, mit der Ihre Ingenieurinnen und Ingenieure arbeiten k\u00f6nnen: was tats\u00e4chlich implementiert ist, wie die Teile voneinander abh\u00e4ngen, was das System exponiert, wo die Realit\u00e4t von der Spezifikation abweicht und welche technischen Annahmen einer Pr\u00fcfung standhalten.',
         cta: 'Fordern Sie ein Engineering-Review an \u2192', delivery: 'Lieferung je nach Umfang.' },
     ],
+    tiers: [
+      { name: 'Starter', price: '\u20ac99', features: ['Eine definierte Untersuchung pro Abrechnungsmonat.', 'Validierte Findings mit PoC.', 'PDF-Report.', 'Kostenloser Retest behobener Findings.'], cta: 'Starter w\u00e4hlen', stripeKey: 'review_starter' },
+      { name: 'Growth', price: '\u20ac399', popular: true, features: ['Laufende \u00dcberwachung: geplante Neupr\u00fcfung in festem Intervall innerhalb des vereinbarten Scopes.', 'Unbegrenzte Retests auf dieser Oberfl\u00e4che.', 'Validierte Findings mit PoC.'], cta: 'Growth w\u00e4hlen', stripeKey: 'review_growth' },
+      { name: 'Pro', price: '\u20ac799', features: ['Alles aus Growth.', 'Bis zu drei definierte Oberfl\u00e4chen.', 'Priorisierte Terminierung.'], cta: 'Pro w\u00e4hlen', stripeKey: 'review_pro' },
+      { name: 'Business', price: '\u20ac1.999', features: ['Alles aus Pro.', 'Bis zu zehn Oberfl\u00e4chen.', 'Dedizierter Success-Kanal.'], cta: 'Business w\u00e4hlen', stripeKey: 'review_business' },
+    ],
+    freeCard: { label: 'Free', price: '\u20ac0', tagline: 'Erstpr\u00fcfung \u00b7 Self-Serve-Einstieg.' },
+    enterprise: { heading: 'Enterprise', text: 'Individuelle Oberfl\u00e4chen, MSP, Multi-Tenant-Deployments, White-Label und verhandelte SLAs. Preis auf Anfrage.', cta: 'Kontakt aufnehmen' },
+    needSomethingElse: 'Etwas anderes gesucht?',
   },
 
   modalTierBody: {
