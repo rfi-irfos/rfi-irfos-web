@@ -642,7 +642,12 @@ button { cursor: pointer; font-family: inherit; }
    too tight. */
 .sq-hero { padding-block: 40px 32px; }
 .sq-overview { padding-top: 40px; padding-bottom: 56px; }
-.sq-overview-frame { border: 1.5px solid color-mix(in srgb, var(--accent) 45%, var(--border)); border-radius: 16px; padding: 18px; box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent), 0 16px 40px rgba(0,0,0,0.3); }
+/* zoom (not transform: scale) so the reduced size actually reflows the
+   layout - the card reserves 95% of the space it needs instead of shrinking
+   visually while leaving a transform's leftover blank margin around it
+   (live feedback 2026-10-14: "a bit huge relative to the how it connects
+   visualization"). */
+.sq-overview-frame { border: 1.5px solid color-mix(in srgb, var(--accent) 45%, var(--border)); border-radius: 16px; padding: 18px; box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent), 0 16px 40px rgba(0,0,0,0.3); zoom: 0.95; }
 /* align-items: stretch (was start) - live feedback: switching agents changed
    the spec-sheet's content length (description, list wraps), so the trust
    badges + Request Access button drifted to a different vertical position
@@ -760,6 +765,17 @@ button { cursor: pointer; font-family: inherit; }
 }
 @keyframes hic-flow { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) { .hic-pulse { display: none; } }
+
+/* Free Check widget on the Access page - soft turquoise glow around the card
+   plus a breathing ring on its "Free check" badge, to draw the eye to it
+   among everything else on that page (live feedback 2026-10-14). */
+.irf-card-glow { box-shadow: 0 0 36px 2px rgba(0,245,196,0.16); }
+.irf-badge-pulse { animation: irf-badge-pulse 2.6s ease-in-out infinite; }
+@keyframes irf-badge-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,245,196,0.4); }
+  50% { box-shadow: 0 0 0 5px rgba(0,245,196,0); }
+}
+@media (prefers-reduced-motion: reduce) { .irf-badge-pulse { animation: none; } }
 
 .sq-need-to-know { padding-top: 8px; padding-bottom: 56px; }
 /* Back to 6-across (live feedback: "aber NEBENEINANDER lassen alle 6" - all

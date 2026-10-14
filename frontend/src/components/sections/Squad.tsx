@@ -231,10 +231,10 @@ const HIC_BOX: Record<string, { x: number; y: number; w: number; h: number }> = 
   hub:        { x: 265,  y: 135, w: 190, h: 130 },
   mcp:        { x: 505,  y: 80,  w: 190, h: 110 },
   cli:        { x: 505,  y: 210, w: 190, h: 110 },
-  process:    { x: 745,  y: 60,  w: 190, h: 150 },
-  crosscheck: { x: 745,  y: 230, w: 190, h: 150 },
-  deliver:    { x: 985,  y: 60,  w: 190, h: 150 },
-  act:        { x: 985,  y: 230, w: 190, h: 150 },
+  process:    { x: 745,  y: 80,  w: 190, h: 110 },
+  crosscheck: { x: 745,  y: 210, w: 190, h: 110 },
+  deliver:    { x: 985,  y: 80,  w: 190, h: 110 },
+  act:        { x: 985,  y: 210, w: 190, h: 110 },
 }
 const HIC_ZONE_BANDS = [
   { x: 10,  w: 220 },
@@ -250,18 +250,21 @@ const HIC_ZONE_BANDS = [
 // convergence reads as a single point instead of crossing lines. `return: true`
 // marks the hub<->squad result arrow so it renders dashed, visually distinct
 // from the forward/delegation arrows without being mistaken for the big
-// feedback loop at the bottom. `delay` groups arrows into pipeline stages so a
-// pulse visibly splits/merges at each junction instead of staggering box by box.
-const HIC_ARROWS: { id: string; pts: [number, number][]; delay: number; feedback?: boolean; return?: boolean }[] = [
+// feedback loop at the bottom. `dashed: true` marks the hub->squad delegation
+// arrow itself as dashed too (live feedback 2026-10-14), so both legs of the
+// Agent OS <-> Squad hand-off read as a matched pair against the solid
+// entry-point arrows. `delay` groups arrows into pipeline stages so a pulse
+// visibly splits/merges at each junction instead of staggering box by box.
+const HIC_ARROWS: { id: string; pts: [number, number][]; delay: number; feedback?: boolean; return?: boolean; dashed?: boolean }[] = [
   { id: 'data-hub',        pts: [[215, 200], [265, 200]], delay: 0 },
   { id: 'hub-mcp',         pts: [[455, 200], [480, 200], [480, 135], [505, 135]], delay: 0.6 },
   { id: 'hub-cli',         pts: [[455, 200], [480, 200], [480, 265], [505, 265]], delay: 0.6 },
-  { id: 'hub-process',     pts: [[455, 175], [470, 175], [470, 40], [720, 40], [720, 135], [745, 135]], delay: 1.2 },
-  { id: 'process-cross',   pts: [[840, 210], [840, 230]], delay: 1.7 },
-  { id: 'cross-hub',       pts: [[745, 305], [720, 305], [720, 360], [470, 360], [470, 225], [455, 225]], delay: 2.1, return: true },
-  { id: 'cross-deliver',   pts: [[935, 305], [960, 305], [960, 135], [985, 135]], delay: 2.1 },
-  { id: 'deliver-act',     pts: [[1080, 210], [1080, 230]], delay: 2.6 },
-  { id: 'act-data',        pts: [[1080, 380], [1080, 440], [120, 440], [120, 265]], delay: 3, feedback: true },
+  { id: 'hub-process',     pts: [[455, 175], [470, 175], [470, 40], [720, 40], [720, 135], [745, 135]], delay: 1.2, dashed: true },
+  { id: 'process-cross',   pts: [[840, 190], [840, 210]], delay: 1.7 },
+  { id: 'cross-hub',       pts: [[745, 265], [720, 265], [720, 360], [470, 360], [470, 225], [455, 225]], delay: 2.1, return: true },
+  { id: 'cross-deliver',   pts: [[935, 265], [960, 265], [960, 135], [985, 135]], delay: 2.1 },
+  { id: 'deliver-act',     pts: [[1080, 190], [1080, 210]], delay: 2.6 },
+  { id: 'act-data',        pts: [[1080, 320], [1080, 440], [120, 440], [120, 265]], delay: 3, feedback: true },
 ]
 
 // Real technical diagram (live feedback 2026-09-07, reference: a Dialogflow-style
@@ -310,7 +313,7 @@ function HowItConnects() {
                 <polyline key={a.id} points={a.pts.map(p => p.join(',')).join(' ')}
                   fill="none" stroke="var(--accent-text)"
                   strokeWidth={a.feedback ? 1.5 : 2}
-                  strokeDasharray={a.feedback || a.return ? '5 5' : undefined}
+                  strokeDasharray={a.feedback || a.return || a.dashed ? '5 5' : undefined}
                   strokeLinejoin="round" strokeLinecap="round"
                   opacity={a.feedback ? 0.5 : a.return ? 0.7 : 0.9}
                   markerEnd="url(#hic-arrowhead)" />

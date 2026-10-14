@@ -146,8 +146,8 @@ export const EN = {
     kpis: {
       appsAudited: 'Android/iOS apps audited',
       smaliClasses: 'Smali classes read',
-      criticalFindings: 'Critical findings reported',
-      trackersFound: 'Trackers found and documented',
+      criticalFindings: 'Critical findings recorded',
+      trackersFound: 'Weak points found and documented',
       endpointsInvestigated: 'Endpoints investigated',
       sdkClasses: 'SDK instances mapped',
     },

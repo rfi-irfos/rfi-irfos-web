@@ -41,7 +41,7 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
   }
 
   return (
-    <div style={cardStyle}>
+    <div className="irf-card-glow" style={cardStyle}>
       <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
         value={botcheck} onChange={e => setBotcheck(e.target.value)}
         style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
@@ -58,7 +58,7 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
             <div style={{ fontSize: 11, color: 'var(--text3)' }}>{c.introSubtitle}</div>
           </div>
         </div>
-        <span style={{ fontSize: 10.5, fontWeight: 800, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.1)', padding: '4px 10px', borderRadius: 999, whiteSpace: 'nowrap' }}>{c.badge}</span>
+        <span className="irf-badge-pulse" style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.1)', padding: '5px 12px', borderRadius: 999, whiteSpace: 'nowrap' }}>{c.badge}</span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {c.introText.map((para, i) => (

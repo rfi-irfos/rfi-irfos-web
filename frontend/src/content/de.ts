@@ -143,8 +143,8 @@ export const DE: Content = {
     kpis: {
       appsAudited: 'Android/iOS Apps geprüft',
       smaliClasses: 'Smali-Klassen gelesen',
-      criticalFindings: 'Kritische Funde gemeldet',
-      trackersFound: 'Tracker gefunden und dokumentiert',
+      criticalFindings: 'Kritische Funde erfasst',
+      trackersFound: 'Schwachstellen gefunden und dokumentiert',
       endpointsInvestigated: 'Endpunkte untersucht',
       sdkClasses: 'SDK-Instanzen kartiert',
     },

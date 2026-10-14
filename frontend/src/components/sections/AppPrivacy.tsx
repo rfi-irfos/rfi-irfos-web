@@ -60,7 +60,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
   const pick = (i: number) => { setPlaying(false); setActive(i) }
   const kpis = [
     { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited, from: 'left' as const },
-    { n: `${(corpusStats.smaliClassesTotal / 1e6).toFixed(2)}M+`, label: t.trackRecord.kpis.smaliClasses, from: 'bottom' as const },
+    { n: `${corpusStats.trackerMentions}+`, label: t.trackRecord.kpis.trackersFound, from: 'bottom' as const },
     { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: t.trackRecord.kpis.criticalFindings, from: 'right' as const },
   ]
 
@@ -80,8 +80,12 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         </Reveal>
 
         <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 350px', gap: stacked ? 28 : 16, maxWidth: 1320, margin: '0 auto 56px' }}>
-          {/* Left: ONE framed card holding process, scope and evidence (frame static, cells reveal) */}
-          <div style={{ minWidth: 0, border: '1px solid var(--border)', borderRadius: 20, padding: phone ? 18 : 28, background: 'var(--glass-bg-solid)' }}>
+          {/* Left: ONE framed card holding process, scope and evidence (frame static, cells reveal).
+              position+zIndex keeps this card painted above the Free Check widget's turquoise
+              glow on its right (live feedback 2026-10-14: the glow "overshadows" this card where
+              its blur bleeds across the grid gap - without this, the later grid item wins paint
+              order by default and the glow sits in front of this card's edge). */}
+          <div style={{ position: 'relative', zIndex: 1, minWidth: 0, border: '1px solid var(--border)', borderRadius: 20, padding: phone ? 18 : 28, background: 'var(--glass-bg-solid)' }}>
             <p style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text3)', marginBottom: 14 }}>{c.processLabel}</p>
             <div ref={stepsRef} style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 18, marginBottom: 28, alignItems: 'start' }}>
               {c.steps.map((s, i) => (
