@@ -288,7 +288,7 @@ export const EN = {
   pricing: {
     eyebrow: 'Core Offer',
     heading: 'Priced in plain terms',
-    subheading: 'Five domains built on one evidence-first world model. Combine as many as your question needs.',
+    subheading: 'Continuous review, scaled to how much surface needs watching. Start free, upgrade when you know what you need.',
     deliveryLabel: 'Delivery',
     domains: [
       { name: 'Intelligence',
@@ -328,14 +328,26 @@ export const EN = {
         cta: 'Request an engineering review \u2192', delivery: 'Delivered depending on scope.' },
     ],
     tiers: [
-      { name: 'Starter', price: '\u20ac99', features: ['One defined investigation per billing month.', 'Validated findings with PoC.', 'PDF report.', 'Free retest of fixed findings.'], cta: 'Choose Starter', stripeKey: 'review_starter' },
-      { name: 'Growth', price: '\u20ac399', popular: true, features: ['Continuous monitoring: scheduled re-examination at a fixed interval within the agreed scope.', 'Unlimited retests on this surface.', 'Validated findings with PoC.'], cta: 'Choose Growth', stripeKey: 'review_growth' },
-      { name: 'Pro', price: '\u20ac799', features: ['Everything in Growth.', 'Up to three defined surfaces.', 'Priority scheduling.'], cta: 'Choose Pro', stripeKey: 'review_pro' },
-      { name: 'Business', price: '\u20ac1,999', features: ['Everything in Pro.', 'Up to ten surfaces.', 'Dedicated success channel.'], cta: 'Choose Business', stripeKey: 'review_business' },
+      { name: 'Starter', price: '\u20ac99', tagline: 'One surface, checked on demand.', features: ['One defined investigation per billing month.', 'Validated findings with PoC.', 'PDF report.', 'Free retest of fixed findings.'], cta: 'Choose Starter', stripeKey: 'review_starter' },
+      { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'One surface, watched continuously.', features: ['Continuous monitoring: scheduled re-examination at a fixed interval within the agreed scope.', 'Unlimited retests on this surface.', 'Validated findings with PoC.'], cta: 'Choose Growth', stripeKey: 'review_growth' },
+      { name: 'Pro', price: '\u20ac799', tagline: 'Up to three surfaces, same discipline.', features: ['Everything in Growth.', 'Up to three defined surfaces.', 'Priority scheduling.'], cta: 'Choose Pro', stripeKey: 'review_pro' },
+      { name: 'Business', price: '\u20ac1,999', tagline: 'Up to ten surfaces, one dedicated channel.', features: ['Everything in Pro.', 'Up to ten surfaces.', 'Dedicated success channel.'], cta: 'Choose Business', stripeKey: 'review_business' },
     ],
-    freeCard: { label: 'Free', price: 'Free', tagline: 'Initial review \u00b7 Self-serve entry point.' },
+    freeCard: {
+      label: 'Free', price: 'Free', tagline: 'A self-serve entry point, no commitment.',
+      features: ['One surface.', 'Read-only, external check.', 'Short written report.'],
+      cta: 'Start free review',
+    },
     enterprise: { heading: 'Enterprise', text: 'Custom surfaces, MSP, multi-tenant deployments, white-label and negotiated SLAs. Price in writing.', cta: 'Talk to us' },
     needSomethingElse: 'Need something else?',
+    mostPopular: 'Most popular',
+    billing: {
+      monthly: 'Monthly',
+      annual: 'Annual',
+      perMonth: '/mo',
+      annualNote: 'Billed yearly, about 2 months free.',
+      annualCta: 'Request annual billing',
+    },
   },
 
   modalTierBody: {

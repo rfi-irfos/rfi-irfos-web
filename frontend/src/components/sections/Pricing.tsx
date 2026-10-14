@@ -29,8 +29,16 @@
 // Settled on a plain vertical stack instead - every tier card fully
 // visible, full price, full checkmark list, no overlap at any scroll
 // position.
+//
+// REVISED again same day (live direction, fourth pass): rebuilt as a
+// side-by-side 4-column comparison grid with a Monthly/Annual toggle, so
+// the four tiers can be read against each other directly instead of
+// scrolled through one at a time. Annual prices are computed client-side
+// (10x monthly - backend only has monthly Stripe price IDs, see
+// backend/src/stripe.rs's tier_info()) and route to a contact request
+// instead of onCheckout, since there is no live annual price to charge.
 import { EngagementFlow, Reveal, useMobile } from './shared'
-import { useLocale } from '../../hooks/useLocale'
+import { useLocale, type Locale } from '../../hooks/useLocale'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { useState } from 'react'
 
@@ -40,49 +48,108 @@ type PricingDomain = {
 }
 
 type PricingTier = {
-  name: string; price: string; features: string[]; cta: string
+  name: string; price: string; tagline: string; features: string[]; cta: string
   stripeKey: string; popular?: boolean
 }
 
-function TierCard({ tier, mobile, onCheckout }: { tier: PricingTier; mobile: boolean; onCheckout: (stripeKey: string) => void }) {
+function annualPrice(monthlyPrice: string, locale: Locale): string {
+  const n = Number(monthlyPrice.replace(/[^0-9]/g, ''))
+  const annual = n * 10
+  return `€${new Intl.NumberFormat(locale === 'de' ? 'de-AT' : 'en-US').format(annual)}`
+}
+
+// Unified comparison panel (live direction, fifth pass): the four tiers
+// used to be separate floating cards with gaps between them - flagged as
+// "too disjointed". Rebuilt as one bordered panel with thin internal
+// column dividers (TierCard renders no border/background of its own, the
+// panel wrapper owns those), the Enterprise band attached directly below
+// with no gap, and a square-cornered tab toggle instead of a pill.
+function TierCard({
+  tier, billing, onCheckout, onSelectTier,
+}: {
+  tier: PricingTier; billing: 'monthly' | 'annual'
+  onCheckout: (stripeKey: string) => void; onSelectTier: (tier: string) => void
+}) {
+  const { t, locale } = useLocale()
+  const b = t.pricing.billing
   return (
-    <div style={{
-      border: tier.popular ? '1px solid #f97316' : '1px solid var(--border)',
-      borderRadius: 16, padding: mobile ? '18px 20px' : '22px 24px',
-      // Opaque, not translucent - these cards sit in a sticky stack and need
-      // to fully cover the card scrolling in underneath them. The popular
-      // tier's orange tint is baked into an opaque gradient layer over the
-      // same solid base instead of a semi-transparent background, or the
-      // card behind it would show through.
-      background: tier.popular
-        ? 'linear-gradient(rgba(249,115,22,0.07), rgba(249,115,22,0.07)), var(--glass-bg-solid)'
-        : 'var(--glass-bg-solid)',
-      boxShadow: '0 20px 60px rgba(0,0,0,0.45)',
-      display: 'flex', flexDirection: 'column', gap: 14, position: 'relative',
-    }}>
-      {tier.popular && (
-        <span style={{ position: 'absolute', top: -11, left: 20, background: '#f97316', color: '#1a0f00', fontSize: 10, fontWeight: 800, padding: '3px 10px', borderRadius: 999, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-          Most popular
-        </span>
-      )}
-      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text3)', margin: 0 }}>{tier.name}</p>
-      <div>
-        <span style={{ fontSize: 30, fontWeight: 800, color: 'var(--text)' }}>{tier.price}</span>
-        <span style={{ fontSize: 12.5, color: 'var(--text3)' }}> /mo</span>
+    <div style={{ padding: '36px 28px', display: 'flex', flexDirection: 'column', gap: 13, height: '100%', boxSizing: 'border-box' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text3)', margin: 0 }}>{tier.name}</p>
+        {tier.popular && (
+          <span style={{ fontSize: 10.5, fontWeight: 800, color: '#f97316', letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{t.pricing.mostPopular}</span>
+        )}
       </div>
-      <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
+      <div>
+        <span style={{ fontSize: 36, fontWeight: 800, color: 'var(--text)' }}>{billing === 'monthly' ? tier.price : annualPrice(tier.price, locale)}</span>
+        <span style={{ fontSize: 14, color: 'var(--text3)' }}> {billing === 'monthly' ? b.perMonth : `/${b.annual.toLowerCase()}`}</span>
+      </div>
+      <p style={{ fontSize: 14, color: 'var(--text2)', margin: 0, lineHeight: 1.55 }}>{tier.tagline}</p>
+      <div style={{ borderTop: '1px solid var(--border)', margin: '4px 0 6px' }} />
+      <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 11, flex: 1 }}>
         {tier.features.map(f => (
-          <li key={f} style={{ fontSize: 12.5, lineHeight: 1.5, color: 'var(--text2)', display: 'flex', gap: 8 }}>
+          <li key={f} style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--text2)', display: 'flex', gap: 9 }}>
             <span style={{ color: 'var(--accent-text)', fontWeight: 800 }}>✓</span>{f}
           </li>
         ))}
       </ul>
-      <button type="button" onClick={() => onCheckout(tier.stripeKey)} style={{
-        background: tier.popular ? '#f97316' : 'transparent',
-        color: tier.popular ? '#1a0f00' : 'var(--text)',
-        border: tier.popular ? 'none' : '1px solid var(--border)',
-        padding: '11px 16px', borderRadius: 8, fontWeight: 800, fontSize: 13, cursor: 'pointer',
-      }}>{tier.cta}</button>
+      {billing === 'annual' && (
+        <p style={{ fontSize: 11.5, color: 'var(--text3)', margin: 0 }}>{b.annualNote}</p>
+      )}
+      <button
+        type="button"
+        onClick={() => billing === 'monthly' ? onCheckout(tier.stripeKey) : onSelectTier(`${tier.name} (${b.annual})`)}
+        style={{
+          background: tier.popular ? '#f97316' : 'transparent',
+          color: tier.popular ? '#1a0f00' : 'var(--text)',
+          border: tier.popular ? 'none' : '1px solid var(--border)',
+          padding: '14px 18px', borderRadius: 8, fontWeight: 800, fontSize: 14.5, cursor: 'pointer', marginTop: 6,
+        }}>{billing === 'monthly' ? tier.cta : b.annualCta}</button>
+    </div>
+  )
+}
+
+function FreeTierCard({ onOpen }: { onOpen: () => void }) {
+  const { t } = useLocale()
+  const f = t.pricing.freeCard
+  return (
+    <div style={{ padding: '36px 28px', display: 'flex', flexDirection: 'column', gap: 13, height: '100%', boxSizing: 'border-box' }}>
+      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text3)', margin: 0 }}>{f.label}</p>
+      <div>
+        <span style={{ fontSize: 36, fontWeight: 800, color: 'var(--text)' }}>{f.price}</span>
+      </div>
+      <p style={{ fontSize: 14, color: 'var(--text2)', margin: 0, lineHeight: 1.55 }}>{f.tagline}</p>
+      <div style={{ borderTop: '1px solid var(--border)', margin: '4px 0 6px' }} />
+      <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 11, flex: 1 }}>
+        {f.features.map(feat => (
+          <li key={feat} style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--text2)', display: 'flex', gap: 9 }}>
+            <span style={{ color: 'var(--accent-text)', fontWeight: 800 }}>✓</span>{feat}
+          </li>
+        ))}
+      </ul>
+      <button type="button" onClick={onOpen} style={{
+        background: 'transparent', color: 'var(--text)', border: '1px solid var(--border)',
+        padding: '14px 18px', borderRadius: 8, fontWeight: 800, fontSize: 14.5, cursor: 'pointer', marginTop: 6,
+      }}>{f.cta}</button>
+    </div>
+  )
+}
+
+function BillingToggle({ billing, onChange }: { billing: 'monthly' | 'annual'; onChange: (b: 'monthly' | 'annual') => void }) {
+  const { t } = useLocale()
+  const b = t.pricing.billing
+  const opt = (value: 'monthly' | 'annual', label: string, borderLeft: boolean) => (
+    <button type="button" onClick={() => onChange(value)} style={{
+      background: billing === value ? '#f97316' : 'transparent',
+      color: billing === value ? '#1a0f00' : 'var(--text2)',
+      border: 'none', borderLeft: borderLeft ? '1px solid var(--border)' : 'none',
+      padding: '12px 24px', fontWeight: 800, fontSize: 12.5, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer',
+    }}>{label}</button>
+  )
+  return (
+    <div style={{ display: 'inline-flex', border: '1px solid var(--border)', borderRadius: 6, overflow: 'hidden' }}>
+      {opt('monthly', b.monthly, false)}
+      {opt('annual', b.annual, true)}
     </div>
   )
 }
@@ -111,8 +178,9 @@ export function PricingSection({
   onCheckout: (stripeKey: string) => void
 }) {
   const { t } = useLocale()
-  const mobile = useMobile(640)
+  const tablet = useMobile(980)
   const [freeModalOpen, setFreeModalOpen] = useState(false)
+  const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
 
   return (
     <section id="pricing" style={{ padding: '56px var(--sec-pad-x) 120px' }}>
@@ -125,49 +193,58 @@ export function PricingSection({
           </div>
         </Reveal>
 
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
+        <div style={{ maxWidth: 1400, margin: '0 auto' }}>
           <Reveal>
-            <button type="button" onClick={() => setFreeModalOpen(true)} style={{
-              width: '100%', textAlign: 'left', background: 'var(--glass-bg-solid)', border: '1px solid var(--border)',
-              borderRadius: 16, padding: '24px 28px', cursor: 'pointer', marginBottom: 28,
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap',
-            }}>
-              <div>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text3)', margin: '0 0 6px' }}>{t.pricing.freeCard.label}</p>
-                <p style={{ fontSize: 13.5, color: 'var(--text2)', margin: 0 }}>{t.pricing.freeCard.tagline}</p>
-              </div>
-              <span style={{ fontSize: 30, fontWeight: 800, color: 'var(--text)' }}>{t.pricing.freeCard.price}</span>
-            </button>
+            <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 20 }}>
+              <BillingToggle billing={billing} onChange={setBilling} />
+            </div>
           </Reveal>
 
-          {/* Tried the five-domain stack's sticky-overlap effect here first
-              (see git history) - with a compact pricing card the peeking
-              strip compressed to just name+price and read as broken, not
-              as a deck of files. Reverted to a plain vertical stack: every
-              card stays fully visible, full price and full checkmark list,
-              no overlap. */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {t.pricing.tiers.map((tier, i) => {
-              const slug = tier.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
-              return (
-                <div key={tier.name} id={`pricing-${slug}`} style={{ scrollMarginTop: 84 }}>
-                  <Reveal from="bottom" dist={48} delay={i}>
-                    <TierCard tier={tier} mobile={mobile} onCheckout={onCheckout} />
-                  </Reveal>
+          {/* Unified panel (see git history for the floating-card layouts
+              tried before this): one bordered container, thin internal
+              column dividers instead of gaps, Free folded in as the first
+              of five columns instead of a separate banner, Enterprise band
+              attached directly below with its own tinted background so it
+              reads as the premium tier rather than a sixth plain card. */}
+          <Reveal from="bottom" dist={32}>
+            <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', background: 'var(--glass-bg-solid)', boxShadow: '0 20px 60px rgba(0,0,0,0.45)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: tablet ? '1fr' : 'repeat(5, 1fr)' }}>
+                <div style={{
+                  scrollMarginTop: 84,
+                  borderRight: !tablet ? '1px solid var(--border)' : undefined,
+                  borderBottom: tablet ? '1px solid var(--border)' : undefined,
+                }}>
+                  <FreeTierCard onOpen={() => setFreeModalOpen(true)} />
                 </div>
-              )
-            })}
-          </div>
-
-          <Reveal delay={4}>
-            <div style={{ border: '1px solid var(--border)', borderRadius: 16, padding: '20px 24px', marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
-              <div>
-                <p style={{ fontWeight: 700, fontSize: 15, color: 'var(--text)', margin: '0 0 4px' }}>{t.pricing.enterprise.heading}</p>
-                <p style={{ fontSize: 12.5, color: 'var(--text2)', margin: 0, maxWidth: 520 }}>{t.pricing.enterprise.text}</p>
+                {t.pricing.tiers.map((tier, i) => {
+                  const slug = tier.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+                  const last = i === t.pricing.tiers.length - 1
+                  return (
+                    <div key={tier.name} id={`pricing-${slug}`} style={{
+                      scrollMarginTop: 84,
+                      borderRight: !tablet && !last ? '1px solid var(--border)' : undefined,
+                      borderBottom: tablet && !last ? '1px solid var(--border)' : undefined,
+                      background: tier.popular ? 'rgba(249,115,22,0.07)' : undefined,
+                    }}>
+                      <TierCard tier={tier} billing={billing} onCheckout={onCheckout} onSelectTier={onSelectTier} />
+                    </div>
+                  )
+                })}
               </div>
-              <button type="button" onClick={() => onSelectTier('Enterprise')} style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text)', padding: '10px 18px', borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap' }}>
-                {t.pricing.enterprise.cta}
-              </button>
+
+              <div style={{
+                borderTop: '1px solid var(--border)', padding: '28px 28px',
+                background: 'linear-gradient(135deg, rgba(0,245,196,0.08), rgba(0,245,196,0.015))',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap',
+              }}>
+                <div>
+                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--accent-text)', margin: '0 0 7px' }}>{t.pricing.enterprise.heading}</p>
+                  <p style={{ fontSize: 13.5, color: 'var(--text2)', margin: 0, maxWidth: 560 }}>{t.pricing.enterprise.text}</p>
+                </div>
+                <button type="button" onClick={() => onSelectTier('Enterprise')} style={{ background: 'transparent', border: '1px solid var(--accent-text)', color: 'var(--accent-text)', padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                  {t.pricing.enterprise.cta}
+                </button>
+              </div>
             </div>
           </Reveal>
 

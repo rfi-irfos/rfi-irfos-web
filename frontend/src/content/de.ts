@@ -281,7 +281,7 @@ export const DE: Content = {
   pricing: {
     eyebrow: 'Kernangebot',
     heading: 'Klar kalkuliert',
-    subheading: 'F\u00fcnf Bereiche auf einem gemeinsamen, evidenzbasierten Weltmodell. Kombinieren Sie so viele, wie Ihre Frage braucht.',
+    subheading: 'Laufende Pr\u00fcfung, skaliert nach \u00fcberwachter Oberfl\u00e4che. Kostenlos starten, upgraden sobald Sie wissen, was Sie brauchen.',
     deliveryLabel: 'Lieferung',
     domains: [
       { name: 'Intelligence',
@@ -321,14 +321,26 @@ export const DE: Content = {
         cta: 'Fordern Sie ein Engineering-Review an \u2192', delivery: 'Lieferung je nach Umfang.' },
     ],
     tiers: [
-      { name: 'Starter', price: '\u20ac99', features: ['Eine definierte Untersuchung pro Abrechnungsmonat.', 'Validierte Findings mit PoC.', 'PDF-Report.', 'Kostenloser Retest behobener Findings.'], cta: 'Starter w\u00e4hlen', stripeKey: 'review_starter' },
-      { name: 'Growth', price: '\u20ac399', popular: true, features: ['Laufende \u00dcberwachung: geplante Neupr\u00fcfung in festem Intervall innerhalb des vereinbarten Scopes.', 'Unbegrenzte Retests auf dieser Oberfl\u00e4che.', 'Validierte Findings mit PoC.'], cta: 'Growth w\u00e4hlen', stripeKey: 'review_growth' },
-      { name: 'Pro', price: '\u20ac799', features: ['Alles aus Growth.', 'Bis zu drei definierte Oberfl\u00e4chen.', 'Priorisierte Terminierung.'], cta: 'Pro w\u00e4hlen', stripeKey: 'review_pro' },
-      { name: 'Business', price: '\u20ac1.999', features: ['Alles aus Pro.', 'Bis zu zehn Oberfl\u00e4chen.', 'Dedizierter Success-Kanal.'], cta: 'Business w\u00e4hlen', stripeKey: 'review_business' },
+      { name: 'Starter', price: '\u20ac99', tagline: 'Eine Oberfl\u00e4che, auf Abruf gepr\u00fcft.', features: ['Eine definierte Untersuchung pro Abrechnungsmonat.', 'Validierte Findings mit PoC.', 'PDF-Report.', 'Kostenloser Retest behobener Findings.'], cta: 'Starter w\u00e4hlen', stripeKey: 'review_starter' },
+      { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Eine Oberfl\u00e4che, laufend beobachtet.', features: ['Laufende \u00dcberwachung: geplante Neupr\u00fcfung in festem Intervall innerhalb des vereinbarten Scopes.', 'Unbegrenzte Retests auf dieser Oberfl\u00e4che.', 'Validierte Findings mit PoC.'], cta: 'Growth w\u00e4hlen', stripeKey: 'review_growth' },
+      { name: 'Pro', price: '\u20ac799', tagline: 'Bis zu drei Oberfl\u00e4chen, gleiche Disziplin.', features: ['Alles aus Growth.', 'Bis zu drei definierte Oberfl\u00e4chen.', 'Priorisierte Terminierung.'], cta: 'Pro w\u00e4hlen', stripeKey: 'review_pro' },
+      { name: 'Business', price: '\u20ac1.999', tagline: 'Bis zu zehn Oberfl\u00e4chen, ein dedizierter Kanal.', features: ['Alles aus Pro.', 'Bis zu zehn Oberfl\u00e4chen.', 'Dedizierter Success-Kanal.'], cta: 'Business w\u00e4hlen', stripeKey: 'review_business' },
     ],
-    freeCard: { label: 'Free', price: 'Kostenlos', tagline: 'Erstpr\u00fcfung \u00b7 Self-Serve-Einstieg.' },
+    freeCard: {
+      label: 'Free', price: 'Kostenlos', tagline: 'Ein Self-Serve-Einstieg, unverbindlich.',
+      features: ['Eine Oberfl\u00e4che.', 'Read-only, externer Check.', 'Kurzer schriftlicher Report.'],
+      cta: 'Kostenlose Pr\u00fcfung starten',
+    },
     enterprise: { heading: 'Enterprise', text: 'Individuelle Oberfl\u00e4chen, MSP, Multi-Tenant-Deployments, White-Label und verhandelte SLAs. Preis auf Anfrage.', cta: 'Kontakt aufnehmen' },
     needSomethingElse: 'Etwas anderes gesucht?',
+    mostPopular: 'Beliebteste Wahl',
+    billing: {
+      monthly: 'Monatlich',
+      annual: 'J\u00e4hrlich',
+      perMonth: '/Monat',
+      annualNote: 'J\u00e4hrliche Abrechnung, rund 2 Monate gespart.',
+      annualCta: 'Jahresabrechnung anfragen',
+    },
   },
 
   modalTierBody: {
