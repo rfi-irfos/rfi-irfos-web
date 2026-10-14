@@ -81,24 +81,45 @@ one — do not block implementation on pricing being "final."
 
 ## Frontend
 
-### 1. CTA modal (replaces the `<a href="#submit">` in `AppPrivacySection.tsx`)
+### 1. The review-intake flow (`InitialReviewFlow.tsx`) — shared component, two hosts
 
-New component `InitialReviewModal.tsx`, opened from the existing CTA button
-(becomes `<button onClick={...}>` instead of an anchor).
+Live direction mid-session changed this from "popup modal" to "the flow is
+a real, always-visible widget" on the homepage, so the flow's step-1/step-2
+logic is built as one presentational-agnostic component with no modal
+chrome of its own, then mounted two different ways:
 
+- **Host A — `AppPrivacySection.tsx`, embedded inline.** The right-hand
+  column currently holds the four trust-point cards stacked above the CTA
+  button. That column is rebuilt: the trust points are compressed into a
+  slim single-row icon strip directly under the CTA area (four small icons
+  with a one-line tooltip/label each, not four full cards — reclaims most
+  of the vertical space), and the reclaimed space above it holds
+  `<InitialReviewFlow variant="embedded" />` rendered as the portrait card
+  from the mockup: "Step 1 of 2 / your domain" → "Step 2 of 2 / work email +
+  consent" right there on the page, no click needed to see it. The left
+  column (process steps 1-4, "what we examine," the evidence card) is
+  **unchanged** — confirmed separately this session, only the right column
+  is being rebuilt.
+- **Host B — `Pricing.tsx`'s Free card.** The pricing page doesn't have a
+  natural inline slot for a portrait form, so clicking the Free card there
+  opens `<InitialReviewFlow variant="modal" />` — same component, wrapped
+  in a lightweight dialog (reuse whatever modal/dialog primitive the repo
+  already uses elsewhere, e.g. the existing report-PDF modal's overlay
+  pattern in `PublicSite.tsx`, rather than introducing a new one).
 - **Step 1 of 2** — domain input (`yoursite.com`), client-side validated
   (bare hostname, strip protocol/path).
-- **Step 2 of 2** — domain shown read-only (back button returns to step 1),
+- **Step 2 of 2** — domain shown read-only (back control returns to step 1),
   work email input, required consent checkbox ("I own this domain or am
   authorized to test it, and I agree to this one read-only check. One word,
   we never look at it again — permanent opt-out."), submit button "Send my
   report, no commitment."
-- Footer inside the modal: "Nothing scans until a researcher confirms your
-  request. We reply within one business day." + the price ladder teaser
-  ("Start from €99" / "plans from €99/mo · read-only free check · ~20 min ·
-  permanent opt-out · or pick a plan") linking to `#pricing`.
+- Footer inside the flow (both hosts): "Nothing scans until a researcher
+  confirms your request. We reply within one business day." + the price
+  ladder teaser ("Start from €99" / "plans from €99/mo · read-only free
+  check · ~20 min · permanent opt-out · or pick a plan") linking to
+  `#pricing`.
 - The free check's own scope must be stated, not implied: the result copy
-  (both the modal's post-submit confirmation and the eventual human-sent
+  (both the flow's post-submit confirmation and the eventual human-sent
   report) says explicitly "external, read-only signal check — not a source
   code review, and not a statement that the application is secure." This is
   a correctness requirement, not polish — the free check only ever sees
@@ -107,8 +128,6 @@ New component `InitialReviewModal.tsx`, opened from the existing CTA button
   approval gate verifies authorization is plausible before any check runs,
   but it is self-attestation, not proof of ownership, and the report must
   not read as if it were.
-- The pricing page's "Free" card (see below) opens this same modal — one
-  component, two entry points (the homepage CTA and the pricing page).
 - Submits `POST /api/initial-review`. Reuses the honeypot + rate-limit
   pattern from `contact.rs`/`Submit.tsx`. Same three-state (idle/sending/
   ok/err) UI and mailto fallback pattern as `SubmitSection`'s form on error.
@@ -122,8 +141,8 @@ top to bottom, connected visually (a down-arrow between sections, not five
 independent blocks competing for attention):
 
 1. **Free card** (full-width, standalone, top of the section) — "Free · €0 ·
-   Initial review · Self-serve entry point." Clicking it opens the same
-   `InitialReviewModal` the homepage CTA opens (see above) rather than
+   Initial review · Self-serve entry point." Clicking it opens
+   `<InitialReviewFlow variant="modal" />` (Host B, see above) rather than
    scrolling to a form.
 2. ↓ arrow connector.
 3. **4-column tier grid** (stacks to 1 column on mobile, same `useMobile`
