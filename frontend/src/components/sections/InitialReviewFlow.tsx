@@ -60,7 +60,6 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
         </div>
         <span style={{ fontSize: 10.5, fontWeight: 800, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.1)', padding: '4px 10px', borderRadius: 999, whiteSpace: 'nowrap' }}>{c.badge}</span>
       </div>
-      <h3 style={{ fontSize: 17, fontWeight: 800, color: 'var(--text)', margin: 0, lineHeight: 1.3 }}>{c.introHeading}</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {c.introText.map((para, i) => (
           <p key={i} style={{ fontSize: 12.5, color: 'var(--text)', lineHeight: 1.55, margin: 0 }}>{para}</p>

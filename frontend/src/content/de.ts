@@ -262,9 +262,8 @@ export const DE: Content = {
 
   initialReview: {
     badge: 'Kostenloser Check',
-    introTitle: 'RFI-IRFOS Review',
-    introSubtitle: 'Evidenzbasiert · Read-only · Menschlich verifiziert.',
-    introHeading: 'Finden Sie heraus, was Ihre Security-Tools übersehen könnten.',
+    introTitle: 'Website-Live-Test',
+    introSubtitle: 'Finden Sie heraus, was Ihre Security-Tools übersehen könnten.',
     introText: [
       'Wir prüfen, welche sicherheitsrelevanten Informationen Ihre Anwendung von außen preisgibt. Der erste Check erfolgt ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ihre Systeme bleiben dabei unverändert.',
       'Bevor die Prüfung beginnt, bestätigt ein Researcher Ihre Anfrage. Innerhalb eines Werktags melden wir uns bei Ihnen. Sie erhalten einen kurzen schriftlichen Report mit unseren Beobachtungen, möglichen Angriffsszenarien, einer fachlichen Einschätzung der potenziellen wirtschaftlichen Schäden und konkreten Empfehlungen für die nächsten Schritte.',

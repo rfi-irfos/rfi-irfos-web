@@ -269,9 +269,8 @@ export const EN = {
 
   initialReview: {
     badge: 'Free check',
-    introTitle: 'RFI-IRFOS Review',
-    introSubtitle: 'Evidence-backed · Read-only · Human-verified.',
-    introHeading: 'Find out what your security tools might be missing.',
+    introTitle: 'Website Live Testing',
+    introSubtitle: 'Find out what your security tools might be missing.',
     introText: [
       'We examine what your application reveals from the outside. The initial check is read-only, performed from a European IP address, with no login and no payloads. Your systems remain unchanged.',
       "A researcher reviews and approves your request before any checks begin. We'll get back to you within one business day. You'll receive a short written report covering our observations, potential attack scenarios, an expert assessment of the potential financial impact, and concrete recommendations for what to do next.",
