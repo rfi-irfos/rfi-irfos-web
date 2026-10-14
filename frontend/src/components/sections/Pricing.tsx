@@ -41,6 +41,7 @@ import { EngagementFlow, Reveal, useMobile } from './shared'
 import { useLocale, type Locale } from '../../hooks/useLocale'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 
 type PricingDomain = {
   name: string; badge: string; scope: string
@@ -80,11 +81,21 @@ function TierCard({
           <span style={{ fontSize: 10.5, fontWeight: 800, color: '#f97316', letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{t.pricing.mostPopular}</span>
         )}
       </div>
-      <div>
-        <span style={{ fontSize: 36, fontWeight: 800, color: 'var(--text)' }}>{billing === 'monthly' ? tier.price : annualPrice(tier.price, locale)}</span>
-        <span style={{ fontSize: 14, color: 'var(--text3)' }}> {billing === 'monthly' ? b.perMonth : `/${b.annual.toLowerCase()}`}</span>
+      <div style={{ overflow: 'hidden' }}>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={billing}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+          >
+            <span style={{ fontSize: 36, fontWeight: 800, color: 'var(--text)' }}>{billing === 'monthly' ? tier.price : annualPrice(tier.price, locale)}</span>
+            <span style={{ fontSize: 14, color: 'var(--text3)' }}> {billing === 'monthly' ? b.perMonth : `/${b.annual.toLowerCase()}`}</span>
+          </motion.div>
+        </AnimatePresence>
       </div>
-      <p style={{ fontSize: 14, color: 'var(--text2)', margin: 0, lineHeight: 1.55 }}>{tier.tagline}</p>
+      <p style={{ fontSize: 14, color: 'var(--text2)', margin: 0, lineHeight: 1.55, minHeight: 44 }}>{tier.tagline}</p>
       <div style={{ borderTop: '1px solid var(--border)', margin: '4px 0 6px' }} />
       <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 11, flex: 1 }}>
         {tier.features.map(f => (
@@ -93,9 +104,17 @@ function TierCard({
           </li>
         ))}
       </ul>
-      {billing === 'annual' && (
-        <p style={{ fontSize: 11.5, color: 'var(--text3)', margin: 0 }}>{b.annualNote}</p>
-      )}
+      <AnimatePresence initial={false}>
+        {billing === 'annual' && (
+          <motion.p
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+            style={{ fontSize: 11.5, color: 'var(--text3)', margin: 0, overflow: 'hidden' }}
+          >{b.annualNote}</motion.p>
+        )}
+      </AnimatePresence>
       <button
         type="button"
         onClick={() => billing === 'monthly' ? onCheckout(tier.stripeKey) : onSelectTier(`${tier.name} (${b.annual})`)}
@@ -118,7 +137,7 @@ function FreeTierCard({ onOpen }: { onOpen: () => void }) {
       <div>
         <span style={{ fontSize: 36, fontWeight: 800, color: 'var(--text)' }}>{f.price}</span>
       </div>
-      <p style={{ fontSize: 14, color: 'var(--text2)', margin: 0, lineHeight: 1.55 }}>{f.tagline}</p>
+      <p style={{ fontSize: 14, color: 'var(--text2)', margin: 0, lineHeight: 1.55, minHeight: 44 }}>{f.tagline}</p>
       <div style={{ borderTop: '1px solid var(--border)', margin: '4px 0 6px' }} />
       <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 11, flex: 1 }}>
         {f.features.map(feat => (
@@ -140,14 +159,21 @@ function BillingToggle({ billing, onChange }: { billing: 'monthly' | 'annual'; o
   const b = t.pricing.billing
   const opt = (value: 'monthly' | 'annual', label: string, borderLeft: boolean) => (
     <button type="button" onClick={() => onChange(value)} style={{
-      background: billing === value ? '#f97316' : 'transparent',
+      position: 'relative', zIndex: 1,
+      background: 'transparent',
       color: billing === value ? '#1a0f00' : 'var(--text2)',
       border: 'none', borderLeft: borderLeft ? '1px solid var(--border)' : 'none',
       padding: '12px 24px', fontWeight: 800, fontSize: 12.5, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer',
+      transition: 'color 0.2s ease',
     }}>{label}</button>
   )
   return (
-    <div style={{ display: 'inline-flex', border: '1px solid var(--border)', borderRadius: 6, overflow: 'hidden' }}>
+    <div style={{ position: 'relative', display: 'inline-flex', border: '1px solid var(--border)', borderRadius: 6, overflow: 'hidden' }}>
+      <motion.div
+        animate={{ left: billing === 'monthly' ? '0%' : '50%' }}
+        transition={{ duration: 0.22, ease: 'easeOut' }}
+        style={{ position: 'absolute', top: 0, bottom: 0, width: '50%', background: '#f97316' }}
+      />
       {opt('monthly', b.monthly, false)}
       {opt('annual', b.annual, true)}
     </div>
@@ -193,7 +219,7 @@ export function PricingSection({
           </div>
         </Reveal>
 
-        <div style={{ maxWidth: 1400, margin: '0 auto' }}>
+        <div style={{ maxWidth: 1900, margin: '0 auto' }}>
           <Reveal>
             <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 20 }}>
               <BillingToggle billing={billing} onChange={setBilling} />
