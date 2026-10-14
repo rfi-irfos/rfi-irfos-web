@@ -210,34 +210,35 @@ function SquadOverview({
 // Fixed pixel layout for the flow diagram below (viewBox 0 0 1200 480) - box
 // positions and which arrow connects to which are hardcoded here (not
 // translatable, only the box content is), keyed by the same icon id used in
-// content/en.ts+de.ts howItConnects.zones[].steps[].icon. Rejected first cut
-// (live feedback 2026-09-07: "this is a disjointed element... one table, one
-// widget all together... an actual diagram") was four separate cards side by
-// side with a plain chevron between them - no visible connection between any
-// specific box and any other. Rejected second cut (live feedback 2026-10-14:
-// "lame... ohne clickable popups, lieber den text in der box") was click-to-
-// reveal detail popovers with title-only boxes. This version puts full title +
-// body text directly in every box, and makes the old "Connect" zone's three
-// integration paths (MCP, CLI, Dashboard) explicit entry points into one named
-// "Agent OS" hub node, which then exchanges work with the squad through two
-// arrows in opposite directions - one out (delegation), one back (verified
-// results) - instead of a single one-way fan-in.
+// content/en.ts+de.ts howItConnects.zones[].steps[].icon. Rejected cuts, in
+// order (live feedback quoted): 2026-09-07 "this is a disjointed element...
+// an actual diagram" (four cards + a chevron, no visible wiring); 2026-10-14
+// "lame... ohne clickable popups, lieber den text in der box" (click-to-reveal
+// detail popovers); 2026-10-14 "should it be not 5 boxes total..? cause the
+// agent os is a standalone thingy" -> "5 gleichwertige zonen" (Agent OS
+// crammed into the same zone as its three entry points, instead of getting
+// its own equal-weight column). This version: five equal-width zones -
+// Your Systems, Connect (the three entry points), Agent OS (standalone hub),
+// The Squad, Verified Delivery - full title+body text in every box, and the
+// hub exchanges work with the squad through two opposite-direction arrows
+// (delegate out, verified results back) instead of a one-way fan-in.
 const HIC_BOX: Record<string, { x: number; y: number; w: number; h: number }> = {
-  data:       { x: 20,  y: 135, w: 170, h: 130 },
-  mcp:        { x: 250, y: 20,  w: 170, h: 110 },
-  cli:        { x: 250, y: 145, w: 170, h: 110 },
-  dashboard:  { x: 250, y: 270, w: 170, h: 110 },
-  hub:        { x: 460, y: 135, w: 180, h: 130 },
-  process:    { x: 695, y: 40,  w: 200, h: 150 },
-  crosscheck: { x: 695, y: 210, w: 200, h: 150 },
-  deliver:    { x: 955, y: 40,  w: 200, h: 150 },
-  act:        { x: 955, y: 210, w: 200, h: 150 },
+  data:       { x: 25,   y: 135, w: 190, h: 130 },
+  mcp:        { x: 265,  y: 20,  w: 190, h: 110 },
+  cli:        { x: 265,  y: 145, w: 190, h: 110 },
+  dashboard:  { x: 265,  y: 270, w: 190, h: 110 },
+  hub:        { x: 505,  y: 135, w: 190, h: 130 },
+  process:    { x: 745,  y: 60,  w: 190, h: 150 },
+  crosscheck: { x: 745,  y: 230, w: 190, h: 150 },
+  deliver:    { x: 985,  y: 60,  w: 190, h: 150 },
+  act:        { x: 985,  y: 230, w: 190, h: 150 },
 }
 const HIC_ZONE_BANDS = [
-  { x: 10,  w: 190 },
-  { x: 230, w: 420 },
-  { x: 680, w: 230 },
-  { x: 940, w: 230 },
+  { x: 10,  w: 220 },
+  { x: 250, w: 220 },
+  { x: 490, w: 220 },
+  { x: 730, w: 220 },
+  { x: 970, w: 220 },
 ]
 // Explicit orthogonal waypoints per arrow, NOT computed diagonals (live feedback
 // 2026-09-07: "welcher pfeil geht wohin... diesen chaotischen pfeilen... lieber
@@ -249,18 +250,18 @@ const HIC_ZONE_BANDS = [
 // feedback loop at the bottom. `delay` groups arrows into pipeline stages so a
 // pulse visibly splits/merges at each junction instead of staggering box by box.
 const HIC_ARROWS: { id: string; pts: [number, number][]; delay: number; feedback?: boolean; return?: boolean }[] = [
-  { id: 'data-mcp',        pts: [[190, 200], [215, 200], [215, 75], [250, 75]], delay: 0 },
-  { id: 'data-cli',        pts: [[190, 200], [250, 200]], delay: 0 },
-  { id: 'data-dashboard',  pts: [[190, 200], [215, 200], [215, 325], [250, 325]], delay: 0 },
-  { id: 'mcp-hub',         pts: [[420, 75], [440, 75], [440, 200], [460, 200]], delay: 0.6 },
-  { id: 'cli-hub',         pts: [[420, 200], [460, 200]], delay: 0.6 },
-  { id: 'dashboard-hub',   pts: [[420, 325], [440, 325], [440, 200], [460, 200]], delay: 0.6 },
-  { id: 'hub-process',     pts: [[640, 175], [665, 175], [665, 115], [695, 115]], delay: 1.2 },
-  { id: 'process-cross',   pts: [[795, 190], [795, 210]], delay: 1.7 },
-  { id: 'cross-hub',       pts: [[695, 285], [665, 285], [665, 225], [640, 225]], delay: 2.1, return: true },
-  { id: 'cross-deliver',   pts: [[895, 285], [920, 285], [920, 115], [955, 115]], delay: 2.1 },
-  { id: 'deliver-act',     pts: [[1055, 190], [1055, 210]], delay: 2.6 },
-  { id: 'act-data',        pts: [[1055, 360], [1055, 440], [105, 440], [105, 265]], delay: 3, feedback: true },
+  { id: 'data-mcp',        pts: [[215, 200], [240, 200], [240, 75], [265, 75]], delay: 0 },
+  { id: 'data-cli',        pts: [[215, 200], [265, 200]], delay: 0 },
+  { id: 'data-dashboard',  pts: [[215, 200], [240, 200], [240, 325], [265, 325]], delay: 0 },
+  { id: 'mcp-hub',         pts: [[455, 75], [480, 75], [480, 200], [505, 200]], delay: 0.6 },
+  { id: 'cli-hub',         pts: [[455, 200], [505, 200]], delay: 0.6 },
+  { id: 'dashboard-hub',   pts: [[455, 325], [480, 325], [480, 200], [505, 200]], delay: 0.6 },
+  { id: 'hub-process',     pts: [[695, 175], [720, 175], [720, 135], [745, 135]], delay: 1.2 },
+  { id: 'process-cross',   pts: [[840, 210], [840, 230]], delay: 1.7 },
+  { id: 'cross-hub',       pts: [[745, 305], [712, 305], [712, 225], [695, 225]], delay: 2.1, return: true },
+  { id: 'cross-deliver',   pts: [[935, 305], [960, 305], [960, 135], [985, 135]], delay: 2.1 },
+  { id: 'deliver-act',     pts: [[1080, 210], [1080, 230]], delay: 2.6 },
+  { id: 'act-data',        pts: [[1080, 380], [1080, 440], [120, 440], [120, 265]], delay: 3, feedback: true },
 ]
 
 // Real technical diagram (live feedback 2026-09-07, reference: a Dialogflow-style
