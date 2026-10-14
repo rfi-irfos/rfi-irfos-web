@@ -42,19 +42,42 @@ CTAs that sit underneath the subscription product rather than next to it.
   state-changing requests). Read-only GETs and passive inspection only — the
   consent checkbox grants exactly "this one read-only check."
 
-## Pricing (placeholder numbers, ≥20% below the mockup Simeon shared)
+## Pricing (placeholder numbers — Starter kept at €99 on Simeon's call, "looks
+better" than the 20%-off €79; Growth/Pro/Business stay ≥20% below the
+original mockup)
 
-| Tier     | Price/mo | Surfaces        | Notable features |
+| Tier     | Price/mo | Surfaces        | Service level (exact commitment, not vibes) |
 |----------|---------:|-----------------|-------------------|
-| Free     |       €0 | 1 web app + API | 1 initial review / month, self-serve, no card |
-| Starter  |      €79 | 1 web app + API | 1 deep hunt/month, validated findings w/ PoC, PDF report, free retest |
-| Growth   |     €399 | 1 web app + API | Continuous standing hunt, release-triggered pass, unlimited retests (**Most Popular**) |
-| Pro      |     €799 | up to 3 surfaces| Continuous standing hunt, priority scheduling, everything in Growth |
-| Business |   €1,999 | up to 10 surfaces| Dedicated success channel, everything in Pro |
+| Free     |       €0 | 1 web app + API | One bounded, read-only external check. Self-serve entry point. |
+| Starter  |      €99 | 1 web app + API | One defined investigation per billing month. Validated findings w/ PoC, PDF report, free retest of fixed findings. |
+| Growth   |     €399 | 1 web app + API | Continuous monitoring: scheduled re-examination at a fixed interval within the agreed scope (see "Continuous monitoring mechanics" below), plus unlimited retests. (**Most Popular**) |
+| Pro      |     €799 | up to 3 surfaces| Everything in Growth, covering up to three defined surfaces, with priority scheduling. |
+| Business |   €1,999 | up to 10 surfaces| Everything in Pro, covering up to ten surfaces, with a dedicated success channel. |
 | Enterprise | custom | multi-tenant / MSP / white-label | "Talk to us", price in writing |
 
 These are illustrative; final numbers are a copy change, not a structural
 one — do not block implementation on pricing being "final."
+
+### Continuous monitoring mechanics (what "continuous" actually commits to)
+
+"Continuous" must not be an ambiguous promise. For v1, continuous means a
+**scheduled interval scan**, not release-triggered CI/CD integration:
+
+- Each Growth+ subscription gets a recurring background job (same
+  `run_scan` task the free/Starter flow uses) that re-runs on a fixed
+  interval — default once per day, tunable down to every 30 minutes for
+  higher tiers if scope requires it. This is cron-like scheduling inside
+  the existing backend (e.g. a `tokio::time::interval` loop per active
+  subscription, or a single sweep task that walks due subscriptions), not
+  a new scheduling service.
+- "Release-triggered examination" (a customer wiring a deploy webhook that
+  kicks off an immediate scan) is explicitly **out of scope for v1** — it
+  needs a customer-facing webhook endpoint, a per-subscription auth token,
+  and integration docs, which is its own project. Do not promise
+  "release-triggered" in shipped copy until that exists; v1 copy says
+  "continuous monitoring on a fixed schedule within the agreed scope,"
+  matching what actually runs. Webhook triggering is a documented future
+  phase, not a silent gap.
 
 ## Frontend
 
@@ -72,8 +95,20 @@ New component `InitialReviewModal.tsx`, opened from the existing CTA button
   report, no commitment."
 - Footer inside the modal: "Nothing scans until a researcher confirms your
   request. We reply within one business day." + the price ladder teaser
-  ("Start from €79" / "plans from €79/mo · read-only free check · ~20 min ·
+  ("Start from €99" / "plans from €99/mo · read-only free check · ~20 min ·
   permanent opt-out · or pick a plan") linking to `#pricing`.
+- The free check's own scope must be stated, not implied: the result copy
+  (both the modal's post-submit confirmation and the eventual human-sent
+  report) says explicitly "external, read-only signal check — not a source
+  code review, and not a statement that the application is secure." This is
+  a correctness requirement, not polish — the free check only ever sees
+  what's reachable from the outside, so claiming more would misrepresent
+  what was actually done. Same reasoning as the consent checkbox: the
+  approval gate verifies authorization is plausible before any check runs,
+  but it is self-attestation, not proof of ownership, and the report must
+  not read as if it were.
+- The pricing page's "Free" card (see below) opens this same modal — one
+  component, two entry points (the homepage CTA and the pricing page).
 - Submits `POST /api/initial-review`. Reuses the honeypot + rate-limit
   pattern from `contact.rs`/`Submit.tsx`. Same three-state (idle/sending/
   ok/err) UI and mailto fallback pattern as `SubmitSection`'s form on error.
@@ -82,27 +117,41 @@ New component `InitialReviewModal.tsx`, opened from the existing CTA button
 
 ### 2. Pricing section rewrite (`Pricing.tsx`)
 
-Drop the sticky card-stack entirely. New layout:
+Drop the sticky card-stack entirely. The section sells **one progression**,
+top to bottom, connected visually (a down-arrow between sections, not five
+independent blocks competing for attention):
 
-- 4-column responsive grid (stacks to 1 column on mobile, same `useMobile`
-  breakpoint pattern already in the file) of tier cards: name, price, one-
-  line pitch, feature bullet list, CTA button. "Growth" gets the existing
-  `rfi-cta-pulse`/orange treatment as "Most Popular."
-- Each paid tier's CTA goes through the existing Stripe checkout flow
-  (`onSelectTier` → `create_checkout`), not the contact form.
-- Enterprise band below the grid: "Custom surface, MSP, or SLA" + "Talk to
-  us" → existing contact flow with topic pre-filled.
-- Below that, a slim "Need something else?" row with the four remaining
-  domains (Intelligence / Data / Business & Market / Engineering) as compact
-  text links/menu items, each still routing into the existing contact form
-  with that domain pre-filled as topic (`onSelectTier(domain.name)`,
-  unchanged mechanism) — same conversion path as today, just visually
-  demoted from five equal hero cards to a secondary list.
+1. **Free card** (full-width, standalone, top of the section) — "Free · €0 ·
+   Initial review · Self-serve entry point." Clicking it opens the same
+   `InitialReviewModal` the homepage CTA opens (see above) rather than
+   scrolling to a form.
+2. ↓ arrow connector.
+3. **4-column tier grid** (stacks to 1 column on mobile, same `useMobile`
+   breakpoint pattern already in the file): Starter/Growth/Pro/Business —
+   name, price, the exact service-level sentence from the pricing table
+   above (not a vague "continuous standing hunt"), feature bullets, CTA
+   button. "Growth" keeps the existing `rfi-cta-pulse`/orange treatment as
+   "Most Popular." Each paid tier's CTA goes through the existing Stripe
+   checkout flow (`onSelectTier` → `create_checkout`), not the contact form.
+4. **Enterprise band** directly below the grid, same visual container
+   family: "Custom surface, MSP, or SLA" + "Talk to us" → existing contact
+   flow with topic pre-filled.
+5. **"Need something else?" row** below that: "Intelligence · Data ·
+   Business & Market · Engineering" as compact text links/menu items, each
+   still routing into the existing contact form with that domain pre-filled
+   as topic (`onSelectTier(domain.name)`, unchanged mechanism) — same
+   conversion path as today, just visually demoted from five equal hero
+   cards to a secondary list. This is the second commercial motion
+   (custom-scoped intelligence/engineering engagements) sitting underneath
+   the first (productized, self-serve AppSec subscription) rather than
+   beside it, so a visitor resolves "what do I buy" before "what kind of
+   company is this."
 - `t.pricing` content restructured: new `t.pricing.tiers` array (name,
-  price, pitch, features[], cta, popular?) replaces reliance on `domains`
-  for the hero grid; `t.pricing.domains` is kept but only rendered in the
-  secondary "need something else" list (drop `bring`/`we`/`receive` from
-  that list's rendering, keep the data for a future deep-link if needed).
+  price, serviceLevel, features[], cta, popular?) replaces reliance on
+  `domains` for the hero grid; `t.pricing.domains` is kept but only
+  rendered in the secondary "need something else" list (drop
+  `bring`/`we`/`receive` from that list's rendering, keep the data for a
+  future deep-link if needed).
 
 ## Backend
 
@@ -180,6 +229,48 @@ beyond exposing the stored signals somewhere a human can read them — the
 admin panel list view is sufficient for v1; a nicer formatted detail page
 can follow later if this flow gets real usage.
 
+### Recurring scans for paid subscriptions (Growth/Pro/Business)
+
+This is additional scope beyond the one-off free/Starter flow above — paid
+tiers need the *same* `run_scan` logic, but re-run on a schedule for as long
+as the subscription is active, not just once after approval.
+
+New table:
+
+```sql
+CREATE TABLE IF NOT EXISTS review_subscriptions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  domain TEXT NOT NULL,
+  email TEXT NOT NULL,
+  tier TEXT NOT NULL,              -- review_starter | review_growth | review_pro | review_business
+  stripe_subscription_id TEXT NOT NULL,
+  interval_minutes INTEGER NOT NULL DEFAULT 1440, -- default daily; tunable per tier/scope
+  status TEXT NOT NULL DEFAULT 'active', -- active | paused | cancelled
+  last_scanned_at DATETIME,
+  created_at DATETIME NOT NULL DEFAULT (datetime('now'))
+)
+```
+
+- Row created by the Stripe webhook's `checkout.session.completed` handler
+  (`stripe.rs`) when `tier` starts with `review_` and is recurring — same
+  place that already logs the paid event, extended to also insert here.
+- A single background sweep task (started once in `main.rs` alongside the
+  existing DB setup, `tokio::spawn(scan_scheduler(state))`) wakes on a short
+  fixed tick (e.g. every 5 minutes), finds subscriptions where `status =
+  'active'` and `now - last_scanned_at >= interval_minutes`, and spawns
+  `run_scan` for each due domain, writing results into a new `signals`-
+  shaped row (reuse the same scan function and output shape as
+  `initial_reviews`, just keyed by subscription instead of one-off request).
+  One sweep task, not one timer per subscription — simpler to reason about
+  and cheap enough at the scale this product will plausibly have in year
+  one.
+- Cancellation: Stripe's `customer.subscription.deleted` webhook event
+  (not currently handled in `stripe.rs` — needs a new match arm) sets
+  `status = 'cancelled'`, which the sweep task's query already excludes.
+- Still no automated email of results — the sweep writes signals, ntfy
+  pings once per completed scan, a human/Claude reviews before anything
+  goes out. Same non-goal as the free flow, now also true for paid ones.
+
 ### Stripe (`stripe.rs`)
 
 Add four `tier_info` entries, all `recurring: true`, `interval: month`:
@@ -210,6 +301,13 @@ bespoke domains keep using the contact-form path, not Stripe, matching how
   exploration — confirm before writing a new pattern from scratch).
 - Verify Stripe checkout for all four new tiers in test mode before going
   live (existing `stripe:test-cards` skill).
+- `scan_scheduler` sweep: test with a fake clock or an injectable
+  `interval_minutes` of 0 so a unit test can assert a due subscription gets
+  picked up without a real wait; assert a non-due (`status='paused'` or
+  recently-scanned) subscription is skipped.
+- Webhook: add a test for `customer.subscription.deleted` setting
+  `review_subscriptions.status = 'cancelled'`, mirroring the existing
+  `checkout.session.completed` handling already in `stripe.rs`.
 
 ## Rollout
 
