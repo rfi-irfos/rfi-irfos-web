@@ -1,7 +1,9 @@
-use axum::{extract::State, http::{HeaderMap, StatusCode}, response::IntoResponse, Json};
-use serde::Deserialize;
+use axum::{extract::{Path, State}, http::{HeaderMap, StatusCode}, response::IntoResponse, Json};
+use axum_extra::extract::cookie::CookieJar;
+use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, sync::{Mutex, OnceLock}, time::Instant};
 
+use crate::auth::get_session;
 use crate::AppState;
 
 static REVIEW_RATE_LIMITER: OnceLock<Mutex<HashMap<String, Vec<Instant>>>> = OnceLock::new();
@@ -127,6 +129,214 @@ async fn notify_new_request(domain: &str, email: &str) {
         .send().await;
 }
 
+#[derive(Serialize)]
+pub struct Signal {
+    pub category: &'static str,
+    pub flag: bool,
+    pub detail: String,
+    pub confidence: &'static str,
+}
+
+#[derive(Serialize)]
+struct ReviewRow {
+    id: i64,
+    domain: String,
+    email: String,
+    status: String,
+    signals: Option<String>,
+    created_at: String,
+}
+
+pub async fn list_reviews(State(state): State<AppState>, jar: CookieJar) -> impl IntoResponse {
+    if get_session(&jar, &state).is_none() {
+        return StatusCode::UNAUTHORIZED.into_response();
+    }
+    let rows: Vec<(i64, String, String, String, Option<String>, String)> = match sqlx::query_as(
+        "SELECT id, domain, email, status, signals, created_at FROM initial_reviews ORDER BY created_at DESC"
+    ).fetch_all(&state.db).await {
+        Ok(r) => r,
+        Err(e) => { tracing::error!("list_reviews query failed: {e}"); return StatusCode::INTERNAL_SERVER_ERROR.into_response(); }
+    };
+    let out: Vec<ReviewRow> = rows.into_iter()
+        .map(|(id, domain, email, status, signals, created_at)| ReviewRow { id, domain, email, status, signals, created_at })
+        .collect();
+    Json(out).into_response()
+}
+
+pub async fn approve_review(
+    State(state): State<AppState>, jar: CookieJar, Path(id): Path<i64>,
+) -> impl IntoResponse {
+    if get_session(&jar, &state).is_none() {
+        return StatusCode::UNAUTHORIZED.into_response();
+    }
+    let domain: Option<(String,)> = sqlx::query_as(
+        "SELECT domain FROM initial_reviews WHERE id = ? AND status = 'pending_approval'"
+    ).bind(id).fetch_optional(&state.db).await.unwrap_or(None);
+    let Some((domain,)) = domain else {
+        return (StatusCode::NOT_FOUND, "no pending request with that id").into_response();
+    };
+    if let Err(e) = sqlx::query(
+        "UPDATE initial_reviews SET status = 'approved', approved_at = datetime('now') WHERE id = ?"
+    ).bind(id).execute(&state.db).await {
+        tracing::error!("approve update failed: {e}");
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+    }
+    let db = state.db.clone();
+    tokio::spawn(run_scan(db, id, domain));
+    StatusCode::OK.into_response()
+}
+
+pub async fn reject_review(
+    State(state): State<AppState>, jar: CookieJar, Path(id): Path<i64>,
+) -> impl IntoResponse {
+    if get_session(&jar, &state).is_none() {
+        return StatusCode::UNAUTHORIZED.into_response();
+    }
+    match sqlx::query("UPDATE initial_reviews SET status = 'rejected' WHERE id = ?")
+        .bind(id).execute(&state.db).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => { tracing::error!("reject update failed: {e}"); StatusCode::INTERNAL_SERVER_ERROR.into_response() }
+    }
+}
+
+fn http_client() -> reqwest::Client {
+    reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(8))
+        .redirect(reqwest::redirect::Policy::limited(3))
+        .build()
+        .expect("build scan http client")
+}
+
+/// GETs a fixed list of common-exposure paths and expects 404. A 200 is a
+/// flag, not proof of a vulnerability — the report-writing human verifies.
+async fn check_exposed_paths(base: &str) -> Signal {
+    const PATHS: &[&str] = &["/.env", "/.git/config", "/wp-config.php.bak", "/.aws/credentials"];
+    let client = http_client();
+    let mut hits = Vec::new();
+    for path in PATHS {
+        if let Ok(res) = client.get(format!("{base}{path}")).send().await {
+            if res.status().is_success() { hits.push(path.to_string()); }
+        }
+    }
+    Signal {
+        category: "architecture_attack_surface",
+        flag: !hits.is_empty(),
+        detail: if hits.is_empty() { "No common exposure paths returned 200.".into() }
+                else { format!("Paths returning 200: {}", hits.join(", ")) },
+        confidence: "high",
+    }
+}
+
+async fn check_security_headers(base: &str) -> Signal {
+    let client = http_client();
+    let Ok(res) = client.get(base).send().await else {
+        return Signal { category: "tls_security_headers", flag: false, detail: "Homepage did not respond within timeout.".into(), confidence: "low" };
+    };
+    let headers = res.headers();
+    let mut missing = Vec::new();
+    for h in ["content-security-policy", "strict-transport-security", "x-frame-options"] {
+        if !headers.contains_key(h) { missing.push(h); }
+    }
+    Signal {
+        category: "tls_security_headers",
+        flag: !missing.is_empty(),
+        detail: if missing.is_empty() { "CSP, HSTS and X-Frame-Options all present.".into() }
+                else { format!("Missing headers: {}", missing.join(", ")) },
+        confidence: "high",
+    }
+}
+
+async fn check_dns_mail_security(domain: &str) -> Signal {
+    let resolver_result = tokio::net::lookup_host(format!("{domain}:443")).await;
+    Signal {
+        category: "dns_mail_security",
+        flag: resolver_result.is_err(),
+        detail: match resolver_result {
+            Ok(_) => "Domain resolves. SPF/DKIM/DMARC TXT lookups are a later enhancement (needs a DNS TXT resolver dependency, not yet added).".into(),
+            Err(e) => format!("Domain did not resolve: {e}"),
+        },
+        confidence: "low",
+    }
+}
+
+async fn check_data_protection(base: &str) -> Signal {
+    let client = http_client();
+    let Ok(res) = client.get(base).send().await else {
+        return Signal { category: "data_protection", flag: false, detail: "Homepage did not respond within timeout.".into(), confidence: "low" };
+    };
+    let body = res.text().await.unwrap_or_default().to_lowercase();
+    let has_privacy_link = body.contains("privacy") || body.contains("datenschutz");
+    Signal {
+        category: "data_protection",
+        flag: !has_privacy_link,
+        detail: if has_privacy_link { "A privacy/Datenschutz link was found on the homepage.".into() }
+                else { "No privacy/Datenschutz link found on the homepage.".into() },
+        confidence: "low",
+    }
+}
+
+async fn check_consumer_protection(base: &str) -> Signal {
+    let client = http_client();
+    let Ok(res) = client.get(base).send().await else {
+        return Signal { category: "consumer_protection", flag: false, detail: "Homepage did not respond within timeout.".into(), confidence: "low" };
+    };
+    let body = res.text().await.unwrap_or_default().to_lowercase();
+    let pre_checked = body.contains("checked") && (body.contains("subscribe") || body.contains("newsletter"));
+    Signal {
+        category: "consumer_protection",
+        flag: pre_checked,
+        detail: if pre_checked { "Possible pre-checked subscribe/newsletter checkbox pattern detected (static heuristic, low confidence — verify manually).".into() }
+                else { "No pre-checked subscribe/newsletter pattern detected.".into() },
+        confidence: "low",
+    }
+}
+
+async fn check_payment_surface(base: &str) -> Signal {
+    let client = http_client();
+    let Ok(res) = client.get(base).send().await else {
+        return Signal { category: "payment_surface", flag: false, detail: "Homepage did not respond within timeout.".into(), confidence: "low" };
+    };
+    let https = base.starts_with("https://");
+    let body = res.text().await.unwrap_or_default().to_lowercase();
+    let has_payment_sdk = body.contains("stripe.com") || body.contains("paypal.com") || body.contains("adyen");
+    Signal {
+        category: "payment_surface",
+        flag: has_payment_sdk && !https,
+        detail: format!("Payment SDK reference detected: {has_payment_sdk}. Served over HTTPS: {https}."),
+        confidence: "medium",
+    }
+}
+
+async fn run_scan(db: sqlx::SqlitePool, id: i64, domain: String) {
+    let base = format!("https://{domain}");
+    let signals = vec![
+        check_exposed_paths(&base).await,
+        check_security_headers(&base).await,
+        check_dns_mail_security(&domain).await,
+        check_data_protection(&base).await,
+        check_consumer_protection(&base).await,
+        check_payment_surface(&base).await,
+    ];
+    let signals_json = serde_json::to_string(&signals).unwrap_or_else(|_| "[]".into());
+    if let Err(e) = sqlx::query(
+        "UPDATE initial_reviews SET status = 'scanned', scanned_at = datetime('now'), signals = ? WHERE id = ?"
+    ).bind(&signals_json).bind(id).execute(&db).await {
+        tracing::error!("run_scan update failed for id {id}: {e}");
+        return;
+    }
+    notify_scan_complete(&domain).await;
+}
+
+async fn notify_scan_complete(domain: &str) {
+    let Ok(client) = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(5)).build() else { return };
+    let _ = client
+        .post("https://ntfy.sh/rfi-irfos-web-contact")
+        .header("Title", "Initial review scan complete")
+        .body(format!("domain={domain} — signals ready, review before sending a report"))
+        .send().await;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -247,5 +457,46 @@ mod tests {
             "SELECT COUNT(*) FROM initial_reviews WHERE domain = 'foo.com' AND status = 'pending_approval'"
         ).fetch_one(&db).await.unwrap();
         assert_eq!(count.0, 1);
+    }
+
+    #[tokio::test]
+    async fn approve_without_session_is_unauthorized() {
+        let state = test_state().await;
+        sqlx::query("INSERT INTO initial_reviews (domain, email) VALUES ('foo.com', 'a@b.com')")
+            .execute(&state.db).await.unwrap();
+        let app = Router::new()
+            .route("/api/initial-review/:id/approve", post(approve_review))
+            .with_state(state);
+        let res = app.oneshot(Request::builder()
+            .method("POST").uri("/api/initial-review/1/approve")
+            .body(Body::empty()).unwrap())
+            .await.unwrap();
+        assert_eq!(res.status(), StatusCode::UNAUTHORIZED);
+    }
+
+    #[tokio::test]
+    async fn architecture_signal_flags_exposed_env_file() {
+        let server = wiremock::MockServer::start().await;
+        wiremock::Mock::given(wiremock::matchers::path("/.env"))
+            .respond_with(wiremock::ResponseTemplate::new(200).set_body_string("SECRET=1"))
+            .mount(&server).await;
+        wiremock::Mock::given(wiremock::matchers::any())
+            .respond_with(wiremock::ResponseTemplate::new(404))
+            .mount(&server).await;
+
+        let host = server.uri().trim_start_matches("http://").to_string();
+        let signal = check_exposed_paths(&format!("http://{host}")).await;
+        assert!(signal.flag, "expected a flag when /.env returns 200");
+    }
+
+    #[tokio::test]
+    async fn architecture_signal_clean_when_paths_404() {
+        let server = wiremock::MockServer::start().await;
+        wiremock::Mock::given(wiremock::matchers::any())
+            .respond_with(wiremock::ResponseTemplate::new(404))
+            .mount(&server).await;
+        let host = server.uri().trim_start_matches("http://").to_string();
+        let signal = check_exposed_paths(&format!("http://{host}")).await;
+        assert!(!signal.flag);
     }
 }
