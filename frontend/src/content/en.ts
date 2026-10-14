@@ -1029,13 +1029,12 @@ export const EN = {
         { label: 'Your Systems', steps: [
           { icon: 'data', title: 'Your Data & Tools', body: 'Code, market feeds, funding databases, whatever the relevant agent needs to watch.' },
         ] },
+        { label: 'Agent OS', steps: [
+          { icon: 'hub', title: 'Agent OS', body: 'The control plane: orchestration, routing and shared memory across every entry point.' },
+        ] },
         { label: 'Connect', steps: [
           { icon: 'mcp', title: 'MCP & Integrations', body: 'Plug directly into your existing agent tooling.' },
           { icon: 'cli', title: 'CLI & API', body: 'Script it into your own pipelines and CI.' },
-          { icon: 'dashboard', title: 'Dashboard & Control', body: 'No integration needed, just log in.' },
-        ] },
-        { label: 'Agent OS', steps: [
-          { icon: 'hub', title: 'Agent OS', body: 'The control plane: orchestration, routing and shared memory across every entry point.' },
         ] },
         { label: 'The Squad', steps: [
           { icon: 'process', title: 'Specialist Agents', body: 'The right specialist picks it up and runs its check.' },

@@ -1016,13 +1016,12 @@ export const DE: Content = {
         { label: 'Ihre Systeme', steps: [
           { icon: 'data', title: 'Ihre Daten & Tools', body: 'Code, Marktdaten, Förderdatenbanken, was der zuständige Agent eben beobachten muss.' },
         ] },
+        { label: 'Agent OS', steps: [
+          { icon: 'hub', title: 'Agent OS', body: 'Die Leitstelle: Orchestrierung, Routing und geteilter Kontext über jeden Zugangspunkt hinweg.' },
+        ] },
         { label: 'Verbinden', steps: [
           { icon: 'mcp', title: 'MCP & Integrationen', body: 'Direkt in Ihr bestehendes Agenten-Tooling einklinken.' },
           { icon: 'cli', title: 'CLI & API', body: 'In Ihre eigenen Pipelines und CI einbinden.' },
-          { icon: 'dashboard', title: 'Dashboard & Steuerung', body: 'Keine Integration nötig, einfach einloggen.' },
-        ] },
-        { label: 'Agent OS', steps: [
-          { icon: 'hub', title: 'Agent OS', body: 'Die Leitstelle: Orchestrierung, Routing und geteilter Kontext über jeden Zugangspunkt hinweg.' },
         ] },
         { label: 'Der Kader', steps: [
           { icon: 'process', title: 'Spezialisierte Agenten', body: 'Der zuständige Spezialist übernimmt und prüft.' },

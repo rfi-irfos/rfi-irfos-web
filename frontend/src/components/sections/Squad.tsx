@@ -11,7 +11,7 @@ import { useState, type CSSProperties, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import {
   IconTrendingUp, IconCoin, IconGitCompare, IconCircleCheck, IconSearch, IconShieldLock,
-  IconDatabase, IconPlug, IconTerminal2, IconLayoutDashboard, IconRobot, IconWorld,
+  IconDatabase, IconPlug, IconTerminal2, IconRobot, IconWorld,
   IconSend, IconCpu,
 } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
@@ -25,7 +25,7 @@ const NEED_TO_KNOW_ICONS = [IconTrendingUp, IconCoin, IconGitCompare, IconCircle
 // in content/squadAgents.ts) - one icon per step, keyed by a stable id so content/
 // en.ts+de.ts only carry title/body text, never JSX.
 const HIC_STEP_ICONS: Record<string, typeof IconDatabase> = {
-  data: IconDatabase, mcp: IconPlug, cli: IconTerminal2, dashboard: IconLayoutDashboard, hub: IconCpu,
+  data: IconDatabase, mcp: IconPlug, cli: IconTerminal2, hub: IconCpu,
   process: IconRobot, crosscheck: IconWorld, deliver: IconSend, act: IconCircleCheck,
 }
 
@@ -216,18 +216,21 @@ function SquadOverview({
 // "lame... ohne clickable popups, lieber den text in der box" (click-to-reveal
 // detail popovers); 2026-10-14 "should it be not 5 boxes total..? cause the
 // agent os is a standalone thingy" -> "5 gleichwertige zonen" (Agent OS
-// crammed into the same zone as its three entry points, instead of getting
-// its own equal-weight column). This version: five equal-width zones -
-// Your Systems, Connect (the three entry points), Agent OS (standalone hub),
-// The Squad, Verified Delivery - full title+body text in every box, and the
-// hub exchanges work with the squad through two opposite-direction arrows
-// (delegate out, verified results back) instead of a one-way fan-in.
+// crammed into the same zone as its entry points); 2026-10-14 "lets delete
+// dashboard and control, cause the agent OS is the dashboard and the
+// control... and the agent os i the direct neighbor of your sytems" - deleted
+// the Dashboard & Control box entirely and moved Agent OS to sit right next
+// to Your Systems, pushing Connect (now just MCP, CLI) out to zone 3. Five
+// equal-width zones - Your Systems, Agent OS (standalone hub), Connect (the
+// two remaining entry points), The Squad, Verified Delivery - full title+body
+// text in every box. The hub<->squad hand-off now arcs over/under Connect's
+// boxes instead of routing through them: delegate out through the zone's top
+// margin, verified results back through its bottom margin.
 const HIC_BOX: Record<string, { x: number; y: number; w: number; h: number }> = {
   data:       { x: 25,   y: 135, w: 190, h: 130 },
-  mcp:        { x: 265,  y: 20,  w: 190, h: 110 },
-  cli:        { x: 265,  y: 145, w: 190, h: 110 },
-  dashboard:  { x: 265,  y: 270, w: 190, h: 110 },
-  hub:        { x: 505,  y: 135, w: 190, h: 130 },
+  hub:        { x: 265,  y: 135, w: 190, h: 130 },
+  mcp:        { x: 505,  y: 80,  w: 190, h: 110 },
+  cli:        { x: 505,  y: 210, w: 190, h: 110 },
   process:    { x: 745,  y: 60,  w: 190, h: 150 },
   crosscheck: { x: 745,  y: 230, w: 190, h: 150 },
   deliver:    { x: 985,  y: 60,  w: 190, h: 150 },
@@ -250,15 +253,12 @@ const HIC_ZONE_BANDS = [
 // feedback loop at the bottom. `delay` groups arrows into pipeline stages so a
 // pulse visibly splits/merges at each junction instead of staggering box by box.
 const HIC_ARROWS: { id: string; pts: [number, number][]; delay: number; feedback?: boolean; return?: boolean }[] = [
-  { id: 'data-mcp',        pts: [[215, 200], [240, 200], [240, 75], [265, 75]], delay: 0 },
-  { id: 'data-cli',        pts: [[215, 200], [265, 200]], delay: 0 },
-  { id: 'data-dashboard',  pts: [[215, 200], [240, 200], [240, 325], [265, 325]], delay: 0 },
-  { id: 'mcp-hub',         pts: [[455, 75], [480, 75], [480, 200], [505, 200]], delay: 0.6 },
-  { id: 'cli-hub',         pts: [[455, 200], [505, 200]], delay: 0.6 },
-  { id: 'dashboard-hub',   pts: [[455, 325], [480, 325], [480, 200], [505, 200]], delay: 0.6 },
-  { id: 'hub-process',     pts: [[695, 175], [720, 175], [720, 135], [745, 135]], delay: 1.2 },
+  { id: 'data-hub',        pts: [[215, 200], [265, 200]], delay: 0 },
+  { id: 'hub-mcp',         pts: [[455, 200], [480, 200], [480, 135], [505, 135]], delay: 0.6 },
+  { id: 'hub-cli',         pts: [[455, 200], [480, 200], [480, 265], [505, 265]], delay: 0.6 },
+  { id: 'hub-process',     pts: [[455, 175], [470, 175], [470, 40], [720, 40], [720, 135], [745, 135]], delay: 1.2 },
   { id: 'process-cross',   pts: [[840, 210], [840, 230]], delay: 1.7 },
-  { id: 'cross-hub',       pts: [[745, 305], [712, 305], [712, 225], [695, 225]], delay: 2.1, return: true },
+  { id: 'cross-hub',       pts: [[745, 305], [720, 305], [720, 360], [470, 360], [470, 225], [455, 225]], delay: 2.1, return: true },
   { id: 'cross-deliver',   pts: [[935, 305], [960, 305], [960, 135], [985, 135]], delay: 2.1 },
   { id: 'deliver-act',     pts: [[1080, 210], [1080, 230]], delay: 2.6 },
   { id: 'act-data',        pts: [[1080, 380], [1080, 440], [120, 440], [120, 265]], delay: 3, feedback: true },
