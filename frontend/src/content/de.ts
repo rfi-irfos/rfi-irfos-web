@@ -255,7 +255,6 @@ export const DE: Content = {
       { title: "Normbasierte Methodik.", text: "Basierend auf OWASP ASVS, OWASP Top 10 und CWE, mit CVSS-Schweregrad, wo anwendbar." },
     ],
     evidenceHeading: 'Unsere Forschung ist öffentlich. Unsere Methodik ist nachprüfbar.',
-    evidenceNote: 'Zahlen aus dem öffentlichen Evidence Ledger, mit jeder Offenlegung aktualisiert.',
     evidenceCta: 'Evidence Ledger ansehen →',
     cta: 'Erstprüfung anfragen',
   },

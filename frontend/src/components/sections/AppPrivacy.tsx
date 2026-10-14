@@ -181,7 +181,6 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
             ))}
           </div>
           <Reveal delay={1}>
-            <p style={{ fontSize: 12.5, color: 'var(--text3)', marginBottom: 12 }}>{c.evidenceNote}</p>
             <a href="/evidence/" onClick={e => { e.preventDefault(); onNavigateEvidence() }} style={{ color: 'var(--accent-text)', fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>{c.evidenceCta}</a>
           </Reveal>
         </div>

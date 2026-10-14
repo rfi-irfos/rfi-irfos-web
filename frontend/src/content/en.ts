@@ -262,7 +262,6 @@ export const EN = {
       { title: "Standards-informed methodology.", text: "Based on OWASP ASVS, OWASP Top 10 and CWE, with CVSS severity where applicable." },
     ],
     evidenceHeading: 'Our research is public. Our methodology is inspectable.',
-    evidenceNote: 'Figures from the public Evidence Ledger, updated with every disclosure.',
     evidenceCta: 'Explore the Evidence Ledger →',
     cta: 'Request an Initial Review',
   },
