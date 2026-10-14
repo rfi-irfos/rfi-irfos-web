@@ -67,19 +67,19 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
       </p>
 
       {step === 1 ? (
-        <form onSubmit={e => { e.preventDefault(); if (domain.trim()) setStep(2) }} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <form onSubmit={e => { e.preventDefault(); if (domain.trim()) setStep(2) }} style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
           <label style={{ fontSize: 12.5, color: 'var(--text2)' }}>{c.domainLabel}</label>
           <input type="text" required placeholder={c.domainPlaceholder} value={domain}
             onChange={e => setDomain(e.target.value)}
             style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
           <p style={{ fontSize: 11, color: 'var(--text3)', lineHeight: 1.6, margin: 0 }}>{c.gateNote}</p>
           <p style={{ fontSize: 10.5, color: 'var(--text3)', lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>{c.scopeDisclaimer}</p>
-          <button type="submit" style={{ background: '#f97316', color: '#1a0f00', padding: '12px 20px', borderRadius: 8, fontWeight: 800, fontSize: 13, border: 'none', cursor: 'pointer' }}>
+          <button type="submit" style={{ background: '#f97316', color: '#1a0f00', padding: '12px 20px', borderRadius: 8, fontWeight: 800, fontSize: 13, border: 'none', cursor: 'pointer', marginTop: 'auto' }}>
             {c.continueCta}
           </button>
         </form>
       ) : (
-        <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
           <button type="button" onClick={() => setStep(1)} style={{ alignSelf: 'flex-start', background: 'none', border: 'none', color: 'var(--text3)', fontSize: 12, cursor: 'pointer', padding: 0 }}>
             ← {c.backCta}
           </button>
@@ -97,16 +97,6 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
           </label>
           <p style={{ fontSize: 11, color: 'var(--text3)', lineHeight: 1.6, margin: 0 }}>{c.gateNote}</p>
           <p style={{ fontSize: 10.5, color: 'var(--text3)', lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>{c.scopeDisclaimer}</p>
-          <button type="submit" disabled={state === 'sending' || !consent} style={{
-            background: state === 'ok' ? 'rgba(0,245,196,0.2)' : '#f97316',
-            color: state === 'ok' ? 'var(--accent-text)' : '#1a0f00',
-            border: state === 'ok' ? '1px solid var(--accent-text)' : 'none',
-            padding: '13px 20px', borderRadius: 8, fontWeight: 800, fontSize: 13,
-            cursor: state === 'sending' ? 'wait' : !consent ? 'not-allowed' : 'pointer',
-            opacity: !consent && state === 'idle' ? 0.5 : 1,
-          }}>
-            {state === 'sending' ? c.submitSending : state === 'ok' ? c.submitOk : c.submitCta}
-          </button>
           {state === 'err' && (
             <p style={{ color: 'var(--sev-crit)', fontSize: 12.5, lineHeight: 1.6 }}>
               {c.errorText}{' '}
@@ -115,13 +105,19 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
               </a>
             </p>
           )}
+          <button type="submit" disabled={state === 'sending' || !consent} style={{
+            background: state === 'ok' ? 'rgba(0,245,196,0.2)' : '#f97316',
+            color: state === 'ok' ? 'var(--accent-text)' : '#1a0f00',
+            border: state === 'ok' ? '1px solid var(--accent-text)' : 'none',
+            padding: '13px 20px', borderRadius: 8, fontWeight: 800, fontSize: 13,
+            cursor: state === 'sending' ? 'wait' : !consent ? 'not-allowed' : 'pointer',
+            opacity: !consent && state === 'idle' ? 0.5 : 1,
+            marginTop: 'auto',
+          }}>
+            {state === 'sending' ? c.submitSending : state === 'ok' ? c.submitOk : c.submitCta}
+          </button>
         </form>
       )}
-
-      <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10, marginTop: 'auto' }}>
-        <a href="#pricing" style={{ color: 'var(--accent-text)', fontWeight: 800, fontSize: 13, textDecoration: 'none' }}>{c.priceTeaser} →</a>
-        <p style={{ fontSize: 10.5, color: 'var(--text3)', margin: '4px 0 0' }}>{c.priceSubline}</p>
-      </div>
     </div>
   )
 }
