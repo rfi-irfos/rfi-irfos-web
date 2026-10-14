@@ -215,8 +215,8 @@ function viewForSection(section?: string | null): PublicView {
 const NAV_HREFS = [
   { key: 'squad' as const, href: '/squad/' },
   { key: 'dataSolutions' as const, href: '/data-solutions/' },
-  { key: 'trackRecord' as const, href: '/evidence/' },
   { key: 'worldModel' as const, href: '/world-model/' },
+  { key: 'trackRecord' as const, href: '/evidence/' },
   { key: 'pricing' as const, href: '/access/' },
 ]
 
