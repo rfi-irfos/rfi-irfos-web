@@ -5,12 +5,12 @@ import { useLocale } from '../../hooks/useLocale'
 
 const GH = 'https://github.com/rfi-irfos/'
 
-const ICON = { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true } as const
-function GroupIcon({ kind }: { kind: 'software' | 'research' | 'repos' | 'website' }) {
-  if (kind === 'repos') return <GithubMark size={20} />
-  if (kind === 'research') return <svg {...ICON}><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z" /><path d="M4 21V5M8 7h6M8 11h6" /></svg>
-  if (kind === 'website') return <svg {...ICON}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z" /></svg>
-  return <svg {...ICON}><path d="M12 3 3.5 7.5v9L12 21l8.5-4.5v-9z" /><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9" /></svg>
+function GroupIcon({ kind, size = 20 }: { kind: 'software' | 'research' | 'repos' | 'website'; size?: number }) {
+  const icon = { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true } as const
+  if (kind === 'repos') return <GithubMark size={size} />
+  if (kind === 'research') return <svg {...icon}><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z" /><path d="M4 21V5M8 7h6M8 11h6" /></svg>
+  if (kind === 'website') return <svg {...icon}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z" /></svg>
+  return <svg {...icon}><path d="M12 3 3.5 7.5v9L12 21l8.5-4.5v-9z" /><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9" /></svg>
 }
 const GROUPS = [
   { title: 'Software', kind: 'software' as const, links: [
@@ -27,9 +27,6 @@ const GROUPS = [
   { title: 'Repositories', kind: 'repos' as const, links: [
     'call-laura', 'lauras-agents', 'lauras-agents-public', 'coevolution-factory',
   ].map(r => ({ label: r, href: GH + r })) },
-  { title: 'Website', kind: 'website' as const, links: [
-    { label: 'emergent-interaction-lab.com', href: 'https://emergent-interaction-lab.com' },
-  ] },
 ]
 
 function GithubMark({ size = 13 }: { size?: number }) {
@@ -71,14 +68,14 @@ export function CoopPartnersSection({
                   @emergentinteractionlab
                 </a>
               </div>
-              <a href="https://laura-api.fly.dev" target="_blank" rel="noopener noreferrer"
+              <a href="https://emergent-interaction-lab.com" target="_blank" rel="noopener noreferrer"
                  style={{
                    display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 10, fontWeight: 700,
                    letterSpacing: '0.06em', textTransform: 'uppercase', padding: '3px 9px', borderRadius: 999,
                    border: '1px solid rgba(16,185,129,.45)', color: '#10b981', textDecoration: 'none', whiteSpace: 'nowrap',
                  }}>
-                <span style={{ width: 5, height: 5, borderRadius: 999, background: '#10b981', display: 'inline-block' }} />
-                Live API
+                <GroupIcon kind="website" size={11} />
+                Website
               </a>
             </div>
           </Reveal>
@@ -91,7 +88,7 @@ export function CoopPartnersSection({
           </Reveal>
           <Reveal from="right" dist={60} delay={3}>
             <div style={{
-              display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(4, minmax(0, 1fr))', gap: 10,
+              display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 10,
               borderTop: '1px solid var(--border)', padding: '14px',
             }}>
               {GROUPS.map(g => (
