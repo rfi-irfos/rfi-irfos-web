@@ -6,6 +6,7 @@
 // as the old table), because one Reveal around the whole panel is barely visible.
 import { useEffect, useRef, useState } from 'react'
 import { Reveal, useMobile } from './shared'
+import { InitialReviewFlow } from './InitialReviewFlow'
 import { useLocale } from '../../hooks/useLocale'
 import { AUDIT_HIGHLIGHTS } from './TrackRecord'
 import corpusStats from '../../content/corpus-stats.json'
@@ -153,24 +154,26 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
             </div>
           </div>
 
-          {/* Right: frameless column with the four trust points, then the single call to action */}
+          {/* Right: the embedded review flow (2026-10-14 redesign — this
+              used to be four trust-point cards stacked above a CTA link to
+              #submit; live direction moved the actual intake flow onto the
+              page itself instead of behind a click, so the trust points
+              compress into a slim icon row and the reclaimed space holds
+              the real step1/step2 form). */}
           <div style={{
-            display: 'flex', flexDirection: 'column', gap: 22, alignSelf: stacked ? 'stretch' : 'center', padding: stacked ? 0 : '0 4px',
+            display: 'flex', flexDirection: 'column', gap: 16, alignSelf: 'stretch', padding: stacked ? 0 : '0 4px',
           }}>
-            {c.trust.map((item, i) => (
-              <Reveal key={item.title} from="right" dist={64} delay={i + 1}>
-                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                  <span className="rfi-glass-icon" style={{ ...tile, width: 44, height: 44 }}>{TRUST_ICONS[i]}</span>
-                  <div style={{ flex: 1, minWidth: 0, padding: '12px 14px', borderRadius: 14, border: '1px solid var(--border)', background: 'color-mix(in srgb, var(--glass-bg-solid) 88%, transparent)' }}>
-                    <div style={{ fontWeight: 700, fontSize: 14.5, color: 'var(--text)', marginBottom: 3 }}>{item.title}</div>
-                    <div style={{ fontSize: 12.5, lineHeight: 1.55, color: 'var(--text2)' }}>{item.text}</div>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-            <div style={{ borderTop: '1px solid var(--border)' }} />
+            <Reveal from="right" dist={64} delay={1} style={{ flex: 1 }}>
+              <InitialReviewFlow variant="embedded" />
+            </Reveal>
             <Reveal from="bottom" dist={48} delay={4}>
-              <a href="#submit" className="rfi-cta-pulse" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f97316', color: '#1a0f00', padding: '13px 22px', borderRadius: 10, fontWeight: 800, fontSize: 13, textDecoration: 'none', letterSpacing: '0.07em', textTransform: 'uppercase', textAlign: 'center' }}>{c.cta} →</a>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, borderTop: '1px solid var(--border)', paddingTop: 14 }}>
+                {c.trust.map((item, i) => (
+                  <span key={item.title} className="rfi-glass-icon" title={item.title} style={{ ...tile, width: 36, height: 36 }}>
+                    {TRUST_ICONS[i]}
+                  </span>
+                ))}
+              </div>
             </Reveal>
           </div>
         </div>
