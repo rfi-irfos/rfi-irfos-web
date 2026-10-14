@@ -920,8 +920,8 @@ export const EN = {
 
   squad: {
     heading: 'The Squad',
-    subheading: 'Specialized agents that review what you send us.',
-    intro: 'Send us a repository, an APK or an API spec. A selected team of specialized agents and our experts work through it together, every finding is always re-verified by our human specialists, and you receive a written report with the evidence behind each result. Run a single agent against one problem, or the whole squad as one pipeline. Reviews run on infrastructure in Europe, with processing in Graz.',
+    subheading: 'Specialized agents. For every kind of work.',
+    intro: 'Each agent is built around one clear responsibility — market intelligence, funding research, evidence verification, delivery checks, visibility, security. Run a single agent against one problem, or combine them into a pipeline for the whole question. Every finding is re-verified by our human specialists before it reaches you, with a written report and the evidence behind each result. Reviews run on infrastructure in Europe, with processing in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'See which agent fits your problem →',

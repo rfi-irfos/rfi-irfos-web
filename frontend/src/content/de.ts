@@ -907,8 +907,8 @@ export const DE: Content = {
 
   squad: {
     heading: 'Der Kader',
-    subheading: 'Spezialisierte Agenten, die prüfen, was Sie uns senden.',
-    intro: 'Senden Sie uns ein Repository, eine APK oder eine API-Spezifikation. Ein ausgewähltes Team spezialisierter Agenten und unsere Expertinnen und Experten arbeiten es gemeinsam durch, jeder Befund wird immer von unseren menschlichen Fachleuten erneut geprüft, und Sie erhalten einen schriftlichen Bericht mit den Belegen zu jedem Ergebnis. Setzen Sie einen einzelnen Agenten auf ein Problem an oder den gesamten Kader als eine Pipeline. Reviews laufen auf Infrastruktur in Europa, die Verarbeitung findet in Graz statt.',
+    subheading: 'Spezialisierte Agenten. Für jede Art von Arbeit.',
+    intro: 'Jeder Agent ist auf eine klare Verantwortung zugeschnitten — Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit, Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Jeder Befund wird von unseren menschlichen Fachleuten erneut geprüft, bevor er bei Ihnen ankommt, mit schriftlichem Bericht und den Belegen dahinter. Reviews laufen auf Infrastruktur in Europa, die Verarbeitung findet in Graz statt.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Finden Sie den passenden Agenten →',
