@@ -74,15 +74,12 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
               <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
             </svg>
           </span>
-          <div>
-            <div style={{ fontWeight: 800, fontSize: 13.5, color: 'var(--text)' }}>{c.introTitle}</div>
-            <div style={{ fontSize: 11, color: 'var(--text3)' }}>{c.introSubtitle}</div>
-          </div>
+          <div style={{ fontWeight: 800, fontSize: 18, color: 'var(--text)' }}>{c.introTitle}</div>
         </div>
-        <span className="irf-badge-pulse" style={{ fontSize: 11.5, fontWeight: 800, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.1)', padding: '5px 12px', borderRadius: 999, whiteSpace: 'nowrap' }}>{c.badge}</span>
+        <span className="irf-badge-pulse" style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.1)', padding: '6px 14px', borderRadius: 999, whiteSpace: 'nowrap' }}>{c.badge}</span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {c.introText.map((para, i) => (
+        {c.introText.slice(0, -1).map((para, i) => (
           <p key={i} style={{ fontSize: 12.5, color: 'var(--text)', lineHeight: 1.55, margin: 0 }}>{para}</p>
         ))}
       </div>
@@ -104,7 +101,9 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
         <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
           <input type="checkbox" required checked={consent} onChange={e => setConsent(e.target.checked)}
             style={{ marginTop: 3, accentColor: 'var(--accent)', width: 16, height: 16, flexShrink: 0 }} />
-          <span style={{ color: 'var(--text2)', fontSize: 11.5, lineHeight: 1.6 }}>{c.consentLabel}</span>
+          <span style={{ color: 'var(--text2)', fontSize: 11.5, lineHeight: 1.6 }}>
+            {c.consentLabel} {c.introText[c.introText.length - 1]}
+          </span>
         </label>
         {state === 'err' && (
           <p style={{ color: 'var(--sev-crit)', fontSize: 12.5, lineHeight: 1.6 }}>

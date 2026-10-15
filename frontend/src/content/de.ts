@@ -245,7 +245,6 @@ export const DE: Content = {
         { title: "Breite technische Abdeckung", text: "Code, Abhängigkeiten, APIs, Konfigurationen und Datenflüsse, gemeinsam untersucht." },
         { title: "Ausnutzbarkeitsanalyse", text: "Jeder Fund geprüft darauf, was ein Angreifer damit real anfangen könnte." },
         { title: "Normbasierte Methodik", text: "Prüfung auf Basis anerkannter Security-Frameworks." },
-        { title: "Belegbasierte Berichte", text: "Jede Aussage mit dem tatsächlichen Beleg dahinter." },
         { title: "Verknüpfter Knowledge Graph", text: "Jeder Bericht enthält einen Basis-Knowledge-Graph, der Funde verknüpft statt sie nur aufzulisten." },
       ],
     },
@@ -266,7 +265,7 @@ export const DE: Content = {
     introSubtitle: 'Finden Sie heraus, was Ihre Security-Tools übersehen könnten.',
     introText: [
       'Der erste Check erfolgt ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ihre Systeme bleiben dabei unverändert.',
-      'Bevor die Prüfung beginnt, bestätigt ein Researcher Ihre Anfrage. Innerhalb eines Werktags melden wir uns bei Ihnen. Sie erhalten einen kurzen schriftlichen Report mit unseren Beobachtungen, möglichen Angriffsszenarien, einer fachlichen Einschätzung der potenziellen wirtschaftlichen Schäden und konkreten Empfehlungen für die nächsten Schritte.',
+      'Bevor die Prüfung beginnt, bestätigt ein Researcher Ihre Anfrage. Innerhalb eines Werktags melden wir uns bei Ihnen. Sie erhalten einen kurzen schriftlichen Report mit unseren Beobachtungen, möglichen Angriffsszenarien, einer fachlichen Einschätzung der potenziellen wirtschaftlichen Schäden und konkreten Empfehlungen für die nächsten Schritte — inklusive eines verknüpften Knowledge Graphs zu allen Funden, kostenlos im Check enthalten.',
       'Der Check liefert eine erste externe Einschätzung. Er umfasst keine Quellcode-Analyse und ist keine Garantie für die Sicherheit Ihrer Anwendung.',
     ],
     domainLabel: 'Ihre Domain',

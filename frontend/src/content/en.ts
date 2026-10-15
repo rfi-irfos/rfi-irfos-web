@@ -252,7 +252,6 @@ export const EN = {
         { title: "Broad technical coverage", text: "Code, dependencies, APIs, configurations and data flows, examined together." },
         { title: "Exploitability analysis", text: "Findings checked for what an attacker could realistically do with them." },
         { title: "Standards-informed methodology", text: "Testing grounded in recognized security frameworks." },
-        { title: "Evidence-backed reporting", text: "Every claim backed by the actual proof behind it." },
         { title: "Correlated knowledge graph", text: "Every report ships with a base knowledge graph linking findings together, not just a flat list." },
       ],
     },
@@ -273,7 +272,7 @@ export const EN = {
     introSubtitle: 'Find out what your security tools might be missing.',
     introText: [
       'The initial check is read-only, performed from a European IP address, with no login and no payloads. Your systems remain unchanged.',
-      "A researcher reviews and approves your request before any checks begin. We'll get back to you within one business day. You'll receive a short written report covering our observations, potential attack scenarios, an expert assessment of the potential financial impact, and concrete recommendations for what to do next.",
+      "A researcher reviews and approves your request before any checks begin. We'll get back to you within one business day. You'll receive a short written report covering our observations, potential attack scenarios, an expert assessment of the potential financial impact, and concrete recommendations for what to do next — plus a correlated knowledge graph linking everything we found, free with the check.",
       'This is an initial external assessment, not a source-code review or a guarantee that your application is secure.',
     ],
     domainLabel: 'Your domain',
