@@ -42,6 +42,15 @@ import { useLocale, type Locale } from '../../hooks/useLocale'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { IconBulb, IconShieldLock, IconDatabase, IconTrendingUp, IconTerminal2 } from '@tabler/icons-react'
+
+// One icon per "Need something else?" domain, same neutral-colour convention
+// as Squad.tsx's NEED_TO_KNOW_ICONS (--icon-neutral, 2026-09-12: a calm
+// shared highlight reads better here than a different colour per item).
+const DOMAIN_ICONS: Record<string, typeof IconBulb> = {
+  Intelligence: IconBulb, Security: IconShieldLock, Data: IconDatabase,
+  'Business & Market': IconTrendingUp, Engineering: IconTerminal2,
+}
 
 type PricingDomain = {
   name: string; badge: string; scope: string
@@ -99,7 +108,7 @@ function TierCard({
       <div style={{ borderTop: '1px solid var(--border)', margin: '4px 0 6px' }} />
       <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 11, flex: 1 }}>
         {tier.features.map(f => (
-          <li key={f} style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--text2)', display: 'flex', gap: 9 }}>
+          <li key={f} style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--text)', display: 'flex', gap: 9 }}>
             <span style={{ color: 'var(--accent-text)', fontWeight: 800 }}>✓</span>{f}
           </li>
         ))}
@@ -141,7 +150,7 @@ function FreeTierCard({ onOpen }: { onOpen: () => void }) {
       <div style={{ borderTop: '1px solid var(--border)', margin: '4px 0 6px' }} />
       <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 11, flex: 1 }}>
         {f.features.map(feat => (
-          <li key={feat} style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--text2)', display: 'flex', gap: 9 }}>
+          <li key={feat} style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--text)', display: 'flex', gap: 9 }}>
             <span style={{ color: 'var(--accent-text)', fontWeight: 800 }}>✓</span>{feat}
           </li>
         ))}
@@ -185,14 +194,18 @@ function NeedSomethingElseRow({ domains, onSelectTier }: { domains: PricingDomai
   return (
     <div style={{ borderTop: '1px solid var(--border)', marginTop: 32, paddingTop: 20, display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px 18px' }}>
       <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)' }}>{t.pricing.needSomethingElse}</span>
-      {domains.map((d, i) => (
-        <span key={d.name} style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-          <button type="button" onClick={() => onSelectTier(d.name)} style={{ background: 'none', border: 'none', color: 'var(--accent-text)', fontWeight: 700, fontSize: 13, cursor: 'pointer', padding: 0 }}>
-            {d.name}
-          </button>
-          {i < domains.length - 1 && <span style={{ color: 'var(--border)' }}>·</span>}
-        </span>
-      ))}
+      {domains.map((d, i) => {
+        const Icon = DOMAIN_ICONS[d.name]
+        return (
+          <span key={d.name} style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+            <button type="button" onClick={() => onSelectTier(d.name)} style={{ background: 'none', border: 'none', color: 'var(--accent-text)', fontWeight: 700, fontSize: 13, cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+              {Icon && <Icon size={15} stroke={1.8} color="var(--icon-neutral)" />}
+              {d.name}
+            </button>
+            {i < domains.length - 1 && <span style={{ color: 'var(--border)' }}>·</span>}
+          </span>
+        )
+      })}
     </div>
   )
 }
@@ -265,7 +278,7 @@ export function PricingSection({
               }}>
                 <div>
                   <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--accent-text)', margin: '0 0 7px' }}>{t.pricing.enterprise.heading}</p>
-                  <p style={{ fontSize: 13.5, color: 'var(--text2)', margin: 0, maxWidth: 560 }}>{t.pricing.enterprise.text}</p>
+                  <p style={{ fontSize: 13.5, color: 'var(--text)', margin: 0, maxWidth: 560 }}>{t.pricing.enterprise.text}</p>
                 </div>
                 <button type="button" onClick={() => onSelectTier('Enterprise')} style={{ background: 'transparent', border: '1px solid var(--accent-text)', color: 'var(--accent-text)', padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer', whiteSpace: 'nowrap' }}>
                   {t.pricing.enterprise.cta}
