@@ -246,6 +246,7 @@ export const DE: Content = {
         { title: "Ausnutzbarkeitsanalyse", text: "Jeder Fund geprüft darauf, was ein Angreifer damit real anfangen könnte." },
         { title: "Normbasierte Methodik", text: "Prüfung auf Basis anerkannter Security-Frameworks." },
         { title: "Belegbasierte Berichte", text: "Jede Aussage mit dem tatsächlichen Beleg dahinter." },
+        { title: "Verknüpfter Knowledge Graph", text: "Jeder Bericht enthält einen Basis-Knowledge-Graph, der Funde verknüpft statt sie nur aufzulisten." },
       ],
     },
     trust: [

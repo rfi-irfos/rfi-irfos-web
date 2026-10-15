@@ -253,6 +253,7 @@ export const EN = {
         { title: "Exploitability analysis", text: "Findings checked for what an attacker could realistically do with them." },
         { title: "Standards-informed methodology", text: "Testing grounded in recognized security frameworks." },
         { title: "Evidence-backed reporting", text: "Every claim backed by the actual proof behind it." },
+        { title: "Correlated knowledge graph", text: "Every report ships with a base knowledge graph linking findings together, not just a flat list." },
       ],
     },
     trust: [
