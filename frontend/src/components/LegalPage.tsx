@@ -1132,7 +1132,6 @@ const TEAM = [
   { name: 'Louis Ehrig',         gh: 'louisuhr',               focus: 'Press & Public Affairs' },
   { name: 'Ana Diez',            gh: 'anadiezmartini',         focus: 'Model Safety & Wellbeing' },
   { name: 'Brennan Bell',        gh: '496crows',               focus: 'Safety Research & Academic Partnerships' },
-  { name: 'Mariano Sosa',        gh: '',                       focus: 'Trust & Public Perception' },
   { name: 'Simeon Kepp',         gh: 'simeon-kepp',            focus: 'Co-Founder & CTO' },
   { name: 'Zabih Karimi',        gh: 'zabih-sudo',             focus: 'Co-Founder & CEO' },
   { name: 'Laura Serna Gaviria', gh: 'emergentinteractionlab', focus: 'Co-Founder & COO' },
