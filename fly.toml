@@ -6,6 +6,11 @@ primary_region = "fra"
 [env]
   PORT = "3000"
   STATIC_DIR = "/app/dist"
+  DB_PATH = "/data/visits.db"
+
+[[mounts]]
+  source = "rfi_data"
+  destination = "/data"
 
 [http_service]
   internal_port = 3000
