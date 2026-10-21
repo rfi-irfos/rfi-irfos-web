@@ -20,8 +20,6 @@
       })();
     </script>
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- First fix attempt (2026-08-27, superseded below) assumed weight 400 vs 900
          were separate font files fetched on demand, and tried to race a small
          dedicated stylesheet request ahead of the full-range one. Checked the real
@@ -41,8 +39,8 @@
          second <link rel=stylesheet> never did - that only affects when the browser
          discovers the file is needed, not the priority it fetches it at. -->
     <link rel="preload" as="font" type="font/woff2" crossorigin
-          href="https://fonts.gstatic.com/s/archivo/v25/k3kPo8UDI-1M0wlSV9XAw6lQkqWY8Q82sLydOxI.woff2" />
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+          href="/fonts/k3kPo8UDI-1M0wlSV9XAw6lQkqWY8Q82sLydOxI.woff2" />
+    <link href="/fonts/fonts.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="canonical" href="https://rfi-irfos.com" />
     <link rel="alternate" hreflang="de" href="https://rfi-irfos.com" />

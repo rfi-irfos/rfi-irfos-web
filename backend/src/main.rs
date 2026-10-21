@@ -114,8 +114,8 @@ async fn set_cache_control(req: Request, next: Next) -> Response {
 //     needed and adding one would be a no-op at best.
 const CSP_POLICY: &str = "default-src 'self'; \
     script-src 'self' 'unsafe-inline'; \
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; \
-    font-src 'self' https://fonts.gstatic.com; \
+    style-src 'self' 'unsafe-inline'; \
+    font-src 'self'; \
     img-src 'self' data: https://raw.githubusercontent.com https://lighthouse-rfi-irfos.fly.dev; \
     connect-src 'self' https://lighthouse-rfi-irfos.fly.dev https://api.github.com https://raw.githubusercontent.com https://api.web3forms.com; \
     frame-src 'self'; \
@@ -144,6 +144,14 @@ async fn set_security_headers(req: Request, next: Next) -> Response {
     // Belt-and-suspenders with the CSP frame-ancestors directive above, for
     // older browsers that don't honor frame-ancestors.
     headers.insert(header::X_FRAME_OPTIONS, HeaderValue::from_static("SAMEORIGIN"));
+    // Found by our own Domain Check (2026-10-21): the three headers every
+    // scanner expects next to CSP/HSTS. None of them changes site behaviour.
+    headers.insert(header::X_CONTENT_TYPE_OPTIONS, HeaderValue::from_static("nosniff"));
+    headers.insert(header::REFERRER_POLICY, HeaderValue::from_static("strict-origin-when-cross-origin"));
+    headers.insert(
+        HeaderName::from_static("permissions-policy"),
+        HeaderValue::from_static("camera=(), microphone=(), geolocation=(), payment=(), usb=()"),
+    );
 
     res
 }
