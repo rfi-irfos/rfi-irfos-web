@@ -417,6 +417,10 @@ struct Gate {
     bans: HashMap<String, Instant>,
     /// IP -> (Zeitpunkt, Punkte) der letzten Stunde
     score: HashMap<String, Vec<(Instant, u32)>>,
+    /// IP -> Versuche seit der Sperre
+    repeats: HashMap<String, u32>,
+    /// IP -> letzte Wiederholer-Meldung
+    repeat_ping: HashMap<String, Instant>,
 }
 
 static GATE: OnceLock<Mutex<Gate>> = OnceLock::new();
@@ -425,12 +429,23 @@ fn gate() -> &'static Mutex<Gate> {
     GATE.get_or_init(|| Mutex::new(Gate::default()))
 }
 
+/// Zählt einen Versuch einer gesperrten IP. Gibt (Versuche gesamt, ob jetzt gemeldet wird) zurück.
+/// Gemeldet wird pro IP höchstens alle 30 Minuten, sonst würde ein Scanner mit 5000 Requests fluten.
+fn note_repeat(ip: &str) -> (u32, bool) {
+    let Ok(mut g) = gate().lock() else { return (0, false) };
+    let now = Instant::now();
+    let n = { let c = g.repeats.entry(ip.to_string()).or_insert(0); *c += 1; *c };
+    let due = g.repeat_ping.get(ip).map_or(true, |t| now.duration_since(*t) >= Duration::from_secs(1800));
+    if due { g.repeat_ping.insert(ip.to_string(), now); }
+    (n, due)
+}
+
 fn is_banned(ip: &str) -> bool {
     let Ok(mut g) = gate().lock() else { return false };
     let now = Instant::now();
     match g.bans.get(ip) {
         Some(until) if *until > now => true,
-        Some(_) => { g.bans.remove(ip); false }
+        Some(_) => { g.bans.remove(ip); g.repeats.remove(ip); g.repeat_ping.remove(ip); false }
         None => false,
     }
 }
@@ -556,6 +571,22 @@ pub async fn guard(State(state): State<AppState>, req: Request, next: Next) -> R
     let ip = if is_ip(&ip) { ip } else { String::new() };
 
     if !ip.is_empty() && !allowlisted(&ip) && is_banned(&ip) {
+        let (tries, due) = note_repeat(&ip);
+        if due {
+            let (db, ip, m) = (state.db.clone(), ip.clone(), method.to_string());
+            let (path_c, ua_c) = (clean(&path, 120), clean(&ua, 80));
+            tokio::spawn(async move {
+                let geo = geo_lookup(&ip).await;
+                let _ = sqlx::query("INSERT INTO trap_hits (kind,method,path,user_agent,ip,geo,fake,banned) VALUES (?1,?2,?3,?4,?5,?6,0,0)")
+                    .bind(format!("wiederholer:{tries}")).bind(&m).bind(&path_c).bind(&ua_c).bind(&ip).bind(&geo)
+                    .execute(&db).await;
+                let ua_show = if ua_c.is_empty() { "(leer)".to_string() } else { ua_c };
+                let body = format!(
+                    "◈ {ip}\n⌖ {geo}\n▤ {m} {path_c}\n⚙ {ua_show}\n◷ {tries} Versuche seit der Sperre, Mauer hält"
+                );
+                ping_ntfy("♜ Bergfried: Wiederholer an der Mauer".to_string(), body, "bergfried", "default").await;
+            });
+        }
         return plain(403, BERGFRIED);
     }
 
