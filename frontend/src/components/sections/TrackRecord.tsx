@@ -669,7 +669,7 @@ export const AUDIT_META: Record<string, { notified?: string; disclosure: string;
   'Geizhals':                    { notified: '2026-06-26', disclosure: '2026-09-24', resolved: true, resolvedDate: '2026-09-25', reportUrl: '/reports/geizhals-2026-report.pdf' },
   'Der Standard':                { notified: '2026-06-27', disclosure: '2026-09-25', resolved: true, resolvedDate: '2026-09-25', reportUrl: '/reports/derstandard-2026-report.pdf' },
   'Winkk AI':                    { notified: '2026-06-27', disclosure: '2026-09-25', resolved: true, resolvedDate: '2026-09-25', reportUrl: '/reports/winkk-2026.pdf' },
-  'BIGO LIVE':                   { notified: '2026-07-24', disclosure: '2026-10-22' },
+  'BIGO LIVE':                   { notified: '2026-07-24', disclosure: '2026-10-22', resolved: true, resolvedDate: '2026-10-22', reportUrl: '/reports/bigo-2026-report.pdf' },
   'KICK':                        { notified: '2026-06-27', disclosure: '2026-09-26', resolved: true, resolvedDate: '2026-10-17', reportUrl: '/reports/kick-2026.pdf' },
   'The White House (US)':        { notified: '2026-06-27', disclosure: '2026-09-25', resolved: true, resolvedDate: '2026-09-25', reportUrl: '/reports/whitehouse-2026-report.pdf' },
   'CheapAirTickets':             { notified: '2026-06-27', disclosure: '2026-09-25', resolved: true, resolvedDate: '2026-09-25', reportUrl: '/reports/cheapairtickets-2026-report.pdf' },
