@@ -6,6 +6,7 @@ mod notify;
 mod review;
 mod stripe;
 mod track;
+mod trap;
 mod upload;
 mod worldmodel;
 
@@ -200,6 +201,8 @@ async fn main() {
     sqlx::query("CREATE INDEX IF NOT EXISTS idx_wv_source ON web_visits(source, created_at)")
         .execute(&db).await.ok();
     review::create_tables(&db).await;
+    trap::create_table(&db).await;
+    trap::spawn_retention(db.clone());
 
     let state = AppState {
         sessions: Arc::new(RwLock::new(HashMap::new())),
@@ -250,7 +253,8 @@ async fn main() {
         .nest_service("/uploads", ServeDir::new(&uploads_dir))
         // React SPA
         .fallback_service(spa_fallback)
-        .with_state(state)
+        .with_state(state.clone())
+        .layer(middleware::from_fn_with_state(state, trap::guard))
         .layer(CorsLayer::permissive())
         .layer(middleware::from_fn(set_cache_control))
         .layer(middleware::from_fn(set_security_headers))

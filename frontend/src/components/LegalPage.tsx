@@ -507,13 +507,22 @@ function DatenschutzEN() {
       <strong style={{ color: '#e8e8f0' }}>Visit statistics:</strong> one self-hosted tracking pixel (Lighthouse, Graz) that logs a page view and a referrer, on every page including this one. On this legal/security page family specifically, we also log, in aggregate only, whether a visit scrolled all the way to the footer at the bottom of the page, the same in-memory, no-cookie mechanism as the section counters described in "Cookies" below, applied here to answer one question: are these pages actually being read to the end. On the homepage specifically, we also log, once per visit and in aggregate only, whether your browser's developer tools appear to be open (a passive window-size check, no timing tricks) — this exists purely because we left a message in the console for anyone who looks, and we're curious how often anyone actually does. No cookie, no device fingerprint, no cross-site identifier. See "Cookies" below for the unglamorous truth about what that pixel actually is.
     </p>
     <p style={P}>
-      <strong style={{ color: '#e8e8f0' }}>What we do not collect,</strong> for the avoidance of doubt: no location data, no device fingerprinting, no advertising ID, no biometric data, no cross-site profile, nothing sold or shared with a data broker, nothing handed to an ad network, because there is no ad network on the other end of anything on this site.
+      <strong style={{ color: '#e8e8f0' }}>What we do not collect,</strong> for the avoidance of doubt: no location data of ordinary visitors (the only exception is the security log described above), no device fingerprinting, no advertising ID, no biometric data, no cross-site profile, nothing sold or shared with a data broker, nothing handed to an ad network, because there is no ad network on the other end of anything on this site.
+    </p>
+
+    <h2 style={H2}>Security Log (Honeypot)</h2>
+    <p style={P}>
+      This site contains decoy paths that no ordinary visitor ever requests (for example <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>/.env</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>/wp-login.php</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>/phpmyadmin</code>), plus detection of attack tools and injection attempts (SQL injection, script injection, Log4Shell, path traversal, unusual HTTP methods). Whoever triggers one of these is logged with: full IP address, time, HTTP method, requested path, user agent, and an approximate location and network provider derived from the IP address. This is self-defence and cyber defence: we need to know where an attack on our systems came from, which decoy was touched, and whether the same source returns.<br />
+      <strong style={{ color: '#e8e8f0' }}>Automatic block:</strong> repeated or serious hits block the IP address for 24 hours. Report a mistake to <a href="mailto:security@rfi-irfos.com" style={A}>security@rfi-irfos.com</a> and we lift the block.<br />
+      <strong style={{ color: '#e8e8f0' }}>Alert:</strong> each hit is forwarded to an internal push channel (ntfy.sh) so the team sees it live. The channel name is secret.<br />
+      <strong style={{ color: '#e8e8f0' }}>Location lookup:</strong> the IP address of such a hit (and only of such a hit) is sent to the lookup service ipwho.is to find the approximate location and provider.<br />
+      <strong style={{ color: '#e8e8f0' }}>Retention:</strong> 30 days, then automatic deletion. Longer only if a specific incident requires it for a report to an authority or for legal defence.
     </p>
 
     <h2 style={H2}>Legal Basis</h2>
     <p style={P}>
       Performance of a contract (Art. 6(1)(b) GDPR): payment processing, contact inquiries.<br />
-      Legitimate interest (Art. 6(1)(f) GDPR): server logs for security and error analysis, and the single anonymized page-view pixel described above.
+      Legitimate interest (Art. 6(1)(f) GDPR): server logs for security and error analysis, the security log with IP address, location and automatic block described above (protection of our systems against attacks, Recital 49 GDPR), and the single anonymized page-view pixel described above.
     </p>
 
     <h2 style={H2}>Processors</h2>
@@ -521,7 +530,8 @@ function DatenschutzEN() {
       <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> — payment processing. Data Processing Agreement (DPA) concluded pursuant to Art. 28 GDPR. Data transferred to the USA on the basis of Standard Contractual Clauses (Art. 46(2)(c) GDPR).<br />
       <strong style={{ color: '#e8e8f0' }}>GitHub, Inc.</strong> — frontend hosting (GitHub Pages). Data transferred to the USA on the basis of Standard Contractual Clauses.<br />
       <strong style={{ color: '#e8e8f0' }}>Superfly, Inc. (Fly.io)</strong> — backend API hosting, including the Lighthouse tracking pixel endpoint. Data transferred to the USA on the basis of Standard Contractual Clauses.<br />
-      <strong style={{ color: '#e8e8f0' }}>Web3Forms</strong> — contact form delivery only, invoked only when you submit the form.
+      <strong style={{ color: '#e8e8f0' }}>Web3Forms</strong> — contact form delivery only, invoked only when you submit the form.<br />
+      <strong style={{ color: '#e8e8f0' }}>ntfy.sh</strong> and <strong style={{ color: '#e8e8f0' }}>ipwho.is</strong> — alert delivery and IP location lookup for the security log above, invoked only on a honeypot or attack hit.
     </p>
 
     <h2 style={H2}>International Transfers</h2>
@@ -615,13 +625,22 @@ function DatenschutzDE() {
       <strong style={{ color: '#e8e8f0' }}>Besuchsstatistik:</strong> ein selbst gehosteter Tracking-Pixel (Lighthouse, Graz), der einen Seitenaufruf und einen Referrer protokolliert, auf jeder Seite einschließlich dieser. Speziell auf dieser Familie von Rechts-/Sicherheitsseiten protokollieren wir zusätzlich, nur aggregiert, ob ein Besuch bis zur Fußzeile am Ende der Seite gescrollt hat — derselbe speicherinterne, cookielose Mechanismus wie die im Abschnitt "Cookies" unten beschriebenen Abschnittszähler, hier angewendet, um eine Frage zu beantworten: Werden diese Seiten tatsächlich bis zum Ende gelesen? Speziell auf der Startseite protokollieren wir außerdem, einmal pro Besuch und nur aggregiert, ob die Entwicklertools Ihres Browsers offenbar geöffnet sind (eine passive Fenstergrößen-Prüfung, keine Timing-Tricks) — das existiert einzig, weil wir in der Konsole eine Nachricht für alle hinterlassen haben, die dort nachsehen, und uns interessiert, wie oft das tatsächlich jemand tut. Kein Cookie, kein Geräte-Fingerprint, kein websiteübergreifender Identifikator. Die unglamouröse Wahrheit darüber, was dieser Pixel tatsächlich ist, steht unter "Cookies" weiter unten.
     </p>
     <p style={P}>
-      <strong style={{ color: '#e8e8f0' }}>Was wir nicht erheben,</strong> zur Klarstellung: keine Standortdaten, kein Geräte-Fingerprinting, keine Werbe-ID, keine biometrischen Daten, kein websiteübergreifendes Profil, nichts wird an einen Datenhändler verkauft oder weitergegeben, nichts geht an ein Werbenetzwerk, weil es auf der anderen Seite dieser Website kein Werbenetzwerk gibt.
+      <strong style={{ color: '#e8e8f0' }}>Was wir nicht erheben,</strong> zur Klarstellung: keine Standortdaten gewöhnlicher Besucher (einzige Ausnahme ist das oben beschriebene Sicherheitsprotokoll), kein Geräte-Fingerprinting, keine Werbe-ID, keine biometrischen Daten, kein websiteübergreifendes Profil, nichts wird an einen Datenhändler verkauft oder weitergegeben, nichts geht an ein Werbenetzwerk, weil es auf der anderen Seite dieser Website kein Werbenetzwerk gibt.
+    </p>
+
+    <h2 style={H2}>Sicherheitsprotokoll (Honeypot)</h2>
+    <p style={P}>
+      Diese Website enthält Köderpfade, die kein gewöhnlicher Besucher aufruft (zum Beispiel <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>/.env</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>/wp-login.php</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>/phpmyadmin</code>), dazu eine Erkennung von Angriffswerkzeugen und Einschleusungsversuchen (SQL-Injection, Script-Einschleusung, Log4Shell, Pfad-Traversal, ungewöhnliche HTTP-Methoden). Wer so etwas auslöst, wird protokolliert: vollständige IP-Adresse, Zeitpunkt, HTTP-Methode, aufgerufener Pfad, User-Agent sowie ein aus der IP-Adresse abgeleiteter ungefährer Standort und Netzbetreiber. Das ist Selbstschutz und Cyberabwehr: Wir müssen wissen, woher ein Angriff auf unsere Systeme kam, welcher Köder berührt wurde und ob dieselbe Quelle wiederkehrt.<br />
+      <strong style={{ color: '#e8e8f0' }}>Automatische Sperre:</strong> wiederholte oder schwere Treffer sperren die IP-Adresse für 24 Stunden. Einen Irrtum melden Sie an <a href="mailto:security@rfi-irfos.com" style={A}>security@rfi-irfos.com</a>, dann heben wir die Sperre auf.<br />
+      <strong style={{ color: '#e8e8f0' }}>Alarm:</strong> Jeder Treffer geht an einen internen Push-Kanal (ntfy.sh), damit das Team ihn sofort sieht. Der Kanalname ist geheim.<br />
+      <strong style={{ color: '#e8e8f0' }}>Standortabfrage:</strong> Die IP-Adresse eines solchen Treffers (und nur eines solchen Treffers) geht an den Abfragedienst ipwho.is, um ungefähren Standort und Anbieter zu ermitteln.<br />
+      <strong style={{ color: '#e8e8f0' }}>Speicherdauer:</strong> 30 Tage, danach automatische Löschung. Länger nur, wenn ein konkreter Vorfall es für eine Meldung an eine Behörde oder zur Rechtsverteidigung erfordert.
     </p>
 
     <h2 style={H2}>Rechtsgrundlage</h2>
     <p style={P}>
       Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO): Zahlungsabwicklung, Kontaktanfragen.<br />
-      Berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO): Serverprotokolle zur Sicherheits- und Fehleranalyse, sowie der oben beschriebene einzelne, anonymisierte Seitenaufruf-Pixel.
+      Berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO): Serverprotokolle zur Sicherheits- und Fehleranalyse, das oben beschriebene Sicherheitsprotokoll mit IP-Adresse, Standort und automatischer Sperre (Schutz unserer Systeme vor Angriffen, Erwägungsgrund 49 DSGVO) sowie der oben beschriebene einzelne, anonymisierte Seitenaufruf-Pixel.
     </p>
 
     <h2 style={H2}>Auftragsverarbeiter</h2>
@@ -629,7 +648,8 @@ function DatenschutzDE() {
       <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> — Zahlungsabwicklung. Auftragsverarbeitungsvertrag (DPA) gemäß Art. 28 DSGVO abgeschlossen. Datenübermittlung in die USA auf Grundlage von Standardvertragsklauseln (Art. 46 Abs. 2 lit. c DSGVO).<br />
       <strong style={{ color: '#e8e8f0' }}>GitHub, Inc.</strong> — Frontend-Hosting (GitHub Pages). Datenübermittlung in die USA auf Grundlage von Standardvertragsklauseln.<br />
       <strong style={{ color: '#e8e8f0' }}>Superfly, Inc. (Fly.io)</strong> — Backend-API-Hosting, einschließlich des Lighthouse-Tracking-Pixel-Endpunkts. Datenübermittlung in die USA auf Grundlage von Standardvertragsklauseln.<br />
-      <strong style={{ color: '#e8e8f0' }}>Web3Forms</strong> — ausschließlich Zustellung des Kontaktformulars, nur ausgelöst, wenn Sie das Formular absenden.
+      <strong style={{ color: '#e8e8f0' }}>Web3Forms</strong> — ausschließlich Zustellung des Kontaktformulars, nur ausgelöst, wenn Sie das Formular absenden.<br />
+      <strong style={{ color: '#e8e8f0' }}>ntfy.sh</strong> und <strong style={{ color: '#e8e8f0' }}>ipwho.is</strong> — Zustellung des Alarms und IP-Standortabfrage für das Sicherheitsprotokoll oben, nur ausgelöst bei einem Honeypot- oder Angriffstreffer.
     </p>
 
     <h2 style={H2}>Internationale Datenübermittlung</h2>
