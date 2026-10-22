@@ -481,7 +481,7 @@ async fn geo_lookup(ip: &str) -> String {
 fn headline(kind: &str) -> (String, &'static str) {
     let (typ, rest) = kind.split_once(':').unwrap_or((kind, ""));
     match typ {
-        "köder" => (format!("Köder {rest}"), "🪤"),
+        "köder" => (format!("Köder {rest}"), "◆"),
         "angriff" => {
             let label = match rest.split_once(':') {
                 Some(("scanner", tool)) => format!("Scanner {tool}"),
@@ -497,9 +497,9 @@ fn headline(kind: &str) -> (String, &'static str) {
                     other => other.to_string(),
                 },
             };
-            (format!("Angriff: {label}"), "⚔️")
+            (format!("Angriff: {label}"), "▲")
         }
-        _ => (kind.to_string(), "❓"),
+        _ => (kind.to_string(), "◇"),
     }
 }
 
@@ -593,27 +593,27 @@ pub async fn guard(State(state): State<AppState>, req: Request, next: Next) -> R
         if ping {
             let verdict = if fake { "Fake-Datei ausgeliefert, er hat gelesen" } else { "Nur einen Spruch bekommen" };
             let body = card(&[
-                ("🎯", what.clone()),
-                ("📄", format!("{m} {path_c}")),
-                ("🌐", ip_log.clone()),
-                ("📍", geo.clone()),
-                ("🤖", ua_show.clone()),
-                ("📦", verdict.to_string()),
-                ("⚖️", format!("{score} von {BAN_SCORE} Punkten, dann Sperre")),
+                ("◎", what.clone()),
+                ("▤", format!("{m} {path_c}")),
+                ("◈", ip_log.clone()),
+                ("⌖", geo.clone()),
+                ("⚙", ua_show.clone()),
+                ("▣", verdict.to_string()),
+                ("◐", format!("{score} von {BAN_SCORE} Punkten, dann Sperre")),
             ]);
-            ping_ntfy(format!("{icon} Honeypot: {what}"), body, "rotating_light", "high").await;
+            ping_ntfy(format!("{icon} Honeypot: {what}"), body, "honeypot", "high").await;
         }
         if banned {
             let body = card(&[
-                ("🌐", ip_log.clone()),
-                ("📍", geo.clone()),
-                ("🎯", format!("Auslöser: {what}")),
-                ("📄", format!("{m} {path_c}")),
-                ("🤖", ua_show),
-                ("⏳", format!("Gesperrt für {BAN_HOURS} Stunden ({score} Punkte)")),
-                ("🔓", "Aufheben: IP in TRAP_ALLOW_IPS oder Zeile in trap_hits mit banned=1 löschen".to_string()),
+                ("◈", ip_log.clone()),
+                ("⌖", geo.clone()),
+                ("◎", format!("Auslöser: {what}")),
+                ("▤", format!("{m} {path_c}")),
+                ("⚙", ua_show),
+                ("◷", format!("Gesperrt für {BAN_HOURS} Stunden ({score} Punkte)")),
+                ("↺", "Aufheben: IP in TRAP_ALLOW_IPS oder Zeile in trap_hits mit banned=1 löschen".to_string()),
             ]);
-            ping_ntfy(format!("🏰 Bergfried: IP ausgesperrt"), body, "european_castle,no_entry", "urgent").await;
+            ping_ntfy("♜ Bergfried: IP ausgesperrt".to_string(), body, "bergfried", "urgent").await;
         }
     });
     response
