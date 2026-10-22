@@ -559,17 +559,22 @@ pub async fn guard(State(state): State<AppState>, req: Request, next: Next) -> R
         return plain(403, BERGFRIED);
     }
 
-    let (kind, fake, points, response) = match classify(&method, &path, &query, &ua) {
+    let (kind, fake, points, response, line, fake_head) = match classify(&method, &path, &query, &ua) {
         Verdict::Pass => return next.run(req).await,
         Verdict::Egg(e) => {
             tracing::info!("easter egg: {path}");
             return plain(e.status, e.body);
         }
         Verdict::Bait(b) => {
-            let body = b.fake.map(|f| format!("{f}\n{}", pick_line())).unwrap_or_else(|| pick_line().to_string());
-            (format!("köder:{}", b.kind), b.fake.is_some(), if b.fake.is_some() { 2 } else { 1 }, plain(200, &body))
+            let line = pick_line();
+            let body = b.fake.map(|f| format!("{f}\n{line}")).unwrap_or_else(|| line.to_string());
+            let head = b.fake.and_then(|f| f.lines().find(|l| !l.trim().is_empty())).unwrap_or("").to_string();
+            (format!("köder:{}", b.kind), b.fake.is_some(), if b.fake.is_some() { 2 } else { 1 }, plain(200, &body), line, head)
         }
-        Verdict::Attack(k) => (format!("angriff:{k}"), false, 3, plain(200, pick_line())),
+        Verdict::Attack(k) => {
+            let line = pick_line();
+            (format!("angriff:{k}"), false, 3, plain(200, line), line, String::new())
+        }
     };
 
     let (path_c, ua_c) = (clean(&path, 120), clean(&ua, 80));
@@ -590,18 +595,24 @@ pub async fn guard(State(state): State<AppState>, req: Request, next: Next) -> R
         let (what, icon) = headline(&kind);
         let ua_show = if ua_c.is_empty() { "(leer)".to_string() } else { ua_c.clone() };
         let card = |lines: &[(&str, String)]| lines.iter().map(|(i, t)| format!("{i} {t}")).collect::<Vec<_>>().join("\n");
+        // Der Spruch kann mehrzeilig sein (Urkunde, Flagge). Die Karte zeigt nur die erste Zeile.
+        let said = clean(line.lines().find(|l| !l.trim().is_empty()).unwrap_or(""), 140);
         if ping {
             let verdict = if fake { "Fake-Datei ausgeliefert, er hat gelesen" } else { "Nur einen Spruch bekommen" };
-            let body = card(&[
+            let mut rows = vec![
                 ("◎", what.clone()),
                 ("▤", format!("{m} {path_c}")),
                 ("◈", ip_log.clone()),
                 ("⌖", geo.clone()),
                 ("⚙", ua_show.clone()),
                 ("▣", verdict.to_string()),
-                ("◐", format!("{score} von {BAN_SCORE} Punkten, dann Sperre")),
-            ]);
-            ping_ntfy(format!("{icon} Honeypot: {what}"), body, "honeypot", "high").await;
+            ];
+            if !fake_head.is_empty() {
+                rows.push(("▧", format!("Inhalt: {}", clean(&fake_head, 100))));
+            }
+            rows.push(("❝", format!("Spruch: {said}")));
+            rows.push(("◐", format!("{score} von {BAN_SCORE} Punkten, dann Sperre")));
+            ping_ntfy(format!("{icon} Honeypot: {what}"), card(&rows), "honeypot", "high").await;
         }
         if banned {
             let body = card(&[
@@ -610,6 +621,7 @@ pub async fn guard(State(state): State<AppState>, req: Request, next: Next) -> R
                 ("◎", format!("Auslöser: {what}")),
                 ("▤", format!("{m} {path_c}")),
                 ("⚙", ua_show),
+                ("❝", format!("Spruch: {said}")),
                 ("◷", format!("Gesperrt für {BAN_HOURS} Stunden ({score} Punkte)")),
                 ("↺", "Aufheben: IP in TRAP_ALLOW_IPS oder Zeile in trap_hits mit banned=1 löschen".to_string()),
             ]);
