@@ -1,3 +1,6 @@
+# ACHTUNG (22.10.2026): NICHT zum Deployen benutzen. Diese Datei hat kein [[mounts]] fuer das Volume rfi_data,
+# Fly stoppt den Rollout und --yes wuerde das Volume mit der SQLite-DB abhaengen. Deploy: flyctl deploy --remote-only
+# (nutzt fly.toml).
 app = "rfi-irfos-web-2"
 primary_region = "fra"
 
