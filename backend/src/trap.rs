@@ -367,10 +367,19 @@ fn is_ip(s: &str) -> bool {
     s.parse::<std::net::IpAddr>().is_ok()
 }
 
+/// Eigene Adressen (ZBook, Kolonie) werden nie gesperrt und sammeln keine Punkte. Ein Eintrag ist eine
+/// exakte IP oder ein IPv6-Präfix mit Doppelpunkt am Ende (`2001:db8:1:2:`), weil IPv6-Adressen durch
+/// Privacy Extensions wechseln.
 fn allowlisted(ip: &str) -> bool {
     std::env::var("TRAP_ALLOW_IPS")
-        .map(|v| v.split(',').any(|a| a.trim() == ip))
+        .map(|v| allow_matches(&v, ip))
         .unwrap_or(false)
+}
+
+fn allow_matches(list: &str, ip: &str) -> bool {
+    list.split(',').map(str::trim).filter(|a| !a.is_empty()).any(|a| {
+        a == ip || (a.ends_with(':') && ip.starts_with(a))
+    })
 }
 
 struct Limiter {
@@ -689,6 +698,16 @@ mod tests {
         assert_eq!(headline("angriff:scanner:sqlmap").0, "Angriff: Scanner sqlmap");
         assert_eq!(headline("angriff:sql-injection").0, "Angriff: SQL-Injection");
         assert_eq!(headline("angriff:method:TRACE").0, "Angriff: Ungewöhnliche Methode TRACE");
+    }
+
+    #[test]
+    fn allowlist_matches_exact_and_prefix() {
+        let l = "89.144.199.197, 2001:4bb8:13b:286c:";
+        assert!(allow_matches(l, "89.144.199.197"));
+        assert!(allow_matches(l, "2001:4bb8:13b:286c:1:2:3:4"));
+        assert!(!allow_matches(l, "89.144.199.19"));
+        assert!(!allow_matches(l, "2001:4bb8:13b:286d:1:2:3:4"));
+        assert!(!allow_matches("", "1.2.3.4"));
     }
 
     #[test]
