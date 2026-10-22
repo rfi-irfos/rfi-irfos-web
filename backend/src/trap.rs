@@ -426,9 +426,9 @@ fn is_banned(ip: &str) -> bool {
     }
 }
 
-/// Bucht Punkte und gibt `Some(gesamt)` zurück, wenn dieser Treffer die Sperre auslöst.
-fn add_score(ip: &str, points: u32) -> Option<u32> {
-    let mut g = gate().lock().ok()?;
+/// Bucht Punkte und gibt (Punkte der letzten Stunde, Sperre ausgelöst) zurück.
+fn add_score(ip: &str, points: u32) -> (u32, bool) {
+    let Ok(mut g) = gate().lock() else { return (0, false) };
     let now = Instant::now();
     let hist = g.score.entry(ip.to_string()).or_default();
     hist.retain(|(t, _)| now.duration_since(*t) < Duration::from_secs(3600));
@@ -437,9 +437,9 @@ fn add_score(ip: &str, points: u32) -> Option<u32> {
     if total >= BAN_SCORE {
         g.score.remove(ip);
         g.bans.insert(ip.to_string(), now + Duration::from_secs(BAN_HOURS * 3600));
-        return Some(total);
+        return (total, true);
     }
-    None
+    (total, false)
 }
 
 /// Standort und Provider über ipwho.is (HTTPS, ohne Schlüssel). Fehler ergeben nur „unbekannt“.
@@ -450,11 +450,48 @@ async fn geo_lookup(ip: &str) -> String {
     if v.get("success").and_then(|x| x.as_bool()) != Some(true) {
         return "unbekannt".into();
     }
-    let g = |k: &str| v.get(k).and_then(|x| x.as_str()).unwrap_or("?").to_string();
+    let g = |k: &str| v.get(k).and_then(|x| x.as_str()).unwrap_or("").to_string();
     let conn = v.get("connection");
-    let c = |k: &str| conn.and_then(|c| c.get(k)).and_then(|x| x.as_str()).unwrap_or("?").to_string();
+    let c = |k: &str| conn.and_then(|c| c.get(k)).and_then(|x| x.as_str()).unwrap_or("").to_string();
     let asn = conn.and_then(|c| c.get("asn")).and_then(|x| x.as_u64()).map(|n| format!("AS{n}")).unwrap_or_default();
-    format!("{}, {} ({}) | {} {} {}", g("city"), g("country"), g("country_code"), asn, c("isp"), c("org"))
+    let (city, country) = (g("city"), g("country"));
+    let place = [city, country].into_iter().filter(|p| !p.is_empty()).collect::<Vec<_>>().join(", ");
+    // isp und org sind oft identisch, dann nur einmal.
+    let (isp, org) = (c("isp"), c("org"));
+    let provider = if org.is_empty() || org == isp { isp } else { format!("{isp} / {org}") };
+    let net = [provider, asn].into_iter().filter(|p| !p.is_empty()).collect::<Vec<_>>().join(" · ");
+    match (place.is_empty(), net.is_empty()) {
+        (true, true) => "unbekannt".into(),
+        (false, true) => place,
+        (true, false) => net,
+        (false, false) => format!("{place} · {net}"),
+    }
+}
+
+/// Lesbare Überschrift zur internen Art („köder:.env“, „angriff:scanner:sqlmap“).
+fn headline(kind: &str) -> (String, &'static str) {
+    let (typ, rest) = kind.split_once(':').unwrap_or((kind, ""));
+    match typ {
+        "köder" => (format!("Köder {rest}"), "🪤"),
+        "angriff" => {
+            let label = match rest.split_once(':') {
+                Some(("scanner", tool)) => format!("Scanner {tool}"),
+                Some(("method", m)) => format!("Ungewöhnliche Methode {m}"),
+                _ => match rest {
+                    "sql-injection" => "SQL-Injection".to_string(),
+                    "xss" => "Script-Einschleusung (XSS)".to_string(),
+                    "log4shell" => "Log4Shell".to_string(),
+                    "path-traversal" => "Pfad-Traversal".to_string(),
+                    "lfi" => "Datei-Einbindung (LFI)".to_string(),
+                    "php-injection" => "PHP-Einschleusung".to_string(),
+                    "command-injection" => "Befehls-Einschleusung".to_string(),
+                    other => other.to_string(),
+                },
+            };
+            (format!("Angriff: {label}"), "⚔️")
+        }
+        _ => (kind.to_string(), "❓"),
+    }
 }
 
 async fn ping_ntfy(title: String, body: String, tags: &'static str, priority: &'static str) {
@@ -530,8 +567,8 @@ pub async fn guard(State(state): State<AppState>, req: Request, next: Next) -> R
     let ip_log = if ip.is_empty() { "unbekannt".to_string() } else { ip.clone() };
     tracing::warn!("trap hit {kind} {method} {path_c} ua={ua_c} ip={ip_log}");
 
-    let banned_now = if ip.is_empty() || allowlisted(&ip) { None } else { add_score(&ip, points) };
-    let ping = allow_ping(format!("{ip_log}|{path_c}")) || banned_now.is_some();
+    let (score, banned) = if ip.is_empty() || allowlisted(&ip) { (0, false) } else { add_score(&ip, points) };
+    let ping = allow_ping(format!("{ip_log}|{path_c}")) || banned;
 
     // Standortabfrage und Protokoll laufen im Hintergrund, die Antwort an den Angreifer wartet nicht.
     let db = state.db.clone();
@@ -539,16 +576,35 @@ pub async fn guard(State(state): State<AppState>, req: Request, next: Next) -> R
     tokio::spawn(async move {
         let geo = if ip.is_empty() { "unbekannt".to_string() } else { geo_lookup(&ip).await };
         let _ = sqlx::query("INSERT INTO trap_hits (kind,method,path,user_agent,ip,geo,fake,banned) VALUES (?1,?2,?3,?4,?5,?6,?7,?8)")
-            .bind(&kind).bind(&m).bind(&path_c).bind(&ua_c).bind(&ip_log).bind(&geo).bind(fake).bind(banned_now.is_some())
+            .bind(&kind).bind(&m).bind(&path_c).bind(&ua_c).bind(&ip_log).bind(&geo).bind(fake).bind(banned)
             .execute(&db).await;
+        let (what, icon) = headline(&kind);
+        let ua_show = if ua_c.is_empty() { "(leer)".to_string() } else { ua_c.clone() };
+        let card = |lines: &[(&str, String)]| lines.iter().map(|(i, t)| format!("{i} {t}")).collect::<Vec<_>>().join("\n");
         if ping {
-            let what = if fake { "Fake-Datei ausgeliefert, er hat gelesen." } else { "Spruch ausgeliefert." };
-            let body = format!("{kind}\n{m} {path_c}\nIP: {ip_log}\nOrt: {geo}\nUA: {ua_c}\n{what}");
-            ping_ntfy(format!("Honeypot: {kind}"), body, "skull,rotating_light", "high").await;
+            let verdict = if fake { "Fake-Datei ausgeliefert, er hat gelesen" } else { "Nur einen Spruch bekommen" };
+            let body = card(&[
+                ("🎯", what.clone()),
+                ("📄", format!("{m} {path_c}")),
+                ("🌐", ip_log.clone()),
+                ("📍", geo.clone()),
+                ("🤖", ua_show.clone()),
+                ("📦", verdict.to_string()),
+                ("⚖️", format!("{score} von {BAN_SCORE} Punkten, dann Sperre")),
+            ]);
+            ping_ntfy(format!("{icon} Honeypot: {what}"), body, "rotating_light", "high").await;
         }
-        if let Some(total) = banned_now {
-            let body = format!("Fallgatter unten für {ip_log} ({geo}).\nPunkte in 1 Std.: {total}, Sperre {BAN_HOURS} Std.\nAuslöser: {kind} {path_c}\nEntsperren: Eintrag aus trap_bans streichen oder IP in TRAP_ALLOW_IPS.");
-            ping_ntfy(format!("Bergfried: {ip_log} ausgesperrt"), body, "european_castle,no_entry", "urgent").await;
+        if banned {
+            let body = card(&[
+                ("🌐", ip_log.clone()),
+                ("📍", geo.clone()),
+                ("🎯", format!("Auslöser: {what}")),
+                ("📄", format!("{m} {path_c}")),
+                ("🤖", ua_show),
+                ("⏳", format!("Gesperrt für {BAN_HOURS} Stunden ({score} Punkte)")),
+                ("🔓", "Aufheben: IP in TRAP_ALLOW_IPS oder Zeile in trap_hits mit banned=1 löschen".to_string()),
+            ]);
+            ping_ntfy(format!("🏰 Bergfried: IP ausgesperrt"), body, "european_castle,no_entry", "urgent").await;
         }
     });
     response
@@ -618,13 +674,21 @@ mod tests {
 
     #[test]
     fn fallgatter_bans_after_score() {
-        assert_eq!(add_score("198.51.100.1", 1), None);
-        assert_eq!(add_score("198.51.100.1", 1), None);
-        assert_eq!(add_score("198.51.100.1", 1), Some(3));
+        assert_eq!(add_score("198.51.100.1", 1), (1, false));
+        assert_eq!(add_score("198.51.100.1", 1), (2, false));
+        assert_eq!(add_score("198.51.100.1", 1), (3, true));
         assert!(is_banned("198.51.100.1"));
         assert!(!is_banned("198.51.100.2"));
         // ein schwerer Treffer genügt
-        assert_eq!(add_score("198.51.100.3", 3), Some(3));
+        assert_eq!(add_score("198.51.100.3", 3), (3, true));
+    }
+
+    #[test]
+    fn headlines_are_readable() {
+        assert_eq!(headline("köder:.env").0, "Köder .env");
+        assert_eq!(headline("angriff:scanner:sqlmap").0, "Angriff: Scanner sqlmap");
+        assert_eq!(headline("angriff:sql-injection").0, "Angriff: SQL-Injection");
+        assert_eq!(headline("angriff:method:TRACE").0, "Angriff: Ungewöhnliche Methode TRACE");
     }
 
     #[test]
