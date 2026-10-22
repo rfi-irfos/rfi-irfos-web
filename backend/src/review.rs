@@ -149,6 +149,8 @@ pub async fn submit_review(
 }
 
 async fn notify_new_request(domain: &str, email: &str) {
+    // Tests dürfen nie echte Pushes oder Mails auslösen (2026-10-22: Testläufe füllten ntfy und die Anfrageliste mit foo.com / a@b.com)
+    if cfg!(test) { return; }
     let Ok(client) = reqwest::Client::builder()
         .timeout(std::time::Duration::from_secs(5)).build() else { return };
     let _ = client
@@ -367,6 +369,8 @@ async fn run_scan(db: sqlx::SqlitePool, id: i64, domain: String) {
 }
 
 async fn notify_scan_complete(domain: &str) {
+    // Tests dürfen nie echte Pushes oder Mails auslösen (2026-10-22: Testläufe füllten ntfy und die Anfrageliste mit foo.com / a@b.com)
+    if cfg!(test) { return; }
     let Ok(client) = reqwest::Client::builder()
         .timeout(std::time::Duration::from_secs(5)).build() else { return };
     let _ = client
