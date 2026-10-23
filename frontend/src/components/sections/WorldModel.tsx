@@ -171,7 +171,7 @@ function LiveFeedWidget() {
         <p>{w.liveFeed.sub}</p>
       </div>
       <div className="wm-chain-list wm-feed-list">
-      {rows.length === 0 && <p style={{ color: 'var(--text2)', fontSize: 13 }}>{w.liveFeed.empty}</p>}
+      {rows.length === 0 && <p style={{ color: 'var(--text2)', fontSize: 'var(--fs-small)' }}>{w.liveFeed.empty}</p>}
       {rows.map(entry => {
         const meta = FEED_META[entry.kind] ?? FEED_META.model
         const Icon = meta.icon
@@ -620,9 +620,9 @@ function EarlyAccessForm() {
             <input type="text" name="company" value={botcheck} onChange={ev => setBotcheck(ev.target.value)}
               tabIndex={-1} autoComplete="off" aria-hidden="true"
               style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
-            {state === 'ok' && <span style={{ color: 'var(--accent-text)', fontSize: 13, fontWeight: 700 }}>{e.submitOk}</span>}
+            {state === 'ok' && <span style={{ color: 'var(--accent-text)', fontSize: 'var(--fs-small)', fontWeight: 700 }}>{e.submitOk}</span>}
             {state === 'err' && (
-              <span style={{ color: 'var(--text2)', fontSize: 12.5 }}>
+              <span style={{ color: 'var(--text2)', fontSize: 'var(--fs-small)' }}>
                 {e.errorText} <a href="mailto:contact@rfi-irfos.com" style={{ color: 'var(--accent-text)' }}><IconMail size={12} style={{ verticalAlign: -1 }} /> contact@rfi-irfos.com</a>
               </span>
             )}

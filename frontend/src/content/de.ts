@@ -265,7 +265,7 @@ export const DE: Content = {
     introSubtitle: 'Finden Sie heraus, was Ihre Security-Tools übersehen könnten.',
     introText: [
       'Der erste Check erfolgt ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ihre Systeme bleiben dabei unverändert.',
-      'Bevor die Prüfung beginnt, bestätigt ein Researcher Ihre Anfrage. Innerhalb eines Werktags melden wir uns bei Ihnen. Sie erhalten einen kurzen schriftlichen Report mit unseren Beobachtungen, möglichen Angriffsszenarien, einer fachlichen Einschätzung der potenziellen wirtschaftlichen Schäden und konkreten Empfehlungen für die nächsten Schritte — inklusive eines verknüpften Knowledge Graphs zu allen Funden, kostenlos im Check enthalten.',
+      'Bevor die Prüfung beginnt, sieht ein Researcher Ihre Anfrage durch und meldet sich innerhalb eines Werktags. Sie erhalten einen kurzen schriftlichen Report mit unseren Funden, möglichen Angriffsszenarien, dem wirtschaftlichen Schaden und klaren nächsten Schritten, dazu einen Knowledge Graph zu allen Funden. Alles kostenlos.',
       'Der Check liefert eine erste externe Einschätzung. Er umfasst keine Quellcode-Analyse und ist keine Garantie für die Sicherheit Ihrer Anwendung.',
     ],
     domainLabel: 'Ihre Domain',

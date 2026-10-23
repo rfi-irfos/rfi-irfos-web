@@ -340,7 +340,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
             {saving ? 'Speichern…' : saved ? 'Gespeichert' : saveErr ? 'Fehler beim Speichern' : 'Speichern'}
           </button>
           {saveErr && (
-            <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#c53030', color: '#fff', borderRadius: 10, padding: '12px 18px', fontSize: 13, fontWeight: 600, boxShadow: '0 4px 20px rgba(0,0,0,.25)', zIndex: 9999, maxWidth: 320, lineHeight: 1.5 }}>
+            <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#c53030', color: '#fff', borderRadius: 10, padding: '12px 18px', fontSize: 'var(--fs-small)', fontWeight: 700, boxShadow: '0 4px 20px rgba(0,0,0,.25)', zIndex: 9999, maxWidth: 320, lineHeight: 'var(--lh-body)' }}>
               Speichern fehlgeschlagen. Bitte prüfe, ob der GitHub-Token noch gültig ist.
             </div>
           )}
@@ -387,7 +387,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
               <button key={t.id} className={`builder-tab ${activeTab === t.id ? 'active' : ''}`} onClick={() => setActiveTab(t.id)} style={{ position: 'relative' }}>
                 {t.label}
                 {(t.badge ?? 0) > 0 && (
-                  <span style={{ position: 'absolute', top: 2, right: 2, background: '#c53030', color: '#fff', borderRadius: '50%', fontSize: 9, fontWeight: 700, minWidth: 14, height: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 2px' }}>{t.badge}</span>
+                  <span style={{ position: 'absolute', top: 2, right: 2, background: '#c53030', color: '#fff', borderRadius: '50%', fontSize: 'var(--fs-label)', fontWeight: 700, minWidth: 14, height: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 2px' }}>{t.badge}</span>
                 )}
               </button>
             ))}
@@ -498,7 +498,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                   <Field label="Button label">
                     <input data-cid="ssp.button" value={draft.ssp?.button ?? ''} onChange={e => update('ssp.button', e.target.value)} placeholder="Member login →" />
                   </Field>
-                  <div style={{ marginTop: 8, padding: '8px 10px', background: '#F8F5F0', borderRadius: 6, fontSize: 11, color: '#888', lineHeight: 1.5 }}>
+                  <div style={{ marginTop: 8, padding: '8px 10px', background: '#F8F5F0', borderRadius: 6, fontSize: 'var(--fs-label)', color: '#888', lineHeight: 'var(--lh-body)' }}>
                     Leave Title empty to hide this section entirely.
                   </div>
                 </PanelSection>
@@ -633,7 +633,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                         <input value={editingPageItem.slug} onChange={e => updatePage(editingPageItem.id, 'slug', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))} placeholder="meine-seite" />
                       </Field>
                       <Field label="">
-                        <div style={{ padding: '6px 10px', background: '#f0f7ff', borderRadius: 6, fontSize: 12, color: '#0099CC', fontFamily: 'monospace' }}>
+                        <div style={{ padding: '6px 10px', background: '#f0f7ff', borderRadius: 6, fontSize: 'var(--fs-small)', color: '#0099CC', fontFamily: 'monospace' }}>
                           Link: <strong>#p/{editingPageItem.slug}</strong>
                         </div>
                       </Field>
@@ -667,17 +667,17 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                   ) : (
                     <div className="panel-product-list">
                       {(draft.pages ?? []).length === 0 && (
-                        <div style={{ padding: '20px 16px', color: '#aaa', fontSize: 13, textAlign: 'center' }}>
+                        <div style={{ padding: '20px 16px', color: '#aaa', fontSize: 'var(--fs-small)', textAlign: 'center' }}>
                           Noch keine Seiten. Klicke auf "+ Neue Seite".
                         </div>
                       )}
                       {(draft.pages ?? []).map(p => (
                         <div key={p.id} className="panel-product-row" onClick={() => setEditingPage(p.id)}>
                           <div style={{ flex: 1, padding: '8px 12px' }}>
-                            <div style={{ fontWeight: 600, fontSize: 13 }}>{p.title}</div>
-                            <div style={{ fontSize: 11, color: '#888', fontFamily: 'monospace' }}>#p/{p.slug}</div>
+                            <div style={{ fontWeight: 700, fontSize: 'var(--fs-small)' }}>{p.title}</div>
+                            <div style={{ fontSize: 'var(--fs-label)', color: '#888', fontFamily: 'monospace' }}>#p/{p.slug}</div>
                           </div>
-                          {p.showInNav && <span style={{ fontSize: 10, background: '#e8f4ff', color: '#0099CC', borderRadius: 4, padding: '2px 6px', margin: '0 8px', fontWeight: 700 }}>NAV</span>}
+                          {p.showInNav && <span style={{ fontSize: 'var(--fs-label)', background: '#e8f4ff', color: '#0099CC', borderRadius: 4, padding: '2px 6px', margin: '0 8px', fontWeight: 700 }}>NAV</span>}
                         </div>
                       ))}
                     </div>
@@ -690,7 +690,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
             {activeTab === 'inbox' && (
               <div style={{ padding: 14 }}>
                 {contactInbox.length === 0 ? (
-                  <div style={{ padding: '24px 0', textAlign: 'center', color: '#aaa', fontSize: 13 }}>
+                  <div style={{ padding: '24px 0', textAlign: 'center', color: '#aaa', fontSize: 'var(--fs-small)' }}>
                     Keine neuen Anfragen.
                   </div>
                 ) : (
@@ -698,16 +698,16 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                     <div key={item.ts} style={{ background: 'var(--panel-surface, #f8f8f8)', borderRadius: 10, padding: 14, marginBottom: 12, border: '1px solid var(--panel-border, #e8e8e8)' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
                         <div>
-                          <div style={{ fontWeight: 700, fontSize: 13 }}>{item.name}</div>
-                          <a href={`mailto:${item.email}`} style={{ fontSize: 12, color: '#0099CC' }}>{item.email}</a>
-                          {item.phone && <div style={{ fontSize: 12, color: '#666' }}>{item.phone}</div>}
+                          <div style={{ fontWeight: 700, fontSize: 'var(--fs-small)' }}>{item.name}</div>
+                          <a href={`mailto:${item.email}`} style={{ fontSize: 'var(--fs-small)', color: '#0099CC' }}>{item.email}</a>
+                          {item.phone && <div style={{ fontSize: 'var(--fs-small)', color: '#666' }}>{item.phone}</div>}
                         </div>
-                        <div style={{ fontSize: 10, color: '#aaa', whiteSpace: 'nowrap' }}>{new Date(item.ts).toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</div>
+                        <div style={{ fontSize: 'var(--fs-label)', color: '#aaa', whiteSpace: 'nowrap' }}>{new Date(item.ts).toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</div>
                       </div>
-                      {item.message && <p style={{ fontSize: 12, margin: '8px 0 10px', color: '#444', lineHeight: 1.5 }}>{item.message}</p>}
+                      {item.message && <p style={{ fontSize: 'var(--fs-small)', margin: '8px 0 10px', color: '#444', lineHeight: 'var(--lh-body)' }}>{item.message}</p>}
                       <div style={{ display: 'flex', gap: 8 }}>
-                        <a href={`mailto:${item.email}?subject=Re: Ihre Anfrage`} className="panel-add-btn" style={{ fontSize: 11, padding: '4px 10px', textDecoration: 'none' }}>Antworten</a>
-                        <button className="panel-delete-btn" style={{ fontSize: 11, padding: '4px 10px' }} onClick={() => dismissInboxItem(item.ts)}>Erledigt</button>
+                        <a href={`mailto:${item.email}?subject=Re: Ihre Anfrage`} className="panel-add-btn" style={{ fontSize: 'var(--fs-label)', padding: '4px 10px', textDecoration: 'none' }}>Antworten</a>
+                        <button className="panel-delete-btn" style={{ fontSize: 'var(--fs-label)', padding: '4px 10px' }} onClick={() => dismissInboxItem(item.ts)}>Erledigt</button>
                       </div>
                     </div>
                   ))
@@ -719,12 +719,12 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
             {activeTab === 'students' && (
               <div className="panel-students">
                 {studentsSaveError && (
-                  <div style={{ color: '#c53030', fontSize: 12, fontWeight: 600, padding: '8px 12px', background: '#fff5f5', borderRadius: 8, border: '1px solid #feb2b2', marginBottom: 12 }}>
+                  <div style={{ color: '#c53030', fontSize: 'var(--fs-small)', fontWeight: 700, padding: '8px 12px', background: '#fff5f5', borderRadius: 8, border: '1px solid #feb2b2', marginBottom: 12 }}>
                     Save failed. Please reload the page and try again.
                   </div>
                 )}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-                  <span style={{ fontSize: 12, color: 'var(--panel-muted, #888)', fontWeight: 600 }}>{students.length} students</span>
+                  <span style={{ fontSize: 'var(--fs-small)', color: 'var(--panel-muted, #888)', fontWeight: 700 }}>{students.length} students</span>
                   <button className="panel-add-btn" onClick={() => { setNewStudentForm(true); setStudentDraft({ status: 'active', language: 'English', level: 'B1', sessions: 0, goal: '', notes: '' }) }}>
                     + Add student
                   </button>
@@ -732,13 +732,13 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
 
                 {newStudentForm && (
                   <div className="panel-student-form" style={{ background: 'var(--panel-surface, #f8f8f8)', borderRadius: 10, padding: 14, marginBottom: 14, border: '1px solid var(--panel-border, #e8e8e8)' }}>
-                    <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 13 }}>New student</div>
+                    <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 'var(--fs-small)' }}>New student</div>
                     {(['name', 'language', 'level', 'goal', 'notes', 'next_session'] as (keyof Student)[]).map(f => (
                       <div key={f} style={{ marginBottom: 8 }}>
-                        <label style={{ display: 'block', fontSize: 11, fontWeight: 600, marginBottom: 3, textTransform: 'capitalize' }}>{f.replace('_', ' ')}</label>
+                        <label style={{ display: 'block', fontSize: 'var(--fs-label)', fontWeight: 700, marginBottom: 3, textTransform: 'capitalize' }}>{f.replace('_', ' ')}</label>
                         {f === 'notes' || f === 'goal'
-                          ? <textarea rows={2} value={(studentDraft[f] as string) ?? ''} onChange={e => setStudentDraft(d => ({ ...d, [f]: e.target.value }))} style={{ width: '100%', borderRadius: 6, border: '1px solid var(--panel-border, #e0e0e0)', padding: '6px 8px', fontSize: 12, resize: 'vertical' }} />
-                          : <input value={(studentDraft[f] as string) ?? ''} onChange={e => setStudentDraft(d => ({ ...d, [f]: e.target.value }))} style={{ width: '100%', borderRadius: 6, border: '1px solid var(--panel-border, #e0e0e0)', padding: '6px 8px', fontSize: 12 }} />
+                          ? <textarea rows={2} value={(studentDraft[f] as string) ?? ''} onChange={e => setStudentDraft(d => ({ ...d, [f]: e.target.value }))} style={{ width: '100%', borderRadius: 6, border: '1px solid var(--panel-border, #e0e0e0)', padding: '6px 8px', fontSize: 'var(--fs-small)', resize: 'vertical' }} />
+                          : <input value={(studentDraft[f] as string) ?? ''} onChange={e => setStudentDraft(d => ({ ...d, [f]: e.target.value }))} style={{ width: '100%', borderRadius: 6, border: '1px solid var(--panel-border, #e0e0e0)', padding: '6px 8px', fontSize: 'var(--fs-small)' }} />
                         }
                       </div>
                     ))}
@@ -752,7 +752,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                 )}
 
                 {students.length === 0 && !newStudentForm && (
-                  <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--panel-muted, #aaa)', fontSize: 13 }}>
+                  <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--panel-muted, #aaa)', fontSize: 'var(--fs-small)' }}>
                     No students yet. Add your first one above.
                   </div>
                 )}
@@ -761,19 +761,19 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                   <div key={s.id} style={{ background: 'var(--panel-surface, #f8f8f8)', borderRadius: 10, padding: 12, marginBottom: 10, border: '1px solid var(--panel-border, #e8e8e8)' }}>
                     {editingStudent?.id === s.id ? (
                       <div>
-                        <div style={{ fontWeight: 700, marginBottom: 8, fontSize: 13 }}>Edit: {s.name}</div>
+                        <div style={{ fontWeight: 700, marginBottom: 8, fontSize: 'var(--fs-small)' }}>Edit: {s.name}</div>
                         {(['name', 'language', 'level', 'status', 'sessions', 'next_session', 'goal', 'notes'] as (keyof Student)[]).map(f => (
                           <div key={f} style={{ marginBottom: 7 }}>
-                            <label style={{ display: 'block', fontSize: 11, fontWeight: 600, marginBottom: 2, textTransform: 'capitalize' }}>{f.replace('_', ' ')}</label>
+                            <label style={{ display: 'block', fontSize: 'var(--fs-label)', fontWeight: 700, marginBottom: 2, textTransform: 'capitalize' }}>{f.replace('_', ' ')}</label>
                             {f === 'status'
-                              ? <select value={editingStudent[f] as string} onChange={e => setEditingStudent(d => d ? ({ ...d, [f]: e.target.value } as Student) : null)} aria-label={f.replace('_', ' ')} style={{ width: '100%', borderRadius: 6, border: '1px solid var(--panel-border, #e0e0e0)', padding: '5px 8px', fontSize: 12 }}>
+                              ? <select value={editingStudent[f] as string} onChange={e => setEditingStudent(d => d ? ({ ...d, [f]: e.target.value } as Student) : null)} aria-label={f.replace('_', ' ')} style={{ width: '100%', borderRadius: 6, border: '1px solid var(--panel-border, #e0e0e0)', padding: '5px 8px', fontSize: 'var(--fs-small)' }}>
                                   <option value="active">Active</option>
                                   <option value="paused">Paused</option>
                                   <option value="completed">Completed</option>
                                 </select>
                               : f === 'notes' || f === 'goal'
-                              ? <textarea rows={2} value={(editingStudent[f] as string) ?? ''} onChange={e => setEditingStudent(d => d ? ({ ...d, [f]: e.target.value } as Student) : null)} style={{ width: '100%', borderRadius: 6, border: '1px solid var(--panel-border, #e0e0e0)', padding: '5px 8px', fontSize: 12, resize: 'vertical' }} />
-                              : <input value={(editingStudent[f] as string | number) ?? ''} onChange={e => setEditingStudent(d => d ? ({ ...d, [f]: f === 'sessions' ? parseInt(e.target.value) || 0 : e.target.value } as Student) : null)} style={{ width: '100%', borderRadius: 6, border: '1px solid var(--panel-border, #e0e0e0)', padding: '5px 8px', fontSize: 12 }} />
+                              ? <textarea rows={2} value={(editingStudent[f] as string) ?? ''} onChange={e => setEditingStudent(d => d ? ({ ...d, [f]: e.target.value } as Student) : null)} style={{ width: '100%', borderRadius: 6, border: '1px solid var(--panel-border, #e0e0e0)', padding: '5px 8px', fontSize: 'var(--fs-small)', resize: 'vertical' }} />
+                              : <input value={(editingStudent[f] as string | number) ?? ''} onChange={e => setEditingStudent(d => d ? ({ ...d, [f]: f === 'sessions' ? parseInt(e.target.value) || 0 : e.target.value } as Student) : null)} style={{ width: '100%', borderRadius: 6, border: '1px solid var(--panel-border, #e0e0e0)', padding: '5px 8px', fontSize: 'var(--fs-small)' }} />
                             }
                           </div>
                         ))}
@@ -786,14 +786,14 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                     ) : (
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 2 }}>{s.name}</div>
-                          <div style={{ fontSize: 11, color: 'var(--panel-muted, #888)', marginBottom: 4 }}>{s.language} · {s.level} · {s.sessions} sessions{s.next_session ? ` · next: ${s.next_session}` : ''}</div>
-                          {s.goal && <div style={{ fontSize: 11, fontStyle: 'italic', color: 'var(--panel-muted, #999)', marginBottom: 2 }}>Goal: {s.goal}</div>}
-                          {s.notes && <div style={{ fontSize: 11, color: 'var(--panel-muted, #aaa)' }}>{s.notes}</div>}
+                          <div style={{ fontWeight: 700, fontSize: 'var(--fs-small)', marginBottom: 2 }}>{s.name}</div>
+                          <div style={{ fontSize: 'var(--fs-label)', color: 'var(--panel-muted, #888)', marginBottom: 4 }}>{s.language} · {s.level} · {s.sessions} sessions{s.next_session ? ` · next: ${s.next_session}` : ''}</div>
+                          {s.goal && <div style={{ fontSize: 'var(--fs-label)', fontStyle: 'italic', color: 'var(--panel-muted, #999)', marginBottom: 2 }}>Goal: {s.goal}</div>}
+                          {s.notes && <div style={{ fontSize: 'var(--fs-label)', color: 'var(--panel-muted, #aaa)' }}>{s.notes}</div>}
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-end', flexShrink: 0 }}>
-                          <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 20, background: s.status === 'active' ? '#E8F5E8' : s.status === 'paused' ? '#FFF8E8' : '#F0F0F0', color: s.status === 'active' ? '#3A7A3A' : s.status === 'paused' ? '#9A7A10' : '#888' }}>{s.status}</span>
-                          <button className="panel-back-btn" style={{ fontSize: 11, padding: '3px 10px' }} onClick={() => setEditingStudent({ ...s })}>Edit</button>
+                          <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, padding: '2px 7px', borderRadius: 20, background: s.status === 'active' ? '#E8F5E8' : s.status === 'paused' ? '#FFF8E8' : '#F0F0F0', color: s.status === 'active' ? '#3A7A3A' : s.status === 'paused' ? '#9A7A10' : '#888' }}>{s.status}</span>
+                          <button className="panel-back-btn" style={{ fontSize: 'var(--fs-label)', padding: '3px 10px' }} onClick={() => setEditingStudent({ ...s })}>Edit</button>
                         </div>
                       </div>
                     )}
@@ -806,10 +806,10 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
             {activeTab === 'analytics' && (
               <div style={{ padding: 14 }}>
                 {analyticsLoading && (
-                  <div style={{ textAlign: 'center', color: '#aaa', padding: '40px 0', fontSize: 13 }}>Lade Daten…</div>
+                  <div style={{ textAlign: 'center', color: '#aaa', padding: '40px 0', fontSize: 'var(--fs-small)' }}>Lade Daten…</div>
                 )}
                 {!analyticsLoading && !analyticsData && (
-                  <div style={{ textAlign: 'center', color: '#aaa', padding: '40px 0', fontSize: 13 }}>Noch keine Besucher-Daten.</div>
+                  <div style={{ textAlign: 'center', color: '#aaa', padding: '40px 0', fontSize: 'var(--fs-small)' }}>Noch keine Besucher-Daten.</div>
                 )}
                 {analyticsData && (() => {
                   const maxDay = Math.max(...analyticsData.views_by_day.map(d => d.views), 1)
@@ -818,22 +818,22 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                     <>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 18 }}>
                         <div style={{ background: 'var(--panel-surface,#f8f8f8)', borderRadius: 10, padding: '14px 16px', border: '1px solid var(--panel-border,#e8e8e8)', textAlign: 'center' }}>
-                          <div style={{ fontSize: 28, fontWeight: 800, color: '#0099CC' }}>{analyticsData.total_views}</div>
-                          <div style={{ fontSize: 11, color: '#888', marginTop: 2 }}>Seitenaufrufe (30 T.)</div>
+                          <div style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: '#0099CC' }}>{analyticsData.total_views}</div>
+                          <div style={{ fontSize: 'var(--fs-label)', color: '#888', marginTop: 2 }}>Seitenaufrufe (30 T.)</div>
                         </div>
                         <div style={{ background: 'var(--panel-surface,#f8f8f8)', borderRadius: 10, padding: '14px 16px', border: '1px solid var(--panel-border,#e8e8e8)', textAlign: 'center' }}>
-                          <div style={{ fontSize: 28, fontWeight: 800, color: '#38A169' }}>{analyticsData.unique_visitors}</div>
-                          <div style={{ fontSize: 11, color: '#888', marginTop: 2 }}>Unique Besucher (30 T.)</div>
+                          <div style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: '#38A169' }}>{analyticsData.unique_visitors}</div>
+                          <div style={{ fontSize: 'var(--fs-label)', color: '#888', marginTop: 2 }}>Unique Besucher (30 T.)</div>
                         </div>
                       </div>
                       {analyticsData.views_by_day.length > 0 && (
                         <div style={{ marginBottom: 18 }}>
-                          <div style={{ fontSize: 11, fontWeight: 700, color: '#555', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Letzte 14 Tage</div>
+                          <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#555', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Letzte 14 Tage</div>
                           <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 60 }}>
                             {analyticsData.views_by_day.map(d => (
                               <div key={d.day} title={`${d.day}: ${d.views}`} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, height: '100%', justifyContent: 'flex-end' }}>
                                 <div style={{ width: '100%', height: `${Math.max((d.views / maxDay) * 50, 2)}px`, background: '#0099CC', borderRadius: '3px 3px 0 0' }} />
-                                <span style={{ fontSize: 7, color: '#aaa' }}>{d.day.slice(5)}</span>
+                                <span style={{ fontSize: 'var(--fs-label)', color: '#aaa' }}>{d.day.slice(5)}</span>
                               </div>
                             ))}
                           </div>
@@ -841,26 +841,26 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                       )}
                       {analyticsData.top_sources.length > 0 && (
                         <div style={{ marginBottom: 18 }}>
-                          <div style={{ fontSize: 11, fontWeight: 700, color: '#555', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Quellen (30 T.)</div>
+                          <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#555', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Quellen (30 T.)</div>
                           {analyticsData.top_sources.map(s => (
                             <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
-                              <span style={{ width: 68, fontSize: 11, color: '#555', fontWeight: 500, flexShrink: 0 }}>{s.label}</span>
+                              <span style={{ width: 68, fontSize: 'var(--fs-label)', color: '#555', fontWeight: 400, flexShrink: 0 }}>{s.label}</span>
                               <div style={{ flex: 1, background: '#f0f0f0', borderRadius: 4, height: 8 }}>
                                 <div style={{ width: `${(s.count / maxSrc) * 100}%`, height: '100%', background: '#0099CC', borderRadius: 4 }} />
                               </div>
-                              <span style={{ fontSize: 11, fontWeight: 700, color: '#0099CC', minWidth: 24, textAlign: 'right' }}>{s.count}</span>
+                              <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#0099CC', minWidth: 24, textAlign: 'right' }}>{s.count}</span>
                             </div>
                           ))}
                         </div>
                       )}
                       {analyticsData.top_paths.length > 0 && (
                         <div>
-                          <div style={{ fontSize: 11, fontWeight: 700, color: '#555', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Beliebteste Seiten</div>
+                          <div style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#555', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Beliebteste Seiten</div>
                           {analyticsData.top_paths.map((p, i) => (
                             <div key={p.label} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
-                              <span style={{ width: 18, fontSize: 10, color: '#aaa', fontWeight: 700 }}>#{i + 1}</span>
-                              <span style={{ flex: 1, fontSize: 11, color: '#444', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.label || '/'}</span>
-                              <span style={{ fontSize: 11, fontWeight: 700, color: '#555', flexShrink: 0 }}>{p.count}</span>
+                              <span style={{ width: 18, fontSize: 'var(--fs-label)', color: '#aaa', fontWeight: 700 }}>#{i + 1}</span>
+                              <span style={{ flex: 1, fontSize: 'var(--fs-label)', color: '#444', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.label || '/'}</span>
+                              <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#555', flexShrink: 0 }}>{p.count}</span>
                             </div>
                           ))}
                         </div>
@@ -905,7 +905,7 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                         stats[i] = { ...stats[i], label: e.target.value }
                         update('about.stats', stats)
                       }} />
-                      <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#d44', padding: '0 4px', fontSize: 18, lineHeight: 1 }}
+                      <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#d44', padding: '0 4px', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)' }}
                         onClick={() => update('about.stats', (draft.about?.stats ?? []).filter((_, j) => j !== i))}>×</button>
                     </div>
                   ))}
@@ -953,29 +953,29 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
             {/* ── REVIEWS TAB ────────────────────────────────────────────── */}
             {activeTab === 'reviews' && (
               <div style={{ padding: 14 }}>
-                {testimonialsSaving && <div style={{ fontSize: 11, color: '#0099CC', marginBottom: 8 }}>Saving…</div>}
+                {testimonialsSaving && <div style={{ fontSize: 'var(--fs-label)', color: '#0099CC', marginBottom: 8 }}>Saving…</div>}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 14 }}>
                   {testimonials.map(r => (
                     <div key={r.id} style={{ background: 'var(--panel-surface,#f8f8f8)', border: '1px solid var(--panel-border,#e8e8e8)', borderRadius: 8, padding: '10px 12px' }}>
                       {editingTestimonial?.id === r.id ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                          <input style={{ fontSize: 12 }} value={editingTestimonial.name} onChange={e => setEditingTestimonial(t => t ? { ...t, name: e.target.value } : t)} placeholder="Name" />
-                          <input style={{ fontSize: 12 }} type="number" min={1} max={5} value={editingTestimonial.rating} onChange={e => setEditingTestimonial(t => t ? { ...t, rating: Number(e.target.value) } : t)} placeholder="Rating (1-5)" />
-                          <input style={{ fontSize: 12 }} value={editingTestimonial.date} onChange={e => setEditingTestimonial(t => t ? { ...t, date: e.target.value } : t)} placeholder="Date (e.g. 2026-01)" />
-                          <textarea style={{ fontSize: 12, resize: 'vertical' }} rows={3} value={editingTestimonial.text} onChange={e => setEditingTestimonial(t => t ? { ...t, text: e.target.value } : t)} placeholder="Review text" />
+                          <input style={{ fontSize: 'var(--fs-small)' }} value={editingTestimonial.name} onChange={e => setEditingTestimonial(t => t ? { ...t, name: e.target.value } : t)} placeholder="Name" />
+                          <input style={{ fontSize: 'var(--fs-small)' }} type="number" min={1} max={5} value={editingTestimonial.rating} onChange={e => setEditingTestimonial(t => t ? { ...t, rating: Number(e.target.value) } : t)} placeholder="Rating (1-5)" />
+                          <input style={{ fontSize: 'var(--fs-small)' }} value={editingTestimonial.date} onChange={e => setEditingTestimonial(t => t ? { ...t, date: e.target.value } : t)} placeholder="Date (e.g. 2026-01)" />
+                          <textarea style={{ fontSize: 'var(--fs-small)', resize: 'vertical' }} rows={3} value={editingTestimonial.text} onChange={e => setEditingTestimonial(t => t ? { ...t, text: e.target.value } : t)} placeholder="Review text" />
                           <div style={{ display: 'flex', gap: 6 }}>
-                            <button style={{ flex: 1, fontSize: 11, padding: '4px 0', background: '#0099CC', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }} onClick={() => { updateTestimonial(editingTestimonial); setEditingTestimonial(null) }}>Save</button>
-                            <button style={{ flex: 1, fontSize: 11, padding: '4px 0', background: 'none', border: '1px solid #ccc', borderRadius: 5, cursor: 'pointer' }} onClick={() => setEditingTestimonial(null)}>Cancel</button>
-                            <button style={{ fontSize: 11, padding: '4px 8px', background: '#c53030', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }} onClick={() => { removeTestimonial(r.id); setEditingTestimonial(null) }}>Delete</button>
+                            <button style={{ flex: 1, fontSize: 'var(--fs-label)', padding: '4px 0', background: '#0099CC', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }} onClick={() => { updateTestimonial(editingTestimonial); setEditingTestimonial(null) }}>Save</button>
+                            <button style={{ flex: 1, fontSize: 'var(--fs-label)', padding: '4px 0', background: 'none', border: '1px solid #ccc', borderRadius: 5, cursor: 'pointer' }} onClick={() => setEditingTestimonial(null)}>Cancel</button>
+                            <button style={{ fontSize: 'var(--fs-label)', padding: '4px 8px', background: '#c53030', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }} onClick={() => { removeTestimonial(r.id); setEditingTestimonial(null) }}>Delete</button>
                           </div>
                         </div>
                       ) : (
                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
                           <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text,#333)' }}>{r.name} <span style={{ color: '#f59e0b' }}>{'★'.repeat(r.rating)}</span></div>
-                            <div style={{ fontSize: 11, color: 'var(--text-soft,#777)', marginTop: 2, lineHeight: 1.4, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{r.text}</div>
+                            <div style={{ fontSize: 'var(--fs-small)', fontWeight: 700, color: 'var(--text,#333)' }}>{r.name} <span style={{ color: '#f59e0b' }}>{'★'.repeat(r.rating)}</span></div>
+                            <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text-soft,#777)', marginTop: 2, lineHeight: 'var(--lh-body)', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{r.text}</div>
                           </div>
-                          <button style={{ fontSize: 11, padding: '3px 8px', background: 'none', border: '1px solid #ddd', borderRadius: 5, cursor: 'pointer', flexShrink: 0 }} onClick={() => setEditingTestimonial(r)}>Edit</button>
+                          <button style={{ fontSize: 'var(--fs-label)', padding: '3px 8px', background: 'none', border: '1px solid #ddd', borderRadius: 5, cursor: 'pointer', flexShrink: 0 }} onClick={() => setEditingTestimonial(r)}>Edit</button>
                         </div>
                       )}
                     </div>
@@ -983,19 +983,19 @@ export function AdminPanel({ content, user, saving, onSave, onUpload, onLogout }
                 </div>
                 {newTestimonialForm ? (
                   <div style={{ background: 'var(--panel-surface,#f8f8f8)', border: '1px solid var(--panel-border,#e8e8e8)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    <input style={{ fontSize: 12 }} value={testimonialDraft.name ?? ''} onChange={e => setTestimonialDraft(d => ({ ...d, name: e.target.value }))} placeholder="Name" />
-                    <input style={{ fontSize: 12 }} type="number" min={1} max={5} value={testimonialDraft.rating ?? 5} onChange={e => setTestimonialDraft(d => ({ ...d, rating: Number(e.target.value) }))} placeholder="Rating (1-5)" />
-                    <input style={{ fontSize: 12 }} value={testimonialDraft.date ?? ''} onChange={e => setTestimonialDraft(d => ({ ...d, date: e.target.value }))} placeholder="Date (e.g. 2026-01)" />
-                    <textarea style={{ fontSize: 12, resize: 'vertical' }} rows={3} value={testimonialDraft.text ?? ''} onChange={e => setTestimonialDraft(d => ({ ...d, text: e.target.value }))} placeholder="Review text" />
+                    <input style={{ fontSize: 'var(--fs-small)' }} value={testimonialDraft.name ?? ''} onChange={e => setTestimonialDraft(d => ({ ...d, name: e.target.value }))} placeholder="Name" />
+                    <input style={{ fontSize: 'var(--fs-small)' }} type="number" min={1} max={5} value={testimonialDraft.rating ?? 5} onChange={e => setTestimonialDraft(d => ({ ...d, rating: Number(e.target.value) }))} placeholder="Rating (1-5)" />
+                    <input style={{ fontSize: 'var(--fs-small)' }} value={testimonialDraft.date ?? ''} onChange={e => setTestimonialDraft(d => ({ ...d, date: e.target.value }))} placeholder="Date (e.g. 2026-01)" />
+                    <textarea style={{ fontSize: 'var(--fs-small)', resize: 'vertical' }} rows={3} value={testimonialDraft.text ?? ''} onChange={e => setTestimonialDraft(d => ({ ...d, text: e.target.value }))} placeholder="Review text" />
                     <div style={{ display: 'flex', gap: 6 }}>
-                      <button style={{ flex: 1, fontSize: 11, padding: '4px 0', background: '#0099CC', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }} onClick={() => {
+                      <button style={{ flex: 1, fontSize: 'var(--fs-label)', padding: '4px 0', background: '#0099CC', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer' }} onClick={() => {
                         if (testimonialDraft.name && testimonialDraft.text) {
                           addTestimonial({ name: testimonialDraft.name, rating: testimonialDraft.rating ?? 5, text: testimonialDraft.text, date: testimonialDraft.date ?? '', language: testimonialDraft.language })
                           setTestimonialDraft({})
                           setNewTestimonialForm(false)
                         }
                       }}>Add</button>
-                      <button style={{ flex: 1, fontSize: 11, padding: '4px 0', background: 'none', border: '1px solid #ccc', borderRadius: 5, cursor: 'pointer' }} onClick={() => { setNewTestimonialForm(false); setTestimonialDraft({}) }}>Cancel</button>
+                      <button style={{ flex: 1, fontSize: 'var(--fs-label)', padding: '4px 0', background: 'none', border: '1px solid #ccc', borderRadius: 5, cursor: 'pointer' }} onClick={() => { setNewTestimonialForm(false); setTestimonialDraft({}) }}>Cancel</button>
                     </div>
                   </div>
                 ) : (

@@ -134,7 +134,7 @@ export function NavMegaMenu({ activeKey, anchorX, t, onNavigate, mobile }: {
                 style={{
                   display: 'flex', alignItems: 'center', gap: 10,
                   padding: '9px 10px', borderRadius: 9,
-                  color: '#d8d8ea', textDecoration: 'none', fontSize: 13.5, fontWeight: 500,
+                  color: '#d8d8ea', textDecoration: 'none', fontSize: 'var(--fs-small)', fontWeight: 400,
                   transition: 'background 0.14s, color 0.14s',
                 }}
                 onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,245,196,0.10)'; e.currentTarget.style.color = '#f0f0fa' }}

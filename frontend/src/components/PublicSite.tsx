@@ -167,7 +167,7 @@ function LocaleIcon({ locale }: { locale: Locale }) {
   // Show the *target* language, not the current one — users expect the toggle
   // to say "click here to switch to Deutsch/English", not "you are already here".
   const target = LOCALES[(LOCALES.indexOf(locale) + 1) % LOCALES.length]
-  return <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 800, letterSpacing: '0.02em' }}>{target.toUpperCase()}</span>
+  return <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.02em' }}>{target.toUpperCase()}</span>
 }
 
 // Sun / Moon / Monitor glyphs for the theme toggle - icon-only reads at a glance and
@@ -1106,8 +1106,8 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t.reportModal.label}</span>
-              <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '9px 11px' }}>&#x2715;</button>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t.reportModal.label}</span>
+              <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', padding: '9px 11px' }}>&#x2715;</button>
             </div>
             {/* FIXED (live bug report, mobile Chrome screenshots, 2026-08-16): a bare
                 <iframe src="*.pdf"> rendered the report fine on desktop (Chrome ships
@@ -1129,7 +1129,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                   <path d="M2 1h11l5 5v16a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" stroke="#8a8aa0" strokeWidth="1.4" strokeLinejoin="round" />
                   <path d="M13 1v5h5" stroke="#8a8aa0" strokeWidth="1.4" strokeLinejoin="round" />
                 </svg>
-                <p style={{ color: '#a0a0b8', fontSize: 13.5, lineHeight: 1.6, margin: 0, maxWidth: 320 }}>{t.reportModal.mobileFallbackHint}</p>
+                <p style={{ color: '#a0a0b8', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', margin: 0, maxWidth: 320 }}>{t.reportModal.mobileFallbackHint}</p>
                 <a
                   href={reportModalExit.rendered}
                   target="_blank"
@@ -1137,7 +1137,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                   onClick={() => beacon('report_modal_mobile_open')}
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none',
-                    background: 'var(--accent)', color: 'var(--accent-fg)', fontWeight: 800, fontSize: 13.5,
+                    background: 'var(--accent)', color: 'var(--accent-fg)', fontWeight: 700, fontSize: 'var(--fs-small)',
                     padding: '11px 20px', borderRadius: 8, letterSpacing: '0.02em',
                   }}
                 >
@@ -1182,8 +1182,8 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{intelModal.target} · {intelModal.market} · {intelModal.sev}</div>
-                <button onClick={() => setIntelModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '9px 11px' }}>&#x2715;</button>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{intelModal.target} · {intelModal.market} · {intelModal.sev}</div>
+                <button onClick={() => setIntelModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', padding: '9px 11px' }}>&#x2715;</button>
               </div>
               <div style={{ padding: '26px 28px', overflowY: 'auto' }}>
                 {/* Newspaper-style headline - the thing a visitor with zero technical
@@ -1191,12 +1191,12 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                     nothing (meaning paragraph just runs first, as before) until every
                     ledger entry has one written - Simeon, 2026-08-08. */}
                 {intelModal.headline && (
-                  <h3 style={{ fontSize: 25, lineHeight: 1.3, fontWeight: 800, color: '#e8e8f0', margin: '0 0 14px' }}>{intelModal.headline}</h3>
+                  <h3 style={{ fontSize: 'var(--fs-h3)', lineHeight: 'var(--lh-tight)', fontWeight: 700, color: '#e8e8f0', margin: '0 0 14px' }}>{intelModal.headline}</h3>
                 )}
-                <p style={{ fontSize: 17, lineHeight: 1.75, color: '#e8e8f0', margin: 0 }}>{meaning}</p>
+                <p style={{ fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)', color: '#e8e8f0', margin: 0 }}>{meaning}</p>
                 <div style={{ marginTop: 22, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 7 }}>{t.intelModal.evidenceLabel}</div>
-                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12.5, lineHeight: 1.65, color: '#a0a0b8', margin: 0 }}>{technical}</p>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 7 }}>{t.intelModal.evidenceLabel}</div>
+                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: '#a0a0b8', margin: 0 }}>{technical}</p>
                 </div>
               </div>
             </div>
@@ -1226,7 +1226,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 illegible grey-on-navy. */}
             <ModalTierBody tier={checkoutModal.tier} price={checkoutModal.price} desc={checkoutModal.desc} delivery={checkoutModal.delivery} mobile={mobile} bullets={checkoutModal.bullets} bring={checkoutModal.bring} mechanism={checkoutModal.mechanism} receive={checkoutModal.receive} />
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>{t.checkoutModal.orderConfirmation}</div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>{t.checkoutModal.orderConfirmation}</div>
               {/* Single combined checkbox, not two - the old two-checkbox gate (business-customer
                   declaration + separate ToS/no-refund consent) meant the Continue button stayed
                   disabled through two clicks, not one, and funnel data showed most people never
@@ -1235,7 +1235,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               <label style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 24, cursor: 'pointer' }}>
                 <input type="checkbox" checked={agbChecked} onChange={e => { setAgbChecked(e.target.checked); setB2bChecked(e.target.checked) }}
                   style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
-                <span style={{ color: '#a0a0b8', fontSize: mobile ? 14 : 13, lineHeight: 1.6 }}>
+                <span style={{ color: '#a0a0b8', fontSize: mobile ? 'var(--fs-body)' : 'var(--fs-small)', lineHeight: 'var(--lh-body)' }}>
                   {t.checkoutModal.agreementPrefix}<strong style={{ color: '#e8e8f0' }}>{t.checkoutModal.agreementBusinessCustomer}</strong>{t.checkoutModal.agreementMiddle}<a href="#p/agb" style={{ color: 'var(--accent-text)' }}>{t.checkoutModal.agreementTos}</a>{t.checkoutModal.agreementSuffix}
                 </span>
               </label>
@@ -1244,13 +1244,13 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                   button in a two-button row. */}
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
                 <button onClick={() => cancelCheckout(checkoutModal.key)}
-                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 13, fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 'var(--fs-small)', fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                   {t.checkoutModal.cancel}
                 </button>
                 <button onClick={confirmCheckout}
                   disabled={!agbChecked || !b2bChecked}
                   style={{
-                    flex: mobile ? undefined : 2, padding: '13px', borderRadius: 6, fontSize: 13, fontFamily: "'JetBrains Mono', monospace",
+                    flex: mobile ? undefined : 2, padding: '13px', borderRadius: 6, fontSize: 'var(--fs-small)', fontFamily: "'JetBrains Mono', monospace",
                     letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 700,
                     // Always reads as "the real button", checked or not - a fully disabled-looking
                     // grey-on-transparent button next to a loud red Cancel was the actual conversion
@@ -1274,7 +1274,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                   beacon('offer_talk_first:' + checkoutModal.key)
                   setCheckoutModal(null)
                   navigateTo('#submit')
-                }} style={{ fontSize: 12, color: '#8a8aa0', textDecoration: 'underline', cursor: 'pointer' }}>
+                }} style={{ fontSize: 'var(--fs-small)', color: '#8a8aa0', textDecoration: 'underline', cursor: 'pointer' }}>
                   {t.checkoutModal.talkFirstInstead}
                 </a>
               </div>
@@ -1328,7 +1328,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             <source srcSet="/logo.webp" type="image/webp" />
             <img src="/logo.png" alt="" style={{ width: 42, height: 42, objectFit: 'contain', flexShrink: 0 }} />
           </picture>
-          <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: '0.06em', color: overDarkHero ? '#e8e8f0' : 'var(--text)' }}>RFI-IRFOS</span>
+          <span style={{ fontWeight: 700, fontSize: 'var(--fs-body)', letterSpacing: '0.06em', color: overDarkHero ? '#e8e8f0' : 'var(--text)' }}>RFI-IRFOS</span>
           <EkgLine theme={theme} />
         </a>
 
@@ -1360,7 +1360,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             <a key={n.href} href={n.href} style={{
               position: 'relative',
               color: isActive ? (overDarkHero ? '#e8e8f0' : 'var(--text)') : (overDarkHero ? '#a0a0b8' : 'var(--text2)'),
-              fontSize: 15, fontWeight: 600,
+              fontSize: 'var(--fs-body)', fontWeight: 700,
               textDecoration: 'none', letterSpacing: '0.04em',
               transition: 'color 0.18s',
               paddingBottom: 4,
@@ -1502,7 +1502,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       }}>
         {NAV_LINKS.map(n => (
           <a key={n.href} href={n.href} onClick={e => { e.preventDefault(); setMobileOpen(false); navigateTo(n.href) }} style={{
-            color: 'var(--text)', fontSize: 20, fontWeight: 700, textDecoration: 'none',
+            color: 'var(--text)', fontSize: 'var(--fs-h3)', fontWeight: 700, textDecoration: 'none',
             padding: '16px 0', borderBottom: '1px solid var(--border)', width: '100%',
             textAlign: 'right',
           }}>{n.label}</a>
@@ -1656,9 +1656,9 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               ]
             ).map(group => (
               <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 2px' }}>{group.heading}</p>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 2px' }}>{group.heading}</p>
                 {group.links.map(l => (
-                  <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 12, textDecoration: 'none' }}
+                  <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 'var(--fs-small)', textDecoration: 'none' }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                     onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}
                     onClick={e => {
@@ -1717,10 +1717,10 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address)
                   lives on Legal Notice - not duplicated here, this footer only points there.
                   ZVR dropped from this line specifically (kept on the Legal Notice itself). */}
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)', letterSpacing: '0.08em', margin: 0 }}>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text4)', letterSpacing: '0.08em', margin: 0 }}>
                 {t.footer.copyright}
               </p>
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: 'var(--accent-text)', letterSpacing: '0.06em', fontWeight: 600, margin: 0 }}>
+              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-small)', color: 'var(--accent-text)', letterSpacing: '0.06em', fontWeight: 700, margin: 0 }}>
                 {t.footer.tagline}
               </p>
             </div>
@@ -1770,16 +1770,16 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 of those headers... same soft grey line". */}
             {ZONE_ORDER.map(zone => (
               <p key={`zh-${zone}`} style={{
-                gridColumn: `${ZONE_COL_START[zone]} / span ${zoneCols(zone)}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
+                gridColumn: `${ZONE_COL_START[zone]} / span ${zoneCols(zone)}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', fontWeight: 700,
                 textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)',
               }}>{ZONE_LABELS[zone][locale]}</p>
             ))}
             <p style={{
-              gridColumn: `${ZONE_TOTAL_COLUMNS + 1} / span ${FOOTER_REPO_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
+              gridColumn: `${ZONE_TOTAL_COLUMNS + 1} / span ${FOOTER_REPO_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', fontWeight: 700,
               textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)',
             }}>Repositories</p>
             <p style={{
-              gridColumn: `${ZONE_TOTAL_COLUMNS + 1 + FOOTER_REPO_COLUMNS.length} / span ${FOOTER_CRATE_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', fontWeight: 700,
+              gridColumn: `${ZONE_TOTAL_COLUMNS + 1 + FOOTER_REPO_COLUMNS.length} / span ${FOOTER_CRATE_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', fontWeight: 700,
               textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap',
             }}>Crates (crates.io)</p>
 
@@ -1793,7 +1793,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                   {chunk.map(s => (
                     <button key={s.key} onClick={() => setSystemModal(s.key)} style={{
                       display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                      font: 'inherit', color: 'var(--text3)', fontSize: 12, lineHeight: 1.6,
+                      font: 'inherit', color: 'var(--text3)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)',
                     }}
                       onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                       onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}>
@@ -1808,7 +1808,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 {col.map(r => (
                   <button key={r.key} onClick={() => setSystemModal(r.key)} style={{
                     display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                    font: 'inherit', color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                    font: 'inherit', color: 'var(--text3)', fontSize: 'var(--fs-small)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                   }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                     onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}>
@@ -1822,7 +1822,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 {col.map(r => (
                   <button key={r.key} onClick={() => setSystemModal(r.key)} style={{
                     display: 'block', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                    font: 'inherit', color: 'var(--text3)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                    font: 'inherit', color: 'var(--text3)', fontSize: 'var(--fs-small)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                   }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                     onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}>
@@ -1830,7 +1830,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                   </button>
                 ))}
                 {i === FOOTER_CRATE_COLUMNS.length - 1 && (
-                  <a href={CRATES_IO_PROFILE} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', fontSize: 11, textDecoration: 'underline', textUnderlineOffset: 2, marginTop: 4 }}>
+                  <a href={CRATES_IO_PROFILE} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', fontSize: 'var(--fs-label)', textDecoration: 'underline', textUnderlineOffset: 2, marginTop: 4 }}>
                     {locale === 'de' ? 'alle Pakete →' : 'all packages →'}
                   </a>
                 )}
@@ -1863,9 +1863,9 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                   opacity: bannerClosing ? 0 : 1,
                   transition: 'transform 0.24s ease-in, opacity 0.24s ease-in',
                 }}>
-                  <p style={{ margin: 0, flex: '1 1 260px', fontSize: 13.5, color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 1.5 }}>
+                  <p style={{ margin: 0, flex: '1 1 260px', fontSize: 'var(--fs-small)', color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 'var(--lh-body)' }}>
                     {t.cookieBanner.text}
-                    <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: theme === 'light' ? '#555555' : '#999999', letterSpacing: '0.04em', marginTop: 4, fontWeight: 'normal' }}>
+                    <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: theme === 'light' ? '#555555' : '#999999', letterSpacing: '0.04em', marginTop: 4, fontWeight: 'normal' }}>
                       {t.cookieBanner.subtext}
                     </span>
                   </p>
@@ -1875,7 +1875,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                       style={{
                         background: 'transparent', color: theme === 'light' ? '#000000' : '#ffffff',
                         border: theme === 'light' ? '1px solid var(--border)' : '2px solid #ffffff',
-                        borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
+                        borderRadius: 8, padding: '9px 16px', fontSize: 'var(--fs-small)', fontWeight: 700, cursor: 'pointer',
                       }}
                     >
                       {t.cookieBanner.doesNothing}
@@ -1884,7 +1884,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                       onClick={dismissCookieBanner}
                       style={{
                         background: 'var(--accent)', color: 'var(--bg)', border: 'none',
-                        borderRadius: 8, padding: '9px 16px', fontSize: 13.5, fontWeight: 700, cursor: 'pointer',
+                        borderRadius: 8, padding: '9px 16px', fontSize: 'var(--fs-small)', fontWeight: 700, cursor: 'pointer',
                       }}
                     >
                       {t.cookieBanner.close}

@@ -114,12 +114,12 @@ function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string)
     >
       <div style={{ padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
-          <div style={{ fontWeight: 900, fontSize: 17, minWidth: 0 }}>{entry.target}</div>
+          <div style={{ fontWeight: 900, fontSize: 'var(--fs-lead)', minWidth: 0 }}>{entry.target}</div>
           {/* PDF tag - live feedback (Simeon, 2026-08-06): the small file icon
               down by the link wasn't enough to signal at a glance that these
               cards ARE documents, not just more ledger rows. */}
           <span style={{
-            fontSize: 9, fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, letterSpacing: '0.1em',
+            fontSize: 'var(--fs-label)', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, letterSpacing: '0.1em',
             padding: '3px 8px', borderRadius: 20, display: 'inline-flex', alignItems: 'center', gap: 3,
             border: '1px solid var(--text3)', color: 'var(--text2)', flexShrink: 0,
           }}>
@@ -127,13 +127,13 @@ function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string)
             PDF
           </span>
         </div>
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
           {entry.market}{entry.resolvedDate ? ` · ${t.proof.resolvedOn(entry.resolvedDate)}` : ''}
         </div>
-        <p style={{ color: 'var(--text2)', fontSize: 13, lineHeight: 1.65, flex: 1, margin: 0, display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        <p style={{ color: 'var(--text2)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', flex: 1, margin: 0, display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {entry.finding}
         </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--accent-text)', fontSize: 12, fontWeight: 700, marginTop: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--accent-text)', fontSize: 'var(--fs-small)', fontWeight: 700, marginTop: 4 }}>
           <svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="M1 1h5l3 3v7H1V1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M6 1v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M3 6h4M3 8h3" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>
           {t.proof.viewReport} &rarr;
         </div>
@@ -220,7 +220,7 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
   const arrowSize = perView === 1 ? 36 : 44
   const arrowStyle: React.CSSProperties = {
     width: arrowSize, height: arrowSize, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.3)',
-    background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: perView === 1 ? 15 : 18, cursor: 'pointer',
+    background: 'var(--bg2)', color: 'var(--accent-text)', fontSize: perView === 1 ? 'var(--fs-body)' : 'var(--fs-lead)', cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'center',
   }
   // Phone: arrows move under the track and the card takes the full width - same
@@ -275,7 +275,7 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
       {showArrows && (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: phone ? 12 : 28 }}>
           {phone && <button onClick={() => go(-1)} aria-label={t.proof.carouselPrevAria} style={arrowStyle}>&larr;</button>}
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', letterSpacing: '0.08em' }}>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', letterSpacing: '0.08em' }}>
             {String(Math.min(activeIdx + 1, n)).padStart(2, '0')} / {n}
           </span>
           {phone && <button onClick={() => go(1)} aria-label={t.proof.carouselNextAria} style={arrowStyle}>&rarr;</button>}
@@ -296,7 +296,7 @@ export function ProofSection({ setReportModal }: { setReportModal: (url: string)
             live feedback 2026-09-13: this was still left-aligned. */}
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Reveal from="right">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.proof.eyebrow}</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.proof.eyebrow}</p>
             <h2 className="rfi-section-h2" style={{ marginBottom: 12 }}>{t.proof.heading}</h2>
           </Reveal>
           <Reveal from="left" delay={1}>

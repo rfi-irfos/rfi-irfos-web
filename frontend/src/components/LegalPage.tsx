@@ -1,8 +1,8 @@
 const BASE = { background: '#070711', color: '#e8e8f0', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', padding: '80px 2rem' }
-const PROSE = { maxWidth: 720, margin: '0 auto', lineHeight: 1.8 }
-const H1 = { fontSize: 32, fontWeight: 900, marginBottom: 8, color: '#e8e8f0' }
-const H2: React.CSSProperties = { fontSize: 12, fontWeight: 800, marginTop: 32, marginBottom: 8, color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'monospace' }
-const P = { color: '#a0a0b8', fontSize: 14, marginBottom: 12 }
+const PROSE = { maxWidth: 720, margin: '0 auto', lineHeight: 'var(--lh-body)' }
+const H1 = { fontSize: 'var(--fs-h2)', fontWeight: 900, marginBottom: 8, color: '#e8e8f0' }
+const H2: React.CSSProperties = { fontSize: 'var(--fs-small)', fontWeight: 700, marginTop: 32, marginBottom: 8, color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'monospace' }
+const P = { color: '#a0a0b8', fontSize: 'var(--fs-body)', marginBottom: 12 }
 const A = { color: 'var(--accent-text)', textDecoration: 'none' }
 
 import React, { useEffect, useRef, useState } from 'react'
@@ -117,7 +117,7 @@ function FaqPage({ locale }: { locale: 'en' | 'de' }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   return <div style={PROSE}>
     <h1 style={H1}>{locale === 'de' ? 'Fragen, die man beantworten sollte' : 'Questions worth answering'}</h1>
-    <p style={{ ...P, fontSize: 16 }}>{locale === 'de' ? 'Verständliche Antworten zu unserer Arbeit, unseren Systemen und unseren Grenzen.' : 'Plain-language answers about our work, our systems, and our boundaries.'}</p>
+    <p style={{ ...P, fontSize: 'var(--fs-body)' }}>{locale === 'de' ? 'Verständliche Antworten zu unserer Arbeit, unseren Systemen und unseren Grenzen.' : 'Plain-language answers about our work, our systems, and our boundaries.'}</p>
     <div className="legal-faq-list">
       {FAQ_ITEMS.map(([q, qDe, a, aDe], index) => {
         const open = openIndex === index
@@ -244,8 +244,8 @@ export function LegalPage({ slug }: { slug: string }) {
               // flex box with centred content guarantees every pill is the
               // exact same height regardless of label length.
               <a key={q.slug} href={`/${q.slug}`} onClick={e => navigate(e, `/${q.slug}`)} style={{
-                display: 'inline-flex', alignItems: 'center', lineHeight: 1,
-                fontFamily: 'monospace', fontSize: 9.5, fontWeight: 600, letterSpacing: '0.035em',
+                display: 'inline-flex', alignItems: 'center', lineHeight: 'var(--lh-tight)',
+                fontFamily: 'monospace', fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.035em',
                 color: '#8a8aa0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
                 borderRadius: 999, padding: '5px 8px', textDecoration: 'none',
               }}>
@@ -260,7 +260,7 @@ export function LegalPage({ slug }: { slug: string }) {
             title={locale === 'de' ? 'Language: German (click to switch)' : 'Sprache: Englisch (klicken zum Wechseln)'}
             style={{
               flexShrink: 0,
-              fontFamily: 'monospace', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
+              fontFamily: 'monospace', fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
               color: '#8fe8d0', background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)',
               borderRadius: 999, padding: '6px 14px', cursor: 'pointer',
             }}
@@ -294,7 +294,7 @@ export function LegalPage({ slug }: { slug: string }) {
             )}
           </motion.div>
         </AnimatePresence>
-        <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 10, color: '#7a7aa0' }}>
+        <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>
           RFI-IRFOS &nbsp;&middot;&nbsp; ZVR 1015608684 &nbsp;&middot;&nbsp; GISA 39261441 &nbsp;&middot;&nbsp; GLN 9110038490191 &nbsp;&middot;&nbsp; UID ATU83405245 &nbsp;&middot;&nbsp; Steuernummer 68 696/8736 &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz
         </div>
         </div>
@@ -325,7 +325,7 @@ function Impressum() {
 function ImpressumEN() {
   return <>
     <h1 style={H1}>Legal Notice</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act) &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act) &middot; Last updated: July 2026</p>
 
     <p style={P}>
       We publish under our own name, at a real street address, because coordinated disclosure only works if the institute doing it can be found, verified, and held to account — the same standard we hold everyone we audit to. Most of what follows on this page exists because the law requires it. A few lines exist because we think a legal notice page shouldn't feel like the one part of a website that nobody proofread.
@@ -403,7 +403,7 @@ function ImpressumEN() {
 function ImpressumDE() {
   return <>
     <h1 style={H1}>Impressum</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Offenlegung gemäß § 5 ECG (E-Commerce-Gesetz) &middot; Letzte Aktualisierung: Juli 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Offenlegung gemäß § 5 ECG (E-Commerce-Gesetz) &middot; Letzte Aktualisierung: Juli 2026</p>
 
     <p style={P}>
       Wir veröffentlichen unter eigenem Namen, mit einer echten Anschrift, weil koordinierte Offenlegung nur funktioniert, wenn das Institut, das sie durchführt, selbst auffindbar, überprüfbar und zur Verantwortung ziehbar ist — genau der Maßstab, den wir an jeden anlegen, den wir prüfen. Das meiste auf dieser Seite steht hier, weil es das Gesetz verlangt. Ein paar Zeilen stehen hier, weil wir finden, dass ein Impressum nicht der eine Teil einer Website sein sollte, den niemand Korrektur gelesen hat.
@@ -486,7 +486,7 @@ function Datenschutz() {
 function DatenschutzEN() {
   return <>
     <h1 style={H1}>Privacy Policy</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Pursuant to the GDPR (EU) 2016/679 &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Pursuant to the GDPR (EU) 2016/679 &middot; Last updated: July 2026</p>
 
     <p style={P}>
       This page has every section a privacy policy is supposed to have. We just refuse to pad any of them with the vague language that usually fills them, because we spend our working hours pointing out exactly that vague language in other people's apps. So: full sections, plain claims, and where a claim is checkable, we tell you how to check it.
@@ -512,7 +512,7 @@ function DatenschutzEN() {
 
     <h2 style={H2}>Security Log (Honeypot)</h2>
     <p style={P}>
-      This site contains decoy paths that no ordinary visitor ever requests (for example <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>/.env</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>/wp-login.php</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>/phpmyadmin</code>), plus detection of attack tools and injection attempts (SQL injection, script injection, Log4Shell, path traversal, unusual HTTP methods). Whoever triggers one of these is logged with: full IP address, time, HTTP method, requested path, user agent, and an approximate location and network provider derived from the IP address. This is self-defence and cyber defence: we need to know where an attack on our systems came from, which decoy was touched, and whether the same source returns.<br />
+      This site contains decoy paths that no ordinary visitor ever requests (for example <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>/.env</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>/wp-login.php</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>/phpmyadmin</code>), plus detection of attack tools and injection attempts (SQL injection, script injection, Log4Shell, path traversal, unusual HTTP methods). Whoever triggers one of these is logged with: full IP address, time, HTTP method, requested path, user agent, and an approximate location and network provider derived from the IP address. This is self-defence and cyber defence: we need to know where an attack on our systems came from, which decoy was touched, and whether the same source returns.<br />
       <strong style={{ color: '#e8e8f0' }}>Automatic block:</strong> repeated or serious hits block the IP address for 24 hours. Report a mistake to <a href="mailto:security@rfi-irfos.com" style={A}>security@rfi-irfos.com</a> and we lift the block.<br />
       <strong style={{ color: '#e8e8f0' }}>Alert:</strong> each hit is forwarded to an internal push channel (ntfy.sh) so the team sees it live. The channel name is secret.<br />
       <strong style={{ color: '#e8e8f0' }}>Location lookup:</strong> the IP address of such a hit (and only of such a hit) is sent to the lookup service ipwho.is to find the approximate location and provider.<br />
@@ -549,22 +549,22 @@ function DatenschutzEN() {
     </p>
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>"Functional cookies, used to remember your preferences."</strong><br />
-      We do let you pick a light, dark, or high-contrast theme and a language, and we do remember that choice, in <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>localStorage</code>, not a cookie. It never leaves your device, carries no identifier, and is not readable by us.
+      We do let you pick a light, dark, or high-contrast theme and a language, and we do remember that choice, in <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>localStorage</code>, not a cookie. It never leaves your device, carries no identifier, and is not readable by us.
     </p>
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>"Performance / analytics cookies, used to understand how visitors use our site."</strong><br />
       This is usually where the actual tracking lives, and this is usually the one place a privacy policy goes vague. We won't. This site loads a single 1&times;1 pixel image, self-hosted, no cookie, no consent needed for it because a cookie-consent requirement (ePrivacy Art. 5(3)) attaches to storing or reading something on <em>your</em> device, and this pixel never does either. Each page load sends exactly this, the literal tag that is live on this page right now, copy it and inspect it yourself:
     </p>
     <div style={{ background: '#0c0c16', border: '1px solid rgba(0,245,196,0.2)', borderRadius: 6, padding: '12px 16px', margin: '8px 0 16px 0', overflowX: 'auto' }}>
-      <code style={{ fontFamily: 'monospace', fontSize: 12, color: 'var(--accent-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+      <code style={{ fontFamily: 'monospace', fontSize: 'var(--fs-small)', color: 'var(--accent-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
         {'<img src="https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif?site=rfi-irfos&p={page-path}&r={referrer}&utm_source={utm}" width="1" height="1" alt="" style="display:none">'}
       </code>
     </div>
     <p style={P}>
-      What lands in our database from that request: the page path, the referring domain normalized into a channel bucket ("organic search", "direct", "referral", "linkedin", and so on, so we can tell a board member where visitors come from), and the site tag. That's it, in full: <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>path, source, referrer, utm_source, utm_medium, utm_campaign, site</code>. No IP address column exists in that table. No visitor-ID field is ever populated by this site's copy of the pixel, so two visits from the same person land as two independent, unlinked rows, not one growing profile. Full source, backend included: <a href="https://github.com/rfi-irfos/rfi-irfos-web" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos/rfi-irfos-web</a>. We are not asking you to trust a sentence, we are pointing at the code that either does or doesn't match it.
+      What lands in our database from that request: the page path, the referring domain normalized into a channel bucket ("organic search", "direct", "referral", "linkedin", and so on, so we can tell a board member where visitors come from), and the site tag. That's it, in full: <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>path, source, referrer, utm_source, utm_medium, utm_campaign, site</code>. No IP address column exists in that table. No visitor-ID field is ever populated by this site's copy of the pixel, so two visits from the same person land as two independent, unlinked rows, not one growing profile. Full source, backend included: <a href="https://github.com/rfi-irfos/rfi-irfos-web" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos/rfi-irfos-web</a>. We are not asking you to trust a sentence, we are pointing at the code that either does or doesn't match it.
     </p>
     <p style={P}>
-      One more signal lands the same way: which section of this single-scrolling-page site came into view during your visit (the disclosure ledger, pricing, the tip-submission form, and so on), stored as one more anonymous <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>section</code> column on the same table. This is a hit-counter, not a viewer log — "the ledger section was seen 214 times today," never "visitor X looked at the ledger." The page keeps a plain JavaScript variable in memory so scrolling up and down past a section doesn't count it twice; that variable is never written to a cookie, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>localStorage</code>, or <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>sessionStorage</code>, and is gone the instant the page reloads. Same reasoning as the pixel above: nothing is stored on your device, so the ePrivacy consent trigger never applies, and nothing here identifies you, so it isn't personal data to begin with.
+      One more signal lands the same way: which section of this single-scrolling-page site came into view during your visit (the disclosure ledger, pricing, the tip-submission form, and so on), stored as one more anonymous <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>section</code> column on the same table. This is a hit-counter, not a viewer log — "the ledger section was seen 214 times today," never "visitor X looked at the ledger." The page keeps a plain JavaScript variable in memory so scrolling up and down past a section doesn't count it twice; that variable is never written to a cookie, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>localStorage</code>, or <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>sessionStorage</code>, and is gone the instant the page reloads. Same reasoning as the pixel above: nothing is stored on your device, so the ePrivacy consent trigger never applies, and nothing here identifies you, so it isn't personal data to begin with.
     </p>
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>"Targeting / advertising cookies, used to build a profile of your interests."</strong><br />
@@ -604,7 +604,7 @@ function DatenschutzEN() {
 function DatenschutzDE() {
   return <>
     <h1 style={H1}>Datenschutzerklärung</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Gemäß DSGVO (EU) 2016/679 &middot; Letzte Aktualisierung: Juli 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Gemäß DSGVO (EU) 2016/679 &middot; Letzte Aktualisierung: Juli 2026</p>
 
     <p style={P}>
       Diese Seite hat jeden Abschnitt, den eine Datenschutzerklärung haben soll. Wir weigern uns nur, sie mit der vagen Formulierung aufzublähen, die sie normalerweise füllt, weil wir unsere Arbeitszeit damit verbringen, genau diese vage Formulierung in fremden Apps aufzuzeigen. Also: vollständige Abschnitte, klare Aussagen, und wo eine Aussage nachprüfbar ist, sagen wir Ihnen, wie.
@@ -630,7 +630,7 @@ function DatenschutzDE() {
 
     <h2 style={H2}>Sicherheitsprotokoll (Honeypot)</h2>
     <p style={P}>
-      Diese Website enthält Köderpfade, die kein gewöhnlicher Besucher aufruft (zum Beispiel <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>/.env</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>/wp-login.php</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>/phpmyadmin</code>), dazu eine Erkennung von Angriffswerkzeugen und Einschleusungsversuchen (SQL-Injection, Script-Einschleusung, Log4Shell, Pfad-Traversal, ungewöhnliche HTTP-Methoden). Wer so etwas auslöst, wird protokolliert: vollständige IP-Adresse, Zeitpunkt, HTTP-Methode, aufgerufener Pfad, User-Agent sowie ein aus der IP-Adresse abgeleiteter ungefährer Standort und Netzbetreiber. Das ist Selbstschutz und Cyberabwehr: Wir müssen wissen, woher ein Angriff auf unsere Systeme kam, welcher Köder berührt wurde und ob dieselbe Quelle wiederkehrt.<br />
+      Diese Website enthält Köderpfade, die kein gewöhnlicher Besucher aufruft (zum Beispiel <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>/.env</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>/wp-login.php</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>/phpmyadmin</code>), dazu eine Erkennung von Angriffswerkzeugen und Einschleusungsversuchen (SQL-Injection, Script-Einschleusung, Log4Shell, Pfad-Traversal, ungewöhnliche HTTP-Methoden). Wer so etwas auslöst, wird protokolliert: vollständige IP-Adresse, Zeitpunkt, HTTP-Methode, aufgerufener Pfad, User-Agent sowie ein aus der IP-Adresse abgeleiteter ungefährer Standort und Netzbetreiber. Das ist Selbstschutz und Cyberabwehr: Wir müssen wissen, woher ein Angriff auf unsere Systeme kam, welcher Köder berührt wurde und ob dieselbe Quelle wiederkehrt.<br />
       <strong style={{ color: '#e8e8f0' }}>Automatische Sperre:</strong> wiederholte oder schwere Treffer sperren die IP-Adresse für 24 Stunden. Einen Irrtum melden Sie an <a href="mailto:security@rfi-irfos.com" style={A}>security@rfi-irfos.com</a>, dann heben wir die Sperre auf.<br />
       <strong style={{ color: '#e8e8f0' }}>Alarm:</strong> Jeder Treffer geht an einen internen Push-Kanal (ntfy.sh), damit das Team ihn sofort sieht. Der Kanalname ist geheim.<br />
       <strong style={{ color: '#e8e8f0' }}>Standortabfrage:</strong> Die IP-Adresse eines solchen Treffers (und nur eines solchen Treffers) geht an den Abfragedienst ipwho.is, um ungefähren Standort und Anbieter zu ermitteln.<br />
@@ -667,22 +667,22 @@ function DatenschutzDE() {
     </p>
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>„Funktionale Cookies, zum Merken Ihrer Einstellungen."</strong><br />
-      Sie können ein helles, dunkles oder kontrastreiches Theme sowie eine Sprache wählen, und wir merken uns diese Wahl — in <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>localStorage</code>, nicht in einem Cookie. Das verlässt nie Ihr Gerät, trägt keinen Identifikator und ist für uns nicht lesbar.
+      Sie können ein helles, dunkles oder kontrastreiches Theme sowie eine Sprache wählen, und wir merken uns diese Wahl — in <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>localStorage</code>, nicht in einem Cookie. Das verlässt nie Ihr Gerät, trägt keinen Identifikator und ist für uns nicht lesbar.
     </p>
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>„Performance-/Analyse-Cookies, um zu verstehen, wie Besucher unsere Website nutzen."</strong><br />
       Hier steckt normalerweise das eigentliche Tracking, und hier wird eine Datenschutzerklärung normalerweise vage. Wir nicht. Diese Website lädt ein einzelnes, selbst gehostetes 1×1-Pixelbild, kein Cookie, keine Einwilligung dafür nötig, weil die Cookie-Einwilligungspflicht (ePrivacy Art. 5 Abs. 3) am Speichern oder Auslesen von etwas auf <em>Ihrem</em> Gerät ansetzt, und dieser Pixel tut keines von beiden. Jeder Seitenaufruf sendet genau das, den wortwörtlichen Tag, der genau jetzt live auf dieser Seite liegt — kopieren Sie ihn und prüfen Sie ihn selbst:
     </p>
     <div style={{ background: '#0c0c16', border: '1px solid rgba(0,245,196,0.2)', borderRadius: 6, padding: '12px 16px', margin: '8px 0 16px 0', overflowX: 'auto' }}>
-      <code style={{ fontFamily: 'monospace', fontSize: 12, color: 'var(--accent-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+      <code style={{ fontFamily: 'monospace', fontSize: 'var(--fs-small)', color: 'var(--accent-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
         {'<img src="https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif?site=rfi-irfos&p={page-path}&r={referrer}&utm_source={utm}" width="1" height="1" alt="" style="display:none">'}
       </code>
     </div>
     <p style={P}>
-      Was durch diese Anfrage in unserer Datenbank landet: der Seitenpfad, die verweisende Domain normalisiert auf einen Kanal ("organische Suche", "direkt", "Referral", "linkedin" und so weiter, damit wir einem Vorstandsmitglied sagen können, woher Besucher kommen) und das Site-Tag. Das ist alles, vollständig: <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>path, source, referrer, utm_source, utm_medium, utm_campaign, site</code>. Es gibt in dieser Tabelle keine IP-Adress-Spalte. Kein Besucher-ID-Feld wird von dieser Pixel-Kopie je befüllt, daher landen zwei Besuche derselben Person als zwei unabhängige, nicht verknüpfte Zeilen, nicht als ein wachsendes Profil. Vollständiger Quellcode, Backend inklusive: <a href="https://github.com/rfi-irfos/rfi-irfos-web" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos/rfi-irfos-web</a>. Wir bitten Sie nicht, einem Satz zu vertrauen, wir zeigen auf den Code, der entweder dazu passt oder nicht.
+      Was durch diese Anfrage in unserer Datenbank landet: der Seitenpfad, die verweisende Domain normalisiert auf einen Kanal ("organische Suche", "direkt", "Referral", "linkedin" und so weiter, damit wir einem Vorstandsmitglied sagen können, woher Besucher kommen) und das Site-Tag. Das ist alles, vollständig: <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>path, source, referrer, utm_source, utm_medium, utm_campaign, site</code>. Es gibt in dieser Tabelle keine IP-Adress-Spalte. Kein Besucher-ID-Feld wird von dieser Pixel-Kopie je befüllt, daher landen zwei Besuche derselben Person als zwei unabhängige, nicht verknüpfte Zeilen, nicht als ein wachsendes Profil. Vollständiger Quellcode, Backend inklusive: <a href="https://github.com/rfi-irfos/rfi-irfos-web" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos/rfi-irfos-web</a>. Wir bitten Sie nicht, einem Satz zu vertrauen, wir zeigen auf den Code, der entweder dazu passt oder nicht.
     </p>
     <p style={P}>
-      Ein weiteres Signal landet auf demselben Weg: welcher Abschnitt dieser einzelnen, scrollenden Seite während Ihres Besuchs sichtbar wurde (das Offenlegungsregister, Preise, das Hinweis-Formular und so weiter), gespeichert als eine weitere anonyme <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>section</code>-Spalte in derselben Tabelle. Das ist ein Zähler, kein Betrachtungsprotokoll — "der Registerabschnitt wurde heute 214 Mal gesehen", niemals "Besucher X hat sich das Register angesehen." Die Seite hält eine einfache JavaScript-Variable im Speicher, damit Hoch- und Herunterscrollen über einen Abschnitt ihn nicht doppelt zählt; diese Variable wird nie in ein Cookie, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>localStorage</code> oder <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 13 }}>sessionStorage</code> geschrieben und ist beim nächsten Laden der Seite sofort weg. Dieselbe Begründung wie beim Pixel oben: Auf Ihrem Gerät wird nichts gespeichert, daher greift der ePrivacy-Einwilligungstatbestand nie, und nichts davon identifiziert Sie, daher sind es von vornherein keine personenbezogenen Daten.
+      Ein weiteres Signal landet auf demselben Weg: welcher Abschnitt dieser einzelnen, scrollenden Seite während Ihres Besuchs sichtbar wurde (das Offenlegungsregister, Preise, das Hinweis-Formular und so weiter), gespeichert als eine weitere anonyme <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>section</code>-Spalte in derselben Tabelle. Das ist ein Zähler, kein Betrachtungsprotokoll — "der Registerabschnitt wurde heute 214 Mal gesehen", niemals "Besucher X hat sich das Register angesehen." Die Seite hält eine einfache JavaScript-Variable im Speicher, damit Hoch- und Herunterscrollen über einen Abschnitt ihn nicht doppelt zählt; diese Variable wird nie in ein Cookie, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>localStorage</code> oder <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>sessionStorage</code> geschrieben und ist beim nächsten Laden der Seite sofort weg. Dieselbe Begründung wie beim Pixel oben: Auf Ihrem Gerät wird nichts gespeichert, daher greift der ePrivacy-Einwilligungstatbestand nie, und nichts davon identifiziert Sie, daher sind es von vornherein keine personenbezogenen Daten.
     </p>
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>„Targeting-/Werbe-Cookies, zum Erstellen eines Profils Ihrer Interessen."</strong><br />
@@ -727,7 +727,7 @@ function AGB() {
 function AGBEN() {
   return <>
     <h1 style={H1}>General Terms and Conditions</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>RFI-IRFOS &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>RFI-IRFOS &middot; Last updated: July 2026</p>
 
     <p style={P}>
       Thirteen sections, no filler clause, nothing in here that exists only to look thorough. If a paragraph below feels short, that's because the short version was the accurate one.
@@ -793,7 +793,7 @@ function AGBEN() {
 function AGBDE() {
   return <>
     <h1 style={H1}>Allgemeine Geschäftsbedingungen</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>RFI-IRFOS &middot; Letzte Aktualisierung: Juli 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>RFI-IRFOS &middot; Letzte Aktualisierung: Juli 2026</p>
 
     <p style={P}>
       Vierzehn Abschnitte, keine Füllklausel, nichts hier, das nur existiert, um gründlich zu wirken. Wenn ein Absatz unten kurz wirkt, dann weil die kurze Fassung die zutreffende war.
@@ -864,7 +864,7 @@ function Security() {
 function SecurityEN() {
   return <>
     <h1 style={H1}>Security Policy</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Coordinated Disclosure &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Coordinated Disclosure &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
 
     <h2 style={H2}>Our Method</h2>
     <p style={P}>
@@ -943,7 +943,7 @@ function SecurityEN() {
 function SecurityDE() {
   return <>
     <h1 style={H1}>Sicherheitsrichtlinie</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Koordinierte Offenlegung &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Koordinierte Offenlegung &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
 
     <h2 style={H2}>Unsere Methode</h2>
     <p style={P}>
@@ -1027,7 +1027,7 @@ function Standards() {
 function StandardsEN() {
   return <>
     <h1 style={H1}>Standards &amp; Compliance</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>The frameworks we file every audit against &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>The frameworks we file every audit against &middot; Last updated: July 2026</p>
 
     <p style={P}>
       Every audit RFI-IRFOS runs is filed against current EU and Austrian law. We track new standards as they enter force and keep our methodology up to date. This page lists what that actually means in practice — the specific frameworks, not just a claim that we "follow best practice."
@@ -1076,7 +1076,7 @@ function StandardsEN() {
 function StandardsDE() {
   return <>
     <h1 style={H1}>Standards &amp; Compliance</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Die Rahmenwerke, gegen die wir jedes Audit führen &middot; Letzte Aktualisierung: Juli 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Die Rahmenwerke, gegen die wir jedes Audit führen &middot; Letzte Aktualisierung: Juli 2026</p>
 
     <p style={P}>
       Jedes Audit, das RFI-IRFOS durchführt, wird gegen geltendes EU- und österreichisches Recht geführt. Wir verfolgen neue Standards, sobald sie in Kraft treten, und halten unsere Methodik aktuell. Diese Seite listet auf, was das in der Praxis tatsächlich bedeutet — die konkreten Rahmenwerke, nicht nur die Behauptung, wir würden „Best Practices" befolgen.
@@ -1180,13 +1180,13 @@ function TeamCard({ p }: { p: { name: string; gh: string; focus: string } }) {
         <div style={{
           width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 20, fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
+          fontSize: 'var(--fs-h3)', fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
         }}>{p.name[0]}</div>
       )}
       <div>
-        <p style={{ fontSize: 14, fontWeight: 800, color: '#e8e8f0' }}>{p.name}</p>
-        <p style={{ fontSize: 11, color: 'var(--accent-text)', marginTop: 4, fontWeight: 600 }}>{p.focus}</p>
-        {p.gh && <p style={{ fontSize: 10.5, color: '#7a7aa0', marginTop: 6, fontFamily: 'monospace' }}>@{p.gh}</p>}
+        <p style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: '#e8e8f0' }}>{p.name}</p>
+        <p style={{ fontSize: 'var(--fs-label)', color: 'var(--accent-text)', marginTop: 4, fontWeight: 700 }}>{p.focus}</p>
+        {p.gh && <p style={{ fontSize: 'var(--fs-label)', color: '#7a7aa0', marginTop: 6, fontFamily: 'monospace' }}>@{p.gh}</p>}
       </div>
     </a>
   )
@@ -1196,9 +1196,9 @@ function Team() {
   const grid = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginTop: 32 } as const
   return <>
     <h1 style={H1}>Team</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>One team, everything in-house</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>One team, everything in-house</p>
     <div style={grid}>{TEAM.map(p => <TeamCard key={p.name} p={p} />)}</div>
-    <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.18em', marginTop: 48 }}>Past contributors</p>
+    <p style={{ fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.18em', marginTop: 48 }}>Past contributors</p>
     <div style={{ ...grid, marginTop: 16, opacity: 0.45, filter: 'grayscale(1)' }}>{PAST.map(p => <TeamCard key={p.name} p={p} />)}</div>
   </>
 }
@@ -1274,7 +1274,7 @@ function Methodology() {
 function MethodologyEN() {
   return <>
     <h1 style={H1}>Methodology</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>The same rules, whoever the client is</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>The same rules, whoever the client is</p>
     <p style={P}>
       An investigator who bends the rules for a paying client isn't an investigator anymore - just a vendor with a fancier vocabulary. These four principles govern where we look, how we test, what we do with what we find, and when it becomes public, regardless of who's paying.
     </p>
@@ -1295,7 +1295,7 @@ function MethodologyEN() {
       background: 'rgba(0,224,193,0.06)', border: '1px solid rgba(0,224,193,0.25)',
       borderRadius: 10, padding: '12px 16px', margin: '16px 0',
     }}>
-      <p style={{ ...P, marginBottom: 0, fontSize: 12.5 }}>
+      <p style={{ ...P, marginBottom: 0, fontSize: 'var(--fs-small)' }}>
         <strong style={{ color: '#00e0c1' }}>Real, disclosed finding.</strong> From "Merge Chicken" (com.Merge.o98Chickens), reported to Google Play &amp; Android Security 2026-06-25, removed from the Play Store 2026-06-30.{' '}
         <a href="/reports/merge-chicken-2026.pdf" target="_blank" rel="noopener" style={A}>Full report (PDF)</a>
       </p>
@@ -1314,7 +1314,7 @@ function MethodologyEN() {
 function MethodologyDE() {
   return <>
     <h1 style={H1}>Methodik</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 11, color: '#7a7aa0' }}>Dieselben Regeln, unabhängig vom Kunden</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Dieselben Regeln, unabhängig vom Kunden</p>
     <p style={P}>
       Ein Ermittler, der die Regeln für einen zahlenden Kunden beugt, ist kein Ermittler mehr - nur ein Dienstleister mit besserem Vokabular. Diese vier Prinzipien bestimmen, wohin wir schauen, wie wir prüfen, was wir mit unseren Funden machen und wann sie öffentlich werden, unabhängig davon, wer zahlt.
     </p>
@@ -1335,7 +1335,7 @@ function MethodologyDE() {
       background: 'rgba(0,224,193,0.06)', border: '1px solid rgba(0,224,193,0.25)',
       borderRadius: 10, padding: '12px 16px', margin: '16px 0',
     }}>
-      <p style={{ ...P, marginBottom: 0, fontSize: 12.5 }}>
+      <p style={{ ...P, marginBottom: 0, fontSize: 'var(--fs-small)' }}>
         <strong style={{ color: '#00e0c1' }}>Echter, offengelegter Fund.</strong> Aus „Merge Chicken" (com.Merge.o98Chickens), gemeldet an Google Play &amp; Android Security am 25.06.2026, aus dem Play Store entfernt am 30.06.2026.{' '}
         <a href="/reports/merge-chicken-2026.pdf" target="_blank" rel="noopener" style={A}>Vollständiger Bericht (PDF)</a>
       </p>

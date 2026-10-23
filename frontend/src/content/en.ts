@@ -272,7 +272,7 @@ export const EN = {
     introSubtitle: 'Find out what your security tools might be missing.',
     introText: [
       'The initial check is read-only, performed from a European IP address, with no login and no payloads. Your systems remain unchanged.',
-      "A researcher reviews and approves your request before any checks begin. We'll get back to you within one business day. You'll receive a short written report covering our observations, potential attack scenarios, an expert assessment of the potential financial impact, and concrete recommendations for what to do next — plus a correlated knowledge graph linking everything we found, free with the check.",
+      "A researcher reviews your request before any check begins and replies within one business day. You receive a short written report with our findings, likely attack scenarios, the potential financial impact and clear next steps, plus a knowledge graph of everything we found. All free.",
       'This is an initial external assessment, not a source-code review or a guarantee that your application is secure.',
     ],
     domainLabel: 'Your domain',

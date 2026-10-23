@@ -47,12 +47,12 @@ export function CoopPartnersSection({
 }) {
   const { t } = useLocale()
   return (
-    <section id="coop-partners" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
+    <section id="coop-partners" style={{ padding: '32px var(--sec-pad-x) 40px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.coopPartners.eyebrow}</p>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.coopPartners.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center' }}>{t.coopPartners.heading}</h2>
-          <p style={{ color: 'var(--text)', fontSize: 17, marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
+          <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
             {t.coopPartners.subheading}
           </p>
         </Reveal>
@@ -60,17 +60,17 @@ export function CoopPartnersSection({
           <Reveal from="left" dist={60} delay={1}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', padding: '24px 28px' }}>
               <div style={{ flex: '1 1 240px', minWidth: 0 }}>
-                <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>Laura Serna Gaviria</p>
-                <p style={{ fontSize: 13, color: 'var(--silver-text)', marginTop: 3, fontWeight: 600 }}>{t.coopPartners.role}</p>
+                <p style={{ fontSize: 'var(--fs-h3)', fontWeight: 700, color: 'var(--text)', margin: 0 }}>Laura Serna Gaviria</p>
+                <p style={{ fontSize: 'var(--fs-small)', color: 'var(--silver-text)', marginTop: 3, fontWeight: 700 }}>{t.coopPartners.role}</p>
                 <a href="https://github.com/emergentinteractionlab" target="_blank" rel="noopener noreferrer"
-                   style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 6, fontSize: 12, color: 'var(--text2)', textDecoration: 'none', fontFamily: "'JetBrains Mono', monospace" }}>
+                   style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 6, fontSize: 'var(--fs-small)', color: 'var(--text2)', textDecoration: 'none', fontFamily: "'JetBrains Mono', monospace" }}>
                   <GithubMark />
                   @emergentinteractionlab
                 </a>
               </div>
               <a href="https://emergent-interaction-lab.com" target="_blank" rel="noopener noreferrer"
                  style={{
-                   display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 10, fontWeight: 700,
+                   display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 'var(--fs-label)', fontWeight: 700,
                    letterSpacing: '0.06em', textTransform: 'uppercase', padding: '3px 9px', borderRadius: 999,
                    border: '1px solid color-mix(in srgb, var(--accent) 55%, transparent)', background: 'color-mix(in srgb, var(--accent) 14%, transparent)', color: 'var(--accent)', textDecoration: 'none', whiteSpace: 'nowrap',
                  }}>
@@ -82,7 +82,7 @@ export function CoopPartnersSection({
           <Reveal from="bottom" dist={40} delay={2}>
             <div style={{ padding: '24px 28px', borderTop: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: 14 }}>
               {t.coopPartners.laura.paragraphs.map((para, i) => (
-                <p key={i} style={{ margin: 0, color: 'var(--text)', lineHeight: 1.65, fontSize: 14.5, fontWeight: 400 }}>{para}</p>
+                <p key={i} style={{ margin: 0, color: 'var(--text)', lineHeight: 'var(--lh-body)', fontSize: 'var(--fs-body)', fontWeight: 400 }}>{para}</p>
               ))}
             </div>
           </Reveal>
@@ -105,12 +105,12 @@ export function CoopPartnersSection({
                     <span className="rfi-glass-icon rfi-icon-pop" style={{ width: 40, height: 40, borderRadius: 12, ['--ib' as string]: `var(--ib-${g.ic})` }}>
                       <GroupIcon kind={g.kind} size={17} />
                     </span>
-                    <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.16em', margin: 0, color: 'var(--text)' }}>{g.title}</p>
+                    <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-small)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.16em', margin: 0, color: 'var(--text)' }}>{g.title}</p>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
                     {g.links.map(l => (
                       <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-                         style={{ fontSize: 13, color: 'var(--text)', textDecoration: 'none' }}>
+                         style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', textDecoration: 'none' }}>
                         {l.label}{'onRequest' in l && l.onRequest ? ` ${t.coopPartners.onRequest}` : ''}
                       </a>
                     ))}

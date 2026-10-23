@@ -40,9 +40,9 @@ export function SubmitSection({
     <section id="submit" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.submit.eyebrow}</p>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.submit.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center' }}>{t.submit.heading}</h2>
-          <p style={{ color: 'var(--text)', fontSize: 17, marginBottom: 40, maxWidth: 680, lineHeight: 1.8, textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
+          <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 40, maxWidth: 680, lineHeight: 'var(--lh-body)', textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
             {t.submit.paragraph}
           </p>
         </Reveal>
@@ -74,12 +74,12 @@ export function SubmitSection({
                 }}
                   onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
                   onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
-                  <div style={{ fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 5 }}>{t.submit.contactCards[c.key]}</div>
-                  <div style={{ color: 'var(--accent-text)', fontWeight: 600, fontSize: 13 }}>{c.value}</div>
+                  <div style={{ fontSize: 'var(--fs-label)', fontFamily: "'JetBrains Mono', monospace", color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 5 }}>{t.submit.contactCards[c.key]}</div>
+                  <div style={{ color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-small)' }}>{c.value}</div>
                 </a>
               ))}
             </div>
-            <p style={{ fontSize: 12.5, color: 'var(--text)', marginBottom: 10, lineHeight: 1.6 }}>
+            <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', marginBottom: 10, lineHeight: 'var(--lh-body)' }}>
               {t.submit.notSurePrefix}<strong>{t.submit.notSureStrong}</strong>{t.submit.notSureSuffix}
             </p>
             {/* Full disclosure-handling policy (ISO/IEC 30111 triage, lawful
@@ -87,7 +87,7 @@ export function SubmitSection({
                 (#p/security) - live feedback: this panel made the contact
                 section feel cluttered/security-intake-only rather than one
                 clean form. */}
-            <p style={{ fontSize: 12, color: 'var(--text)', marginBottom: 10, lineHeight: 1.7 }}>
+            <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', marginBottom: 10, lineHeight: 'var(--lh-body)' }}>
               {t.submit.disclosurePolicyPrefix}
               <a href="/security/" onClick={e => {
                 // Real crawlable path (was `#p/security`, a same-document fragment
@@ -102,7 +102,7 @@ export function SubmitSection({
                 window.dispatchEvent(new PopStateEvent('popstate'))
               }} style={{ color: 'var(--accent-text)' }}>{t.submit.disclosurePolicyLink}</a>{t.submit.disclosurePolicySuffix}
             </p>
-            <p style={{ fontSize: 12, color: 'var(--text)', marginBottom: 0, lineHeight: 1.7 }}>
+            <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', marginBottom: 0, lineHeight: 'var(--lh-body)' }}>
               {t.submit.responseTime}
             </p>
           </Reveal>
@@ -128,13 +128,13 @@ export function SubmitSection({
                 ]} />
               <input type="text" placeholder={t.submit.form.namePlaceholder}
                 value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
-                style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit' }} />
               <input type="email" required placeholder={t.submit.form.emailPlaceholder}
                 value={tipForm.email} onChange={e => setTipForm(p => ({ ...p, email: e.target.value }))}
-                style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit' }} />
               <input type="text" required placeholder={t.submit.form.targetPlaceholder}
                 value={tipForm.target} onChange={e => setTipForm(p => ({ ...p, target: e.target.value }))}
-                style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', fontFamily: 'inherit' }} />
+                style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit' }} />
               {/* Only relevant once this is actually a disclosure - showing a credit
                   preference on e.g. a "Send Us Your APK" or careers inquiry read as
                   out of place (live feedback 2026-08-21). */}
@@ -143,19 +143,19 @@ export function SubmitSection({
                   <input type="checkbox" aria-label={t.submit.form.creditAriaLabel} checked={tipForm.credit === 'alias'}
                     onChange={e => setTipForm(p => ({ ...p, credit: e.target.checked ? 'alias' : 'anonymous' }))}
                     style={{ marginTop: 3, accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
-                  <span style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.6 }}>
+                  <span style={{ color: 'var(--text2)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)' }}>
                     {t.submit.form.creditOptions.alias}
                   </span>
                 </label>
               )}
               <textarea required placeholder={t.submit.form.findingPlaceholder}
                 value={tipForm.finding} onChange={e => setTipForm(p => ({ ...p, finding: e.target.value }))}
-                rows={6} style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
+                rows={6} style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
               <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
                 <input type="checkbox" required checked={tipForm.lawful}
                   onChange={e => setTipForm(p => ({ ...p, lawful: e.target.checked }))}
                   style={{ marginTop: 3, accentColor: TEAL, width: 16, height: 16, flexShrink: 0 }} />
-                <span style={{ color: 'var(--text2)', fontSize: 12, lineHeight: 1.6 }}>
+                <span style={{ color: 'var(--text2)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)' }}>
                   {t.submit.form.lawfulLabel}
                 </span>
               </label>
@@ -163,7 +163,7 @@ export function SubmitSection({
                 background: tipFormState === 'ok' ? 'rgba(0,245,196,0.2)' : TEAL,
                 color: tipFormState === 'ok' ? TEAL : '#070711',
                 border: tipFormState === 'ok' ? `1px solid ${TEAL}` : 'none',
-                padding: '13px 24px', borderRadius: 8, fontWeight: 800, fontSize: 14,
+                padding: '13px 24px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-body)',
                 cursor: tipFormState === 'sending' ? 'wait' : !tipForm.lawful ? 'not-allowed' : 'pointer',
                 opacity: !tipForm.lawful && tipFormState === 'idle' ? 0.5 : 1, fontFamily: 'inherit',
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 9,
@@ -177,7 +177,7 @@ export function SubmitSection({
                   also means the page is safe to ship before the CRM relay key is set:
                   worst case the lead arrives by email instead of in the CRM, never nowhere. */}
               {tipFormState === 'err' && (
-                <p style={{ color: 'var(--sev-crit)', fontSize: 13, lineHeight: 1.6 }}>
+                <p style={{ color: 'var(--sev-crit)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)' }}>
                   {t.submit.form.errorText}{' '}
                   <a
                     href={`mailto:contact@rfi-irfos.com?subject=${encodeURIComponent(

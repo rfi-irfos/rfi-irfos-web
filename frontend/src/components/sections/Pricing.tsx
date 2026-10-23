@@ -85,9 +85,9 @@ function TierCard({
   return (
     <div style={{ padding: '36px 28px', display: 'flex', flexDirection: 'column', gap: 13, height: '100%', boxSizing: 'border-box' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text3)', margin: 0 }}>{tier.name}</p>
+        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-small)', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text3)', margin: 0 }}>{tier.name}</p>
         {tier.popular && (
-          <span style={{ fontSize: 10.5, fontWeight: 800, color: '#f97316', letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{t.pricing.mostPopular}</span>
+          <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#f97316', letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{t.pricing.mostPopular}</span>
         )}
       </div>
       <div style={{ overflow: 'hidden' }}>
@@ -99,17 +99,17 @@ function TierCard({
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
           >
-            <span style={{ fontSize: 36, fontWeight: 800, color: 'var(--text)' }}>{billing === 'monthly' ? tier.price : annualPrice(tier.price, locale)}</span>
-            <span style={{ fontSize: 14, color: 'var(--text3)' }}> {billing === 'monthly' ? b.perMonth : `/${b.annual.toLowerCase()}`}</span>
+            <span style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: 'var(--text)' }}>{billing === 'monthly' ? tier.price : annualPrice(tier.price, locale)}</span>
+            <span style={{ fontSize: 'var(--fs-body)', color: 'var(--text3)' }}> {billing === 'monthly' ? b.perMonth : `/${b.annual.toLowerCase()}`}</span>
           </motion.div>
         </AnimatePresence>
       </div>
-      <p style={{ fontSize: 14, color: 'var(--text2)', margin: 0, lineHeight: 1.55, minHeight: 44 }}>{tier.tagline}</p>
+      <p style={{ fontSize: 'var(--fs-body)', color: 'var(--text2)', margin: 0, lineHeight: 'var(--lh-body)', minHeight: 44 }}>{tier.tagline}</p>
       <div style={{ borderTop: '1px solid var(--border)', margin: '4px 0 6px' }} />
       <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 11, flex: 1 }}>
         {tier.features.map(f => (
-          <li key={f} style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--text)', display: 'flex', gap: 9 }}>
-            <span style={{ color: 'var(--accent-text)', fontWeight: 800 }}>✓</span>{f}
+          <li key={f} style={{ fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', color: 'var(--text)', display: 'flex', gap: 9 }}>
+            <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>✓</span>{f}
           </li>
         ))}
       </ul>
@@ -120,7 +120,7 @@ function TierCard({
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
-            style={{ fontSize: 11.5, color: 'var(--text3)', margin: 0, overflow: 'hidden' }}
+            style={{ fontSize: 'var(--fs-label)', color: 'var(--text3)', margin: 0, overflow: 'hidden' }}
           >{b.annualNote}</motion.p>
         )}
       </AnimatePresence>
@@ -131,7 +131,7 @@ function TierCard({
           background: tier.popular ? '#f97316' : 'transparent',
           color: tier.popular ? '#1a0f00' : 'var(--text)',
           border: tier.popular ? 'none' : '1px solid var(--border)',
-          padding: '14px 18px', borderRadius: 8, fontWeight: 800, fontSize: 14.5, cursor: 'pointer', marginTop: 6,
+          padding: '14px 18px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', marginTop: 6,
         }}>{billing === 'monthly' ? tier.cta : b.annualCta}</button>
     </div>
   )
@@ -142,22 +142,22 @@ function FreeTierCard({ onOpen }: { onOpen: () => void }) {
   const f = t.pricing.freeCard
   return (
     <div style={{ padding: '36px 28px', display: 'flex', flexDirection: 'column', gap: 13, height: '100%', boxSizing: 'border-box' }}>
-      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text3)', margin: 0 }}>{f.label}</p>
+      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-small)', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text3)', margin: 0 }}>{f.label}</p>
       <div>
-        <span style={{ fontSize: 36, fontWeight: 800, color: 'var(--text)' }}>{f.price}</span>
+        <span style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: 'var(--text)' }}>{f.price}</span>
       </div>
-      <p style={{ fontSize: 14, color: 'var(--text2)', margin: 0, lineHeight: 1.55, minHeight: 44 }}>{f.tagline}</p>
+      <p style={{ fontSize: 'var(--fs-body)', color: 'var(--text2)', margin: 0, lineHeight: 'var(--lh-body)', minHeight: 44 }}>{f.tagline}</p>
       <div style={{ borderTop: '1px solid var(--border)', margin: '4px 0 6px' }} />
       <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 11, flex: 1 }}>
         {f.features.map(feat => (
-          <li key={feat} style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--text)', display: 'flex', gap: 9 }}>
-            <span style={{ color: 'var(--accent-text)', fontWeight: 800 }}>✓</span>{feat}
+          <li key={feat} style={{ fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', color: 'var(--text)', display: 'flex', gap: 9 }}>
+            <span style={{ color: 'var(--accent-text)', fontWeight: 700 }}>✓</span>{feat}
           </li>
         ))}
       </ul>
       <button type="button" onClick={onOpen} style={{
         background: 'transparent', color: 'var(--text)', border: '1px solid var(--border)',
-        padding: '14px 18px', borderRadius: 8, fontWeight: 800, fontSize: 14.5, cursor: 'pointer', marginTop: 6,
+        padding: '14px 18px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', marginTop: 6,
       }}>{f.cta}</button>
     </div>
   )
@@ -172,7 +172,7 @@ function BillingToggle({ billing, onChange }: { billing: 'monthly' | 'annual'; o
       background: 'transparent',
       color: billing === value ? '#1a0f00' : 'var(--text2)',
       border: 'none', borderLeft: borderLeft ? '1px solid var(--border)' : 'none',
-      padding: '12px 24px', fontWeight: 800, fontSize: 12.5, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer',
+      padding: '12px 24px', fontWeight: 700, fontSize: 'var(--fs-small)', letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer',
       transition: 'color 0.2s ease',
     }}>{label}</button>
   )
@@ -193,12 +193,12 @@ function NeedSomethingElseRow({ domains, onSelectTier }: { domains: PricingDomai
   const { t } = useLocale()
   return (
     <div style={{ borderTop: '1px solid var(--border)', marginTop: 32, paddingTop: 20, display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px 18px' }}>
-      <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)' }}>{t.pricing.needSomethingElse}</span>
+      <span style={{ fontSize: 'var(--fs-small)', fontWeight: 700, color: 'var(--text)' }}>{t.pricing.needSomethingElse}</span>
       {domains.map((d, i) => {
         const Icon = DOMAIN_ICONS[d.name]
         return (
           <span key={d.name} style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-            <button type="button" onClick={() => onSelectTier(d.name)} style={{ background: 'none', border: 'none', color: 'var(--accent-text)', fontWeight: 700, fontSize: 13, cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <button type="button" onClick={() => onSelectTier(d.name)} style={{ background: 'none', border: 'none', color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-small)', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
               {Icon && <Icon size={15} stroke={1.8} color="var(--icon-neutral)" />}
               {d.name}
             </button>
@@ -277,10 +277,10 @@ export function PricingSection({
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap',
               }}>
                 <div>
-                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--accent-text)', margin: '0 0 7px' }}>{t.pricing.enterprise.heading}</p>
-                  <p style={{ fontSize: 13.5, color: 'var(--text)', margin: 0, maxWidth: 560 }}>{t.pricing.enterprise.text}</p>
+                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--accent-text)', margin: '0 0 7px' }}>{t.pricing.enterprise.heading}</p>
+                  <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', margin: 0, maxWidth: 560 }}>{t.pricing.enterprise.text}</p>
                 </div>
-                <button type="button" onClick={() => onSelectTier('Enterprise')} style={{ background: 'transparent', border: '1px solid var(--accent-text)', color: 'var(--accent-text)', padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                <button type="button" onClick={() => onSelectTier('Enterprise')} style={{ background: 'transparent', border: '1px solid var(--accent-text)', color: 'var(--accent-text)', padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
                   {t.pricing.enterprise.cta}
                 </button>
               </div>

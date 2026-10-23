@@ -31,7 +31,7 @@ function StatusBadge({ status }: { status: SystemStatus }) {
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', gap: 6,
-      fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, letterSpacing: '0.1em',
+      fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.1em',
       color: c, border: `1px solid ${c}55`, background: `${c}15`, borderRadius: 999, padding: '4px 10px',
     }}>
       <span style={{ width: 6, height: 6, borderRadius: '50%', background: c }} />
@@ -42,7 +42,7 @@ function StatusBadge({ status }: { status: SystemStatus }) {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 6, marginTop: 18 }}>
+    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 6, marginTop: 18 }}>
       {children}
     </div>
   )
@@ -83,7 +83,7 @@ function PreviewBox({ preview, accent }: { preview: ReturnType<typeof getPreview
 function LinkPill({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" style={{
-      fontSize: 13, fontWeight: 700, padding: '8px 16px', borderRadius: 999, cursor: 'pointer',
+      fontSize: 'var(--fs-small)', fontWeight: 700, padding: '8px 16px', borderRadius: 999, cursor: 'pointer',
       background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)', color: '#8fe8d0',
       fontFamily: "'JetBrains Mono', monospace", textDecoration: 'none',
     }}>{children}</a>
@@ -138,7 +138,7 @@ export function SystemCardModal({ systemKey, closing, onClose, onNavigate }: {
         boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
         border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: '46px 42px', maxWidth: 980, width: '100%', maxHeight: '85vh', overflowY: 'auto', position: 'relative',
       }}>
-        <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 8, right: 8, background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 20, lineHeight: 1, padding: 10, zIndex: 1 }}>&#x2715;</button>
+        <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 8, right: 8, background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 'var(--fs-h3)', lineHeight: 'var(--lh-tight)', padding: 10, zIndex: 1 }}>&#x2715;</button>
 
         {/* Zone breadcrumb - current zone highlighted, same architecture-position
             signal at the top of every card regardless of which system it is.
@@ -146,7 +146,7 @@ export function SystemCardModal({ systemKey, closing, onClose, onNavigate }: {
             side-projects/tooling don't cleanly map onto one of the four zones -
             forcing a bad fit would be less honest than just not showing one). */}
         {sys.zone && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6, fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, letterSpacing: '0.04em', marginBottom: 16, paddingRight: 24 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', letterSpacing: '0.04em', marginBottom: 16, paddingRight: 24 }}>
             {ZONE_ORDER.map((z, i) => (
               <span key={z} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span style={{ color: z === sys.zone ? '#00f5c4' : '#7a7aa0', fontWeight: z === sys.zone ? 800 : 500 }}>
@@ -174,27 +174,27 @@ export function SystemCardModal({ systemKey, closing, onClose, onNavigate }: {
 
           <div style={{ flex: '1 1 0', minWidth: 280 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 4, marginTop: 0 }}>
-              <h3 style={{ fontSize: 27, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2, margin: 0 }}>{sys.name}</h3>
+              <h3 style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: '#e8e8f0', lineHeight: 'var(--lh-tight)', margin: 0 }}>{sys.name}</h3>
               <StatusBadge status={sys.status} />
             </div>
 
             <SectionLabel>{l.problem}</SectionLabel>
-            <p style={{ color: '#e8e8f0', fontSize: 16, lineHeight: 1.75, margin: 0 }}>{sys.problem[locale]}</p>
+            <p style={{ color: '#e8e8f0', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: 0 }}>{sys.problem[locale]}</p>
 
             <SectionLabel>{l.why}</SectionLabel>
-            <p style={{ color: '#c8c8d8', fontSize: 15.5, lineHeight: 1.75, margin: 0 }}>{sys.why[locale]}</p>
+            <p style={{ color: '#c8c8d8', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: 0 }}>{sys.why[locale]}</p>
 
             <SectionLabel>{l.different}</SectionLabel>
-            <p style={{ color: '#c8c8d8', fontSize: 15.5, lineHeight: 1.75, margin: 0 }}>{sys.different[locale]}</p>
+            <p style={{ color: '#c8c8d8', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: 0 }}>{sys.different[locale]}</p>
 
             <SectionLabel>{l.fit}</SectionLabel>
-            <p style={{ color: '#c8c8d8', fontSize: 15.5, lineHeight: 1.75, margin: 0 }}>{sys.fit[locale]}</p>
+            <p style={{ color: '#c8c8d8', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: 0 }}>{sys.fit[locale]}</p>
 
             <SectionLabel>{l.proof}</SectionLabel>
-            <p style={{ color: '#a0a0b8', fontSize: 14.5, lineHeight: 1.7, margin: 0 }}>{sys.proof[locale]}</p>
+            <p style={{ color: '#a0a0b8', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: 0 }}>{sys.proof[locale]}</p>
 
             <SectionLabel>{l.technical}</SectionLabel>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", color: '#a0a0b8', fontSize: 13, lineHeight: 1.65, margin: 0 }}>{sys.technical[locale]}</p>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", color: '#a0a0b8', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', margin: 0 }}>{sys.technical[locale]}</p>
 
             {connected.length > 0 && (
               <>
@@ -202,7 +202,7 @@ export function SystemCardModal({ systemKey, closing, onClose, onNavigate }: {
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                   {connected.map(c => (
                     <button key={c.key} onClick={() => onNavigate(c.key)} style={{
-                      fontSize: 12, fontWeight: 700, padding: '6px 13px', borderRadius: 999, cursor: 'pointer',
+                      fontSize: 'var(--fs-small)', fontWeight: 700, padding: '6px 13px', borderRadius: 999, cursor: 'pointer',
                       background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)', color: '#8fe8d0',
                       fontFamily: "'JetBrains Mono', monospace",
                     }}>{c.name}</button>

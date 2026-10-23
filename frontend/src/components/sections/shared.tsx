@@ -60,11 +60,11 @@ export function Select({
         onClick={() => setOpen(o => !o)}
         style={{
           width: '100%', textAlign: 'left', background: 'var(--input-bg)', border: '1px solid var(--border)',
-          borderRadius: 8, padding: '12px 16px', color: selected ? 'var(--text)' : 'var(--text3)', fontSize: 14,
+          borderRadius: 8, padding: '12px 16px', color: selected ? 'var(--text)' : 'var(--text3)', fontSize: 'var(--fs-body)',
           fontFamily: 'inherit', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8,
         }}>
         <span>{selected ? selected.label : placeholder}</span>
-        <span style={{ fontSize: 10, opacity: 0.6, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s', flexShrink: 0 }}>▾</span>
+        <span style={{ fontSize: 'var(--fs-label)', opacity: 0.6, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s', flexShrink: 0 }}>▾</span>
       </button>
       {open && (
         <div role="listbox" aria-label={ariaLabel} style={{
@@ -78,7 +78,7 @@ export function Select({
               onClick={() => { onChange(o.value); setOpen(false) }}
               className="rfi-select-option"
               style={{
-                padding: '10px 12px', borderRadius: 8, fontSize: 14, cursor: 'pointer',
+                padding: '10px 12px', borderRadius: 8, fontSize: 'var(--fs-body)', cursor: 'pointer',
                 color: o.value === value ? 'var(--accent-text)' : 'var(--text)',
               }}>
               {o.label}
@@ -658,7 +658,7 @@ export function EngagementFlow({ bring, mechanism, receive, large }: {
                   ("you bring we you receive must be one font size bigger than what
                   it describes"). */}
               <div style={{
-                fontSize: large ? 15 : 10, fontWeight: large ? 700 : 700,
+                fontSize: large ? 'var(--fs-body)' : 'var(--fs-label)', fontWeight: large ? 700 : 700,
                 color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: large ? '0.04em' : '0.12em',
                 marginBottom: 6,
               }}>{g.label}</div>
@@ -673,7 +673,7 @@ export function EngagementFlow({ bring, mechanism, receive, large }: {
                   actually-grey value being used at the time. */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {g.paragraphs.map((p, i) => (
-                  <p key={i} style={{ margin: 0, fontSize: large ? 13.5 : 12.5, lineHeight: large ? 1.55 : 1.5, color: 'var(--text)' }}>{p}</p>
+                  <p key={i} style={{ margin: 0, fontSize: large ? 'var(--fs-small)' : 'var(--fs-small)', lineHeight: large ? 'var(--lh-body)' : 'var(--lh-body)', color: 'var(--text)' }}>{p}</p>
                 ))}
               </div>
             </div>
@@ -733,7 +733,7 @@ function JourneyPreview({ mobile }: { mobile: boolean }) {
   return (
     <div style={{ marginBottom: 20 }}>
       <div style={{
-        fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, fontWeight: 700,
+        fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700,
         color: TEAL, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12,
       }}>{locale.modalTierBody.whatHappensNext}</div>
       <div style={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -749,7 +749,7 @@ function JourneyPreview({ mobile }: { mobile: boolean }) {
                   style={{
                     width: circle, height: circle, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     background: 'rgba(0,245,196,0.12)', border: `1px solid ${TEAL}`, color: TEAL,
-                    fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: font,
+                    fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, fontSize: font,
                   }}>{i + 1}</motion.div>
                 <div style={{ fontSize: font, fontWeight: 700, color: '#e8e8f0', textAlign: 'center', whiteSpace: 'nowrap' }}>{s.stage}</div>
               </motion.div>
@@ -779,7 +779,7 @@ function TierBullets({ bullets }: { bullets?: readonly string[] }) {
   return (
     <ul style={{ listStyle: 'none', margin: '0 0 14px', padding: 0, display: 'flex', flexDirection: 'column', gap: 7 }}>
       {bullets.map((b, i) => (
-        <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12.5, lineHeight: 1.55, color: 'var(--text)' }}>
+        <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text)' }}>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 3 }}><path d="M20 6L9 17l-5-5" /></svg>
           <span>{b}</span>
         </li>
@@ -876,24 +876,24 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets, br
           baselines. Baseline alignment fixes that regardless of the size difference,
           no manual marginTop nudge needed any more. */}
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
-        <h3 style={{ fontSize: mobile ? 24 : 32, fontWeight: 800, color: 'var(--text)', lineHeight: 1.2, margin: 0 }}>{tier}</h3>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, flexShrink: 0, color: '#8a8aa0', fontSize: 13 }}>
+        <h3 style={{ fontSize: mobile ? 'var(--fs-h3)' : 'var(--fs-h2)', fontWeight: 700, color: 'var(--text)', lineHeight: 'var(--lh-tight)', margin: 0 }}>{tier}</h3>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, flexShrink: 0, color: '#8a8aa0', fontSize: 'var(--fs-small)' }}>
           <ClockIcon /> {t.modalTierBody.inTouchWithin12h}
         </div>
       </div>
       {body.length > 0 && (
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>
+        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>
           {t.modalTierBody.whatYouGet}
         </div>
       )}
       {body.map((para, pi) => (
-        <p key={pi} style={{ color: '#e8e8f0', fontSize: mobile ? 15.5 : 16.5, lineHeight: 1.85, margin: 0, marginBottom: 18 }}>{para}</p>
+        <p key={pi} style={{ color: '#e8e8f0', fontSize: mobile ? 'var(--fs-body)' : 'var(--fs-lead)', lineHeight: 'var(--lh-body)', margin: 0, marginBottom: 18 }}>{para}</p>
       ))}
       {body.length > 0 && <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', margin: '2px 0 18px' }} />}
       {punchline && (
         body.length > 0 ? (
           <p style={{
-            color: 'var(--text)', fontSize: mobile ? 15.5 : 17, fontWeight: 700, lineHeight: 1.6,
+            color: 'var(--text)', fontSize: mobile ? 'var(--fs-body)' : 'var(--fs-lead)', fontWeight: 700, lineHeight: 'var(--lh-body)',
             margin: 0, marginBottom: 20, paddingLeft: 14, borderLeft: `2px solid ${TEAL}`,
           }}>{punchline}</p>
         ) : (
@@ -904,7 +904,7 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets, br
           // to quiet context copy here specifically - the tiers that DO have a real body +
           // distinct closing punchline keep the emphasized version above untouched.
           <p style={{
-            color: '#8a8aa0', fontSize: mobile ? 13.5 : 14, fontWeight: 400, lineHeight: 1.6,
+            color: '#8a8aa0', fontSize: mobile ? 'var(--fs-small)' : 'var(--fs-body)', fontWeight: 400, lineHeight: 'var(--lh-body)',
             margin: 0, marginBottom: 20,
           }}>{punchline}</p>
         )

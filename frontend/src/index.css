@@ -1,3 +1,20 @@
+/* ── Type scale (2026-10-23): ONE fixed scale for the whole site. Never write a raw
+   font-size/line-height/font-weight in a component - pick a step below. The hero
+   display line stays fluid (clamp) and is the only exception. Weights: 400 / 700 / 900.
+   Families: Archivo = headings, Inter = text, JetBrains Mono = eyebrows/labels/code. */
+:root {
+  --fs-label: 10px;   /* mono eyebrows, pills, micro text */
+  --fs-small: 12px;   /* meta, card copy, list items */
+  --fs-body: 14px;    /* running text */
+  --fs-lead: 16px;    /* intros under headings */
+  --fs-h3: 20px;      /* card and panel titles */
+  --fs-h2: 29px;      /* section headings, big numbers */
+  --lh-tight: 1.2;    /* headings, numbers */
+  --lh-body: 1.6;     /* all running text */
+}
+body { font-size: var(--fs-body); line-height: var(--lh-body); }
+button, input, select, textarea { font-family: inherit; }
+
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; -webkit-font-smoothing: antialiased; }
 html { scroll-padding-top: 72px; }
@@ -267,7 +284,7 @@ h1, h2, h3, .rfi-display {
   border: 1px solid var(--border);
   color: var(--text3);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-size: var(--fs-small);
   letter-spacing: 0.08em;
   padding: 4px 8px;
   cursor: pointer;
@@ -731,7 +748,7 @@ h1, h2, h3, .rfi-display {
 .rfi-pricing-badge {
   display: inline-block; border: 1px solid rgba(0,255,220,0.22); background: rgba(0,255,220,0.025);
   border-radius: 999px; padding: 7px 14px;
-  font-size: 12px; letter-spacing: 0.12em; color: #00e8d0; text-transform: uppercase;
+  font-size: var(--fs-small); letter-spacing: 0.12em; color: #00e8d0; text-transform: uppercase;
 }
 .rfi-pricing-icon-box {
   border-radius: 10px;
@@ -817,7 +834,7 @@ h1, h2, h3, .rfi-display {
    the old coloured glow). Colour comes from the icon itself (currentColor / own stroke). */
 .rfi-glass-icon {
   position: relative; display: inline-flex; align-items: center; justify-content: center;
-  flex-shrink: 0; line-height: 0; overflow: hidden; border-radius: 14px;
+  flex-shrink: 0; line-height: var(--lh-tight); overflow: hidden; border-radius: 14px;
   background: linear-gradient(160deg, rgba(255,255,255,0.11), rgba(255,255,255,0.02) 55%, rgba(255,255,255,0.05));
   border: 1px solid rgba(255,255,255,0.16);
   -webkit-backdrop-filter: blur(10px) saturate(1.3); backdrop-filter: blur(10px) saturate(1.3);

@@ -47,7 +47,7 @@ function BentoTile({ icon, ic, title, onOpen, from, delay }: {
         <div className="rfi-glass-icon rfi-icon-pop" style={{ width: 54, height: 54, borderRadius: 15, ['--ib' as string]: `var(--ib-${ic})`, ['--pop-sym' as string]: '#efe3c8', ['--pop-fill' as string]: '40%' }}>
           {icon}
         </div>
-        <div style={{ fontWeight: 800, fontSize: 14.5, lineHeight: 1.25, whiteSpace: 'pre-line' }}>{title}</div>
+        <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-tight)', whiteSpace: 'pre-line' }}>{title}</div>
       </motion.button>
     </Reveal>
   )
@@ -104,13 +104,13 @@ function ResearchAreaModal({ index, closing, onClose, onNavigate }: {
             pull the button's generous tap padding back out to the panel edge
             without moving its optical position. */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, marginBottom: 18 }}>
-          <div style={{ lineHeight: 0, ['--tile-ic' as string]: `var(--ic-${AREA_IC[index]})` }}>{icon}</div>
+          <div style={{ lineHeight: 'var(--lh-tight)', ['--tile-ic' as string]: `var(--ic-${AREA_IC[index]})` }}>{icon}</div>
           <button onClick={onClose} aria-label="Close" style={{
             background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer',
-            fontSize: 20, lineHeight: 1, padding: 10, margin: '-10px -10px 0 0',
+            fontSize: 'var(--fs-h3)', lineHeight: 'var(--lh-tight)', padding: 10, margin: '-10px -10px 0 0',
           }}>&#x2715;</button>
         </div>
-        <h3 style={{ fontSize: 30, fontWeight: 800, color: '#e8e8f0', lineHeight: 1.2, marginBottom: 22 }}>{area.title}</h3>
+        <h3 style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: '#e8e8f0', lineHeight: 'var(--lh-tight)', marginBottom: 22 }}>{area.title}</h3>
         {/* Plain-language anchor line (2026-08-15, live feedback: the two prose
             paragraphs below assume a reader already knows what a "world model" or
             a "trit" is - this line never does, one concrete sentence before the
@@ -118,7 +118,7 @@ function ResearchAreaModal({ index, closing, onClose, onNavigate }: {
             modal's punchline paragraph, for visual consistency across modals. */}
         {area.plain && (
           <p style={{
-            color: '#e8e8f0', fontSize: 16, fontWeight: 700, lineHeight: 1.55,
+            color: '#e8e8f0', fontSize: 'var(--fs-body)', fontWeight: 700, lineHeight: 'var(--lh-body)',
             margin: 0, marginBottom: 18, paddingLeft: 16, borderLeft: '2px solid #00f5c4',
           }}>{area.plain}</p>
         )}
@@ -129,7 +129,7 @@ function ResearchAreaModal({ index, closing, onClose, onNavigate }: {
             same feedback pass also asked for less scrolling after the keyword-
             density pass made every area's desc noticeably longer. */}
         {area.desc.split('\n\n').map((p, i) => (
-          <p key={i} style={{ color: '#e8e8f0', fontSize: 16, lineHeight: 1.75, margin: 0, marginBottom: 14 }}>{p}</p>
+          <p key={i} style={{ color: '#e8e8f0', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: 0, marginBottom: 14 }}>{p}</p>
         ))}
         {/* Deliberately unshowy (live feedback: "nicht so grell") - a low-fill teal
             pill, not a loud CTA button, so it reads as "there's more to explore"
@@ -140,11 +140,11 @@ function ResearchAreaModal({ index, closing, onClose, onNavigate }: {
             fontFamily override, so it inherits the same body font as the rest
             of the card instead of the monospace fallback reading as "Roboto". */}
         <div style={{ marginTop: 24, textAlign: 'center' }}>
-          <p style={{ fontSize: 11, color: '#6a6a80', textTransform: 'uppercase', letterSpacing: '0.14em', margin: 0, marginBottom: 9 }}>{t.research.upNext}</p>
+          <p style={{ fontSize: 'var(--fs-label)', color: '#6a6a80', textTransform: 'uppercase', letterSpacing: '0.14em', margin: 0, marginBottom: 9 }}>{t.research.upNext}</p>
           <button onClick={() => onNavigate(nextIndex)} style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
             background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)',
-            color: '#8fe8d0', fontSize: 13,
+            color: '#8fe8d0', fontSize: 'var(--fs-small)',
             letterSpacing: '0.01em', padding: '10px 18px', borderRadius: 999, cursor: 'pointer',
           }}>
             {t.research.areas[nextIndex].nextLabel} &rarr;
@@ -432,14 +432,14 @@ export const RESEARCH_AREAS = [
 export function ResearchSection() {
   const { t } = useLocale()
   return (
-    <section id="research" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
+    <section id="research" style={{ padding: '32px var(--sec-pad-x) 40px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.research.eyebrow}</p>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.research.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center' }}>{t.research.heading}</h2>
         </Reveal>
         <Reveal delay={1}>
-          <p style={{ color: 'var(--text)', fontSize: 17, marginBottom: 56, maxWidth: 560, textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
+          <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 56, maxWidth: 560, textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
             {t.research.subheading}
           </p>
         </Reveal>

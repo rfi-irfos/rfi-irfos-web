@@ -2690,7 +2690,7 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
         border: `1px solid ${active ? (accent as string) : 'rgba(0,245,196,0.18)'}`,
         borderRadius: 7, padding: '11px 12px',
         color: active ? (accent as string) : 'var(--text3)',
-        fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
+        fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.08em',
         cursor: 'pointer', outline: 'none',
       }}>
         <span style={{ whiteSpace: 'nowrap' }}>{current ? current.label : placeholder}</span>
@@ -2716,7 +2716,7 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
                   onClick={() => { onSelect(o.value); onToggle(null) }}
                   style={{
                     padding: '8px 12px', borderRadius: 5, cursor: 'pointer',
-                    fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 700, letterSpacing: '0.06em',
+                    fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.06em',
                     color: sel ? (o.color || '#00f5c4') : 'var(--text2)',
                     background: sel ? 'rgba(0,245,196,0.10)' : 'transparent',
                   }}>
@@ -2812,7 +2812,7 @@ export function TrackRecordSection({
               so it sat right under the h1's own 12px marginBottom alone. */}
           {/* White + 17px to match Data Solutions' .data-lede exactly (live
               feedback 2026-09-13) - was var(--text2) grey at 15px. */}
-          <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 12, maxWidth: 720, fontSize: 17, lineHeight: 1.6 }}>
+          <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 12, maxWidth: 720, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)' }}>
             {t.trackRecord.paragraph}
           </p>
           {/* Bridge sentence to the Security offer - live audit 2026-09-13
@@ -2820,11 +2820,11 @@ export function TrackRecordSection({
               strongest trust asset on the site but sat disconnected from
               anything purchasable, reading as unsolicited research output
               instead of a sample of what a paying Security client receives. */}
-          <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 720, fontSize: 15, lineHeight: 1.6 }}>
+          <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 720, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)' }}>
             {t.trackRecord.securityBridgeLead}{' '}
             {/* Real <a href> (was <button onClick>) - 2026-09-25 crawlability sweep: a
                 button carries no href a crawler can follow, unlike an anchor. */}
-            <a href="/access/" onClick={e => { e.preventDefault(); onNavigateAccess() }} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent-text)', fontWeight: 700, fontSize: 15, cursor: 'pointer', textDecoration: 'underline' }}>
+            <a href="/access/" onClick={e => { e.preventDefault(); onNavigateAccess() }} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', textDecoration: 'underline' }}>
               {t.trackRecord.securityBridgeCta}
             </a>
           </p>
@@ -2859,9 +2859,9 @@ export function TrackRecordSection({
                   ? 'inset 0 1px 0 rgba(255,255,255,0.07), inset 0 0 40px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.5)'
                   : '0 8px 32px rgba(0,0,0,0.35)',
               }}>
-                <div style={{ fontSize: 40, fontWeight: 900, color: 'var(--accent-text)', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: 12 }}><CountUp value={s.n} /></div>
-                <div style={{ fontSize: 12, color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.14em' }}>{s.label}</div>
-                <div style={{ fontSize: 10, color: 'var(--text2)', fontWeight: 500, marginTop: 6, lineHeight: 1.4 }}>{s.sub}</div>
+                <div style={{ fontSize: 'var(--fs-h2)', fontWeight: 900, color: 'var(--accent-text)', lineHeight: 'var(--lh-tight)', letterSpacing: '-0.02em', marginBottom: 12 }}><CountUp value={s.n} /></div>
+                <div style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.14em' }}>{s.label}</div>
+                <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', fontWeight: 400, marginTop: 6, lineHeight: 'var(--lh-body)' }}>{s.sub}</div>
               </div>
             </Reveal>
           ))}
@@ -2889,7 +2889,7 @@ export function TrackRecordSection({
                 background: 'rgba(0,245,196,0.04)',
                 border: searchQuery ? '1px solid rgba(0,245,196,0.55)' : '1px solid rgba(0,245,196,0.18)',
                 borderRadius: 7, padding: '13px 38px 13px 46px',
-                color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 13,
+                color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 'var(--fs-small)',
                 outline: 'none', transition: 'border-color 0.15s',
               }}
               onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)' }}
@@ -2898,7 +2898,7 @@ export function TrackRecordSection({
             {searchQuery && (
               <button onClick={() => setSearchQuery('')} aria-label={t.trackRecord.clearSearchAriaLabel} style={{
                 position: 'absolute', right: 6, top: '50%', transform: 'translateY(-50%)',
-                background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)', padding: 9, lineHeight: 0,
+                background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)', padding: 9, lineHeight: 'var(--lh-tight)',
               }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
@@ -2956,7 +2956,7 @@ export function TrackRecordSection({
           ).length
           const sortLabel = t.trackRecord.resultsSummary.sortLabel
           return (
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: n > 0 ? TEAL : '#f87171', marginBottom: 10, letterSpacing: '0.06em' }}>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: n > 0 ? TEAL : '#f87171', marginBottom: 10, letterSpacing: '0.06em' }}>
               {n > 0 ? t.trackRecord.resultsSummary.matches(n, AUDIT_HIGHLIGHTS.length) : t.trackRecord.resultsSummary.noMatches}
               {searchQuery.trim() ? t.trackRecord.resultsSummary.forQuery(searchQuery) : ''}
               {sortBy !== 'default' ? t.trackRecord.resultsSummary.sortedBy(sortLabel[sortBy] ?? sortBy) : ''}
@@ -2965,10 +2965,10 @@ export function TrackRecordSection({
         })()}
 
         {focusTargets && onShowFullLedger && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', marginBottom: 12, fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: '0.06em', color: TEAL }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', marginBottom: 12, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', letterSpacing: '0.06em', color: TEAL }}>
             <span>{t.trackRecord.focusBanner(focusTargets.join(', '))}</span>
             <button type="button" onClick={onShowFullLedger}
-              style={{ background: 'transparent', border: '1px solid rgba(0,245,196,0.45)', color: TEAL, borderRadius: 6, padding: '6px 12px', cursor: 'pointer', fontFamily: 'inherit', fontSize: 11, letterSpacing: '0.06em' }}>
+              style={{ background: 'transparent', border: '1px solid rgba(0,245,196,0.45)', color: TEAL, borderRadius: 6, padding: '6px 12px', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'var(--fs-label)', letterSpacing: '0.06em' }}>
               {t.trackRecord.showFullLedger}
             </button>
           </div>
@@ -3005,7 +3005,7 @@ export function TrackRecordSection({
             padding: '7px 14px',
             position: 'sticky', top: 0, zIndex: 2,
             background: 'var(--bg)', borderBottom: '1px solid var(--border2)',
-            fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 700,
+            fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700,
             color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.1em',
           }}>
             {/* overflow/ellipsis stays on as a defensive floor even though the
@@ -3106,18 +3106,18 @@ export function TrackRecordSection({
                   </div>
                   {/* Organisation */}
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: 12, color: 'var(--text)', lineHeight: 1.4 }}>{a.target}</div>
-                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: 'var(--text3)', textTransform: 'uppercase', marginTop: 2 }}>{a.market}</div>
+                    <div style={{ fontWeight: 700, fontSize: 'var(--fs-small)', color: 'var(--text)', lineHeight: 'var(--lh-body)' }}>{a.target}</div>
+                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', textTransform: 'uppercase', marginTop: 2 }}>{a.market}</div>
                   </div>
 
                   {/* Notified */}
                   {!mobile && (
                     <div style={{ paddingTop: 1 }}>
-                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: meta?.notified ? 'var(--text2)' : 'var(--text4)' }}>
+                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: meta?.notified ? 'var(--text2)' : 'var(--text4)' }}>
                         {meta?.notified ?? '-'}
                       </div>
                       {notifiedTs && (
-                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: 'var(--accent-text)', marginTop: 2, letterSpacing: '0.04em' }}>
+                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--accent-text)', marginTop: 2, letterSpacing: '0.04em' }}>
                           {eDays === 0 ? t.trackRecord.row.today : t.trackRecord.row.daysAgo(eDays)}
                         </div>
                       )}
@@ -3126,13 +3126,13 @@ export function TrackRecordSection({
 
                   {/* Status */}
                   <div style={{ paddingTop: 1, textAlign: 'center' }}>
-                    <span className="site-status-badge" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3, border: '1px solid var(--border)', background: sm.bg, color: sm.color, letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>{sm.label}</span>
+                    <span className="site-status-badge" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700, padding: '2px 6px', borderRadius: 3, border: '1px solid var(--border)', background: sm.bg, color: sm.color, letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>{sm.label}</span>
                   </div>
 
                   {/* SEV */}
                   {!mobile && (
                     <div style={{ paddingTop: 1, textAlign: 'center' }}>
-                      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 700, color: SEV_COLOR[a.sev] ?? TEAL }}>{a.sev}</span>
+                      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700, color: SEV_COLOR[a.sev] ?? TEAL }}>{a.sev}</span>
                     </div>
                   )}
 
@@ -3150,20 +3150,20 @@ export function TrackRecordSection({
                         style={{ cursor: 'pointer', border: '1px solid var(--border)', borderRadius: 8, padding: '6px 8px', background: 'var(--surface-sunken)', boxSizing: 'border-box', overflow: 'hidden', width: '100%' }}>
                         {meaning && (
                           <div className="intel-meaning" style={{
-                            color: 'var(--accent-text)', fontSize: 11, fontWeight: 600, lineHeight: 1.5,
+                            color: 'var(--accent-text)', fontSize: 'var(--fs-label)', fontWeight: 700, lineHeight: 'var(--lh-body)',
                             display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
                             marginBottom: 3,
                           }}>
                             {meaning}
                           </div>
                         )}
-                        <div className="intel-technical" style={{ color: 'var(--text3)', fontSize: 10, lineHeight: 1.5,
+                        <div className="intel-technical" style={{ color: 'var(--text3)', fontSize: 'var(--fs-label)', lineHeight: 'var(--lh-body)',
                           fontFamily: "'JetBrains Mono', monospace",
                           display: '-webkit-box', WebkitLineClamp: meaning ? 1 : 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
                         }}>
                           {technical}
                         </div>
-                        <div className="intel-hint" style={{ fontSize: 9, color: 'var(--text2)', marginTop: 2 }}>{t.trackRecord.table.intelClickHint}</div>
+                        <div className="intel-hint" style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginTop: 2 }}>{t.trackRecord.table.intelClickHint}</div>
                       </div>
                     )
                   })()}
@@ -3177,12 +3177,12 @@ export function TrackRecordSection({
                     return (
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3, paddingTop: 1, minWidth: 0, overflow: 'hidden' }}>
                         {statutes.length === 0 ? (
-                          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)' }}>-</span>
+                          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text4)' }}>-</span>
                         ) : (
                           <>
                             {shown.map((s, si) => (
                               <span key={si} title={`${s.note} (${s.source})`} style={{
-                                fontFamily: "'JetBrains Mono', monospace", fontSize: 8, fontWeight: 700, padding: '2px 5px',
+                                fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700, padding: '2px 5px',
                                 borderRadius: 3, letterSpacing: '0.04em', whiteSpace: 'nowrap', cursor: 'default',
                                 ...{ background: 'transparent', color: 'var(--text3)', border: '1px solid rgba(150,150,150,0.35)' },
                               }}>
@@ -3193,7 +3193,7 @@ export function TrackRecordSection({
                               <span
                                 title={rest.map(s => `${s.article ? `${s.law} ${s.article}` : s.law}: ${s.note} (${s.source})`).join('\n')}
                                 style={{
-                                  fontFamily: "'JetBrains Mono', monospace", fontSize: 8, fontWeight: 700, padding: '2px 5px',
+                                  fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700, padding: '2px 5px',
                                   borderRadius: 3, letterSpacing: '0.04em', whiteSpace: 'nowrap', cursor: 'default',
                                   background: 'rgba(255,255,255,0.06)', color: 'var(--text3)', border: '1px solid rgba(150,150,150,0.25)',
                                 }}>
@@ -3210,7 +3210,7 @@ export function TrackRecordSection({
                   {!mobile && (
                     <div style={{ paddingTop: 1, textAlign: 'center' }}>
                       <span style={{
-                        fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                        fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                         background: 'var(--surface-sunken)', color: 'var(--text)', letterSpacing: '0.07em',
                       }}>{resolved ? t.trackRecord.row.yes : t.trackRecord.row.no}</span>
                     </div>
@@ -3218,10 +3218,10 @@ export function TrackRecordSection({
 
                   {/* Countdown */}
                   <div style={{ paddingTop: 1 }}>
-                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: mobile ? 12 : 16, fontWeight: 900, color: resolved ? '#00f5c4' : cdColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
+                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: mobile ? 'var(--fs-small)' : 'var(--fs-body)', fontWeight: 900, color: resolved ? '#00f5c4' : cdColor, lineHeight: 'var(--lh-tight)', letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
                       {resolved ? t.trackRecord.row.closed : cdStr}
                     </div>
-                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
+                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
                       {t.trackRecord.row.disclosureLabel}
                     </div>
                   </div>
@@ -3229,10 +3229,10 @@ export function TrackRecordSection({
                   {/* Elapsed */}
                   {!mobile && (
                     <div style={{ paddingTop: 1 }}>
-                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 900, color: eColor, lineHeight: 1.3, letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
+                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-body)', fontWeight: 900, color: eColor, lineHeight: 'var(--lh-tight)', letterSpacing: '0.02em', fontVariantNumeric: 'tabular-nums' }}>
                         {notifiedTs ? eStr : '-'}
                       </div>
-                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
+                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text4)', marginTop: 2, letterSpacing: '0.06em' }}>
                         {resolved ? t.trackRecord.row.respondedLabel : t.trackRecord.row.elapsedLabel}
                       </div>
                     </div>
@@ -3253,14 +3253,14 @@ export function TrackRecordSection({
                         <a href={`/evidence/${reportSlug(meta.reportUrl)}/`} onClick={e => { e.preventDefault(); setReportModal(meta.reportUrl!) }} style={{
                           background: 'rgba(0,245,196,0.10)', border: '1px solid rgba(0,245,196,0.3)',
                           borderRadius: 4, padding: '4px 8px', cursor: 'pointer', display: 'flex',
-                          alignItems: 'center', gap: 4, color: 'var(--accent-text)', fontSize: 10, fontFamily: "'JetBrains Mono', monospace",
+                          alignItems: 'center', gap: 4, color: 'var(--accent-text)', fontSize: 'var(--fs-label)', fontFamily: "'JetBrains Mono', monospace",
                           fontWeight: 700, letterSpacing: '0.06em', transition: 'background 0.15s', textDecoration: 'none',
                         }}>
                           <svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="M1 1h5l3 3v7H1V1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M6 1v3h3" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M3 6h4M3 8h3" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>
                           {t.trackRecord.row.pdf}
                         </a>
                       ) : (
-                        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)' }}>-</span>
+                        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text4)' }}>-</span>
                       )}
                     </div>
                   )}
@@ -3272,7 +3272,7 @@ export function TrackRecordSection({
         </div>
         </div>
 
-        <p style={{ marginTop: 12, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--text4)' }}>
+        <p style={{ marginTop: 12, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text4)' }}>
         {t.trackRecord.footerNote}<a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
         </p>
       </div>

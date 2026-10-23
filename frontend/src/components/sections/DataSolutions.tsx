@@ -141,11 +141,11 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
           auch noch einbaun das konsistent isch") - this page was the one
           hero-first section with no cross-link back to what's purchasable. */}
       <Reveal delay={1}>
-        <p style={{ color: 'var(--text2)', marginTop: 12, fontSize: 15, lineHeight: 1.6 }}>
+        <p style={{ color: 'var(--text2)', marginTop: 12, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)' }}>
           {c.bridgeLead}{' '}
           {/* Real <a href> (was <button onClick>) - 2026-09-25 crawlability sweep: a
               button carries no href a crawler can follow, unlike an anchor. */}
-          <a href="/access/" onClick={e => { e.preventDefault(); onNavigateAccessData() }} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent-text)', fontWeight: 700, fontSize: 15, cursor: 'pointer', textDecoration: 'underline' }}>
+          <a href="/access/" onClick={e => { e.preventDefault(); onNavigateAccessData() }} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', textDecoration: 'underline' }}>
             {c.bridgeCta}
           </a>
         </p>

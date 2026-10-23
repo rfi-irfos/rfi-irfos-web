@@ -59,7 +59,7 @@ function CustomerJourneyTimeline() {
               background: i === current ? TEAL : 'rgba(255,255,255,0.06)',
               border: `1px solid ${i === current ? TEAL : 'var(--border)'}`,
               color: i === current ? '#070711' : 'var(--text2)',
-              fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: 12.5,
+              fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, fontSize: 'var(--fs-small)',
               marginBottom: mobile ? 0 : 14, transition: 'background 0.4s, border-color 0.4s, color 0.4s',
             }}>{i + 1}</div>
             {/* Active stage reads noticeably bolder/brighter than the rest (live
@@ -70,7 +70,7 @@ function CustomerJourneyTimeline() {
                 stage column and every paragraph beneath it twenty times a minute. Fixed
                 size with a compositor-only scale is visually equivalent and free. */}
             <div style={{
-              fontWeight: 900, fontSize: 19,
+              fontWeight: 900, fontSize: 'var(--fs-lead)',
               transform: i === current ? 'scale(1)' : 'scale(0.84)',
               transformOrigin: 'left center',
               color: i === current ? 'var(--text)' : 'var(--text2)',
@@ -80,7 +80,7 @@ function CustomerJourneyTimeline() {
             {/* Split into two shorter paragraphs instead of one dense block, and
                 bumped up a size, per live feedback - easier to scan at a glance. */}
             {s.body.split('\n\n').map((para, pi) => (
-              <p key={pi} style={{ color: i === current ? 'var(--text)' : 'var(--text3)', fontSize: 14, lineHeight: 1.8, margin: pi === 0 ? '0 0 10px' : 0, transition: 'color 0.4s' }}>{para}</p>
+              <p key={pi} style={{ color: i === current ? 'var(--text)' : 'var(--text3)', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: pi === 0 ? '0 0 10px' : 0, transition: 'color 0.4s' }}>{para}</p>
             ))}
           </div>
         </Reveal>
@@ -100,7 +100,7 @@ export function JourneySection() {
     <section id="journey" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.journey.eyebrow}</p>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.journey.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12 }}>{t.journey.heading}</h2>
         </Reveal>
         <Reveal from="right" delay={1}>
