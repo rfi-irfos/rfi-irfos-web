@@ -214,8 +214,8 @@ function viewForSection(section?: string | null): PublicView {
 // behaves - it only changes what a non-JS crawler parses out of the raw href.
 const NAV_HREFS = [
   { key: 'squad' as const, href: '/squad/' },
-  { key: 'dataSolutions' as const, href: '/data-solutions/' },
   { key: 'worldModel' as const, href: '/world-model/' },
+  { key: 'dataSolutions' as const, href: '/data-solutions/' },
   { key: 'trackRecord' as const, href: '/evidence/' },
   { key: 'pricing' as const, href: '/access/' },
 ]
