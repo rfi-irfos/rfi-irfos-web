@@ -56,7 +56,7 @@ export function CoopPartnersSection({
             {t.coopPartners.subheading}
           </p>
         </Reveal>
-        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 14, maxWidth: 820, margin: '0 auto', overflow: 'hidden', background: 'linear-gradient(165deg, var(--silver-bg-a), var(--silver-bg-b))', border: '1px solid var(--silver-line)' }}>
+        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 14, maxWidth: 820, margin: '0 auto', overflow: 'hidden', zoom: 0.95, background: 'linear-gradient(165deg, var(--silver-bg-a), var(--silver-bg-b))', border: '1px solid var(--silver-line)' }}>
           <Reveal from="left" dist={60} delay={1}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', padding: '24px 28px' }}>
               <div style={{ flex: '1 1 240px', minWidth: 0 }}>
@@ -72,7 +72,7 @@ export function CoopPartnersSection({
                  style={{
                    display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 10, fontWeight: 700,
                    letterSpacing: '0.06em', textTransform: 'uppercase', padding: '3px 9px', borderRadius: 999,
-                   border: '1px solid var(--silver-line)', color: 'var(--silver-text)', textDecoration: 'none', whiteSpace: 'nowrap',
+                   border: '1px solid color-mix(in srgb, var(--accent) 55%, transparent)', background: 'color-mix(in srgb, var(--accent) 14%, transparent)', color: 'var(--accent)', textDecoration: 'none', whiteSpace: 'nowrap',
                  }}>
                 <GroupIcon kind="website" size={11} />
                 Website
@@ -82,7 +82,7 @@ export function CoopPartnersSection({
           <Reveal from="bottom" dist={40} delay={2}>
             <div style={{ padding: '24px 28px', borderTop: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: 14 }}>
               {t.coopPartners.laura.paragraphs.map((para, i) => (
-                <p key={i} style={{ margin: 0, color: 'var(--text)', lineHeight: 1.65, fontSize: i === 0 ? 15.5 : 14.5, fontWeight: 400, opacity: i === 0 ? 1 : 0.88 }}>{para}</p>
+                <p key={i} style={{ margin: 0, color: 'var(--text)', lineHeight: 1.65, fontSize: 14.5, fontWeight: 400 }}>{para}</p>
               ))}
             </div>
           </Reveal>
@@ -93,19 +93,24 @@ export function CoopPartnersSection({
             }}>
               {GROUPS.map(g => (
                 <div key={g.title} style={{
-                  padding: '20px 18px', textAlign: 'center', borderRadius: 10,
-                  background: 'linear-gradient(160deg, var(--silver-tile-a), var(--silver-tile-b) 55%, var(--silver-tile-a))',
+                  padding: '26px 18px 22px', textAlign: 'center', borderRadius: 16, position: 'relative', overflow: 'hidden',
+                  // Glass card: a faint glow in the icon's own colour on top, a silver sheen below,
+                  // a bright top edge and blur so it reads as frosted glass, not a flat box.
+                  background: `radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--ic-${g.ic}) 6%, transparent), transparent 62%), linear-gradient(160deg, var(--silver-tile-a), var(--silver-tile-b) 55%, var(--silver-tile-a))`,
                   border: '1px solid var(--silver-line)',
-                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 6px 16px rgba(0,0,0,0.25)',
+                  backdropFilter: 'blur(16px) saturate(1.4)', WebkitBackdropFilter: 'blur(16px) saturate(1.4)',
+                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(255,255,255,0.05), 0 6px 16px rgba(0,0,0,0.28)',
                 }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                    <span style={{ display: 'inline-flex', color: `var(--ic-${g.ic})` }}><GroupIcon kind={g.kind} /></span>
-                    <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.16em', margin: 0, color: 'var(--silver-text)' }}>{g.title}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                    <span className="rfi-glass-icon rfi-icon-pop" style={{ width: 40, height: 40, borderRadius: 12, ['--ib' as string]: `var(--ib-${g.ic})` }}>
+                      <GroupIcon kind={g.kind} size={17} />
+                    </span>
+                    <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.16em', margin: 0, color: 'var(--text)' }}>{g.title}</p>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
                     {g.links.map(l => (
                       <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-                         style={{ fontSize: 12.5, color: 'var(--text)', textDecoration: 'none' }}>
+                         style={{ fontSize: 13, color: 'var(--text)', textDecoration: 'none' }}>
                         {l.label}{'onRequest' in l && l.onRequest ? ` ${t.coopPartners.onRequest}` : ''}
                       </a>
                     ))}

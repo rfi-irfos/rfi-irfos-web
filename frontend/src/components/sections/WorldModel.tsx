@@ -432,41 +432,44 @@ function SparkBars() {
   const h = [5, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14, 17, 16, 19]
   const w = 100 / h.length
   return <svg viewBox="0 0 100 24" preserveAspectRatio="none" style={{ width: '100%', height: 24 }}>
-    {h.map((v, i) => <rect key={i} x={i * w + 0.6} y={24 - v} width={w - 1.2} height={v} rx="0.6" fill="var(--accent)" opacity={0.35 + (i / h.length) * 0.45} />)}
+    {h.map((v, i) => <rect key={i} x={i * w + 0.6} y={24 - v} width={w - 1.2} height={v} rx="0.6" fill="currentColor" opacity={0.35 + (i / h.length) * 0.45} />)}
   </svg>
 }
 function SparkPulse() {
   const pts = [[0, 14], [7, 17], [14, 10], [21, 19], [28, 8], [35, 15], [42, 12], [50, 20], [58, 9], [65, 16], [72, 11], [80, 18], [88, 13], [100, 15]]
   return <svg viewBox="0 0 100 24" preserveAspectRatio="none" style={{ width: '100%', height: 24 }}>
-    <polyline points={pts.map(p => p.join(',')).join(' ')} fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" opacity={0.85} />
+    <polyline points={pts.map(p => p.join(',')).join(' ')} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" opacity={0.85} />
   </svg>
 }
 const NET_NODES = [[8, 18], [24, 6], [40, 14], [58, 5], [72, 16], [88, 9], [50, 20]]
 const NET_EDGES = [[0, 1], [0, 2], [1, 3], [2, 4], [3, 5], [2, 6], [4, 5], [6, 1]]
 function SparkNetwork() {
   return <svg viewBox="0 0 100 24" preserveAspectRatio="none" style={{ width: '100%', height: 24 }}>
-    {NET_EDGES.map(([a, b], i) => <line key={i} x1={NET_NODES[a][0]} y1={NET_NODES[a][1]} x2={NET_NODES[b][0]} y2={NET_NODES[b][1]} stroke="var(--accent)" strokeWidth="0.7" opacity="0.4" />)}
-    {NET_NODES.map(([x, y], i) => <circle key={i} cx={x} cy={y} r={i === 6 ? 2.4 : 1.6} fill="var(--accent)" opacity={i === 6 ? 0.95 : 0.7} />)}
+    {NET_EDGES.map(([a, b], i) => <line key={i} x1={NET_NODES[a][0]} y1={NET_NODES[a][1]} x2={NET_NODES[b][0]} y2={NET_NODES[b][1]} stroke="currentColor" strokeWidth="0.7" opacity="0.4" />)}
+    {NET_NODES.map(([x, y], i) => <circle key={i} cx={x} cy={y} r={i === 6 ? 2.4 : 1.6} fill="currentColor" opacity={i === 6 ? 0.95 : 0.7} />)}
   </svg>
 }
 function SparkRidge() {
   return <svg viewBox="0 0 100 24" preserveAspectRatio="none" style={{ width: '100%', height: 24 }}>
     <path d="M0,18 C10,16 14,8 24,9 C34,10 38,19 48,17 C58,15 62,4 72,6 C82,8 86,17 100,13"
-      fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="round" opacity="0.85" />
+      fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" opacity="0.85" />
   </svg>
 }
 function SparkIconRow() {
   const icons = [IconActivity, IconShip, IconCloudRain, IconTrain, IconBroadcast]
   return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', height: 24 }}>
-    {icons.map((I, i) => <I key={i} size={14} stroke={1.7} style={{ color: 'var(--accent)', opacity: 0.55 + (i % 2) * 0.25 }} />)}
+    {icons.map((I, i) => <I key={i} size={14} stroke={1.7} style={{ opacity: 0.55 + (i % 2) * 0.25 }} />)}
   </div>
 }
 function SparkConstellation() {
   const dots = [[6, 16, 1.8], [16, 8, 1.2], [28, 18, 2.2], [38, 6, 1], [48, 14, 1.6], [58, 20, 1.2], [68, 9, 2], [78, 17, 1.3], [88, 5, 1.7], [96, 15, 1.1]]
   return <svg viewBox="0 0 100 24" preserveAspectRatio="none" style={{ width: '100%', height: 24 }}>
-    {dots.map(([x, y, r], i) => <circle key={i} cx={x} cy={y} r={r} fill="var(--accent)" opacity={0.35 + (r / 2.2) * 0.5} />)}
+    {dots.map(([x, y, r], i) => <circle key={i} cx={x} cy={y} r={r} fill="currentColor" opacity={0.35 + (r / 2.2) * 0.5} />)}
   </svg>
 }
+
+// One soft colour per KPI visualizer (tokens --ic-N, index.css), so the six cards read as six different things.
+const STAT_IC = [1, 3, 2, 4, 5, 6]
 
 function StatsRow() {
   const { t } = useLocale()
@@ -484,7 +487,7 @@ function StatsRow() {
               <span className="wm-stat-label">{s[key].label}</span>
               <span className="wm-stat-value">{s[key].value}</span>
               <span className="wm-stat-sub">{s[key].sub}</span>
-              <span className="wm-stat-accent"><Spark /></span>
+              <span className="wm-stat-accent" style={{ color: `var(--ic-${STAT_IC[i]})` }}><Spark /></span>
             </div>
           </Reveal>
         ))}
@@ -530,6 +533,7 @@ function ComparisonBlock() {
   )
 }
 
+const USE_CASE_IB = [4, 1, 8, 2, 7, 5]
 const USE_CASE_ICONS = [IconAlertTriangle, IconRoute, IconChartLine, IconShieldLock, IconFlask, IconBuildingSkyscraper]
 
 function UseCasesGrid() {
@@ -547,7 +551,7 @@ function UseCasesGrid() {
             <Reveal key={card.title} dist={14} delay={(i % 3) + 1} style={{ height: '100%' }}>
               <article className="wm-card">
                 <div className="wm-usecase-head">
-                  <div className="wm-compare-icon"><Icon size={19} stroke={1.6} /></div>
+                  <div className="wm-compare-icon rfi-icon-pop" style={{ ['--ib' as string]: `var(--ib-${USE_CASE_IB[i]})` }}><Icon size={19} stroke={1.6} /></div>
                   <h3>{card.title}</h3>
                 </div>
                 <p>{card.body} {card.body2}</p>

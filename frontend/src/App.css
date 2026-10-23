@@ -698,7 +698,7 @@ button { cursor: pointer; font-family: inherit; }
 }
 .sq-spec-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .sq-spec-head h3 { margin: 0; font-size: 22px; font-weight: 900; flex: 1; }
-.sq-spec-desc { margin: 0 0 22px; color: var(--text); line-height: 1.6; font-size: 15px; }
+.sq-spec-desc { margin: 0 0 34px; color: var(--text); line-height: 1.6; font-size: 15px; }
 /* align-items: stretch (was start) - live feedback: the three columns sized to
    their own content, so Monitors/Detects/You get ended up different heights
    per agent (line-wrap differences), and the Request Access button below
@@ -714,6 +714,11 @@ button { cursor: pointer; font-family: inherit; }
    .sq-tag--column span inside it (live feedback: wrap MONITORS/DETECTS/YOU GET
    in a silver pill like the agent tags, for the same visual language). */
 .sq-spec-panel h4 { margin: 0 0 20px; text-align: center; }
+/* 2026-10-23: the pill sits ABOVE its card as its own heading, the card wraps only the list
+   (live feedback: "the cards wrap the text and the pills stand alone"). */
+.sq-spec-col { display: flex; flex-direction: column; min-width: 0; }
+.sq-spec-col > h4 { margin: 0 0 20px; text-align: center; }
+.sq-spec-col > .sq-spec-panel { flex: 1; }
 /* The list grows to fill its panel and spreads its items across that height
    (live feedback 2026-09-07: "no empty spaces in those three tables"). All three
    panels are the same height via the grid's stretch, but the columns wrap to

@@ -12,8 +12,12 @@ import { useLocale } from '../../hooks/useLocale'
 // modal. rfi-icon-tile (index.css) adds a barely-there background tint on
 // hover, deliberately subtle - a nudge that the tile is clickable, not a
 // competing animation on top of the existing tilt/lift.
-function BentoTile({ icon, title, onOpen, from, delay }: {
-  icon: React.ReactNode; title: string; onOpen: () => void
+// One soft colour per research area (tokens --ic-N, index.css) so each topic reads as its own
+// thing instead of every icon being the same teal. Order is spread so neighbours differ.
+const AREA_IC = [3, 1, 2, 8, 7, 5, 4, 6]
+
+function BentoTile({ icon, ic, title, onOpen, from, delay }: {
+  icon: React.ReactNode; ic: number; title: string; onOpen: () => void
   from: 'left' | 'right'; delay: number
 }) {
   const tiltRef = useRef<HTMLButtonElement>(null)
@@ -26,9 +30,9 @@ function BentoTile({ icon, title, onOpen, from, delay }: {
       <motion.button ref={tiltRef} onClick={onOpen} className="rfi-hover-card rfi-icon-tile" style={{
         ...tilt,
         background: 'var(--glass-bg-solid)', border: '1px solid var(--border)',
-        borderRadius: 14, padding: '20px 14px', cursor: 'pointer',
+        borderRadius: 14, padding: '14px 12px', cursor: 'pointer',
         height: '100%', width: '100%', boxSizing: 'border-box', overflow: 'hidden',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, textAlign: 'center',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, textAlign: 'center',
         transition: 'box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 180ms cubic-bezier(0.4,0,0.2,1), background-color 180ms cubic-bezier(0.4,0,0.2,1)',
         font: 'inherit', color: 'inherit',
       }}
@@ -40,10 +44,10 @@ function BentoTile({ icon, title, onOpen, from, delay }: {
             edge along the top-left (light source) fading to a darker inset
             bottom-right, and a soft coloured drop shadow lifting the badge off
             the card. Same accent hue throughout, no new colour introduced. */}
-        <div className="rfi-glass-icon" style={{ width: 60, height: 60, borderRadius: 16 }}>
+        <div className="rfi-glass-icon rfi-icon-pop" style={{ width: 54, height: 54, borderRadius: 15, ['--ib' as string]: `var(--ib-${ic})`, ['--pop-sym' as string]: '#efe3c8', ['--pop-fill' as string]: '40%' }}>
           {icon}
         </div>
-        <div style={{ fontWeight: 800, fontSize: 15, lineHeight: 1.25, whiteSpace: 'pre-line' }}>{title}</div>
+        <div style={{ fontWeight: 800, fontSize: 14.5, lineHeight: 1.25, whiteSpace: 'pre-line' }}>{title}</div>
       </motion.button>
     </Reveal>
   )
@@ -100,7 +104,7 @@ function ResearchAreaModal({ index, closing, onClose, onNavigate }: {
             pull the button's generous tap padding back out to the panel edge
             without moving its optical position. */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, marginBottom: 18 }}>
-          <div style={{ lineHeight: 0 }}>{icon}</div>
+          <div style={{ lineHeight: 0, ['--tile-ic' as string]: `var(--ic-${AREA_IC[index]})` }}>{icon}</div>
           <button onClick={onClose} aria-label="Close" style={{
             background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer',
             fontSize: 20, lineHeight: 1, padding: 10, margin: '-10px -10px 0 0',
@@ -170,13 +174,13 @@ function ResearchAreasGrid() {
   }, [selected])
   return (
     <>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, maxWidth: 1060, margin: '0 auto' }}>
         {RESEARCH_AREAS.map((a, i) => {
           const area = t.research.areas[i]
           const col = i % RESEARCH_GRID_COLS
           const row = Math.floor(i / RESEARCH_GRID_COLS)
           return (
-            <BentoTile key={area.title} icon={a.icon} title={area.title} onOpen={() => setSelected(i)}
+            <BentoTile key={area.title} icon={a.icon} ic={AREA_IC[i]} title={area.title} onOpen={() => setSelected(i)}
               from={col < RESEARCH_GRID_COLS / 2 ? 'left' : 'right'} delay={row} />
           )
         })}
@@ -204,7 +208,7 @@ function ResearchAreasGrid() {
 
 const _I = ({ children }: { children: React.ReactNode }) => (
   <svg width="56" height="56" viewBox="0 0 32 32" fill="none"
-    stroke="currentColor" style={{ color: 'var(--accent)' }} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    stroke="currentColor" style={{ color: 'var(--tile-ic, var(--accent))' }} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     {children}
   </svg>
 )

@@ -96,7 +96,12 @@ h1, h2, h3, .rfi-display {
   --silver-tile-a: rgba(214,219,230,0.16);
   --silver-tile-b: rgba(214,219,230,0.05);
   /* One soft colour per icon, so each topic reads as its own thing instead of all teal. */
+  --icon-doc: #ffffff;   /* evidence box document icon */
+  /* Saturated tile backgrounds for the white-symbol "pop" icons (class .rfi-icon-pop). */
+  --ib-1: #4f8cf0;  --ib-2: #8f76f2;  --ib-3: #ee6a98;  --ib-4: #f0ad3c;
+  --ib-5: #f27a54;  --ib-6: #6a7cf0;  --ib-7: #cf74dc;  --ib-8: #36cdb2;
   --ic-1: #8fb7ea;  --ic-2: #b7a3ea;  --ic-3: #eba3bd;  --ic-4: #ecc98b;  --ic-5: #f0a68e;
+  --ic-6: #9fb0f0;  --ic-7: #e6a6e0;  --ic-8: #d9d68c;
 }
 
 /* Phone gutter. Theme-independent, so it deliberately sits outside the
@@ -150,7 +155,9 @@ h1, h2, h3, .rfi-display {
   --silver-text:  #4a5162;
   --silver-tile-a: rgba(255,255,255,0.75);
   --silver-tile-b: rgba(255,255,255,0.35);
+  --icon-doc: #1a1a20;
   --ic-1: #3f6fb5;  --ic-2: #6a4fb5;  --ic-3: #b5456f;  --ic-4: #a8741a;  --ic-5: #c0603f;
+  --ic-6: #4a5cc0;  --ic-7: #a04fa0;  --ic-8: #8a8a1c;
   --surface-sunken: var(--bg3);
 }
 
@@ -828,3 +835,15 @@ h1, h2, h3, .rfi-display {
 :root:not([data-theme="dark"]):not([data-theme="hc"]) .rfi-glass-icon::before {
   background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0));
 }
+
+/* "Pop" icon tile: coloured background (set --ib on the element), white symbol. */
+.rfi-icon-pop {
+  /* Symbol colour (--pop-sym, default white) on a tinted glass tile: the box and its fill carry the colour. */
+  --tile-ic: var(--pop-sym, rgba(255,255,255,0.94)) !important;
+  background: linear-gradient(150deg, color-mix(in srgb, var(--ib) var(--pop-fill, 52%), rgba(14,16,18,0.7)), color-mix(in srgb, var(--ib) calc(var(--pop-fill, 52%) / 2), rgba(14,16,18,0.7))) !important;
+  border: 1px solid color-mix(in srgb, var(--ib) 62%, transparent) !important;
+  color: var(--pop-sym, rgba(255,255,255,0.94)) !important;
+  box-shadow: none !important;
+}
+.rfi-icon-pop::before { opacity: 0.2; }
+.rfi-icon-pop svg { color: var(--pop-sym, rgba(255,255,255,0.94)) !important; filter: none; }

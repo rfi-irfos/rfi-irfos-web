@@ -129,7 +129,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
               <Reveal from="right" dist={64} delay={2} style={{ height: '100%' }}>
                 <div style={{ border: '1px solid var(--accent-text)', borderRadius: 16, padding: 20, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box', background: 'rgba(0,245,196,0.05)' }}>
                   <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 16 }}>
-                    <span className="rfi-glass-icon" style={{ ...tile, width: 48, height: 48 }}>
+                    <span className="rfi-glass-icon" style={{ ...tile, width: 48, height: 48, color: 'var(--icon-doc)' }}>
                       <Icon size={26}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="14" y2="17" /></Icon>
                     </span>
                     <div>
@@ -170,9 +170,6 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         {/* Evidence strip: the same three live figures as the ledger KPI row
             (AUDIT_HIGHLIGHTS + corpus-stats.json), never hand-typed numbers. */}
         <div style={{ maxWidth: 920, margin: '0 auto 40px', textAlign: 'center' }}>
-          <Reveal>
-            <h3 style={{ fontSize: 20, fontWeight: 700, color: 'var(--text)', marginBottom: 20 }}>{c.evidenceHeading}</h3>
-          </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 12, marginBottom: 14 }}>
             {kpis.map((k, i) => (
               <Reveal key={k.label} from={k.from} dist={56} delay={i}>

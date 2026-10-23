@@ -180,17 +180,23 @@ function SquadOverview({
                 </div>
                 <p className="sq-spec-desc">{content.description}</p>
                 <div className="sq-spec-stack">
-                  <div className="sq-spec-panel">
+                  <div className="sq-spec-col">
                     <h4><span className="sq-tag sq-tag--column">{s.overview.columns.monitors}</span></h4>
-                    <ul>{content.monitors.map(m => <li key={m}>{m}</li>)}</ul>
+                    <div className="sq-spec-panel">
+                      <ul>{content.monitors.map(m => <li key={m}>{m}</li>)}</ul>
+                    </div>
                   </div>
-                  <div className="sq-spec-panel">
+                  <div className="sq-spec-col">
                     <h4><span className="sq-tag sq-tag--column">{s.overview.columns.detects}</span></h4>
-                    <ul>{content.detects.map(d => <li key={d}>{d}</li>)}</ul>
+                    <div className="sq-spec-panel">
+                      <ul>{content.detects.map(d => <li key={d}>{d}</li>)}</ul>
+                    </div>
                   </div>
-                  <div className="sq-spec-panel">
+                  <div className="sq-spec-col">
                     <h4><span className="sq-tag sq-tag--column">{s.overview.columns.output}</span></h4>
-                    <ul>{content.output.map(o => <li key={o}>{o}</li>)}</ul>
+                    <div className="sq-spec-panel">
+                      <ul>{content.output.map(o => <li key={o}>{o}</li>)}</ul>
+                    </div>
                   </div>
                 </div>
               </motion.div>

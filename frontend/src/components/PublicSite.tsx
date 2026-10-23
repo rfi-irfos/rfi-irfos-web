@@ -1527,8 +1527,8 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         {view === 'home' && <>
           <HeroSection mobile={mobile} theme={theme} />
           <AppPrivacySection onNavigateEvidence={() => navigateTo('evidence')} />
-          <CoopPartnersSection mobile={mobile} />
           <ResearchSection />
+          <CoopPartnersSection mobile={mobile} />
           <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} />
         </>}
 
