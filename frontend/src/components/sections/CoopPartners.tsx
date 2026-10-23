@@ -13,18 +13,18 @@ function GroupIcon({ kind, size = 20 }: { kind: 'software' | 'research' | 'repos
   return <svg {...icon}><path d="M12 3 3.5 7.5v9L12 21l8.5-4.5v-9z" /><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9" /></svg>
 }
 const GROUPS = [
-  { title: 'Software', kind: 'software' as const, links: [
+  { title: 'Software', kind: 'software' as const, ic: 1, links: [
     { label: 'lauras-core v0.2.0', href: 'https://crates.io/crates/lauras-core' },
     { label: 'lauras-mcp v0.2.0', href: 'https://crates.io/crates/lauras-mcp' },
     { label: 'lauras-api v0.2.0', href: 'https://crates.io/crates/lauras-api' },
     { label: 'lauras-team v0.2.0', onRequest: true, href: 'https://crates.io/crates/lauras-team' },
   ] },
-  { title: 'Research (OSF)', kind: 'research' as const, links: [
+  { title: 'Research (OSF)', kind: 'research' as const, ic: 2, links: [
     { label: 'HC9ZB', href: 'https://doi.org/10.17605/OSF.IO/HC9ZB' },
     { label: 'QCVJB', href: 'https://doi.org/10.17605/OSF.IO/QCVJB' },
     { label: 'UXCJE', href: 'https://doi.org/10.17605/OSF.IO/UXCJE' },
   ] },
-  { title: 'Repositories', kind: 'repos' as const, links: [
+  { title: 'Repositories', kind: 'repos' as const, ic: 4, links: [
     'call-laura', 'lauras-agents', 'lauras-agents-public', 'coevolution-factory',
   ].map(r => ({ label: r, href: GH + r })) },
 ]
@@ -56,12 +56,12 @@ export function CoopPartnersSection({
             {t.coopPartners.subheading}
           </p>
         </Reveal>
-        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 14, maxWidth: 820, margin: '0 auto', overflow: 'hidden' }}>
+        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 14, maxWidth: 820, margin: '0 auto', overflow: 'hidden', background: 'linear-gradient(165deg, var(--silver-bg-a), var(--silver-bg-b))', border: '1px solid var(--silver-line)' }}>
           <Reveal from="left" dist={60} delay={1}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', padding: '24px 28px' }}>
               <div style={{ flex: '1 1 240px', minWidth: 0 }}>
                 <p style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', margin: 0 }}>Laura Serna Gaviria</p>
-                <p style={{ fontSize: 13, color: 'var(--accent-text)', marginTop: 3, fontWeight: 600 }}>{t.coopPartners.role}</p>
+                <p style={{ fontSize: 13, color: 'var(--silver-text)', marginTop: 3, fontWeight: 600 }}>{t.coopPartners.role}</p>
                 <a href="https://github.com/emergentinteractionlab" target="_blank" rel="noopener noreferrer"
                    style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 6, fontSize: 12, color: 'var(--text2)', textDecoration: 'none', fontFamily: "'JetBrains Mono', monospace" }}>
                   <GithubMark />
@@ -72,7 +72,7 @@ export function CoopPartnersSection({
                  style={{
                    display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 10, fontWeight: 700,
                    letterSpacing: '0.06em', textTransform: 'uppercase', padding: '3px 9px', borderRadius: 999,
-                   border: '1px solid rgba(16,185,129,.45)', color: '#10b981', textDecoration: 'none', whiteSpace: 'nowrap',
+                   border: '1px solid var(--silver-line)', color: 'var(--silver-text)', textDecoration: 'none', whiteSpace: 'nowrap',
                  }}>
                 <GroupIcon kind="website" size={11} />
                 Website
@@ -94,13 +94,13 @@ export function CoopPartnersSection({
               {GROUPS.map(g => (
                 <div key={g.title} style={{
                   padding: '20px 18px', textAlign: 'center', borderRadius: 10,
-                  background: 'linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.015) 55%, rgba(255,255,255,0.05))',
-                  border: '1px solid rgba(255,255,255,0.14)',
+                  background: 'linear-gradient(160deg, var(--silver-tile-a), var(--silver-tile-b) 55%, var(--silver-tile-a))',
+                  border: '1px solid var(--silver-line)',
                   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 6px 16px rgba(0,0,0,0.25)',
                 }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, color: 'var(--accent-text)', marginBottom: 12 }}>
-                    <GroupIcon kind={g.kind} />
-                    <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.16em', margin: 0 }}>{g.title}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                    <span style={{ display: 'inline-flex', color: `var(--ic-${g.ic})` }}><GroupIcon kind={g.kind} /></span>
+                    <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.16em', margin: 0, color: 'var(--silver-text)' }}>{g.title}</p>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
                     {g.links.map(l => (

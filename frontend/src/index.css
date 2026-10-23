@@ -86,6 +86,17 @@ h1, h2, h3, .rfi-display {
      rainbow of agent brand colours per icon read as noisy, one calm neutral
      highlight for all of them instead. */
   --icon-neutral: #ddd0ac;
+  /* Chapter colours (2026-10-23, live feedback: teal on grey everywhere "falls into one
+     big pot"). Violet marks "belongs together" frames, silver marks the partner chapter. */
+  --violet-line:  rgba(124,92,214,0.42);
+  --silver-bg-a:  #111218;   /* EIL card: near-black, not pure black */
+  --silver-bg-b:  #08090c;
+  --silver-line:  rgba(206,212,224,0.20);
+  --silver-text:  #c9ced9;
+  --silver-tile-a: rgba(214,219,230,0.16);
+  --silver-tile-b: rgba(214,219,230,0.05);
+  /* One soft colour per icon, so each topic reads as its own thing instead of all teal. */
+  --ic-1: #8fb7ea;  --ic-2: #b7a3ea;  --ic-3: #eba3bd;  --ic-4: #ecc98b;  --ic-5: #f0a68e;
 }
 
 /* Phone gutter. Theme-independent, so it deliberately sits outside the
@@ -132,6 +143,14 @@ h1, h2, h3, .rfi-display {
   --input-ph:     #999999;
   --timeline-line:rgba(0,0,0,0.12);
   --icon-neutral: #8a7548;   /* muted warm tone, readable on white (cream is too pale here) */
+  --violet-line:  rgba(91,58,176,0.40);
+  --silver-bg-a:  #eceef2;
+  --silver-bg-b:  #dcdfe6;
+  --silver-line:  rgba(70,78,96,0.22);
+  --silver-text:  #4a5162;
+  --silver-tile-a: rgba(255,255,255,0.75);
+  --silver-tile-b: rgba(255,255,255,0.35);
+  --ic-1: #3f6fb5;  --ic-2: #6a4fb5;  --ic-3: #b5456f;  --ic-4: #a8741a;  --ic-5: #c0603f;
   --surface-sunken: var(--bg3);
 }
 

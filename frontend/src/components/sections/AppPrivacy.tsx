@@ -79,7 +79,9 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
           </div>
         </Reveal>
 
-        <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 350px', gap: stacked ? 28 : 16, maxWidth: 1320, margin: '0 auto 56px' }}>
+        {/* Thin violet frame around process card + Free Check widget so the two read as one unit. */}
+        <div style={{ border: '1px solid var(--violet-line)', borderRadius: 26, padding: phone ? 8 : 12, maxWidth: 1320, margin: '0 auto 56px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 350px', gap: stacked ? 28 : 16 }}>
           {/* Left: ONE framed card holding process, scope and evidence (frame static, cells reveal).
               position+zIndex keeps this card painted above the Free Check widget's turquoise
               glow on its right (live feedback 2026-10-14: the glow "overshadows" this card where
@@ -110,12 +112,12 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
             </div>
 
             <div style={{ borderTop: '1px solid var(--border)', paddingTop: 22, display: 'grid', gridTemplateColumns: phone ? '1fr' : 'minmax(0, 1.15fr) minmax(0, 1fr)', gap: 24 }}>
-              <div>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <p style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text3)', marginBottom: 14 }}>{c.scopeLabel}</p>
                 {c.scope.map((row, i) => (
-                  <Reveal key={row.title} from="left" dist={64} delay={i + 1}>
-                    <div style={{ display: 'flex', gap: 14, padding: '10px 0', borderBottom: i < c.scope.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                      <span className="rfi-glass-icon" style={tile}>{SCOPE_ICONS[i]}</span>
+                  <Reveal key={row.title} from="left" dist={64} delay={i + 1} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', flex: 1, gap: 14, padding: '10px 0', borderBottom: i < c.scope.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                      <span className="rfi-glass-icon" style={{ ...tile, color: `var(--ic-${i + 1})`, borderColor: `color-mix(in srgb, var(--ic-${i + 1}) 38%, transparent)` }}>{SCOPE_ICONS[i]}</span>
                       <div style={{ minWidth: 0 }}>
                         <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--text)' }}>{row.title}</div>
                         <div style={{ fontSize: 12.5, lineHeight: 1.5, color: 'var(--text2)', marginTop: 2 }}>{row.text}</div>
@@ -162,6 +164,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
               <InitialReviewFlow variant="embedded" />
             </Reveal>
           </div>
+        </div>
         </div>
 
         {/* Evidence strip: the same three live figures as the ledger KPI row
