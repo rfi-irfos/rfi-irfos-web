@@ -169,7 +169,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
 
         {/* Evidence strip: the same three live figures as the ledger KPI row
             (AUDIT_HIGHLIGHTS + corpus-stats.json), never hand-typed numbers. */}
-        <div style={{ maxWidth: 920, margin: '0 auto 8px', textAlign: 'center' }}>
+        <div style={{ maxWidth: 920, margin: '0 auto 40px', textAlign: 'center' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 12, marginBottom: 14 }}>
             {kpis.map((k, i) => (
               <Reveal key={k.label} from={k.from} dist={56} delay={i}>
