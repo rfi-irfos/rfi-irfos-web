@@ -111,6 +111,11 @@ export const HERO_IMAGES = [
   ]),
 ]
 
+// Homepage opener (2026-10-23, live feedback: the first frame was too overwhelming):
+// a whitebox shot with readable words instead of numbers/years leads the rotation.
+// Built separately from HERO_IMAGES so WorldModel.tsx's panel keeps its own order.
+const HOME_HERO_IMAGES = [heroDingirEmbedDecided, ...HERO_IMAGES.filter(src => src !== heroDingirEmbedDecided)]
+
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 
 // Gates the WebGL hero background: skipped outright under prefers-reduced-motion,
@@ -280,7 +285,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           -2, and behind the tint gradient above it (the section's own
           `background`, which paints on top of z-index -2/-1 children per
           normal stacking order). */}
-      <HeroSlideshow images={HERO_IMAGES} />
+      <HeroSlideshow images={HOME_HERO_IMAGES} />
       <HeroBackground theme={theme} />
       {/* Stays English in both locales (live feedback) - "Rethink the Obvious."
           is the site's signature line/wordmark-adjacent phrase, not translated
