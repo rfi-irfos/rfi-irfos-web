@@ -20,6 +20,8 @@ import { SubmitSection, type TipForm } from './sections/Submit'
 import { ZONE_ORDER, ZONE_LABELS, SYSTEMS } from '../content/systems'
 import { SystemCardModal } from './sections/SystemCardModal'
 import { RFI_REPOS, SIMEON_REPOS, CRATES, CRATES_IO_PROFILE } from '../content/repos'
+import reportPackages from '../content/reportPackages.json'
+import { reportSeo } from '../lib/reportSeo'
 import { upsertJsonLd, breadcrumbJsonLd, reportBreadcrumbJsonLd, reportArticleJsonLd } from '../lib/structuredData'
 
 // Footer's overflow repo/crate directory (2026-08-15) is rendered as literal
@@ -462,8 +464,10 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     const meta = REPORT_META_BY_SLUG[initialReportSlug]
     if (meta) {
       const names = meta.targets.join(', ')
-      const title = `${names} — Disclosure Report — RFI-IRFOS`
-      const description = `RFI-IRFOS GDPR/security disclosure report for ${names}.${meta.disclosure ? ` Disclosed ${meta.disclosure}.` : ''}${meta.resolved ? ' Resolved.' : ''}`
+      // Package IDs + the 'half' experiment split live in lib/reportSeo.ts (see the comment there).
+      const { title, description } = reportSeo(initialReportSlug, names, {
+        disclosure: meta.disclosure, resolved: meta.resolved, packages: reportPackages,
+      })
       document.title = title
       document.querySelector('meta[name="description"]')?.setAttribute('content', description)
       document.querySelector('meta[property="og:title"]')?.setAttribute('content', title)

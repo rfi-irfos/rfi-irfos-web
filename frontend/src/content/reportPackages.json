@@ -1,0 +1,1270 @@
+{
+ "aboutyou": [
+  {
+   "app": "About You / AY Outlet Android",
+   "pkg": "de.aboutyou.outlet.app"
+  }
+ ],
+ "action": [
+  {
+   "app": "Action",
+   "pkg": "com.action.consumerapp"
+  }
+ ],
+ "activision": [
+  {
+   "app": "Call of Duty: Mobile for Android",
+   "pkg": "com.activision.callofduty.shooter"
+  }
+ ],
+ "adahealth": [
+  {
+   "app": "Ada Health for Android",
+   "pkg": "com.ada.app"
+  }
+ ],
+ "adidasrunning": [
+  {
+   "app": "Android",
+   "pkg": "com.runtastic.android"
+  }
+ ],
+ "agoda": [
+  {
+   "app": "Agoda Android",
+   "pkg": "com.agoda.mobile.consumer"
+  }
+ ],
+ "aidu": [
+  {
+   "app": "Aidu.de Android",
+   "pkg": "de.unister.aidu"
+  }
+ ],
+ "airbnb": [
+  {
+   "app": "Airbnb for Android",
+   "pkg": "com.airbnb.android"
+  }
+ ],
+ "aircanada": [
+  {
+   "app": "Air Canada Android",
+   "pkg": "com.aircanada.mobile"
+  }
+ ],
+ "alibaba": [
+  {
+   "app": "Alibaba.com for Android",
+   "pkg": "com.alibaba.intl.android.apps.poseidon"
+  }
+ ],
+ "aliexpress": [
+  {
+   "app": "AliExpress for Android",
+   "pkg": "com.alibaba.aliexpresshd"
+  }
+ ],
+ "allianz": [
+  {
+   "app": "Meine Allianz Android",
+   "pkg": "at.aztec.customer"
+  }
+ ],
+ "amadeusmerci": [
+  {
+   "app": "Merci Android",
+   "pkg": "com.amadeus.merci.client.ui"
+  }
+ ],
+ "amazonbusiness": [
+  {
+   "app": "Amazon Business for Android",
+   "pkg": "com.amazon.mShop.android.business.shopping"
+  }
+ ],
+ "amazonmusic": [
+  {
+   "app": "Amazon Music for Android",
+   "pkg": "com.amazon.mp3"
+  }
+ ],
+ "amazonshopping": [
+  {
+   "app": "Amazon Shopping for Android",
+   "pkg": "com.amazon.mShop.android.shopping"
+  }
+ ],
+ "aok": [
+  {
+   "app": "Meine AOK for Android",
+   "pkg": "de.aoksystems.amg"
+  }
+ ],
+ "applemusic": [
+  {
+   "app": "Apple Music for Android",
+   "pkg": "com.apple.android.music"
+  }
+ ],
+ "ardmediathek": [
+  {
+   "app": "ARD Mediathek Android",
+   "pkg": "de.swr.avp.ard"
+  }
+ ],
+ "asos": [
+  {
+   "app": "ASOS",
+   "pkg": "com.asos.app"
+  }
+ ],
+ "atrust": [
+  {
+   "app": "ATrust Signatur App",
+   "pkg": "at.atrust.tanapp"
+  }
+ ],
+ "atruvia": [
+  {
+   "app": "Sparda-Banking-App Android",
+   "pkg": "de.sparda.banking.app"
+  }
+ ],
+ "audible": [
+  {
+   "app": "Audible Android",
+   "pkg": "com.audible.application"
+  }
+ ],
+ "babbel": [
+  {
+   "app": "Babbel Android",
+   "pkg": "com.babbel.mobile.android.en"
+  }
+ ],
+ "babybus": [
+  {
+   "app": "Baby Panda’s Food Story for Android",
+   "pkg": "com.sinyee.babybus.foodstory"
+  }
+ ],
+ "badoo": [
+  {
+   "app": "Badoo",
+   "pkg": "com.badoo.mobile"
+  }
+ ],
+ "bank99": [
+  {
+   "app": "99 Android",
+   "pkg": "at.bank99.meine.meine"
+  }
+ ],
+ "bankaustria": [
+  {
+   "app": "Bank Austria Mobile App Android",
+   "pkg": "com.bankaustria.android.olb"
+  }
+ ],
+ "bawag": [
+  {
+   "app": "BAWAG for Android",
+   "pkg": "com.bawagpsk.bawagpsk"
+  }
+ ],
+ "bigo": [
+  {
+   "app": "BIGO LIVE",
+   "pkg": "sg.bigo.live"
+  }
+ ],
+ "bild": [
+  {
+   "app": "BILD News App for Android",
+   "pkg": "com.netbiscuits.bild.android"
+  }
+ ],
+ "billa": [
+  {
+   "app": "BILLA Android",
+   "pkg": "at.billa.service"
+  }
+ ],
+ "binance": [
+  {
+   "app": "Binance",
+   "pkg": "com.binance.dev"
+  }
+ ],
+ "bitpanda": [
+  {
+   "app": "Bitpanda Android",
+   "pkg": "com.bitpanda.bitpanda"
+  }
+ ],
+ "bluecode": [
+  {
+   "app": "Bluecode Android",
+   "pkg": "com.spt.bluecode"
+  }
+ ],
+ "bolt": [
+  {
+   "app": "Bolt for Android",
+   "pkg": "ee.mtakso.client"
+  }
+ ],
+ "boschsmarthome": [
+  {
+   "app": "Bosch Smart Home Android",
+   "pkg": "com.bosch.sh.ui.android"
+  }
+ ],
+ "bwin": [
+  {
+   "app": "Austria Games for Android",
+   "pkg": "at.equadrat.bwinaustria.games"
+  }
+ ],
+ "calm": [
+  {
+   "app": "Calm",
+   "pkg": "com.calm.android"
+  }
+ ],
+ "canva": [
+  {
+   "app": "Canva for Android",
+   "pkg": "com.canva.editor"
+  }
+ ],
+ "caritaswien": [
+  {
+   "app": "Caritas Intranet Android",
+   "pkg": "org.xinger.caritasintranet"
+  }
+ ],
+ "characterai": [
+  {
+   "app": "Character.AI",
+   "pkg": "ai.character.app"
+  }
+ ],
+ "chargemap": [
+  {
+   "app": "Chargemap for Android",
+   "pkg": "com.chargemap_beta.android"
+  }
+ ],
+ "chatgpt": [
+  {
+   "app": "ChatGPT Android",
+   "pkg": "com.openai.chatgpt"
+  }
+ ],
+ "cocacola": [
+  {
+   "app": "Coca-Cola CEE",
+   "pkg": "com.cocacola.app.cee"
+  },
+  {
+   "app": "The Coca-Cola Company, CEE loyalty platform",
+   "pkg": "win.coke.at"
+  }
+ ],
+ "coinbase": [
+  {
+   "app": "Coinbase",
+   "pkg": "com.coinbase.android"
+  }
+ ],
+ "coinmaster": [
+  {
+   "app": "Coin Master Android",
+   "pkg": "com.moonactive.coinmaster"
+  }
+ ],
+ "crunchyroll": [
+  {
+   "app": "Crunchyroll Android",
+   "pkg": "com.crunchyroll.crunchyroid"
+  }
+ ],
+ "daysyday": [
+  {
+   "app": "DaysyDay for Android",
+   "pkg": "ch.valleyelectronics.daysyday"
+  }
+ ],
+ "decathlon": [
+  {
+   "app": "Decathlon Android",
+   "pkg": "com.decathlon.app"
+  }
+ ],
+ "deepseek": [
+  {
+   "app": "DeepSeek Android",
+   "pkg": "com.deepseek.chat"
+  }
+ ],
+ "derstandard": [
+  {
+   "app": "DER STANDARD Android",
+   "pkg": "derstandard.at.istandardx"
+  }
+ ],
+ "diagnosia": [
+  {
+   "app": "Diagnosia",
+   "pkg": "com.diagnosia.fachinformation"
+  }
+ ],
+ "disney": [
+  {
+   "app": "Disney+ for Android",
+   "pkg": "com.disney.disneyplus"
+  }
+ ],
+ "disneyland": [
+  {
+   "app": "Disneyland Android App",
+   "pkg": "com.disney.wdpro.dlr"
+  }
+ ],
+ "disneysolitaire": [
+  {
+   "app": "Disney Solitaire Dreams Android",
+   "pkg": "com.superplaystudios.disneysolitairedreams"
+  }
+ ],
+ "doordash": [
+  {
+   "app": "DoorDash for Android",
+   "pkg": "com.dd.doordash"
+  }
+ ],
+ "drei": [
+  {
+   "app": "Drei Kundenzone for Android",
+   "pkg": "com.hutchison3g.at.android.selfcare"
+  }
+ ],
+ "droetker": [
+  {
+   "app": "Dr. Oetker Rezeptideen for Android",
+   "pkg": "at.oetker.android.rezeptideen"
+  }
+ ],
+ "dundle": [
+  {
+   "app": "Dundle",
+   "pkg": "com.dundle.app"
+  }
+ ],
+ "easyvoice": [
+  {
+   "app": "Easy Voice Recorder Android",
+   "pkg": "com.coffeebeanventures.easyvoicerecorder"
+  }
+ ],
+ "etihad": [
+  {
+   "app": "Etihad Airways Android",
+   "pkg": "com.mttnow.android.etihad"
+  }
+ ],
+ "expedia": [
+  {
+   "app": "Expedia Android",
+   "pkg": "com.expedia.bookings"
+  }
+ ],
+ "f1tv": [
+  {
+   "app": "F1 TV Android",
+   "pkg": "com.formulaone.production"
+  }
+ ],
+ "fairtiq": [
+  {
+   "app": "FAIRTIQ for Android",
+   "pkg": "com.fairtiq.android"
+  },
+  {
+   "app": "SDK embedded in OeBB Tickets",
+   "pkg": "at.oebb.ts"
+  }
+ ],
+ "fet": [
+  {
+   "app": "Fet",
+   "pkg": "de.ideawise.fet"
+  }
+ ],
+ "fifapanini": [
+  {
+   "app": "FIFA Panini Digital Collection Android",
+   "pkg": "it.panini.fifacollection"
+  }
+ ],
+ "flatex": [
+  {
+   "app": "Austria for Android",
+   "pkg": "de.xcom.flatexat"
+  }
+ ],
+ "flixbus": [
+  {
+   "app": "FlixBus Android",
+   "pkg": "de.flixbus.app"
+  }
+ ],
+ "flohealth": [
+  {
+   "app": "Flo Period & Pregnancy Tracker for Android",
+   "pkg": "org.iggymedia.periodtracker"
+  }
+ ],
+ "fluegede": [
+  {
+   "app": "Fluege.de Android",
+   "pkg": "de.unister.fluege"
+  }
+ ],
+ "freecash": [
+  {
+   "app": "Freecash",
+   "pkg": "com.freecash.app2"
+  }
+ ],
+ "fritz": [
+  {
+   "app": "FRITZ! Smart Home",
+   "pkg": "de.avm.android.smarthome"
+  }
+ ],
+ "geizhals": [
+  {
+   "app": "Geizhals Android",
+   "pkg": "at.geizhals.pv"
+  }
+ ],
+ "gemini": [
+  {
+   "app": "Google Gemini Android",
+   "pkg": "com.google.android.apps.bard"
+  }
+ ],
+ "generali": [
+  {
+   "app": "Generali Austria App / Generali AT Mobility",
+   "pkg": "com.generali.at.mobility"
+  }
+ ],
+ "george": [
+  {
+   "app": "George for Android",
+   "pkg": "at.erstebank.george"
+  }
+ ],
+ "goodcalendar": [
+  {
+   "app": "Good Calendar Android",
+   "pkg": "calendar.agenda.calendarplanner.agendaplanner"
+  }
+ ],
+ "grok": [
+  {
+   "app": "Grok for Android",
+   "pkg": "ai.x.grok"
+  }
+ ],
+ "grokio": [
+  {
+   "app": "Grokio for Android",
+   "pkg": "com.grokiolabs.Grokio"
+  }
+ ],
+ "gunjan": [
+  {
+   "app": "ElePant ”Einfache Lernspiele für Kinder” Android",
+   "pkg": "com.gamesforkids.toddlers.baby.games.girls.learning.coloring.easy"
+  }
+ ],
+ "hallow": [
+  {
+   "app": "Hallow for Android",
+   "pkg": "app.hallow.android"
+  }
+ ],
+ "hbomax": [
+  {
+   "app": "Max for Android",
+   "pkg": "com.wbd.stream"
+  }
+ ],
+ "headspace": [
+  {
+   "app": "Headspace Android",
+   "pkg": "com.getsomeheadspace.android"
+  }
+ ],
+ "heyobi": [
+  {
+   "app": "OBI for Android",
+   "pkg": "de.obi.app"
+  }
+ ],
+ "hot": [
+  {
+   "app": "Mein HoT",
+   "pkg": "com.austrianapps.ventocom.hofer"
+  }
+ ],
+ "ichat": [
+  {
+   "app": "Linky / iChat, AI-companion and live-social app",
+   "pkg": "com.aigc.ushow.ichat"
+  }
+ ],
+ "idaustria": [
+  {
+   "app": "ID Austria",
+   "pkg": "at.gv.oe.app"
+  }
+ ],
+ "ijoysoft": [
+  {
+   "app": "Joysoft ”Camera” Android",
+   "pkg": "photo.cam.filter.beauty.effect"
+  }
+ ],
+ "ikea": [
+  {
+   "app": "IKEA Android App",
+   "pkg": "com.ingka.ikea.app"
+  }
+ ],
+ "immoscout": [
+  {
+   "app": "ImmoScout24 Austria Android",
+   "pkg": "at.is24.android"
+  }
+ ],
+ "immowelt": [
+  {
+   "app": "Android",
+   "pkg": "de.immowelt.android.immobiliensuche"
+  }
+ ],
+ "ionity": [
+  {
+   "app": "IONITY for Android",
+   "pkg": "com.cleevio.ionity.android.app"
+  }
+ ],
+ "ivie": [
+  {
+   "app": "Vienna city guide",
+   "pkg": "at.vienna.ivie"
+  }
+ ],
+ "joebonus": [
+  {
+   "app": "Jö Bonus Club für Android",
+   "pkg": "at.joeclub.app.joecard"
+  }
+ ],
+ "kaufland": [
+  {
+   "app": "Kaufland Android",
+   "pkg": "com.kaufland.Kaufland"
+  }
+ ],
+ "kfcuae": [
+  {
+   "app": "KFC UAE for Android",
+   "pkg": "com.kfc.me"
+  }
+ ],
+ "kick": [
+  {
+   "app": "KICK for Android",
+   "pkg": "com.kick.mobile"
+  }
+ ],
+ "kicker": [
+  {
+   "app": "Android",
+   "pkg": "com.netbiscuits.kicker"
+  }
+ ],
+ "lastwar": [
+  {
+   "app": "Last War: Survival Game Android",
+   "pkg": "com.fun.lastwar.gp"
+  }
+ ],
+ "lhgroup": [
+  {
+   "app": "Lufthansa Group Shared App Platform",
+   "pkg": "com.lhgroup.lhgroupapp"
+  }
+ ],
+ "lieferando": [
+  {
+   "app": "Lieferando for Android",
+   "pkg": "at.lieferservice.android"
+  }
+ ],
+ "linkedin": [
+  {
+   "app": "LinkedIn Android",
+   "pkg": "com.linkedin.android"
+  }
+ ],
+ "logos": [
+  {
+   "app": "Logos Bible Study",
+   "pkg": "com.logos.androidlogos"
+  }
+ ],
+ "lotterien": [
+  {
+   "app": "Lotterien / Lotto for Android",
+   "pkg": "at.lotterien.app"
+  }
+ ],
+ "lovoo": [
+  {
+   "app": "Lovoo",
+   "pkg": "net.lovoo.android"
+  }
+ ],
+ "magellantv": [
+  {
+   "app": "MagellanTV",
+   "pkg": "com.abide.magellantv"
+  }
+ ],
+ "magenta": [
+  {
+   "app": "Mein Magenta for Android",
+   "pkg": "at.tmobile.android.myt"
+  }
+ ],
+ "magenta-smarthome": [
+  {
+   "app": "Magenta SmartHome",
+   "pkg": "de.telekom.smarthomeb2c"
+  }
+ ],
+ "marktguru": [
+  {
+   "app": "Android",
+   "pkg": "com.marktguru.android"
+  }
+ ],
+ "matchgroup": [
+  {
+   "app": "Hinge",
+   "pkg": "com.okcupid.okcupid"
+  },
+  {
+   "app": "Fish",
+   "pkg": "com.pof.android"
+  },
+  {
+   "app": "5.66.0, BLK",
+   "pkg": "com.affinityapps.blk"
+  }
+ ],
+ "mcdonalds": [
+  {
+   "app": "McDonald’s Austria Loyalty",
+   "pkg": "com.mcdonalds.mobileapp"
+  },
+  {
+   "app": "McDelivery",
+   "pkg": "ph.mobext.mcdelivery"
+  }
+ ],
+ "meina1": [
+  {
+   "app": "Mein A1 for Android",
+   "pkg": "at.mobilkom.android.meina1"
+  }
+ ],
+ "meindm": [
+  {
+   "app": "Android",
+   "pkg": "de.dm.meindm.android"
+  }
+ ],
+ "meowdoku": [
+  {
+   "app": "Meowdoku Android",
+   "pkg": "com.oakever.meowdoku"
+  }
+ ],
+ "meta": [
+  {
+   "app": "566.0.0.48.73, Instagram",
+   "pkg": "com.instagram.android"
+  },
+  {
+   "app": "433.0.0.47.68, Messenger",
+   "pkg": "com.facebook.orca"
+  }
+ ],
+ "midea": [
+  {
+   "app": "Midea mSmartLife",
+   "pkg": "com.midea.ai.overseas"
+  }
+ ],
+ "momondo": [
+  {
+   "app": "Momondo Android",
+   "pkg": "com.momondo.flightsearch"
+  }
+ ],
+ "msedge": [
+  {
+   "app": "Microsoft Edge for Android",
+   "pkg": "com.microsoft.emmx"
+  }
+ ],
+ "mueller": [
+  {
+   "app": "Müller App",
+   "pkg": "at.helloagain.muellerde"
+  }
+ ],
+ "muslimpro": [
+  {
+   "app": "Muslim Pro for Android",
+   "pkg": "com.bitsmedia.android.muslimpro"
+  }
+ ],
+ "mynfp": [
+  {
+   "app": "NFP for Android",
+   "pkg": "de.mynfp.mobile"
+  }
+ ],
+ "myuniqa": [
+  {
+   "app": "UNIQA Android",
+   "pkg": "at.uniqa.myuniqa.ionic"
+  }
+ ],
+ "naturalcycles": [
+  {
+   "app": "Natural Cycles",
+   "pkg": "com.naturalcycles.cordova"
+  }
+ ],
+ "netflix": [
+  {
+   "app": "Netflix for Android",
+   "pkg": "com.netflix.mediaclient"
+  }
+ ],
+ "nike": [
+  {
+   "app": "Nike for Android",
+   "pkg": "com.nike.omega"
+  }
+ ],
+ "nintendo": [
+  {
+   "app": "Nintendo Switch Online",
+   "pkg": "com.nintendo.znca"
+  },
+  {
+   "app": "Nintendo Store",
+   "pkg": "com.nintendo.znej"
+  }
+ ],
+ "oebb": [
+  {
+   "app": "BB Tickets for Android",
+   "pkg": "at.oebb.ts"
+  }
+ ],
+ "oegk": [
+  {
+   "app": "Meine ÖGK for Android",
+   "pkg": "at.itsv.mobile.meineoegk"
+  }
+ ],
+ "omv": [
+  {
+   "app": "OMV App Android",
+   "pkg": "com.hastobe.omv"
+  }
+ ],
+ "oonachrichten": [
+  {
+   "app": "OÖNachrichten for Android",
+   "pkg": "de.fcms.webapp.oon"
+  }
+ ],
+ "opera": [
+  {
+   "app": "Opera Browser Android",
+   "pkg": "com.opera.browser"
+  }
+ ],
+ "orfkids": [
+  {
+   "app": "ORF Kids!",
+   "pkg": "at.orf.kids"
+  }
+ ],
+ "parship": [
+  {
+   "app": "Parship",
+   "pkg": "com.parship.android"
+  }
+ ],
+ "paylife": [
+  {
+   "app": "PayLife SESAM Android",
+   "pkg": "at.paylife.sesam"
+  }
+ ],
+ "paypal": [
+  {
+   "app": "PayPal for Android",
+   "pkg": "com.paypal.android.p2pmobile"
+  }
+ ],
+ "pegasus": [
+  {
+   "app": "Pegasus Airlines Android",
+   "pkg": "com.pozitron.pegasus"
+  }
+ ],
+ "perplexity": [
+  {
+   "app": "Perplexity",
+   "pkg": "ai.perplexity.app.android"
+  }
+ ],
+ "pokemonchampions": [
+  {
+   "app": "Pokémon Champions Android",
+   "pkg": "jp.pokemon.pokemonchampions"
+  }
+ ],
+ "pokemongo": [
+  {
+   "app": "Pokemon GO for Android",
+   "pkg": "com.nianticlabs.pokemongo"
+  }
+ ],
+ "pollenradar": [
+  {
+   "app": "Pollen-Radar for Android",
+   "pkg": "de.ratiopharm.pollenradar"
+  }
+ ],
+ "primevideo": [
+  {
+   "app": "Amazon Prime Video",
+   "pkg": "com.amazon.avod.thirdpartyclient"
+  }
+ ],
+ "psaichapp": [
+  {
+   "app": "Android",
+   "pkg": "at.psa.app.ich"
+  }
+ ],
+ "raiffeisen": [
+  {
+   "app": "Mein ELBAApp",
+   "pkg": "at.rsg.pfp"
+  },
+  {
+   "app": "Raiffeisen Kapitalmarkt",
+   "pkg": "at.raiffeisen.kapitalmarkt"
+  }
+ ],
+ "raisin": [
+  {
+   "app": "Raisin Android",
+   "pkg": "com.raisin.app"
+  }
+ ],
+ "redbullesim": [
+  {
+   "app": "Red Bull MOBILE eSIM",
+   "pkg": "com.redbull.android.esim"
+  }
+ ],
+ "revolut": [
+  {
+   "app": "Revolut for Android",
+   "pkg": "com.revolut.revolut"
+  }
+ ],
+ "roblox": [
+  {
+   "app": "Roblox Android",
+   "pkg": "com.roblox.client"
+  }
+ ],
+ "romadiana": [
+  {
+   "app": "Roma and Diana Show for Android",
+   "pkg": "com.epicrondigital.romadianashow"
+  }
+ ],
+ "rtlplus": [
+  {
+   "app": "RTL for Android",
+   "pkg": "de.rtlplus.app"
+  }
+ ],
+ "samsunghealth": [
+  {
+   "app": "Samsung Health",
+   "pkg": "com.sec.android.app.shealth"
+  }
+ ],
+ "santander": [
+  {
+   "app": "MySantander Android",
+   "pkg": "de.santander.presentation"
+  }
+ ],
+ "sap": [
+  {
+   "app": "SAP Field Service Management",
+   "pkg": "com.sap.fsm"
+  },
+  {
+   "app": "SAP Asset Manager",
+   "pkg": "com.sap.mobile.apps.a"
+  },
+  {
+   "app": "SAP Mobile Start",
+   "pkg": "com.sap.mobile.apps"
+  }
+ ],
+ "shell": [
+  {
+   "app": "Shell Android",
+   "pkg": "com.shell.sitibv.retail"
+  }
+ ],
+ "simplitv": [
+  {
+   "app": "TV for Android",
+   "pkg": "at.simplitv.ott"
+  }
+ ],
+ "skyscanner": [
+  {
+   "app": "Skyscanner Android",
+   "pkg": "net.skyscanner.android.main"
+  }
+ ],
+ "smartlife": [
+  {
+   "app": "Smart Life",
+   "pkg": "com.tuya.smartlife"
+  }
+ ],
+ "snapchat": [
+  {
+   "app": "Snapchat for Android",
+   "pkg": "com.snapchat.android"
+  }
+ ],
+ "soundcloud": [
+  {
+   "app": "SoundCloud for Android",
+   "pkg": "com.soundcloud.android"
+  }
+ ],
+ "spar": [
+  {
+   "app": "SPAR Plus",
+   "pkg": "plus.spar.si"
+  }
+ ],
+ "speakmaster": [
+  {
+   "app": "PolyBuzz / Speak Master",
+   "pkg": "ai.socialapps.speakmaster"
+  }
+ ],
+ "spiegel": [
+  {
+   "app": "DER SPIEGEL for Android",
+   "pkg": "de.spiegel.android.app.spon"
+  }
+ ],
+ "starbucks": [
+  {
+   "app": "Starbucks Austria for Android",
+   "pkg": "com.starbucks.at"
+  }
+ ],
+ "subwaysurfers": [
+  {
+   "app": "Subway Surfers",
+   "pkg": "com.kiloo.subwaysurf"
+  }
+ ],
+ "sumup": [
+  {
+   "app": "SumUp Business Android",
+   "pkg": "com.kaching.merchant"
+  }
+ ],
+ "supercell": [
+  {
+   "app": "Brawl Stars",
+   "pkg": "com.supercell.brawlstars"
+  },
+  {
+   "app": "Clash of Clans",
+   "pkg": "com.supercell.clashofclans"
+  },
+  {
+   "app": "Clash Royale",
+   "pkg": "com.supercell.clashroyale"
+  }
+ ],
+ "superfourgames": [
+  {
+   "app": "Write 123 for Android",
+   "pkg": "com.super4.learn.write123.numbers.count.trace.preschool.educational.gam"
+  }
+ ],
+ "swiplus": [
+  {
+   "app": "SWIplus",
+   "pkg": "ch.swissinfo.android"
+  }
+ ],
+ "taxefy": [
+  {
+   "app": "Taxefy for Android",
+   "pkg": "at.taxefy.app"
+  }
+ ],
+ "tchibo": [
+  {
+   "app": "Tchibo App for Android",
+   "pkg": "de.tchibo.app"
+  }
+ ],
+ "tcl": [
+  {
+   "app": "TCL Smart Home Android",
+   "pkg": "com.tcl.smarthome"
+  }
+ ],
+ "teamviewer": [
+  {
+   "app": "TeamViewer for Android",
+   "pkg": "com.teamviewer.teamviewer.market.mobile"
+  }
+ ],
+ "temu": [
+  {
+   "app": "Temu for Android",
+   "pkg": "com.einnovation.temu"
+  }
+ ],
+ "tgtg": [
+  {
+   "app": "Too Good To Go Android",
+   "pkg": "com.app.tgtg"
+  }
+ ],
+ "tiktok": [
+  {
+   "app": "TikTok for Android",
+   "pkg": "com.zhiliaoapp.musically"
+  }
+ ],
+ "tipico": [
+  {
+   "app": "Tipico Austria for Android",
+   "pkg": "tipico.sports.at"
+  }
+ ],
+ "tkmaxx": [
+  {
+   "app": "TK Maxx Android",
+   "pkg": "com.tjx.tkmaxx"
+  }
+ ],
+ "traderepublic": [
+  {
+   "app": "Trade Republic",
+   "pkg": "de.traderepublic.app"
+  }
+ ],
+ "tripadvisor": [
+  {
+   "app": "TripAdvisor Android",
+   "pkg": "com.tripadvisor.tripadvisor"
+  }
+ ],
+ "tuya": [
+  {
+   "app": "Tuya Smart",
+   "pkg": "com.tuya.smart"
+  }
+ ],
+ "vigapp": [
+  {
+   "app": "VIG KV App for Android",
+   "pkg": "com.vig.kvApp"
+  }
+ ],
+ "vignetim": [
+  {
+   "app": "Vignetim Android",
+   "pkg": "com.vignetim.mobile"
+  }
+ ],
+ "visa": [
+  {
+   "app": "Visa Go",
+   "pkg": "com.visa.eva"
+  },
+  {
+   "app": "Tap to Pay Ready",
+   "pkg": "com.visa.kic.app.kernel"
+  }
+ ],
+ "vladnikita": [
+  {
+   "app": "Vlad and Nikita for Android",
+   "pkg": "me.apptivise.vladnikita"
+  }
+ ],
+ "vol": [
+  {
+   "app": "VOL.at for Android",
+   "pkg": "at.vol.android"
+  }
+ ],
+ "welt": [
+  {
+   "app": "WELT News Android",
+   "pkg": "de.cellular.n24hybrid"
+  }
+ ],
+ "weplay": [
+  {
+   "app": "WePlay",
+   "pkg": "com.wejoy.weplay.us"
+  }
+ ],
+ "whitehouse": [
+  {
+   "app": "Official WhiteHouse.gov Android App",
+   "pkg": "gov.whitehouse.app"
+  }
+ ],
+ "wienmobil": [
+  {
+   "app": "WienMobil for Android",
+   "pkg": "at.wienerlinien.wienmobillab"
+  }
+ ],
+ "win2day": [
+  {
+   "app": "2day for Android",
+   "pkg": "at.win2day.games"
+  }
+ ],
+ "winkk": [
+  {
+   "app": "AI Android",
+   "pkg": "ai.winkk.app.winkkai"
+  }
+ ],
+ "wizzair": [
+  {
+   "app": "Wizz Air Android",
+   "pkg": "com.wizzair.WizzAirApp"
+  }
+ ],
+ "wogibtswas": [
+  {
+   "app": "Android",
+   "pkg": "com.undabot.android.wgw"
+  }
+ ],
+ "xtrendspeed": [
+  {
+   "app": "XTrend Speed for Android",
+   "pkg": "com.rynatsa.xtrendspeed"
+  }
+ ],
+ "xtwitter": [
+  {
+   "app": "X",
+   "pkg": "com.twitter.android"
+  }
+ ],
+ "xverse": [
+  {
+   "app": "Saylo / AI Character Story Chat",
+   "pkg": "com.xverse.aistory"
+  }
+ ],
+ "yesss": [
+  {
+   "app": "Android",
+   "pkg": "at.a1telekom.android.yesss"
+  }
+ ],
+ "youtubekids": [
+  {
+   "app": "YouTube Kids for Android",
+   "pkg": "com.google.android.apps.youtube.kids"
+  }
+ ],
+ "zalando": [
+  {
+   "app": "Zalando for Android",
+   "pkg": "de.zalando.mobile"
+  }
+ ],
+ "zara": [
+  {
+   "app": "ZARA for Android",
+   "pkg": "com.inditex.zara"
+  }
+ ],
+ "zdf": [
+  {
+   "app": "ZDF Mediathek Android",
+   "pkg": "com.zdf.android.mediathek"
+  }
+ ],
+ "zurich": [
+  {
+   "app": "Zurich ZAPP Android",
+   "pkg": "at.zurich.zapp"
+  },
+  {
+   "app": "Zurich ZIO Android",
+   "pkg": "com.zurich.ziomob2"
+  }
+ ]
+}
