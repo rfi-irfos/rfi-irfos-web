@@ -119,52 +119,56 @@ pub async fn submit_contact(
         }
     }
 
-    // Actual mail delivery, independent of the CRM relay below - the CRM relay
-    // only feeds Lighthouse's lead counter, it does not put anything in an
-    // inbox. Restores the server-side Web3Forms send from the 2026-09-11 fix,
-    // which was lost in a later refactor (contact.rs stopped calling it, while
-    // the client-side fallback in PublicSite.tsx/Squad.tsx has been dead code
-    // the whole time - see notify.rs for why). Fire-and-forget: a visitor's
-    // submission is already durably appended to contacts.jsonl above regardless
-    // of whether this succeeds.
-    crate::notify::web3forms_email(
-        &format!("[rfi-irfos.com] Contact form — {}", entry.name),
-        &entry.name,
-        &entry.email,
-        &entry.message,
-    ).await;
-
-    // Relay the lead into the Lighthouse CRM. This is the whole point of the endpoint:
-    // Lighthouse computes its "leads" figure as COUNT(*) FROM contacts, so a submission
-    // that never reaches that table is invisible no matter how many people send it. Until
-    // 2026-08-05 nothing on rfi-irfos.com wrote to it, which is why 71,340 visits showed
-    // zero leads.
-    //
-    // The key is held here, server side, and never reaches the browser bundle. We send
-    // x-inbox-key against Lighthouse's existing LIGHTHOUSE_INBOX_KEY rather than
-    // introducing LIGHTHOUSE_SIGNUP_KEY: signup() validates against a single key value,
-    // so defining SIGNUP_KEY over there would invalidate the key ternlang.com already
-    // sends and silently break its lead flow.
-    match relay_to_crm(&entry).await {
-        Ok(()) => {
-            tracing::info!("Contact from {} ({}) relayed to CRM", entry.name, entry.email);
-            StatusCode::OK.into_response()
-        }
-        Err(e) => {
-            // The submission is already durably appended above, so it is not lost, and the
-            // frontend still tries a direct client-side Web3Forms send as a second path
-            // (see PublicSite.tsx / Squad.tsx) - Web3Forms' free tier rejects server-to-
-            // server calls outright ("Pro plan required"), so that fallback has to live in
-            // the browser, not here. We still fail loudly rather than returning 200: a form
-            // that reports success while the CRM lead count goes nowhere is exactly the
-            // failure this endpoint exists to end. Ping ntfy so a human sees the CRM outage
-            // within minutes instead of finding it during the next "why no leads" audit -
-            // tracing::error alone was how the original bug went unnoticed for months.
-            tracing::error!("Contact relay to CRM failed for {}: {e}", entry.email);
-            notify_crm_failure(&entry, &e).await;
-            (StatusCode::BAD_GATEWAY, "could not reach the CRM").into_response()
+    // ntfy ping on every submission, unconditionally - not just on CRM failure
+    // (notify_crm_failure below). Live bug report 2026-10-24: a self-sent test
+    // through this exact form showed the green "Received" state and produced
+    // zero email. Root-caused by replaying the server-side Web3Forms call this
+    // function used to make below: Web3Forms' free tier returns 403 "This
+    // method is not allowed ... Pro plan is required" for ANY server-to-server
+    // POST, unconditionally - the 2026-09-11 fix this comment used to describe
+    // as "restored" never actually delivered a single email, it just silently
+    // logged a tracing::error! with no alerting, so the gap went unnoticed for
+    // six weeks. This is the exact same failure review.rs hit on 2026-10-14
+    // ("ich hab ne ntfy bekommen, aber keine email") - mirroring that fix here:
+    // ntfy is the one delivery path actually proven to reach a human. Real
+    // email delivery needs a provider that allows server-side sends (Web3Forms
+    // Pro, or a transactional provider like Resend/Mailgun/SES) - a service/
+    // cost decision for Simeon, not something to pick unilaterally.
+    if !cfg!(test) {
+        if let Ok(client) = reqwest::Client::builder().timeout(std::time::Duration::from_secs(5)).build() {
+            let _ = client
+                .post("https://ntfy.sh/rfi-irfos-web-contact")
+                .header("Title", "New contact form submission")
+                .body(format!(
+                    "{} <{}>{}\n\n{}",
+                    entry.name, entry.email,
+                    if entry.phone.is_empty() { String::new() } else { format!(" — {}", entry.phone) },
+                    entry.message,
+                ))
+                .send()
+                .await;
         }
     }
+
+    // Relay the lead into the Lighthouse CRM - best-effort, not on the
+    // response path. Live decision 2026-10-24 (Zabih is actively bugfixing
+    // Lighthouse right now, so the CRM is a known-unreliable dependency this
+    // endpoint should not block on): matches the pattern review.rs already
+    // uses for domain-check submissions - durable local write + ntfy above,
+    // always 200 once those two land, CRM relay attempted afterward and
+    // logged/alerted on failure but never the reason a real visitor sees an
+    // error. The submission is never lost either way: contacts.jsonl above is
+    // the durable record, and Lighthouse's own lead count catches up the next
+    // time this succeeds or someone backfills it from that file.
+    tokio::spawn(async move {
+        if let Err(e) = relay_to_crm(&entry).await {
+            tracing::error!("Contact relay to CRM failed for {}: {e}", entry.email);
+            notify_crm_failure(&entry, &e).await;
+        } else {
+            tracing::info!("Contact from {} ({}) relayed to CRM", entry.name, entry.email);
+        }
+    });
+    StatusCode::OK.into_response()
 }
 
 async fn notify_crm_failure(entry: &ContactEntry, err: &str) {

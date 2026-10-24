@@ -1,15 +1,26 @@
-/// Shared Web3Forms email delivery, used by both `contact.rs` and `review.rs`.
+/// Shared Web3Forms email delivery, used by `review.rs`.
 ///
-/// Read server-side at runtime, NOT as a Vite build-time constant. The frontend
-/// still has its own client-side Web3Forms fallback (PublicSite.tsx, Squad.tsx)
-/// gated on `VITE_WEB3FORMS_KEY`, but that only works if the key was passed as a
-/// build-arg to the frontend build — the Dockerfile moved the frontend build
-/// outside Docker on 2026-09-26, and nothing in that local `npm run build` step
-/// sets the var, so the client-side path has been silently dead ever since.
-/// Reading the same already-deployed Fly secret as a plain runtime env var here
-/// is the one path that has ever actually delivered mail for this codebase (see
-/// the 2026-09-11 contact-form fix, which did this for `contact.rs` before it
-/// was lost in a later refactor).
+/// Verified broken 2026-10-24 by replaying this exact request shape directly
+/// against api.web3forms.com: it returns 403 "This method is not allowed...
+/// Pro plan is required" for ANY server-to-server POST, every time, key valid
+/// or not. The doc comment this replaces claimed the opposite - that reading
+/// `VITE_WEB3FORMS_KEY` as a runtime secret here (rather than a Vite build-time
+/// constant) was "the one path that has ever actually delivered mail for this
+/// codebase". It never delivered one; the 403 was only ever visible as a
+/// tracing::error! with no alerting, so the gap went unnoticed for six weeks
+/// (see review.rs's own 2026-10-14 bug report in `notify_new_request`, and
+/// contact.rs's near-identical one on 2026-10-24 - this function's call sites
+/// were never actually sending mail either time, CRM/local-write success
+/// masked it both times). contact.rs no longer calls this; it pings ntfy
+/// directly instead, which is the one delivery path actually proven to reach
+/// a human. review.rs still calls it below - harmless no-op, not yet removed.
+/// Real server-side email delivery needs a provider that allows it (Web3Forms
+/// Pro, or a transactional provider like Resend/Mailgun/SES) - unresolved.
+/// The frontend's OWN client-side Web3Forms fallback (PublicSite.tsx,
+/// Squad.tsx) is a different, real path - browser-origin calls are not
+/// rejected the way server-to-server ones are - gated on `VITE_WEB3FORMS_KEY`
+/// reaching the Vite build; see scripts/ship.sh for why that needed fixing
+/// separately (the frontend build runs outside Docker, build-args don't apply).
 pub async fn web3forms_email(subject: &str, name: &str, email: &str, message: &str) {
     let Ok(key) = std::env::var("VITE_WEB3FORMS_KEY") else { return };
     if key.is_empty() {
