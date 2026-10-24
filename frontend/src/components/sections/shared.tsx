@@ -459,6 +459,42 @@ export function Reveal({
   // bottom edge about to leave past the top - the element's full transit, not a
   // single threshold crossing.
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  // viewportH/elH used to be read LIVE inside the useTransform callback below -
+  // window.innerHeight and el.offsetHeight, on every single scroll frame, for
+  // every Reveal instance mounted on the page at once. Two live mobile bugs
+  // (2026-10-24, Simeon's phone plus an independent teammate report on the
+  // same scroll) traced back to exactly that: (1) offsetHeight is a
+  // layout-triggering read - a forced synchronous layout on every scroll tick,
+  // times however many Reveal components are on screen, is the textbook jank
+  // pattern ("nicht diese 60 FPS Feeling", "laggy", "nicht smooth"). (2)
+  // window.innerHeight on mobile Chrome/Safari shrinks and grows as the
+  // address bar collapses/expands DURING scroll, not only on resize - since
+  // that value fed straight into `total`/`inEnd` below and was re-read every
+  // tick, the settle threshold itself moved under the animation while
+  // scrolling, not a stable function of scroll position ("während man
+  // runterscrollt, sieht man gar nichts" - the toolbar alone could push an
+  // already-settled element back to mid-transit with zero scroll input).
+  // Fixed by measuring once on mount and re-measuring only on a genuine
+  // resize/orientation change (ResizeObserver for the element, a resize
+  // listener for the viewport) - the scroll callback is now pure math over
+  // cached numbers: no layout cost, and immune to toolbar flicker.
+  const dims = useRef({ viewportH: typeof window !== 'undefined' ? window.innerHeight : 800, elH: 0 })
+  useEffect(() => {
+    const measureViewport = () => { dims.current.viewportH = window.innerHeight }
+    measureViewport()
+    window.addEventListener('resize', measureViewport)
+    const el = ref.current
+    let ro: ResizeObserver | undefined
+    if (el) {
+      dims.current.elH = el.offsetHeight
+      ro = new ResizeObserver(([entry]) => { dims.current.elH = entry.contentRect.height })
+      ro.observe(el)
+    }
+    return () => {
+      window.removeEventListener('resize', measureViewport)
+      ro?.disconnect()
+    }
+  }, [])
   // Maps that transit into a 0-1 "how assembled is this" value: ramps up over
   // the first stretch (entrance) and then holds at 1 for the rest of the
   // transit - continuous, so scrolling slowly assembles slowly, and scrolling
@@ -488,9 +524,8 @@ export function Reveal({
   // means "comfortably visible", for any element size.
   const settled = useTransform(scrollYProgress, latest => {
     if (prefersReducedMotion() || revealSuppressed.current) return 1
-    const el = ref.current
-    const viewportH = typeof window !== 'undefined' ? window.innerHeight : 800
-    const elH = el?.offsetHeight ?? viewportH
+    const { viewportH, elH: cachedElH } = dims.current
+    const elH = cachedElH || viewportH
     const total = viewportH + elH
     // `delay` nudges a row of grid items into a cascade rather than settling
     // in lockstep. Capped tight: at 868px viewport the old cap (0.06 of
