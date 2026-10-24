@@ -23,7 +23,21 @@ rm -rf frontend/dist
 # broken build would have shipped silently the same way). Both this step and
 # the docker-build step below now `set -o pipefail`/capture the real exit
 # code inside their own remote shell before deciding to continue.
-colony-run -a frontend/dist -- 'cd frontend && npm ci --no-audit --no-fund >/dev/null 2>&1; set -o pipefail; npm run build 2>&1 | tail -8'
+# `npx playwright install chromium` runs every time, inside this same
+# colony-run invocation, right before the build that needs it (not as a
+# separate earlier command) - fix for a real failure chain hit 2026-10-24.
+# playwright-core pins an exact browser revision (e.g. chromium-1234) and
+# tracks which on-disk project needs it via a `.links` registry entry in the
+# shared `~/.cache/ms-playwright` (shared across every project on the Colony,
+# not per-repo). Installing it from a workdir and then deleting that workdir
+# (as this script always does, win or lose) orphans that `.links` entry; the
+# next `npm ci` anywhere on the box (this repo's next deploy, or any other
+# project sharing the Colony) runs Playwright's own GC, finds the dangling
+# link, and deletes the revision again - so a one-off manual install here
+# keeps getting silently undone. Installing fresh inside the very colony-run
+# that's about to consume it means the revision is always present when
+# needed, regardless of what any other project's cache GC did in between.
+colony-run -a frontend/dist -- 'cd frontend && npm ci --no-audit --no-fund >/dev/null 2>&1; npx playwright install chromium >/dev/null 2>&1; set -o pipefail; npm run build 2>&1 | tail -8'
 test -f frontend/dist/index.html
 ssh colony 'rm -rf ~/work/rfi-web-img && mkdir -p ~/work/rfi-web-img'
 git archive HEAD | ssh colony 'tar -x -C ~/work/rfi-web-img'
