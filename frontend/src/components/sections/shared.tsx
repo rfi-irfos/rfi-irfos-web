@@ -459,14 +459,15 @@ export function Reveal({
   // bottom edge about to leave past the top - the element's full transit, not a
   // single threshold crossing.
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  // Maps that transit into a 0-1 "how assembled is this" value: ramps up over the
-  // first stretch (entrance), holds at 1 through the middle (settled, fully
-  // readable), ramps back down over the last stretch (exit) - continuous, so
-  // scrolling slowly assembles/disassembles slowly and reversing direction
-  // reverses it at the same rate, symmetric both ways. `delay` shifts where the
-  // ramps sit (not a time delay - there's no fixed-duration animation left to
-  // delay), so a row of grid items sharing nearly the same vertical position
-  // still cascades instead of settling in lockstep.
+  // Maps that transit into a 0-1 "how assembled is this" value: ramps up over
+  // the first stretch (entrance) and then holds at 1 for the rest of the
+  // transit - continuous, so scrolling slowly assembles slowly, and scrolling
+  // back down past the bottom edge disassembles at the same rate through the
+  // same ramp. There is deliberately no exit ramp at the top (see below).
+  // `delay` shifts where the entrance ramp sits (not a time delay - there's no
+  // fixed-duration animation left to delay), so a row of grid items sharing
+  // nearly the same vertical position still cascades instead of settling in
+  // lockstep.
   // inEnd/outStart used to be fixed fractions (0.28/0.72) of the element's OWN
   // transit, regardless of its height. That transit (`scrollYProgress` above)
   // spans from "top enters viewport bottom" to "bottom leaves viewport top",
@@ -492,25 +493,33 @@ export function Reveal({
     const elH = el?.offsetHeight ?? viewportH
     const total = viewportH + elH
     // `delay` nudges a row of grid items into a cascade rather than settling
-    // in lockstep, same intent as before, just a smaller absolute nudge now
-    // that the bands themselves are no longer a fixed fraction of transit.
-    const offset = Math.min(0.06, delay * 0.008)
-    // Settled once the element's top has scrolled to ~87% down the viewport -
-    // i.e. the fly-in finishes while the element is still entering the bottom
-    // edge, BEFORE the eye rests on it. Was 78% (factor 0.22), which left
-    // everything in the bottom fifth of the screen permanently mid-flight
-    // (live bug report 2026-10-24: "ich bin genau drauf, aber die sachen
-    // fliegen noch rein" - measured: a fully-visible row at 82% viewport
-    // height sat at opacity 0.69). Exits once its top nears ~8% down (about
-    // to clip). Clamped so very tall/short elements still get a real band.
-    const inEnd = Math.min(0.9, Math.max(0.05, (viewportH * 0.13) / total + offset))
-    const outStart = Math.min(0.95, Math.max(inEnd + 0.04, (viewportH * 0.92) / total + offset))
+    // in lockstep. Capped tight: at 868px viewport the old cap (0.06 of
+    // transit) pushed a staggered child's settle line up to ~94px higher,
+    // which is most of why nested reveals lagged their parent.
+    const offset = Math.min(0.02, delay * 0.004)
+    // Settled once the element has entered ~8% of the viewport (~70px) past
+    // the bottom edge - the fly-in plays over the first few dozen scrolled
+    // pixels and is DONE before the eye could rest on the element. Two prior
+    // factors (0.22 then 0.13, i.e. settle at 78%/87% viewport height) both
+    // failed live (2026-10-24, twice: "die sachen fliegen noch rein" then
+    // "nur marginal besser... die berechnung isch noch iwie broke"): any
+    // settle line meaningfully above the bottom edge means a child reveal
+    // deep inside a tall parent (team card sub-boxes, free-check widget rows)
+    // is still mid-flight while the parent is already centered in view.
+    const inEnd = Math.min(0.9, Math.max(0.04, (viewportH * 0.08) / total + offset))
     const smooth = (value: number) => value * value * (3 - 2 * value)
     if (latest <= 0) return 0
     if (latest < inEnd) return smooth(latest / inEnd)
-    if (latest <= outStart) return 1
-    if (latest < 1) return 1 - smooth((latest - outStart) / (1 - outStart))
-    return 0
+    // No exit ramp anymore. The old one started fading the element once its
+    // top neared ~8% viewport height - but a tall card MUST be scrolled that
+    // far up before its lower children are visible at all, so reading the
+    // bottom of a card actively faded out its top (live report 2026-10-24,
+    // screenshot: team card "fast verschwunden unter dem header" while its
+    // three sub-boxes were still flying in). Once assembled, an element stays
+    // at full visibility until it has actually left the viewport; scrolling
+    // back down past the bottom edge still disassembles it symmetrically via
+    // the entrance ramp above.
+    return 1
   })
   const transform = useTransform(settled, s => {
     const d = (1 - s) * dist

@@ -84,6 +84,28 @@ for (const route of LOCALIZED_ROUTES) {
     errors.push(`${deRoute(route)}: DE description identical to EN - locale not applied?`)
 }
 
+// EN-only canonical routes (in prerender.mjs's ROUTES but NOT localized): the
+// snapshot must exist (on 2026-10-24 '/team' was dropped from ROUTES instead of
+// LOCALIZED_ROUTES and shipped as a live 404), must be English, must carry no
+// hreflang (no German alternate exists), and no /de/ twin may have been rendered.
+const EN_ONLY_ROUTES = ['/research', '/datasets', '/submit', '/track-record', '/pricing', '/team']
+const { access } = await import('node:fs/promises')
+for (const route of EN_ONLY_ROUTES) {
+  let html
+  try {
+    html = await readFile(join(DIST, route, 'index.html'), 'utf8')
+  } catch {
+    errors.push(`${route}: snapshot missing (EN-only route dropped from prerender ROUTES?)`)
+    continue
+  }
+  const lang = html.match(/<html[^>]*\blang="([^"]*)"/)?.[1]
+  if (lang !== 'en') errors.push(`${route}: lang="${lang}", expected "en"`)
+  const n = (html.match(/<link rel="alternate" hreflang=/g) ?? []).length
+  if (n !== 0) errors.push(`${route}: ${n} hreflang tags on an EN-only route, expected 0`)
+  const deExists = await access(join(DIST, 'de', route.slice(1), 'index.html')).then(() => true, () => false)
+  if (deExists) errors.push(`/de${route}/: rendered for an EN-only route - no German page exists`)
+}
+
 // Spot-check one EN-only report page: it must carry NO hreflang (it has no
 // German alternate) - inheriting the homepage triple is the bug class above.
 try {

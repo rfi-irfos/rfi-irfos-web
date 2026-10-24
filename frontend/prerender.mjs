@@ -31,10 +31,7 @@ const ROUTES = [
   '/research', '/world-model', '/squad', '/evidence', '/data-solutions', '/datasets', '/access', '/submit',
   // Legacy section URLs remain valid and should keep receiving static output.
   '/track-record', '/pricing',
-  // /team has no German translation (LegalPage META: no titleDe/body-DE) - a /de/team
-  // page would claim an alternate that doesn't exist, same reasoning as the EN-only
-  // evidence reports.
-  '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/methodology', '/faq',
+  '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/team', '/methodology', '/faq',
 ]
 
 // Individual disclosure-report routes (2026-09-25 crawlability sweep) - every
@@ -68,7 +65,11 @@ console.log(`discovered ${REPORT_SLUGS.length} individual report routes from AUD
 const LOCALIZED_ROUTES = [
   '/',
   '/world-model', '/squad', '/evidence', '/data-solutions', '/access',
-  '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/team', '/methodology', '/faq',
+  // /team has no German translation (LegalPage META: no titleDe/body-DE) - a /de/team
+  // page would claim an alternate that doesn't exist, same reasoning as the EN-only
+  // evidence reports. It stays in ROUTES above (the EN page must render) - removing
+  // it from the wrong list here is exactly what 404'd /team/ on 2026-10-24.
+  '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/methodology', '/faq',
 ]
 const absUrl = (route) => route === '/' ? 'https://rfi-irfos.com' : `https://rfi-irfos.com${route}/`
 const deRoute = (route) => route === '/' ? '/de' : `/de${route}`
