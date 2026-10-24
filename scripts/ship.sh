@@ -37,7 +37,17 @@ rm -rf frontend/dist
 # keeps getting silently undone. Installing fresh inside the very colony-run
 # that's about to consume it means the revision is always present when
 # needed, regardless of what any other project's cache GC did in between.
-colony-run -a frontend/dist -- 'cd frontend && npm ci --no-audit --no-fund >/dev/null 2>&1; npx playwright install chromium >/dev/null 2>&1; set -o pipefail; npm run build 2>&1 | tail -8'
+# VITE_WEB3FORMS_KEY: live bug report 2026-10-24 (both the main contact form
+# and the Squad "Request Access" form landed in the error state while the
+# Lighthouse CRM relay was down, with no safety net). Vite inlines
+# import.meta.env.VITE_* at build time from the build process's own env - the
+# frontend build runs here, on the Colony, not inside Docker (see Dockerfile's
+# own top comment), so the key has to reach THIS remote shell, not a
+# `--build-arg`. Read fresh from the gitignored, never-committed local file
+# at ship-time rather than hardcoding it into this committed script.
+WEB3FORMS_KEY="$(grep -m1 '^VITE_WEB3FORMS_KEY=' frontend/.env.production.local | cut -d= -f2-)"
+test -n "$WEB3FORMS_KEY" || { echo "missing VITE_WEB3FORMS_KEY in frontend/.env.production.local" >&2; exit 1; }
+colony-run -a frontend/dist -- "cd frontend && npm ci --no-audit --no-fund >/dev/null 2>&1; npx playwright install chromium >/dev/null 2>&1; set -o pipefail; VITE_WEB3FORMS_KEY='$WEB3FORMS_KEY' npm run build 2>&1 | tail -8"
 test -f frontend/dist/index.html
 ssh colony 'rm -rf ~/work/rfi-web-img && mkdir -p ~/work/rfi-web-img'
 git archive HEAD | ssh colony 'tar -x -C ~/work/rfi-web-img'

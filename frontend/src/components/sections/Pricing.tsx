@@ -224,7 +224,20 @@ export function PricingSection({
   return (
     <section id="pricing" style={{ padding: '56px var(--sec-pad-x) 120px' }}>
       <div style={{ maxWidth: 1440, margin: '0 auto' }}>
-        <Reveal>
+        {/* from="top" on all three Reveals in this section (not the shared
+            default "bottom"): live bug report 2026-10-24, these three blocks
+            sit immediately below the fixed nav once scrolled, exactly where
+            Reveal's top exit boundary (shared.tsx, rootMargin -8% from top)
+            lives. "bottom" hides by translateY(+dist) - away from the top
+            edge, i.e. back INTO the still-visible zone - so the hide
+            transition's own motion could re-cross the same exit line it had
+            just crossed, flip back to visible, animate back out, and repeat:
+            a self-driven feedback loop (not scroll jitter - an 80ms debounce
+            added earlier the same day did not fix it, because the loop keeps
+            re-arming itself). "top" hides by translateY(-dist) - further AWAY
+            from the exit line, in the same direction as the exit itself - so
+            the hide motion reinforces the crossing instead of undoing it. */}
+        <Reveal from="top">
           <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <p className="wm-eyebrow">{t.pricing.eyebrow}</p>
             <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.pricing.heading}</h1>
@@ -233,7 +246,7 @@ export function PricingSection({
         </Reveal>
 
         <div>
-          <Reveal>
+          <Reveal from="top">
             <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 20 }}>
               <BillingToggle billing={billing} onChange={setBilling} />
             </div>
@@ -245,7 +258,7 @@ export function PricingSection({
               of five columns instead of a separate banner, Enterprise band
               attached directly below with its own tinted background so it
               reads as the premium tier rather than a sixth plain card. */}
-          <Reveal from="bottom" dist={32}>
+          <Reveal from="top" dist={32}>
             <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', background: 'var(--glass-bg-solid)', boxShadow: '0 20px 60px rgba(0,0,0,0.45)' }}>
               <div style={{ display: 'grid', gridTemplateColumns: tablet ? '1fr' : 'repeat(5, 1fr)' }}>
                 <div style={{
