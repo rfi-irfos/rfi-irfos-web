@@ -155,19 +155,10 @@ export function ScrollSpine({ theme }: { theme: Theme }) {
   // that theme entirely rather than picking a "high contrast glow" color.
   if (theme === 'hc') return null
 
-  // Two layers (2026-10-23, "the dot never passes the big panels"): the thin rail stays BEHIND
-  // the content (zIndex -1) so it never crosses text, but the orb (dot + trail) rides in its own
-  // layer ABOVE the sections (zIndex 50, below the nav at 100) so it stays visible while it passes
-  // the opaque cards and panels instead of vanishing behind them.
   return (
-    <>
     <motion.div aria-hidden="true" style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none', opacity: reduced ? 1 : groupOpacity }}>
       <motion.div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: clipHeight, overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: 2, transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.1)', boxShadow: `0 0 6px rgba(${accentRgb},0.08)` }} />
-      </motion.div>
-    </motion.div>
-    <motion.div aria-hidden="true" style={{ position: 'fixed', inset: 0, zIndex: 50, pointerEvents: 'none', opacity: reduced ? 1 : groupOpacity }}>
-      <motion.div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: clipHeight, overflow: 'hidden' }}>
         <motion.div style={{ position: 'absolute', left: '50%', width: 0, height: 0, top: reduced ? staticTop : topPct, opacity: reduced ? 1 : orbOpacity }}>
           {/* the trail - a short fading tail extending back up the spine, not a
               radial blob, so it stays confined to the line's own narrow width */}
@@ -186,6 +177,5 @@ export function ScrollSpine({ theme }: { theme: Theme }) {
         </motion.div>
       </motion.div>
     </motion.div>
-    </>
   )
 }

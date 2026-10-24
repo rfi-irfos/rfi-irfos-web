@@ -1119,7 +1119,7 @@ export const DE: Content = {
       },
       research: {
         heading: 'Forschung',
-        links: { research: 'Forschung', trackRecord: 'Evidenz', methodology: 'Methodik' },
+        links: { research: 'Forschung', trackRecord: 'Evidenz', methodology: 'Methodik', dataSolutions: 'Data Solutions' },
       },
     },
     copyright: '© 2026 RFI-IRFOS  ·  Graz, Österreich  ·  GISA 39261441  ·  UID ATU83405245',

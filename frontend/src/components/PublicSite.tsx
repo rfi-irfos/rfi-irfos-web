@@ -215,7 +215,6 @@ function viewForSection(section?: string | null): PublicView {
 const NAV_HREFS = [
   { key: 'squad' as const, href: '/squad/' },
   { key: 'worldModel' as const, href: '/world-model/' },
-  { key: 'dataSolutions' as const, href: '/data-solutions/' },
   { key: 'trackRecord' as const, href: '/evidence/' },
   { key: 'pricing' as const, href: '/access/' },
 ]
@@ -1651,6 +1650,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                     { label: t.footer.groups.research.links.research, href: '/research/' },
                     { label: t.footer.groups.research.links.trackRecord, href: '/evidence/' },
                     { label: t.footer.groups.research.links.methodology, href: '/methodology/' },
+                    { label: t.footer.groups.research.links.dataSolutions, href: '/data-solutions/' },
                   ],
                 },
               ]
@@ -1674,6 +1674,13 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                       // as the top nav (navigateTo), then scrolls to the specific in-page
                       // section rather than just the view's top.
                       const target = l.href.replace(/^\/|\/$/g, '')
+                      // Data Solutions left the top nav (2026-10-23, product-led-growth flow):
+                      // it lives here in the footer and opens the same view as before.
+                      if (target === 'data-solutions') {
+                        e.preventDefault()
+                        navigateTo(target)
+                        return
+                      }
                       if (target === 'research' || target === 'track-record') {
                         e.preventDefault()
                         navigateTo(target)

@@ -17,7 +17,7 @@ import {
 import { useLocale } from '../../hooks/useLocale'
 import { Reveal, useMobile, beacon, WEB3FORMS_KEY, OUTPUT_TAG_HUES } from './shared'
 import { SQUAD_AGENTS, agentByKey, type AgentKey } from '../../content/squadAgents'
-import squadHeroWorkflow from '../../assets/squad/sq-hero-agent-workflow.mp4'
+import squadHeroWorkflow from '../../assets/squad/sq-hero-agent-os.mp4'
 
 const NEED_TO_KNOW_ICONS = [IconTrendingUp, IconCoin, IconGitCompare, IconCircleCheck, IconSearch, IconShieldLock]
 // One distinct icon per trust badge instead of the same checkmark four times
@@ -89,7 +89,10 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
             {/* Swapped from a static screenshot to a real screencast of the agent
                 workflow builder in motion (Simeon, 2026-09-13) - autoplay/muted/
                 loop/playsInline is required for iOS Safari to autoplay at all;
-                no controls, this is a hero backdrop, not a media player. */}
+                no controls, this is a hero backdrop, not a media player.
+                2026-10-24: replaced by the 45s Agent OS 3D film (16:9, 1280x720, no audio
+                track - it plays muted anyway). The frame is 1920:926, so object-fit: cover
+                trims about 7% off the top and bottom of the 16:9 picture. */}
             <video className="sq-hub-photo" src={squadHeroWorkflow} autoPlay muted loop playsInline />
           </div>
         </Reveal>
