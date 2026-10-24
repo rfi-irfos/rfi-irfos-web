@@ -84,10 +84,26 @@ for (const route of LOCALIZED_ROUTES) {
     errors.push(`${deRoute(route)}: DE description identical to EN - locale not applied?`)
 }
 
-// EN-only canonical routes (in prerender.mjs's ROUTES but NOT localized): the
-// snapshot must exist (on 2026-10-24 '/team' was dropped from ROUTES instead of
-// LOCALIZED_ROUTES and shipped as a live 404), must be English, must carry no
-// hreflang (no German alternate exists), and no /de/ twin may have been rendered.
+// EN-only canonical routes (in prerender.mjs's ROUTES but NOT itself in
+// LOCALIZED_ROUTES): the snapshot must exist (on 2026-10-24 '/team' was
+// dropped from ROUTES instead of LOCALIZED_ROUTES and shipped as a live
+// 404), must be English, and no /de/ twin of ITS OWN path may have been
+// rendered. Two different sub-cases for hreflang, not one:
+//   - CANONICAL_ALIAS routes (prerender.mjs) are the same page as their
+//     localized target under a legacy URL - they correctly carry that
+//     target's hreflang triple (first version of this check got this wrong,
+//     2026-10-24: flagged /pricing/track-record/submit as broken for
+//     carrying /access's/evidence's/home's triple, which is exactly right).
+//   - Everything else (just /team) has no localized equivalent anywhere and
+//     must carry zero hreflang tags.
+// Keep in sync with prerender.mjs's CANONICAL_ALIAS.
+const CANONICAL_ALIAS = {
+  '/track-record': '/evidence',
+  '/pricing': '/access',
+  '/datasets': '/data-solutions',
+  '/research': '/',
+  '/submit': '/',
+}
 const EN_ONLY_ROUTES = ['/research', '/datasets', '/submit', '/track-record', '/pricing', '/team']
 const { access } = await import('node:fs/promises')
 for (const route of EN_ONLY_ROUTES) {
@@ -100,8 +116,17 @@ for (const route of EN_ONLY_ROUTES) {
   }
   const lang = html.match(/<html[^>]*\blang="([^"]*)"/)?.[1]
   if (lang !== 'en') errors.push(`${route}: lang="${lang}", expected "en"`)
-  const n = (html.match(/<link rel="alternate" hreflang=/g) ?? []).length
-  if (n !== 0) errors.push(`${route}: ${n} hreflang tags on an EN-only route, expected 0`)
+  const alias = CANONICAL_ALIAS[route]
+  if (alias) {
+    for (const [hl, target] of [['en', absUrl(alias)], ['de', absUrl(deRoute(alias))], ['x-default', absUrl(alias)]]) {
+      const re = new RegExp(`<link rel="alternate" hreflang="${hl}" href="([^"]*)"`)
+      const href = html.match(re)?.[1]
+      if (href !== target) errors.push(`${route}: hreflang ${hl} = ${href ?? 'MISSING'}, expected ${target} (alias of ${alias})`)
+    }
+  } else {
+    const n = (html.match(/<link rel="alternate" hreflang=/g) ?? []).length
+    if (n !== 0) errors.push(`${route}: ${n} hreflang tags, expected 0 (no localized equivalent)`)
+  }
   const deExists = await access(join(DIST, 'de', route.slice(1), 'index.html')).then(() => true, () => false)
   if (deExists) errors.push(`/de${route}/: rendered for an EN-only route - no German page exists`)
 }
