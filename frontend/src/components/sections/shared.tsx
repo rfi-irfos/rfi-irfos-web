@@ -2,7 +2,7 @@
 // itself for the nav/modals/footer) - extracted verbatim from the former single
 // ~5600-line PublicSite.tsx as a pure refactor (no copy/style/behavior changes).
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
-import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { useLocale } from '../../hooks/useLocale'
 
 // Was the literal '#00f5c4'. In dark, --accent IS #00f5c4, so this is a zero-diff
@@ -413,38 +413,33 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
 // cell instead. Same single shared flag, same semantics, just import-safe.
 export const revealSuppressed = { current: false }
 
-// History of this function, both incidents worth knowing before touching it again:
-//
-// (1) Original version computed opacity as a pure function of the element's CURRENT
-// position on every scroll event, with NO defined settle zone and no reduced-motion/
-// anchor-jump escape hatch - it could leave content stuck invisible depending on
-// scroll direction, confirmed by direct reproduction on the one page taking paid
-// traffic. Fixed 2026-08-05 by switching to a one-shot IntersectionObserver:
-// `visible` latched true forever once seen, never reverting.
-//
-// (2) That one-shot version was itself replaced 2026-08-06 (bidirectional toggle),
-// then replaced AGAIN the same day: bidirectional-via-CSS-transition still fired a
-// fixed-duration animation off a threshold crossing, which read as a discrete "snap"
-// rather than tracking scroll continuously (Simeon: "diese reinfliegen muss nich
-// animiert sein sondern vom scroll abhangig sein"). This version fixes that by using
-// Framer's `useScroll` to read the element's own scroll-relative progress directly -
-// opacity/transform are a continuous function of CURRENT position again, same shape
-// as incident (1)'s root cause. The difference this time, deliberately: a real
-// library primitive (`useScroll`) does the position tracking instead of a hand-rolled
-// listener, and `prefersReducedMotion()`/`revealSuppressed.current` are checked
-// LIVE inside the `useTransform` callback below (which runs in Framer's value
-// pipeline, not React's render phase - not the same class of read as the
-// react-hooks/refs violation fixed earlier the same day) rather than captured once
-// at mount. That live check is what makes an in-app anchor-nav click correctly force
-// already-mounted elements to full visibility regardless of where the jump lands,
-// closing the specific gap the mount-once "bypass" state had.
-// dist default raised 32 -> 72 (2026-08-18, live feedback: "der effect isch zu
-// wenig dramatisch, fast nicht sichtbar, das muss ULTRASMOOTH sein") - the
-// mechanism underneath was already continuous/scroll-linked (see the incident
-// history above), so "ultrasmooth" was never a motion-curve problem, just a
-// travel distance too small to read as converging from the edges. Raising the
-// shared default means every existing Reveal call across the site gets the
-// more dramatic version automatically, not just the ones touched directly.
+// History of this function (why it's no longer a continuous scroll-position
+// tween): v1 computed opacity as a pure function of CURRENT scroll position
+// with no settle zone - could leave content stuck invisible depending on
+// scroll direction (2026-08-05). v2 was a one-shot IntersectionObserver (fixed
+// v1, but never reverted once revealed). v3 (2026-08-06) made it bidirectional
+// via a fixed-duration CSS transition on a threshold crossing - rejected the
+// same day for reading as a "snap" instead of tracking scroll continuously
+// ("diese reinfliegen muss nich animiert sein sondern vom scroll abhangig
+// sein"), replaced by v4: Framer's useScroll/useTransform driving opacity and
+// transform directly off live scroll position, no transition at all. v4 fixed
+// the "snap" complaint, but turned out to be the wrong trade - four months of
+// recurring live bugs chasing a settle formula that had to be correct for
+// every element height, every nesting depth, and every platform's scroll
+// quirks at once: wrong settle zone for tall/short/nested elements (multiple
+// rounds, 08-14 through 10-24), then mobile jank from reading layout
+// properties on every scroll frame, then mobile's address bar resizing the
+// viewport DURING scroll and moving the settle line out from under the
+// animation while it played. Simeon, 2026-10-24, after that last round:
+// "that every single element is flying in or out... is an impossible task to
+// actually get it right across all the platforms... better to have a normal
+// scroll reveal." This is v5 - back to v3's IntersectionObserver-plus-CSS-
+// transition shape. The "snap" v3 was rejected for is the point now: a short
+// fixed-duration transition triggered by a threshold crossing has a small,
+// enumerable surface (one rootMargin, one duration, one easing curve) instead
+// of a settle formula that has to hold for every element against every
+// browser's live viewport behavior - correct-by-construction instead of
+// correct-by-increasingly-specific-correction.
 export function Reveal({
   children, delay = 0, from = 'bottom', dist = 32, style: extra,
 }: {
@@ -455,140 +450,67 @@ export function Reveal({
   style?: React.CSSProperties
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  // 0 = element's top edge about to enter the viewport from the bottom, 1 = its
-  // bottom edge about to leave past the top - the element's full transit, not a
-  // single threshold crossing.
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  // viewportH/elH used to be read LIVE inside the useTransform callback below -
-  // window.innerHeight and el.offsetHeight, on every single scroll frame, for
-  // every Reveal instance mounted on the page at once. Two live mobile bugs
-  // (2026-10-24, Simeon's phone plus an independent teammate report on the
-  // same scroll) traced back to exactly that: (1) offsetHeight is a
-  // layout-triggering read - a forced synchronous layout on every scroll tick,
-  // times however many Reveal components are on screen, is the textbook jank
-  // pattern ("nicht diese 60 FPS Feeling", "laggy", "nicht smooth"). (2)
-  // window.innerHeight on mobile Chrome/Safari shrinks and grows as the
-  // address bar collapses/expands DURING scroll, not only on resize - since
-  // that value fed straight into `total`/`inEnd` below and was re-read every
-  // tick, the settle threshold itself moved under the animation while
-  // scrolling, not a stable function of scroll position ("während man
-  // runterscrollt, sieht man gar nichts" - the toolbar alone could push an
-  // already-settled element back to mid-transit with zero scroll input).
-  // Fixed by measuring once on mount and re-measuring only on a genuine
-  // resize/orientation change (ResizeObserver for the element, a resize
-  // listener for the viewport) - the scroll callback is now pure math over
-  // cached numbers: no layout cost, and immune to toolbar flicker.
-  const dims = useRef({ viewportH: typeof window !== 'undefined' ? window.innerHeight : 800, elH: 0 })
+  // Lazy useState initializer, not a ref read during render (that's flagged
+  // by this project's react-hooks lint rule, and was the exact class of bug
+  // ScrambleHeading's own history already hit once): computed once at mount,
+  // never again. Reduced-motion users and an in-flight anchor-nav jump
+  // (PublicSite.tsx sets this during the jump, see revealSuppressed above)
+  // both render fully visible immediately, no transition, no observer needed.
+  const [skip] = useState(() => prefersReducedMotion() || revealSuppressed.current)
+  const [visible, setVisible] = useState(skip)
   useEffect(() => {
-    const measureViewport = () => { dims.current.viewportH = window.innerHeight }
-    measureViewport()
-    window.addEventListener('resize', measureViewport)
     const el = ref.current
-    let ro: ResizeObserver | undefined
-    if (el) {
-      dims.current.elH = el.offsetHeight
-      ro = new ResizeObserver(([entry]) => { dims.current.elH = entry.contentRect.height })
-      ro.observe(el)
-    }
+    if (!el || skip) return
+    // rootMargin shrinks the box IntersectionObserver tests intersection
+    // against: -10% at the bottom means "visible" only once the element is
+    // already 10% of the viewport up from the bottom edge (comfortably on
+    // screen, not right at the clipping edge, before the eye could rest on
+    // it); -8% at the top means it goes invisible again slightly before it
+    // would be clipped under the fixed nav, rather than exactly at the clip
+    // line. Not latched - isIntersecting toggles both ways, so scrolling back
+    // up past an element hides it again, same as scrolling down past it:
+    // "coming in as you scroll down... disappear again as you scroll up."
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { rootMargin: '-8% 0px -10% 0px', threshold: 0 },
+    )
+    observer.observe(el)
+    // Anchor-nav jump (PublicSite.tsx dispatches this at the moment of the
+    // click, see revealSuppressed above): force visible immediately rather
+    // than waiting for the observer to catch up with the programmatic scroll.
+    const onJump = () => setVisible(true)
+    const section = el.closest('.rfi-view-panel') ?? el.closest('section')
+    section?.addEventListener('rfi-nav-jump', onJump)
     return () => {
-      window.removeEventListener('resize', measureViewport)
-      ro?.disconnect()
+      observer.disconnect()
+      section?.removeEventListener('rfi-nav-jump', onJump)
     }
-  }, [])
-  // Maps that transit into a 0-1 "how assembled is this" value: ramps up over
-  // the first stretch (entrance) and then holds at 1 for the rest of the
-  // transit - continuous, so scrolling slowly assembles slowly, and scrolling
-  // back down past the bottom edge disassembles at the same rate through the
-  // same ramp. There is deliberately no exit ramp at the top (see below).
-  // `delay` shifts where the entrance ramp sits (not a time delay - there's no
-  // fixed-duration animation left to delay), so a row of grid items sharing
-  // nearly the same vertical position still cascades instead of settling in
-  // lockstep.
-  // inEnd/outStart used to be fixed fractions (0.28/0.72) of the element's OWN
-  // transit, regardless of its height. That transit (`scrollYProgress` above)
-  // spans from "top enters viewport bottom" to "bottom leaves viewport top",
-  // i.e. a distance of (viewport height + element height) - so the same 0.28/
-  // 0.72 split lands at wildly different actual on-screen positions depending
-  // on how tall the element is. A short element (a toggle, a button row) has
-  // transit ~= viewport height, so 72% of it is reached while the element is
-  // still fully and comfortably on screen - it was starting to fade out long
-  // before it was anywhere near the top edge (live bug report 2026-10-14:
-  // "schon wieder halb verschwunden" while sibling content lower on the page
-  // was still revealing). A tall element (a multi-row grid/widget) has transit
-  // much larger than the viewport, so 28% of it can already be past the point
-  // where its top has scrolled above the viewport - it was never reaching
-  // "settled" before its own top edge started clipping (same report: a grid
-  // tile "noch nicht ganz reingeflogen" while already cut off above). Fixed by
-  // deriving inEnd/outStart from where the element's top edge actually sits
-  // relative to the viewport, using its real height - so "settled" always
-  // means "comfortably visible", for any element size.
-  const settled = useTransform(scrollYProgress, latest => {
-    if (prefersReducedMotion() || revealSuppressed.current) return 1
-    const { viewportH, elH: cachedElH } = dims.current
-    const elH = cachedElH || viewportH
-    const total = viewportH + elH
-    // `delay` nudges a row of grid items into a cascade rather than settling
-    // in lockstep. Capped tight: at 868px viewport the old cap (0.06 of
-    // transit) pushed a staggered child's settle line up to ~94px higher,
-    // which is most of why nested reveals lagged their parent.
-    const offset = Math.min(0.02, delay * 0.004)
-    // Settled once the element has entered ~8% of the viewport (~70px) past
-    // the bottom edge - the fly-in plays over the first few dozen scrolled
-    // pixels and is DONE before the eye could rest on the element. Two prior
-    // factors (0.22 then 0.13, i.e. settle at 78%/87% viewport height) both
-    // failed live (2026-10-24, twice: "die sachen fliegen noch rein" then
-    // "nur marginal besser... die berechnung isch noch iwie broke"): any
-    // settle line meaningfully above the bottom edge means a child reveal
-    // deep inside a tall parent (team card sub-boxes, free-check widget rows)
-    // is still mid-flight while the parent is already centered in view.
-    const inEnd = Math.min(0.9, Math.max(0.04, (viewportH * 0.08) / total + offset))
-    const smooth = (value: number) => value * value * (3 - 2 * value)
-    if (latest <= 0) return 0
-    if (latest < inEnd) return smooth(latest / inEnd)
-    // No exit ramp anymore. The old one started fading the element once its
-    // top neared ~8% viewport height - but a tall card MUST be scrolled that
-    // far up before its lower children are visible at all, so reading the
-    // bottom of a card actively faded out its top (live report 2026-10-24,
-    // screenshot: team card "fast verschwunden unter dem header" while its
-    // three sub-boxes were still flying in). Once assembled, an element stays
-    // at full visibility until it has actually left the viewport; scrolling
-    // back down past the bottom edge still disassembles it symmetrically via
-    // the entrance ramp above.
-    return 1
-  })
-  const transform = useTransform(settled, s => {
-    const d = (1 - s) * dist
+  }, [skip])
+  const computeTransform = (shown: boolean) => {
+    const d = shown ? 0 : dist
     if (from === 'left')  return `translateX(${-d}px)`
     if (from === 'right') return `translateX(${d}px)`
     if (from === 'top')   return `translateY(${-d}px)`
-    if (from === 'scale') return `scale(${1 - (1 - s) * 0.16})`
+    if (from === 'scale') return `scale(${shown ? 1 : 0.92})`
     return `translateY(${d}px)`
-  })
-  // Same root cause ScrambleHeading already hit and fixed (see its comment above):
-  // `settled` only recomputes when `scrollYProgress` itself changes, so an in-app
-  // nav jump that lands the element at rest - no further scroll delta - never
-  // re-runs the transform, and it stays stuck at whatever mid-transit value it
-  // happened to hold at that instant (live bug report: a paragraph "stuck grey,
-  // doesn't slide fully in" after clicking a top-nav link straight to it).
-  // `revealSuppressed.current` alone doesn't fix this either, for the same reason
-  // ScrambleHeading's own comment gives: it's read inside this useTransform
-  // callback, so it only takes effect the next time the callback happens to fire.
-  // Fix: listen for the same deterministic `rfi-nav-jump` event ScrambleHeading
-  // uses and imperatively `.set(1)` on the settled MotionValue - that push
-  // directly notifies every dependent (`transform` here) regardless of whether
-  // scrollYProgress ever moves again.
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const section = el.closest('.rfi-view-panel') ?? el.closest('section')
-    const onJump = () => settled.set(1)
-    section?.addEventListener('rfi-nav-jump', onJump)
-    return () => section?.removeEventListener('rfi-nav-jump', onJump)
-  }, [settled])
+  }
+  // `delay` is used across the site as a small stagger index (0/1/2/3, or a
+  // grid's `i`), never a literal second count - capped the same way the old
+  // settle-offset was, so no call site's range can produce an absurd wait.
+  const transitionDelay = `${Math.min(0.4, delay * 0.06)}s`
   return (
-    <motion.div ref={ref} style={{ opacity: settled, transform, willChange: 'transform, opacity', ...extra }}>
+    <div
+      ref={ref}
+      style={{
+        opacity: skip || visible ? 1 : 0,
+        transform: skip ? 'none' : computeTransform(visible),
+        transition: skip ? 'none' : `opacity 0.6s ease ${transitionDelay}, transform 0.6s cubic-bezier(0.16,1,0.3,1) ${transitionDelay}`,
+        willChange: 'transform, opacity',
+        ...extra,
+      }}
+    >
       {children}
-    </motion.div>
+    </div>
   )
 }
 
