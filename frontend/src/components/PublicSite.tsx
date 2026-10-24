@@ -1378,7 +1378,13 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         <a href="/" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <picture>
             <source srcSet="/logo.webp" type="image/webp" />
-            <img src="/logo.png" alt="" style={{ width: 42, height: 42, objectFit: 'contain', flexShrink: 0 }} />
+            {/* Real bug fix, live report 2026-10-24: logo.png/.webp is 126x84 (3:2),
+                not square - a 42x42 box + object-fit:contain was shrinking it down to an
+                effective 42x28 with ~7px of dead transparent padding above and below,
+                reading as smaller/off-centre next to the wordmark. Box now matches the
+                asset's real aspect ratio exactly (48x32, still 3:2) so there's no wasted
+                contain-padding, and a bit bigger than the old effective 42x28. */}
+            <img src="/logo.png" alt="" style={{ width: 48, height: 32, objectFit: 'contain', flexShrink: 0 }} />
           </picture>
           <span style={{ fontWeight: 700, fontSize: 'var(--fs-body)', letterSpacing: '0.06em', color: overDarkHero ? '#e8e8f0' : 'var(--text)' }}>RFI-IRFOS</span>
           <EkgLine theme={theme} />

@@ -492,18 +492,36 @@ export function Reveal({
     // line. Not latched - isIntersecting toggles both ways, so scrolling back
     // up past an element hides it again, same as scrolling down past it:
     // "coming in as you scroll down... disappear again as you scroll up."
+    // Debounced, not applied straight from the callback (live bug report,
+    // 2026-10-24: the pricing page's billing toggle sits right under the
+    // fixed nav once scrolled, exactly where the -8% top margin above puts
+    // the exit boundary - an element resting there crosses that single-pixel
+    // line back and forth on ordinary scroll-momentum jitter, and each
+    // crossing restarted this element's CSS transition mid-flight, reading
+    // as a visible shake). Collapsing a burst of crossings into the state
+    // that's still current 80ms after the last one keeps the intended
+    // scroll-past show/hide (still fires, just once scroll actually settles
+    // past the line) while killing the flicker - confirmed via a scripted
+    // reproduction oscillating 1px across this exact boundary before this
+    // fix (toggled) and after (didn't).
+    let debounce: number | undefined
     const observer = new IntersectionObserver(
-      ([entry]) => setVisible(entry.isIntersecting),
+      ([entry]) => {
+        const next = entry.isIntersecting
+        window.clearTimeout(debounce)
+        debounce = window.setTimeout(() => setVisible(next), 80)
+      },
       { rootMargin: '-8% 0px -10% 0px', threshold: 0 },
     )
     observer.observe(el)
     // Anchor-nav jump (PublicSite.tsx dispatches this at the moment of the
     // click, see revealSuppressed above): force visible immediately rather
     // than waiting for the observer to catch up with the programmatic scroll.
-    const onJump = () => setVisible(true)
+    const onJump = () => { window.clearTimeout(debounce); setVisible(true) }
     const section = el.closest('.rfi-view-panel') ?? el.closest('section')
     section?.addEventListener('rfi-nav-jump', onJump)
     return () => {
+      window.clearTimeout(debounce)
       observer.disconnect()
       section?.removeEventListener('rfi-nav-jump', onJump)
     }
