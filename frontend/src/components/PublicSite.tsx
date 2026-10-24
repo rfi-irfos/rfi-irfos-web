@@ -1024,7 +1024,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       // clips the same way `hidden` does but isn't a scrolling mechanism, so
       // it doesn't trigger the overflow-y auto-computation at all.
       position: 'relative', zIndex: 0,
-      color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'clip', maxWidth: '100vw' }}>
+      color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'clip' }}>
 
       {/* Photo backdrop, on its own layer (live feedback 2026-08-14: "it takes too
           much attention, like a drummer overshadowing the band, not carrying it" -
@@ -1359,7 +1359,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             <a key={n.href} href={n.href} style={{
               position: 'relative',
               color: isActive ? (overDarkHero ? '#e8e8f0' : 'var(--text)') : (overDarkHero ? '#a0a0b8' : 'var(--text2)'),
-              fontSize: 'var(--fs-body)', fontWeight: 700,
+              fontSize: 'var(--fs-lead)', fontWeight: 700,
               textDecoration: 'none', letterSpacing: '0.04em',
               transition: 'color 0.18s',
               paddingBottom: 4,
@@ -1367,7 +1367,9 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               onMouseEnter={e => {
                 e.currentTarget.style.color = overDarkHero ? '#e8e8f0' : 'var(--text)'
                 const rect = e.currentTarget.getBoundingClientRect()
-                armNavMenuOpen(n.key, rect.left + rect.width / 2)
+                // rects are in screen px, the fixed menu lays out in html-zoom units
+                const zoom = parseFloat(getComputedStyle(document.documentElement).zoom) || 1
+                armNavMenuOpen(n.key, (rect.left + rect.width / 2) / zoom)
               }}
               onMouseLeave={e => (e.currentTarget.style.color = isActive ? (overDarkHero ? '#e8e8f0' : 'var(--text)') : (overDarkHero ? '#a0a0b8' : 'var(--text2)'))}
               onClick={e => { e.preventDefault(); navigateTo(n.href) }}

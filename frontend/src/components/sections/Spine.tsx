@@ -18,8 +18,8 @@
 // stacking works exactly as it should, with no per-component masking logic
 // needed in this file at all.
 import { useEffect } from 'react'
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { TEAL, prefersReducedMotion, usePageScrollProgress } from './shared'
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion'
+import { TEAL, prefersReducedMotion, pageZoom } from './shared'
 import type { Theme } from '../../hooks/useTheme'
 
 // Every glow/trail color below was hardcoded to dark theme's bright #00f5c4
@@ -34,15 +34,16 @@ const ACCENT_RGB: Record<Theme, string> = { dark: '0,245,196', light: '0,158,122
 
 export function ScrollSpine({ theme }: { theme: Theme }) {
   const reduced = prefersReducedMotion()
-  const rawProgress = usePageScrollProgress()
   const accentRgb = ACCENT_RGB[theme]
 
-  const mv = useMotionValue(rawProgress)
-  useEffect(() => { mv.set(rawProgress) }, [rawProgress, mv])
+  // scrollYProgress is a MotionValue: scroll updates flow through framer's value
+  // pipeline without a React re-render per scroll frame (the old state-based hook
+  // re-rendered this whole component 60x/s).
+  const { scrollYProgress: mv } = useScroll()
   const smooth = useSpring(mv, { stiffness: 120, damping: 22, mass: 0.5 })
   // 3%..97%, not 0%..100% - keeps the trail's own tail fully on-screen at both
   // ends of the page instead of clipping off the top/bottom edge.
-  const topPct = useTransform(smooth, v => `${3 + v * 94}%`)
+  const topPct = useTransform(reduced ? mv : smooth, v => `${3 + v * 94}%`)
 
   // Fades the whole spine group in only once scrolled past the Hero (Simeon:
   // shouldn't compete with the hero's own CTA), using the first section below the
@@ -69,12 +70,14 @@ export function ScrollSpine({ theme }: { theme: Theme }) {
   // badge (Simeon, screenshot feedback) - measured live against the footer's
   // current viewport-relative top on every scroll frame, not a fixed page
   // offset, so it stays correct regardless of how much content is above it.
-  const clipHeight = useMotionValue(typeof window === 'undefined' ? 2000 : window.innerHeight)
+  const clipHeight = useMotionValue(typeof window === 'undefined' ? 2000 : window.innerHeight / pageZoom())
   useEffect(() => {
     let rafId = 0
     const compute = () => {
       const footerTop = document.querySelector('footer')?.getBoundingClientRect().top
-      clipHeight.set(footerTop === undefined ? window.innerHeight : Math.max(0, Math.min(window.innerHeight, footerTop)))
+      // clipHeight styles a fixed layer, so it lives in zoomed units (screen px / zoom)
+      const z = pageZoom()
+      clipHeight.set(footerTop === undefined ? window.innerHeight / z : Math.max(0, Math.min(window.innerHeight, footerTop)) / z)
     }
     const onScroll = () => { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(compute) }
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -109,7 +112,7 @@ export function ScrollSpine({ theme }: { theme: Theme }) {
       const orbPx = ((3 + smooth.get() * 94) / 100) * vh
       for (const el of cards) {
         const rect = el.getBoundingClientRect()
-        if (rect.bottom < 0 || rect.top > vh) { el.style.filter = 'none'; continue }
+        if (rect.bottom < 0 || rect.top > vh) { if (el.dataset.glow !== '0') { el.style.filter = 'none'; el.dataset.glow = '0' } continue }
         const cardCenter = rect.top + rect.height / 2
         const dist = Math.abs(cardCenter - orbPx)
         const falloff = 220
@@ -117,7 +120,12 @@ export function ScrollSpine({ theme }: { theme: Theme }) {
         // Softened per feedback (2026-08-06): a tight 18px/0.35 read as a hard
         // highlight, not ambience. Wider blur + much lower peak alpha reads as
         // a soft foggy wash instead of a distinct glow outline.
-        const a = (ratio * 0.14).toFixed(3)
+        // Quantised to 0.01 steps and written only on change: a drop-shadow filter
+        // repaints the whole card subtree, so ~30 cards rewriting it every scroll
+        // frame was the main source of scroll jank.
+        const a = (Math.round(ratio * 14) / 100).toFixed(2)
+        if (el.dataset.glow === a) continue
+        el.dataset.glow = a
         el.style.filter = ratio > 0 ? `drop-shadow(0 0 42px rgba(${accentRgb},${a}))` : 'none'
       }
     }
@@ -136,7 +144,6 @@ export function ScrollSpine({ theme }: { theme: Theme }) {
     }
   }, [reduced, smooth, accentRgb])
 
-  const staticTop = `${3 + rawProgress * 94}%`
 
   // Fades the orb out over the last ~90px before it reaches the footer clip
   // point, rather than letting it hard-clip and sit pinned to that edge
@@ -146,7 +153,7 @@ export function ScrollSpine({ theme }: { theme: Theme }) {
     const [s, ch] = latest as [number, number]
     const vh = window.innerHeight
     const orbPx = ((3 + s * 94) / 100) * vh
-    return Math.max(0, Math.min(1, (ch - orbPx) / 90))
+    return Math.max(0, Math.min(1, (ch * pageZoom() - orbPx) / 90))
   })
 
   // High contrast strips glass/blur/decorative effects everywhere else in this
@@ -159,7 +166,7 @@ export function ScrollSpine({ theme }: { theme: Theme }) {
     <motion.div aria-hidden="true" style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none', opacity: reduced ? 1 : groupOpacity }}>
       <motion.div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: clipHeight, overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: 2, transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.1)', boxShadow: `0 0 6px rgba(${accentRgb},0.08)` }} />
-        <motion.div style={{ position: 'absolute', left: '50%', width: 0, height: 0, top: reduced ? staticTop : topPct, opacity: reduced ? 1 : orbOpacity }}>
+        <motion.div style={{ position: 'absolute', left: '50%', width: 0, height: 0, top: topPct, opacity: reduced ? 1 : orbOpacity }}>
           {/* the trail - a short fading tail extending back up the spine, not a
               radial blob, so it stays confined to the line's own narrow width */}
           <div style={{

@@ -1036,3 +1036,12 @@ export function useFormAbandonment(name: string, values: Record<string, unknown>
     }
   }, [name, state])
 }
+
+
+// The whole site renders under `html { zoom: 0.9 }` (index.css). Viewport APIs
+// (getBoundingClientRect, clientX, innerWidth) report screen px, while position:fixed
+// and inline px lay out in zoomed units - divide screen px by this to convert.
+export function pageZoom(): number {
+  if (typeof document === 'undefined') return 1
+  return parseFloat(getComputedStyle(document.documentElement).zoom) || 1
+}

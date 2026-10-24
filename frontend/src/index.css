@@ -3,12 +3,12 @@
    display line stays fluid (clamp) and is the only exception. Weights: 400 / 700 / 900.
    Families: Archivo = headings, Inter = text, JetBrains Mono = eyebrows/labels/code. */
 :root {
-  --fs-label: 10px;   /* mono eyebrows, pills, micro text */
-  --fs-small: 12px;   /* meta, card copy, list items */
-  --fs-body: 14px;    /* running text */
-  --fs-lead: 16px;    /* intros under headings */
-  --fs-h3: 20px;      /* card and panel titles */
-  --fs-h2: 29px;      /* section headings, big numbers */
+  --fs-label: 11px;   /* mono eyebrows, pills, micro text */
+  --fs-small: 13px;   /* meta, card copy, list items */
+  --fs-body: 15px;    /* running text */
+  --fs-lead: 18px;    /* intros under headings */
+  --fs-h3: 22px;      /* card and panel titles */
+  --fs-h2: 32px;      /* section headings, big numbers */
   --lh-tight: 1.2;    /* headings, numbers */
   --lh-body: 1.6;     /* all running text */
 }
@@ -17,7 +17,9 @@ button, input, select, textarea { font-family: inherit; }
 
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; -webkit-font-smoothing: antialiased; }
-html { scroll-padding-top: 72px; }
+/* Whole site renders at 90% (looks tighter than 100%). Percent widths resolve in zoomed
+   units, so #root still fills the viewport; never use vw/max-width:100vw on wrappers. */
+html { scroll-padding-top: 72px; zoom: 0.9; }
 #root { width: 100%; min-height: 100svh; }
 
 /* Headline font - all section h2s already use real heading tags, so this one rule

@@ -1,6 +1,7 @@
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Content } from '../content/en'
+import { pageZoom } from './sections/shared'
 
 // Shared glass-panel mega menu that lives under the whole nav row (not one
 // panel per link) so switching between nav items while the mouse stays
@@ -103,7 +104,7 @@ export function NavMegaMenu({ activeKey, anchorX, t, onNavigate, mobile }: {
             // the containing block for any position:fixed descendant instead of
             // the viewport, the same issue ResearchAreaModal below works around
             // with its own createPortal call.
-            left: anchorX == null ? '50%' : Math.min(Math.max(anchorX, 134), window.innerWidth - 134),
+            left: anchorX == null ? '50%' : Math.min(Math.max(anchorX, 134), window.innerWidth / pageZoom() - 134),
             zIndex: 39, minWidth: 236,
             background: 'rgba(10,11,18,0.94)',
             backdropFilter: 'blur(20px) saturate(160%)',

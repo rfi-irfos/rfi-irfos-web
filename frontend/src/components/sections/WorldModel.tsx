@@ -17,7 +17,7 @@ import {
   IconMessage2, IconMountain, IconRobot, IconRoute, IconShieldLock, IconShip, IconSnowflake, IconTrain,
   IconWorld, IconX,
 } from '@tabler/icons-react'
-import { Reveal, OUTPUT_TAG_HUES, beacon } from './shared'
+import { Reveal, OUTPUT_TAG_HUES, beacon, pageZoom } from './shared'
 import { HeroSlideshow } from './Hero'
 import { useLocale } from '../../hooks/useLocale'
 // Real DINGIR interface screenshots, own set (added 2026-09-01, replacing the
@@ -57,8 +57,8 @@ function useSpotlight<T extends HTMLElement>() {
     const el = ref.current
     if (!el) return
     const rect = el.getBoundingClientRect()
-    el.style.setProperty('--spot-x', `${event.clientX - rect.left}px`)
-    el.style.setProperty('--spot-y', `${event.clientY - rect.top}px`)
+    el.style.setProperty('--spot-x', `${(event.clientX - rect.left) / pageZoom()}px`)
+    el.style.setProperty('--spot-y', `${(event.clientY - rect.top) / pageZoom()}px`)
   }
   return { ref, onMouseMove }
 }
@@ -325,7 +325,8 @@ function HeroLightbox({ startIndex, onClose }: { startIndex: number; onClose: ()
   const onMouseMove = (ev: ReactMouseEvent) => {
     if (!dragging.current) return
     const d = dragging.current
-    setPan({ x: d.panX + (ev.clientX - d.x), y: d.panY + (ev.clientY - d.y) })
+    const z = pageZoom()
+    setPan({ x: d.panX + (ev.clientX - d.x) / z, y: d.panY + (ev.clientY - d.y) / z })
   }
   const endDrag = () => { dragging.current = null }
 

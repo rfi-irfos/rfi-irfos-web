@@ -44,7 +44,7 @@ function BentoTile({ icon, ic, title, onOpen, from, delay }: {
             edge along the top-left (light source) fading to a darker inset
             bottom-right, and a soft coloured drop shadow lifting the badge off
             the card. Same accent hue throughout, no new colour introduced. */}
-        <div className="rfi-glass-icon rfi-icon-pop" style={{ width: 54, height: 54, borderRadius: 15, ['--ib' as string]: `var(--ib-${ic})`, ['--pop-sym' as string]: '#efe3c8', ['--pop-fill' as string]: '40%' }}>
+        <div className="rfi-glass-icon rfi-icon-pop" style={{ width: 54, height: 54, borderRadius: 15, ['--ib' as string]: `var(--ib-${ic})`, ['--pop-sym' as string]: '#efe3c8', ['--pop-fill' as string]: '72%' }}>
           {icon}
         </div>
         <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-tight)', whiteSpace: 'pre-line' }}>{title}</div>
