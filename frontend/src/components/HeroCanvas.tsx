@@ -55,7 +55,7 @@ export default function HeroCanvas() {
     const container = containerRef.current
     if (!container) return
 
-    const renderer = new Renderer({ alpha: true, dpr: Math.min(window.devicePixelRatio, 2) })
+    const renderer = new Renderer({ alpha: true, dpr: 1 })
     const gl = renderer.gl
     gl.canvas.style.width = '100%'
     gl.canvas.style.height = '100%'
@@ -92,17 +92,28 @@ export default function HeroCanvas() {
     rafId = requestAnimationFrame(render)
 
     // Pause when the tab isn't visible - no reason to burn GPU on a hidden tab.
-    const onVis = () => {
-      if (document.hidden) { running = false; cancelAnimationFrame(rafId) }
-      else if (!running) { running = true; rafId = requestAnimationFrame(render) }
+    // Also pause once the hero has scrolled out of view: this soft blob field is
+    // pure background, and a full-screen shader running behind the rest of the
+    // page competes with compositing on every scroll frame. dpr is pinned to 1
+    // for the same reason - the output is a blurry gradient, so extra pixels
+    // buy nothing.
+    let inView = true
+    const sync = () => {
+      const shouldRun = inView && !document.hidden
+      if (shouldRun && !running) { running = true; rafId = requestAnimationFrame(render) }
+      else if (!shouldRun && running) { running = false; cancelAnimationFrame(rafId) }
     }
+    const onVis = sync
     document.addEventListener('visibilitychange', onVis)
+    const io = new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; sync() })
+    io.observe(container)
 
     return () => {
       running = false
       cancelAnimationFrame(rafId)
       window.removeEventListener('resize', resize)
       document.removeEventListener('visibilitychange', onVis)
+      io.disconnect()
       gl.getExtension('WEBGL_lose_context')?.loseContext()
       if (gl.canvas.parentNode === container) container.removeChild(gl.canvas)
     }
