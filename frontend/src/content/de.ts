@@ -399,9 +399,9 @@ export const DE: Content = {
     role: 'Mitgründerin & COO, RFI-IRFOS · Leitung Emergent Interaction Lab',
     laura: {
       paragraphs: [
-        "Seit 2023 erforscht Laura, wie sich Verhalten, Urteilsvermögen und neue Fähigkeiten im Zusammenspiel von Menschen und KI entwickeln. Ihre Arbeit verbindet die Untersuchung emergenter Phänomene mit der praktischen Entwicklung komplexer KI-Systeme.",
-        "Heute fließen diese Erkenntnisse in eine produktive Multi-Agenten-Architektur ein: 18 handentwickelte Kern-Agenten koordinieren einen Pool von 292 spezialisierten Agenten. Aufgaben werden verteilt, Ergebnisse überprüft und Freigaben kontrolliert, bevor Resultate weitergegeben werden.",
-        "Ihr Schwerpunkt liegt auf der Frage, wie aus vielen spezialisierten Einheiten ein kohärentes, überprüfbares System entsteht und welche Rolle menschliches Urteilsvermögen dabei spielt.",
+        "Laura ist interdisziplinäre Forscherin, Systemarchitektin und Gründerin des Emergent Interaction Lab. Ihre Arbeit umfasst künstliche Intelligenz, menschliche Kognition, Verhaltensanalyse und die Erforschung emergenter Phänomene, mit dem Schwerpunkt, wie sich komplexe Systeme verhalten, entwickeln und neue Fähigkeiten erwerben.",
+        "Seit 2023 betreibt sie umfangreiche Langzeitforschung zur Interaktion zwischen Mensch und KI. Sie hat eigene Methoden entwickelt, um kognitive, verhaltensbezogene und systemische Muster zu erkennen, zu rekonstruieren und zu bewerten. Ihre Forschung behandelt außerdem Bewusstsein, Perspektivübernahme, Entscheidungsprozesse und die Evolution von Intelligenz.",
+        "Sie entwirft komplexe Intelligenzarchitekturen, autonome Multi-Agenten-Systeme und computergestützte Forschungsumgebungen, darunter KERNEL, ERIS, SELFGRAPH und Laura's Agents. Ihre Beiträge zu RFI-IRFOS umfassen kausale Rekonstruktion, kognitive Modellierung und die Entwicklung des World Models.",
       ],
     },
   },

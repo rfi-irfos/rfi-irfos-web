@@ -412,9 +412,9 @@ export const EN = {
     role: 'Co-Founder & COO, RFI-IRFOS · Lead, Emergent Interaction Lab',
     laura: {
       paragraphs: [
-        "Since 2023, Laura has been researching how behavior, judgment and new capabilities develop in the interplay between humans and AI. Her work connects the study of emergent phenomena with the practical development of complex AI systems.",
-        "Today these insights feed into a production multi-agent architecture: 18 hand-built core agents coordinate a pool of 292 specialized agents. Tasks are distributed, results are checked and releases are controlled before anything is passed on.",
-        "Her focus is the question of how many specialized units become one coherent, verifiable system, and what role human judgment plays in it.",
+        "Laura is an interdisciplinary researcher, systems architect and founder of the Emergent Interaction Lab. Her work spans artificial intelligence, human cognition, behavioral analysis and the study of emergent phenomena, with a focus on how complex systems behave, develop and acquire new capabilities.",
+        "Since 2023, she has conducted extensive longitudinal research into human–AI interaction. She developed original methodologies to identify, reconstruct and evaluate cognitive, behavioral and systemic patterns, and her research also addresses consciousness, perspective-taking, decision processes and the evolution of intelligence.",
+        "She designs complex intelligence architectures, autonomous multi-agent systems and computational research environments, including KERNEL, ERIS, SELFGRAPH and Laura's Agents. Her contributions to RFI-IRFOS include causal reconstruction, cognitive modeling and World Model development.",
       ],
     },
   },
