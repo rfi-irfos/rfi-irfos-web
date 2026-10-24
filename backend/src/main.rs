@@ -11,8 +11,8 @@ mod upload;
 mod worldmodel;
 
 use axum::{
-    extract::Request,
-    http::{header, HeaderName, HeaderValue},
+    extract::{Request, State},
+    http::{header, HeaderName, HeaderValue, Method},
     middleware::{self, Next},
     response::{IntoResponse, Redirect, Response},
     routing::{get, post}, Router,
@@ -21,6 +21,41 @@ use sqlx::SqlitePool;
 use std::{collections::HashMap, path::PathBuf, sync::{Arc, RwLock}};
 use tower_http::{cors::CorsLayer, services::{ServeDir, ServeFile}};
 use serde::{Deserialize, Serialize};
+
+// tower-http's ServeDir answers `/security` (a directory) with a 307 to `/security/`. Google reads
+// 307 as temporary and keeps both URLs, which is how slash and no-slash variants ended up
+// as separate entries in Search Console. Redirect permanently (308) before ServeDir sees it.
+// Pure so it can be unit-tested: `is_dir_with_index` is the only filesystem touch.
+fn dir_slash_target(path: &str, query: Option<&str>, is_dir_with_index: impl Fn(&str) -> bool) -> Option<String> {
+    if path == "/" || path.ends_with('/') || path.contains("..") {
+        return None;
+    }
+    if ["/api", "/auth", "/uploads"].iter().any(|p| path == *p || path.starts_with(&format!("{p}/"))) {
+        return None;
+    }
+    if path.rsplit('/').next().is_some_and(|last| last.contains('.')) {
+        return None;
+    }
+    if !is_dir_with_index(path) {
+        return None;
+    }
+    Some(match query {
+        Some(q) => format!("{path}/?{q}"),
+        None => format!("{path}/"),
+    })
+}
+
+async fn redirect_dir_slash(State(static_dir): State<PathBuf>, req: Request, next: Next) -> Response {
+    if matches!(*req.method(), Method::GET | Method::HEAD) {
+        let target = dir_slash_target(req.uri().path(), req.uri().query(), |p| {
+            static_dir.join(p.trim_start_matches('/')).join("index.html").is_file()
+        });
+        if let Some(target) = target {
+            return Redirect::permanent(&target).into_response();
+        }
+    }
+    next.run(req).await
+}
 
 // Google indexes rfi-irfos.com and www.rfi-irfos.com as duplicate pages
 // otherwise — the canonical tag alone doesn't stop the www host from
@@ -258,6 +293,7 @@ async fn main() {
         .layer(CorsLayer::permissive())
         .layer(middleware::from_fn(set_cache_control))
         .layer(middleware::from_fn(set_security_headers))
+        .layer(middleware::from_fn_with_state(static_dir.clone(), redirect_dir_slash))
         .layer(middleware::from_fn(redirect_www));
 
     let port = std::env::var("PORT").unwrap_or("3000".into());
@@ -265,4 +301,41 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
     tracing::info!("Listening on http://{addr}");
     axum::serve(listener, app).await.unwrap();
+}
+
+#[cfg(test)]
+mod tests {
+    use super::dir_slash_target;
+
+    fn dirs(p: &str) -> bool {
+        matches!(p, "/security" | "/evidence/nintendo" | "/humanrights")
+    }
+
+    #[test]
+    fn directory_without_slash_gets_a_slash() {
+        assert_eq!(dir_slash_target("/security", None, dirs), Some("/security/".into()));
+        assert_eq!(dir_slash_target("/evidence/nintendo", Some("a=1"), dirs), Some("/evidence/nintendo/?a=1".into()));
+    }
+
+    #[test]
+    fn leaves_everything_else_alone() {
+        assert_eq!(dir_slash_target("/", None, dirs), None);
+        assert_eq!(dir_slash_target("/security/", None, dirs), None);
+        assert_eq!(dir_slash_target("/robots.txt", None, |_| true), None);
+        assert_eq!(dir_slash_target("/.well-known", None, |_| true), None);
+        assert_eq!(dir_slash_target("/api", None, |_| true), None);
+        assert_eq!(dir_slash_target("/api/track", None, |_| true), None);
+        assert_eq!(dir_slash_target("/uploads/x", None, |_| true), None);
+        assert_eq!(dir_slash_target("/not-a-dir", None, dirs), None);
+    }
+
+    #[test]
+    fn path_traversal_is_never_probed() {
+        assert_eq!(dir_slash_target("/../etc", None, |_| true), None);
+    }
+
+    #[test]
+    fn prefix_lookalikes_of_excluded_roots_still_redirect() {
+        assert_eq!(dir_slash_target("/apiary", None, |_| true), Some("/apiary/".into()));
+    }
 }
