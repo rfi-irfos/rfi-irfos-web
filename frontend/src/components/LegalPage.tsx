@@ -52,8 +52,8 @@ const META: Record<string, { title: string; description: string; titleDe?: strin
     titleDe: 'AGB — RFI-IRFOS', descriptionDe: 'Allgemeine Geschäftsbedingungen für Sicherheitsaudits, Softwareentwicklung und Forschungsleistungen von RFI-IRFOS. Ausschließlich B2B.',
   },
   security: {
-    title: 'Security Policy — RFI-IRFOS', description: "RFI-IRFOS's coordinated vulnerability disclosure policy: ISO/IEC 29147, 90-day embargo, regulator notification, safe harbor for good-faith research.",
-    titleDe: 'Sicherheitsrichtlinie — RFI-IRFOS', descriptionDe: 'Die koordinierte Offenlegungsrichtlinie von RFI-IRFOS: ISO/IEC 29147, 90-Tage-Embargo, Behördenbenachrichtigung, Safe Harbor für Forschung in gutem Glauben.',
+    title: 'Responsible Disclosure & Security Policy — RFI-IRFOS', description: "How to report a vulnerability to RFI-IRFOS and how we disclose: responsible (coordinated) disclosure per ISO/IEC 29147, 90-day embargo, regulator notification, safe harbor. No bug bounty program.",
+    titleDe: 'Responsible Disclosure & Sicherheitsrichtlinie — RFI-IRFOS', descriptionDe: 'Schwachstelle melden und koordinierte Offenlegung bei RFI-IRFOS (Responsible Disclosure): ISO/IEC 29147, 90-Tage-Embargo, Behördenbenachrichtigung, Safe Harbor. Kein Bug-Bounty-Programm.',
   },
   standards: {
     title: 'Standards & Compliance — RFI-IRFOS', description: 'The regulatory frameworks RFI-IRFOS audits against: NIS-2, GDPR, EU AI Act, DSA, ISO/IEC 29147/30111/27001, and more.',
@@ -863,7 +863,7 @@ function Security() {
 
 function SecurityEN() {
   return <>
-    <h1 style={H1}>Security Policy</h1>
+    <h1 style={H1}>Responsible Disclosure &amp; Security Policy</h1>
     <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Coordinated Disclosure &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
 
     <h2 style={H2}>Our Method</h2>
@@ -942,7 +942,7 @@ function SecurityEN() {
 
 function SecurityDE() {
   return <>
-    <h1 style={H1}>Sicherheitsrichtlinie</h1>
+    <h1 style={H1}>Responsible Disclosure &amp; Sicherheitsrichtlinie</h1>
     <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Koordinierte Offenlegung &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
 
     <h2 style={H2}>Unsere Methode</h2>
