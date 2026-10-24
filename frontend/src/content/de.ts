@@ -9,6 +9,14 @@
 import type { Content } from './en'
 
 export const DE: Content = {
+  meta: {
+    title: 'RFI-IRFOS — Rethink the Obvious · Forschungsinstitut, Graz',
+    description: 'Interdisziplinäre Forschungseinrichtung für Open Sciences in Graz. Ternäre KI · Software-Sicherheit · DSGVO-Analysen · Governance.',
+    dataSolutions: {
+      title: 'Data Solutions — RFI-IRFOS',
+      description: 'Reproduzierbare Umgebungen, Experten-Trajektorien, Evaluationsdatensätze und Safety-Daten für leistungsfähige Agenten.',
+    },
+  },
   nav: {
     links: {
       research: 'Forschung',
@@ -135,6 +143,8 @@ export const DE: Content = {
   trackRecord: {
     eyebrow: 'Permanentes Offenlegungsledger',
     heading: 'Die Disziplin, bewiesen',
+    seoTitle: 'App-Datenschutz- & Sicherheitsanalysen — Evidence Ledger — RFI-IRFOS',
+    seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsanalysen bekannter Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel, Tracking vor Einwilligung. Vollständige Berichte, frei zugänglich.',
     paragraph: 'Wir dekompilieren öffentlich verbreitete Android- und iOS-Apps und verfolgen ihre Datenflüsse zu echten Endpunkten in echten Ländern. Wir dokumentieren, was wir beobachten, trennen verifizierte Befunde von Interpretation und bewahren die Beweise hinter jeder Schlussfolgerung. Kein Unternehmen kann sich ein besseres Ergebnis erkaufen — jede Organisation wird nach demselben Maßstab behandelt, unabhängig davon, ob sie uns bezahlt oder nicht. Dieses permanente Offenlegungsledger setzt genau dieses Prinzip um.',
     securityBridgeLead: 'Das ist es, was ein Security-Auftrag liefert.',
     focusBanner: (names: string) => `Angezeigt wird der Report zu ${names}.`,

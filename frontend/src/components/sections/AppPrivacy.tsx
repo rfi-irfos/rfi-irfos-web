@@ -8,8 +8,11 @@ import { useEffect, useRef, useState } from 'react'
 import { Reveal, useMobile } from './shared'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { useLocale } from '../../hooks/useLocale'
-import { AUDIT_HIGHLIGHTS } from './TrackRecord'
+// KPI figures are extracted from AUDIT_HIGHLIGHTS at build time
+// (scripts/extract-audit-stats.mjs) - a direct import here dragged the whole
+// 1.5MB TrackRecord ledger into the entry bundle of every page.
 import corpusStats from '../../content/corpus-stats.json'
+import auditStats from '../../content/auditStats.json'
 
 const MONO = "'JetBrains Mono', monospace"
 
@@ -59,9 +62,9 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
   }, [playing, visible, c.steps.length])
   const pick = (i: number) => { setPlaying(false); setActive(i) }
   const kpis = [
-    { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited, from: 'left' as const },
+    { n: `${auditStats.appsAudited}+`, label: t.trackRecord.kpis.appsAudited, from: 'left' as const },
     { n: `${corpusStats.trackerMentions}+`, label: t.trackRecord.kpis.trackersFound, from: 'bottom' as const },
-    { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: t.trackRecord.kpis.criticalFindings, from: 'right' as const },
+    { n: `${auditStats.criticalFindings}+`, label: t.trackRecord.kpis.criticalFindings, from: 'right' as const },
   ]
 
   return (
@@ -168,7 +171,8 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         </div>
 
         {/* Evidence strip: the same three live figures as the ledger KPI row
-            (AUDIT_HIGHLIGHTS + corpus-stats.json), never hand-typed numbers. */}
+            (auditStats.json - build-time extract of AUDIT_HIGHLIGHTS - plus
+            corpus-stats.json), never hand-typed numbers. */}
         <div style={{ maxWidth: 920, margin: '0 auto 40px', textAlign: 'center' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 12, marginBottom: 14 }}>
             {kpis.map((k, i) => (

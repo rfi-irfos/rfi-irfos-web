@@ -12,31 +12,31 @@ import type { Theme } from '../../hooks/useTheme'
 import heroSoftware from '../../assets/hero-software.jpeg'
 // Live DINGIR dashboard screenshots (2026-08-17), full resolution/quality on
 // purpose - live feedback was explicit: "HD wie's geht", no compression.
-import heroDingir2 from '../../assets/hero-dingir-2.png'
-import heroDingir3 from '../../assets/hero-dingir-3.png'
-import heroDingir4 from '../../assets/hero-dingir-4.png'
-import heroDingir5 from '../../assets/hero-dingir-5.png'
-import heroDingir6 from '../../assets/hero-dingir-6.png'
-import heroDingir7 from '../../assets/hero-dingir-7.png'
-import heroDingir8 from '../../assets/hero-dingir-8.png'
-import heroDingir10 from '../../assets/hero-dingir-10.png'
-import heroDingir11 from '../../assets/hero-dingir-11.png'
-import heroDingir12 from '../../assets/hero-dingir-12.png'
-import heroDingir13 from '../../assets/hero-dingir-13.png'
+import heroDingir2 from '../../assets/hero-dingir-2.webp'
+import heroDingir3 from '../../assets/hero-dingir-3.webp'
+import heroDingir4 from '../../assets/hero-dingir-4.webp'
+import heroDingir5 from '../../assets/hero-dingir-5.webp'
+import heroDingir6 from '../../assets/hero-dingir-6.webp'
+import heroDingir7 from '../../assets/hero-dingir-7.webp'
+import heroDingir8 from '../../assets/hero-dingir-8.webp'
+import heroDingir10 from '../../assets/hero-dingir-10.webp'
+import heroDingir11 from '../../assets/hero-dingir-11.webp'
+import heroDingir12 from '../../assets/hero-dingir-12.webp'
+import heroDingir13 from '../../assets/hero-dingir-13.webp'
 // hero-dingir-9 (Turkish Straits + a live DINGIR chat answer panel) was
 // pulled 2026-08-18 - live feedback: it read as "a screenshot of a chatbot"
 // rather than a satellite/software shot, once the slideshow had enough
 // other frames for that one to stand out. Replaced by the vessel-tracking
 // shot below, which shows the same satellite basemap without the chat UI.
-import heroDingirVesselsNl from '../../assets/hero-dingir-vessels-nl.png'
+import heroDingirVesselsNl from '../../assets/hero-dingir-vessels-nl.webp'
 // Four more plain-software (MAP-mode, not SAT-mode) shots (2026-08-18) -
 // brought the software-UI count up to 8, matching satellite and (mostly)
 // matching neural-network, so the 3-way rotation below is a real round-robin
 // instead of running out of one category early.
-import heroDingirMapDc from '../../assets/hero-dingir-map-dc.png'
-import heroDingirMapGrazDossier from '../../assets/hero-dingir-map-graz-dossier.png'
-import heroDingirGlobeAntarctica from '../../assets/hero-dingir-globe-antarctica.png'
-import heroDingirGlobeAfricaThreats from '../../assets/hero-dingir-globe-africa-threats.png'
+import heroDingirMapDc from '../../assets/hero-dingir-map-dc.webp'
+import heroDingirMapGrazDossier from '../../assets/hero-dingir-map-graz-dossier.webp'
+import heroDingirGlobeAntarctica from '../../assets/hero-dingir-globe-antarctica.webp'
+import heroDingirGlobeAfricaThreats from '../../assets/hero-dingir-globe-africa-threats.webp'
 // The embedding-graph ("neural network") shots - DINGIR's UMAP/cosine-
 // similarity view of albert's own token embeddings, 3D-rendered inside a
 // wireframe cube. Added 2026-08-18 as a third slideshow category alongside
@@ -46,24 +46,24 @@ import heroDingirGlobeAfricaThreats from '../../assets/hero-dingir-globe-africa-
 // zoomed-in node cluster - live feedback specifically wanted this visible
 // ("nich nur label, whitebox by design" - the wireframe IS the point, not
 // just a claim about it), so it leads this category in the sequence below.
-import heroDingirEmbedBuoy from '../../assets/hero-dingir-embed-buoy.png'
-import heroDingirEmbedLanguage from '../../assets/hero-dingir-embed-language.png'
-import heroDingirEmbedImpact from '../../assets/hero-dingir-embed-impact.png'
-import heroDingirEmbedCoast from '../../assets/hero-dingir-embed-coast.png'
-import heroDingirEmbedStorm from '../../assets/hero-dingir-embed-storm.png'
-import heroDingirEmbedHope from '../../assets/hero-dingir-embed-hope.png'
-import heroDingirEmbedWater from '../../assets/hero-dingir-embed-water.png'
-import heroDingirEmbedDecided from '../../assets/hero-dingir-embed-decided.png'
+import heroDingirEmbedBuoy from '../../assets/hero-dingir-embed-buoy.webp'
+import heroDingirEmbedLanguage from '../../assets/hero-dingir-embed-language.webp'
+import heroDingirEmbedImpact from '../../assets/hero-dingir-embed-impact.webp'
+import heroDingirEmbedCoast from '../../assets/hero-dingir-embed-coast.webp'
+import heroDingirEmbedStorm from '../../assets/hero-dingir-embed-storm.webp'
+import heroDingirEmbedHope from '../../assets/hero-dingir-embed-hope.webp'
+import heroDingirEmbedWater from '../../assets/hero-dingir-embed-water.webp'
+import heroDingirEmbedDecided from '../../assets/hero-dingir-embed-decided.webp'
 // -embed-incident and -embed-decade ("1950") are the same decade/timeline
 // cluster shape as several others above, so they ride as two extra
 // neural-network-only slides at the end rather than forcing a 4th category
 // or an uneven triad - still shown ("alle screenshots"), just not forced
 // into lockstep with a software/satellite pair that doesn't exist for them.
-import heroDingirEmbedIncident from '../../assets/hero-dingir-embed-incident.png'
-import heroDingirEmbedDecade from '../../assets/hero-dingir-embed-decade.png'
+import heroDingirEmbedIncident from '../../assets/hero-dingir-embed-incident.webp'
+import heroDingirEmbedDecade from '../../assets/hero-dingir-embed-decade.webp'
 // Cropped variant of -embed-decided (2026-10-23): graph only, without the DINGIR
 // side panel/legend, so the homepage opener shows the pure neural net with words.
-import heroDingirEmbedDecidedGraph from '../../assets/hero-dingir-embed-decided-graph.png'
+import heroDingirEmbedDecidedGraph from '../../assets/hero-dingir-embed-decided-graph.webp'
 // Append more `import heroX from '../../assets/hero-x.jpeg'` + entries here to
 // grow the slideshow - HeroSlideshow below already handles 1..N images. With
 // just one, it renders exactly like the old single static image (no interval,

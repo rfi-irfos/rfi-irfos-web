@@ -150,7 +150,7 @@ export function LegalPage({ slug }: { slug: string }) {
 
     const quicklink = LEGAL_QUICKLINKS.find(q => q.slug === slug)
     if (quicklink) {
-      upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(locale === 'de' ? quicklink.labelDe : quicklink.labelEn, `/${slug}`))
+      upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(locale === 'de' ? quicklink.labelDe : quicklink.labelEn, `${locale === 'de' ? '/de' : ''}/${slug}`))
     }
     // The 20 real Q&A pairs below are the only ones that exist for this site - not
     // a sample, the actual FAQPage content a crawler landing on /faq would see.

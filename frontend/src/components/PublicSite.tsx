@@ -6,9 +6,14 @@ import type { Content } from '../content/en'
 import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed, useModalExit } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
-import { TrackRecordSection, REPORT_URL_BY_SLUG, REPORT_META_BY_SLUG, reportSlug } from './sections/TrackRecord'
+// TrackRecord.tsx (the full AUDIT_META ledger, ~1.5MB of source) and Proof.tsx
+// (which statically imports it) are loaded on demand instead of statically:
+// they were the main bundle's single largest member, taxing every page view
+// with data only the evidence view uses (2026-10-24 performance sweep,
+// Lighthouse mobile baseline 35). Vite emits them as one shared async chunk.
+type TrackRecordModule = typeof import('./sections/TrackRecord')
+type ProofModule = typeof import('./sections/Proof')
 import { NavMegaMenu, type MegaMenuKey } from './NavMegaMenu'
-import { ProofSection } from './sections/Proof'
 import { ScrollSpine } from './sections/Spine'
 import { AppPrivacySection } from './sections/AppPrivacy'
 import { WorldModelSection } from './sections/WorldModel'
@@ -230,10 +235,12 @@ function sectionMeta(t: Content, section: string) {
     case 'research': return { title: `${t.research.heading} — RFI-IRFOS`, description: t.research.subheading }
     case 'world-model': return { title: `${t.worldModel.heading} — RFI-IRFOS`, description: t.worldModel.intro }
     case 'squad': return { title: `${t.squad.heading} — RFI-IRFOS`, description: t.squad.intro }
+    // Dedicated search-facing copy (see en.ts seoTitle comment): the heading-derived
+    // title said nothing about what the page is, at 4.7k impressions and <1% CTR.
     case 'evidence':
-    case 'track-record': return { title: `${t.trackRecord.heading} — RFI-IRFOS`, description: t.trackRecord.paragraph }
+    case 'track-record': return { title: t.trackRecord.seoTitle, description: t.trackRecord.seoDescription }
     case 'data-solutions':
-    case 'datasets': return { title: 'Data Solutions — RFI-IRFOS', description: 'Reproducible environments, expert trajectories, evaluation datasets, and safety data for capable agents.' }
+    case 'datasets': return { title: t.meta.dataSolutions.title, description: t.meta.dataSolutions.description }
     case 'access':
     case 'pricing': return { title: `${t.pricing.heading} — RFI-IRFOS`, description: t.pricing.subheading }
     case 'submit': return { title: `${t.submit.heading} — RFI-IRFOS`, description: t.submit.paragraph }
@@ -303,10 +310,26 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', meta.description)
     }
     const crumb = BREADCRUMB_BY_VIEW[viewForSection(initialSection)]
-    if (crumb) upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(t.nav.links[crumb.navKey], crumb.path))
+    if (crumb) {
+      const prefix = locale === 'de' ? '/de' : ''
+      upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(t.nav.links[crumb.navKey], `${prefix}${crumb.path}`))
+    }
     if (initialSection === 'submit') {
       requestAnimationFrame(() => document.getElementById('submit')?.scrollIntoView({ block: 'start' }))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Homepage itself (no section, no report): index.html statically ships the EN
+  // title/description, which is wrong on /de/ (and for a saved-de visitor). One
+  // mount-once write from the active locale's own meta keeps snapshot and client
+  // consistent; EN writes the same values index.html already carries.
+  useEffect(() => {
+    if (initialSection || initialReportSlug) return
+    document.title = t.meta.title
+    document.querySelector('meta[name="description"]')?.setAttribute('content', t.meta.description)
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', t.meta.title)
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', t.meta.description)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -406,9 +429,11 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   // /evidence/<slug>/ landing: show only that report's ledger entries (and no Proof carousel) instead of
   // the whole ledger, see TrackRecordSection's focusTargets note. Cleared by the banner button, by any
   // search/filter use and by leaving the evidence view, so the normal ledger behaves exactly as before.
-  const [reportFocus, setReportFocus] = useState<string[] | null>(
-    () => (initialReportSlug ? REPORT_META_BY_SLUG[initialReportSlug]?.targets ?? null : null),
-  )
+  // Starts null even for a /evidence/<slug>/ landing: the focus targets live in
+  // the lazily-loaded TrackRecord module, so the deep-link effect below sets
+  // them the moment that chunk arrives (same render pass the ledger first
+  // appears in - a visitor can't see an unfocused ledger before that).
+  const [reportFocus, setReportFocus] = useState<string[] | null>(null)
   const [activeStatus, setActiveStatus] = useState<string | null>(null)
   const [activeSev, setActiveSev] = useState<string | null>(null)
   const [sortBy, setSortBy] = useState<string>('elapsed-desc')
@@ -447,11 +472,24 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   // already forced sectionFocus to 'track-record' for this case, so `view` is already
   // 'evidence' by the time this runs - this effect only has to resolve the slug and open
   // the modal, same one-time-on-mount pattern as the initialSection effect above.
+  // Fetch the evidence chunk only when something can actually need it: the
+  // evidence view itself, a report deep link, or an already-open report modal.
+  const [evidenceMods, setEvidenceMods] = useState<{ tr: TrackRecordModule; proof: ProofModule } | null>(null)
   useEffect(() => {
-    if (!initialReportSlug) return
+    if (evidenceMods || (view !== 'evidence' && !initialReportSlug && !reportModal)) return
+    let alive = true
+    Promise.all([import('./sections/TrackRecord'), import('./sections/Proof')])
+      .then(([tr, proof]) => { if (alive) setEvidenceMods({ tr, proof }) })
+    return () => { alive = false }
+  }, [view, reportModal, initialReportSlug, evidenceMods])
+
+  useEffect(() => {
+    if (!initialReportSlug || !evidenceMods) return
+    const { REPORT_URL_BY_SLUG, REPORT_META_BY_SLUG } = evidenceMods.tr
     const url = REPORT_URL_BY_SLUG[initialReportSlug]
     if (!url) return
     setReportModal(url)
+    setReportFocus(REPORT_META_BY_SLUG[initialReportSlug]?.targets ?? null)
     requestAnimationFrame(() => document.getElementById('evidence')?.scrollIntoView({ block: 'start' }))
     // Per-report <title>/meta description + JSON-LD (2026-09-25 crawlability sweep) -
     // landing directly on /evidence/<slug>/ (or the older ?report=<slug> form) used to
@@ -481,7 +519,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       }))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [evidenceMods])
   // Keep the URL's ?report= param in sync with whichever report is actually open, for
   // EVERY way the modal can change, not just the initial deep-link landing above: clicking
   // a different ledger row's PDF button while one is already open, clicking the Proof
@@ -490,18 +528,21 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   // visitor opened from here left the URL pointing at the wrong (or no) report, so sharing
   // "the link I'm looking at" never worked except by accident, on the very first click.
   useEffect(() => {
+    // An open modal implies the evidence chunk is loading; wait for it rather
+    // than wrongly deleting ?report= below (the effect re-runs on arrival).
+    if (reportModal && !evidenceMods) return
     const params = new URLSearchParams(window.location.search)
     // A /evidence/<slug>/ path landing (2026-09-25) already names the open report in
     // the path itself - skip appending the redundant ?report= for that one report
     // (still used for every other case: switching reports from within an already-open
     // ledger, or the older ?report= deep-link form on any other path).
-    const pathSlugAlreadyMatches = reportModal && window.location.pathname.replace(/^\/|\/$/g, '') === `evidence/${reportSlug(reportModal)}`
-    if (reportModal && !pathSlugAlreadyMatches) params.set('report', reportSlug(reportModal))
+    const pathSlugAlreadyMatches = reportModal && window.location.pathname.replace(/^\/|\/$/g, '') === `evidence/${evidenceMods!.tr.reportSlug(reportModal)}`
+    if (reportModal && !pathSlugAlreadyMatches) params.set('report', evidenceMods!.tr.reportSlug(reportModal))
     else params.delete('report')
     const qs = params.toString()
     const next = `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`
     window.history.replaceState(null, '', next)
-  }, [reportModal])
+  }, [reportModal, evidenceMods])
   // Full plain-language writeup per ledger entry - the ledger row/cell only ever
   // summarizes (hover reveals the short "why it matters" line), this is where the
   // complete article-style explanation lives, opened by clicking the Intel cell.
@@ -1553,8 +1594,8 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
           <SquadSection />
         </section>}
 
-        {view === 'evidence' && <section id="evidence" className="rfi-view-panel">
-          <TrackRecordSection
+        {view === 'evidence' && evidenceMods && <section id="evidence" className="rfi-view-panel">
+          <evidenceMods.tr.TrackRecordSection
             mobile={mobile} theme={theme} now={now} ledgerFired={ledgerFired} ledgerRef={ledgerRef}
             searchQuery={searchQuery} setSearchQuery={setSearchQuery}
             activeStatus={activeStatus} setActiveStatus={setActiveStatus}
@@ -1567,7 +1608,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             focusTargets={reportFocus}
             onShowFullLedger={() => setReportFocus(null)}
           />
-          {!reportFocus && <ProofSection setReportModal={setReportModal} />}
+          {!reportFocus && <evidenceMods.proof.ProofSection setReportModal={setReportModal} />}
         </section>}
 
         {view === 'data-solutions' && <section id="data-solutions" className="rfi-view-panel">

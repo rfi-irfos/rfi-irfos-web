@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { PublicSite } from './components/PublicSite'
 import { LocaleProvider } from './hooks/useLocale'
-import { REPORT_URL_BY_SLUG } from './components/sections/TrackRecord'
+import { EN } from './content/en'
+import { DE } from './content/de'
 import './App.css'
 
 // Lazy-loaded: legal pages are a secondary route homepage visitors never hit, so there's
@@ -19,8 +20,19 @@ const LEGAL_SLUGS = ['impressum', 'datenschutz', 'agb', 'security', 'standards',
 // old bookmarks to those URLs still resolve gracefully, just to the homepage.
 const SECTION_SLUGS = ['world-model', 'squad', 'evidence', 'data-solutions', 'datasets', 'access', 'submit', 'research', 'track-record', 'pricing']
 
+// /de/<route> is the same app route in German (real crawlable German URLs,
+// 2026-10-24 language-architecture work): the prefix only decides the initial
+// locale, every slug/section lookup below runs on the prefix-stripped path.
+function isDePath() {
+  return /^\/de(\/|$)/.test(window.location.pathname)
+}
+
+function appPathname() {
+  return window.location.pathname.replace(/^\/de(?=\/|$)/, '') || '/'
+}
+
 function pathSlug() {
-  return window.location.pathname.replace(/^\/|\/$/g, '')
+  return appPathname().replace(/^\/|\/$/g, '')
 }
 
 function getSlug() {
@@ -50,12 +62,15 @@ function getReportSlug() {
 // query form (open the ledger with that report's modal already showing) - this
 // only adds a second, real-path way to reach the identical state, it doesn't
 // replace the query form (existing closure-email links keep working unchanged).
-// Validated against REPORT_URL_BY_SLUG (built once from AUDIT_META in
-// TrackRecord.tsx) rather than accepted blindly, so an unknown/typo'd slug falls
-// through to the normal /evidence/ ledger landing instead of silently no-oping.
+// Shape-validated here; the real existence check against REPORT_URL_BY_SLUG now
+// happens in PublicSite's deep-link effect, after the lazily-loaded TrackRecord
+// chunk arrives (2026-10-24 performance sweep - importing the registry here
+// statically dragged the full 1.5MB ledger into the entry bundle). An
+// unknown/typo'd slug still falls through to the normal /evidence/ ledger
+// landing: the effect simply finds no URL and opens no modal.
 function getEvidencePathReportSlug() {
-  const seg = window.location.pathname.split('/').filter(Boolean)
-  if (seg.length === 2 && seg[0] === 'evidence' && REPORT_URL_BY_SLUG[seg[1]]) return seg[1]
+  const seg = appPathname().split('/').filter(Boolean)
+  if (seg.length === 2 && seg[0] === 'evidence' && /^[a-z0-9][a-z0-9.-]*$/.test(seg[1])) return seg[1]
   return null
 }
 
@@ -66,6 +81,9 @@ export default function App() {
   // #hash nav clicks are unrelated native browser scrolling, not a slug change.
   const [reportSlug] = useState(() => getReportSlug() || getEvidencePathReportSlug())
   const [sectionFocus] = useState(() => reportSlug ? 'track-record' : getSectionFocus())
+  // Landing on a /de/ URL wins over any saved locale preference - the URL names the
+  // language the visitor (or crawler) explicitly asked for.
+  const [initialLocale] = useState(() => isDePath() ? ('de' as const) : undefined)
 
   useEffect(() => {
     // Take over scroll restoration ourselves so the browser's own (which fires
@@ -121,8 +139,9 @@ export default function App() {
       // obvious"). Reset to index.html's own defaults here - PublicSite's own
       // effect (initialSection-driven) still overrides this correctly for a
       // direct /pricing-style landing, since that path never sets prevSlug.
-      document.title = 'RFI-IRFOS - Rethink the Obvious.'
-      document.querySelector('meta[name="description"]')?.setAttribute('content', 'Interdisciplinary Research Facility for Open Sciences. Ternary AI · Security · Governance · Graz, Austria.')
+      const home = isDePath() ? DE.meta : EN.meta
+      document.title = home.title
+      document.querySelector('meta[name="description"]')?.setAttribute('content', home.description)
     }
     prevSlug.current = slug
   }, [slug])
@@ -132,6 +151,6 @@ export default function App() {
   // except Team (2026-08-19: Security/Standards/Methodology closed the gap
   // Impressum/Datenschutz/AGB left open) - the DE/EN toggle reaches this
   // route the same way it reaches the homepage.
-  if (slug) return <LocaleProvider><Suspense fallback={null}><LegalPage slug={slug} /></Suspense></LocaleProvider>
-  return <LocaleProvider><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} /></LocaleProvider>
+  if (slug) return <LocaleProvider initialLocale={initialLocale}><Suspense fallback={null}><LegalPage slug={slug} /></Suspense></LocaleProvider>
+  return <LocaleProvider initialLocale={initialLocale}><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} /></LocaleProvider>
 }

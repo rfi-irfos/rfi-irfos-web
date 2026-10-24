@@ -25,18 +25,18 @@ import { useLocale } from '../../hooks/useLocale'
 // set "passt nich" here, this page gets its own fresh screenshots rather than
 // borrowing the main hero's. Keep these two pools independent going forward,
 // don't re-merge them even if the counts happen to be similar later.
-import wmHeroGlobeOverview from '../../assets/world-model/wm-hero-globe-overview.png'
-import wmHeroBuoyDetail from '../../assets/world-model/wm-hero-buoy-detail.png'
-import wmHeroReasoningSanctions from '../../assets/world-model/wm-hero-reasoning-sanctions.png'
-import wmHeroEarthquakeDetail from '../../assets/world-model/wm-hero-earthquake-detail.png'
-import wmHeroLiveCamera from '../../assets/world-model/wm-hero-live-camera.png'
-import wmHeroTrafficIncident from '../../assets/world-model/wm-hero-traffic-incident.png'
-import wmHeroFireDetection from '../../assets/world-model/wm-hero-fire-detection.png'
-import wmHeroInfrastructureWeather from '../../assets/world-model/wm-hero-infrastructure-weather.png'
-import wmHeroGraphFlood from '../../assets/world-model/wm-hero-graph-flood.png'
-import wmHeroAircraftDetail from '../../assets/world-model/wm-hero-aircraft-detail.png'
-import wmHeroStormDetail from '../../assets/world-model/wm-hero-storm-detail.png'
-import wmHeroChatAnalyst from '../../assets/world-model/wm-hero-chat-analyst.png'
+import wmHeroGlobeOverview from '../../assets/world-model/wm-hero-globe-overview.webp'
+import wmHeroBuoyDetail from '../../assets/world-model/wm-hero-buoy-detail.webp'
+import wmHeroReasoningSanctions from '../../assets/world-model/wm-hero-reasoning-sanctions.webp'
+import wmHeroEarthquakeDetail from '../../assets/world-model/wm-hero-earthquake-detail.webp'
+import wmHeroLiveCamera from '../../assets/world-model/wm-hero-live-camera.webp'
+import wmHeroTrafficIncident from '../../assets/world-model/wm-hero-traffic-incident.webp'
+import wmHeroFireDetection from '../../assets/world-model/wm-hero-fire-detection.webp'
+import wmHeroInfrastructureWeather from '../../assets/world-model/wm-hero-infrastructure-weather.webp'
+import wmHeroGraphFlood from '../../assets/world-model/wm-hero-graph-flood.webp'
+import wmHeroAircraftDetail from '../../assets/world-model/wm-hero-aircraft-detail.webp'
+import wmHeroStormDetail from '../../assets/world-model/wm-hero-storm-detail.webp'
+import wmHeroChatAnalyst from '../../assets/world-model/wm-hero-chat-analyst.webp'
 
 const WORLD_MODEL_HERO_IMAGES = [
   wmHeroGlobeOverview, wmHeroBuoyDetail, wmHeroReasoningSanctions, wmHeroEarthquakeDetail,

@@ -31,7 +31,10 @@ const ROUTES = [
   '/research', '/world-model', '/squad', '/evidence', '/data-solutions', '/datasets', '/access', '/submit',
   // Legacy section URLs remain valid and should keep receiving static output.
   '/track-record', '/pricing',
-  '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/team', '/methodology', '/faq',
+  // /team has no German translation (LegalPage META: no titleDe/body-DE) - a /de/team
+  // page would claim an alternate that doesn't exist, same reasoning as the EN-only
+  // evidence reports.
+  '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/methodology', '/faq',
 ]
 
 // Individual disclosure-report routes (2026-09-25 crawlability sweep) - every
@@ -50,6 +53,27 @@ const REPORT_META_BY_SLUG = trackRecordModule.REPORT_META_BY_SLUG
 await viteServer.close()
 console.log(`discovered ${REPORT_SLUGS.length} individual report routes from AUDIT_META`)
 
+// German URL architecture (2026-10-24 visibility sweep): every fully localized
+// view gets a real crawlable /de/... page. App.tsx reads the /de prefix and
+// boots the LocaleProvider in German, so the exact same render pipeline below
+// produces a German snapshot (<html lang="de">, German title/description) at
+// /de/<route>/. Only canonical routes are localized - aliases (/pricing,
+// /track-record, ...) keep a single English redirect-style canonical and never
+// get a /de twin, and the ~200 /evidence/<slug>/ report pages stay EN-only for
+// now (their body copy is English; a hreflang pair would claim a German page
+// that doesn't exist). Both language snapshots of a localized route carry the
+// reciprocal hreflang triple (en / de / x-default=en) - one-sided hreflang is
+// ignored by Google, which is exactly the bug this sweep removed from
+// index.html.
+const LOCALIZED_ROUTES = [
+  '/',
+  '/world-model', '/squad', '/evidence', '/data-solutions', '/access',
+  '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/team', '/methodology', '/faq',
+]
+const absUrl = (route) => route === '/' ? 'https://rfi-irfos.com' : `https://rfi-irfos.com${route}/`
+const deRoute = (route) => route === '/' ? '/de' : `/de${route}`
+const enRouteOf = (route) => route.startsWith('/de') ? (route === '/de' ? '/' : route.slice(3)) : route
+
 // --only=/squad,/evidence/outfit7 : render just these routes (plus '/', which a plain `vite build`
 // always overwrites with the empty SPA shell). Added 2026-10-02 so a one-page change no longer
 // needs all ~190 routes through Chromium. Unknown routes abort instead of being silently skipped.
@@ -58,7 +82,7 @@ console.log(`discovered ${REPORT_SLUGS.length} individual report routes from AUD
 const onlyArg = process.argv.find(a => a.startsWith('--only='))
 const ONLY = onlyArg ? onlyArg.slice('--only='.length).split(',').map(r => r.trim().replace(/\/$/, '')).filter(Boolean) : null
 if (ONLY) {
-  const known = new Set([...ROUTES, ...REPORT_SLUGS.map(slug => `/evidence/${slug}`)])
+  const known = new Set([...ROUTES, ...LOCALIZED_ROUTES.map(deRoute), ...REPORT_SLUGS.map(slug => `/evidence/${slug}`)])
   const unknown = ONLY.filter(r => !known.has(r))
   if (unknown.length) {
     console.error(`ERROR: unknown route(s) in --only: ${unknown.join(', ')}`)
@@ -164,6 +188,7 @@ const CANONICAL_ALIAS = {
   '/submit': '/',
 }
 
+
 // Factored out (2026-09-25) so the ~160 individual /evidence/<slug>/ report
 // routes below can reuse the exact same goto/wait/canonicalize/write pipeline
 // as the hand-listed ROUTES above, instead of a second copy drifting from it.
@@ -190,11 +215,28 @@ async function renderRoute(route, canonicalRoute, waitSelector = '#root h1, #roo
   // Rewritten here, per route, to the page's own real URL (trailing slash on
   // every route except / itself, matching how the site is actually served and
   // the exact form Search Console's own examples use).
-  const canonicalUrl = canonicalRoute === '/' ? 'https://rfi-irfos.com' : `https://rfi-irfos.com${canonicalRoute}/`
+  const canonicalUrl = absUrl(canonicalRoute)
   html = html.replace(
     /<link rel="canonical" href="[^"]*"\s*\/?>/,
     `<link rel="canonical" href="${canonicalUrl}" />`
   )
+  // Strip any inherited hreflang first: '/' renders first and overwrites
+  // dist/index.html, which then serves as the SPA fallback TEMPLATE for every
+  // later route in this very run - without this, every subsequent snapshot
+  // (including all EN-only report pages) would carry the homepage's triple.
+  html = html.replace(/<link rel="alternate" hreflang="[^"]*" href="[^"]*"\s*\/?>/g, '')
+  // Reciprocal hreflang for localized routes, injected into BOTH language
+  // snapshots right before the canonical tag. x-default = EN (the site's
+  // default language and what an unmatched locale should land on).
+  const enRoute = enRouteOf(canonicalRoute)
+  if (LOCALIZED_ROUTES.includes(enRoute)) {
+    const alternates = [
+      `<link rel="alternate" hreflang="en" href="${absUrl(enRoute)}" />`,
+      `<link rel="alternate" hreflang="de" href="${absUrl(deRoute(enRoute))}" />`,
+      `<link rel="alternate" hreflang="x-default" href="${absUrl(enRoute)}" />`,
+    ].join('')
+    html = html.replace('<link rel="canonical"', `${alternates}<link rel="canonical"`)
+  }
   // og:url inherited the homepage's hardcoded value from index.html on every
   // route before this -- correct for the canonical route already, wrong on
   // every other one (a shared link posting /evidence would show a preview
@@ -211,9 +253,24 @@ async function renderRoute(route, canonicalRoute, waitSelector = '#root h1, #roo
   await restartBrowserIfDue()
 }
 
+// The evidence view's ledger (TrackRecord) is a lazily-loaded chunk since the
+// 2026-10-24 performance sweep - the generic '#root h1, #root h2' gate can match
+// headings that render before that chunk arrives, so the evidence routes wait on
+// a heading INSIDE the ledger panel itself or the snapshot could miss the ledger.
+const WAIT_SELECTOR = { '/evidence': '#evidence h2' }
+
 for (const route of ROUTES) {
   if (ONLY && route !== '/' && !ONLY.includes(route)) continue
-  await renderRoute(route, CANONICAL_ALIAS[route] ?? route)
+  await renderRoute(route, CANONICAL_ALIAS[route] ?? route, WAIT_SELECTOR[CANONICAL_ALIAS[route] ?? route])
+}
+
+// German twins of the localized routes - canonical to themselves (/de/...),
+// never back to the EN page: they are real alternate-language pages, not
+// duplicates, and hreflang (injected above) is what ties the pair together.
+for (const route of LOCALIZED_ROUTES) {
+  const de = deRoute(route)
+  if (ONLY && !ONLY.includes(de)) continue
+  await renderRoute(de, de, WAIT_SELECTOR[route])
 }
 
 // Individual /evidence/<slug>/ report pages - each is its own indexable page
@@ -254,7 +311,17 @@ if (!ONLY) {
       '  </url>',
     ].join('\n')
   }).join('\n')
-  const combinedSitemap = staticSitemap.replace('</urlset>', `${reportUrls}\n</urlset>`)
+  // /de/... twins, generated here (not hand-maintained in public/sitemap.xml)
+  // so the DE set can never drift from LOCALIZED_ROUTES above.
+  const deUrls = LOCALIZED_ROUTES.map(route => [
+    '  <url>',
+    `    <loc>${absUrl(deRoute(route))}</loc>`,
+    '    <lastmod>2026-10-24</lastmod>',
+    '    <changefreq>monthly</changefreq>',
+    '    <priority>0.6</priority>',
+    '  </url>',
+  ].join('\n')).join('\n')
+  const combinedSitemap = staticSitemap.replace('</urlset>', `${deUrls}\n${reportUrls}\n</urlset>`)
   await writeFile(join(DIST, 'sitemap.xml'), combinedSitemap)
-  console.log(`sitemap.xml: ${ROUTES.length} static routes + ${REPORT_SLUGS.length} report routes`)
+  console.log(`sitemap.xml: ${ROUTES.length} static routes + ${LOCALIZED_ROUTES.length} de routes + ${REPORT_SLUGS.length} report routes`)
 }
