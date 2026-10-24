@@ -396,7 +396,15 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
   return (
     <motion.span
       ref={ref}
-      style={{ display: 'inline-block', position: 'relative', verticalAlign: 'bottom' }}
+      // verticalAlign: baseline (not bottom, live feedback 2026-10-24: "the rethink
+      // is not on the same height" / "it sits lower, definitely") - this span's
+      // height is set below to the plain word's measured line-box height (ascent +
+      // leading, no descender reserve for a word with no descenders like "Rethink").
+      // `bottom` anchors that box's bottom edge to the whole line's bottom, which
+      // includes descender space the box itself doesn't have, pushing the visible
+      // glyphs down relative to RevealWords' sibling spans (the default `baseline`,
+      // unset there) by roughly that descender gap. `baseline` matches them.
+      style={{ display: 'inline-block', position: 'relative', verticalAlign: 'baseline' }}
       initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }}
       animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       transition={{ duration: 0.95, delay, ease: [0.16, 1, 0.3, 1] }}
