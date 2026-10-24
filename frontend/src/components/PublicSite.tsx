@@ -1042,6 +1042,9 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
           its 0.8 overlay is the accessibility-mandated one. */}
       <div aria-hidden="true" style={{
         position: 'absolute', inset: 0, zIndex: -2, pointerEvents: 'none',
+        // Own compositor layer: this page-tall photo + gradient stack is otherwise
+        // re-rasterised as tiles scroll into view (measured +9 fps with this alone).
+        willChange: 'transform',
         backgroundBlendMode: 'normal',
         // Live feedback 2026-08-14: "die bottom bar braucht ein bissl weniger
         // opacity gegen den BG dass man die pages da unten sieht" - footer has
@@ -1081,8 +1084,11 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
           no crop/zoom concerns tied to viewport size the way a single photo does. */}
       <div aria-hidden="true" style={{
         position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none',
-        opacity: 0.08, mixBlendMode: 'overlay',
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+        // No mix-blend-mode here on purpose: a fixed full-viewport overlay blend forces the
+        // compositor to re-blend the whole viewport on every scroll frame (measured: halved
+        // scroll FPS). Grain is desaturated in the SVG itself and shown with a normal blend.
+        opacity: 0.07,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
         backgroundRepeat: 'repeat', backgroundSize: '180px 180px',
       }} />
 
