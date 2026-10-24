@@ -297,6 +297,20 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
     el.style.height = height + 'px'
     let accN = 0
     for (let i = 0; i < n; i++) { normalLeft.push(accN); accN += widths[i] }
+    // Baseline anchor (live feedback 2026-10-24, round 2: vertical-align: baseline
+    // alone didn't fix it - "its still lower"). Root cause: all `.flip-char` letters
+    // are position: absolute (index.css), so el has NO in-flow content once
+    // textContent was cleared above - per CSS2.1 10.8.1, an inline-block with no
+    // in-flow line boxes takes its BASELINE from its bottom margin edge, same as
+    // vertical-align: bottom regardless of what vertical-align is set to. This
+    // invisible (but still in-flow, still laid out) copy of the word gives el a
+    // real line box to take its baseline from, matching RevealWords' sibling spans
+    // next to it ("the Obvious.") which get theirs from their own normal text.
+    const ghost = document.createElement('span')
+    ghost.textContent = word
+    ghost.style.visibility = 'hidden'
+    ghost.setAttribute('aria-hidden', 'true')
+    el.appendChild(ghost)
     for (let i = 0; i < n; i++) {
       const span = document.createElement('span')
       span.className = 'flip-char'
