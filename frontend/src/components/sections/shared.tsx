@@ -480,6 +480,11 @@ export function Reveal({
   // both render fully visible immediately, no transition, no observer needed.
   const [skip] = useState(() => prefersReducedMotion() || revealSuppressed.current)
   const [visible, setVisible] = useState(skip)
+  // Which side of the viewport the element last sat on while hidden (null
+  // only before the observer's first report). A ref, not state: it only
+  // matters at the moment `visible` flips, and must not itself schedule
+  // renders mid-scroll.
+  const exitSide = useRef<'top' | 'bottom' | null>(null)
   useEffect(() => {
     const el = ref.current
     if (!el || skip) return
@@ -508,6 +513,27 @@ export function Reveal({
     const observer = new IntersectionObserver(
       ([entry]) => {
         const next = entry.isIntersecting
+        // Second half of the same 2026-10-24 bug class, found the next day at
+        // other boundary-resting elements (World Model page): the debounce
+        // stops transition RESTARTS, but the hide transition itself could
+        // still re-cross the boundary it was reacting to - from="bottom"'s
+        // hide slides the element downward, back toward the visible zone,
+        // when it exited at the TOP edge (and the pricing page's from="top"
+        // patch mirrored the same loop at the bottom edge). Record which
+        // boundary the element left through, and let the hidden transform
+        // slide AWAY from that boundary regardless of `from`, so the hide
+        // motion reinforces the crossing instead of undoing it. This also
+        // fires on the initial observation (element starts below the fold ->
+        // 'bottom'), so the rule is uniform: a hidden element always sits
+        // displaced AWAY from the viewport, and `from` is only the fallback
+        // for the vertical variants before the observer has ever reported.
+        if (!next) {
+          const r = entry.boundingClientRect
+          const mid = entry.rootBounds
+            ? entry.rootBounds.top + entry.rootBounds.height / 2
+            : window.innerHeight / 2
+          exitSide.current = r.top + r.height / 2 < mid ? 'top' : 'bottom'
+        }
         window.clearTimeout(debounce)
         debounce = window.setTimeout(() => setVisible(next), 80)
       },
@@ -528,6 +554,13 @@ export function Reveal({
   }, [skip])
   const computeTransform = (shown: boolean) => {
     const d = shown ? 0 : dist
+    // Hidden vertical movement must point away from the boundary the element
+    // exited through (see the observer callback above). Horizontal variants
+    // can't re-cross a horizontal scroll boundary, so they keep `from`; the
+    // vertical and scale variants defer to the recorded exit side once known.
+    if (!shown && exitSide.current && (from === 'bottom' || from === 'top' || from === 'scale')) {
+      return `translateY(${exitSide.current === 'top' ? -d : d}px)`
+    }
     if (from === 'left')  return `translateX(${-d}px)`
     if (from === 'right') return `translateX(${d}px)`
     if (from === 'top')   return `translateY(${-d}px)`
