@@ -47,7 +47,7 @@ struct ContactEntry {
 }
 
 pub async fn submit_contact(
-    State(state): State<AppState>,
+    State(_state): State<AppState>,
     headers: HeaderMap,
     Json(body): Json<ContactRequest>,
 ) -> impl IntoResponse {
@@ -96,10 +96,17 @@ pub async fn submit_contact(
         }
     };
 
-    let contacts_path = state.content_path
-        .parent()
-        .unwrap_or(std::path::Path::new("."))
-        .join("contacts.jsonl");
+    // Live finding 2026-10-25: this used to derive from state.content_path's
+    // parent, which defaults to the app's own working directory (/app in the
+    // container) - NOT the persistent /data volume that DB_PATH already uses
+    // for visits.db. /app is the image's own filesystem, wiped on every `fly
+    // deploy` (not just a restart) - so "durably appended to contacts.jsonl"
+    // was only ever true until the next deploy, silently, the whole time this
+    // comment claimed otherwise. Same env-var-with-local-default pattern as
+    // DB_PATH (main.rs) so local/dev runs without /data keep working.
+    let contacts_path = std::path::PathBuf::from(
+        std::env::var("CONTACTS_PATH").unwrap_or_else(|_| "contacts.jsonl".into()),
+    );
 
     match tokio::fs::OpenOptions::new()
         .create(true)

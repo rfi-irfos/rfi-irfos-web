@@ -7,6 +7,10 @@ primary_region = "fra"
   PORT = "3000"
   STATIC_DIR = "/app/dist"
   DB_PATH = "/data/visits.db"
+  # Added 2026-10-25: contacts.jsonl was defaulting onto the app's own image
+  # filesystem (not this mount), so it got silently wiped on every `fly
+  # deploy` despite being documented as "durable". See backend/src/contact.rs.
+  CONTACTS_PATH = "/data/contacts.jsonl"
 
 [[mounts]]
   source = "rfi_data"
