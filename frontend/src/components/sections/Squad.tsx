@@ -82,7 +82,6 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
                 this real link-as-button replaces both. */}
             <a href="/world-model/" className="wm-btn-secondary">{s.worldModelLinkLabel}</a>
           </div>
-          <p className="sq-status-line"><span className="sq-status-dot" />{s.statusLine}</p>
         </Reveal>
         <Reveal from="right">
           <div className="sq-hub-panel">

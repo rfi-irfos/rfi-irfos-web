@@ -298,7 +298,10 @@ button { cursor: pointer; font-family: inherit; }
 
 .wm-hero h1 { margin: 10px 0 16px; }
 .wm-hero-copy p { max-width: 480px; color: var(--text); font-size: var(--fs-body); line-height: var(--lh-body); margin: 0 0 24px; }
-.wm-hero-ctas { display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+/* margin-bottom 0 since 2026-10-26: the "Live system active" line below the
+   buttons is gone, so the buttons close the text block and it centres exactly
+   against the film (.wm-hero align-items: center). */
+.wm-hero-ctas { display: flex; gap: 12px; margin-bottom: 0; flex-wrap: wrap; }
 .wm-btn-primary { padding: 13px 22px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: var(--on-primary, #07110e); font-family: 'Archivo', system-ui, sans-serif; font-size: var(--fs-body); font-weight: 700; cursor: pointer; box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 18%, transparent); transition: transform .2s, box-shadow .2s; }
 .wm-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 34px color-mix(in srgb, var(--accent) 30%, transparent); }
 .wm-btn-secondary { padding: 13px 22px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text); font-family: 'Archivo', system-ui, sans-serif; font-size: var(--fs-body); font-weight: 700; cursor: pointer; transition: border-color .2s, background .2s; }
@@ -610,7 +613,9 @@ button { cursor: pointer; font-family: inherit; }
 .sq-heading { margin: 0 0 12px; }
 .sq-subheading { margin: 0 0 14px; font-size: var(--fs-lead); color: var(--text); font-weight: 700; }
 .sq-intro { margin: 0 0 18px; max-width: 480px; color: var(--text); line-height: var(--lh-body); }
-.sq-hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+/* margin-bottom 0 since 2026-10-26, same reason as .wm-hero-ctas: the "Early
+   Access" line under the buttons is gone. */
+.sq-hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 0; }
 /* Anchor, not <button> (unlike World Model's own pair) - a real link to
    /world-model/, not a JS-driven scroll/navigate. .wm-btn-secondary has no
    display rule of its own, so this needs one now that it's not always a

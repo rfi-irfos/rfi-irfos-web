@@ -418,7 +418,6 @@ function HeroBlock({ onApiRequest }: { onApiRequest: () => void }) {
             <button className="wm-btn-primary" onClick={scrollToUseCases}>{w.exploreCta}</button>
             <button className="wm-btn-secondary" onClick={onApiRequest}>{w.apiCta}</button>
           </div>
-          <div className="wm-live-status"><span className="wm-live-dot" />{w.liveStatus}</div>
         </div>
       </Reveal>
       <Reveal dist={14} delay={1}><WorldGraphVisual /></Reveal>
