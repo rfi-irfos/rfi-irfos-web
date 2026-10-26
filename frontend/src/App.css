@@ -314,8 +314,10 @@ button { cursor: pointer; font-family: inherit; }
    background-size: contain and cover become equivalent (no crop, no
    letterbox bar) - the panel's own shape just IS the screenshot's shape.
    background: var(--wm-surface) stays as a safety net for any future shot
-   that doesn't share this ratio. */
-.wm-graph-panel { position: relative; aspect-ratio: 1920 / 926; border-radius: 10px; overflow: hidden; border: 1px solid var(--wm-border); background: var(--wm-surface); }
+   that doesn't share this ratio.
+   2026-10-26: 16:9 now (Simeon) - the panel holds the 16:9 DINGIR film instead
+   of the 1920x926 dashboard screenshots, so the film fits uncropped. */
+.wm-graph-panel { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; border: 1px solid var(--wm-border); background: var(--wm-surface); }
 .wm-graph-screenshot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
 /* The panel is now a <button> (added 2026-09-01, opens the fullscreen lightbox)
    - reset the default button chrome, then re-add exactly what the plain div
@@ -637,8 +639,10 @@ button { cursor: pointer; font-family: inherit; }
    live direction 2026-09-13: the Squad hero frame should be visually
    consistent with World Model's, not its own bespoke size. The current
    screenshot (800x388, ratio ~2.06) is close enough to this ratio (~2.07)
-   that object-fit: cover crops next to nothing. */
-.sq-hub-panel { position: relative; aspect-ratio: 1920 / 926; border-radius: 10px; overflow: hidden; border: 1px solid var(--wm-border); background: var(--bg); width: 100%; display: flex; align-items: center; justify-content: center; }
+   that object-fit: cover crops next to nothing.
+   2026-10-26: 16:9 now, matching .wm-graph-panel again - both heroes hold a
+   16:9 film, nothing gets trimmed top and bottom anymore. */
+.sq-hub-panel { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; border: 1px solid var(--wm-border); background: var(--bg); width: 100%; display: flex; align-items: center; justify-content: center; }
 .sq-hub-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
 
 /* .sq-hero had no vertical padding of its own (unlike .wm-hero's padding-block:

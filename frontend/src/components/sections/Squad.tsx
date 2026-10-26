@@ -91,8 +91,8 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
                 loop/playsInline is required for iOS Safari to autoplay at all;
                 no controls, this is a hero backdrop, not a media player.
                 2026-10-24: replaced by the 45s Agent OS 3D film (16:9, 1280x720, no audio
-                track - it plays muted anyway). The frame is 1920:926, so object-fit: cover
-                trims about 7% off the top and bottom of the 16:9 picture. */}
+                track - it plays muted anyway). 2026-10-26: the frame is 16:9 now too,
+                the film fits uncropped. */}
             <video className="sq-hub-photo" src={squadHeroWorkflow} autoPlay muted loop playsInline />
           </div>
         </Reveal>

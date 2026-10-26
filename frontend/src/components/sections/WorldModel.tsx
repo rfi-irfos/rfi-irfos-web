@@ -18,7 +18,6 @@ import {
   IconWorld, IconX,
 } from '@tabler/icons-react'
 import { Reveal, OUTPUT_TAG_HUES, beacon, pageZoom } from './shared'
-import { HeroSlideshow } from './Hero'
 import { useLocale } from '../../hooks/useLocale'
 // Real DINGIR interface screenshots, own set (added 2026-09-01, replacing the
 // shared HERO_IMAGES import) - live feedback: the main homepage hero's photo
@@ -37,6 +36,7 @@ import wmHeroGraphFlood from '../../assets/world-model/wm-hero-graph-flood.webp'
 import wmHeroAircraftDetail from '../../assets/world-model/wm-hero-aircraft-detail.webp'
 import wmHeroStormDetail from '../../assets/world-model/wm-hero-storm-detail.webp'
 import wmHeroChatAnalyst from '../../assets/world-model/wm-hero-chat-analyst.webp'
+import wmHeroDingirFilm from '../../assets/world-model/wm-hero-dingir-film.mp4'
 
 const WORLD_MODEL_HERO_IMAGES = [
   wmHeroGlobeOverview, wmHeroBuoyDetail, wmHeroReasoningSanctions, wmHeroEarthquakeDetail,
@@ -387,12 +387,16 @@ function HeroLightbox({ startIndex, onClose }: { startIndex: number; onClose: ()
 // the full viewport it normally sits behind. Clicking it opens HeroLightbox
 // (added same session, same live-feedback round) for the uncropped fullscreen
 // view.
+// 2026-10-26: the panel plays the 60s DINGIR world-model film (16:9, muted loop,
+// same autoPlay/muted/loop/playsInline set as Squad's hero video) instead of the
+// slideshow. The click still opens the screenshot lightbox, so the uncut shots
+// stay one click away.
 function WorldGraphVisual() {
   const [open, setOpen] = useState(false)
   return (
     <>
       <button type="button" className="wm-graph-panel wm-graph-panel--clickable" onClick={() => setOpen(true)} aria-label="View screenshots fullscreen">
-        <HeroSlideshow images={WORLD_MODEL_HERO_IMAGES} zoomEffect={false} fit="contain" intervalMs={4500} />
+        <video className="wm-graph-screenshot" src={wmHeroDingirFilm} autoPlay muted loop playsInline />
         <span className="wm-graph-expand-hint"><IconWorld size={13} stroke={1.8} /> view fullscreen</span>
       </button>
       {open && <HeroLightbox startIndex={0} onClose={() => setOpen(false)} />}
