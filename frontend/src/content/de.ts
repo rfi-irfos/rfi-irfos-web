@@ -293,7 +293,7 @@ export const DE: Content = {
   pricing: {
     eyebrow: 'Kernangebot',
     heading: 'Klar kalkuliert',
-    subheading: 'Laufende Pr\u00fcfung, skaliert nach \u00fcberwachter Oberfl\u00e4che. Kostenlos starten, upgraden sobald Sie wissen, was Sie brauchen.',
+    subheading: 'W\u00e4hlen Sie die Sicherheitsabdeckung, die heute zu Ihrem Bedarf und Budget passt, mit einem Plan, der mit Ihrem Produkt w\u00e4chst. Starten Sie mit einer fokussierten Pr\u00fcfung und erweitern Sie auf laufende Untersuchungen, wenn Ihre Anforderungen wachsen.',
     deliveryLabel: 'Lieferung',
     domains: [
       { name: 'Intelligence',

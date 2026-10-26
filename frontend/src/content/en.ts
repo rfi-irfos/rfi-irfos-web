@@ -308,7 +308,7 @@ export const EN = {
   pricing: {
     eyebrow: 'Core Offer',
     heading: 'Priced in plain terms',
-    subheading: 'Continuous review, scaled to how much surface needs watching. Start free, upgrade when you know what you need.',
+    subheading: 'Choose the level of security coverage that fits your needs and budget today, with a plan that scales as your product grows. Start with a focused assessment and extend to continuous investigations as your requirements evolve.',
     deliveryLabel: 'Delivery',
     domains: [
       { name: 'Intelligence',
