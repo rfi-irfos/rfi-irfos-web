@@ -441,11 +441,34 @@ export const revealSuppressed = { current: false }
 // browser's fullscreen (Simeon: "zeigen das video in fullscreen ... gleich bei
 // squad auch"). iOS Safari has no element requestFullscreen for <video>, only
 // its own webkitEnterFullscreen, hence the fallback.
+// Fullscreen plays from the start with sound and native controls; the click is
+// the user gesture browsers require for unmuted playback. Leaving fullscreen
+// returns to the silent hero loop (Simeon 2026-10-26: "mit Ton abspielen").
 export function FilmPanel({ src, className }: { src: string; className: string }) {
   const ref = useRef<HTMLVideoElement>(null)
+  useEffect(() => {
+    const video = ref.current
+    if (!video) return
+    const toLoop = () => {
+      if (document.fullscreenElement === video) return
+      video.muted = true
+      video.controls = false
+      video.play().catch(() => {})
+    }
+    document.addEventListener('fullscreenchange', toLoop)
+    video.addEventListener('webkitendfullscreen', toLoop)
+    return () => {
+      document.removeEventListener('fullscreenchange', toLoop)
+      video.removeEventListener('webkitendfullscreen', toLoop)
+    }
+  }, [])
   const openFullscreen = () => {
     const video = ref.current as (HTMLVideoElement & { webkitEnterFullscreen?: () => void }) | null
     if (!video) return
+    video.currentTime = 0
+    video.muted = false
+    video.controls = true
+    video.play().catch(() => {})
     if (video.requestFullscreen) video.requestFullscreen().catch(() => {})
     else video.webkitEnterFullscreen?.()
   }
