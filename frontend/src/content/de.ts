@@ -145,7 +145,7 @@ export const DE: Content = {
     heading: 'Die Disziplin, bewiesen',
     seoTitle: 'App-Datenschutz- & Sicherheitsanalysen · Evidence Ledger · RFI-IRFOS',
     seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsanalysen bekannter Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel, Tracking vor Einwilligung. Vollständige Berichte, frei zugänglich.',
-    paragraph: 'Wir dekompilieren öffentlich verbreitete Android- und iOS-Apps und verfolgen ihre Datenflüsse zu echten Endpunkten in echten Ländern. Wir dokumentieren, was wir beobachten, trennen verifizierte Befunde von Interpretation und bewahren die Beweise hinter jeder Schlussfolgerung. Kein Unternehmen kann sich ein besseres Ergebnis erkaufen: Jede Organisation wird nach demselben Maßstab behandelt, unabhängig davon, ob sie uns bezahlt oder nicht. Dieses permanente Offenlegungsledger setzt genau dieses Prinzip um.',
+    paragraph: 'Wir betreiben eine agentische KI-Pipeline, die öffentlich verbreitete Android- und iOS-Apps dekompiliert, ihren Code und ihre Datenflüsse untersucht und Verbindungen zu realen Endpunkten nachverfolgt. Hunderte spezialisierte Agenten arbeiten an der Untersuchung und verbinden technische Belege zu einem stimmigen Gesamtbild, das menschliche Fachleute prüfen und verifizieren.',
     securityBridgeLead: 'Das ist es, was ein Security-Auftrag liefert.',
     focusBanner: (names: string) => `Angezeigt wird der Report zu ${names}.`,
     showFullLedger: 'Gesamtes Ledger anzeigen',

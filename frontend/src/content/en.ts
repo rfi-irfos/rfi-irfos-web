@@ -156,7 +156,7 @@ export const EN = {
     // searcher nothing about what the page IS. Search-facing copy only - visible page text unchanged.
     seoTitle: 'App Privacy & Security Audit Reports · Evidence Ledger · RFI-IRFOS',
     seoDescription: 'Public ledger of evidence-based GDPR and security audit reports on popular Android apps: trackers, SDKs, permissions, hardcoded keys, pre-consent tracking. Free full reports.',
-    paragraph: 'We decompile publicly distributed Android and iOS apps and trace their data flows to real endpoints in real countries. We document what we observe, distinguish verified findings from interpretation, and preserve the evidence behind every conclusion. No company can buy a better result: every organisation is held to the same standard, whether it pays us or not. This permanent disclosure ledger puts that principle into practice.',
+    paragraph: 'We run an agentic AI pipeline that decompiles publicly distributed Android and iOS apps, investigates their code and data flows, and traces connections to real-world endpoints. Hundreds of specialised agents work across the investigation, connecting technical evidence into a coherent picture that human specialists review and verify.',
     securityBridgeLead: 'This is what a Security engagement produces.',
     focusBanner: (names: string) => `Showing the report for ${names}.`,
     showFullLedger: 'Show the full ledger',
