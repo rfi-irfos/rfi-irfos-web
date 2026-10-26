@@ -475,6 +475,20 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   // Fetch the evidence chunk only when something can actually need it: the
   // evidence view itself, a report deep link, or an already-open report modal.
   const [evidenceMods, setEvidenceMods] = useState<{ tr: TrackRecordModule; proof: ProofModule } | null>(null)
+  // Warm the evidence chunk (TrackRecord alone is ~1.4MB) in idle time after
+  // first paint: the dynamic import below hits the module cache and the first
+  // click on "Evidence" mounts instantly instead of stalling several seconds
+  // on the network fetch (live feedback 2026-10-26, "saulangsam"). Initial
+  // paint stays unaffected - this runs only once the main thread is idle.
+  useEffect(() => {
+    const warm = () => { import('./sections/TrackRecord'); import('./sections/Proof') }
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(warm, { timeout: 4000 })
+      return () => window.cancelIdleCallback(id)
+    }
+    const id = window.setTimeout(warm, 2500)
+    return () => window.clearTimeout(id)
+  }, [])
   useEffect(() => {
     if (evidenceMods || (view !== 'evidence' && !initialReportSlug && !reportModal)) return
     let alive = true
@@ -770,6 +784,13 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   const mobile = useMobile()
 
   useEffect(() => {
+    // `evidenceMods` must be a dependency since the 2026-10-24 evidence chunk
+    // split: on the first switch to the evidence view the TrackRecord section
+    // is not mounted yet (the chunk is still loading), so ledgerRef.current is
+    // null, this effect bailed - and with [view] alone it never re-ran. Result
+    // (live bug, 2026-10-26): ledgerFired stayed false forever and all 387
+    // ledger rows sat at opacity 0 under a fully rendered header. Re-running
+    // when the chunk lands arms the observer + fallback against the real node.
     const el = ledgerRef.current; if (!el) return
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) { setLedgerFired(true); obs.disconnect() }
@@ -779,7 +800,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     // cross a nonzero threshold, so guarantee rows render even if the observer never fires.
     const fallback = setTimeout(() => setLedgerFired(true), 800)
     return () => { obs.disconnect(); clearTimeout(fallback) }
-  }, [view])
+  }, [view, evidenceMods])
 
   useEffect(() => {
     // revealSuppressed itself still had the exact race ScrambleHeading's comment
