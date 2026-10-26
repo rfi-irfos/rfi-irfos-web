@@ -76,11 +76,9 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         </Reveal>
         <Reveal delay={1}>
           <div style={{ maxWidth: 720, margin: '0 auto 36px', textAlign: 'center' }}>
-            {c.paragraph.split('\n\n').map((para, i) => (
-              <p key={i} style={{ color: 'var(--text)', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: i ? '14px 0 0' : 0 }}>
-                {para}
-              </p>
-            ))}
+            <p style={{ color: 'var(--text)', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: 0 }}>
+              {c.paragraph}
+            </p>
           </div>
         </Reveal>
 

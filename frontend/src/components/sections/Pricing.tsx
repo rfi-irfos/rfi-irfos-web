@@ -241,7 +241,8 @@ export function PricingSection({
           <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <p className="wm-eyebrow">{t.pricing.eyebrow}</p>
             <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.pricing.heading}</h1>
-            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 640 }}>{t.pricing.subheading}</p>
+            {/* White at --fs-lead like the Evidence ledger intro (Simeon 2026-10-26). */}
+            <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 40, maxWidth: 720, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)' }}>{t.pricing.subheading}</p>
           </div>
         </Reveal>
 
