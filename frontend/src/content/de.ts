@@ -874,10 +874,10 @@ export const DE: Content = {
     },
     stats: {
       historical: { label: 'Historische Beobachtungen', value: '3.334.419', sub: 'der vollständige historische Datenbestand, reicht zurück bis 55.500 v. Chr. · Stand 19.08.2026' },
-      live: { label: 'Live-Beobachtungen', value: '7.854.538', sub: 'Echtzeit-Datenpunkte aus allen aktiven Streams, kumulativ · Stand 31.08.2026' },
-      nodes: { label: 'Weltgraph', value: '51.200', sub: 'einzelne Entitäten im Graphen erfasst, Orte, Systeme und Ereignisse · Stand 31.08.2026' },
-      edges: { label: 'Weltgraph-Kanten', value: '484.307', sub: 'die kausalen und relationalen Verknüpfungen zwischen diesen Entitäten' },
-      streams: { label: 'Live-Streams', value: '21', sub: 'unabhängige Live-Feeds, die gerade neue Beobachtungen einspeisen' },
+      live: { label: 'Live-Beobachtungen', value: '45.828.573', sub: 'Echtzeit-Datenpunkte aus allen aktiven Streams, kumulativ · Stand 26.10.2026' },
+      nodes: { label: 'Weltgraph', value: '182.214', sub: 'einzelne Entitäten im Graphen erfasst, Orte, Systeme und Ereignisse · Stand 24.10.2026' },
+      edges: { label: 'Weltgraph-Kanten', value: '770.636', sub: 'die kausalen und relationalen Verknüpfungen zwischen diesen Entitäten' },
+      streams: { label: 'Live-Streams', value: '27', sub: 'unabhängige Live-Feeds, die gerade neue Beobachtungen einspeisen' },
       domains: { label: 'Domänen', value: '20+', sub: 'eigenständige Themenfelder, die DINGIR abdeckt, von Erdbeben bis Märkten' },
     },
     comparison: {

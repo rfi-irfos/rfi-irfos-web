@@ -895,10 +895,10 @@ export const EN = {
     },
     stats: {
       historical: { label: 'Historical observations', value: '3,334,419', sub: 'the full historical corpus ingested so far, reaching back to 55,500 BCE · as of 2026-08-19' },
-      live: { label: 'Live observations', value: '7,854,538', sub: 'real-time data points collected across every active stream, cumulative · as of 2026-08-31' },
-      nodes: { label: 'World graph', value: '51,200', sub: 'distinct entities tracked in the graph, places, systems and events · as of 2026-08-31' },
-      edges: { label: 'World graph edges', value: '484,307', sub: 'the causal and relational links connecting those entities to each other' },
-      streams: { label: 'Live streams', value: '21', sub: 'independent live feeds ingesting new observations right now' },
+      live: { label: 'Live observations', value: '45,828,573', sub: 'real-time data points collected across every active stream, cumulative · as of 2026-10-26' },
+      nodes: { label: 'World graph', value: '182,214', sub: 'distinct entities tracked in the graph, places, systems and events · as of 2026-10-24' },
+      edges: { label: 'World graph edges', value: '770,636', sub: 'the causal and relational links connecting those entities to each other' },
+      streams: { label: 'Live streams', value: '27', sub: 'independent live feeds ingesting new observations right now' },
       domains: { label: 'Domains', value: '20+', sub: 'distinct subject areas DINGIR spans, from seismic activity to markets' },
     },
     comparison: {
