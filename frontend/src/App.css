@@ -1324,3 +1324,11 @@ button { cursor: pointer; font-family: inherit; }
 .rfi-thin-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 245, 196, 0.45);
 }
+
+/* Evidence ledger frame (#track-record-reports, inline-styled in TrackRecord.tsx)
+   reaches 20px (~5mm) further out on each side on wide screens (2026-10-26,
+   Simeon), so the six KPI labels fit on two lines instead of three. Desktop only:
+   on narrow screens a negative margin would push the frame past the viewport. */
+@media (min-width: 1100px) {
+  #track-record-reports { margin-left: -20px; margin-right: -20px; }
+}
