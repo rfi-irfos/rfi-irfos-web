@@ -239,7 +239,6 @@ function WorldGraphVisual() {
 function HeroBlock({ onApiRequest }: { onApiRequest: () => void }) {
   const { t } = useLocale()
   const w = t.worldModel
-  const scrollToUseCases = () => document.getElementById('wm-usecases')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   return (
     <div className="wm-wrap wm-hero">
       <Reveal dist={14}>
@@ -247,8 +246,11 @@ function HeroBlock({ onApiRequest }: { onApiRequest: () => void }) {
           <h1>{w.heading}</h1>
           <p>{w.intro}</p>
           <div className="wm-hero-ctas">
-            <button className="wm-btn-primary" onClick={scrollToUseCases}>{w.exploreCta}</button>
-            <button className="wm-btn-secondary" onClick={onApiRequest}>{w.apiCta}</button>
+            {/* Same shape as Squad's hero (2026-10-26, Simeon): the page's own ask as
+                the primary button, the sibling product as the secondary link. Was
+                "Explore" (scroll to use cases) + "Request API access". */}
+            <button className="wm-btn-primary" onClick={onApiRequest}>{w.apiCta}</button>
+            <a href="/squad/" className="wm-btn-secondary">{w.squadLinkLabel}</a>
           </div>
         </div>
       </Reveal>

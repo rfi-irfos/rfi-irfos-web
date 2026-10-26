@@ -884,7 +884,7 @@ export const EN = {
     eyebrow: 'DINGIR',
     heading: 'A continuously growing world model',
     intro: 'DINGIR (Dynamic Interaction Network & Graph Intelligence Runtime) connects historical and real-time observations across more than 20 domains into one living, causally structured world graph. Not just a data store: a system that tracks how things relate, notices what changes, and reasons about what that change touches next.',
-    exploreCta: 'Explore', apiCta: 'Request API access',
+    apiCta: 'Request API access →', squadLinkLabel: 'The Squad →',
     liveStatus: 'Live system active',
     liveStatusFallback: 'Example data (live feed not reachable)',
     statsAsOf: (date: string) => `as of ${date}`,

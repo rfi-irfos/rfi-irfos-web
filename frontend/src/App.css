@@ -576,7 +576,7 @@ button { cursor: pointer; font-family: inherit; }
    /world-model/, not a JS-driven scroll/navigate. .wm-btn-secondary has no
    display rule of its own, so this needs one now that it's not always a
    flex-item sibling of a <button> with matching box-sizing by default. */
-.sq-hero-ctas a.wm-btn-secondary { display: inline-flex; align-items: center; text-decoration: none; }
+.sq-hero-ctas a.wm-btn-secondary, .wm-hero-ctas a.wm-btn-secondary { display: inline-flex; align-items: center; text-decoration: none; }
 .sq-status-line { display: flex; align-items: center; gap: 8px; margin: 0; font: 700 11px 'JetBrains Mono', monospace; letter-spacing: .08em; color: var(--text3); text-transform: uppercase; }
 .sq-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); opacity: .7; }
 
