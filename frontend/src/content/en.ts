@@ -247,7 +247,7 @@ export const EN = {
   appPrivacy: {
     eyebrow: 'What we do best',
     heading: 'Human-Powered Multi-Agent Security Investigations',
-    paragraph: "We run digital products through a purpose-built, multi-agent investigation pipeline. Hundreds of specialized agents examine code, dependencies, APIs, configurations and attack surfaces in parallel, trace connections and flag suspicious behavior. Our human specialists then turn the correlated evidence into a detailed roadmap of what was found, so developers get a clear picture they can verify and act on.",
+    paragraph: "Selected agents execute thousands of parallel tests across your code, dependencies, APIs, configurations and attack surfaces. Their findings are correlated to expose relationships, trace potential attack paths and distinguish isolated signals from broader security issues.\n\nOur investigators then examine each result in its technical context, producing an evidence-backed assessment of your security posture and a clear roadmap for remediation.",
     processLabel: 'How a review happens',
     steps: [
       { title: 'Send', text: 'A GitHub link, a repository archive, a package build or an API specification.' },
