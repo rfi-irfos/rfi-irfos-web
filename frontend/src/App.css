@@ -526,6 +526,10 @@ button { cursor: pointer; font-family: inherit; }
    .wm-compare-icon keeps its own fixed 36px box, the row just centers it
    against the title's cap-height instead of letting it float on its own line. */
 .wm-usecase-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+/* Same icon-beside-title row for the LM/agent/world-model compare cards
+   (live feedback 2026-10-26); no margin - the card's own gap spaces it. */
+.wm-compare-head { display: flex; align-items: center; gap: 10px; }
+.wm-compare-head .wm-compare-icon { flex: 0 0 auto; }
 .wm-usecase-grid .wm-compare-icon { flex: 0 0 auto; }
 .wm-usecase-grid h3 { margin: 0; font-size: var(--fs-body); font-weight: 700; }
 .wm-usecase-grid p { margin: 0; font-size: var(--fs-body); color: var(--text2); line-height: var(--lh-body); }

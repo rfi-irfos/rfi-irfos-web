@@ -506,24 +506,21 @@ function ComparisonBlock() {
       <div className="wm-section-box">
         <div className="wm-compare-grid">
           <Reveal dist={14} style={{ height: '100%' }}><div className="wm-compare-card wm-card">
-            <div className="wm-compare-icon"><IconMessage2 size={19} stroke={1.7} /></div>
-            <h3>{c.lm.title}</h3>
+            <div className="wm-compare-head"><div className="wm-compare-icon"><IconMessage2 size={19} stroke={1.7} /></div><h3>{c.lm.title}</h3></div>
             <p>{c.lm.body}</p>
             <p className="wm-compare-tag">{c.lm.tag}</p>
             <span className="wm-compare-verdict">{c.lm.verdict}</span>
           </div></Reveal>
           <span className="wm-compare-vs">vs.</span>
           <Reveal dist={14} delay={1} style={{ height: '100%' }}><div className="wm-compare-card wm-card">
-            <div className="wm-compare-icon"><IconRobot size={19} stroke={1.7} /></div>
-            <h3>{c.agent.title}</h3>
+            <div className="wm-compare-head"><div className="wm-compare-icon"><IconRobot size={19} stroke={1.7} /></div><h3>{c.agent.title}</h3></div>
             <p>{c.agent.body}</p>
             <p className="wm-compare-tag">{c.agent.tag}</p>
             <span className="wm-compare-verdict">{c.agent.verdict}</span>
           </div></Reveal>
           <span className="wm-compare-vs">vs.</span>
           <Reveal dist={14} delay={2} style={{ height: '100%' }}><div className="wm-compare-card wm-compare-card--wm wm-card">
-            <div className="wm-compare-icon"><IconWorld size={19} stroke={1.7} /></div>
-            <h3>{c.wm.title}</h3>
+            <div className="wm-compare-head"><div className="wm-compare-icon"><IconWorld size={19} stroke={1.7} /></div><h3>{c.wm.title}</h3></div>
             <p>{c.wm.body}</p>
             <p className="wm-compare-tag">{c.wm.tag}</p>
             <span className="wm-compare-verdict">{c.wm.verdict}</span>
