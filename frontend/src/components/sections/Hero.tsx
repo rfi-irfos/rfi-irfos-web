@@ -64,6 +64,9 @@ import heroDingirEmbedDecade from '../../assets/hero-dingir-embed-decade.webp'
 // Cropped variant of -embed-decided (2026-10-23): graph only, without the DINGIR
 // side panel/legend, so the homepage opener shows the pure neural net with words.
 import heroDingirEmbedDecidedGraph from '../../assets/hero-dingir-embed-decided-graph.webp'
+// Graz from above (2026-10-26, live request: "neues start hero image... von graz") -
+// the satellite shot of our own city now opens the homepage rotation.
+import heroGrazSatellite from '../../assets/hero-graz-satellite.webp'
 // Append more `import heroX from '../../assets/hero-x.jpeg'` + entries here to
 // grow the slideshow - HeroSlideshow below already handles 1..N images. With
 // just one, it renders exactly like the old single static image (no interval,
@@ -114,10 +117,11 @@ export const HERO_IMAGES = [
   ]),
 ]
 
-// Homepage opener (2026-10-23, live feedback: the first frame was too overwhelming):
-// the pure neural net (words, no UI panel, no year numbers) leads the rotation.
+// Homepage opener: the Graz satellite shot leads (2026-10-26 live request),
+// followed by the pure neural net that opened before (2026-10-23, "the first
+// frame was too overwhelming" - words, no UI panel, no year numbers).
 // Built separately from HERO_IMAGES so WorldModel.tsx's panel keeps its own order.
-const HOME_HERO_IMAGES = [heroDingirEmbedDecidedGraph, ...HERO_IMAGES.filter(src => src !== heroDingirEmbedDecided)]
+const HOME_HERO_IMAGES = [heroGrazSatellite, heroDingirEmbedDecidedGraph, ...HERO_IMAGES.filter(src => src !== heroDingirEmbedDecided)]
 
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 
