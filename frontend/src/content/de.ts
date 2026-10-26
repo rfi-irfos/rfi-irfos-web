@@ -10,10 +10,10 @@ import type { Content } from './en'
 
 export const DE: Content = {
   meta: {
-    title: 'RFI-IRFOS — Rethink the Obvious · Forschungsinstitut, Graz',
-    description: 'Interdisziplinäre Forschungseinrichtung für Open Sciences in Graz. Ternäre KI · Software-Sicherheit · DSGVO-Analysen · Governance.',
+    title: 'RFI-IRFOS · Agenten, Weltmodell, App-Audits · Graz',
+    description: 'Forschungsinstitut in Graz. The Squad: spezialisierte Agenten für jede Art von Arbeit. DINGIR: ein Weltmodell über mehr als 20 Domänen. Evidence: ein öffentliches Register von App-Datenschutz-Audits.',
     dataSolutions: {
-      title: 'Data Solutions — RFI-IRFOS',
+      title: 'Data Solutions · RFI-IRFOS',
       description: 'Reproduzierbare Umgebungen, Experten-Trajektorien, Evaluationsdatensätze und Safety-Daten für leistungsfähige Agenten.',
     },
   },
@@ -143,9 +143,9 @@ export const DE: Content = {
   trackRecord: {
     eyebrow: 'Permanentes Offenlegungsledger',
     heading: 'Die Disziplin, bewiesen',
-    seoTitle: 'App-Datenschutz- & Sicherheitsanalysen — Evidence Ledger — RFI-IRFOS',
+    seoTitle: 'App-Datenschutz- & Sicherheitsanalysen · Evidence Ledger · RFI-IRFOS',
     seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsanalysen bekannter Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel, Tracking vor Einwilligung. Vollständige Berichte, frei zugänglich.',
-    paragraph: 'Wir dekompilieren öffentlich verbreitete Android- und iOS-Apps und verfolgen ihre Datenflüsse zu echten Endpunkten in echten Ländern. Wir dokumentieren, was wir beobachten, trennen verifizierte Befunde von Interpretation und bewahren die Beweise hinter jeder Schlussfolgerung. Kein Unternehmen kann sich ein besseres Ergebnis erkaufen — jede Organisation wird nach demselben Maßstab behandelt, unabhängig davon, ob sie uns bezahlt oder nicht. Dieses permanente Offenlegungsledger setzt genau dieses Prinzip um.',
+    paragraph: 'Wir dekompilieren öffentlich verbreitete Android- und iOS-Apps und verfolgen ihre Datenflüsse zu echten Endpunkten in echten Ländern. Wir dokumentieren, was wir beobachten, trennen verifizierte Befunde von Interpretation und bewahren die Beweise hinter jeder Schlussfolgerung. Kein Unternehmen kann sich ein besseres Ergebnis erkaufen: Jede Organisation wird nach demselben Maßstab behandelt, unabhängig davon, ob sie uns bezahlt oder nicht. Dieses permanente Offenlegungsledger setzt genau dieses Prinzip um.',
     securityBridgeLead: 'Das ist es, was ein Security-Auftrag liefert.',
     focusBanner: (names: string) => `Angezeigt wird der Report zu ${names}.`,
     showFullLedger: 'Gesamtes Ledger anzeigen',
@@ -868,7 +868,7 @@ export const DE: Content = {
     liveStatusFallback: 'Beispieldaten (Live-Feed nicht erreichbar)',
     statsAsOf: (date: string) => `Stand ${date}`,
     heroExample: {
-      tag: 'Beispiel', title: 'Sumatra, Indonesien — Nachbebensequenz',
+      tag: 'Beispiel', title: 'Sumatra, Indonesien: Nachbebensequenz',
       time: 'M6.2 Hauptbeben, 24.08.2026 · 07:24 UTC',
       body: 'DINGIR verfolgt die Nachbeben-Wahrscheinlichkeit laufend nach dem Omori-Utsu-Modell, auf Basis von USGS-Erdbebendaten. Dies ist ein Rechenbeispiel, kein Live-Ereignis.',
     },
@@ -930,7 +930,7 @@ export const DE: Content = {
   squad: {
     heading: 'Der Kader',
     subheading: 'Spezialisierte Agenten. Für jede Art von Arbeit.',
-    intro: 'Jeder Agent ist auf eine klare Verantwortung zugeschnitten — Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit, Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Jeder Befund wird von unseren menschlichen Fachleuten erneut geprüft, bevor er bei Ihnen ankommt, mit schriftlichem Bericht und den Belegen dahinter. Reviews laufen auf Infrastruktur in Europa, die Verarbeitung findet in Graz statt.',
+    intro: 'Jeder Agent ist auf eine klare Verantwortung zugeschnitten: Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit, Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Jeder Befund wird von unseren menschlichen Fachleuten erneut geprüft, bevor er bei Ihnen ankommt, mit schriftlichem Bericht und den Belegen dahinter. Reviews laufen auf Infrastruktur in Europa, die Verarbeitung findet in Graz statt.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Finden Sie den passenden Agenten →',
@@ -953,7 +953,7 @@ export const DE: Content = {
         output: ['Eine priorisierte To-do-Liste statt zehn Alerts', 'Eine klare nächste Aktion', 'Eskalation, wenn etwas nicht warten kann', 'Ein Protokoll, was entschieden wurde und warum', 'Eine wöchentliche Zusammenfassung, was wichtig war', 'Ein einziges Dashboard statt acht Postfächer', 'Einen benannten Verantwortlichen für jeden offenen Punkt', 'Eine Auslastungsübersicht über den ganzen Kader'],
       },
       argus: {
-        mission: 'Findet heraus, wenn ein Wettbewerber einen Schritt macht — noch am selben Tag.',
+        mission: 'Findet heraus, wenn ein Wettbewerber einen Schritt macht, noch am selben Tag.',
         domain: 'Markt- & Aufmerksamkeits-Intelligence',
         jobTitle: 'Markt- & Kommunikations-Intelligence',
         description: 'Argus ist der Agent, den man ruft, wenn ein Mitbewerber einen Schritt macht und man das noch am selben Tag wissen muss, nicht erst Wochen später. Er beobachtet den Markt fortlaufend und meldet, was sich tatsächlich verändert hat.',
@@ -1058,7 +1058,7 @@ export const DE: Content = {
     },
     requestForm: {
       heading: 'Starten Sie mit einem Agenten.',
-      description: 'Kein Bundle nötig — fordern Sie Zugang zu dem Agenten an, den Sie brauchen, oder zum ganzen Kader.',
+      description: 'Kein Bundle nötig. Fordern Sie Zugang zu dem Agenten an, den Sie brauchen, oder zum ganzen Kader.',
       emailPlaceholder: 'Geschäftliche E-Mail',
       companyPlaceholder: 'Unternehmen',
       submitIdle: 'Zugang anfragen', submitSending: 'Wird gesendet...', submitOk: 'Angekommen. Wir melden uns.',

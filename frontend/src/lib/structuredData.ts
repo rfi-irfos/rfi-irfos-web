@@ -60,7 +60,7 @@ export function reportArticleJsonLd(opts: { slug: string; targets: string[]; dis
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: `${names} — GDPR/Security Disclosure Report`,
+    headline: `${names} · GDPR/Security Disclosure Report`,
     url: `https://rfi-irfos.com/evidence/${slug}/`,
     ...(disclosure ? { datePublished: disclosure } : {}),
     ...(resolved && resolvedDate ? { dateModified: resolvedDate } : {}),

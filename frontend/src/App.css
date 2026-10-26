@@ -297,7 +297,10 @@ button { cursor: pointer; font-family: inherit; }
 .sq-heading, .wm-hero h1, .data-hero h1, .rfi-page-h1 { font-size: var(--fs-h2); font-weight: 900; line-height: var(--lh-tight); }
 
 .wm-hero h1 { margin: 10px 0 16px; }
-.wm-hero-copy p { max-width: 480px; color: var(--text); font-size: var(--fs-body); line-height: var(--lh-body); margin: 0 0 24px; }
+/* --fs-lead (18px) since 2026-10-26: same size and colour as the Evidence
+   ledger's intro paragraph, so the Squad, World Model and Evidence heroes read
+   alike (Simeon). */
+.wm-hero-copy p { max-width: 520px; color: var(--text); font-size: var(--fs-lead); line-height: var(--lh-body); margin: 0 0 24px; }
 /* margin-bottom 0 since 2026-10-26: the "Live system active" line below the
    buttons is gone, so the buttons close the text block and it centres exactly
    against the film (.wm-hero align-items: center). */
@@ -321,13 +324,6 @@ button { cursor: pointer; font-family: inherit; }
    2026-10-26: 16:9 now (Simeon) - the panel holds the 16:9 DINGIR film instead
    of the 1920x926 dashboard screenshots, so the film fits uncropped. */
 .wm-graph-panel { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; border: 1px solid var(--wm-border); background: var(--wm-surface); }
-.wm-graph-screenshot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
-/* The panel is now a <button> (added 2026-09-01, opens the fullscreen lightbox)
-   - reset the default button chrome, then re-add exactly what the plain div
-   version had (padding: 0, no border-radius/border duplication since those
-   already live on .wm-graph-panel itself, font-family: inherit so the hint
-   label below doesn't pick up the UA button font). */
-.wm-graph-panel--clickable { padding: 0; border: 1px solid var(--wm-border); background: none; font-family: inherit; cursor: pointer; display: block; width: 100%; }
 /* Always visible (was hover/focus-only, changed 2026-09-01 - "sollte immer
    sichtbar sein nich nur bei mouse hover", the affordance needs to read on
    touch devices too, which have no hover state at all). Hover/focus still
@@ -338,49 +334,6 @@ button { cursor: pointer; font-family: inherit; }
   background: rgba(8,10,16,0.72); border: 1px solid var(--wm-border); border-radius: 999px;
   font-size: var(--fs-label); font-weight: 700; color: var(--text2);
   transition: transform 0.15s ease, background-color 0.15s ease;
-}
-.wm-graph-panel--clickable:hover .wm-graph-expand-hint,
-.wm-graph-panel--clickable:focus-visible .wm-graph-expand-hint { transform: translateY(-2px); background: rgba(8,10,16,0.9); }
-
-/* Fullscreen lightbox (2026-09-01) - position:fixed unlike .wm-modal-backdrop
-   above, which is deliberately scoped to its own panel by design. */
-.wm-lightbox-backdrop {
-  position: fixed; inset: 0; z-index: 500; background: rgba(3,4,8,0.94);
-  display: flex; align-items: center; justify-content: center; gap: 16px; overflow: hidden;
-  cursor: default; touch-action: none;
-}
-@media (max-width: 640px) { .wm-lightbox-backdrop { gap: 6px; } }
-/* A real <img>, not a background-image box (changed 2026-09-01) - sized to
-   its own natural aspect ratio via max-width/max-height rather than forced
-   into a fixed 16:9 crop, so nothing gets sliced off (live feedback: "es
-   soll eig direkt in den rahmen passen" - screenshots aren't all exactly
-   16:9, and cover was cropping the corner where the DINGIR logo sits). */
-.wm-lightbox-frame {
-  display: block; max-width: 94vw; max-height: 86vh; width: auto; height: auto;
-  border-radius: 10px; border: 1px solid var(--wm-border); background: var(--wm-surface);
-  transition: transform 0.05s linear; will-change: transform; user-select: none;
-}
-.wm-lightbox-close { position: fixed; top: 20px; right: 20px; z-index: 501; background: rgba(8,10,16,0.72); }
-/* Sit in normal flow right next to the frame (was position: fixed at the
-   viewport edges, changed 2026-09-01 - "die arrows näher an das foto" - the
-   frame doesn't span the full viewport width, so fixed-at-edge arrows read
-   as disconnected from the image they control). shrink: 0 keeps them from
-   being squeezed by the frame's own flex-basis. */
-.wm-lightbox-nav {
-  flex: 0 0 auto; z-index: 501;
-  width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%;
-  background: rgba(8,10,16,0.72); border: 1px solid var(--wm-border); color: var(--text2); cursor: pointer;
-  transition: color var(--dur-colour) var(--ease-settle), border-color var(--dur-colour) var(--ease-settle);
-}
-.wm-lightbox-nav:hover { color: var(--text); border-color: var(--accent); }
-@media (max-width: 640px) {
-  .wm-lightbox-nav { width: 38px; height: 38px; }
-}
-.wm-lightbox-hint {
-  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 501;
-  font-size: var(--fs-label); font-weight: 700; letter-spacing: .04em; color: var(--text3);
-  background: rgba(8,10,16,0.72); border: 1px solid var(--wm-border); border-radius: 999px; padding: 6px 14px;
-  pointer-events: none;
 }
 
 /* Base "software card": opaque navy surface, hairline border, no blur, no
@@ -396,6 +349,8 @@ button { cursor: pointer; font-family: inherit; }
 .wm-section-box .wm-section-head, .wm-section-box > h2 { margin-bottom: 16px; }
 
 .wm-stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+/* Inside the reasoning box under .wm-split (2026-10-26): same 6px gap as the split. */
+.wm-stats-grid--attached { margin-top: 6px; }
 .wm-stat { padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 8px; min-height: 132px; height: 100%; box-sizing: border-box; }
 .wm-stat-label { font: 700 9.5px 'JetBrains Mono', monospace; letter-spacing: .09em; text-transform: uppercase; color: var(--text3); }
 /* Site's own real body/heading font (Archivo/system-ui), NOT a monospace swap
@@ -611,8 +566,9 @@ button { cursor: pointer; font-family: inherit; }
    small box. */
 .sq-hero-grid { display: grid; grid-template-columns: 0.85fr 1.35fr; gap: 48px; align-items: center; }
 .sq-heading { margin: 0 0 12px; }
-.sq-subheading { margin: 0 0 14px; font-size: var(--fs-lead); color: var(--text); font-weight: 700; }
-.sq-intro { margin: 0 0 18px; max-width: 480px; color: var(--text); line-height: var(--lh-body); }
+/* --fs-lead since 2026-10-26, matching .wm-hero-copy p and the Evidence intro.
+   Opens with the former .sq-subheading line as its first sentence. */
+.sq-intro { margin: 0 0 24px; max-width: 520px; color: var(--text); font-size: var(--fs-lead); line-height: var(--lh-body); }
 /* margin-bottom 0 since 2026-10-26, same reason as .wm-hero-ctas: the "Early
    Access" line under the buttons is gone. */
 .sq-hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 0; }
@@ -648,7 +604,15 @@ button { cursor: pointer; font-family: inherit; }
    2026-10-26: 16:9 now, matching .wm-graph-panel again - both heroes hold a
    16:9 film, nothing gets trimmed top and bottom anymore. */
 .sq-hub-panel { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; border: 1px solid var(--wm-border); background: var(--bg); width: 100%; display: flex; align-items: center; justify-content: center; }
-.sq-hub-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+/* FilmPanel (shared.tsx, 2026-10-26): the hero panel is a <button> that opens
+   its own video fullscreen - reset the button chrome, keep the panel box from
+   .sq-hub-panel / .wm-graph-panel. In fullscreen the video letterboxes
+   (contain) instead of keeping the panel's cover crop. */
+.film-panel { padding: 0; font-family: inherit; cursor: pointer; display: block; width: 100%; }
+.film-panel-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.film-panel-video:fullscreen { object-fit: contain; background: #000; }
+.film-panel:hover .wm-graph-expand-hint,
+.film-panel:focus-visible .wm-graph-expand-hint { transform: translateY(-2px); background: rgba(8,10,16,0.9); }
 
 /* .sq-hero had no vertical padding of its own (unlike .wm-hero's padding-block:
    24px 10px) - live feedback: the overview section "clips" against the hero,

@@ -3,6 +3,7 @@
 // ~5600-line PublicSite.tsx as a pure refactor (no copy/style/behavior changes).
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { IconMaximize } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
 
 // Was the literal '#00f5c4'. In dark, --accent IS #00f5c4, so this is a zero-diff
@@ -434,6 +435,27 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
 // (ES module bindings are read-only views from the importing side), so this is a mutable
 // cell instead. Same single shared flag, same semantics, just import-safe.
 export const revealSuppressed = { current: false }
+
+// Hero film panel shared by Squad and World Model (2026-10-26): a muted 16:9
+// loop, and a click on the panel puts the video element itself into the
+// browser's fullscreen (Simeon: "zeigen das video in fullscreen ... gleich bei
+// squad auch"). iOS Safari has no element requestFullscreen for <video>, only
+// its own webkitEnterFullscreen, hence the fallback.
+export function FilmPanel({ src, className }: { src: string; className: string }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  const openFullscreen = () => {
+    const video = ref.current as (HTMLVideoElement & { webkitEnterFullscreen?: () => void }) | null
+    if (!video) return
+    if (video.requestFullscreen) video.requestFullscreen().catch(() => {})
+    else video.webkitEnterFullscreen?.()
+  }
+  return (
+    <button type="button" className={`${className} film-panel`} onClick={openFullscreen} aria-label="View film fullscreen">
+      <video ref={ref} className="film-panel-video" src={src} autoPlay muted loop playsInline />
+      <span className="wm-graph-expand-hint"><IconMaximize size={13} stroke={1.8} /> view fullscreen</span>
+    </button>
+  )
+}
 
 // History of this function (why it's no longer a continuous scroll-position
 // tween): v1 computed opacity as a pure function of CURRENT scroll position

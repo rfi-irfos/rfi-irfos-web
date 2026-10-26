@@ -32,16 +32,16 @@ export function reportSeo(
   const tail = `${opts.disclosure ? ` Disclosed ${opts.disclosure}.` : ''}${opts.resolved ? ' Resolved.' : ''}`
   if (!withPackage) {
     return {
-      title: `${names} — Disclosure Report — RFI-IRFOS`,
+      title: `${names} · Disclosure Report · RFI-IRFOS`,
       description: `RFI-IRFOS GDPR/security disclosure report for ${names}.${tail}`,
       withPackage: false,
     }
   }
   const ids = pkgs.map(p => p.pkg)
   const candidates = [
-    `${names} (${ids[0]}) — GDPR & Security Disclosure — RFI-IRFOS`,
-    `${names} (${ids[0]}) — Disclosure — RFI-IRFOS`,
-    `${names} (${ids[0]}) — RFI-IRFOS`,
+    `${names} (${ids[0]}) · GDPR & Security Disclosure · RFI-IRFOS`,
+    `${names} (${ids[0]}) · Disclosure · RFI-IRFOS`,
+    `${names} (${ids[0]}) · RFI-IRFOS`,
   ]
   const title = candidates.find(c => c.length <= MAX_TITLE) ?? candidates[candidates.length - 1]
   return {

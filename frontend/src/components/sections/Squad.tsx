@@ -15,7 +15,7 @@ import {
   IconSend, IconCpu, IconScale, IconBulb, IconHistory, IconUserCheck,
 } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
-import { Reveal, useMobile, beacon, WEB3FORMS_KEY, OUTPUT_TAG_HUES } from './shared'
+import { Reveal, useMobile, beacon, WEB3FORMS_KEY, OUTPUT_TAG_HUES, FilmPanel } from './shared'
 import { SQUAD_AGENTS, agentByKey, type AgentKey } from '../../content/squadAgents'
 import squadHeroWorkflow from '../../assets/squad/sq-hero-agent-os.mp4'
 
@@ -70,8 +70,9 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
       <div className="wm-wrap sq-hero-grid">
         <Reveal>
           <h1 className="sq-heading">{s.heading}</h1>
-          <p className="sq-subheading">{s.subheading}</p>
-          <p className="sq-intro">{s.intro}</p>
+          {/* The subheading opens the intro as its first sentence (2026-10-26, Simeon)
+              instead of standing alone as a bold line above it. */}
+          <p className="sq-intro">{s.subheading} {s.intro}</p>
           <div className="sq-hero-ctas">
             <button type="button" className="wm-btn-primary" onClick={onRequestAccess}>{s.primaryCta}</button>
             {/* Was a plain text link above the buttons + a separate "Watch an
@@ -84,16 +85,14 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
           </div>
         </Reveal>
         <Reveal from="right">
-          <div className="sq-hub-panel">
-            {/* Swapped from a static screenshot to a real screencast of the agent
-                workflow builder in motion (Simeon, 2026-09-13) - autoplay/muted/
-                loop/playsInline is required for iOS Safari to autoplay at all;
-                no controls, this is a hero backdrop, not a media player.
-                2026-10-24: replaced by the 45s Agent OS 3D film (16:9, 1280x720, no audio
-                track - it plays muted anyway). 2026-10-26: the frame is 16:9 now too,
-                the film fits uncropped. */}
-            <video className="sq-hub-photo" src={squadHeroWorkflow} autoPlay muted loop playsInline />
-          </div>
+          {/* Swapped from a static screenshot to a real screencast of the agent
+              workflow builder in motion (Simeon, 2026-09-13) - autoplay/muted/
+              loop/playsInline is required for iOS Safari to autoplay at all;
+              no controls, this is a hero backdrop, not a media player.
+              2026-10-24: replaced by the 45s Agent OS 3D film (16:9, 1280x720, no audio
+              track - it plays muted anyway). 2026-10-26: the frame is 16:9 now too,
+              the film fits uncropped, and a click opens it fullscreen (FilmPanel). */}
+          <FilmPanel src={squadHeroWorkflow} className="sq-hub-panel" />
         </Reveal>
       </div>
     </section>

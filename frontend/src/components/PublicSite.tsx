@@ -232,9 +232,9 @@ const NAV_HREFS = [
 // free instead of needing a second, separately-maintained copy of the same copy.
 function sectionMeta(t: Content, section: string) {
   switch (section) {
-    case 'research': return { title: `${t.research.heading} — RFI-IRFOS`, description: t.research.subheading }
-    case 'world-model': return { title: `${t.worldModel.heading} — RFI-IRFOS`, description: t.worldModel.intro }
-    case 'squad': return { title: `${t.squad.heading} — RFI-IRFOS`, description: t.squad.intro }
+    case 'research': return { title: `${t.research.heading} · RFI-IRFOS`, description: t.research.subheading }
+    case 'world-model': return { title: `${t.worldModel.heading} · RFI-IRFOS`, description: t.worldModel.intro }
+    case 'squad': return { title: `${t.squad.heading} · RFI-IRFOS`, description: t.squad.intro }
     // Dedicated search-facing copy (see en.ts seoTitle comment): the heading-derived
     // title said nothing about what the page is, at 4.7k impressions and <1% CTR.
     case 'evidence':
@@ -242,8 +242,8 @@ function sectionMeta(t: Content, section: string) {
     case 'data-solutions':
     case 'datasets': return { title: t.meta.dataSolutions.title, description: t.meta.dataSolutions.description }
     case 'access':
-    case 'pricing': return { title: `${t.pricing.heading} — RFI-IRFOS`, description: t.pricing.subheading }
-    case 'submit': return { title: `${t.submit.heading} — RFI-IRFOS`, description: t.submit.paragraph }
+    case 'pricing': return { title: `${t.pricing.heading} · RFI-IRFOS`, description: t.pricing.subheading }
+    case 'submit': return { title: `${t.submit.heading} · RFI-IRFOS`, description: t.submit.paragraph }
     default: return null
   }
 }

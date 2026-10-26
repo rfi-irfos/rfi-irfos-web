@@ -7,42 +7,16 @@
 // tried on this page and pulled again (live feedback 2026-08-31:
 // "overstimulates ppl") - this compact five-chain view is the only
 // causality-chain presence here now, not a preview of something bigger.
-import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type WheelEvent as ReactWheelEvent } from 'react'
-import { createPortal } from 'react-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from 'react'
 import {
   IconActivity, IconAlertTriangle, IconBroadcast, IconBug, IconBuildingSkyscraper, IconChartLine,
-  IconChevronLeft, IconChevronRight,
   IconCircleCheck, IconCloudRain, IconFlag, IconFlame, IconFlask, IconMail,
   IconMessage2, IconMountain, IconRobot, IconRoute, IconShieldLock, IconShip, IconSnowflake, IconTrain,
   IconWorld, IconX,
 } from '@tabler/icons-react'
-import { Reveal, OUTPUT_TAG_HUES, beacon, pageZoom } from './shared'
+import { Reveal, OUTPUT_TAG_HUES, beacon, pageZoom, FilmPanel } from './shared'
 import { useLocale } from '../../hooks/useLocale'
-// Real DINGIR interface screenshots, own set (added 2026-09-01, replacing the
-// shared HERO_IMAGES import) - live feedback: the main homepage hero's photo
-// set "passt nich" here, this page gets its own fresh screenshots rather than
-// borrowing the main hero's. Keep these two pools independent going forward,
-// don't re-merge them even if the counts happen to be similar later.
-import wmHeroGlobeOverview from '../../assets/world-model/wm-hero-globe-overview.webp'
-import wmHeroBuoyDetail from '../../assets/world-model/wm-hero-buoy-detail.webp'
-import wmHeroReasoningSanctions from '../../assets/world-model/wm-hero-reasoning-sanctions.webp'
-import wmHeroEarthquakeDetail from '../../assets/world-model/wm-hero-earthquake-detail.webp'
-import wmHeroLiveCamera from '../../assets/world-model/wm-hero-live-camera.webp'
-import wmHeroTrafficIncident from '../../assets/world-model/wm-hero-traffic-incident.webp'
-import wmHeroFireDetection from '../../assets/world-model/wm-hero-fire-detection.webp'
-import wmHeroInfrastructureWeather from '../../assets/world-model/wm-hero-infrastructure-weather.webp'
-import wmHeroGraphFlood from '../../assets/world-model/wm-hero-graph-flood.webp'
-import wmHeroAircraftDetail from '../../assets/world-model/wm-hero-aircraft-detail.webp'
-import wmHeroStormDetail from '../../assets/world-model/wm-hero-storm-detail.webp'
-import wmHeroChatAnalyst from '../../assets/world-model/wm-hero-chat-analyst.webp'
 import wmHeroDingirFilm from '../../assets/world-model/wm-hero-dingir-film.mp4'
-
-const WORLD_MODEL_HERO_IMAGES = [
-  wmHeroGlobeOverview, wmHeroBuoyDetail, wmHeroReasoningSanctions, wmHeroEarthquakeDetail,
-  wmHeroLiveCamera, wmHeroTrafficIncident, wmHeroFireDetection, wmHeroInfrastructureWeather,
-  wmHeroGraphFlood, wmHeroAircraftDetail, wmHeroStormDetail, wmHeroChatAnalyst,
-]
 
 const hue = (i: number) => OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
 const hueStyle = (i: number) => ({ '--hue-bg': hue(i).bg, '--hue-border': hue(i).border }) as CSSProperties
@@ -254,154 +228,12 @@ function ChainsPreview() {
   )
 }
 
-const ZOOM_MIN = 1
-const ZOOM_MAX = 4
-
-// Full-viewport lightbox opened by clicking the hero panel (live feedback
-// 2026-09-01: "click on the hero... expand into a fullscreen view with
-// slideshow effect and an option to scroll in n out and pan around so
-// people can discover it uncut"). Reuses HeroSlideshow itself for the
-// cycling/cross-fade, just at viewport scale instead of inside the bounded
-// panel - the zoom/pan layer wraps it rather than reimplementing the
-// slideshow a third time. `position: fixed`, not the `.wm-modal-backdrop`
-// pattern used elsewhere on this page (FeedDetailModal) - that one is
-// `position: absolute` scoped to its own panel by design, this needs the
-// whole screen.
-// Manual left/right navigation, no auto-advance and no cross-fade blend
-// (live feedback 2026-09-01, after the first cut reused HeroSlideshow's own
-// auto-cycling here too: "when fullscreen modal is on, obv the blend over
-// effect is gone, this is the preview where the user can use it as he wants,
-// with no interruptions") - a hard cut on manual navigation, not the panel's
-// own atmospheric timed crossfade. Deliberately NOT HeroSlideshow reused a
-// second time here; the two components now want genuinely different
-// interaction models (auto/blended vs. manual/instant), forcing one to serve
-// both would mean threading a disable-autoplay flag through a component this
-// page doesn't otherwise control.
-function HeroLightbox({ startIndex, onClose }: { startIndex: number; onClose: () => void }) {
-  const [current, setCurrent] = useState(startIndex)
-  const [zoom, setZoom] = useState(1)
-  const [pan, setPan] = useState({ x: 0, y: 0 })
-  const dragging = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null)
-
-  const resetView = () => { setZoom(1); setPan({ x: 0, y: 0 }) }
-  const prev = () => { setCurrent(c => (c - 1 + WORLD_MODEL_HERO_IMAGES.length) % WORLD_MODEL_HERO_IMAGES.length); resetView() }
-  const next = () => { setCurrent(c => (c + 1) % WORLD_MODEL_HERO_IMAGES.length); resetView() }
-
-  // Warm the browser cache for every shot up front (added 2026-09-01, live
-  // feedback: "die pfeile... sieht man kurz erscheinen in der mitte vom
-  // bild wärend es wächselt" - the browser's broken-image glyph flashing
-  // centered while a fresh 1-3MB PNG was still downloading). Only 12 images,
-  // and the lightbox only mounts once someone has already opened it, so
-  // eagerly loading all of them here is cheap relative to the confusion of
-  // a half-loaded frame mid-crossfade.
-  useEffect(() => {
-    WORLD_MODEL_HERO_IMAGES.forEach(src => { const img = new Image(); img.src = src })
-  }, [])
-
-  useEffect(() => {
-    const onKey = (ev: KeyboardEvent) => {
-      if (ev.key === 'Escape') onClose()
-      if (ev.key === 'ArrowLeft') prev()
-      if (ev.key === 'ArrowRight') next()
-    }
-    document.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = '' }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onClose])
-
-  const onWheel = (ev: ReactWheelEvent) => {
-    ev.preventDefault()
-    setZoom(z => {
-      const nextZoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z - ev.deltaY * 0.0018))
-      if (nextZoom === ZOOM_MIN) setPan({ x: 0, y: 0 })
-      return nextZoom
-    })
-  }
-  const onMouseDown = (ev: ReactMouseEvent) => {
-    if (zoom <= ZOOM_MIN) return
-    dragging.current = { x: ev.clientX, y: ev.clientY, panX: pan.x, panY: pan.y }
-  }
-  const onMouseMove = (ev: ReactMouseEvent) => {
-    if (!dragging.current) return
-    const d = dragging.current
-    const z = pageZoom()
-    setPan({ x: d.panX + (ev.clientX - d.x) / z, y: d.panY + (ev.clientY - d.y) / z })
-  }
-  const endDrag = () => { dragging.current = null }
-
-  // Rendered via a portal straight onto document.body (added 2026-09-01,
-  // fixing a real bug the first cut of this shipped with) - `position: fixed`
-  // only escapes to the true viewport when NO ancestor sets `transform`
-  // (or filter/perspective/will-change: transform), and nearly every element
-  // on this page is wrapped in <Reveal>, whose motion.div sets `transform`
-  // unconditionally as part of its own scroll-linked animation. Left un-
-  // portaled, the "fullscreen" lightbox rendered pinned inside the hero
-  // panel's own small box instead of covering the viewport - portaling out
-  // of the whole Reveal-wrapped tree is what actually gets a real containing
-  // block back.
-  return createPortal(
-    <div
-      className="wm-lightbox-backdrop"
-      onClick={onClose}
-      onWheel={onWheel}
-      onMouseMove={onMouseMove}
-      onMouseUp={endDrag}
-      onMouseLeave={endDrag}
-    >
-      <button type="button" className="wm-modal-close wm-lightbox-close" onClick={onClose} aria-label="Close"><IconX size={20} /></button>
-      <button type="button" className="wm-lightbox-nav wm-lightbox-nav--prev" onClick={ev => { ev.stopPropagation(); prev() }} aria-label="Previous"><IconChevronLeft size={22} /></button>
-      <AnimatePresence mode="wait">
-        <motion.img
-          key={current}
-          src={WORLD_MODEL_HERO_IMAGES[current]}
-          alt=""
-          className="wm-lightbox-frame"
-          onClick={ev => ev.stopPropagation()}
-          onMouseDown={onMouseDown}
-          draggable={false}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.28, ease: 'easeInOut' }}
-          style={{
-            transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-            cursor: zoom > ZOOM_MIN ? (dragging.current ? 'grabbing' : 'grab') : 'default',
-          }}
-        />
-      </AnimatePresence>
-      <button type="button" className="wm-lightbox-nav wm-lightbox-nav--next" onClick={ev => { ev.stopPropagation(); next() }} aria-label="Next"><IconChevronRight size={22} /></button>
-      <span className="wm-lightbox-hint">&larr; &rarr; to browse &middot; scroll to zoom &middot; drag to pan &middot; esc to close</span>
-    </div>,
-    document.body
-  )
-}
-
-// Was a single static DINGIR interface screenshot - swapped 2026-09-01 for the
-// same cross-fading slideshow the main homepage hero runs (live feedback:
-// "können wir da auch einfach die slideshow zeigen von den screenshots die
-// wir haben, wie draussen im main hero"), reusing HeroSlideshow/HERO_IMAGES
-// exported from Hero.tsx rather than a second copy of the same mechanic.
-// .wm-graph-panel is position:relative + overflow:hidden, so the slideshow's
-// absolutely-positioned layer fills and crops to this bounded box instead of
-// the full viewport it normally sits behind. Clicking it opens HeroLightbox
-// (added same session, same live-feedback round) for the uncropped fullscreen
-// view.
-// 2026-10-26: the panel plays the 60s DINGIR world-model film (16:9, muted loop,
-// same autoPlay/muted/loop/playsInline set as Squad's hero video) instead of the
-// slideshow. The click still opens the screenshot lightbox, so the uncut shots
-// stay one click away.
+// The hero panel used to be a screenshot slideshow with a zoom/pan lightbox
+// (2026-09-01). Since 2026-10-26 it plays the 60s DINGIR world-model film as a
+// muted 16:9 loop, and "view fullscreen" puts the film itself into the
+// browser's fullscreen (Simeon). Same FilmPanel as Squad's hero.
 function WorldGraphVisual() {
-  const [open, setOpen] = useState(false)
-  return (
-    <>
-      <button type="button" className="wm-graph-panel wm-graph-panel--clickable" onClick={() => setOpen(true)} aria-label="View screenshots fullscreen">
-        <video className="wm-graph-screenshot" src={wmHeroDingirFilm} autoPlay muted loop playsInline />
-        <span className="wm-graph-expand-hint"><IconWorld size={13} stroke={1.8} /> view fullscreen</span>
-      </button>
-      {open && <HeroLightbox startIndex={0} onClose={() => setOpen(false)} />}
-    </>
-  )
+  return <FilmPanel src={wmHeroDingirFilm} className="wm-graph-panel" />
 }
 
 function HeroBlock({ onApiRequest }: { onApiRequest: () => void }) {
@@ -482,20 +314,20 @@ function StatsRow() {
     ['historical', SparkBars], ['live', SparkPulse], ['nodes', SparkNetwork],
     ['edges', SparkRidge], ['streams', SparkIconRow], ['domains', SparkConstellation],
   ]
+  // No .wm-wrap of its own since 2026-10-26: it renders inside the reasoning
+  // section's .wm-section-box, under .wm-split.
   return (
-    <div className="wm-wrap">
-      <div className="wm-stats-grid" style={HUE_MAIN}>
-        {items.map(([key, Spark], i) => (
-          <Reveal key={key} delay={(i % 3) + 1} style={{ height: '100%' }}>
-            <div className="wm-stat wm-card">
-              <span className="wm-stat-label">{s[key].label}</span>
-              <span className="wm-stat-value">{s[key].value}</span>
-              <span className="wm-stat-sub">{s[key].sub}</span>
-              <span className="wm-stat-accent" style={{ color: `var(--ic-${STAT_IC[i]})` }}><Spark /></span>
-            </div>
-          </Reveal>
-        ))}
-      </div>
+    <div className="wm-stats-grid wm-stats-grid--attached" style={HUE_MAIN}>
+      {items.map(([key, Spark], i) => (
+        <Reveal key={key} delay={(i % 3) + 1} style={{ height: '100%' }}>
+          <div className="wm-stat wm-card">
+            <span className="wm-stat-label">{s[key].label}</span>
+            <span className="wm-stat-value">{s[key].value}</span>
+            <span className="wm-stat-sub">{s[key].sub}</span>
+            <span className="wm-stat-accent" style={{ color: `var(--ic-${STAT_IC[i]})` }}><Spark /></span>
+          </div>
+        </Reveal>
+      ))}
     </div>
   )
 }
@@ -641,7 +473,6 @@ export function WorldModelSection() {
   return (
     <div className="wm">
       <section className="wm-section"><HeroBlock onApiRequest={scrollToApi} /></section>
-      <section className="wm-section"><StatsRow /></section>
       <section id="wm-comparison" className="wm-section"><ComparisonBlock /></section>
       <section id="wm-reasoning" className="wm-section">
         <div className="wm-wrap">
@@ -668,6 +499,11 @@ export function WorldModelSection() {
               <Reveal dist={14}><ChainsPreview /></Reveal>
               <Reveal dist={14} delay={1}><LiveFeedWidget /></Reveal>
             </div>
+            {/* The six corpus numbers sit inside this box, right under the chains
+                and the live feed (2026-10-26, Simeon) - they used to be their own
+                strip under the hero, which left World Model's top heavier than
+                Squad's. */}
+            <StatsRow />
           </div>
         </div>
       </section>

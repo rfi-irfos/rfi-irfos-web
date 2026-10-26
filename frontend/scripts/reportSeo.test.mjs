@@ -21,19 +21,19 @@ test('control group keeps the original title and description', () => {
   const all = reportSeo('nintendo', 'Nintendo', { disclosure: '2026-09-19', resolved: true, packages, rollout: 'all' })
   assert.match(all.title, /com\.nintendo\.znca/)
   assert.ok(all.withPackage)
-  if (!r.withPackage) assert.equal(r.title, 'Nintendo — Disclosure Report — RFI-IRFOS')
+  if (!r.withPackage) assert.equal(r.title, 'Nintendo · Disclosure Report · RFI-IRFOS')
 })
 
 test('page without a known package never gets a package title', () => {
   const r = reportSeo('unknown', 'Foo', { packages, rollout: 'all' })
   assert.equal(r.withPackage, false)
-  assert.equal(r.title, 'Foo — Disclosure Report — RFI-IRFOS')
+  assert.equal(r.title, 'Foo · Disclosure Report · RFI-IRFOS')
 })
 
 test('treatment title names package and respects the length cap', () => {
   const long = 'A very long combined target name list, Another App, Third App'
   const r = reportSeo('nintendo', long, { packages, rollout: 'all' })
-  assert.ok(r.title.length <= 70 || r.title.endsWith('— RFI-IRFOS'))
+  assert.ok(r.title.length <= 70 || r.title.endsWith('· RFI-IRFOS'))
   assert.match(r.description, /package com\.nintendo\.znca/)
 })
 

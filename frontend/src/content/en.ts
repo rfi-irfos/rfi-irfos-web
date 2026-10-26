@@ -16,12 +16,12 @@ export const EN = {
   // statically; the DE values are what /de/'s prerender snapshot and a client-side
   // locale switch show). Every other route derives its meta from its section copy.
   meta: {
-    title: 'RFI-IRFOS — Rethink the Obvious · Research Institute, Graz',
-    description: 'Interdisciplinary Research Facility for Open Sciences. Ternary AI · Security · Governance · Graz, Austria.',
+    title: 'RFI-IRFOS · Agents, World Model, App Audits · Graz',
+    description: 'Research institute in Graz. The Squad: specialised agents for every kind of work. DINGIR: a world model across 20+ domains. Evidence: a public ledger of app privacy audits.',
     // Was hardcoded English inside sectionMeta() before 2026-10-24 - the /de/
     // twin shipped the EN description verbatim (caught by check-dist-seo.mjs).
     dataSolutions: {
-      title: 'Data Solutions — RFI-IRFOS',
+      title: 'Data Solutions · RFI-IRFOS',
       description: 'Reproducible environments, expert trajectories, evaluation datasets, and safety data for capable agents.',
     },
   },
@@ -141,7 +141,7 @@ export const EN = {
       { sub: 'offline port-checker PWA', desc: 'rfi-irfos port prox is an honest, offline-installable port-checker for your phone that does exactly what it claims and nothing more. Instead of a fake scan or a fake \'close this port\' button, the kind most competing tools ship, it runs a real WebSocket connect-timing probe against localhost and shows real, per-operating-system terminal commands to actually close whatever it finds open. At just 11 files, the entire timing-probe logic is small enough to read start to finish in a few minutes, no black box involved. Sibling project to invisible layer, sharing its no-install, no-account approach.', plain: "Honestly shows which network ports are open on your phone, instead of faking an \"all safe\" like other apps do.", tag: 'open source · privacy' },
       { sub: 'canary-token honeypot', desc: 'LAURA protects against NFC and Bluetooth proximity phone-data theft with bait photo folders that fire a single passive beacon the moment they\'re opened without consent, and nothing else. There is no exploit, no device access, and no automatic reporting: a human reviews every hit manually before anything further happens, on purpose, so a false positive can never escalate on its own. It runs live on a Rust and Axum backend deployed on Fly, paired with a Python scanner package and a real test suite, not a proof of concept. Live demo at rfi-irfos.github.io/laura.', plain: 'A bait photo folder that tells you if someone accesses your phone without permission - no hacking back, just a signal.', tag: 'open source · privacy' },
       { sub: 'deterministic document-review framework', desc: 'call-laura is an MCP server where agents submit plans or documents and get back structured findings across four lenses, or the full 15-agent expert team when the stakes call for it, and every finding cites the exact text span it references. It runs fully local with no external API calls, so the same input produces the same output every time, unlike an LLM that can judge differently on a Tuesday than it did the Monday before. At 3,064 lines of Rust with 50 passing tests, it\'s already live in production and published on crates.io as lauras-core, lauras-team, lauras-mcp and lauras-api.', plain: 'Reviews documents or plans by the same fixed rules every time - no randomness, no off day like a human reviewer might have.', tag: 'open source · crates.io' },
-      { sub: 'LLM-bridged expert team', desc: 'Laura\'s Agents comprises 315 individually authored, specialized Rust crates. An orchestrator invokes the appropriate function for each task—from OSINT and security to legal, finance, UX and other domains. Every task passes a ternary context gate before acceptance; a hardened review loop checks the output with call-laura as an independent second opinion. The crates are not a vote counter but distinct, traceable expert functions.', plain: '315 individually authored Rust crates provide bounded specialist functions instead of one generalist.', tag: 'commercial architecture' },
+      { sub: 'LLM-bridged expert team', desc: 'Laura\'s Agents comprises 315 individually authored, specialized Rust crates. An orchestrator invokes the appropriate function for each task, from OSINT and security to legal, finance, UX and other domains. Every task passes a ternary context gate before acceptance; a hardened review loop checks the output with call-laura as an independent second opinion. The crates are not a vote counter but distinct, traceable expert functions.', plain: '315 individually authored Rust crates provide bounded specialist functions instead of one generalist.', tag: 'commercial architecture' },
       { sub: 'autonomous compliance/risk AI centers', desc: 'CoEvolution Factory runs 50 live, autonomous compliance and risk AI centers, each an independent \'daughter\' firm scaled out from one shared constitution rather than configured by hand one at a time. It calls Laura\'s Agents as its engine and call-laura as its approval gate before anything it produces ships, and pushes its own revenue telemetry straight into Lighthouse for the same transparency the rest of the institute runs on. At 12,143 lines of Python, it runs a genuine self-improvement loop with daily cron re-optimization, not a one-time setup left to drift. The clearest proof in the whole stack that its layers actually depend on each other.', plain: '50 independently running AI units, each operating like a small specialized compliance firm.', tag: 'live · internal' },
       { sub: 'reflective-mode technique for LLMs', desc: 'VEO Framework is a reusable technique for pulling a language model out of transactional \'answer mode\' and into genuine reflective mode, examining its own reasoning and acknowledging uncertainty instead of just completing the prompt as fast as possible. It started from one observed case, an extended conversation with a custom GPT that behaved this way on its own, and generalizes that single instance into a repeatable, describable technique anyone can try. There is no code here at all, deliberately: it\'s a pure prompting methodology, a markdown whitepaper, not a library to install. Developed out of Laura Serna Gaviria\'s human-AI co-evolution research.', plain: 'Makes a language model double-check its own answer instead of just outputting the first plausible-sounding word.', tag: 'open source · research' },
       { sub: 'ecocentric research', desc: 'NFCS is an agent-based model proving the global food system produces 1.64 times the calories needed to feed every person on Earth today, a surplus that collapses to roughly 0.94 times once post-harvest loss, processing waste and access barriers are actually accounted for. The scarcity people experience is not thermodynamic, it\'s organizational, manufactured rather than physical, and the model shows exactly where along the chain it gets manufactured. Built with Sobol sensitivity analysis and ABC parameter estimation, not a single fixed assumption, and delivered as a reproducible Python simulation with an interactive dashboard anyone can explore themselves.', plain: "Shows mathematically that there's enough food for everyone - hunger isn't a supply problem, it's a distribution problem.", tag: 'ecocentric research' },
@@ -154,9 +154,9 @@ export const EN = {
     // Dedicated SEO title/description for /evidence/ (4,760 impressions at position ~6.5 but
     // <1% CTR in GSC to 2026-10-24): the section heading makes a fine on-page H2 but tells a
     // searcher nothing about what the page IS. Search-facing copy only - visible page text unchanged.
-    seoTitle: 'App Privacy & Security Audit Reports — Evidence Ledger — RFI-IRFOS',
+    seoTitle: 'App Privacy & Security Audit Reports · Evidence Ledger · RFI-IRFOS',
     seoDescription: 'Public ledger of evidence-based GDPR and security audit reports on popular Android apps: trackers, SDKs, permissions, hardcoded keys, pre-consent tracking. Free full reports.',
-    paragraph: 'We decompile publicly distributed Android and iOS apps and trace their data flows to real endpoints in real countries. We document what we observe, distinguish verified findings from interpretation, and preserve the evidence behind every conclusion. No company can buy a better result — every organisation is held to the same standard, whether it pays us or not. This permanent disclosure ledger puts that principle into practice.',
+    paragraph: 'We decompile publicly distributed Android and iOS apps and trace their data flows to real endpoints in real countries. We document what we observe, distinguish verified findings from interpretation, and preserve the evidence behind every conclusion. No company can buy a better result: every organisation is held to the same standard, whether it pays us or not. This permanent disclosure ledger puts that principle into practice.',
     securityBridgeLead: 'This is what a Security engagement produces.',
     focusBanner: (names: string) => `Showing the report for ${names}.`,
     showFullLedger: 'Show the full ledger',
@@ -889,7 +889,7 @@ export const EN = {
     liveStatusFallback: 'Example data (live feed not reachable)',
     statsAsOf: (date: string) => `as of ${date}`,
     heroExample: {
-      tag: 'Example', title: 'Sumatra, Indonesia — Aftershock sequence',
+      tag: 'Example', title: 'Sumatra, Indonesia: aftershock sequence',
       time: 'M6.2 mainshock, 2026-08-24 · 07:24 UTC',
       body: 'DINGIR tracks aftershock probability continuously via the Omori-Utsu model, based on USGS earthquake data. This is a worked example, not a live event.',
     },
@@ -951,7 +951,7 @@ export const EN = {
   squad: {
     heading: 'The Squad',
     subheading: 'Specialized agents. For every kind of work.',
-    intro: 'Each agent is built around one clear responsibility — market intelligence, funding research, evidence verification, delivery checks, visibility, security. Run a single agent against one problem, or combine them into a pipeline for the whole question. Every finding is re-verified by our human specialists before it reaches you, with a written report and the evidence behind each result. Reviews run on infrastructure in Europe, with processing in Graz.',
+    intro: 'Each agent is built around one clear responsibility: market intelligence, funding research, evidence verification, delivery checks, visibility, security. Run a single agent against one problem, or combine them into a pipeline for the whole question. Every finding is re-verified by our human specialists before it reaches you, with a written report and the evidence behind each result. Reviews run on infrastructure in Europe, with processing in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'See which agent fits your problem →',
@@ -974,7 +974,7 @@ export const EN = {
         output: ['One ranked to-do list instead of ten alerts', 'A clear next action', 'Escalation when something can’t wait', 'A record of what was decided and why', 'A weekly summary of what mattered', 'A single dashboard instead of eight inboxes', 'A named owner for every open item', 'A workload view across the whole squad'],
       },
       argus: {
-        mission: 'Finds out when a competitor makes a move — the same day it happens.',
+        mission: 'Finds out when a competitor makes a move, the same day it happens.',
         domain: 'Market & Attention Intelligence',
         jobTitle: 'Market & Communications Intelligence',
         description: "Argus is the agent you call when a competitor makes a move and you need to know the same day, not weeks later. It watches your market continuously and flags what actually changed.",
@@ -1079,7 +1079,7 @@ export const EN = {
     },
     requestForm: {
       heading: 'Start with one agent.',
-      description: 'No bundle required — request access to the agent you need, or the whole squad.',
+      description: 'No bundle required. Request access to the agent you need, or the whole squad.',
       emailPlaceholder: 'Work email',
       companyPlaceholder: 'Company',
       submitIdle: 'Request Access', submitSending: 'Sending...', submitOk: 'Received. We’ll be in touch.',

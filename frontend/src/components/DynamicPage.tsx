@@ -11,7 +11,7 @@ export function DynamicPage({ page, content }: { page: PageItem; content: SiteCo
   useEffect(() => { window.scrollTo(0, 0) }, [page.id])
   useEffect(() => {
     const prev = document.title
-    document.title = page.metaTitle ?? `${page.title} — ${content.meta?.title ?? ''}`
+    document.title = page.metaTitle ?? `${page.title} · ${content.meta?.title ?? ''}`
     return () => { document.title = prev }
   }, [page.id, page.metaTitle, page.title, content.meta?.title])
 

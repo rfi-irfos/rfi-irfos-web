@@ -40,33 +40,33 @@ function navigate(e: React.MouseEvent, href: string) {
 // regardless of locale.
 const META: Record<string, { title: string; description: string; titleDe?: string; descriptionDe?: string }> = {
   impressum: {
-    title: 'Legal Notice — RFI-IRFOS', description: 'Legal notice for RFI-IRFOS, a registered not-for-profit research institute in Graz, Austria — registry data, contact, and trade information.',
-    titleDe: 'Impressum — RFI-IRFOS', descriptionDe: 'Impressum von RFI-IRFOS, einem eingetragenen, nicht gewinnorientierten Forschungsinstitut in Graz, Österreich — Registerdaten, Kontakt und Gewerbeinformationen.',
+    title: 'Legal Notice · RFI-IRFOS', description: 'Legal notice for RFI-IRFOS, a registered not-for-profit research institute in Graz, Austria — registry data, contact, and trade information.',
+    titleDe: 'Impressum · RFI-IRFOS', descriptionDe: 'Impressum von RFI-IRFOS, einem eingetragenen, nicht gewinnorientierten Forschungsinstitut in Graz, Österreich — Registerdaten, Kontakt und Gewerbeinformationen.',
   },
   datenschutz: {
-    title: 'Privacy Policy — RFI-IRFOS', description: 'How RFI-IRFOS handles data under GDPR: what we collect, our processors, and your rights. No cookies, no tracking, no ad network.',
-    titleDe: 'Datenschutzerklärung — RFI-IRFOS', descriptionDe: 'Wie RFI-IRFOS mit Daten gemäß DSGVO umgeht: was wir erheben, unsere Auftragsverarbeiter und Ihre Rechte. Keine Cookies, kein Tracking, kein Werbenetzwerk.',
+    title: 'Privacy Policy · RFI-IRFOS', description: 'How RFI-IRFOS handles data under GDPR: what we collect, our processors, and your rights. No cookies, no tracking, no ad network.',
+    titleDe: 'Datenschutzerklärung · RFI-IRFOS', descriptionDe: 'Wie RFI-IRFOS mit Daten gemäß DSGVO umgeht: was wir erheben, unsere Auftragsverarbeiter und Ihre Rechte. Keine Cookies, kein Tracking, kein Werbenetzwerk.',
   },
   agb: {
-    title: 'Terms and Conditions — RFI-IRFOS', description: 'General Terms and Conditions for RFI-IRFOS security audits, software development, and research services. B2B only.',
-    titleDe: 'AGB — RFI-IRFOS', descriptionDe: 'Allgemeine Geschäftsbedingungen für Sicherheitsaudits, Softwareentwicklung und Forschungsleistungen von RFI-IRFOS. Ausschließlich B2B.',
+    title: 'Terms and Conditions · RFI-IRFOS', description: 'General Terms and Conditions for RFI-IRFOS security audits, software development, and research services. B2B only.',
+    titleDe: 'AGB · RFI-IRFOS', descriptionDe: 'Allgemeine Geschäftsbedingungen für Sicherheitsaudits, Softwareentwicklung und Forschungsleistungen von RFI-IRFOS. Ausschließlich B2B.',
   },
   security: {
-    title: 'Responsible Disclosure & Security Policy — RFI-IRFOS', description: "How to report a vulnerability to RFI-IRFOS and how we disclose: responsible (coordinated) disclosure per ISO/IEC 29147, 90-day embargo, regulator notification, safe harbor. No bug bounty program.",
-    titleDe: 'Responsible Disclosure & Sicherheitsrichtlinie — RFI-IRFOS', descriptionDe: 'Schwachstelle melden und koordinierte Offenlegung bei RFI-IRFOS (Responsible Disclosure): ISO/IEC 29147, 90-Tage-Embargo, Behördenbenachrichtigung, Safe Harbor. Kein Bug-Bounty-Programm.',
+    title: 'Responsible Disclosure & Security Policy · RFI-IRFOS', description: "How to report a vulnerability to RFI-IRFOS and how we disclose: responsible (coordinated) disclosure per ISO/IEC 29147, 90-day embargo, regulator notification, safe harbor. No bug bounty program.",
+    titleDe: 'Responsible Disclosure & Sicherheitsrichtlinie · RFI-IRFOS', descriptionDe: 'Schwachstelle melden und koordinierte Offenlegung bei RFI-IRFOS (Responsible Disclosure): ISO/IEC 29147, 90-Tage-Embargo, Behördenbenachrichtigung, Safe Harbor. Kein Bug-Bounty-Programm.',
   },
   standards: {
-    title: 'Standards & Compliance — RFI-IRFOS', description: 'The regulatory frameworks RFI-IRFOS audits against: NIS-2, GDPR, EU AI Act, DSA, ISO/IEC 29147/30111/27001, and more.',
-    titleDe: 'Standards & Compliance — RFI-IRFOS', descriptionDe: 'Die Rahmenwerke, gegen die RFI-IRFOS prüft: NIS-2, DSGVO, EU AI Act, DSA, ISO/IEC 29147/30111/27001 und mehr.',
+    title: 'Standards & Compliance · RFI-IRFOS', description: 'The regulatory frameworks RFI-IRFOS audits against: NIS-2, GDPR, EU AI Act, DSA, ISO/IEC 29147/30111/27001, and more.',
+    titleDe: 'Standards & Compliance · RFI-IRFOS', descriptionDe: 'Die Rahmenwerke, gegen die RFI-IRFOS prüft: NIS-2, DSGVO, EU AI Act, DSA, ISO/IEC 29147/30111/27001 und mehr.',
   },
-  team: { title: 'Team — RFI-IRFOS', description: "The people behind RFI-IRFOS's security research, disclosure, and ternary AI work." },
+  team: { title: 'Team · RFI-IRFOS', description: "The people behind RFI-IRFOS's security research, disclosure, and ternary AI work." },
   methodology: {
-    title: 'Methodology — RFI-IRFOS', description: "The four principles governing RFI-IRFOS's research: sources, methods, handling results, and disclosure — the same rules regardless of who's paying.",
-    titleDe: 'Methodik — RFI-IRFOS', descriptionDe: 'Die vier Prinzipien, die die Forschung von RFI-IRFOS bestimmen: Quellen, Methoden, Umgang mit Ergebnissen und Offenlegung — dieselben Regeln, unabhängig vom Kunden.',
+    title: 'Methodology · RFI-IRFOS', description: "The four principles governing RFI-IRFOS's research: sources, methods, handling results, and disclosure — the same rules regardless of who's paying.",
+    titleDe: 'Methodik · RFI-IRFOS', descriptionDe: 'Die vier Prinzipien, die die Forschung von RFI-IRFOS bestimmen: Quellen, Methoden, Umgang mit Ergebnissen und Offenlegung — dieselben Regeln, unabhängig vom Kunden.',
   },
   faq: {
-    title: 'Questions worth answering — RFI-IRFOS', description: 'Plain-language answers about RFI-IRFOS, agents, world models, data systems, safety, and our boundaries.',
-    titleDe: 'Fragen, die man beantworten sollte — RFI-IRFOS', descriptionDe: 'Verständliche Antworten zu RFI-IRFOS, Agenten, World Models, Datensystemen, Sicherheit und unseren Grenzen.',
+    title: 'Questions worth answering · RFI-IRFOS', description: 'Plain-language answers about RFI-IRFOS, agents, world models, data systems, safety, and our boundaries.',
+    titleDe: 'Fragen, die man beantworten sollte · RFI-IRFOS', descriptionDe: 'Verständliche Antworten zu RFI-IRFOS, Agenten, World Models, Datensystemen, Sicherheit und unseren Grenzen.',
   },
 }
 
