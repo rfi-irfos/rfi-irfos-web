@@ -543,15 +543,28 @@ button { cursor: pointer; font-family: inherit; }
 @media (max-width: 980px) {
   .wm-hero { grid-template-columns: 1fr; }
   .wm-stats-grid { grid-template-columns: repeat(3, 1fr); } /* usecase-grid is already 3-wide at its base */
-  .wm-split { grid-template-columns: 1fr; }
+  .wm-split { grid-template-columns: minmax(0, 1fr); } /* minmax: long feed rows must not widen the column past the box */
   .wm-compare-grid { grid-template-columns: 1fr; }
   .wm-compare-vs { display: none; }
   .wm-early { grid-template-columns: 1fr; }
   .wm-early-form { min-width: 0; }
 }
 @media (max-width: 640px) {
-  .wm-stats-grid, .wm-usecase-grid { grid-template-columns: repeat(2, 1fr); }
-  .wm-chain-row { flex-wrap: wrap; }
+  .wm-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .wm-usecase-grid { grid-template-columns: minmax(0, 1fr); } /* two columns left ~140px of text per line */
+  /* Phone: each chain reads top to bottom, full-width steps with a down arrow
+     between them (live feedback 2026-10-27: four steps side by side squeezed
+     every word into hyphenated fragments). */
+  .wm-chain-row { flex-direction: column; gap: 4px; }
+  .wm-chain-step { flex: 0 0 auto; min-height: 0; }
+  .wm-chain-arrow { transform: rotate(90deg); line-height: 1; }
+  /* Feed: heading over the status line, and the category tag gives its width
+     back to the event title (the row icon already carries the category). */
+  .wm-panel-head-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .wm-panel-head-row h3 { white-space: nowrap; }
+  .wm-feed-tag { display: none; }
+  .wm-early-row { flex-direction: column; }
+  .wm-early-row button { width: 100%; }
 }
 
 /* ── THE SQUAD / KADER page - a `.sq-` namespace under the same `.wm-wrap`/
