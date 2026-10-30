@@ -80,7 +80,7 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {c.introText.slice(0, -1).map((para, i) => (
-          <p key={i} style={{ fontSize: 'var(--fs-small)', fontWeight: 400, color: 'var(--text2)', lineHeight: 'var(--lh-body)', margin: 0 }}>{para}</p>
+          <p key={i} style={{ fontSize: 'var(--fs-small)', fontWeight: 400, color: '#ffffff', lineHeight: 'var(--lh-body)', margin: 0 }}>{para}</p>
         ))}
       </div>
       <div style={{ borderTop: '1px solid var(--border)' }} />
