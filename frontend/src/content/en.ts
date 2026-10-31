@@ -323,6 +323,8 @@ export const EN = {
     okPricing: 'Scope and pricing →',
     okReports: 'Published reports →',
     errorText: 'Something went wrong sending that.',
+    errorInvalid: 'Please check the domain and email address, for example yourcompany.com.',
+    errorLimited: 'Many requests from this connection today. Please try again tomorrow.',
     errorMailtoCta: 'Email us directly instead →',
   },
 

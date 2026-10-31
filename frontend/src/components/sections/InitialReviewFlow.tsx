@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { WEB3FORMS_KEY } from './shared'
 
-type FormState = 'idle' | 'sending' | 'ok' | 'err'
+type FormState = 'idle' | 'sending' | 'ok' | 'err' | 'invalid' | 'limited'
 
 // Single-step form (2026-10-14, live direction: "why make it a two step
 // process, lets make it as easy as possible") - site, work email and the
@@ -22,6 +22,10 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!consent || state === 'sending') return
+    // 2026-10-31 (Lighthouse round 20): a typo like "meinefirma" (no dot) came back as a
+    // backend 400 and was shown as "something went wrong" plus a mail link, so people
+    // read it as our failure. Same check as normalize_domain in review.rs, caught here.
+    if (!domain.replace(/^https?:\/\//, '').split('/')[0].includes('.')) { setState('invalid'); return }
     setState('sending')
     try {
       const res = await fetch('/api/initial-review', {
@@ -29,7 +33,7 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ domain, email, consent, botcheck }),
       })
-      setState(res.ok ? 'ok' : 'err')
+      setState(res.ok ? 'ok' : res.status === 400 ? 'invalid' : res.status === 429 ? 'limited' : 'err')
       // The backend already persists the request and pings ntfy regardless of this
       // call, but Web3Forms' free tier rejects the equivalent server-to-server send
       // outright ("Pro plan required" - see notify.rs) - this client-side call is the
@@ -115,9 +119,12 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
             <a href={`${pre}/evidence/`} style={{ color: 'var(--accent-text)', fontWeight: 700 }}>{c.okReports}</a>
           </p>
         )}
-        {state === 'err' && (
-          <p style={{ color: 'var(--sev-crit)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)' }}>
-            {c.errorText}{' '}
+        {state === 'invalid' && (
+          <p role="alert" style={{ color: 'var(--sev-crit)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)' }}>{c.errorInvalid}</p>
+        )}
+        {(state === 'err' || state === 'limited') && (
+          <p role="alert" style={{ color: 'var(--sev-crit)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)' }}>
+            {state === 'limited' ? c.errorLimited : c.errorText}{' '}
             <a href={`mailto:contact@rfi-irfos.com?subject=${encodeURIComponent('Initial Review — ' + domain)}&body=${encodeURIComponent(`Domain: ${domain}\nEmail: ${email}`)}`} style={{ color: 'var(--accent-text)', fontWeight: 700 }}>
               {c.errorMailtoCta}
             </a>

@@ -129,10 +129,12 @@ pub async fn submit_review(
     // A visitor re-submitting the same still-pending domain (double click,
     // retried request) must not pile up duplicate rows that leave an admin
     // unsure which one to approve — treat it as a no-op success instead of
-    // inserting again.
+    // inserting again. Keyed on domain AND email since 2026-10-31 (Lighthouse
+    // round 20): a second person from the same company got an OK while their
+    // address never reached the table or ntfy, a silently lost lead.
     let existing: Option<(i64,)> = sqlx::query_as(
-        "SELECT id FROM initial_reviews WHERE domain = ? AND status = 'pending_approval'"
-    ).bind(&domain).fetch_optional(&state.db).await.unwrap_or(None);
+        "SELECT id FROM initial_reviews WHERE domain = ? AND lower(email) = lower(?) AND status = 'pending_approval'"
+    ).bind(&domain).bind(&email).fetch_optional(&state.db).await.unwrap_or(None);
     if existing.is_some() {
         return StatusCode::OK.into_response();
     }
@@ -504,6 +506,25 @@ mod tests {
             "SELECT COUNT(*) FROM initial_reviews WHERE domain = 'foo.com' AND status = 'pending_approval'"
         ).fetch_one(&db).await.unwrap();
         assert_eq!(count.0, 1);
+    }
+
+    #[tokio::test]
+    async fn second_person_same_domain_gets_own_row() {
+        let state = test_state().await;
+        let db = state.db.clone();
+        for (email, ip) in [("a@foo.com", "10.0.0.7"), ("b@foo.com", "10.0.0.8")] {
+            let body = serde_json::json!({ "domain": "foo.com", "email": email, "consent": true, "botcheck": null });
+            let req = Request::builder()
+                .method("POST").uri("/api/initial-review")
+                .header("content-type", "application/json")
+                .header("x-forwarded-for", ip)
+                .body(Body::from(body.to_string())).unwrap();
+            assert_eq!(app(state.clone()).oneshot(req).await.unwrap().status(), StatusCode::OK);
+        }
+        let count: (i64,) = sqlx::query_as(
+            "SELECT COUNT(*) FROM initial_reviews WHERE domain = 'foo.com' AND status = 'pending_approval'"
+        ).fetch_one(&db).await.unwrap();
+        assert_eq!(count.0, 2);
     }
 
     #[tokio::test]

@@ -302,6 +302,8 @@ export const DE: Content = {
     okPricing: 'Umfang und Preise →',
     okReports: 'Veröffentlichte Reports →',
     errorText: 'Beim Senden ist etwas schiefgegangen.',
+    errorInvalid: 'Bitte prüfen Sie Domain und E-Mail-Adresse, zum Beispiel ihrefirma.at.',
+    errorLimited: 'Heute kamen viele Anfragen von diesem Anschluss. Bitte versuchen Sie es morgen erneut.',
     errorMailtoCta: 'Stattdessen direkt per E-Mail →',
   },
 
