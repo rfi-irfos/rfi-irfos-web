@@ -467,6 +467,13 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   useEffect(() => {
     if (searchQuery.trim() || activeStatus || activeSev) setReportFocus(null)
   }, [searchQuery, activeStatus, activeSev])
+  // Shareable ledger search (Lighthouse R81, 2026-10-31): /evidence/?q=<name> opens the ledger
+  // already filtered, so a mail or post can point a company at its own entries. Set after mount,
+  // not in the useState initializer, so the prerendered markup and the first client render match.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get('q')
+    if (q && q.trim()) setSearchQuery(q.trim().slice(0, 80))
+  }, [])
   useEffect(() => {
     if (view !== 'evidence') setReportFocus(null)
   }, [view])
