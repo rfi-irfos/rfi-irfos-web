@@ -1181,10 +1181,10 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         // 2026-10-24: teal wash removed, plain black tint (live feedback: teal read too
         // cyberpunk; black vs navy compared side by side on localhost, black won).
         background: theme === 'dark'
-          ? 'linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.88)), url("/page-structure-dark.jpeg") center top / cover no-repeat'
+          ? 'linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.88)), url("/page-structure-dark.webp") center top / cover no-repeat'
           : theme === 'light'
             ? 'linear-gradient(rgba(0,245,196,0.03), rgba(0,245,196,0.03)), linear-gradient(rgba(250,245,239,0.36), rgba(250,245,239,0.36)), url("/page-structure-light.jpeg") center top / cover no-repeat'
-            : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/page-structure-dark.jpeg") center top / cover no-repeat',
+            : 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("/page-structure-dark.webp") center top / cover no-repeat',
       }} />
 
       {/* Grain overlay (live feedback 2026-08-14: the photo backdrop looked too
