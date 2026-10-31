@@ -4,6 +4,9 @@ import { localeHref } from '../../lib/localeHref'
 import { Reveal, OUTPUT_TAG_HUES } from './shared'
 import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport, IconArrowRight } from '@tabler/icons-react'
 
+// Lighthouse R109: two held datasets are public already, so their cards link to the proof.
+const DATASET_PROOF_HREF = ['/evidence/', '', '', '/world-model/', '']
+
 // One fixed hue per section (see HUE_* below), reusing the same calibrated hue set
 // OutputTags uses elsewhere on the site so this isn't a new, uncalibrated palette.
 const hue = (i: number) => OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
@@ -19,6 +22,7 @@ const COPY = {
     intro: 'The same discipline behind our systems and public evidence, delivered as data and infrastructure: a data warehouse, reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Our services connect to ternary-logic pipelines through a governed data layer. Your corpus stays private. Every delivered artefact stays traceable.',
     bridgeLead: 'This is what a Data engagement produces.', bridgeCta: 'See what you’d receive →',
     datasetsEyebrow: 'Datasets', datasetsTitle: 'What we already hold',
+    datasetProof: ['See the public reports', '', '', 'See the world model', ''],
     datasets: [
       ['Mobile application behavior\ndatasets', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],
       ['SDK & tracker knowledge\ngraphs', 'Reusable SDKs, tracker relationships, infrastructure, and cross-application recurrence mapped as connected evidence.'],
@@ -71,6 +75,7 @@ const COPY = {
     intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten und Infrastruktur geliefert: ein Data Warehouse, reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Unsere Services verbinden sich über eine kontrollierte Datenschicht mit ternären Logik-Pipelines. Ihr Korpus bleibt privat. Jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
     bridgeLead: 'Das ist es, was ein Data-Auftrag liefert.', bridgeCta: 'Sehen Sie, was Sie erhalten →',
     datasetsEyebrow: 'Datensätze', datasetsTitle: 'Was wir bereits vorhalten',
+    datasetProof: ['Zu den öffentlichen Reports', '', '', 'Zum Weltmodell', ''],
     datasets: [
       ['Verhalten mobiler Anwendungen', 'Quellcodebasiertes App-Verhalten, Berechtigungen, Endpunkte, Consent-Timing und beobachtete Datenflüsse.'],
       ['SDK- & Tracker-\nWissensgraphen', 'Wiederkehrende SDKs, Tracker-Beziehungen, Infrastruktur und App-übergreifende Zusammenhänge als verbundene Evidenz.'],
@@ -159,7 +164,7 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
           with its siblings and an accessibility problem: the page jumped straight
           from h1 to the h3 card titles, skipping h2 entirely (measured 2026-09-07). */}
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.datasetsEyebrow}</p><h2>{c.datasetsTitle}</h2></div></Reveal>
-      <div className="data-dataset-grid" style={HUE_DATASETS}>{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_DATASETS}><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article> })}</div>
+      <div className="data-dataset-grid" style={HUE_DATASETS}>{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_DATASETS}><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p>{c.datasetProof[i] && <a href={localeHref(DATASET_PROOF_HREF[i], locale)} style={{ color: 'var(--accent-text)', fontSize: 'var(--fs-small)', fontWeight: 700, textDecoration: 'none' }}>{c.datasetProof[i]} <span aria-hidden="true">→</span></a>}</article> })}</div>
     </div></section>
 
     <section id="data-deliver" className="data-section"><div className="data-wrap">
