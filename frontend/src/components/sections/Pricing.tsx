@@ -85,7 +85,7 @@ function TierCard({
   return (
     <div style={{ padding: '36px 28px', display: 'flex', flexDirection: 'column', gap: 13, height: '100%', boxSizing: 'border-box' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-small)', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text3)', margin: 0 }}>{tier.name}</p>
+        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-small)', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text2)', margin: 0 }}>{tier.name}</p>
         {tier.popular && (
           <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#f97316', letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{t.pricing.mostPopular}</span>
         )}
@@ -100,7 +100,7 @@ function TierCard({
             transition={{ duration: 0.18, ease: 'easeOut' }}
           >
             <span style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: 'var(--text)' }}>{billing === 'monthly' ? tier.price : annualPrice(tier.price, locale)}</span>
-            <span style={{ fontSize: 'var(--fs-body)', color: 'var(--text3)' }}> {billing === 'monthly' ? b.perMonth : `/${b.annual.toLowerCase()}`}</span>
+            <span style={{ fontSize: 'var(--fs-body)', color: 'var(--text2)' }}> {billing === 'monthly' ? b.perMonth : `/${b.annual.toLowerCase()}`}</span>
           </motion.div>
         </AnimatePresence>
       </div>
@@ -120,7 +120,7 @@ function TierCard({
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
-            style={{ fontSize: 'var(--fs-label)', color: 'var(--text3)', margin: 0, overflow: 'hidden' }}
+            style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0, overflow: 'hidden' }}
           >{b.annualNote}</motion.p>
         )}
       </AnimatePresence>
