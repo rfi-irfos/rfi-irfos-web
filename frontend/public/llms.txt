@@ -20,6 +20,7 @@ The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Ja
 - [GDPR app audit](https://rfi-irfos.com/gdpr-app-audit/): tracking before consent, data flows to third countries, special-category data, mapped to GDPR articles (German: /de/gdpr-app-audit/).
 - [NIS2 for software vendors](https://rfi-irfos.com/nis2-software-vendors/): NIS2 / NISG 2026 supply-chain and risk-management duties as technical evidence about shipped software (German: /de/nis2-software-vendors/).
 - [App tracker and SDK check](https://rfi-irfos.com/app-tracker-sdk-check/): every tracker and SDK in an app build - version, start time, endpoints, data categories (German: /de/app-tracker-sdk-check/).
+- [AI app privacy audit](https://rfi-irfos.com/ai-app-privacy-audit/): privacy investigation of AI chatbots, assistants and AI companion apps - what the built app sends, to whom, before consent, and how minors are handled (German: /de/ai-app-privacy-audit/).
 
 ## How it works
 

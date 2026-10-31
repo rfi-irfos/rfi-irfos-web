@@ -7,7 +7,7 @@ export const DE_ROUTES = new Set([
   '/',
   '/world-model', '/squad', '/evidence', '/data-solutions', '/access',
   '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/methodology', '/faq',
-  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check',
+  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check', '/ai-app-privacy-audit',
 ])
 
 // 2026-10-31 (Lighthouse round 15): the German pages linked 13-14 times per page

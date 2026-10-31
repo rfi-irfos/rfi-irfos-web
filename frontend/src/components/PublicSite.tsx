@@ -831,6 +831,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       { label: t.footer.groups.services.links.gdprAppAudit, href: `${servicesPrefix}/gdpr-app-audit/` },
       { label: t.footer.groups.services.links.nis2, href: `${servicesPrefix}/nis2-software-vendors/` },
       { label: t.footer.groups.services.links.trackerSdk, href: `${servicesPrefix}/app-tracker-sdk-check/` },
+      { label: t.footer.groups.services.links.aiApp, href: `${servicesPrefix}/ai-app-privacy-audit/` },
     ],
   }
 

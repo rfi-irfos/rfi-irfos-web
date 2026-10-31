@@ -21,7 +21,7 @@ const LOCALIZED_ROUTES = [
   // page would claim an alternate that doesn't exist, same reasoning as the EN-only
   // evidence reports.
   '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/methodology', '/faq',
-  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check',
+  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check', '/ai-app-privacy-audit',
 ]
 const DIST = process.argv[2] ?? fileURLToPath(new URL('../dist/', import.meta.url))
 const absUrl = (route) => route === '/' ? 'https://rfi-irfos.com' : `https://rfi-irfos.com${route}/`

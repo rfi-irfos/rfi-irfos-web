@@ -35,7 +35,7 @@ const ROUTES = [
   '/track-record', '/pricing',
   '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/team', '/methodology', '/faq',
   // Search landing pages (2026-10-31, buyer-term sweep) - content in src/components/landingPages.ts.
-  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check',
+  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check', '/ai-app-privacy-audit',
 ]
 
 // Individual disclosure-report routes (2026-09-25 crawlability sweep) - every
@@ -75,7 +75,7 @@ const LOCALIZED_ROUTES = [
   // it from the wrong list here is exactly what 404'd /team/ on 2026-10-24.
   '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/methodology', '/faq',
   // DE twins of the four search landing pages (fully translated, 2026-10-31).
-  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check',
+  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check', '/ai-app-privacy-audit',
 ]
 const absUrl = (route) => route === '/' ? 'https://rfi-irfos.com' : `https://rfi-irfos.com${route}/`
 const deRoute = (route) => route === '/' ? '/de' : `/de${route}`

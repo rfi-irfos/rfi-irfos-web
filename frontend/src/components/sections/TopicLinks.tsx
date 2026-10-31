@@ -4,7 +4,7 @@
 // prerendered page, so crawlers keep the internal link, but a click opens the page's own
 // copy in an overlay and the visitor stays where they were.
 import { useEffect, useRef, useState } from 'react'
-import { IconShieldCheck, IconScale, IconCertificate, IconRadar, IconX } from '@tabler/icons-react'
+import { IconShieldCheck, IconScale, IconCertificate, IconRadar, IconRobot, IconX } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
 import { beacon } from './shared'
 import { LANDING_SLUGS, type LandingSlug } from '../landingSlugs'
@@ -15,11 +15,13 @@ const ICONS: Record<LandingSlug, typeof IconShieldCheck> = {
   'gdpr-app-audit': IconScale,
   'nis2-software-vendors': IconCertificate,
   'app-tracker-sdk-check': IconRadar,
+  'ai-app-privacy-audit': IconRobot,
 }
 
 const KEYS = {
   'app-security-audit': 'appSecurityAudit', 'gdpr-app-audit': 'gdprAppAudit',
   'nis2-software-vendors': 'nis2', 'app-tracker-sdk-check': 'trackerSdk',
+  'ai-app-privacy-audit': 'aiApp',
 } as const
 
 export function TopicLinks() {

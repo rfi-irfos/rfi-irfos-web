@@ -590,6 +590,125 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       ],
     },
   },
+  // Lighthouse R99 (2026-10-31): Brave showed no RFI-IRFOS result for "AI companion app privacy
+  // investigation" although the ledger holds six AI assistant/companion reports. Notes restate
+  // the published report summaries only.
+  'ai-app-privacy-audit': {
+    en: {
+      title: 'AI App Privacy Audit: Chatbots & Companions · RFI-IRFOS',
+      description: 'Privacy audit for AI chatbot, assistant and companion apps: what runs before consent, where conversations go and how they are protected in transit.',
+      label: 'AI App Privacy Audit',
+      h1: 'AI App Privacy Audit: Chatbots, Assistants and AI Companions',
+      lead: 'People tell AI apps things they tell nobody else. An AI app privacy audit checks what the shipped app does with that: which SDKs start before consent, where conversations are stored, whether the connection that carries them can be verified, and which permissions reach beyond the chat. The Squad has investigated six widely used AI assistant and companion apps, and every report is public.',
+      sections: [
+        {
+          h2: 'What an AI companion app privacy investigation looks at',
+          p: [
+            'Conversations with an AI companion or assistant often contain health, relationship and other special-category data under Article 9 GDPR. The investigation follows that data from the first second after launch: the SDKs in the build, the endpoints the app contacts, the country those endpoints resolve to and the consent flow in front of them.',
+          ],
+          ul: [
+            'Tracking and advertising SDKs that start before consent or before an age gate',
+            'Session replay or analytics running on conversation screens',
+            'Storage and transfer of chats to third countries (Articles 44 to 46 GDPR)',
+            'Transport security of conversation traffic, including certificate pinning',
+            'Biometric identity checks and their legal basis under Article 9',
+            'Assistant permissions that reach SMS, contacts, calendar or notifications',
+          ],
+        },
+        {
+          h2: 'Minors and age gates',
+          p: [
+            'Several AI companion apps are used by teenagers. The audit checks whether the age gate actually comes first in the code, or whether advertising identifiers are read before the app asks for an age. Article 8 GDPR and, for US audiences, COPPA apply here.',
+          ],
+        },
+        {
+          h2: 'Who does the work',
+          p: [
+            'The Squad is human-powered multi-agent security investigation. Agents built and trained in house decompile the build and test code, dependencies, endpoints and configuration in parallel. Human specialists examine every result in context and re-verify each finding before it reaches the report. Reviews run on infrastructure in Europe, with processing in Graz.',
+          ],
+        },
+      ],
+      evidenceH2: 'AI apps in the public ledger',
+      evidenceIntro: 'The public ledger lists {apps}+ audited apps and {critical}+ critical findings. These reports cover AI assistants and companions:',
+      evidence: [
+        { slug: 'characterai', label: 'Character.AI', note: 'A 12-network ad and analytics stack starts before the age gate, so an advertising identifier is read before a minor is asked their age.' },
+        { slug: 'deepseek', label: 'DeepSeek', note: 'The app\'s own privacy policy states that chats are stored in the People\'s Republic of China, and SDKs start behind a single "Agree" button.' },
+        { slug: 'chatgpt', label: 'ChatGPT', note: 'Firebase initialises before consent, and a biometric identity check runs without a disclosed Article 9 basis.' },
+        { slug: 'grok', label: 'Grok', note: 'Conversation data travels without a network security configuration, so the encrypted connection cannot be verified.' },
+        { slug: 'perplexity', label: 'Perplexity', note: 'The app\'s own strings say anyone holding the phone can use the assistant without unlocking it.' },
+        { slug: 'gemini', label: 'Gemini', note: 'The cleanest AI assistant in the series: zero third-party tracking SDKs, but no certificate pinning for conversation traffic.' },
+      ],
+      startH2: 'Start with the free check',
+      startText: [
+        'The free check examines one domain from the outside: read-only, from a European IP address, with no login and no payloads. A researcher reviews your request and replies within one business day. It is an initial external assessment, so it complements a full AI app privacy audit and does not replace it.',
+        'The plans for a full audit are on the Access page.',
+      ],
+      faqH2: 'Questions about AI app privacy audits',
+      faq: [
+        ['Do you need access to our model or training data?', 'The audit works on the shipped app and its network traffic. A built package is enough.'],
+        ['Does the audit cover AI companion apps as well as assistants?', 'Yes. Companion, assistant and chatbot apps share the same risks: intimate conversations, third-party SDKs and transfers. The ledger includes both kinds.'],
+        ['Which AI apps have you already investigated?', 'Character.AI, DeepSeek, ChatGPT, Grok, Perplexity and Gemini. Each report is public in the ledger, with its evidence and the articles it cites.'],
+        ['Is the report legal advice?', 'The report documents technical facts and maps them to articles. The legal assessment stays with your data protection officer or counsel.'],
+      ],
+    },
+    de: {
+      title: 'Datenschutz-Audit für KI-Apps & Chatbots · RFI-IRFOS',
+      description: 'Datenschutz-Audit für KI-Chatbots, Assistenten und AI-Companion-Apps: was vor der Einwilligung läuft, wohin Gespräche gehen und wie sie geschützt sind.',
+      label: 'Datenschutz-Audit für KI-Apps',
+      h1: 'Datenschutz-Audit für KI-Apps: Chatbots, Assistenten und AI Companions',
+      lead: 'Menschen erzählen KI-Apps Dinge, die sie sonst niemandem erzählen. Ein Datenschutz-Audit für KI-Apps prüft, was die ausgelieferte App damit tut: welche SDKs vor der Einwilligung starten, wo Gespräche gespeichert werden, ob sich die Verbindung, die sie trägt, überprüfen lässt, und welche Berechtigungen über den Chat hinausreichen. The Squad hat sechs verbreitete KI-Assistenten- und Companion-Apps untersucht, und jeder Bericht ist öffentlich.',
+      sections: [
+        {
+          h2: 'Was eine Untersuchung einer AI-Companion-App prüft',
+          p: [
+            'Gespräche mit einem KI-Companion oder Assistenten enthalten oft Gesundheits-, Beziehungs- und andere besondere Daten nach Art. 9 DSGVO. Die Untersuchung verfolgt diese Daten ab der ersten Sekunde nach dem Start: die SDKs im Build, die Endpunkte, die die App kontaktiert, das Land, in dem sie auflösen, und den Einwilligungsablauf davor.',
+          ],
+          ul: [
+            'Tracking- und Werbe-SDKs, die vor der Einwilligung oder vor einer Altersabfrage starten',
+            'Session Replay oder Analyse auf Gesprächsbildschirmen',
+            'Speicherung und Übermittlung von Chats in Drittländer (Art. 44 bis 46 DSGVO)',
+            'Transportsicherheit des Gesprächsverkehrs, einschließlich Certificate Pinning',
+            'Biometrische Identitätsprüfungen und ihre Rechtsgrundlage nach Art. 9',
+            'Assistenten-Berechtigungen für SMS, Kontakte, Kalender oder Benachrichtigungen',
+          ],
+        },
+        {
+          h2: 'Minderjährige und Altersabfragen',
+          p: [
+            'Mehrere AI-Companion-Apps werden von Jugendlichen genutzt. Das Audit prüft, ob die Altersabfrage im Code tatsächlich zuerst kommt oder ob Werbe-IDs gelesen werden, bevor die App nach dem Alter fragt. Hier gelten Art. 8 DSGVO und, für US-Publikum, COPPA.',
+          ],
+        },
+        {
+          h2: 'Wer die Arbeit macht',
+          p: [
+            'The Squad ist human-powered multi-agent security investigation. Im Haus gebaute und trainierte Agenten dekompilieren den Build und testen Code, Abhängigkeiten, Endpunkte und Konfiguration parallel. Menschliche Fachleute prüfen jedes Ergebnis im Zusammenhang und verifizieren jeden Befund erneut, bevor er in den Bericht kommt. Die Prüfungen laufen auf Infrastruktur in Europa, mit Verarbeitung in Graz.',
+          ],
+        },
+      ],
+      evidenceH2: 'KI-Apps im öffentlichen Verzeichnis',
+      evidenceIntro: 'Das öffentliche Verzeichnis listet {apps}+ geprüfte Apps und {critical}+ kritische Befunde. Diese Berichte betreffen KI-Assistenten und Companions:',
+      evidence: [
+        { slug: 'characterai', label: 'Character.AI', note: 'Ein Werbe- und Analyse-Stack mit 12 Netzwerken startet vor der Altersabfrage, die Werbe-ID wird also gelesen, bevor Minderjährige nach ihrem Alter gefragt werden.' },
+        { slug: 'deepseek', label: 'DeepSeek', note: 'Die eigene Datenschutzerklärung sagt, dass Chats in der Volksrepublik China gespeichert werden, und SDKs starten hinter einem einzigen „Zustimmen“-Knopf.' },
+        { slug: 'chatgpt', label: 'ChatGPT', note: 'Firebase initialisiert vor der Einwilligung, und eine biometrische Identitätsprüfung läuft ohne offengelegte Grundlage nach Art. 9.' },
+        { slug: 'grok', label: 'Grok', note: 'Gesprächsdaten laufen ohne Network Security Configuration, die verschlüsselte Verbindung lässt sich also nicht überprüfen.' },
+        { slug: 'perplexity', label: 'Perplexity', note: 'Die eigenen Texte der App sagen, dass jede Person mit dem Telefon in der Hand den Assistenten ohne Entsperren nutzen kann.' },
+        { slug: 'gemini', label: 'Gemini', note: 'Der sauberste KI-Assistent der Serie: null Tracking-SDKs von Drittanbietern, aber kein Certificate Pinning für den Gesprächsverkehr.' },
+      ],
+      startH2: 'Starten Sie mit dem kostenlosen Check',
+      startText: [
+        'Der kostenlose Check untersucht eine Domain von außen: ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ein Researcher sieht Ihre Anfrage durch und meldet sich innerhalb eines Werktags. Der Check ist eine erste externe Einschätzung und ergänzt ein vollständiges Datenschutz-Audit für KI-Apps, ohne es zu ersetzen.',
+        'Die Pläne für eine vollständige Prüfung stehen auf der Seite Zugang.',
+      ],
+      faqH2: 'Fragen zum Datenschutz-Audit für KI-Apps',
+      faq: [
+        ['Brauchen Sie Zugang zu unserem Modell oder den Trainingsdaten?', 'Das Audit arbeitet mit der ausgelieferten App und ihrem Netzwerkverkehr. Ein gebautes Paket genügt.'],
+        ['Deckt das Audit AI-Companion-Apps genauso ab wie Assistenten?', 'Ja. Companion-, Assistenten- und Chatbot-Apps teilen dieselben Risiken: vertrauliche Gespräche, SDKs von Drittanbietern und Übermittlungen. Das Verzeichnis enthält beide Arten.'],
+        ['Welche KI-Apps haben Sie schon untersucht?', 'Character.AI, DeepSeek, ChatGPT, Grok, Perplexity und Gemini. Jeder Bericht ist im Verzeichnis öffentlich, mit Belegen und den zitierten Artikeln.'],
+        ['Ist der Bericht eine Rechtsberatung?', 'Der Bericht dokumentiert technische Tatsachen und ordnet sie Artikeln zu. Die rechtliche Bewertung bleibt bei Ihrer oder Ihrem Datenschutzbeauftragten oder bei Ihrer Rechtsvertretung.'],
+      ],
+    },
+  },
 }
 
 export function isLandingSlug(slug: string): slug is LandingSlug {
