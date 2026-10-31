@@ -99,7 +99,7 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
       <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
         <div>
           <label htmlFor={`${fid}-domain`} style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', display: 'block', marginBottom: 6 }}>{c.domainLabel}</label>
-          <input id={`${fid}-domain`} name="domain" type="text" required placeholder={c.domainPlaceholder} value={domain}
+          <input id={`${fid}-domain`} name="domain" type="text" inputMode="url" autoComplete="url" autoCapitalize="none" autoCorrect="off" spellCheck={false} required placeholder={c.domainPlaceholder} value={domain}
             onChange={e => setDomain(e.target.value)}
             style={{ width: '100%', background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
         </div>

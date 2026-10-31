@@ -445,7 +445,7 @@ function EarlyAccessForm() {
           <form className="wm-early-form" onSubmit={submit}>
             <div className="wm-early-row">
               <input
-                type="email" required placeholder={e.emailPlaceholder} value={email}
+                type="email" autoComplete="email" required placeholder={e.emailPlaceholder} value={email}
                 onChange={ev => setEmail(ev.target.value)} disabled={state === 'sending' || state === 'ok'}
               />
               <button type="submit" className="wm-btn-primary" disabled={state === 'sending' || state === 'ok'}>

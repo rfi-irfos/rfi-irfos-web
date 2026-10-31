@@ -520,7 +520,7 @@ function SquadRequestForm({
                 style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
               />
               <input
-                id="squad-request-email" type="email" required placeholder={s.emailPlaceholder}
+                id="squad-request-email" type="email" autoComplete="email" required placeholder={s.emailPlaceholder}
                 value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                 className="rfi-input"
               />

@@ -127,13 +127,13 @@ export function SubmitSection({
                   { value: 'Engineering', label: t.submit.form.topicOptions.engineering },
                   { value: 'Other', label: t.submit.form.topicOptions.other },
                 ]} />
-              <input type="text" placeholder={t.submit.form.namePlaceholder}
+              <input type="text" autoComplete="name" placeholder={t.submit.form.namePlaceholder}
                 value={tipForm.handle} onChange={e => setTipForm(p => ({ ...p, handle: e.target.value }))}
                 style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit' }} />
-              <input type="email" required placeholder={t.submit.form.emailPlaceholder}
+              <input type="email" autoComplete="email" required placeholder={t.submit.form.emailPlaceholder}
                 value={tipForm.email} onChange={e => setTipForm(p => ({ ...p, email: e.target.value }))}
                 style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit' }} />
-              <input type="text" required placeholder={t.submit.form.targetPlaceholder}
+              <input type="text" autoCapitalize="none" autoCorrect="off" spellCheck={false} required placeholder={t.submit.form.targetPlaceholder}
                 value={tipForm.target} onChange={e => setTipForm(p => ({ ...p, target: e.target.value }))}
                 style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit' }} />
               {/* Only relevant once this is actually a disclosure - showing a credit
