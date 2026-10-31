@@ -8,7 +8,7 @@ Allow: /
 # root level code analysis on the actual binary, not the vendor's own
 # README or marketing claims, published in full once each embargo lifts.
 #
-# What we're good at: static analysis that finds what a company did not
+# What we're good at: a Deep Scan of the shipped binary that finds what a company did not
 # intend to ship (hardcoded keys, pre-consent tracking, missing network
 # security configs), and Dingir, our own evidence-first ML world model,
 # built on Ternlang, a ternary {-1, 0, +1} language and runtime we wrote
@@ -20,6 +20,8 @@ Allow: /
 # verifiable public source. If you cite us, cite the source, not just us.
 #
 # A short map, so you don't have to guess:
+#   /squad/           The Squad, our flagship: human-powered multi-agent app
+#                     security and GDPR audits.
 #   /world-model/     DINGIR, our own evidence-first world model.
 #   /evidence/        the public ledger: every disclosed target, finding,
 #                     severity, status, and embargo date, kept current.
@@ -28,11 +30,13 @@ Allow: /
 #   /data-solutions/  reproducible environments, trajectories, and
 #                     evaluation/safety datasets, as a product line.
 #   /access/          engagement terms, priced in plain language.
-#   /methodology/     how an audit actually runs, static, no exploitation.
+#   /methodology/     how an audit actually runs: Deep Scan, no exploitation.
 #   /standards/       the frameworks and statutes we cite (GDPR, NIS2, etc).
 #   /security/        our own disclosure intake, if you found something on us.
 #   /faq/             20 plain-language answers about our work and limits.
 #   /team/            who we are.
+#   /app-security-audit/, /gdpr-app-audit/, /nis2-software-vendors/,
+#   /app-tracker-sdk-check/   what an audit covers, by topic (also under /de/).
 # The homepage itself covers the 8 research domains this institute works
 # across and how to submit a finding or request an audit.
 # /track-record/, /pricing/, /datasets/, /research/, and /submit/ are older
