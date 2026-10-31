@@ -45,11 +45,13 @@ fn tier_info(tier: &str) -> Option<TierInfo> {
         // Web development: proposal-only since 2026-08-12 (custom-scoped "from
         // €10k" base tier, price varies by scope - same pattern Mobile always
         // used). No direct Stripe checkout for this line anymore.
-        // Initial Review subscription tiers (2026-10-14 pricing redesign)
-        "review_starter"  => Some(TierInfo { label: "RFI-IRFOS Initial Review — Starter",  amount:   9_900, recurring: true }),
-        "review_growth"   => Some(TierInfo { label: "RFI-IRFOS Initial Review — Growth",   amount:  39_900, recurring: true }),
-        "review_pro"      => Some(TierInfo { label: "RFI-IRFOS Initial Review — Pro",      amount:  79_900, recurring: true }),
-        "review_business" => Some(TierInfo { label: "RFI-IRFOS Initial Review — Business", amount: 199_900, recurring: true }),
+        // Monthly plans (2026-10-14 pricing redesign). Lighthouse round 74: labelled "Initial
+        // Review" until 2026-10-31, the name of the free check, so a paying buyer saw the free
+        // product's name on Stripe's page. Tier keys stay, the webhook attributes by key.
+        "review_starter"  => Some(TierInfo { label: "RFI-IRFOS Security Plan — Starter",   amount:   9_900, recurring: true }),
+        "review_growth"   => Some(TierInfo { label: "RFI-IRFOS Security Plan — Growth",    amount:  39_900, recurring: true }),
+        "review_pro"      => Some(TierInfo { label: "RFI-IRFOS Security Plan — Pro",       amount:  79_900, recurring: true }),
+        "review_business" => Some(TierInfo { label: "RFI-IRFOS Security Plan — Business", amount: 199_900, recurring: true }),
         _ => None,
     }
 }
