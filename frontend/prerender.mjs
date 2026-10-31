@@ -294,6 +294,13 @@ async function renderRoute(route, canonicalRoute, waitSelector = '#root h1, #roo
     html = html.replace('</head>', `<meta property="og:image:alt" content="${alt}" /></head>`)
   }
 
+  // Person nodes (team portraits) only on the homepage and /team/ (Lighthouse R91): on every other
+  // page Brave took the last JSON-LD image, @496crows' avatar, as the result thumbnail instead of
+  // the page card. The organization's founder @id references stay valid without them.
+  if (!['/', '/team'].includes(enRoute)) {
+    html = html.replace(/<script type="application\/ld\+json">\s*\{\s*"@context": "https:\/\/schema\.org",\s*"@type": "Person"[\s\S]*?<\/script>\s*/g, '')
+  }
+
   const outPath = route === '/' ? join(DIST, 'index.html') : join(DIST, route, 'index.html')
   await mkdir(dirname(outPath), { recursive: true })
   await writeFile(outPath, html)

@@ -257,6 +257,11 @@ console.log(`check-dist-seo: sitewide scan covered ${scanned} indexable pages`)
   for (const h of new Set(handles)) {
     if (!team.includes(`"https://github.com/${h}"`)) errors.push(`/team/: @${h} is listed but has no Person JSON-LD with sameAs github.com/${h}`)
   }
+  // 2b. Team Person nodes stay off the topic pages (Brave used a team avatar as their thumbnail, R91).
+  for (const route of ['gdpr-app-audit', 'de/app-security-audit', 'access', 'squad/film']) {
+    const html = await readFile(join(DIST, route, 'index.html'), 'utf8').catch(() => '')
+    if (html.includes('"@type": "Person"')) errors.push(`/${route}/: carries team Person JSON-LD (only / and /team/ should)`)
+  }
   // 3. llms.txt names every plan price shown on /access/ (it described the old five-offer page for weeks).
   const access = await readFile(join(DIST, 'access', 'index.html'), 'utf8').catch(() => '')
   const llms = await readFile(join(DIST, 'llms.txt'), 'utf8').catch(() => '')
