@@ -240,6 +240,34 @@ console.log(`check-dist-seo: sitewide scan covered ${scanned} indexable pages`)
   else console.log(`check-dist-seo: evidence/feed.xml has ${n} entries`)
 }
 
+// Drift gates (Lighthouse round 50): three things that went stale silently on 2026-10-31.
+{
+  const stats = JSON.parse(await readFile(new URL('../src/content/auditStats.json', import.meta.url), 'utf8'))
+  // 1. Count-up figures: the prerender once froze them mid-animation (367+ / 224+ instead of 387+).
+  for (const route of ['', 'de', 'evidence', 'de/evidence']) {
+    const html = await readFile(join(DIST, route, 'index.html'), 'utf8').catch(() => '')
+    for (const n of [stats.appsAudited, stats.criticalFindings]) {
+      if (!html.includes(`>${n}+<`)) errors.push(`/${route}${route ? '/' : ''}: count ${n}+ from auditStats.json not in the snapshot (count-up frozen mid-animation?)`)
+    }
+  }
+  // 2. Every current team member on /team/ has a Person node (Laura's was lost in July unnoticed).
+  const team = await readFile(join(DIST, 'team', 'index.html'), 'utf8').catch(() => '')
+  const visible = team.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ')
+  const handles = [...visible.split('Past contributors')[0].matchAll(/@([A-Za-z0-9-]+)/g)].map(m => m[1])
+  for (const h of new Set(handles)) {
+    if (!team.includes(`"https://github.com/${h}"`)) errors.push(`/team/: @${h} is listed but has no Person JSON-LD with sameAs github.com/${h}`)
+  }
+  // 3. llms.txt names every plan price shown on /access/ (it described the old five-offer page for weeks).
+  const access = await readFile(join(DIST, 'access', 'index.html'), 'utf8').catch(() => '')
+  const llms = await readFile(join(DIST, 'llms.txt'), 'utf8').catch(() => '')
+  const prices = [...new Set([...access.matchAll(/>€([0-9.,]+)</g)].map(m => m[1]))]
+  if (!prices.length) errors.push('/access/: no plan prices found in the snapshot')
+  for (const price of prices) {
+    if (!llms.includes(`EUR ${price}`)) errors.push(`llms.txt: plan price EUR ${price} from /access/ missing`)
+  }
+  console.log(`check-dist-seo: drift gates checked ${handles.length} team handles, ${prices.length} plan prices`)
+}
+
 if (errors.length) {
   console.error(`check-dist-seo: ${errors.length} error(s)`)
   for (const e of errors) console.error(`  - ${e}`)
