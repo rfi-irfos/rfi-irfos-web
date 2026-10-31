@@ -106,7 +106,8 @@ async fn redirect_www(req: Request, next: Next) -> Response {
 //     content-hashed, so a full year is too aggressive — an image swap on
 //     the same filename wouldn't bust the cache. A week is a deliberate
 //     middle ground between bandwidth savings and staleness risk; adjust up
-//     if these images turn out to change rarely in practice.
+//     if these images turn out to change rarely in practice. The films under
+//     /media/*.mp4 (up to 7.6 MB) follow the same rule (Lighthouse R90).
 // Scoped to the static frontend surface only (excludes /api, /auth,
 // /uploads) so we never accidentally cache something like the tracking
 // pixel at /api/track/pixel.gif, which would silently undercount visits.
@@ -120,7 +121,7 @@ async fn set_cache_control(req: Request, next: Next) -> Response {
 
     let cache_value = if path.starts_with("/assets/") {
         "public, max-age=31536000, immutable"
-    } else if [".png", ".jpg", ".jpeg", ".webp", ".gif", ".ico", ".svg"]
+    } else if [".png", ".jpg", ".jpeg", ".webp", ".gif", ".ico", ".svg", ".mp4", ".webm"]
         .iter()
         .any(|ext| path.ends_with(ext))
     {
