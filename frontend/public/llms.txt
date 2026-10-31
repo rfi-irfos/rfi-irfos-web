@@ -11,6 +11,7 @@ The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Ja
 - [The Squad](https://rfi-irfos.com/squad/): the flagship - human-powered multi-agent app security and GDPR audits, with the eight agents and how they work together.
 - [Access](https://rfi-irfos.com/access/): the plans from Free to Business (EUR 99 to 1,999 per month) plus Enterprise, and the five offer areas - Intelligence, Security, Data, Business & Market, Engineering - each with scope and delivery estimate.
 - [Evidence](https://rfi-irfos.com/evidence/): the permanent public disclosure ledger - every audited app, finding, severity, status, and embargo date, updated as companies respond (or don't).
+- [Evidence feed](https://rfi-irfos.com/evidence/feed.xml): Atom feed of the 50 most recently published reports, newest first.
 - [Data Solutions](https://rfi-irfos.com/data-solutions/): reproducible environments, expert trajectories, and evaluation/safety datasets for AI teams, as a standing product line.
 
 ## Services by topic
@@ -23,6 +24,7 @@ The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Ja
 ## How it works
 
 - [World Model](https://rfi-irfos.com/world-model/): how Dingir connects historical and real-time observations across domains into one causally structured evidence graph.
+- [The Squad film](https://rfi-irfos.com/squad/film/) and [Dingir world model film](https://rfi-irfos.com/world-model/film/): short product films, each with a written description of what it shows.
 - [Methodology](https://rfi-irfos.com/methodology/): how an audit actually runs - a Deep Scan of the shipped binary, with every finding traced to the code that causes it.
 
 ## Reference
