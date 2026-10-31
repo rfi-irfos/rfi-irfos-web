@@ -1,9 +1,9 @@
 /* ── Type scale (2026-10-23): ONE fixed scale for the whole site. Never write a raw
    font-size/line-height/font-weight in a component - pick a step below. The hero
    display line stays fluid (clamp) and is the only exception. Weights: 400 / 700 / 900.
-   Families: Archivo = headings, Inter = text, JetBrains Mono = eyebrows/labels/code. */
+   Families: Archivo = headings, Inter = text and labels (no monospace labels since 2026-10-31). */
 :root {
-  --fs-label: 11px;   /* mono eyebrows, pills, micro text */
+  --fs-label: 11px;   /* eyebrows, pills, micro text */
   --fs-small: 13px;   /* meta, card copy, list items */
   --fs-body: 15px;    /* running text */
   --fs-lead: 18px;    /* intros under headings */

@@ -4,7 +4,7 @@
 // arriving from the mail finds the same offer in the same order. The frame is
 // static and every cell reveals on its own (same converge-from-the-sides pattern
 // as the old table), because one Reveal around the whole panel is barely visible.
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Reveal, useMobile } from './shared'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { IconListSearch } from '@tabler/icons-react'
@@ -84,8 +84,11 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         </Reveal>
 
         {/* Thin violet frame around process card + Free Check widget so the two read as one unit. */}
-        <div style={{ border: '1px solid var(--violet-line)', borderRadius: 26, padding: phone ? 8 : 12, maxWidth: 1320, margin: '0 auto 24px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 350px', gap: stacked ? 28 : 16 }}>
+        {/* Flagship block reads one type step up (Simeon 31.10.: "flagshippy", ca. 5 % größer): the scale
+            tokens are re-declared here, so every card inside grows together without raw font sizes. */}
+        <div style={{ border: '1px solid var(--violet-line)', borderRadius: 26, padding: phone ? 8 : 12, maxWidth: 1320, margin: '0 auto 24px',
+          '--fs-label': '12px', '--fs-small': '14px', '--fs-body': '16px' } as CSSProperties}>
+        <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 350px', gap: stacked ? 28 : 8 }}>
           {/* Left: ONE framed card holding process, scope and evidence (frame static, cells reveal).
               position+zIndex keeps this card painted above the Free Check widget's turquoise
               glow on its right (live feedback 2026-10-14: the glow "overshadows" this card where

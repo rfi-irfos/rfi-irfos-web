@@ -192,7 +192,7 @@ function BillingToggle({ billing, onChange }: { billing: 'monthly' | 'annual'; o
 function NeedSomethingElseRow({ domains, onSelectTier }: { domains: PricingDomain[]; onSelectTier: (t: string) => void }) {
   const { t } = useLocale()
   return (
-    <div style={{ borderTop: '1px solid var(--border)', marginTop: 32, paddingTop: 20, display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px 18px' }}>
+    <div style={{ borderBottom: '1px solid var(--border)', marginTop: 24, paddingBottom: 20, display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px 18px' }}>
       <span style={{ fontSize: 'var(--fs-small)', fontWeight: 700, color: 'var(--text)' }}>{t.pricing.needSomethingElse}</span>
       {domains.map((d, i) => {
         const Icon = DOMAIN_ICONS[d.name]
