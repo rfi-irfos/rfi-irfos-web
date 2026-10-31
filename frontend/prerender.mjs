@@ -364,4 +364,49 @@ if (!ONLY) {
   const combinedSitemap = staticSitemap.replace('</urlset>', `${deUrls}\n${reportUrls}\n</urlset>`)
   await writeFile(join(DIST, 'sitemap.xml'), combinedSitemap)
   console.log(`sitemap.xml: ${ROUTES.length} static routes + ${LOCALIZED_ROUTES.length} de routes + ${REPORT_SLUGS.length} report routes`)
+
+  // Atom feed of the newest reports (Lighthouse round 31, 2026-10-31): 248 reports and no
+  // feed, so nobody could subscribe, and feed readers / aggregators had nothing to pick up.
+  // Title and description come from the snapshots just rendered, so they match the pages.
+  const xmlEsc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+  const htmlUnesc = s => s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+  const feedEntries = []
+  for (const slug of REPORT_SLUGS) {
+    const meta = REPORT_META_BY_SLUG[slug]
+    const date = meta?.disclosure ?? meta?.notified
+    if (!date || !/^\d{4}-\d{2}-\d{2}/.test(date)) continue
+    let html
+    try { html = await readFile(join(DIST, 'evidence', slug, 'index.html'), 'utf8') } catch { continue }
+    const title = htmlUnesc(html.match(/<title>([^<]*)<\/title>/)?.[1] ?? slug)
+    const summary = htmlUnesc(html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '')
+    feedEntries.push({ slug, title, summary, updated: (meta?.resolvedDate ?? date).slice(0, 10), published: date.slice(0, 10) })
+  }
+  feedEntries.sort((a, b) => b.published.localeCompare(a.published) || a.slug.localeCompare(b.slug))
+  const newest = feedEntries.slice(0, 50)
+  const feed = [
+    '<?xml version="1.0" encoding="utf-8"?>',
+    '<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">',
+    '  <title>RFI-IRFOS Evidence Ledger: published reports</title>',
+    '  <subtitle>Security and GDPR investigations by The Squad, published in full after each disclosure.</subtitle>',
+    '  <id>https://rfi-irfos.com/evidence/</id>',
+    '  <link rel="alternate" type="text/html" href="https://rfi-irfos.com/evidence/"/>',
+    '  <link rel="self" type="application/atom+xml" href="https://rfi-irfos.com/evidence/feed.xml"/>',
+    `  <updated>${newest.reduce((m, e) => e.updated > m ? e.updated : m, '1970-01-01')}T00:00:00Z</updated>`,
+    '  <author><name>RFI-IRFOS</name><uri>https://rfi-irfos.com/</uri></author>',
+    ...newest.map(e => [
+      '  <entry>',
+      `    <title>${xmlEsc(e.title)}</title>`,
+      `    <id>https://rfi-irfos.com/evidence/${e.slug}/</id>`,
+      `    <link rel="alternate" type="text/html" href="https://rfi-irfos.com/evidence/${e.slug}/"/>`,
+      `    <published>${e.published}T00:00:00Z</published>`,
+      `    <updated>${e.updated}T00:00:00Z</updated>`,
+      ...(e.summary ? [`    <summary>${xmlEsc(e.summary)}</summary>`] : []),
+      '  </entry>',
+    ].join('\n')),
+    '</feed>',
+    '',
+  ].join('\n')
+  await mkdir(join(DIST, 'evidence'), { recursive: true })
+  await writeFile(join(DIST, 'evidence', 'feed.xml'), feed)
+  console.log(`evidence/feed.xml: ${newest.length} of ${feedEntries.length} dated reports`)
 }

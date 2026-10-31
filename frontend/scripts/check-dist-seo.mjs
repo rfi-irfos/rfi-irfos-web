@@ -231,6 +231,15 @@ if (warnings.length) {
 }
 console.log(`check-dist-seo: sitewide scan covered ${scanned} indexable pages`)
 
+// Atom feed of the newest reports (Lighthouse round 31): missing or empty = nobody can subscribe.
+{
+  const feedPath = join(DIST, 'evidence', 'feed.xml')
+  const feed = await readFile(feedPath, 'utf8').catch(() => '')
+  const n = (feed.match(/<entry>/g) ?? []).length
+  if (n < 10) errors.push(`evidence/feed.xml has ${n} entries (expected at least 10)`)
+  else console.log(`check-dist-seo: evidence/feed.xml has ${n} entries`)
+}
+
 if (errors.length) {
   console.error(`check-dist-seo: ${errors.length} error(s)`)
   for (const e of errors) console.error(`  - ${e}`)
