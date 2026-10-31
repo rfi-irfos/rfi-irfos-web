@@ -57,16 +57,24 @@ export function reportBreadcrumbJsonLd(reportName: string, slug: string, evidenc
 // 2026-10-31: description + image (the per-report OG card from gen-og-images.mjs)
 // + mainEntityOfPage, and author/publisher point at the #organization node in
 // index.html so Google ties every report to the one institute entity.
+// Google truncates Article headlines past 110 characters; ORF (19 apps), Outfit7 and
+// StoryToys listed every app and ran to 337-470 (round 60). The full list stays in `about`.
+function articleHeadline(targets: string[]) {
+  const suffix = ' · GDPR/Security Disclosure Report'
+  const names = targets.length > 3 ? `${targets.slice(0, 3).join(', ')} and ${targets.length - 3} more` : targets.join(', ')
+  const head = names + suffix
+  return head.length <= 110 ? head : names.slice(0, 109 - suffix.length).trimEnd() + '…' + suffix
+}
+
 export function reportArticleJsonLd(opts: { slug: string; targets: string[]; disclosure?: string; resolved?: boolean; resolvedDate?: string; description?: string }) {
   const { slug, targets, disclosure, resolved, resolvedDate, description } = opts
   const modified = [disclosure, resolved ? resolvedDate : undefined].filter(Boolean).sort().pop()
-  const names = targets.join(', ')
   const url = `https://rfi-irfos.com/evidence/${slug}/`
   const org = { '@type': 'ResearchOrganization', '@id': 'https://rfi-irfos.com/#organization', name: 'RFI-IRFOS', url: 'https://rfi-irfos.com' }
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: `${names} · GDPR/Security Disclosure Report`,
+    headline: articleHeadline(targets),
     ...(description ? { description } : {}),
     url,
     mainEntityOfPage: url,
@@ -111,7 +119,9 @@ export function squadServiceJsonLd(description: string, locale: 'en' | 'de') {
     provider: { '@id': 'https://rfi-irfos.com/#organization' },
     areaServed: 'Worldwide',
     availableLanguage: ['en', 'de'],
-    offers: { '@type': 'Offer', url: access },
+    // Round 60: a bare Offer without price/currency is an incomplete offer for Google;
+    // the priced plans already exist as the /access/ OfferCatalog, so reference that node.
+    hasOfferCatalog: { '@id': 'https://rfi-irfos.com/access/#plans', url: access },
   }
 }
 

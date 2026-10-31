@@ -315,6 +315,8 @@ console.log(`check-dist-seo: sitewide scan covered ${scanned} indexable pages`)
     const html = await readFile(join(DIST, u.slice(1), 'index.html'), 'utf8').catch(() => '')
     const pub = html.match(/"datePublished":"([^"]+)"/)?.[1]?.slice(0, 10)
     const mod = html.match(/"dateModified":"([^"]+)"/)?.[1]?.slice(0, 10)
+    const headline = html.match(/"headline":"([^"]*)"/)?.[1] ?? ''
+    if (headline.length > 110) errors.push(`${u}: Article headline ${headline.length} chars (> 110, Google truncates)`)
     if (pub && mod && mod < pub) errors.push(`${u}: dateModified ${mod} before datePublished ${pub}`)
     if (pub && lastmodOf.get(u) && lastmodOf.get(u) < pub) errors.push(`${u}: sitemap lastmod ${lastmodOf.get(u)} before datePublished ${pub}`)
   }
