@@ -67,7 +67,13 @@ pub async fn create_checkout(
     let origin      = "https://rfi-irfos.com";
     // Back to /access/ (was the legacy /pricing path, 2026-10-31 Lighthouse round 21);
     // the frontend reads ?checkout=success|cancelled and shows the next step.
-    let access = if body.locale.as_deref() == Some("de") { "/de/access/" } else { "/access/" };
+    let de = body.locale.as_deref() == Some("de");
+    let access = if de { "/de/access/" } else { "/access/" };
+    let tos_text = if de {
+        "Ich bestelle als Unternehmen (B2B) und akzeptiere die [AGB](https://rfi-irfos.com/de/agb/)."
+    } else {
+        "I am ordering as a business (B2B) and accept the [terms](https://rfi-irfos.com/agb/)."
+    };
     let success_url = format!("{}{}?checkout=success", origin, access);
     let cancel_url  = format!("{}{}?checkout=cancelled", origin, access);
 
@@ -92,6 +98,8 @@ pub async fn create_checkout(
         // in the Dashboard's public details by Simeon, 2026-10-31).
         ("billing_address_collection".to_string(),                    "required".to_string()),
         ("consent_collection[terms_of_service]".to_string(),          "required".to_string()),
+        // One checkbox for both: ToS and the B2B declaration (Simeon, 2026-10-31).
+        ("custom_text[terms_of_service_acceptance][message]".to_string(), tos_text.to_string()),
         ("tax_id_collection[enabled]".to_string(),                    "true".to_string()),
         ("tax_id_collection[required]".to_string(),                   "if_supported".to_string()),
     ];

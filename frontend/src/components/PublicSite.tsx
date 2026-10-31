@@ -739,16 +739,6 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     setCheckoutModal(info)
   }
 
-  // Tier buttons open the B2B/ToS confirmation again before Stripe (Simeon, 2026-10-31:
-  // "vor dem Kauf AGB und B2B-Status wieder der gleiche, den wir hatten"). Since the coop
-  // grid left on 2026-09-13 nothing called openCheckoutModal, so tier clicks went
-  // straight to Stripe with no business-customer declaration and no ToS consent.
-  const openTierCheckout = (key: string) => {
-    const tier = t.pricing.tiers.find(x => x.stripeKey === key)
-    if (!tier) { handleCheckout(key); return }
-    openCheckoutModal({ key, tier: tier.name, desc: tier.tagline, price: `${tier.price}${t.pricing.billing.perMonth}`, bullets: tier.features })
-  }
-
   const cancelCheckout = (key: string) => {
     // Funnel step 2a: user dismissed the confirmation modal without continuing.
     beacon('offer_cancel:' + key)
@@ -768,6 +758,9 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   const handleCheckout = async (tier: string) => {
     // Funnel step 2b: user hit CONTINUE TO STRIPE — beam the attempt BEFORE the
     // redirect so a Stripe-bound click counts even if the tab navigates away.
+    // 2026-10-31 (Simeon: "kann nich einfach 1 sein"): tier buttons go straight to Stripe.
+    // The one checkbox for ToS + B2B status lives on Stripe's page (consent_collection +
+    // custom_text in stripe.rs), so the consent is recorded on the session itself.
     beacon('offer_attempt:' + tier)
     setCheckoutModal(null)
     setCheckoutLoading(tier)
@@ -1694,7 +1687,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         </section>}
 
         {view === 'access' && <section id="access" className="rfi-view-panel">
-          <PricingSection onSelectTier={selectTier} onCheckout={openTierCheckout} />
+          <PricingSection onSelectTier={selectTier} onCheckout={handleCheckout} />
         </section>}
       </main>
 
