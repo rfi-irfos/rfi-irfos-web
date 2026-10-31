@@ -235,8 +235,8 @@ export function LegalPage({ slug }: { slug: string }) {
           <a
             href={localeHref('/', locale)}
             onClick={e => navigate(e, localeHref('/', locale))}
-            aria-label="Back to rfi-irfos.com"
-            title="Back to rfi-irfos.com"
+            aria-label={locale === 'de' ? 'Zurück zu rfi-irfos.com' : 'Back to rfi-irfos.com'}
+            title={locale === 'de' ? 'Zurück zu rfi-irfos.com' : 'Back to rfi-irfos.com'}
             style={{
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
               width: 34, height: 34, borderRadius: '50%',
