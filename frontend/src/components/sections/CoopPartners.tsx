@@ -2,6 +2,7 @@
 // verbatim from PublicSite.tsx.
 import { Reveal } from './shared'
 import { useLocale } from '../../hooks/useLocale'
+import { TopicLinks } from './TopicLinks'
 
 const GH = 'https://github.com/rfi-irfos/'
 
@@ -120,6 +121,9 @@ export function CoopPartnersSection({
             </div>
           </Reveal>
         </div>
+        {/* Simeon 2026-10-31: the service pills sit under Laura's lab card,
+            where they read calmer than under the research grid. */}
+        <div style={{ marginTop: 32 }}><TopicLinks /></div>
       </div>
 
     </section>

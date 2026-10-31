@@ -3223,6 +3223,12 @@ export function TrackRecordSection({
         </div>
         </div>
 
+        <p style={{ marginTop: 16, textAlign: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text4)' }}>
+        {AUDIT_REPO_PUBLIC
+          ? <>{t.trackRecord.footerNote}<a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a></>
+          : t.trackRecord.footerNote.replace(/\s*·\s*$/, '')}
+        </p>
+
         {/* Bridge to the Security offer (positioning audit 2026-09-13: the ledger is the strongest
             trust asset and must lead to something purchasable). Simeon 2026-10-31: it belongs under
             the ledger itself, after the visitor has seen the reports, as a pill like the topic links. */}
@@ -3233,12 +3239,6 @@ export function TrackRecordSection({
             {t.trackRecord.securityBridgeCta}
           </a>
         </div>
-
-        <p style={{ marginTop: 12, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text4)' }}>
-        {AUDIT_REPO_PUBLIC
-          ? <>{t.trackRecord.footerNote}<a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a></>
-          : t.trackRecord.footerNote.replace(/\s*·\s*$/, '')}
-        </p>
       </div>
     </section>
   )
