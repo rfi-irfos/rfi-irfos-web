@@ -2849,7 +2849,16 @@ export function TrackRecordSection({
             their own individual bordered-card treatment from the prior pass
             (2026-08-12 revert of the shared-description-box experiment) -
             only the outer boundary changed, not the cards themselves. */}
-        <div id="track-record-reports" style={{ background: 'var(--glass-bg-solid)', border: '1px solid var(--accent-text)', borderRadius: 20, padding: '24px 20px 20px', marginBottom: 32, scrollMarginTop: 84 }}>
+        {/* Slab statt grünem Rahmen (31.10., Simeon: "so wie ein physisches Objekt, das Grün sticht sehr hart"):
+            neutrale Kante, hellere Oberkante als Lichtkante, Tiefe über den Schatten. */}
+        <div id="track-record-reports" style={{
+          background: 'var(--glass-bg-solid)', borderRadius: 20, padding: '24px 20px 20px', marginBottom: 32, scrollMarginTop: 84,
+          border: theme === 'dark' ? '1px solid rgba(255,255,255,0.07)' : '1px solid rgba(0,0,0,0.10)',
+          borderTopColor: theme === 'dark' ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.9)',
+          boxShadow: theme === 'dark'
+            ? 'inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 0 rgba(0,0,0,0.55), 0 30px 70px rgba(0,0,0,0.55)'
+            : '0 1px 0 rgba(0,0,0,0.06), 0 24px 56px rgba(0,0,0,0.12)',
+        }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 24 }}>
           {[
             { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,          sub: t.trackRecord.kpisSub.appsAudited,        from: 'left'   },
@@ -2865,7 +2874,8 @@ export function TrackRecordSection({
                   ? 'linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'
                   : 'var(--bg2)',
                 backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
-                border: theme === 'dark' ? '1px solid rgba(0,245,196,0.35)' : '1px solid rgba(10,122,92,0.45)',
+                border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.10)',
+                borderTopColor: theme === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.06)',
                 borderRadius: 12, padding: '20px 20px 22px', textAlign: 'center', height: '100%',
                 display: 'flex', flexDirection: 'column',
                 boxShadow: theme === 'dark'
