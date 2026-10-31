@@ -48,7 +48,8 @@ export function LandingBody({ slug, locale, navigate }: {
         </li>)}
       </ul>
       <p style={BODY}>
-        <a href={localePath(locale, '/evidence/')} style={A}>{de ? 'Das vollständige Verzeichnis ansehen →' : 'Browse the full evidence ledger →'}</a>
+        {de ? 'Alle weiteren Untersuchungen stehen im ' : 'Every other investigation is in the '}
+        <a href={localePath(locale, '/evidence/')} style={A}>{de ? 'vollständigen Evidence-Ledger' : 'full evidence ledger'}</a>.
       </p>
     </section>
 
@@ -56,11 +57,12 @@ export function LandingBody({ slug, locale, navigate }: {
       <h2 style={H2}>{d.startH2}</h2>
       {d.startText.map((para, i) => <p key={i} style={BODY}>{para}</p>)}
       <p style={BODY}>
-        <a href={localePath(locale, '/access/')} style={A}>{de ? 'Pläne und Preise ansehen →' : 'See plans and pricing →'}</a>
-        {'  ·  '}
-        <a href={localePath(locale, '/squad/')} style={A}>{de ? 'The Squad kennenlernen →' : 'Meet The Squad →'}</a>
-        {'  ·  '}
-        <a href={localePath(locale, '/standards/')} onClick={e => navigate(e, localePath(locale, '/standards/'))} style={A}>{de ? 'Standards und Rahmenwerke →' : 'Standards and frameworks →'}</a>
+        {de ? 'Pläne und Preise stehen unter ' : 'Plans and prices are on '}
+        <a href={localePath(locale, '/access/')} style={A}>Access</a>
+        {de ? ', die Agenten hinter jeder Prüfung unter ' : ', the agents behind every review on '}
+        <a href={localePath(locale, '/squad/')} style={A}>The Squad</a>
+        {de ? ' und die Rahmenwerke, an denen wir messen, unter ' : ' and the frameworks we measure against on '}
+        <a href={localePath(locale, '/standards/')} onClick={e => navigate(e, localePath(locale, '/standards/'))} style={A}>Standards</a>.
       </p>
       <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 8px' }}>
         <InitialReviewFlow variant="embedded" />
@@ -78,10 +80,11 @@ export function LandingBody({ slug, locale, navigate }: {
     <section>
       <h2 style={H2}>{de ? 'Verwandte Seiten' : 'Related pages'}</h2>
       <p style={BODY}>
+        {de ? 'Mehr dazu auf den Seiten ' : 'More on the pages '}
         {others.map((s, i) => <React.Fragment key={s}>
-          {i > 0 && '  ·  '}
+          {i > 0 && (i === others.length - 1 ? (de ? ' und ' : ' and ') : ', ')}
           <a href={localePath(locale, `/${s}/`)} onClick={e => navigate(e, localePath(locale, `/${s}/`))} style={A}>{LANDING[s][locale].label}</a>
-        </React.Fragment>)}
+        </React.Fragment>)}.
       </p>
     </section>
   </>
