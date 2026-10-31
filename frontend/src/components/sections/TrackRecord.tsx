@@ -422,17 +422,22 @@ const SEV_COLOR: Record<string, string> = {
 // body text), no red/orange/green emotional coding by status. High-contrast
 // mode gets its own amber/black treatment via .site-status-badge in App.css,
 // consistent with the site's existing HC token overrides.
+// Display casing for the all-caps data words (severity, market type); exchange tickers
+// like NASDAQ or WBAG stay as they are. Sentence case since 2026-10-31 (mono/caps removal).
+const CASED_WORDS = new Set(['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'PRIVATE', 'PUBLIC', 'PLAY', 'NON-PROFIT'])
+const casedWord = (w: string) => CASED_WORDS.has(w) ? w[0] + w.slice(1).toLowerCase() : w
+
 const STATUS_META: Record<string, { label: string; bg: string; color: string }> = {
-  WAITING:      { label: 'WAITING',     bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  WAITING:      { label: 'Waiting',     bg: 'var(--surface-sunken)', color: 'var(--text)' },
   ACK:          { label: 'ACK',         bg: 'var(--surface-sunken)', color: 'var(--text)' },
-  'CS-DEFLECT': { label: 'CS-DEFLECT',  bg: 'var(--surface-sunken)', color: 'var(--text)' },
-  ESCALATED:    { label: 'ESCALATED',   bg: 'var(--surface-sunken)', color: 'var(--text)' },
-  SUBSTANTIVE:  { label: 'SUBSTANTIVE', bg: 'var(--surface-sunken)', color: 'var(--text)' },
-  ENGAGED:      { label: 'ENGAGED',     bg: 'var(--surface-sunken)', color: 'var(--text)' },
-  PAID:         { label: 'PAID',        bg: 'var(--surface-sunken)', color: 'var(--text)' },
-  SILENT:       { label: 'SILENT',      bg: 'var(--surface-sunken)', color: 'var(--text)' },
-  REGULATOR:    { label: 'REGULATOR',   bg: 'var(--surface-sunken)', color: 'var(--text)' },
-  RESOLVED:     { label: 'RESOLVED',    bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  'CS-DEFLECT': { label: 'CS deflect',  bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  ESCALATED:    { label: 'Escalated',   bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  SUBSTANTIVE:  { label: 'Substantive', bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  ENGAGED:      { label: 'Engaged',     bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  PAID:         { label: 'Paid',        bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  SILENT:       { label: 'Silent',      bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  REGULATOR:    { label: 'Regulator',   bg: 'var(--surface-sunken)', color: 'var(--text)' },
+  RESOLVED:     { label: 'Resolved',    bg: 'var(--surface-sunken)', color: 'var(--text)' },
 }
 
 
@@ -3099,7 +3104,7 @@ export function TrackRecordSection({
                   {/* Organisation */}
                   <div>
                     <div className="rfi-ledger-org">{a.target}</div>
-                    <div className="rfi-ledger-mono rfi-ledger-market">{a.market}</div>
+                    <div className="rfi-ledger-mono rfi-ledger-market">{casedWord(a.market)}</div>
                   </div>
 
                   {/* Notified */}
@@ -3124,7 +3129,7 @@ export function TrackRecordSection({
                   {/* SEV */}
                   {!mobile && (
                     <div className="rfi-ledger-pt1 rfi-ledger-center">
-                      <span className="rfi-ledger-mono rfi-ledger-sev" style={{ color: SEV_COLOR[a.sev] ?? TEAL }}>{a.sev}</span>
+                      <span className="rfi-ledger-mono rfi-ledger-sev" style={{ color: SEV_COLOR[a.sev] ?? TEAL }}>{casedWord(a.sev)}</span>
                     </div>
                   )}
 
