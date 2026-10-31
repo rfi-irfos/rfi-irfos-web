@@ -96,6 +96,7 @@ button { cursor: pointer; font-family: inherit; }
   min-height: 100vh;
   animation: rfi-view-enter .42s cubic-bezier(.16, 1, .3, 1) both;
 }
+.rfi-view-stage--first { animation: none; }
 .rfi-view-panel {
   min-height: 100vh;
   padding-top: 74px; /* floating pill nav: 14px top inset + 60px bar height */

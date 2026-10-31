@@ -2,7 +2,7 @@
 // scrolled to via the bare "#" logo link) - extracted verbatim from PublicSite.tsx.
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { prefersReducedMotion, RevealWords, CountUp, HeroFlipWord } from './shared'
+import { prefersReducedMotion, SKIP_FIRST_PAINT_ANIMATION, RevealWords, CountUp, HeroFlipWord } from './shared'
 import { RESEARCH_AREAS } from './Research'
 import { useLocale } from '../../hooks/useLocale'
 import type { Theme } from '../../hooks/useTheme'
@@ -338,7 +338,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       <div style={{ position: 'relative', display: 'inline-block', maxWidth: 1300, marginBottom: 40 }}>
         <motion.div
           aria-hidden="true"
-          initial={prefersReducedMotion() ? undefined : { scaleX: 0 }}
+          initial={prefersReducedMotion() || SKIP_FIRST_PAINT_ANIMATION ? false : { scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 1.3, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           style={{
@@ -356,7 +356,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
             Cut hard since this is the single largest lever on the performance score;
             the bar sweep above is decorative and unaffected. */}
         <motion.p
-          initial={prefersReducedMotion() ? undefined : { opacity: 0, y: 24 }}
+          initial={prefersReducedMotion() || SKIP_FIRST_PAINT_ANIMATION ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
           style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.2rem, 2.2vw, 1.6rem)', fontWeight: 400, color: theme === 'light' ? '#1a1a20' : '#ffffff', lineHeight: 'var(--lh-body)', letterSpacing: '0.01em', margin: 0 }}

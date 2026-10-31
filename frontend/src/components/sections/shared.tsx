@@ -23,6 +23,15 @@ export const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | unde
 export const prefersReducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+// Lighthouse round 24 (2026-10-31): main.tsx uses createRoot, which throws away the
+// prerendered snapshot and mounts fresh nodes. Any above-the-fold entrance animation
+// then hides text that was already on screen, and the phone only counts it as painted
+// once the JS has loaded and the fade has run (mobile LCP 11 s, desktop 2 s). True when
+// #root still held the snapshot at module load (evaluated before createRoot renders),
+// or when prerender.mjs itself is capturing, so the snapshot shows the final state.
+export const SKIP_FIRST_PAINT_ANIMATION = typeof document !== 'undefined' &&
+  (navigator.webdriver || !!document.getElementById('root')?.firstElementChild)
+
 // Custom-styled listbox replacing the native <select>. Native option popups are
 // drawn by the OS/browser chrome, not the page, so they can't be pulled into the
 // site's glass/dark theme no matter how the closed control or <option> tags are

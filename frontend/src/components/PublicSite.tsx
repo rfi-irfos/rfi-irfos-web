@@ -270,6 +270,11 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   const { locale, setLocale, t } = useLocale()
   const NAV_LINKS = NAV_HREFS.map(n => ({ key: n.key, label: t.nav.links[n.key], href: n.href }))
   const [view, setView] = useState<PublicView>(() => viewForSection(initialSection))
+  // The chapter slide-in only plays on real view changes. On the first view it would fade
+  // in content the prerendered snapshot already showed (Lighthouse round 24, mobile LCP).
+  const firstView = useRef(view)
+  const leftFirstView = useRef(false)
+  if (view !== firstView.current) leftFirstView.current = true
   // On-hover glass mega menu (live direction 2026-10-02: "on mouse hover so
   // dass man schneller navigieren und sich zurechtfinden kann", modeled on a
   // shared-panel reference mega menu). A short close delay, armed on leaving
@@ -495,14 +500,22 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   // click on "Evidence" mounts instantly instead of stalling several seconds
   // on the network fetch (live feedback 2026-10-26, "saulangsam"). Initial
   // paint stays unaffected - this runs only once the main thread is idle.
+  // Lighthouse round 24 (2026-10-31): the idle warm-up fired inside the page load on a
+  // throttled phone, so the 520 KB chunk competed with the first paint. It now waits for
+  // the first sign of a real visitor (touch, click, scroll, key), or 12 s at the latest.
   useEffect(() => {
-    const warm = () => { import('./sections/TrackRecord'); import('./sections/Proof') }
-    if ('requestIdleCallback' in window) {
-      const id = window.requestIdleCallback(warm, { timeout: 4000 })
-      return () => window.cancelIdleCallback(id)
+    let done = false
+    const events = ['pointerdown', 'scroll', 'keydown'] as const
+    const warm = () => {
+      if (done) return
+      done = true
+      events.forEach(ev => window.removeEventListener(ev, warm))
+      window.clearTimeout(id)
+      import('./sections/TrackRecord'); import('./sections/Proof')
     }
-    const id = window.setTimeout(warm, 2500)
-    return () => window.clearTimeout(id)
+    events.forEach(ev => window.addEventListener(ev, warm, { once: true, passive: true }))
+    const id = window.setTimeout(warm, 12000)
+    return () => { done = true; events.forEach(ev => window.removeEventListener(ev, warm)); window.clearTimeout(id) }
   }, [])
   useEffect(() => {
     if (evidenceMods || (view !== 'evidence' && !initialReportSlug && !reportModal)) return
@@ -1654,7 +1667,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         </div>
       </div>
 
-      <main className="rfi-view-stage" key={view} aria-live="polite">
+      <main className={leftFirstView.current ? 'rfi-view-stage' : 'rfi-view-stage rfi-view-stage--first'} key={view} aria-live="polite">
         {view === 'home' && <>
           <HeroSection mobile={mobile} theme={theme} />
           <AppPrivacySection onNavigateEvidence={() => navigateTo('evidence')} />
