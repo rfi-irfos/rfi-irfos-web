@@ -21,7 +21,10 @@ primary_region = "fra"
   force_https = true
   auto_stop_machines = "stop"
   auto_start_machines = true
-  min_machines_running = 0
+  # Lighthouse R82 (2026-10-31, Simeon ok): keep one machine warm. With 0 the single machine
+  # auto-stopped between visits, so the first visitor (and Googlebot, DLT clicks) waited ~1 s for a
+  # cold start and the bot trap lost its in-memory scores on every stop.
+  min_machines_running = 1
   processes = ["app"]
 
   # Lighthouse round 54 (2026-10-31): no check existed, so a machine that booted but
