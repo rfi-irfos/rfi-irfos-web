@@ -7,6 +7,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Reveal, useMobile } from './shared'
 import { InitialReviewFlow } from './InitialReviewFlow'
+import { TopicLinks } from './TopicLinks'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
 // KPI figures are extracted from AUDIT_HIGHLIGHTS at build time
@@ -191,6 +192,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
           <Reveal delay={1}>
             <a href={localeHref('/evidence/', locale)} onClick={e => { e.preventDefault(); onNavigateEvidence() }} style={{ color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-body)', textDecoration: 'none' }}>{c.evidenceCta}</a>
           </Reveal>
+          <TopicLinks />
         </div>
       </div>
     </section>

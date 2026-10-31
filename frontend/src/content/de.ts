@@ -278,6 +278,7 @@ export const DE: Content = {
     ],
     evidenceHeading: 'Unsere Forschung ist öffentlich. Unsere Methodik ist nachprüfbar.',
     evidenceCta: 'Evidence Ledger ansehen →',
+    topics: { label: 'Was wir prüfen:', close: 'Schließen', startCheck: 'Gratis-Check starten', fullPage: 'Ganze Seite öffnen' },
     cta: 'Erstprüfung anfragen',
   },
 
