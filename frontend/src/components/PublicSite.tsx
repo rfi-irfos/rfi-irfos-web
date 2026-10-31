@@ -1443,6 +1443,12 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
           all, and can render with scrollY still at/near 0 right after a view
           switch (no hero to scroll past). Gated on the view too now, so the
           light-text fallback only ever applies where the dark hero actually is. */}
+      {/* Skip link (Lighthouse R128): keyboard users jump past the nav straight to the view.
+          Focus is moved by hand because '#...' hrefs feed the view router here. */}
+      <a href="#main-content" className="rfi-skip-link" onClick={e => {
+        e.preventDefault()
+        const m = document.getElementById('main-content'); if (m) { m.focus(); m.scrollIntoView() }
+      }}>{locale === 'de' ? 'Zum Inhalt springen' : 'Skip to content'}</a>
       {(() => { const overDarkHero = !scrolled && view === 'home'
       // Floating glass pill (live direction 2026-09-13, "wie bei n8n") - the
       // nav no longer runs flush edge-to-edge; it's inset from the top and
@@ -1687,7 +1693,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         </div>
       </div>
 
-      <main className={leftFirstView.current ? 'rfi-view-stage' : 'rfi-view-stage rfi-view-stage--first'} key={view} aria-live="polite">
+      <main id="main-content" tabIndex={-1} className={leftFirstView.current ? 'rfi-view-stage' : 'rfi-view-stage rfi-view-stage--first'} key={view} aria-live="polite">
         {view === 'home' && <>
           <HeroSection mobile={mobile} theme={theme} />
           <AppPrivacySection onNavigateEvidence={() => navigateTo('evidence')} />

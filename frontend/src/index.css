@@ -880,3 +880,13 @@ h1, h2, h3, .rfi-display {
   outline: 2px solid var(--focus) !important;
   outline-offset: 2px;
 }
+
+/* Skip link (R128): off-screen until focused, then a pill above the nav. */
+.rfi-skip-link {
+  position: fixed; left: 16px; top: -64px; z-index: 10000;
+  padding: 8px 16px; border-radius: 8px;
+  background: var(--text); color: var(--bg); font-size: var(--fs-small); font-weight: 600;
+  text-decoration: none; transition: top .15s ease;
+}
+.rfi-skip-link:focus { top: 16px; }
+#main-content:focus { outline: none !important; }
