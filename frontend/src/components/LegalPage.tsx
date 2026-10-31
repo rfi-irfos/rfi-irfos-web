@@ -346,7 +346,7 @@ function Impressum() {
 function ImpressumEN() {
   return <>
     <h1 style={H1}>Legal Notice</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act) &middot; Last updated: October 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act) and § 25 MedienG (Austrian Media Act) &middot; Last updated: October 2026</p>
 
     <p style={P}>
       We publish under our own name, at a real street address, because coordinated disclosure only works if the institute doing it can be found, verified, and held to account — the same standard we hold everyone we audit to. Most of what follows on this page exists because the law requires it. A few lines exist because we think a legal notice page shouldn't feel like the one part of a website that nobody proofread.
@@ -386,6 +386,13 @@ function ImpressumEN() {
     <h2 style={H2}>Trade-Law Management</h2>
     <p style={P}>Simeon-Andreas Johann Manfred Kepp, responsible under Austrian trade law (GewO) for the licensed activity listed above.</p>
 
+    <h2 style={H2}>Disclosure Pursuant to § 25 MedienG</h2>
+    <p style={P}>
+      Media owner: Research Focus Institute — Interdisciplinary Research Facility for Open Sciences (RFI-IRFOS), registered seat Graz, address as above.<br />
+      Board of the association: Simeon-Andreas Johann Manfred Kepp (Chair) and Louis Ehrig (Treasurer). Under the statutes, both represent the association externally together.<br />
+      Editorial line: independent publication of research results on the privacy and security of software, including the public disclosure ledger, and information about the institute's work.
+    </p>
+
     <h2 style={H2}>Consumer Dispute Resolution</h2>
     <p style={P}>
       We are neither obligated nor willing to participate in dispute resolution proceedings before a consumer arbitration board, as we contract exclusively with businesses. This is not us dodging accountability, it is the accurate legal consequence of running a B2B-only operation (see our Terms).
@@ -422,7 +429,7 @@ function ImpressumEN() {
 function ImpressumDE() {
   return <>
     <h1 style={H1}>Impressum</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Offenlegung gemäß § 5 ECG (E-Commerce-Gesetz) &middot; Letzte Aktualisierung: Oktober 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Offenlegung gemäß § 5 ECG (E-Commerce-Gesetz) und § 25 MedienG (Mediengesetz) &middot; Letzte Aktualisierung: Oktober 2026</p>
 
     <p style={P}>
       Wir veröffentlichen unter eigenem Namen, mit einer echten Anschrift, weil koordinierte Offenlegung nur funktioniert, wenn das Institut, das sie durchführt, selbst auffindbar, überprüfbar und zur Verantwortung ziehbar ist — genau der Maßstab, den wir an jeden anlegen, den wir prüfen. Das meiste auf dieser Seite steht hier, weil es das Gesetz verlangt. Ein paar Zeilen stehen hier, weil wir finden, dass ein Impressum nicht der eine Teil einer Website sein sollte, den niemand Korrektur gelesen hat.
@@ -461,6 +468,13 @@ function ImpressumDE() {
 
     <h2 style={H2}>Gewerberechtliche Geschäftsführung</h2>
     <p style={P}>Simeon-Andreas Johann Manfred Kepp, verantwortlich nach der österreichischen Gewerbeordnung (GewO) für die oben angeführte, angemeldete Tätigkeit.</p>
+
+    <h2 style={H2}>Offenlegung gemäß § 25 MedienG</h2>
+    <p style={P}>
+      Medieninhaber: Research Focus Institute — Interdisciplinary Research Facility for Open Sciences (RFI-IRFOS), Sitz Graz, Anschrift wie oben.<br />
+      Vereinsvorstand: Simeon-Andreas Johann Manfred Kepp (Obmann) und Louis Ehrig (Kassier). Laut Statuten vertreten beide den Verein gemeinsam nach außen.<br />
+      Grundlegende Richtung: unabhängige Veröffentlichung von Forschungsergebnissen zu Datenschutz und Sicherheit von Software, einschließlich des öffentlichen Offenlegungs-Ledgers, sowie Information über die Arbeit des Instituts.
+    </p>
 
     <h2 style={H2}>Verbraucherschlichtung</h2>
     <p style={P}>
