@@ -13,7 +13,7 @@ import auditStats from '../content/auditStats.json'
 
 const H1: React.CSSProperties = { fontSize: 'var(--fs-h2)', fontWeight: 900, marginBottom: 14, color: '#e8e8f0', lineHeight: 'var(--lh-tight)' }
 const LEAD: React.CSSProperties = { color: '#eeeef8', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)', marginBottom: 16 }
-const H2: React.CSSProperties = { fontSize: 'var(--fs-small)', fontWeight: 700, marginTop: 36, marginBottom: 10, color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'monospace' }
+const H2: React.CSSProperties = { fontSize: 'var(--fs-small)', fontWeight: 700, marginTop: 36, marginBottom: 10, color: 'var(--accent-text)' }
 const BODY: React.CSSProperties = { color: '#d8d8e8', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', marginBottom: 12 }
 const LIST: React.CSSProperties = { ...BODY, paddingLeft: 22 }
 const A: React.CSSProperties = { color: 'var(--accent-text)', textDecoration: 'none', fontWeight: 600 }

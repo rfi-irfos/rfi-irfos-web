@@ -175,7 +175,7 @@ function LocaleIcon({ locale }: { locale: Locale }) {
   // Show the *target* language, not the current one — users expect the toggle
   // to say "click here to switch to Deutsch/English", not "you are already here".
   const target = LOCALES[(LOCALES.indexOf(locale) + 1) % LOCALES.length]
-  return <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.02em' }}>{target.toUpperCase()}</span>
+  return <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700 }}>{target}</span>
 }
 
 // Sun / Moon / Monitor glyphs for the theme toggle - icon-only reads at a glance and
@@ -1246,7 +1246,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t.reportModal.label}</span>
+              <span style={{ fontSize: 'var(--fs-label)', color: TEAL }}>{t.reportModal.label}</span>
               {/* Teilen-Button links neben dem Schliessen-Button; teilt immer /evidence/<slug>/ (2026-10-31). */}
               {evidenceMods && <evidenceMods.tr.ReportShare slug={evidenceMods.tr.reportSlug(reportModalExit.rendered)} locale={locale} />}
               <button onClick={() => setReportModal(null)} aria-label={locale === 'de' ? 'Schließen' : 'Close'} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', padding: '9px 11px' }}>&#x2715;</button>
@@ -1332,7 +1332,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{intelModal.target} · {intelModal.market} · {intelModal.sev}</div>
+                <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>{intelModal.target} · {intelModal.market} · {intelModal.sev}</div>
                 <button onClick={() => setIntelModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', padding: '9px 11px' }}>&#x2715;</button>
               </div>
               <div style={{ padding: '26px 28px', overflowY: 'auto' }}>
@@ -1345,8 +1345,8 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 )}
                 <p style={{ fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)', color: '#e8e8f0', margin: 0 }}>{meaning}</p>
                 <div style={{ marginTop: 22, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 7 }}>{t.intelModal.evidenceLabel}</div>
-                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: '#a0a0b8', margin: 0 }}>{technical}</p>
+                  <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 7 }}>{t.intelModal.evidenceLabel}</div>
+                  <p style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text2)', margin: 0 }}>{technical}</p>
                 </div>
               </div>
             </div>
@@ -1376,7 +1376,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 illegible grey-on-navy. */}
             <ModalTierBody tier={checkoutModal.tier} price={checkoutModal.price} desc={checkoutModal.desc} delivery={checkoutModal.delivery} mobile={mobile} bullets={checkoutModal.bullets} bring={checkoutModal.bring} mechanism={checkoutModal.mechanism} receive={checkoutModal.receive} />
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20 }}>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 10 }}>{t.checkoutModal.orderConfirmation}</div>
+              <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 10 }}>{t.checkoutModal.orderConfirmation}</div>
               {/* Single combined checkbox, not two - the old two-checkbox gate (business-customer
                   declaration + separate ToS/no-refund consent) meant the Continue button stayed
                   disabled through two clicks, not one, and funnel data showed most people never
@@ -1394,14 +1394,13 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                   button in a two-button row. */}
               <div style={{ display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 10 }}>
                 <button onClick={() => cancelCheckout(checkoutModal.key)}
-                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 'var(--fs-small)', fontFamily: "'JetBrains Mono', monospace", cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 6, color: '#8a8aa0', fontSize: 'var(--fs-small)', cursor: 'pointer' }}>
                   {t.checkoutModal.cancel}
                 </button>
                 <button onClick={confirmCheckout}
                   disabled={!agbChecked || !b2bChecked}
                   style={{
-                    flex: mobile ? undefined : 2, padding: '13px', borderRadius: 6, fontSize: 'var(--fs-small)', fontFamily: "'JetBrains Mono', monospace",
-                    letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 700,
+                    flex: mobile ? undefined : 2, padding: '13px', borderRadius: 6, fontSize: 'var(--fs-small)', fontWeight: 700,
                     // Always reads as "the real button", checked or not - a fully disabled-looking
                     // grey-on-transparent button next to a loud red Cancel was the actual conversion
                     // killer here, not the copy. Unchecked state keeps a visible teal outline instead.
@@ -1842,7 +1841,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               ]
             ).map(group => (
               <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
-                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 2px' }}>{group.heading}</p>
+                <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', fontWeight: 700, margin: '0 0 2px' }}>{group.heading}</p>
                 {group.links.map(l => (
                   <a key={l.label} href={localeHref(l.href, locale)} style={{ color: 'var(--text3)', fontSize: 'var(--fs-small)', textDecoration: 'none' }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
@@ -1921,10 +1920,10 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address)
                   lives on Legal Notice - not duplicated here, this footer only points there.
                   ZVR dropped from this line specifically (kept on the Legal Notice itself). */}
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text4)', letterSpacing: '0.08em', margin: 0 }}>
+              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text4)', margin: 0 }}>
                 {t.footer.copyright}
               </p>
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-small)', color: 'var(--accent-text)', letterSpacing: '0.06em', fontWeight: 700, margin: 0 }}>
+              <p style={{ fontSize: 'var(--fs-small)', color: 'var(--accent-text)', fontWeight: 700, margin: 0 }}>
                 {t.footer.tagline}
               </p>
             </div>
@@ -1974,17 +1973,17 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 of those headers... same soft grey line". */}
             {ZONE_ORDER.map(zone => (
               <p key={`zh-${zone}`} style={{
-                gridColumn: `${ZONE_COL_START[zone]} / span ${zoneCols(zone)}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', fontWeight: 700,
-                textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)',
+                gridColumn: `${ZONE_COL_START[zone]} / span ${zoneCols(zone)}`, gridRow: 1, fontSize: 'var(--fs-label)', color: 'var(--text2)', fontWeight: 700,
+                margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)',
               }}>{ZONE_LABELS[zone][locale]}</p>
             ))}
             <p style={{
-              gridColumn: `${ZONE_TOTAL_COLUMNS + 1} / span ${FOOTER_REPO_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', fontWeight: 700,
-              textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)',
+              gridColumn: `${ZONE_TOTAL_COLUMNS + 1} / span ${FOOTER_REPO_COLUMNS.length}`, gridRow: 1, fontSize: 'var(--fs-label)', color: 'var(--text2)', fontWeight: 700,
+              margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)',
             }}>Repositories</p>
             <p style={{
-              gridColumn: `${ZONE_TOTAL_COLUMNS + 1 + FOOTER_REPO_COLUMNS.length} / span ${FOOTER_CRATE_COLUMNS.length}`, gridRow: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', fontWeight: 700,
-              textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap',
+              gridColumn: `${ZONE_TOTAL_COLUMNS + 1 + FOOTER_REPO_COLUMNS.length} / span ${FOOTER_CRATE_COLUMNS.length}`, gridRow: 1, fontSize: 'var(--fs-label)', color: 'var(--text2)', fontWeight: 700,
+              margin: 0, paddingBottom: 8, borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap',
             }}>Crates (crates.io)</p>
 
             {/* One <div> per grid column, not per zone: a zone with zoneCols > 1
@@ -2069,7 +2068,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 }}>
                   <p style={{ margin: 0, flex: '1 1 260px', fontSize: 'var(--fs-small)', color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 'var(--lh-body)' }}>
                     {t.cookieBanner.text}
-                    <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: theme === 'light' ? '#555555' : '#999999', letterSpacing: '0.04em', marginTop: 4, fontWeight: 'normal' }}>
+                    <span style={{ display: 'block', fontSize: 'var(--fs-label)', color: theme === 'light' ? '#555555' : '#999999', marginTop: 4, fontWeight: 'normal' }}>
                       {t.cookieBanner.subtext}
                     </span>
                   </p>

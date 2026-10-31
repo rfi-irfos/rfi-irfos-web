@@ -285,9 +285,7 @@ h1, h2, h3, .rfi-display {
   background: none;
   border: 1px solid var(--border);
   color: var(--text3);
-  font-family: 'JetBrains Mono', monospace;
   font-size: var(--fs-small);
-  letter-spacing: 0.08em;
   padding: 4px 8px;
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s, background 0.15s;

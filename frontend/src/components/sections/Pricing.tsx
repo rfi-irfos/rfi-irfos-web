@@ -85,9 +85,9 @@ function TierCard({
   return (
     <div style={{ padding: '36px 28px', display: 'flex', flexDirection: 'column', gap: 13, height: '100%', boxSizing: 'border-box' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-small)', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text2)', margin: 0 }}>{tier.name}</p>
+        <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', margin: 0 }}>{tier.name}</p>
         {tier.popular && (
-          <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#f97316', letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{t.pricing.mostPopular}</span>
+          <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#f97316', whiteSpace: 'nowrap' }}>{t.pricing.mostPopular}</span>
         )}
       </div>
       <div style={{ overflow: 'hidden' }}>
@@ -142,7 +142,7 @@ function FreeTierCard({ onOpen }: { onOpen: () => void }) {
   const f = t.pricing.freeCard
   return (
     <div style={{ padding: '36px 28px', display: 'flex', flexDirection: 'column', gap: 13, height: '100%', boxSizing: 'border-box' }}>
-      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-small)', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--text3)', margin: 0 }}>{f.label}</p>
+      <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', margin: 0 }}>{f.label}</p>
       <div>
         <span style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: 'var(--text)' }}>{f.price}</span>
       </div>
@@ -172,7 +172,7 @@ function BillingToggle({ billing, onChange }: { billing: 'monthly' | 'annual'; o
       background: 'transparent',
       color: billing === value ? '#1a0f00' : 'var(--text2)',
       border: 'none', borderLeft: borderLeft ? '1px solid var(--border)' : 'none',
-      padding: '12px 24px', fontWeight: 700, fontSize: 'var(--fs-small)', letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer',
+      padding: '12px 24px', fontWeight: 700, fontSize: 'var(--fs-small)', cursor: 'pointer',
       transition: 'color 0.2s ease',
     }}>{label}</button>
   )
@@ -291,7 +291,7 @@ export function PricingSection({
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap',
               }}>
                 <div>
-                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--accent-text)', margin: '0 0 7px' }}>{t.pricing.enterprise.heading}</p>
+                  <p style={{ fontSize: 'var(--fs-label)', color: 'var(--accent-text)', margin: '0 0 7px' }}>{t.pricing.enterprise.heading}</p>
                   <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', margin: 0, maxWidth: 560 }}>{t.pricing.enterprise.text}</p>
                 </div>
                 <button type="button" onClick={() => onSelectTier('Enterprise')} style={{ background: 'transparent', border: '1px solid var(--accent-text)', color: 'var(--accent-text)', padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', whiteSpace: 'nowrap' }}>

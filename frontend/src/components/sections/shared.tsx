@@ -786,8 +786,7 @@ export function EngagementFlow({ bring, mechanism, receive, large }: {
                   it describes"). */}
               <div style={{
                 fontSize: large ? 'var(--fs-body)' : 'var(--fs-label)', fontWeight: large ? 700 : 700,
-                color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: large ? '0.04em' : '0.12em',
-                marginBottom: 6,
+                color: 'var(--accent-text)', marginBottom: 6,
               }}>{g.label}</div>
               {/* Was hardcoded #f4f6f6/#00e8d0 for `large` (live feedback 2026-08-25:
                   "immer noch grau" on dark, fixed by going near-white/bright-teal
@@ -860,8 +859,8 @@ function JourneyPreview({ mobile }: { mobile: boolean }) {
   return (
     <div style={{ marginBottom: 20 }}>
       <div style={{
-        fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700,
-        color: TEAL, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12,
+        fontSize: 'var(--fs-label)', fontWeight: 700,
+        color: TEAL, marginBottom: 12,
       }}>{locale.modalTierBody.whatHappensNext}</div>
       <div style={{ display: 'flex', alignItems: 'flex-start' }}>
         {steps.map((s, i) => {
@@ -876,7 +875,7 @@ function JourneyPreview({ mobile }: { mobile: boolean }) {
                   style={{
                     width: circle, height: circle, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     background: 'rgba(0,245,196,0.12)', border: `1px solid ${TEAL}`, color: TEAL,
-                    fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, fontSize: font,
+                    fontWeight: 700, fontSize: font,
                   }}>{i + 1}</motion.div>
                 <div style={{ fontSize: font, fontWeight: 700, color: '#e8e8f0', textAlign: 'center', whiteSpace: 'nowrap' }}>{s.stage}</div>
               </motion.div>
@@ -1009,7 +1008,7 @@ export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets, br
         </div>
       </div>
       {body.length > 0 && (
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>
+        <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12 }}>
           {t.modalTierBody.whatYouGet}
         </div>
       )}

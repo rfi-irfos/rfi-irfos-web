@@ -1,7 +1,7 @@
 const BASE = { background: '#070711', color: '#e8e8f0', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', padding: '80px 2rem' }
 const PROSE = { maxWidth: 720, margin: '0 auto', lineHeight: 'var(--lh-body)' }
 const H1 = { fontSize: 'var(--fs-h2)', fontWeight: 900, marginBottom: 8, color: '#e8e8f0' }
-const H2: React.CSSProperties = { fontSize: 'var(--fs-small)', fontWeight: 700, marginTop: 32, marginBottom: 8, color: 'var(--accent-text)', textTransform: 'uppercase', letterSpacing: '0.12em', fontFamily: 'monospace' }
+const H2: React.CSSProperties = { fontSize: 'var(--fs-small)', fontWeight: 700, marginTop: 32, marginBottom: 8, color: 'var(--accent-text)' }
 const P = { color: '#a0a0b8', fontSize: 'var(--fs-body)', marginBottom: 12 }
 const A = { color: 'var(--accent-text)', textDecoration: 'none' }
 
@@ -265,8 +265,7 @@ export function LegalPage({ slug }: { slug: string }) {
               // exact same height regardless of label length.
               <a key={q.slug} href={localeHref(`/${q.slug}/`, locale)} onClick={e => navigate(e, localeHref(`/${q.slug}/`, locale))} style={{
                 display: 'inline-flex', alignItems: 'center', lineHeight: 'var(--lh-tight)',
-                fontFamily: 'monospace', fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.035em',
-                color: '#8a8aa0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
+                fontSize: 'var(--fs-label)', fontWeight: 700, color: '#8a8aa0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
                 borderRadius: 999, padding: '5px 8px', textDecoration: 'none',
               }}>
                 {locale === 'de' ? q.labelDe : q.labelEn}
@@ -280,8 +279,7 @@ export function LegalPage({ slug }: { slug: string }) {
             title={locale === 'de' ? 'Language: German (click to switch)' : 'Sprache: Englisch (klicken zum Wechseln)'}
             style={{
               flexShrink: 0,
-              fontFamily: 'monospace', fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
-              color: '#8fe8d0', background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)',
+              fontSize: 'var(--fs-label)', fontWeight: 700, color: '#8fe8d0', background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)',
               borderRadius: 999, padding: '6px 14px', cursor: 'pointer',
             }}
           >
@@ -317,7 +315,7 @@ export function LegalPage({ slug }: { slug: string }) {
             )}
           </motion.main>
         </AnimatePresence>
-        <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>
+        <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>
           RFI-IRFOS &nbsp;&middot;&nbsp; ZVR 1015608684 &nbsp;&middot;&nbsp; GISA 39261441 &nbsp;&middot;&nbsp; GLN 9110038490191 &nbsp;&middot;&nbsp; UID ATU83405245 &nbsp;&middot;&nbsp; Steuernummer 68 696/8736 &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz
         </div>
         </div>
@@ -348,7 +346,7 @@ function Impressum() {
 function ImpressumEN() {
   return <>
     <h1 style={H1}>Legal Notice</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act) and § 25 MedienG (Austrian Media Act) &middot; Last updated: October 2026</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act) and § 25 MedienG (Austrian Media Act) &middot; Last updated: October 2026</p>
 
     <p style={P}>
       We publish under our own name, at a real street address, because coordinated disclosure only works if the institute doing it can be found, verified, and held to account — the same standard we hold everyone we audit to. Most of what follows on this page exists because the law requires it. A few lines exist because we think a legal notice page shouldn't feel like the one part of a website that nobody proofread.
@@ -432,7 +430,7 @@ function ImpressumEN() {
 function ImpressumDE() {
   return <>
     <h1 style={H1}>Impressum</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Offenlegung gemäß § 5 ECG (E-Commerce-Gesetz) und § 25 MedienG (Mediengesetz) &middot; Letzte Aktualisierung: Oktober 2026</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Offenlegung gemäß § 5 ECG (E-Commerce-Gesetz) und § 25 MedienG (Mediengesetz) &middot; Letzte Aktualisierung: Oktober 2026</p>
 
     <p style={P}>
       Wir veröffentlichen unter eigenem Namen, mit einer echten Anschrift, weil koordinierte Offenlegung nur funktioniert, wenn das Institut, das sie durchführt, selbst auffindbar, überprüfbar und zur Verantwortung ziehbar ist — genau der Maßstab, den wir an jeden anlegen, den wir prüfen. Das meiste auf dieser Seite steht hier, weil es das Gesetz verlangt. Ein paar Zeilen stehen hier, weil wir finden, dass ein Impressum nicht der eine Teil einer Website sein sollte, den niemand Korrektur gelesen hat.
@@ -521,7 +519,7 @@ function Datenschutz() {
 function DatenschutzEN() {
   return <>
     <h1 style={H1}>Privacy Policy</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Pursuant to the GDPR (EU) 2016/679 &middot; Last updated: October 2026</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Pursuant to the GDPR (EU) 2016/679 &middot; Last updated: October 2026</p>
 
     <p style={P}>
       This page has every section a privacy policy is supposed to have. We just refuse to pad any of them with the vague language that usually fills them, because we spend our working hours pointing out exactly that vague language in other people's apps. So: full sections, plain claims, and where a claim is checkable, we tell you how to check it.
@@ -593,7 +591,7 @@ function DatenschutzEN() {
       This is usually where the actual tracking lives, and this is usually the one place a privacy policy goes vague. We won't. This site loads a single 1&times;1 pixel image, self-hosted, no cookie, no consent needed for it because a cookie-consent requirement (ePrivacy Art. 5(3)) attaches to storing or reading something on <em>your</em> device, and this pixel never does either. Each page load sends exactly this, the literal tag that is live on this page right now, copy it and inspect it yourself:
     </p>
     <div style={{ background: '#0c0c16', border: '1px solid rgba(0,245,196,0.2)', borderRadius: 6, padding: '12px 16px', margin: '8px 0 16px 0', overflowX: 'auto' }}>
-      <code style={{ fontFamily: 'monospace', fontSize: 'var(--fs-small)', color: 'var(--accent-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+      <code style={{ fontSize: 'var(--fs-small)', color: 'var(--accent-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
         {'<img src="https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif?site=rfi-irfos&p={page-path}&r={referrer}&utm_source={utm}" width="1" height="1" alt="" style="display:none">'}
       </code>
     </div>
@@ -641,7 +639,7 @@ function DatenschutzEN() {
 function DatenschutzDE() {
   return <>
     <h1 style={H1}>Datenschutzerklärung</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Gemäß DSGVO (EU) 2016/679 &middot; Letzte Aktualisierung: Oktober 2026</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Gemäß DSGVO (EU) 2016/679 &middot; Letzte Aktualisierung: Oktober 2026</p>
 
     <p style={P}>
       Diese Seite hat jeden Abschnitt, den eine Datenschutzerklärung haben soll. Wir weigern uns nur, sie mit der vagen Formulierung aufzublähen, die sie normalerweise füllt, weil wir unsere Arbeitszeit damit verbringen, genau diese vage Formulierung in fremden Apps aufzuzeigen. Also: vollständige Abschnitte, klare Aussagen, und wo eine Aussage nachprüfbar ist, sagen wir Ihnen, wie.
@@ -713,7 +711,7 @@ function DatenschutzDE() {
       Hier steckt normalerweise das eigentliche Tracking, und hier wird eine Datenschutzerklärung normalerweise vage. Wir nicht. Diese Website lädt ein einzelnes, selbst gehostetes 1×1-Pixelbild, kein Cookie, keine Einwilligung dafür nötig, weil die Cookie-Einwilligungspflicht (ePrivacy Art. 5 Abs. 3) am Speichern oder Auslesen von etwas auf <em>Ihrem</em> Gerät ansetzt, und dieser Pixel tut keines von beiden. Jeder Seitenaufruf sendet genau das, den wortwörtlichen Tag, der genau jetzt live auf dieser Seite liegt — kopieren Sie ihn und prüfen Sie ihn selbst:
     </p>
     <div style={{ background: '#0c0c16', border: '1px solid rgba(0,245,196,0.2)', borderRadius: 6, padding: '12px 16px', margin: '8px 0 16px 0', overflowX: 'auto' }}>
-      <code style={{ fontFamily: 'monospace', fontSize: 'var(--fs-small)', color: 'var(--accent-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
+      <code style={{ fontSize: 'var(--fs-small)', color: 'var(--accent-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
         {'<img src="https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track/pixel.gif?site=rfi-irfos&p={page-path}&r={referrer}&utm_source={utm}" width="1" height="1" alt="" style="display:none">'}
       </code>
     </div>
@@ -766,7 +764,7 @@ function AGB() {
 function AGBEN() {
   return <>
     <h1 style={H1}>General Terms and Conditions</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>RFI-IRFOS &middot; Last updated: October 2026</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>RFI-IRFOS &middot; Last updated: October 2026</p>
 
     <p style={P}>
       Thirteen sections, no filler clause, nothing in here that exists only to look thorough. If a paragraph below feels short, that's because the short version was the accurate one.
@@ -831,7 +829,7 @@ function AGBEN() {
 function AGBDE() {
   return <>
     <h1 style={H1}>Allgemeine Geschäftsbedingungen</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>RFI-IRFOS &middot; Letzte Aktualisierung: Oktober 2026</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>RFI-IRFOS &middot; Letzte Aktualisierung: Oktober 2026</p>
 
     <p style={P}>
       Vierzehn Abschnitte, keine Füllklausel, nichts hier, das nur existiert, um gründlich zu wirken. Wenn ein Absatz unten kurz wirkt, dann weil die kurze Fassung die zutreffende war.
@@ -901,7 +899,7 @@ function Security() {
 function SecurityEN() {
   return <>
     <h1 style={H1}>Responsible Disclosure &amp; Security Policy</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Coordinated Disclosure &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Coordinated Disclosure &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
 
     <h2 style={H2}>Our Method</h2>
     <p style={P}>
@@ -980,7 +978,7 @@ function SecurityEN() {
 function SecurityDE() {
   return <>
     <h1 style={H1}>Responsible Disclosure &amp; Sicherheitsrichtlinie</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Koordinierte Offenlegung &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Koordinierte Offenlegung &middot; ISO/IEC 29147 &amp; ISO/IEC 30111</p>
 
     <h2 style={H2}>Unsere Methode</h2>
     <p style={P}>
@@ -1064,7 +1062,7 @@ function Standards() {
 function StandardsEN() {
   return <>
     <h1 style={H1}>Standards &amp; Compliance</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>The frameworks we file every audit against &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>The frameworks we file every audit against &middot; Last updated: July 2026</p>
 
     <p style={P}>
       Every audit RFI-IRFOS runs is filed against current EU and Austrian law. We track new standards as they enter force and keep our methodology up to date. This page lists what that actually means in practice — the specific frameworks, not just a claim that we "follow best practice."
@@ -1113,7 +1111,7 @@ function StandardsEN() {
 function StandardsDE() {
   return <>
     <h1 style={H1}>Standards &amp; Compliance</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Die Rahmenwerke, gegen die wir jedes Audit führen &middot; Letzte Aktualisierung: Juli 2026</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Die Rahmenwerke, gegen die wir jedes Audit führen &middot; Letzte Aktualisierung: Juli 2026</p>
 
     <p style={P}>
       Jedes Audit, das RFI-IRFOS durchführt, wird gegen geltendes EU- und österreichisches Recht geführt. Wir verfolgen neue Standards, sobald sie in Kraft treten, und halten unsere Methodik aktuell. Diese Seite listet auf, was das in der Praxis tatsächlich bedeutet — die konkreten Rahmenwerke, nicht nur die Behauptung, wir würden „Best Practices" befolgen.
@@ -1223,7 +1221,7 @@ function TeamCard({ p }: { p: { name: string; gh: string; focus: string } }) {
       <div>
         <p style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: '#e8e8f0' }}>{p.name}</p>
         <p style={{ fontSize: 'var(--fs-label)', color: 'var(--accent-text)', marginTop: 4, fontWeight: 700 }}>{p.focus}</p>
-        {p.gh && <p style={{ fontSize: 'var(--fs-label)', color: '#7a7aa0', marginTop: 6, fontFamily: 'monospace' }}>@{p.gh}</p>}
+        {p.gh && <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginTop: 6 }}>@{p.gh}</p>}
       </div>
     </a>
   )
@@ -1233,9 +1231,9 @@ function Team() {
   const grid = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginTop: 32 } as const
   return <>
     <h1 style={H1}>Team</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>One team, everything in-house</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>One team, everything in-house</p>
     <div style={grid}>{TEAM.map(p => <TeamCard key={p.name} p={p} />)}</div>
-    <p style={{ fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0', textTransform: 'uppercase', letterSpacing: '0.18em', marginTop: 48 }}>Past contributors</p>
+    <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginTop: 48 }}>Past contributors</p>
     <div style={{ ...grid, marginTop: 16, opacity: 0.45, filter: 'grayscale(1)' }}>{PAST.map(p => <TeamCard key={p.name} p={p} />)}</div>
   </>
 }
@@ -1311,7 +1309,7 @@ function Methodology() {
 function MethodologyEN() {
   return <>
     <h1 style={H1}>Methodology</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>The same rules, whoever the client is</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>The same rules, whoever the client is</p>
     <p style={P}>
       An investigator who bends the rules for a paying client isn't an investigator anymore - just a vendor with a fancier vocabulary. These four principles govern where we look, how we test, what we do with what we find, and when it becomes public, regardless of who's paying.
     </p>
@@ -1351,7 +1349,7 @@ function MethodologyEN() {
 function MethodologyDE() {
   return <>
     <h1 style={H1}>Methodik</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Dieselben Regeln, unabhängig vom Kunden</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Dieselben Regeln, unabhängig vom Kunden</p>
     <p style={P}>
       Ein Ermittler, der die Regeln für einen zahlenden Kunden beugt, ist kein Ermittler mehr - nur ein Dienstleister mit besserem Vokabular. Diese vier Prinzipien bestimmen, wohin wir schauen, wie wir prüfen, was wir mit unseren Funden machen und wann sie öffentlich werden, unabhängig davon, wer zahlt.
     </p>

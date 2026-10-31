@@ -119,15 +119,14 @@ function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string)
               down by the link wasn't enough to signal at a glance that these
               cards ARE documents, not just more ledger rows. */}
           <span style={{
-            fontSize: 'var(--fs-label)', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, letterSpacing: '0.1em',
-            padding: '3px 8px', borderRadius: 20, display: 'inline-flex', alignItems: 'center', gap: 3,
+            fontSize: 'var(--fs-label)', fontWeight: 700, padding: '3px 8px', borderRadius: 20, display: 'inline-flex', alignItems: 'center', gap: 3,
             border: '1px solid var(--text3)', color: 'var(--text2)', flexShrink: 0,
           }}>
             <svg width="8" height="10" viewBox="0 0 10 12" fill="none"><path d="M1 1h5l3 3v7H1V1z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="M6 1v3h3" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/></svg>
             PDF
           </span>
         </div>
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+        <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>
           {entry.market}{entry.resolvedDate ? ` · ${t.proof.resolvedOn(entry.resolvedDate)}` : ''}
         </div>
         <p style={{ color: 'var(--text2)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', flex: 1, margin: 0, display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
@@ -275,7 +274,7 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
       {showArrows && (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: phone ? 12 : 28 }}>
           {phone && <button onClick={() => go(-1)} aria-label={t.proof.carouselPrevAria} style={arrowStyle}>&larr;</button>}
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', letterSpacing: '0.08em' }}>
+          <span style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>
             {String(Math.min(activeIdx + 1, n)).padStart(2, '0')} / {n}
           </span>
           {phone && <button onClick={() => go(1)} aria-label={t.proof.carouselNextAria} style={arrowStyle}>&rarr;</button>}
@@ -296,11 +295,11 @@ export function ProofSection({ setReportModal }: { setReportModal: (url: string)
             live feedback 2026-09-13: this was still left-aligned. */}
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Reveal from="right">
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.proof.eyebrow}</p>
+            <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12 }}>{t.proof.eyebrow}</p>
             <h2 className="rfi-section-h2" style={{ marginBottom: 12 }}>{t.proof.heading}</h2>
           </Reveal>
           <Reveal from="left" delay={1}>
-            <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 620 }}>{t.proof.subheading}</p>
+            <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 40, maxWidth: 620 }}>{t.proof.subheading}</p>
           </Reveal>
         </div>
         <Reveal from="bottom" delay={1}>

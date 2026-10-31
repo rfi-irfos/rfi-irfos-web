@@ -41,7 +41,7 @@ export function SubmitSection({
     <section id="submit" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.submit.eyebrow}</p>
+          <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12, textAlign: 'center' }}>{t.submit.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center' }}>{t.submit.heading}</h2>
           <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 40, maxWidth: 680, lineHeight: 'var(--lh-body)', textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
             {t.submit.paragraph}
@@ -75,7 +75,7 @@ export function SubmitSection({
                 }}
                   onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,245,196,0.3)')}
                   onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
-                  <div style={{ fontSize: 'var(--fs-label)', fontFamily: "'JetBrains Mono', monospace", color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 5 }}>{t.submit.contactCards[c.key]}</div>
+                  <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text)', marginBottom: 5 }}>{t.submit.contactCards[c.key]}</div>
                   <div style={{ color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-small)' }}>{c.value}</div>
                 </a>
               ))}

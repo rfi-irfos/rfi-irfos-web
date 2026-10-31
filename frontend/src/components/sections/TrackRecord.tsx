@@ -2700,8 +2700,7 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
         border: `1px solid ${active ? (accent as string) : 'rgba(0,245,196,0.18)'}`,
         borderRadius: 7, padding: '11px 12px',
         color: active ? (accent as string) : 'var(--text3)',
-        fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.08em',
-        cursor: 'pointer', outline: 'none',
+        fontSize: 'var(--fs-label)', fontWeight: 700, cursor: 'pointer', outline: 'none',
       }}>
         <span style={{ whiteSpace: 'nowrap' }}>{current ? current.label : placeholder}</span>
         <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke={active ? (accent as string) : 'rgba(0,245,196,0.5)'}
@@ -2726,8 +2725,7 @@ function LedgerDropdown({ id, value, onSelect, options, placeholder, selColor, o
                   onClick={() => { onSelect(o.value); onToggle(null) }}
                   style={{
                     padding: '8px 12px', borderRadius: 5, cursor: 'pointer',
-                    fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.06em',
-                    color: sel ? (o.color || '#00f5c4') : 'var(--text2)',
+                    fontSize: 'var(--fs-label)', fontWeight: 700, color: sel ? (o.color || '#00f5c4') : 'var(--text2)',
                     background: sel ? 'rgba(0,245,196,0.10)' : 'transparent',
                   }}>
                   {o.label}
@@ -2883,7 +2881,7 @@ export function TrackRecordSection({
                   : '0 8px 32px rgba(0,0,0,0.35)',
               }}>
                 <div style={{ fontSize: 'var(--fs-h2)', fontWeight: 900, color: 'var(--accent-text)', lineHeight: 'var(--lh-tight)', letterSpacing: '-0.02em', marginBottom: 12 }}><CountUp value={s.n} /></div>
-                <div style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.14em' }}>{s.label}</div>
+                <div style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', fontWeight: 700 }}>{s.label}</div>
                 <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', fontWeight: 400, marginTop: 6, lineHeight: 'var(--lh-body)' }}>{s.sub}</div>
               </div>
             </Reveal>
@@ -2979,7 +2977,7 @@ export function TrackRecordSection({
           ).length
           const sortLabel = t.trackRecord.resultsSummary.sortLabel
           return (
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: n > 0 ? TEAL : '#f87171', marginBottom: 10, letterSpacing: '0.06em' }}>
+            <div style={{ fontSize: 'var(--fs-label)', color: n > 0 ? TEAL : '#f87171', marginBottom: 10 }}>
               {n > 0 ? t.trackRecord.resultsSummary.matches(n, AUDIT_HIGHLIGHTS.length) : t.trackRecord.resultsSummary.noMatches}
               {searchQuery.trim() ? t.trackRecord.resultsSummary.forQuery(searchQuery) : ''}
               {sortBy !== 'default' ? t.trackRecord.resultsSummary.sortedBy(sortLabel[sortBy] ?? sortBy) : ''}
@@ -2988,7 +2986,7 @@ export function TrackRecordSection({
         })()}
 
         {focusTargets && onShowFullLedger && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', marginBottom: 12, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', letterSpacing: '0.06em', color: TEAL }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', marginBottom: 12, fontSize: 'var(--fs-label)', color: TEAL }}>
             <span>{t.trackRecord.focusBanner(focusTargets.join(', '))}</span>
             <button type="button" onClick={onShowFullLedger}
               style={{ background: 'transparent', border: '1px solid rgba(0,245,196,0.45)', color: TEAL, borderRadius: 6, padding: '6px 12px', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'var(--fs-label)', letterSpacing: '0.06em' }}>
@@ -3028,9 +3026,8 @@ export function TrackRecordSection({
             padding: '7px 14px',
             position: 'sticky', top: 0, zIndex: 2,
             background: 'var(--bg)', borderBottom: '1px solid var(--border2)',
-            fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', fontWeight: 700,
-            color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.1em',
-          }}>
+            fontSize: 'var(--fs-label)', fontWeight: 700,
+            color: 'var(--text)', }}>
             {/* overflow/ellipsis stays on as a defensive floor even though the
                 column-width fix above gives "Organisation" a comfortable ~11px of
                 slack on every currently shipped locale - so a future longer
@@ -3233,7 +3230,7 @@ export function TrackRecordSection({
         </div>
         </div>
 
-        <p style={{ marginTop: 16, textAlign: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text4)' }}>
+        <p style={{ marginTop: 16, textAlign: 'center', fontSize: 'var(--fs-label)', color: 'var(--text4)' }}>
         {AUDIT_REPO_PUBLIC
           ? <>{t.trackRecord.footerNote}<a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a></>
           : t.trackRecord.footerNote.replace(/\s*·\s*$/, '')}

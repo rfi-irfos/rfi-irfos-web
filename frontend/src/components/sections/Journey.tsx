@@ -59,7 +59,7 @@ function CustomerJourneyTimeline() {
               background: i === current ? TEAL : 'rgba(255,255,255,0.06)',
               border: `1px solid ${i === current ? TEAL : 'var(--border)'}`,
               color: i === current ? '#070711' : 'var(--text2)',
-              fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, fontSize: 'var(--fs-small)',
+              fontWeight: 700, fontSize: 'var(--fs-small)',
               marginBottom: mobile ? 0 : 14, transition: 'background 0.4s, border-color 0.4s, color 0.4s',
             }}>{i + 1}</div>
             {/* Active stage reads noticeably bolder/brighter than the rest (live
@@ -100,11 +100,11 @@ export function JourneySection() {
     <section id="journey" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal from="left">
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12 }}>{t.journey.eyebrow}</p>
+          <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12 }}>{t.journey.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12 }}>{t.journey.heading}</h2>
         </Reveal>
         <Reveal from="right" delay={1}>
-          <p style={{ color: 'var(--text2)', marginBottom: 56, maxWidth: 640 }}>
+          <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 56, maxWidth: 640 }}>
             {t.journey.subheading}
           </p>
         </Reveal>

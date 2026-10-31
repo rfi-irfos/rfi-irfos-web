@@ -143,7 +143,7 @@ function ResearchAreaModal({ index, closing, onClose, onNavigate }: {
             fontFamily override, so it inherits the same body font as the rest
             of the card instead of the monospace fallback reading as "Roboto". */}
         <div style={{ marginTop: 24, textAlign: 'center' }}>
-          <p style={{ fontSize: 'var(--fs-label)', color: '#6a6a80', textTransform: 'uppercase', letterSpacing: '0.14em', margin: 0, marginBottom: 9 }}>{t.research.upNext}</p>
+          <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0, marginBottom: 9 }}>{t.research.upNext}</p>
           <button onClick={() => onNavigate(nextIndex)} style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
             background: 'rgba(0,245,196,0.07)', border: '1px solid rgba(0,245,196,0.22)',
@@ -438,7 +438,7 @@ export function ResearchSection() {
     <section id="research" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 12, textAlign: 'center' }}>{t.research.eyebrow}</p>
+          <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12, textAlign: 'center' }}>{t.research.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center' }}>{t.research.heading}</h2>
         </Reveal>
         <Reveal delay={1}>

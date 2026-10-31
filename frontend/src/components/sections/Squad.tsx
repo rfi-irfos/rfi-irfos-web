@@ -334,7 +334,7 @@ function HowItConnects() {
               {s.zones.map((zone, zi) => (
                 <text key={zone.label} x={HIC_ZONE_BANDS[zi].x + HIC_ZONE_BANDS[zi].w / 2} y="28"
                   textAnchor="middle" fontSize="11.5" fontWeight="800" letterSpacing="0.1em"
-                  fill="var(--text)">{`${String(zi + 1).padStart(2, '0')} · ${zone.label.toUpperCase()}`}</text>
+                  fill="var(--text)">{`${String(zi + 1).padStart(2, '0')} · ${zone.label}`}</text>
               ))}
               {HIC_ARROWS.map(a => (
                 <polyline key={a.id} points={a.pts.map(p => p.join(',')).join(' ')}
@@ -405,11 +405,15 @@ function SquadNeedToKnow({ onRequestAccess }: { onRequestAccess: (keys: AgentKey
                   <h3>{card.question}</h3>
                   <p>{card.body}</p>
                   <div className="sq-tag-row">
-                    {tags.map(tag => (
-                      <span key={tag} className="sq-tag" style={{ '--agent': agentByKey(tag).color } as CSSProperties}>
-                        {agentByKey(tag).name}
-                      </span>
-                    ))}
+                    {tags.map(tag => {
+                      const agent = agentByKey(tag)
+                      const AgentIcon = agent.icon
+                      return (
+                        <span key={tag} className="sq-agent-icon" role="img" aria-label={agent.name} title={agent.name} style={{ '--agent': agent.color } as CSSProperties}>
+                          <AgentIcon size={16} stroke={1.5} aria-hidden="true" />
+                        </span>
+                      )
+                    })}
                   </div>
                   <button type="button" className="sq-link-btn" onClick={() => onRequestAccess(tags)}>
                     {s.needToKnow.requestAccess}

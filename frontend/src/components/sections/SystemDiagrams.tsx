@@ -17,7 +17,6 @@ import type { DiagramSpec } from '../../content/systemPreviews'
 
 const W = 260
 const H = 260
-const MONO = "'JetBrains Mono', monospace"
 
 function Frame({ children }: { children: React.ReactNode }) {
   return (
@@ -45,8 +44,8 @@ function Cap({ text, accent, y = 244 }: { text: string; accent: string; y?: numb
   return (
     <g>
       {lines.map((l, i) => (
-        <text key={i} x={W / 2} y={y0 + i * 12} textAnchor="middle" fontFamily={MONO} fontSize={9}
-          fill={accent} opacity={0.6} letterSpacing="0.08em">{l}</text>
+        <text key={i} x={W / 2} y={y0 + i * 12} textAnchor="middle" fontSize={9}
+          fill={accent} opacity={0.6}>{l}</text>
       ))}
     </g>
   )
@@ -55,7 +54,7 @@ function Cap({ text, accent, y = 244 }: { text: string; accent: string; y?: numb
 function TLabel({ x, y, size = 8.5, accent, op = 0.8, anchor = 'middle', children }: {
   x: number; y: number; size?: number; accent: string; op?: number; anchor?: 'middle' | 'start' | 'end'; children: React.ReactNode
 }) {
-  return <text x={x} y={y} textAnchor={anchor} fontFamily={MONO} fontSize={size} fill={accent} opacity={op} letterSpacing="0.04em">{children}</text>
+  return <text x={x} y={y} textAnchor={anchor} fontSize={size} fill={accent} opacity={op}>{children}</text>
 }
 
 // ── Core stack shapes ─────────────────────────────────────────────
