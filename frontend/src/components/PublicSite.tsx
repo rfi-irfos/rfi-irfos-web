@@ -766,7 +766,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       const res = await fetch(`${apiBase}/api/stripe/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier }),
+        body: JSON.stringify({ tier, locale }),
       })
       if (!res.ok) throw new Error(`checkout ${res.status}`)
       const { url } = await res.json()

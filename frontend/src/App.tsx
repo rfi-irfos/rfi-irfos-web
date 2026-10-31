@@ -4,7 +4,7 @@ import { LocaleProvider } from './hooks/useLocale'
 import { EN } from './content/en'
 import { DE } from './content/de'
 import { LANDING_SLUGS } from './components/landingSlugs'
-import { NotFoundNotice } from './components/NotFoundNotice'
+import { NotFoundNotice, CheckoutReturnNotice } from './components/FunnelNotice'
 import './App.css'
 
 // Lazy-loaded: legal pages are a secondary route homepage visitors never hit, so there's
@@ -170,5 +170,5 @@ export default function App() {
   // Impressum/Datenschutz/AGB left open) - the DE/EN toggle reaches this
   // route the same way it reaches the homepage.
   if (slug) return <LocaleProvider initialLocale={initialLocale}><Suspense fallback={null}><LegalPage slug={slug} /></Suspense></LocaleProvider>
-  return <LocaleProvider initialLocale={initialLocale}><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} />{SERVED_NOT_FOUND && <NotFoundNotice />}</LocaleProvider>
+  return <LocaleProvider initialLocale={initialLocale}><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} />{SERVED_NOT_FOUND && <NotFoundNotice />}<CheckoutReturnNotice /></LocaleProvider>
 }

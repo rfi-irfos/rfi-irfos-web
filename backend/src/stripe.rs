@@ -13,6 +13,9 @@ use crate::AppState;
 #[derive(Deserialize)]
 pub struct CheckoutRequest {
     pub tier: String,
+    /// "de" sends the buyer back to /de/access/ (2026-10-31, Lighthouse round 21).
+    #[serde(default)]
+    pub locale: Option<String>,
 }
 
 #[derive(Serialize)]
@@ -62,8 +65,11 @@ pub async fn create_checkout(
 
     let client = reqwest::Client::new();
     let origin      = "https://rfi-irfos.com";
-    let success_url = format!("{}/pricing?session_id={{CHECKOUT_SESSION_ID}}&success=1", origin);
-    let cancel_url  = format!("{}/pricing?cancelled=1", origin);
+    // Back to /access/ (was the legacy /pricing path, 2026-10-31 Lighthouse round 21);
+    // the frontend reads ?checkout=success|cancelled and shows the next step.
+    let access = if body.locale.as_deref() == Some("de") { "/de/access/" } else { "/access/" };
+    let success_url = format!("{}{}?checkout=success", origin, access);
+    let cancel_url  = format!("{}{}?checkout=cancelled", origin, access);
 
     let mode = if info.recurring { "subscription" } else { "payment" };
 
