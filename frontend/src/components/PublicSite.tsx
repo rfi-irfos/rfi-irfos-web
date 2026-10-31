@@ -516,9 +516,11 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     const meta = REPORT_META_BY_SLUG[initialReportSlug]
     if (meta) {
       const names = meta.targets.join(', ')
-      // Package IDs + the 'half' experiment split live in lib/reportSeo.ts (see the comment there).
+      // Package IDs, Schweregrad/Rechtsgrundlagen-Zahl und Titel-Regeln leben in lib/reportSeo.ts (A/B-Test seit 2026-10-31 beendet).
+      const facts = evidenceMods.tr.getReportFacts(initialReportSlug)
       const { title, description } = reportSeo(initialReportSlug, names, {
         disclosure: meta.disclosure, resolved: meta.resolved, packages: reportPackages,
+        severity: facts?.topSev ?? undefined, statutes: facts?.statuteCount,
       })
       document.title = title
       document.querySelector('meta[name="description"]')?.setAttribute('content', description)
@@ -1180,8 +1182,18 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
               <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: TEAL, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t.reportModal.label}</span>
-              <button onClick={() => setReportModal(null)} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', padding: '9px 11px' }}>&#x2715;</button>
+              {/* Teilen-Button links neben dem Schliessen-Button; teilt immer /evidence/<slug>/ (2026-10-31). */}
+              {evidenceMods && <evidenceMods.tr.ReportShare slug={evidenceMods.tr.reportSlug(reportModalExit.rendered)} locale={locale} />}
+              <button onClick={() => setReportModal(null)} aria-label={locale === 'de' ? 'Schließen' : 'Close'} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', padding: '9px 11px' }}>&#x2715;</button>
             </div>
+            {/* Sichtbarer Report-Text (2026-10-31 SEO-Sweep): Zusammenfassung, Funde, Rechtsgrundlagen,
+                Offenlegungsverlauf als echtes HTML oberhalb des PDFs. Auf der Report-Route
+                (initialReportSlug) traegt dieser Block die eindeutige h1 der Seite; beim Oeffnen
+                eines anderen Reports aus dem Ledger heraus bleibt die Seiten-h1 unangetastet (h2). */}
+            {evidenceMods && (() => {
+              const openSlug = evidenceMods.tr.reportSlug(reportModalExit.rendered)
+              return <evidenceMods.tr.ReportFacts slug={openSlug} locale={locale} asH1={openSlug === initialReportSlug} />
+            })()}
             {/* FIXED (live bug report, mobile Chrome screenshots, 2026-08-16): a bare
                 <iframe src="*.pdf"> rendered the report fine on desktop (Chrome ships
                 a PDF viewer that also works embedded in an iframe there) but came
@@ -1634,6 +1646,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             onNavigateAccess={() => navigateToOffer('security')}
             focusTargets={reportFocus}
             onShowFullLedger={() => setReportFocus(null)}
+            demoteHeading={!!initialReportSlug}
           />
           {!reportFocus && <evidenceMods.proof.ProofSection setReportModal={setReportModal} />}
         </section>}

@@ -3,7 +3,8 @@
 // the modal that opens PDF reports (`setReportModal`) lives at the page level in
 // PublicSite.tsx (shared with the checkout/proposal modals), so this section
 // receives it as props rather than owning its own copy.
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { IconShare } from '@tabler/icons-react'
 import type { Theme } from '../../hooks/useTheme'
 import { TEAL, CountUp, Reveal } from './shared'
 import { useLocale } from '../../hooks/useLocale'
@@ -12,6 +13,8 @@ import { useLocale } from '../../hooks/useLocale'
 // script after adding a new R1 or watchtower re-audit; appsAudited/criticalFindings stay
 // computed directly from AUDIT_HIGHLIGHTS below and need no script.
 import corpusStats from '../../content/corpus-stats.json'
+// Paketnamen je Report-Slug (scripts/extract-report-packages.py) - fuer die sichtbare Report-Zusammenfassung im PDF-Modal.
+import reportPackages from '../../content/reportPackages.json'
 
 
 export const AUDIT_HIGHLIGHTS: { target: string; market: string; sev: string; status: string; headline: { en: string; de: string }; finding: { en: string; de: string }; company?: string; aliases?: string[] }[] = [
@@ -826,6 +829,11 @@ export const AUDIT_META: Record<string, { notified?: string; disclosure: string;
 // is the reverse lookup App.tsx/PublicSite.tsx need to resolve an incoming ?report= slug
 // back to the exact reportUrl to hand to setReportModal. Built once from AUDIT_META itself
 // rather than hand-maintained, so every future report gets a working deep link for free.
+// 2026-10-31: Das Repo github.com/rfi-irfos/android-security-audit-2026 ist PRIVAT, bis alle Embargos
+// abgelaufen sind; Besucher und Googlebot bekamen 404 (Link stand im Ledger-Fuss auf allen /evidence/-Seiten).
+// Verweis deshalb ausgeblendet, nicht geloescht. Nach Embargo-Ende auf true setzen.
+const AUDIT_REPO_PUBLIC = false
+
 export function reportSlug(url: string): string {
   const file = url.split('/').pop() || ''
   return file.replace(/\.pdf$/i, '').replace(/-2026(-report)?$/i, '')
@@ -2740,7 +2748,7 @@ export function TrackRecordSection({
   mobile, theme, now, ledgerFired, ledgerRef,
   searchQuery, setSearchQuery, activeStatus, setActiveStatus, activeSev, setActiveSev,
   sortBy, setSortBy, openDD, setOpenDD, setReportModal, setIntelModal, onNavigateAccess,
-  focusTargets, onShowFullLedger,
+  focusTargets, onShowFullLedger, demoteHeading,
 }: {
   mobile: boolean
   theme: Theme
@@ -2766,6 +2774,10 @@ export function TrackRecordSection({
   // ~1 GB. onShowFullLedger lifts the focus (banner button, or any search/filter use).
   focusTargets?: string[] | null
   onShowFullLedger?: () => void
+  // 2026-10-31 SEO: auf /evidence/<slug>/ traegt das PDF-Modal die eigene, eindeutige h1
+  // (ReportFacts). Die Ledger-Ueberschrift dahinter wuerde sonst auf allen 231 Report-Seiten
+  // dieselbe h1 "The discipline, demonstrated" liefern -> dort nur h2 (gleiche Optik, .rfi-page-h1).
+  demoteHeading?: boolean
 }) {
   const { t, locale } = useLocale()
   // Top padding matched to Data Solutions' .data-hero (56px) - live feedback
@@ -2799,7 +2811,9 @@ export function TrackRecordSection({
             assumed a left-aligned page). */}
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <p className="wm-eyebrow">{t.trackRecord.eyebrow}</p>
-          <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.trackRecord.heading}</h1>
+          {demoteHeading
+            ? <h2 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.trackRecord.heading}</h2>
+            : <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.trackRecord.heading}</h1>}
           {/* Background panel dropped (live feedback 2026-09-13, "der graue
               Balken weg") - it existed only to visually anchor this text to
               the page's left edge across the spine/orb (2026-08-06 comment),
@@ -3273,9 +3287,185 @@ export function TrackRecordSection({
         </div>
 
         <p style={{ marginTop: 12, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text4)' }}>
-        {t.trackRecord.footerNote}<a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a>
+        {AUDIT_REPO_PUBLIC
+          ? <>{t.trackRecord.footerNote}<a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a></>
+          : t.trackRecord.footerNote.replace(/\s*·\s*$/, '')}
         </p>
       </div>
     </section>
+  )
+}
+
+
+// ---------------------------------------------------------------------------------------------
+// Sichtbarer Report-Text im PDF-Modal (2026-10-31 SEO-Sweep).
+//
+// Warum: Live-Crawl vom 2026-10-31 (alle 276 Sitemap-URLs, Googlebot-UA): die 231 Seiten
+// /evidence/<slug>/ hatten dieselbe h1 (die des Ledgers) und ausser ~100 Woertern in einer
+// Tabellenzeile nur ein PDF im iframe - fuer Google Beinahe-Duplikate. Dieser Block gibt alles,
+// was schon in AUDIT_HIGHLIGHTS / AUDIT_META / AUDIT_STATUTES / reportPackages.json steht, als
+// echten HTML-Text aus. Nichts davon ist neu erfunden; fehlt ein Feld, entfaellt der Abschnitt.
+// ---------------------------------------------------------------------------------------------
+const SEV_RANK: Record<string, number> = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 }
+const SEV_DE: Record<string, string> = { CRITICAL: 'Kritisch', HIGH: 'Hoch', MEDIUM: 'Mittel', LOW: 'Niedrig' }
+const SEV_EN: Record<string, string> = { CRITICAL: 'Critical', HIGH: 'High', MEDIUM: 'Medium', LOW: 'Low' }
+
+export type ReportFactsData = {
+  slug: string
+  names: string
+  pkgs: string[]
+  topSev: string | null
+  statuteCount: number
+  items: {
+    target: string; sev?: string; status?: string; headline?: { en: string; de: string }; finding?: { en: string; de: string }
+    notified?: string; disclosure?: string; resolved?: boolean; resolvedDate?: string; statutes: StatuteCitation[]
+  }[]
+}
+
+export function getReportFacts(slug: string): ReportFactsData | null {
+  const meta = REPORT_META_BY_SLUG[slug]
+  if (!meta) return null
+  const pkgs = ((reportPackages as Record<string, { app: string; pkg: string }[]>)[slug] ?? []).map(p => p.pkg)
+  const items = meta.targets.map(target => {
+    const h = AUDIT_HIGHLIGHTS.find(a => a.target === target)
+    const m = AUDIT_META[target]
+    return {
+      target, sev: h?.sev, status: h?.status, headline: h?.headline, finding: h?.finding,
+      notified: m?.notified, disclosure: m?.disclosure, resolved: m?.resolved, resolvedDate: m?.resolvedDate,
+      statutes: AUDIT_STATUTES[target] ?? [],
+    }
+  })
+  const sevs = items.map(i => i.sev).filter((x): x is string => !!x).sort((a, b) => (SEV_RANK[a] ?? 9) - (SEV_RANK[b] ?? 9))
+  const statuteKeys = new Set(items.flatMap(i => i.statutes.map(s => `${s.law} ${s.article ?? ''}`.trim())))
+  return { slug, names: meta.targets.join(', '), pkgs, topSev: sevs[0] ?? null, statuteCount: statuteKeys.size, items }
+}
+
+// Eindeutige h1 je Report: "{App} ({paket}): Datenschutz- & Sicherheitsbefund".
+export function reportH1(f: ReportFactsData, locale: 'en' | 'de'): string {
+  const pkg = f.pkgs.length ? ` (${f.pkgs.slice(0, 2).join(', ')})` : ''
+  return `${f.names}${pkg}: ${locale === 'de' ? 'Datenschutz- & Sicherheitsbefund' : 'Privacy & Security Findings'}`
+}
+
+export function ReportFacts({ slug, locale, asH1 }: { slug: string; locale: 'en' | 'de'; asH1: boolean }) {
+  const f = getReportFacts(slug)
+  if (!f) return null
+  const de = locale === 'de'
+  const L = de
+    ? { summary: 'Zusammenfassung', findings: 'Funde', statutes: 'Rechtsgrundlagen', timeline: 'Offenlegungsverlauf', sev: 'Schweregrad', status: 'Status', pkg: 'Paketname', notified: 'Hersteller benachrichtigt', disclosure: 'Veröffentlichung (Offenlegungsfrist)', resolved: 'Behoben', yes: 'ja', open: 'offen', target: 'Geprüfte App', fact: 'Befund', ref: 'Einordnung' }
+    : { summary: 'Summary', findings: 'Findings', statutes: 'Legal basis', timeline: 'Disclosure timeline', sev: 'Severity', status: 'Status', pkg: 'Package name', notified: 'Vendor notified', disclosure: 'Public disclosure date', resolved: 'Resolved', yes: 'yes', open: 'open', target: 'Audited app', fact: 'Finding', ref: 'Context' }
+  const sevLabel = (s?: string) => s ? ((de ? SEV_DE : SEV_EN)[s] ?? s) : '—'
+  const title = reportH1(f, locale)
+  const H = asH1 ? 'h1' : 'h2'
+  const S = asH1 ? 'h2' : 'h3'
+  const I = asH1 ? 'h3' : 'h4'
+  const h = { color: '#f2f2f6', margin: '14px 0 6px', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)' } as const
+  return (
+    <article className="rfi-report-facts" style={{ padding: '14px 18px', color: '#c8c8d8', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', overflowY: 'auto', maxHeight: '34vh', borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'left' }}>
+      <H style={{ color: '#ffffff', margin: 0, fontSize: 'var(--fs-h3, 1.25rem)', lineHeight: 'var(--lh-tight)' }}>{title}</H>
+      <S style={h}>{L.summary}</S>
+      <p style={{ margin: 0 }}>
+        {de
+          ? `Untersuchung von ${f.names}${f.pkgs.length ? ` (Paket ${f.pkgs.join(', ')})` : ''}${f.topSev ? `, höchster Schweregrad: ${sevLabel(f.topSev)}` : ''}${f.statuteCount ? `, ${f.statuteCount} zitierte Rechtsgrundlagen` : ''}.`
+          : `Investigation of ${f.names}${f.pkgs.length ? ` (package ${f.pkgs.join(', ')})` : ''}${f.topSev ? `, highest severity: ${sevLabel(f.topSev)}` : ''}${f.statuteCount ? `, ${f.statuteCount} cited legal provisions` : ''}.`}
+      </p>
+      {f.items.filter(i => i.headline).map(i => <p key={i.target} style={{ margin: '6px 0 0', fontWeight: 600 }}>{i.headline![locale]}</p>)}
+      <S style={h}>{L.findings}</S>
+      {f.items.filter(i => i.finding).map(i => (
+        <div key={i.target}>
+          {f.items.length > 1 && <I style={{ color: '#f2f2f6', margin: '8px 0 2px', fontSize: 'var(--fs-small)' }}>{i.target}</I>}
+          <p style={{ margin: '0 0 6px' }}>{i.finding![locale]}</p>
+        </div>
+      ))}
+      {f.items.some(i => i.statutes.length > 0) && <>
+        <S style={h}>{L.statutes}</S>
+        <ul style={{ margin: 0, paddingLeft: 18 }}>
+          {f.items.flatMap(i => i.statutes.map((s, n) => (
+            <li key={`${i.target}-${n}`}><strong>{s.law}{s.article ? ` ${s.article}` : ''}</strong> ({s.kind === 'fact' ? L.fact : L.ref}{f.items.length > 1 ? `, ${i.target}` : ''}): {s.note}</li>
+          )))}
+        </ul>
+      </>}
+      <S style={h}>{L.timeline}</S>
+      <ul style={{ margin: 0, paddingLeft: 18 }}>
+        {f.pkgs.length > 0 && <li>{L.pkg}: {f.pkgs.join(', ')}</li>}
+        {f.items.map(i => (
+          <li key={i.target}>
+            {f.items.length > 1 ? `${i.target}: ` : ''}
+            {L.sev}: {sevLabel(i.sev)}; {L.status}: {i.status ?? '—'}
+            {i.notified ? `; ${L.notified}: ${i.notified}` : ''}
+            {i.disclosure ? `; ${L.disclosure}: ${i.disclosure}` : ''}
+            {`; ${L.resolved}: ${i.resolved ? `${L.yes}${i.resolvedDate ? ` (${i.resolvedDate})` : ''}` : L.open}`}
+          </li>
+        ))}
+      </ul>
+    </article>
+  )
+}
+
+
+// ---------------------------------------------------------------------------------------------
+// Teilen-Button in der Kopfzeile des Report-Modals (Zusatzauftrag Inhaber 2026-10-31).
+// Geteilt wird IMMER die kanonische Report-Seite /evidence/<slug>/ (Report-Seiten sind EN-only,
+// auch in der DE-Ansicht), nie ?report=...#evidence. Datenschutz-Institut: nur einfache Links
+// (target=_blank, rel=noopener noreferrer) bzw. navigator.share - keine Skripte, SDKs oder Widgets
+// von Drittanbietern, die CSP (backend/src/main.rs) bleibt unveraendert.
+// ---------------------------------------------------------------------------------------------
+export function ReportShare({ slug, locale }: { slug: string; locale: 'en' | 'de' }) {
+  const [open, setOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const wrapRef = useRef<HTMLSpanElement>(null)
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const f = getReportFacts(slug)
+  const de = locale === 'de'
+  useEffect(() => {
+    if (!open) return
+    // Capture-Phase + stopPropagation: Escape schliesst nur das Popover, nicht zugleich das Modal.
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      e.stopPropagation(); e.preventDefault(); setOpen(false); btnRef.current?.focus()
+    }
+    const onDown = (e: MouseEvent) => { if (!wrapRef.current?.contains(e.target as Node)) setOpen(false) }
+    document.addEventListener('keydown', onKey, true)
+    document.addEventListener('mousedown', onDown)
+    return () => { document.removeEventListener('keydown', onKey, true); document.removeEventListener('mousedown', onDown) }
+  }, [open])
+  if (!f) return null
+  const url = `https://rfi-irfos.com/evidence/${slug}/`
+  const title = de ? `${f.names}: Datenschutz- & Sicherheitsbefund – RFI-IRFOS` : `${f.names}: privacy & security findings – RFI-IRFOS`
+  const label = de ? 'Report teilen' : 'Share report'
+  const u = encodeURIComponent(url), ti = encodeURIComponent(title), both = encodeURIComponent(`${title} ${url}`)
+  const links: { label: string; href: string }[] = [
+    { label: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}` },
+    { label: 'X', href: `https://x.com/intent/post?url=${u}&text=${ti}` },
+    { label: 'Bluesky', href: `https://bsky.app/intent/compose?text=${both}` },
+    { label: 'WhatsApp', href: `https://wa.me/?text=${both}` },
+    { label: 'Reddit', href: `https://www.reddit.com/submit?url=${u}&title=${ti}` },
+    { label: de ? 'E-Mail' : 'Email', href: `mailto:?subject=${ti}&body=${both}` },
+  ]
+  const onClick = async () => {
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+      try { await navigator.share({ title, url }) } catch { /* Abbruch durch Nutzer */ }
+      return
+    }
+    setOpen(o => !o)
+  }
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 1800) } catch { window.prompt(label, url) }
+  }
+  const item = { display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', color: '#d8d8e8', fontSize: 'var(--fs-small)', padding: '8px 12px', cursor: 'pointer', textDecoration: 'none', fontFamily: 'inherit', whiteSpace: 'nowrap' } as const
+  return (
+    <span ref={wrapRef} style={{ position: 'relative', display: 'inline-flex', marginLeft: 'auto', marginRight: 2 }}>
+      <button ref={btnRef} type="button" onClick={onClick} aria-label={label} title={label} aria-haspopup="menu" aria-expanded={open}
+        style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', lineHeight: 1, padding: '9px 11px', display: 'inline-flex', alignItems: 'center' }}>
+        <IconShare size={18} stroke={1.8} aria-hidden="true" />
+      </button>
+      {open && (
+        <div role="menu" aria-label={label} style={{ position: 'absolute', right: 0, top: '100%', zIndex: 5, minWidth: 170, background: '#14141b', border: '1px solid rgba(255,255,255,0.14)', borderRadius: 10, boxShadow: '0 12px 32px rgba(0,0,0,0.6)', padding: '4px 0' }}>
+          <button role="menuitem" type="button" onClick={copy} style={item} autoFocus>{copied ? (de ? 'Kopiert' : 'Copied') : (de ? 'Link kopieren' : 'Copy link')}</button>
+          {links.map(l => (
+            <a key={l.label} role="menuitem" href={l.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} style={item}>{l.label}</a>
+          ))}
+        </div>
+      )}
+    </span>
   )
 }

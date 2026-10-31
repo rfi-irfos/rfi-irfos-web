@@ -308,8 +308,10 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
     // real line box to take its baseline from, matching RevealWords' sibling spans
     // next to it ("the Obvious.") which get theirs from their own normal text.
     const ghost = document.createElement('span')
-    ghost.textContent = word
-    ghost.style.visibility = 'hidden'
+    // Kein Textknoten (siehe .flip-ghost in index.css, 2026-10-31): sonst steht das Wort doppelt im DOM
+    // und die h1 der Startseite lautet im Prerender "RethinkRethink the Obvious.".
+    ghost.className = 'flip-ghost'
+    ghost.setAttribute('data-word', word)
     ghost.setAttribute('aria-hidden', 'true')
     el.appendChild(ghost)
     for (let i = 0; i < n; i++) {

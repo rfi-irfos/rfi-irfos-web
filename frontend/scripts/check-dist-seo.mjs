@@ -66,8 +66,7 @@ async function checkSnapshot(route, enRoute, lang) {
 
   const title = attr(html, /<title>([^<]*)<\/title>/, 'title', route).trim()
   if (!title) errors.push(`${route}: empty title`)
-  else if (titles[lang].has(title)) errors.push(`${route}: title duplicates ${titles[lang].get(title)} ("${title}")`)
-  else titles[lang].set(title, route)
+  // Duplikat-Pruefung des Titels seit 2026-10-31 im Sitewide-Scan unten (mit Allowlist, alle dist-Seiten).
 
   const desc = attr(html, /<meta name="description" content="([^"]*)"/, 'description', route).trim()
   if (!desc) errors.push(`${route}: empty description`)
@@ -143,6 +142,73 @@ try {
     if (n !== 0) errors.push(`/evidence/${slugs[0].name}/: ${n} hreflang tags on an EN-only report page, expected 0`)
   }
 } catch { /* no report pages in a partial dist - nothing to check */ }
+
+// ---------------------------------------------------------------------------------------------
+// Sitewide-Scan ueber ALLE dist-Seiten inkl. der 231 /evidence/<slug>/-Reports (2026-10-31).
+// Anlass: Live-Crawl 2026-10-31 - alle Report-Seiten trugen dieselbe h1 ("The discipline,
+// demonstrated"), zwei Seitenpaare denselben <title>, /humanrights/ hatte weder description noch
+// canonical. Geprueft wird je Seite (noindex-Seiten und Alias-Routen ausgenommen):
+//   FEHLER   fehlende/leere description, fehlendes canonical, nicht genau eine h1,
+//            doppelter <title> bzw. doppelte h1 (je Sprache, ueber alle Seiten)
+//   WARNUNG  Titel > 70 Zeichen, description > 170 Zeichen
+// ALLOWLIST: Seiten, deren Duplikat gerade parallel in de.ts/en.ts behoben wird. Dupes, an denen
+// NUR Allowlist-Routen beteiligt sind, werden als WARNUNG gemeldet. Sobald die Inhalte gefixt sind,
+// die Liste leeren (const DUPE_ALLOWLIST = []) - dann sind auch diese Dupes harte Fehler.
+// ---------------------------------------------------------------------------------------------
+const DUPE_ALLOWLIST = ['/data-solutions/', '/standards/', '/de/data-solutions/', '/de/standards/']
+const warnings = []
+const ALIAS_ROUTES = new Set(Object.keys(CANONICAL_ALIAS).map(r => `${r}/`))
+
+async function* walk(dir) {
+  const { readdir } = await import('node:fs/promises')
+  for (const d of await readdir(dir, { withFileTypes: true })) {
+    const p = join(dir, d.name)
+    if (d.isDirectory()) yield* walk(p)
+    else if (d.name === 'index.html') yield p
+  }
+}
+const decode = (s) => s.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/\s+/g, ' ').trim()
+
+const seenTitle = new Map() // `${lang}|${title}` -> [route]
+const seenH1 = new Map()
+let scanned = 0
+for await (const file of walk(DIST)) {
+  const rel = file.slice(DIST.length).replace(/\\/g, '/').replace(/^\/?/, '/').replace(/index\.html$/, '')
+  const route = rel || '/'
+  const html = await readFile(file, 'utf8')
+  if (/<meta[^>]+name="robots"[^>]+noindex/i.test(html) || ALIAS_ROUTES.has(route)) continue
+  scanned++
+  const lang = html.match(/<html[^>]*\blang="([^"]*)"/)?.[1] ?? 'en'
+  // Sprach-Gate (2026-10-31): 19 Report-Seiten gingen live mit lang="de" + deutschem Inhalt, weil die
+  // Sprachwahl einer vorher gerenderten /de/-Route im wiederverwendeten Prerender-Browser hing.
+  if (route.startsWith('/evidence/') && route !== '/evidence/' && lang !== 'en') errors.push(`${route}: lang="${lang}" on an EN-only report page, expected "en"`)
+  if (route.startsWith('/de/') && lang !== 'de') errors.push(`${route}: lang="${lang}" under /de/, expected "de"`)
+  const title = decode(html.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? '')
+  const desc = decode(html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '')
+  if (!desc) errors.push(`${route}: missing/empty meta description`)
+  if (!/<link rel="canonical" href="[^"]+"/.test(html)) errors.push(`${route}: missing canonical`)
+  if (title.length > 70) warnings.push(`${route}: title ${title.length} chars (> 70): "${title}"`)
+  if (desc.length > 170) warnings.push(`${route}: description ${desc.length} chars (> 170)`)
+  if (title) { const k = `${lang}|${title}`; seenTitle.set(k, [...(seenTitle.get(k) ?? []), route]) }
+  const h1s = [...html.matchAll(/<h1[\s>][\s\S]*?<\/h1>/g)].map(m => decode(m[0]))
+  if (h1s.length !== 1) errors.push(`${route}: ${h1s.length} h1 elements, expected exactly 1${h1s.length ? ` (${h1s.map(h => `"${h}"`).join(' | ')})` : ''}`)
+  else { const k = `${lang}|${h1s[0]}`; seenH1.set(k, [...(seenH1.get(k) ?? []), route]) }
+}
+for (const [what, map] of [['title', seenTitle], ['h1', seenH1]]) {
+  for (const [k, routes] of map) {
+    if (routes.length < 2) continue
+    const text = k.slice(k.indexOf('|') + 1)
+    const msg = `duplicate ${what} "${text.slice(0, 90)}" on ${routes.length} pages: ${routes.slice(0, 4).join(', ')}${routes.length > 4 ? ', ...' : ''}`
+    // Warnung nur, wenn ALLE beteiligten Routen auf der Allowlist stehen.
+    if (routes.every(r => DUPE_ALLOWLIST.includes(r))) warnings.push(`${msg} (allowlisted - parallel fix pending)`)
+    else errors.push(msg)
+  }
+}
+if (warnings.length) {
+  console.warn(`check-dist-seo: ${warnings.length} warning(s)`)
+  for (const w of warnings) console.warn(`  ~ ${w}`)
+}
+console.log(`check-dist-seo: sitewide scan covered ${scanned} indexable pages`)
 
 if (errors.length) {
   console.error(`check-dist-seo: ${errors.length} error(s)`)

@@ -15,6 +15,7 @@ import { createServer as createViteServer } from 'vite'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, extname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { execFileSync } from 'node:child_process'
 
 const ROOT = fileURLToPath(new URL('./', import.meta.url))
 // PRERENDER_DIST: render into/serve from another build directory (used to test a change without
@@ -155,6 +156,13 @@ let routesSinceRestart = 0
 // and CSS url()s still serialize identically, only the pixel decode is skipped.
 async function abortMedia() {
   await page.route(/\.(png|jpe?g|webp|gif|mp4|webm)(\?|$)/, r => r.abort())
+  // Sprachwahl pro Route deterministisch (2026-10-31): useLocale.ts speichert die aktive Sprache unter
+  // localStorage['rfi-locale'] (Effekt nach jedem Render). Die Seite wird ueber bis zu ROUTES_PER_BROWSER
+  // Routen wiederverwendet; eine zuvor gerenderte /de/-Route hinterliess 'de', und EN-only Routen ohne
+  // initialLocale (19 Report-Seiten live: <html lang="de"> + deutscher Inhalt) lasen es beim naechsten
+  // goto. Das Init-Skript laeuft vor dem App-Code jeder Navigation und loescht den Schluessel; /de/-Routen
+  // bekommen ihre Sprache ohnehin ueber initialLocale aus der URL (App.tsx).
+  await page.addInitScript(() => { try { localStorage.removeItem('rfi-locale') } catch { /* ignore */ } })
 }
 await abortMedia()
 
@@ -314,10 +322,20 @@ if (!ONLY) {
   }).join('\n')
   // /de/... twins, generated here (not hand-maintained in public/sitemap.xml)
   // so the DE set can never drift from LOCALIZED_ROUTES above.
+  // lastmod der /de/-Eintraege (2026-10-31): frueher hart 2026-10-24, dadurch meldete die Sitemap nie
+  // eine Aenderung der deutschen Seiten. Jetzt Datum der letzten Aenderung von de.ts (die DE-Texte
+  // leben dort) aus der Versionsverwaltung; ohne Historie (Docker-Build ohne Repo-Daten) das Build-Datum.
+  const deLastmod = (() => {
+    try {
+      const d = execFileSync('git', ['log', '-1', '--format=%cs', '--', 'src/content/de.ts'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim()
+      if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d
+    } catch { /* kein git verfuegbar */ }
+    return new Date().toISOString().slice(0, 10)
+  })()
   const deUrls = LOCALIZED_ROUTES.map(route => [
     '  <url>',
     `    <loc>${absUrl(deRoute(route))}</loc>`,
-    '    <lastmod>2026-10-24</lastmod>',
+    `    <lastmod>${deLastmod}</lastmod>`,
     '    <changefreq>monthly</changefreq>',
     '    <priority>0.6</priority>',
     '  </url>',

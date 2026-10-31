@@ -829,6 +829,12 @@ h1, h2, h3, .rfi-display {
   top: 0;
   display: inline-block;
 }
+/* Baseline-Geist von HeroFlipWord (2026-10-31 SEO-Sweep): frueher ein unsichtbarer Textknoten mit dem
+   Wort - dadurch stand "Rethink" zweimal im DOM und die prerenderte h1 lautete "RethinkRethink the
+   Obvious.". Jetzt kommt das Wort per ::before aus data-word (kein Textknoten, nicht in textContent,
+   nicht fuer Suchmaschinen/Screenreader sichtbar). Die Zeilenbox fuer die Baseline bleibt identisch. */
+.flip-ghost { visibility: hidden; }
+.flip-ghost::before { content: attr(data-word); }
 
 
 /* Glass hood for icons: a near-transparent, blurred pane with a bright top edge and a soft
