@@ -425,7 +425,9 @@ const SEV_COLOR: Record<string, string> = {
 // Display casing for the all-caps data words (severity, market type); exchange tickers
 // like NASDAQ or WBAG stay as they are. Sentence case since 2026-10-31 (mono/caps removal).
 const CASED_WORDS = new Set(['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'PRIVATE', 'PUBLIC', 'PLAY', 'NON-PROFIT'])
-const casedWord = (w: string) => CASED_WORDS.has(w) ? w[0] + w.slice(1).toLowerCase() : w
+const WORDS_DE: Record<string, string> = { CRITICAL: 'Kritisch', HIGH: 'Hoch', MEDIUM: 'Mittel', LOW: 'Niedrig', PRIVATE: 'Privat', PUBLIC: 'Börsennotiert', PLAY: 'Play', 'NON-PROFIT': 'Gemeinnützig' }
+const casedWord = (w: string, locale: 'en' | 'de' = 'en') =>
+  locale === 'de' && WORDS_DE[w] ? WORDS_DE[w] : CASED_WORDS.has(w) ? w[0] + w.slice(1).toLowerCase() : w
 
 const STATUS_META: Record<string, { label: string; bg: string; color: string }> = {
   WAITING:      { label: 'Waiting',     bg: 'var(--surface-sunken)', color: 'var(--text)' },
@@ -2952,7 +2954,7 @@ export function TrackRecordSection({
             value={activeSev ?? ''} onSelect={v => setActiveSev(v || null)}
             open={openDD === 'sev'} onToggle={setOpenDD} placeholder={t.trackRecord.dropdowns.sevPlaceholder}
             selColor={activeSev === 'CRITICAL' ? '#f87171' : activeSev === 'HIGH' ? '#fb923c' : activeSev === 'MEDIUM' ? '#fbbf24' : null}
-            options={[{ value: '', label: t.trackRecord.dropdowns.sevPlaceholder }, ...(['CRITICAL', 'HIGH', 'MEDIUM'] as const).map(sev => ({ value: sev, label: `${sev} (${AUDIT_HIGHLIGHTS.filter(a => a.sev === sev).length})`, color: sev === 'CRITICAL' ? '#f87171' : sev === 'HIGH' ? '#fb923c' : '#fbbf24' }))]}
+            options={[{ value: '', label: t.trackRecord.dropdowns.sevPlaceholder }, ...(['CRITICAL', 'HIGH', 'MEDIUM'] as const).map(sev => ({ value: sev, label: `${casedWord(sev, locale)} (${AUDIT_HIGHLIGHTS.filter(a => a.sev === sev).length})`, color: sev === 'CRITICAL' ? '#f87171' : sev === 'HIGH' ? '#fb923c' : '#fbbf24' }))]}
           />
 
           {/* Sort by dropdown */}
@@ -3104,7 +3106,7 @@ export function TrackRecordSection({
                   {/* Organisation */}
                   <div>
                     <div className="rfi-ledger-org">{a.target}</div>
-                    <div className="rfi-ledger-mono rfi-ledger-market">{casedWord(a.market)}</div>
+                    <div className="rfi-ledger-mono rfi-ledger-market">{casedWord(a.market, locale)}</div>
                   </div>
 
                   {/* Notified */}
@@ -3129,7 +3131,7 @@ export function TrackRecordSection({
                   {/* SEV */}
                   {!mobile && (
                     <div className="rfi-ledger-pt1 rfi-ledger-center">
-                      <span className="rfi-ledger-mono rfi-ledger-sev" style={{ color: SEV_COLOR[a.sev] ?? TEAL }}>{casedWord(a.sev)}</span>
+                      <span className="rfi-ledger-mono rfi-ledger-sev" style={{ color: SEV_COLOR[a.sev] ?? TEAL }}>{casedWord(a.sev, locale)}</span>
                     </div>
                   )}
 
