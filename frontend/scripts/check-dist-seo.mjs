@@ -309,6 +309,15 @@ console.log(`check-dist-seo: sitewide scan covered ${scanned} indexable pages`)
   const smUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => norm(m[1]))
   if (!smUrls.length) errors.push('sitemap.xml: no <loc> entries found')
   for (const u of smUrls) if (u !== '/' && !inbound.get(u)) errors.push(`${u}: in sitemap but no internal page links to it (orphan)`)
+  // 6. Date coherence on report pages (round 59): nothing may claim a change before publication.
+  const lastmodOf = new Map([...sitemap.matchAll(/<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/g)].map(m => [norm(m[1]), m[2]]))
+  for (const u of smUrls.filter(u => /^\/evidence\/[^/]+\/$/.test(u))) {
+    const html = await readFile(join(DIST, u.slice(1), 'index.html'), 'utf8').catch(() => '')
+    const pub = html.match(/"datePublished":"([^"]+)"/)?.[1]?.slice(0, 10)
+    const mod = html.match(/"dateModified":"([^"]+)"/)?.[1]?.slice(0, 10)
+    if (pub && mod && mod < pub) errors.push(`${u}: dateModified ${mod} before datePublished ${pub}`)
+    if (pub && lastmodOf.get(u) && lastmodOf.get(u) < pub) errors.push(`${u}: sitemap lastmod ${lastmodOf.get(u)} before datePublished ${pub}`)
+  }
   console.log(`check-dist-seo: drift gates checked ${handles.length} team handles, ${prices.length} plan prices, ${cards} page cards, ${smUrls.length} sitemap URLs for inbound links`)
 }
 

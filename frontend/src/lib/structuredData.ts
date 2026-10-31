@@ -59,6 +59,7 @@ export function reportBreadcrumbJsonLd(reportName: string, slug: string, evidenc
 // index.html so Google ties every report to the one institute entity.
 export function reportArticleJsonLd(opts: { slug: string; targets: string[]; disclosure?: string; resolved?: boolean; resolvedDate?: string; description?: string }) {
   const { slug, targets, disclosure, resolved, resolvedDate, description } = opts
+  const modified = [disclosure, resolved ? resolvedDate : undefined].filter(Boolean).sort().pop()
   const names = targets.join(', ')
   const url = `https://rfi-irfos.com/evidence/${slug}/`
   const org = { '@type': 'ResearchOrganization', '@id': 'https://rfi-irfos.com/#organization', name: 'RFI-IRFOS', url: 'https://rfi-irfos.com' }
@@ -72,7 +73,8 @@ export function reportArticleJsonLd(opts: { slug: string; targets: string[]; dis
     image: `https://rfi-irfos.com/og/${slug}.png`,
     inLanguage: 'en',
     ...(disclosure ? { datePublished: disclosure } : {}),
-    ...(resolved && resolvedDate ? { dateModified: resolvedDate } : {}),
+    // Never before datePublished: some vendors fixed before we published (round 59).
+    ...(modified ? { dateModified: modified } : {}),
     about: targets.map(name => ({ '@type': 'Thing', name })),
     author: org,
     publisher: { ...org, logo: { '@type': 'ImageObject', url: 'https://rfi-irfos.com/logo-512.png' } },

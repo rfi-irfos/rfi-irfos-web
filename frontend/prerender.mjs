@@ -349,7 +349,9 @@ if (!ONLY) {
   const staticSitemap = await readFile(join(ROOT, 'public/sitemap.xml'), 'utf8')
   const reportUrls = REPORT_SLUGS.map(slug => {
     const meta = REPORT_META_BY_SLUG[slug]
-    const lastmod = meta?.resolvedDate ?? meta?.disclosure
+    // Round 59 (2026-10-31): a vendor fix before publication (resolvedDate < disclosure)
+    // gave merge-chicken lastmod 2026-06-30 for a page first published 2026-09-23.
+    const lastmod = [meta?.disclosure, meta?.resolvedDate].filter(Boolean).sort().pop()
     return [
       '  <url>',
       `    <loc>https://rfi-irfos.com/evidence/${slug}/</loc>`,
