@@ -382,6 +382,54 @@ fn allow_matches(list: &str, ip: &str) -> bool {
     })
 }
 
+/// Suchmaschinen, die nie gesperrt werden dürfen. Ein echter Crawler folgt jedem Link, auch einem
+/// Spam-Backlink auf einen Köder; eine 24-h-Sperre würde ihm 403 liefern und Rankings kosten.
+/// Die Echtheit prüft `verified_crawler` (Reverse-DNS plus Vorwärtsabgleich, wie Google es vorgibt).
+fn claims_crawler(ua: &str) -> bool {
+    let u = ua.to_ascii_lowercase();
+    ["googlebot", "google-inspectiontool", "googleother", "adsbot-google", "bingbot", "applebot"].iter().any(|b| u.contains(b))
+}
+
+/// googleusercontent.com fehlt mit Absicht: darunter laufen auch gemietete Google-Cloud-Maschinen.
+fn crawler_host_ok(host: &str) -> bool {
+    let h = host.trim_end_matches('.').to_ascii_lowercase();
+    [".googlebot.com", ".google.com", ".search.msn.com", ".applebot.apple.com"].iter().any(|d| h.ends_with(d))
+}
+
+fn reverse_name(ip: &std::net::IpAddr) -> String {
+    match ip {
+        std::net::IpAddr::V4(v4) => {
+            let o = v4.octets();
+            format!("{}.{}.{}.{}.in-addr.arpa", o[3], o[2], o[1], o[0])
+        }
+        std::net::IpAddr::V6(v6) => {
+            let hex: String = v6.octets().iter().map(|b| format!("{b:02x}")).collect();
+            let mut n: Vec<String> = hex.chars().rev().map(|c| c.to_string()).collect();
+            n.push("ip6.arpa".into());
+            n.join(".")
+        }
+    }
+}
+
+async fn verified_crawler(ip: &str) -> bool {
+    let Ok(addr) = ip.parse::<std::net::IpAddr>() else { return false };
+    let Ok(client) = reqwest::Client::builder().timeout(Duration::from_secs(3)).build() else { return false };
+    let Ok(res) = client.get("https://cloudflare-dns.com/dns-query")
+        .query(&[("name", reverse_name(&addr).as_str()), ("type", "PTR")])
+        .header("accept", "application/dns-json").send().await else { return false };
+    let Ok(v) = res.json::<serde_json::Value>().await else { return false };
+    let hosts: Vec<String> = v.get("Answer").and_then(|a| a.as_array()).into_iter().flatten()
+        .filter(|a| a.get("type").and_then(|t| t.as_u64()) == Some(12))
+        .filter_map(|a| a.get("data").and_then(|d| d.as_str()).map(|d| d.trim_end_matches('.').to_string()))
+        .filter(|h| crawler_host_ok(h)).collect();
+    for h in hosts {
+        if let Ok(mut addrs) = tokio::net::lookup_host((h.as_str(), 0)).await {
+            if addrs.any(|a| a.ip() == addr) { return true; }
+        }
+    }
+    false
+}
+
 struct Limiter {
     seen: HashMap<String, Instant>,
     window_start: Instant,
@@ -612,13 +660,29 @@ pub async fn guard(State(state): State<AppState>, req: Request, next: Next) -> R
     let ip_log = if ip.is_empty() { "unbekannt".to_string() } else { ip.clone() };
     tracing::warn!("trap hit {kind} {method} {path_c} ua={ua_c} ip={ip_log}");
 
-    let (score, banned) = if ip.is_empty() || allowlisted(&ip) { (0, false) } else { add_score(&ip, points) };
-    let ping = allow_ping(format!("{ip_log}|{path_c}")) || banned;
+    // Behauptete Crawler sammeln erst nach der DNS-Prüfung Punkte und bekommen ein schlichtes 404,
+    // damit eine Suchmaschine keine Fake-Datei indexiert. Fälscher werden danach normal bestraft.
+    let crawler = !ip.is_empty() && !allowlisted(&ip) && claims_crawler(&ua);
+    let (score, banned) = if ip.is_empty() || allowlisted(&ip) || crawler { (0, false) } else { add_score(&ip, points) };
+    let response = if crawler { plain(404, "Not Found") } else { response };
 
     // Standortabfrage und Protokoll laufen im Hintergrund, die Antwort an den Angreifer wartet nicht.
     let db = state.db.clone();
     let m = method.to_string();
     tokio::spawn(async move {
+        let (mut kind, mut score, mut banned) = (kind, score, banned);
+        if crawler {
+            if verified_crawler(&ip).await {
+                // Echte Suchmaschine: protokollieren, kein Ping, keine Punkte.
+                let _ = sqlx::query("INSERT INTO trap_hits (kind,method,path,user_agent,ip,geo,fake,banned) VALUES (?1,?2,?3,?4,?5,?6,0,0)")
+                    .bind(format!("suchmaschine:{kind}")).bind(&m).bind(&path_c).bind(&ua_c).bind(&ip_log).bind("verifiziert per DNS")
+                    .execute(&db).await;
+                return;
+            }
+            kind = format!("{kind}:falscher-crawler");
+            (score, banned) = add_score(&ip, points);
+        }
+        let ping = allow_ping(format!("{ip_log}|{path_c}")) || banned;
         let geo = if ip.is_empty() { "unbekannt".to_string() } else { geo_lookup(&ip).await };
         let _ = sqlx::query("INSERT INTO trap_hits (kind,method,path,user_agent,ip,geo,fake,banned) VALUES (?1,?2,?3,?4,?5,?6,?7,?8)")
             .bind(&kind).bind(&m).bind(&path_c).bind(&ua_c).bind(&ip_log).bind(&geo).bind(fake).bind(banned)
@@ -701,6 +765,19 @@ mod tests {
             Verdict::Bait(b) => format!("bait:{}", b.kind),
             Verdict::Attack(k) => format!("attack:{k}"),
         }
+    }
+
+    #[test]
+    fn crawler_check_parts() {
+        assert!(claims_crawler("Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"));
+        assert!(claims_crawler("Mozilla/5.0 (compatible; bingbot/2.0)"));
+        assert!(!claims_crawler("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"));
+        assert!(crawler_host_ok("crawl-66-249-66-1.googlebot.com."));
+        assert!(crawler_host_ok("msnbot-157-55-39-1.search.msn.com"));
+        assert!(!crawler_host_ok("1.2.3.4.bc.googleusercontent.com"));
+        assert!(!crawler_host_ok("googlebot.com.evil.example"));
+        assert_eq!(reverse_name(&"66.249.66.1".parse().unwrap()), "1.66.249.66.in-addr.arpa");
+        assert!(reverse_name(&"2001:db8::1".parse().unwrap()).ends_with("8.b.d.0.1.0.0.2.ip6.arpa"));
     }
 
     #[test]
