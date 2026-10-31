@@ -2875,7 +2875,7 @@ export function TrackRecordSection({
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 24 }}>
           {[
             { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,          sub: t.trackRecord.kpisSub.appsAudited},
-            { n: `${(corpusStats.smaliClassesTotal / 1e6).toFixed(2)}M+`, label: t.trackRecord.kpis.smaliClasses, sub: t.trackRecord.kpisSub.smaliClasses},
+            { n: locale === 'de' ? `${(corpusStats.smaliClassesTotal / 1e6).toFixed(2).replace('.', ',')} Mio.+` : `${(corpusStats.smaliClassesTotal / 1e6).toFixed(2)}M+`, label: t.trackRecord.kpis.smaliClasses, sub: t.trackRecord.kpisSub.smaliClasses},
             { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: t.trackRecord.kpis.criticalFindings, sub: t.trackRecord.kpisSub.criticalFindings},
             { n: `${corpusStats.trackerMentions}+`,          label: t.trackRecord.kpis.trackersFound,          sub: t.trackRecord.kpisSub.trackersFound},
             { n: `${corpusStats.endpointMentionsDistinct}+`, label: t.trackRecord.kpis.endpointsInvestigated,  sub: t.trackRecord.kpisSub.endpointsInvestigated},
