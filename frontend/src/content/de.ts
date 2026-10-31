@@ -158,6 +158,7 @@ export const DE: Content = {
     seoTitle: 'App-Datenschutz- & Sicherheitsanalysen · RFI-IRFOS',
     seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsberichte zu Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel.',
     paragraph: 'Wir betreiben eine agentische KI-Pipeline, die öffentlich verbreitete Android- und iOS-Apps dekompiliert, ihren Code und ihre Datenflüsse untersucht und Verbindungen zu realen Endpunkten nachverfolgt. Hunderte spezialisierte Agenten arbeiten an der Untersuchung und verbinden technische Belege zu einem stimmigen Gesamtbild, das menschliche Fachleute prüfen und verifizieren.',
+    follow: { label: 'Neue Untersuchungen verfolgen', feed: 'Atom-Feed' },
     securityBridgeLead: 'Das ist es, was ein Security-Auftrag liefert.',
     focusBanner: (names: string) => `Angezeigt wird der Report zu ${names}.`,
     showFullLedger: 'Gesamtes Ledger anzeigen',

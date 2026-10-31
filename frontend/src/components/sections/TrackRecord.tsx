@@ -2836,8 +2836,15 @@ export function TrackRecordSection({
               so it sat right under the h1's own 12px marginBottom alone. */}
           {/* White + 17px to match Data Solutions' .data-lede exactly (live
               feedback 2026-09-13) - was var(--text2) grey at 15px. */}
-          <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 40, maxWidth: 720, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)' }}>
+          <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 12, maxWidth: 720, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)' }}>
             {t.trackRecord.paragraph}
+          </p>
+          {/* Return channel (Lighthouse R108): the Atom feed was only a <link> in <head>, invisible to readers. */}
+          <p style={{ color: 'var(--text2)', margin: '0 0 40px', fontSize: 'var(--fs-small)' }}>
+            {t.trackRecord.follow.label}:{' '}
+            <a href="/evidence/feed.xml" style={{ color: 'var(--accent-text)' }}>{t.trackRecord.follow.feed}</a>{' · '}
+            <a href="https://www.linkedin.com/company/rfi-irfos" style={{ color: 'var(--accent-text)' }}>LinkedIn</a>{' · '}
+            <a href="https://www.youtube.com/@rfi-irfos-official" style={{ color: 'var(--accent-text)' }}>YouTube</a>
           </p>
         </div>
         {/* Permanent disclosure ledger — KPI row + search/table panel now share
