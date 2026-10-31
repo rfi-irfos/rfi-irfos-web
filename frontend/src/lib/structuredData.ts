@@ -61,9 +61,13 @@ export function reportBreadcrumbJsonLd(reportName: string, slug: string, evidenc
 // StoryToys listed every app and ran to 337-470 (round 60). The full list stays in `about`.
 function articleHeadline(targets: string[]) {
   const suffix = ' · GDPR/Security Disclosure Report'
-  const names = targets.length > 3 ? `${targets.slice(0, 3).join(', ')} and ${targets.length - 3} more` : targets.join(', ')
-  const head = names + suffix
-  return head.length <= 110 ? head : names.slice(0, 109 - suffix.length).trimEnd() + '…' + suffix
+  // Fewest-cut first: all names, else 3/2/1 names + "and N more"; hard clamp only as last resort.
+  for (const k of [targets.length, 3, 2, 1]) {
+    if (k > targets.length) continue
+    const names = k === targets.length ? targets.join(', ') : `${targets.slice(0, k).join(', ')} and ${targets.length - k} more`
+    if ((names + suffix).length <= 110) return names + suffix
+  }
+  return targets[0].slice(0, 109 - suffix.length).trimEnd() + '…' + suffix
 }
 
 export function reportArticleJsonLd(opts: { slug: string; targets: string[]; disclosure?: string; resolved?: boolean; resolvedDate?: string; description?: string }) {
