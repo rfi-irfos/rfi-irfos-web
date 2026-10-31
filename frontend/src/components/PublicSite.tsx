@@ -810,10 +810,19 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     handleCheckout(checkoutModal.key)
   }
 
+  // Lighthouse round 36 (2026-10-31): this 1 s tick re-rendered the WHOLE site every
+  // second on every page (Lighthouse mobile /evidence/: TBT 35 s, recurring long tasks).
+  // Only the evidence ledger reads `now`, so it ticks only there and only while visible.
   useEffect(() => {
-    const t = setInterval(() => setNow(Date.now()), 1000)
-    return () => clearInterval(t)
-  }, [])
+    if (view !== 'evidence') return
+    let t: number | undefined
+    const start = () => { setNow(Date.now()); t = window.setInterval(() => setNow(Date.now()), 1000) }
+    const stop = () => { if (t !== undefined) { window.clearInterval(t); t = undefined } }
+    const onVis = () => { stop(); if (!document.hidden) start() }
+    if (!document.hidden) start()
+    document.addEventListener('visibilitychange', onVis)
+    return () => { stop(); document.removeEventListener('visibilitychange', onVis) }
+  }, [view])
   const mobile = useMobile()
   // Services footer column (2026-10-31, buyer-term sweep): real crawlable links to the four
   // search landing pages from every public view. German visitors get the /de/ twins so the
