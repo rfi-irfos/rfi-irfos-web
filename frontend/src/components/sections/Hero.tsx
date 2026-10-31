@@ -67,6 +67,7 @@ import heroDingirEmbedDecidedGraph from '../../assets/hero-dingir-embed-decided-
 // Graz from above (2026-10-26, live request: "neues start hero image... von graz") -
 // the satellite shot of our own city now opens the homepage rotation.
 import heroGrazSatellite from '../../assets/hero-graz-satellite.webp'
+import heroGrazSatelliteMobile from '../../assets/hero-graz-satellite-mobile.webp'
 // Append more `import heroX from '../../assets/hero-x.jpeg'` + entries here to
 // grow the slideshow - HeroSlideshow below already handles 1..N images. With
 // just one, it renders exactly like the old single static image (no interval,
@@ -121,7 +122,10 @@ export const HERO_IMAGES = [
 // followed by the pure neural net that opened before (2026-10-23, "the first
 // frame was too overwhelming" - words, no UI panel, no year numbers).
 // Built separately from HERO_IMAGES so WorldModel.tsx's panel keeps its own order.
-const HOME_HERO_IMAGES = [heroGrazSatellite, heroDingirEmbedDecidedGraph, ...HERO_IMAGES.filter(src => src !== heroDingirEmbedDecided)]
+// Lighthouse round 25 (2026-10-31): the 1821 px satellite slide (466 KB) is the first
+// image every phone downloads. Phones get a 1000 px copy; the hero is cover-cropped there.
+const SMALL_SCREEN = typeof window !== 'undefined' && window.innerWidth < 768
+const HOME_HERO_IMAGES = [SMALL_SCREEN ? heroGrazSatelliteMobile : heroGrazSatellite, heroDingirEmbedDecidedGraph, ...HERO_IMAGES.filter(src => src !== heroDingirEmbedDecided)]
 
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 
@@ -205,6 +209,8 @@ const CROSSFADE_S = 3.2
 export function HeroSlideshow({ images, zoomEffect = true, fit = 'cover', intervalMs = SLIDE_INTERVAL_MS }: { images: string[]; zoomEffect?: boolean; fit?: 'cover' | 'contain'; intervalMs?: number }) {
   const [current, setCurrent] = useState(0)
   const reduced = prefersReducedMotion()
+  // First slide over a prerendered snapshot: no fade-in, same reason as the hero line.
+  const [skipFirstFade] = useState(SKIP_FIRST_PAINT_ANIMATION)
 
   useEffect(() => {
     if (images.length <= 1 || reduced) return
@@ -223,7 +229,7 @@ export function HeroSlideshow({ images, zoomEffect = true, fit = 'cover', interv
         key={current}
         aria-hidden="true"
         className={zoomEffect ? 'rfi-hero-zoom' : undefined}
-        initial={reduced ? undefined : { opacity: 0 }}
+        initial={reduced || (skipFirstFade && current === 0) ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={reduced ? undefined : { opacity: 0 }}
         transition={{ duration: reduced ? 0 : CROSSFADE_S, ease: 'easeInOut' }}
