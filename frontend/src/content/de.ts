@@ -10,7 +10,7 @@ import type { Content } from './en'
 
 export const DE: Content = {
   meta: {
-    title: 'RFI-IRFOS: Menschlich geführte Sicherheitsprüfung mit Agenten',
+    title: 'RFI-IRFOS: Agenten-Teams prüfen parallel, Menschen entscheiden',
     description: 'The Squad untersucht Apps und Software mit einem Agenten-Team, geführt und geprüft von Menschen. Forschungsinstitut in Graz mit öffentlichem Ledger.',
     dataSolutions: {
       title: 'Evaluationsdaten & Safety-Datensätze für Agenten · RFI-IRFOS',
