@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { WEB3FORMS_KEY, beacon } from './shared'
 
@@ -18,6 +18,8 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
   const [consent, setConsent] = useState(false)
   const [botcheck, setBotcheck] = useState('')
   const [state, setState] = useState<FormState>('idle')
+  // Lighthouse round 33: labels tied to their inputs (screen readers, click-to-focus).
+  const fid = useId()
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -96,14 +98,14 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
 
       <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
         <div>
-          <label style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', display: 'block', marginBottom: 6 }}>{c.domainLabel}</label>
-          <input type="text" required placeholder={c.domainPlaceholder} value={domain}
+          <label htmlFor={`${fid}-domain`} style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', display: 'block', marginBottom: 6 }}>{c.domainLabel}</label>
+          <input id={`${fid}-domain`} name="domain" type="text" required placeholder={c.domainPlaceholder} value={domain}
             onChange={e => setDomain(e.target.value)}
             style={{ width: '100%', background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
         </div>
         <div>
-          <label style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', display: 'block', marginBottom: 6 }}>{c.emailLabel}</label>
-          <input type="email" required placeholder={c.emailPlaceholder} value={email}
+          <label htmlFor={`${fid}-email`} style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', display: 'block', marginBottom: 6 }}>{c.emailLabel}</label>
+          <input id={`${fid}-email`} name="email" autoComplete="email" type="email" required placeholder={c.emailPlaceholder} value={email}
             onChange={e => setEmail(e.target.value)}
             style={{ width: '100%', background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
         </div>
