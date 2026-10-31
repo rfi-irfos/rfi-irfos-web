@@ -258,6 +258,17 @@ async function renderRoute(route, canonicalRoute, waitSelector = '#root h1, #roo
     /<meta property="og:url" content="[^"]*"\s*\/?>/,
     `<meta property="og:url" content="${canonicalUrl}" />`
   )
+  // 2026-10-31: each report gets its own preview card (scripts/gen-og-images.mjs
+  // writes dist/og/<slug>.png after this script). width/height stay from index.html.
+  if (route.startsWith('/evidence/')) {
+    const slug = route.slice('/evidence/'.length)
+    const og = `https://rfi-irfos.com/og/${slug}.png`
+    const alt = (html.match(/<title>([^<]*)<\/title>/)?.[1] ?? slug).replace(/"/g, '&quot;')
+    html = html.replace(/(<meta (?:property|name)="(?:og|twitter):image" content=")[^"]*(")/g, `$1${og}$2`)
+    html = html.replace(/<meta property="og:type" content="[^"]*"\s*\/?>/, '<meta property="og:type" content="article" />')
+    html = html.replace(/<meta property="og:image:alt"[^>]*>/, '')
+    html = html.replace('</head>', `<meta property="og:image:alt" content="${alt}" /></head>`)
+  }
 
   const outPath = route === '/' ? join(DIST, 'index.html') : join(DIST, route, 'index.html')
   await mkdir(dirname(outPath), { recursive: true })
