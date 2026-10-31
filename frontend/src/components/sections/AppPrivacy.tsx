@@ -80,6 +80,12 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
             <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)', margin: 0 }}>
               {c.paragraph}
             </p>
+            {/* Lighthouse R114: the homepage <main> had no link to /squad/ or /access/ (nav only). */}
+            <p style={{ margin: '16px 0 0', fontSize: 'var(--fs-body)' }}>
+              <a href={localeHref('/squad/', locale)} style={{ color: 'var(--accent-text)', fontWeight: 700, textDecoration: 'none' }}>{locale === 'de' ? 'Die Agenten kennenlernen →' : 'Meet the agents →'}</a>
+              {'  ·  '}
+              <a href={localeHref('/access/', locale)} style={{ color: 'var(--accent-text)', fontWeight: 700, textDecoration: 'none' }}>{locale === 'de' ? 'Pläne und Preise ansehen →' : 'See plans and pricing →'}</a>
+            </p>
           </div>
         </Reveal>
 

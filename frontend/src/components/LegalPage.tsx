@@ -11,7 +11,7 @@ function NextSteps({ de, locale }: { de: boolean; locale: 'en' | 'de' }) {
     <section>
       <h2 style={H2}>{de ? 'Nächster Schritt' : 'Next step'}</h2>
       <p style={P}>
-        <a href={`${localePath(locale, '/')}#app-privacy`} style={A}>{de ? 'Gratis-Check starten →' : 'Start the free check →'}</a>
+        <a href={`${localePath(locale, '/')}#domain-check`} style={A}>{de ? 'Gratis-Check starten →' : 'Start the free check →'}</a>
         {'  ·  '}
         <a href={localePath(locale, '/access/')} style={A}>{de ? 'Pläne und Preise ansehen →' : 'See plans and pricing →'}</a>
         {'  ·  '}
