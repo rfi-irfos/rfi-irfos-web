@@ -921,7 +921,7 @@ function SecurityEN() {
 
     <h2 style={H2}>Reporting a Vulnerability</h2>
     <p style={P}>
-      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a><br />
+      E-Mail: <a href="mailto:security@rfi-irfos.com" style={A}>security@rfi-irfos.com</a><br />
       PGP key available on request. We acknowledge all reports within 48 hours — from a human, not a ticket number.
     </p>
 
@@ -1000,7 +1000,7 @@ function SecurityDE() {
 
     <h2 style={H2}>Eine Schwachstelle melden</h2>
     <p style={P}>
-      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a><br />
+      E-Mail: <a href="mailto:security@rfi-irfos.com" style={A}>security@rfi-irfos.com</a><br />
       PGP-Schlüssel auf Anfrage verfügbar. Wir bestätigen jede Meldung innerhalb von 48 Stunden — von einem Menschen, nicht einer Ticketnummer.
     </p>
 

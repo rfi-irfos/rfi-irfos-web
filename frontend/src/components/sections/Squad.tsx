@@ -518,7 +518,7 @@ function SquadRequestForm({
         </div>
         {formState === 'err' && (
           <p className="sq-form-err">
-            {s.errorText} <a href="mailto:rfi.irfos@gmail.com">rfi.irfos@gmail.com</a>
+            {s.errorText} <a href="mailto:contact@rfi-irfos.com">contact@rfi-irfos.com</a>
           </p>
         )}
       </div>
