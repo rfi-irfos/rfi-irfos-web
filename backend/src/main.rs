@@ -206,6 +206,8 @@ pub struct AppState {
     pub db: SqlitePool,
     pub stripe_secret_key: String,
     pub stripe_webhook_secret: String,
+    /// Brevo transactional key for the free-check confirmation mail; empty = off.
+    pub brevo_api_key: String,
 }
 
 #[derive(Clone, Serialize, Deserialize)]
@@ -253,6 +255,7 @@ async fn main() {
         db,
         stripe_secret_key: std::env::var("STRIPE_SECRET_KEY").unwrap_or_default(),
         stripe_webhook_secret: std::env::var("STRIPE_WEBHOOK_SECRET").unwrap_or_default(),
+        brevo_api_key: std::env::var("BREVO_API_KEY").unwrap_or_default(),
     };
 
     if dev_mode {

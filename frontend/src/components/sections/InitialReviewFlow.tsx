@@ -31,7 +31,7 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
       const res = await fetch('/api/initial-review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ domain, email, consent, botcheck }),
+        body: JSON.stringify({ domain, email, consent, botcheck, locale }),
       })
       setState(res.ok ? 'ok' : res.status === 400 ? 'invalid' : res.status === 429 ? 'limited' : 'err')
       // Lighthouse round 22: the DLT free check is the top of the paid funnel, but it was

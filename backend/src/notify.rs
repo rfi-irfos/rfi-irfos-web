@@ -49,3 +49,96 @@ pub async fn web3forms_email(subject: &str, name: &str, email: &str, message: &s
         Err(e) => tracing::error!("web3forms_email request failed: {e}"),
     }
 }
+
+fn html_escape(s: &str) -> String {
+    s.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;").replace('"', "&quot;")
+}
+
+/// Subject, HTML and plain text of the free-check confirmation (2026-10-31).
+pub fn confirmation_mail(domain: &str, de: bool) -> (String, String, String) {
+    let (subject, lines, access, cta) = if de {
+        (
+            format!("Ihr Gratis-Check für {domain} ist eingegangen"),
+            [
+                format!("danke, Ihre Anfrage für {domain} ist bei uns eingegangen."),
+                "Ein Researcher prüft sie und meldet sich innerhalb eines Werktags mit dem nächsten Schritt.".to_string(),
+                "Falls jemand anderer diese Adresse eingetragen hat, ignorieren Sie diese Mail einfach.".to_string(),
+            ],
+            "https://rfi-irfos.com/de/access/",
+            "Pakete und Preise ansehen",
+        )
+    } else {
+        (
+            format!("Your free check for {domain} has arrived"),
+            [
+                format!("thank you, your request for {domain} has reached us."),
+                "A researcher reviews it and replies within one working day with the next step.".to_string(),
+                "If someone else entered this address, simply ignore this mail.".to_string(),
+            ],
+            "https://rfi-irfos.com/access/",
+            "See packages and pricing",
+        )
+    };
+    let hello = if de { "Hallo," } else { "Hello," };
+    let sign = if de { "Schöne Grüße aus Graz,<br>RFI-IRFOS" } else { "With appreciation,<br>RFI-IRFOS" };
+    let paras: String = lines.iter()
+        .map(|l| format!("<p style=\"margin:0 0 14px\">{}</p>", html_escape(l)))
+        .collect();
+    let html = format!(
+        "<table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px\">\
+<table role=\"presentation\" width=\"560\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:560px;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#111\"><tr><td>\
+<p style=\"margin:0 0 14px;font-family:monospace;font-size:12px\">RFI-IRFOS · GRAZ, AUSTRIA</p>\
+<p style=\"margin:0 0 14px\">{hello}</p>{paras}\
+<p style=\"margin:20px 0\"><a href=\"{access}\" style=\"background:#f97316;color:#1a0f00;padding:11px 18px;border-radius:8px;font-weight:700;text-decoration:none\">{cta}</a></p>\
+<p style=\"margin:0\">{sign}</p></td></tr></table></td></tr></table>"
+    );
+    let text = format!("{hello}\n\n{}\n\n{cta}: {access}\n\n{}", lines.join("\n\n"), sign.replace("<br>", "\n"));
+    (subject, html, text)
+}
+
+/// Sends the confirmation through Brevo's transactional API. Errors are only
+/// logged: the request is already saved and ntfy already fired.
+pub async fn brevo_confirmation(key: &str, domain: &str, email: &str, de: bool) {
+    if cfg!(test) { return; }
+    let (subject, html, text) = confirmation_mail(domain, de);
+    let Ok(client) = reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(8))
+        .build()
+    else { return };
+    let res = client
+        .post("https://api.brevo.com/v3/smtp/email")
+        .header("api-key", key)
+        .json(&serde_json::json!({
+            "sender": { "name": "RFI-IRFOS", "email": "sales@rfi-irfos.com" },
+            "replyTo": { "email": "sales@rfi-irfos.com" },
+            "to": [{ "email": email }],
+            "subject": subject,
+            "htmlContent": html,
+            "textContent": text,
+            "tags": ["free-check-confirmation"],
+        }))
+        .send()
+        .await;
+    match res {
+        Ok(r) if r.status().is_success() => tracing::info!("free-check confirmation sent for {domain}"),
+        Ok(r) => tracing::error!("brevo_confirmation: status {}", r.status()),
+        Err(e) => tracing::error!("brevo_confirmation request failed: {e}"),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn confirmation_mail_matches_locale_and_escapes_domain() {
+        let (s, html, text) = confirmation_mail("a<b>.com", true);
+        assert!(s.contains("Gratis-Check"));
+        assert!(html.contains("/de/access/") && html.contains("a&lt;b&gt;.com"));
+        assert!(!html.contains("a<b>"));
+        assert!(text.contains("Werktags"));
+        let (s, html, _) = confirmation_mail("example.org", false);
+        assert!(s.starts_with("Your free check"));
+        assert!(html.contains("https://rfi-irfos.com/access/"));
+    }
+}

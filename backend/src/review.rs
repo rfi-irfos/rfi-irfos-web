@@ -73,6 +73,9 @@ pub struct SubmitReviewRequest {
     pub email: String,
     pub consent: bool,
     pub botcheck: Option<String>,
+    /// "de" picks the German confirmation mail.
+    #[serde(default)]
+    pub locale: Option<String>,
 }
 
 pub async fn create_tables(db: &sqlx::SqlitePool) {
@@ -147,7 +150,35 @@ pub async fn submit_review(
     }
 
     notify_new_request(&domain, &email).await;
+
+    // 2026-10-31 (Simeon): the visitor gets a confirmation mail right away, so the
+    // warmest moment of the DLT funnel ends in their inbox, not only on our screen.
+    // Spawned: Brevo being slow or down never touches the response. One per
+    // address per day, so the form cannot be used to flood a stranger's inbox.
+    if !state.brevo_api_key.is_empty() && confirmation_allowed(&email) {
+        let key = state.brevo_api_key.clone();
+        // locale from the body; the same-origin Referer (/de/...) covers older bundles.
+        let de = body.locale.as_deref() == Some("de") || headers.get("referer")
+            .and_then(|v| v.to_str().ok()).is_some_and(|r| r.contains("rfi-irfos.com/de/"));
+        tokio::spawn(async move {
+            crate::notify::brevo_confirmation(&key, &domain, &email, de).await;
+        });
+    }
     StatusCode::OK.into_response()
+}
+
+static CONFIRMATION_LIMITER: OnceLock<Mutex<HashMap<String, Instant>>> = OnceLock::new();
+
+fn confirmation_allowed(email: &str) -> bool {
+    const WINDOW: std::time::Duration = std::time::Duration::from_secs(60 * 60 * 24);
+    let now = Instant::now();
+    let mut map = CONFIRMATION_LIMITER.get_or_init(|| Mutex::new(HashMap::new()))
+        .lock().unwrap_or_else(|e| e.into_inner());
+    map.retain(|_, t| now.duration_since(*t) < WINDOW);
+    let key = email.trim().to_lowercase();
+    if map.contains_key(&key) { return false; }
+    map.insert(key, now);
+    true
 }
 
 async fn notify_new_request(domain: &str, email: &str) {
@@ -406,7 +437,15 @@ mod tests {
             db,
             stripe_secret_key: String::new(),
             stripe_webhook_secret: String::new(),
+            brevo_api_key: String::new(),
         }
+    }
+
+    #[test]
+    fn confirmation_is_sent_once_per_address_per_day() {
+        assert!(confirmation_allowed("once@example.org"));
+        assert!(!confirmation_allowed("ONCE@example.org "));
+        assert!(confirmation_allowed("other@example.org"));
     }
 
     fn app(state: AppState) -> Router {
