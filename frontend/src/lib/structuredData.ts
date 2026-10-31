@@ -112,3 +112,31 @@ export function squadServiceJsonLd(description: string, locale: 'en' | 'de') {
     offers: { '@type': 'Offer', url: access },
   }
 }
+
+// The /access/ plans as an OfferCatalog (Lighthouse round 45): the prices were only
+// visible text, and llms.txt still described the older five-offer page. Amounts come
+// from the same t.pricing.tiers the table renders, so the two can never drift apart.
+export function accessOfferCatalogJsonLd(tiers: readonly { name: string; price: string; tagline: string }[], free: { tagline: string }, locale: 'en' | 'de') {
+  const access = locale === 'de' ? 'https://rfi-irfos.com/de/access/' : 'https://rfi-irfos.com/access/'
+  const offer = (name: string, description: string, price: string, monthly: boolean) => ({
+    '@type': 'Offer',
+    name,
+    description,
+    url: access,
+    price,
+    priceCurrency: 'EUR',
+    ...(monthly ? { priceSpecification: { '@type': 'UnitPriceSpecification', price, priceCurrency: 'EUR', unitCode: 'MON', referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'MON' } } } : {}),
+    itemOffered: { '@id': 'https://rfi-irfos.com/squad/#service' },
+  })
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'OfferCatalog',
+    '@id': 'https://rfi-irfos.com/access/#plans',
+    name: 'The Squad plans',
+    url: access,
+    itemListElement: [
+      offer('Free', free.tagline, '0', false),
+      ...tiers.map(t => offer(t.name, t.tagline, t.price.replace(/[^0-9]/g, ''), true)),
+    ],
+  }
+}

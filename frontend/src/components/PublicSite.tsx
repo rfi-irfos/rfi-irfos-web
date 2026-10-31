@@ -28,7 +28,7 @@ import { SystemCardModal } from './sections/SystemCardModal'
 import { RFI_REPOS, SIMEON_REPOS, CRATES, CRATES_IO_PROFILE } from '../content/repos'
 import reportPackages from '../content/reportPackages.json'
 import { reportSeo } from '../lib/reportSeo'
-import { upsertJsonLd, breadcrumbJsonLd, reportBreadcrumbJsonLd, reportArticleJsonLd, squadServiceJsonLd } from '../lib/structuredData'
+import { upsertJsonLd, breadcrumbJsonLd, reportBreadcrumbJsonLd, reportArticleJsonLd, squadServiceJsonLd, accessOfferCatalogJsonLd } from '../lib/structuredData'
 
 // Footer's overflow repo/crate directory (2026-08-15) is rendered as literal
 // grid-column chunks, not CSS column-count, so it lines up as flat siblings
@@ -325,6 +325,9 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     }
     if (meta && viewForSection(initialSection) === 'squad') {
       upsertJsonLd('ld-squad-service', squadServiceJsonLd(meta.description, locale === 'de' ? 'de' : 'en'))
+    }
+    if (viewForSection(initialSection) === 'access') {
+      upsertJsonLd('ld-access-plans', accessOfferCatalogJsonLd(t.pricing.tiers, t.pricing.freeCard, locale === 'de' ? 'de' : 'en'))
     }
     if (initialSection === 'submit') {
       requestAnimationFrame(() => document.getElementById('submit')?.scrollIntoView({ block: 'start' }))
