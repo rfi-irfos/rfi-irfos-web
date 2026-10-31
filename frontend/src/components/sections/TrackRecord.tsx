@@ -2839,6 +2839,10 @@ export function TrackRecordSection({
           <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 12, maxWidth: 720, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)' }}>
             {t.trackRecord.paragraph}
           </p>
+          {/* Lighthouse R115: the ledger's only funnel exit was /access/; the free check (entry offer) had no link here. */}
+          <p style={{ margin: '0 0 8px', fontSize: 'var(--fs-body)' }}>
+            <a href={`${localeHref('/', locale)}#domain-check`} style={{ color: 'var(--accent-text)', fontWeight: 700, textDecoration: 'none' }}>{locale === 'de' ? 'Gratis-Check für Ihre eigene Domain starten →' : 'Start the free check for your own domain →'}</a>
+          </p>
           {/* Return channel (Lighthouse R108): the Atom feed was only a <link> in <head>, invisible to readers. */}
           <p style={{ color: 'var(--text2)', margin: '0 0 40px', fontSize: 'var(--fs-small)' }}>
             {t.trackRecord.follow.label}:{' '}
