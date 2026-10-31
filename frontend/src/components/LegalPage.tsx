@@ -422,6 +422,7 @@ function ImpressumEN() {
       <li><strong style={{ color: '#e8e8f0' }}>OSF:</strong> <a href="https://osf.io/rzvyg" target="_blank" rel="noopener" style={A}>osf.io/rzvyg</a> — all research publications and preprints.</li>
       <li><strong style={{ color: '#e8e8f0' }}>GitHub:</strong> <a href="https://github.com/rfi-irfos" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos</a> — open-source tools, models, and audit repositories.</li>
       <li><strong style={{ color: '#e8e8f0' }}>LinkedIn:</strong> <a href="https://linkedin.com/company/rfi-irfos" target="_blank" rel="noopener" style={A}>RFI-IRFOS</a> — institute presence and announcements.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>YouTube:</strong> <a href="https://www.youtube.com/@rfi-irfos-official" target="_blank" rel="noopener" style={A}>RFI-IRFOS Official</a> — videos and product films.</li>
     </ul>
   </>
 }
@@ -505,6 +506,7 @@ function ImpressumDE() {
       <li><strong style={{ color: '#e8e8f0' }}>OSF:</strong> <a href="https://osf.io/rzvyg" target="_blank" rel="noopener" style={A}>osf.io/rzvyg</a> — sämtliche Forschungspublikationen und Preprints.</li>
       <li><strong style={{ color: '#e8e8f0' }}>GitHub:</strong> <a href="https://github.com/rfi-irfos" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos</a> — Open-Source-Werkzeuge, Modelle und Audit-Repositories.</li>
       <li><strong style={{ color: '#e8e8f0' }}>LinkedIn:</strong> <a href="https://linkedin.com/company/rfi-irfos" target="_blank" rel="noopener" style={A}>RFI-IRFOS</a> — institutionelle Präsenz und Ankündigungen.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>YouTube:</strong> <a href="https://www.youtube.com/@rfi-irfos-official" target="_blank" rel="noopener" style={A}>RFI-IRFOS Official</a> — Videos und Produktfilme.</li>
     </ul>
   </>
 }

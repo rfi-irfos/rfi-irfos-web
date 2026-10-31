@@ -1144,7 +1144,7 @@ export const DE: Content = {
       },
       company: {
         heading: 'Unternehmen',
-        links: { freeCheck: 'Gratis-Check', pricing: 'Preise', team: 'Team', careers: 'Karriere', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos' },
+        links: { freeCheck: 'Gratis-Check', pricing: 'Preise', team: 'Team', careers: 'Karriere', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube' },
       },
       research: {
         heading: 'Forschung',

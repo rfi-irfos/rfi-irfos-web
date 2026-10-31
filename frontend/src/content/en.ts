@@ -1174,7 +1174,7 @@ export const EN = {
       },
       company: {
         heading: 'Company',
-        links: { freeCheck: 'Free check', pricing: 'Pricing', team: 'Team', careers: 'Careers', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos' },
+        links: { freeCheck: 'Free check', pricing: 'Pricing', team: 'Team', careers: 'Careers', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube' },
       },
       research: {
         heading: 'Research',

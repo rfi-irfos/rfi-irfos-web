@@ -1815,6 +1815,10 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                     { label: t.footer.groups.company.links.careers, href: 'mailto:career@rfi-irfos.com' },
                     { label: t.footer.groups.company.links.ternlang, href: 'https://ternlang.com' },
                     { label: t.footer.groups.company.links.github, href: 'https://github.com/rfi-irfos' },
+                    // Lighthouse R83 (2026-10-31): LinkedIn and the YouTube channel both link to us,
+                    // the footer linked neither back.
+                    { label: t.footer.groups.company.links.linkedin, href: 'https://www.linkedin.com/company/rfi-irfos' },
+                    { label: t.footer.groups.company.links.youtube, href: 'https://www.youtube.com/@rfi-irfos-official' },
                   ],
                 },
                 {
