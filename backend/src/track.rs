@@ -1,7 +1,7 @@
 use axum::{
     body::Body,
     extract::{Query, State},
-    http::{header, StatusCode},
+    http::{header, HeaderMap, StatusCode},
     response::{IntoResponse, Response},
     Json,
 };
@@ -44,6 +44,19 @@ pub fn derive_source(utm_source: &str, referrer: &str) -> String {
 /// 2026-10-31): it was dropped, so every offer_click/offer_attempt/section scroll was stored
 /// as one more page view of the current path and the funnel could not be read at all.
 /// Empty = a real page view. Control characters out, 80 characters max.
+/// Automated browsers run our JavaScript and fire the beacon like a visitor would (Lighthouse
+/// round 68: 982 "views" of /evidence/supercell/ on 2026-10-27, no referrer, while Search brought
+/// 7 clicks that day). Our own Playwright checks, PageSpeed and crawlers are not audience.
+pub fn is_automated(user_agent: &str) -> bool {
+    let ua = user_agent.to_lowercase();
+    ["headlesschrome", "chrome-lighthouse", "playwright", "puppeteer", "phantomjs", "bot", "crawler", "spider", "slurp", "facebookexternalhit"]
+        .iter().any(|m| ua.contains(m))
+}
+
+fn ua(headers: &HeaderMap) -> &str {
+    headers.get(header::USER_AGENT).and_then(|h| h.to_str().ok()).unwrap_or("")
+}
+
 pub fn event_name(section: &str) -> String {
     section.chars().filter(|c| !c.is_control()).take(80).collect::<String>().trim().to_string()
 }
@@ -62,8 +75,8 @@ fn q<'a>(m: &'a HashMap<String, String>, k: &str) -> &'a str {
 }
 
 /// GET /api/track/pixel.gif — 1x1 transparent GIF beacon, no auth required.
-pub async fn pixel(State(state): State<AppState>, Query(m): Query<HashMap<String, String>>) -> Response {
-    record(&state, q(&m, "p"), q(&m, "r"), q(&m, "utm_source"), q(&m, "utm_medium"), q(&m, "utm_campaign"), q(&m, "v"), "").await;
+pub async fn pixel(State(state): State<AppState>, headers: HeaderMap, Query(m): Query<HashMap<String, String>>) -> Response {
+    if !is_automated(ua(&headers)) { record(&state, q(&m, "p"), q(&m, "r"), q(&m, "utm_source"), q(&m, "utm_medium"), q(&m, "utm_campaign"), q(&m, "v"), "").await; }
     const GIF: [u8; 43] = [
         0x47,0x49,0x46,0x38,0x39,0x61,0x01,0x00,0x01,0x00,0x80,0x00,0x00,0x00,0x00,0x00,
         0xff,0xff,0xff,0x21,0xf9,0x04,0x01,0x00,0x00,0x00,0x00,0x2c,0x00,0x00,0x00,0x00,
@@ -78,7 +91,10 @@ pub async fn pixel(State(state): State<AppState>, Query(m): Query<HashMap<String
 }
 
 /// POST /api/track — JSON beacon (navigator.sendBeacon), CORS-open.
-pub async fn beacon(State(state): State<AppState>, Json(b): Json<Value>) -> StatusCode {
+pub async fn beacon(State(state): State<AppState>, headers: HeaderMap, Json(b): Json<Value>) -> StatusCode {
+    if is_automated(ua(&headers)) {
+        return StatusCode::NO_CONTENT;
+    }
     let g = |k: &str| b.get(k).and_then(|v| v.as_str()).unwrap_or("");
     record(&state, g("path"), g("referrer"), g("utm_source"), g("utm_medium"), g("utm_campaign"), g("visitor"), &event_name(g("section"))).await;
     StatusCode::NO_CONTENT
@@ -86,7 +102,16 @@ pub async fn beacon(State(state): State<AppState>, Json(b): Json<Value>) -> Stat
 
 #[cfg(test)]
 mod tests {
-    use super::event_name;
+    use super::{event_name, is_automated};
+
+    #[test]
+    fn automated_browsers_are_not_audience() {
+        assert!(is_automated("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/130.0.0.0 Safari/537.36"));
+        assert!(is_automated("Mozilla/5.0 (Linux; Android 11) Chrome/120 Mobile Safari/537.36 Chrome-Lighthouse"));
+        assert!(is_automated("Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"));
+        assert!(!is_automated("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"));
+        assert!(!is_automated("Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148"));
+    }
 
     #[test]
     fn event_name_keeps_funnel_steps_and_strips_noise() {
