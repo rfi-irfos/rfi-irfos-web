@@ -464,7 +464,10 @@ export const revealSuppressed = { current: false }
 // contentUrl, it is rebuilt with every deploy together with this markup).
 export type FilmMeta = { name: string; description: string; thumbnail: string; uploadDate: string; duration: string }
 
-export function FilmPanel({ src, className, video }: { src: string; className: string; video?: FilmMeta }) {
+// watchHref (Lighthouse R88, 2026-10-31): Search Console reported the films as "Video isn't on a
+// watch page". Each film now has its own static watch page (public/<route>/film/), linked below
+// the panel so visitors and crawlers find it.
+export function FilmPanel({ src, className, video, watchHref }: { src: string; className: string; video?: FilmMeta; watchHref?: string }) {
   const { locale } = useLocale()
   const ref = useRef<HTMLVideoElement>(null)
   useEffect(() => {
@@ -494,6 +497,7 @@ export function FilmPanel({ src, className, video }: { src: string; className: s
     else video.webkitEnterFullscreen?.()
   }
   return (
+    <>
     <button type="button" className={`${className} film-panel`} onClick={openFullscreen}
       aria-label={locale === 'de' ? 'Film im Vollbild ansehen' : 'View film fullscreen'}>
       <video ref={ref} className="film-panel-video" src={src} autoPlay muted loop playsInline title={video?.name} />
@@ -509,6 +513,13 @@ export function FilmPanel({ src, className, video }: { src: string; className: s
         }) }} />
       )}
     </button>
+    {watchHref && (
+      <a href={locale === 'de' ? `/de${watchHref}` : watchHref}
+         style={{ display: 'inline-block', marginTop: 10, fontSize: 'var(--fs-small)', fontWeight: 600, color: 'var(--accent-text)', textDecoration: 'none' }}>
+        {locale === 'de' ? 'Film mit Steuerung ansehen →' : 'Watch the film with controls →'}
+      </a>
+    )}
+    </>
   )
 }
 

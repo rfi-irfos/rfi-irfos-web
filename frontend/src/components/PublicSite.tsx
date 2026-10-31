@@ -1761,7 +1761,12 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             goal: more width means more columns fit side by side instead of
             wrapping into a tall single-column scroll. */}
         <div style={{ display: 'flex', gap: '1.1rem', alignItems: 'flex-start', marginBottom: 28, textAlign: 'left' }}>
-          <div style={{ flex: mobile ? '1 1 auto' : '0 0 170px', display: 'flex', flexDirection: 'column', gap: 22 }}>
+          {/* Simeon 2026-10-31: four groups stacked in one 170px column made the left side far
+              taller than the directory to its right (big empty band below it). Desktop now lays the
+              groups out in two columns (Legal + Services | Company + Research), tagline below both. */}
+          <div style={mobile
+            ? { flex: '1 1 auto', display: 'flex', flexDirection: 'column', gap: 22 }
+            : { flex: '0 0 auto', display: 'grid', gridTemplateColumns: '170px 170px', gridTemplateRows: 'auto auto', gridAutoFlow: 'column', columnGap: '1.1rem', rowGap: 22, alignContent: 'start' }}>
             {/* FIXED (live bug report, mobile Chrome screenshot, 2026-08-16): this
                 footer is a dense, desktop-oriented link directory (Legal/Company/
                 Research column + a wide grid of Systems zones/Repositories/Crates
@@ -1911,7 +1916,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 line; taglineAttribution ("RFI-IRFOS × Emergent Interaction Lab,
                 core doctrine") was a literal third line here and is now purged
                 entirely, not just relocated. */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8, ...(mobile ? {} : { gridColumn: '1 / -1', gridRow: 3 }) }}>
               {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address)
                   lives on Legal Notice - not duplicated here, this footer only points there.
                   ZVR dropped from this line specifically (kept on the Legal Notice itself). */}

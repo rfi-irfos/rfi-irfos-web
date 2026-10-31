@@ -17,7 +17,8 @@ import {
 import { Reveal, OUTPUT_TAG_HUES, beacon, pageZoom, FilmPanel } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
-import wmHeroDingirFilm from '../../assets/world-model/wm-hero-dingir-film.mp4'
+// Stable URL (Lighthouse R88), see Squad.tsx: the watch page /world-model/film/ links the same file.
+const wmHeroDingirFilm = '/media/dingir-world-model-film.mp4'
 
 const hue = (i: number) => OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
 const hueStyle = (i: number) => ({ '--hue-bg': hue(i).bg, '--hue-border': hue(i).border }) as CSSProperties
@@ -235,7 +236,7 @@ function ChainsPreview() {
 // browser's fullscreen (Simeon). Same FilmPanel as Squad's hero.
 function WorldGraphVisual() {
   const { locale } = useLocale()
-  return <FilmPanel src={wmHeroDingirFilm} className="wm-graph-panel" video={locale === 'de'
+  return <FilmPanel src={wmHeroDingirFilm} className="wm-graph-panel" watchHref="/world-model/film/" video={locale === 'de'
     ? { name: 'DINGIR, das Weltmodell von RFI-IRFOS', description: 'Produktfilm: DINGIR (Dynamic Interaction Network & Graph Intelligence Runtime) zeigt historische Datensätze, Echtzeit-Messwerte und ihre Verbindungen auf einem Globus.', thumbnail: '/media/dingir-world-model-film.jpg', uploadDate: '2026-10-26', duration: 'PT1M' }
     : { name: 'DINGIR, the world model by RFI-IRFOS', description: 'Product film: DINGIR (Dynamic Interaction Network & Graph Intelligence Runtime) shows historical records, real-time readings and their connections on one globe.', thumbnail: '/media/dingir-world-model-film.jpg', uploadDate: '2026-10-26', duration: 'PT1M' }} />
 }
