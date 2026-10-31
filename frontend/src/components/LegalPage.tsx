@@ -5,6 +5,22 @@ const H2: React.CSSProperties = { fontSize: 'var(--fs-small)', fontWeight: 700, 
 const P = { color: '#a0a0b8', fontSize: 'var(--fs-body)', marginBottom: 12 }
 const A = { color: 'var(--accent-text)', textDecoration: 'none' }
 
+// Lighthouse R110: FAQ and Methodology ended with no link in <main>, a dead end for readers who were convinced.
+function NextSteps({ de, locale }: { de: boolean; locale: 'en' | 'de' }) {
+  return (
+    <section>
+      <h2 style={H2}>{de ? 'Nächster Schritt' : 'Next step'}</h2>
+      <p style={P}>
+        <a href={`${localePath(locale, '/')}#app-privacy`} style={A}>{de ? 'Gratis-Check starten →' : 'Start the free check →'}</a>
+        {'  ·  '}
+        <a href={localePath(locale, '/access/')} style={A}>{de ? 'Pläne und Preise ansehen →' : 'See plans and pricing →'}</a>
+        {'  ·  '}
+        <a href={localePath(locale, '/evidence/')} style={A}>{de ? 'Öffentliche Reports ansehen →' : 'Browse the public reports →'}</a>
+      </p>
+    </section>
+  )
+}
+
 import React, { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLocale } from '../hooks/useLocale'
@@ -309,6 +325,7 @@ export function LegalPage({ slug }: { slug: string }) {
             {slug === 'team'        && <Team />}
             {slug === 'methodology' && <Methodology />}
             {slug === 'faq'         && <FaqPage locale={locale} />}
+            {(slug === 'faq' || slug === 'methodology') && <NextSteps de={locale === 'de'} locale={locale} />}
             {isLandingSlug(slug) && <LandingBody slug={slug} locale={locale} navigate={navigate} />}
             {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq'].includes(slug) && !isLandingSlug(slug) && (
               <p style={P}>Seite nicht gefunden.</p>
