@@ -506,7 +506,7 @@ function Datenschutz() {
 function DatenschutzEN() {
   return <>
     <h1 style={H1}>Privacy Policy</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Pursuant to the GDPR (EU) 2016/679 &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Pursuant to the GDPR (EU) 2016/679 &middot; Last updated: October 2026</p>
 
     <p style={P}>
       This page has every section a privacy policy is supposed to have. We just refuse to pad any of them with the vague language that usually fills them, because we spend our working hours pointing out exactly that vague language in other people's apps. So: full sections, plain claims, and where a claim is checkable, we tell you how to check it.
@@ -523,6 +523,7 @@ function DatenschutzEN() {
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>Server logs:</strong> IP address, access timestamp, URL, HTTP status code — collected by GitHub Pages (GitHub, Inc., USA) and Fly.io (Superfly, Inc., USA) as an unavoidable side effect of any request reaching a web server anywhere.<br />
       <strong style={{ color: '#e8e8f0' }}>Contact form:</strong> name, email, subject, message — submitted via Web3Forms (<a href="https://web3forms.com/privacy" target="_blank" rel="noopener" style={A}>web3forms.com/privacy</a>), only if you fill it in and press send.<br />
+      <strong style={{ color: '#e8e8f0' }}>Free check (domain check):</strong> the domain and the work email you enter, plus the time of the request — stored in our own database on Fly.io so we can run the check and send you the result. Your IP address is used only in memory to limit repeated submissions and is not stored. On submission we receive an internal push alert and an email copy (via ntfy.sh and Web3Forms), and you receive one confirmation email, sent through Brevo.<br />
       <strong style={{ color: '#e8e8f0' }}>Payment data:</strong> for purchases made through the website, payment data (card details, email, name) is processed by <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> (354 Oyster Point Blvd, South San Francisco, CA 94080, USA). RFI-IRFOS never receives or stores your card data. Stripe's privacy policy: <a href="https://stripe.com/privacy" target="_blank" rel="noopener" style={A}>stripe.com/privacy</a>.<br />
       <strong style={{ color: '#e8e8f0' }}>Visit statistics:</strong> one self-hosted tracking pixel (Lighthouse, Graz) that logs a page view and a referrer, on every page including this one. On this legal/security page family specifically, we also log, in aggregate only, whether a visit scrolled all the way to the footer at the bottom of the page, the same in-memory, no-cookie mechanism as the section counters described in "Cookies" below, applied here to answer one question: are these pages actually being read to the end. On the homepage specifically, we also log, once per visit and in aggregate only, whether your browser's developer tools appear to be open (a passive window-size check, no timing tricks) — this exists purely because we left a message in the console for anyone who looks, and we're curious how often anyone actually does. No cookie, no device fingerprint, no cross-site identifier. See "Cookies" below for the unglamorous truth about what that pixel actually is.
     </p>
@@ -550,8 +551,10 @@ function DatenschutzEN() {
       <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> — payment processing. Data Processing Agreement (DPA) concluded pursuant to Art. 28 GDPR. Data transferred to the USA on the basis of Standard Contractual Clauses (Art. 46(2)(c) GDPR).<br />
       <strong style={{ color: '#e8e8f0' }}>GitHub, Inc.</strong> — frontend hosting (GitHub Pages). Data transferred to the USA on the basis of Standard Contractual Clauses.<br />
       <strong style={{ color: '#e8e8f0' }}>Superfly, Inc. (Fly.io)</strong> — backend API hosting, including the Lighthouse tracking pixel endpoint. Data transferred to the USA on the basis of Standard Contractual Clauses.<br />
-      <strong style={{ color: '#e8e8f0' }}>Web3Forms</strong> — contact form delivery only, invoked only when you submit the form.<br />
-      <strong style={{ color: '#e8e8f0' }}>ntfy.sh</strong> and <strong style={{ color: '#e8e8f0' }}>ipwho.is</strong> — alert delivery and IP location lookup for the security log above, invoked only on a honeypot or attack hit.
+      <strong style={{ color: '#e8e8f0' }}>Web3Forms</strong> — delivery of contact-form and free-check requests to our inbox, invoked only when you submit a form.<br />
+      <strong style={{ color: '#e8e8f0' }}>Brevo (Sendinblue SAS, Paris, France)</strong> — sends the one confirmation email after a free-check request. Processing within the EU.<br />
+      <strong style={{ color: '#e8e8f0' }}>ntfy.sh</strong> — internal push alerts to our team: for a new contact or free-check request (with the domain and email you entered), and for a hit in the security log above, on private channels.<br />
+      <strong style={{ color: '#e8e8f0' }}>ipwho.is</strong> — IP location lookup for the security log above, invoked only on a honeypot or attack hit.
     </p>
 
     <h2 style={H2}>International Transfers</h2>
@@ -624,7 +627,7 @@ function DatenschutzEN() {
 function DatenschutzDE() {
   return <>
     <h1 style={H1}>Datenschutzerklärung</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Gemäß DSGVO (EU) 2016/679 &middot; Letzte Aktualisierung: Juli 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Gemäß DSGVO (EU) 2016/679 &middot; Letzte Aktualisierung: Oktober 2026</p>
 
     <p style={P}>
       Diese Seite hat jeden Abschnitt, den eine Datenschutzerklärung haben soll. Wir weigern uns nur, sie mit der vagen Formulierung aufzublähen, die sie normalerweise füllt, weil wir unsere Arbeitszeit damit verbringen, genau diese vage Formulierung in fremden Apps aufzuzeigen. Also: vollständige Abschnitte, klare Aussagen, und wo eine Aussage nachprüfbar ist, sagen wir Ihnen, wie.
@@ -641,6 +644,7 @@ function DatenschutzDE() {
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>Serverprotokolle:</strong> IP-Adresse, Zugriffszeitpunkt, URL, HTTP-Statuscode — erhoben von GitHub Pages (GitHub, Inc., USA) und Fly.io (Superfly, Inc., USA) als unvermeidbarer Nebeneffekt jeder Anfrage, die irgendeinen Webserver erreicht.<br />
       <strong style={{ color: '#e8e8f0' }}>Kontaktformular:</strong> Name, E-Mail, Betreff, Nachricht — übermittelt über Web3Forms (<a href="https://web3forms.com/privacy" target="_blank" rel="noopener" style={A}>web3forms.com/privacy</a>), nur wenn Sie es ausfüllen und absenden.<br />
+      <strong style={{ color: '#e8e8f0' }}>Gratis-Check (Domain-Check):</strong> die eingegebene Domain und die geschäftliche E-Mail-Adresse sowie der Zeitpunkt der Anfrage — gespeichert in unserer eigenen Datenbank bei Fly.io, damit wir den Check durchführen und Ihnen das Ergebnis schicken können. Ihre IP-Adresse wird nur im Arbeitsspeicher genutzt, um wiederholte Absendungen zu begrenzen, und nicht gespeichert. Beim Absenden erhalten wir einen internen Push-Hinweis und eine E-Mail-Kopie (über ntfy.sh und Web3Forms), und Sie erhalten eine Bestätigungsmail, versendet über Brevo.<br />
       <strong style={{ color: '#e8e8f0' }}>Zahlungsdaten:</strong> Für Käufe über die Website werden Zahlungsdaten (Kartendetails, E-Mail, Name) von <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> verarbeitet (354 Oyster Point Blvd, South San Francisco, CA 94080, USA). RFI-IRFOS erhält oder speichert Ihre Kartendaten nie. Datenschutzerklärung von Stripe: <a href="https://stripe.com/privacy" target="_blank" rel="noopener" style={A}>stripe.com/privacy</a>.<br />
       <strong style={{ color: '#e8e8f0' }}>Besuchsstatistik:</strong> ein selbst gehosteter Tracking-Pixel (Lighthouse, Graz), der einen Seitenaufruf und einen Referrer protokolliert, auf jeder Seite einschließlich dieser. Speziell auf dieser Familie von Rechts-/Sicherheitsseiten protokollieren wir zusätzlich, nur aggregiert, ob ein Besuch bis zur Fußzeile am Ende der Seite gescrollt hat — derselbe speicherinterne, cookielose Mechanismus wie die im Abschnitt "Cookies" unten beschriebenen Abschnittszähler, hier angewendet, um eine Frage zu beantworten: Werden diese Seiten tatsächlich bis zum Ende gelesen? Speziell auf der Startseite protokollieren wir außerdem, einmal pro Besuch und nur aggregiert, ob die Entwicklertools Ihres Browsers offenbar geöffnet sind (eine passive Fenstergrößen-Prüfung, keine Timing-Tricks) — das existiert einzig, weil wir in der Konsole eine Nachricht für alle hinterlassen haben, die dort nachsehen, und uns interessiert, wie oft das tatsächlich jemand tut. Kein Cookie, kein Geräte-Fingerprint, kein websiteübergreifender Identifikator. Die unglamouröse Wahrheit darüber, was dieser Pixel tatsächlich ist, steht unter "Cookies" weiter unten.
     </p>
@@ -668,8 +672,10 @@ function DatenschutzDE() {
       <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> — Zahlungsabwicklung. Auftragsverarbeitungsvertrag (DPA) gemäß Art. 28 DSGVO abgeschlossen. Datenübermittlung in die USA auf Grundlage von Standardvertragsklauseln (Art. 46 Abs. 2 lit. c DSGVO).<br />
       <strong style={{ color: '#e8e8f0' }}>GitHub, Inc.</strong> — Frontend-Hosting (GitHub Pages). Datenübermittlung in die USA auf Grundlage von Standardvertragsklauseln.<br />
       <strong style={{ color: '#e8e8f0' }}>Superfly, Inc. (Fly.io)</strong> — Backend-API-Hosting, einschließlich des Lighthouse-Tracking-Pixel-Endpunkts. Datenübermittlung in die USA auf Grundlage von Standardvertragsklauseln.<br />
-      <strong style={{ color: '#e8e8f0' }}>Web3Forms</strong> — ausschließlich Zustellung des Kontaktformulars, nur ausgelöst, wenn Sie das Formular absenden.<br />
-      <strong style={{ color: '#e8e8f0' }}>ntfy.sh</strong> und <strong style={{ color: '#e8e8f0' }}>ipwho.is</strong> — Zustellung des Alarms und IP-Standortabfrage für das Sicherheitsprotokoll oben, nur ausgelöst bei einem Honeypot- oder Angriffstreffer.
+      <strong style={{ color: '#e8e8f0' }}>Web3Forms</strong> — Zustellung von Kontaktformular- und Gratis-Check-Anfragen an unser Postfach, nur ausgelöst, wenn Sie ein Formular absenden.<br />
+      <strong style={{ color: '#e8e8f0' }}>Brevo (Sendinblue SAS, Paris, Frankreich)</strong> — versendet die eine Bestätigungsmail nach einer Gratis-Check-Anfrage. Verarbeitung innerhalb der EU.<br />
+      <strong style={{ color: '#e8e8f0' }}>ntfy.sh</strong> — interne Push-Hinweise an unser Team: bei einer neuen Kontakt- oder Gratis-Check-Anfrage (mit der eingegebenen Domain und E-Mail) und bei einem Treffer im Sicherheitsprotokoll oben, über private Kanäle.<br />
+      <strong style={{ color: '#e8e8f0' }}>ipwho.is</strong> — IP-Standortabfrage für das Sicherheitsprotokoll oben, nur ausgelöst bei einem Honeypot- oder Angriffstreffer.
     </p>
 
     <h2 style={H2}>Internationale Datenübermittlung</h2>
