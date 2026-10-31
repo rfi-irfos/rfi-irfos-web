@@ -16,6 +16,7 @@ import {
 } from '@tabler/icons-react'
 import { Reveal, OUTPUT_TAG_HUES, beacon, pageZoom, FilmPanel } from './shared'
 import { useLocale } from '../../hooks/useLocale'
+import { localeHref } from '../../lib/localeHref'
 import wmHeroDingirFilm from '../../assets/world-model/wm-hero-dingir-film.mp4'
 
 const hue = (i: number) => OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
@@ -237,7 +238,7 @@ function WorldGraphVisual() {
 }
 
 function HeroBlock({ onApiRequest }: { onApiRequest: () => void }) {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const w = t.worldModel
   return (
     <div className="wm-wrap wm-hero">
@@ -250,7 +251,7 @@ function HeroBlock({ onApiRequest }: { onApiRequest: () => void }) {
                 the primary button, the sibling product as the secondary link. Was
                 "Explore" (scroll to use cases) + "Request API access". */}
             <button className="wm-btn-primary" onClick={onApiRequest}>{w.apiCta}</button>
-            <a href="/squad/" className="wm-btn-secondary">{w.squadLinkLabel}</a>
+            <a href={localeHref('/squad/', locale)} className="wm-btn-secondary">{w.squadLinkLabel}</a>
           </div>
         </div>
       </Reveal>

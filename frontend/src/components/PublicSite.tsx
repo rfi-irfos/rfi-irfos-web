@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
+import { localeHref } from '../lib/localeHref'
 import type { Content } from '../content/en'
 import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed, useModalExit } from './sections/shared'
 import { HeroSection } from './sections/Hero'
@@ -1435,7 +1436,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         padding: '0 1.5rem',
         display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', columnGap: 12, height: '60px',
       }}>
-        <a href="/" onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
+        <a href={localeHref('/', locale)} onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
           <picture>
             <source srcSet="/logo.webp" type="image/webp" />
             {/* Real bug fix, live report 2026-10-24: logo.png/.webp is 126x84 (3:2),
@@ -1475,7 +1476,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             // else - fixed by stripping both slashes.
             const isActive = viewForSection(n.href.slice(1, -1)) === view
             return (
-            <a key={n.href} href={n.href} style={{
+            <a key={n.href} href={localeHref(n.href, locale)} style={{
               position: 'relative',
               color: isActive ? (overDarkHero ? '#e8e8f0' : 'var(--text)') : (overDarkHero ? '#a0a0b8' : 'var(--text2)'),
               fontSize: 'var(--fs-lead)', fontWeight: 700,
@@ -1621,7 +1622,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         textAlign: 'right',
       }}>
         {NAV_LINKS.map(n => (
-          <a key={n.href} href={n.href} onClick={e => { e.preventDefault(); setMobileOpen(false); navigateTo(n.href) }} style={{
+          <a key={n.href} href={localeHref(n.href, locale)} onClick={e => { e.preventDefault(); setMobileOpen(false); navigateTo(n.href) }} style={{
             color: 'var(--text)', fontSize: 'var(--fs-h3)', fontWeight: 700, textDecoration: 'none',
             padding: '16px 0', borderBottom: '1px solid var(--border)', width: '100%',
             textAlign: 'right',
@@ -1782,7 +1783,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
                 <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', margin: '0 0 2px' }}>{group.heading}</p>
                 {group.links.map(l => (
-                  <a key={l.label} href={l.href} style={{ color: 'var(--text3)', fontSize: 'var(--fs-small)', textDecoration: 'none' }}
+                  <a key={l.label} href={localeHref(l.href, locale)} style={{ color: 'var(--text3)', fontSize: 'var(--fs-small)', textDecoration: 'none' }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
                     onMouseLeave={e => (e.currentTarget.style.color = '#7a7aa0')}
                     onClick={e => {
@@ -1825,7 +1826,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                       // actually go through App.tsx's slug state.
                       if (!l.href.startsWith('/') || l.href.startsWith('//')) return
                       e.preventDefault()
-                      history.pushState(null, '', l.href)
+                      history.pushState(null, '', localeHref(l.href, locale))
                       window.dispatchEvent(new PopStateEvent('popstate'))
                     }}>
                     {l.label}

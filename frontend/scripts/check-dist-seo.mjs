@@ -65,6 +65,14 @@ async function checkSnapshot(route, enRoute, lang) {
     if (href !== target) errors.push(`${route}: hreflang ${hl} = ${href ?? 'MISSING'}, expected ${target}`)
   }
 
+  // 2026-10-31 (Lighthouse round 15): German pages must link to German twins, live
+  // they linked 13-14x per page to the EN paths (src/lib/localeHref.ts).
+  if (lang === 'de') {
+    const enTwins = [...html.matchAll(/href="(\/[^"#?]*)/g)].map(m => m[1])
+      .filter(h => !h.startsWith('/de/') && LOCALIZED_ROUTES.includes(h.replace(/\/$/, '') || '/'))
+    if (enTwins.length) errors.push(`${route}: ${enTwins.length} links to EN twins (${[...new Set(enTwins)].slice(0, 4).join(', ')})`)
+  }
+
   const title = attr(html, /<title>([^<]*)<\/title>/, 'title', route).trim()
   if (!title) errors.push(`${route}: empty title`)
   // Duplikat-Pruefung des Titels seit 2026-10-31 im Sitewide-Scan unten (mit Allowlist, alle dist-Seiten).

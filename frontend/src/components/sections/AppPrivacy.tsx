@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Reveal, useMobile } from './shared'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { useLocale } from '../../hooks/useLocale'
+import { localeHref } from '../../lib/localeHref'
 // KPI figures are extracted from AUDIT_HIGHLIGHTS at build time
 // (scripts/extract-audit-stats.mjs) - a direct import here dragged the whole
 // 1.5MB TrackRecord ledger into the entry bundle of every page.
@@ -37,7 +38,7 @@ const SCOPE_ICONS = [
 const tile = { width: 44, height: 44, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-text)', flexShrink: 0 } as const
 
 export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: () => void }) {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const c = t.appPrivacy
   const stacked = useMobile(900)
   const phone = useMobile(640)
@@ -188,7 +189,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
             ))}
           </div>
           <Reveal delay={1}>
-            <a href="/evidence/" onClick={e => { e.preventDefault(); onNavigateEvidence() }} style={{ color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-body)', textDecoration: 'none' }}>{c.evidenceCta}</a>
+            <a href={localeHref('/evidence/', locale)} onClick={e => { e.preventDefault(); onNavigateEvidence() }} style={{ color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-body)', textDecoration: 'none' }}>{c.evidenceCta}</a>
           </Reveal>
         </div>
       </div>

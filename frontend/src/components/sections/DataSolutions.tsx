@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import { useLocale } from '../../hooks/useLocale'
+import { localeHref } from '../../lib/localeHref'
 import { Reveal, OUTPUT_TAG_HUES } from './shared'
 import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport, IconArrowRight } from '@tabler/icons-react'
 
@@ -145,7 +146,7 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
           {c.bridgeLead}{' '}
           {/* Real <a href> (was <button onClick>) - 2026-09-25 crawlability sweep: a
               button carries no href a crawler can follow, unlike an anchor. */}
-          <a href="/access/" onClick={e => { e.preventDefault(); onNavigateAccessData() }} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', textDecoration: 'underline' }}>
+          <a href={localeHref('/access/', locale)} onClick={e => { e.preventDefault(); onNavigateAccessData() }} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', textDecoration: 'underline' }}>
             {c.bridgeCta}
           </a>
         </p>
@@ -176,7 +177,7 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
     {/* padding override - .data-section's default 72px top+bottom is sized for
         a heading + grid, way too much air around a single button. */}
     <section className="data-section" style={{ padding: '16px 0' }}><div className="data-wrap" style={{ display: 'flex', justifyContent: 'center' }}>
-      <Reveal><a href="/access/" onClick={e => { e.preventDefault(); onNavigateAccessData() }} className="data-cta" style={{ margin: 0, display: 'inline-block', textDecoration: 'none' }}>{c.accessCta} <span aria-hidden="true">→</span></a></Reveal>
+      <Reveal><a href={localeHref('/access/', locale)} onClick={e => { e.preventDefault(); onNavigateAccessData() }} className="data-cta" style={{ margin: 0, display: 'inline-block', textDecoration: 'none' }}>{c.accessCta} <span aria-hidden="true">→</span></a></Reveal>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">

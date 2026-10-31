@@ -2,6 +2,8 @@ import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Content } from '../content/en'
 import { pageZoom } from './sections/shared'
+import { localeHref } from '../lib/localeHref'
+import { useLocale } from '../hooks/useLocale'
 
 // Shared glass-panel mega menu that lives under the whole nav row (not one
 // panel per link) so switching between nav items while the mouse stays
@@ -72,6 +74,7 @@ export function NavMegaMenu({ activeKey, anchorX, t, onNavigate, mobile }: {
   onNavigate: (href: string) => void
   mobile: boolean
 }) {
+  const { locale } = useLocale()
   if (mobile) return null
   // Access/pricing has no sub-sections worth a dropdown (confirmed by the user
   // 2026-10-02: "nur access braucht kein dropdown") - it stays a plain nav link.
@@ -123,7 +126,7 @@ export function NavMegaMenu({ activeKey, anchorX, t, onNavigate, mobile }: {
             transition={{ duration: 0.14 }}
             style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {items.map(item => (
-              <a key={item.label} href={item.href}
+              <a key={item.label} href={localeHref(item.href, locale)}
                 target={item.external ? '_blank' : undefined}
                 rel={item.external ? 'noopener noreferrer' : undefined}
                 onClick={e => {

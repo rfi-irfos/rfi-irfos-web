@@ -5,6 +5,7 @@
 // state - so this section receives it all as props.
 import { FormStateIcon, TEAL, Reveal, Select } from './shared'
 import { useLocale } from '../../hooks/useLocale'
+import { localeHref } from '../../lib/localeHref'
 
 // Emails/hrefs are locale-independent; labels come from t.submit.contactCards.
 const CONTACT_CARDS = [
@@ -35,7 +36,7 @@ export function SubmitSection({
   tipFormState: 'idle' | 'sending' | 'ok' | 'err'
   submitTip: (e: React.FormEvent) => void
 }) {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   return (
     <section id="submit" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
@@ -89,7 +90,7 @@ export function SubmitSection({
                 clean form. */}
             <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', marginBottom: 10, lineHeight: 'var(--lh-body)' }}>
               {t.submit.disclosurePolicyPrefix}
-              <a href="/security/" onClick={e => {
+              <a href={localeHref('/security/', locale)} onClick={e => {
                 // Real crawlable path (was `#p/security`, a same-document fragment
                 // invisible to a crawler's link graph - same defect class as the
                 // NAV_HREFS fix in PublicSite.tsx, 2026-09-05 sweep). pushState +

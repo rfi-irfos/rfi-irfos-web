@@ -15,6 +15,7 @@ import {
   IconSend, IconCpu, IconScale, IconBulb, IconHistory, IconUserCheck,
 } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
+import { localeHref } from '../../lib/localeHref'
 import { Reveal, useMobile, beacon, WEB3FORMS_KEY, OUTPUT_TAG_HUES, FilmPanel } from './shared'
 import { SQUAD_AGENTS, agentByKey, type AgentKey } from '../../content/squadAgents'
 import squadHeroWorkflow from '../../assets/squad/sq-hero-agent-os.mp4'
@@ -63,7 +64,7 @@ export function SquadSection() {
 }
 
 function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const s = t.squad
   return (
     <section className="sq-hero wm-section">
@@ -81,7 +82,7 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
                 primary and one secondary button side by side - "Explore" +
                 "Request API access"). Reuses that same two-button shape here:
                 this real link-as-button replaces both. */}
-            <a href="/world-model/" className="wm-btn-secondary">{s.worldModelLinkLabel}</a>
+            <a href={localeHref('/world-model/', locale)} className="wm-btn-secondary">{s.worldModelLinkLabel}</a>
           </div>
         </Reveal>
         <Reveal from="right">
