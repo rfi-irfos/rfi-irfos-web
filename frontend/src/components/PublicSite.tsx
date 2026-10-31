@@ -1631,6 +1631,13 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             textAlign: 'right',
           }}>{n.label}</a>
         ))}
+        {/* Lighthouse round 23 (2026-10-31): on mobile the free check (the DLT entry point)
+            sat outside the drawer, so from any subpage it took logo, scroll and search.
+            Extra CTA under the links, the menu headers themselves stay as they are. */}
+        <a href={`${localeHref('/', locale)}#domain-check`} onClick={() => { setMobileOpen(false); beacon('mobile_menu_free_check') }} style={{
+          marginTop: 20, alignSelf: 'flex-end', background: '#f97316', color: '#1a0f00',
+          fontWeight: 700, fontSize: 'var(--fs-body)', padding: '12px 20px', borderRadius: 8, textDecoration: 'none',
+        }}>{locale === 'de' ? 'Gratis-Check starten →' : 'Start the free check →'}</a>
         <div style={{ display: 'flex', gap: 8, marginTop: 24, alignSelf: 'flex-end' }}>
           <button onClick={toggleLocale} title={t.nav.localeTitle(LOCALE_LABEL[locale])} aria-label={t.nav.localeAria(LOCALE_LABEL[locale])} style={{
             width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center',
