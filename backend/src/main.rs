@@ -160,9 +160,19 @@ const CSP_POLICY: &str = "default-src 'self'; \
     base-uri 'self'; \
     form-action 'self'";
 
+// Lighthouse round 64 (2026-10-31): /api/* and /auth/* answered JSON/text with no
+// robots signal, so a linked endpoint (e.g. /api/worldmodel-feed) could land in the index.
+fn is_machine_path(path: &str) -> bool {
+    path == "/api" || path.starts_with("/api/") || path == "/auth" || path.starts_with("/auth/")
+}
+
 async fn set_security_headers(req: Request, next: Next) -> Response {
+    let machine = is_machine_path(req.uri().path());
     let mut res = next.run(req).await;
     let headers = res.headers_mut();
+    if machine {
+        headers.insert(HeaderName::from_static("x-robots-tag"), HeaderValue::from_static("noindex, nofollow"));
+    }
 
     headers.insert(header::CONTENT_SECURITY_POLICY, HeaderValue::from_static(CSP_POLICY));
     // fly.toml already sets force_https = true at the edge; HSTS just tells
@@ -330,6 +340,16 @@ mod tests {
         assert_eq!(dir_slash_target("/api/track", None, |_| true), None);
         assert_eq!(dir_slash_target("/uploads/x", None, |_| true), None);
         assert_eq!(dir_slash_target("/not-a-dir", None, dirs), None);
+    }
+
+    #[test]
+    fn machine_paths_get_noindex() {
+        use super::is_machine_path;
+        assert!(is_machine_path("/api/analytics"));
+        assert!(is_machine_path("/auth/google"));
+        assert!(!is_machine_path("/apidocs/"));
+        assert!(!is_machine_path("/access/"));
+        assert!(!is_machine_path("/"));
     }
 
     #[test]
