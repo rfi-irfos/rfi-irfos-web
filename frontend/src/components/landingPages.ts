@@ -200,6 +200,13 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
           ],
         },
         {
+          h2: 'Mobile app privacy audit for Europe',
+          p: [
+            'A mobile app privacy audit for the European market asks whether the app handles personal data the way EU law requires in every country where it is offered. The GDPR applies across the EU and the EEA, and the ePrivacy rules on access to the device come on top. This audit covers both, for Android and iOS builds, with each finding mapped to the articles that European data protection authorities apply.',
+            'Teams that publish one app in several European countries get one audit of the shared build. Country-specific points, such as the national age of digital consent under Article 8, which ranges from 13 to 16 across member states, appear as separate notes in the report.',
+          ],
+        },
+        {
           h2: 'Data flows to third countries',
           p: [
             'The audit reconstructs where data goes: every endpoint the app contacts, the company behind it and the country it resolves to. Transfers to third countries need a legal basis under Articles 44 to 46. The ledger documents apps that send data to a country without an adequacy decision or a documented safeguard, and an app whose own consent page still cites the EU-U.S. Privacy Shield.',
@@ -244,6 +251,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       faq: [
         ['Which GDPR articles does the audit refer to?', 'Typically Article 5 (principles), Article 6 (lawful basis), Article 7 (consent), Article 8 (children), Article 9 (special categories), Articles 44 to 46 (third-country transfers) and Article 33 (breach notification), together with Article 5(3) of the ePrivacy Directive for terminal-equipment access.'],
         ['Does the audit show whether our consent banner works?', 'It shows what the build does before and independent of the banner: which SDKs initialise at start, which consent defaults the code sets and which endpoints receive data.'],
+        ['Is a GDPR app audit the same as a mobile app privacy audit?', 'For apps offered in Europe, yes. A mobile app privacy audit under EU law checks the app against the GDPR and the ePrivacy rules, and that is exactly the scope of this audit, for Android and iOS.'],
         ['Is the report legal advice?', 'The report documents technical facts and maps them to articles. The legal assessment stays with your data protection officer or counsel.'],
         ['Do you also cover SDKs from vendors we do not control?', 'Yes. Third-party libraries and their versions are part of the scope, because their behaviour is part of what your app does.'],
       ],
@@ -260,6 +268,13 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
           p: [
             'Der häufigste Befund in unserem Verzeichnis ist ein SDK, das startet, bevor der Einwilligungsbildschirm erscheint. Im Manifest deklarierte Content Provider initialisieren sich beim Prozessstart, deshalb laufen Analyse- und Werbebibliotheken, bevor die Nutzerin oder der Nutzer irgendetwas gewählt hat. Consent-Mode-Standardwerte, die im Binary auf „granted“ stehen, haben dieselbe Wirkung.',
             'Art. 5 Abs. 3 der ePrivacy-Richtlinie regelt den Zugriff auf Endgeräte und ist das rechtliche Rückgrat jedes SDK-Einwilligungsbefunds, den wir veröffentlichen. Daneben stehen Art. 6 DSGVO (Rechtsgrundlage) und Art. 7 DSGVO (Bedingungen für die Einwilligung) sowie die Grundsätze in Art. 5 DSGVO.',
+          ],
+        },
+        {
+          h2: 'Datenschutz-Audit für mobile Apps in Europa',
+          p: [
+            'Ein Datenschutz-Audit für mobile Apps auf dem europäischen Markt klärt, ob die App personenbezogene Daten in jedem Land, in dem sie angeboten wird, so behandelt, wie es das EU-Recht verlangt. Die DSGVO gilt in der gesamten EU und im EWR, dazu kommen die ePrivacy-Regeln zum Zugriff auf das Gerät. Diese Prüfung deckt beides ab, für Android- und iOS-Builds, und ordnet jeden Befund den Artikeln zu, die europäische Datenschutzbehörden anwenden.',
+            'Teams, die eine App in mehreren europäischen Ländern veröffentlichen, erhalten eine Prüfung des gemeinsamen Builds. Länderspezifische Punkte, etwa das nationale Mindestalter für die digitale Einwilligung nach Art. 8 DSGVO, das in den Mitgliedstaaten zwischen 13 und 16 Jahren liegt, stehen als eigene Hinweise im Bericht.',
           ],
         },
         {
@@ -307,6 +322,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       faq: [
         ['Auf welche DSGVO-Artikel bezieht sich die Prüfung?', 'In der Regel auf Art. 5 (Grundsätze), Art. 6 (Rechtsgrundlage), Art. 7 (Einwilligung), Art. 8 (Kinder), Art. 9 (besondere Kategorien), Art. 44 bis 46 (Drittlandübermittlung) und Art. 33 (Meldung von Verletzungen), dazu Art. 5 Abs. 3 der ePrivacy-Richtlinie für den Zugriff auf Endgeräte.'],
         ['Zeigt die Prüfung, ob unser Consent-Banner funktioniert?', 'Sie zeigt, was der Build vor dem Banner und unabhängig von ihm tut: welche SDKs beim Start initialisieren, welche Consent-Standardwerte der Code setzt und welche Endpunkte Daten empfangen.'],
+        ['Ist eine DSGVO-Prüfung für Apps dasselbe wie ein Datenschutz-Audit für mobile Apps?', 'Für Apps, die in Europa angeboten werden, ja. Ein Datenschutz-Audit für mobile Apps nach EU-Recht prüft die App gegen die DSGVO und die ePrivacy-Regeln, und genau das ist der Umfang dieser Prüfung, für Android und iOS.'],
         ['Ist der Bericht eine Rechtsberatung?', 'Der Bericht dokumentiert technische Tatsachen und ordnet sie Artikeln zu. Die rechtliche Bewertung bleibt bei Ihrer oder Ihrem Datenschutzbeauftragten oder bei Ihrer Rechtsvertretung.'],
         ['Decken Sie auch SDKs von Anbietern ab, die wir nicht kontrollieren?', 'Ja. Drittanbieter-Bibliotheken und ihre Versionen gehören zum Umfang, weil ihr Verhalten Teil dessen ist, was Ihre App tut.'],
       ],
