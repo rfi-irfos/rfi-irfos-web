@@ -1119,10 +1119,15 @@ export function beacon(section: string, extra?: Record<string, string>) {
     ...attributionParams(),
     ...extra,
   }
+  // keepalive (Lighthouse round 26, 2026-10-31): offer_attempt fires right before the
+  // redirect to Stripe and mobile_menu_free_check right before a page load; without it
+  // the browser aborts the request on navigation (seen live as net::ERR_ABORTED), so the
+  // funnel's most important step went missing exactly when it happened.
   fetch(LIGHTHOUSE_BEACON, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
+    keepalive: true,
   }).catch(() => {})
 }
 

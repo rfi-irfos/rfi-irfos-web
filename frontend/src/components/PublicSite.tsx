@@ -998,6 +998,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     fetch(LIGHTHOUSE_BEACON, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      keepalive: true, // a quick bounce would otherwise abort the page-view itself
       body: JSON.stringify({
         path: location.pathname,
         referrer: document.referrer,
