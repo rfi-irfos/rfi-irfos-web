@@ -362,6 +362,7 @@ export const DE: Content = {
       cta: 'Kostenlose Pr\u00fcfung starten',
     },
     enterprise: { heading: 'Enterprise', text: 'Individuelle Oberfl\u00e4chen, MSP, Multi-Tenant-Deployments, White-Label und verhandelte SLAs. Preis auf Anfrage.', cta: 'Kontakt aufnehmen' },
+    termsNote: { text: 'Preise in Euro, zuzüglich gesetzlicher USt. Für Unternehmen (B2B). Abrechnung vorab über Stripe, die UID wird im Checkout abgefragt.', link: 'AGB', href: '/de/agb/' },
     needSomethingElse: 'Etwas anderes gesucht?',
     mostPopular: 'Beliebteste Wahl',
     billing: {

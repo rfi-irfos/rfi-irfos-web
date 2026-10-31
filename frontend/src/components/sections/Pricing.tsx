@@ -301,6 +301,11 @@ export function PricingSection({
             </div>
           </Reveal>
 
+          <p style={{ margin: '20px 0 0', fontSize: 'var(--fs-small)', color: 'var(--text)', lineHeight: 1.6 }}>
+            {t.pricing.termsNote.text}{' '}
+            <a href={t.pricing.termsNote.href} style={{ color: 'var(--accent-text)' }}>{t.pricing.termsNote.link}</a>
+          </p>
+
           <NeedSomethingElseRow domains={t.pricing.domains} onSelectTier={onSelectTier} />
         </div>
       </div>

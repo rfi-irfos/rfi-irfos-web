@@ -384,6 +384,9 @@ export const EN = {
       cta: 'Start free review',
     },
     enterprise: { heading: 'Enterprise', text: 'Custom surfaces, MSP, multi-tenant deployments, white-label and negotiated SLAs. Price in writing.', cta: 'Talk to us' },
+    // Lighthouse round 72: these conditions only appeared on Stripe's page (B2B consent, VAT ID,
+    // subscription), a surprise at the last step. Same facts as AGB §3 and the checkout session.
+    termsNote: { text: 'Prices in euro, plus statutory VAT. For businesses (B2B). Billed upfront via Stripe, your VAT ID is requested at checkout.', link: 'Terms', href: '/agb/' },
     needSomethingElse: 'Need something else?',
     mostPopular: 'Most popular',
     billing: {
