@@ -436,7 +436,7 @@ function SquadRequestForm({
   formState: FormState
   setFormState: (s: FormState) => void
 }) {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const s = t.squad.requestForm
   const customSolutionsLinkLabel = t.squad.customSolutionsLinkLabel
 
@@ -494,6 +494,12 @@ function SquadRequestForm({
           <div className="sq-request-text">
             <h2>{s.heading}</h2>
             <p className="sq-request-desc">{s.description}</p>
+            {/* Lighthouse R113: the flagship page linked only to /world-model/ in <main>; prices and proof were one click too far. */}
+            <p className="sq-request-desc">
+              <a href={localeHref('/access/', locale)} style={{ color: 'var(--accent-text)', fontWeight: 700, textDecoration: 'none' }}>{locale === 'de' ? 'Pläne und Preise ansehen →' : 'See plans and pricing →'}</a>
+              {'  ·  '}
+              <a href={localeHref('/evidence/', locale)} style={{ color: 'var(--accent-text)', fontWeight: 700, textDecoration: 'none' }}>{locale === 'de' ? 'Öffentliche Reports ansehen →' : 'Browse the public reports →'}</a>
+            </p>
             {form.interest.length > 0 && (
               <p className="sq-interest-line">
                 {s.interestedPrefix}: {form.interest.map(k => agentByKey(k).name).join(', ')}
