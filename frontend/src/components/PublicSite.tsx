@@ -739,6 +739,16 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     setCheckoutModal(info)
   }
 
+  // Tier buttons open the B2B/ToS confirmation again before Stripe (Simeon, 2026-10-31:
+  // "vor dem Kauf AGB und B2B-Status wieder der gleiche, den wir hatten"). Since the coop
+  // grid left on 2026-09-13 nothing called openCheckoutModal, so tier clicks went
+  // straight to Stripe with no business-customer declaration and no ToS consent.
+  const openTierCheckout = (key: string) => {
+    const tier = t.pricing.tiers.find(x => x.stripeKey === key)
+    if (!tier) { handleCheckout(key); return }
+    openCheckoutModal({ key, tier: tier.name, desc: tier.tagline, price: `${tier.price}${t.pricing.billing.perMonth}`, bullets: tier.features })
+  }
+
   const cancelCheckout = (key: string) => {
     // Funnel step 2a: user dismissed the confirmation modal without continuing.
     beacon('offer_cancel:' + key)
@@ -1349,7 +1359,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 <input type="checkbox" checked={agbChecked} onChange={e => { setAgbChecked(e.target.checked); setB2bChecked(e.target.checked) }}
                   style={{ marginTop: 3, accentColor: TEAL, width: 18, height: 18, flexShrink: 0 }} />
                 <span style={{ color: '#a0a0b8', fontSize: mobile ? 'var(--fs-body)' : 'var(--fs-small)', lineHeight: 'var(--lh-body)' }}>
-                  {t.checkoutModal.agreementPrefix}<strong style={{ color: '#e8e8f0' }}>{t.checkoutModal.agreementBusinessCustomer}</strong>{t.checkoutModal.agreementMiddle}<a href="#p/agb" style={{ color: 'var(--accent-text)' }}>{t.checkoutModal.agreementTos}</a>{t.checkoutModal.agreementSuffix}
+                  {t.checkoutModal.agreementPrefix}<strong style={{ color: '#e8e8f0' }}>{t.checkoutModal.agreementBusinessCustomer}</strong>{t.checkoutModal.agreementMiddle}<a href={localeHref('/agb/', locale)} target="_blank" rel="noopener" style={{ color: 'var(--accent-text)' }}>{t.checkoutModal.agreementTos}</a>{t.checkoutModal.agreementSuffix}
                 </span>
               </label>
               {/* Cancel/Pay order swapped (live feedback 2026-08-16) - primary action
@@ -1684,7 +1694,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         </section>}
 
         {view === 'access' && <section id="access" className="rfi-view-panel">
-          <PricingSection onSelectTier={selectTier} onCheckout={handleCheckout} />
+          <PricingSection onSelectTier={selectTier} onCheckout={openTierCheckout} />
         </section>}
       </main>
 

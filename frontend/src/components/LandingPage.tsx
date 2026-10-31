@@ -48,7 +48,7 @@ export function LandingBody({ slug, locale, navigate }: {
         </li>)}
       </ul>
       <p style={BODY}>
-        <a href="/evidence/" style={A}>{de ? 'Das vollständige Verzeichnis ansehen →' : 'Browse the full evidence ledger →'}</a>
+        <a href={localePath(locale, '/evidence/')} style={A}>{de ? 'Das vollständige Verzeichnis ansehen →' : 'Browse the full evidence ledger →'}</a>
       </p>
     </section>
 

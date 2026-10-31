@@ -84,6 +84,15 @@ pub async fn create_checkout(
         // Embed the tier so the Stripe webhook can attribute the paid event to the
         // correct Lighthouse funnel leg (offer_paid:<tier>) without guessing.
         ("metadata[tier]".to_string(),                                body.tier.clone()),
+        // 2026-10-31 (Simeon): B2B only, so every invoice needs the buyer's billing
+        // address and UID. if_supported makes the tax ID mandatory wherever Stripe
+        // supports the country's format (all EU VAT IDs). Consent to the AGB and the
+        // B2B status is collected on-site in the checkout modal before this call;
+        // Stripe's own consent_collection[terms_of_service] needs the ToS URL set in
+        // the Dashboard first and is left out until then.
+        ("billing_address_collection".to_string(),                    "required".to_string()),
+        ("tax_id_collection[enabled]".to_string(),                    "true".to_string()),
+        ("tax_id_collection[required]".to_string(),                   "if_supported".to_string()),
     ];
 
     if info.recurring {

@@ -12,6 +12,7 @@ import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd } from '../lib/structured
 import { attributionParams } from './sections/shared'
 import { LANDING_SLUGS, isLandingSlug, landingDoc, localePath } from './landingPages'
 import { LandingBody } from './LandingPage'
+import { localeHref } from '../lib/localeHref'
 
 const LIGHTHOUSE_PIXEL = '/api/track/pixel.gif'
 const LIGHTHOUSE_TRACK = '/api/track'
@@ -231,8 +232,8 @@ export function LegalPage({ slug }: { slug: string }) {
               Client-side nav via the `navigate` helper above - no more full
               reload on the way back to the homepage. */}
           <a
-            href="/"
-            onClick={e => navigate(e, '/')}
+            href={localeHref('/', locale)}
+            onClick={e => navigate(e, localeHref('/', locale))}
             aria-label="Back to rfi-irfos.com"
             title="Back to rfi-irfos.com"
             style={{
@@ -261,7 +262,7 @@ export function LegalPage({ slug }: { slug: string }) {
               // depending on their text length/line-box metrics; forcing a
               // flex box with centred content guarantees every pill is the
               // exact same height regardless of label length.
-              <a key={q.slug} href={isLandingSlug(q.slug) ? localePath(locale, `/${q.slug}`) : `/${q.slug}`} onClick={e => navigate(e, isLandingSlug(q.slug) ? localePath(locale, `/${q.slug}`) : `/${q.slug}`)} style={{
+              <a key={q.slug} href={localeHref(`/${q.slug}`, locale)} onClick={e => navigate(e, localeHref(`/${q.slug}`, locale))} style={{
                 display: 'inline-flex', alignItems: 'center', lineHeight: 'var(--lh-tight)',
                 fontFamily: 'monospace', fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.035em',
                 color: '#8a8aa0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
