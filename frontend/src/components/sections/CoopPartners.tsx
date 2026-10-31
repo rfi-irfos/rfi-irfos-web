@@ -25,7 +25,7 @@ const GROUPS = [
     { label: 'UXCJE', href: 'https://doi.org/10.17605/OSF.IO/UXCJE' },
   ] },
   { title: 'Repositories', kind: 'repos' as const, ic: 4, links: [
-    'call-laura', 'lauras-agents', 'lauras-agents-public', 'coevolution-factory',
+    'call-laura', 'lauras-agents-public', 'coevolution-factory',
   ].map(r => ({ label: r, href: GH + r })) },
 ]
 
