@@ -24,6 +24,15 @@ primary_region = "fra"
   min_machines_running = 0
   processes = ["app"]
 
+  # Lighthouse round 54 (2026-10-31): no check existed, so a machine that booted but
+  # stopped answering kept receiving traffic. /security.txt is static and cheap.
+  [[http_service.checks]]
+    grace_period = "20s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/.well-known/security.txt"
+
 [[vm]]
   memory = "512mb"
   cpu_kind = "shared"
