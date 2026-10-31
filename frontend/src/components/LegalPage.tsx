@@ -263,7 +263,7 @@ export function LegalPage({ slug }: { slug: string }) {
               // depending on their text length/line-box metrics; forcing a
               // flex box with centred content guarantees every pill is the
               // exact same height regardless of label length.
-              <a key={q.slug} href={localeHref(`/${q.slug}`, locale)} onClick={e => navigate(e, localeHref(`/${q.slug}`, locale))} style={{
+              <a key={q.slug} href={localeHref(`/${q.slug}/`, locale)} onClick={e => navigate(e, localeHref(`/${q.slug}/`, locale))} style={{
                 display: 'inline-flex', alignItems: 'center', lineHeight: 'var(--lh-tight)',
                 fontFamily: 'monospace', fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.035em',
                 color: '#8a8aa0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',

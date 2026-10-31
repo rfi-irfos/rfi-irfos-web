@@ -289,6 +289,7 @@ console.log(`check-dist-seo: sitewide scan covered ${scanned} indexable pages`)
     return h.endsWith('/') || /\.[a-z0-9]+$/i.test(h) ? h : h + '/'
   }
   const inbound = new Map()
+  const slashless = new Set(), aliasLinks = new Set()
   for await (const file of walk(DIST)) {
     const src = norm(file.slice(DIST.length).replace(/\\/g, '/').replace(/^\/?/, '/').replace(/index\.html$/, ''))
     const html = await readFile(file, 'utf8')
@@ -296,8 +297,15 @@ console.log(`check-dist-seo: sitewide scan covered ${scanned} indexable pages`)
     for (const [, h] of html.matchAll(/href="((?:https:\/\/rfi-irfos\.com)?\/(?!\/)[^"]*)"/g)) {
       const dst = norm(h)
       if (dst !== src) inbound.set(dst, (inbound.get(dst) ?? 0) + 1)
+      // Round 58: a slashless page link costs a 308 hop; an alias route (/research/ etc.)
+      // is a duplicate whose canonical points elsewhere - link the real target instead.
+      const path = h.replace(/^https:\/\/rfi-irfos\.com/, '').replace(/[#?].*$/, '')
+      if (path && path !== '/' && !path.endsWith('/') && !/\.[a-z0-9]+$/i.test(path)) slashless.add(`${src} -> ${path}`)
+      if (ALIAS_ROUTES.has(dst)) aliasLinks.add(`${src} -> ${dst}`)
     }
   }
+  for (const l of [...slashless].slice(0, 20)) errors.push(`slashless internal link (308 hop): ${l}`)
+  for (const l of [...aliasLinks].slice(0, 20)) errors.push(`internal link to alias route: ${l}`)
   const smUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => norm(m[1]))
   if (!smUrls.length) errors.push('sitemap.xml: no <loc> entries found')
   for (const u of smUrls) if (u !== '/' && !inbound.get(u)) errors.push(`${u}: in sitemap but no internal page links to it (orphan)`)

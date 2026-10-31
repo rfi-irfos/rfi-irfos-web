@@ -335,8 +335,11 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     // DLT mails link to /#domain-check. createRoot replaces the prerendered DOM, so the
     // browser's own load-time hash jump can land on stale layout; jump again once the
     // live tree is mounted, and once more after lazy sections above it have settled.
-    if (window.location.hash === '#domain-check') {
-      const jump = () => document.getElementById('domain-check')?.scrollIntoView({ block: 'start' })
+    // Lighthouse round 58 (2026-10-31): the footer now links /#research instead of the
+    // /research/ alias (canonical = home), so any in-page section id gets the same jump.
+    const hashId = window.location.hash.slice(1)
+    if (/^[a-z][a-z-]*$/.test(hashId)) {
+      const jump = () => document.getElementById(hashId)?.scrollIntoView({ block: 'start' })
       requestAnimationFrame(jump)
       setTimeout(jump, 700)
     }
@@ -1795,7 +1798,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 },
                 {
                   heading: t.footer.groups.research.heading, links: [
-                    { label: t.footer.groups.research.links.research, href: '/research/' },
+                    { label: t.footer.groups.research.links.research, href: '/#research' },
                     { label: t.footer.groups.research.links.trackRecord, href: '/evidence/' },
                     { label: t.footer.groups.research.links.methodology, href: '/methodology/' },
                     { label: t.footer.groups.research.links.dataSolutions, href: '/data-solutions/' },
@@ -1829,6 +1832,14 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                       // it lives here in the footer and opens the same view as before.
                       // The free check is an in-page anchor on home: plain navigation, the
                       // mount-time #domain-check jump above handles the scroll.
+                      // Round 58: Research links /#research (a crawler follows it to home, where
+                      // the section lives) but a left-click keeps the in-app switch.
+                      if (l.href === '/#research') {
+                        e.preventDefault()
+                        navigateTo('research')
+                        requestAnimationFrame(() => document.getElementById('research')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+                        return
+                      }
                       if (l.href.includes('#')) return
                       if (target === 'data-solutions' || target === 'access') {
                         e.preventDefault()
