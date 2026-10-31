@@ -4,7 +4,7 @@
 // PublicSite.tsx (shared with the checkout/proposal modals), so this section
 // receives it as props rather than owning its own copy.
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { IconShare } from '@tabler/icons-react'
+import { IconShare, IconFileCertificate } from '@tabler/icons-react'
 import type { Theme } from '../../hooks/useTheme'
 import { TEAL, CountUp, Reveal } from './shared'
 import { Countdown, Elapsed, DaysAgo, Battery } from './ledgerClock'
@@ -2838,21 +2838,8 @@ export function TrackRecordSection({
               so it sat right under the h1's own 12px marginBottom alone. */}
           {/* White + 17px to match Data Solutions' .data-lede exactly (live
               feedback 2026-09-13) - was var(--text2) grey at 15px. */}
-          <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 12, maxWidth: 720, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)' }}>
+          <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 40, maxWidth: 720, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)' }}>
             {t.trackRecord.paragraph}
-          </p>
-          {/* Bridge sentence to the Security offer - live audit 2026-09-13
-              (positioning audit, top-5-this-week #3): the ledger is the
-              strongest trust asset on the site but sat disconnected from
-              anything purchasable, reading as unsolicited research output
-              instead of a sample of what a paying Security client receives. */}
-          <p style={{ color: 'var(--text2)', marginBottom: 40, maxWidth: 720, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)' }}>
-            {t.trackRecord.securityBridgeLead}{' '}
-            {/* Real <a href> (was <button onClick>) - 2026-09-25 crawlability sweep: a
-                button carries no href a crawler can follow, unlike an anchor. */}
-            <a href={localeHref('/access/', locale)} onClick={e => { e.preventDefault(); onNavigateAccess() }} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', textDecoration: 'underline' }}>
-              {t.trackRecord.securityBridgeCta}
-            </a>
           </p>
         </div>
         {/* Permanent disclosure ledger — KPI row + search/table panel now share
@@ -3234,6 +3221,17 @@ export function TrackRecordSection({
           </div>
         </div>
         </div>
+        </div>
+
+        {/* Bridge to the Security offer (positioning audit 2026-09-13: the ledger is the strongest
+            trust asset and must lead to something purchasable). Simeon 2026-10-31: it belongs under
+            the ledger itself, after the visitor has seen the reports, as a pill like the topic links. */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '10px 14px', marginTop: 28 }}>
+          <span style={{ color: 'var(--text)', fontSize: 'var(--fs-body)', fontWeight: 600 }}>{t.trackRecord.securityBridgeLead}</span>
+          <a href={localeHref('/access/', locale)} onClick={e => { e.preventDefault(); onNavigateAccess() }} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 18px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--glass-bg-solid)', color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-body)', textDecoration: 'none' }}>
+            <IconFileCertificate size={18} stroke={1.8} color="var(--icon-neutral)" aria-hidden />
+            {t.trackRecord.securityBridgeCta}
+          </a>
         </div>
 
         <p style={{ marginTop: 12, fontFamily: "'JetBrains Mono', monospace", fontSize: 'var(--fs-label)', color: 'var(--text4)' }}>

@@ -7,7 +7,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Reveal, useMobile } from './shared'
 import { InitialReviewFlow } from './InitialReviewFlow'
-import { TopicLinks } from './TopicLinks'
+import { IconListSearch } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
 // KPI figures are extracted from AUDIT_HIGHLIGHTS at build time
@@ -190,9 +190,11 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
             ))}
           </div>
           <Reveal delay={1}>
-            <a href={localeHref('/evidence/', locale)} onClick={e => { e.preventDefault(); onNavigateEvidence() }} style={{ color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-body)', textDecoration: 'none' }}>{c.evidenceCta}</a>
+            <a href={localeHref('/evidence/', locale)} onClick={e => { e.preventDefault(); onNavigateEvidence() }} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 8, padding: '10px 18px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--glass-bg-solid)', color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-body)', textDecoration: 'none' }}>
+              <IconListSearch size={18} stroke={1.8} color="var(--icon-neutral)" aria-hidden />
+              {c.evidenceCta}
+            </a>
           </Reveal>
-          <TopicLinks />
         </div>
       </div>
     </section>

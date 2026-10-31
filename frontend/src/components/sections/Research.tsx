@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import { motion } from 'framer-motion'
 import { prefersReducedMotion, useTilt, Reveal, useModalExit } from './shared'
 import { useLocale } from '../../hooks/useLocale'
+import { TopicLinks } from './TopicLinks'
 
 // Live feedback 2026-08-14: cards used to show the full two-paragraph
 // description inline, which read as overwhelming across 8 tiles at once.
@@ -447,6 +448,9 @@ export function ResearchSection() {
           </p>
         </Reveal>
         <ResearchAreasGrid />
+        {/* Simeon 2026-10-31: the service pills moved here from under the home KPI row,
+            where three stacked elements read as cluttered. */}
+        <div style={{ marginTop: 28 }}><TopicLinks /></div>
       </div>
     </section>
   )
