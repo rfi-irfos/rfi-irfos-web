@@ -936,7 +936,7 @@ function SecurityEN() {
       <strong style={{ color: '#e8e8f0' }}>Lawful basis only.</strong> We accept findings obtained through publicly accessible information, your own devices, or software you're authorized to test — the same standard our own root-level code analysis holds to. If what you send us shows evidence of unauthorized access to a system you don't control, we do not publish or credit it under this program. We report it directly to the relevant authorities, the same way we'd expect to be treated if the roles were reversed.
     </p>
     <p style={P}>
-      <strong style={{ color: '#e8e8f0' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous — exactly as set out in our <a href="#p/agb" style={A}>terms</a>. No call, no meeting. Everything stays written, same as every disclosure we send.
+      <strong style={{ color: '#e8e8f0' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous — exactly as set out in our <a href="/agb/" style={A}>terms</a>. No call, no meeting. Everything stays written, same as every disclosure we send.
     </p>
 
     <h2 style={H2}>Scope</h2>
@@ -1015,7 +1015,7 @@ function SecurityDE() {
       <strong style={{ color: '#e8e8f0' }}>Nur rechtmäßige Grundlage.</strong> Wir akzeptieren Funde, die über öffentlich zugängliche Informationen, Ihre eigenen Geräte oder Software, zu deren Test Sie berechtigt sind, gewonnen wurden — derselbe Maßstab, an den sich auch unsere eigene Root-Level-Codeanalyse hält. Zeigt das, was Sie uns schicken, Hinweise auf unbefugten Zugriff auf ein System, das Sie nicht kontrollieren, veröffentlichen oder kreditieren wir es unter diesem Programm nicht. Wir melden es direkt an die zuständigen Behörden, genauso, wie wir behandelt werden wollten, wenn die Rollen vertauscht wären.
     </p>
     <p style={P}>
-      <strong style={{ color: '#e8e8f0' }}>Namensnennung, Ihre Wahl.</strong> Vollständiger Name, Alias oder vollständig anonym — genau wie in unseren <a href="#p/agb" style={A}>AGB</a> festgelegt. Kein Anruf, kein Treffen. Alles bleibt schriftlich, wie bei jeder Offenlegung, die wir versenden.
+      <strong style={{ color: '#e8e8f0' }}>Namensnennung, Ihre Wahl.</strong> Vollständiger Name, Alias oder vollständig anonym — genau wie in unseren <a href="/de/agb/" style={A}>AGB</a> festgelegt. Kein Anruf, kein Treffen. Alles bleibt schriftlich, wie bei jeder Offenlegung, die wir versenden.
     </p>
 
     <h2 style={H2}>Geltungsbereich</h2>

@@ -1147,7 +1147,7 @@ export const DE: Content = {
       },
       research: {
         heading: 'Forschung',
-        links: { research: 'Forschung', trackRecord: 'Evidenz', methodology: 'Methodik', dataSolutions: 'Data Solutions' },
+        links: { research: 'Forschung', trackRecord: 'Evidenz', methodology: 'Methodik', dataSolutions: 'Data Solutions', humanRights: 'Menschenrechts-Ledger' },
       },
       services: {
         heading: 'Leistungen',

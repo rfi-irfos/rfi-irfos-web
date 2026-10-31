@@ -1799,6 +1799,9 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                     { label: t.footer.groups.research.links.trackRecord, href: '/evidence/' },
                     { label: t.footer.groups.research.links.methodology, href: '/methodology/' },
                     { label: t.footer.groups.research.links.dataSolutions, href: '/data-solutions/' },
+                    // Lighthouse round 56 (2026-10-31): /humanrights/ sat in the sitemap with
+                    // zero internal links pointing at it, the only orphan among 284 URLs.
+                    { label: t.footer.groups.research.links.humanRights, href: '/humanrights/' },
                   ],
                 },
               ]

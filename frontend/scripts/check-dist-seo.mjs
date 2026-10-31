@@ -279,7 +279,29 @@ console.log(`check-dist-seo: sitewide scan covered ${scanned} indexable pages`)
       cards++
     }
   }
-  console.log(`check-dist-seo: drift gates checked ${handles.length} team handles, ${prices.length} plan prices, ${cards} page cards`)
+  // 5. Every sitemap URL has at least one internal link from another page, and no snapshot
+  //    still carries GitHub-Pages hash routes (round 56: /humanrights/ was an orphan whose own
+  //    footer linked Impressum/Datenschutz as "#p/impressum", which goes nowhere).
+  const sitemap = await readFile(join(DIST, 'sitemap.xml'), 'utf8').catch(() => '')
+  const norm = (h) => {
+    h = h.replace(/^https:\/\/rfi-irfos\.com/, '').replace(/[#?].*$/, '')
+    if (!h) return '/'
+    return h.endsWith('/') || /\.[a-z0-9]+$/i.test(h) ? h : h + '/'
+  }
+  const inbound = new Map()
+  for await (const file of walk(DIST)) {
+    const src = norm(file.slice(DIST.length).replace(/\\/g, '/').replace(/^\/?/, '/').replace(/index\.html$/, ''))
+    const html = await readFile(file, 'utf8')
+    if (/href="#p\//.test(html)) errors.push(`${src}: legacy hash link href="#p/..." (use /impressum/ etc.)`)
+    for (const [, h] of html.matchAll(/href="((?:https:\/\/rfi-irfos\.com)?\/(?!\/)[^"]*)"/g)) {
+      const dst = norm(h)
+      if (dst !== src) inbound.set(dst, (inbound.get(dst) ?? 0) + 1)
+    }
+  }
+  const smUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => norm(m[1]))
+  if (!smUrls.length) errors.push('sitemap.xml: no <loc> entries found')
+  for (const u of smUrls) if (u !== '/' && !inbound.get(u)) errors.push(`${u}: in sitemap but no internal page links to it (orphan)`)
+  console.log(`check-dist-seo: drift gates checked ${handles.length} team handles, ${prices.length} plan prices, ${cards} page cards, ${smUrls.length} sitemap URLs for inbound links`)
 }
 
 if (errors.length) {
