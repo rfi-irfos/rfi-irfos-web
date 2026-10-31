@@ -870,3 +870,13 @@ h1, h2, h3, .rfi-display {
 }
 .rfi-icon-pop::before { opacity: 0.2; }
 .rfi-icon-pop svg { color: var(--pop-sym, rgba(255,255,255,0.94)) !important; filter: none; }
+
+/* Keyboard focus ring (2026-10-31). Many fields and toggles set outline: 'none' inline,
+   and --focus was referenced (theme toggle) but never defined, so keyboard users saw no
+   focus at all on the free-check form. !important beats those inline styles; mouse clicks
+   stay ring-free because this is :focus-visible only. */
+:root { --focus: var(--accent-text); }
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus) !important;
+  outline-offset: 2px;
+}
