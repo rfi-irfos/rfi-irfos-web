@@ -2781,6 +2781,13 @@ export function TrackRecordSection({
   demoteHeading?: boolean
 }) {
   const { t, locale } = useLocale()
+  // Lighthouse round 70: the statute-chip tooltips were English on /de/evidence/. German notes
+  // load as a separate chunk only on /de/, keyed by the English note; a missing key falls back.
+  const [notesDe, setNotesDe] = useState<Record<string, string> | null>(null)
+  useEffect(() => {
+    if (locale === 'de' && !notesDe) import('../../content/ledgerNotesDe.json').then(m => setNotesDe(m.default as Record<string, string>)).catch(() => {})
+  }, [locale, notesDe])
+  const noteText = (n: string) => (locale === 'de' && notesDe?.[n]) || n
   // Sortierung 'elapsed-desc': Referenzzeit pro Mount auf die Minute gerundet, kein Sekundentakt.
   // Die Reihenfolge aendert sich innerhalb einer Minute praktisch nie; die Ticker-Texte laufen
   // separat in ledgerClock.tsx.
@@ -3156,13 +3163,13 @@ export function TrackRecordSection({
                         ) : (
                           <>
                             {shown.map((s, si) => (
-                              <span key={si} title={`${s.note} (${s.source})`} className="rfi-ledger-mono rfi-ledger-chip">
+                              <span key={si} title={`${noteText(s.note)} (${s.source})`} className="rfi-ledger-mono rfi-ledger-chip">
                                 {s.article ? `${s.law} ${s.article}` : s.law}
                               </span>
                             ))}
                             {rest.length > 0 && (
                               <span
-                                title={rest.map(s => `${s.article ? `${s.law} ${s.article}` : s.law}: ${s.note} (${s.source})`).join('\n')}
+                                title={rest.map(s => `${s.article ? `${s.law} ${s.article}` : s.law}: ${noteText(s.note)} (${s.source})`).join('\n')}
                                 className="rfi-ledger-mono rfi-ledger-chip rfi-ledger-chip--more">
                                 +{rest.length}
                               </span>

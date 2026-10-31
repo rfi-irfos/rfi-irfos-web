@@ -1819,6 +1819,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                     // Lighthouse round 56 (2026-10-31): /humanrights/ sat in the sitemap with
                     // zero internal links pointing at it, the only orphan among 284 URLs.
                     { label: t.footer.groups.research.links.humanRights, href: '/humanrights/' },
+                    { label: t.footer.groups.research.links.albert, href: 'https://albert.rfi-irfos.com/' },
                   ],
                 },
               ]

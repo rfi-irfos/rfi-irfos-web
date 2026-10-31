@@ -1175,7 +1175,7 @@ export const EN = {
       },
       research: {
         heading: 'Research',
-        links: { research: 'Research', trackRecord: 'Evidence', methodology: 'Methodology', dataSolutions: 'Data Solutions', humanRights: 'Human Rights Ledger' },
+        links: { research: 'Research', trackRecord: 'Evidence', methodology: 'Methodology', dataSolutions: 'Data Solutions', humanRights: 'Human Rights Ledger', albert: 'albert. 3D Explorer' },
       },
       // Footer column linking the four search landing pages (2026-10-31) from every public view.
       services: {
