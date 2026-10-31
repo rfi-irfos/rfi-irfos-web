@@ -86,7 +86,7 @@ function TopicModal({ slug, doc, href, onClose }: { slug: LandingSlug; doc: Land
           <IconX size={18} stroke={1.8} />
         </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, paddingRight: 44 }}>
-          <Icon size={22} stroke={1.8} color="var(--accent-text)" aria-hidden />
+          <Icon size={22} stroke={1.8} color="var(--accent-text)" aria-hidden style={{ flexShrink: 0 }} />
           <h2 id="topic-modal-title" style={{ fontSize: 'var(--fs-h3, 1.4rem)', fontWeight: 700, color: 'var(--text)', margin: 0, lineHeight: 'var(--lh-tight)' }}>{doc.h1}</h2>
         </div>
         <p style={{ color: 'var(--text)', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: '0 0 18px' }}>{doc.lead}</p>
