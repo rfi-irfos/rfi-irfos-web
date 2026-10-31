@@ -4,6 +4,7 @@ import { LocaleProvider } from './hooks/useLocale'
 import { EN } from './content/en'
 import { DE } from './content/de'
 import { LANDING_SLUGS } from './components/landingSlugs'
+import { NotFoundNotice } from './components/NotFoundNotice'
 import './App.css'
 
 // Lazy-loaded: legal pages are a secondary route homepage visitors never hit, so there's
@@ -78,6 +79,18 @@ function getEvidencePathReportSlug() {
   if (seg.length === 2 && seg[0] === 'evidence' && /^[a-z0-9][a-z0-9.-]*$/.test(seg[1])) return seg[1]
   return null
 }
+
+// 2026-10-31 (Lighthouse round 19): a dead URL (typo, old mail link, removed page) got a
+// correct 404 status from the backend, but the body is the homepage snapshot, so a visitor
+// saw the homepage with no hint they had landed wrong. Every real route is prerendered
+// with its own canonical; only the backend's not-found fallback serves the root snapshot
+// (canonical = bare origin) at another path. Read once at module load, before React
+// rewrites <head>. Legacy section slugs (/pricing, /track-record, ...) are handled by the
+// app itself and stay excluded.
+// navigator.webdriver: prerender.mjs (Playwright) also boots every route from the root
+// snapshot, the notice must never be baked into a prerendered page (gated in check-dist-seo).
+const SERVED_NOT_FOUND = import.meta.env.PROD && !navigator.webdriver && appPathname() !== '/' && !getSectionFocus()
+  && document.querySelector('link[rel="canonical"]')?.getAttribute('href') === 'https://rfi-irfos.com'
 
 export default function App() {
   const [slug, setSlug] = useState(getSlug)
@@ -157,5 +170,5 @@ export default function App() {
   // Impressum/Datenschutz/AGB left open) - the DE/EN toggle reaches this
   // route the same way it reaches the homepage.
   if (slug) return <LocaleProvider initialLocale={initialLocale}><Suspense fallback={null}><LegalPage slug={slug} /></Suspense></LocaleProvider>
-  return <LocaleProvider initialLocale={initialLocale}><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} /></LocaleProvider>
+  return <LocaleProvider initialLocale={initialLocale}><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} />{SERVED_NOT_FOUND && <NotFoundNotice />}</LocaleProvider>
 }

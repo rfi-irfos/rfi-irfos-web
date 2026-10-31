@@ -73,6 +73,10 @@ async function checkSnapshot(route, enRoute, lang) {
     if (enTwins.length) errors.push(`${route}: ${enTwins.length} links to EN twins (${[...new Set(enTwins)].slice(0, 4).join(', ')})`)
   }
 
+  // 2026-10-31 (Lighthouse round 19): the dead-link notice must never be prerendered.
+  if (html.includes('This link leads nowhere') || html.includes('Dieser Link führt ins Leere'))
+    errors.push(`${route}: not-found notice baked into the snapshot`)
+
   // 2026-10-31 (Lighthouse round 18): the product films carry a VideoObject.
   if (['/squad', '/world-model'].includes(enRoute) && !html.includes('"@type":"VideoObject"'))
     errors.push(`${route}: VideoObject for the product film missing`)
