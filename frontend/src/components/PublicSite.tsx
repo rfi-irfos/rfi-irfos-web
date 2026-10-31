@@ -464,17 +464,13 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   useEffect(() => {
     if (view !== 'evidence') setReportFocus(null)
   }, [view])
-  // Restored 2026-07-31: an earlier "performance fix" removed this assuming MoonPhase
-  // was its only consumer - it wasn't. The Track Record ledger's live per-row countdown
-  // timers (disclosure countdown, elapsed-since-notification, embargo progress bar,
-  // elapsed-desc sort) all read `now` too, and removing it left those as a bare
-  // undefined reference - a ReferenceError that crashed the entire render (blank white
-  // page in production). That ledger genuinely needs one shared, synchronized clock
-  // across potentially hundreds of rows computed in the same .map(), so a top-level
-  // ticking state is the right shape for THIS feature - MoonPhase (a single icon with
-  // no reason to share a clock with anything) still correctly ticks on its own, slower,
-  // isolated timer instead of this one.
-  const [now, setNow] = useState(() => Date.now())
+  // History / WARNING: on 2026-07-31 an earlier "performance fix" removed `now` while the ledger
+  // still referenced it -> ReferenceError, blank production page. On 2026-10-31 `now` was removed
+  // on purpose (ledger perf rebuild): the per-second state re-rendered the whole site. Live
+  // countdowns now come from the shared clock in sections/ledgerClock.tsx (one setInterval, only
+  // while a subscriber exists and the tab is visible); TrackRecordSection takes no `now` prop.
+  // The ONLY remaining `now` readers are MoonPhase (own 60 s timer, TrackRecord.tsx) and the
+  // unrelated Web-Audio local in PublicSite. Before reintroducing `now` anywhere: grep both files.
   const [, setCheckoutLoading] = useState<string | null>(null)
   // Cards now show only tier/price/CTA - the full breakdown (what this tier actually
   // is) moved into this confirmation modal, shown above the B2B/ToS checkboxes, so
@@ -810,19 +806,6 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     handleCheckout(checkoutModal.key)
   }
 
-  // Lighthouse round 36 (2026-10-31): this 1 s tick re-rendered the WHOLE site every
-  // second on every page (Lighthouse mobile /evidence/: TBT 35 s, recurring long tasks).
-  // Only the evidence ledger reads `now`, so it ticks only there and only while visible.
-  useEffect(() => {
-    if (view !== 'evidence') return
-    let t: number | undefined
-    const start = () => { setNow(Date.now()); t = window.setInterval(() => setNow(Date.now()), 1000) }
-    const stop = () => { if (t !== undefined) { window.clearInterval(t); t = undefined } }
-    const onVis = () => { stop(); if (!document.hidden) start() }
-    if (!document.hidden) start()
-    document.addEventListener('visibilitychange', onVis)
-    return () => { stop(); document.removeEventListener('visibilitychange', onVis) }
-  }, [view])
   const mobile = useMobile()
   // Services footer column (2026-10-31, buyer-term sweep): real crawlable links to the four
   // search landing pages from every public view. German visitors get the /de/ twins so the
@@ -1696,7 +1679,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
 
         {view === 'evidence' && evidenceMods && <section id="evidence" className="rfi-view-panel">
           <evidenceMods.tr.TrackRecordSection
-            mobile={mobile} theme={theme} now={now} ledgerFired={ledgerFired} ledgerRef={ledgerRef}
+            mobile={mobile} theme={theme} ledgerFired={ledgerFired} ledgerRef={ledgerRef}
             searchQuery={searchQuery} setSearchQuery={setSearchQuery}
             activeStatus={activeStatus} setActiveStatus={setActiveStatus}
             activeSev={activeSev} setActiveSev={setActiveSev}

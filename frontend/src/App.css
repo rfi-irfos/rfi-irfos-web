@@ -1346,3 +1346,77 @@ button { cursor: pointer; font-family: inherit; }
 @media (min-width: 1100px) {
   #track-record-reports { margin-left: -20px; margin-right: -20px; }
 }
+
+/* ------------------------------------------------------------------------------------------
+   Evidence ledger rows (2026-10-31 performance rebuild). These styles used to be repeated as
+   inline style="" on every one of ~311 rows (14k style attributes = 61 % of /evidence/ HTML).
+   Dynamic values (status/severity colours, countdown colours, battery scale, animation delay)
+   stay inline or in --rfi-delay. Colours remain CSS variables, so light/dark/high-contrast
+   themes work unchanged.
+   ------------------------------------------------------------------------------------------ */
+.rfi-ledger-row {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(120px,1.6fr) 82px 100px 72px minmax(160px,4fr) 110px 70px 130px 130px 56px;
+  gap: 0 6px;
+  padding: 9px 14px;
+  align-items: center;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  background: transparent;
+  opacity: 0;
+  animation: none;
+}
+.rfi-ledger-row--m { grid-template-columns: 1fr 95px 82px; }
+.rfi-ledger-row--alt { background: var(--bg2); }
+.rfi-ledger-row--in {
+  opacity: 1;
+  animation: ledgerRowIn 0.38s cubic-bezier(0.22,1,0.36,1) var(--rfi-delay, 0ms) both;
+}
+.rfi-ledger-bat { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.05); }
+.rfi-ledger-bat-fill { height: 100%; width: 100%; transform-origin: 0 50%; border-radius: 0 2px 0 0; transition: transform 1s linear; }
+.rfi-ledger-mono { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-label); }
+.rfi-ledger-org { font-weight: 700; font-size: var(--fs-small); color: var(--text); line-height: var(--lh-body); }
+.rfi-ledger-market { color: var(--text3); text-transform: uppercase; margin-top: 2px; }
+.rfi-ledger-pt1 { padding-top: 1px; }
+.rfi-ledger-pt2 { padding-top: 2px; }
+.rfi-ledger-center { text-align: center; }
+.rfi-ledger-date { color: var(--text2); }
+.rfi-ledger-dim { color: var(--text4); }
+.rfi-ledger-daysago { color: var(--accent-text); margin-top: 2px; letter-spacing: 0.04em; }
+.rfi-ledger-badge { font-weight: 700; padding: 2px 6px; border-radius: 3px; border: 1px solid var(--border); letter-spacing: 0.07em; white-space: nowrap; }
+.rfi-ledger-sev { font-weight: 700; }
+.rfi-ledger-resolved { font-weight: 700; padding: 2px 6px; border-radius: 3px; background: var(--surface-sunken); color: var(--text); letter-spacing: 0.07em; }
+/* specificity 0,3,0+: beats the inline-<style> .intel-cell / :hover rules exactly as the old inline styles did */
+.intel-row .rfi-ledger-intel.intel-cell {
+  cursor: pointer; border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px;
+  background: var(--surface-sunken); box-sizing: border-box; overflow: hidden; width: 100%;
+}
+.rfi-ledger-intel-meaning {
+  color: var(--accent-text); font-size: var(--fs-label); font-weight: 700; line-height: var(--lh-body);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 3px;
+}
+.rfi-ledger-intel-tech {
+  color: var(--text3); font-size: var(--fs-label); line-height: var(--lh-body); font-family: 'JetBrains Mono', monospace;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.rfi-ledger-intel-tech--1 { -webkit-line-clamp: 1; }
+.intel-row .intel-cell .intel-hint.rfi-ledger-intel-hint { font-size: var(--fs-label); color: var(--text2); margin-top: 2px; }
+.rfi-ledger-statutes { display: flex; flex-wrap: wrap; gap: 3px; padding-top: 1px; min-width: 0; overflow: hidden; }
+.rfi-ledger-chip {
+  font-weight: 700; padding: 2px 5px; border-radius: 3px; letter-spacing: 0.04em; white-space: nowrap; cursor: default;
+  background: transparent; color: var(--text3); border: 1px solid rgba(150,150,150,0.35);
+}
+.rfi-ledger-chip--more { background: rgba(255,255,255,0.06); border-color: rgba(150,150,150,0.25); }
+.rfi-ledger-time {
+  font-size: var(--fs-body); font-weight: 900; line-height: var(--lh-tight); letter-spacing: 0.02em; font-variant-numeric: tabular-nums;
+}
+.rfi-ledger-time--m { font-size: var(--fs-small); }
+.rfi-ledger-sub { color: var(--text4); margin-top: 2px; letter-spacing: 0.06em; }
+.rfi-ledger-pdf {
+  background: rgba(0,245,196,0.10); border: 1px solid rgba(0,245,196,0.3); border-radius: 4px; padding: 4px 8px;
+  cursor: pointer; display: flex; align-items: center; gap: 4px; color: var(--accent-text);
+  font-weight: 700; letter-spacing: 0.06em; transition: background 0.15s; text-decoration: none;
+}
