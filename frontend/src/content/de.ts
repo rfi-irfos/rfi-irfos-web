@@ -295,7 +295,7 @@ export const DE: Content = {
     domainPlaceholder: 'ihredomain.com',
     emailLabel: 'Ihre Arbeits-E-Mail',
     emailPlaceholder: 'sie@firma.com',
-    consentLabel: 'Ich besitze diese Domain oder bin autorisiert, sie zu testen, und stimme diesem einen Read-only-Check zu. Ein Wort genügt, wir sehen sie nie wieder an, dauerhafter Opt-out.',
+    consentLabel: 'Ich besitze diese Domain oder bin autorisiert, sie zu testen, und stimme diesem einen Read-only-Check zu. Eine kurze Antwort genügt jederzeit, und wir prüfen diese Domain nie wieder.',
     submitCta: 'Report anfordern, unverbindlich',
     submitSending: 'Wird gesendet…',
     submitOk: 'Anfrage erhalten',

@@ -317,7 +317,7 @@ export const EN = {
     domainPlaceholder: 'yourdomain.com',
     emailLabel: 'Your work email',
     emailPlaceholder: 'you@company.com',
-    consentLabel: 'I own this domain or am authorized to test it, and I agree to this one read-only check. One word, we never look at it again, permanent opt-out.',
+    consentLabel: 'I own this domain or am authorized to test it, and I agree to this one read-only check. A one-word reply at any time is enough, and we never check this domain again.',
     submitCta: 'Send my report, no commitment',
     submitSending: 'Sending…',
     submitOk: 'Request received',
