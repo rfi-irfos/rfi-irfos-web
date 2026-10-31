@@ -204,6 +204,12 @@ for await (const file of walk(DIST)) {
   // Sprachwahl einer vorher gerenderten /de/-Route im wiederverwendeten Prerender-Browser hing.
   if (route.startsWith('/evidence/') && route !== '/evidence/' && lang !== 'en') errors.push(`${route}: lang="${lang}" on an EN-only report page, expected "en"`)
   if (route.startsWith('/de/') && lang !== 'de') errors.push(`${route}: lang="${lang}" under /de/, expected "de"`)
+  // Umlaut-Gate (Lighthouse R100): "fuer"/"oeffentliches" standen sichtbar auf /de/evidence/ (TrackRecord.tsx).
+  if (lang === 'de') {
+    const body = decode(html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' '))
+    const ascii = [...new Set(body.match(/\b(?:fuer|ueber|Ueber|waehrend|zurueck|moeglich\w*|oeffentlich\w*|\w*schluessel\w*|\w*gefuehrt|[Pp]ruef\w*|[Gg]eprueft)\b/g) ?? [])]
+    if (ascii.length) errors.push(`${route}: ASCII umlaut substitutes in visible German text: ${ascii.slice(0, 6).join(', ')}`)
+  }
   const title = decode(html.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? '')
   const desc = decode(html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '')
   if (!desc) errors.push(`${route}: missing/empty meta description`)
