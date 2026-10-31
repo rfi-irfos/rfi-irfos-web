@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { EN, type Content } from '../content/en'
 import { DE } from '../content/de'
+import { hasDeTwin } from '../lib/localeHref'
 
 // EN/DE homepage content switch. Modeled on useTheme.ts's localStorage pattern:
 // a saved choice always wins, otherwise default to English (this is not
@@ -50,7 +51,9 @@ export function LocaleProvider({ children, initialLocale }: { children: ReactNod
     if (typeof window === 'undefined') return
     const { pathname, search, hash } = window.location
     const isDe = /^\/de(\/|$)/.test(pathname)
-    if (l === 'de' && !isDe) history.replaceState(null, '', `/de${pathname === '/' ? '' : pathname}${search}${hash}`)
+    // Lighthouse round 34 (2026-10-31): only where a /de/ twin exists. Reports, /team
+    // and /research are EN-only, and the rewritten /de/... URL was a 404 on reload or share.
+    if (l === 'de' && !isDe && hasDeTwin(pathname)) history.replaceState(null, '', `/de${pathname === '/' ? '' : pathname}${search}${hash}`)
     else if (l === 'en' && isDe) history.replaceState(null, '', `${pathname.replace(/^\/de(?=\/|$)/, '') || '/'}${search}${hash}`)
   }
 
