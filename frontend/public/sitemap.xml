@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
     <loc>https://rfi-irfos.com</loc>
     <lastmod>2026-10-24</lastmod>
@@ -115,23 +115,59 @@
     <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://rfi-irfos.com/media/the-squad-film.jpg</video:thumbnail_loc>
+      <video:title>The Squad by RFI-IRFOS: from task to result</video:title>
+      <video:description>Product film: the agents of The Squad in one interface, every step from a task to something you can use.</video:description>
+      <video:content_loc>https://rfi-irfos.com/media/the-squad-film.mp4</video:content_loc>
+      <video:duration>45</video:duration>
+      <video:publication_date>2026-10-24</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
   </url>
   <url>
     <loc>https://rfi-irfos.com/de/squad/film/</loc>
     <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://rfi-irfos.com/media/the-squad-film.jpg</video:thumbnail_loc>
+      <video:title>The Squad von RFI-IRFOS: vom Auftrag zum Ergebnis</video:title>
+      <video:description>Produktfilm: Die Agenten von The Squad in einer Oberfläche, Schritt für Schritt vom Auftrag zu einem nutzbaren Ergebnis.</video:description>
+      <video:content_loc>https://rfi-irfos.com/media/the-squad-film.mp4</video:content_loc>
+      <video:duration>45</video:duration>
+      <video:publication_date>2026-10-24</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
   </url>
   <url>
     <loc>https://rfi-irfos.com/world-model/film/</loc>
     <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://rfi-irfos.com/media/dingir-world-model-film.jpg</video:thumbnail_loc>
+      <video:title>DINGIR, the world model by RFI-IRFOS</video:title>
+      <video:description>Product film: DINGIR (Dynamic Interaction Network &amp; Graph Intelligence Runtime) shows historical records, real-time readings and their connections on one globe.</video:description>
+      <video:content_loc>https://rfi-irfos.com/media/dingir-world-model-film.mp4</video:content_loc>
+      <video:duration>60</video:duration>
+      <video:publication_date>2026-10-26</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
   </url>
   <url>
     <loc>https://rfi-irfos.com/de/world-model/film/</loc>
     <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>https://rfi-irfos.com/media/dingir-world-model-film.jpg</video:thumbnail_loc>
+      <video:title>DINGIR, das Weltmodell von RFI-IRFOS</video:title>
+      <video:description>Produktfilm: DINGIR (Dynamic Interaction Network &amp; Graph Intelligence Runtime) zeigt historische Datensätze, Echtzeit-Messwerte und ihre Verbindungen auf einem Globus.</video:description>
+      <video:content_loc>https://rfi-irfos.com/media/dingir-world-model-film.mp4</video:content_loc>
+      <video:duration>60</video:duration>
+      <video:publication_date>2026-10-26</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
   </url>
 </urlset>
