@@ -262,6 +262,11 @@ console.log(`check-dist-seo: sitewide scan covered ${scanned} indexable pages`)
     const html = await readFile(join(DIST, route, 'index.html'), 'utf8').catch(() => '')
     if (html.includes('"@type": "Person"')) errors.push(`/${route}/: carries team Person JSON-LD (only / and /team/ should)`)
   }
+  // 2c. Large image previews allowed (Discover, mobile result cards), R96.
+  for (const route of ['', 'de', 'gdpr-app-audit', 'evidence/geizhals', 'squad/film']) {
+    const html = await readFile(join(DIST, route, 'index.html'), 'utf8').catch(() => '')
+    if (html && !html.includes('max-image-preview:large')) errors.push(`/${route}${route ? '/' : ''}: robots meta without max-image-preview:large`)
+  }
   // 3. llms.txt names every plan price shown on /access/ (it described the old five-offer page for weeks).
   const access = await readFile(join(DIST, 'access', 'index.html'), 'utf8').catch(() => '')
   const llms = await readFile(join(DIST, 'llms.txt'), 'utf8').catch(() => '')
