@@ -27,7 +27,7 @@ import { SystemCardModal } from './sections/SystemCardModal'
 import { RFI_REPOS, SIMEON_REPOS, CRATES, CRATES_IO_PROFILE } from '../content/repos'
 import reportPackages from '../content/reportPackages.json'
 import { reportSeo } from '../lib/reportSeo'
-import { upsertJsonLd, breadcrumbJsonLd, reportBreadcrumbJsonLd, reportArticleJsonLd } from '../lib/structuredData'
+import { upsertJsonLd, breadcrumbJsonLd, reportBreadcrumbJsonLd, reportArticleJsonLd, squadServiceJsonLd } from '../lib/structuredData'
 
 // Footer's overflow repo/crate directory (2026-08-15) is rendered as literal
 // grid-column chunks, not CSS column-count, so it lines up as flat siblings
@@ -317,6 +317,9 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       const prefix = locale === 'de' ? '/de' : ''
       upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(t.nav.links[crumb.navKey], `${prefix}${crumb.path}`))
     }
+    if (meta && viewForSection(initialSection) === 'squad') {
+      upsertJsonLd('ld-squad-service', squadServiceJsonLd(meta.description, locale === 'de' ? 'de' : 'en'))
+    }
     if (initialSection === 'submit') {
       requestAnimationFrame(() => document.getElementById('submit')?.scrollIntoView({ block: 'start' }))
     }
@@ -534,7 +537,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       upsertJsonLd('ld-breadcrumb', reportBreadcrumbJsonLd(names, initialReportSlug, t.nav.links.trackRecord))
       upsertJsonLd('ld-report-article', reportArticleJsonLd({
         slug: initialReportSlug, targets: meta.targets, disclosure: meta.disclosure,
-        resolved: meta.resolved, resolvedDate: meta.resolvedDate,
+        resolved: meta.resolved, resolvedDate: meta.resolvedDate, description,
       }))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -23,7 +23,7 @@ Dingir (Dynamic Interaction Network & Graph Intelligence Runtime), Ternlang (a t
 
 - [World Model](https://rfi-irfos.com/world-model/): how Dingir connects historical and real-time observations across domains into one causally structured evidence graph.
 - [The Squad](https://rfi-irfos.com/squad/): the eight specialized agents (Atlas, Argus, Kopernikus, Janus, Mirror, Daedalus, Lynx, Nyx) that power the investigations.
-- [Methodology](https://rfi-irfos.com/methodology/): how an audit actually runs - static analysis of the shipped binary, never exploitation of a live system.
+- [Methodology](https://rfi-irfos.com/methodology/): how an audit actually runs - a Deep Scan of the shipped binary, with every finding traced to the code that causes it.
 
 ## Reference
 

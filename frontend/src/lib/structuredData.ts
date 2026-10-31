@@ -54,19 +54,28 @@ export function reportBreadcrumbJsonLd(reportName: string, slug: string, evidenc
 // (a single PDF can cover several targets, e.g. Meta's Facebook/Instagram/
 // WhatsApp/Messenger) as a schema.org Thing rather than Organization - these
 // are audited apps/products, not necessarily the legal entity itself.
-export function reportArticleJsonLd(opts: { slug: string; targets: string[]; disclosure?: string; resolved?: boolean; resolvedDate?: string }) {
-  const { slug, targets, disclosure, resolved, resolvedDate } = opts
+// 2026-10-31: description + image (the per-report OG card from gen-og-images.mjs)
+// + mainEntityOfPage, and author/publisher point at the #organization node in
+// index.html so Google ties every report to the one institute entity.
+export function reportArticleJsonLd(opts: { slug: string; targets: string[]; disclosure?: string; resolved?: boolean; resolvedDate?: string; description?: string }) {
+  const { slug, targets, disclosure, resolved, resolvedDate, description } = opts
   const names = targets.join(', ')
+  const url = `https://rfi-irfos.com/evidence/${slug}/`
+  const org = { '@type': 'ResearchOrganization', '@id': 'https://rfi-irfos.com/#organization', name: 'RFI-IRFOS', url: 'https://rfi-irfos.com' }
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: `${names} · GDPR/Security Disclosure Report`,
-    url: `https://rfi-irfos.com/evidence/${slug}/`,
+    ...(description ? { description } : {}),
+    url,
+    mainEntityOfPage: url,
+    image: `https://rfi-irfos.com/og/${slug}.png`,
+    inLanguage: 'en',
     ...(disclosure ? { datePublished: disclosure } : {}),
     ...(resolved && resolvedDate ? { dateModified: resolvedDate } : {}),
     about: targets.map(name => ({ '@type': 'Thing', name })),
-    author: { '@type': 'Organization', name: 'RFI-IRFOS', url: 'https://rfi-irfos.com' },
-    publisher: { '@type': 'Organization', name: 'RFI-IRFOS', url: 'https://rfi-irfos.com' },
+    author: org,
+    publisher: { ...org, logo: { '@type': 'ImageObject', url: 'https://rfi-irfos.com/logo-512.png' } },
     isPartOf: { '@type': 'WebPage', name: 'Evidence Ledger', url: 'https://rfi-irfos.com/evidence/' },
   }
 }
@@ -80,5 +89,26 @@ export function faqPageJsonLd(items: readonly (readonly [string, string])[]) {
       name: question,
       acceptedAnswer: { '@type': 'Answer', text: answer },
     })),
+  }
+}
+
+// The Squad as a Service entity on /squad/ (2026-10-31): the flagship had no
+// structured-data node of its own, only the institute did. Prices live on
+// /access/, so the offer points there instead of repeating amounts here.
+export function squadServiceJsonLd(description: string, locale: 'en' | 'de') {
+  const page = locale === 'de' ? 'https://rfi-irfos.com/de/squad/' : 'https://rfi-irfos.com/squad/'
+  const access = locale === 'de' ? 'https://rfi-irfos.com/de/access/' : 'https://rfi-irfos.com/access/'
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': 'https://rfi-irfos.com/squad/#service',
+    name: 'The Squad',
+    serviceType: 'App security and GDPR audit',
+    description,
+    url: page,
+    provider: { '@id': 'https://rfi-irfos.com/#organization' },
+    areaServed: 'Worldwide',
+    availableLanguage: ['en', 'de'],
+    offers: { '@type': 'Offer', url: access },
   }
 }

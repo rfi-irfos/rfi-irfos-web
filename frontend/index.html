@@ -73,9 +73,16 @@
     {
       "@context": "https://schema.org",
       "@type": "ResearchOrganization",
+      "@id": "https://rfi-irfos.com/#organization",
       "name": "RFI-IRFOS",
       "legalName": "Research Focus Institute — Interdisciplinary Research Facility for Open Sciences",
       "url": "https://rfi-irfos.com",
+      "logo": { "@type": "ImageObject", "url": "https://rfi-irfos.com/logo-512.png", "width": 512, "height": 512 },
+      "image": "https://rfi-irfos.com/og-image.png",
+      "founder": [
+        { "@id": "https://rfi-irfos.com/#person-simeon-kepp" },
+        { "@id": "https://rfi-irfos.com/#person-zabih-karimi" }
+      ],
       "description": "App security and GDPR audits by The Squad, human-powered multi-agent investigations. Research institute in Graz with a public audit ledger.",
       "email": "mailto:rfi.irfos@gmail.com",
       "vatID": "ATU83405245",
@@ -169,8 +176,10 @@
       "sameAs": [
         "https://github.com/rfi-irfos",
         "https://osf.io/rzvyg",
-        "https://linkedin.com/company/rfi-irfos",
-        "https://ternlang.com"
+        "https://www.linkedin.com/company/rfi-irfos",
+        "https://huggingface.co/rfi-irfos",
+        "https://ternlang.com",
+        "https://albert.rfi-irfos.com/"
       ],
       "employee": [
         { "@id": "https://rfi-irfos.com/#person-simeon-kepp" },
@@ -187,8 +196,9 @@
       "@type": "WebSite",
       "name": "RFI-IRFOS",
       "url": "https://rfi-irfos.com",
-      "description": "Interdisciplinary Research Facility for Open Sciences. Ternary AI · Security · Governance.",
-      "inLanguage": ["en", "de"]
+      "description": "Research institute in Graz. The Squad: app security and GDPR audits. Evidence Ledger: public audit reports. DINGIR: world model.",
+      "inLanguage": ["en", "de"],
+      "publisher": { "@id": "https://rfi-irfos.com/#organization" }
     }
     </script>
     <script type="application/ld+json">
@@ -259,8 +269,8 @@
       "@id": "https://rfi-irfos.com/#person-simeon-kepp",
       "name": "Simeon Kepp",
       "jobTitle": "Founder and CTO",
-      "worksFor": { "@type": "Organization", "name": "RFI-IRFOS", "url": "https://rfi-irfos.com" },
-      "sameAs": ["https://github.com/simeon-kepp"],
+      "worksFor": { "@id": "https://rfi-irfos.com/#organization" },
+      "sameAs": ["https://github.com/simeon-kepp", "https://orcid.org/0009-0009-6922-9552", "https://www.linkedin.com/in/simeon-kepp"],
       "image": "https://rfi-irfos.com/team/simeon-kepp.png"
     }
     </script>
@@ -271,7 +281,7 @@
       "@id": "https://rfi-irfos.com/#person-zabih-karimi",
       "name": "Zabih Karimi",
       "jobTitle": "Founder and CEO",
-      "worksFor": { "@type": "Organization", "name": "RFI-IRFOS", "url": "https://rfi-irfos.com" },
+      "worksFor": { "@id": "https://rfi-irfos.com/#organization" },
       "sameAs": ["https://github.com/zabih-sudo"],
       "image": "https://rfi-irfos.com/team/zabih-sudo.png"
     }
@@ -283,7 +293,7 @@
       "@id": "https://rfi-irfos.com/#person-louis-ehrig",
       "name": "Louis Ehrig",
       "jobTitle": "Press and Public Affairs",
-      "worksFor": { "@type": "Organization", "name": "RFI-IRFOS", "url": "https://rfi-irfos.com" },
+      "worksFor": { "@id": "https://rfi-irfos.com/#organization" },
       "sameAs": ["https://github.com/louisuhr"],
       "image": "https://rfi-irfos.com/team/louisuhr.png"
     }
@@ -295,7 +305,7 @@
       "@id": "https://rfi-irfos.com/#person-ana-diez",
       "name": "Ana Diez",
       "jobTitle": "Model Safety and Wellbeing",
-      "worksFor": { "@type": "Organization", "name": "RFI-IRFOS", "url": "https://rfi-irfos.com" },
+      "worksFor": { "@id": "https://rfi-irfos.com/#organization" },
       "sameAs": ["https://github.com/anadiezmartini"],
       "image": "https://rfi-irfos.com/team/anadiezmartini.png"
     }
@@ -307,7 +317,7 @@
       "@id": "https://rfi-irfos.com/#person-brennan-bell",
       "name": "Brennan Bell",
       "jobTitle": "Safety Research and Academic Partnerships",
-      "worksFor": { "@type": "Organization", "name": "RFI-IRFOS", "url": "https://rfi-irfos.com" },
+      "worksFor": { "@id": "https://rfi-irfos.com/#organization" },
       "sameAs": ["https://github.com/496crows"],
       "image": "https://rfi-irfos.com/team/496crows.png"
     }
