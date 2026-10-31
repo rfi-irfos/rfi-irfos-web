@@ -343,16 +343,27 @@ if (!ONLY) {
   }).join('\n')
   // /de/... twins, generated here (not hand-maintained in public/sitemap.xml)
   // so the DE set can never drift from LOCALIZED_ROUTES above.
-  // lastmod der /de/-Eintraege (2026-10-31): frueher hart 2026-10-24, dadurch meldete die Sitemap nie
-  // eine Aenderung der deutschen Seiten. Jetzt Datum der letzten Aenderung von de.ts (die DE-Texte
-  // leben dort) aus der Versionsverwaltung; ohne Historie (Docker-Build ohne Repo-Daten) das Build-Datum.
-  const deLastmod = (() => {
+  // lastmod of the static pages, EN and DE alike (Lighthouse round 40, 2026-10-31): the EN dates
+  // were hand-typed in public/sitemap.xml and sat at 2026-09-05 although /access/ and the rest
+  // changed weekly, while the DE twins carried the de.ts commit date, so one page had two dates.
+  // Now both come from the last commit touching the page copy and page components; without git
+  // history and without SITEMAP_LASTMOD the build date.
+  const pageLastmod = (() => {
+    // Colony builds get the tree via git archive (no history), so the caller passes the date.
+    if (/^\d{4}-\d{2}-\d{2}$/.test(process.env.SITEMAP_LASTMOD ?? '')) return process.env.SITEMAP_LASTMOD
     try {
-      const d = execFileSync('git', ['log', '-1', '--format=%cs', '--', 'src/content/de.ts'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim()
+      const d = execFileSync('git', ['log', '-1', '--format=%cs', '--', 'src/content', 'src/components'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim()
       if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d
-    } catch { /* kein git verfuegbar */ }
+    } catch { /* no git available */ }
     return new Date().toISOString().slice(0, 10)
   })()
+  const deLastmod = pageLastmod
+  const staticWithDates = staticSitemap.replace(/<url>([\s\S]*?)<\/url>/g, (_, inner) => {
+    const body = inner.includes('<lastmod>')
+      ? inner.replace(/<lastmod>[^<]*<\/lastmod>/, `<lastmod>${pageLastmod}</lastmod>`)
+      : inner.replace(/(<\/loc>)/, `$1\n    <lastmod>${pageLastmod}</lastmod>`)
+    return `<url>${body}</url>`
+  })
   const deUrls = LOCALIZED_ROUTES.map(route => [
     '  <url>',
     `    <loc>${absUrl(deRoute(route))}</loc>`,
@@ -361,7 +372,7 @@ if (!ONLY) {
     '    <priority>0.6</priority>',
     '  </url>',
   ].join('\n')).join('\n')
-  const combinedSitemap = staticSitemap.replace('</urlset>', `${deUrls}\n${reportUrls}\n</urlset>`)
+  const combinedSitemap = staticWithDates.replace('</urlset>', `${deUrls}\n${reportUrls}\n</urlset>`)
   await writeFile(join(DIST, 'sitemap.xml'), combinedSitemap)
   console.log(`sitemap.xml: ${ROUTES.length} static routes + ${LOCALIZED_ROUTES.length} de routes + ${REPORT_SLUGS.length} report routes`)
 
