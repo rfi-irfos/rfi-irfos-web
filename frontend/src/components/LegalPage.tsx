@@ -5,7 +5,7 @@ const H2: React.CSSProperties = { fontSize: 'var(--fs-small)', fontWeight: 700, 
 const P = { color: '#a0a0b8', fontSize: 'var(--fs-body)', marginBottom: 12 }
 const A = { color: 'var(--accent-text)', textDecoration: 'none' }
 
-// Lighthouse R110: FAQ and Methodology ended with no link in <main>, a dead end for readers who were convinced.
+// Lighthouse R110/R112: FAQ, Methodology and Standards ended with no link in <main>, a dead end for readers who were convinced.
 function NextSteps({ de, locale }: { de: boolean; locale: 'en' | 'de' }) {
   return (
     <section>
@@ -325,7 +325,7 @@ export function LegalPage({ slug }: { slug: string }) {
             {slug === 'team'        && <Team />}
             {slug === 'methodology' && <Methodology />}
             {slug === 'faq'         && <FaqPage locale={locale} />}
-            {(slug === 'faq' || slug === 'methodology') && <NextSteps de={locale === 'de'} locale={locale} />}
+            {(slug === 'faq' || slug === 'methodology' || slug === 'standards') && <NextSteps de={locale === 'de'} locale={locale} />}
             {isLandingSlug(slug) && <LandingBody slug={slug} locale={locale} navigate={navigate} />}
             {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq'].includes(slug) && !isLandingSlug(slug) && (
               <p style={P}>Seite nicht gefunden.</p>
