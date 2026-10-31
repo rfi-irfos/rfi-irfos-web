@@ -217,6 +217,12 @@ async function renderRoute(route, canonicalRoute, waitSelector = '#root h1, #roo
   await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'networkidle', timeout: 12000 }).catch(() => {})
   await page.waitForSelector(waitSelector, { state: 'visible', timeout: 60000 })
   let html = await page.content() // already includes the doctype
+  // FOUND 2026-10-31 (Simeon, console easter egg opened with three red errors): Vite's
+  // dynamic-import helper adds <link rel="modulepreload"> tags at runtime with absolute
+  // hrefs, and the snapshot froze them as http://localhost:4173/assets/... - every live
+  // visitor then requested localhost and the CSP blocked it. The real lazy imports use
+  // relative URLs and are unaffected, so these runtime tags are simply dropped.
+  html = html.replace(/<link [^>]*href="http:\/\/localhost:\d+\/[^"]*"[^>]*>/g, '')
 
   // FOUND 2026-08-19 via Search Console flagging /methodology/ as "Alternative
   // page with proper canonical tag" (i.e. not indexed on its own): index.html's

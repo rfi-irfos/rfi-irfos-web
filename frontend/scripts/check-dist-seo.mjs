@@ -73,6 +73,10 @@ async function checkSnapshot(route, enRoute, lang) {
     if (enTwins.length) errors.push(`${route}: ${enTwins.length} links to EN twins (${[...new Set(enTwins)].slice(0, 4).join(', ')})`)
   }
 
+  // 2026-10-31: no snapshot may reference the prerender server (CSP-blocked on live).
+  if (/https?:\/\/(localhost|127\.0\.0\.1)[:/]/.test(html))
+    errors.push(`${route}: snapshot references localhost (prerender leftover)`)
+
   // 2026-10-31 (Lighthouse round 19): the dead-link notice must never be prerendered.
   if (html.includes('This link leads nowhere') || html.includes('Dieser Link führt ins Leere'))
     errors.push(`${route}: not-found notice baked into the snapshot`)
