@@ -10,11 +10,23 @@ import type { Content } from './en'
 
 export const DE: Content = {
   meta: {
-    title: 'RFI-IRFOS · Agenten, Weltmodell, App-Audits · Graz',
-    description: 'Forschungsinstitut in Graz. The Squad: spezialisierte Agenten für jede Art von Arbeit. DINGIR: ein Weltmodell über mehr als 20 Domänen. Evidence: ein öffentliches Register von App-Datenschutz-Audits.',
+    title: 'App-Sicherheitsprüfung & DSGVO-Audit, Agenten · RFI-IRFOS',
+    description: 'App-Sicherheitsprüfung und DSGVO-Audit durch The Squad, menschlich geprüft. Forschungsinstitut in Graz mit öffentlichem Audit-Verzeichnis.',
     dataSolutions: {
-      title: 'Data Solutions · RFI-IRFOS',
-      description: 'Reproduzierbare Umgebungen, Experten-Trajektorien, Evaluationsdatensätze und Safety-Daten für leistungsfähige Agenten.',
+      title: 'Evaluationsdaten & Safety-Datensätze für Agenten · RFI-IRFOS',
+      description: 'Reproduzierbare Umgebungen, Experten-Trajektorien, Evaluationsdatensätze und Safety-Daten zum Trainieren und Testen von KI-Agenten.',
+    },
+    squad: {
+      title: 'The Squad: Menschlich geprüfte App-Audits · RFI-IRFOS',
+      description: 'The Squad: Agenten untersuchen Code, SDKs und Datenflüsse Ihrer App. Menschliche Fachleute prüfen jeden Befund erneut. Schriftlicher Bericht mit Belegen.',
+    },
+    access: {
+      title: 'Preise App-Sicherheitsprüfung & Gratis-Check · RFI-IRFOS',
+      description: 'Pläne für Sicherheitsaudits Ihrer App oder API: klarer Umfang, Bericht mit Belegen, kostenloser Nachtest. Dazu ein kostenloser Domain-Check.',
+    },
+    worldModel: {
+      title: 'Weltmodell: Evidenzgraph über 20+ Domänen · RFI-IRFOS',
+      description: 'DINGIR verbindet Beobachtungen aus über 20 Domänen zu einem kausalen Evidenzgraphen: was sich ändert und was es als Nächstes berührt.',
     },
   },
   nav: {
@@ -22,7 +34,7 @@ export const DE: Content = {
       research: 'Forschung',
       projects: 'Systeme',
       worldModel: 'World Model',
-      squad: 'Kader',
+      squad: 'The Squad',
       trackRecord: 'Evidenz',
       dataSolutions: 'Data Solutions',
       pricing: 'Zugang',
@@ -30,7 +42,7 @@ export const DE: Content = {
     },
     megaMenu: {
       worldModel: { differs: 'Der Unterschied', practice: 'In der Praxis', applications: 'Anwendungsbereiche' },
-      squad: { lineup: 'Der Kader', integration: 'Integration', faq: 'Häufige Fragen' },
+      squad: { lineup: 'The Squad', integration: 'Integration', faq: 'Häufige Fragen' },
       dataSolutions: { datasets: 'Datensätze', deliver: 'Was wir liefern', pipeline: 'So funktioniert es' },
       trackRecord: { overview: 'Disclosure Ledger', research: 'Security Reports' },
       pricing: { overview: 'Überblick', offer: 'Das Angebot', contact: 'Kontakt Aufnehmen' },
@@ -143,8 +155,8 @@ export const DE: Content = {
   trackRecord: {
     eyebrow: 'Permanentes Offenlegungsledger',
     heading: 'Die Disziplin, bewiesen',
-    seoTitle: 'App-Datenschutz- & Sicherheitsanalysen · Evidence Ledger · RFI-IRFOS',
-    seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsanalysen bekannter Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel, Tracking vor Einwilligung. Vollständige Berichte, frei zugänglich.',
+    seoTitle: 'App-Datenschutz- & Sicherheitsanalysen · RFI-IRFOS',
+    seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsberichte zu Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel.',
     paragraph: 'Wir betreiben eine agentische KI-Pipeline, die öffentlich verbreitete Android- und iOS-Apps dekompiliert, ihren Code und ihre Datenflüsse untersucht und Verbindungen zu realen Endpunkten nachverfolgt. Hunderte spezialisierte Agenten arbeiten an der Untersuchung und verbinden technische Belege zu einem stimmigen Gesamtbild, das menschliche Fachleute prüfen und verifizieren.',
     securityBridgeLead: 'Das ist es, was ein Security-Auftrag liefert.',
     focusBanner: (names: string) => `Angezeigt wird der Report zu ${names}.`,
@@ -928,7 +940,7 @@ export const DE: Content = {
   },
 
   squad: {
-    heading: 'Der Kader',
+    heading: 'The Squad',
     subheading: 'Spezialisierte Agenten. Für jede Art von Arbeit.',
     intro: 'Jeder Agent ist auf eine klare Verantwortung zugeschnitten: Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit, Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Jeder Befund wird von unseren menschlichen Fachleuten erneut geprüft, bevor er bei Ihnen ankommt, mit schriftlichem Bericht und den Belegen dahinter. Reviews laufen auf Infrastruktur in Europa, die Verarbeitung findet in Graz statt.',
     worldModelLinkLabel: 'DINGIR →',
@@ -937,9 +949,9 @@ export const DE: Content = {
     statusLine: 'Early Access',
     trustBadges: ['EU-KI-Verordnung-konform', 'Nachvollziehbar durch Design', 'Jede Entscheidung rückverfolgbar', 'Von Menschen geprüft'],
     overview: {
-      eyebrow: 'Der Kader',
+      eyebrow: 'The Squad',
       heading: 'Direkt aus unserer eigenen Produktion',
-      sub: 'Acht spezialisierte Agenten, jeder auf eine klare Frage ausgerichtet. Wählen Sie den, den Sie brauchen, oder starten Sie mit dem ganzen Kader.',
+      sub: 'Acht spezialisierte Agenten, jeder auf eine klare Frage ausgerichtet. Wählen Sie den, den Sie brauchen, oder starten Sie mit dem ganzen Squad.',
       columns: { monitors: 'Überwacht', detects: 'Erkennt', output: 'Sie bekommen' },
     },
     agents: {
@@ -950,7 +962,7 @@ export const DE: Content = {
         description: 'Atlas ist der Agent, den man ruft, wenn aus allen Richtungen Signale eintreffen und jemand entscheiden muss, was gerade am wichtigsten ist. Er ordnet die Dringlichkeit über die Ausgabe aller Agenten hinweg, damit nichts Kritisches im Rauschen untergeht.',
         monitors: ['Was jeder Agent findet', 'Welche Alerts sich überschneiden', 'Was dringend ist und was warten kann', 'Wo Agenten voneinander abhängen', 'Wie schnell jeder Agent reagiert', 'Ob ein Agent stillsteht', 'Welche Fristen näher rücken', 'Wo dieselbe Arbeit doppelt gemacht wird'],
         detects: ['Widersprüchliche Berichte verschiedener Agenten', 'Doppelte Alerts für dasselbe Problem', 'Veraltete Prioritäten', 'Engpässe zwischen Agenten', 'Ein Agent hängt oder reagiert nicht', 'Zwei Agenten bearbeiten dasselbe Problem doppelt', 'Eine Entscheidung, die auf eine einzelne Person wartet', 'Eine Aufgabe ohne klaren Verantwortlichen'],
-        output: ['Eine priorisierte To-do-Liste statt zehn Alerts', 'Eine klare nächste Aktion', 'Eskalation, wenn etwas nicht warten kann', 'Ein Protokoll, was entschieden wurde und warum', 'Eine wöchentliche Zusammenfassung, was wichtig war', 'Ein einziges Dashboard statt acht Postfächer', 'Einen benannten Verantwortlichen für jeden offenen Punkt', 'Eine Auslastungsübersicht über den ganzen Kader'],
+        output: ['Eine priorisierte To-do-Liste statt zehn Alerts', 'Eine klare nächste Aktion', 'Eskalation, wenn etwas nicht warten kann', 'Ein Protokoll, was entschieden wurde und warum', 'Eine wöchentliche Zusammenfassung, was wichtig war', 'Ein einziges Dashboard statt acht Postfächer', 'Einen benannten Verantwortlichen für jeden offenen Punkt', 'Eine Auslastungsübersicht über den ganzen Squad'],
       },
       argus: {
         mission: 'Findet heraus, wenn ein Wettbewerber einen Schritt macht, noch am selben Tag.',
@@ -1018,7 +1030,7 @@ export const DE: Content = {
     },
     howItConnects: {
       eyebrow: 'Integration',
-      heading: 'So bindet sich der Kader ein',
+      heading: 'So bindet sich The Squad ein',
       sub: 'Fünf Schritte von einem rohen Signal in Ihren Systemen bis zur geprüften Handlung, der Sie vertrauen können.',
       feedbackLabel: 'Feedback & aktualisierter Kontext',
       zones: [
@@ -1032,7 +1044,7 @@ export const DE: Content = {
           { icon: 'mcp', title: 'MCP & Integrationen', body: 'Direkt in Ihr bestehendes Agenten-Tooling einklinken.' },
           { icon: 'cli', title: 'CLI & API', body: 'In Ihre eigenen Pipelines und CI einbinden.' },
         ] },
-        { label: 'Der Kader', steps: [
+        { label: 'The Squad', steps: [
           { icon: 'process', title: 'Spezialisierte Agenten', body: 'Der zuständige Spezialist übernimmt und prüft.' },
           { icon: 'crosscheck', title: 'Gegengeprüfte Evidenz', body: 'Verifiziert gegen DINGIRs Weltmodell, nicht isoliert beurteilt.' },
         ] },
@@ -1058,7 +1070,7 @@ export const DE: Content = {
     },
     requestForm: {
       heading: 'Starten Sie mit einem Agenten.',
-      description: 'Kein Bundle nötig. Fordern Sie Zugang zu dem Agenten an, den Sie brauchen, oder zum ganzen Kader.',
+      description: 'Kein Bundle nötig. Fordern Sie Zugang zu dem Agenten an, den Sie brauchen, oder zum ganzen Squad.',
       emailPlaceholder: 'Geschäftliche E-Mail',
       companyPlaceholder: 'Unternehmen',
       submitIdle: 'Zugang anfragen', submitSending: 'Wird gesendet...', submitOk: 'Angekommen. Wir melden uns.',
@@ -1130,6 +1142,10 @@ export const DE: Content = {
       research: {
         heading: 'Forschung',
         links: { research: 'Forschung', trackRecord: 'Evidenz', methodology: 'Methodik', dataSolutions: 'Data Solutions' },
+      },
+      services: {
+        heading: 'Leistungen',
+        links: { appSecurityAudit: 'App-Sicherheitsprüfung', gdprAppAudit: 'DSGVO-Prüfung für Apps', nis2: 'NIS2 für Softwareanbieter', trackerSdk: 'Tracker- & SDK-Check' },
       },
     },
     copyright: '© 2026 RFI-IRFOS  ·  Graz, Österreich  ·  GISA 39261441  ·  UID ATU83405245',
