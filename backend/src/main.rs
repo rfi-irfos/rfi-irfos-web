@@ -1,4 +1,3 @@
-mod analytics;
 mod auth;
 mod contact;
 mod content;
@@ -73,11 +72,21 @@ async fn redirect_dir_slash(State(static_dir): State<PathBuf>, req: Request, nex
 // Google indexes rfi-irfos.com and www.rfi-irfos.com as duplicate pages
 // otherwise — the canonical tag alone doesn't stop the www host from
 // serving its own 200 response.
+// Lighthouse round 76 (2026-10-31): rfi-irfos.at was Brave's first result for the brand and
+// failed TLS since 2026-09-06 (stale Base44/Render binding). It now points here and 301s to .com.
+fn redirect_host(host: &str) -> Option<&str> {
+    let h = host.split(':').next().unwrap_or(host);
+    match h {
+        "rfi-irfos.at" | "www.rfi-irfos.at" => Some("rfi-irfos.com"),
+        _ => h.strip_prefix("www."),
+    }
+}
+
 async fn redirect_www(req: Request, next: Next) -> Response {
     let host = req.headers().get(header::HOST).and_then(|h| h.to_str().ok());
-    if let Some(bare) = host.and_then(|h| h.strip_prefix("www.")) {
+    if let Some(target) = host.and_then(redirect_host) {
         let path_and_query = req.uri().path_and_query().map(|pq| pq.as_str()).unwrap_or("/");
-        return Redirect::permanent(&format!("https://{bare}{path_and_query}")).into_response();
+        return Redirect::permanent(&format!("https://{target}{path_and_query}")).into_response();
     }
     next.run(req).await
 }
@@ -307,7 +316,6 @@ async fn main() {
         .route("/api/initial-review/:id/reject", post(review::reject_review))
         .route("/api/early-access", post(worldmodel::submit_early_access))
         .route("/api/worldmodel-feed", get(worldmodel::worldmodel_feed).post(worldmodel::ingest_worldmodel_feed))
-        .route("/api/analytics", get(analytics::stats))
         .route("/api/stripe/checkout", post(stripe::create_checkout))
         .route("/api/stripe/webhook", post(stripe::webhook))
         // Tracking pixel (public, no auth)
@@ -334,7 +342,7 @@ async fn main() {
 
 #[cfg(test)]
 mod tests {
-    use super::dir_slash_target;
+    use super::{dir_slash_target, redirect_host};
 
     fn dirs(p: &str) -> bool {
         matches!(p, "/security" | "/evidence/nintendo" | "/humanrights")
@@ -356,6 +364,15 @@ mod tests {
         assert_eq!(dir_slash_target("/api/track", None, |_| true), None);
         assert_eq!(dir_slash_target("/uploads/x", None, |_| true), None);
         assert_eq!(dir_slash_target("/not-a-dir", None, dirs), None);
+    }
+
+    #[test]
+    fn old_domains_redirect_to_com() {
+        assert_eq!(redirect_host("rfi-irfos.at"), Some("rfi-irfos.com"));
+        assert_eq!(redirect_host("www.rfi-irfos.at"), Some("rfi-irfos.com"));
+        assert_eq!(redirect_host("www.rfi-irfos.com"), Some("rfi-irfos.com"));
+        assert_eq!(redirect_host("rfi-irfos.com"), None);
+        assert_eq!(redirect_host("rfi-irfos-web-2.fly.dev"), None);
     }
 
     #[test]
