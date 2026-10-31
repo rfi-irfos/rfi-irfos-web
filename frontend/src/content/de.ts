@@ -221,15 +221,15 @@ export const DE: Content = {
     row: {
       today: 'heute',
       daysAgo: (d: number) => `vor ${d} Tagen`,
-      closed: 'GESCHLOSSEN',
-      disclosureLabel: 'OFFENLEGUNG',
-      respondedLabel: 'VERÖFFENTLICHT',
-      elapsedLabel: 'TAGE STILLE',
-      yes: 'JA',
-      no: 'NEIN',
+      closed: 'Geschlossen',
+      disclosureLabel: 'Offenlegung',
+      respondedLabel: 'Veröffentlicht',
+      elapsedLabel: 'Tage Stille',
+      yes: 'Ja',
+      no: 'Nein',
       pdf: 'PDF',
     },
-    footerNote: 'dieses Ledger wird in Echtzeit aktualisiert, sobald Unternehmen reagieren. Schweigen ist öffentlich. severity wird primär nach CVSS v4.0 bewertet, wir behalten uns vor, je nach Blast-Radius davon abzuweichen. · ',
+    footerNote: 'Dieses Ledger wird in Echtzeit aktualisiert, sobald Unternehmen reagieren. Schweigen ist öffentlich. Die Schwere wird primär nach CVSS v4.0 bewertet, wir behalten uns vor, je nach Blast-Radius davon abzuweichen. · ',
   },
 
   proof: {

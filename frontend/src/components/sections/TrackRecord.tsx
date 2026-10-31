@@ -3238,7 +3238,7 @@ export function TrackRecordSection({
         </div>
         </div>
 
-        <p style={{ marginTop: 16, textAlign: 'center', fontSize: 'var(--fs-label)', color: 'var(--text4)' }}>
+        <p style={{ marginTop: 16, textAlign: 'center', fontSize: 'var(--fs-small)', color: 'var(--text2)' }}>
         {AUDIT_REPO_PUBLIC
           ? <>{t.trackRecord.footerNote}<a href="https://github.com/rfi-irfos/android-security-audit-2026" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text3)', textDecoration: 'none' }}>github.com/rfi-irfos/android-security-audit-2026</a></>
           : t.trackRecord.footerNote.replace(/\s*·\s*$/, '')}

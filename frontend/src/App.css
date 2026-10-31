@@ -1399,7 +1399,7 @@ button { cursor: pointer; font-family: inherit; }
 .rfi-ledger-pt2 { padding-top: 2px; }
 .rfi-ledger-center { text-align: center; }
 .rfi-ledger-date { color: var(--text2); }
-.rfi-ledger-dim { color: var(--text4); }
+.rfi-ledger-dim { color: var(--text3); }
 .rfi-ledger-daysago { color: var(--accent-text); margin-top: 2px; letter-spacing: 0.04em; }
 .rfi-ledger-badge { font-weight: 700; padding: 2px 6px; border-radius: 3px; border: 1px solid var(--border); letter-spacing: 0.07em; white-space: nowrap; }
 .rfi-ledger-sev { font-weight: 700; }
@@ -1429,7 +1429,7 @@ button { cursor: pointer; font-family: inherit; }
   font-size: var(--fs-body); font-weight: 900; line-height: var(--lh-tight); letter-spacing: 0.02em; font-variant-numeric: tabular-nums;
 }
 .rfi-ledger-time--m { font-size: var(--fs-small); }
-.rfi-ledger-sub { color: var(--text4); margin-top: 2px; letter-spacing: 0.06em; }
+.rfi-ledger-sub { color: var(--text2); margin-top: 4px; }
 .rfi-ledger-pdf {
   background: rgba(0,245,196,0.10); border: 1px solid rgba(0,245,196,0.3); border-radius: 4px; padding: 4px 8px;
   cursor: pointer; display: flex; align-items: center; gap: 4px; color: var(--accent-text);

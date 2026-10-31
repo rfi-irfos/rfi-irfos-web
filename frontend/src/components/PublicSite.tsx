@@ -1920,7 +1920,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address)
                   lives on Legal Notice - not duplicated here, this footer only points there.
                   ZVR dropped from this line specifically (kept on the Legal Notice itself). */}
-              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text4)', margin: 0 }}>
+              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0 }}>
                 {t.footer.copyright}
               </p>
               <p style={{ fontSize: 'var(--fs-small)', color: 'var(--accent-text)', fontWeight: 700, margin: 0 }}>

@@ -239,19 +239,19 @@ export const EN = {
     row: {
       today: 'today',
       daysAgo: (d: number) => `${d}d ago`,
-      closed: 'CLOSED',
-      disclosureLabel: 'DISCLOSURE',
-      respondedLabel: 'PUBLISHED',
+      closed: 'Closed',
+      disclosureLabel: 'Disclosure',
+      respondedLabel: 'Published',
       // Renamed from 'ELAPSED' 2026-08-05 - the underlying number (time since notification,
       // still ticking for anything not marked resolved) is a "days silent" count; "ELAPSED"
       // was accurate but neutral, "SILENT" says what an open row actually means without
       // needing the visitor to do the interpretation themselves.
-      elapsedLabel: 'DAYS SILENT',
-      yes: 'YES',
-      no: 'NO',
+      elapsedLabel: 'Days silent',
+      yes: 'Yes',
+      no: 'No',
       pdf: 'PDF',
     },
-    footerNote: 'this ledger is updated in real time as companies respond. silence is public. severity is scored primarily by CVSS v4.0, we reserve the right to deviate based on blast radius. · ',
+    footerNote: 'This ledger is updated in real time as companies respond. Silence is public. Severity is scored primarily by CVSS v4.0, we reserve the right to deviate based on blast radius. · ',
   },
 
   proof: {
