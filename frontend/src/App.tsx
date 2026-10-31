@@ -3,6 +3,7 @@ import { PublicSite } from './components/PublicSite'
 import { LocaleProvider } from './hooks/useLocale'
 import { EN } from './content/en'
 import { DE } from './content/de'
+import { LANDING_SLUGS } from './components/landingSlugs'
 import './App.css'
 
 // Lazy-loaded: legal pages are a secondary route homepage visitors never hit, so there's
@@ -11,7 +12,11 @@ import './App.css'
 // the common case.
 const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ default: m.LegalPage })))
 
-const LEGAL_SLUGS = ['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq']
+// The four search-facing landing pages (2026-10-31, buyer-term sweep: app-security-audit,
+// gdpr-app-audit, nis2-software-vendors, app-tracker-sdk-check - content in
+// components/landingPages.ts) ride the same standalone-route path as the legal pages:
+// LegalPage renders them inside its shell, prerender.mjs lists them in ROUTES + LOCALIZED_ROUTES.
+const LEGAL_SLUGS = ['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq', ...LANDING_SLUGS]
 // View ids that also get a real, crawlable URL in addition to their homepage hash.
 // The legacy section slugs remain accepted so existing links do not break while
 // the public shell is reorganised into Home / World Model / Data Solutions /

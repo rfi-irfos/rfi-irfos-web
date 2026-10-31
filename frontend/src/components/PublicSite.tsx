@@ -233,8 +233,11 @@ const NAV_HREFS = [
 function sectionMeta(t: Content, section: string) {
   switch (section) {
     case 'research': return { title: `${t.research.heading} · RFI-IRFOS`, description: t.research.subheading }
-    case 'world-model': return { title: `${t.worldModel.heading} · RFI-IRFOS`, description: t.worldModel.intro }
-    case 'squad': return { title: `${t.squad.heading} · RFI-IRFOS`, description: t.squad.intro }
+    // world-model/squad/access: dedicated search-facing meta (2026-10-31, buyer-term pass) - the
+    // heading-derived titles ("The Squad", "Priced in plain terms") and 450-520-char intro
+    // descriptions (truncated in the SERP) said nothing a buyer searches for.
+    case 'world-model': return t.meta.worldModel
+    case 'squad': return t.meta.squad
     // Dedicated search-facing copy (see en.ts seoTitle comment): the heading-derived
     // title said nothing about what the page is, at 4.7k impressions and <1% CTR.
     case 'evidence':
@@ -242,7 +245,7 @@ function sectionMeta(t: Content, section: string) {
     case 'data-solutions':
     case 'datasets': return { title: t.meta.dataSolutions.title, description: t.meta.dataSolutions.description }
     case 'access':
-    case 'pricing': return { title: `${t.pricing.heading} · RFI-IRFOS`, description: t.pricing.subheading }
+    case 'pricing': return t.meta.access
     case 'submit': return { title: `${t.submit.heading} · RFI-IRFOS`, description: t.submit.paragraph }
     default: return null
   }
@@ -782,6 +785,19 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     return () => clearInterval(t)
   }, [])
   const mobile = useMobile()
+  // Services footer column (2026-10-31, buyer-term sweep): real crawlable links to the four
+  // search landing pages from every public view. German visitors get the /de/ twins so the
+  // German footer feeds link equity to German pages (the /de/ homepage was "crawled, not
+  // indexed" in Search Console). Used by both the mobile and the desktop footer list below.
+  const servicesPrefix = locale === 'de' ? '/de' : ''
+  const servicesGroup = {
+    heading: t.footer.groups.services.heading, links: [
+      { label: t.footer.groups.services.links.appSecurityAudit, href: `${servicesPrefix}/app-security-audit/` },
+      { label: t.footer.groups.services.links.gdprAppAudit, href: `${servicesPrefix}/gdpr-app-audit/` },
+      { label: t.footer.groups.services.links.nis2, href: `${servicesPrefix}/nis2-software-vendors/` },
+      { label: t.footer.groups.services.links.trackerSdk, href: `${servicesPrefix}/app-tracker-sdk-check/` },
+    ],
+  }
 
   useEffect(() => {
     // `evidenceMods` must be a dependency since the 2026-10-24 evidence chunk
@@ -1707,6 +1723,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                     { label: 'FAQ', href: '/faq/' },
                   ],
                 },
+                servicesGroup,
               ]
               : [
                 {
@@ -1719,6 +1736,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                     { label: 'FAQ', href: '/faq/' },
                   ],
                 },
+                servicesGroup,
                 {
                   heading: t.footer.groups.company.heading, links: [
                     { label: t.footer.groups.company.links.team, href: '/team/' },

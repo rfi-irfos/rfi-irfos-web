@@ -16,13 +16,31 @@ export const EN = {
   // statically; the DE values are what /de/'s prerender snapshot and a client-side
   // locale switch show). Every other route derives its meta from its section copy.
   meta: {
-    title: 'RFI-IRFOS · Agents, World Model, App Audits · Graz',
-    description: 'Research institute in Graz. The Squad: specialised agents for every kind of work. DINGIR: a world model across 20+ domains. Evidence: a public ledger of app privacy audits.',
+    // 2026-10-31 buyer-term pass (Search Console: 98 % of clicks were brand searches, the
+    // buyer queries had 0 impressions). Search term first, brand last, title <= 60 chars,
+    // description 120-155 chars. index.html ships these same EN strings statically.
+    title: 'App Security & GDPR Audits, Agents, World Model · RFI-IRFOS',
+    description: 'App security and GDPR audits by The Squad, human-powered multi-agent investigations. Research institute in Graz with a public audit ledger.',
     // Was hardcoded English inside sectionMeta() before 2026-10-24 - the /de/
     // twin shipped the EN description verbatim (caught by check-dist-seo.mjs).
     dataSolutions: {
-      title: 'Data Solutions · RFI-IRFOS',
-      description: 'Reproducible environments, expert trajectories, evaluation datasets, and safety data for capable agents.',
+      title: 'Agent Evaluation Data & Safety Datasets · RFI-IRFOS',
+      description: 'Reproducible environments, expert trajectories, evaluation datasets and safety data to train and test AI agents, built from our own audit research.',
+    },
+    // sectionMeta() used `${heading} · RFI-IRFOS` + the intro paragraph for these three, which
+    // put the brand-ish headings ("The Squad", "Priced in plain terms") and 450-char intros
+    // into the SERP. Dedicated search-facing copy instead (2026-10-31).
+    squad: {
+      title: 'The Squad: Human-Powered App Security Audits · RFI-IRFOS',
+      description: 'The Squad: specialised agents investigate your app\'s code, SDKs and data flows. Human specialists re-verify every finding. Written report with evidence.',
+    },
+    access: {
+      title: 'App Security Audit Pricing & Free Check · RFI-IRFOS',
+      description: 'Security audit plans for your app or API: defined scope, written evidence report, free retest of fixed findings. Plus a free read-only domain check.',
+    },
+    worldModel: {
+      title: 'World Model: Evidence Graph Across 20+ Domains · RFI-IRFOS',
+      description: 'DINGIR connects historical and real-time observations from over 20 domains into one causal evidence graph that shows what changes and what it touches next.',
     },
   },
   nav: {
@@ -154,8 +172,8 @@ export const EN = {
     // Dedicated SEO title/description for /evidence/ (4,760 impressions at position ~6.5 but
     // <1% CTR in GSC to 2026-10-24): the section heading makes a fine on-page H2 but tells a
     // searcher nothing about what the page IS. Search-facing copy only - visible page text unchanged.
-    seoTitle: 'App Privacy & Security Audit Reports · Evidence Ledger · RFI-IRFOS',
-    seoDescription: 'Public ledger of evidence-based GDPR and security audit reports on popular Android apps: trackers, SDKs, permissions, hardcoded keys, pre-consent tracking. Free full reports.',
+    seoTitle: 'App Privacy & Security Audit Reports · RFI-IRFOS',
+    seoDescription: 'Public ledger of evidence-based GDPR and security audit reports on Android apps: trackers, SDKs, permissions, hardcoded keys, pre-consent tracking.',
     paragraph: 'We run an agentic AI pipeline that decompiles publicly distributed Android and iOS apps, investigates their code and data flows, and traces connections to real-world endpoints. Hundreds of specialised agents work across the investigation, connecting technical evidence into a coherent picture that human specialists review and verify.',
     securityBridgeLead: 'This is what a Security engagement produces.',
     focusBanner: (names: string) => `Showing the report for ${names}.`,
@@ -1151,6 +1169,11 @@ export const EN = {
       research: {
         heading: 'Research',
         links: { research: 'Research', trackRecord: 'Evidence', methodology: 'Methodology', dataSolutions: 'Data Solutions' },
+      },
+      // Footer column linking the four search landing pages (2026-10-31) from every public view.
+      services: {
+        heading: 'Services',
+        links: { appSecurityAudit: 'App Security Audit', gdprAppAudit: 'GDPR App Audit', nis2: 'NIS2 for Software Vendors', trackerSdk: 'Tracker & SDK Check' },
       },
     },
     copyright: '© 2026 RFI-IRFOS  ·  Graz, Austria  ·  GISA 39261441  ·  UID ATU83405245',

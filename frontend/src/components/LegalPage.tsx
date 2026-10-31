@@ -10,6 +10,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useLocale } from '../hooks/useLocale'
 import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd } from '../lib/structuredData'
 import { attributionParams } from './sections/shared'
+import { LANDING_SLUGS, isLandingSlug, landingDoc, localePath } from './landingPages'
+import { LandingBody } from './LandingPage'
 
 const LIGHTHOUSE_PIXEL = '/api/track/pixel.gif'
 const LIGHTHOUSE_TRACK = '/api/track'
@@ -41,32 +43,36 @@ function navigate(e: React.MouseEvent, href: string) {
 const META: Record<string, { title: string; description: string; titleDe?: string; descriptionDe?: string }> = {
   impressum: {
     title: 'Legal Notice · RFI-IRFOS', description: 'Legal notice for RFI-IRFOS, a registered not-for-profit research institute in Graz, Austria — registry data, contact, and trade information.',
-    titleDe: 'Impressum · RFI-IRFOS', descriptionDe: 'Impressum von RFI-IRFOS, einem eingetragenen, nicht gewinnorientierten Forschungsinstitut in Graz, Österreich — Registerdaten, Kontakt und Gewerbeinformationen.',
+    titleDe: 'Impressum · RFI-IRFOS', descriptionDe: 'Impressum von RFI-IRFOS, einem eingetragenen, nicht gewinnorientierten Forschungsinstitut in Graz: Registerdaten, Kontakt und Gewerbeinformationen.',
   },
   datenschutz: {
     title: 'Privacy Policy · RFI-IRFOS', description: 'How RFI-IRFOS handles data under GDPR: what we collect, our processors, and your rights. No cookies, no tracking, no ad network.',
     titleDe: 'Datenschutzerklärung · RFI-IRFOS', descriptionDe: 'Wie RFI-IRFOS mit Daten gemäß DSGVO umgeht: was wir erheben, unsere Auftragsverarbeiter und Ihre Rechte. Keine Cookies, kein Tracking, kein Werbenetzwerk.',
   },
   agb: {
-    title: 'Terms and Conditions · RFI-IRFOS', description: 'General Terms and Conditions for RFI-IRFOS security audits, software development, and research services. B2B only.',
+    title: 'Terms and Conditions · RFI-IRFOS', description: 'General Terms and Conditions for RFI-IRFOS security audits, software development, and research services. Business customers (B2B) only.',
     titleDe: 'AGB · RFI-IRFOS', descriptionDe: 'Allgemeine Geschäftsbedingungen für Sicherheitsaudits, Softwareentwicklung und Forschungsleistungen von RFI-IRFOS. Ausschließlich B2B.',
   },
   security: {
-    title: 'Responsible Disclosure & Security Policy · RFI-IRFOS', description: "How to report a vulnerability to RFI-IRFOS and how we disclose: responsible (coordinated) disclosure per ISO/IEC 29147, 90-day embargo, regulator notification, safe harbor. No bug bounty program.",
-    titleDe: 'Responsible Disclosure & Sicherheitsrichtlinie · RFI-IRFOS', descriptionDe: 'Schwachstelle melden und koordinierte Offenlegung bei RFI-IRFOS (Responsible Disclosure): ISO/IEC 29147, 90-Tage-Embargo, Behördenbenachrichtigung, Safe Harbor. Kein Bug-Bounty-Programm.',
+    // 2026-10-31: no sales terms on purpose - this is the institute's own disclosure policy,
+    // not a service page; the title just says what a vulnerability reporter is looking for.
+    title: 'Report a Vulnerability: Disclosure Policy · RFI-IRFOS', description: "Report a vulnerability to RFI-IRFOS. Coordinated disclosure per ISO/IEC 29147, 90-day embargo, regulators notified, safe harbor. No bug bounty program.",
+    titleDe: 'Schwachstelle melden: Disclosure-Richtlinie · RFI-IRFOS', descriptionDe: 'Schwachstelle an RFI-IRFOS melden: koordinierte Offenlegung nach ISO/IEC 29147, 90-Tage-Embargo, Behörden informiert, Safe Harbor. Kein Bug-Bounty.',
   },
   standards: {
-    title: 'Standards & Compliance · RFI-IRFOS', description: 'The regulatory frameworks RFI-IRFOS audits against: NIS-2, GDPR, EU AI Act, DSA, ISO/IEC 29147/30111/27001, and more.',
-    titleDe: 'Standards & Compliance · RFI-IRFOS', descriptionDe: 'Die Rahmenwerke, gegen die RFI-IRFOS prüft: NIS-2, DSGVO, EU AI Act, DSA, ISO/IEC 29147/30111/27001 und mehr.',
+    // 2026-10-31: EN and DE carried the identical title "Standards & Compliance" (duplicate across
+    // the hreflang pair, no buyer term). Now each names the frameworks people search for.
+    title: 'NIS2, GDPR & EU AI Act: Audit Standards · RFI-IRFOS', description: 'The frameworks RFI-IRFOS audits against: NIS2 and NISG 2026, GDPR, EU AI Act, DSA, ISO/IEC 29147, 30111, 27001. See which statute backs each finding.',
+    titleDe: 'NIS2, DSGVO & EU AI Act: Prüfstandards · RFI-IRFOS', descriptionDe: 'Die Rahmenwerke, gegen die RFI-IRFOS prüft: NIS2 und NISG 2026, DSGVO, EU AI Act, DSA, ISO/IEC 29147, 30111 und 27001. Welche Norm stützt welchen Befund.',
   },
-  team: { title: 'Team · RFI-IRFOS', description: "The people behind RFI-IRFOS's security research, disclosure, and ternary AI work." },
+  team: { title: 'Team Behind The Squad and DINGIR · RFI-IRFOS', description: "The people behind RFI-IRFOS's app security research, coordinated disclosure and ternary AI work in Graz, with their focus areas." },
   methodology: {
-    title: 'Methodology · RFI-IRFOS', description: "The four principles governing RFI-IRFOS's research: sources, methods, handling results, and disclosure — the same rules regardless of who's paying.",
-    titleDe: 'Methodik · RFI-IRFOS', descriptionDe: 'Die vier Prinzipien, die die Forschung von RFI-IRFOS bestimmen: Quellen, Methoden, Umgang mit Ergebnissen und Offenlegung — dieselben Regeln, unabhängig vom Kunden.',
+    title: 'Security Audit Methodology & Disclosure Rules · RFI-IRFOS', description: "The four principles behind every RFI-IRFOS audit: sources, methods, handling of results and disclosure. The same rules apply regardless of who is paying.",
+    titleDe: 'Prüfmethodik & Offenlegungsregeln · RFI-IRFOS', descriptionDe: 'Die vier Prinzipien hinter jedem Audit von RFI-IRFOS: Quellen, Methoden, Umgang mit Ergebnissen, Offenlegung. Dieselben Regeln für jede Kundschaft.',
   },
   faq: {
-    title: 'Questions worth answering · RFI-IRFOS', description: 'Plain-language answers about RFI-IRFOS, agents, world models, data systems, safety, and our boundaries.',
-    titleDe: 'Fragen, die man beantworten sollte · RFI-IRFOS', descriptionDe: 'Verständliche Antworten zu RFI-IRFOS, Agenten, World Models, Datensystemen, Sicherheit und unseren Grenzen.',
+    title: 'FAQ: App Security Audits, Agents & Data · RFI-IRFOS', description: 'Plain-language answers on app security audits, security findings and disclosure, agents, world models, data systems, and the boundaries RFI-IRFOS keeps.',
+    titleDe: 'FAQ: App-Sicherheitsprüfung, Agenten, Daten · RFI-IRFOS', descriptionDe: 'Verständliche Antworten zu App-Sicherheitsprüfung, Funden und Offenlegung, Agenten, World Models, Datensystemen und den Grenzen, die RFI-IRFOS einhält.',
   },
 }
 
@@ -137,10 +143,14 @@ export function LegalPage({ slug }: { slug: string }) {
   const { locale, setLocale } = useLocale()
 
   useEffect(() => {
-    const meta = META[slug]
+    // Landing pages (2026-10-31) carry their own per-locale title/description/FAQ in
+    // landingPages.ts instead of a META entry; same head writes, plus a BreadcrumbList and a
+    // FAQPage built from the page's visible Q&A (the exact text rendered below, not a sample).
+    const landing = isLandingSlug(slug) ? landingDoc(slug, locale) : null
+    const meta = landing ? { title: landing.title, description: landing.description } : META[slug]
     if (!meta) return
-    const title = (locale === 'de' && meta.titleDe) ? meta.titleDe : meta.title
-    const description = (locale === 'de' && meta.descriptionDe) ? meta.descriptionDe : meta.description
+    const title = (!landing && locale === 'de' && (meta as typeof META[string]).titleDe) ? (meta as typeof META[string]).titleDe! : meta.title
+    const description = (!landing && locale === 'de' && (meta as typeof META[string]).descriptionDe) ? (meta as typeof META[string]).descriptionDe! : meta.description
     document.title = title
     document.querySelector('meta[name="description"]')?.setAttribute('content', description)
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', title)
@@ -148,6 +158,11 @@ export function LegalPage({ slug }: { slug: string }) {
     document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', title)
     document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description)
 
+    if (landing) {
+      upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(landing.label, localePath(locale, `/${slug}`)))
+      upsertJsonLd('ld-faqpage', faqPageJsonLd(landing.faq))
+      return
+    }
     const quicklink = LEGAL_QUICKLINKS.find(q => q.slug === slug)
     if (quicklink) {
       upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(locale === 'de' ? quicklink.labelDe : quicklink.labelEn, `${locale === 'de' ? '/de' : ''}/${slug}`))
@@ -236,14 +251,17 @@ export function LegalPage({ slug }: { slug: string }) {
               (was a full-reload <a href> - "das ist nicht clean, das ist
               increment"), real href kept for middle-click/SEO/no-JS. */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, flex: '1 1 auto', justifyContent: 'center' }}>
-            {LEGAL_QUICKLINKS.filter(q => q.slug !== slug).map(q => (
+            {(isLandingSlug(slug)
+              ? LANDING_SLUGS.filter(s => s !== slug).map(s => ({ slug: s, labelEn: landingDoc(s, 'en').label, labelDe: landingDoc(s, 'de').label }))
+              : LEGAL_QUICKLINKS.filter(q => q.slug !== slug)
+            ).map(q => (
               // display: inline-flex + lineHeight: 1 (2026-08-19, live feedback:
               // "sollten die buttons net alle in einer reihe sauber sein?") -
               // plain inline <a> pills can render at subtly different heights
               // depending on their text length/line-box metrics; forcing a
               // flex box with centred content guarantees every pill is the
               // exact same height regardless of label length.
-              <a key={q.slug} href={`/${q.slug}`} onClick={e => navigate(e, `/${q.slug}`)} style={{
+              <a key={q.slug} href={isLandingSlug(q.slug) ? localePath(locale, `/${q.slug}`) : `/${q.slug}`} onClick={e => navigate(e, isLandingSlug(q.slug) ? localePath(locale, `/${q.slug}`) : `/${q.slug}`)} style={{
                 display: 'inline-flex', alignItems: 'center', lineHeight: 'var(--lh-tight)',
                 fontFamily: 'monospace', fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.035em',
                 color: '#8a8aa0', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
@@ -289,7 +307,8 @@ export function LegalPage({ slug }: { slug: string }) {
             {slug === 'team'        && <Team />}
             {slug === 'methodology' && <Methodology />}
             {slug === 'faq'         && <FaqPage locale={locale} />}
-            {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq'].includes(slug) && (
+            {isLandingSlug(slug) && <LandingBody slug={slug} locale={locale} navigate={navigate} />}
+            {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq'].includes(slug) && !isLandingSlug(slug) && (
               <p style={P}>Seite nicht gefunden.</p>
             )}
           </motion.div>

@@ -12,6 +12,13 @@ Dingir (Dynamic Interaction Network & Graph Intelligence Runtime), Ternlang (a t
 - [Evidence](https://rfi-irfos.com/evidence/): the permanent public disclosure ledger - every audited app, finding, severity, status, and embargo date, updated as companies respond (or don't).
 - [Data Solutions](https://rfi-irfos.com/data-solutions/): reproducible environments, expert trajectories, and evaluation/safety datasets for AI teams, as a standing product line.
 
+## Services by topic
+
+- [App security audit](https://rfi-irfos.com/app-security-audit/): Android/iOS app security audit by The Squad - decompiled build, hardcoded keys, network configuration, written report with evidence (German: /de/app-security-audit/).
+- [GDPR app audit](https://rfi-irfos.com/gdpr-app-audit/): tracking before consent, data flows to third countries, special-category data, mapped to GDPR articles (German: /de/gdpr-app-audit/).
+- [NIS2 for software vendors](https://rfi-irfos.com/nis2-software-vendors/): NIS2 / NISG 2026 supply-chain and risk-management duties as technical evidence about shipped software (German: /de/nis2-software-vendors/).
+- [App tracker and SDK check](https://rfi-irfos.com/app-tracker-sdk-check/): every tracker and SDK in an app build - version, start time, endpoints, data categories (German: /de/app-tracker-sdk-check/).
+
 ## How it works
 
 - [World Model](https://rfi-irfos.com/world-model/): how Dingir connects historical and real-time observations across domains into one causally structured evidence graph.

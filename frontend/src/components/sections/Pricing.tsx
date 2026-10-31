@@ -216,7 +216,7 @@ export function PricingSection({
   onSelectTier: (tier: string) => void
   onCheckout: (stripeKey: string) => void
 }) {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const tablet = useMobile(980)
   const [freeModalOpen, setFreeModalOpen] = useState(false)
   const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
@@ -242,7 +242,15 @@ export function PricingSection({
             <p className="wm-eyebrow">{t.pricing.eyebrow}</p>
             <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.pricing.heading}</h1>
             {/* White at --fs-lead like the Evidence ledger intro (Simeon 2026-10-26). */}
-            <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 40, maxWidth: 720, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)' }}>{t.pricing.subheading}</p>
+            <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 16, maxWidth: 720, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)' }}>{t.pricing.subheading}</p>
+            {/* What the plans cover, as real crawlable links to the four search landing pages
+                (2026-10-31, buyer-term sweep). Plain <a>: a full load of the prerendered page. */}
+            <p style={{ color: 'var(--text)', marginTop: 0, marginBottom: 40, maxWidth: 720, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)' }}>
+              {(['app-security-audit', 'gdpr-app-audit', 'nis2-software-vendors', 'app-tracker-sdk-check'] as const).map((slug, i) => {
+                const key = ({ 'app-security-audit': 'appSecurityAudit', 'gdpr-app-audit': 'gdprAppAudit', 'nis2-software-vendors': 'nis2', 'app-tracker-sdk-check': 'trackerSdk' } as const)[slug]
+                return <span key={slug}>{i > 0 && '  ·  '}<a href={`${locale === 'de' ? '/de' : ''}/${slug}/`} style={{ color: 'var(--accent-text)', fontWeight: 600, textDecoration: 'none' }}>{t.footer.groups.services.links[key]}</a></span>
+              })}
+            </p>
           </div>
         </Reveal>
 
