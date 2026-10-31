@@ -1788,6 +1788,10 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 servicesGroup,
                 {
                   heading: t.footer.groups.company.heading, links: [
+                    // Lighthouse round 32 (2026-10-31): the footer, where people look for a
+                    // way to get in touch, had no free check and no pricing link at all.
+                    { label: t.footer.groups.company.links.freeCheck, href: '/#domain-check' },
+                    { label: t.footer.groups.company.links.pricing, href: '/access/' },
                     { label: t.footer.groups.company.links.team, href: '/team/' },
                     { label: t.footer.groups.company.links.careers, href: 'mailto:career@rfi-irfos.com' },
                     { label: t.footer.groups.company.links.ternlang, href: 'https://ternlang.com' },
@@ -1825,7 +1829,10 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                       const target = l.href.replace(/^\/|\/$/g, '')
                       // Data Solutions left the top nav (2026-10-23, product-led-growth flow):
                       // it lives here in the footer and opens the same view as before.
-                      if (target === 'data-solutions') {
+                      // The free check is an in-page anchor on home: plain navigation, the
+                      // mount-time #domain-check jump above handles the scroll.
+                      if (l.href.includes('#')) return
+                      if (target === 'data-solutions' || target === 'access') {
                         e.preventDefault()
                         navigateTo(target)
                         return
