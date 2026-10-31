@@ -21,6 +21,17 @@
 /// rejected the way server-to-server ones are - gated on `VITE_WEB3FORMS_KEY`
 /// reaching the Vite build; see scripts/ship.sh for why that needed fixing
 /// separately (the frontend build runs outside Docker, build-args don't apply).
+
+/// ntfy topic for contact and free-check alerts. ntfy.sh topics are open to anyone who knows the
+/// name, and the old hardcoded name sat in this public repo, so every alert (domain, email,
+/// message) was readable by any subscriber (Lighthouse round 43, 2026-10-31). The name now comes
+/// from the CONTACT_NTFY_TOPIC secret; the old name stays only as a fallback until it is set.
+pub fn contact_ntfy_url() -> String {
+    let topic = std::env::var("CONTACT_NTFY_TOPIC").unwrap_or_default();
+    let topic = if topic.trim().is_empty() { "rfi-irfos-web-contact".to_string() } else { topic.trim().to_string() };
+    format!("https://ntfy.sh/{topic}")
+}
+
 pub async fn web3forms_email(subject: &str, name: &str, email: &str, message: &str) {
     let Ok(key) = std::env::var("VITE_WEB3FORMS_KEY") else { return };
     if key.is_empty() {

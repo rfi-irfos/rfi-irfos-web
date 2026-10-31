@@ -187,7 +187,7 @@ async fn notify_new_request(domain: &str, email: &str) {
     let Ok(client) = reqwest::Client::builder()
         .timeout(std::time::Duration::from_secs(5)).build() else { return };
     let _ = client
-        .post("https://ntfy.sh/rfi-irfos-web-contact")
+        .post(crate::notify::contact_ntfy_url())
         .header("Title", "New initial review request")
         .body(format!("domain={domain} email={email} — approve via POST /api/initial-review/:id/approve"))
         .send().await;
@@ -407,7 +407,7 @@ async fn notify_scan_complete(domain: &str) {
     let Ok(client) = reqwest::Client::builder()
         .timeout(std::time::Duration::from_secs(5)).build() else { return };
     let _ = client
-        .post("https://ntfy.sh/rfi-irfos-web-contact")
+        .post(crate::notify::contact_ntfy_url())
         .header("Title", "Initial review scan complete")
         .body(format!("domain={domain} — signals ready, review before sending a report"))
         .send().await;

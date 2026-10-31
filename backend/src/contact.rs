@@ -144,7 +144,7 @@ pub async fn submit_contact(
     if !cfg!(test) {
         if let Ok(client) = reqwest::Client::builder().timeout(std::time::Duration::from_secs(5)).build() {
             let _ = client
-                .post("https://ntfy.sh/rfi-irfos-web-contact")
+                .post(crate::notify::contact_ntfy_url())
                 .header("Title", "New contact form submission")
                 .body(format!(
                     "{} <{}>{}\n\n{}",
@@ -191,7 +191,7 @@ async fn notify_crm_failure(entry: &ContactEntry, err: &str) {
         entry.name, entry.email,
     );
     let _ = client
-        .post("https://ntfy.sh/rfi-irfos-web-contact")
+        .post(crate::notify::contact_ntfy_url())
         .header("Title", "Contact form CRM relay failed")
         .header("Priority", "urgent")
         .body(body)
