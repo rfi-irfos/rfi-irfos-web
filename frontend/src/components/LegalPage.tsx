@@ -1120,7 +1120,7 @@ function StandardsDE() {
     <p style={P}>Digital Services Act. Pflichten zu systemischen Risiken und illegalen Inhalten. Bei Plattform-Funden direkt beim irischen Digital Services Coordinator (Coimisiún na Meán) eingereicht.</p>
 
     <h2 style={H2}>ISO/IEC 29147 &middot; International</h2>
-    <p style={P}>Offenlegung von Schwachstellen. Unser koordinierter Rahmen folgt dem Standard aus 90-Tage-Embargo und Behördenbenachrichtigung — siehe unsere <a href="/security/" onClick={e => navigate(e, '/security/')} style={A}>Sicherheitsrichtlinie</a> für den Prozess selbst.</p>
+    <p style={P}>Offenlegung von Schwachstellen. Unser koordinierter Rahmen folgt dem Standard aus 90-Tage-Embargo und Behördenbenachrichtigung — siehe unsere <a href="/de/security/" onClick={e => navigate(e, '/de/security/')} style={A}>Sicherheitsrichtlinie</a> für den Prozess selbst.</p>
 
     <h2 style={H2}>ISO/IEC 30111 &middot; International</h2>
     <p style={P}>Prozesse zur Behandlung von Schwachstellen. Der interne Triage-, Validierungs- und Nachverfolgungs-Workflow hinter jeder koordinierten Offenlegung, die wir durchführen.</p>
