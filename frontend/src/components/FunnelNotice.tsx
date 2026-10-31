@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useLocale } from '../hooks/useLocale'
 import { localeHref } from '../lib/localeHref'
+import { beacon } from './sections/shared'
 
 type Link = { href: string; label: string }
 
@@ -57,6 +58,9 @@ const CHECKOUT_RETURN = (() => {
   const url = new URL(window.location.href)
   url.searchParams.delete('checkout')
   window.history.replaceState(null, '', url.pathname + url.search + url.hash)
+  // Lighthouse round 22: a cancel on Stripe's own page was invisible (offer_cancel only
+  // covers the on-site modal), so attempt -> paid had no middle step to explain the gap.
+  beacon('checkout_return:' + v)
   return v
 })()
 

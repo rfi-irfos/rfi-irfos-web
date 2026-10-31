@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useLocale } from '../../hooks/useLocale'
-import { WEB3FORMS_KEY } from './shared'
+import { WEB3FORMS_KEY, beacon } from './shared'
 
 type FormState = 'idle' | 'sending' | 'ok' | 'err' | 'invalid' | 'limited'
 
@@ -25,7 +25,7 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
     // 2026-10-31 (Lighthouse round 20): a typo like "meinefirma" (no dot) came back as a
     // backend 400 and was shown as "something went wrong" plus a mail link, so people
     // read it as our failure. Same check as normalize_domain in review.rs, caught here.
-    if (!domain.replace(/^https?:\/\//, '').split('/')[0].includes('.')) { setState('invalid'); return }
+    if (!domain.replace(/^https?:\/\//, '').split('/')[0].includes('.')) { setState('invalid'); beacon('free_check_invalid:' + variant); return }
     setState('sending')
     try {
       const res = await fetch('/api/initial-review', {
@@ -34,6 +34,9 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
         body: JSON.stringify({ domain, email, consent, botcheck }),
       })
       setState(res.ok ? 'ok' : res.status === 400 ? 'invalid' : res.status === 429 ? 'limited' : 'err')
+      // Lighthouse round 22: the DLT free check is the top of the paid funnel, but it was
+      // the one conversion that never reached web_visits. No domain or email is sent.
+      beacon((res.ok ? 'free_check_submitted:' : 'free_check_error:' + res.status + ':') + variant)
       // The backend already persists the request and pings ntfy regardless of this
       // call, but Web3Forms' free tier rejects the equivalent server-to-server send
       // outright ("Pro plan required" - see notify.rs) - this client-side call is the
@@ -56,6 +59,7 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
       }
     } catch {
       setState('err')
+      beacon('free_check_error:network:' + variant)
     }
   }
 
