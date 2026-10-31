@@ -10,8 +10,8 @@ import type { Content } from './en'
 
 export const DE: Content = {
   meta: {
-    title: 'App-Sicherheitsprüfung & DSGVO-Audit, Agenten · RFI-IRFOS',
-    description: 'App-Sicherheitsprüfung und DSGVO-Audit durch The Squad, menschlich geprüft. Forschungsinstitut in Graz mit öffentlichem Audit-Verzeichnis.',
+    title: 'RFI-IRFOS: Menschlich geführte Multi-Agenten-Sicherheitsuntersuchungen',
+    description: 'The Squad untersucht Apps und Software mit einem Agenten-Team, geführt und geprüft von Menschen. Forschungsinstitut in Graz mit öffentlichem Ledger.',
     dataSolutions: {
       title: 'Evaluationsdaten & Safety-Datensätze für Agenten · RFI-IRFOS',
       description: 'Reproduzierbare Umgebungen, Experten-Trajektorien, Evaluationsdatensätze und Safety-Daten zum Trainieren und Testen von KI-Agenten.',

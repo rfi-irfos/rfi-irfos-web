@@ -103,7 +103,7 @@ export function squadServiceJsonLd(description: string, locale: 'en' | 'de') {
     '@type': 'Service',
     '@id': 'https://rfi-irfos.com/squad/#service',
     name: 'The Squad',
-    serviceType: 'App security and GDPR audit',
+    serviceType: 'Multi-agent security investigation',
     description,
     url: page,
     provider: { '@id': 'https://rfi-irfos.com/#organization' },

@@ -16,11 +16,12 @@ export const EN = {
   // statically; the DE values are what /de/'s prerender snapshot and a client-side
   // locale switch show). Every other route derives its meta from its section copy.
   meta: {
-    // 2026-10-31 buyer-term pass (Search Console: 98 % of clicks were brand searches, the
-    // buyer queries had 0 impressions). Search term first, brand last, title <= 60 chars,
-    // description 120-155 chars. index.html ships these same EN strings statically.
-    title: 'App Security & GDPR Audits, Agents, World Model · RFI-IRFOS',
-    description: 'App security and GDPR audits by The Squad, human-powered multi-agent investigations. Research institute in Graz with a public audit ledger.',
+    // 2026-10-31, second pass (Simeon: "GDPR audits, das weiß net ob das zieht"): the
+    // homepage ranks on brand searches only (rfi irfos, position 1), buyer terms reach us
+    // through the report pages. Brand first, then the flagship line from hero and LinkedIn.
+    // Title <= 60 chars, description 120-155. index.html ships these same EN strings.
+    title: 'RFI-IRFOS: Human-Powered Multi-Agent Security Investigations',
+    description: 'The Squad investigates apps and software with a team of agents, led and checked by people. Research institute in Graz with a public evidence ledger.',
     // Was hardcoded English inside sectionMeta() before 2026-10-24 - the /de/
     // twin shipped the EN description verbatim (caught by check-dist-seo.mjs).
     dataSolutions: {
