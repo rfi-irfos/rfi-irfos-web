@@ -45,8 +45,21 @@ fn dir_slash_target(path: &str, query: Option<&str>, is_dir_with_index: impl Fn(
     })
 }
 
+// Lighthouse round 67 (2026-10-31): /reports/ holds the PDFs but has no index page; 33 visits
+// in 30 days hit it (people trimming a PDF URL to "see all reports") and got a 404. The list
+// they want is the evidence ledger.
+fn listing_target(path: &str) -> Option<&'static str> {
+    match path {
+        "/reports" | "/reports/" => Some("/evidence/"),
+        _ => None,
+    }
+}
+
 async fn redirect_dir_slash(State(static_dir): State<PathBuf>, req: Request, next: Next) -> Response {
     if matches!(*req.method(), Method::GET | Method::HEAD) {
+        if let Some(target) = listing_target(req.uri().path()) {
+            return Redirect::permanent(target).into_response();
+        }
         let target = dir_slash_target(req.uri().path(), req.uri().query(), |p| {
             static_dir.join(p.trim_start_matches('/')).join("index.html").is_file()
         });
@@ -343,6 +356,15 @@ mod tests {
         assert_eq!(dir_slash_target("/api/track", None, |_| true), None);
         assert_eq!(dir_slash_target("/uploads/x", None, |_| true), None);
         assert_eq!(dir_slash_target("/not-a-dir", None, dirs), None);
+    }
+
+    #[test]
+    fn reports_listing_goes_to_the_ledger() {
+        use super::listing_target;
+        assert_eq!(listing_target("/reports/"), Some("/evidence/"));
+        assert_eq!(listing_target("/reports"), Some("/evidence/"));
+        assert_eq!(listing_target("/reports/gemini-2026-report.pdf"), None);
+        assert_eq!(listing_target("/evidence/"), None);
     }
 
     #[test]
