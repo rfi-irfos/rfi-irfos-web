@@ -44,12 +44,12 @@ export function LandingBody({ slug, locale, navigate }: {
       <p style={BODY}>{fill(d.evidenceIntro)}</p>
       <ul style={LIST}>
         {d.evidence.map(e => <li key={e.slug} style={{ marginBottom: 6 }}>
-          <a href={`/evidence/${e.slug}/`} style={A}>{e.label}</a>{': '}{e.note}
+          <a href={`/evidence/${e.slug}/`} style={A} className="rfi-inline-link">{e.label}</a>{': '}{e.note}
         </li>)}
       </ul>
       <p style={BODY}>
         {de ? 'Alle weiteren Untersuchungen stehen im ' : 'Every other investigation is in the '}
-        <a href={localePath(locale, '/evidence/')} style={A}>{de ? 'vollständigen Evidence-Ledger' : 'full evidence ledger'}</a>.
+        <a href={localePath(locale, '/evidence/')} style={A} className="rfi-inline-link">{de ? 'vollständigen Evidence-Ledger' : 'full evidence ledger'}</a>.
       </p>
     </section>
 
@@ -58,11 +58,11 @@ export function LandingBody({ slug, locale, navigate }: {
       {d.startText.map((para, i) => <p key={i} style={BODY}>{para}</p>)}
       <p style={BODY}>
         {de ? 'Pläne und Preise stehen unter ' : 'Plans and prices are on '}
-        <a href={localePath(locale, '/access/')} style={A}>Access</a>
+        <a href={localePath(locale, '/access/')} style={A} className="rfi-inline-link">Access</a>
         {de ? ', die Agenten hinter jeder Prüfung unter ' : ', the agents behind every review on '}
-        <a href={localePath(locale, '/squad/')} style={A}>The Squad</a>
+        <a href={localePath(locale, '/squad/')} style={A} className="rfi-inline-link">The Squad</a>
         {de ? ' und die Rahmenwerke, an denen wir messen, unter ' : ' and the frameworks we measure against on '}
-        <a href={localePath(locale, '/standards/')} onClick={e => navigate(e, localePath(locale, '/standards/'))} style={A}>Standards</a>.
+        <a href={localePath(locale, '/standards/')} onClick={e => navigate(e, localePath(locale, '/standards/'))} style={A} className="rfi-inline-link">Standards</a>.
       </p>
       <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 8px' }}>
         <InitialReviewFlow variant="embedded" />
@@ -83,7 +83,7 @@ export function LandingBody({ slug, locale, navigate }: {
         {de ? 'Mehr dazu auf den Seiten ' : 'More on the pages '}
         {others.map((s, i) => <React.Fragment key={s}>
           {i > 0 && (i === others.length - 1 ? (de ? ' und ' : ' and ') : ', ')}
-          <a href={localePath(locale, `/${s}/`)} onClick={e => navigate(e, localePath(locale, `/${s}/`))} style={A}>{LANDING[s][locale].label}</a>
+          <a href={localePath(locale, `/${s}/`)} onClick={e => navigate(e, localePath(locale, `/${s}/`))} style={A} className="rfi-inline-link">{LANDING[s][locale].label}</a>
         </React.Fragment>)}.
       </p>
     </section>

@@ -890,3 +890,9 @@ h1, h2, h3, .rfi-display {
 }
 .rfi-skip-link:focus { top: 16px; }
 #main-content:focus { outline: none !important; }
+
+/* Inline text links (Simeon 2026-10-31): accent green at rest, underline only on hover or
+   keyboard focus, so the link invites the click without striping the paragraph.
+   !important because LegalPage/LandingPage still pass textDecoration: 'none' inline. */
+.rfi-inline-link { color: var(--accent-text); text-decoration: none; text-underline-offset: 3px; }
+.rfi-inline-link:hover, .rfi-inline-link:focus-visible { text-decoration: underline !important; }

@@ -12,6 +12,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { prefersReducedMotion, beacon, TEAL, Reveal } from './shared'
 import { useLocale } from '../../hooks/useLocale'
+import { localeHref } from '../../lib/localeHref'
 import { AUDIT_HIGHLIGHTS, AUDIT_META, reportSlug } from './TrackRecord'
 
 type ProofEntry = { target: string; market: string; finding: string; reportUrl: string; resolvedDate?: string }
@@ -305,6 +306,15 @@ export function ProofSection({ setReportModal }: { setReportModal: (url: string)
         <Reveal delay={1}>
           <ProofCarousel entries={entries} onOpen={setReportModal} />
         </Reveal>
+        {/* Return channel (Lighthouse R108) + free check (R115), one sentence at the very end of
+            the page (Simeon 2026-10-31: under the report showcase, not under the ledger intro). */}
+        <p style={{ color: 'var(--text2)', margin: '48px auto 0', maxWidth: 720, textAlign: 'center', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)' }}>
+          <a href={`${localeHref('/', locale)}#domain-check`} className="rfi-inline-link">{t.trackRecord.follow.freeCheck}</a>
+          {t.trackRecord.follow.label}:{' '}
+          <a href="/evidence/feed.xml" className="rfi-inline-link">{t.trackRecord.follow.feed}</a>{' · '}
+          <a href="https://www.linkedin.com/company/rfi-irfos" className="rfi-inline-link">LinkedIn</a>{' · '}
+          <a href="https://www.youtube.com/@rfi-irfos-official" className="rfi-inline-link">YouTube</a>
+        </p>
       </div>
     </section>
   )

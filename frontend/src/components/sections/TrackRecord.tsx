@@ -2846,14 +2846,6 @@ export function TrackRecordSection({
           <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 12, maxWidth: 720, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)' }}>
             {t.trackRecord.paragraph}
           </p>
-          {/* Return channel (Lighthouse R108) + free check (R115) as one sentence, not separate link rows. */}
-          <p style={{ color: 'var(--text2)', margin: '0 0 40px', fontSize: 'var(--fs-body)' }}>
-            <a href={`${localeHref('/', locale)}#domain-check`} style={{ color: 'var(--accent-text)' }}>{t.trackRecord.follow.freeCheck}</a>
-            {t.trackRecord.follow.label}:{' '}
-            <a href="/evidence/feed.xml" style={{ color: 'var(--accent-text)' }}>{t.trackRecord.follow.feed}</a>{' · '}
-            <a href="https://www.linkedin.com/company/rfi-irfos" style={{ color: 'var(--accent-text)' }}>LinkedIn</a>{' · '}
-            <a href="https://www.youtube.com/@rfi-irfos-official" style={{ color: 'var(--accent-text)' }}>YouTube</a>
-          </p>
         </div>
         {/* Permanent disclosure ledger — KPI row + search/table panel now share
             ONE outer frame (live feedback 2026-08-12: the two used to be

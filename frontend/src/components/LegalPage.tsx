@@ -7,7 +7,7 @@ const A = { color: 'var(--accent-text)', textDecoration: 'none' }
 
 // Lighthouse R110/R112: FAQ, Methodology and Standards ended with no link in <main>, a dead end for readers who were convinced.
 function NextSteps({ de, locale }: { de: boolean; locale: 'en' | 'de' }) {
-  const l = (href: string, label: string) => <a href={href} style={A}>{label}</a>
+  const l = (href: string, label: string) => <a href={href} style={A} className="rfi-inline-link">{label}</a>
   return de ? (
     <p style={{ ...P, marginTop: 32 }}>
       Wenn Sie das an Ihrem eigenen Produkt sehen wollen, {l(`${localePath(locale, '/')}#domain-check`, 'starten Sie den Gratis-Check')}.
@@ -374,8 +374,8 @@ function ImpressumEN() {
       <strong style={{ color: '#e8e8f0' }}>Research Focus Institute — Interdisciplinary Research Facility for Open Sciences</strong><br />
       Short name: RFI-IRFOS<br />
       Elisabethinergasse 25/10, 8020 Graz, Austria<br />
-      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a><br />
-      Website: <a href="https://rfi-irfos.com" style={A}>rfi-irfos.com</a>
+      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a><br />
+      Website: <a href="https://rfi-irfos.com" style={A} className="rfi-inline-link">rfi-irfos.com</a>
     </p>
 
     <h2 style={H2}>What We Actually Do</h2>
@@ -436,10 +436,10 @@ function ImpressumEN() {
       We publish our research and code openly. You can find us at:
     </p>
     <ul style={{ ...P, paddingLeft: 18, marginBottom: 16 }}>
-      <li><strong style={{ color: '#e8e8f0' }}>OSF:</strong> <a href="https://osf.io/rzvyg" target="_blank" rel="noopener" style={A}>osf.io/rzvyg</a> — all research publications and preprints.</li>
-      <li><strong style={{ color: '#e8e8f0' }}>GitHub:</strong> <a href="https://github.com/rfi-irfos" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos</a> — open-source tools, models, and audit repositories.</li>
-      <li><strong style={{ color: '#e8e8f0' }}>LinkedIn:</strong> <a href="https://linkedin.com/company/rfi-irfos" target="_blank" rel="noopener" style={A}>RFI-IRFOS</a> — institute presence and announcements.</li>
-      <li><strong style={{ color: '#e8e8f0' }}>YouTube:</strong> <a href="https://www.youtube.com/@rfi-irfos-official" target="_blank" rel="noopener" style={A}>RFI-IRFOS Official</a> — videos and product films.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>OSF:</strong> <a href="https://osf.io/rzvyg" target="_blank" rel="noopener" style={A} className="rfi-inline-link">osf.io/rzvyg</a> — all research publications and preprints.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>GitHub:</strong> <a href="https://github.com/rfi-irfos" target="_blank" rel="noopener" style={A} className="rfi-inline-link">github.com/rfi-irfos</a> — open-source tools, models, and audit repositories.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>LinkedIn:</strong> <a href="https://linkedin.com/company/rfi-irfos" target="_blank" rel="noopener" style={A} className="rfi-inline-link">RFI-IRFOS</a> — institute presence and announcements.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>YouTube:</strong> <a href="https://www.youtube.com/@rfi-irfos-official" target="_blank" rel="noopener" style={A} className="rfi-inline-link">RFI-IRFOS Official</a> — videos and product films.</li>
     </ul>
   </>
 }
@@ -458,8 +458,8 @@ function ImpressumDE() {
       <strong style={{ color: '#e8e8f0' }}>Research Focus Institute — Interdisciplinary Research Facility for Open Sciences</strong><br />
       Kurzbezeichnung: RFI-IRFOS<br />
       Elisabethinergasse 25/10, 8020 Graz, Österreich<br />
-      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a><br />
-      Website: <a href="https://rfi-irfos.com" style={A}>rfi-irfos.com</a>
+      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a><br />
+      Website: <a href="https://rfi-irfos.com" style={A} className="rfi-inline-link">rfi-irfos.com</a>
     </p>
 
     <h2 style={H2}>Was wir tatsächlich tun</h2>
@@ -520,10 +520,10 @@ function ImpressumDE() {
       Wir veröffentlichen unsere Forschung und unseren Code offen. Sie finden uns unter:
     </p>
     <ul style={{ ...P, paddingLeft: 18, marginBottom: 16 }}>
-      <li><strong style={{ color: '#e8e8f0' }}>OSF:</strong> <a href="https://osf.io/rzvyg" target="_blank" rel="noopener" style={A}>osf.io/rzvyg</a> — sämtliche Forschungspublikationen und Preprints.</li>
-      <li><strong style={{ color: '#e8e8f0' }}>GitHub:</strong> <a href="https://github.com/rfi-irfos" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos</a> — Open-Source-Werkzeuge, Modelle und Audit-Repositories.</li>
-      <li><strong style={{ color: '#e8e8f0' }}>LinkedIn:</strong> <a href="https://linkedin.com/company/rfi-irfos" target="_blank" rel="noopener" style={A}>RFI-IRFOS</a> — institutionelle Präsenz und Ankündigungen.</li>
-      <li><strong style={{ color: '#e8e8f0' }}>YouTube:</strong> <a href="https://www.youtube.com/@rfi-irfos-official" target="_blank" rel="noopener" style={A}>RFI-IRFOS Official</a> — Videos und Produktfilme.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>OSF:</strong> <a href="https://osf.io/rzvyg" target="_blank" rel="noopener" style={A} className="rfi-inline-link">osf.io/rzvyg</a> — sämtliche Forschungspublikationen und Preprints.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>GitHub:</strong> <a href="https://github.com/rfi-irfos" target="_blank" rel="noopener" style={A} className="rfi-inline-link">github.com/rfi-irfos</a> — Open-Source-Werkzeuge, Modelle und Audit-Repositories.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>LinkedIn:</strong> <a href="https://linkedin.com/company/rfi-irfos" target="_blank" rel="noopener" style={A} className="rfi-inline-link">RFI-IRFOS</a> — institutionelle Präsenz und Ankündigungen.</li>
+      <li><strong style={{ color: '#e8e8f0' }}>YouTube:</strong> <a href="https://www.youtube.com/@rfi-irfos-official" target="_blank" rel="noopener" style={A} className="rfi-inline-link">RFI-IRFOS Official</a> — Videos und Produktfilme.</li>
     </ul>
   </>
 }
@@ -546,15 +546,15 @@ function DatenschutzEN() {
     <p style={P}>
       RFI-IRFOS (Research Focus Institute — Interdisciplinary Research Facility for Open Sciences)<br />
       Elisabethinergasse 25/10, 8020 Graz, Austria<br />
-      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a>
+      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a>
     </p>
 
     <h2 style={H2}>Data We Collect</h2>
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>Server logs:</strong> IP address, access timestamp, URL, HTTP status code — collected by Fly.io (Superfly, Inc., USA), which hosts this website and its API, as an unavoidable side effect of any request reaching a web server anywhere.<br />
-      <strong style={{ color: '#e8e8f0' }}>Contact form:</strong> name, email, subject, message — submitted via Web3Forms (<a href="https://web3forms.com/privacy" target="_blank" rel="noopener" style={A}>web3forms.com/privacy</a>), only if you fill it in and press send.<br />
+      <strong style={{ color: '#e8e8f0' }}>Contact form:</strong> name, email, subject, message — submitted via Web3Forms (<a href="https://web3forms.com/privacy" target="_blank" rel="noopener" style={A} className="rfi-inline-link">web3forms.com/privacy</a>), only if you fill it in and press send.<br />
       <strong style={{ color: '#e8e8f0' }}>Free check (domain check):</strong> the domain and the work email you enter, plus the time of the request — stored in our own database on Fly.io so we can run the check and send you the result. Your IP address is used only in memory to limit repeated submissions and is not stored. On submission we receive an internal push alert and an email copy (via ntfy.sh and Web3Forms), and you receive one confirmation email, sent through Brevo.<br />
-      <strong style={{ color: '#e8e8f0' }}>Payment data:</strong> for purchases made through the website, payment data (card details, email, name) is processed by <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> (354 Oyster Point Blvd, South San Francisco, CA 94080, USA). RFI-IRFOS never receives or stores your card data. Stripe's privacy policy: <a href="https://stripe.com/privacy" target="_blank" rel="noopener" style={A}>stripe.com/privacy</a>.<br />
+      <strong style={{ color: '#e8e8f0' }}>Payment data:</strong> for purchases made through the website, payment data (card details, email, name) is processed by <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> (354 Oyster Point Blvd, South San Francisco, CA 94080, USA). RFI-IRFOS never receives or stores your card data. Stripe's privacy policy: <a href="https://stripe.com/privacy" target="_blank" rel="noopener" style={A} className="rfi-inline-link">stripe.com/privacy</a>.<br />
       <strong style={{ color: '#e8e8f0' }}>Visit statistics:</strong> one self-hosted tracking pixel (Lighthouse, Graz) that logs a page view and a referrer, on every page including this one. On this legal/security page family specifically, we also log, in aggregate only, whether a visit scrolled all the way to the footer at the bottom of the page, the same in-memory, no-cookie mechanism as the section counters described in "Cookies" below, applied here to answer one question: are these pages actually being read to the end. On the homepage specifically, we also log, once per visit and in aggregate only, whether your browser's developer tools appear to be open (a passive window-size check, no timing tricks) — this exists purely because we left a message in the console for anyone who looks, and we're curious how often anyone actually does. No cookie, no device fingerprint, no cross-site identifier. See "Cookies" below for the unglamorous truth about what that pixel actually is.
     </p>
     <p style={P}>
@@ -564,7 +564,7 @@ function DatenschutzEN() {
     <h2 style={H2}>Security Log (Honeypot)</h2>
     <p style={P}>
       This site contains decoy paths that no ordinary visitor ever requests (for example <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>/.env</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>/wp-login.php</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>/phpmyadmin</code>), plus detection of attack tools and injection attempts (SQL injection, script injection, Log4Shell, path traversal, unusual HTTP methods). Whoever triggers one of these is logged with: full IP address, time, HTTP method, requested path, user agent, and an approximate location and network provider derived from the IP address. This is self-defence and cyber defence: we need to know where an attack on our systems came from, which decoy was touched, and whether the same source returns.<br />
-      <strong style={{ color: '#e8e8f0' }}>Automatic block:</strong> repeated or serious hits block the IP address for 24 hours. Report a mistake to <a href="mailto:security@rfi-irfos.com" style={A}>security@rfi-irfos.com</a> and we lift the block.<br />
+      <strong style={{ color: '#e8e8f0' }}>Automatic block:</strong> repeated or serious hits block the IP address for 24 hours. Report a mistake to <a href="mailto:security@rfi-irfos.com" style={A} className="rfi-inline-link">security@rfi-irfos.com</a> and we lift the block.<br />
       <strong style={{ color: '#e8e8f0' }}>Alert:</strong> each hit is forwarded to an internal push channel (ntfy.sh) so the team sees it live. The channel name is secret.<br />
       <strong style={{ color: '#e8e8f0' }}>Location lookup:</strong> the IP address of such a hit (and only of such a hit) is sent to the lookup service ipwho.is to find the approximate location and provider.<br />
       <strong style={{ color: '#e8e8f0' }}>Retention:</strong> 30 days, then automatic deletion. Longer only if a specific incident requires it for a report to an authority or for legal defence.
@@ -613,7 +613,7 @@ function DatenschutzEN() {
       </code>
     </div>
     <p style={P}>
-      What lands in our database from that request: the page path, the referring domain normalized into a channel bucket ("organic search", "direct", "referral", "linkedin", and so on, so we can tell a board member where visitors come from), and the site tag. That's it, in full: <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>path, source, referrer, utm_source, utm_medium, utm_campaign, site</code>. No IP address column exists in that table. No visitor-ID field is ever populated by this site's copy of the pixel, so two visits from the same person land as two independent, unlinked rows, not one growing profile. Full source, backend included: <a href="https://github.com/rfi-irfos/rfi-irfos-web" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos/rfi-irfos-web</a>. We are not asking you to trust a sentence, we are pointing at the code that either does or doesn't match it.
+      What lands in our database from that request: the page path, the referring domain normalized into a channel bucket ("organic search", "direct", "referral", "linkedin", and so on, so we can tell a board member where visitors come from), and the site tag. That's it, in full: <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>path, source, referrer, utm_source, utm_medium, utm_campaign, site</code>. No IP address column exists in that table. No visitor-ID field is ever populated by this site's copy of the pixel, so two visits from the same person land as two independent, unlinked rows, not one growing profile. Full source, backend included: <a href="https://github.com/rfi-irfos/rfi-irfos-web" target="_blank" rel="noopener" style={A} className="rfi-inline-link">github.com/rfi-irfos/rfi-irfos-web</a>. We are not asking you to trust a sentence, we are pointing at the code that either does or doesn't match it.
     </p>
     <p style={P}>
       One more signal lands the same way: which section of this single-scrolling-page site came into view during your visit (the disclosure ledger, pricing, the tip-submission form, and so on), stored as one more anonymous <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>section</code> column on the same table. This is a hit-counter, not a viewer log — "the ledger section was seen 214 times today," never "visitor X looked at the ledger." The page keeps a plain JavaScript variable in memory so scrolling up and down past a section doesn't count it twice; that variable is never written to a cookie, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>localStorage</code>, or <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>sessionStorage</code>, and is gone the instant the page reloads. Same reasoning as the pixel above: nothing is stored on your device, so the ePrivacy consent trigger never applies, and nothing here identifies you, so it isn't personal data to begin with.
@@ -639,11 +639,11 @@ function DatenschutzEN() {
 
     <h2 style={H2}>Your Rights (Art. 15–21 GDPR)</h2>
     <p style={P}>
-      Access, rectification, erasure, restriction, data portability, and objection, all of it, at: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a>. Given what little we actually hold on any one person, most of these requests take us minutes, not weeks, to resolve.
+      Access, rectification, erasure, restriction, data portability, and objection, all of it, at: <a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a>. Given what little we actually hold on any one person, most of these requests take us minutes, not weeks, to resolve.
     </p>
 
     <h2 style={H2}>Right to Lodge a Complaint</h2>
-    <p style={P}>Austrian Data Protection Authority (Datenschutzbehörde): <a href="https://www.dsb.gv.at" target="_blank" rel="noopener" style={A}>dsb.gv.at</a></p>
+    <p style={P}>Austrian Data Protection Authority (Datenschutzbehörde): <a href="https://www.dsb.gv.at" target="_blank" rel="noopener" style={A} className="rfi-inline-link">dsb.gv.at</a></p>
 
     <h2 style={H2}>Changes to This Policy</h2>
     <p style={P}>Any change to what we actually collect gets reflected here first, with the "last updated" date above moved forward. We track changes to this page the same way we would expect anyone else to.</p>
@@ -666,15 +666,15 @@ function DatenschutzDE() {
     <p style={P}>
       RFI-IRFOS (Research Focus Institute — Interdisciplinary Research Facility for Open Sciences)<br />
       Elisabethinergasse 25/10, 8020 Graz, Österreich<br />
-      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a>
+      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a>
     </p>
 
     <h2 style={H2}>Welche Daten wir erheben</h2>
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>Serverprotokolle:</strong> IP-Adresse, Zugriffszeitpunkt, URL, HTTP-Statuscode — erhoben von Fly.io (Superfly, Inc., USA), das diese Website und ihre API hostet, als unvermeidbarer Nebeneffekt jeder Anfrage, die irgendeinen Webserver erreicht.<br />
-      <strong style={{ color: '#e8e8f0' }}>Kontaktformular:</strong> Name, E-Mail, Betreff, Nachricht — übermittelt über Web3Forms (<a href="https://web3forms.com/privacy" target="_blank" rel="noopener" style={A}>web3forms.com/privacy</a>), nur wenn Sie es ausfüllen und absenden.<br />
+      <strong style={{ color: '#e8e8f0' }}>Kontaktformular:</strong> Name, E-Mail, Betreff, Nachricht — übermittelt über Web3Forms (<a href="https://web3forms.com/privacy" target="_blank" rel="noopener" style={A} className="rfi-inline-link">web3forms.com/privacy</a>), nur wenn Sie es ausfüllen und absenden.<br />
       <strong style={{ color: '#e8e8f0' }}>Gratis-Check (Domain-Check):</strong> die eingegebene Domain und die geschäftliche E-Mail-Adresse sowie der Zeitpunkt der Anfrage — gespeichert in unserer eigenen Datenbank bei Fly.io, damit wir den Check durchführen und Ihnen das Ergebnis schicken können. Ihre IP-Adresse wird nur im Arbeitsspeicher genutzt, um wiederholte Absendungen zu begrenzen, und nicht gespeichert. Beim Absenden erhalten wir einen internen Push-Hinweis und eine E-Mail-Kopie (über ntfy.sh und Web3Forms), und Sie erhalten eine Bestätigungsmail, versendet über Brevo.<br />
-      <strong style={{ color: '#e8e8f0' }}>Zahlungsdaten:</strong> Für Käufe über die Website werden Zahlungsdaten (Kartendetails, E-Mail, Name) von <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> verarbeitet (354 Oyster Point Blvd, South San Francisco, CA 94080, USA). RFI-IRFOS erhält oder speichert Ihre Kartendaten nie. Datenschutzerklärung von Stripe: <a href="https://stripe.com/privacy" target="_blank" rel="noopener" style={A}>stripe.com/privacy</a>.<br />
+      <strong style={{ color: '#e8e8f0' }}>Zahlungsdaten:</strong> Für Käufe über die Website werden Zahlungsdaten (Kartendetails, E-Mail, Name) von <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> verarbeitet (354 Oyster Point Blvd, South San Francisco, CA 94080, USA). RFI-IRFOS erhält oder speichert Ihre Kartendaten nie. Datenschutzerklärung von Stripe: <a href="https://stripe.com/privacy" target="_blank" rel="noopener" style={A} className="rfi-inline-link">stripe.com/privacy</a>.<br />
       <strong style={{ color: '#e8e8f0' }}>Besuchsstatistik:</strong> ein selbst gehosteter Tracking-Pixel (Lighthouse, Graz), der einen Seitenaufruf und einen Referrer protokolliert, auf jeder Seite einschließlich dieser. Speziell auf dieser Familie von Rechts-/Sicherheitsseiten protokollieren wir zusätzlich, nur aggregiert, ob ein Besuch bis zur Fußzeile am Ende der Seite gescrollt hat — derselbe speicherinterne, cookielose Mechanismus wie die im Abschnitt "Cookies" unten beschriebenen Abschnittszähler, hier angewendet, um eine Frage zu beantworten: Werden diese Seiten tatsächlich bis zum Ende gelesen? Speziell auf der Startseite protokollieren wir außerdem, einmal pro Besuch und nur aggregiert, ob die Entwicklertools Ihres Browsers offenbar geöffnet sind (eine passive Fenstergrößen-Prüfung, keine Timing-Tricks) — das existiert einzig, weil wir in der Konsole eine Nachricht für alle hinterlassen haben, die dort nachsehen, und uns interessiert, wie oft das tatsächlich jemand tut. Kein Cookie, kein Geräte-Fingerprint, kein websiteübergreifender Identifikator. Die unglamouröse Wahrheit darüber, was dieser Pixel tatsächlich ist, steht unter "Cookies" weiter unten.
     </p>
     <p style={P}>
@@ -684,7 +684,7 @@ function DatenschutzDE() {
     <h2 style={H2}>Sicherheitsprotokoll (Honeypot)</h2>
     <p style={P}>
       Diese Website enthält Köderpfade, die kein gewöhnlicher Besucher aufruft (zum Beispiel <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>/.env</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>/wp-login.php</code>, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>/phpmyadmin</code>), dazu eine Erkennung von Angriffswerkzeugen und Einschleusungsversuchen (SQL-Injection, Script-Einschleusung, Log4Shell, Pfad-Traversal, ungewöhnliche HTTP-Methoden). Wer so etwas auslöst, wird protokolliert: vollständige IP-Adresse, Zeitpunkt, HTTP-Methode, aufgerufener Pfad, User-Agent sowie ein aus der IP-Adresse abgeleiteter ungefährer Standort und Netzbetreiber. Das ist Selbstschutz und Cyberabwehr: Wir müssen wissen, woher ein Angriff auf unsere Systeme kam, welcher Köder berührt wurde und ob dieselbe Quelle wiederkehrt.<br />
-      <strong style={{ color: '#e8e8f0' }}>Automatische Sperre:</strong> wiederholte oder schwere Treffer sperren die IP-Adresse für 24 Stunden. Einen Irrtum melden Sie an <a href="mailto:security@rfi-irfos.com" style={A}>security@rfi-irfos.com</a>, dann heben wir die Sperre auf.<br />
+      <strong style={{ color: '#e8e8f0' }}>Automatische Sperre:</strong> wiederholte oder schwere Treffer sperren die IP-Adresse für 24 Stunden. Einen Irrtum melden Sie an <a href="mailto:security@rfi-irfos.com" style={A} className="rfi-inline-link">security@rfi-irfos.com</a>, dann heben wir die Sperre auf.<br />
       <strong style={{ color: '#e8e8f0' }}>Alarm:</strong> Jeder Treffer geht an einen internen Push-Kanal (ntfy.sh), damit das Team ihn sofort sieht. Der Kanalname ist geheim.<br />
       <strong style={{ color: '#e8e8f0' }}>Standortabfrage:</strong> Die IP-Adresse eines solchen Treffers (und nur eines solchen Treffers) geht an den Abfragedienst ipwho.is, um ungefähren Standort und Anbieter zu ermitteln.<br />
       <strong style={{ color: '#e8e8f0' }}>Speicherdauer:</strong> 30 Tage, danach automatische Löschung. Länger nur, wenn ein konkreter Vorfall es für eine Meldung an eine Behörde oder zur Rechtsverteidigung erfordert.
@@ -733,7 +733,7 @@ function DatenschutzDE() {
       </code>
     </div>
     <p style={P}>
-      Was durch diese Anfrage in unserer Datenbank landet: der Seitenpfad, die verweisende Domain normalisiert auf einen Kanal ("organische Suche", "direkt", "Referral", "linkedin" und so weiter, damit wir einem Vorstandsmitglied sagen können, woher Besucher kommen) und das Site-Tag. Das ist alles, vollständig: <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>path, source, referrer, utm_source, utm_medium, utm_campaign, site</code>. Es gibt in dieser Tabelle keine IP-Adress-Spalte. Kein Besucher-ID-Feld wird von dieser Pixel-Kopie je befüllt, daher landen zwei Besuche derselben Person als zwei unabhängige, nicht verknüpfte Zeilen, nicht als ein wachsendes Profil. Vollständiger Quellcode, Backend inklusive: <a href="https://github.com/rfi-irfos/rfi-irfos-web" target="_blank" rel="noopener" style={A}>github.com/rfi-irfos/rfi-irfos-web</a>. Wir bitten Sie nicht, einem Satz zu vertrauen, wir zeigen auf den Code, der entweder dazu passt oder nicht.
+      Was durch diese Anfrage in unserer Datenbank landet: der Seitenpfad, die verweisende Domain normalisiert auf einen Kanal ("organische Suche", "direkt", "Referral", "linkedin" und so weiter, damit wir einem Vorstandsmitglied sagen können, woher Besucher kommen) und das Site-Tag. Das ist alles, vollständig: <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>path, source, referrer, utm_source, utm_medium, utm_campaign, site</code>. Es gibt in dieser Tabelle keine IP-Adress-Spalte. Kein Besucher-ID-Feld wird von dieser Pixel-Kopie je befüllt, daher landen zwei Besuche derselben Person als zwei unabhängige, nicht verknüpfte Zeilen, nicht als ein wachsendes Profil. Vollständiger Quellcode, Backend inklusive: <a href="https://github.com/rfi-irfos/rfi-irfos-web" target="_blank" rel="noopener" style={A} className="rfi-inline-link">github.com/rfi-irfos/rfi-irfos-web</a>. Wir bitten Sie nicht, einem Satz zu vertrauen, wir zeigen auf den Code, der entweder dazu passt oder nicht.
     </p>
     <p style={P}>
       Ein weiteres Signal landet auf demselben Weg: welcher Abschnitt dieser einzelnen, scrollenden Seite während Ihres Besuchs sichtbar wurde (das Offenlegungsregister, Preise, das Hinweis-Formular und so weiter), gespeichert als eine weitere anonyme <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>section</code>-Spalte in derselben Tabelle. Das ist ein Zähler, kein Betrachtungsprotokoll — "der Registerabschnitt wurde heute 214 Mal gesehen", niemals "Besucher X hat sich das Register angesehen." Die Seite hält eine einfache JavaScript-Variable im Speicher, damit Hoch- und Herunterscrollen über einen Abschnitt ihn nicht doppelt zählt; diese Variable wird nie in ein Cookie, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>localStorage</code> oder <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>sessionStorage</code> geschrieben und ist beim nächsten Laden der Seite sofort weg. Dieselbe Begründung wie beim Pixel oben: Auf Ihrem Gerät wird nichts gespeichert, daher greift der ePrivacy-Einwilligungstatbestand nie, und nichts davon identifiziert Sie, daher sind es von vornherein keine personenbezogenen Daten.
@@ -759,11 +759,11 @@ function DatenschutzDE() {
 
     <h2 style={H2}>Ihre Rechte (Art. 15–21 DSGVO)</h2>
     <p style={P}>
-      Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch, alles davon, unter: <a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a>. Angesichts dessen, wie wenig wir tatsächlich über eine einzelne Person vorhalten, erledigen wir die meisten dieser Anfragen in Minuten, nicht in Wochen.
+      Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch, alles davon, unter: <a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a>. Angesichts dessen, wie wenig wir tatsächlich über eine einzelne Person vorhalten, erledigen wir die meisten dieser Anfragen in Minuten, nicht in Wochen.
     </p>
 
     <h2 style={H2}>Beschwerderecht</h2>
-    <p style={P}>Österreichische Datenschutzbehörde: <a href="https://www.dsb.gv.at" target="_blank" rel="noopener" style={A}>dsb.gv.at</a></p>
+    <p style={P}>Österreichische Datenschutzbehörde: <a href="https://www.dsb.gv.at" target="_blank" rel="noopener" style={A} className="rfi-inline-link">dsb.gv.at</a></p>
 
     <h2 style={H2}>Änderungen dieser Erklärung</h2>
     <p style={P}>Jede Änderung dessen, was wir tatsächlich erheben, wird zuerst hier abgebildet, mit vorgezogenem "Letzte Aktualisierung"-Datum oben. Wir verfolgen Änderungen an dieser Seite nach demselben Maßstab, den wir von jedem anderen erwarten würden.</p>
@@ -834,7 +834,7 @@ function AGBEN() {
     <p style={P}>Should any provision of these Terms be or become invalid, the validity of the remaining provisions shall remain unaffected.</p>
 
     <h2 style={H2}>13. Contact</h2>
-    <p style={P}><a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a></p>
+    <p style={P}><a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a></p>
 
     <h2 style={H2}>14. Use of Revenue</h2>
     <p style={P}>
@@ -899,7 +899,7 @@ function AGBDE() {
     <p style={P}>Sollte eine Bestimmung dieser Bedingungen unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen davon unberührt.</p>
 
     <h2 style={H2}>13. Kontakt</h2>
-    <p style={P}><a href="mailto:rfi.irfos@gmail.com" style={A}>rfi.irfos@gmail.com</a></p>
+    <p style={P}><a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a></p>
 
     <h2 style={H2}>14. Verwendung der Einnahmen</h2>
     <p style={P}>
@@ -953,7 +953,7 @@ function SecurityEN() {
 
     <h2 style={H2}>Reporting a Vulnerability</h2>
     <p style={P}>
-      E-Mail: <a href="mailto:security@rfi-irfos.com" style={A}>security@rfi-irfos.com</a><br />
+      E-Mail: <a href="mailto:security@rfi-irfos.com" style={A} className="rfi-inline-link">security@rfi-irfos.com</a><br />
       PGP key available on request. We acknowledge all reports within 48 hours — from a human, not a ticket number.
     </p>
 
@@ -963,7 +963,7 @@ function SecurityEN() {
       <strong style={{ color: '#e8e8f0' }}>Lawful basis only.</strong> We accept findings obtained through publicly accessible information, your own devices, or software you're authorized to test — the same standard our own root-level code analysis holds to. If what you send us shows evidence of unauthorized access to a system you don't control, we do not publish or credit it under this program. We report it directly to the relevant authorities, the same way we'd expect to be treated if the roles were reversed.
     </p>
     <p style={P}>
-      <strong style={{ color: '#e8e8f0' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous — exactly as set out in our <a href="/agb/" style={A}>terms</a>. No call, no meeting. Everything stays written, same as every disclosure we send.
+      <strong style={{ color: '#e8e8f0' }}>Credit, your choice.</strong> Full name, alias, or fully anonymous — exactly as set out in our <a href="/agb/" style={A} className="rfi-inline-link">terms</a>. No call, no meeting. Everything stays written, same as every disclosure we send.
     </p>
 
     <h2 style={H2}>Scope</h2>
@@ -1032,7 +1032,7 @@ function SecurityDE() {
 
     <h2 style={H2}>Eine Schwachstelle melden</h2>
     <p style={P}>
-      E-Mail: <a href="mailto:security@rfi-irfos.com" style={A}>security@rfi-irfos.com</a><br />
+      E-Mail: <a href="mailto:security@rfi-irfos.com" style={A} className="rfi-inline-link">security@rfi-irfos.com</a><br />
       PGP-Schlüssel auf Anfrage verfügbar. Wir bestätigen jede Meldung innerhalb von 48 Stunden — von einem Menschen, nicht einer Ticketnummer.
     </p>
 
@@ -1042,7 +1042,7 @@ function SecurityDE() {
       <strong style={{ color: '#e8e8f0' }}>Nur rechtmäßige Grundlage.</strong> Wir akzeptieren Funde, die über öffentlich zugängliche Informationen, Ihre eigenen Geräte oder Software, zu deren Test Sie berechtigt sind, gewonnen wurden — derselbe Maßstab, an den sich auch unsere eigene Root-Level-Codeanalyse hält. Zeigt das, was Sie uns schicken, Hinweise auf unbefugten Zugriff auf ein System, das Sie nicht kontrollieren, veröffentlichen oder kreditieren wir es unter diesem Programm nicht. Wir melden es direkt an die zuständigen Behörden, genauso, wie wir behandelt werden wollten, wenn die Rollen vertauscht wären.
     </p>
     <p style={P}>
-      <strong style={{ color: '#e8e8f0' }}>Namensnennung, Ihre Wahl.</strong> Vollständiger Name, Alias oder vollständig anonym — genau wie in unseren <a href="/de/agb/" style={A}>AGB</a> festgelegt. Kein Anruf, kein Treffen. Alles bleibt schriftlich, wie bei jeder Offenlegung, die wir versenden.
+      <strong style={{ color: '#e8e8f0' }}>Namensnennung, Ihre Wahl.</strong> Vollständiger Name, Alias oder vollständig anonym — genau wie in unseren <a href="/de/agb/" style={A} className="rfi-inline-link">AGB</a> festgelegt. Kein Anruf, kein Treffen. Alles bleibt schriftlich, wie bei jeder Offenlegung, die wir versenden.
     </p>
 
     <h2 style={H2}>Geltungsbereich</h2>
@@ -1090,7 +1090,7 @@ function StandardsEN() {
       The EU directive for a high common level of cybersecurity, transposed into Austrian law as <strong style={{ color: '#e8e8f0' }}>NISG 2026</strong>. It mandates state-of-the-art risk management, strict incident reporting to national authorities, and <strong style={{ color: '#e8e8f0' }}>personal liability for company management</strong>. In Austria it directly impacts roughly 4,000 essential and important entities, plus an estimated 50,000 supply-chain partners.
     </p>
     <p style={P}>
-      In practice this covers three things: <strong style={{ color: '#e8e8f0' }}>risk management</strong> (cryptography, access control, supply-chain security), <strong style={{ color: '#e8e8f0' }}>incident response</strong> (mandatory reporting within strict timeframes), and <strong style={{ color: '#e8e8f0' }}>corporate accountability</strong> (management personally liable for non-compliance). Scope: ~4,000 entities directly, ~50,000 supply-chain partners — see <a href="https://www.nis.gv.at" target="_blank" rel="noopener" style={A}>nis.gv.at</a>.
+      In practice this covers three things: <strong style={{ color: '#e8e8f0' }}>risk management</strong> (cryptography, access control, supply-chain security), <strong style={{ color: '#e8e8f0' }}>incident response</strong> (mandatory reporting within strict timeframes), and <strong style={{ color: '#e8e8f0' }}>corporate accountability</strong> (management personally liable for non-compliance). Scope: ~4,000 entities directly, ~50,000 supply-chain partners — see <a href="https://www.nis.gv.at" target="_blank" rel="noopener" style={A} className="rfi-inline-link">nis.gv.at</a>.
     </p>
 
     <h2 style={H2}>GDPR &middot; EU 2016/679</h2>
@@ -1103,7 +1103,7 @@ function StandardsEN() {
     <p style={P}>Digital Services Act. Systemic-risk and illegal-content obligations. Filed directly with the Irish Digital Services Coordinator (Coimisiún na Meán) on platform findings.</p>
 
     <h2 style={H2}>ISO/IEC 29147 &middot; International</h2>
-    <p style={P}>Vulnerability disclosure. Our coordinated framework follows the 90-day embargo + regulator-notification standard — see our <a href="/security/" onClick={e => navigate(e, '/security/')} style={A}>Security Policy</a> for the process itself.</p>
+    <p style={P}>Vulnerability disclosure. Our coordinated framework follows the 90-day embargo + regulator-notification standard — see our <a href="/security/" onClick={e => navigate(e, '/security/')} style={A} className="rfi-inline-link">Security Policy</a> for the process itself.</p>
 
     <h2 style={H2}>ISO/IEC 30111 &middot; International</h2>
     <p style={P}>Vulnerability handling processes. The internal triage, validation, and remediation-tracking workflow behind every coordinated disclosure we run.</p>
@@ -1139,7 +1139,7 @@ function StandardsDE() {
       Die EU-Richtlinie für ein hohes gemeinsames Cybersicherheitsniveau, umgesetzt in österreichisches Recht als <strong style={{ color: '#e8e8f0' }}>NISG 2026</strong>. Sie verlangt Risikomanagement nach dem Stand der Technik, strenge Vorfallsmeldung an nationale Behörden und <strong style={{ color: '#e8e8f0' }}>persönliche Haftung der Unternehmensführung</strong>. In Österreich betrifft sie direkt rund 4.000 wesentliche und wichtige Einrichtungen, plus geschätzte 50.000 Lieferkettenpartner.
     </p>
     <p style={P}>
-      In der Praxis umfasst das drei Dinge: <strong style={{ color: '#e8e8f0' }}>Risikomanagement</strong> (Kryptografie, Zugriffskontrolle, Lieferkettensicherheit), <strong style={{ color: '#e8e8f0' }}>Vorfallsreaktion</strong> (verpflichtende Meldung innerhalb strenger Fristen) und <strong style={{ color: '#e8e8f0' }}>Unternehmensverantwortung</strong> (Geschäftsführung persönlich haftbar bei Nichteinhaltung). Umfang: ~4.000 Einrichtungen direkt, ~50.000 Lieferkettenpartner — siehe <a href="https://www.nis.gv.at" target="_blank" rel="noopener" style={A}>nis.gv.at</a>.
+      In der Praxis umfasst das drei Dinge: <strong style={{ color: '#e8e8f0' }}>Risikomanagement</strong> (Kryptografie, Zugriffskontrolle, Lieferkettensicherheit), <strong style={{ color: '#e8e8f0' }}>Vorfallsreaktion</strong> (verpflichtende Meldung innerhalb strenger Fristen) und <strong style={{ color: '#e8e8f0' }}>Unternehmensverantwortung</strong> (Geschäftsführung persönlich haftbar bei Nichteinhaltung). Umfang: ~4.000 Einrichtungen direkt, ~50.000 Lieferkettenpartner — siehe <a href="https://www.nis.gv.at" target="_blank" rel="noopener" style={A} className="rfi-inline-link">nis.gv.at</a>.
     </p>
 
     <h2 style={H2}>DSGVO &middot; EU 2016/679</h2>
@@ -1152,7 +1152,7 @@ function StandardsDE() {
     <p style={P}>Digital Services Act. Pflichten zu systemischen Risiken und illegalen Inhalten. Bei Plattform-Funden direkt beim irischen Digital Services Coordinator (Coimisiún na Meán) eingereicht.</p>
 
     <h2 style={H2}>ISO/IEC 29147 &middot; International</h2>
-    <p style={P}>Offenlegung von Schwachstellen. Unser koordinierter Rahmen folgt dem Standard aus 90-Tage-Embargo und Behördenbenachrichtigung — siehe unsere <a href="/de/security/" onClick={e => navigate(e, '/de/security/')} style={A}>Sicherheitsrichtlinie</a> für den Prozess selbst.</p>
+    <p style={P}>Offenlegung von Schwachstellen. Unser koordinierter Rahmen folgt dem Standard aus 90-Tage-Embargo und Behördenbenachrichtigung — siehe unsere <a href="/de/security/" onClick={e => navigate(e, '/de/security/')} style={A} className="rfi-inline-link">Sicherheitsrichtlinie</a> für den Prozess selbst.</p>
 
     <h2 style={H2}>ISO/IEC 30111 &middot; International</h2>
     <p style={P}>Prozesse zur Behandlung von Schwachstellen. Der interne Triage-, Validierungs- und Nachverfolgungs-Workflow hinter jeder koordinierten Offenlegung, die wir durchführen.</p>
@@ -1349,7 +1349,7 @@ function MethodologyEN() {
     }}>
       <p style={{ ...P, marginBottom: 0, fontSize: 'var(--fs-small)' }}>
         <strong style={{ color: '#00e0c1' }}>Real, disclosed finding.</strong> From "Merge Chicken" (com.Merge.o98Chickens), reported to Google Play &amp; Android Security 2026-06-25, removed from the Play Store 2026-06-30.{' '}
-        <a href="/reports/merge-chicken-2026.pdf" target="_blank" rel="noopener" style={A}>Full report (PDF)</a>
+        <a href="/reports/merge-chicken-2026.pdf" target="_blank" rel="noopener" style={A} className="rfi-inline-link">Full report (PDF)</a>
       </p>
     </div>
     <div style={{ display: 'grid', gap: 20, marginTop: 20 }}>
@@ -1389,7 +1389,7 @@ function MethodologyDE() {
     }}>
       <p style={{ ...P, marginBottom: 0, fontSize: 'var(--fs-small)' }}>
         <strong style={{ color: '#00e0c1' }}>Echter, offengelegter Fund.</strong> Aus „Merge Chicken" (com.Merge.o98Chickens), gemeldet an Google Play &amp; Android Security am 25.06.2026, aus dem Play Store entfernt am 30.06.2026.{' '}
-        <a href="/reports/merge-chicken-2026.pdf" target="_blank" rel="noopener" style={A}>Vollständiger Bericht (PDF)</a>
+        <a href="/reports/merge-chicken-2026.pdf" target="_blank" rel="noopener" style={A} className="rfi-inline-link">Vollständiger Bericht (PDF)</a>
       </p>
     </div>
     <div style={{ display: 'grid', gap: 20, marginTop: 20 }}>

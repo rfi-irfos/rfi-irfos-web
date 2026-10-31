@@ -10,7 +10,7 @@ import { IconMaximize } from '@tabler/icons-react'
 export function linkPhrase(text: string, phrase: string, href: string): ReactNode {
   const i = text.indexOf(phrase)
   if (i < 0) return text
-  return <>{text.slice(0, i)}<a href={href} style={{ color: 'var(--accent-text)', textDecoration: 'underline', textUnderlineOffset: 3 }}>{phrase}</a>{text.slice(i + phrase.length)}</>
+  return <>{text.slice(0, i)}<a href={href} className="rfi-inline-link">{phrase}</a>{text.slice(i + phrase.length)}</>
 }
 import { useLocale } from '../../hooks/useLocale'
 
