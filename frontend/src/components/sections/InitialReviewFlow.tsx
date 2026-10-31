@@ -10,8 +10,9 @@ type FormState = 'idle' | 'sending' | 'ok' | 'err'
 // from email+consent across two steps. Same /api/initial-review contract,
 // unchanged on the backend.
 export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }) {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const c = t.initialReview
+  const pre = locale === 'de' ? '/de' : ''
   const [domain, setDomain] = useState('')
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
@@ -105,6 +106,15 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
             {c.consentLabel} {c.introText[c.introText.length - 1]}
           </span>
         </label>
+        {state === 'ok' && (
+          // 2026-10-31: the success state used to only relabel the button, a dead end
+          // right at the warmest moment of the DLT funnel. Next step + pricing.
+          <p style={{ color: 'var(--text)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)' }}>
+            {c.okNext}{' '}
+            <a href={`${pre}/access/`} style={{ color: 'var(--accent-text)', fontWeight: 700 }}>{c.okPricing}</a>{' '}
+            <a href={`${pre}/evidence/`} style={{ color: 'var(--accent-text)', fontWeight: 700 }}>{c.okReports}</a>
+          </p>
+        )}
         {state === 'err' && (
           <p style={{ color: 'var(--sev-crit)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)' }}>
             {c.errorText}{' '}

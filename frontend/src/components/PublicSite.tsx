@@ -323,6 +323,14 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     if (initialSection === 'submit') {
       requestAnimationFrame(() => document.getElementById('submit')?.scrollIntoView({ block: 'start' }))
     }
+    // DLT mails link to /#domain-check. createRoot replaces the prerendered DOM, so the
+    // browser's own load-time hash jump can land on stale layout; jump again once the
+    // live tree is mounted, and once more after lazy sections above it have settled.
+    if (window.location.hash === '#domain-check') {
+      const jump = () => document.getElementById('domain-check')?.scrollIntoView({ block: 'start' })
+      requestAnimationFrame(jump)
+      setTimeout(jump, 700)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -160,8 +160,11 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
               used to be four trust-point cards stacked above a CTA link to
               #submit; live direction moved the actual intake flow onto the
               page itself instead of behind a click). */}
-          <div style={{
-            display: 'flex', flexDirection: 'column', gap: 16, alignSelf: 'stretch',
+          {/* id="domain-check" is the anchor every DLT benchmark mail links to
+              (rfi-irfos.com/#domain-check). It didn't exist until 2026-10-31, so
+              those clicks landed on the top of the homepage instead of the form. */}
+          <div id="domain-check" style={{
+            display: 'flex', flexDirection: 'column', gap: 16, alignSelf: 'stretch', scrollMarginTop: 84,
           }}>
             <Reveal from="right" dist={64} delay={1} style={{ flex: 1 }}>
               <InitialReviewFlow variant="embedded" />
