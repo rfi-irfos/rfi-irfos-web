@@ -14,6 +14,7 @@ import { createServer as createHttpServer } from 'node:http'
 import { createServer as createViteServer } from 'vite'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, extname, join } from 'node:path'
+import { OG_PAGE_ROUTES, ogPageKey } from './scripts/og-pages.mjs'
 import { fileURLToPath } from 'node:url'
 import { execFileSync } from 'node:child_process'
 
@@ -279,6 +280,16 @@ async function renderRoute(route, canonicalRoute, waitSelector = '#root h1, #roo
     const alt = (html.match(/<title>([^<]*)<\/title>/)?.[1] ?? slug).replace(/"/g, '&quot;')
     html = html.replace(/(<meta (?:property|name)="(?:og|twitter):image" content=")[^"]*(")/g, `$1${og}$2`)
     html = html.replace(/<meta property="og:type" content="[^"]*"\s*\/?>/, '<meta property="og:type" content="article" />')
+    html = html.replace(/<meta property="og:image:alt"[^>]*>/, '')
+    html = html.replace('</head>', `<meta property="og:image:alt" content="${alt}" /></head>`)
+  }
+
+  // Main pages get their own card too (scripts/og-pages.mjs); keyed by the canonical route so
+  // an alias like /pricing shares /access's card instead of pointing at a PNG nobody paints.
+  if (OG_PAGE_ROUTES.includes(enRoute)) {
+    const og = `https://rfi-irfos.com/og/${ogPageKey(canonicalRoute)}.png`
+    const alt = (html.match(/<title>([^<]*)<\/title>/)?.[1] ?? enRoute).replace(/"/g, '&quot;')
+    html = html.replace(/(<meta (?:property|name)="(?:og|twitter):image" content=")[^"]*(")/g, `$1${og}$2`)
     html = html.replace(/<meta property="og:image:alt"[^>]*>/, '')
     html = html.replace('</head>', `<meta property="og:image:alt" content="${alt}" /></head>`)
   }

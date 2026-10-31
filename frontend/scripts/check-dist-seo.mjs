@@ -265,7 +265,21 @@ console.log(`check-dist-seo: sitewide scan covered ${scanned} indexable pages`)
   for (const price of prices) {
     if (!llms.includes(`EUR ${price}`)) errors.push(`llms.txt: plan price EUR ${price} from /access/ missing`)
   }
-  console.log(`check-dist-seo: drift gates checked ${handles.length} team handles, ${prices.length} plan prices`)
+  // 4. Every own-card og:image points at a PNG that was actually painted (round 52 page cards).
+  const { OG_PAGE_ROUTES, ogPageKey } = await import('./og-pages.mjs')
+  let cards = 0
+  for (const en of OG_PAGE_ROUTES) {
+    for (const route of [en, '/de' + en]) {
+      const html = await readFile(join(DIST, route.slice(1), 'index.html'), 'utf8').catch(() => '')
+      if (!html) continue
+      const want = `https://rfi-irfos.com/og/${ogPageKey(route)}.png`
+      if (!html.includes(`content="${want}"`)) { errors.push(`${route}/: og:image is not its own card ${want}`); continue }
+      const png = await readFile(join(DIST, 'og', ogPageKey(route) + '.png')).catch(() => null)
+      if (!png || png.length < 10000) errors.push(`${route}/: card og/${ogPageKey(route)}.png missing or empty`)
+      cards++
+    }
+  }
+  console.log(`check-dist-seo: drift gates checked ${handles.length} team handles, ${prices.length} plan prices, ${cards} page cards`)
 }
 
 if (errors.length) {

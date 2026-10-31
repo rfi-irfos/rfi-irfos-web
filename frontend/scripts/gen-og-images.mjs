@@ -18,6 +18,7 @@ import { mkdir, readFile, writeFile, stat } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { OG_PAGE_ROUTES, ogPageKey } from './og-pages.mjs'
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url))
 const DIST = process.env.OG_DIST
@@ -114,7 +115,8 @@ async function paint(page, d) {
     show('status', d.status); $('status').style.color = d.status === 'RESOLVED' ? TEAL : '#f4f7fa'
     show('date', d.disclosure ? 'Disclosure ' + d.disclosure : '')
     show('pkg', d.pkg); show('head', d.headline)
-    $('url').textContent = 'rfi-irfos.com/evidence/' + d.slug
+    $('url').textContent = d.url ?? ('rfi-irfos.com/evidence/' + d.slug)
+    $('head').style.webkitLineClamp = d.url ? '3' : '2'
     // Titel: 84 px, bei Überlänge in 4-px-Schritten bis 64 px schrumpfen, danach 2-Zeilen-Ellipse.
     const t = $('title'); t.textContent = d.name
     let size = 84
@@ -131,8 +133,21 @@ try { manifest = JSON.parse(await readFile(MANIFEST, 'utf8')) } catch {}
 const FORCE = !!process.env.OG_FORCE
 const next = {}
 const todo = []
-for (const slug of SLUGS) {
-  const d = cardData(slug)
+// Main-page cards (scripts/og-pages.mjs): title and description come from the snapshot
+// prerender.mjs just wrote, so the card says exactly what the search snippet says.
+const unescape = (v) => v.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+const pageCards = []
+for (const en of OG_PAGE_ROUTES) {
+  for (const route of [en, '/de' + en]) {
+    const html = await readFile(join(DIST, route.slice(1), 'index.html'), 'utf8').catch(() => '')
+    if (!html) continue
+    const title = unescape(html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '').replace(/\s*[·|]\s*RFI-IRFOS\s*$/, '')
+    const desc = unescape(html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '')
+    pageCards.push({ slug: ogPageKey(route), name: title, pkg: '', sev: '', status: '', disclosure: '', headline: desc, url: 'rfi-irfos.com' + route + '/' })
+  }
+}
+for (const d of [...SLUGS.map(cardData), ...pageCards]) {
+  const slug = d.slug
   const hash = createHash('sha256').update(JSON.stringify([TEMPLATE_VERSION, d])).digest('hex').slice(0, 16)
   next[slug] = hash
   const exists = await stat(join(OUT, slug + '.png')).then(() => true, () => false)
@@ -156,4 +171,4 @@ if (todo.length) {
   await browser.close()
 }
 await writeFile(MANIFEST, JSON.stringify(next, null, 1) + '\n')
-console.log(`og images: ${todo.length} gerendert, ${SLUGS.length - todo.length} übersprungen, ${SLUGS.length} Slugs, ${((Date.now() - t0) / 1000).toFixed(1)} s -> ${OUT}`)
+console.log(`og images: ${todo.length} gerendert, ${SLUGS.length + pageCards.length - todo.length} übersprungen, ${SLUGS.length} Slugs + ${pageCards.length} Seitenkarten, ${((Date.now() - t0) / 1000).toFixed(1)} s -> ${OUT}`)
