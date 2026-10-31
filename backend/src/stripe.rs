@@ -87,10 +87,11 @@ pub async fn create_checkout(
         // 2026-10-31 (Simeon): B2B only, so every invoice needs the buyer's billing
         // address and UID. if_supported makes the tax ID mandatory wherever Stripe
         // supports the country's format (all EU VAT IDs). Consent to the AGB and the
-        // B2B status is collected on-site in the checkout modal before this call;
-        // Stripe's own consent_collection[terms_of_service] needs the ToS URL set in
-        // the Dashboard first and is left out until then.
+        // B2B status is collected on-site in the checkout modal before this call, and
+        // Stripe records the ToS consent on the session itself (ToS + privacy URLs set
+        // in the Dashboard's public details by Simeon, 2026-10-31).
         ("billing_address_collection".to_string(),                    "required".to_string()),
+        ("consent_collection[terms_of_service]".to_string(),          "required".to_string()),
         ("tax_id_collection[enabled]".to_string(),                    "true".to_string()),
         ("tax_id_collection[required]".to_string(),                   "if_supported".to_string()),
     ];
