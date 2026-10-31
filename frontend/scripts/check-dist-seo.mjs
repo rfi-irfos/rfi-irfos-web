@@ -237,6 +237,14 @@ if (warnings.length) {
 }
 console.log(`check-dist-seo: sitewide scan covered ${scanned} indexable pages`)
 
+// llms-full.txt (Lighthouse R104): Volltext der Kernseiten für Antwortmaschinen, muss jede Kernseite enthalten.
+{
+  const { LLMS_FULL_ROUTES } = await import('./gen-llms-full-routes.mjs')
+  const full = await readFile(join(DIST, 'llms-full.txt'), 'utf8').catch(() => '')
+  const missing = LLMS_FULL_ROUTES.filter(r => !full.includes(`URL: https://rfi-irfos.com${r}\n`))
+  if (full.length < 20000 || missing.length) errors.push(`llms-full.txt: ${full.length} bytes, missing pages: ${missing.join(', ') || '-'}`)
+}
+
 // Atom feed of the newest reports (Lighthouse round 31): missing or empty = nobody can subscribe.
 {
   const feedPath = join(DIST, 'evidence', 'feed.xml')

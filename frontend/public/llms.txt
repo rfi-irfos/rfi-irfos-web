@@ -11,6 +11,7 @@ The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Ja
 - [The Squad](https://rfi-irfos.com/squad/): the flagship - human-powered multi-agent app security and GDPR audits, with the eight agents and how they work together.
 - [Access](https://rfi-irfos.com/access/): the plans from Free to Business (EUR 99 to 1,999 per month) plus Enterprise, and the five offer areas - Intelligence, Security, Data, Business & Market, Engineering - each with scope and delivery estimate.
 - [Evidence](https://rfi-irfos.com/evidence/): the permanent public disclosure ledger - every audited app, finding, severity, status, and embargo date, updated as companies respond (or don't).
+- [Full text of the core pages](https://rfi-irfos.com/llms-full.txt): home, The Squad, pricing, the five service pages, methodology, team and FAQ as plain text in one file.
 - [Evidence feed](https://rfi-irfos.com/evidence/feed.xml): Atom feed of the 50 most recently published reports, newest first.
 - [Data Solutions](https://rfi-irfos.com/data-solutions/): reproducible environments, expert trajectories, and evaluation/safety datasets for AI teams, as a standing product line.
 

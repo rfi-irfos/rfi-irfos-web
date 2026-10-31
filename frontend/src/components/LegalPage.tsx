@@ -252,7 +252,7 @@ export function LegalPage({ slug }: { slug: string }) {
               through the homepage footer each time. Client-side via `navigate`
               (was a full-reload <a href> - "das ist nicht clean, das ist
               increment"), real href kept for middle-click/SEO/no-JS. */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, flex: '1 1 auto', justifyContent: 'center' }}>
+          <nav aria-label={locale === 'de' ? 'Verwandte Seiten' : 'Related pages'} style={{ display: 'flex', flexWrap: 'wrap', gap: 5, flex: '1 1 auto', justifyContent: 'center' }}>
             {(isLandingSlug(slug)
               ? LANDING_SLUGS.filter(s => s !== slug).map(s => ({ slug: s, labelEn: landingDoc(s, 'en').label, labelDe: landingDoc(s, 'de').label }))
               : LEGAL_QUICKLINKS.filter(q => q.slug !== slug)
@@ -272,7 +272,7 @@ export function LegalPage({ slug }: { slug: string }) {
                 {locale === 'de' ? q.labelDe : q.labelEn}
               </a>
             ))}
-          </div>
+          </nav>
           {/* Wrapped in a pill (2026-08-19, live feedback) - same chrome as the
               System Card modal's link pills, was bare text before. */}
           <button
@@ -294,7 +294,9 @@ export function LegalPage({ slug }: { slug: string }) {
             instantly, the same "remount for a smooth swap" pattern already
             used by the Research area modal's cross-links. */}
         <AnimatePresence mode="wait">
-          <motion.div
+          {/* <main> (Lighthouse R104): Leistungs-, Rechts- und Methodikseiten hatten keinen Hauptinhalt-Landmark,
+              Screenreader, Reader-Modus und Text-Extraktoren fanden den Seiteninhalt nicht als Hauptteil. */}
+          <motion.main
             key={slug}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -313,7 +315,7 @@ export function LegalPage({ slug }: { slug: string }) {
             {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq'].includes(slug) && !isLandingSlug(slug) && (
               <p style={P}>Seite nicht gefunden.</p>
             )}
-          </motion.div>
+          </motion.main>
         </AnimatePresence>
         <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>
           RFI-IRFOS &nbsp;&middot;&nbsp; ZVR 1015608684 &nbsp;&middot;&nbsp; GISA 39261441 &nbsp;&middot;&nbsp; GLN 9110038490191 &nbsp;&middot;&nbsp; UID ATU83405245 &nbsp;&middot;&nbsp; Steuernummer 68 696/8736 &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz
