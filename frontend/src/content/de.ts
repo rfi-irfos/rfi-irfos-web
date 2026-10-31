@@ -903,9 +903,9 @@ export const DE: Content = {
       eyebrow: 'Der Unterschied',
       heading: 'Language Model vs. Agent vs. World Model',
       sub: 'Drei Begriffe, die ähnlich klingen und es nicht sind. Wissen Sie, mit welchem Sie gerade sprechen.',
-      lm: { title: 'Language Model (LM)', body: 'Wird darauf trainiert, das nächste sprachlich plausible Token vorherzusagen.', tag: 'Versteht Sprache, nicht die Welt.', verdict: 'Antwortet wahrscheinlich.' },
-      agent: { title: 'Agent', body: 'Ein Language Model, verbunden mit Werkzeugen, das damit Aufgaben ausführen kann.', tag: 'Kann Aktionen ausführen und auf Daten zugreifen, um Arbeit zu erledigen.', verdict: 'Handelt wahrscheinlich.' },
-      wm: { title: 'World Model (DINGIR)', body: 'Bildet Zustände der Welt selbst ab, erhält Zusammenhänge über Zeit und Raum und leitet daraus ab, was als Nächstes passieren könnte.', tag: 'Lernt aus Beobachtungen, simuliert Szenarien und trifft begründete Vorhersagen.', verdict: 'Versteht die Welt.' },
+      lm: { title: 'Language Model (LM)', body: 'Sagt aus Mustern in seinen Trainingstexten das nächste wahrscheinliche Wort voraus.', tag: 'Sprachlich gewandt, ohne eigenes Wissen darüber, was tatsächlich passiert ist.', verdict: 'Antwortet aus Mustern.' },
+      agent: { title: 'Agent', body: 'Ein Language Model mit Werkzeugen: Es kann suchen, Systeme aufrufen und Aufgaben ausführen.', tag: 'Handelt auf Anweisung, mit den Daten, die es bekommt.', verdict: 'Handelt auf Anweisung.' },
+      wm: { title: 'World Model (DINGIR)', body: 'Ein Machine-Learning-Modell auf einem zeitlichen Wissensgraphen: Es verknüpft beobachtete Ereignisse aus vielen Quellen über Zeit und Raum.', tag: 'Lernt, welche Ursachen zu welchen Wirkungen führen, prüft diese Zusammenhänge am tatsächlichen Verlauf und schätzt ab, was folgen könnte.', verdict: 'Denkt in Ursache und Wirkung.' },
     },
     reasoningIntro: {
       eyebrow: 'In der Praxis', heading: 'Wie DINGIR schlussfolgert',

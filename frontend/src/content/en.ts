@@ -933,9 +933,9 @@ export const EN = {
       eyebrow: 'How DINGIR Differs',
       heading: 'Language model vs. agent vs. world model',
       sub: 'Three things that sound similar and are not. Know which one you are actually talking to.',
-      lm: { title: 'Language model (LM)', body: 'Trained to predict the next linguistically plausible token.', tag: 'Understands language, not the world.', verdict: 'Answers plausibly.' },
-      agent: { title: 'Agent', body: 'A language model connected to tools, able to carry out tasks with them.', tag: 'Can take actions and access data to get work done.', verdict: 'Acts plausibly.' },
-      wm: { title: 'World model (DINGIR)', body: 'Represents the state of the world itself, keeps relationships across time and space, and infers what could happen next.', tag: 'Learns from observations, simulates scenarios, and reaches grounded predictions.', verdict: 'Understands the world.' },
+      lm: { title: 'Language model (LM)', body: 'Predicts the next likely word from patterns in its training text.', tag: 'Fluent in language, with no own record of what actually happened.', verdict: 'Answers from patterns.' },
+      agent: { title: 'Agent', body: 'A language model with tools: it can search, call systems and carry out tasks.', tag: 'Acts on instructions, using the data it is given.', verdict: 'Acts on instructions.' },
+      wm: { title: 'World model (DINGIR)', body: 'A machine-learning model on a temporal knowledge graph: it links observed events from many sources across time and place.', tag: 'Learns which causes lead to which effects, tests those links against what actually happened, and estimates what could follow.', verdict: 'Reasons in cause and effect.' },
     },
     reasoningIntro: {
       eyebrow: 'In Practice', heading: 'How DINGIR reasons',

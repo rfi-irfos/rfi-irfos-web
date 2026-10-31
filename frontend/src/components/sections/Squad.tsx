@@ -40,7 +40,7 @@ type SquadForm = { email: string; botcheck: string; interest: AgentKey[] }
 type FormState = 'idle' | 'sending' | 'ok' | 'err'
 
 export function SquadSection() {
-  const [selectedKey, setSelectedKey] = useState<AgentKey>('atlas')
+  const [selectedKey, setSelectedKey] = useState<AgentKey>(OVERVIEW_ORDER[0].key)
   const [form, setForm] = useState<SquadForm>({ email: '', botcheck: '', interest: [] })
   const [formState, setFormState] = useState<FormState>('idle')
   const mobile = useMobile(768)
@@ -64,6 +64,14 @@ export function SquadSection() {
     </>
   )
 }
+
+// Anzeigereihenfolge im Agenten-Überblick (31.10., Simeon: "NYX ganz oben, dann LYNX, dann die andern"):
+// NYX trägt das Flagship (Sicherheit), LYNX die Sichtbarkeit. SQUAD_AGENTS selbst bleibt unverändert,
+// der Netzgraph positioniert über hubRing/hubSide nach dieser Liste.
+const OVERVIEW_ORDER = [
+  ...(['nyx', 'lynx'] as AgentKey[]).map(agentByKey),
+  ...SQUAD_AGENTS.filter(a => a.key !== 'nyx' && a.key !== 'lynx'),
+]
 
 function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
   const { t, locale } = useLocale()
@@ -125,7 +133,7 @@ function SquadOverview({
         <div className={mobile ? 'sq-overview-mobile sq-overview-frame' : 'sq-overview-grid sq-overview-frame'}>
           {mobile ? (
             <div className="sq-chip-row">
-              {SQUAD_AGENTS.map(a => (
+              {OVERVIEW_ORDER.map(a => (
                 <button
                   key={a.key}
                   type="button"
@@ -140,7 +148,7 @@ function SquadOverview({
             </div>
           ) : (
             <ul className="sq-agent-list">
-              {SQUAD_AGENTS.map(a => (
+              {OVERVIEW_ORDER.map(a => (
                 <li key={a.key}>
                   <button
                     type="button"
@@ -398,7 +406,7 @@ function SquadNeedToKnow({ onRequestAccess }: { onRequestAccess: (keys: AgentKey
                   <p>{card.body}</p>
                   <div className="sq-tag-row">
                     {tags.map(tag => (
-                      <span key={tag} className="sq-tag">
+                      <span key={tag} className="sq-tag" style={{ '--agent': agentByKey(tag).color } as CSSProperties}>
                         {agentByKey(tag).name}
                       </span>
                     ))}
