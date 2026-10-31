@@ -61,7 +61,7 @@ pub fn event_name(section: &str) -> String {
     section.chars().filter(|c| !c.is_control()).take(80).collect::<String>().trim().to_string()
 }
 
-async fn record(state: &AppState, path: &str, referrer: &str, utm_source: &str, utm_medium: &str, utm_campaign: &str, visitor: &str, event: &str) {
+pub(crate) async fn record(state: &AppState, path: &str, referrer: &str, utm_source: &str, utm_medium: &str, utm_campaign: &str, visitor: &str, event: &str) {
     let source = derive_source(utm_source, referrer);
     let _ = sqlx::query(
         "INSERT INTO web_visits (path,source,referrer,utm_source,utm_medium,utm_campaign,visitor,event) VALUES (?1,?2,?3,?4,?5,?6,?7,?8)"

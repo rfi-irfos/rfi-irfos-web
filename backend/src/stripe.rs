@@ -189,6 +189,10 @@ pub async fn webhook(
             // live in one table (web_visits) without touching PII or cookies.
             if !tier.is_empty() {
                 let section = format!("offer_paid:{}", tier);
+                // Lighthouse round 69: the site's own tracker is /api/track -> web_visits on
+                // this app; the external post below never reached it, so paid stayed invisible
+                // in /api/analytics top_events. Record locally first, keep the legacy mirror.
+                crate::track::record(&state, "/access/", "", "", "", "", "", &crate::track::event_name(&section)).await;
                 let payload = serde_json::json!({
                     "path": "/pricing",
                     "referrer": "",
