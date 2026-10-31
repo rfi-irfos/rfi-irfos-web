@@ -553,13 +553,15 @@ export function FilmPanel({ src, className, video }: { src: string; className: s
 // of a settle formula that has to hold for every element against every
 // browser's live viewport behavior - correct-by-construction instead of
 // correct-by-increasingly-specific-correction.
+// One reveal for the whole site (unslop, Simeon 31.10.: "das einblenden darf man anfassen"): a short fade + rise.
+// The per-call `from` (left/right/top/scale) and `dist` (14-140px) variants were removed; they made every
+// section enter differently.
+const REVEAL_RISE = 16
 export function Reveal({
-  children, delay = 0, from = 'bottom', dist = 32, style: extra,
+  children, delay = 0, style: extra,
 }: {
   children: React.ReactNode
   delay?: number
-  from?: 'bottom' | 'top' | 'left' | 'right' | 'scale'
-  dist?: number
   style?: React.CSSProperties
 }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -612,12 +614,12 @@ export function Reveal({
         // when it exited at the TOP edge (and the pricing page's from="top"
         // patch mirrored the same loop at the bottom edge). Record which
         // boundary the element left through, and let the hidden transform
-        // slide AWAY from that boundary regardless of `from`, so the hide
+        // slide AWAY from that boundary, so the hide
         // motion reinforces the crossing instead of undoing it. This also
         // fires on the initial observation (element starts below the fold ->
         // 'bottom'), so the rule is uniform: a hidden element always sits
-        // displaced AWAY from the viewport, and `from` is only the fallback
-        // for the vertical variants before the observer has ever reported.
+        // displaced AWAY from the viewport (below it before the observer has
+        // ever reported).
         if (!next) {
           const r = entry.boundingClientRect
           const mid = entry.rootBounds
@@ -643,21 +645,10 @@ export function Reveal({
       section?.removeEventListener('rfi-nav-jump', onJump)
     }
   }, [skip])
-  const computeTransform = (shown: boolean) => {
-    const d = shown ? 0 : dist
-    // Hidden vertical movement must point away from the boundary the element
-    // exited through (see the observer callback above). Horizontal variants
-    // can't re-cross a horizontal scroll boundary, so they keep `from`; the
-    // vertical and scale variants defer to the recorded exit side once known.
-    if (!shown && exitSide.current && (from === 'bottom' || from === 'top' || from === 'scale')) {
-      return `translateY(${exitSide.current === 'top' ? -d : d}px)`
-    }
-    if (from === 'left')  return `translateX(${-d}px)`
-    if (from === 'right') return `translateX(${d}px)`
-    if (from === 'top')   return `translateY(${-d}px)`
-    if (from === 'scale') return `scale(${shown ? 1 : 0.92})`
-    return `translateY(${d}px)`
-  }
+  // Hidden elements sit displaced AWAY from the boundary they exited through (see the observer
+  // callback above), so the hide motion can never slide them back across it.
+  const computeTransform = (shown: boolean) =>
+    shown ? 'translateY(0px)' : `translateY(${exitSide.current === 'top' ? -REVEAL_RISE : REVEAL_RISE}px)`
   // `delay` is used across the site as a small stagger index (0/1/2/3, or a
   // grid's `i`), never a literal second count - capped the same way the old
   // settle-offset was, so no call site's range can produce an absurd wait.
@@ -668,7 +659,7 @@ export function Reveal({
       style={{
         opacity: skip || visible ? 1 : 0,
         transform: skip ? 'none' : computeTransform(visible),
-        transition: skip ? 'none' : `opacity 0.6s ease ${transitionDelay}, transform 0.6s cubic-bezier(0.16,1,0.3,1) ${transitionDelay}`,
+        transition: skip ? 'none' : `opacity 0.45s ease ${transitionDelay}, transform 0.45s cubic-bezier(0.16,1,0.3,1) ${transitionDelay}`,
         willChange: 'transform, opacity',
         ...extra,
       }}

@@ -16,14 +16,14 @@ import { useLocale } from '../../hooks/useLocale'
 // thing instead of every icon being the same teal. Order is spread so neighbours differ.
 const AREA_IC = [3, 1, 2, 8, 7, 5, 4, 6]
 
-function BentoTile({ icon, ic, title, onOpen, from, delay }: {
+function BentoTile({ icon, ic, title, onOpen, delay }: {
   icon: React.ReactNode; ic: number; title: string; onOpen: () => void
-  from: 'left' | 'right'; delay: number
+  delay: number
 }) {
   const tiltRef = useRef<HTMLButtonElement>(null)
   const tilt = useTilt(tiltRef, 5)
   return (
-    <Reveal from={from} delay={delay} dist={140} style={{ height: '100%' }}>
+    <Reveal delay={delay} style={{ height: '100%' }}>
       {/* Slimmed down 2026-08-18 (live feedback: "die karten bischl verschlankern") -
           padding, icon badge and gap all cut, card reads as a compact index entry
           rather than a bulky tile. */}
@@ -180,11 +180,10 @@ function ResearchAreasGrid() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16, maxWidth: 1060, margin: '0 auto' }}>
         {RESEARCH_AREAS.map((a, i) => {
           const area = t.research.areas[i]
-          const col = i % RESEARCH_GRID_COLS
           const row = Math.floor(i / RESEARCH_GRID_COLS)
           return (
             <BentoTile key={area.title} icon={a.icon} ic={AREA_IC[i]} title={area.title} onOpen={() => setSelected(i)}
-              from={col < RESEARCH_GRID_COLS / 2 ? 'left' : 'right'} delay={row} />
+              delay={row} />
           )
         })}
       </div>

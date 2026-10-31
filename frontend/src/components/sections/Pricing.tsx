@@ -237,7 +237,7 @@ export function PricingSection({
             re-arming itself). "top" hides by translateY(-dist) - further AWAY
             from the exit line, in the same direction as the exit itself - so
             the hide motion reinforces the crossing instead of undoing it. */}
-        <Reveal from="top">
+        <Reveal>
           <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <p className="wm-eyebrow">{t.pricing.eyebrow}</p>
             <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.pricing.heading}</h1>
@@ -247,7 +247,7 @@ export function PricingSection({
         </Reveal>
 
         <div>
-          <Reveal from="top">
+          <Reveal>
             <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 20 }}>
               <BillingToggle billing={billing} onChange={setBilling} />
             </div>
@@ -259,7 +259,7 @@ export function PricingSection({
               of five columns instead of a separate banner, Enterprise band
               attached directly below with its own tinted background so it
               reads as the premium tier rather than a sixth plain card. */}
-          <Reveal from="top" dist={32}>
+          <Reveal>
             <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', background: 'var(--glass-bg-solid)', boxShadow: '0 20px 60px rgba(0,0,0,0.45)' }}>
               <div style={{ display: 'grid', gridTemplateColumns: tablet ? '1fr' : 'repeat(5, 1fr)' }}>
                 <div style={{

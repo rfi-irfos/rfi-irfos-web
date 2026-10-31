@@ -30,7 +30,7 @@ function CustomerJourneyTimeline() {
         gap: mobile ? 0 : 14,
       }}>
       {steps.map((s, i) => (
-        <Reveal key={s.stage} from={mobile ? 'left' : 'bottom'} delay={i}>
+        <Reveal key={s.stage} delay={i}>
           {/* Solid backing added 2026-08-06 (spine feedback): these step columns
               sit directly on the page background with nothing behind them, and
               with 5 equal columns the middle one straddles the page's
@@ -99,11 +99,11 @@ export function JourneySection() {
   return (
     <section id="journey" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
-        <Reveal from="left">
+        <Reveal>
           <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12 }}>{t.journey.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12 }}>{t.journey.heading}</h2>
         </Reveal>
-        <Reveal from="right" delay={1}>
+        <Reveal delay={1}>
           <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 56, maxWidth: 640 }}>
             {t.journey.subheading}
           </p>

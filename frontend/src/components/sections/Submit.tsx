@@ -61,7 +61,7 @@ export function SubmitSection({
               feedback: leading with the disclosure policy panel made the whole
               section read as a security-intake-only channel with no obvious
               "just email someone" option. */}
-          <Reveal from="left">
+          <Reveal>
             {/* both reassurance lines moved to sit together under the Careers
                 card at the bottom of the list (live feedback 2026-08-14) instead
                 of split - one above the cards, one below - across the whole
@@ -109,7 +109,7 @@ export function SubmitSection({
           </Reveal>
 
           {/* right: the one form */}
-          <Reveal from="right">
+          <Reveal>
             <form onSubmit={submitTip} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
                 value={tipForm.botcheck} onChange={e => setTipForm(p => ({ ...p, botcheck: e.target.value }))}

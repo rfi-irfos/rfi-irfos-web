@@ -58,7 +58,7 @@ export function CoopPartnersSection({
           </p>
         </Reveal>
         <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 14, maxWidth: 820, margin: '0 auto', overflow: 'hidden', zoom: 0.95, background: 'linear-gradient(165deg, var(--silver-bg-a), var(--silver-bg-b))', border: '1px solid var(--silver-line)' }}>
-          <Reveal from="left" dist={60} delay={1}>
+          <Reveal delay={1}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', padding: '24px 28px' }}>
               <div style={{ flex: '1 1 240px', minWidth: 0 }}>
                 <p style={{ fontSize: 'var(--fs-h3)', fontWeight: 700, color: 'var(--text)', margin: 0 }}>Laura Serna Gaviria</p>
@@ -80,14 +80,14 @@ export function CoopPartnersSection({
               </a>
             </div>
           </Reveal>
-          <Reveal from="bottom" dist={40} delay={2}>
+          <Reveal delay={2}>
             <div style={{ padding: '24px 28px', borderTop: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: 14 }}>
               {t.coopPartners.laura.paragraphs.map((para, i) => (
                 <p key={i} style={{ margin: 0, color: 'var(--text)', lineHeight: 'var(--lh-body)', fontSize: 'var(--fs-body)', fontWeight: 400 }}>{para}</p>
               ))}
             </div>
           </Reveal>
-          <Reveal from="right" dist={60} delay={3}>
+          <Reveal delay={3}>
             <div style={{
               display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 10,
               borderTop: '1px solid var(--border)', padding: '14px',

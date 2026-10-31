@@ -63,9 +63,9 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
   }, [playing, visible, c.steps.length])
   const pick = (i: number) => { setPlaying(false); setActive(i) }
   const kpis = [
-    { n: `${auditStats.appsAudited}+`, label: t.trackRecord.kpis.appsAudited, from: 'left' as const },
-    { n: `${corpusStats.trackerMentions}+`, label: t.trackRecord.kpis.trackersFound, from: 'bottom' as const },
-    { n: `${auditStats.criticalFindings}+`, label: t.trackRecord.kpis.criticalFindings, from: 'right' as const },
+    { n: `${auditStats.appsAudited}+`, label: t.trackRecord.kpis.appsAudited },
+    { n: `${corpusStats.trackerMentions}+`, label: t.trackRecord.kpis.trackersFound },
+    { n: `${auditStats.criticalFindings}+`, label: t.trackRecord.kpis.criticalFindings },
   ]
 
   return (
@@ -98,7 +98,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
             <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 14 }}>{c.processLabel}</p>
             <div ref={stepsRef} style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 18, marginBottom: 28, alignItems: 'start' }}>
               {c.steps.map((s, i) => (
-                <Reveal key={s.title} from="bottom" dist={48} delay={i}>
+                <Reveal key={s.title} delay={i}>
                   <div role="button" tabIndex={0} onClick={() => pick(i)} aria-pressed={active === i}
                     onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(i) } }}
                     style={{ cursor: 'pointer', textAlign: 'left' }}>
@@ -122,7 +122,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 14 }}>{c.scopeLabel}</p>
                 {c.scope.map((row, i) => (
-                  <Reveal key={row.title} from="left" dist={64} delay={i + 1} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <Reveal key={row.title} delay={i + 1} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                     <div style={{ display: 'flex', alignItems: 'center', flex: 1, gap: 14, padding: '10px 0', borderBottom: i < c.scope.length - 1 ? '1px solid var(--border)' : 'none' }}>
                       <span className="rfi-glass-icon" style={{ ...tile, color: `var(--ic-${i + 1})`, borderColor: `color-mix(in srgb, var(--ic-${i + 1}) 38%, transparent)` }}>{SCOPE_ICONS[i]}</span>
                       <div style={{ minWidth: 0 }}>
@@ -133,7 +133,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                   </Reveal>
                 ))}
               </div>
-              <Reveal from="right" dist={64} delay={2} style={{ height: '100%' }}>
+              <Reveal delay={2} style={{ height: '100%' }}>
                 <div style={{ border: '1px solid var(--accent-text)', borderRadius: 16, padding: 20, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box', background: 'rgba(0,245,196,0.05)' }}>
                   <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 16 }}>
                     <span className="rfi-glass-icon" style={{ ...tile, width: 48, height: 48, color: 'var(--icon-doc)' }}>
@@ -170,7 +170,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
           <div id="domain-check" style={{
             display: 'flex', flexDirection: 'column', gap: 16, alignSelf: 'stretch', scrollMarginTop: 84,
           }}>
-            <Reveal from="right" dist={64} delay={1} style={{ flex: 1 }}>
+            <Reveal delay={1} style={{ flex: 1 }}>
               <InitialReviewFlow variant="embedded" />
             </Reveal>
           </div>
@@ -183,7 +183,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         <div style={{ maxWidth: 920, margin: '0 auto 40px', textAlign: 'center' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 12, marginBottom: 14 }}>
             {kpis.map((k, i) => (
-              <Reveal key={k.label} from={k.from} dist={56} delay={i}>
+              <Reveal key={k.label} delay={i}>
                 <div style={{ border: '1px solid var(--border)', borderRadius: 12, padding: '16px 12px', background: 'var(--glass-bg-solid)' }}>
                   <div style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: 'var(--accent-text)', lineHeight: 'var(--lh-tight)' }}>{k.n}</div>
                   <div style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', marginTop: 6 }}>{k.label}</div>

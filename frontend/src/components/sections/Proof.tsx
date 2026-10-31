@@ -294,15 +294,15 @@ export function ProofSection({ setReportModal }: { setReportModal: (url: string)
         {/* Centered to match Data Solutions/Access/Evidence's heading treatment -
             live feedback 2026-09-13: this was still left-aligned. */}
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Reveal from="right">
+          <Reveal>
             <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12 }}>{t.proof.eyebrow}</p>
             <h2 className="rfi-section-h2" style={{ marginBottom: 12 }}>{t.proof.heading}</h2>
           </Reveal>
-          <Reveal from="left" delay={1}>
+          <Reveal delay={1}>
             <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 40, maxWidth: 620 }}>{t.proof.subheading}</p>
           </Reveal>
         </div>
-        <Reveal from="bottom" delay={1}>
+        <Reveal delay={1}>
           <ProofCarousel entries={entries} onOpen={setReportModal} />
         </Reveal>
       </div>

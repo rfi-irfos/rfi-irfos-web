@@ -2867,14 +2867,14 @@ export function TrackRecordSection({
         }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16, marginBottom: 24 }}>
           {[
-            { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,          sub: t.trackRecord.kpisSub.appsAudited,        from: 'left'   },
-            { n: `${(corpusStats.smaliClassesTotal / 1e6).toFixed(2)}M+`, label: t.trackRecord.kpis.smaliClasses, sub: t.trackRecord.kpisSub.smaliClasses,     from: 'bottom' },
-            { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: t.trackRecord.kpis.criticalFindings, sub: t.trackRecord.kpisSub.criticalFindings, from: 'top' },
-            { n: `${corpusStats.trackerMentions}+`,          label: t.trackRecord.kpis.trackersFound,          sub: t.trackRecord.kpisSub.trackersFound,    from: 'right'  },
-            { n: `${corpusStats.endpointMentionsDistinct}+`, label: t.trackRecord.kpis.endpointsInvestigated,  sub: t.trackRecord.kpisSub.endpointsInvestigated, from: 'left' },
+            { n: `${AUDIT_HIGHLIGHTS.length}+`, label: t.trackRecord.kpis.appsAudited,          sub: t.trackRecord.kpisSub.appsAudited},
+            { n: `${(corpusStats.smaliClassesTotal / 1e6).toFixed(2)}M+`, label: t.trackRecord.kpis.smaliClasses, sub: t.trackRecord.kpisSub.smaliClasses},
+            { n: `${AUDIT_HIGHLIGHTS.filter(a => a.sev === 'CRITICAL').length}+`, label: t.trackRecord.kpis.criticalFindings, sub: t.trackRecord.kpisSub.criticalFindings},
+            { n: `${corpusStats.trackerMentions}+`,          label: t.trackRecord.kpis.trackersFound,          sub: t.trackRecord.kpisSub.trackersFound},
+            { n: `${corpusStats.endpointMentionsDistinct}+`, label: t.trackRecord.kpis.endpointsInvestigated,  sub: t.trackRecord.kpisSub.endpointsInvestigated},
             { n: `${corpusStats.sdkClassCountEntries}+`,     label: t.trackRecord.kpis.sdkClasses,             sub: t.trackRecord.kpisSub.sdkClasses,       from: 'bottom' },
           ].map((s, i) => (
-            <Reveal key={s.label} delay={i} from={s.from as 'left'|'bottom'|'top'|'right'}>
+            <Reveal key={s.label} delay={i}>
               <div style={{
                 background: theme === 'dark'
                   ? 'linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px)'

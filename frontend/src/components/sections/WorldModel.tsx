@@ -246,7 +246,7 @@ function HeroBlock({ onApiRequest }: { onApiRequest: () => void }) {
   const w = t.worldModel
   return (
     <div className="wm-wrap wm-hero">
-      <Reveal dist={14}>
+      <Reveal>
         <div className="wm-hero-copy">
           <h1>{w.heading}</h1>
           <p>{w.intro}</p>
@@ -259,7 +259,7 @@ function HeroBlock({ onApiRequest }: { onApiRequest: () => void }) {
           </div>
         </div>
       </Reveal>
-      <Reveal dist={14} delay={1}><WorldGraphVisual /></Reveal>
+      <Reveal delay={1}><WorldGraphVisual /></Reveal>
     </div>
   )
 }
@@ -344,24 +344,24 @@ function ComparisonBlock() {
   const c = t.worldModel.comparison
   return (
     <div className="wm-wrap">
-      <Reveal dist={14}><div className="wm-section-head wm-section-head--gapped"><p className="wm-eyebrow">{c.eyebrow}</p><h2>{c.heading}</h2><p>{c.sub}</p></div></Reveal>
+      <Reveal><div className="wm-section-head wm-section-head--gapped"><p className="wm-eyebrow">{c.eyebrow}</p><h2>{c.heading}</h2><p>{c.sub}</p></div></Reveal>
       <div className="wm-section-box">
         <div className="wm-compare-grid">
-          <Reveal dist={14} style={{ height: '100%' }}><div className="wm-compare-card wm-card">
+          <Reveal style={{ height: '100%' }}><div className="wm-compare-card wm-card">
             <div className="wm-compare-head"><div className="wm-compare-icon"><IconMessage2 size={19} stroke={1.7} /></div><h3>{c.lm.title}</h3></div>
             <p>{c.lm.body}</p>
             <p className="wm-compare-tag">{c.lm.tag}</p>
             <span className="wm-compare-verdict">{c.lm.verdict}</span>
           </div></Reveal>
           <span className="wm-compare-vs">vs.</span>
-          <Reveal dist={14} delay={1} style={{ height: '100%' }}><div className="wm-compare-card wm-card">
+          <Reveal delay={1} style={{ height: '100%' }}><div className="wm-compare-card wm-card">
             <div className="wm-compare-head"><div className="wm-compare-icon"><IconRobot size={19} stroke={1.7} /></div><h3>{c.agent.title}</h3></div>
             <p>{c.agent.body}</p>
             <p className="wm-compare-tag">{c.agent.tag}</p>
             <span className="wm-compare-verdict">{c.agent.verdict}</span>
           </div></Reveal>
           <span className="wm-compare-vs">vs.</span>
-          <Reveal dist={14} delay={2} style={{ height: '100%' }}><div className="wm-compare-card wm-compare-card--wm wm-card">
+          <Reveal delay={2} style={{ height: '100%' }}><div className="wm-compare-card wm-compare-card--wm wm-card">
             <div className="wm-compare-head"><div className="wm-compare-icon"><IconWorld size={19} stroke={1.7} /></div><h3>{c.wm.title}</h3></div>
             <p>{c.wm.body}</p>
             <p className="wm-compare-tag">{c.wm.tag}</p>
@@ -382,13 +382,13 @@ function UseCasesGrid() {
   const spot = useSpotlight<HTMLDivElement>()
   return (
     <div id="wm-usecases" className="wm-wrap">
-      <Reveal dist={14}><div className="wm-section-head wm-section-head--gapped"><p className="wm-eyebrow">{u.eyebrow}</p><h2>{u.heading}</h2><p>{u.sub}</p></div></Reveal>
+      <Reveal><div className="wm-section-head wm-section-head--gapped"><p className="wm-eyebrow">{u.eyebrow}</p><h2>{u.heading}</h2><p>{u.sub}</p></div></Reveal>
       <div className="wm-section-box">
       <div ref={spot.ref} className="wm-usecase-grid" style={HUE_MAIN} onMouseMove={spot.onMouseMove}>
         {u.cards.map((card, i) => {
           const Icon = USE_CASE_ICONS[i]
           return (
-            <Reveal key={card.title} dist={14} delay={(i % 3) + 1} style={{ height: '100%' }}>
+            <Reveal key={card.title} delay={(i % 3) + 1} style={{ height: '100%' }}>
               <article className="wm-card">
                 <div className="wm-usecase-head">
                   <div className="wm-compare-icon rfi-icon-pop" style={{ ['--ib' as string]: `var(--ib-${USE_CASE_IB[i]})` }}><Icon size={19} stroke={1.6} /></div>
@@ -435,7 +435,7 @@ function EarlyAccessForm() {
 
   return (
     <div className="wm-wrap wm-early-narrow">
-      <Reveal dist={14}>
+      <Reveal>
         <div className="wm-early wm-card">
           <div className="wm-early-copy">
             <div className="wm-compare-icon wm-early-icon"><IconMail size={20} stroke={1.7} /></div>
@@ -489,7 +489,7 @@ export function WorldModelSection() {
               section head on this page (and Squad's) now sits bare on the
               page background - only the actual content grid gets the framed
               .wm-section-box. */}
-          <Reveal dist={14}>
+          <Reveal>
             <div className="wm-section-head wm-section-head--gapped">
               <p className="wm-eyebrow">{w.reasoningIntro.eyebrow}</p>
               <h2>{w.reasoningIntro.heading}</h2>
@@ -503,8 +503,8 @@ export function WorldModelSection() {
                   surface reads as flat grey instead of blue - the darker
                   --bg box around it is what makes --wm-surface read as blue
                   by contrast, not the card colour itself). */}
-              <Reveal dist={14}><ChainsPreview /></Reveal>
-              <Reveal dist={14} delay={1}><LiveFeedWidget /></Reveal>
+              <Reveal><ChainsPreview /></Reveal>
+              <Reveal delay={1}><LiveFeedWidget /></Reveal>
             </div>
             {/* The six corpus numbers sit inside this box, right under the chains
                 and the live feed (2026-10-26, Simeon) - they used to be their own

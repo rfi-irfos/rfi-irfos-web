@@ -95,7 +95,7 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
             <a href={localeHref('/world-model/', locale)} className="wm-btn-secondary">{s.worldModelLinkLabel}</a>
           </div>
         </Reveal>
-        <Reveal from="right">
+        <Reveal>
           {/* Swapped from a static screenshot to a real screencast of the agent
               workflow builder in motion (Simeon, 2026-09-13) - autoplay/muted/
               loop/playsInline is required for iOS Safari to autoplay at all;
