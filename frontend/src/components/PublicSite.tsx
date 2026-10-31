@@ -275,6 +275,12 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   const firstView = useRef(view)
   const leftFirstView = useRef(false)
   if (view !== firstView.current) leftFirstView.current = true
+  // View switch (R129): move focus to the new view so screen readers announce it once,
+  // instead of aria-live on <main> reading the whole page aloud on every switch.
+  useEffect(() => {
+    if (!leftFirstView.current) return
+    document.getElementById('main-content')?.focus({ preventScroll: true })
+  }, [view])
   // On-hover glass mega menu (live direction 2026-10-02: "on mouse hover so
   // dass man schneller navigieren und sich zurechtfinden kann", modeled on a
   // shared-panel reference mega menu). A short close delay, armed on leaving
@@ -1693,7 +1699,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         </div>
       </div>
 
-      <main id="main-content" tabIndex={-1} className={leftFirstView.current ? 'rfi-view-stage' : 'rfi-view-stage rfi-view-stage--first'} key={view} aria-live="polite">
+      <main id="main-content" tabIndex={-1} className={leftFirstView.current ? 'rfi-view-stage' : 'rfi-view-stage rfi-view-stage--first'} key={view}>
         {view === 'home' && <>
           <HeroSection mobile={mobile} theme={theme} />
           <AppPrivacySection onNavigateEvidence={() => navigateTo('evidence')} />
