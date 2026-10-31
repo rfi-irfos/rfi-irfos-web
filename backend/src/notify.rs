@@ -109,8 +109,10 @@ pub async fn brevo_confirmation(key: &str, domain: &str, email: &str, de: bool) 
         .post("https://api.brevo.com/v3/smtp/email")
         .header("api-key", key)
         .json(&serde_json::json!({
-            "sender": { "name": "RFI-IRFOS", "email": "sales@rfi-irfos.com" },
-            "replyTo": { "email": "sales@rfi-irfos.com" },
+            // domain-check@ (ImprovMX alias, Simeon 2026-10-31): matches the form the visitor
+            // just used; security@ stays the disclosure inbox from security.txt.
+            "sender": { "name": "RFI-IRFOS Domain Check", "email": "domain-check@rfi-irfos.com" },
+            "replyTo": { "email": "domain-check@rfi-irfos.com" },
             "to": [{ "email": email }],
             "subject": subject,
             "htmlContent": html,
