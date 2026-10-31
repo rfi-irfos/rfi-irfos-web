@@ -346,7 +346,7 @@ function Impressum() {
 function ImpressumEN() {
   return <>
     <h1 style={H1}>Legal Notice</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act) &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act) &middot; Last updated: October 2026</p>
 
     <p style={P}>
       We publish under our own name, at a real street address, because coordinated disclosure only works if the institute doing it can be found, verified, and held to account — the same standard we hold everyone we audit to. Most of what follows on this page exists because the law requires it. A few lines exist because we think a legal notice page shouldn't feel like the one part of a website that nobody proofread.
@@ -386,10 +386,8 @@ function ImpressumEN() {
     <h2 style={H2}>Trade-Law Management</h2>
     <p style={P}>Simeon-Andreas Johann Manfred Kepp, responsible under Austrian trade law (GewO) for the licensed activity listed above.</p>
 
-    <h2 style={H2}>Notice Pursuant to EU Regulation 524/2013 (ODR)</h2>
+    <h2 style={H2}>Consumer Dispute Resolution</h2>
     <p style={P}>
-      The European Commission provides a platform for online dispute resolution:{' '}
-      <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" style={A}>ec.europa.eu/consumers/odr</a>.<br />
       We are neither obligated nor willing to participate in dispute resolution proceedings before a consumer arbitration board, as we contract exclusively with businesses. This is not us dodging accountability, it is the accurate legal consequence of running a B2B-only operation (see our Terms).
     </p>
 
@@ -424,7 +422,7 @@ function ImpressumEN() {
 function ImpressumDE() {
   return <>
     <h1 style={H1}>Impressum</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Offenlegung gemäß § 5 ECG (E-Commerce-Gesetz) &middot; Letzte Aktualisierung: Juli 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>Offenlegung gemäß § 5 ECG (E-Commerce-Gesetz) &middot; Letzte Aktualisierung: Oktober 2026</p>
 
     <p style={P}>
       Wir veröffentlichen unter eigenem Namen, mit einer echten Anschrift, weil koordinierte Offenlegung nur funktioniert, wenn das Institut, das sie durchführt, selbst auffindbar, überprüfbar und zur Verantwortung ziehbar ist — genau der Maßstab, den wir an jeden anlegen, den wir prüfen. Das meiste auf dieser Seite steht hier, weil es das Gesetz verlangt. Ein paar Zeilen stehen hier, weil wir finden, dass ein Impressum nicht der eine Teil einer Website sein sollte, den niemand Korrektur gelesen hat.
@@ -464,10 +462,8 @@ function ImpressumDE() {
     <h2 style={H2}>Gewerberechtliche Geschäftsführung</h2>
     <p style={P}>Simeon-Andreas Johann Manfred Kepp, verantwortlich nach der österreichischen Gewerbeordnung (GewO) für die oben angeführte, angemeldete Tätigkeit.</p>
 
-    <h2 style={H2}>Hinweis gemäß EU-Verordnung 524/2013 (OS)</h2>
+    <h2 style={H2}>Verbraucherschlichtung</h2>
     <p style={P}>
-      Die Europäische Kommission stellt eine Plattform für Online-Streitbeilegung bereit:{' '}
-      <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" style={A}>ec.europa.eu/consumers/odr</a>.<br />
       Wir sind weder verpflichtet noch bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen, da wir ausschließlich mit Unternehmen kontrahieren. Das ist kein Ausweichen vor Verantwortung, sondern die zutreffende rechtliche Folge eines reinen B2B-Geschäfts (siehe unsere AGB).
     </p>
 
@@ -752,7 +748,7 @@ function AGB() {
 function AGBEN() {
   return <>
     <h1 style={H1}>General Terms and Conditions</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>RFI-IRFOS &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>RFI-IRFOS &middot; Last updated: October 2026</p>
 
     <p style={P}>
       Thirteen sections, no filler clause, nothing in here that exists only to look thorough. If a paragraph below feels short, that's because the short version was the accurate one.
@@ -796,9 +792,8 @@ function AGBEN() {
     <h2 style={H2}>10. Governing Law &amp; Jurisdiction</h2>
     <p style={P}>Austrian law applies, excluding the UN Convention on Contracts for the International Sale of Goods (CISG). Place of jurisdiction: Graz, Austria.</p>
 
-    <h2 style={H2}>11. Online Dispute Resolution (ODR)</h2>
+    <h2 style={H2}>11. Consumer Dispute Resolution</h2>
     <p style={P}>
-      EU platform for online dispute resolution: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" style={A}>ec.europa.eu/consumers/odr</a>.<br />
       As we contract exclusively with businesses, we are not obligated to participate in consumer arbitration proceedings.
     </p>
 
@@ -818,7 +813,7 @@ function AGBEN() {
 function AGBDE() {
   return <>
     <h1 style={H1}>Allgemeine Geschäftsbedingungen</h1>
-    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>RFI-IRFOS &middot; Letzte Aktualisierung: Juli 2026</p>
+    <p style={{ ...P, fontFamily: 'monospace', fontSize: 'var(--fs-label)', color: '#7a7aa0' }}>RFI-IRFOS &middot; Letzte Aktualisierung: Oktober 2026</p>
 
     <p style={P}>
       Vierzehn Abschnitte, keine Füllklausel, nichts hier, das nur existiert, um gründlich zu wirken. Wenn ein Absatz unten kurz wirkt, dann weil die kurze Fassung die zutreffende war.
@@ -862,9 +857,8 @@ function AGBDE() {
     <h2 style={H2}>10. Anwendbares Recht &amp; Gerichtsstand</h2>
     <p style={P}>Es gilt österreichisches Recht unter Ausschluss des UN-Kaufrechts (CISG). Gerichtsstand: Graz, Österreich.</p>
 
-    <h2 style={H2}>11. Online-Streitbeilegung (OS)</h2>
+    <h2 style={H2}>11. Verbraucherschlichtung</h2>
     <p style={P}>
-      EU-Plattform für Online-Streitbeilegung: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" style={A}>ec.europa.eu/consumers/odr</a>.<br />
       Da wir ausschließlich mit Unternehmen kontrahieren, sind wir nicht verpflichtet, an Verfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
     </p>
 
