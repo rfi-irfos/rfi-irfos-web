@@ -40,12 +40,20 @@ pub fn derive_source(utm_source: &str, referrer: &str) -> String {
     .to_string()
 }
 
-async fn record(state: &AppState, path: &str, referrer: &str, utm_source: &str, utm_medium: &str, utm_campaign: &str, visitor: &str) {
+/// Funnel/section event name from the beacon's `section` field (Lighthouse round 66,
+/// 2026-10-31): it was dropped, so every offer_click/offer_attempt/section scroll was stored
+/// as one more page view of the current path and the funnel could not be read at all.
+/// Empty = a real page view. Control characters out, 80 characters max.
+pub fn event_name(section: &str) -> String {
+    section.chars().filter(|c| !c.is_control()).take(80).collect::<String>().trim().to_string()
+}
+
+async fn record(state: &AppState, path: &str, referrer: &str, utm_source: &str, utm_medium: &str, utm_campaign: &str, visitor: &str, event: &str) {
     let source = derive_source(utm_source, referrer);
     let _ = sqlx::query(
-        "INSERT INTO web_visits (path,source,referrer,utm_source,utm_medium,utm_campaign,visitor) VALUES (?1,?2,?3,?4,?5,?6,?7)"
+        "INSERT INTO web_visits (path,source,referrer,utm_source,utm_medium,utm_campaign,visitor,event) VALUES (?1,?2,?3,?4,?5,?6,?7,?8)"
     )
-    .bind(path).bind(&source).bind(referrer).bind(utm_source).bind(utm_medium).bind(utm_campaign).bind(visitor)
+    .bind(path).bind(&source).bind(referrer).bind(utm_source).bind(utm_medium).bind(utm_campaign).bind(visitor).bind(event)
     .execute(&state.db).await;
 }
 
@@ -55,7 +63,7 @@ fn q<'a>(m: &'a HashMap<String, String>, k: &str) -> &'a str {
 
 /// GET /api/track/pixel.gif — 1x1 transparent GIF beacon, no auth required.
 pub async fn pixel(State(state): State<AppState>, Query(m): Query<HashMap<String, String>>) -> Response {
-    record(&state, q(&m, "p"), q(&m, "r"), q(&m, "utm_source"), q(&m, "utm_medium"), q(&m, "utm_campaign"), q(&m, "v")).await;
+    record(&state, q(&m, "p"), q(&m, "r"), q(&m, "utm_source"), q(&m, "utm_medium"), q(&m, "utm_campaign"), q(&m, "v"), "").await;
     const GIF: [u8; 43] = [
         0x47,0x49,0x46,0x38,0x39,0x61,0x01,0x00,0x01,0x00,0x80,0x00,0x00,0x00,0x00,0x00,
         0xff,0xff,0xff,0x21,0xf9,0x04,0x01,0x00,0x00,0x00,0x00,0x2c,0x00,0x00,0x00,0x00,
@@ -72,6 +80,19 @@ pub async fn pixel(State(state): State<AppState>, Query(m): Query<HashMap<String
 /// POST /api/track — JSON beacon (navigator.sendBeacon), CORS-open.
 pub async fn beacon(State(state): State<AppState>, Json(b): Json<Value>) -> StatusCode {
     let g = |k: &str| b.get(k).and_then(|v| v.as_str()).unwrap_or("");
-    record(&state, g("path"), g("referrer"), g("utm_source"), g("utm_medium"), g("utm_campaign"), g("visitor")).await;
+    record(&state, g("path"), g("referrer"), g("utm_source"), g("utm_medium"), g("utm_campaign"), g("visitor"), &event_name(g("section"))).await;
     StatusCode::NO_CONTENT
+}
+
+#[cfg(test)]
+mod tests {
+    use super::event_name;
+
+    #[test]
+    fn event_name_keeps_funnel_steps_and_strips_noise() {
+        assert_eq!(event_name("offer_attempt:growth"), "offer_attempt:growth");
+        assert_eq!(event_name(""), "");
+        assert_eq!(event_name("  access \n"), "access");
+        assert_eq!(event_name(&"x".repeat(200)).len(), 80);
+    }
 }

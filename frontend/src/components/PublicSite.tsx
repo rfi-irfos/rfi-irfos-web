@@ -4,7 +4,7 @@ import { useTheme, type Theme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
 import { localeHref } from '../lib/localeHref'
 import type { Content } from '../content/en'
-import { TEAL, useMobile, useFormAbandonment, beacon, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed, useModalExit } from './sections/shared'
+import { TEAL, useMobile, useFormAbandonment, beacon, attributionParams, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed, useModalExit } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
 // TrackRecord.tsx (the full AUDIT_META ledger, ~1.5MB of source) and Proof.tsx
@@ -1012,6 +1012,20 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     }).catch(() => {})
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // In-app view switches (home -> /access/ etc.) are real page views too (Lighthouse round 66):
+  // the page-load beacon above fires once per load, so a click on "Access" never counted as a
+  // visit to /access/. Same body shape, no visitor id; skipped on the first render.
+  const viewTracked = useRef(false)
+  useEffect(() => {
+    if (!viewTracked.current) { viewTracked.current = true; return }
+    fetch(LIGHTHOUSE_BEACON, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      keepalive: true,
+      body: JSON.stringify({ path: location.pathname, referrer: document.referrer, site: 'rfi-irfos', ...attributionParams() }),
+    }).catch(() => {})
+  }, [view])
 
   // Section-level view counts - plain hit-counter per section, nothing more. The `seen` set
   // lives only in this component's memory: never written to a cookie, localStorage, or

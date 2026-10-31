@@ -243,6 +243,9 @@ async fn main() {
         .await.expect("open visits.db");
     sqlx::query("CREATE TABLE IF NOT EXISTS web_visits (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL DEFAULT '/', source TEXT NOT NULL DEFAULT 'direct', referrer TEXT NOT NULL DEFAULT '', utm_source TEXT NOT NULL DEFAULT '', utm_medium TEXT NOT NULL DEFAULT '', utm_campaign TEXT NOT NULL DEFAULT '', visitor TEXT NOT NULL DEFAULT '', created_at DATETIME NOT NULL DEFAULT (datetime('now')))")
         .execute(&db).await.expect("create web_visits");
+    // Round 66: funnel event name; fails harmlessly once the column exists.
+    sqlx::query("ALTER TABLE web_visits ADD COLUMN event TEXT NOT NULL DEFAULT ''")
+        .execute(&db).await.ok();
     sqlx::query("CREATE INDEX IF NOT EXISTS idx_wv_created ON web_visits(created_at)")
         .execute(&db).await.ok();
     sqlx::query("CREATE INDEX IF NOT EXISTS idx_wv_source ON web_visits(source, created_at)")
