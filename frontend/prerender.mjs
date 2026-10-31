@@ -264,6 +264,13 @@ async function renderRoute(route, canonicalRoute, waitSelector = '#root h1, #roo
     /<meta property="og:url" content="[^"]*"\s*\/?>/,
     `<meta property="og:url" content="${canonicalUrl}" />`
   )
+  // og:locale (Lighthouse round 42, 2026-10-31): absent before, so LinkedIn/Facebook guessed the
+  // language of every card. Same template-inheritance trap as hreflang above: strip, then set.
+  html = html.replace(/<meta property="og:locale(?::alternate)?" content="[^"]*"\s*\/?>/g, '')
+  const isDe = canonicalRoute === '/de' || canonicalRoute.startsWith('/de/')
+  const ogLocale = [`<meta property="og:locale" content="${isDe ? 'de_AT' : 'en_US'}" />`]
+  if (LOCALIZED_ROUTES.includes(enRoute)) ogLocale.push(`<meta property="og:locale:alternate" content="${isDe ? 'en_US' : 'de_AT'}" />`)
+  html = html.replace('<meta property="og:site_name"', `${ogLocale.join('')}<meta property="og:site_name"`)
   // 2026-10-31: each report gets its own preview card (scripts/gen-og-images.mjs
   // writes dist/og/<slug>.png after this script). width/height stay from index.html.
   if (route.startsWith('/evidence/')) {
