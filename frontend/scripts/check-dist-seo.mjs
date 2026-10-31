@@ -73,6 +73,10 @@ async function checkSnapshot(route, enRoute, lang) {
     if (enTwins.length) errors.push(`${route}: ${enTwins.length} links to EN twins (${[...new Set(enTwins)].slice(0, 4).join(', ')})`)
   }
 
+  // 2026-10-31 (Lighthouse round 18): the product films carry a VideoObject.
+  if (['/squad', '/world-model'].includes(enRoute) && !html.includes('"@type":"VideoObject"'))
+    errors.push(`${route}: VideoObject for the product film missing`)
+
   const title = attr(html, /<title>([^<]*)<\/title>/, 'title', route).trim()
   if (!title) errors.push(`${route}: empty title`)
   // Duplikat-Pruefung des Titels seit 2026-10-31 im Sitewide-Scan unten (mit Allowlist, alle dist-Seiten).

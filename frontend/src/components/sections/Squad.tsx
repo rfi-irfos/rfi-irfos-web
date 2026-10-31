@@ -93,7 +93,9 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
               2026-10-24: replaced by the 45s Agent OS 3D film (16:9, 1280x720, no audio
               track - it plays muted anyway). 2026-10-26: the frame is 16:9 now too,
               the film fits uncropped, and a click opens it fullscreen (FilmPanel). */}
-          <FilmPanel src={squadHeroWorkflow} className="sq-hub-panel" />
+          <FilmPanel src={squadHeroWorkflow} className="sq-hub-panel" video={locale === 'de'
+            ? { name: 'The Squad von RFI-IRFOS: vom Auftrag zum Ergebnis', description: 'Produktfilm: Die Agenten von The Squad in einer Oberfläche, Schritt für Schritt vom Auftrag zu einem nutzbaren Ergebnis.', thumbnail: '/media/the-squad-film.jpg', uploadDate: '2026-10-24', duration: 'PT45S' }
+            : { name: 'The Squad by RFI-IRFOS: from task to result', description: 'Product film: the agents of The Squad in one interface, every step from a task to something you can use.', thumbnail: '/media/the-squad-film.jpg', uploadDate: '2026-10-24', duration: 'PT45S' }} />
         </Reveal>
       </div>
     </section>

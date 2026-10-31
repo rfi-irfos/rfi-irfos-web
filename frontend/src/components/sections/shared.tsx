@@ -446,7 +446,14 @@ export const revealSuppressed = { current: false }
 // Fullscreen plays from the start with sound and native controls; the click is
 // the user gesture browsers require for unmuted playback. Leaving fullscreen
 // returns to the silent hero loop (Simeon 2026-10-26: "mit Ton abspielen").
-export function FilmPanel({ src, className }: { src: string; className: string }) {
+// 2026-10-31 (Lighthouse round 18): the two product films had no VideoObject, so
+// Google could not list them as video results. `video` adds one, with a
+// stable thumbnail in public/media/ (the hashed /assets/ mp4 URL is fine as
+// contentUrl, it is rebuilt with every deploy together with this markup).
+export type FilmMeta = { name: string; description: string; thumbnail: string; uploadDate: string; duration: string }
+
+export function FilmPanel({ src, className, video }: { src: string; className: string; video?: FilmMeta }) {
+  const { locale } = useLocale()
   const ref = useRef<HTMLVideoElement>(null)
   useEffect(() => {
     const video = ref.current
@@ -475,9 +482,20 @@ export function FilmPanel({ src, className }: { src: string; className: string }
     else video.webkitEnterFullscreen?.()
   }
   return (
-    <button type="button" className={`${className} film-panel`} onClick={openFullscreen} aria-label="View film fullscreen">
-      <video ref={ref} className="film-panel-video" src={src} autoPlay muted loop playsInline />
-      <span className="wm-graph-expand-hint"><IconMaximize size={13} stroke={1.8} /> view fullscreen</span>
+    <button type="button" className={`${className} film-panel`} onClick={openFullscreen}
+      aria-label={locale === 'de' ? 'Film im Vollbild ansehen' : 'View film fullscreen'}>
+      <video ref={ref} className="film-panel-video" src={src} autoPlay muted loop playsInline title={video?.name} />
+      <span className="wm-graph-expand-hint"><IconMaximize size={13} stroke={1.8} /> {locale === 'de' ? 'Vollbild' : 'view fullscreen'}</span>
+      {video && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org', '@type': 'VideoObject',
+          name: video.name, description: video.description,
+          thumbnailUrl: `https://rfi-irfos.com${video.thumbnail}`,
+          contentUrl: new URL(src, 'https://rfi-irfos.com').href,
+          uploadDate: video.uploadDate, duration: video.duration, inLanguage: locale,
+          publisher: { '@id': 'https://rfi-irfos.com/#organization' },
+        }) }} />
+      )}
     </button>
   )
 }

@@ -234,7 +234,10 @@ function ChainsPreview() {
 // muted 16:9 loop, and "view fullscreen" puts the film itself into the
 // browser's fullscreen (Simeon). Same FilmPanel as Squad's hero.
 function WorldGraphVisual() {
-  return <FilmPanel src={wmHeroDingirFilm} className="wm-graph-panel" />
+  const { locale } = useLocale()
+  return <FilmPanel src={wmHeroDingirFilm} className="wm-graph-panel" video={locale === 'de'
+    ? { name: 'DINGIR, das Weltmodell von RFI-IRFOS', description: 'Produktfilm: DINGIR (Dynamic Interaction Network & Graph Intelligence Runtime) zeigt historische Datensätze, Echtzeit-Messwerte und ihre Verbindungen auf einem Globus.', thumbnail: '/media/dingir-world-model-film.jpg', uploadDate: '2026-10-26', duration: 'PT1M' }
+    : { name: 'DINGIR, the world model by RFI-IRFOS', description: 'Product film: DINGIR (Dynamic Interaction Network & Graph Intelligence Runtime) shows historical records, real-time readings and their connections on one globe.', thumbnail: '/media/dingir-world-model-film.jpg', uploadDate: '2026-10-26', duration: 'PT1M' }} />
 }
 
 function HeroBlock({ onApiRequest }: { onApiRequest: () => void }) {
