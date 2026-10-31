@@ -177,14 +177,17 @@ export function useTilt<T extends HTMLElement>(elRef: React.RefObject<T | null>,
 
 // Counts up from 0 to the numeric part of `value` (keeping any non-numeric suffix,
 // e.g. "14+") once scrolled into view. Respects reduced-motion (renders final value
-// immediately, no counting).
+// immediately, no counting). The prerender (Playwright, navigator.webdriver) also gets
+// the final value: Lighthouse round 47 found /evidence/ shipped mid-animation snapshots
+// (367+ EN, 224+ DE instead of 387+) to crawlers and no-JS readers.
 export function CountUp({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null)
   const target = parseInt(value, 10)
   const suffix = value.replace(/^-?\d+/, '')
-  const [display, setDisplay] = useState(prefersReducedMotion() || isNaN(target) ? target : 0)
+  const still = prefersReducedMotion() || navigator.webdriver || isNaN(target)
+  const [display, setDisplay] = useState(still ? target : 0)
   useEffect(() => {
-    if (prefersReducedMotion() || isNaN(target)) return
+    if (still) return
     const el = ref.current; if (!el) return
     const io = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return
@@ -200,7 +203,7 @@ export function CountUp({ value }: { value: string }) {
     }, { threshold: 0.4 })
     io.observe(el)
     return () => io.disconnect()
-  }, [target])
+  }, [target, still])
   return <span ref={ref}>{isNaN(target) ? value : `${display}${suffix}`}</span>
 }
 
