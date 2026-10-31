@@ -181,9 +181,11 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
             (auditStats.json - build-time extract of AUDIT_HIGHLIGHTS - plus
             corpus-stats.json), never hand-typed numbers. */}
         <div style={{ maxWidth: 920, margin: '0 auto 40px', textAlign: 'center' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 12, marginBottom: 14 }}>
+          {/* Phone (Simeon 01.11.): auto-fit left the third card alone on the left, as if one were
+              missing. A 4-track grid with 2-track cards puts two on top and centres the third. */}
+          <div style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(4, minmax(0, 1fr))' : 'repeat(auto-fit, minmax(170px, 1fr))', gap: 12, marginBottom: 14 }}>
             {kpis.map((k, i) => (
-              <Reveal key={k.label} delay={i}>
+              <Reveal key={k.label} delay={i} style={phone ? { gridColumn: i === 2 ? '2 / span 2' : 'span 2' } : undefined}>
                 <div style={{ border: '1px solid var(--border)', borderRadius: 12, padding: '16px 12px', background: 'var(--glass-bg-solid)' }}>
                   <div style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: 'var(--accent-text)', lineHeight: 'var(--lh-tight)' }}>{k.n}</div>
                   <div style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', marginTop: 6 }}>{k.label}</div>
