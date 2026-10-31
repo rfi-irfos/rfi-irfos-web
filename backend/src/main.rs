@@ -156,11 +156,9 @@ async fn set_cache_control(req: Request, next: Next) -> Response {
 //   - img-src/connect-src lighthouse-rfi-irfos.fly.dev: the first-party
 //     tracking pixel (<img src=.../pixel.gif> in PublicSite.tsx/
 //     LegalPage.tsx) and the beacon (fetch POST to .../api/track).
-//   - connect-src api.github.com: the admin panel's GitHub Contents API
-//     read/write (frontend/src/lib/github.ts).
-//   - img-src/connect-src raw.githubusercontent.com: the public site's live
-//     content fetch (frontend/src/hooks/useContent.ts) and uploaded content
-//     images, which are served straight from raw.githubusercontent.com URLs.
+//   - api.github.com / raw.githubusercontent.com were removed 2026-10-31:
+//     the admin panel and the live content fetch that used them are gone,
+//     nothing in the built site requests either host.
 //   - connect-src api.web3forms.com: the contact form's email fallback path
 //     (PublicSite.tsx submitTip) used only if the CRM relay to /api/contact
 //     fails.
@@ -175,8 +173,8 @@ const CSP_POLICY: &str = "default-src 'self'; \
     script-src 'self' 'unsafe-inline'; \
     style-src 'self' 'unsafe-inline'; \
     font-src 'self'; \
-    img-src 'self' data: https://raw.githubusercontent.com https://lighthouse-rfi-irfos.fly.dev; \
-    connect-src 'self' https://lighthouse-rfi-irfos.fly.dev https://api.github.com https://raw.githubusercontent.com https://api.web3forms.com; \
+    img-src 'self' data: https://lighthouse-rfi-irfos.fly.dev; \
+    connect-src 'self' https://lighthouse-rfi-irfos.fly.dev https://api.web3forms.com; \
     frame-src 'self'; \
     frame-ancestors 'self'; \
     object-src 'none'; \
