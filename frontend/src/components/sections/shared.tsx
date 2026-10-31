@@ -1,9 +1,17 @@
 // Shared primitives used across multiple homepage sections (and by PublicSite.tsx
 // itself for the nav/modals/footer) - extracted verbatim from the former single
 // ~5600-line PublicSite.tsx as a pure refactor (no copy/style/behavior changes).
-import { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef, type ReactNode } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { IconMaximize } from '@tabler/icons-react'
+
+// Links inside running text instead of separate link rows (Simeon 31.10.: "lieber im Fließtext").
+// Wraps the first occurrence of `phrase` in `text`; returns the text unchanged if the phrase is missing.
+export function linkPhrase(text: string, phrase: string, href: string): ReactNode {
+  const i = text.indexOf(phrase)
+  if (i < 0) return text
+  return <>{text.slice(0, i)}<a href={href} style={{ color: 'var(--accent-text)', textDecoration: 'underline', textUnderlineOffset: 3 }}>{phrase}</a>{text.slice(i + phrase.length)}</>
+}
 import { useLocale } from '../../hooks/useLocale'
 
 // Was the literal '#00f5c4'. In dark, --accent IS #00f5c4, so this is a zero-diff

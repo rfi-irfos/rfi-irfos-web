@@ -16,7 +16,7 @@ import {
 } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
-import { Reveal, useMobile, beacon, WEB3FORMS_KEY, OUTPUT_TAG_HUES, FilmPanel } from './shared'
+import { Reveal, useMobile, beacon, WEB3FORMS_KEY, OUTPUT_TAG_HUES, FilmPanel, linkPhrase } from './shared'
 import { SQUAD_AGENTS, agentByKey, type AgentKey } from '../../content/squadAgents'
 // Stable URL (Lighthouse R88): the watch page /squad/film/ and the VideoObject need a
 // contentUrl that survives rebuilds, so the film lives in public/media/, not hashed /assets/.
@@ -83,7 +83,7 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
           <h1 className="sq-heading">{s.heading}</h1>
           {/* The subheading opens the intro as its first sentence (2026-10-26, Simeon)
               instead of standing alone as a bold line above it. */}
-          <p className="sq-intro">{s.subheading} {s.intro}</p>
+          <p className="sq-intro">{s.subheading} {linkPhrase(s.intro, locale === 'de' ? 'den Belegen dahinter' : 'the evidence behind each result', localeHref('/evidence/', locale))}</p>
           <div className="sq-hero-ctas">
             <button type="button" className="wm-btn-primary" onClick={onRequestAccess}>{s.primaryCta}</button>
             {/* Was a plain text link above the buttons + a separate "Watch an
@@ -436,7 +436,7 @@ function SquadRequestForm({
   formState: FormState
   setFormState: (s: FormState) => void
 }) {
-  const { t, locale } = useLocale()
+  const { t } = useLocale()
   const s = t.squad.requestForm
   const customSolutionsLinkLabel = t.squad.customSolutionsLinkLabel
 
@@ -494,12 +494,6 @@ function SquadRequestForm({
           <div className="sq-request-text">
             <h2>{s.heading}</h2>
             <p className="sq-request-desc">{s.description}</p>
-            {/* Lighthouse R113: the flagship page linked only to /world-model/ in <main>; prices and proof were one click too far. */}
-            <p className="sq-request-desc">
-              <a href={localeHref('/access/', locale)} style={{ color: 'var(--accent-text)', fontWeight: 700, textDecoration: 'none' }}>{locale === 'de' ? 'Pläne und Preise ansehen →' : 'See plans and pricing →'}</a>
-              {'  ·  '}
-              <a href={localeHref('/evidence/', locale)} style={{ color: 'var(--accent-text)', fontWeight: 700, textDecoration: 'none' }}>{locale === 'de' ? 'Öffentliche Reports ansehen →' : 'Browse the public reports →'}</a>
-            </p>
             {form.interest.length > 0 && (
               <p className="sq-interest-line">
                 {s.interestedPrefix}: {form.interest.map(k => agentByKey(k).name).join(', ')}

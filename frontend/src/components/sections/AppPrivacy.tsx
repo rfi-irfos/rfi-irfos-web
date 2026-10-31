@@ -5,7 +5,7 @@
 // static and every cell reveals on its own (same converge-from-the-sides pattern
 // as the old table), because one Reveal around the whole panel is barely visible.
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { Reveal, useMobile } from './shared'
+import { Reveal, useMobile, linkPhrase } from './shared'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { IconListSearch } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
@@ -78,13 +78,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         <Reveal delay={1}>
           <div style={{ maxWidth: 720, margin: '0 auto 36px', textAlign: 'center' }}>
             <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)', margin: 0 }}>
-              {c.paragraph}
-            </p>
-            {/* Lighthouse R114: the homepage <main> had no link to /squad/ or /access/ (nav only). */}
-            <p style={{ margin: '16px 0 0', fontSize: 'var(--fs-body)' }}>
-              <a href={localeHref('/squad/', locale)} style={{ color: 'var(--accent-text)', fontWeight: 700, textDecoration: 'none' }}>{locale === 'de' ? 'Die Agenten kennenlernen →' : 'Meet the agents →'}</a>
-              {'  ·  '}
-              <a href={localeHref('/access/', locale)} style={{ color: 'var(--accent-text)', fontWeight: 700, textDecoration: 'none' }}>{locale === 'de' ? 'Pläne und Preise ansehen →' : 'See plans and pricing →'}</a>
+              {linkPhrase(c.paragraph, locale === 'de' ? 'Agenten' : 'Selected agents', localeHref('/squad/', locale))}
             </p>
           </div>
         </Reveal>

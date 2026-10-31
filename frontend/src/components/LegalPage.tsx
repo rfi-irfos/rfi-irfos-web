@@ -7,17 +7,17 @@ const A = { color: 'var(--accent-text)', textDecoration: 'none' }
 
 // Lighthouse R110/R112: FAQ, Methodology and Standards ended with no link in <main>, a dead end for readers who were convinced.
 function NextSteps({ de, locale }: { de: boolean; locale: 'en' | 'de' }) {
-  return (
-    <section>
-      <h2 style={H2}>{de ? 'Nächster Schritt' : 'Next step'}</h2>
-      <p style={P}>
-        <a href={`${localePath(locale, '/')}#domain-check`} style={A}>{de ? 'Gratis-Check starten →' : 'Start the free check →'}</a>
-        {'  ·  '}
-        <a href={localePath(locale, '/access/')} style={A}>{de ? 'Pläne und Preise ansehen →' : 'See plans and pricing →'}</a>
-        {'  ·  '}
-        <a href={localePath(locale, '/evidence/')} style={A}>{de ? 'Öffentliche Reports ansehen →' : 'Browse the public reports →'}</a>
-      </p>
-    </section>
+  const l = (href: string, label: string) => <a href={href} style={A}>{label}</a>
+  return de ? (
+    <p style={{ ...P, marginTop: 32 }}>
+      Wenn Sie das an Ihrem eigenen Produkt sehen wollen, {l(`${localePath(locale, '/')}#domain-check`, 'starten Sie den Gratis-Check')}.
+      Pläne und Preise stehen unter {l(localePath(locale, '/access/'), 'Access')}, jede veröffentlichte Untersuchung im {l(localePath(locale, '/evidence/'), 'Evidence-Ledger')}.
+    </p>
+  ) : (
+    <p style={{ ...P, marginTop: 32 }}>
+      To see this applied to your own product, {l(`${localePath(locale, '/')}#domain-check`, 'start the free check')}.
+      Plans and prices are on {l(localePath(locale, '/access/'), 'Access')}, and every published investigation is in the {l(localePath(locale, '/evidence/'), 'evidence ledger')}.
+    </p>
   )
 }
 
