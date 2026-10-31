@@ -437,7 +437,7 @@ export function ResearchSection() {
     <section id="research" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12, textAlign: 'center' }}>{t.research.eyebrow}</p>
+          <p className="rfi-eyebrow" style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12, textAlign: 'center' }}>{t.research.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center' }}>{t.research.heading}</h2>
         </Reveal>
         <Reveal delay={1}>

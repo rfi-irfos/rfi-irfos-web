@@ -159,10 +159,9 @@ export const DE: Content = {
     seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsberichte zu Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel.',
     paragraph: 'Wir betreiben eine agentische KI-Pipeline, die öffentlich verbreitete Android- und iOS-Apps dekompiliert, ihren Code und ihre Datenflüsse untersucht und Verbindungen zu realen Endpunkten nachverfolgt. Hunderte spezialisierte Agenten arbeiten an der Untersuchung und verbinden technische Belege zu einem stimmigen Gesamtbild, das menschliche Fachleute prüfen und verifizieren.',
     follow: { freeCheck: 'Starten Sie den Gratis-Check für Ihre eigene Domain', label: ' oder verfolgen Sie neue Untersuchungen', feed: 'Atom-Feed' },
-    securityBridgeLead: 'Das ist es, was ein Security-Auftrag liefert.',
     focusBanner: (names: string) => `Angezeigt wird der Report zu ${names}.`,
     showFullLedger: 'Gesamtes Ledger anzeigen',
-    securityBridgeCta: 'Sehen Sie, was Sie erhalten →',
+    securityBridgeCta: 'Das umfasst ein Security-Auftrag →',
     kpis: {
       appsAudited: 'Android/iOS Apps geprüft',
       smaliClasses: 'Smali-Klassen gelesen',
@@ -289,7 +288,7 @@ export const DE: Content = {
     introSubtitle: 'Finden Sie heraus, was Ihre Security-Tools übersehen könnten.',
     introText: [
       'Der erste Check erfolgt ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ihre Systeme bleiben dabei unverändert.',
-      'Bevor die Prüfung beginnt, sieht ein Researcher Ihre Anfrage durch und meldet sich innerhalb eines Werktags. Sie erhalten einen kurzen schriftlichen Report mit unseren Funden, möglichen Angriffsszenarien, dem wirtschaftlichen Schaden und klaren nächsten Schritten, dazu einen Knowledge Graph zu allen Funden. Alles kostenlos.',
+      'Bevor die Prüfung beginnt, sieht ein Researcher Ihre Anfrage durch und meldet sich innerhalb eines Werktags. Sie erhalten einen kurzen schriftlichen Report mit unseren Funden, möglichen Angriffsszenarien, dem wirtschaftlichen Schaden und klaren nächsten Schritten, dazu einen Knowledge Graph zu allen Funden.',
       'Der Check liefert eine erste externe Einschätzung. Er umfasst keine Quellcode-Analyse und ist keine Garantie für die Sicherheit Ihrer Anwendung.',
     ],
     domainLabel: 'Ihre Domain',

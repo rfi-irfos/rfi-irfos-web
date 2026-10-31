@@ -72,7 +72,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
     <section id="app-privacy" style={{ padding: '48px var(--sec-pad-x) 12px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12, textAlign: 'center' }}>{c.eyebrow}</p>
+          <p className="rfi-eyebrow" style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12, textAlign: 'center' }}>{c.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center', fontWeight: 700 }}>{c.heading}</h2>
         </Reveal>
         <Reveal delay={1}>

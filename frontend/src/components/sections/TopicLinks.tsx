@@ -39,8 +39,9 @@ export function TopicLinks() {
 
   return (
     <>
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 10, marginTop: 22 }}>
-        <span style={{ fontSize: 'var(--fs-small)', fontWeight: 700, color: 'var(--text)', marginRight: 4 }}>{c.label}</span>
+      {/* Simeon 2026-10-31: the visible "What we examine:" lead looked out of place in front of
+          the pills, so the label now only names the group for screen readers. */}
+      <nav aria-label={c.label.replace(/:$/, '')} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 10, marginTop: 22 }}>
         {LANDING_SLUGS.map(slug => {
           const Icon = ICONS[slug]
           return (
@@ -52,7 +53,7 @@ export function TopicLinks() {
             </a>
           )
         })}
-      </div>
+      </nav>
       {open && <TopicModal slug={open.slug} doc={open.doc} href={`${pre}/${open.slug}/`} onClose={() => setOpen(null)} />}
     </>
   )

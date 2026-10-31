@@ -896,3 +896,8 @@ h1, h2, h3, .rfi-display {
    !important because LegalPage/LandingPage still pass textDecoration: 'none' inline. */
 .rfi-inline-link { color: var(--accent-text); text-decoration: none; text-underline-offset: 3px; }
 .rfi-inline-link:hover, .rfi-inline-link:focus-visible { text-decoration: underline !important; }
+/* Simeon 2026-10-31: every eyebrow gets the same thin accent underline, a shared "capstone"
+   above each section title. fit-content keeps the line as wide as the words; centred
+   eyebrows centre the line with them, .rfi-eyebrow--start keeps left-aligned ones left. */
+.wm-eyebrow, .data-eyebrow, .rfi-eyebrow { width: fit-content; max-width: 100%; margin-inline: auto; padding-bottom: 6px; border-bottom: 1px solid var(--accent-text); }
+.rfi-eyebrow--start { margin-inline: 0; }

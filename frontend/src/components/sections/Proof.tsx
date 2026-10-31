@@ -296,7 +296,7 @@ export function ProofSection({ setReportModal }: { setReportModal: (url: string)
             live feedback 2026-09-13: this was still left-aligned. */}
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Reveal>
-            <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12 }}>{t.proof.eyebrow}</p>
+            <p className="rfi-eyebrow" style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12 }}>{t.proof.eyebrow}</p>
             <h2 className="rfi-section-h2" style={{ marginBottom: 12 }}>{t.proof.heading}</h2>
           </Reveal>
           <Reveal delay={1}>

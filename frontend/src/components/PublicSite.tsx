@@ -1929,12 +1929,6 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 core doctrine") was a literal third line here and is now purged
                 entirely, not just relocated. */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8, ...(mobile ? {} : { gridColumn: '1 / -1', gridRow: 3 }) }}>
-              {/* Full registry data (ZVR/UID/GISA/GLN/Steuernummer/ECG authority/address)
-                  lives on Legal Notice - not duplicated here, this footer only points there.
-                  ZVR dropped from this line specifically (kept on the Legal Notice itself). */}
-              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0 }}>
-                {t.footer.copyright}
-              </p>
               <p style={{ fontSize: 'var(--fs-small)', color: 'var(--accent-text)', fontWeight: 700, margin: 0 }}>
                 {t.footer.tagline}
               </p>
@@ -2054,6 +2048,11 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
           </div>
           </>)}
         </div>
+        {/* Simeon 2026-10-31: copyright sits on its own line in the footer's bottom-left corner,
+            below the whole directory, instead of above the tagline. */}
+        <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0, textAlign: 'left', ...(mobile ? {} : { whiteSpace: 'nowrap' }) }}>
+          {t.footer.copyright}
+        </p>
         {systemModalExit.rendered && <SystemCardModal systemKey={systemModalExit.rendered} closing={systemModalExit.closing} onClose={() => setSystemModal(null)} onNavigate={setSystemModal} />}
       </footer>
       {cookieBannerOpen && (

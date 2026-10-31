@@ -19,7 +19,7 @@
 // instead of forcing every entry into a "why we built this" narrative it
 // doesn't have.
 export type SystemStatus = 'OPERATIONAL' | 'COMPOSABLE' | 'EXPERIMENTAL' | 'EXTERNAL'
-export type SystemZone = 'foundation' | 'intelligence' | 'worldmodel' | 'applications'
+export type SystemZone = 'foundation' | 'intelligence' | 'applications'
 
 type Bilingual = { de: string; en: string }
 
@@ -50,10 +50,9 @@ export type SystemCard = {
 export const ZONE_LABELS: Record<SystemZone, Bilingual> = {
   foundation: { de: 'Foundation', en: 'Foundation' },
   intelligence: { de: 'Intelligence', en: 'Intelligence' },
-  worldmodel: { de: 'World Model', en: 'World Model' },
   applications: { de: 'Applications', en: 'Applications' },
 }
-export const ZONE_ORDER: SystemZone[] = ['foundation', 'intelligence', 'worldmodel', 'applications']
+export const ZONE_ORDER: SystemZone[] = ['foundation', 'intelligence', 'applications']
 
 export const SYSTEMS: SystemCard[] = [
   {
@@ -66,6 +65,17 @@ export const SYSTEMS: SystemCard[] = [
     technical: { de: 'Rust, Cargo-Workspace, 441 .rs-Dateien, 1.547 .tern-Dateien.', en: 'Rust, Cargo workspace, 441 .rs files, 1,547 .tern files.' },
     connects: ['albert', 'rusty-penguin', 'agent-albert-cli', 'albert-spores', 'ternlang-stdlib', 'tree-sitter-ternlang'],
     links: { github: 'https://github.com/rfi-irfos/ternary-intelligence-stack', crates: 'https://crates.io/crates/ternlang-core' },
+  },
+  {
+    key: 'dingir', name: 'DINGIR', zone: 'intelligence', status: 'OPERATIONAL',
+    problem: { de: 'Ein Sprachmodell beantwortet Fragen in Worten. Es verfolgt aber nicht, wie Entitäten in der physischen Welt tatsächlich zusammenhängen.', en: "A language model answers questions in words. It doesn't track how entities in the physical world actually connect." },
+    why: { de: 'Untersuchungen scheiterten wiederholt, weil Evidenz in fünf getrennten Systemen lag, die nie miteinander sprachen - ein gemeinsames Weltmodell sollte das beenden.', en: 'Investigations kept stalling because evidence lived in five separate systems that never talked to each other - a shared world model was built to end that.' },
+    different: { de: "Echter PyTorch-GNN mit getrackter Test-AUC, jede Aussage wird mit einem ternären Epistemic-State gestempelt. Albert ist bewusst eine 'explizite Naht': die Synthese-Funktion wirft absichtlich einen Fehler, statt einen Albert-Output vorzutäuschen, solange kein echtes Backend verdrahtet ist.", en: "A real PyTorch GNN with tracked test AUC, every claim gets stamped with a ternary epistemic state. Albert is deliberately an 'explicit seam': the synthesis function intentionally raises an error rather than faking an Albert output until a real backend is wired in." },
+    fit: { de: 'Das Weltmodell der Intelligence-Schicht. Der Kern-Loop (ingest → reason → stamp → interim-synthesize) läuft; die native Ausführung auf Rusty Penguin ist eine separate, noch experimentelle Baustelle.', en: "The world model of the Intelligence layer. The core loop (ingest → reason → stamp → interim-synthesize) runs; native execution on Rusty Penguin is a separate, still-experimental piece." },
+    proof: { de: '1.026 Knoten, 1.960 Kanten, 313 Beobachtungen aus 9 Datensätzen, mehrere selbst aufgedeckte und offen dokumentierte Mess-Fehler statt stillschweigend korrigierter Zahlen.', en: '1,026 nodes, 1,960 edges, 313 observations from 9 datasets, several self-caught and openly documented measurement errors instead of quietly corrected numbers.' },
+    technical: { de: 'Python, PyTorch-GNN. Noch nicht öffentlich auf GitHub.', en: 'Python, PyTorch GNN. Not yet public on GitHub.' },
+    connects: ['albert', 'rusty-penguin', 'tis'],
+    links: {},
   },
   {
     key: 'albert', name: 'albert.', zone: 'intelligence', status: 'OPERATIONAL',
@@ -176,17 +186,6 @@ export const SYSTEMS: SystemCard[] = [
     technical: { de: 'Kein Code, Markdown-Whitepaper.', en: 'No code, markdown whitepaper.' },
     connects: ['lauras-agents', 'call-laura'],
     links: { github: 'https://github.com/rfi-irfos/veo-framework' },
-  },
-  {
-    key: 'dingir', name: 'DINGIR', zone: 'worldmodel', status: 'OPERATIONAL',
-    problem: { de: 'Ein Sprachmodell beantwortet Fragen in Worten. Es verfolgt aber nicht, wie Entitäten in der physischen Welt tatsächlich zusammenhängen.', en: "A language model answers questions in words. It doesn't track how entities in the physical world actually connect." },
-    why: { de: 'Untersuchungen scheiterten wiederholt, weil Evidenz in fünf getrennten Systemen lag, die nie miteinander sprachen - ein gemeinsames Weltmodell sollte das beenden.', en: 'Investigations kept stalling because evidence lived in five separate systems that never talked to each other - a shared world model was built to end that.' },
-    different: { de: "Echter PyTorch-GNN mit getrackter Test-AUC, jede Aussage wird mit einem ternären Epistemic-State gestempelt. Albert ist bewusst eine 'explizite Naht': die Synthese-Funktion wirft absichtlich einen Fehler, statt einen Albert-Output vorzutäuschen, solange kein echtes Backend verdrahtet ist.", en: "A real PyTorch GNN with tracked test AUC, every claim gets stamped with a ternary epistemic state. Albert is deliberately an 'explicit seam': the synthesis function intentionally raises an error rather than faking an Albert output until a real backend is wired in." },
-    fit: { de: 'Die World-Model-Schicht. Der Kern-Loop (ingest → reason → stamp → interim-synthesize) läuft; die native Ausführung auf Rusty Penguin ist eine separate, noch experimentelle Baustelle.', en: "The World Model layer. The core loop (ingest → reason → stamp → interim-synthesize) runs; native execution on Rusty Penguin is a separate, still-experimental piece." },
-    proof: { de: '1.026 Knoten, 1.960 Kanten, 313 Beobachtungen aus 9 Datensätzen, mehrere selbst aufgedeckte und offen dokumentierte Mess-Fehler statt stillschweigend korrigierter Zahlen.', en: '1,026 nodes, 1,960 edges, 313 observations from 9 datasets, several self-caught and openly documented measurement errors instead of quietly corrected numbers.' },
-    technical: { de: 'Python, PyTorch-GNN. Noch nicht öffentlich auf GitHub.', en: 'Python, PyTorch GNN. Not yet public on GitHub.' },
-    connects: ['albert', 'rusty-penguin', 'tis'],
-    links: {},
   },
   {
     key: 'coevolution-factory', name: 'CoEvolution Factory', zone: 'applications', status: 'OPERATIONAL',

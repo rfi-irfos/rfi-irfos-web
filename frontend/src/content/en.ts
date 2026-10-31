@@ -177,10 +177,9 @@ export const EN = {
     seoDescription: 'Public ledger of evidence-based GDPR and security audit reports on Android apps: trackers, SDKs, permissions, hardcoded keys, pre-consent tracking.',
     paragraph: 'We run an agentic AI pipeline that decompiles publicly distributed Android and iOS apps, investigates their code and data flows, and traces connections to real-world endpoints. Hundreds of specialised agents work across the investigation, connecting technical evidence into a coherent picture that human specialists review and verify.',
     follow: { freeCheck: 'Start the free check for your own domain', label: ', or follow new investigations', feed: 'Atom feed' },
-    securityBridgeLead: 'This is what a Security engagement produces.',
     focusBanner: (names: string) => `Showing the report for ${names}.`,
     showFullLedger: 'Show the full ledger',
-    securityBridgeCta: 'See what you’d receive →',
+    securityBridgeCta: 'This is what a security engagement encompasses →',
     kpis: {
       appsAudited: 'Android/iOS apps audited',
       smaliClasses: 'Smali classes read',
@@ -311,7 +310,7 @@ export const EN = {
     introSubtitle: 'Find out what your security tools might be missing.',
     introText: [
       'The initial check is read-only, performed from a European IP address, with no login and no payloads. Your systems remain unchanged.',
-      "A researcher reviews your request before any check begins and replies within one business day. You receive a short written report with our findings, likely attack scenarios, the potential financial impact and clear next steps, plus a knowledge graph of everything we found. All free.",
+      "A researcher reviews your request before any check begins and replies within one business day. You receive a short written report with our findings, likely attack scenarios, the potential financial impact and clear next steps, plus a knowledge graph of everything we found.",
       'This is an initial external assessment, not a source-code review or a guarantee that your application is secure.',
     ],
     domainLabel: 'Your domain',

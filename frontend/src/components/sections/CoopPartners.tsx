@@ -51,7 +51,7 @@ export function CoopPartnersSection({
     <section id="coop-partners" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
-          <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12, textAlign: 'center' }}>{t.coopPartners.eyebrow}</p>
+          <p className="rfi-eyebrow" style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12, textAlign: 'center' }}>{t.coopPartners.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center' }}>{t.coopPartners.heading}</h2>
           <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 40, textAlign: 'center', maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}>
             {t.coopPartners.subheading}
