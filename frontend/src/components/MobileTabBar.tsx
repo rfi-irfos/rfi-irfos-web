@@ -43,15 +43,16 @@ export function MobileTabBar({ view, locale, links, onNavigate }: {
       borderTop: '1px solid var(--border)',
     }}>
       {links.slice(0, 2).map(tab)}
-      <div style={{ flex: '0 0 72px', display: 'flex', justifyContent: 'center' }}>
+      {/* Home sits inside the bar, vertically centred like the tabs (Simeon 01.11.: the raised,
+          ringed FAB looked cut off from the bar). */}
+      <div style={{ flex: '0 0 72px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <a href={localeHref('/', locale)} aria-label={locale === 'de' ? 'Startseite' : 'Home'} aria-current={home ? 'page' : undefined}
           onClick={e => { e.preventDefault(); onNavigate('/') }}
           style={{
-            width: 56, height: 56, marginTop: -18, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'var(--accent-text)', color: 'var(--bg)', border: '4px solid var(--bg)',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.45)',
+            width: 46, height: 46, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'var(--accent-text)', color: 'var(--bg)',
           }}>
-          <IconHome size={24} stroke={2} aria-hidden />
+          <IconHome size={22} stroke={2} aria-hidden />
         </a>
       </div>
       {links.slice(2).map(tab)}
