@@ -1863,7 +1863,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             {/* Simeon 01.11.: the copyright sits at the bottom of this left column, inside the divider,
                 level with the divider's lower end, instead of a separate full-width row below. */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8, ...(mobile ? {} : { gridColumn: '1 / -1', gridRow: 3, alignSelf: 'end' }) }}>
-              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0, ...(mobile ? {} : { whiteSpace: 'nowrap' }) }}>
+              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0, lineHeight: 1.6 }}>
                 {t.footer.copyright}
               </p>
             </div>
