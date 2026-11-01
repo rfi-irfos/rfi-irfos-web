@@ -75,10 +75,10 @@ export function Select({
   return (
     <div ref={rootRef} style={{ position: 'relative' }}>
       <button type="button" aria-haspopup="listbox" aria-expanded={open} aria-label={ariaLabel}
-        onClick={() => setOpen(o => !o)}
+        onClick={() => setOpen(o => !o)} className="fx-input"
         style={{
-          width: '100%', textAlign: 'left', background: 'var(--input-bg)', border: '1px solid var(--border)',
-          borderRadius: 8, padding: '12px 16px', color: selected ? 'var(--text)' : 'var(--text3)', fontSize: 'var(--fs-body)',
+          width: '100%', textAlign: 'left',
+          borderRadius: 12, padding: '12px 16px', color: selected ? 'var(--text)' : 'var(--text3)', fontSize: 'var(--fs-body)',
           fontFamily: 'inherit', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8,
         }}>
         <span>{selected ? selected.label : placeholder}</span>

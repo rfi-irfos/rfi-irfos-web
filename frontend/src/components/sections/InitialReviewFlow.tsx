@@ -66,8 +66,7 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
   }
 
   const cardStyle: React.CSSProperties = {
-    border: '1px solid var(--border)', borderRadius: 16, padding: variant === 'embedded' ? '20px' : '24px',
-    background: 'var(--glass-bg-solid)', display: 'flex', flexDirection: 'column', gap: 14,
+    borderRadius: 18, padding: variant === 'embedded' ? '22px' : '24px', display: 'flex', flexDirection: 'column', gap: 14,
     maxWidth: variant === 'modal' ? 380 : undefined, height: variant === 'embedded' ? '100%' : undefined,
     boxSizing: 'border-box',
   }
@@ -101,13 +100,13 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
           <label htmlFor={`${fid}-domain`} style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', display: 'block', marginBottom: 6 }}>{c.domainLabel}</label>
           <input id={`${fid}-domain`} name="domain" type="text" inputMode="url" autoComplete="url" autoCapitalize="none" autoCorrect="off" spellCheck={false} required placeholder={c.domainPlaceholder} value={domain}
             onChange={e => setDomain(e.target.value)}
-            style={{ width: '100%', background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+            className="fx-input" style={{ width: '100%', borderRadius: 12, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
         </div>
         <div>
           <label htmlFor={`${fid}-email`} style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', display: 'block', marginBottom: 6 }}>{c.emailLabel}</label>
           <input id={`${fid}-email`} name="email" autoComplete="email" type="email" required placeholder={c.emailPlaceholder} value={email}
             onChange={e => setEmail(e.target.value)}
-            style={{ width: '100%', background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+            className="fx-input" style={{ width: '100%', borderRadius: 12, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
         </div>
         <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
           <input type="checkbox" required checked={consent} onChange={e => setConsent(e.target.checked)}
@@ -136,13 +135,13 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
             </a>
           </p>
         )}
-        <button type="submit" disabled={state === 'sending' || !consent} style={{
-          background: state === 'ok' ? 'rgba(0,245,196,0.2)' : '#f97316',
+        <button type="submit" className={state === 'ok' ? undefined : 'fx-cta'} disabled={state === 'sending' || !consent} style={{
+          background: state === 'ok' ? 'rgba(0,245,196,0.2)' : undefined,
           color: state === 'ok' ? 'var(--accent-text)' : '#1a0f00',
           border: state === 'ok' ? '1px solid var(--accent-text)' : 'none',
-          padding: '13px 20px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)',
+          padding: '14px 20px', borderRadius: 12, fontWeight: 700, fontSize: 'var(--fs-body)',
           cursor: state === 'sending' ? 'wait' : !consent ? 'not-allowed' : 'pointer',
-          opacity: !consent && state === 'idle' ? 0.5 : 1,
+          opacity: !consent && state === 'idle' ? 0.78 : 1,
           marginTop: 'auto',
         }}>
           {state === 'sending' ? c.submitSending : state === 'ok' ? c.submitOk : c.submitCta}

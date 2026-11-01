@@ -19,8 +19,9 @@ export function MobileTabBar({ view, locale, links, onNavigate }: {
 }) {
   const home: NavLink = { key: 'home', label: locale === 'de' ? 'Start' : 'Home', href: '/' }
   const tabs = [links[0], links[1], home, ...links.slice(2)]
+  // --tab-hi lives in index.css (.rfi-tabbar): deep green in dark, the amber accent in hc.
   return (
-    <nav aria-label={locale === 'de' ? 'Hauptnavigation' : 'Main navigation'} style={{
+    <nav className="rfi-tabbar" aria-label={locale === 'de' ? 'Hauptnavigation' : 'Main navigation'} style={{
       position: 'fixed', left: 10, right: 10, bottom: 'calc(10px + env(safe-area-inset-bottom))', zIndex: 150,
       display: 'flex', alignItems: 'stretch', height: 68, padding: '0 4px', borderRadius: 24, overflow: 'hidden',
       background: 'rgba(22, 24, 34, 0.55)', backdropFilter: 'blur(18px) saturate(140%)', WebkitBackdropFilter: 'blur(18px) saturate(140%)',
@@ -36,12 +37,23 @@ export function MobileTabBar({ view, locale, links, onNavigate }: {
             style={{
               position: 'relative', flex: '1 1 0', minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
               gap: 5, textDecoration: 'none', fontSize: 'var(--fs-label)', fontWeight: active ? 600 : 500, whiteSpace: 'nowrap',
-              color: active ? 'var(--accent-text)' : 'var(--text2)', transition: 'color .2s',
+              color: active ? 'var(--tab-hi)' : 'var(--text2)', transition: 'color .2s',
             }}>
-            {active && <span aria-hidden="true" style={{ position: 'absolute', inset: '0 12%', background: 'radial-gradient(closest-side, color-mix(in srgb, var(--accent-text) 7%, transparent), transparent)', pointerEvents: 'none' }} />}
-            <Icon size={24} stroke={1.5} aria-hidden />
-            <span style={{ position: 'relative' }}>{n.label}</span>
-            {active && <span aria-hidden="true" style={{ position: 'absolute', bottom: 6, width: 28, height: 2, borderRadius: 999, background: 'var(--accent-text)' }} />}
+            {active && <span aria-hidden="true" style={{ position: 'absolute', inset: '0 12%', background: 'radial-gradient(closest-side, color-mix(in srgb, var(--tab-hi) 7%, transparent), transparent)', pointerEvents: 'none' }} />}
+            {/* Zabih 01.11.: Home is the centre piece, one glass frame around icon and label together. */}
+            {n.key === 'home'
+              ? <span style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, padding: '5px 14px 4px', margin: '-4px 0', borderRadius: 14,
+                  border: `1px solid ${active ? 'color-mix(in srgb, var(--tab-hi) 45%, transparent)' : 'rgba(255,255,255,0.16)'}`,
+                  background: 'linear-gradient(160deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03))',
+                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.22), 0 4px 12px rgba(0,0,0,0.35)', transition: 'border-color .2s' }}>
+                  <Icon size={22} stroke={1.6} aria-hidden />
+                  <span>{n.label}</span>
+                </span>
+              : <>
+                  <Icon size={24} stroke={1.5} aria-hidden />
+                  <span style={{ position: 'relative' }}>{n.label}</span>
+                </>}
+            {active && <span aria-hidden="true" style={{ position: 'absolute', bottom: 6, width: 28, height: 2, borderRadius: 999, background: 'var(--tab-hi)' }} />}
           </a>
         )
       })}

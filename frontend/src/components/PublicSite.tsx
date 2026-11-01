@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
@@ -625,7 +625,8 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   const [bannerClosing, setBannerClosing] = useState(false)
   const bannerRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
+  // Layout effect so the attribute lands inside the view-transition update (lib/viewTransition.ts).
+  useLayoutEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
@@ -1072,7 +1073,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
 
   async function submitTip(e: React.FormEvent) {
     e.preventDefault()
-    if (!tipForm.lawful) return
+    if (tipForm.topic === 'Security Disclosure' && !tipForm.lawful) return
     if (tipForm.botcheck) { setTipFormState('ok'); return }
     setTipFormState('sending')
     // Posts same-origin to our own backend, which relays into the Lighthouse CRM with

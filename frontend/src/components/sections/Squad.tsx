@@ -318,6 +318,19 @@ function HowItConnects() {
                 <marker id="hic-arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                   <path d="M0,0 L10,5 L0,10 Z" fill="var(--accent-text)" />
                 </marker>
+                {/* Simeon 01.11.: depth instead of flat fills - a raised gradient per box,
+                    a soft drop shadow, and a top sheen on each zone band. */}
+                <linearGradient id="hic-box-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor="#1a1f27" />
+                  <stop offset="1" stopColor="#0d1015" />
+                </linearGradient>
+                <linearGradient id="hic-zone-sheen" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor="#fff" stopOpacity="0.07" />
+                  <stop offset="0.35" stopColor="#fff" stopOpacity="0" />
+                </linearGradient>
+                <filter id="hic-shadow" x="-20%" y="-20%" width="140%" height="150%">
+                  <feDropShadow dx="0" dy="8" stdDeviation="9" floodColor="#000" floodOpacity="0.5" />
+                </filter>
               </defs>
               {HIC_ZONE_BANDS.map((band, zi) => (
                 <g key={band.x}>
@@ -329,6 +342,7 @@ function HowItConnects() {
                   <rect x={band.x} y="0" width={band.w} height="400" rx="14"
                     fill={OUTPUT_TAG_HUES[zi % OUTPUT_TAG_HUES.length].bg}
                     stroke={OUTPUT_TAG_HUES[zi % OUTPUT_TAG_HUES.length].border} strokeWidth="1" />
+                  <rect x={band.x} y="0" width={band.w} height="400" rx="14" fill="url(#hic-zone-sheen)" pointerEvents="none" />
                 </g>
               ))}
               {s.zones.map((zone, zi) => (
@@ -361,8 +375,10 @@ function HowItConnects() {
                 const Icon = HIC_STEP_ICONS[id] ?? IconDatabase
                 return (
                   <g key={id} className={id === 'hub' ? 'hic-hub-box' : undefined}>
-                    <rect x={b.x} y={b.y} width={b.w} height={b.h} rx="10" fill="var(--bg)"
-                      stroke={id === 'hub' ? 'var(--accent-text)' : 'var(--wm-border)'} strokeWidth={id === 'hub' ? 2 : 1.5} />
+                    <rect x={b.x} y={b.y} width={b.w} height={b.h} rx="12" fill="url(#hic-box-grad)" filter="url(#hic-shadow)"
+                      stroke={id === 'hub' ? 'var(--accent-text)' : 'rgba(255,255,255,0.11)'} strokeWidth={id === 'hub' ? 2 : 1} />
+                    {/* top highlight line, the lit edge of a raised card */}
+                    <line x1={b.x + 12} y1={b.y + 0.75} x2={b.x + b.w - 12} y2={b.y + 0.75} stroke="rgba(255,255,255,0.22)" strokeWidth="1" />
                     <foreignObject x={b.x + 10} y={b.y} width={b.w - 20} height={b.h}>
                       <div className="hic-box-content">
                         <div className="hic-box-icon"><Icon size={17} stroke={1.8} /></div>

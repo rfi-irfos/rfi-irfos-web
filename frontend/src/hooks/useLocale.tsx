@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { withViewTransition } from '../lib/viewTransition'
 import { EN, type Content } from '../content/en'
 import { DE } from '../content/de'
 import { hasDeTwin } from '../lib/localeHref'
@@ -43,7 +44,7 @@ export function LocaleProvider({ children, initialLocale }: { children: ReactNod
   useEffect(() => { document.documentElement.lang = locale }, [locale])
 
   const setLocale = (l: Locale) => {
-    setLocaleState(l)
+    withViewTransition(() => setLocaleState(l))
     // Keep the /de URL prefix in step with an explicit toggle (replaceState: a
     // language switch is a representation change of the same page, not a new
     // history entry). Initial-load locale resolution deliberately never does

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { withViewTransition } from '../lib/viewTransition'
 
 // Light dropped from the selectable set (Simeon, 2026-09-14: "nur dark und
 // high contrast supported") - 'light' stays in the Theme union rather than
@@ -44,7 +45,7 @@ export function useTheme(): {
   }, [theme])
 
   const setTheme = (t: Theme) => setThemeState(t)
-  const cycle = () => setThemeState(t => THEMES[(THEMES.indexOf(t) + 1) % THEMES.length])
+  const cycle = () => withViewTransition(() => setThemeState(t => THEMES[(THEMES.indexOf(t) + 1) % THEMES.length]))
 
   return { theme, setTheme, cycle }
 }

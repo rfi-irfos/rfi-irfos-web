@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion } from 'framer-motion'
-import { prefersReducedMotion, useTilt, Reveal, useModalExit } from './shared'
+import { prefersReducedMotion, Reveal, useModalExit } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
 // Live feedback 2026-08-14: cards used to show the full two-paragraph
@@ -16,27 +16,26 @@ import { useLocale } from '../../hooks/useLocale'
 // thing instead of every icon being the same teal. Order is spread so neighbours differ.
 const AREA_IC = [3, 1, 2, 8, 7, 5, 4, 6]
 
-function BentoTile({ icon, ic, title, onOpen, delay }: {
+function BentoTile({ icon, ic, title, onOpen, delay, alt }: {
   icon: React.ReactNode; ic: number; title: string; onOpen: () => void
-  delay: number
+  delay: number; alt?: boolean
 }) {
+  // Tilt and hover scale removed (Simeon 01.11.): the 3D transform rasterised the glass tile and its text blurry.
   const tiltRef = useRef<HTMLButtonElement>(null)
-  const tilt = useTilt(tiltRef, 5)
   return (
     <Reveal delay={delay} style={{ height: '100%' }}>
       {/* Slimmed down 2026-08-18 (live feedback: "die karten bischl verschlankern") -
           padding, icon badge and gap all cut, card reads as a compact index entry
           rather than a bulky tile. */}
-      <motion.button ref={tiltRef} onClick={onOpen} className="rfi-hover-card rfi-icon-tile" style={{
-        ...tilt,
-        background: 'var(--glass-bg-solid)', border: '1px solid var(--border)',
-        borderRadius: 14, padding: '14px 12px', cursor: 'pointer',
+      <motion.button ref={tiltRef} onClick={onOpen} className={`rfi-hover-card rfi-icon-tile fx-tile${alt ? ' fx-tile--alt' : ''}`} style={{
+        ['--tile-hue' as string]: `var(--ib-${ic})`,
+        borderRadius: 18, padding: '22px 14px', cursor: 'pointer',
         height: '100%', width: '100%', boxSizing: 'border-box', overflow: 'hidden',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, textAlign: 'center',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, textAlign: 'center',
         transition: 'box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 180ms cubic-bezier(0.4,0,0.2,1), background-color 180ms cubic-bezier(0.4,0,0.2,1)',
         font: 'inherit', color: 'inherit',
       }}
-        whileHover={prefersReducedMotion() ? undefined : { y: -4, scale: 1.012 }}
+        whileHover={prefersReducedMotion() ? undefined : { y: -3 }}
         transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
       >
         {/* Depth added 2026-09-07 (live feedback: "so 2D and flat sorta") - a
@@ -47,7 +46,7 @@ function BentoTile({ icon, ic, title, onOpen, delay }: {
         {/* --pop-fill 72% -> 54% (live feedback 2026-10-25: "die BGs von den icons a klein
             wenig durchsichtiger machen dass die farben nicht so knallig sind") - more of the
             dark base mixed in, the hue stays but stops shouting. */}
-        <div className="rfi-glass-icon rfi-icon-pop" style={{ width: 54, height: 54, borderRadius: 15, ['--ib' as string]: `var(--ib-${ic})`, ['--pop-sym' as string]: '#efe3c8', ['--pop-fill' as string]: '54%' }}>
+        <div className="rfi-glass-icon rfi-icon-pop fx-icon3d" style={{ width: 62, height: 62, borderRadius: 17, ['--ib' as string]: `var(--ib-${ic})`, ['--pop-sym' as string]: '#fdfbf7', ['--pop-fill' as string]: '54%' }}>
           {icon}
         </div>
         <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-tight)', whiteSpace: 'pre-line' }}>{title}</div>
@@ -183,7 +182,7 @@ function ResearchAreasGrid() {
           const row = Math.floor(i / RESEARCH_GRID_COLS)
           return (
             <BentoTile key={area.title} icon={a.icon} ic={AREA_IC[i]} title={area.title} onOpen={() => setSelected(i)}
-              delay={row} />
+              delay={row} alt={(row + (i % RESEARCH_GRID_COLS)) % 2 === 1} />
           )
         })}
       </div>

@@ -2,7 +2,6 @@
 // verbatim from PublicSite.tsx.
 import { Reveal } from './shared'
 import { useLocale } from '../../hooks/useLocale'
-import { TopicLinks } from './TopicLinks'
 
 const GH = 'https://github.com/rfi-irfos/'
 
@@ -57,7 +56,7 @@ export function CoopPartnersSection({
             {t.coopPartners.subheading}
           </p>
         </Reveal>
-        <div className="rfi-glass-flat rfi-glass-solid" style={{ borderRadius: 14, maxWidth: 820, margin: '0 auto', overflow: 'hidden', zoom: 0.95, background: 'linear-gradient(165deg, var(--silver-bg-a), var(--silver-bg-b))', border: '1px solid var(--silver-line)' }}>
+        <div className="fx-panel fx-laura" style={{ borderRadius: 20, maxWidth: 820, margin: '0 auto', overflow: 'hidden', zoom: 0.95 }}>
           <Reveal delay={1}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', padding: '24px 28px' }}>
               <div style={{ flex: '1 1 240px', minWidth: 0 }}>
@@ -71,11 +70,11 @@ export function CoopPartnersSection({
               </div>
               <a href="https://emergent-interaction-lab.com" target="_blank" rel="noopener noreferrer"
                  style={{
-                   display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 'var(--fs-label)', fontWeight: 700,
-                   padding: '3px 9px', borderRadius: 999,
+                   display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 'var(--fs-small)', fontWeight: 700,
+                   padding: '8px 16px', borderRadius: 999, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.12)',
                    border: '1px solid color-mix(in srgb, var(--accent) 55%, transparent)', background: 'color-mix(in srgb, var(--accent) 14%, transparent)', color: 'var(--accent)', textDecoration: 'none', whiteSpace: 'nowrap',
                  }}>
-                <GroupIcon kind="website" size={11} />
+                <GroupIcon kind="website" size={15} />
                 Website
               </a>
             </div>
@@ -93,17 +92,12 @@ export function CoopPartnersSection({
               borderTop: '1px solid var(--border)', padding: '14px',
             }}>
               {GROUPS.map(g => (
-                <div key={g.title} style={{
+                <div key={g.title} className="fx-tile fx-tile--static" style={{
                   padding: '26px 18px 22px', textAlign: 'center', borderRadius: 16, position: 'relative', overflow: 'hidden',
-                  // Glass card: a faint glow in the icon's own colour on top, a silver sheen below,
-                  // a bright top edge and blur so it reads as frosted glass, not a flat box.
-                  background: `radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--ic-${g.ic}) 6%, transparent), transparent 62%), linear-gradient(160deg, var(--silver-tile-a), var(--silver-tile-b) 55%, var(--silver-tile-a))`,
-                  border: '1px solid var(--silver-line)',
-                  backdropFilter: 'blur(16px) saturate(1.4)', WebkitBackdropFilter: 'blur(16px) saturate(1.4)',
-                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(255,255,255,0.05), 0 6px 16px rgba(0,0,0,0.28)',
+                  ['--tile-hue' as string]: `var(--ib-${g.ic})`,
                 }}>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                    <span className="rfi-glass-icon rfi-icon-pop" style={{ width: 40, height: 40, borderRadius: 12, ['--ib' as string]: `var(--ib-${g.ic})` }}>
+                    <span className="rfi-glass-icon rfi-icon-pop fx-icon3d" style={{ width: 44, height: 44, borderRadius: 13, ['--ib' as string]: `var(--ib-${g.ic})` }}>
                       <GroupIcon kind={g.kind} size={17} />
                     </span>
                     <p style={{ fontSize: 'var(--fs-small)', fontWeight: 700, margin: 0, color: 'var(--text)' }}>{g.title}</p>
@@ -121,9 +115,6 @@ export function CoopPartnersSection({
             </div>
           </Reveal>
         </div>
-        {/* Simeon 2026-10-31: the service pills sit under Laura's lab card,
-            where they read calmer than under the research grid. */}
-        <div style={{ marginTop: 32 }}><TopicLinks /></div>
       </div>
 
     </section>

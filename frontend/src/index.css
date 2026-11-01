@@ -906,3 +906,164 @@ h1, h2, h3, .rfi-display {
    eyebrows centre the line with them, .rfi-eyebrow--start keeps left-aligned ones left. */
 .wm-eyebrow, .data-eyebrow, .rfi-eyebrow { width: fit-content; max-width: 100%; margin-inline: auto; padding-bottom: 3px; border-bottom: 1px solid var(--text4); }
 .rfi-eyebrow--start { margin-inline: 0; }
+
+/* Evidence strip glass cards (AppPrivacy), after Simeon's reference 01.11. */
+.kpi-card { position: relative; display: flex; align-items: center; gap: 28px; height: 100%; box-sizing: border-box; padding: 32px 36px; border-radius: 24px; border: 1px solid rgba(255,255,255,.12); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 18px 40px rgba(0,0,0,.35); background: linear-gradient(160deg, rgba(255,255,255,.11), rgba(255,255,255,.04) 45%, rgba(255,255,255,.07)), #111419; backdrop-filter: blur(22px) saturate(150%); -webkit-backdrop-filter: blur(22px) saturate(150%); overflow: hidden; }
+.kpi-card::before, .kpi-card::after { content: ''; position: absolute; left: 12%; right: 12%; height: 1px; background: linear-gradient(90deg, transparent, #8b6cf0, transparent); box-shadow: 0 0 10px rgba(124,92,230,.5); }
+.kpi-card::before { top: 0; opacity: .7; }
+.kpi-card::after { bottom: 0; opacity: .9; }
+/* Each card catches the light from a slightly different spot, so the three read as separate panes. */
+.kpi-card--1::before { left: 6%; right: 38%; }
+.kpi-card--1::after { left: 45%; right: 8%; opacity: .55; }
+.kpi-card--1 { background-position: 0 0; }
+.kpi-card--2::before { left: 22%; right: 22%; opacity: .5; }
+.kpi-card--2::after { left: 14%; right: 14%; }
+.kpi-card--3::before { left: 40%; right: 6%; }
+.kpi-card--3::after { left: 8%; right: 50%; opacity: .55; }
+.kpi-card--1 { background-image: linear-gradient(150deg, rgba(255,255,255,.12), rgba(255,255,255,.04) 45%, rgba(255,255,255,.06)); }
+.kpi-card--3 { background-image: linear-gradient(210deg, rgba(255,255,255,.12), rgba(255,255,255,.04) 45%, rgba(255,255,255,.06)); }
+.kpi-card__rule { flex: none; align-self: stretch; margin: 8px 0; width: 1px; background: rgba(255,255,255,.14); }
+.kpi-cq { container-type: inline-size; height: 100%; }
+.kpi-card__n { font-size: clamp(1.85rem, 12.2cqi, 4.3rem); font-weight: 700; color: var(--accent-text); line-height: 1; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.kpi-card__label { font-size: clamp(.85rem, 4.3cqi, 1.35rem); white-space: nowrap; color: var(--text); margin-top: 8px; line-height: 1.35; }
+.kpi-art { position: relative; flex: none; width: 160px; height: 150px; color: var(--accent-text); }
+.kpi-glass { position: absolute; display: flex; align-items: center; justify-content: center; border-radius: 14px; border: 1px solid rgba(255,255,255,.2); border-top-color: rgba(255,255,255,.38); border-left-color: color-mix(in srgb, var(--accent-text) 45%, rgba(255,255,255,.2)); background: linear-gradient(150deg, rgba(255,255,255,.13), rgba(255,255,255,.03) 48%, rgba(255,255,255,.06)); box-shadow: 5px 6px 0 -1px rgba(255,255,255,.05), 5px 6px 0 0 color-mix(in srgb, var(--accent-text) 16%, transparent), inset 0 1px 0 rgba(255,255,255,.3), 0 14px 28px rgba(0,0,0,.5); backdrop-filter: blur(8px) saturate(1.3); -webkit-backdrop-filter: blur(8px) saturate(1.3); }
+.kpi-glass--window { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 8px 10px; border-color: rgba(255,255,255,.16); background: linear-gradient(160deg, rgba(40,46,56,.9), rgba(16,18,24,.92)); color: var(--text2); }
+.kpi-win__bar { display: flex; gap: 4px; margin-bottom: 10px; }
+.kpi-win__bar i { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.35); }
+.kpi-win__code { display: flex; flex-direction: column; gap: 6px; }
+.kpi-win__code b { font: 600 11px/1 ui-monospace, monospace; color: var(--text); }
+.kpi-win__code span { display: block; height: 3px; border-radius: 2px; background: rgba(255,255,255,.22); }
+.kpi-br { position: absolute; width: 12px; height: 12px; border: 0 solid color-mix(in srgb, var(--accent-text) 70%, transparent); }
+.kpi-br--tl { left: 4px; top: 4px; border-left-width: 1.5px; border-top-width: 1.5px; border-top-left-radius: 4px; }
+.kpi-br--tr { right: 4px; top: 4px; border-right-width: 1.5px; border-top-width: 1.5px; border-top-right-radius: 4px; }
+.kpi-br--bl { left: 4px; bottom: 4px; border-left-width: 1.5px; border-bottom-width: 1.5px; border-bottom-left-radius: 4px; }
+.kpi-br--br { right: 4px; bottom: 4px; border-right-width: 1.5px; border-bottom-width: 1.5px; border-bottom-right-radius: 4px; }
+.kpi-ring { position: absolute; border-radius: 50%; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.kpi-ring--outer { width: 146px; height: 146px; border: 1.5px dashed color-mix(in srgb, var(--accent-text) 30%, transparent); }
+.kpi-ring--inner { width: 118px; height: 118px; border: 1px solid color-mix(in srgb, var(--accent-text) 40%, transparent); background: radial-gradient(circle, color-mix(in srgb, var(--accent-text) 12%, transparent), transparent 70%); }
+.kpi-art--tilt { perspective: 600px; }
+.kpi-glyph { color: var(--accent-text); filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent-text) 45%, transparent)); }
+.kpi-glyph--light { color: color-mix(in srgb, var(--accent-text) 55%, #ffffff); }
+.kpi-floor { position: absolute; left: 6px; right: 0; bottom: 0; height: 34px; background-image: linear-gradient(color-mix(in srgb, var(--accent-text) 18%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--accent-text) 18%, transparent) 1px, transparent 1px); background-size: 14px 10px; transform: perspective(200px) rotateX(55deg); transform-origin: bottom; mask-image: linear-gradient(transparent, #000 40%, transparent); -webkit-mask-image: linear-gradient(transparent, #000 40%, transparent); }
+.kpi-ring--outer { background: repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--accent-text) 35%, transparent) 0 1deg, transparent 1deg 10deg); -webkit-mask: radial-gradient(circle, transparent 68px, #000 69px); mask: radial-gradient(circle, transparent 68px, #000 69px); border: none; }
+@container (max-width: 460px) {
+  .kpi-card { gap: 14px; padding: 22px 18px; }
+  .kpi-art { zoom: .6; }
+}
+@container (max-width: 340px) {
+  .kpi-card { gap: 12px; padding: 18px 16px; border-radius: 18px; }
+  .kpi-art { zoom: .52; }
+  .kpi-card__rule { margin: 4px 0; }
+}
+@media (max-width: 640px) {
+  .kpi-card { gap: 18px; padding: 22px 20px; }
+  .kpi-art { zoom: .72; }
+}
+
+/* Flagship widget glass (Simeon 01.11., reference image): clean dark panes with crisp bright top
+   edges (no grey wash, that read muddy), each scope row its own glass strip, the evidence card lit
+   from inside with a tight glow, glass inputs, warm CTA. */
+[data-theme="dark"] .fx-frame, [data-theme="dark"] .kpi-card { --text2: #bcc4d0; }
+.fx-frame { border: 1px solid rgba(98,64,196,.42); box-shadow: 0 0 28px rgba(76,46,170,.14); }
+.fx-panel, .irf-card-glow { border: 1px solid rgba(255,255,255,.09); border-top-color: rgba(255,255,255,.22); background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0) 28%), #0b0d12; backdrop-filter: blur(20px) saturate(150%); -webkit-backdrop-filter: blur(20px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 1px 0 rgba(0,0,0,.6), 0 28px 60px rgba(0,0,0,.55) !important; }
+.fx-row { border-radius: 14px; border: 1px solid rgba(255,255,255,.07); border-top-color: rgba(255,255,255,.17); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02) 60%), rgba(14,17,23,.9); box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 8px 18px rgba(0,0,0,.4); transition: border-color .25s, background .25s; }
+.fx-row:hover { border-color: color-mix(in srgb, var(--accent-text) 34%, rgba(255,255,255,.1)); }
+.fx-evidence { position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.1); border-top-color: rgba(255,255,255,.22); background: linear-gradient(180deg, #070b0b 0%, #090c0d 50%, color-mix(in srgb, var(--accent-text) 6%, #090d0d) 100%); box-shadow: 0 0 22px color-mix(in srgb, var(--accent-text) 12%, transparent), 0 24px 50px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18); }
+.fx-evidence::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 40%; pointer-events: none; background: linear-gradient(180deg, rgba(255,255,255,.06), transparent); }
+.fx-evidence > * { position: relative; }
+.fx-input { background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.13); box-shadow: inset 0 1px 3px rgba(0,0,0,.5), 0 1px 0 rgba(255,255,255,.04); transition: border-color .2s, box-shadow .2s; }
+.fx-input:focus { border-color: color-mix(in srgb, var(--accent-text) 60%, transparent); box-shadow: inset 0 1px 3px rgba(0,0,0,.5), 0 0 0 3px color-mix(in srgb, var(--accent-text) 18%, transparent); }
+.fx-cta { background: linear-gradient(180deg, #ffb347, #f7931e 55%, #ea7a0c); box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 8px 22px rgba(247,147,30,.34); transition: transform .15s, box-shadow .2s; }
+.fx-cta:not(:disabled):hover { transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 10px 28px rgba(247,147,30,.46); }
+:root:not([data-theme="dark"]):not([data-theme="hc"]) .fx-panel,
+:root:not([data-theme="dark"]):not([data-theme="hc"]) .irf-card-glow { background: linear-gradient(165deg, rgba(255,255,255,.92), rgba(255,255,255,.7)); border-color: rgba(0,0,0,.08); box-shadow: inset 0 1px 0 #fff, 0 20px 50px rgba(0,0,0,.08) !important; }
+:root:not([data-theme="dark"]):not([data-theme="hc"]) .fx-row { background: linear-gradient(170deg, rgba(255,255,255,.95), rgba(245,247,250,.8)); border-color: rgba(0,0,0,.07); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+:root:not([data-theme="dark"]):not([data-theme="hc"]) .fx-evidence { background: linear-gradient(165deg, color-mix(in srgb, var(--accent-text) 14%, #fff), color-mix(in srgb, var(--accent-text) 5%, #fff)); }
+:root:not([data-theme="dark"]):not([data-theme="hc"]) .fx-input { background: #fff; border-color: rgba(0,0,0,.12); box-shadow: inset 0 1px 2px rgba(0,0,0,.06); }
+
+/* Research topic tiles (Simeon 01.11.): dark glass with a bright top edge, the edge and a low
+   floor light tinted with each tile's own icon hue. Opaque base so the scroll spine stays behind. */
+.fx-tile { border: 1px solid rgba(255,255,255,.08); border-top-color: rgba(255,255,255,.18); background: radial-gradient(90% 60% at 50% 115%, color-mix(in srgb, var(--tile-hue) 12%, transparent), transparent 70%), linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.015) 55%, rgba(255,255,255,0)), #10131a; box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 -1px 0 rgba(0,0,0,.4), 0 1px 0 rgba(0,0,0,.6), 0 14px 28px rgba(0,0,0,.48); }
+.fx-tile:hover, .fx-tile.rfi-icon-tile:hover { background-color: #10131a; border-color: color-mix(in srgb, var(--tile-hue) 30%, rgba(255,255,255,.1)); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 18px 34px rgba(0,0,0,.52), 0 0 20px color-mix(in srgb, var(--tile-hue) 12%, transparent); }
+:root:not([data-theme="dark"]):not([data-theme="hc"]) .fx-tile.rfi-icon-tile:hover { background-color: #fff; }
+:root:not([data-theme="dark"]):not([data-theme="hc"]) .fx-tile { background: radial-gradient(90% 70% at 50% 120%, color-mix(in srgb, var(--tile-hue) 12%, transparent), transparent 70%), linear-gradient(170deg, #fff, #f4f6f9); border-color: color-mix(in srgb, var(--tile-hue) 25%, rgba(0,0,0,.08)); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+
+/* Cross-fade for the language and theme toggles (lib/viewTransition.ts). */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 340ms; animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
+
+/* Research icons with volume (Simeon 01.11.: "look very flat and 2D"): light from the top left,
+   a shaded lower edge, a lifted coloured shadow and an embossed symbol. */
+.fx-icon3d.rfi-icon-pop { background: radial-gradient(120% 90% at 28% 12%, rgba(255,255,255,.28), transparent 46%), linear-gradient(160deg, color-mix(in srgb, var(--ib) 70%, #1a1d22), color-mix(in srgb, var(--ib) 30%, #0b0d10)) !important; border: 1px solid color-mix(in srgb, var(--ib) 55%, rgba(255,255,255,.25)) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.45), inset 0 -3px 6px rgba(0,0,0,.35), 0 8px 18px color-mix(in srgb, var(--ib) 28%, transparent), 0 3px 6px rgba(0,0,0,.45) !important; }
+.fx-icon3d.rfi-icon-pop::before { opacity: .55; }
+/* Simeon 01.11.: crisp near-white symbol, a tight dark shadow for contrast instead of a soft white glow, slightly finer lines. */
+.fx-icon3d.rfi-icon-pop svg { filter: drop-shadow(0 1px 0 rgba(0,0,0,.55)) drop-shadow(0 1px 3px rgba(0,0,0,.35)); stroke-width: 1.55; }
+
+/* Simeon 01.11.: Laura's lab card and the contact form get the same crisp glass depth as the flagship widget. */
+.fx-laura { background: radial-gradient(90% 70% at 12% 0%, rgba(124,92,230,.08), transparent 75%), radial-gradient(80% 60% at 100% 100%, color-mix(in srgb, var(--accent-text) 4%, transparent), transparent 75%), linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0) 30%), #0b0d12; border-color: rgba(139,108,240,.22); border-top-color: rgba(255,255,255,.24); }
+.fx-tile--static:hover { transform: none; }
+.fx-cta-teal { background: linear-gradient(180deg, #5cffe0, #00f5c4 50%, #00cfa6); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -1px 0 rgba(0,0,0,.15), 0 8px 22px rgba(0,245,196,.26); transition: transform .15s, box-shadow .2s; }
+.fx-cta-teal:not(:disabled):hover { transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.65), 0 10px 28px rgba(0,245,196,.38); }
+.fx-dir-row { transition: background .2s; }
+.fx-dir-row:hover { background: rgba(255,255,255,.035); }
+.fx-dir-row:first-child { border-radius: 16px 16px 0 0; }
+.fx-dir-row:last-child { border-radius: 0 0 16px 16px; }
+.fx-expand { display: grid; grid-template-rows: 0fr; opacity: 0; margin-top: -14px; transition: grid-template-rows .38s cubic-bezier(.2,.7,.2,1), opacity .3s ease, margin-top .38s cubic-bezier(.2,.7,.2,1); }
+.fx-expand.is-open { grid-template-rows: 1fr; opacity: 1; margin-top: 0; }
+@media (prefers-reduced-motion: reduce) { .fx-expand { transition: none; } }
+
+/* Simeon 01.11.: the Squad agent widget gets the same solid, raised glass as the homepage cards. */
+[data-theme="dark"] .sq-overview-frame { background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0) 30%), #0a0c10; border-color: rgba(98,64,196,.38); box-shadow: 0 0 28px rgba(76,46,170,.12), 0 28px 60px rgba(0,0,0,.5); }
+[data-theme="dark"] .sq-agent-row { border: 1px solid rgba(255,255,255,.08); border-top-color: rgba(255,255,255,.17); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.015) 60%), #10131a; box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 8px 18px rgba(0,0,0,.4); }
+[data-theme="dark"] .sq-agent-row--active { background: radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--row-color) 16%, transparent), transparent 60%), linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02)), #121620; box-shadow: 0 0 0 1px var(--row-color), 0 0 22px color-mix(in srgb, var(--row-color) 22%, transparent), 0 10px 22px rgba(0,0,0,.45); }
+[data-theme="dark"] .sq-spec-sheet { border: 1px solid rgba(255,255,255,.09); border-top-color: rgba(255,255,255,.22); background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0) 28%), #0d1016; box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 24px 50px rgba(0,0,0,.5); border-radius: 18px; }
+[data-theme="dark"] .sq-spec-panel { border: 1px solid rgba(255,255,255,.08); border-top-color: rgba(255,255,255,.18); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.015) 55%), #12151c; box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 10px 22px rgba(0,0,0,.4); border-radius: 14px; }
+[data-theme="dark"] .sq-spec-sheet .wm-btn-primary { background: linear-gradient(180deg, #5cffe0, #00f5c4 50%, #00cfa6); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 8px 22px rgba(0,245,196,.24); border-radius: 12px; }
+
+/* Simeon 01.11.: KPI cards on phones read too fat - compact strip, smaller art and figure. */
+@media (max-width: 640px) {
+  .kpi-card { padding: 16px 18px; gap: 16px; border-radius: 20px; }
+  .kpi-art { zoom: .5; }
+  .kpi-card__n { font-size: 1.9rem; }
+  .kpi-card__label { font-size: .85rem; }
+}
+/* Simeon 01.11.: checkerboard light, every second tile catches the light from the other side. */
+.fx-tile--alt { background: radial-gradient(90% 60% at 50% 115%, color-mix(in srgb, var(--tile-hue) 12%, transparent), transparent 70%), linear-gradient(200deg, rgba(255,255,255,.075), rgba(255,255,255,.012) 50%, rgba(255,255,255,.02)), #0e1118; }
+
+/* Simeon 01.11., polish pass: one shared "raised plate" recipe for every remaining card surface in dark,
+   lit top edge, soft top sheen over an opaque base, a shaded underside and a grounded drop shadow.
+   Cards that already carry an fx- surface are left alone. */
+[data-theme="dark"] .wm-card:not(.sq-spec-sheet):not(.wm-modal),
+[data-theme="dark"] .rfi-glass-flat.rfi-glass-solid:not(.fx-panel):not(.fx-row):not(.fx-tile) {
+  background-color: #10131a;
+  background-image: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.015) 55%, rgba(255,255,255,0));
+  border: 1px solid rgba(255,255,255,.08);
+  border-top-color: rgba(255,255,255,.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), inset 0 -1px 0 rgba(0,0,0,.4), 0 1px 0 rgba(0,0,0,.6), 0 14px 28px rgba(0,0,0,.45);
+}
+[data-theme="dark"] .wm-modal.wm-card { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0) 30%), #0f1218; border: 1px solid rgba(255,255,255,.1); border-top-color: rgba(255,255,255,.22); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 30px 70px rgba(0,0,0,.6); }
+
+/* Mobile tab bar highlight (Simeon 01.11.: deep green instead of teal). */
+.rfi-tabbar { --tab-hi: #2fbf71; }
+[data-theme="hc"] .rfi-tabbar { --tab-hi: var(--accent-text); }
+
+/* High contrast keeps the same raised depth, neutral greys instead of tints, and full-strength
+   edges so every surface still clears the HC border contrast. */
+[data-theme="hc"] .fx-frame, [data-theme="hc"] .sq-overview-frame { border: 1px solid rgba(255,255,255,.7); box-shadow: 0 28px 60px rgba(0,0,0,.6); }
+[data-theme="hc"] .fx-panel, [data-theme="hc"] .irf-card-glow, [data-theme="hc"] .fx-laura, [data-theme="hc"] .sq-spec-sheet,
+[data-theme="hc"] .fx-row, [data-theme="hc"] .fx-tile, [data-theme="hc"] .fx-tile--alt, [data-theme="hc"] .kpi-card, [data-theme="hc"] .fx-evidence,
+[data-theme="hc"] .sq-agent-row, [data-theme="hc"] .sq-spec-panel, [data-theme="hc"] .wm-card:not(.wm-modal),
+[data-theme="hc"] .rfi-glass-flat.rfi-glass-solid {
+  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.02) 55%, rgba(255,255,255,0)), #0b0b0b;
+  border: 1px solid rgba(255,255,255,.6);
+  border-top-color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), inset 0 -1px 0 rgba(0,0,0,.6), 0 14px 30px rgba(0,0,0,.7) !important;
+}
+[data-theme="hc"] .fx-tile--alt { background: linear-gradient(200deg, rgba(255,255,255,.1), rgba(255,255,255,.02) 50%, rgba(255,255,255,0)), #0d0d0d; }
+[data-theme="hc"] .fx-evidence { border-color: var(--accent-text); }
+[data-theme="hc"] .fx-tile:hover, [data-theme="hc"] .fx-row:hover, [data-theme="hc"] .sq-agent-row:hover { border-color: var(--accent-text); }
+[data-theme="hc"] .sq-agent-row--active { border-color: var(--accent-text); box-shadow: 0 0 0 2px var(--accent-text), 0 10px 22px rgba(0,0,0,.7) !important; }
+[data-theme="hc"] .fx-input { background: #0b0b0b; border-color: rgba(255,255,255,.75); }
+[data-theme="hc"] .fx-input:focus { border-color: var(--accent-text); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-text) 35%, transparent); }
+[data-theme="hc"] .fx-cta-teal, [data-theme="hc"] .sq-spec-sheet .wm-btn-primary { background: linear-gradient(180deg, #ffe14d, var(--accent) 55%, #e6bf00); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 8px 22px rgba(0,0,0,.6); color: #000; }
+[data-theme="hc"] .kpi-card::before, [data-theme="hc"] .kpi-card::after { background: var(--accent-text); box-shadow: none; }

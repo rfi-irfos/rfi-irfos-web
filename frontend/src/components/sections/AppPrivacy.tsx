@@ -7,7 +7,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Reveal, useMobile, linkPhrase } from './shared'
 import { InitialReviewFlow } from './InitialReviewFlow'
-import { IconListSearch } from '@tabler/icons-react'
+import { IconListSearch, IconBrandAppleFilled, IconBugFilled } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
 // KPI figures are extracted from AUDIT_HIGHLIGHTS at build time
@@ -63,9 +63,9 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
   }, [playing, visible, c.steps.length])
   const pick = (i: number) => { setPlaying(false); setActive(i) }
   const kpis = [
-    { n: `${auditStats.appsAudited}+`, label: t.trackRecord.kpis.appsAudited },
-    { n: `${corpusStats.trackerMentions}+`, label: t.trackRecord.kpis.trackersFound },
-    { n: `${auditStats.criticalFindings}+`, label: t.trackRecord.kpis.criticalFindings },
+    { n: `${auditStats.appsAudited}+`, label: t.trackRecord.kpis.appsAudited, art: 'apps' as const },
+    { n: `${corpusStats.trackerMentions}+`, label: t.trackRecord.kpis.trackersFound, art: 'bugs' as const },
+    { n: `${auditStats.criticalFindings}+`, label: t.trackRecord.kpis.criticalFindings, art: 'shield' as const },
   ]
 
   return (
@@ -78,7 +78,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         <Reveal delay={1}>
           <div style={{ maxWidth: 720, margin: '0 auto 36px', textAlign: 'center' }}>
             <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)', margin: 0 }}>
-              {linkPhrase(c.paragraph, locale === 'de' ? 'Agenten aus unserem Haus' : 'Selected agents', localeHref('/squad/', locale))}
+              {linkPhrase(c.paragraph, locale === 'de' ? 'von Grund auf trainierte Agenten' : 'built and trained from scratch in house', localeHref('/squad/', locale))}
             </p>
           </div>
         </Reveal>
@@ -86,7 +86,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         {/* Thin violet frame around process card + Free Check widget so the two read as one unit. */}
         {/* Flagship block reads one type step up (Simeon 31.10.: "flagshippy", ca. 5 % größer): the scale
             tokens are re-declared here, so every card inside grows together without raw font sizes. */}
-        <div style={{ border: '1px solid var(--violet-line)', borderRadius: 26, padding: phone ? 8 : 12, maxWidth: 1320, margin: '0 auto 24px',
+        <div className="fx-frame" style={{ borderRadius: 26, padding: phone ? 8 : 12, maxWidth: 1320, margin: '0 auto 24px',
           '--fs-label': '12px', '--fs-small': '14px', '--fs-body': '16px' } as CSSProperties}>
         <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 350px', gap: stacked ? 28 : 8 }}>
           {/* Left: ONE framed card holding process, scope and evidence (frame static, cells reveal).
@@ -94,7 +94,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
               glow on its right (live feedback 2026-10-14: the glow "overshadows" this card where
               its blur bleeds across the grid gap - without this, the later grid item wins paint
               order by default and the glow sits in front of this card's edge). */}
-          <div style={{ position: 'relative', zIndex: 1, minWidth: 0, border: '1px solid var(--border)', borderRadius: 20, padding: phone ? 18 : 28, background: 'var(--glass-bg-solid)' }}>
+          <div className="fx-panel" style={{ position: 'relative', zIndex: 1, minWidth: 0, borderRadius: 20, padding: phone ? 18 : 28 }}>
             <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 14 }}>{c.processLabel}</p>
             <div ref={stepsRef} style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 18, marginBottom: 28, alignItems: 'start' }}>
               {c.steps.map((s, i) => (
@@ -106,7 +106,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                       <span style={{ width: 38, height: 38, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 'var(--fs-body)', flexShrink: 0, transition: 'all 0.4s', transform: active === i ? 'scale(1.12)' : 'scale(1)',
                         background: i <= active ? 'var(--accent-text)' : 'var(--bg2)', color: i <= active ? '#02110d' : 'var(--text2)',
                         border: '1px solid ' + (i <= active ? 'var(--accent-text)' : 'var(--border)'),
-                        boxShadow: active === i ? '0 0 18px rgba(0,245,196,0.35)' : 'none' }}>{i + 1}</span>
+                        boxShadow: active === i ? '0 0 0 4px color-mix(in srgb, var(--accent-text) 12%, transparent), 0 0 26px color-mix(in srgb, var(--accent-text) 55%, transparent)' : i < active ? '0 0 12px color-mix(in srgb, var(--accent-text) 25%, transparent)' : 'inset 0 1px 0 rgba(255,255,255,0.08)' }}>{i + 1}</span>
                       {i < c.steps.length - 1 && !phone && <span style={{ flex: 1, height: 2, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
                         <span style={{ display: 'block', height: '100%', background: 'var(--accent-text)', transformOrigin: 'left', transform: i < active ? 'scaleX(1)' : 'scaleX(0)', transition: 'transform 0.6s ease' }} />
                       </span>}
@@ -118,12 +118,14 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
               ))}
             </div>
 
-            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 22, display: 'grid', gridTemplateColumns: phone ? '1fr' : 'minmax(0, 1.15fr) minmax(0, 1fr)', gap: 24 }}>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 14 }}>{c.scopeLabel}</p>
+            {/* Label sits in its own row, so the scope rows and the evidence card start and end on the
+                same lines (Simeon 01.11.: the evidence card used to begin level with the label). */}
+            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 28, display: 'grid', gridTemplateColumns: phone ? '1fr' : 'minmax(0, 1.15fr) minmax(0, 1fr)', gridTemplateRows: phone ? undefined : 'auto 1fr', columnGap: 24, rowGap: 12 }}>
+              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0, gridColumn: phone ? undefined : '1 / -1' }}>{c.scopeLabel}</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {c.scope.map((row, i) => (
                   <Reveal key={row.title} delay={i + 1} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', flex: 1, gap: 14, padding: '10px 0', borderBottom: i < c.scope.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                    <div className="fx-row" style={{ display: 'flex', alignItems: 'center', flex: 1, gap: 14, padding: '10px 14px' }}>
                       <span className="rfi-glass-icon" style={{ ...tile, color: `var(--ic-${i + 1})`, borderColor: `color-mix(in srgb, var(--ic-${i + 1}) 38%, transparent)` }}>{SCOPE_ICONS[i]}</span>
                       <div style={{ minWidth: 0 }}>
                         <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', color: 'var(--text)' }}>{row.title}</div>
@@ -133,8 +135,8 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                   </Reveal>
                 ))}
               </div>
-              <Reveal delay={2} style={{ height: '100%' }}>
-                <div style={{ border: '1px solid var(--accent-text)', borderRadius: 16, padding: 20, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box', background: 'rgba(0,245,196,0.05)' }}>
+              <Reveal delay={2} style={{ height: '100%', marginTop: phone ? 16 : 0 }}>
+                <div className="fx-evidence" style={{ borderRadius: 18, padding: 22, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box' }}>
                   <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 16 }}>
                     <span className="rfi-glass-icon" style={{ ...tile, width: 48, height: 48, color: 'var(--icon-doc)' }}>
                       <Icon size={26}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="14" y2="17" /></Icon>
@@ -180,16 +182,20 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         {/* Evidence strip: the same three live figures as the ledger KPI row
             (auditStats.json - build-time extract of AUDIT_HIGHLIGHTS - plus
             corpus-stats.json), never hand-typed numbers. */}
-        <div style={{ maxWidth: 920, margin: '0 auto 40px', textAlign: 'center' }}>
-          {/* Phone (Simeon 01.11.): auto-fit left the third card alone on the left, as if one were
-              missing. A 4-track grid with 2-track cards puts two on top and centres the third. */}
-          <div style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(4, minmax(0, 1fr))' : 'repeat(auto-fit, minmax(170px, 1fr))', gap: 12, marginBottom: 14 }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto 40px', textAlign: 'center' }}>
+          {/* Glass cards after Simeon's reference (01.11.): icon tile, hairline, figure and label left-aligned.
+              Phone stacks them full width, the horizontal card reads better as a row than squeezed in pairs. */}
+          <div style={{ display: 'grid', maxWidth: 1000, margin: '0 auto 20px', gridTemplateColumns: phone ? '1fr' : 'repeat(auto-fit, minmax(270px, 1fr))', gap: 14 }}>
             {kpis.map((k, i) => (
-              <Reveal key={k.label} delay={i} style={phone ? { gridColumn: i === 2 ? '2 / span 2' : 'span 2' } : undefined}>
-                <div style={{ border: '1px solid var(--border)', borderRadius: 12, padding: '16px 12px', background: 'var(--glass-bg-solid)' }}>
-                  <div style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: 'var(--accent-text)', lineHeight: 'var(--lh-tight)' }}>{k.n}</div>
-                  <div style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', marginTop: 6 }}>{k.label}</div>
-                </div>
+              <Reveal key={k.label} delay={i}>
+                <div className="kpi-cq"><div className={`kpi-card kpi-card--${i + 1}`}>
+                  <KpiArt kind={k.art} />
+                  <div className="kpi-card__rule" aria-hidden="true" />
+                  <div style={{ textAlign: 'left', minWidth: 0 }}>
+                    <div className="kpi-card__n">{k.n}</div>
+                    <div className="kpi-card__label">{k.label}</div>
+                  </div>
+                </div></div>
               </Reveal>
             ))}
           </div>
@@ -202,5 +208,62 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         </div>
       </div>
     </section>
+  )
+}
+
+// Layered glass illustrations for the evidence cards (Simeon's reference 01.11.):
+// two app tiles, a code window with a bug tile, a shield inside scan rings.
+function AndroidGlyph() {
+  return (
+    <svg viewBox="0 0 48 52" width="40" height="44" className="kpi-glyph" fill="currentColor">
+      <path d="M10 20a14 13 0 0 1 28 0Z" />
+      <circle cx="18.5" cy="14" r="1.6" fill="rgba(10,14,18,.9)" /><circle cx="29.5" cy="14" r="1.6" fill="rgba(10,14,18,.9)" />
+      <path d="M15 4l3 5M33 4l-3 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <rect x="10" y="22" width="28" height="19" rx="3" />
+      <rect x="2" y="22" width="6" height="15" rx="3" /><rect x="40" y="22" width="6" height="15" rx="3" />
+      <rect x="15" y="39" width="6" height="11" rx="3" /><rect x="27" y="39" width="6" height="11" rx="3" />
+    </svg>
+  )
+}
+function Brackets() {
+  return <>{['tl', 'tr', 'bl', 'br'].map(c => <span key={c} className={`kpi-br kpi-br--${c}`} />)}</>
+}
+function KpiArt({ kind }: { kind: 'apps' | 'bugs' | 'shield' }) {
+  if (kind === 'apps') return (
+    <div className="kpi-art kpi-art--tilt" aria-hidden="true">
+      <div className="kpi-floor" />
+      <Brackets />
+      <div className="kpi-glass" style={{ left: 16, top: 20, width: 80, height: 80 }}><AndroidGlyph /></div>
+      <div className="kpi-glass" style={{ left: 66, top: 50, width: 80, height: 80 }}><IconBrandAppleFilled size={42} className="kpi-glyph kpi-glyph--light" /></div>
+    </div>
+  )
+  if (kind === 'bugs') return (
+    <div className="kpi-art kpi-art--tilt" aria-hidden="true">
+      <div className="kpi-glass kpi-glass--window" style={{ left: 4, top: 12, width: 112, height: 96 }}>
+        <div className="kpi-win__bar"><i /><i /><i /></div>
+        <div className="kpi-win__code"><b>&lt;/&gt;</b><span style={{ width: '70%' }} /><span style={{ width: '50%' }} /><span style={{ width: '62%' }} /><span style={{ width: '40%' }} /></div>
+      </div>
+      <div className="kpi-glass" style={{ left: 68, top: 52, width: 82, height: 82 }}>
+        <Brackets />
+        <IconBugFilled size={40} className="kpi-glyph" />
+      </div>
+    </div>
+  )
+  return (
+    <div className="kpi-art" aria-hidden="true">
+      <div className="kpi-ring kpi-ring--outer" />
+      <div className="kpi-ring kpi-ring--inner" />
+      <svg viewBox="0 0 64 72" width="74" height="84" style={{ position: 'absolute', left: 43, top: 33 }}>
+        <defs>
+          <linearGradient id="kpi-shield" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="var(--accent-text)" stopOpacity=".32" />
+            <stop offset="1" stopColor="var(--accent-text)" stopOpacity=".06" />
+          </linearGradient>
+        </defs>
+        <path d="M32 3 L58 13 V34 C58 52 46 63 32 69 C18 63 6 52 6 34 V13 Z" fill="url(#kpi-shield)" stroke="var(--accent-text)" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M32 9 L52 17 V34 C52 48 43 57 32 62 C21 57 12 48 12 34 V17 Z" fill="none" stroke="var(--accent-text)" strokeOpacity=".35" strokeWidth="1" />
+        <path d="M21 36 L29 44 L44 27" fill="none" stroke="var(--accent-text)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </div>
   )
 }
