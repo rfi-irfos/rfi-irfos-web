@@ -46,11 +46,11 @@ export function MobileTabBar({ view, locale, links, onNavigate }: {
                   border: `1px solid ${active ? 'color-mix(in srgb, var(--tab-hi) 45%, transparent)' : 'rgba(255,255,255,0.16)'}`,
                   background: 'linear-gradient(160deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03))',
                   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.22), 0 4px 12px rgba(0,0,0,0.35)', transition: 'border-color .2s' }}>
-                  <Icon size={22} stroke={1.6} aria-hidden />
+                  <Icon size={24} stroke={1.6} aria-hidden />
                   <span>{n.label}</span>
                 </span>
               : <>
-                  <Icon size={24} stroke={1.5} aria-hidden />
+                  <Icon size={26} stroke={1.5} aria-hidden />
                   <span style={{ position: 'relative' }}>{n.label}</span>
                 </>}
             {active && <span aria-hidden="true" style={{ position: 'absolute', bottom: 6, width: 28, height: 2, borderRadius: 999, background: 'var(--tab-hi)' }} />}

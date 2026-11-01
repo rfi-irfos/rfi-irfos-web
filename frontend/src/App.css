@@ -245,7 +245,7 @@ button { cursor: pointer; font-family: inherit; }
    which only exists on the three sections that actually got unboxed. */
 .wm { color: var(--text); display: flex; flex-direction: column; gap: 10px; }
 .wm-wrap { width: min(1320px, calc(100% - 2 * var(--sec-pad-x))); margin-inline: auto; }
-.wm-eyebrow { margin: 0 0 12px; color: var(--text2); font-size: 11px; font-weight: 700; line-height: 1.3; }
+.wm-eyebrow { margin-block: 0 12px; /* block only: margin-inline:auto in index.css centres it (bug 2026-11-01) */ color: var(--text2); font-size: 11px; font-weight: 700; line-height: 1.3; }
 .wm-section { padding: 0; }
 /* Breathing room before the footer, added 2026-09-01 (live feedback: early-access
    box sat right on top of the footer). MUST come after .wm-section in source
