@@ -28,6 +28,7 @@ import { SystemCardModal } from './sections/SystemCardModal'
 import { RFI_REPOS, SIMEON_REPOS, CRATES, CRATES_IO_PROFILE } from '../content/repos'
 import reportPackages from '../content/reportPackages.json'
 import { reportSeo } from '../lib/reportSeo'
+import { MobileTabBar } from './MobileTabBar'
 import { upsertJsonLd, breadcrumbJsonLd, reportBreadcrumbJsonLd, reportArticleJsonLd, squadServiceJsonLd, accessOfferCatalogJsonLd } from '../lib/structuredData'
 
 // Footer's overflow repo/crate directory (2026-08-15) is rendered as literal
@@ -445,7 +446,6 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   }
   const toggleLocale = () => setLocale(LOCALES[(LOCALES.indexOf(locale) + 1) % LOCALES.length])
   const [scrolled, setScrolled] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
   // One consolidated contact/disclosure form (live feedback: two separate full
   // forms - a general "write to us" one and a security-tip one - stacked on the
   // page read as duplicated UI). `topic` added so it still covers every inquiry
@@ -1591,7 +1591,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               two stark white squares floating on the hero photo. Idle state now
               transparent specifically in light theme; hover still fills for
               affordance, dark/hc keep their original ghost-grey fill throughout. */}
-          <div style={{ display: mobile ? 'none' : 'flex', gap: 6, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
             {/* color/border follow overDarkHero same as NAV_LINKS above - these sit on
                 the same always-dark hero photo unscrolled, so var(--text2) (tuned for
                 a white light-theme background) went near-invisible there (live bug
@@ -1624,80 +1624,10 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 route to the identical destination. */}
           </div>
 
-          {/* Hamburger - shown only on mobile (media queries don't work in inline styles) */}
-          <button onClick={() => setMobileOpen(o => !o)} style={{
-          display: mobile ? 'flex' : 'none',
-          background: 'none', border: 'none', cursor: 'pointer',
-          padding: '8px', color: 'var(--text)',
-        }} aria-label={t.nav.menuAria}>
-          {mobileOpen ? (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          ) : (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="16" x2="21" y2="16"/></svg>
-          )}
-          </button>
         </div>
       </nav>
       </div>
       ) })()}
-
-      {/* Mobile menu overlay — always mounted, drops down from the top (partial height) */}
-      <div style={{
-        position: 'fixed', top: 74, left: 'auto', right: 0, bottom: 'auto', zIndex: 99,
-        width: 'min(50%, 320px)', height: 'auto',
-        background: theme === 'dark'
-          ? 'radial-gradient(120% 90% at 50% 0%, rgba(0,245,196,0.12) 0%, transparent 55%), linear-gradient(155deg, #1e1e24 0%, #101013 30%, #0a0a0c 55%, #17171d 78%, #0c0c0f 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.09) 0px, rgba(255,255,255,0.09) 1px, transparent 1px, transparent 3px)'
-          : 'rgba(255,255,255,0.25)',
-        backgroundBlendMode: theme === 'dark' ? 'overlay' : 'normal',
-        border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid var(--border)',
-        borderTop: 'none',
-        borderRadius: '0 0 14px 14px',
-        boxShadow: theme === 'dark'
-          ? 'inset 0 1px 0 rgba(255,255,255,0.10), inset 0 0 50px rgba(0,0,0,0.45), 0 12px 40px rgba(0,0,0,0.55)'
-          : '0 8px 32px rgba(0,0,0,0.35)',
-        display: 'flex', flexDirection: 'column', alignItems: 'flex-end',
-        padding: '1.5rem 1.5rem 1.75rem', gap: 4,
-        // Fixed bug (live feedback, 2026-08-03): translateY(-110%) only clears
-        // 110% of the panel's OWN height, but the panel also sits 64px down
-        // from the viewport top (`top: 74`, updated for the floating pill nav's
-        // own 14px inset - 2026-09-13) - for any panel shorter than ~640px
-        // tall, that left a visible sliver of the carbon-textured background
-        // peeking in at the very top of the page. Adding the top offset itself
-        // to the translate distance guarantees the whole panel clears y=0.
-        transform: mobileOpen ? 'translateY(0)' : 'translateY(calc(-100% - 74px))',
-        transition: 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
-        pointerEvents: mobileOpen ? 'auto' : 'none',
-        textAlign: 'right',
-      }}>
-        {NAV_LINKS.map(n => (
-          <a key={n.href} href={localeHref(n.href, locale)} onClick={e => { e.preventDefault(); setMobileOpen(false); navigateTo(n.href) }} style={{
-            color: 'var(--text)', fontSize: 'var(--fs-h3)', fontWeight: 700, textDecoration: 'none',
-            padding: '16px 0', borderBottom: '1px solid var(--border)', width: '100%',
-            textAlign: 'right',
-          }}>{n.label}</a>
-        ))}
-        {/* Lighthouse round 23 (2026-10-31): on mobile the free check (the DLT entry point)
-            sat outside the drawer, so from any subpage it took logo, scroll and search.
-            Extra CTA under the links, the menu headers themselves stay as they are. */}
-        <a href={`${localeHref('/', locale)}#domain-check`} onClick={() => { setMobileOpen(false); beacon('mobile_menu_free_check') }} style={{
-          marginTop: 20, alignSelf: 'flex-end', background: '#f97316', color: '#1a0f00',
-          fontWeight: 700, fontSize: 'var(--fs-body)', padding: '12px 20px', borderRadius: 8, textDecoration: 'none',
-        }}>{locale === 'de' ? 'Gratis-Check starten →' : 'Start the free check →'}</a>
-        <div style={{ display: 'flex', gap: 8, marginTop: 24, alignSelf: 'flex-end' }}>
-          <button onClick={toggleLocale} title={t.nav.localeTitle(LOCALE_LABEL[locale])} aria-label={t.nav.localeAria(LOCALE_LABEL[locale])} style={{
-            width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
-            cursor: 'pointer',
-          }}><LocaleIcon locale={locale} /></button>
-          <button onClick={cycle} title={t.nav.themeTitle(t.nav.themeLabel[theme])} aria-label={t.nav.themeAria(t.nav.themeLabel[theme])} style={{
-            width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'var(--bg2)', color: 'var(--text2)', border: '1px solid var(--border)', borderRadius: 8,
-            cursor: 'pointer',
-          }}><ThemeIcon t={theme} /></button>
-          {/* Mobile mail-icon button removed too, same reasoning as the desktop nav
-              - Submit already covers this destination. */}
-        </div>
-      </div>
 
       <main id="main-content" tabIndex={-1} className={leftFirstView.current ? 'rfi-view-stage' : 'rfi-view-stage rfi-view-stage--first'} key={view}>
         {view === 'home' && <>
@@ -2055,6 +1985,11 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         </p>
         {systemModalExit.rendered && <SystemCardModal systemKey={systemModalExit.rendered} closing={systemModalExit.closing} onClose={() => setSystemModal(null)} onNavigate={setSystemModal} />}
       </footer>
+      {/* Simeon 01.11.: on phones the hamburger drawer covered half the page and squeezed its
+          CTA, so mobile gets an app-style tab bar instead: the four views plus Home in the middle.
+          The spacer keeps the footer's last line clear of the fixed bar. */}
+      {mobile && <div aria-hidden="true" style={{ height: 'calc(72px + env(safe-area-inset-bottom))' }} />}
+      {mobile && <MobileTabBar view={view} locale={locale} links={NAV_LINKS} onNavigate={navigateTo} />}
       {cookieBannerOpen && (
         // background/border/box-shadow come from .rfi-glass-flat now, not hand-rolled per
         // theme - that inline duplication only ever branched dark-vs-not-dark, so it silently
@@ -2068,7 +2003,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         // 52% see-through (feedback 2026-08-06), so the opaque variant overrides just the
         // background while keeping the same theme-correct border/shadow/hc handling.
         <div ref={bannerRef} className="rfi-glass-flat rfi-glass-solid" style={{
-                  position: 'fixed', left: 16, right: 16, bottom: 16, zIndex: 200,
+                  position: 'fixed', left: 16, right: 16, bottom: mobile ? 'calc(84px + env(safe-area-inset-bottom))' : 16, zIndex: 200,
                   maxWidth: 640, margin: '0 auto',
                   borderRadius: 12,
                   padding: '20px 24px',
