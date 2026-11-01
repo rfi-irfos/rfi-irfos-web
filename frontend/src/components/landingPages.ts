@@ -229,7 +229,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'Who does the work',
           p: [
-            'The Squad is human-powered multi-agent security investigation. Agents built and trained in house execute the broad testing across code, dependencies, APIs and configurations. Human specialists examine each result in its technical context and re-verify every finding before it reaches the report. Reviews run on infrastructure in Europe, with processing in Graz.',
+            'The Squad is human-powered multi-agent security investigation. Agents built and trained in house execute the broad testing across code, dependencies, APIs and configurations. Human specialists examine each result in its technical context and re-verify every finding before it reaches the report. The entire pipeline runs on our own server in Graz.',
           ],
         },
       ],
@@ -300,7 +300,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'Wer die Arbeit macht',
           p: [
-            'The Squad ist menschlich verantwortete Multi-Agenten-Sicherheitsuntersuchung. Selbst gebaute und trainierte Agenten führen die breite Testarbeit über Code, Abhängigkeiten, APIs und Konfigurationen aus. Menschliche Fachleute prüfen jedes Ergebnis in seinem technischen Kontext und kontrollieren jeden Befund erneut, bevor er in den Bericht kommt. Reviews laufen auf Infrastruktur in Europa, die Verarbeitung findet in Graz statt.',
+            'The Squad ist menschlich verantwortete Multi-Agenten-Sicherheitsuntersuchung. Selbst gebaute und trainierte Agenten führen die breite Testarbeit über Code, Abhängigkeiten, APIs und Konfigurationen aus. Menschliche Fachleute prüfen jedes Ergebnis in seinem technischen Kontext und kontrollieren jeden Befund erneut, bevor er in den Bericht kommt. Die komplette Pipeline läuft auf unserem eigenen Server in Graz.',
           ],
         },
       ],
@@ -624,7 +624,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'Who does the work',
           p: [
-            'The Squad is human-powered multi-agent security investigation. Agents built and trained in house decompile the build and test code, dependencies, endpoints and configuration in parallel. Human specialists examine every result in context and re-verify each finding before it reaches the report. Reviews run on infrastructure in Europe, with processing in Graz.',
+            'The Squad is human-powered multi-agent security investigation. Agents built and trained in house decompile the build and test code, dependencies, endpoints and configuration in parallel. Human specialists examine every result in context and re-verify each finding before it reaches the report. The entire pipeline runs on our own server in Graz.',
           ],
         },
       ],
@@ -681,7 +681,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'Wer die Arbeit macht',
           p: [
-            'The Squad ist human-powered multi-agent security investigation. Im Haus gebaute und trainierte Agenten dekompilieren den Build und testen Code, Abhängigkeiten, Endpunkte und Konfiguration parallel. Menschliche Fachleute prüfen jedes Ergebnis im Zusammenhang und verifizieren jeden Befund erneut, bevor er in den Bericht kommt. Die Prüfungen laufen auf Infrastruktur in Europa, mit Verarbeitung in Graz.',
+            'The Squad ist human-powered multi-agent security investigation. Im Haus gebaute und trainierte Agenten dekompilieren den Build und testen Code, Abhängigkeiten, Endpunkte und Konfiguration parallel. Menschliche Fachleute prüfen jedes Ergebnis im Zusammenhang und verifizieren jeden Befund erneut, bevor er in den Bericht kommt. Die komplette Pipeline läuft auf unserem eigenen Server in Graz.',
           ],
         },
       ],

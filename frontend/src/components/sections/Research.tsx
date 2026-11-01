@@ -31,7 +31,7 @@ function BentoTile({ icon, ic, title, onOpen, delay, alt }: {
         ['--tile-hue' as string]: `var(--ib-${ic})`,
         borderRadius: 18, padding: '22px 14px', cursor: 'pointer',
         height: '100%', width: '100%', boxSizing: 'border-box', overflow: 'hidden',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, textAlign: 'center',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, textAlign: 'center',
         transition: 'box-shadow 260ms cubic-bezier(0.16,1,0.3,1), border-color 180ms cubic-bezier(0.4,0,0.2,1), background-color 180ms cubic-bezier(0.4,0,0.2,1)',
         font: 'inherit', color: 'inherit',
       }}
@@ -40,7 +40,7 @@ function BentoTile({ icon, ic, title, onOpen, delay, alt }: {
       >
         {/* Glass box with the KPI glass values (Simeon 01.11., icon picker): the box and the icon
             take the colour on hover, eased in slowly, the card itself stays neutral. index.css .rfi-ri-box */}
-        <div className="rfi-ri-box" style={{ width: 62, height: 62, ['--ib' as string]: `var(--ib-${ic})` }}>
+        <div className="rfi-ri-box" style={{ width: 74, height: 74, ['--ib' as string]: `var(--ib-${ic})` }}>
           {icon}
         </div>
         <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-tight)', whiteSpace: 'pre-line' }}>{title}</div>

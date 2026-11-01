@@ -27,31 +27,38 @@ struct TierInfo {
     label:     &'static str,
     amount:    u64,   // cents
     recurring: bool,
+    yearly:    bool,  // recurring interval "year" instead of "month"
 }
 
 fn tier_info(tier: &str) -> Option<TierInfo> {
     match tier {
         // Security audits
-        "remediation"   => Some(TierInfo { label: "RFI-IRFOS Remediation Advisory",        amount:   450_000, recurring: false }),
-        "confidential"  => Some(TierInfo { label: "RFI-IRFOS Confidential Audit",           amount:   900_000, recurring: false }),
-        "enterprise_nda"=> Some(TierInfo { label: "RFI-IRFOS Enterprise NDA Audit",         amount: 1_800_000, recurring: false }),
+        "remediation"   => Some(TierInfo { label: "RFI-IRFOS Remediation Advisory",        amount:   450_000, recurring: false, yearly: false }),
+        "confidential"  => Some(TierInfo { label: "RFI-IRFOS Confidential Audit",           amount:   900_000, recurring: false, yearly: false }),
+        "enterprise_nda"=> Some(TierInfo { label: "RFI-IRFOS Enterprise NDA Audit",         amount: 1_800_000, recurring: false, yearly: false }),
         // Retainer (subscription)
-        "retainer"      => Some(TierInfo { label: "RFI-IRFOS Security Retainer",            amount:   150_000, recurring: true  }),
+        "retainer"      => Some(TierInfo { label: "RFI-IRFOS Security Retainer",            amount:   150_000, recurring: true, yearly: false  }),
         // Market research
-        "market_overview"  => Some(TierInfo { label: "RFI-IRFOS Market Overview Report",     amount:   250_000, recurring: false }),
-        "competitor_intel" => Some(TierInfo { label: "RFI-IRFOS Competitor Intelligence",    amount:   750_000, recurring: false }),
-        "sector_intel"     => Some(TierInfo { label: "RFI-IRFOS Sector Intelligence Report", amount: 1_800_000, recurring: false }),
-        "ongoing_intel"    => Some(TierInfo { label: "RFI-IRFOS Ongoing Intelligence",       amount:   450_000, recurring: true  }),
+        "market_overview"  => Some(TierInfo { label: "RFI-IRFOS Market Overview Report",     amount:   250_000, recurring: false, yearly: false }),
+        "competitor_intel" => Some(TierInfo { label: "RFI-IRFOS Competitor Intelligence",    amount:   750_000, recurring: false, yearly: false }),
+        "sector_intel"     => Some(TierInfo { label: "RFI-IRFOS Sector Intelligence Report", amount: 1_800_000, recurring: false, yearly: false }),
+        "ongoing_intel"    => Some(TierInfo { label: "RFI-IRFOS Ongoing Intelligence",       amount:   450_000, recurring: true, yearly: false  }),
         // Web development: proposal-only since 2026-08-12 (custom-scoped "from
         // €10k" base tier, price varies by scope - same pattern Mobile always
         // used). No direct Stripe checkout for this line anymore.
         // Monthly plans (2026-10-14 pricing redesign). Lighthouse round 74: labelled "Initial
         // Review" until 2026-10-31, the name of the free check, so a paying buyer saw the free
         // product's name on Stripe's page. Tier keys stay, the webhook attributes by key.
-        "review_starter"  => Some(TierInfo { label: "RFI-IRFOS Security Plan — Starter",   amount:   9_900, recurring: true }),
-        "review_growth"   => Some(TierInfo { label: "RFI-IRFOS Security Plan — Growth",    amount:  39_900, recurring: true }),
-        "review_pro"      => Some(TierInfo { label: "RFI-IRFOS Security Plan — Pro",       amount:  79_900, recurring: true }),
-        "review_business" => Some(TierInfo { label: "RFI-IRFOS Security Plan — Business", amount: 199_900, recurring: true }),
+        "review_starter"  => Some(TierInfo { label: "RFI-IRFOS Security Plan — Starter",   amount:   9_900, recurring: true, yearly: false }),
+        "review_growth"   => Some(TierInfo { label: "RFI-IRFOS Security Plan — Growth",    amount:  39_900, recurring: true, yearly: false }),
+        "review_pro"      => Some(TierInfo { label: "RFI-IRFOS Security Plan — Pro",       amount:  79_900, recurring: true, yearly: false }),
+        "review_business" => Some(TierInfo { label: "RFI-IRFOS Security Plan — Business", amount: 199_900, recurring: true, yearly: false }),
+        // Annual plans (Simeon 2026-11-01: "direkt kaufbar mit Stripe", no contact form): 10x the
+        // monthly price, about two months free, billed once a year.
+        "review_starter_annual"  => Some(TierInfo { label: "RFI-IRFOS Security Plan — Starter (annual)",   amount:    99_000, recurring: true, yearly: true }),
+        "review_growth_annual"   => Some(TierInfo { label: "RFI-IRFOS Security Plan — Growth (annual)",    amount:   399_000, recurring: true, yearly: true }),
+        "review_pro_annual"      => Some(TierInfo { label: "RFI-IRFOS Security Plan — Pro (annual)",       amount:   799_000, recurring: true, yearly: true }),
+        "review_business_annual" => Some(TierInfo { label: "RFI-IRFOS Security Plan — Business (annual)", amount: 1_999_000, recurring: true, yearly: true }),
         _ => None,
     }
 }
@@ -107,7 +114,8 @@ pub async fn create_checkout(
     ];
 
     if info.recurring {
-        params.push(("line_items[0][price_data][recurring][interval]".to_string(), "month".to_string()));
+        let interval = if info.yearly { "year" } else { "month" };
+        params.push(("line_items[0][price_data][recurring][interval]".to_string(), interval.to_string()));
     }
 
     let res = client
@@ -233,5 +241,11 @@ mod tests {
         assert_eq!(tier_info("review_pro").unwrap().amount, 79_900);
         assert_eq!(tier_info("review_business").unwrap().amount, 199_900);
         assert!(tier_info("review_starter").unwrap().recurring);
+        for base in ["review_starter", "review_growth", "review_pro", "review_business"] {
+            let m = tier_info(base).unwrap();
+            let y = tier_info(&format!("{base}_annual")).unwrap();
+            assert_eq!(y.amount, m.amount * 10);
+            assert!(y.recurring && y.yearly && !m.yearly);
+        }
     }
 }

@@ -273,7 +273,7 @@ export const DE: Content = {
     trust: [
       { title: "Ihr Material. Ihr Umfang.", text: "Sie bestimmen, was wir prüfen. Kein Zugriff auf Ihre Live-Systeme." },
       { title: "Eigens entwickelt. Multi-Agent.", text: "Spezialisierte Agenten durchleuchten Ihre Software und verbinden Befunde, mit Belegen zu jedem einzelnen." },
-      { title: "In Europa verarbeitet.", text: "Verarbeitet in Graz. Ihr Material bleibt in der EU." },
+      { title: "Eigener Server in Graz.", text: "Unsere komplette Pipeline läuft auf unserem eigenen Server in Graz, vom Quickscan bis zum Bericht." },
       { title: "Normbasierte Methodik.", text: "Basierend auf OWASP ASVS, OWASP Top 10 und CWE, mit CVSS-Schweregrad, wo anwendbar." },
     ],
     evidenceHeading: 'Unsere Forschung ist öffentlich. Unsere Methodik ist nachprüfbar.',
@@ -377,7 +377,6 @@ export const DE: Content = {
       annual: 'J\u00e4hrlich',
       perMonth: '/Monat',
       annualNote: 'J\u00e4hrliche Abrechnung, rund 2 Monate gespart.',
-      annualCta: 'Jahresabrechnung anfragen',
     },
   },
 
@@ -956,7 +955,7 @@ export const DE: Content = {
   squad: {
     heading: 'The Squad',
     subheading: 'Spezialisierte Agenten. Für jede Art von Arbeit.',
-    intro: 'Jeder Agent ist auf eine klare Verantwortung zugeschnitten: Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit, Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Jeder Befund wird von unseren menschlichen Fachleuten erneut geprüft, bevor er bei Ihnen ankommt, mit schriftlichem Bericht und den Belegen dahinter. Reviews laufen auf Infrastruktur in Europa, die Verarbeitung findet in Graz statt.',
+    intro: 'Jeder Agent ist auf eine klare Verantwortung zugeschnitten: Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit, Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Jeder Befund wird von unseren menschlichen Fachleuten erneut geprüft, bevor er bei Ihnen ankommt, mit schriftlichem Bericht und den Belegen dahinter. Die komplette Pipeline läuft auf unserem eigenen Server in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Finden Sie den passenden Agenten →',

@@ -35,8 +35,9 @@
 // the four tiers can be read against each other directly instead of
 // scrolled through one at a time. Annual prices are computed client-side
 // (10x monthly - backend only has monthly Stripe price IDs, see
-// backend/src/stripe.rs's tier_info()) and route to a contact request
-// instead of onCheckout, since there is no live annual price to charge.
+// backend/src/stripe.rs's tier_info()). Since 2026-11-01 (Simeon) the annual
+// plans go straight to Stripe too (<key>_annual, billed yearly); only Managed
+// SOC still routes to the contact form.
 import { EngagementFlow, Reveal, useMobile } from './shared'
 import { useLocale, type Locale } from '../../hooks/useLocale'
 import { InitialReviewFlow } from './InitialReviewFlow'
@@ -76,10 +77,10 @@ function annualPrice(monthlyPrice: string, locale: Locale): string {
 // panel wrapper owns those), the Enterprise band attached directly below
 // with no gap, and a square-cornered tab toggle instead of a pill.
 function TierCard({
-  tier, billing, onCheckout, onSelectTier,
+  tier, billing, onCheckout,
 }: {
   tier: PricingTier; billing: 'monthly' | 'annual'
-  onCheckout: (stripeKey: string) => void; onSelectTier: (tier: string) => void
+  onCheckout: (stripeKey: string) => void
 }) {
   const { t, locale } = useLocale()
   const b = t.pricing.billing
@@ -127,13 +128,13 @@ function TierCard({
       </AnimatePresence>
       <button
         type="button"
-        onClick={() => billing === 'monthly' ? onCheckout(tier.stripeKey) : onSelectTier(`${tier.name} (${b.annual})`)}
+        onClick={() => onCheckout(billing === 'monthly' ? tier.stripeKey : `${tier.stripeKey}_annual`)}
         style={{
           background: tier.popular ? '#f97316' : 'transparent',
           color: tier.popular ? '#1a0f00' : 'var(--text)',
           border: tier.popular ? 'none' : '1px solid var(--border)',
           padding: '14px 18px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', marginTop: 6,
-        }}>{billing === 'monthly' ? tier.cta : b.annualCta}</button>
+        }}>{tier.cta}</button>
     </div>
   )
 }
@@ -261,12 +262,14 @@ export function PricingSection({
               attached directly below with its own tinted background so it
               reads as the premium tier rather than a sixth plain card. */}
           <Reveal>
-            <div style={{ border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', background: 'var(--glass-bg-solid)', boxShadow: '0 20px 60px rgba(0,0,0,0.45)' }}>
+            {/* fx-tiers (index.css, Simeon 2026-11-01): same depth as the Managed SOC card below,
+                solid lit edges instead of a border that faded into the dark. */}
+            <div className="fx-tiers" style={{ borderRadius: 16, overflow: 'hidden' }}>
               <div style={{ display: 'grid', gridTemplateColumns: tablet ? '1fr' : 'repeat(5, 1fr)' }}>
                 <div style={{
                   scrollMarginTop: 84,
-                  borderRight: !tablet ? '1px solid var(--border)' : undefined,
-                  borderBottom: tablet ? '1px solid var(--border)' : undefined,
+                  borderRight: !tablet ? '1px solid var(--tiers-line)' : undefined,
+                  borderBottom: tablet ? '1px solid var(--tiers-line)' : undefined,
                 }}>
                   <FreeTierCard onOpen={() => setFreeModalOpen(true)} />
                 </div>
@@ -276,11 +279,11 @@ export function PricingSection({
                   return (
                     <div key={tier.name} id={`pricing-${slug}`} style={{
                       scrollMarginTop: 84,
-                      borderRight: !tablet && !last ? '1px solid var(--border)' : undefined,
-                      borderBottom: tablet && !last ? '1px solid var(--border)' : undefined,
+                      borderRight: !tablet && !last ? '1px solid var(--tiers-line)' : undefined,
+                      borderBottom: tablet && !last ? '1px solid var(--tiers-line)' : undefined,
                       background: tier.popular ? 'rgba(249,115,22,0.07)' : undefined,
                     }}>
-                      <TierCard tier={tier} billing={billing} onCheckout={onCheckout} onSelectTier={onSelectTier} />
+                      <TierCard tier={tier} billing={billing} onCheckout={onCheckout} />
                     </div>
                   )
                 })}

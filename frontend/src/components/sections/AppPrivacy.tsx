@@ -253,16 +253,25 @@ function KpiArt({ kind }: { kind: 'apps' | 'bugs' | 'shield' }) {
     <div className="kpi-art kpi-c--shield" aria-hidden="true">
       <div className="kpi-ring kpi-ring--outer" />
       <div className="kpi-ring kpi-ring--inner" />
-      <svg viewBox="0 0 64 72" width="74" height="84" style={{ position: 'absolute', left: 43, top: 33 }}>
+      {/* Glass shield (Simeon 01.11.: stood "schlank" next to the other cards): tinted body, a light
+          sheen on the left half, a bright rim along the top and a lifted drop shadow (index.css .kpi-shield). */}
+      <svg className="kpi-shield" viewBox="0 0 64 72" width="84" height="95" style={{ position: 'absolute', left: 38, top: 28 }}>
         <defs>
           <linearGradient id="kpi-shield" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="var(--accent-text)" stopOpacity=".32" />
-            <stop offset="1" stopColor="var(--accent-text)" stopOpacity=".06" />
+            <stop offset="0" stopColor="var(--accent-text)" stopOpacity=".5" />
+            <stop offset="1" stopColor="var(--accent-text)" stopOpacity=".12" />
+          </linearGradient>
+          <linearGradient id="kpi-shield-sheen" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#fff" stopOpacity=".38" />
+            <stop offset=".55" stopColor="#fff" stopOpacity=".04" />
           </linearGradient>
         </defs>
-        <path d="M32 3 L58 13 V34 C58 52 46 63 32 69 C18 63 6 52 6 34 V13 Z" fill="url(#kpi-shield)" stroke="var(--accent-text)" strokeWidth="2" strokeLinejoin="round" />
-        <path d="M32 9 L52 17 V34 C52 48 43 57 32 62 C21 57 12 48 12 34 V17 Z" fill="none" stroke="var(--accent-text)" strokeOpacity=".35" strokeWidth="1" />
-        <path d="M21 36 L29 44 L44 27" fill="none" stroke="var(--accent-text)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M32 3 L58 13 V34 C58 52 46 63 32 69 C18 63 6 52 6 34 V13 Z" fill="url(#kpi-shield)" stroke="var(--accent-text)" strokeWidth="2.4" strokeLinejoin="round" />
+        <path d="M32 3 L6 13 V34 C6 52 18 63 32 69 Z" fill="url(#kpi-shield-sheen)" />
+        <path d="M7.5 14 L32 4.6 L56.5 14" fill="none" stroke="#fff" strokeOpacity=".55" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M32 9 L52 17 V34 C52 48 43 57 32 62 C21 57 12 48 12 34 V17 Z" fill="none" stroke="var(--accent-text)" strokeOpacity=".5" strokeWidth="1.2" />
+        <path d="M21 36 L29 44 L44 27" fill="none" stroke="#0b1424" strokeOpacity=".45" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" transform="translate(0 1.2)" />
+        <path d="M21 36 L29 44 L44 27" fill="none" style={{ stroke: 'color-mix(in srgb, var(--accent-text) 55%, #fff)' }} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </div>
   )

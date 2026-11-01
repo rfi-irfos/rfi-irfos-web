@@ -1092,6 +1092,18 @@ h1, h2, h3, .rfi-display {
 }
 [data-theme="light"] .fx-soc { background: linear-gradient(180deg, #f6f8fb, #eef2f6); }
 [data-theme="hc"] .fx-soc { background: #050505; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5); }
+/* Plan table on /access (Simeon 2026-11-01: looked "mickrig" next to Managed SOC, edges too dark):
+   the same lifted dark-glass depth, a solid lit border and lighter column dividers. */
+.fx-tiers {
+  --tiers-line: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .16); border-top-color: rgba(255, 255, 255, .26);
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(255, 255, 255, .045), transparent 60%),
+    linear-gradient(180deg, #151922, #0e1118);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), inset 0 0 0 1px rgba(255, 255, 255, .03), 0 24px 60px rgba(0, 0, 0, .5), 0 0 0 1px rgba(0, 0, 0, .4);
+}
+[data-theme="light"] .fx-tiers { --tiers-line: rgba(0, 0, 0, .08); border-color: rgba(0, 0, 0, .12); background: linear-gradient(180deg, #ffffff, #f3f5f8); box-shadow: inset 0 1px 0 #fff, 0 20px 48px rgba(0, 0, 0, .1); }
+[data-theme="hc"] .fx-tiers { --tiers-line: rgba(255, 255, 255, .5); border-color: #fff; background: #050505; box-shadow: none; }
 
 /* Topic pills under the contact form: one swipeable row on phones (2026-11-01) */
 @media (max-width: 640px) {
@@ -1126,7 +1138,7 @@ h1, h2, h3, .rfi-display {
    eases in at the same slow tempo (gradients cannot transition). The card stays neutral. */
 .rfi-ri-box { position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 14px; border: 1px solid rgba(255,255,255,.2); border-top-color: rgba(255,255,255,.38); border-left-color: color-mix(in srgb, var(--ib) 45%, rgba(255,255,255,.2)); background: linear-gradient(150deg, rgba(255,255,255,.13), rgba(255,255,255,.03) 48%, rgba(255,255,255,.06)); box-shadow: 5px 6px 0 -1px rgba(255,255,255,.05), 5px 6px 0 0 color-mix(in srgb, var(--ib) 16%, transparent), inset 0 1px 0 rgba(255,255,255,.3), 0 14px 28px rgba(0,0,0,.5); -webkit-backdrop-filter: blur(8px) saturate(1.3); backdrop-filter: blur(8px) saturate(1.3); transition: box-shadow 1.3s ease; }
 .rfi-ri-box::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity 1.3s ease; background: radial-gradient(90% 90% at 30% 20%, color-mix(in srgb, var(--ib) 34%, transparent), color-mix(in srgb, var(--ib) 12%, transparent) 70%); }
-.rfi-ri-box svg { position: relative; z-index: 1; width: 38px; height: 38px; overflow: visible; color: var(--ib) !important; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--ib) 45%, transparent)); transition: color 1.3s ease, filter 1.3s ease; }
+.rfi-ri-box svg { position: relative; z-index: 1; width: 46px; height: 46px; overflow: visible; color: var(--ib) !important; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--ib) 45%, transparent)); transition: color 1.3s ease, filter 1.3s ease; }
 .rfi-icon-tile:hover .rfi-ri-box { box-shadow: 5px 6px 0 -1px rgba(255,255,255,.05), 5px 6px 0 0 color-mix(in srgb, var(--ib) 30%, transparent), inset 0 1px 0 rgba(255,255,255,.34), 0 14px 28px rgba(0,0,0,.5), 0 0 26px color-mix(in srgb, var(--ib) 22%, transparent); }
 .rfi-icon-tile:hover .rfi-ri-box::after { opacity: 1; }
 .rfi-icon-tile:hover .rfi-ri-box svg { color: color-mix(in srgb, var(--ib) 70%, #fff) !important; filter: drop-shadow(0 0 9px color-mix(in srgb, var(--ib) 65%, transparent)); }
@@ -1148,3 +1160,7 @@ svg .k3 { color: #5aa9ff; }
 .kpi-c--apple { --accent-text: #f4f6f8; }
 .kpi-c--bug { --accent-text: #ff5d52; }
 .kpi-c--shield { --accent-text: #5aa9ff; }
+/* Shield card (Simeon 01.11.): the ring and its dots were lost, so both are heavier here, and the shield is lifted off the card. */
+.kpi-c--shield .kpi-ring--inner { border: 2px solid color-mix(in srgb, var(--accent-text) 62%, transparent); background: radial-gradient(circle, color-mix(in srgb, var(--accent-text) 18%, transparent), transparent 70%); }
+.kpi-c--shield .kpi-ring--outer { background: repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--accent-text) 70%, transparent) 0 3.2deg, transparent 3.2deg 12deg); -webkit-mask: radial-gradient(circle, transparent 66px, #000 67px); mask: radial-gradient(circle, transparent 66px, #000 67px); }
+.kpi-shield { overflow: visible; filter: drop-shadow(0 8px 12px rgba(0,0,0,.55)) drop-shadow(0 0 10px color-mix(in srgb, var(--accent-text) 35%, transparent)); }

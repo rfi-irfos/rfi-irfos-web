@@ -295,7 +295,7 @@ export const EN = {
     trust: [
       { title: "Your material. Your scope.", text: "You choose what we examine. No access to your live systems." },
       { title: "Purpose-built. Multi-agent.", text: "Specialized agents probe your software and connect findings, with evidence behind each one." },
-      { title: "Processed in Europe.", text: "Processed in Graz. Your material stays in the EU." },
+      { title: "Our own server in Graz.", text: "Our entire pipeline runs on our own server in Graz, from the quick scan to the report." },
       { title: "Standards-informed methodology.", text: "Based on OWASP ASVS, OWASP Top 10 and CWE, with CVSS severity where applicable." },
     ],
     evidenceHeading: 'Our research is public. Our methodology is inspectable.',
@@ -401,7 +401,6 @@ export const EN = {
       annual: 'Annual',
       perMonth: '/mo',
       annualNote: 'Billed yearly, about 2 months free.',
-      annualCta: 'Request annual billing',
     },
   },
 
@@ -986,7 +985,7 @@ export const EN = {
   squad: {
     heading: 'The Squad',
     subheading: 'Specialized agents. For every kind of work.',
-    intro: 'Each agent is built around one clear responsibility: market intelligence, funding research, evidence verification, delivery checks, visibility, security. Run a single agent against one problem, or combine them into a pipeline for the whole question. Every finding is re-verified by our human specialists before it reaches you, with a written report and the evidence behind each result. Reviews run on infrastructure in Europe, with processing in Graz.',
+    intro: 'Each agent is built around one clear responsibility: market intelligence, funding research, evidence verification, delivery checks, visibility, security. Run a single agent against one problem, or combine them into a pipeline for the whole question. Every finding is re-verified by our human specialists before it reaches you, with a written report and the evidence behind each result. The entire pipeline runs on our own server in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'See which agent fits your problem →',
