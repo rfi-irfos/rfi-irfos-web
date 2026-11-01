@@ -38,15 +38,9 @@ function BentoTile({ icon, ic, title, onOpen, delay, alt }: {
         whileHover={prefersReducedMotion() ? undefined : { y: -3 }}
         transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Depth added 2026-09-07 (live feedback: "so 2D and flat sorta") - a
-            diagonal gradient instead of the flat accent-dim fill, a bright inset
-            edge along the top-left (light source) fading to a darker inset
-            bottom-right, and a soft coloured drop shadow lifting the badge off
-            the card. Same accent hue throughout, no new colour introduced. */}
-        {/* --pop-fill 72% -> 54% (live feedback 2026-10-25: "die BGs von den icons a klein
-            wenig durchsichtiger machen dass die farben nicht so knallig sind") - more of the
-            dark base mixed in, the hue stays but stops shouting. */}
-        <div className="rfi-glass-icon rfi-icon-pop fx-icon3d" style={{ width: 62, height: 62, borderRadius: 17, ['--ib' as string]: `var(--ib-${ic})`, ['--pop-sym' as string]: '#fdfbf7', ['--pop-fill' as string]: '54%' }}>
+        {/* Glass box with the KPI glass values (Simeon 01.11., icon picker): the box and the icon
+            take the colour on hover, eased in slowly, the card itself stays neutral. index.css .rfi-ri-box */}
+        <div className="rfi-ri-box" style={{ width: 62, height: 62, ['--ib' as string]: `var(--ib-${ic})` }}>
           {icon}
         </div>
         <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-tight)', whiteSpace: 'pre-line' }}>{title}</div>
@@ -207,33 +201,26 @@ function ResearchAreasGrid() {
   )
 }
 
-const _I = ({ children }: { children: React.ReactNode }) => (
+const _I = ({ children, sw = '1.6' }: { children: React.ReactNode; sw?: string }) => (
   <svg width="56" height="56" viewBox="0 0 32 32" fill="none"
-    stroke="currentColor" style={{ color: 'var(--tile-ic, var(--accent))' }} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    stroke="currentColor" style={{ color: 'var(--tile-ic, var(--accent))' }} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round">
     {children}
   </svg>
 )
 
+// Icons picked by Simeon and Sabi in the icon picker (01.11.): one 32-unit grid, round caps,
+// main element in the area colour, secondary element (.k2) in a near-white tone so details stay readable.
 export const RESEARCH_AREAS = [
   {
     icon: (
+      // umbrella, the handle in the second tone
       <_I>
-        {/* ethics and minor protection - a plain umbrella. An earlier pass gave
-            it a deeply scalloped hem, which made it read as a flower rather
-            than a shelter (live feedback 2026-08-16: "can we just make a normal
-            freaking umbrella"). Flat hem, two panel seams, crook handle.
-            Redrawn again 2026-08-24 (live feedback: "ein Regenschirm mit drei
-            Dividern das war die Idee... das muss ja durchgehen bis rauf") -
-            three dividers converging at the apex (16,5): the two curved rib
-            seams already reached the apex, but the centre divider used to stop
-            partway down inside the canopy instead of continuing all the way up
-            to meet them. Now one continuous line from the apex to the handle,
-            merging what used to be two separate short segments (a ferrule stub
-            above the canopy and a shaft below it) into a single spine. */}
-        <path d="M16 5a12 12 0 0 0-12 11h24A12 12 0 0 0 16 5z"/>
-        <path d="M10 16q0-8 6-11M22 16q0-8-6-11"/>
-        <line x1="16" y1="2.5" x2="16" y2="24" strokeWidth="2.1"/>
-        <path d="M16 24a3.3 3.3 0 0 1-6.6 0"/>
+        <path d="M4 16C4 9.4 9.4 4.5 16 4.5S28 9.4 28 16q-2-2.4-4-2.4T20 16q-2-2.4-4-2.4T12 16q-2-2.4-4-2.4T4 16Z"/>
+        <path d="M16 4.5C12.6 7 11.3 11 12 15.6M16 4.5c3.4 2.5 4.7 6.5 4 11.1" opacity=".8"/>
+        <path d="M16 3.5v1"/>
+        <g className="k2">
+        <path d="M16 15.5v9a2.8 2.8 0 0 1-5.6 0"/>
+        </g>
       </_I>
     ),
     title: 'Ethic Audits & Minor Protection',
@@ -241,23 +228,15 @@ export const RESEARCH_AREAS = [
   },
   {
     icon: (
+      // page in the second tone, magnifier in the area colour
       <_I>
-        {/* evidence security + contradiction review - was a check+cross pair, which
-            only shows two isolated verdicts. The replacement keeps the evidence
-            document itself and makes close review explicit with a detailed lens. */}
-        <path d="M5.5 3.5h12l5 5v19.5h-17z"/><path d="M17.5 3.5v5h5"/>
-        <line x1="9" y1="11" x2="16" y2="11"/>
-        <line x1="9" y1="14.5" x2="14" y2="14.5"/>
-        <line x1="9" y1="24.5" x2="13" y2="24.5"/>
-        <circle cx="18" cy="18" r="7.2"/>
-        <circle cx="18" cy="18" r="5.7" opacity="0.42"/>
-        {/* small hook arc swapped for a ">" chevron 2026-08-24 (live feedback:
-            "und da in die lupe rein ein '>' noch maginifiziert mit rein?") -
-            reads as "go deeper / expand" magnified inside the lens, rather
-            than an ambiguous partial curve. */}
-        <path d="M15.7 14 19.4 18 15.7 22" strokeWidth="1.8"/>
-        <line x1="23.1" y1="23.1" x2="28.5" y2="28.5"/>
-        <line x1="24.3" y1="21.9" x2="25.6" y2="23.2"/>
+        <g className="k2">
+        <path d="M13 27.5H7.5A1.5 1.5 0 0 1 6 26V5.5A1.5 1.5 0 0 1 7.5 4H16l5 5v4.5"/>
+        <path d="M16 4v5h5"/>
+        <path d="M10 11h4.5M10 15h3"/>
+        </g>
+        <circle cx="20" cy="20" r="5.5"/>
+        <path d="M24 24l4 4"/>
       </_I>
     ),
     title: 'Evidence Security & Contradiction Reviews',
@@ -265,24 +244,16 @@ export const RESEARCH_AREAS = [
   },
   {
     icon: (
+      // three nodes in a triangle, spokes and centre in the second tone
       <_I>
-        {/* ternary tree - one root, three branches, and the three trit VALUES
-            drawn inside the leaves (-1 / 0 / +1) instead of three identical
-            empty circles. The detail carries the actual meaning of the word
-            "ternary" rather than just decorating the shape.
-            Swapped from minus/dot/plus GLYPHS drawn as raw line segments to
-            actual "-1"/"0"/"+1" text 2026-08-24 (live feedback: "hier wollten
-            wir -1 0 +1 reinschreiben und das ternary computing besser
-            anzeigen") - the old plus/minus strokes read as generic math
-            symbols at tile scale, not specifically as the trit values this
-            icon exists to represent. Leaf circles bumped 3 -> 3.3 to give the
-            two-character "-1"/"+1" labels a little breathing room. */}
-        <circle cx="16" cy="5" r="2.5"/>
-        <line x1="16" y1="7.5" x2="7" y2="22.5"/><line x1="16" y1="7.5" x2="16" y2="22.5"/><line x1="16" y1="7.5" x2="25" y2="22.5"/>
-        <circle cx="7" cy="25" r="3.8"/><circle cx="16" cy="25" r="3.8"/><circle cx="25" cy="25" r="3.8"/>
-        <text x="7" y="26.7" textAnchor="middle" fontSize="4.1" fontWeight="700" fontFamily="monospace" fill="currentColor" stroke="none">-1</text>
-        <text x="16" y="26.7" textAnchor="middle" fontSize="4.6" fontWeight="700" fontFamily="monospace" fill="currentColor" stroke="none">0</text>
-        <text x="25" y="26.7" textAnchor="middle" fontSize="4.1" fontWeight="700" fontFamily="monospace" fill="currentColor" stroke="none">+1</text>
+        <circle cx="16" cy="6.5" r="3"/>
+        <circle cx="7" cy="24" r="3"/>
+        <circle cx="25" cy="24" r="3"/>
+        <path d="M14.6 9.2 8.4 21.3M17.4 9.2l6.2 12.1M10 24h12"/>
+        <g className="k2">
+        <path d="M16 9.5v6.8M14.4 19.2l-5 3.1M17.6 19.2l5 3.1" opacity=".8"/>
+        <circle cx="16" cy="18" r="1.8" fill="currentColor" stroke="none"/>
+        </g>
       </_I>
     ),
     title: 'Ternary AI & Smart Computing',
@@ -290,29 +261,28 @@ export const RESEARCH_AREAS = [
   },
   {
     icon: (
-      <_I>
-        {/* world model - redrawn 2026-08-24 as an actual GLOBE with domains
-            connected across its surface (live feedback: "cross domain ok aber
-            man sieht das world model nich, wär doch besser eine globus mit
-            domains conected drauf?"). Previous version was a pure abstract
-            graph (dashed boundary + satellite nodes) - correct in spirit but
-            didn't read as "world" to a first glance. Sphere outline plus a
-            flattened equator ellipse and a flattened meridian ellipse give the
-            3D-globe read, four small domain nodes and their connections sit on
-            top of it so the "relationships between things" idea from the old
-            design survives inside the new shape instead of being replaced by it. */}
-        <circle cx="16" cy="16" r="12"/>
-        <ellipse cx="16" cy="16" rx="12" ry="4.5" opacity="0.6"/>
-        <ellipse cx="16" cy="16" rx="4.5" ry="12" opacity="0.6"/>
-        <line x1="9" y1="10" x2="22" y2="9" strokeWidth="2"/>
-        <line x1="9" y1="10" x2="10" y2="22" strokeWidth="2"/>
-        <line x1="22" y1="9" x2="23" y2="21" strokeWidth="2"/>
-        <line x1="10" y1="22" x2="23" y2="21" strokeWidth="2"/>
-        <line x1="9" y1="10" x2="23" y2="21" strokeWidth="2" opacity="0.6"/>
-        <circle cx="9" cy="10" r="2" fill="currentColor" stroke="none"/>
-        <circle cx="22" cy="9" r="2" fill="currentColor" stroke="none"/>
-        <circle cx="10" cy="22" r="2" fill="currentColor" stroke="none"/>
-        <circle cx="23" cy="21" r="2" fill="currentColor" stroke="none"/>
+      // globe with one tilted orbit and three points
+      <_I sw="1.15">
+        <g className="k2">
+        <circle cx="16" cy="16" r="8.5"/>
+        </g>
+        <ellipse cx="16" cy="16" rx="3.57" ry="8.5" opacity=".45"/>
+        <path d="M7.5 16h17" opacity=".45"/>
+        <g strokeWidth="1.1">
+        <mask id="ri-orbit">
+        <rect width="32" height="32" fill="#fff"/>
+        <circle cx="16" cy="16" r="9.8" fill="#000"/>
+        </mask>
+        <g mask="url(#ri-orbit)" opacity=".55">
+        <path d="M1.4 16A14.6 4.6 0 0 1 30.6 16" transform="rotate(-20 16 16)"/>
+        </g>
+        <path d="M1.4 16A14.6 4.6 0 0 0 30.6 16" transform="rotate(-20 16 16)"/>
+        </g>
+        <g className="k3">
+        <circle cx="3.1" cy="21.91" r="1.6" fill="currentColor" stroke="none"/>
+        <circle cx="21.74" cy="18.57" r="1.6" fill="currentColor" stroke="none"/>
+        <circle cx="27.74" cy="9.64" r="1.6" fill="currentColor" stroke="none"/>
+        </g>
       </_I>
     ),
     title: 'World Models & Cross-Domain Intelligence',
@@ -320,32 +290,16 @@ export const RESEARCH_AREAS = [
   },
   {
     icon: (
+      // node chain fanning out, links in the second tone
       <_I>
-        {/* pattern matching + propagation - the same triad appears twice fully
-            and a THIRD time only half-formed, which is the recognition step:
-            two instances establish the pattern, the incomplete one is what the
-            system predicts next. The arc below carries that prediction into a
-            filled node downstream. */}
-        {/* Recentred 2026-08-16: the content was hugging the top-right of the
-            32px box. It now sits balanced on both axes inside the tile frame. */}
-        <circle cx="5" cy="11" r="1.8"/><circle cx="11" cy="8" r="1.8"/><circle cx="11" cy="14" r="1.8"/>
-        <line x1="6.6" y1="10.3" x2="9.4" y2="8.9"/><line x1="6.6" y1="11.7" x2="9.4" y2="13.1"/>
-        <circle cx="16" cy="11" r="1.8"/><circle cx="22" cy="8" r="1.8"/><circle cx="22" cy="14" r="1.8"/>
-        <line x1="17.6" y1="10.3" x2="20.4" y2="8.9"/><line x1="17.6" y1="11.7" x2="20.4" y2="13.1"/>
-        <circle cx="27" cy="11" r="1.8" strokeDasharray="2 2"/>
-        {/* Swapped the smile-shaped check-arrow for a crosshair 2026-08-24 (live
-            feedback: "the arrow does look cheap like amazon, so idk lets leave
-            the chain, and put a crosshair there somehow of some sort") - the
-            triad "chain" above is unchanged, only the downstream marker below
-            it changed, from an arrow reading as a logo wink to a reticle
-            reading as "this is the node the system is tracking." */}
-        <path d="M22 15.5c1.6 2.2 3 3.4 4.3 4" opacity="0.6"/>
-        <circle cx="26" cy="21" r="4" strokeDasharray="1.6 1.9" opacity="0.7"/>
-        <line x1="26" y1="15.3" x2="26" y2="17.6"/>
-        <line x1="26" y1="24.4" x2="26" y2="26.7"/>
-        <line x1="20.3" y1="21" x2="22.6" y2="21"/>
-        <line x1="29.4" y1="21" x2="31.7" y2="21"/>
-        <circle cx="26" cy="21" r="2.3" fill="currentColor" stroke="none"/>
+        <circle cx="6" cy="16" r="2.4"/>
+        <circle cx="14" cy="16" r="2.4"/>
+        <circle cx="22" cy="10" r="2.4"/>
+        <circle cx="22" cy="22" r="2.4"/>
+        <g className="k2">
+        <path d="M8.4 16h3.2M16 14.5l3.9-3M16 17.5l3.9 3"/>
+        <path d="M24.4 10h3.6M24.4 22h3.6" strokeDasharray="1.8 1.8"/>
+        </g>
       </_I>
     ),
     title: 'Pattern Recognition & Impact Propagation',
@@ -353,15 +307,15 @@ export const RESEARCH_AREAS = [
   },
   {
     icon: (
+      // trend line opening into a fan of possible paths, axes in the second tone
       <_I>
-        {/* change + anomaly - a baseline trace running flat through the sights
-            with ONE deviation, marked. The old version was crosshairs aimed at
-            nothing; detection needs something to have deviated from. */}
-        <circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="5" strokeDasharray="2.5 2.5" opacity="0.6"/>
-        <line x1="16" y1="2.5" x2="16" y2="5.5"/><line x1="16" y1="26.5" x2="16" y2="29.5"/>
-        <line x1="2.5" y1="16" x2="5.5" y2="16"/><line x1="26.5" y1="16" x2="29.5" y2="16"/>
-        <path d="M7 17.5h4l1.6-2.6 2 2.6h2.2l1.8-7 2.4 7H25"/>
-        <circle cx="20.6" cy="10.5" r="2.2" fill="currentColor" stroke="none"/>
+        <g className="k2">
+        <path d="M5 5v22h22"/>
+        </g>
+        <path d="M18 17 27 8.5V21.5Z" fill="currentColor" stroke="none" opacity=".18"/>
+        <path d="M8 21l3.5-2 3.5 1 3-3"/>
+        <path d="M18 17l9-8.5M18 17h9M18 17l9 4.5" strokeDasharray="2 2.2"/>
+        <circle cx="18" cy="17" r="1.6" fill="currentColor" stroke="none"/>
       </_I>
     ),
     title: 'Change Detection & Anomaly Evaluation',
@@ -369,24 +323,15 @@ export const RESEARCH_AREAS = [
   },
   {
     icon: (
+      // lighthouse, tower in the second tone
       <_I>
-        {/* early warning + scenario prediction - a radar sweep that has already
-            picked something up, plus a widening cone: the cone is the forecast,
-            and it widens because uncertainty grows with distance ahead. The
-            dashed blip is the predicted contact, the solid one is observed. */}
-        <circle cx="16" cy="16" r="11"/>
-        <circle cx="16" cy="16" r="6" strokeDasharray="2.5 3" opacity="0.6"/>
-        <circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/>
-        {/* filled sweep wedge added 2026-08-24 (live feedback: "can be more of
-            a radar shape") - the sweep used to be a bare line plus a faint
-            outline arc for the forecast cone, which read as a compass bearing
-            more than a radar display. A translucent filled sector between the
-            same two directions reads as an actual sweeping beam. */}
-        <path d="M16 16 24.8 8.2A11 11 0 0 0 22.2 6.1Z" fill="currentColor" stroke="none" opacity="0.28"/>
-        <path d="M16 16 24.8 8.2"/>
-        <path d="M16 16 27 12.5M16 16 27 20" strokeDasharray="2 2.5" opacity="0.75"/>
-        <circle cx="21.5" cy="10.5" r="1.6" fill="currentColor" stroke="none"/>
-        <circle cx="24.5" cy="18.5" r="1.6" strokeDasharray="1.8 1.6"/>
+        <g className="k2">
+        <path d="M13 27l1.5-13.5h3L19 27Z"/>
+        <path d="M13 9.8 16 6.8l3 3"/>
+        <path d="M9 27h14"/>
+        </g>
+        <path d="M13.6 13.5h4.8V9.8h-4.8Z" fill="currentColor" fillOpacity=".35"/>
+        <path d="M20.8 10.6 28 7.8M20.8 12.6 28 15.4M11.2 10.6 4 7.8M11.2 12.6 4 15.4"/>
       </_I>
     ),
     title: 'Early Warning & Scenario Prediction',
@@ -394,30 +339,22 @@ export const RESEARCH_AREAS = [
   },
   {
     icon: (
+      // heart with a syringe set into its centre, syringe in the second tone
       <_I>
-        {/* Model welfare + prompt injection, redrawn from the approved visual:
-            a broad protective heart, a keyhole-shaped injection point and a
-            precise syringe crossing the upper-right edge. The tile supplies the
-            rounded outer frame, avoiding a redundant frame-within-a-frame. */}
-        <path d="M15.5 27 8.3 20.5C3.1 15.8 4.5 9 9.5 7.7c2.5-.6 4.7.5 6 2.5 1.4-2 3.4-3 5.7-2.6"/>
-        <path d="M24.6 12c1.1 3 .3 6.2-2.4 8.7L15.5 27"/>
-
-        {/* The needle terminates at, rather than piercing through, the keyhole.
-            Barrel redrawn 2026-08-24 (live feedback: "die spritze muss dünner
-            sein das sieht man nich richtig das isch nich sauber gezeichnet") -
-            the old barrel was a closed zigzag path that read as a lightning
-            bolt rather than a syringe. Replaced with one thin diagonal line for
-            the barrel, three short perpendicular dose-mark hatches along it,
-            and a single perpendicular tick for the plunger cap at the top end -
-            the same visual grammar a real syringe icon uses, just thinner and
-            with no filled shapes to read as clutter at tile scale. */}
-        <path d="M13.9 22.2h3.6l-.6-3.2a2.4 2.4 0 1 0-2.3 0z"/>
-        <line x1="16.3" y1="16.9" x2="18.4" y2="14.8"/>
-        <line x1="18.4" y1="14.8" x2="26.2" y2="7"/>
-        <line x1="19.8" y1="13.4" x2="21.1" y2="12.1"/>
-        <line x1="22.3" y1="10.9" x2="23.6" y2="9.6"/>
-        <line x1="24.8" y1="8.4" x2="26.1" y2="7.1"/>
-        <line x1="24.9" y1="5.7" x2="27.5" y2="8.3"/>
+        <mask id="ri-heart-gap" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+        <rect width="32" height="32" fill="#fff"/>
+        <path d="M9 9.6L5.6 6.2" stroke="#000" strokeWidth="4.6" strokeLinecap="round"/>
+        </mask>
+        <path d="M16 26.5C9.2 22.2 4.5 18 4.5 12.8a5.8 5.8 0 0 1 11.5-1.1 5.8 5.8 0 0 1 11.5 1.1C27.5 18 22.8 22.2 16 26.5Z" mask="url(#ri-heart-gap)" strokeWidth="1.25"/>
+        <g className="k2">
+        <g transform="translate(16 16.6) rotate(-135) scale(1.05)" strokeWidth="1.19">
+        <path d="M0 0h6.5"/>
+        <rect x="6.5" y="-2" width="8" height="4" rx="1.20"/>
+        <path d="M9.0 -2v1.8M11.5 -2v1.8"/>
+        <path d="M14.5 0h2.6"/>
+        <path d="M17.1 -2.6v5.2"/>
+        </g>
+        </g>
       </_I>
     ),
     title: 'Model Welfare & Injection Robustness',

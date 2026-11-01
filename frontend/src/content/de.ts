@@ -364,8 +364,8 @@ export const DE: Content = {
     managedSoc: {
       eyebrow: 'Managed SOC · Enterprise',
       heading: 'Ihre ausgelagerte Sicherheitsabteilung',
-      text: 'Für Unternehmen ohne eigene Sicherheitskapazität übernehmen wir Ihr komplettes Security Operations Center, mit allem aus Business. Wir überwachen rund um die Uhr, reagieren im Ernstfall binnen einer Stunde und beheben den Fund binnen 24 Stunden selbst, bis in den Code.',
-      points: ['Überwachung rund um die Uhr, 24/7', 'Incident Response binnen 1 Stunde', 'Behebung binnen 24 Stunden, bis in den Code', 'Ein festes Team als Ihre Sicherheitsabteilung', 'Individuelle Oberflächen, MSP und Multi-Tenant', 'White-Label und vereinbarte SLAs'],
+      text: 'Für Unternehmen ohne eigene Sicherheitskapazität übernehmen wir Ihr komplettes Security Operations Center, mit allem aus Business. Wir überwachen rund um die Uhr, reagieren im Ernstfall binnen einer Stunde und beheben den Fund innerhalb von 24 Stunden selbst, bis in den Code.',
+      points: ['Überwachung rund um die Uhr, 24/7', 'Incident Response binnen 1 Stunde', 'Behebung innerhalb von 24 Stunden, bis in den Code', 'Ein festes Team als Ihre Sicherheitsabteilung', 'Individuelle Oberflächen, MSP und Multi-Tenant', 'White-Label und vereinbarte SLAs'],
       price: 'Preis nach Umfang, schriftlich angeboten.',
       cta: 'Managed SOC anfragen',
     },

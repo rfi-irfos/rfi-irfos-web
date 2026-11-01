@@ -175,7 +175,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       ],
       faqH2: 'Fragen zur App-Sicherheitsprüfung',
       faq: [
-        ['Was kostet eine App-Sicherheitsprüfung?', 'Die Seite Zugang listet die Pläne von Starter bis Business mit ihren Preisen, dazu Managed SOC, unsere ausgelagerte Sicherheitsabteilung mit Überwachung rund um die Uhr, Incident Response binnen einer Stunde und Behebung binnen 24 Stunden. Jeder Plan nennt seinen Umfang und das, was Sie erhalten.'],
+        ['Was kostet eine App-Sicherheitsprüfung?', 'Die Seite Zugang listet die Pläne von Starter bis Business mit ihren Preisen, dazu Managed SOC, unsere ausgelagerte Sicherheitsabteilung mit Überwachung rund um die Uhr, Incident Response binnen einer Stunde und Behebung innerhalb von 24 Stunden. Jeder Plan nennt seinen Umfang und das, was Sie erhalten.'],
         ['Welche Plattformen decken Sie ab?', 'Android- und iOS-Apps, zusammen mit den APIs und Backends, mit denen sie sprechen, im vereinbarten Umfang.'],
         ['Brauchen Sie Zugriff auf unsere Produktivsysteme?', 'Nein. Sie bestimmen, was wir untersuchen, und senden uns das Material. Wir brauchen keinen Zugriff auf Ihre Live-Systeme.'],
         ['Wer prüft die Befunde?', 'Menschliche Fachleute prüfen jeden Befund erneut, bevor er in den Bericht kommt. Agenten übernehmen die breite Testarbeit, Menschen entscheiden, was als Befund zählt.'],

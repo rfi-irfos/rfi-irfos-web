@@ -126,6 +126,7 @@ export const HERO_IMAGES = [
 // Built separately from HERO_IMAGES so WorldModel.tsx's panel keeps its own order.
 // Lighthouse round 25 (2026-10-31): the 1821 px satellite slide (466 KB) is the first
 // image every phone downloads. Phones get a 1000 px copy; the hero is cover-cropped there.
+const GRAZ_PHOTOS = new Set([heroGrazSatellite, heroGrazSatelliteMobile])
 const SMALL_SCREEN = typeof window !== 'undefined' && window.innerWidth < 768
 const HOME_HERO_IMAGES = [SMALL_SCREEN ? heroGrazSatelliteMobile : heroGrazSatellite, heroDingirEmbedDecidedGraph, ...HERO_IMAGES.filter(src => src !== heroDingirEmbedDecided)]
 
@@ -230,14 +231,20 @@ export function HeroSlideshow({ images, zoomEffect = true, fit = 'cover', interv
       <motion.div
         key={current}
         aria-hidden="true"
-        className={zoomEffect ? 'rfi-hero-zoom' : undefined}
+        className={[zoomEffect ? 'rfi-hero-zoom' : '', GRAZ_PHOTOS.has(images[current]) ? 'rfi-hero-graz' : ''].join(' ').trim() || undefined}
         initial={reduced || (skipFirstFade && current === 0) ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={reduced ? undefined : { opacity: 0 }}
         transition={{ duration: reduced ? 0 : CROSSFADE_S, ease: 'easeInOut' }}
         style={{
           position: 'absolute', inset: 0, zIndex: -2,
-          backgroundImage: `url("${images[current]}")`, backgroundSize: fit, backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
+          // Graz photo: mobile/desktop file picked by a CSS media query (.rfi-hero-graz),
+          // so the prerendered HTML already paints the right one and hydration does not
+          // swap it (LCP render delay 3.7 s on mobile, 2026-11-01).
+          ...(GRAZ_PHOTOS.has(images[current])
+            ? { ['--hero-graz-d' as string]: `url("${heroGrazSatellite}")`, ['--hero-graz-m' as string]: `url("${heroGrazSatelliteMobile}")` }
+            : { backgroundImage: `url("${images[current]}")` }),
+          backgroundSize: fit, backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
         }}
       />
     </AnimatePresence>

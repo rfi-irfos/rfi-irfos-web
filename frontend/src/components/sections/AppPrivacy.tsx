@@ -233,8 +233,8 @@ function KpiArt({ kind }: { kind: 'apps' | 'bugs' | 'shield' }) {
     <div className="kpi-art kpi-art--tilt" aria-hidden="true">
       <div className="kpi-floor" />
       <Brackets />
-      <div className="kpi-glass" style={{ left: 16, top: 20, width: 80, height: 80 }}><AndroidGlyph /></div>
-      <div className="kpi-glass" style={{ left: 66, top: 50, width: 80, height: 80 }}><IconBrandAppleFilled size={42} className="kpi-glyph kpi-glyph--light" /></div>
+      <div className="kpi-glass kpi-c--android" style={{ left: 16, top: 20, width: 80, height: 80 }}><AndroidGlyph /></div>
+      <div className="kpi-glass kpi-c--apple" style={{ left: 66, top: 50, width: 80, height: 80 }}><IconBrandAppleFilled size={42} className="kpi-glyph kpi-glyph--light" /></div>
     </div>
   )
   if (kind === 'bugs') return (
@@ -243,14 +243,14 @@ function KpiArt({ kind }: { kind: 'apps' | 'bugs' | 'shield' }) {
         <div className="kpi-win__bar"><i /><i /><i /></div>
         <div className="kpi-win__code"><b>&lt;/&gt;</b><span style={{ width: '70%' }} /><span style={{ width: '50%' }} /><span style={{ width: '62%' }} /><span style={{ width: '40%' }} /></div>
       </div>
-      <div className="kpi-glass" style={{ left: 68, top: 52, width: 82, height: 82 }}>
+      <div className="kpi-glass kpi-c--bug" style={{ left: 68, top: 52, width: 82, height: 82 }}>
         <Brackets />
         <IconBugFilled size={40} className="kpi-glyph" />
       </div>
     </div>
   )
   return (
-    <div className="kpi-art" aria-hidden="true">
+    <div className="kpi-art kpi-c--shield" aria-hidden="true">
       <div className="kpi-ring kpi-ring--outer" />
       <div className="kpi-ring kpi-ring--inner" />
       <svg viewBox="0 0 64 72" width="74" height="84" style={{ position: 'absolute', left: 43, top: 33 }}>
