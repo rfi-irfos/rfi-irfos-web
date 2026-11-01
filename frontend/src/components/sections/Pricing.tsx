@@ -41,6 +41,7 @@ import { EngagementFlow, Reveal, useMobile } from './shared'
 import { useLocale, type Locale } from '../../hooks/useLocale'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { useState } from 'react'
+import { IconRadar, IconBolt, IconCode, IconUsers, IconStack2, IconCertificate } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { IconBulb, IconShieldLock, IconDatabase, IconTrendingUp, IconTerminal2 } from '@tabler/icons-react'
 
@@ -192,7 +193,7 @@ function BillingToggle({ billing, onChange }: { billing: 'monthly' | 'annual'; o
 function NeedSomethingElseRow({ domains, onSelectTier }: { domains: PricingDomain[]; onSelectTier: (t: string) => void }) {
   const { t } = useLocale()
   return (
-    <div style={{ borderBottom: '1px solid var(--border)', marginTop: 24, paddingBottom: 20, display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px 18px' }}>
+    <div style={{ borderBottom: '1px solid var(--border)', marginTop: 24, paddingBottom: 20, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '8px 18px' }}>
       <span style={{ fontSize: 'var(--fs-small)', fontWeight: 700, color: 'var(--text)' }}>{t.pricing.needSomethingElse}</span>
       {domains.map((d, i) => {
         const Icon = DOMAIN_ICONS[d.name]
@@ -248,7 +249,7 @@ export function PricingSection({
 
         <div>
           <Reveal>
-            <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 20 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
               <BillingToggle billing={billing} onChange={setBilling} />
             </div>
           </Reveal>
@@ -285,23 +286,39 @@ export function PricingSection({
                 })}
               </div>
 
-              <div style={{
-                borderTop: '1px solid var(--border)', padding: '28px 28px',
-                background: 'linear-gradient(135deg, rgba(0,245,196,0.08), rgba(0,245,196,0.015))',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap',
-              }}>
-                <div>
-                  <p style={{ fontSize: 'var(--fs-label)', color: 'var(--accent-text)', margin: '0 0 7px' }}>{t.pricing.enterprise.heading}</p>
-                  <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', margin: 0, maxWidth: 560 }}>{t.pricing.enterprise.text}</p>
-                </div>
-                <button type="button" onClick={() => onSelectTier('Enterprise')} style={{ background: 'transparent', border: '1px solid var(--accent-text)', color: 'var(--accent-text)', padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
-                  {t.pricing.enterprise.cta}
-                </button>
-              </div>
             </div>
+
+              {/* Managed SOC band (Simeon 2026-11-01): the outsourced security department
+                  for teams without in-house capacity, 24/7 monitoring, 1 h incident
+                  response, fix within 24 h. Merged with the former Enterprise band
+                  (custom surfaces, MSP, multi-tenant, white-label, SLAs) the same day. */}
+              <div id="pricing-managed-soc" className="fx-soc" style={{ scrollMarginTop: 84, marginTop: 14, border: '1px solid var(--border)', borderRadius: 16, padding: tablet ? '28px 22px' : '36px 36px', display: 'grid', gridTemplateColumns: tablet ? '1fr' : 'minmax(0, 1.05fr) minmax(0, 1fr)', gap: tablet ? 22 : 40, alignItems: 'center' }}>
+                <div>
+                  <p style={{ fontSize: 'var(--fs-label)', color: 'var(--accent-text)', margin: '0 0 8px', letterSpacing: '0.04em' }}>{t.pricing.managedSoc.eyebrow}</p>
+                  <h2 style={{ fontSize: 'clamp(1.5rem, 2.4vw, 2rem)', color: 'var(--text)', margin: '0 0 12px', lineHeight: 1.15 }}>{t.pricing.managedSoc.heading}</h2>
+                  <p style={{ fontSize: 'var(--fs-body)', color: 'var(--text)', margin: '0 0 20px', lineHeight: 'var(--lh-body)', maxWidth: 560 }}>{t.pricing.managedSoc.text}</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+                    <button type="button" className="fx-cta-teal" onClick={() => onSelectTier('Managed SOC')} style={{ color: '#070711', border: 'none', padding: '12px 22px', borderRadius: 10, fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                      {t.pricing.managedSoc.cta}
+                    </button>
+                    <span style={{ fontSize: 'var(--fs-small)', color: 'var(--text)' }}>{t.pricing.managedSoc.price}</span>
+                  </div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: tablet ? '1fr' : '1fr 1fr', gap: 12 }}>
+                  {t.pricing.managedSoc.points.map((pt, i) => {
+                    const Icon = [IconRadar, IconBolt, IconCode, IconUsers, IconStack2, IconCertificate][i] ?? IconRadar
+                    return (
+                      <div key={pt} className="fx-tile fx-tile--static" style={{ ['--tile-hue' as string]: 'var(--accent-text)', padding: '16px 16px', borderRadius: 14, display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                        <Icon size={22} stroke={1.6} style={{ color: 'var(--accent-text)', flexShrink: 0, marginTop: 1 }} />
+                        <span style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', fontWeight: 600, lineHeight: 1.4 }}>{pt}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
           </Reveal>
 
-          <p style={{ margin: '20px 0 0', fontSize: 'var(--fs-small)', color: 'var(--text)', lineHeight: 1.6 }}>
+          <p style={{ margin: '20px 0 0', fontSize: 'var(--fs-small)', color: 'var(--text)', lineHeight: 1.6, textAlign: 'center' }}>
             {t.pricing.termsNote.text}{' '}
             <a href={t.pricing.termsNote.href} style={{ color: 'var(--accent-text)' }}>{t.pricing.termsNote.link}</a>
           </p>

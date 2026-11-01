@@ -138,6 +138,7 @@ export function SubmitSection({
                   options={[
                     { value: 'General', label: f.topicOptions.general },
                     { value: 'Service Enquiry', label: f.topicOptions.service },
+                    { value: 'Managed SOC', label: f.topicOptions.managedSoc },
                     { value: 'Security Disclosure', label: f.topicOptions.securityDisclosure },
                     { value: 'Research Collaboration', label: f.topicOptions.researchCollaboration },
                     { value: 'Data Solutions', label: f.topicOptions.dataSolutions },

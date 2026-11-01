@@ -361,7 +361,14 @@ export const DE: Content = {
       features: ['Eine Website oder Anwendung.', 'Externer, read-only Sicherheitscheck.', 'Schriftliche Findings-Zusammenfassung.', 'Empfohlene n\u00e4chste Schritte.'],
       cta: 'Kostenlose Pr\u00fcfung starten',
     },
-    enterprise: { heading: 'Enterprise', text: 'Individuelle Oberfl\u00e4chen, MSP, Multi-Tenant-Deployments, White-Label und verhandelte SLAs. Dazu beheben wir die Funde gemeinsam mit Ihrem Team, bis in den Code. Preis auf Anfrage.', cta: 'Kontakt aufnehmen' },
+    managedSoc: {
+      eyebrow: 'Managed SOC · Enterprise',
+      heading: 'Ihre ausgelagerte Sicherheitsabteilung',
+      text: 'Für Unternehmen ohne eigene Sicherheitskapazität übernehmen wir Ihr komplettes Security Operations Center, mit allem aus Business. Wir überwachen rund um die Uhr, reagieren im Ernstfall binnen einer Stunde und beheben den Fund binnen 24 Stunden selbst, bis in den Code.',
+      points: ['Überwachung rund um die Uhr, 24/7', 'Incident Response binnen 1 Stunde', 'Behebung binnen 24 Stunden, bis in den Code', 'Ein festes Team als Ihre Sicherheitsabteilung', 'Individuelle Oberflächen, MSP und Multi-Tenant', 'White-Label und vereinbarte SLAs'],
+      price: 'Preis nach Umfang, schriftlich angeboten.',
+      cta: 'Managed SOC anfragen',
+    },
     termsNote: { text: 'Preise in Euro, zuzüglich gesetzlicher USt. Für Unternehmen (B2B). Abrechnung vorab über Stripe, die UID wird im Checkout abgefragt.', link: 'AGB', href: '/de/agb/' },
     needSomethingElse: 'Etwas anderes gesucht?',
     mostPopular: 'Beliebteste Wahl',
@@ -1108,6 +1115,7 @@ export const DE: Content = {
       topicPlaceholder: 'Allgemeine Anfrage',
       topicOptions: {
         general: 'Allgemeine Anfrage',
+        managedSoc: 'Managed SOC anfragen',
         service: 'Prüfung oder Projekt anfragen',
         securityDisclosure: 'Sicherheitsfund melden',
         researchCollaboration: 'Forschungskooperation',

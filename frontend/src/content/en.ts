@@ -383,7 +383,14 @@ export const EN = {
       features: ['One website or application.', 'External, read-only security check.', 'Written findings summary.', 'Recommended next steps.'],
       cta: 'Start free review',
     },
-    enterprise: { heading: 'Enterprise', text: 'Custom surfaces, MSP, multi-tenant deployments, white-label and negotiated SLAs. We also fix the findings together with your team, down to the code. Price in writing.', cta: 'Talk to us' },
+    managedSoc: {
+      eyebrow: 'Managed SOC · Enterprise',
+      heading: 'Your outsourced security department',
+      text: 'For companies without in-house security capacity, we run your entire security operations center, with everything in Business. We monitor around the clock, respond to incidents within one hour and fix the finding ourselves within 24 hours, down to the code.',
+      points: ['Monitoring around the clock, 24/7', 'Incident response within 1 hour', 'Fix within 24 hours, down to the code', 'One dedicated team as your security department', 'Custom surfaces, MSP and multi-tenant', 'White-label and agreed SLAs'],
+      price: 'Priced by scope, offered in writing.',
+      cta: 'Request Managed SOC',
+    },
     // Lighthouse round 72: these conditions only appeared on Stripe's page (B2B consent, VAT ID,
     // subscription), a surprise at the last step. Same facts as AGB §3 and the checkout session.
     termsNote: { text: 'Prices in euro, plus statutory VAT. For businesses (B2B). Billed upfront via Stripe, your VAT ID is requested at checkout.', link: 'Terms', href: '/agb/' },
@@ -1138,6 +1145,7 @@ export const EN = {
       topicPlaceholder: 'General enquiry',
       topicOptions: {
         general: 'General enquiry',
+        managedSoc: 'Request Managed SOC',
         service: 'Request a review or project',
         securityDisclosure: 'Report a security finding',
         researchCollaboration: 'Research collaboration',

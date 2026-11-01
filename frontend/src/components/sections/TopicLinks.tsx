@@ -4,6 +4,7 @@
 // prerendered page, so crawlers keep the internal link, but a click opens the page's own
 // copy in an overlay and the visitor stays where they were.
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { IconShieldCheck, IconScale, IconCertificate, IconRadar, IconRobot, IconX } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
 import { beacon } from './shared'
@@ -41,20 +42,24 @@ export function TopicLinks() {
     <>
       {/* Simeon 2026-10-31: the visible "What we examine:" lead looked out of place in front of
           the pills, so the label now only names the group for screen readers. */}
-      <nav aria-label={c.label.replace(/:$/, '')} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 10, marginTop: 22 }}>
+      {/* Phones: one swipeable row instead of five stacked pills (.rfi-topic-row in index.css). */}
+      <nav className="rfi-topic-row" aria-label={c.label.replace(/:$/, '')} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 10, marginTop: 22 }}>
         {LANDING_SLUGS.map(slug => {
           const Icon = ICONS[slug]
           return (
             <a key={slug} href={`${pre}/${slug}/`}
               onClick={e => { if (e.metaKey || e.ctrlKey || e.shiftKey) return; e.preventDefault(); show(slug) }}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--glass-bg-solid)', color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none' }}>
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--glass-bg-solid)', color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
               <Icon size={16} stroke={1.8} color="var(--icon-neutral)" aria-hidden />
               {t.footer.groups.services.links[KEYS[slug]]}
             </a>
           )
         })}
       </nav>
-      {open && <TopicModal slug={open.slug} doc={open.doc} href={`${pre}/${open.slug}/`} onClose={() => setOpen(null)} />}
+      {/* Portal to <body> (bug 2026-11-01, Zabih): the row sits inside an animated
+          section whose transform turns position:fixed into "fixed to that section",
+          so on desktop the overlay rendered cut off at the bottom of the page. */}
+      {open && createPortal(<TopicModal slug={open.slug} doc={open.doc} href={`${pre}/${open.slug}/`} onClose={() => setOpen(null)} />, document.body)}
     </>
   )
 }

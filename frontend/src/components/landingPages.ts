@@ -106,7 +106,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       ],
       faqH2: 'Questions about app security audits',
       faq: [
-        ['What does an app security audit cost?', 'The Access page lists the plans from Starter to Business with their prices, plus an Enterprise option for custom surfaces. Each plan states its scope and what you receive.'],
+        ['What does an app security audit cost?', 'The Access page lists the plans from Starter to Business with their prices, plus Managed SOC, our outsourced security department with 24/7 monitoring, incident response within one hour and fixes within 24 hours. Each plan states its scope and what you receive.'],
         ['Which platforms do you cover?', 'Android and iOS apps, together with the APIs and backends they talk to, within the scope you agree.'],
         ['Do you need access to our production systems?', 'No. You choose what we examine and send us the material. We need no access to your live systems.'],
         ['Who verifies the findings?', 'Human specialists re-verify every finding before it reaches the report. Agents do the broad testing, people decide what counts as a finding.'],
@@ -175,7 +175,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       ],
       faqH2: 'Fragen zur App-Sicherheitsprüfung',
       faq: [
-        ['Was kostet eine App-Sicherheitsprüfung?', 'Die Seite Zugang listet die Pläne von Starter bis Business mit ihren Preisen, dazu eine Enterprise-Option für individuelle Flächen. Jeder Plan nennt seinen Umfang und das, was Sie erhalten.'],
+        ['Was kostet eine App-Sicherheitsprüfung?', 'Die Seite Zugang listet die Pläne von Starter bis Business mit ihren Preisen, dazu Managed SOC, unsere ausgelagerte Sicherheitsabteilung mit Überwachung rund um die Uhr, Incident Response binnen einer Stunde und Behebung binnen 24 Stunden. Jeder Plan nennt seinen Umfang und das, was Sie erhalten.'],
         ['Welche Plattformen decken Sie ab?', 'Android- und iOS-Apps, zusammen mit den APIs und Backends, mit denen sie sprechen, im vereinbarten Umfang.'],
         ['Brauchen Sie Zugriff auf unsere Produktivsysteme?', 'Nein. Sie bestimmen, was wir untersuchen, und senden uns das Material. Wir brauchen keinen Zugriff auf Ihre Live-Systeme.'],
         ['Wer prüft die Befunde?', 'Menschliche Fachleute prüfen jeden Befund erneut, bevor er in den Bericht kommt. Agenten übernehmen die breite Testarbeit, Menschen entscheiden, was als Befund zählt.'],

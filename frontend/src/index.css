@@ -985,6 +985,8 @@ h1, h2, h3, .rfi-display {
 /* Research topic tiles (Simeon 01.11.): dark glass with a bright top edge, the edge and a low
    floor light tinted with each tile's own icon hue. Opaque base so the scroll spine stays behind. */
 .fx-tile { border: 1px solid rgba(255,255,255,.08); border-top-color: rgba(255,255,255,.18); background: radial-gradient(90% 60% at 50% 115%, color-mix(in srgb, var(--tile-hue) 12%, transparent), transparent 70%), linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.015) 55%, rgba(255,255,255,0)), #10131a; box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 -1px 0 rgba(0,0,0,.4), 0 1px 0 rgba(0,0,0,.6), 0 14px 28px rgba(0,0,0,.48); }
+/* Smooth hover (Simeon 2026-11-01: highlights snapped in "roh"). */
+.fx-tile { transition: border-color .35s cubic-bezier(.4,0,.2,1), box-shadow .35s cubic-bezier(.4,0,.2,1), background-color .35s cubic-bezier(.4,0,.2,1), transform .35s cubic-bezier(.4,0,.2,1); }
 .fx-tile:hover, .fx-tile.rfi-icon-tile:hover { background-color: #10131a; border-color: color-mix(in srgb, var(--tile-hue) 30%, rgba(255,255,255,.1)); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 18px 34px rgba(0,0,0,.52), 0 0 20px color-mix(in srgb, var(--tile-hue) 12%, transparent); }
 :root:not([data-theme="dark"]):not([data-theme="hc"]) .fx-tile.rfi-icon-tile:hover { background-color: #fff; }
 :root:not([data-theme="dark"]):not([data-theme="hc"]) .fx-tile { background: radial-gradient(90% 70% at 50% 120%, color-mix(in srgb, var(--tile-hue) 12%, transparent), transparent 70%), linear-gradient(170deg, #fff, #f4f6f9); border-color: color-mix(in srgb, var(--tile-hue) 25%, rgba(0,0,0,.08)); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
@@ -1078,4 +1080,29 @@ h1, h2, h3, .rfi-display {
 @media (min-width: 900px) {
   .rfi-hero-identity { max-width: none !important; }
   .rfi-hero-identity > p { white-space: nowrap; font-size: clamp(0.95rem, 1.55vw, 1.5rem) !important; }
+}
+
+/* Managed SOC band on /access (2026-11-01) */
+.fx-soc {
+  background:
+    radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--accent-text) 9%, transparent), transparent 60%),
+    linear-gradient(180deg, #121620, #0c0f16);
+  border-color: color-mix(in srgb, var(--accent-text) 28%, var(--border)) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 24px 60px rgba(0, 0, 0, .5), 0 0 0 1px rgba(0, 0, 0, .4);
+}
+[data-theme="light"] .fx-soc { background: linear-gradient(180deg, #f6f8fb, #eef2f6); }
+[data-theme="hc"] .fx-soc { background: #050505; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5); }
+
+/* Topic pills under the contact form: one swipeable row on phones (2026-11-01) */
+@media (max-width: 640px) {
+  .rfi-topic-row {
+    flex-wrap: nowrap !important; justify-content: flex-start !important;
+    overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none;
+    margin-left: calc(-1 * var(--sec-pad-x, 16px)); margin-right: calc(-1 * var(--sec-pad-x, 16px));
+    padding: 2px var(--sec-pad-x, 16px) 6px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 28px), transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 28px), transparent 100%);
+  }
+  .rfi-topic-row::-webkit-scrollbar { display: none; }
+  .rfi-topic-row > a { scroll-snap-align: start; }
 }

@@ -264,10 +264,10 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
   return (
     <section style={{
       display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden',
-      // minHeight keeps the hero at its pre-2026-10-10 size (live: 551px at 2133x964) now that the KPI row is gone, then trimmed 64px (~1.7cm) off the bottom.
-      minHeight: 'clamp(396px, calc(57vh - 84px), 596px)',
+      // minHeight keeps the hero at its pre-2026-10-10 size (live: 551px at 2133x964) now that the KPI row is gone, then trimmed 64px (~1.7cm) off the bottom, and another ~36px on 2026-11-01.
+      minHeight: 'clamp(356px, calc(57vh - 124px), 556px)',
       alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
-      padding: 'calc(72px + 6vh) var(--sec-pad-x) 72px',
+      padding: 'calc(54px + 6vh) var(--sec-pad-x) 52px',
       // Tint gradient only - the actual photo is the dedicated zoom layer below,
       // not this section's own background. Kept as a tint (not a full photo) for
       // text legibility over whatever's showing through it. Tried tuning a
