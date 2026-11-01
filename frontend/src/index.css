@@ -1067,3 +1067,15 @@ h1, h2, h3, .rfi-display {
 [data-theme="hc"] .fx-input:focus { border-color: var(--accent-text); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-text) 35%, transparent); }
 [data-theme="hc"] .fx-cta-teal, [data-theme="hc"] .sq-spec-sheet .wm-btn-primary { background: linear-gradient(180deg, #ffe14d, var(--accent) 55%, #e6bf00); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 8px 22px rgba(0,0,0,.6); color: #000; }
 [data-theme="hc"] .kpi-card::before, [data-theme="hc"] .kpi-card::after { background: var(--accent-text); box-shadow: none; }
+
+/* Hero identity line (2026-11-01): outline + shadow instead of the old black bar */
+.rfi-hero-identity { margin-top: -14px; }
+.rfi-hero-identity > p {
+  -webkit-text-stroke: 3px rgba(0, 0, 0, .85);
+  paint-order: stroke fill;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .75), 0 0 2px rgba(0, 0, 0, .9);
+}
+@media (min-width: 900px) {
+  .rfi-hero-identity { max-width: none !important; }
+  .rfi-hero-identity > p { white-space: nowrap; font-size: clamp(0.95rem, 1.55vw, 1.5rem) !important; }
+}

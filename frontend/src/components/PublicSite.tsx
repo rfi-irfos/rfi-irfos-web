@@ -702,7 +702,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       const isRibbon = shapeRoll < 0.28
       const isCircle = !isRibbon && shapeRoll < 0.56
       const isDiamond = !isRibbon && !isCircle && shapeRoll < 0.74
-      const size = 9 + Math.random() * 11
+      const size = 4 + Math.random() * 4  // smaller snippets, 2026-11-01
       const w = isRibbon ? size * 0.42 : size
       const h = isRibbon ? size * 1.9 : size
       const color = colors[i % colors.length]
@@ -714,47 +714,37 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       // at the source is enough to read as a diamond silhouette without special-casing
       // every phase's transform.
       const diamondOffset = isDiamond ? 45 : 0
-      el.style.cssText = `position:fixed;left:${startX}px;top:${startY}px;width:${w}px;height:${h}px;background:${color};box-shadow:inset -2px -2px 3px rgba(0,0,0,0.22),inset 2px 2px 2px rgba(255,255,255,0.35);opacity:1;border-radius:${isCircle ? '50%' : '2px'};pointer-events:none;z-index:99999;transform:translate(0,0) scale(0.4) rotate(0deg);transition:transform 0.16s cubic-bezier(.2,.9,.35,1);`
+      el.style.cssText = `position:fixed;left:${startX}px;top:${startY}px;width:${w}px;height:${h}px;background:${color};box-shadow:inset -1px -1px 1px rgba(0,0,0,0.22),inset 1px 1px 1px rgba(255,255,255,0.35);opacity:1;border-radius:${isCircle ? '50%' : '2px'};pointer-events:none;z-index:99999;transform:translate(0,0) scale(0.4) rotate(0deg);transition:transform 0.16s cubic-bezier(.2,.9,.35,1);`
       document.body.appendChild(el)
       // force a synchronous layout so the browser commits the starting transform
       // before we change it - otherwise the transition can silently no-op.
       void el.offsetHeight
       // phase 1 - piñata burst: fast, radial, outward.
       const angle = Math.random() * Math.PI * 2
-      const burstDist = 70 + Math.random() * 160
+      const burstDist = 50 + Math.random() * 120
       const burstX = Math.cos(angle) * burstDist
       const burstY = Math.sin(angle) * burstDist - 34 // slight upward pop before gravity takes over
       const burstSpin = (Math.random() - 0.5) * 560 + diamondOffset
       el.style.transform = `translate(${burstX}px, ${burstY}px) scale(1.15) rotate(${burstSpin}deg)`
       setTimeout(() => {
-        // phase 2 - a mid-air sway checkpoint, roughly a third of the way down, with a
-        // slower transition than the burst - this is what reads as "flutter" instead of
-        // a straight drop, since the piece visibly changes drift direction mid-fall.
-        // Durations scaled ~45% slower than the original pass (live feedback 2026-08-24:
-        // "slower fall") so the flutter reads unhurried instead of brisk.
-        const totalFall = window.innerHeight - startY + 80 + Math.random() * 100
-        const swayX = burstX + (Math.random() - 0.5) * 220
-        const swayY = startY + totalFall * 0.4
-        const swaySpin = burstSpin + (Math.random() - 0.5) * 500
-        const swayDur = 1.0 + Math.random() * 0.5
-        el.style.transition = `transform ${swayDur}s cubic-bezier(.45,0,.55,1)`
-        el.style.transform = `translate(${swayX}px, ${swayY - startY}px) scale(1) rotate(${swaySpin}deg)`
-        setTimeout(() => {
-          // phase 3 - settle the rest of the way down, fading out near the bottom.
-          const fallX = swayX + (Math.random() - 0.5) * 160
-          const fallSpin = swaySpin + (Math.random() - 0.5) * 700
-          el.style.transition = `transform ${1.6 + Math.random() * 0.7}s cubic-bezier(.45,0,.55,1), opacity 0.5s ease-in ${1.0 + Math.random() * 0.45}s`
-          el.style.transform = `translate(${fallX}px, ${totalFall}px) scale(0.85) rotate(${fallSpin}deg)`
-          el.style.opacity = '0'
-        }, swayDur * 1000)
+        // phase 2 - one continuous gravity fall straight after the pop (live feedback
+        // 2026-11-01: the old mid-air sway checkpoint read as pieces parking near the
+        // bottom edge before dropping). ease-in curve = accelerating, like a real drop.
+        const totalFall = window.innerHeight - startY + 60 + Math.random() * 80
+        const fallX = burstX + (Math.random() - 0.5) * 140
+        const fallSpin = burstSpin + (Math.random() - 0.5) * 900
+        const fallDur = 1.1 + Math.random() * 0.7
+        el.style.transition = `transform ${fallDur}s cubic-bezier(.45,.05,.85,.55), opacity 0.4s ease-in ${fallDur - 0.4}s`
+        el.style.transform = `translate(${fallX}px, ${totalFall}px) scale(0.9) rotate(${fallSpin}deg)`
+        el.style.opacity = '0'
       }, 160)
-      setTimeout(() => el.remove(), 4500)
+      setTimeout(() => el.remove(), 2400)
     }
   }
 
   const dismissCookieBanner = () => {
     const el = bannerRef.current
-    if (el) fireConfettiFromRect(el.getBoundingClientRect(), 90)
+    if (el) fireConfettiFromRect(el.getBoundingClientRect(), 50)
     beacon('cookie_banner_close')
     setBannerClosing(true)
     setTimeout(() => { setCookieBannerOpen(false); setBannerClosing(false) }, 240)

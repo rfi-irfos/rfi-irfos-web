@@ -109,6 +109,7 @@ const HERO_NEURAL_SHOTS = [heroDingirEmbedStorm, heroDingirEmbedBuoy, heroDingir
 // "die slideshow zeigen von den screenshots die wir haben... wie draussen im
 // main hero") - same image pool and cross-fade mechanic reused inside a
 // bounded panel there instead of this section's full-viewport background.
+
 export const HERO_IMAGES = [
   heroSoftware,
   ...HERO_NEURAL_SHOTS.flatMap((neural, r) => [
@@ -327,35 +328,13 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           1*0.16 = 0.52s) - same easing curve as RevealWords for visual consistency.
           Font size taken down a step further (clamp 1.05-1.4rem -> 0.95-1.2rem, live
           feedback 2026-08-14: still reading too heavy under the shrunk headline). */}
-      {/* Live feedback 2026-08-14: the identity line sits directly on the busy
-          dashboard screenshot now (map dots/lines right behind the glyphs), so
-          plain text color alone doesn't hold contrast anymore. A solid bar in
-          the theme's own background tone sweeps in behind the text (scaleX,
-          left-anchored, "zieht rein") just before the text itself fades up -
-          same fix pattern as a highlighter, not a glass panel: opaque enough
-          to read cleanly against any part of the photo underneath it. Fixed
-          hex, not var(--text2)/theme-conditional, now that the hero's own
-          background is always the dark tint regardless of site theme (same
-          "carbon modal" reasoning as the ledger modals - a section that's
-          deliberately theme-independent needs theme-independent text too,
-          or light mode's dark text tokens go illegible on it). maxWidth
-          widened 1000->1300 so the longer identity line (with "Kein Theater,
-          keine Warnwesten.") fits on one line instead of wrapping mid-bar. */}
-      <div style={{ position: 'relative', display: 'inline-block', maxWidth: 1300, marginBottom: 40 }}>
-        <motion.div
-          aria-hidden="true"
-          initial={prefersReducedMotion() || SKIP_FIRST_PAINT_ANIMATION ? false : { scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 1.3, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            position: 'absolute', inset: '-1px -4px', zIndex: 0, borderRadius: 3, transformOrigin: 'left center',
-            // Light theme: white bar + dark text (live feedback), same highlighter
-            // logic as before, just flipped - still opaque enough to read cleanly
-            // against any part of the photo underneath it.
-            background: theme === 'hc' ? 'rgba(0,0,0,0.92)' : theme === 'light' ? 'rgba(255,255,255,0.92)' : 'rgba(5,7,14,0.88)',
-            boxShadow: '0 8px 20px rgba(0,0,0,0.35)',
-          }}
-        />
+      {/* Identity line (2026-11-01, Simeon + Zabih): the old opaque highlighter bar
+          read as an unrendered black block, so it is gone. Contrast now comes from the
+          same black outline as the headline plus a soft shadow (.rfi-hero-identity in
+          index.css). Desktop: one line in both languages, sitting closer to the
+          headline, which also makes the hero shorter. Hero background is always the
+          dark tint, so the text is white in every theme. */}
+      <div className="rfi-hero-identity" style={{ position: 'relative', display: 'inline-block', maxWidth: 1300, marginBottom: 40 }}>
         {/* This paragraph is the page's LCP element (Lighthouse, 2026-08-16) - the old
             0.65s delay + 0.8s fade added ~1.45s of pure animation on top of JS hydration
             time, directly inflating the LCP score for purely cosmetic reveal polish.
@@ -365,7 +344,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           initial={prefersReducedMotion() || SKIP_FIRST_PAINT_ANIMATION ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-          style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 400, color: theme === 'light' ? '#1a1a20' : '#ffffff', lineHeight: 'var(--lh-body)', letterSpacing: '0.01em', margin: 0 }}
+          style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 500, color: '#ffffff', lineHeight: 'var(--lh-body)', letterSpacing: '0.01em', margin: 0 }}
         >
           {t.hero.identity}
         </motion.p>
