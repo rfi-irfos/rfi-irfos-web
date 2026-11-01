@@ -2,6 +2,7 @@
 // scrolled to via the bare "#" logo link) - extracted verbatim from PublicSite.tsx.
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { preload } from 'react-dom'
 import { prefersReducedMotion, SKIP_FIRST_PAINT_ANIMATION, RevealWords, CountUp, HeroFlipWord } from './shared'
 import { RESEARCH_AREAS } from './Research'
 import { useLocale } from '../../hooks/useLocale'
@@ -261,6 +262,12 @@ function HeroBackground({ theme }: { theme: Theme }) {
 
 export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }) {
   const { t } = useLocale()
+  // LCP (Lighthouse mobile 2026-11-01): with the slimmer hero the Graz photo is the
+  // largest element, but as a CSS background it was only found after JS ran (4.7 s load
+  // delay on mobile). React hoists these <link rel=preload> tags into <head>, the
+  // prerender snapshot keeps them, and media picks the one file each screen uses.
+  preload(heroGrazSatelliteMobile, { as: 'image', fetchPriority: 'high', media: '(max-width: 767px)' })
+  preload(heroGrazSatellite, { as: 'image', fetchPriority: 'high', media: '(min-width: 768px)' })
   return (
     <section style={{
       display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden',
