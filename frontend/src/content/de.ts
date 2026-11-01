@@ -361,7 +361,7 @@ export const DE: Content = {
       features: ['Eine Website oder Anwendung.', 'Externer, read-only Sicherheitscheck.', 'Schriftliche Findings-Zusammenfassung.', 'Empfohlene n\u00e4chste Schritte.'],
       cta: 'Kostenlose Pr\u00fcfung starten',
     },
-    enterprise: { heading: 'Enterprise', text: 'Individuelle Oberfl\u00e4chen, MSP, Multi-Tenant-Deployments, White-Label und verhandelte SLAs. Preis auf Anfrage.', cta: 'Kontakt aufnehmen' },
+    enterprise: { heading: 'Enterprise', text: 'Individuelle Oberfl\u00e4chen, MSP, Multi-Tenant-Deployments, White-Label und verhandelte SLAs. Dazu beheben wir die Funde gemeinsam mit Ihrem Team, bis in den Code. Preis auf Anfrage.', cta: 'Kontakt aufnehmen' },
     termsNote: { text: 'Preise in Euro, zuzüglich gesetzlicher USt. Für Unternehmen (B2B). Abrechnung vorab über Stripe, die UID wird im Checkout abgefragt.', link: 'AGB', href: '/de/agb/' },
     needSomethingElse: 'Etwas anderes gesucht?',
     mostPopular: 'Beliebteste Wahl',
