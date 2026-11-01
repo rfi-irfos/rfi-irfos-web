@@ -29,6 +29,7 @@ import { RFI_REPOS, SIMEON_REPOS, CRATES, CRATES_IO_PROFILE } from '../content/r
 import reportPackages from '../content/reportPackages.json'
 import { reportSeo } from '../lib/reportSeo'
 import { MobileTabBar } from './MobileTabBar'
+import { InstallPrompt } from './InstallPrompt'
 import { upsertJsonLd, breadcrumbJsonLd, reportBreadcrumbJsonLd, reportArticleJsonLd, squadServiceJsonLd, accessOfferCatalogJsonLd } from '../lib/structuredData'
 
 // Footer's overflow repo/crate directory (2026-08-15) is rendered as literal
@@ -1465,7 +1466,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       // (that contrast tuning was its own hard-won live feedback round), the
       // pill shape and inset now apply in both states.
       return (
-      <div style={{ position: 'fixed', top: 14, left: 0, right: 0, zIndex: 100, display: 'flex', justifyContent: 'center', padding: mobile ? '0 10px' : '0 16px', pointerEvents: 'none' }}>
+      <div style={{ position: 'fixed', top: 'calc(14px + env(safe-area-inset-top))', left: 0, right: 0, zIndex: 100, display: 'flex', justifyContent: 'center', padding: mobile ? '0 10px' : '0 16px', pointerEvents: 'none' }}>
       {/* Reversed from the original transparent-at-top/solid-once-scrolled
           logic (live direction 2026-09-13): the floating pill should look
           like a solid, grounded object at rest, and only turn into frosted
@@ -1703,13 +1704,13 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             readable at a fixed width, but a link directory has the opposite
             goal: more width means more columns fit side by side instead of
             wrapping into a tall single-column scroll. */}
-        <div style={{ display: 'flex', gap: '1.1rem', alignItems: 'flex-start', marginBottom: 28, textAlign: 'left' }}>
+        <div style={{ display: 'flex', gap: '1.1rem', alignItems: 'flex-start', marginBottom: 0, textAlign: 'left' }}>
           {/* Simeon 2026-10-31: four groups stacked in one 170px column made the left side far
               taller than the directory to its right (big empty band below it). Desktop now lays the
               groups out in two columns (Legal + Services | Company + Research), tagline below both. */}
           <div style={mobile
             ? { flex: '1 1 auto', display: 'flex', flexDirection: 'column', gap: 22 }
-            : { flex: '0 0 auto', display: 'grid', gridTemplateColumns: '170px 170px', gridTemplateRows: 'auto auto', gridAutoFlow: 'column', columnGap: '1.1rem', rowGap: 22, alignContent: 'start' }}>
+            : { flex: '0 0 auto', alignSelf: 'stretch', display: 'grid', gridTemplateColumns: '170px 170px', gridTemplateRows: 'auto auto 1fr', gridAutoFlow: 'column', columnGap: '1.1rem', rowGap: 22, alignContent: 'start' }}>
             {/* FIXED (live bug report, mobile Chrome screenshot, 2026-08-16): this
                 footer is a dense, desktop-oriented link directory (Legal/Company/
                 Research column + a wide grid of Systems zones/Repositories/Crates
@@ -1859,9 +1860,11 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 line; taglineAttribution ("RFI-IRFOS × Emergent Interaction Lab,
                 core doctrine") was a literal third line here and is now purged
                 entirely, not just relocated. */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8, ...(mobile ? {} : { gridColumn: '1 / -1', gridRow: 3 }) }}>
-              <p style={{ fontSize: 'var(--fs-small)', color: 'var(--accent-text)', fontWeight: 700, margin: 0 }}>
-                {t.footer.tagline}
+            {/* Simeon 01.11.: the copyright sits at the bottom of this left column, inside the divider,
+                level with the divider's lower end, instead of a separate full-width row below. */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8, ...(mobile ? {} : { gridColumn: '1 / -1', gridRow: 3, alignSelf: 'end' }) }}>
+              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0, ...(mobile ? {} : { whiteSpace: 'nowrap' }) }}>
+                {t.footer.copyright}
               </p>
             </div>
           </div>
@@ -1979,11 +1982,6 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
           </div>
           </>)}
         </div>
-        {/* Simeon 2026-10-31: copyright sits on its own line in the footer's bottom-left corner,
-            below the whole directory, instead of above the tagline. */}
-        <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0, textAlign: 'left', ...(mobile ? {} : { whiteSpace: 'nowrap' }) }}>
-          {t.footer.copyright}
-        </p>
         {systemModalExit.rendered && <SystemCardModal systemKey={systemModalExit.rendered} closing={systemModalExit.closing} onClose={() => setSystemModal(null)} onNavigate={setSystemModal} />}
       </footer>
       {/* Simeon 01.11.: on phones the hamburger drawer covered half the page and squeezed its
@@ -1991,6 +1989,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
           The spacer keeps the footer's last line clear of the fixed bar. */}
       {mobile && <div aria-hidden="true" style={{ height: 'calc(88px + env(safe-area-inset-bottom))' }} />}
       {mobile && <MobileTabBar view={view} locale={locale} links={NAV_LINKS} onNavigate={navigateTo} />}
+      {mobile && <InstallPrompt locale={locale} blocked={cookieBannerOpen} />}
       {cookieBannerOpen && (
         // background/border/box-shadow come from .rfi-glass-flat now, not hand-rolled per
         // theme - that inline duplication only ever branched dark-vs-not-dark, so it silently
