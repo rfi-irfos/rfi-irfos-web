@@ -374,7 +374,7 @@ function ImpressumEN() {
       <strong style={{ color: '#e8e8f0' }}>Research Focus Institute — Interdisciplinary Research Facility for Open Sciences</strong><br />
       Short name: RFI-IRFOS<br />
       Elisabethinergasse 25/10, 8020 Graz, Austria<br />
-      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a><br />
+      E-Mail: <a href="mailto:contact@rfi-irfos.com" style={A} className="rfi-inline-link">contact@rfi-irfos.com</a><br />
       Website: <a href="https://rfi-irfos.com" style={A} className="rfi-inline-link">rfi-irfos.com</a>
     </p>
 
@@ -458,7 +458,7 @@ function ImpressumDE() {
       <strong style={{ color: '#e8e8f0' }}>Research Focus Institute — Interdisciplinary Research Facility for Open Sciences</strong><br />
       Kurzbezeichnung: RFI-IRFOS<br />
       Elisabethinergasse 25/10, 8020 Graz, Österreich<br />
-      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a><br />
+      E-Mail: <a href="mailto:contact@rfi-irfos.com" style={A} className="rfi-inline-link">contact@rfi-irfos.com</a><br />
       Website: <a href="https://rfi-irfos.com" style={A} className="rfi-inline-link">rfi-irfos.com</a>
     </p>
 
@@ -546,7 +546,7 @@ function DatenschutzEN() {
     <p style={P}>
       RFI-IRFOS (Research Focus Institute — Interdisciplinary Research Facility for Open Sciences)<br />
       Elisabethinergasse 25/10, 8020 Graz, Austria<br />
-      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a>
+      E-Mail: <a href="mailto:contact@rfi-irfos.com" style={A} className="rfi-inline-link">contact@rfi-irfos.com</a>
     </p>
 
     <h2 style={H2}>Data We Collect</h2>
@@ -639,7 +639,7 @@ function DatenschutzEN() {
 
     <h2 style={H2}>Your Rights (Art. 15–21 GDPR)</h2>
     <p style={P}>
-      Access, rectification, erasure, restriction, data portability, and objection, all of it, at: <a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a>. Given what little we actually hold on any one person, most of these requests take us minutes, not weeks, to resolve.
+      Access, rectification, erasure, restriction, data portability, and objection, all of it, at: <a href="mailto:contact@rfi-irfos.com" style={A} className="rfi-inline-link">contact@rfi-irfos.com</a>. Given what little we actually hold on any one person, most of these requests take us minutes, not weeks, to resolve.
     </p>
 
     <h2 style={H2}>Right to Lodge a Complaint</h2>
@@ -666,7 +666,7 @@ function DatenschutzDE() {
     <p style={P}>
       RFI-IRFOS (Research Focus Institute — Interdisciplinary Research Facility for Open Sciences)<br />
       Elisabethinergasse 25/10, 8020 Graz, Österreich<br />
-      E-Mail: <a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a>
+      E-Mail: <a href="mailto:contact@rfi-irfos.com" style={A} className="rfi-inline-link">contact@rfi-irfos.com</a>
     </p>
 
     <h2 style={H2}>Welche Daten wir erheben</h2>
@@ -759,7 +759,7 @@ function DatenschutzDE() {
 
     <h2 style={H2}>Ihre Rechte (Art. 15–21 DSGVO)</h2>
     <p style={P}>
-      Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch, alles davon, unter: <a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a>. Angesichts dessen, wie wenig wir tatsächlich über eine einzelne Person vorhalten, erledigen wir die meisten dieser Anfragen in Minuten, nicht in Wochen.
+      Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch, alles davon, unter: <a href="mailto:contact@rfi-irfos.com" style={A} className="rfi-inline-link">contact@rfi-irfos.com</a>. Angesichts dessen, wie wenig wir tatsächlich über eine einzelne Person vorhalten, erledigen wir die meisten dieser Anfragen in Minuten, nicht in Wochen.
     </p>
 
     <h2 style={H2}>Beschwerderecht</h2>
@@ -834,7 +834,7 @@ function AGBEN() {
     <p style={P}>Should any provision of these Terms be or become invalid, the validity of the remaining provisions shall remain unaffected.</p>
 
     <h2 style={H2}>13. Contact</h2>
-    <p style={P}><a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a></p>
+    <p style={P}><a href="mailto:contact@rfi-irfos.com" style={A} className="rfi-inline-link">contact@rfi-irfos.com</a></p>
 
     <h2 style={H2}>14. Use of Revenue</h2>
     <p style={P}>
@@ -899,7 +899,7 @@ function AGBDE() {
     <p style={P}>Sollte eine Bestimmung dieser Bedingungen unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen davon unberührt.</p>
 
     <h2 style={H2}>13. Kontakt</h2>
-    <p style={P}><a href="mailto:rfi.irfos@gmail.com" style={A} className="rfi-inline-link">rfi.irfos@gmail.com</a></p>
+    <p style={P}><a href="mailto:contact@rfi-irfos.com" style={A} className="rfi-inline-link">contact@rfi-irfos.com</a></p>
 
     <h2 style={H2}>14. Verwendung der Einnahmen</h2>
     <p style={P}>
