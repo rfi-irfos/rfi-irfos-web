@@ -1989,7 +1989,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       {/* Simeon 01.11.: on phones the hamburger drawer covered half the page and squeezed its
           CTA, so mobile gets an app-style tab bar instead: the four views plus Home in the middle.
           The spacer keeps the footer's last line clear of the fixed bar. */}
-      {mobile && <div aria-hidden="true" style={{ height: 'calc(72px + env(safe-area-inset-bottom))' }} />}
+      {mobile && <div aria-hidden="true" style={{ height: 'calc(88px + env(safe-area-inset-bottom))' }} />}
       {mobile && <MobileTabBar view={view} locale={locale} links={NAV_LINKS} onNavigate={navigateTo} />}
       {cookieBannerOpen && (
         // background/border/box-shadow come from .rfi-glass-flat now, not hand-rolled per
@@ -2004,7 +2004,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         // 52% see-through (feedback 2026-08-06), so the opaque variant overrides just the
         // background while keeping the same theme-correct border/shadow/hc handling.
         <div ref={bannerRef} className="rfi-glass-flat rfi-glass-solid" style={{
-                  position: 'fixed', left: 16, right: 16, bottom: mobile ? 'calc(84px + env(safe-area-inset-bottom))' : 16, zIndex: 200,
+                  position: 'fixed', left: 16, right: 16, bottom: mobile ? 'calc(92px + env(safe-area-inset-bottom))' : 16, zIndex: 200,
                   maxWidth: 640, margin: '0 auto',
                   borderRadius: 12,
                   padding: '20px 24px',
