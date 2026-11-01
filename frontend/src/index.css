@@ -894,8 +894,12 @@ h1, h2, h3, .rfi-display {
 /* Inline text links (Simeon 2026-10-31): accent green at rest, underline only on hover or
    keyboard focus, so the link invites the click without striping the paragraph.
    !important because LegalPage/LandingPage still pass textDecoration: 'none' inline. */
-.rfi-inline-link { color: var(--accent-text); text-decoration: none; text-underline-offset: 3px; }
-.rfi-inline-link:hover, .rfi-inline-link:focus-visible { text-decoration: underline !important; }
+/* The hover underline draws itself left to right instead of popping in (Simeon 01.11.): a 1px
+   background line grows from 0 to full width. Works across line breaks because inline
+   backgrounds follow each line box. */
+.rfi-inline-link { color: var(--accent-text); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-repeat: no-repeat; background-position: 0 100%; background-size: 0% 1px; padding-bottom: 1px; transition: background-size .35s ease; }
+.rfi-inline-link:hover, .rfi-inline-link:focus-visible { background-size: 100% 1px; }
+@media (prefers-reduced-motion: reduce) { .rfi-inline-link { transition: none; } }
 /* Simeon 2026-10-31: every eyebrow gets the same thin grey underline (accent green was too
    loud and read like a link), sitting close to the text, a shared "capstone"
    above each section title. fit-content keeps the line as wide as the words; centred

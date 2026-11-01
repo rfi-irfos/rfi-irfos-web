@@ -1,14 +1,14 @@
 // App-style bottom navigation for phones (Simeon 2026-11-01, replaces the hamburger drawer).
 // Four views left and right, Home as the round button in the middle. Real <a href>s so the
 // links still work without JS and stay crawlable; clicks go through PublicSite's view router.
-import { IconHome, IconUsersGroup, IconWorld, IconFileSearch, IconKey } from '@tabler/icons-react'
+import { IconHome, IconTopologyStar3, IconPlanet, IconFileSearch, IconKey } from '@tabler/icons-react'
 import type { ComponentType } from 'react'
 import { localeHref } from '../lib/localeHref'
 
 type NavLink = { key: string; label: string; href: string }
 type IconType = ComponentType<{ size?: number; stroke?: number; 'aria-hidden'?: boolean }>
 
-const ICONS: Record<string, IconType> = { squad: IconUsersGroup, worldModel: IconWorld, trackRecord: IconFileSearch, pricing: IconKey }
+const ICONS: Record<string, IconType> = { squad: IconTopologyStar3, worldModel: IconPlanet, trackRecord: IconFileSearch, pricing: IconKey }
 
 export function MobileTabBar({ view, locale, links, onNavigate }: {
   view: string

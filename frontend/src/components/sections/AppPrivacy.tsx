@@ -78,7 +78,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         <Reveal delay={1}>
           <div style={{ maxWidth: 720, margin: '0 auto 36px', textAlign: 'center' }}>
             <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)', margin: 0 }}>
-              {linkPhrase(c.paragraph, locale === 'de' ? 'Agenten' : 'Selected agents', localeHref('/squad/', locale))}
+              {linkPhrase(c.paragraph, locale === 'de' ? 'Agenten aus unserem Haus' : 'Selected agents', localeHref('/squad/', locale))}
             </p>
           </div>
         </Reveal>

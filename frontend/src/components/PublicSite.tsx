@@ -1465,7 +1465,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       // (that contrast tuning was its own hard-won live feedback round), the
       // pill shape and inset now apply in both states.
       return (
-      <div style={{ position: 'fixed', top: 14, left: 0, right: 0, zIndex: 100, display: 'flex', justifyContent: 'center', padding: '0 16px', pointerEvents: 'none' }}>
+      <div style={{ position: 'fixed', top: 14, left: 0, right: 0, zIndex: 100, display: 'flex', justifyContent: 'center', padding: mobile ? '0 10px' : '0 16px', pointerEvents: 'none' }}>
       {/* Reversed from the original transparent-at-top/solid-once-scrolled
           logic (live direction 2026-09-13): the floating pill should look
           like a solid, grounded object at rest, and only turn into frosted
@@ -1481,7 +1481,8 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         borderRadius: 18,
         boxShadow: scrolled ? '0 8px 32px rgba(0,0,0,0.28)' : '0 8px 24px rgba(0,0,0,0.16)',
         transition: 'background 0.3s, backdrop-filter 0.3s, border-color 0.3s, box-shadow 0.3s',
-        padding: '0 1.5rem',
+        // Phone (Simeon 01.11.): logo and name hug the left edge, toggles the right edge.
+        padding: mobile ? '0 8px 0 4px' : '0 1.5rem',
         display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', columnGap: 12, height: '60px',
       }}>
         <a href={localeHref('/', locale)} onClick={e => { e.preventDefault(); navigateHome() }} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 0 }}>
