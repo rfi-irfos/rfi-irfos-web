@@ -1243,6 +1243,13 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
             border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14,
           }}>
+            {/* Eindeutige Seiten-h1 der Report-Route (SEO-Gate: genau eine h1 je Seite, je Report
+                verschieden). Visuell versteckt, damit das Modal sichtbar unveraendert bleibt. */}
+            {evidenceMods && (() => {
+              const openSlug = evidenceMods.tr.reportSlug(reportModalExit.rendered)
+              const f = openSlug === initialReportSlug ? evidenceMods.tr.getReportFacts(openSlug) : null
+              return f ? <h1 style={{ position: 'absolute', width: 1, height: 1, margin: -1, padding: 0, overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap', border: 0 }}>{evidenceMods.tr.reportH1(f, locale)}</h1> : null
+            })()}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
               <span style={{ fontSize: 'var(--fs-label)', color: TEAL }}>{t.reportModal.label}</span>
               {/* Teilen-Button links neben dem Schliessen-Button; teilt immer /evidence/<slug>/ (2026-10-31). */}
@@ -1644,6 +1651,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             onNavigateAccess={() => navigateToOffer('security')}
             focusTargets={reportFocus}
             onShowFullLedger={() => setReportFocus(null)}
+            demoteHeading={!!initialReportSlug}
           />
           {!reportFocus && <evidenceMods.proof.ProofSection setReportModal={setReportModal} />}
         </section>}
