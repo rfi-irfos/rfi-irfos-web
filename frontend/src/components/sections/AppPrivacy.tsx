@@ -95,7 +95,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
               its blur bleeds across the grid gap - without this, the later grid item wins paint
               order by default and the glow sits in front of this card's edge). */}
           <div className="fx-panel" style={{ position: 'relative', zIndex: 1, minWidth: 0, borderRadius: 20, padding: phone ? 18 : 28 }}>
-            <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 14 }}>{c.processLabel}</p>
+            <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 14, textAlign: 'center' }}>{c.processLabel}</p>
             <div ref={stepsRef} style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 18, marginBottom: 28, alignItems: 'start' }}>
               {c.steps.map((s, i) => (
                 <Reveal key={s.title} delay={i}>
