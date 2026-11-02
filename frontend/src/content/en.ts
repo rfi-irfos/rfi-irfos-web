@@ -175,7 +175,7 @@ export const EN = {
     // searcher nothing about what the page IS. Search-facing copy only - visible page text unchanged.
     seoTitle: 'App Privacy & Security Audit Reports · RFI-IRFOS',
     seoDescription: 'Public ledger of evidence-based GDPR and security audit reports on Android apps: trackers, SDKs, permissions, hardcoded keys, pre-consent tracking.',
-    paragraph: 'We run an agentic AI pipeline that decompiles publicly distributed Android and iOS apps, investigates their code and data flows, and traces connections to real-world endpoints. Hundreds of specialised agents work across the investigation, connecting technical evidence into a coherent picture that human specialists review and verify.',
+    paragraph: 'On behalf of our research partners, we investigate publicly distributed Android and iOS apps: we decompile them, follow their code and data flows, and trace every connection to the servers it reaches. Hundreds of specialised agents work through each app and join the technical evidence into one picture, which our specialists then review and verify.',
     follow: { freeCheck: 'Start the free check for your own domain', label: ', or follow new investigations', feed: 'Atom feed' },
     focusBanner: (names: string) => `Showing the report for ${names}.`,
     showFullLedger: 'Show the full ledger',
@@ -275,6 +275,7 @@ export const EN = {
       { title: 'Evidence', text: 'We document the examination in writing, with the evidence for each finding.' },
     ],
     scopeLabel: 'What we examine',
+      evidenceLabel: 'What you receive',
     scope: [
       { title: 'Source and dependencies', text: 'Code, third-party libraries and their versions.' },
       { title: 'Authorization and actions', text: 'Permissions, data access and abuse paths.' },
@@ -986,7 +987,7 @@ export const EN = {
   squad: {
     heading: 'The Squad',
     subheading: 'Specialized agents. For every kind of work.',
-    intro: 'Each agent is built around one clear responsibility: market intelligence, funding research, evidence verification, delivery checks, visibility, security. Run a single agent against one problem, or combine them into a pipeline for the whole question. Every finding is re-verified by our human specialists before it reaches you, with a written report and the evidence behind each result. The entire pipeline runs on our own server in Graz.',
+    intro: 'Each agent is built around one clear responsibility: market intelligence, funding research, evidence verification, delivery checks, visibility, security. Run a single agent against one problem, or combine them into a pipeline for the whole question. The entire pipeline runs on our own server in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'See which agent fits your problem →',

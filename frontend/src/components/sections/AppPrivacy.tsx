@@ -118,11 +118,12 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
               ))}
             </div>
 
-            {/* Label sits in its own row, so the scope rows and the evidence card start and end on the
-                same lines (Simeon 01.11.: the evidence card used to begin level with the label). */}
+            {/* Each column gets its own centred label in the first row, so the scope rows and the evidence
+                card still start and end on the same lines (Simeon 01.11. + 03.11.). On phones the DOM order
+                (label, rows, label, card) stacks each label over its own column. */}
             <div style={{ borderTop: '1px solid var(--border)', paddingTop: 28, display: 'grid', gridTemplateColumns: phone ? '1fr' : 'minmax(0, 1.15fr) minmax(0, 1fr)', gridTemplateRows: phone ? undefined : 'auto 1fr', columnGap: 24, rowGap: 12 }}>
-              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0, gridColumn: phone ? undefined : '1 / -1' }}>{c.scopeLabel}</p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0, textAlign: 'center', gridColumn: phone ? undefined : 1, gridRow: phone ? undefined : 1 }}>{c.scopeLabel}</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, gridColumn: phone ? undefined : 1, gridRow: phone ? undefined : 2 }}>
                 {c.scope.map((row, i) => (
                   <Reveal key={row.title} delay={i + 1} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                     <div className="fx-row" style={{ display: 'flex', alignItems: 'center', flex: 1, gap: 14, padding: '10px 14px' }}>
@@ -135,7 +136,8 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                   </Reveal>
                 ))}
               </div>
-              <Reveal delay={2} style={{ height: '100%', marginTop: phone ? 16 : 0 }}>
+              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: phone ? '16px 0 0' : 0, textAlign: 'center', gridColumn: phone ? undefined : 2, gridRow: phone ? undefined : 1 }}>{c.evidenceLabel}</p>
+              <Reveal delay={2} style={{ height: '100%', gridColumn: phone ? undefined : 2, gridRow: phone ? undefined : 2 }}>
                 <div className="fx-evidence" style={{ borderRadius: 18, padding: 22, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box' }}>
                   <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 16 }}>
                     <span className="rfi-glass-icon" style={{ ...tile, width: 48, height: 48, color: 'var(--icon-doc)' }}>

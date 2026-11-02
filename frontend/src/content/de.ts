@@ -157,7 +157,7 @@ export const DE: Content = {
     heading: 'Die Disziplin, bewiesen',
     seoTitle: 'App-Datenschutz- & Sicherheitsanalysen · RFI-IRFOS',
     seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsberichte zu Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel.',
-    paragraph: 'Wir betreiben eine agentische KI-Pipeline, die öffentlich verbreitete Android- und iOS-Apps dekompiliert, ihren Code und ihre Datenflüsse untersucht und Verbindungen zu realen Endpunkten nachverfolgt. Hunderte spezialisierte Agenten arbeiten an der Untersuchung und verbinden technische Belege zu einem stimmigen Gesamtbild, das menschliche Fachleute prüfen und verifizieren.',
+    paragraph: 'Im Auftrag unserer Forschungspartner untersuchen wir öffentlich verbreitete Android- und iOS-Apps: Wir dekompilieren sie, verfolgen ihren Code und ihre Datenflüsse und jede Verbindung bis zu den Servern, die sie erreicht. Hunderte spezialisierte Agenten arbeiten jede App durch und fügen die technischen Belege zu einem Gesamtbild zusammen, das unsere Fachleute anschließend prüfen und verifizieren.',
     follow: { freeCheck: 'Starten Sie den Gratis-Check für Ihre eigene Domain', label: ' oder verfolgen Sie neue Untersuchungen', feed: 'Atom-Feed' },
     focusBanner: (names: string) => `Angezeigt wird der Report zu ${names}.`,
     showFullLedger: 'Gesamtes Ledger anzeigen',
@@ -253,6 +253,7 @@ export const DE: Content = {
       { title: 'Nachweis', text: 'Wir dokumentieren die Prüfung schriftlich, mit der Evidenz zu jedem Fund.' },
     ],
     scopeLabel: 'Das prüfen wir',
+      evidenceLabel: 'Das bekommen Sie',
     scope: [
       { title: 'Quellcode und Abhängigkeiten', text: 'Code, Bibliotheken und deren Versionen.' },
       { title: 'Autorisierung und Aktionen', text: 'Berechtigungen, Datenzugriff, Missbrauchspfade.' },
@@ -956,7 +957,7 @@ export const DE: Content = {
   squad: {
     heading: 'The Squad',
     subheading: 'Spezialisierte Agenten. Für jede Art von Arbeit.',
-    intro: 'Jeder Agent ist auf eine klare Verantwortung zugeschnitten: Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit, Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Jeder Befund wird von unseren menschlichen Fachleuten erneut geprüft, bevor er bei Ihnen ankommt, mit schriftlichem Bericht und den Belegen dahinter. Die komplette Pipeline läuft auf unserem eigenen Server in Graz.',
+    intro: 'Jeder Agent ist auf eine klare Verantwortung zugeschnitten: Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit, Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Die komplette Pipeline läuft auf unserem eigenen Server in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Finden Sie den passenden Agenten →',

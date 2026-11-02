@@ -83,7 +83,7 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
           <h1 className="sq-heading">{s.heading}</h1>
           {/* The subheading opens the intro as its first sentence (2026-10-26, Simeon)
               instead of standing alone as a bold line above it. */}
-          <p className="sq-intro">{s.subheading} {linkPhrase(s.intro, locale === 'de' ? 'den Belegen dahinter' : 'the evidence behind each result', localeHref('/evidence/', locale))}</p>
+          <p className="sq-intro">{s.subheading} {linkPhrase(s.intro, locale === 'de' ? 'Evidenzprüfung, Delivery-Checks' : 'evidence verification, delivery checks', localeHref('/evidence/', locale))}</p>
           <div className="sq-hero-ctas">
             <button type="button" className="wm-btn-primary" onClick={onRequestAccess}>{s.primaryCta}</button>
             {/* Was a plain text link above the buttons + a separate "Watch an
