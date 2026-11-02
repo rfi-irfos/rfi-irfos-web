@@ -1249,14 +1249,6 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               {evidenceMods && <evidenceMods.tr.ReportShare slug={evidenceMods.tr.reportSlug(reportModalExit.rendered)} locale={locale} />}
               <button onClick={() => setReportModal(null)} aria-label={locale === 'de' ? 'Schließen' : 'Close'} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', padding: '9px 11px' }}>&#x2715;</button>
             </div>
-            {/* Sichtbarer Report-Text (2026-10-31 SEO-Sweep): Zusammenfassung, Funde, Rechtsgrundlagen,
-                Offenlegungsverlauf als echtes HTML oberhalb des PDFs. Auf der Report-Route
-                (initialReportSlug) traegt dieser Block die eindeutige h1 der Seite; beim Oeffnen
-                eines anderen Reports aus dem Ledger heraus bleibt die Seiten-h1 unangetastet (h2). */}
-            {evidenceMods && (() => {
-              const openSlug = evidenceMods.tr.reportSlug(reportModalExit.rendered)
-              return <evidenceMods.tr.ReportFacts slug={openSlug} locale={locale} asH1={openSlug === initialReportSlug} />
-            })()}
             {/* FIXED (live bug report, mobile Chrome screenshots, 2026-08-16): a bare
                 <iframe src="*.pdf"> rendered the report fine on desktop (Chrome ships
                 a PDF viewer that also works embedded in an iframe there) but came
@@ -1652,7 +1644,6 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             onNavigateAccess={() => navigateToOffer('security')}
             focusTargets={reportFocus}
             onShowFullLedger={() => setReportFocus(null)}
-            demoteHeading={!!initialReportSlug}
           />
           {!reportFocus && <evidenceMods.proof.ProofSection setReportModal={setReportModal} />}
         </section>}
