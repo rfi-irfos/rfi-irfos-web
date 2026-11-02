@@ -250,12 +250,16 @@ function KpiArt({ kind }: { kind: 'apps' | 'bugs' | 'shield' }) {
     </div>
   )
   return (
-    <div className="kpi-art kpi-c--shield" aria-hidden="true">
-      <div className="kpi-ring kpi-ring--outer" />
-      <div className="kpi-ring kpi-ring--inner" />
+    <div className="kpi-art kpi-art--tilt kpi-c--shield" aria-hidden="true">
+      {/* Picker 02.11. (S6): the shield floats in front of a round glass disc with a dot ring,
+          the disc tilted like the tiles of the other two cards (index.css .kpi-disc). */}
+      <div className="kpi-disc-tilt">
+        <div className="kpi-disc-dots" />
+        <div className="kpi-disc" />
+      </div>
       {/* Glass shield (Simeon 01.11.: stood "schlank" next to the other cards): tinted body, a light
           sheen on the left half, a bright rim along the top and a lifted drop shadow (index.css .kpi-shield). */}
-      <svg className="kpi-shield" viewBox="0 0 64 72" width="84" height="95" style={{ position: 'absolute', left: 38, top: 28 }}>
+      <svg className="kpi-shield" viewBox="0 0 64 72" width="66" height="74" style={{ position: 'absolute', left: 50, top: 36 }}>
         <defs>
           <linearGradient id="kpi-shield" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stopColor="var(--accent-text)" stopOpacity=".5" />
