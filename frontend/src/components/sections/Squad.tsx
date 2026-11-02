@@ -1,8 +1,8 @@
 // "The Squad" / "Kader" page (`#squad`, nav slot between World Model and Data
 // Solutions). Showcases the 8 DINGIR agents as a product, not a "meet the team"
 // page: each agent gets its own mission, monitors/detects/output, and its own
-// "Request Access" entry point. All 8 are badged "Early Access" uniformly (Gate
-// 6/11, final tests pending) - never "Live"/"Active", to avoid overclaiming.
+// "Put this agent to work" entry point. All 8 are badged "In production" uniformly
+// (Simeon 02.11.: the agents are production-ready and deployable, no early-access framing).
 //
 // Deliberately does NOT duplicate World Model's real corpus numbers (would drift
 // out of sync across two pages) and does NOT show a "recent signals" feed with

@@ -437,9 +437,13 @@ function EarlyAccessForm() {
     <div className="wm-wrap wm-early-narrow">
       <Reveal>
         <div className="wm-early wm-card">
+          {/* Simeon 02.11. ("schaut chaotisch aus"): icon and heading share one row, the copy stays
+              on the left, the form box on the right holds the field, the benefits under it and one note. */}
           <div className="wm-early-copy">
-            <div className="wm-compare-icon wm-early-icon"><IconMail size={20} stroke={1.7} /></div>
-            <h3>{e.heading}</h3>
+            <div className="wm-early-head">
+              <div className="wm-compare-icon wm-early-icon"><IconMail size={20} stroke={1.7} /></div>
+              <h3>{e.heading}</h3>
+            </div>
             <p>{e.sub}</p>
           </div>
           <form className="wm-early-form" onSubmit={submit}>
@@ -453,8 +457,9 @@ function EarlyAccessForm() {
               </button>
             </div>
             <ul className="wm-early-benefits">
-              {e.benefits.map(b => <li key={b}><IconCircleCheck size={14} />{b}</li>)}
+              {e.benefits.map(b => <li key={b}><IconCircleCheck size={16} />{b}</li>)}
             </ul>
+            <span className="wm-early-note">{e.formNote}</span>
             {/* Honeypot, same pattern as SubmitSection: hidden from real visitors, only an
                 automated filler that submits every field populates it. */}
             <input type="text" name="company" value={botcheck} onChange={ev => setBotcheck(ev.target.value)}
