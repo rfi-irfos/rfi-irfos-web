@@ -571,7 +571,7 @@ export const AUDIT_META: Record<string, { notified?: string; disclosure: string;
   'OMV (AT)':                     { notified: '2026-06-26', disclosure: '2026-09-26', resolved: true, resolvedDate: '2026-09-26', reportUrl: '/reports/omv-2026-report.pdf' },
   'IONITY (DE/EU)':               { notified: '2026-06-26', disclosure: '2026-09-26', resolved: true, resolvedDate: '2026-10-17', reportUrl: '/reports/ionity-2026.pdf' },
   'Mein Magenta (AT)':            { notified: '2026-06-26', disclosure: '2026-09-26', resolved: true, resolvedDate: '2026-10-17', reportUrl: '/reports/magenta-2026.pdf' },
-  'Doctolib':                     { notified: '2026-08-04', disclosure: '2026-11-02' },
+  'Doctolib':                     { notified: '2026-08-04', disclosure: '2026-11-02', reportUrl: '/reports/doctolib-2026-report.pdf' },
   'Meine Allianz (AT)':          { notified: '2026-06-26', disclosure: '2026-09-19', resolved: true, resolvedDate: '2026-09-25', reportUrl: '/reports/allianz-2026-report.pdf' },
   'Bitpanda (AT)':               { notified: '2026-06-26', disclosure: '2026-09-24', resolved: true, resolvedDate: '2026-09-25', reportUrl: '/reports/bitpanda-2026-report.pdf' },
   'ChatGPT (OpenAI)':             { notified: '2026-06-28', disclosure: '2026-09-24', resolved: true, resolvedDate: '2026-09-25', reportUrl: '/reports/chatgpt-2026.pdf' },
