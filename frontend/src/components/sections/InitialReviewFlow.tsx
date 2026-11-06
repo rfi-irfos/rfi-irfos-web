@@ -107,11 +107,11 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
         </div>
         {wide ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingLeft: 16, borderLeft: '3px solid var(--accent-text)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', lineHeight: 1.35, margin: 0 }}>{c.introText[0]}</p>
               <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{c.introText[1]}</p>
             </div>
-            <p style={{ fontSize: 14, fontWeight: 400, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0, paddingLeft: 19 }}>{c.introText[2]}</p>
+            <p style={{ fontSize: 14, fontWeight: 400, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{c.introText[2]}</p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
