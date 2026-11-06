@@ -137,7 +137,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
               </div>
               <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: phone ? '16px 0 0' : 0, textAlign: 'center', gridColumn: phone ? undefined : 2, gridRow: phone ? undefined : 1 }}>{c.evidenceLabel}</p>
               <Reveal delay={2} style={{ height: '100%', gridColumn: phone ? undefined : 2, gridRow: phone ? undefined : 2 }}>
-                <div className="fx-evidence" style={{ borderRadius: 18, padding: 22, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box' }}>
+                <div className="fx-evidence irf-evidence-band" style={{ borderRadius: 18, padding: 22, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box' }}>
                   <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 16 }}>
                     <span className="rfi-glass-icon" style={{ ...tile, width: 48, height: 48, color: 'var(--icon-doc)' }}>
                       <Icon size={26}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="14" y2="17" /></Icon>
@@ -147,10 +147,10 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                       <div style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)' }}>{c.report.sub}</div>
                     </div>
                   </div>
-                  <ul style={{ listStyle: 'none', margin: 0, padding: '0 0 0 5px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
+                  <ul style={{ listStyle: 'none', margin: 0, padding: '0 0 0 18px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
                     {c.report.items.map(item => (
                       <li key={item.title} style={{ display: 'flex', gap: 12 }}>
-                        <span aria-hidden style={{ color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', flexShrink: 0 }}>✓</span>
+                        <span aria-hidden style={{ color: 'var(--evidence-check, var(--accent-text))', fontWeight: 700, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', flexShrink: 0 }}>✓</span>
                         <div>
                           <div style={{ fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-tight)', fontWeight: 700, color: 'var(--text)' }}>{item.title}</div>
                           <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text2)', marginTop: 3 }}>{item.text}</div>

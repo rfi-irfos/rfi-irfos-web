@@ -778,6 +778,9 @@ button { cursor: pointer; font-family: inherit; }
 .irf-card-glow { box-shadow: 0 0 36px 2px rgba(0,245,196,0.16); }
 /* Dark only: the DLT card keeps the plain card background with a teal edge, the scope panel gets a blue tint. The other themes keep their own card gradient. */
 [data-theme="dark"] .irf-dlt-band { border-color: rgba(0,245,196,.3); }
+[data-theme="dark"] .irf-dlt-title { color: #fff !important; }
+/* Soft tint for the evidence panel, dark only: it has to read apart from the blue scope panel and the teal DLT card. */
+[data-theme="dark"] .irf-evidence-band { --ev: #9cc8f5; --evidence-check: var(--ev); border-color: color-mix(in srgb, var(--ev) 30%, transparent); border-top-color: color-mix(in srgb, var(--ev) 50%, transparent); background: linear-gradient(180deg, color-mix(in srgb, var(--ev) 11%, #0c0e14) 0%, color-mix(in srgb, var(--ev) 18%, #0c0e14) 100%); box-shadow: 0 0 22px color-mix(in srgb, var(--ev) 14%, transparent), 0 24px 50px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18); }
 [data-theme="dark"] .irf-scope-band { background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0) 28%), linear-gradient(rgba(34,82,176,.12), rgba(34,82,176,.12)), rgba(11,13,18,.8); }
 [data-theme="dark"] .irf-scope-band .fx-row { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02) 60%), rgba(16,25,44,.9); }
 .irf-badge-pulse { animation: irf-badge-pulse 2.6s ease-in-out infinite; }

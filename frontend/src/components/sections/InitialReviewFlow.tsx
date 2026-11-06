@@ -74,14 +74,14 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
   }
 
   const badge = (
-    <span className="irf-badge-pulse" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginLeft: wide ? 'auto' : undefined, fontSize: wide ? 13 : 'var(--fs-small)', fontWeight: 700, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.1)', padding: wide ? '5px 12px' : '6px 14px', borderRadius: 999, whiteSpace: 'nowrap' }}>
-      {wide && <svg width={14} height={14} viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M13 2 4 14h7l-1 8 9-12h-7z" /></svg>}
+    <span className="irf-badge-pulse" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginLeft: wide ? 'auto' : undefined, fontSize: wide ? 15 : 'var(--fs-small)', fontWeight: 700, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.1)', padding: wide ? '8px 17px' : '6px 14px', borderRadius: 999, whiteSpace: 'nowrap' }}>
+      {wide && <svg width={16} height={16} viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M13 2 4 14h7l-1 8 9-12h-7z" /></svg>}
       {c.badge}
     </span>
   )
   const labelStyle: React.CSSProperties = { fontSize: wide ? 13 : 'var(--fs-small)', fontWeight: wide ? 600 : undefined, color: wide ? 'var(--text)' : 'var(--text2)', display: wide ? 'flex' : 'block', alignItems: 'center', gap: 8, marginBottom: 6 }
   const labelIcon = (d: string) => wide && (
-    <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="var(--accent-text)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d={d} /></svg>
+    <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d={d} /></svg>
   )
 
   return (
@@ -101,17 +101,15 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
                 <path d="M18.500 21l1.800 1.800 3.200-3.400" />
               </svg>
             </span>
-            <div style={{ fontWeight: 700, fontSize: wide ? 23 : 'var(--fs-lead)', lineHeight: 1.15, color: 'var(--text)' }}>{c.introTitle}</div>
+            <div className={wide ? 'irf-dlt-title' : undefined} style={{ fontWeight: 700, fontSize: wide ? 23 : 'var(--fs-lead)', lineHeight: 1.15, color: 'var(--text)' }}>{c.introTitle}</div>
           </div>
           {badge}
         </div>
         {wide ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', lineHeight: 1.35, margin: 0 }}>{c.introText[0]}</p>
-              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{c.introText[1]}</p>
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, flex: 1, marginTop: 14 }}>
+            <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', lineHeight: 1.35, margin: 0 }}>{c.introText[0]}</p>
             <p style={{ fontSize: 14, fontWeight: 400, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{c.introText[2]}</p>
+            <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{c.introText[1]}</p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

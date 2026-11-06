@@ -285,7 +285,7 @@ export const DE: Content = {
 
   initialReview: {
     badge: 'Quick Check',
-    introTitle: 'Domain-Live-Test',
+    introTitle: 'Domain-Sicherheitstest',
     introSubtitle: 'Finden Sie heraus, was Ihre Security-Tools übersehen könnten.',
     introText: [
       'Stellen Sie Ihre Domain auf die Probe. Reichen Sie sie für eine erste externe Sicherheitsbewertung Ihrer öffentlich erreichbaren Angriffsfläche ein.',

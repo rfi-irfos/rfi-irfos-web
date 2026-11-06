@@ -307,7 +307,7 @@ export const EN = {
 
   initialReview: {
     badge: 'Quick Check',
-    introTitle: 'Domain Live Testing',
+    introTitle: 'Domain Security Test',
     introSubtitle: 'Find out what your security tools might be missing.',
     introText: [
       'Put your domain to the test. Submit it for an initial external security assessment of your publicly accessible attack surface.',
