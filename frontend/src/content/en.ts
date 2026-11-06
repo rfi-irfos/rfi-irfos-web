@@ -310,7 +310,8 @@ export const EN = {
     introTitle: 'Domain Live Testing',
     introSubtitle: 'Find out what your security tools might be missing.',
     introText: [
-      'Put your domain to the test. Submit it for an initial external security assessment of your publicly accessible attack surface. No login, no payloads and no changes to your systems.',
+      'Put your domain to the test. Submit it for an initial external security assessment of your publicly accessible attack surface.',
+      'No login, no payloads and no changes to your systems.',
       "A researcher reviews your request before testing begins and responds within one business day. You'll receive a short written report covering our findings, likely attack scenarios, potential financial impact and recommended next steps, alongside an exportable security intelligence graph connecting the findings.",
       'This is an initial external assessment, not a source-code review or a guarantee that your application is secure.',
     ],

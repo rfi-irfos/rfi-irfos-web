@@ -94,7 +94,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
               glow on its right (live feedback 2026-10-14: the glow "overshadows" this card where
               its blur bleeds across the grid gap - without this, the later grid item wins paint
               order by default and the glow sits in front of this card's edge). */}
-          <div className="fx-panel" style={{ position: 'relative', zIndex: 1, minWidth: 0, borderRadius: 20, padding: phone ? 18 : 28 }}>
+          <div className="fx-panel irf-scope-band" style={{ position: 'relative', zIndex: 1, minWidth: 0, borderRadius: 20, padding: phone ? 18 : 28 }}>
             <div ref={stepsRef} style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 18, marginBottom: 28, alignItems: 'start' }}>
               {c.steps.map((s, i) => (
                 <Reveal key={s.title} delay={i}>
@@ -147,7 +147,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                       <div style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)' }}>{c.report.sub}</div>
                     </div>
                   </div>
-                  <ul style={{ listStyle: 'none', margin: 0, padding: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
+                  <ul style={{ listStyle: 'none', margin: 0, padding: '0 0 0 5px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
                     {c.report.items.map(item => (
                       <li key={item.title} style={{ display: 'flex', gap: 12 }}>
                         <span aria-hidden style={{ color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', flexShrink: 0 }}>✓</span>

@@ -288,7 +288,8 @@ export const DE: Content = {
     introTitle: 'Domain-Live-Test',
     introSubtitle: 'Finden Sie heraus, was Ihre Security-Tools übersehen könnten.',
     introText: [
-      'Stellen Sie Ihre Domain auf die Probe. Reichen Sie sie für eine erste externe Sicherheitsbewertung Ihrer öffentlich erreichbaren Angriffsfläche ein. Ohne Login, ohne Payloads und ohne Änderungen an Ihren Systemen.',
+      'Stellen Sie Ihre Domain auf die Probe. Reichen Sie sie für eine erste externe Sicherheitsbewertung Ihrer öffentlich erreichbaren Angriffsfläche ein.',
+      'Ohne Login, ohne Payloads und ohne Änderungen an Ihren Systemen.',
       'Ein Researcher sieht Ihre Anfrage durch, bevor der Test beginnt, und meldet sich innerhalb eines Werktags. Sie erhalten einen kurzen schriftlichen Report mit unseren Funden, wahrscheinlichen Angriffsszenarien, möglichen finanziellen Auswirkungen und empfohlenen nächsten Schritten, dazu einen exportierbaren Security-Intelligence-Graphen, der die Funde verknüpft.',
       'Der Check liefert eine erste externe Einschätzung. Er umfasst keine Quellcode-Analyse und ist keine Garantie für die Sicherheit Ihrer Anwendung.',
     ],

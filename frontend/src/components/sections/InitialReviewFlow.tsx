@@ -67,50 +67,76 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
   }
 
   const cardStyle: React.CSSProperties = {
-    borderRadius: 18, padding: wide ? '24px 28px' : variant === 'embedded' ? '22px' : '24px', display: wide ? 'grid' : 'flex', flexDirection: 'column', gap: wide ? '18px 24px' : 14,
-    gridTemplateColumns: wide ? 'minmax(0, 1.15fr) minmax(0, 1fr)' : undefined,
+    borderRadius: 18, padding: wide ? '20px 24px' : variant === 'embedded' ? '22px' : '24px', display: wide ? 'grid' : 'flex', flexDirection: 'column', gap: wide ? 28 : 14,
+    gridTemplateColumns: wide ? 'minmax(0, 1fr) minmax(0, 1fr)' : undefined,
     maxWidth: variant === 'modal' ? 380 : undefined, height: variant === 'embedded' ? '100%' : undefined,
     boxSizing: 'border-box',
   }
 
+  const badge = (
+    <span className="irf-badge-pulse" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginLeft: wide ? 'auto' : undefined, fontSize: wide ? 13 : 'var(--fs-small)', fontWeight: 700, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.1)', padding: wide ? '5px 12px' : '6px 14px', borderRadius: 999, whiteSpace: 'nowrap' }}>
+      {wide && <svg width={14} height={14} viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M13 2 4 14h7l-1 8 9-12h-7z" /></svg>}
+      {c.badge}
+    </span>
+  )
+  const labelStyle: React.CSSProperties = { fontSize: wide ? 13 : 'var(--fs-small)', fontWeight: wide ? 600 : undefined, color: wide ? 'var(--text)' : 'var(--text2)', display: wide ? 'flex' : 'block', alignItems: 'center', gap: 8, marginBottom: 6 }
+  const labelIcon = (d: string) => wide && (
+    <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="var(--accent-text)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d={d} /></svg>
+  )
+
   return (
-    <div className="irf-card-glow" style={cardStyle}>
+    <div className={wide ? 'irf-card-glow irf-dlt-band' : 'irf-card-glow'} style={cardStyle}>
       <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
         value={botcheck} onChange={e => setBotcheck(e.target.value)}
         style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
 
-      <div style={{ display: 'flex', alignItems: wide ? 'center' : 'flex-start', justifyContent: 'space-between', gap: 10, gridColumn: wide ? '1 / -1' : undefined, paddingLeft: wide ? 15 : undefined }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: wide ? 14 : 10 }}>
-          <span className="rfi-glass-icon" style={{ width: 44, height: 44, borderRadius: 12, color: '#4f9dff' }}>
-            <svg width={28} height={28} viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <rect x="4" y="6" width="24" height="20" rx="3" />
-              <g stroke="var(--text)"><path d="M4 12h24" /><circle cx="16" cy="19" r="3.5" /><path d="M16 14v1.5M16 22.5V24M11 19h1.5M19.5 19H21" /></g>
-            </svg>
-          </span>
-          <div style={{ fontWeight: 700, fontSize: 'var(--fs-lead)', color: 'var(--text)' }}>{c.introTitle}</div>
+      {/* `display: contents` keeps the stacked card flat; wide groups the intro into its own column. */}
+      <div style={wide ? { display: 'flex', flexDirection: 'column', gap: 14, paddingLeft: 15, position: 'relative' } : { display: 'contents' }}>
+        <div style={{ display: 'flex', alignItems: wide ? 'center' : 'flex-start', justifyContent: wide ? 'flex-start' : 'space-between', gap: wide ? 16 : 10, flexWrap: wide ? 'wrap' : undefined }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: wide ? 14 : 10 }}>
+            <span className="rfi-glass-icon" style={{ width: wide ? 50 : 44, height: wide ? 50 : 44, borderRadius: wide ? 14 : 12, color: 'var(--accent-text)', flexShrink: 0 }}>
+              <svg width={wide ? 32 : 28} height={wide ? 32 : 28} viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M11 25H6.5A2.5 2.5 0 0 1 4 22.5v-15A2.5 2.5 0 0 1 6.5 5h19A2.5 2.5 0 0 1 28 7.500V13M4 11h24" />
+                <path d="M21 14.500l6 2v4.500c0 3.600-2.500 6-6 7.500-3.500-1.500-6-3.900-6-7.500v-4.500z" />
+                <path d="M18.500 21l1.800 1.800 3.200-3.400" />
+              </svg>
+            </span>
+            <div style={{ fontWeight: 700, fontSize: wide ? 23 : 'var(--fs-lead)', lineHeight: 1.15, color: 'var(--text)' }}>{c.introTitle}</div>
+          </div>
+          {badge}
         </div>
-        <span className="irf-badge-pulse" style={{ fontSize: 'var(--fs-small)', fontWeight: 700, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.1)', padding: '6px 14px', borderRadius: 999, whiteSpace: 'nowrap' }}>{c.badge}</span>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingLeft: wide ? 73 : undefined }}>
-        {c.introText.slice(0, -1).map((para, i) => (
-          <p key={i} style={{ fontSize: 'var(--fs-small)', fontWeight: 400, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{para}</p>
-        ))}
+        {wide ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingLeft: 16, borderLeft: '3px solid var(--accent-text)' }}>
+              <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', lineHeight: 1.35, margin: 0 }}>{c.introText[0]}</p>
+              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{c.introText[1]}</p>
+            </div>
+            <p style={{ fontSize: 14, fontWeight: 400, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0, paddingLeft: 19 }}>{c.introText[2]}</p>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {c.introText.slice(0, -1).map((para, i) => (
+              <p key={i} style={{ fontSize: 'var(--fs-small)', fontWeight: 400, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{para}</p>
+            ))}
+          </div>
+        )}
+        {wide && <div aria-hidden style={{ position: 'absolute', top: '8%', bottom: '8%', right: -14, width: 1, background: 'linear-gradient(transparent, var(--accent-text), transparent)', opacity: 0.45 }} />}
       </div>
       {!wide && <div style={{ borderTop: '1px solid var(--border)' }} />}
 
-      <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: wide ? '1fr 1fr' : '1fr', gap: 12 }}>
+      <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1, ...(wide ? { padding: '14px 18px', borderRadius: 14, gap: 10, border: '1px solid color-mix(in srgb, var(--accent-text) 38%, transparent)', background: 'color-mix(in srgb, var(--accent-text) 6%, transparent)' } : {}) }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: wide ? 10 : 12 }}>
         <div>
-          <label htmlFor={`${fid}-domain`} style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', display: 'block', marginBottom: 6 }}>{c.domainLabel}</label>
+          <label htmlFor={`${fid}-domain`} style={labelStyle}>{labelIcon('M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c2.500 2.500 3.800 5.500 3.800 9s-1.300 6.500-3.800 9c-2.500-2.500-3.800-5.500-3.800-9S9.500 5.500 12 3z')}{c.domainLabel}</label>
           <input id={`${fid}-domain`} name="domain" type="text" inputMode="url" autoComplete="url" autoCapitalize="none" autoCorrect="off" spellCheck={false} required placeholder={c.domainPlaceholder} value={domain}
             onChange={e => setDomain(e.target.value)}
-            className="fx-input" style={{ width: '100%', borderRadius: 12, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+            className="fx-input" style={{ width: '100%', borderRadius: 12, padding: wide ? '9px 14px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 14 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
         </div>
         <div>
-          <label htmlFor={`${fid}-email`} style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', display: 'block', marginBottom: 6 }}>{c.emailLabel}</label>
+          <label htmlFor={`${fid}-email`} style={labelStyle}>{labelIcon('M3 6h18v12H3zM3 7l9 6 9-6')}{c.emailLabel}</label>
           <input id={`${fid}-email`} name="email" autoComplete="email" type="email" required placeholder={c.emailPlaceholder} value={email}
             onChange={e => setEmail(e.target.value)}
-            className="fx-input" style={{ width: '100%', borderRadius: 12, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+            className="fx-input" style={{ width: '100%', borderRadius: 12, padding: wide ? '9px 14px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 14 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
         </div>
         </div>
         <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
@@ -144,11 +170,11 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
           background: state === 'ok' ? 'rgba(0,245,196,0.2)' : undefined,
           color: state === 'ok' ? 'var(--accent-text)' : '#1a0f00',
           border: state === 'ok' ? '1px solid var(--accent-text)' : 'none',
-          padding: '14px 20px', borderRadius: 12, fontWeight: 700, fontSize: 'var(--fs-body)',
+          padding: wide ? '11px 18px' : '14px 20px', borderRadius: 12, fontWeight: 700, fontSize: wide ? 14 : 'var(--fs-body)',
           cursor: state === 'sending' ? 'wait' : !consent ? 'not-allowed' : 'pointer',
           opacity: !consent && state === 'idle' ? 0.78 : 1,
         }}>
-          {state === 'sending' ? c.submitSending : state === 'ok' ? c.submitOk : c.submitCta}
+          {state === 'sending' ? c.submitSending : state === 'ok' ? c.submitOk : c.submitCta}{wide && state === 'idle' && ' \u2192'}
         </button>
       </form>
     </div>
