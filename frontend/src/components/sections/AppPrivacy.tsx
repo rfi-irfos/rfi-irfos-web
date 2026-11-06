@@ -78,7 +78,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         <Reveal delay={1}>
           <div style={{ maxWidth: 720, margin: '0 auto 36px', textAlign: 'center' }}>
             <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)', margin: 0 }}>
-              {linkPhrase(c.paragraph, locale === 'de' ? 'von Grund auf trainierte Agenten' : 'built and trained from scratch in house', localeHref('/squad/', locale))}
+              {linkPhrase(c.paragraph, locale === 'de' ? 'im eigenen Haus gebaut und trainiert' : 'built and trained in-house', localeHref('/squad/', locale))}
             </p>
           </div>
         </Reveal>
@@ -88,14 +88,13 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
             tokens are re-declared here, so every card inside grows together without raw font sizes. */}
         <div className="fx-frame" style={{ borderRadius: 26, padding: phone ? 8 : 12, maxWidth: 1320, margin: '0 auto 24px',
           '--fs-label': '12px', '--fs-small': '14px', '--fs-body': '16px' } as CSSProperties}>
-        <div style={{ display: 'grid', gridTemplateColumns: stacked ? '1fr' : 'minmax(0, 1fr) 350px', gap: stacked ? 28 : 8 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: stacked ? 28 : 8 }}>
           {/* Left: ONE framed card holding process, scope and evidence (frame static, cells reveal).
               position+zIndex keeps this card painted above the Free Check widget's turquoise
               glow on its right (live feedback 2026-10-14: the glow "overshadows" this card where
               its blur bleeds across the grid gap - without this, the later grid item wins paint
               order by default and the glow sits in front of this card's edge). */}
           <div className="fx-panel" style={{ position: 'relative', zIndex: 1, minWidth: 0, borderRadius: 20, padding: phone ? 18 : 28 }}>
-            <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 14, textAlign: 'center' }}>{c.processLabel}</p>
             <div ref={stepsRef} style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 18, marginBottom: 28, alignItems: 'start' }}>
               {c.steps.map((s, i) => (
                 <Reveal key={s.title} delay={i}>
@@ -175,7 +174,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
             display: 'flex', flexDirection: 'column', gap: 16, alignSelf: 'stretch', scrollMarginTop: 84,
           }}>
             <Reveal delay={1} style={{ flex: 1 }}>
-              <InitialReviewFlow variant="embedded" />
+              <InitialReviewFlow variant="embedded" wide={!stacked} />
             </Reveal>
           </div>
         </div>

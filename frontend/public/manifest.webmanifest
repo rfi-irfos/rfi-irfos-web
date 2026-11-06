@@ -15,7 +15,7 @@
     { "src": "/pwa-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "Free check", "url": "/#domain-check", "icons": [{ "src": "/pwa-192.png", "sizes": "192x192" }] },
+    { "name": "Quick Check", "url": "/#domain-check", "icons": [{ "src": "/pwa-192.png", "sizes": "192x192" }] },
     { "name": "Evidence", "url": "/evidence/", "icons": [{ "src": "/pwa-192.png", "sizes": "192x192" }] }
   ]
 }

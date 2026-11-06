@@ -36,8 +36,8 @@ export const EN = {
       description: 'The Squad: specialised agents investigate your app\'s code, SDKs and data flows. Human specialists re-verify every finding. Written report with evidence.',
     },
     access: {
-      title: 'App Security Audit Pricing & Free Check · RFI-IRFOS',
-      description: 'Security audit plans for your app or API: defined scope, written evidence report, free retest of fixed findings. Plus a free read-only domain check.',
+      title: 'App Security Audit Pricing & Quick Check · RFI-IRFOS',
+      description: 'Security audit plans for your app or API: defined scope, written evidence report, free retest of fixed findings. Plus a read-only Quick Check of your domain.',
     },
     worldModel: {
       title: 'World Model: Evidence Graph Across 20+ Domains · RFI-IRFOS',
@@ -176,7 +176,7 @@ export const EN = {
     seoTitle: 'App Privacy & Security Audit Reports · RFI-IRFOS',
     seoDescription: 'Public ledger of evidence-based GDPR and security audit reports on Android apps: trackers, SDKs, permissions, hardcoded keys, pre-consent tracking.',
     paragraph: 'On behalf of our research partners, we investigate publicly distributed Android and iOS apps: we decompile them, follow their code and data flows, and trace every connection to the servers it reaches. Hundreds of specialised agents work through each app and join the technical evidence into one picture, which our specialists then review and verify.',
-    follow: { freeCheck: 'Start the free check for your own domain', label: ', or follow new investigations', feed: 'Atom feed' },
+    follow: { freeCheck: 'Start the Quick Check for your own domain', label: ', or follow new investigations', feed: 'Atom feed' },
     focusBanner: (names: string) => `Showing the report for ${names}.`,
     showFullLedger: 'Show the full ledger',
     securityBridgeCta: 'This is what a security engagement encompasses →',
@@ -266,13 +266,12 @@ export const EN = {
   appPrivacy: {
     eyebrow: 'What we do best',
     heading: 'Human-Powered Multi-Agent Security Investigations',
-    paragraph: "Selected agents that we built and trained from scratch in house execute thousands of parallel tests across your code, dependencies, APIs, configurations and attack surfaces. Their findings are correlated to expose relationships, trace potential attack paths and distinguish isolated signals from broader security issues. Our investigators then examine each result in its technical context, producing an evidence-backed assessment of your security posture and a clear roadmap for remediation.",
-    processLabel: 'How a review happens',
+    paragraph: "Selected agents that we built and trained in-house execute thousands of parallel security tests, while our specialists investigate vulnerabilities, trace attack paths and engineer fixes down to the code for companies with limited in-house capacity.",
     steps: [
       { title: 'Share access', text: 'Point us to your codebase: a GitHub or GitLab repository, an archive, a build, an API specification or a dev or staging environment. Read access is enough.' },
-      { title: 'Investigate', text: 'Our agents run thousands of tests across code, dependencies, configuration and data flows, and our team steers them toward what matters for your product.' },
-      { title: 'Verify', text: 'A specialist checks every finding in its technical context and rates what an attacker could really do with it, so only real issues reach you.' },
-      { title: 'Report', text: 'A written report with the evidence, severity and a concrete fix for each finding, plus a knowledge graph of how they connect.' },
+      { title: 'Investigate', text: 'Our in-house agents run thousands of parallel tests across code, dependencies, APIs and data flows. Our team steers them toward your product.' },
+      { title: 'Verify & Engineer', text: 'Our specialists validate every finding and separate real risk from false positives. Then we engineer the fix down to the code, ready to apply where possible.' },
+      { title: 'Deliver', text: 'An evidence-backed report with every vulnerability, its severity, attack path and fix, plus an exportable knowledge graph for your own systems.' },
     ],
     scopeLabel: 'What we examine',
       evidenceLabel: 'What you receive',
@@ -285,12 +284,13 @@ export const EN = {
     ],
     report: {
       title: 'The evidence',
-      sub: 'Our work, documented and checkable.',
+      sub: 'Our work, documented, actionable and checkable.',
       items: [
         { title: "Broad technical coverage", text: "Code, dependencies, APIs, configurations and data flows, examined together." },
-        { title: "Exploitability analysis", text: "Findings checked for what an attacker could realistically do with them." },
+        { title: "Exploitability analysis", text: "Findings verified against what an attacker could realistically do." },
+        { title: "Engineered remediation", text: "Concrete fixes developed down to the affected code, with ready-to-apply changes where possible. Included from the Growth plan." },
         { title: "Standards-informed methodology", text: "Testing grounded in recognized security frameworks." },
-        { title: "Correlated knowledge graph", text: "Every report ships with a base knowledge graph linking findings together, not just a flat list." },
+        { title: "Graz-based processing", text: "Your investigation is handled by our team in Graz, Austria, with data processing kept within defined European infrastructure boundaries." },
       ],
     },
     trust: [
@@ -301,17 +301,17 @@ export const EN = {
     ],
     evidenceHeading: 'Our research is public. Our methodology is inspectable.',
     evidenceCta: 'Explore the Evidence Ledger →',
-    topics: { label: 'What we examine:', close: 'Close', startCheck: 'Start the free check', fullPage: 'Open the full page' },
+    topics: { label: 'What we examine:', close: 'Close', startCheck: 'Start the Quick Check', fullPage: 'Open the full page' },
     cta: 'Request an Initial Review',
   },
 
   initialReview: {
-    badge: 'Free check',
+    badge: 'Quick Check',
     introTitle: 'Domain Live Testing',
     introSubtitle: 'Find out what your security tools might be missing.',
     introText: [
-      'The initial check is read-only, performed from a European IP address, with no login and no payloads. Your systems remain unchanged.',
-      "A researcher reviews your request before any check begins and replies within one business day. You receive a short written report with our findings, likely attack scenarios, the potential financial impact and clear next steps, plus a knowledge graph of everything we found.",
+      'Put your domain to the test. Submit it for an initial external security assessment of your publicly accessible attack surface. No login, no payloads and no changes to your systems.',
+      "A researcher reviews your request before testing begins and responds within one business day. You'll receive a short written report covering our findings, likely attack scenarios, potential financial impact and recommended next steps, alongside an exportable security intelligence graph connecting the findings.",
       'This is an initial external assessment, not a source-code review or a guarantee that your application is secure.',
     ],
     domainLabel: 'Your domain',
@@ -375,14 +375,14 @@ export const EN = {
     ],
     tiers: [
       { name: 'Starter', price: '\u20ac99', tagline: 'Find weaknesses. Get evidence. Know what to fix.', features: ['One focused vulnerability hunt per month.', 'Verified weak spots with proof of concept.', 'Evidence-backed PDF report.', 'Severity and remediation guidance.', 'Free retest of fixed findings.'], cta: 'Choose Starter', stripeKey: 'review_starter' },
-      { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Regular vulnerability hunts on your application.', features: ['Scheduled security re-examinations.', 'One application or API in scope.', 'Verified vulnerabilities with proof of concept.', 'Unlimited retesting within scope.', 'Ongoing findings and remediation history.'], cta: 'Choose Growth', stripeKey: 'review_growth' },
+      { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Regular vulnerability hunts on your application.', features: ['Scheduled security re-examinations.', 'One application or API in scope.', 'Verified vulnerabilities with proof of concept.', 'Concrete fixes engineered down to the affected code.', 'Unlimited retesting within scope.', 'Ongoing findings and remediation history.'], cta: 'Choose Growth', stripeKey: 'review_growth' },
       { name: 'Pro', price: '\u20ac799', tagline: 'Extend security coverage across your products.', features: ['Everything in Growth.', 'Up to three websites, applications or APIs.', 'Consistent reviews across every surface.', 'Priority review scheduling.', 'Consolidated findings and fix tracking.'], cta: 'Choose Pro', stripeKey: 'review_pro' },
       { name: 'Business', price: '\u20ac1,999', tagline: 'Coordinate security across your application portfolio.', features: ['Everything in Pro.', 'Up to ten websites, applications or APIs.', 'Dedicated customer communication channel.', 'Coordinated remediation follow-up.', 'Portfolio-wide findings overview.'], cta: 'Choose Business', stripeKey: 'review_business' },
     ],
     freeCard: {
-      label: 'Free', price: 'Free', tagline: 'See what is exposed from the outside.',
+      label: 'Quick Check', price: '\u20ac0', tagline: 'See what is exposed from the outside.',
       features: ['One website or application.', 'External, read-only security check.', 'Written findings summary.', 'Recommended next steps.'],
-      cta: 'Start free review',
+      cta: 'Start the Quick Check',
     },
     managedSoc: {
       eyebrow: 'Managed SOC · Enterprise',
@@ -1185,7 +1185,7 @@ export const EN = {
       },
       company: {
         heading: 'Company',
-        links: { freeCheck: 'Free check', pricing: 'Pricing', team: 'Team', careers: 'Careers', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube' },
+        links: { freeCheck: 'Quick Check', pricing: 'Pricing', team: 'Team', careers: 'Careers', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube' },
       },
       research: {
         heading: 'Research',

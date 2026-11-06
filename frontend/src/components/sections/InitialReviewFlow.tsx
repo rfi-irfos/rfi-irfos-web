@@ -9,7 +9,8 @@ type FormState = 'idle' | 'sending' | 'ok' | 'err' | 'invalid' | 'limited'
 // consent checkbox all sit on one screen instead of splitting domain entry
 // from email+consent across two steps. Same /api/initial-review contract,
 // unchanged on the backend.
-export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }) {
+// `wide`: full-width band with the intro left and the form right, for the homepage block.
+export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedded' | 'modal'; wide?: boolean }) {
   const { t, locale } = useLocale()
   const c = t.initialReview
   const pre = locale === 'de' ? '/de' : ''
@@ -66,7 +67,8 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
   }
 
   const cardStyle: React.CSSProperties = {
-    borderRadius: 18, padding: variant === 'embedded' ? '22px' : '24px', display: 'flex', flexDirection: 'column', gap: 14,
+    borderRadius: 18, padding: wide ? '24px 28px' : variant === 'embedded' ? '22px' : '24px', display: wide ? 'grid' : 'flex', flexDirection: 'column', gap: wide ? '18px 24px' : 14,
+    gridTemplateColumns: wide ? 'minmax(0, 1.15fr) minmax(0, 1fr)' : undefined,
     maxWidth: variant === 'modal' ? 380 : undefined, height: variant === 'embedded' ? '100%' : undefined,
     boxSizing: 'border-box',
   }
@@ -77,25 +79,27 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
         value={botcheck} onChange={e => setBotcheck(e.target.value)}
         style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
 
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ width: 32, height: 32, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,245,196,0.12)', color: 'var(--accent-text)', flexShrink: 0 }}>
-            <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+      <div style={{ display: 'flex', alignItems: wide ? 'center' : 'flex-start', justifyContent: 'space-between', gap: 10, gridColumn: wide ? '1 / -1' : undefined, paddingLeft: wide ? 15 : undefined }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: wide ? 14 : 10 }}>
+          <span className="rfi-glass-icon" style={{ width: 44, height: 44, borderRadius: 12, color: '#4f9dff' }}>
+            <svg width={28} height={28} viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <rect x="4" y="6" width="24" height="20" rx="3" />
+              <g stroke="var(--text)"><path d="M4 12h24" /><circle cx="16" cy="19" r="3.5" /><path d="M16 14v1.5M16 22.5V24M11 19h1.5M19.5 19H21" /></g>
             </svg>
           </span>
           <div style={{ fontWeight: 700, fontSize: 'var(--fs-lead)', color: 'var(--text)' }}>{c.introTitle}</div>
         </div>
         <span className="irf-badge-pulse" style={{ fontSize: 'var(--fs-small)', fontWeight: 700, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.1)', padding: '6px 14px', borderRadius: 999, whiteSpace: 'nowrap' }}>{c.badge}</span>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingLeft: wide ? 73 : undefined }}>
         {c.introText.slice(0, -1).map((para, i) => (
-          <p key={i} style={{ fontSize: 'var(--fs-small)', fontWeight: 400, color: '#ffffff', lineHeight: 'var(--lh-body)', margin: 0 }}>{para}</p>
+          <p key={i} style={{ fontSize: 'var(--fs-small)', fontWeight: 400, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{para}</p>
         ))}
       </div>
-      <div style={{ borderTop: '1px solid var(--border)' }} />
+      {!wide && <div style={{ borderTop: '1px solid var(--border)' }} />}
 
       <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: wide ? '1fr 1fr' : '1fr', gap: 12 }}>
         <div>
           <label htmlFor={`${fid}-domain`} style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', display: 'block', marginBottom: 6 }}>{c.domainLabel}</label>
           <input id={`${fid}-domain`} name="domain" type="text" inputMode="url" autoComplete="url" autoCapitalize="none" autoCorrect="off" spellCheck={false} required placeholder={c.domainPlaceholder} value={domain}
@@ -107,6 +111,7 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
           <input id={`${fid}-email`} name="email" autoComplete="email" type="email" required placeholder={c.emailPlaceholder} value={email}
             onChange={e => setEmail(e.target.value)}
             className="fx-input" style={{ width: '100%', borderRadius: 12, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+        </div>
         </div>
         <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
           <input type="checkbox" required checked={consent} onChange={e => setConsent(e.target.checked)}
@@ -142,7 +147,6 @@ export function InitialReviewFlow({ variant }: { variant: 'embedded' | 'modal' }
           padding: '14px 20px', borderRadius: 12, fontWeight: 700, fontSize: 'var(--fs-body)',
           cursor: state === 'sending' ? 'wait' : !consent ? 'not-allowed' : 'pointer',
           opacity: !consent && state === 'idle' ? 0.78 : 1,
-          marginTop: 'auto',
         }}>
           {state === 'sending' ? c.submitSending : state === 'ok' ? c.submitOk : c.submitCta}
         </button>

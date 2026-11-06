@@ -43,7 +43,7 @@ export function NotFoundNotice() {
     title={de ? 'Dieser Link führt ins Leere. Weiter geht es hier:' : 'This link leads nowhere. Here is where to go next:'}
     links={[
       { href: localeHref('/evidence/', locale), label: de ? 'Veröffentlichte Reports' : 'Published reports' },
-      { href: `${localeHref('/', locale)}#domain-check`, label: de ? 'Gratis-Check' : 'Free check' },
+      { href: `${localeHref('/', locale)}#domain-check`, label: 'Quick Check' },
       { href: localeHref('/access/', locale), label: de ? 'Umfang und Preise' : 'Scope and pricing' },
     ]} />
 }
@@ -77,6 +77,6 @@ export function CheckoutReturnNotice() {
     title={de ? 'Der Checkout wurde abgebrochen, es wurde nichts berechnet. Offene Fragen klären wir gern vorab:' : 'Checkout cancelled, nothing was charged. Happy to answer questions first:'}
     links={[
       { href: 'mailto:contact@rfi-irfos.com', label: de ? 'Schreiben Sie uns' : 'Email us' },
-      { href: `${localeHref('/', locale)}#domain-check`, label: de ? 'Erst den Gratis-Check' : 'Start with the free check' },
+      { href: `${localeHref('/', locale)}#domain-check`, label: de ? 'Erst den Quick Check' : 'Start with the Quick Check' },
     ]} />
 }

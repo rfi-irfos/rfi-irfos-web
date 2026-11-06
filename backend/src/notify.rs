@@ -69,7 +69,7 @@ fn html_escape(s: &str) -> String {
 pub fn confirmation_mail(domain: &str, de: bool) -> (String, String, String) {
     let (subject, lines, access, cta) = if de {
         (
-            format!("Ihr Gratis-Check für {domain} ist eingegangen"),
+            format!("Ihr Quick Check für {domain} ist eingegangen"),
             [
                 format!("danke, Ihre Anfrage für {domain} ist bei uns eingegangen."),
                 "Ein Researcher prüft sie und meldet sich innerhalb eines Werktags mit dem nächsten Schritt.".to_string(),
@@ -80,7 +80,7 @@ pub fn confirmation_mail(domain: &str, de: bool) -> (String, String, String) {
         )
     } else {
         (
-            format!("Your free check for {domain} has arrived"),
+            format!("Your Quick Check for {domain} has arrived"),
             [
                 format!("thank you, your request for {domain} has reached us."),
                 "A researcher reviews it and replies within one working day with the next step.".to_string(),
@@ -146,12 +146,12 @@ mod tests {
     #[test]
     fn confirmation_mail_matches_locale_and_escapes_domain() {
         let (s, html, text) = confirmation_mail("a<b>.com", true);
-        assert!(s.contains("Gratis-Check"));
+        assert!(s.contains("Quick Check"));
         assert!(html.contains("/de/access/") && html.contains("a&lt;b&gt;.com"));
         assert!(!html.contains("a<b>"));
         assert!(text.contains("Werktags"));
         let (s, html, _) = confirmation_mail("example.org", false);
-        assert!(s.starts_with("Your free check"));
+        assert!(s.starts_with("Your Quick Check"));
         assert!(html.contains("https://rfi-irfos.com/access/"));
     }
 }

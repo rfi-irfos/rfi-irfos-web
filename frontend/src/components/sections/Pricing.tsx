@@ -295,7 +295,7 @@ export function PricingSection({
                   for teams without in-house capacity, 24/7 monitoring, 1 h incident
                   response, fix within 24 h. Merged with the former Enterprise band
                   (custom surfaces, MSP, multi-tenant, white-label, SLAs) the same day. */}
-              <div id="pricing-managed-soc" className="fx-soc" style={{ scrollMarginTop: 84, marginTop: 14, border: '1px solid var(--border)', borderRadius: 16, padding: tablet ? '28px 22px' : '36px 36px', display: 'grid', gridTemplateColumns: tablet ? '1fr' : 'minmax(0, 1.05fr) minmax(0, 1fr)', gap: tablet ? 22 : 40, alignItems: 'center' }}>
+              <div id="pricing-managed-soc" className="fx-soc" style={{ scrollMarginTop: 84, marginTop: 14, border: '1px solid var(--border)', borderRadius: 16, padding: tablet ? '28px 22px' : '36px 36px', display: 'grid', gridTemplateColumns: tablet ? '1fr' : 'minmax(0, 0.8fr) minmax(0, 1.2fr)', gap: tablet ? 22 : 40, alignItems: 'center' }}>
                 <div>
                   <p style={{ fontSize: 'var(--fs-label)', color: 'var(--accent-text)', margin: '0 0 8px', letterSpacing: '0.04em' }}>{t.pricing.managedSoc.eyebrow}</p>
                   <h2 style={{ fontSize: 'clamp(1.5rem, 2.4vw, 2rem)', color: 'var(--text)', margin: '0 0 12px', lineHeight: 1.15 }}>{t.pricing.managedSoc.heading}</h2>

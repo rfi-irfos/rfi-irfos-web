@@ -21,8 +21,8 @@ export const DE: Content = {
       description: 'The Squad: Agenten untersuchen Code, SDKs und Datenflüsse Ihrer App. Menschliche Fachleute prüfen jeden Befund erneut. Schriftlicher Bericht mit Belegen.',
     },
     access: {
-      title: 'Preise App-Sicherheitsprüfung & Gratis-Check · RFI-IRFOS',
-      description: 'Pläne für Sicherheitsaudits Ihrer App oder API: klarer Umfang, Bericht mit Belegen, kostenloser Nachtest. Dazu ein kostenloser Domain-Check.',
+      title: 'Preise App-Sicherheitsprüfung & Quick Check · RFI-IRFOS',
+      description: 'Pläne für Sicherheitsaudits Ihrer App oder API: klarer Umfang, Bericht mit Belegen, kostenloser Nachtest. Dazu ein Quick Check Ihrer Domain, ausschließlich lesend.',
     },
     worldModel: {
       title: 'Weltmodell: Evidenzgraph über 20+ Domänen · RFI-IRFOS',
@@ -158,7 +158,7 @@ export const DE: Content = {
     seoTitle: 'App-Datenschutz- & Sicherheitsanalysen · RFI-IRFOS',
     seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsberichte zu Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel.',
     paragraph: 'Im Auftrag unserer Forschungspartner untersuchen wir öffentlich verbreitete Android- und iOS-Apps: Wir dekompilieren sie, verfolgen ihren Code und ihre Datenflüsse und jede Verbindung bis zu den Servern, die sie erreicht. Hunderte spezialisierte Agenten arbeiten jede App durch und fügen die technischen Belege zu einem Gesamtbild zusammen, das unsere Fachleute anschließend prüfen und verifizieren.',
-    follow: { freeCheck: 'Starten Sie den Gratis-Check für Ihre eigene Domain', label: ' oder verfolgen Sie neue Untersuchungen', feed: 'Atom-Feed' },
+    follow: { freeCheck: 'Starten Sie den Quick Check für Ihre eigene Domain', label: ' oder verfolgen Sie neue Untersuchungen', feed: 'Atom-Feed' },
     focusBanner: (names: string) => `Angezeigt wird der Report zu ${names}.`,
     showFullLedger: 'Gesamtes Ledger anzeigen',
     securityBridgeCta: 'Das umfasst ein Security-Auftrag →',
@@ -244,13 +244,12 @@ export const DE: Content = {
   appPrivacy: {
     eyebrow: 'Was wir am besten können',
     heading: 'Human-Powered Multi-Agent Security Investigations',
-    paragraph: "Selbst gebaute und von Grund auf trainierte Agenten aus unserem Haus führen Tausende parallele Tests über Ihren Code, Ihre Abhängigkeiten, APIs, Konfigurationen und Angriffsflächen aus. Ihre Befunde werden korreliert, um Zusammenhänge offenzulegen, mögliche Angriffspfade nachzuverfolgen und isolierte Signale von umfassenderen Sicherheitsproblemen zu unterscheiden. Unser Untersuchungsteam prüft anschließend jedes Ergebnis in seinem technischen Kontext. Daraus entstehen eine belegte Einschätzung Ihrer Sicherheitslage und ein klarer Fahrplan zur Behebung.",
-    processLabel: 'So läuft eine Prüfung ab',
+    paragraph: "Ausgewählte Agenten, die wir im eigenen Haus gebaut und trainiert haben, führen Tausende parallele Sicherheitstests aus, während unsere Fachleute Schwachstellen untersuchen, Angriffspfade nachverfolgen und Fixes bis in den Code entwickeln, für Unternehmen mit begrenzten eigenen Kapazitäten.",
     steps: [
       { title: 'Zugang teilen', text: 'Zeigen Sie uns Ihre Codebasis: ein GitHub- oder GitLab-Repository, ein Archiv, einen Build, eine API-Spezifikation oder eine Dev- oder Staging-Umgebung. Lesezugriff reicht.' },
-      { title: 'Untersuchen', text: 'Unsere Agenten führen Tausende Tests über Code, Abhängigkeiten, Konfiguration und Datenflüsse aus, und unser Team lenkt sie auf das, was für Ihr Produkt zählt.' },
-      { title: 'Verifizieren', text: 'Eine Fachperson prüft jeden Fund im technischen Kontext und bewertet, was ein Angreifer damit wirklich anrichten kann. Bei Ihnen kommen nur echte Probleme an.' },
-      { title: 'Bericht', text: 'Ein schriftlicher Bericht mit Beleg, Schweregrad und konkreter Behebung zu jedem Fund, dazu ein Wissensgraph, der zeigt, wie sie zusammenhängen.' },
+      { title: 'Untersuchen', text: 'Unsere selbst gebauten Agenten führen Tausende parallele Tests über Code, Abhängigkeiten, APIs und Datenflüsse aus. Unser Team lenkt sie auf Ihr Produkt.' },
+      { title: 'Prüfen & Fixen', text: 'Unsere Fachleute prüfen jeden Fund und trennen echtes Risiko von Fehlalarmen. Dann entwickeln wir den Fix bis in den Code, wo möglich direkt anwendbar.' },
+      { title: 'Übergabe', text: 'Ein belegter Bericht mit jeder Schwachstelle, Schweregrad, Angriffspfad und Fix, dazu ein exportierbarer Knowledge Graph für Ihre eigenen Systeme.' },
     ],
     scopeLabel: 'Das prüfen wir',
       evidenceLabel: 'Das bekommen Sie',
@@ -263,12 +262,13 @@ export const DE: Content = {
     ],
     report: {
       title: 'Der Nachweis',
-      sub: 'Unsere Arbeit, dokumentiert und überprüfbar.',
+      sub: 'Unsere Arbeit, dokumentiert, umsetzbar und überprüfbar.',
       items: [
         { title: "Breite technische Abdeckung", text: "Code, Abhängigkeiten, APIs, Konfigurationen und Datenflüsse, gemeinsam untersucht." },
-        { title: "Ausnutzbarkeitsanalyse", text: "Jeder Fund geprüft darauf, was ein Angreifer damit real anfangen könnte." },
+        { title: "Ausnutzbarkeitsanalyse", text: "Funde daran verifiziert, was ein Angreifer realistisch damit anfangen kann." },
+        { title: "Fix bis in den Code", text: "Konkrete Fixes bis in den betroffenen Code, wo möglich als direkt anwendbare Änderungen. Ab dem Growth-Plan." },
         { title: "Normbasierte Methodik", text: "Prüfung auf Basis anerkannter Security-Frameworks." },
-        { title: "Verknüpfter Knowledge Graph", text: "Jeder Bericht enthält einen Basis-Knowledge-Graph, der Funde verknüpft statt sie nur aufzulisten." },
+        { title: "Verarbeitung in Graz", text: "Ihre Untersuchung liegt bei unserem Team in Graz, Österreich. Die Datenverarbeitung bleibt innerhalb festgelegter europäischer Infrastrukturgrenzen." },
       ],
     },
     trust: [
@@ -279,17 +279,17 @@ export const DE: Content = {
     ],
     evidenceHeading: 'Unsere Forschung ist öffentlich. Unsere Methodik ist nachprüfbar.',
     evidenceCta: 'Evidence Ledger ansehen →',
-    topics: { label: 'Was wir prüfen:', close: 'Schließen', startCheck: 'Gratis-Check starten', fullPage: 'Ganze Seite öffnen' },
+    topics: { label: 'Was wir prüfen:', close: 'Schließen', startCheck: 'Quick Check starten', fullPage: 'Ganze Seite öffnen' },
     cta: 'Erstprüfung anfragen',
   },
 
   initialReview: {
-    badge: 'Kostenloser Check',
+    badge: 'Quick Check',
     introTitle: 'Domain-Live-Test',
     introSubtitle: 'Finden Sie heraus, was Ihre Security-Tools übersehen könnten.',
     introText: [
-      'Der erste Check erfolgt ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ihre Systeme bleiben dabei unverändert.',
-      'Bevor die Prüfung beginnt, sieht ein Researcher Ihre Anfrage durch und meldet sich innerhalb eines Werktags. Sie erhalten einen kurzen schriftlichen Report mit unseren Funden, möglichen Angriffsszenarien, dem wirtschaftlichen Schaden und klaren nächsten Schritten, dazu einen Knowledge Graph zu allen Funden.',
+      'Stellen Sie Ihre Domain auf die Probe. Reichen Sie sie für eine erste externe Sicherheitsbewertung Ihrer öffentlich erreichbaren Angriffsfläche ein. Ohne Login, ohne Payloads und ohne Änderungen an Ihren Systemen.',
+      'Ein Researcher sieht Ihre Anfrage durch, bevor der Test beginnt, und meldet sich innerhalb eines Werktags. Sie erhalten einen kurzen schriftlichen Report mit unseren Funden, wahrscheinlichen Angriffsszenarien, möglichen finanziellen Auswirkungen und empfohlenen nächsten Schritten, dazu einen exportierbaren Security-Intelligence-Graphen, der die Funde verknüpft.',
       'Der Check liefert eine erste externe Einschätzung. Er umfasst keine Quellcode-Analyse und ist keine Garantie für die Sicherheit Ihrer Anwendung.',
     ],
     domainLabel: 'Ihre Domain',
@@ -353,20 +353,20 @@ export const DE: Content = {
     ],
     tiers: [
       { name: 'Starter', price: '\u20ac99', tagline: 'Schwachstellen finden. Beweise sichern. Wissen, was zu tun ist.', features: ['Eine fokussierte Schwachstellenjagd pro Monat.', 'Verifizierte Schwachstellen mit Proof of Concept.', 'Evidenzbasierter PDF-Report.', 'Schweregrad und Handlungsempfehlungen.', 'Kostenloser Retest behobener Findings.'], cta: 'Starter w\u00e4hlen', stripeKey: 'review_starter' },
-      { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Regelm\u00e4\u00dfige Schwachstellenjagd auf Ihre Anwendung.', features: ['Geplante Sicherheits-Neupr\u00fcfungen.', 'Eine Anwendung oder API im Scope.', 'Verifizierte Schwachstellen mit Proof of Concept.', 'Unbegrenzte Retests innerhalb des Scopes.', 'Laufende Findings- und Fix-Historie.'], cta: 'Growth w\u00e4hlen', stripeKey: 'review_growth' },
+      { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Regelm\u00e4\u00dfige Schwachstellenjagd auf Ihre Anwendung.', features: ['Geplante Sicherheits-Neupr\u00fcfungen.', 'Eine Anwendung oder API im Scope.', 'Verifizierte Schwachstellen mit Proof of Concept.', 'Konkrete Fixes, entwickelt bis in den betroffenen Code.', 'Unbegrenzte Retests innerhalb des Scopes.', 'Laufende Findings- und Fix-Historie.'], cta: 'Growth w\u00e4hlen', stripeKey: 'review_growth' },
       { name: 'Pro', price: '\u20ac799', tagline: 'Sicherheitsabdeckung \u00fcber mehrere Produkte.', features: ['Alles aus Growth.', 'Bis zu drei Websites, Anwendungen oder APIs.', 'Konsistente Pr\u00fcfungen \u00fcber alle Oberfl\u00e4chen.', 'Priorisierte Terminierung.', 'Konsolidierte Findings- und Fix-\u00dcbersicht.'], cta: 'Pro w\u00e4hlen', stripeKey: 'review_pro' },
       { name: 'Business', price: '\u20ac1.999', tagline: 'Sicherheit \u00fcber Ihr gesamtes Anwendungsportfolio koordiniert.', features: ['Alles aus Pro.', 'Bis zu zehn Websites, Anwendungen oder APIs.', 'Dedizierter Kommunikationskanal.', 'Koordinierte Nachverfolgung der Behebung.', 'Portfolioweite Findings-\u00dcbersicht.'], cta: 'Business w\u00e4hlen', stripeKey: 'review_business' },
     ],
     freeCard: {
-      label: 'Free', price: 'Kostenlos', tagline: 'Sehen, was von au\u00dfen sichtbar und angreifbar ist.',
+      label: 'Quick Check', price: '\u20ac0', tagline: 'Sehen, was von au\u00dfen sichtbar und angreifbar ist.',
       features: ['Eine Website oder Anwendung.', 'Externer, read-only Sicherheitscheck.', 'Schriftliche Findings-Zusammenfassung.', 'Empfohlene n\u00e4chste Schritte.'],
-      cta: 'Kostenlose Pr\u00fcfung starten',
+      cta: 'Quick Check starten',
     },
     managedSoc: {
       eyebrow: 'Managed SOC · Enterprise',
       heading: 'Ihre ausgelagerte Sicherheitsabteilung',
       text: 'Für Unternehmen ohne eigene Sicherheitskapazität übernehmen wir Ihr komplettes Security Operations Center, mit allem aus Business. Wir überwachen rund um die Uhr, reagieren im Ernstfall binnen einer Stunde und beheben den Fund innerhalb von 24 Stunden selbst, bis in den Code.',
-      points: ['Überwachung rund um die Uhr, 24/7', 'Incident Response binnen 1 Stunde', 'Behebung innerhalb von 24 Stunden, bis in den Code', 'Ein festes Team als Ihre Sicherheitsabteilung', 'Individuelle Oberflächen, MSP und Multi-Tenant', 'White-Label und vereinbarte SLAs'],
+      points: ['Überwachung rund um die Uhr, 24/7', 'Incident Response binnen 1 Stunde', 'Fix binnen 24 Stunden, bis in den Code', 'Ein festes Team als Ihre Sicherheitsabteilung', 'Individuelle Oberflächen, MSP und Multi-Tenant', 'White-Label und vereinbarte SLAs'],
       price: 'Preis nach Umfang, schriftlich angeboten.',
       cta: 'Managed SOC anfragen',
     },
@@ -1155,7 +1155,7 @@ export const DE: Content = {
       },
       company: {
         heading: 'Unternehmen',
-        links: { freeCheck: 'Gratis-Check', pricing: 'Preise', team: 'Team', careers: 'Karriere', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube' },
+        links: { freeCheck: 'Quick Check', pricing: 'Preise', team: 'Team', careers: 'Karriere', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube' },
       },
       research: {
         heading: 'Forschung',
