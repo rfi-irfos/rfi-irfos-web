@@ -175,7 +175,7 @@ export const EN = {
     // searcher nothing about what the page IS. Search-facing copy only - visible page text unchanged.
     seoTitle: 'App Privacy & Security Audit Reports · RFI-IRFOS',
     seoDescription: 'Public ledger of evidence-based GDPR and security audit reports on Android apps: trackers, SDKs, permissions, hardcoded keys, pre-consent tracking.',
-    paragraph: 'On behalf of our research partners, we investigate publicly distributed Android and iOS apps: we decompile them, follow their code and data flows, and trace every connection to the servers it reaches. Hundreds of specialised agents work through each app and join the technical evidence into one picture, which our specialists then review and verify.',
+    paragraph: 'On behalf of our research partners, we investigate publicly distributed Android and iOS apps: we decompile them, follow their code and data flows, and trace every connection to the servers it reaches. Hundreds of agents work through each app and join the technical evidence into one picture, which our specialists then review and verify.',
     follow: { freeCheck: 'Start the Quick Check for your own domain', label: ', or follow new investigations', feed: 'Atom feed' },
     focusBanner: (names: string) => `Showing the report for ${names}.`,
     showFullLedger: 'Show the full ledger',
