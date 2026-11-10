@@ -277,6 +277,8 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
   preload(heroGrazSatellite, { as: 'image', fetchPriority: 'high', media: '(min-width: 768px)' })
   return (
     <section style={{
+      // Hero bleibt in Archivo (Simeon 10.11.2026), der Rest der Seite läuft in Plus Jakarta Sans
+      fontFamily: "'Archivo', system-ui, sans-serif",
       display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden',
       // minHeight keeps the hero at its pre-2026-10-10 size (live: 551px at 2133x964) now that the KPI row is gone, then trimmed 64px (~1.7cm) off the bottom, and another ~36px on 2026-11-01.
       minHeight: 'clamp(300px, calc(57vh - 190px), 500px)',
