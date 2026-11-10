@@ -919,7 +919,7 @@ export const EN = {
   worldModel: {
     eyebrow: 'DINGIR',
     heading: 'A continuously growing world model',
-    intro: 'DINGIR (Dynamic Interaction Network & Graph Intelligence Runtime) connects historical and real-time observations across more than 20 domains into one living, causally structured world graph. Not just a data store: a system that tracks how things relate, notices what changes, and reasons about what that change touches next.',
+    intro: 'DINGIR (Dynamic Interaction Network & Graph Intelligence Runtime) connects historical and real-time observations across more than 20 domains into one living, causally structured world graph. A system that tracks how things relate, notices what changes, and reasons about what that change touches next.',
     apiCta: 'Request API access →', squadLinkLabel: 'The Squad →',
     liveStatus: 'Live system active',
     liveStatusFallback: 'Example data (live feed not reachable)',
@@ -988,7 +988,7 @@ export const EN = {
   squad: {
     heading: 'The Squad',
     subheading: 'Specialized agents. For every kind of work.',
-    intro: 'Each agent is built around one clear responsibility: market intelligence, funding research, evidence verification, delivery checks, visibility, security. Run a single agent against one problem, or combine them into a pipeline for the whole question. The entire pipeline runs on our own server in Graz.',
+    intro: 'Each of them is built around one clear responsibility: market intelligence, funding research, evidence verification, delivery checks, visibility, security. Run a single agent against one problem, or combine them into a pipeline for the whole question. The entire pipeline runs on our own server in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'See which agent fits your problem →',
