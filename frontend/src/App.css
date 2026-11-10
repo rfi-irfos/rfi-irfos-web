@@ -5,7 +5,7 @@
    frame, and a global `smooth` here would re-animate each of those frames and
    fight the accelerator (janky / rubber-banding scroll). In-page anchor jumps
    request `behavior: 'smooth'` explicitly where they want it. */
-body { font-family: var(--font, 'Archivo', system-ui, sans-serif); }
+body { font-family: var(--font, 'Plus Jakarta Sans', system-ui, sans-serif); }
 a { text-decoration: none; color: inherit; }
 img { max-width: 100%; display: block; }
 button { cursor: pointer; font-family: inherit; }
@@ -114,7 +114,7 @@ button { cursor: pointer; font-family: inherit; }
 .data-hero h1 { margin: 0; text-align: center; }
 .data-section h2, .data-experts h2 { margin: 0; text-align: center; }
 .data-lede { max-width: 680px; margin: 16px auto 0; color: var(--text2); font-size: var(--fs-lead); line-height: var(--lh-body); }
-.data-cta { margin-top: 28px; padding: 13px 21px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: var(--on-primary, #07110e); font-family: 'Archivo', system-ui, sans-serif; font-size: var(--fs-body); line-height: var(--lh-tight); font-weight: 700; letter-spacing: 0; cursor: pointer; box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 18%, transparent); transition: transform .2s, box-shadow .2s; }
+.data-cta { margin-top: 28px; padding: 13px 21px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: var(--on-primary, #07110e); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: var(--fs-body); line-height: var(--lh-tight); font-weight: 700; letter-spacing: 0; cursor: pointer; box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 18%, transparent); transition: transform .2s, box-shadow .2s; }
 .data-cta:hover { transform: translateY(-2px); box-shadow: 0 0 34px color-mix(in srgb, var(--accent) 30%, transparent); }
 .data-section { padding: 72px 0; }
 .data-section:nth-of-type(even) {
@@ -315,9 +315,9 @@ button { cursor: pointer; font-family: inherit; }
    buttons is gone, so the buttons close the text block and it centres exactly
    against the film (.wm-hero align-items: center). */
 .wm-hero-ctas { display: flex; gap: 12px; margin-bottom: 0; flex-wrap: wrap; }
-.wm-btn-primary { padding: 12px 24px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: var(--on-primary, #07110e); font-family: 'Archivo', system-ui, sans-serif; font-size: var(--fs-body); font-weight: 700; cursor: pointer; box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 18%, transparent); transition: transform .2s, box-shadow .2s; }
+.wm-btn-primary { padding: 12px 24px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: var(--on-primary, #07110e); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: var(--fs-body); font-weight: 700; cursor: pointer; box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 18%, transparent); transition: transform .2s, box-shadow .2s; }
 .wm-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 34px color-mix(in srgb, var(--accent) 30%, transparent); }
-.wm-btn-secondary { padding: 12px 24px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text); font-family: 'Archivo', system-ui, sans-serif; font-size: var(--fs-body); font-weight: 700; cursor: pointer; transition: border-color .2s, background .2s; }
+.wm-btn-secondary { padding: 12px 24px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: var(--fs-body); font-weight: 700; cursor: pointer; transition: border-color .2s, background .2s; }
 .wm-btn-secondary:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); }
 .wm-live-status { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; color: var(--text2); }
 .wm-live-dot { width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; animation: wm-pulse 2s infinite; }
@@ -363,7 +363,7 @@ button { cursor: pointer; font-family: inherit; }
 .wm-stats-grid--attached { margin-top: 6px; }
 .wm-stat { padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 8px; min-height: 132px; height: 100%; box-sizing: border-box; }
 .wm-stat-label { font-size: 9.5px; font-weight: 700; color: var(--text2); }
-/* Site's own real body/heading font (Archivo/system-ui), NOT a monospace swap
+/* Site's own real body/heading font (Plus Jakarta Sans/system-ui), NOT a monospace swap
    - only tabular-nums for column alignment, the same distinction Lighthouse's
    own design system draws (".mono class = tabular-nums ONLY... does NOT
    change the font family"). Live feedback 2026-08-31: this page's type read

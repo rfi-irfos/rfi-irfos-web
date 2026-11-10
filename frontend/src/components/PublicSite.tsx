@@ -1200,7 +1200,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       // clips the same way `hidden` does but isn't a scrolling mechanism, so
       // it doesn't trigger the overflow-y auto-computation at all.
       position: 'relative', zIndex: 0,
-      color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', overflowX: 'clip' }}>
+      color: 'var(--text)', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", minHeight: '100vh', overflowX: 'clip' }}>
 
       {/* Photo backdrop, on its own layer (live feedback 2026-08-14: "it takes too
           much attention, like a drummer overshadowing the band, not carrying it" -

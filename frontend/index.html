@@ -32,23 +32,23 @@
     <!-- First fix attempt (2026-08-27, superseded below) assumed weight 400 vs 900
          were separate font files fetched on demand, and tried to race a small
          dedicated stylesheet request ahead of the full-range one. Checked the real
-         Google Fonts CSS response directly (`curl .../css2?family=Archivo:wght@400;900`)
+         Google Fonts CSS response directly (`curl .../css2?family=Plus+Jakarta+Sans:wght@200..800`)
          and both weights' latin @font-face rules point at the exact same woff2 URL -
-         Archivo is served as one variable font file covering the whole range, so
+         Plus Jakarta Sans is served as one variable font file covering the whole range, so
          there's no separate "weight 900" fetch to race. The dedicated stylesheet link
          was therefore a no-op, confirmed by live feedback the swap still happened.
          The real bottleneck is almost certainly contention: this font file competes
          for bandwidth with the homepage's hero images (several 2-3MB PNGs), so on a
          first/cold load it can lose out and finish downloading a couple of seconds
          after first paint - the browser renders a fallback font until then per
-         `display=swap`, and the swap to real Archivo shifts line-height/baseline
+         `display=swap`, and the swap to real Plus Jakarta Sans shifts line-height/baseline
          slightly (live feedback: headline text "greying out and dropping a bit a
          few seconds after load"). A real `rel=preload` for the actual font file
          gives it top fetch priority regardless of what else is competing, which a
          second <link rel=stylesheet> never did - that only affects when the browser
          discovers the file is needed, not the priority it fetches it at. -->
     <link rel="preload" as="font" type="font/woff2" crossorigin
-          href="/fonts/k3kPo8UDI-1M0wlSV9XAw6lQkqWY8Q82sLydOxI.woff2" />
+          href="/fonts/plus-jakarta-sans-latin.woff2" />
     <link href="/fonts/fonts.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />

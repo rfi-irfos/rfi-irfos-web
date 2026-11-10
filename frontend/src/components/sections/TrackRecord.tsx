@@ -2917,7 +2917,7 @@ export function TrackRecordSection({
                 background: 'rgba(0,245,196,0.04)',
                 border: searchQuery ? '1px solid rgba(0,245,196,0.55)' : '1px solid rgba(0,245,196,0.18)',
                 borderRadius: 7, padding: '13px 38px 13px 46px',
-                color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 'var(--fs-small)',
+                color: 'var(--text)', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSize: 'var(--fs-small)',
                 outline: 'none', transition: 'border-color 0.15s',
               }}
               onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,245,196,0.55)' }}

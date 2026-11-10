@@ -63,7 +63,7 @@ function cardData(slug) {
 }
 
 // --- Template ---------------------------------------------------------------------------------
-// Fonts (Archivo, JetBrains Mono) und Logo werden einmal als data-URI in die Seite gelegt; pro
+// Fonts (Plus Jakarta Sans, JetBrains Mono) und Logo werden einmal als data-URI in die Seite gelegt; pro
 // Bild wird nur der Text getauscht. Ein file://-Laden pro Bild scheitert an Cross-Origin für Fonts.
 const fontsCss = await readFile(join(ROOT, 'public/fonts/fonts.css'), 'utf8')
 const fontFiles = new Map()
@@ -81,7 +81,7 @@ const PAGE = `<!doctype html><html><head><meta charset="utf-8"><style>
 ${embeddedFonts}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:1200px;height:630px;overflow:hidden;background:#0b0d12}
-body{font-family:'Archivo',sans-serif;color:#f4f7fa;position:relative}
+body{font-family:'Plus Jakarta Sans',sans-serif;color:#f4f7fa;position:relative}
 .glow{position:absolute;inset:0;background:radial-gradient(900px 420px at 100% 0%,rgba(0,245,196,.16),transparent 70%)}
 .bar{position:absolute;left:0;top:0;bottom:0;width:10px;background:${TEAL}}
 .wrap{position:absolute;inset:0;padding:48px 64px 44px 72px;display:flex;flex-direction:column}

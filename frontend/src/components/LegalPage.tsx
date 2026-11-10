@@ -1,4 +1,4 @@
-const BASE = { background: '#070711', color: '#e8e8f0', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh', padding: '80px 2rem' }
+const BASE = { background: '#070711', color: '#e8e8f0', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", minHeight: '100vh', padding: '80px 2rem' }
 const PROSE = { maxWidth: 720, margin: '0 auto', lineHeight: 'var(--lh-body)' }
 const H1 = { fontSize: 'var(--fs-h2)', fontWeight: 900, marginBottom: 8, color: '#e8e8f0' }
 const H2: React.CSSProperties = { fontSize: 'var(--fs-small)', fontWeight: 700, marginTop: 32, marginBottom: 8, color: 'var(--accent-text)' }
