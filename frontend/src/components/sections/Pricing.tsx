@@ -42,7 +42,7 @@ import { EngagementFlow, Reveal, useMobile } from './shared'
 import { useLocale, type Locale } from '../../hooks/useLocale'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { useState } from 'react'
-import { IconRadar, IconBolt, IconCode, IconUsers, IconStack2, IconCertificate, IconListCheck } from '@tabler/icons-react'
+import { IconRadar, IconBolt, IconCode, IconUsers, IconStack2, IconCertificate, IconListCheck, IconLayoutDashboard } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { IconBulb, IconShieldLock, IconDatabase, IconTrendingUp, IconTerminal2 } from '@tabler/icons-react'
 
@@ -309,7 +309,7 @@ export function PricingSection({
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: tablet ? '1fr' : '1fr 1fr', gap: 12 }}>
                   {t.pricing.managedSoc.points.map((pt, i) => {
-                    const Icon = [IconRadar, IconBolt, IconCode, IconUsers, IconStack2, IconCertificate, IconListCheck][i] ?? IconRadar
+                    const Icon = [IconRadar, IconBolt, IconCode, IconUsers, IconStack2, IconCertificate, IconListCheck, IconLayoutDashboard][i] ?? IconRadar
                     return (
                       <div key={pt} className="fx-tile fx-tile--static" style={{ ['--tile-hue' as string]: 'var(--accent-text)', padding: '16px 16px', borderRadius: 14, display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                         <Icon size={22} stroke={1.6} style={{ color: 'var(--accent-text)', flexShrink: 0, marginTop: 1 }} />

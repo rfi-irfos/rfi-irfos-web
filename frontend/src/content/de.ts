@@ -246,7 +246,7 @@ export const DE: Content = {
   appPrivacy: {
     eyebrow: 'Was wir am besten können',
     heading: 'Human-Powered Multi-Agent Security Investigations',
-    paragraph: "Ausgewählte Agenten, die wir im eigenen Haus gebaut und trainiert haben, führen Tausende parallele Sicherheitstests aus, während unsere Fachleute Schwachstellen untersuchen, Angriffspfade nachverfolgen und Fixes bis in den Code entwickeln, für Unternehmen mit begrenzten eigenen Kapazitäten.",
+    paragraph: "Ausgewählte Agenten, die wir im eigenen Haus gebaut und trainiert haben, führen Tausende parallele Sicherheitstests aus, während unsere Fachleute Schwachstellen untersuchen, Angriffspfade nachverfolgen und Fixes bis in den Code entwickeln, für Startups und Unternehmen mit begrenzten eigenen Kapazitäten.",
     steps: [
       { title: 'Zugang teilen', text: 'Zeigen Sie uns Ihre Codebasis: ein GitHub- oder GitLab-Repository, ein Archiv, einen Build, eine API-Spezifikation oder eine Dev- oder Staging-Umgebung. Lesezugriff reicht.' },
       { title: 'Untersuchen', text: 'Unsere selbst gebauten Agenten führen Tausende parallele Tests über Code, Abhängigkeiten, APIs und Datenflüsse aus. Unser Team lenkt sie auf Ihr Produkt.' },
@@ -369,7 +369,7 @@ export const DE: Content = {
       eyebrow: 'Managed SOC · Startups bis Enterprise',
       heading: 'Ihre ausgelagerte Sicherheitsabteilung',
       text: 'Für Startups und Unternehmen ohne eigene Sicherheitskapazität übernehmen wir Ihr komplettes Security Operations Center, mit allem aus Business. Wir überwachen rund um die Uhr, reagieren im Ernstfall binnen einer Stunde und beheben den Fund innerhalb von 24 Stunden selbst, bis in den Code. Befunde und Nachweise sind den Kontrollen von NIS2, ISO 27001 und SOC 2 zugeordnet: Ihre Prüfstelle prüft, wir liefern die Belege.',
-      points: ['Überwachung rund um die Uhr, 24/7', 'Incident Response binnen 1 Stunde', 'Fix binnen 24 Stunden, bis in den Code', 'Ein festes Team als Ihre Sicherheitsabteilung', 'Individuelle Oberflächen, MSP und Multi-Tenant', 'White-Label und vereinbarte SLAs', 'Compliance-Automatisierung'],
+      points: ['Überwachung rund um die Uhr, 24/7', 'Incident Response binnen 1 Stunde', 'Fix binnen 24 Stunden, bis in den Code', 'Ein festes Team als Ihre Sicherheitsabteilung', 'Individuelle Oberflächen, MSP und Multi-Tenant', 'White-Label und vereinbarte SLAs', 'Compliance-Automatisierung', 'Kundenportal mit Ihrem SOC-Dashboard'],
       price: 'Preis nach Umfang, schriftlich angeboten.',
       cta: 'Managed SOC anfragen',
     },

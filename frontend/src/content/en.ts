@@ -267,7 +267,7 @@ export const EN = {
   appPrivacy: {
     eyebrow: 'What we do best',
     heading: 'Human-Powered Multi-Agent Security Investigations',
-    paragraph: "Selected agents that we built and trained in-house execute thousands of parallel security tests, while our specialists investigate vulnerabilities, trace attack paths and engineer fixes down to the code for companies with limited in-house capacity.",
+    paragraph: "Selected agents that we built and trained in-house execute thousands of parallel security tests, while our specialists investigate vulnerabilities, trace attack paths and engineer fixes down to the code for startups and companies with limited in-house capacity.",
     steps: [
       { title: 'Share access', text: 'Point us to your codebase: a GitHub or GitLab repository, an archive, a build, an API specification or a dev or staging environment. Read access is enough.' },
       { title: 'Investigate', text: 'Our in-house agents run thousands of parallel tests across code, dependencies, APIs and data flows. Our team steers them toward your product.' },
@@ -390,7 +390,7 @@ export const EN = {
       eyebrow: 'Managed SOC · Startups to Enterprise',
       heading: 'Your outsourced security department',
       text: 'For startups and companies without in-house security capacity, we run your entire security operations center, with everything in Business. We monitor around the clock, respond to incidents within one hour and fix the finding ourselves within 24 hours, down to the code. Findings and evidence are mapped to the controls of NIS2, ISO 27001 and SOC 2: your auditor audits, we deliver the evidence.',
-      points: ['Monitoring around the clock, 24/7', 'Incident response within 1 hour', 'Fix within 24 hours, down to the code', 'One dedicated team as your security department', 'Custom surfaces, MSP and multi-tenant', 'White-label and agreed SLAs', 'Compliance automation'],
+      points: ['Monitoring around the clock, 24/7', 'Incident response within 1 hour', 'Fix within 24 hours, down to the code', 'One dedicated team as your security department', 'Custom surfaces, MSP and multi-tenant', 'White-label and agreed SLAs', 'Compliance automation', 'Customer portal with your SOC dashboard'],
       price: 'Priced by scope, offered in writing.',
       cta: 'Request Managed SOC',
     },
