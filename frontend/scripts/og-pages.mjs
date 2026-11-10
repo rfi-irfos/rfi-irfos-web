@@ -5,7 +5,7 @@
 // two can't disagree about which pages have a card. The homepage keeps its designed card.
 export const OG_PAGE_ROUTES = [
   '/squad', '/access', '/evidence', '/world-model', '/data-solutions', '/methodology', '/standards', '/faq', '/team',
-  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check', '/ai-app-privacy-audit', '/managed-soc', '/compliance-automation', '/domain-security-test',
+  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check', '/ai-app-privacy-audit', '/managed-soc', '/compliance-automation', '/domain-security-test', '/penetration-testing', '/api-security-testing', '/cloud-security-assessment', '/secure-code-review',
 ]
 
 // '/de/access' -> 'page-de-access', '/squad' -> 'page-squad'

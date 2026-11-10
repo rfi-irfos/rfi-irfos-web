@@ -37,7 +37,9 @@ Allow: /
 #   /team/            who we are.
 #   /app-security-audit/, /gdpr-app-audit/, /nis2-software-vendors/,
 #   /app-tracker-sdk-check/, /managed-soc/, /compliance-automation/,
-#   /domain-security-test/   what an audit or service covers, by topic (also under /de/).
+#   /domain-security-test/, /penetration-testing/, /api-security-testing/,
+#   /cloud-security-assessment/, /secure-code-review/   what an audit or service
+#   covers, by topic (also under /de/).
 # The homepage itself covers the 8 research domains this institute works
 # across and how to submit a finding or request an audit.
 # /track-record/, /pricing/, /datasets/, /research/, and /submit/ are older

@@ -20,6 +20,10 @@ const ICONS: Record<LandingSlug, typeof IconShieldCheck> = {
   'managed-soc': IconHeadset,
   'compliance-automation': IconListCheck,
   'domain-security-test': IconWorldSearch,
+  'penetration-testing': IconShieldCheck,
+  'api-security-testing': IconShieldCheck,
+  'cloud-security-assessment': IconShieldCheck,
+  'secure-code-review': IconShieldCheck,
 }
 
 const KEYS = {
@@ -27,6 +31,8 @@ const KEYS = {
   'nis2-software-vendors': 'nis2', 'app-tracker-sdk-check': 'trackerSdk',
   'ai-app-privacy-audit': 'aiApp', 'managed-soc': 'managedSoc',
   'compliance-automation': 'compliance', 'domain-security-test': 'domainCheck',
+  'penetration-testing': 'pentest', 'api-security-testing': 'apiSecurity',
+  'cloud-security-assessment': 'cloud', 'secure-code-review': 'codeReview',
 } as const
 
 // Simeon 2026-11-10: five pills, not one per landing page. App security and the GDPR app audit

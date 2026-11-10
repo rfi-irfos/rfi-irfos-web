@@ -348,7 +348,7 @@ export const EN = {
         cta: 'Get an intelligence briefing \u2192', delivery: 'Delivered within 10 business days.' },
       { name: 'Security',
         badge: 'Root-level investigation \u00b7 red teaming \u00b7 adversarial testing',
-        scope: 'Root-level security investigation, cyberdefense, red teaming, penetration testing, vulnerability research, attack-surface analysis, data-flow reconstruction, privacy analysis and adversarial testing.',
+        scope: 'Root-level security investigation, penetration testing of web applications, mobile apps (Android and iOS), APIs (REST and GraphQL), cloud environments (AWS and Azure) and infrastructure, secure code review, cyberdefense, red teaming, vulnerability research, attack-surface analysis, data-flow reconstruction, privacy analysis and adversarial testing.',
         bring: 'An application, binary, API, backend, cloud environment, infrastructure, vendor or cybersecurity claim that needs to be tested against reality.',
         we: 'Go below the documentation. We inspect implementations, decompile where necessary, trace data flows and trust boundaries, reconstruct attack paths and test the assumptions your existing security picture depends on. Our investigations can span application code, mobile systems, APIs, cloud infrastructure, authentication, third-party dependencies and external attack surface.',
         receive: 'A technically evidenced picture of what the system actually does, where it can fail or be abused, how an attacker could move through it, what the consequences are and which findings actually matter for your security posture.',
@@ -376,13 +376,13 @@ export const EN = {
         cta: 'Request an engineering review \u2192', delivery: 'Delivered depending on scope.' },
     ],
     tiers: [
-      { name: 'Starter', price: '\u20ac99', tagline: 'Find weaknesses. Get evidence. Know what to fix.', features: ['One focused vulnerability hunt per month.', 'Verified weak spots with proof of concept.', 'Evidence-backed PDF report.', 'Severity and remediation guidance.', 'Free retest of fixed findings.'], cta: 'Choose Starter', stripeKey: 'review_starter' },
-      { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Regular vulnerability hunts on your application.', features: ['Scheduled security re-examinations.', 'One application or API in scope.', 'Verified vulnerabilities with proof of concept.', 'Concrete fixes engineered down to the affected code.', 'Unlimited retesting within scope.', 'Ongoing findings and remediation history.'], cta: 'Choose Growth', stripeKey: 'review_growth' },
-      { name: 'Pro', price: '\u20ac799', tagline: 'Extend security coverage across your products.', features: ['Everything in Growth.', 'Up to three websites, applications or APIs.', 'Consistent reviews across every surface.', 'Priority review scheduling.', 'Consolidated findings and fix tracking.'], cta: 'Choose Pro', stripeKey: 'review_pro' },
-      { name: 'Business', price: '\u20ac1,999', tagline: 'Coordinate security across your application portfolio.', features: ['Everything in Pro.', 'Up to ten websites, applications or APIs.', 'Dedicated customer communication channel.', 'Coordinated remediation follow-up.', 'Portfolio-wide findings overview.'], cta: 'Choose Business', stripeKey: 'review_business' },
+      { name: 'Starter', price: '\u20ac99', tagline: 'One focused hunt per month on your web app, mobile app or API: verified weak spots with proof of concept and a clear list of what to fix.', features: ['One focused vulnerability hunt per month.', 'Verified weak spots with proof of concept.', 'Evidence-backed PDF report.', 'Severity and remediation guidance.', 'Free retest of fixed findings.'], cta: 'Choose Starter', stripeKey: 'review_starter' },
+      { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Regular penetration testing of your application or API, with the fixes engineered down to the code. Built for companies still building their security team.', features: ['Scheduled security re-examinations.', 'One application or API in scope.', 'Verified vulnerabilities with proof of concept.', 'Concrete fixes engineered down to the affected code.', 'Unlimited retesting within scope.', 'Ongoing findings and remediation history.'], cta: 'Choose Growth', stripeKey: 'review_growth' },
+      { name: 'Pro', price: '\u20ac799', tagline: 'One rhythm for up to three websites, apps or APIs, from web and API penetration testing to a single view of every finding and fix.', features: ['Everything in Growth.', 'Up to three websites, applications or APIs.', 'Consistent reviews across every surface.', 'Priority review scheduling.', 'Consolidated findings and fix tracking.'], cta: 'Choose Pro', stripeKey: 'review_pro' },
+      { name: 'Business', price: '\u20ac1,999', tagline: 'Security for your whole portfolio, up to ten surfaces: a dedicated channel, coordinated fixes and one overview for management and auditors.', features: ['Everything in Pro.', 'Up to ten websites, applications or APIs.', 'Dedicated customer communication channel.', 'Coordinated remediation follow-up.', 'Portfolio-wide findings overview.'], cta: 'Choose Business', stripeKey: 'review_business' },
     ],
     freeCard: {
-      label: 'Quick Check', price: '\u20ac0', tagline: 'See what is exposed from the outside.',
+      label: 'Quick Check', price: '\u20ac0', tagline: 'See what an attacker sees of your company from the outside, from domain and e-mail protection to certificates, checked by a person.',
       features: ['One website or application.', 'External, read-only security check.', 'Written findings summary.', 'Recommended next steps.'],
       cta: 'Start the Quick Check',
     },
@@ -1196,7 +1196,7 @@ export const EN = {
       // Footer column linking the four search landing pages (2026-10-31) from every public view.
       services: {
         heading: 'Services',
-        links: { appSecurityAudit: 'App Security Audit', gdprAppAudit: 'GDPR App Audit', nis2: 'NIS2 for Software Vendors', trackerSdk: 'Tracker & SDK Check', aiApp: 'AI App Privacy Audit', managedSoc: 'Outsourced SOC', compliance: 'Compliance Automation', domainCheck: 'Domain Security Test', dataSolutions: 'Data Solutions' },
+        links: { appSecurityAudit: 'App Security Audit', gdprAppAudit: 'GDPR App Audit', nis2: 'NIS2 for Software Vendors', trackerSdk: 'Tracker & SDK Check', aiApp: 'AI App Privacy Audit', managedSoc: 'Outsourced SOC', compliance: 'Compliance Automation', domainCheck: 'Domain Security Test', pentest: 'Penetration Testing', apiSecurity: 'API Security Testing', cloud: 'Cloud Security Assessment', codeReview: 'Secure Code Review', dataSolutions: 'Data Solutions' },
       },
     },
     socialAria: 'Social media profiles',

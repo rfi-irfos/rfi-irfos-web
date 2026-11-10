@@ -25,6 +25,10 @@ The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Ja
 - [Managed SOC](https://rfi-irfos.com/managed-soc/): outsourced security operations center for startups up to enterprise - monitoring around the clock, incident response within one hour, fix within 24 hours down to the code (German: /de/managed-soc/).
 - [Compliance automation](https://rfi-irfos.com/compliance-automation/): findings and evidence mapped to NIS2, ISO 27001 and SOC 2 controls, delivered to your auditor; no certificate issued by us (German: /de/compliance-automation/).
 - [Domain Security Test](https://rfi-irfos.com/domain-security-test/): external, read-only test of a domain - DNS, TLS, e-mail protection and security headers, reviewed by a person, written report (German: /de/domain-security-test/).
+- [Penetration testing](https://rfi-irfos.com/penetration-testing/): penetration testing of web apps, mobile apps, APIs, cloud and infrastructure; agents test in parallel, specialists verify, fixes down to the code (German: /de/penetration-testing/).
+- [API security testing](https://rfi-irfos.com/api-security-testing/): REST and GraphQL, authentication, authorization and attack surface, every finding verified (German: /de/api-security-testing/).
+- [Cloud security assessment](https://rfi-irfos.com/cloud-security-assessment/): AWS and Azure misconfigurations, vulnerabilities and external attack surface (German: /de/cloud-security-assessment/).
+- [Secure code review](https://rfi-irfos.com/secure-code-review/): source code and shipped-build vulnerability analysis with fixes engineered into the code (German: /de/secure-code-review/).
 
 ## How it works
 
