@@ -1160,11 +1160,11 @@ export const DE: Content = {
       },
       research: {
         heading: 'Forschung',
-        links: { research: 'Forschung', trackRecord: 'Evidenz', methodology: 'Methodik', dataSolutions: 'Data Solutions', humanRights: 'Menschenrechts-Ledger', albert: 'albert. 3D-Explorer' },
+        links: { research: 'Forschung', trackRecord: 'Evidenz', methodology: 'Methodik', humanRights: 'Menschenrechts-Ledger', albert: 'albert. 3D-Explorer' },
       },
       services: {
         heading: 'Leistungen',
-        links: { appSecurityAudit: 'App-Sicherheitsprüfung', gdprAppAudit: 'DSGVO-Prüfung für Apps', nis2: 'NIS2 für Softwareanbieter', trackerSdk: 'Tracker- & SDK-Check', aiApp: 'Datenschutz-Audit für KI-Apps' },
+        links: { appSecurityAudit: 'App-Sicherheitsprüfung', gdprAppAudit: 'DSGVO-Prüfung für Apps', nis2: 'NIS2 für Softwareanbieter', trackerSdk: 'Tracker- & SDK-Check', aiApp: 'Datenschutz-Audit für KI-Apps', dataSolutions: 'Data Solutions' },
       },
     },
     copyright: '© 2026 RFI-IRFOS  ·  Graz, Österreich  ·  GISA 39261441  ·  UID ATU83405245',

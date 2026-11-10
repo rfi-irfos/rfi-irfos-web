@@ -830,6 +830,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       { label: t.footer.groups.services.links.nis2, href: `${servicesPrefix}/nis2-software-vendors/` },
       { label: t.footer.groups.services.links.trackerSdk, href: `${servicesPrefix}/app-tracker-sdk-check/` },
       { label: t.footer.groups.services.links.aiApp, href: `${servicesPrefix}/ai-app-privacy-audit/` },
+      { label: t.footer.groups.services.links.dataSolutions, href: '/data-solutions/' },
     ],
   }
 
@@ -1765,7 +1766,6 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                     { label: t.footer.groups.research.links.research, href: '/#research' },
                     { label: t.footer.groups.research.links.trackRecord, href: '/evidence/' },
                     { label: t.footer.groups.research.links.methodology, href: '/methodology/' },
-                    { label: t.footer.groups.research.links.dataSolutions, href: '/data-solutions/' },
                     // Lighthouse round 56 (2026-10-31): /humanrights/ sat in the sitemap with
                     // zero internal links pointing at it, the only orphan among 284 URLs.
                     { label: t.footer.groups.research.links.humanRights, href: '/humanrights/' },
