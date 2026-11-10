@@ -10,8 +10,10 @@ import type { Content } from './en'
 
 export const DE: Content = {
   meta: {
-    title: 'RFI-IRFOS: Agenten-Teams prüfen parallel, Menschen entscheiden',
-    description: 'The Squad untersucht Apps und Software mit einem Agenten-Team, geführt und geprüft von Menschen. Forschungsinstitut in Graz mit öffentlichem Ledger.',
+    // 2026-11-10 (Simeon: Snippet muss auf den ersten Blick verständlich sein): Suchwort im Titel,
+    // Agenten + Fachleute, Zielgruppensatz. Titel <= 60, Beschreibung 120-155 Zeichen.
+    title: 'Sicherheitslücken finden und beheben | RFI-IRFOS Graz',
+    description: 'Agenten suchen Schwachstellen in Apps und Software, Fachleute prüfen und beheben sie bis in den Code. Für Unternehmen mit begrenzten eigenen Kapazitäten.',
     dataSolutions: {
       title: 'Evaluationsdaten & Safety-Datensätze für Agenten · RFI-IRFOS',
       description: 'Reproduzierbare Umgebungen, Experten-Trajektorien, Evaluationsdatensätze und Safety-Daten zum Trainieren und Testen von KI-Agenten.',
@@ -249,7 +251,7 @@ export const DE: Content = {
       { title: 'Zugang teilen', text: 'Zeigen Sie uns Ihre Codebasis: ein GitHub- oder GitLab-Repository, ein Archiv, einen Build, eine API-Spezifikation oder eine Dev- oder Staging-Umgebung. Lesezugriff reicht.' },
       { title: 'Untersuchen', text: 'Unsere selbst gebauten Agenten führen Tausende parallele Tests über Code, Abhängigkeiten, APIs und Datenflüsse aus. Unser Team lenkt sie auf Ihr Produkt.' },
       { title: 'Prüfen & Fixen', text: 'Unsere Fachleute prüfen jeden Fund und trennen echtes Risiko von Fehlalarmen. Dann entwickeln wir den Fix bis in den Code, wo möglich direkt anwendbar.' },
-      { title: 'Übergabe', text: 'Ein belegter Bericht mit jeder Schwachstelle, Schweregrad, Angriffspfad und Fix, dazu ein exportierbarer Knowledge Graph für Ihre eigenen Systeme.' },
+      { title: 'Übergabe', text: 'Ein belegter Bericht mit jeder Schwachstelle, Schweregrad, Angriffspfad und Fix, dazu ein exportierbarer Knowledge Graph und Ihr Dashboard im Kundenportal.' },
     ],
     scopeLabel: 'Das prüfen wir',
       evidenceLabel: 'Das bekommen Sie',
@@ -279,7 +281,7 @@ export const DE: Content = {
     ],
     evidenceHeading: 'Unsere Forschung ist öffentlich. Unsere Methodik ist nachprüfbar.',
     evidenceCta: 'Evidence Ledger ansehen →',
-    topics: { label: 'Was wir prüfen:', close: 'Schließen', startCheck: 'Quick Check starten', fullPage: 'Ganze Seite öffnen' },
+    topics: { label: 'Was wir prüfen:', appAndGdpr: 'App-Sicherheit & DSGVO', close: 'Schließen', startCheck: 'Quick Check starten', fullPage: 'Ganze Seite öffnen' },
     cta: 'Erstprüfung anfragen',
   },
 
@@ -364,10 +366,10 @@ export const DE: Content = {
       cta: 'Quick Check starten',
     },
     managedSoc: {
-      eyebrow: 'Managed SOC · Enterprise',
+      eyebrow: 'Managed SOC · Startups bis Enterprise',
       heading: 'Ihre ausgelagerte Sicherheitsabteilung',
-      text: 'Für Unternehmen ohne eigene Sicherheitskapazität übernehmen wir Ihr komplettes Security Operations Center, mit allem aus Business. Wir überwachen rund um die Uhr, reagieren im Ernstfall binnen einer Stunde und beheben den Fund innerhalb von 24 Stunden selbst, bis in den Code.',
-      points: ['Überwachung rund um die Uhr, 24/7', 'Incident Response binnen 1 Stunde', 'Fix binnen 24 Stunden, bis in den Code', 'Ein festes Team als Ihre Sicherheitsabteilung', 'Individuelle Oberflächen, MSP und Multi-Tenant', 'White-Label und vereinbarte SLAs'],
+      text: 'Für Startups und Unternehmen ohne eigene Sicherheitskapazität übernehmen wir Ihr komplettes Security Operations Center, mit allem aus Business. Wir überwachen rund um die Uhr, reagieren im Ernstfall binnen einer Stunde und beheben den Fund innerhalb von 24 Stunden selbst, bis in den Code. Befunde und Nachweise sind den Kontrollen von NIS2, ISO 27001 und SOC 2 zugeordnet: Ihre Prüfstelle prüft, wir liefern die Belege.',
+      points: ['Überwachung rund um die Uhr, 24/7', 'Incident Response binnen 1 Stunde', 'Fix binnen 24 Stunden, bis in den Code', 'Ein festes Team als Ihre Sicherheitsabteilung', 'Individuelle Oberflächen, MSP und Multi-Tenant', 'White-Label und vereinbarte SLAs', 'Compliance-Automatisierung'],
       price: 'Preis nach Umfang, schriftlich angeboten.',
       cta: 'Managed SOC anfragen',
     },
@@ -1047,7 +1049,7 @@ export const DE: Content = {
     howItConnects: {
       eyebrow: 'Integration',
       heading: 'So bindet sich The Squad ein',
-      sub: 'Fünf Schritte von einem rohen Signal in Ihren Systemen bis zur geprüften Handlung, der Sie vertrauen können.',
+      sub: 'Sie geben uns Zugriff, unsere Agenten suchen Schwachstellen, Fachleute prüfen und beheben sie bis in den Code. Das Ergebnis landet bei Ihrem Team.',
       feedbackLabel: 'Feedback & aktualisierter Kontext',
       zones: [
         { label: 'Ihre Systeme', steps: [
@@ -1156,7 +1158,7 @@ export const DE: Content = {
       },
       company: {
         heading: 'Unternehmen',
-        links: { freeCheck: 'Quick Check', pricing: 'Preise', team: 'Team', careers: 'Karriere', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube' },
+        links: { freeCheck: 'Quick Check', pricing: 'Preise', team: 'Team', careers: 'Karriere', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok' },
       },
       research: {
         heading: 'Forschung',
@@ -1164,9 +1166,10 @@ export const DE: Content = {
       },
       services: {
         heading: 'Leistungen',
-        links: { appSecurityAudit: 'App-Sicherheitsprüfung', gdprAppAudit: 'DSGVO-Prüfung für Apps', nis2: 'NIS2 für Softwareanbieter', trackerSdk: 'Tracker- & SDK-Check', aiApp: 'Datenschutz-Audit für KI-Apps', dataSolutions: 'Data Solutions' },
+        links: { appSecurityAudit: 'App-Sicherheitsprüfung', gdprAppAudit: 'DSGVO-Prüfung für Apps', nis2: 'NIS2 für Softwareanbieter', trackerSdk: 'Tracker- & SDK-Check', aiApp: 'Datenschutz-Audit für KI-Apps', managedSoc: 'Ausgelagertes SOC', compliance: 'Compliance-Automatisierung', domainCheck: 'Domain Security Test', dataSolutions: 'Data Solutions' },
       },
     },
+    socialAria: 'Social-Media-Profile',
     copyright: '© 2026 RFI-IRFOS  ·  Graz, Österreich  ·  GISA 39261441  ·  UID ATU83405245',
   },
 

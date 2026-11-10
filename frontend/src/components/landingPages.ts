@@ -709,6 +709,332 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       ],
     },
   },
+  'managed-soc': {
+    en: {
+      title: 'Managed SOC for Startups to Enterprise · RFI-IRFOS',
+      description: 'Outsourced security operations center: 24/7 monitoring, incident response within one hour, fixes within 24 hours down to the code. From RFI-IRFOS in Graz.',
+      label: 'Outsourced SOC',
+      h1: 'Managed SOC: your outsourced security department',
+      lead: 'Startups and companies without in-house security capacity hand us their security operations center. We monitor around the clock, respond to incidents within one hour and fix the finding ourselves within 24 hours, down to the code. One dedicated team works as your security department.',
+      sections: [
+        {
+          h2: 'What the Managed SOC includes',
+          p: [
+            'The Managed SOC covers everything in the Business plan and adds continuous operation. Agents we built ourselves watch your systems. Human specialists check every finding before it reaches you.',
+          ],
+          ul: [
+            'Monitoring around the clock, 24/7.',
+            'Incident response within 1 hour.',
+            'Fix within 24 hours, down to the code.',
+            'One dedicated team as your security department.',
+            'Custom surfaces for MSP and multi-tenant setups.',
+            'White-label delivery and agreed SLAs.',
+            'Compliance automation for your auditor (see the Compliance Automation page).',
+          ],
+        },
+        {
+          h2: 'Who it is for',
+          p: [
+            'The offer fits startups that sell to larger customers and receive security questionnaires. It fits growing companies that have no security team yet, and enterprises that want an additional team on call. Managed service providers can run it with their own surfaces and their own branding.',
+            'The name Managed SOC describes a service. It has no connection to the SOC 2 audit standard, which the Compliance Automation page explains.',
+          ],
+        },
+        {
+          h2: 'How a SOC engagement starts',
+          p: [
+            'Every engagement begins with a look at your public attack surface, so scope and price rest on facts. The Domain Security Test is that first look. Prices depend on scope and are offered in writing.',
+          ],
+        },
+      ],
+      evidenceH2: 'Evidence from audited software',
+      evidenceIntro: 'The public ledger lists {apps}+ audited apps and {critical}+ critical findings. These full reports show how we document what we find:',
+      evidence: [
+        { slug: 'sap', label: 'SAP', note: 'A Chinese push SDK in a field-service app, and Firebase keys hardcoded across five apps.' },
+        { slug: 'nike', label: 'Nike', note: 'Development and production push credentials hardcoded in the shipped build.' },
+        { slug: 'strava', label: 'Strava', note: 'A hardcoded key and a security configuration that protects nothing.' },
+        { slug: 'revolut', label: 'Revolut', note: 'The largest third-party SDK in the series and what it sends to a US company.' },
+      ],
+      startH2: 'Start with the Domain Security Test',
+      startText: [
+        'The Domain Security Test examines one domain from the outside: read-only, from a European IP address, with no login and no payloads. A researcher reviews your request and replies within one business day.',
+        'To request a Managed SOC, use the Managed SOC card on the Access page.',
+      ],
+      faqH2: 'Questions about the Managed SOC',
+      faq: [
+        ['What does the Managed SOC cost?', 'The price depends on scope and is offered in writing.'],
+        ['Who fixes the findings?', 'We do. The fix comes within 24 hours and reaches down to the code.'],
+        ['Does the Managed SOC replace our own security team?', 'It can serve as your security department, or work next to a team you already have.'],
+        ['Is the Managed SOC the same as SOC 2?', 'The two are different things. The Managed SOC is a service we run for you. SOC 2 is an audit standard.'],
+      ],
+    },
+    de: {
+      title: 'Ausgelagertes SOC (Managed SOC) für Unternehmen · RFI-IRFOS',
+      description: 'Ausgelagertes Security Operations Center: Überwachung rund um die Uhr, Incident Response binnen einer Stunde, Fix in 24 Stunden bis in den Code. Aus Graz.',
+      label: 'Ausgelagertes SOC',
+      h1: 'Managed SOC: Ihre ausgelagerte Sicherheitsabteilung',
+      lead: 'Startups und Unternehmen ohne eigene Sicherheitskapazität übergeben uns ihr Security Operations Center. Wir überwachen rund um die Uhr, reagieren im Ernstfall binnen einer Stunde und beheben den Fund innerhalb von 24 Stunden selbst, bis in den Code. Ein festes Team arbeitet als Ihre Sicherheitsabteilung.',
+      sections: [
+        {
+          h2: 'Was das Managed SOC umfasst',
+          p: [
+            'Das Managed SOC enthält alles aus dem Plan Business und ergänzt den laufenden Betrieb. Agenten, die wir selbst gebaut haben, beobachten Ihre Systeme. Fachleute aus unserem Team prüfen jeden Befund, bevor er bei Ihnen ankommt.',
+          ],
+          ul: [
+            'Überwachung rund um die Uhr, 24/7.',
+            'Incident Response binnen 1 Stunde.',
+            'Fix binnen 24 Stunden, bis in den Code.',
+            'Ein festes Team als Ihre Sicherheitsabteilung.',
+            'Individuelle Oberflächen für MSP und Multi-Tenant.',
+            'White-Label und vereinbarte SLAs.',
+            'Compliance-Automatisierung für Ihre Prüfstelle (siehe Seite Compliance-Automatisierung).',
+          ],
+        },
+        {
+          h2: 'Für wen das Angebot gedacht ist',
+          p: [
+            'Das Angebot passt zu Startups, die an größere Kunden verkaufen und Sicherheitsfragebögen erhalten. Es passt zu wachsenden Unternehmen, die noch kein Sicherheitsteam haben, und zu Konzernen, die ein zusätzliches Team in Bereitschaft wollen. Managed Service Provider betreiben es mit eigenen Oberflächen und unter eigenem Namen.',
+            'Der Name Managed SOC beschreibt einen Dienst. Mit dem Prüfstandard SOC 2 hat er keine Verbindung, die Seite Compliance-Automatisierung erklärt den Standard.',
+          ],
+        },
+        {
+          h2: 'Wie ein SOC-Auftrag beginnt',
+          p: [
+            'Jeder Auftrag beginnt mit einem Blick auf Ihre öffentliche Angriffsfläche, damit Umfang und Preis auf Fakten ruhen. Dieser erste Blick ist der Domain Security Test. Der Preis richtet sich nach dem Umfang und wird schriftlich angeboten.',
+          ],
+        },
+      ],
+      evidenceH2: 'Belege aus geprüfter Software',
+      evidenceIntro: 'Das öffentliche Verzeichnis führt {apps}+ geprüfte Apps und {critical}+ kritische Befunde. Diese vollständigen Berichte zeigen, wie wir unsere Funde dokumentieren:',
+      evidence: [
+        { slug: 'sap', label: 'SAP', note: 'Ein chinesisches Push-SDK in einer Außendienst-App und hartkodierte Firebase-Schlüssel in fünf Apps.' },
+        { slug: 'nike', label: 'Nike', note: 'Entwicklungs- und Produktiv-Push-Zugangsdaten hartkodiert im ausgelieferten Build.' },
+        { slug: 'strava', label: 'Strava', note: 'Ein hartkodierter Schlüssel und eine Sicherheitskonfiguration, die nichts schützt.' },
+        { slug: 'revolut', label: 'Revolut', note: 'Das größte Drittanbieter-SDK der Serie und was es an ein US-Unternehmen sendet.' },
+      ],
+      startH2: 'Starten Sie mit dem Domain Security Test',
+      startText: [
+        'Der Domain Security Test untersucht eine Domain von außen: ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ein Researcher sieht Ihre Anfrage durch und meldet sich innerhalb eines Werktags.',
+        'Ein Managed SOC fragen Sie über die Karte Managed SOC auf der Seite Zugang an.',
+      ],
+      faqH2: 'Fragen zum Managed SOC',
+      faq: [
+        ['Was kostet das Managed SOC?', 'Der Preis richtet sich nach dem Umfang und wird schriftlich angeboten.'],
+        ['Wer behebt die Befunde?', 'Wir. Der Fix kommt innerhalb von 24 Stunden und reicht bis in den Code.'],
+        ['Ersetzt das Managed SOC unser eigenes Sicherheitsteam?', 'Es kann Ihre Sicherheitsabteilung sein oder neben einem bestehenden Team arbeiten.'],
+        ['Ist das Managed SOC dasselbe wie SOC 2?', 'Beides sind verschiedene Dinge. Das Managed SOC ist ein Dienst, den wir für Sie betreiben. SOC 2 ist ein Prüfstandard.'],
+      ],
+    },
+  },
+  'compliance-automation': {
+    en: {
+      title: 'Compliance Automation: NIS2, ISO 27001, SOC 2 · RFI-IRFOS',
+      description: 'We map findings and evidence to the controls of NIS2, ISO 27001 and SOC 2. Your auditor audits, we deliver the evidence. From RFI-IRFOS in Graz.',
+      label: 'Compliance Automation',
+      h1: 'Compliance Automation for NIS2, ISO 27001 and SOC 2',
+      lead: 'Audits ask for evidence. We map the findings and evidence from our reviews to the controls of NIS2, ISO 27001 and SOC 2, so your auditor receives them sorted by control. Your auditor audits, we deliver the evidence.',
+      sections: [
+        {
+          h2: 'What compliance automation means here',
+          p: [
+            'Each framework lists controls: rules your company has to meet and show proof for. Our reviews produce technical facts about your software and systems. Compliance automation connects the two. Every finding and every piece of evidence carries the control it belongs to, so the proof is ready when the audit starts.',
+            'Compliance automation is part of the Managed SOC, and it works as an add-on to the audit reports described on the other pages.',
+          ],
+        },
+        {
+          h2: 'The frameworks',
+          p: ['We map to three frameworks:'],
+          ul: [
+            'NIS2, in Austria the NISG 2026: risk management, cryptography, access control and supply-chain security.',
+            'ISO/IEC 27001: the standard for an information security management system.',
+            'SOC 2: an audit standard for service providers. It has no connection to the Managed SOC, which is a service we run for you.',
+          ],
+        },
+        {
+          h2: 'Who does what',
+          p: [
+            'Your auditor audits and issues the certificate or the report. We deliver the technical evidence in the form the auditor works with. A certificate is not part of our service.',
+          ],
+        },
+      ],
+      evidenceH2: 'Evidence from audited software',
+      evidenceIntro: 'The public ledger lists {apps}+ audited apps and {critical}+ critical findings. These full reports show how we document what we find:',
+      evidence: [
+        { slug: 'sap', label: 'SAP', note: 'A Chinese push SDK in a field-service app, and Firebase keys hardcoded across five apps.' },
+        { slug: 'nike', label: 'Nike', note: 'Development and production push credentials hardcoded in the shipped build.' },
+        { slug: 'strava', label: 'Strava', note: 'A hardcoded key and a security configuration that protects nothing.' },
+        { slug: 'revolut', label: 'Revolut', note: 'The largest third-party SDK in the series and what it sends to a US company.' },
+      ],
+      startH2: 'Start with the Domain Security Test',
+      startText: [
+        'The Domain Security Test examines one domain from the outside: read-only, from a European IP address, with no login and no payloads. A researcher reviews your request and replies within one business day.',
+        'Compliance automation is part of the Managed SOC. Plans and prices are on the Access page.',
+      ],
+      faqH2: 'Questions about compliance automation',
+      faq: [
+        ['Do you certify us for ISO 27001 or SOC 2?', 'Your auditor certifies. We deliver the technical evidence that the auditor needs.'],
+        ['Which frameworks do you cover?', 'NIS2 (NISG 2026 in Austria), ISO/IEC 27001 and SOC 2.'],
+        ['Is compliance automation a separate product?', 'It is part of the Managed SOC.'],
+        ['Does NIS2 apply to our company?', 'That depends on sector, size and role in a supply chain. The national authority\'s information at nis.gv.at is the reference.'],
+      ],
+    },
+    de: {
+      title: 'Compliance-Automatisierung: NIS2 und SOC 2 · RFI-IRFOS',
+      description: 'Wir ordnen Befunde und Belege den Kontrollen von NIS2, ISO 27001 und SOC 2 zu. Ihre Prüfstelle prüft, wir liefern die Belege. Aus Graz.',
+      label: 'Compliance-Automatisierung',
+      h1: 'Compliance-Automatisierung für NIS2, ISO 27001 und SOC 2',
+      lead: 'Audits verlangen Belege. Wir ordnen die Befunde und Belege aus unseren Prüfungen den Kontrollen von NIS2, ISO 27001 und SOC 2 zu, damit Ihre Prüfstelle sie nach Kontrollen sortiert erhält. Ihre Prüfstelle prüft, wir liefern die Belege.',
+      sections: [
+        {
+          h2: 'Was Compliance-Automatisierung hier bedeutet',
+          p: [
+            'Jedes Rahmenwerk listet Kontrollen: Regeln, die Ihr Unternehmen einhalten und belegen muss. Unsere Prüfungen liefern technische Fakten über Ihre Software und Ihre Systeme. Die Compliance-Automatisierung verbindet beides. Jeder Befund und jeder Beleg trägt die Kontrolle, zu der er gehört, und der Nachweis liegt bereit, wenn das Audit beginnt.',
+            'Die Compliance-Automatisierung gehört zum Managed SOC und ergänzt die Prüfberichte, die auf den anderen Seiten beschrieben sind.',
+          ],
+        },
+        {
+          h2: 'Die Rahmenwerke',
+          p: ['Wir ordnen drei Rahmenwerken zu:'],
+          ul: [
+            'NIS2, in Österreich das NISG 2026: Risikomanagement, Kryptografie, Zugriffskontrolle und Sicherheit der Lieferkette.',
+            'ISO/IEC 27001: der Standard für ein Informationssicherheits-Managementsystem.',
+            'SOC 2: ein Prüfstandard für Dienstleister. Mit dem Managed SOC, einem Dienst, den wir für Sie betreiben, hat er keine Verbindung.',
+          ],
+        },
+        {
+          h2: 'Wer was tut',
+          p: [
+            'Ihre Prüfstelle prüft und stellt das Zertifikat oder den Bericht aus. Wir liefern die technischen Belege in der Form, mit der die Prüfstelle arbeitet. Ein Zertifikat gehört nicht zu unserer Leistung.',
+          ],
+        },
+      ],
+      evidenceH2: 'Belege aus geprüfter Software',
+      evidenceIntro: 'Das öffentliche Verzeichnis führt {apps}+ geprüfte Apps und {critical}+ kritische Befunde. Diese vollständigen Berichte zeigen, wie wir unsere Funde dokumentieren:',
+      evidence: [
+        { slug: 'sap', label: 'SAP', note: 'Ein chinesisches Push-SDK in einer Außendienst-App und hartkodierte Firebase-Schlüssel in fünf Apps.' },
+        { slug: 'nike', label: 'Nike', note: 'Entwicklungs- und Produktiv-Push-Zugangsdaten hartkodiert im ausgelieferten Build.' },
+        { slug: 'strava', label: 'Strava', note: 'Ein hartkodierter Schlüssel und eine Sicherheitskonfiguration, die nichts schützt.' },
+        { slug: 'revolut', label: 'Revolut', note: 'Das größte Drittanbieter-SDK der Serie und was es an ein US-Unternehmen sendet.' },
+      ],
+      startH2: 'Starten Sie mit dem Domain Security Test',
+      startText: [
+        'Der Domain Security Test untersucht eine Domain von außen: ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ein Researcher sieht Ihre Anfrage durch und meldet sich innerhalb eines Werktags.',
+        'Die Compliance-Automatisierung gehört zum Managed SOC. Pläne und Preise stehen auf der Seite Zugang.',
+      ],
+      faqH2: 'Fragen zur Compliance-Automatisierung',
+      faq: [
+        ['Zertifizieren Sie uns nach ISO 27001 oder SOC 2?', 'Ihre Prüfstelle zertifiziert. Wir liefern die technischen Belege, die sie braucht.'],
+        ['Welche Rahmenwerke decken Sie ab?', 'NIS2 (in Österreich NISG 2026), ISO/IEC 27001 und SOC 2.'],
+        ['Ist die Compliance-Automatisierung ein eigenes Produkt?', 'Sie gehört zum Managed SOC.'],
+        ['Gilt NIS2 für unser Unternehmen?', 'Das hängt von Branche, Größe und Rolle in einer Lieferkette ab. Die Informationen der nationalen Behörde unter nis.gv.at sind die Referenz.'],
+      ],
+    },
+  },
+  'domain-security-test': {
+    en: {
+      title: 'Domain Security Test: DNS, TLS, E-Mail · RFI-IRFOS',
+      description: 'External, read-only test of your domain: DNS, certificates, e-mail protection and security headers. A person checks every finding. Written report.',
+      label: 'Domain Security Test',
+      h1: 'Domain Security Test for your domain',
+      lead: 'Find out what your security tools might be missing. We test your domain from the outside, read-only, with no login and no payloads. A person checks every finding before it enters your written report.',
+      sections: [
+        {
+          h2: 'What the test covers',
+          p: ['The test looks at the publicly accessible attack surface of one domain:'],
+          ul: [
+            'DNS and the records around it, including CAA.',
+            'TLS and the certificate.',
+            'E-mail protection with SPF, DKIM and DMARC.',
+            'Security headers of your website.',
+          ],
+        },
+        {
+          h2: 'How it works',
+          p: [
+            'You enter your domain and your work e-mail address and confirm that you own the domain or may test it. A researcher reviews your request before testing begins and replies within one business day. The check runs once, read-only and from a European IP address. It makes no changes to your systems.',
+          ],
+        },
+        {
+          h2: 'What you receive',
+          p: [
+            'A short written report with our findings, likely attack scenarios, potential financial impact and recommended next steps. Each finding carries a CVSS severity. An exportable security intelligence graph connects the findings.',
+            'The test is an initial external assessment. It does not replace a source-code review and does not guarantee that your application is secure.',
+          ],
+        },
+      ],
+      evidenceH2: 'Evidence from audited software',
+      evidenceIntro: 'The public ledger lists {apps}+ audited apps and {critical}+ critical findings. These full reports show how we document what we find:',
+      evidence: [
+        { slug: 'sap', label: 'SAP', note: 'A Chinese push SDK in a field-service app, and Firebase keys hardcoded across five apps.' },
+        { slug: 'nike', label: 'Nike', note: 'Development and production push credentials hardcoded in the shipped build.' },
+        { slug: 'strava', label: 'Strava', note: 'A hardcoded key and a security configuration that protects nothing.' },
+        { slug: 'revolut', label: 'Revolut', note: 'The largest third-party SDK in the series and what it sends to a US company.' },
+      ],
+      startH2: 'Test your domain',
+      startText: [
+        'Enter your domain below. A researcher reviews your request and replies within one business day.',
+        'After the test, the Access page shows what a full examination covers and costs.',
+      ],
+      faqH2: 'Questions about the Domain Security Test',
+      faq: [
+        ['Do you change anything on our systems?', 'The test is read-only. It uses no login and no payloads.'],
+        ['Who sees my request?', 'A researcher reviews every request before testing begins.'],
+        ['How often do you test my domain?', 'Once. A one-word reply at any time is enough to stop, and we never check the domain again.'],
+        ['Is this a penetration test?', 'The test is an initial external assessment of the public attack surface. A source-code review goes further and is part of the full audits on the Access page.'],
+      ],
+    },
+    de: {
+      title: 'Domain Security Test: DNS, TLS, E-Mail · RFI-IRFOS',
+      description: 'Externer, lesender Test Ihrer Domain: DNS, Zertifikate, E-Mail-Schutz und Security-Header. Ein Mensch prüft jeden Befund. Schriftlicher Bericht.',
+      label: 'Domain Security Test',
+      h1: 'Domain Security Test für Ihre Domain',
+      lead: 'Finden Sie heraus, was Ihre Sicherheitswerkzeuge übersehen könnten. Wir testen Ihre Domain von außen, ausschließlich lesend, ohne Login und ohne Payloads. Ein Mensch prüft jeden Befund, bevor er in Ihren schriftlichen Bericht kommt.',
+      sections: [
+        {
+          h2: 'Was der Test abdeckt',
+          p: ['Der Test betrachtet die öffentlich erreichbare Angriffsfläche einer Domain:'],
+          ul: [
+            'DNS und die Einträge darum, auch CAA.',
+            'TLS und das Zertifikat.',
+            'E-Mail-Schutz mit SPF, DKIM und DMARC.',
+            'Security-Header Ihrer Website.',
+          ],
+        },
+        {
+          h2: 'So läuft er ab',
+          p: [
+            'Sie geben Ihre Domain und Ihre Arbeits-E-Mail-Adresse an und bestätigen, dass die Domain Ihnen gehört oder Sie sie testen dürfen. Ein Researcher sieht Ihre Anfrage durch, bevor der Test beginnt, und meldet sich innerhalb eines Werktags. Die Prüfung läuft einmal, ausschließlich lesend und von einer europäischen IP-Adresse aus. Ihre Systeme bleiben unverändert.',
+          ],
+        },
+        {
+          h2: 'Was Sie erhalten',
+          p: [
+            'Einen kurzen schriftlichen Bericht mit unseren Befunden, wahrscheinlichen Angriffsszenarien, möglichen finanziellen Folgen und empfohlenen nächsten Schritten. Jeder Befund trägt eine CVSS-Bewertung. Ein exportierbarer Security-Intelligence-Graph verbindet die Befunde.',
+            'Der Test ist eine erste externe Einschätzung. Eine Prüfung des Quellcodes ersetzt er nicht, und er garantiert nicht, dass Ihre Anwendung sicher ist.',
+          ],
+        },
+      ],
+      evidenceH2: 'Belege aus geprüfter Software',
+      evidenceIntro: 'Das öffentliche Verzeichnis führt {apps}+ geprüfte Apps und {critical}+ kritische Befunde. Diese vollständigen Berichte zeigen, wie wir unsere Funde dokumentieren:',
+      evidence: [
+        { slug: 'sap', label: 'SAP', note: 'Ein chinesisches Push-SDK in einer Außendienst-App und hartkodierte Firebase-Schlüssel in fünf Apps.' },
+        { slug: 'nike', label: 'Nike', note: 'Entwicklungs- und Produktiv-Push-Zugangsdaten hartkodiert im ausgelieferten Build.' },
+        { slug: 'strava', label: 'Strava', note: 'Ein hartkodierter Schlüssel und eine Sicherheitskonfiguration, die nichts schützt.' },
+        { slug: 'revolut', label: 'Revolut', note: 'Das größte Drittanbieter-SDK der Serie und was es an ein US-Unternehmen sendet.' },
+      ],
+      startH2: 'Testen Sie Ihre Domain',
+      startText: [
+        'Geben Sie unten Ihre Domain an. Ein Researcher sieht Ihre Anfrage durch und meldet sich innerhalb eines Werktags.',
+        'Nach dem Test zeigt die Seite Zugang, was eine vollständige Prüfung umfasst und kostet.',
+      ],
+      faqH2: 'Fragen zum Domain Security Test',
+      faq: [
+        ['Ändern Sie etwas an unseren Systemen?', 'Der Test ist ausschließlich lesend. Er verwendet keinen Login und keine Payloads.'],
+        ['Wer sieht meine Anfrage?', 'Ein Researcher sieht jede Anfrage durch, bevor der Test beginnt.'],
+        ['Wie oft testen Sie meine Domain?', 'Einmal. Eine Antwort mit einem Wort genügt jederzeit zum Stoppen, und wir prüfen die Domain nie wieder.'],
+        ['Ist das ein Penetrationstest?', 'Der Test ist eine erste externe Einschätzung der öffentlichen Angriffsfläche. Eine Prüfung des Quellcodes geht weiter und gehört zu den vollständigen Prüfungen auf der Seite Zugang.'],
+      ],
+    },
+  },
 }
 
 export function isLandingSlug(slug: string): slug is LandingSlug {

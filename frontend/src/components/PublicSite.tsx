@@ -196,6 +196,43 @@ function ThemeIcon({ t }: { t: 'light' | 'dark' | 'hc' }) {
   )
 }
 
+// Official profiles, shown as an icon row above the copyright line (Simeon 2026-11-10,
+// Lighthouse 2.0: maximum visibility, and every profile should link back to us).
+// Stroke glyphs in the Feather family so they sit beside ThemeIcon without a second icon style.
+// rel="me" lets the profile pages confirm the link back to the site.
+const SOCIAL_PROFILES = [
+  { key: 'linkedin' as const, label: 'LinkedIn', href: 'https://www.linkedin.com/company/rfi-irfos' },
+  { key: 'youtube' as const, label: 'YouTube', href: 'https://www.youtube.com/@rfi-irfos-official' },
+  { key: 'instagram' as const, label: 'Instagram', href: 'https://www.instagram.com/research_focus_institute/' },
+  { key: 'facebook' as const, label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61596193894841' },
+  { key: 'tiktok' as const, label: 'TikTok', href: 'https://www.tiktok.com/@rfiirfos.official' },
+  { key: 'github' as const, label: 'GitHub', href: 'https://github.com/rfi-irfos' },
+]
+
+function SocialGlyph({ k }: { k: (typeof SOCIAL_PROFILES)[number]['key'] }) {
+  const common = { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, 'aria-hidden': true }
+  switch (k) {
+    case 'linkedin': return (
+      <svg {...common}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>
+    )
+    case 'youtube': return (
+      <svg {...common}><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" /><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" /></svg>
+    )
+    case 'instagram': return (
+      <svg {...common}><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
+    )
+    case 'facebook': return (
+      <svg {...common}><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>
+    )
+    case 'tiktok': return (
+      <svg {...common}><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5" /><path d="M14 3c.3 2.6 2 4.4 5 4.7" /></svg>
+    )
+    case 'github': return (
+      <svg {...common}><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" /></svg>
+    )
+  }
+}
+
 type PublicView = 'home' | 'world-model' | 'squad' | 'evidence' | 'data-solutions' | 'access'
 
 function viewForSection(section?: string | null): PublicView {
@@ -830,6 +867,9 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       { label: t.footer.groups.services.links.nis2, href: `${servicesPrefix}/nis2-software-vendors/` },
       { label: t.footer.groups.services.links.trackerSdk, href: `${servicesPrefix}/app-tracker-sdk-check/` },
       { label: t.footer.groups.services.links.aiApp, href: `${servicesPrefix}/ai-app-privacy-audit/` },
+      { label: t.footer.groups.services.links.managedSoc, href: `${servicesPrefix}/managed-soc/` },
+      { label: t.footer.groups.services.links.compliance, href: `${servicesPrefix}/compliance-automation/` },
+      { label: t.footer.groups.services.links.domainCheck, href: `${servicesPrefix}/domain-security-test/` },
       { label: t.footer.groups.services.links.dataSolutions, href: '/data-solutions/' },
     ],
   }
@@ -1698,7 +1738,8 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         <div style={{ display: 'flex', gap: '1.1rem', alignItems: 'flex-start', marginBottom: 0, textAlign: 'left' }}>
           {/* Simeon 2026-10-31: four groups stacked in one 170px column made the left side far
               taller than the directory to its right (big empty band below it). Desktop now lays the
-              groups out in two columns (Legal + Services | Company + Research), tagline below both. */}
+              groups out in two columns, tagline below both. Simeon 2026-11-10: Company | Research on top,
+              Services | Legal below (column flow: Company, Services, Research, Legal). */}
           <div style={mobile
             ? { flex: '1 1 auto', display: 'flex', flexDirection: 'column', gap: 22 }
             : { flex: '0 0 auto', alignSelf: 'stretch', display: 'grid', gridTemplateColumns: '170px 170px', gridTemplateRows: 'auto auto 1fr', gridAutoFlow: 'column', columnGap: '1.1rem', rowGap: 22, alignContent: 'start' }}>
@@ -1735,17 +1776,6 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               ]
               : [
                 {
-                  heading: t.footer.groups.legal.heading, links: [
-                    { label: t.footer.groups.legal.links.impressum, href: '/impressum/' },
-                    { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz/' },
-                    { label: t.footer.groups.legal.links.agb, href: '/agb/' },
-                    { label: t.footer.groups.legal.links.security, href: '/security/' },
-                    { label: t.footer.groups.legal.links.standards, href: '/standards/' },
-                    { label: 'FAQ', href: '/faq/' },
-                  ],
-                },
-                servicesGroup,
-                {
                   heading: t.footer.groups.company.heading, links: [
                     // Lighthouse round 32 (2026-10-31): the footer, where people look for a
                     // way to get in touch, had no free check and no pricing link at all.
@@ -1754,13 +1784,12 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                     { label: t.footer.groups.company.links.team, href: '/team/' },
                     { label: t.footer.groups.company.links.careers, href: 'mailto:career@rfi-irfos.com' },
                     { label: t.footer.groups.company.links.ternlang, href: 'https://ternlang.com' },
-                    { label: t.footer.groups.company.links.github, href: 'https://github.com/rfi-irfos' },
-                    // Lighthouse R83 (2026-10-31): LinkedIn and the YouTube channel both link to us,
-                    // the footer linked neither back.
-                    { label: t.footer.groups.company.links.linkedin, href: 'https://www.linkedin.com/company/rfi-irfos' },
-                    { label: t.footer.groups.company.links.youtube, href: 'https://www.youtube.com/@rfi-irfos-official' },
+                    // Social profiles (LinkedIn, YouTube, Instagram, Facebook, TikTok, GitHub) live in the
+                    // icon row below (Simeon 2026-11-10: "brauchts ja diese extra links nicht"); the back-links
+                    // Lighthouse R83 asked for are still there, as rel="me" anchors.
                   ],
                 },
+                servicesGroup,
                 {
                   heading: t.footer.groups.research.heading, links: [
                     { label: t.footer.groups.research.links.research, href: '/#research' },
@@ -1770,6 +1799,16 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                     // zero internal links pointing at it, the only orphan among 284 URLs.
                     { label: t.footer.groups.research.links.humanRights, href: '/humanrights/' },
                     { label: t.footer.groups.research.links.albert, href: 'https://albert.rfi-irfos.com/' },
+                  ],
+                },
+                {
+                  heading: t.footer.groups.legal.heading, links: [
+                    { label: t.footer.groups.legal.links.impressum, href: '/impressum/' },
+                    { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz/' },
+                    { label: t.footer.groups.legal.links.agb, href: '/agb/' },
+                    { label: t.footer.groups.legal.links.security, href: '/security/' },
+                    { label: t.footer.groups.legal.links.standards, href: '/standards/' },
+                    { label: 'FAQ', href: '/faq/' },
                   ],
                 },
               ]
@@ -1853,6 +1892,15 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
             {/* Simeon 01.11.: the copyright sits at the bottom of this left column, inside the divider,
                 level with the divider's lower end, instead of a separate full-width row below. */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8, ...(mobile ? {} : { gridColumn: '1 / -1', gridRow: 3, alignSelf: 'end' }) }}>
+              {/* Footer foot, top to bottom (Simeon 2026-11-10): social icons, copyright (the core doctrine line lives on /standards/). */}
+              <nav aria-label={t.footer.socialAria} data-testid="footer-socials" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {SOCIAL_PROFILES.map(p => (
+                  <a key={p.key} href={p.href} target="_blank" rel="me noopener" aria-label={p.label} title={p.label}
+                    style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 38, borderRadius: 8, border: '1px solid var(--border)', color: 'var(--text2)', textDecoration: 'none' }}>
+                    <SocialGlyph k={p.key} />
+                  </a>
+                ))}
+              </nav>
               <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0, lineHeight: 1.6 }}>
                 {t.footer.copyright}
               </p>

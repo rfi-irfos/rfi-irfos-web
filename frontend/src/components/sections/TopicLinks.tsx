@@ -1,29 +1,39 @@
-// The four search landing pages as a row of icon pills under the homepage evidence strip
+// The search landing pages as a row of icon pills under the homepage evidence strip
 // (Simeon 2026-10-31: the plain-text row under the pricing intro sent people off to a full
 // page and back to the bottom of /access/). Each pill is still a real <a href> to the
 // prerendered page, so crawlers keep the internal link, but a click opens the page's own
 // copy in an overlay and the visitor stays where they were.
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { IconShieldCheck, IconScale, IconCertificate, IconRadar, IconRobot, IconX } from '@tabler/icons-react'
+import { IconShieldCheck, IconCertificate, IconHeadset, IconListCheck, IconWorldSearch, IconX } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
 import { beacon } from './shared'
-import { LANDING_SLUGS, type LandingSlug } from '../landingSlugs'
+import type { LandingSlug } from '../landingSlugs'
 import type { LandingDoc } from '../landingPages'
 
 const ICONS: Record<LandingSlug, typeof IconShieldCheck> = {
   'app-security-audit': IconShieldCheck,
-  'gdpr-app-audit': IconScale,
+  'gdpr-app-audit': IconShieldCheck,
   'nis2-software-vendors': IconCertificate,
-  'app-tracker-sdk-check': IconRadar,
-  'ai-app-privacy-audit': IconRobot,
+  'app-tracker-sdk-check': IconShieldCheck,
+  'ai-app-privacy-audit': IconShieldCheck,
+  'managed-soc': IconHeadset,
+  'compliance-automation': IconListCheck,
+  'domain-security-test': IconWorldSearch,
 }
 
 const KEYS = {
   'app-security-audit': 'appSecurityAudit', 'gdpr-app-audit': 'gdprAppAudit',
   'nis2-software-vendors': 'nis2', 'app-tracker-sdk-check': 'trackerSdk',
-  'ai-app-privacy-audit': 'aiApp',
+  'ai-app-privacy-audit': 'aiApp', 'managed-soc': 'managedSoc',
+  'compliance-automation': 'compliance', 'domain-security-test': 'domainCheck',
 } as const
+
+// Simeon 2026-11-10: five pills, not one per landing page. App security and the GDPR app audit
+// share one pill (its overlay links to the GDPR page); tracker/SDK and AI-app stay as pages in
+// the footer and the sitemap. Every pill keeps its real <a href>, so crawlers see all five pages.
+const PILLS: readonly LandingSlug[] = ['app-security-audit', 'nis2-software-vendors', 'managed-soc', 'compliance-automation', 'domain-security-test']
+const ALSO: Partial<Record<LandingSlug, LandingSlug>> = { 'app-security-audit': 'gdpr-app-audit' }
 
 export function TopicLinks() {
   const { t, locale } = useLocale()
@@ -42,16 +52,16 @@ export function TopicLinks() {
     <>
       {/* Simeon 2026-10-31: the visible "What we examine:" lead looked out of place in front of
           the pills, so the label now only names the group for screen readers. */}
-      {/* Phones: one swipeable row instead of five stacked pills (.rfi-topic-row in index.css). */}
+      {/* Phones: one swipeable row instead of stacked pills (.rfi-topic-row in index.css). */}
       <nav className="rfi-topic-row" aria-label={c.label.replace(/:$/, '')} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 10, marginTop: 22 }}>
-        {LANDING_SLUGS.map(slug => {
+        {PILLS.map(slug => {
           const Icon = ICONS[slug]
           return (
             <a key={slug} href={`${pre}/${slug}/`}
               onClick={e => { if (e.metaKey || e.ctrlKey || e.shiftKey) return; e.preventDefault(); show(slug) }}
               style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--glass-bg-solid)', color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
               <Icon size={16} stroke={1.8} color="var(--icon-neutral)" aria-hidden />
-              {t.footer.groups.services.links[KEYS[slug]]}
+              {slug === 'app-security-audit' ? c.appAndGdpr : t.footer.groups.services.links[KEYS[slug]]}
             </a>
           )
         })}
@@ -69,6 +79,8 @@ function TopicModal({ slug, doc, href, onClose }: { slug: LandingSlug; doc: Land
   const c = t.appPrivacy.topics
   const closeRef = useRef<HTMLButtonElement>(null)
   const Icon = ICONS[slug]
+  const also = ALSO[slug]
+  const alsoHref = also ? href.replace(slug, also) : ''
 
   useEffect(() => {
     const prev = document.body.style.overflow
@@ -113,6 +125,7 @@ function TopicModal({ slug, doc, href, onClose }: { slug: LandingSlug; doc: Land
           <button type="button" onClick={startCheck}
             style={{ background: '#f97316', color: '#1a0f00', border: 'none', padding: '12px 20px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', cursor: 'pointer' }}>{c.startCheck}</button>
           <a href={href} style={{ border: '1px solid var(--border)', color: 'var(--text)', padding: '12px 20px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none' }}>{c.fullPage}</a>
+          {also && <a href={alsoHref} style={{ border: '1px solid var(--border)', color: 'var(--accent-text)', padding: '12px 20px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none' }}>{t.footer.groups.services.links[KEYS[also]]}</a>}
         </div>
       </div>
     </div>

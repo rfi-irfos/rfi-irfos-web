@@ -2,15 +2,14 @@ import type { CSSProperties } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
 import { Reveal, OUTPUT_TAG_HUES } from './shared'
-import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport, IconArrowRight } from '@tabler/icons-react'
-
-// Lighthouse R109: two held datasets are public already, so their cards link to the proof.
-const DATASET_PROOF_HREF = ['/evidence/', '', '', '/world-model/', '']
+import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport, IconArrowRight, IconPlayerPlay } from '@tabler/icons-react'
 
 // One fixed hue per section (see HUE_* below), reusing the same calibrated hue set
 // OutputTags uses elsewhere on the site so this isn't a new, uncalibrated palette.
 const hue = (i: number) => OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
-const hueStyle = (i: number) => ({ '--hue-bg': hue(i).bg, '--hue-border': hue(i).border }) as CSSProperties
+// --ib is the solid area colour the glass icon box (.rfi-ri-box in index.css) takes, same set as the hues above.
+const IB = ['#36cdb2', '#f0ad3c', '#4f8cf0', '#8f76f2']
+const hueStyle = (i: number) => ({ '--hue-bg': hue(i).bg, '--hue-border': hue(i).border, '--ib': IB[i % IB.length] }) as CSSProperties
 
 const PRODUCT_ICONS = [IconDatabase, IconBuilding, IconFlask, IconGitBranch, IconShieldCheck, IconCode]
 const AGENT_ICONS = [IconRobot, IconBuilding, IconSearch, IconDeviceDesktop, IconBraces, IconTerminal2]
@@ -20,15 +19,14 @@ const COPY = {
   en: {
     eyebrow: 'Data Solutions', title: 'Production, data and agents that have to work',
     intro: 'The same discipline behind our systems and public evidence, delivered as data and infrastructure: a data warehouse, reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Our services connect to ternary-logic pipelines through a governed data layer. Your corpus stays private. Every delivered artefact stays traceable.',
-    bridgeLead: 'This is what a Data engagement produces.', bridgeCta: 'See what you’d receive →',
-    datasetsEyebrow: 'Datasets', datasetsTitle: 'What we already hold',
-    datasetProof: ['See the public reports', '', '', 'See the world model', ''],
+    datasetsTitle: 'What we already hold',
     datasets: [
-      ['Mobile application behavior\ndatasets', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],
-      ['SDK & tracker knowledge\ngraphs', 'Reusable SDKs, tracker relationships, infrastructure, and cross-application recurrence mapped as connected evidence.'],
-      ['Agent safety\ntrajectories', 'Tool-use traces under injection, conflicting instructions, boundary pressure, recovery, and stop conditions.'],
-      ['World-state & causality\nmapping', 'Multi-domain observations, entity relationships, change histories, and evidence-linked causal chains.'],
+      ['Mobile application behavior datasets', 'Source-level app behaviour, permissions, endpoints, consent timing, and observed data flows.'],
+      ['SDK & tracker knowledge graphs', 'Reusable SDKs, tracker relationships, infrastructure, and cross-application recurrence mapped as connected evidence.'],
+      ['Agent safety trajectories', 'Tool-use traces under injection, conflicting instructions, boundary pressure, recovery, and stop conditions.'],
+      ['World-state & causality mapping', 'Multi-domain observations, entity relationships, change histories, and evidence-linked causal chains.'],
       ['Stressed benchmark variants', 'Controlled, reproducible perturbations of open benchmarks for robustness testing beyond clean inputs.'],
+      ['Agent runs & test environments', 'Recorded agent runs in realistic, resettable test environments, with outcomes and failures.'],
     ],
     deliverEyebrow: 'What we deliver', deliverTitle: 'From environment to evaluation',
     deliverIntro: 'We define success criteria with your team, then build the data operation around the way your models are actually trained and evaluated. No anonymous task stream and no benchmark theatre: the environment, trace, label, and decision remain connected.',
@@ -73,15 +71,14 @@ const COPY = {
   de: {
     eyebrow: 'Data Solutions', title: 'Produktion, Daten und Agenten, die wirklich arbeiten müssen',
     intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten und Infrastruktur geliefert: ein Data Warehouse, reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Unsere Services verbinden sich über eine kontrollierte Datenschicht mit ternären Logik-Pipelines. Ihr Korpus bleibt privat. Jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
-    bridgeLead: 'Das ist es, was ein Data-Auftrag liefert.', bridgeCta: 'Sehen Sie, was Sie erhalten →',
-    datasetsEyebrow: 'Datensätze', datasetsTitle: 'Was wir bereits vorhalten',
-    datasetProof: ['Zu den öffentlichen Reports', '', '', 'Zum Weltmodell', ''],
+    datasetsTitle: 'Was wir bereits vorhalten',
     datasets: [
       ['Verhalten mobiler Anwendungen', 'Quellcodebasiertes App-Verhalten, Berechtigungen, Endpunkte, Consent-Timing und beobachtete Datenflüsse.'],
-      ['SDK- & Tracker-\nWissensgraphen', 'Wiederkehrende SDKs, Tracker-Beziehungen, Infrastruktur und App-übergreifende Zusammenhänge als verbundene Evidenz.'],
-      ['Agent-Safety-\nTrajektorien', 'Tool-Use-Traces unter Injection, Zielkonflikten, Grenzdruck, Recovery und expliziten Stop-Bedingungen.'],
-      ['World-State & Kausalitäts-\nMapping', 'Domänenübergreifende Beobachtungen, Entitäten, Veränderungshistorien und evidenzgebundene Kausalketten.'],
+      ['SDK- & Tracker-Wissensgraphen', 'Wiederkehrende SDKs, Tracker-Beziehungen, Infrastruktur und App-übergreifende Zusammenhänge als verbundene Evidenz.'],
+      ['Agent-Safety-Trajektorien', 'Tool-Use-Traces unter Injection, Zielkonflikten, Grenzdruck, Recovery und expliziten Stop-Bedingungen.'],
+      ['World-State & Kausalitäts-Mapping', 'Domänenübergreifende Beobachtungen, Entitäten, Veränderungshistorien und evidenzgebundene Kausalketten.'],
       ['Gestresste Benchmark-Varianten', 'Kontrollierte, reproduzierbare Störungen offener Benchmarks für Robustheitstests jenseits sauberer Inputs.'],
+      ['Agenten-Läufe & Testumgebungen', 'Aufgezeichnete Agenten-Läufe in realistischen, rücksetzbaren Testumgebungen, samt Ergebnissen und Fehlschlägen.'],
     ],
     deliverEyebrow: 'Was wir liefern', deliverTitle: 'Von der Umgebung bis zur Evaluation',
     deliverIntro: 'Gemeinsam definieren wir belastbare Erfolgskriterien und bauen den Datenbetrieb passend zu Ihren realen Trainings- und Evaluationsabläufen. Kein anonymer Task-Stream und kein Benchmark-Theater: Umgebung, Trace, Label und Entscheidung bleiben verbunden.',
@@ -130,7 +127,8 @@ const COPY = {
 // card within a single, uniform list (six agent types, none more different from
 // each other than another) read as random confetti rather than a signal, live
 // feedback 2026-08-26 ("looks like a pinjata"). Section identity, not card identity.
-const HUE_DATASETS = hueStyle(0)  // teal - matches the pipeline's existing accent
+// The five datasets are five different things, so each card takes its own colour (Simeon 2026-11-10); the wash follows --ib.
+const DATASET_HUES = ['#36cdb2', '#4f8cf0', '#8f76f2', '#ee6a98', '#f0ad3c', '#f27a54'].map(ib => ({ '--ib': ib, '--hue-bg': `color-mix(in srgb, ${ib} 11%, transparent)`, '--hue-border': `color-mix(in srgb, ${ib} 40%, transparent)` }) as CSSProperties)
 const HUE_PRODUCTS = hueStyle(2)  // blue
 const HUE_AGENTS = hueStyle(1)    // amber
 const HUE_STARTS = hueStyle(3)    // violet
@@ -142,34 +140,18 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
     <header className="data-hero data-wrap">
       <Reveal><p className="data-eyebrow">{c.eyebrow}</p><h1>{c.title}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{c.intro}</p></Reveal>
-      {/* Bridge sentence to the Data offer on Access, same pattern as Evidence's
-          own securityBridgeLead/Cta (live feedback 2026-09-13: "das kann man
-          auch noch einbaun das konsistent isch") - this page was the one
-          hero-first section with no cross-link back to what's purchasable. */}
-      <Reveal delay={1}>
-        <p style={{ color: 'var(--text2)', marginTop: 12, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)' }}>
-          {c.bridgeLead}{' '}
-          {/* Real <a href> (was <button onClick>) - 2026-09-25 crawlability sweep: a
-              button carries no href a crawler can follow, unlike an anchor. */}
-          <a href={localeHref('/access/', locale)} onClick={e => { e.preventDefault(); onNavigateAccessData() }} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', textDecoration: 'underline' }}>
-            {c.bridgeCta}
-          </a>
-        </p>
-      </Reveal>
     </header>
 
     <section id="data-datasets" className="data-section data-datasets"><div className="data-wrap">
-      {/* This was the one section on the page with no heading at all, while every
-          other one carries an eyebrow + h2. That made it both visually inconsistent
-          with its siblings and an accessibility problem: the page jumped straight
-          from h1 to the h3 card titles, skipping h2 entirely (measured 2026-09-07). */}
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.datasetsEyebrow}</p><h2>{c.datasetsTitle}</h2></div></Reveal>
-      <div className="data-dataset-grid" style={HUE_DATASETS}>{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_DATASETS}><div className="data-icon"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p>{c.datasetProof[i] && <a href={localeHref(DATASET_PROOF_HREF[i], locale)} style={{ color: 'var(--accent-text)', fontSize: 'var(--fs-small)', fontWeight: 700, textDecoration: 'none' }}>{c.datasetProof[i]} <span aria-hidden="true">→</span></a>}</article> })}</div>
+      {/* Simeon 2026-11-10: eyebrow and title are gone from the page. The h2 stays as a visually hidden heading, so the outline
+          still goes h1 > h2 > h3 (it was a measured defect 2026-09-07 when this section had no heading at all). */}
+      <h2 className="data-sr-only">{c.datasetsTitle}</h2>
+      <div className="data-dataset-grid">{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask, IconPlayerPlay][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={DATASET_HUES[i]}><div className="data-icon rfi-ri-box"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article> })}</div>
     </div></section>
 
     <section id="data-deliver" className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.deliverEyebrow}</p><h2>{c.deliverTitle}</h2><p>{c.deliverIntro}</p></div></Reveal>
-      <div className="data-product-grid" style={HUE_PRODUCTS}>{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_PRODUCTS}><div className="data-icon"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
+      <div className="data-product-grid" style={HUE_PRODUCTS}>{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_PRODUCTS}><div className="data-icon rfi-ri-box"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
     </div></section>
 
     {/* Cross-link to the Data offer card on Access (Simeon, 2026-09-13, moved
@@ -187,18 +169,18 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.agentsEyebrow}</p><h2>{c.agentsTitle}</h2><p>{c.agentsIntro}</p></div></Reveal>
-      <div className="data-agent-grid" style={HUE_AGENTS}>{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_AGENTS}><Icon size={27} stroke={1.6} /><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
+      <div className="data-agent-grid" style={HUE_AGENTS}>{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_AGENTS}><div className="data-icon data-icon--row rfi-ri-box"><Icon size={26} stroke={1.6} /></div><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
     </div></section>
 
     <section id="data-pipeline" className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2>{c.pipelineTitle}</h2></div></Reveal>
-      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid rfi-hover-card" data-stage={i}><div className="data-pipeline-icon"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-stage"><span>{n}</span></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
-      <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><IconShieldCheck size={32} /><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
+      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid rfi-hover-card" data-stage={i}><div className="data-pipeline-icon rfi-ri-box"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-stage"><span>{n}</span></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
+      <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><div className="data-icon data-icon--row rfi-ri-box"><IconShieldCheck size={28} /></div><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2>{c.startTitle}</h2><p>{c.startIntro}</p></div></Reveal>
-      <div className="data-start-grid" style={HUE_STARTS}>{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_STARTS}><span>{n}</span><div className="data-start-icons" aria-hidden="true">{i === 0 && <><IconDatabase size={27} stroke={1.5} /><IconCircleCheck size={24} stroke={1.8} /></>}{i === 1 && <><IconDatabase size={27} stroke={1.5} /><IconSettingsAutomation size={25} stroke={1.6} /><IconDatabase size={27} stroke={1.5} /></>}{i === 2 && <><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /></>}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
+      <div className="data-start-grid" style={HUE_STARTS}>{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_STARTS}><span>{n}</span><div className="data-start-icons rfi-ri-box" aria-hidden="true">{i === 0 && <><IconDatabase size={27} stroke={1.5} /><IconCircleCheck size={24} stroke={1.8} /></>}{i === 1 && <><IconDatabase size={27} stroke={1.5} /><IconSettingsAutomation size={25} stroke={1.6} /><IconDatabase size={27} stroke={1.5} /></>}{i === 2 && <><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /></>}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
     </div></section>
 
     <section className="data-experts data-wrap"><Reveal><p className="data-eyebrow">{c.expertsEyebrow}</p><h2>{c.expertsTitle}</h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>

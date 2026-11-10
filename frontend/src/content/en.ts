@@ -20,8 +20,9 @@ export const EN = {
     // homepage ranks on brand searches only (rfi irfos, position 1), buyer terms reach us
     // through the report pages. Brand first, then the flagship line from hero and LinkedIn.
     // Title <= 60 chars, description 120-155. index.html ships these same EN strings.
-    title: 'RFI-IRFOS: Human-Powered Multi-Agent Security Investigations',
-    description: 'The Squad investigates apps and software with a team of agents, led and checked by people. Research institute in Graz with a public evidence ledger.',
+    // 2026-11-10: snippet rewrite (Simeon), independent of the DE text. Title <= 60, description 120-155.
+    title: 'Find and fix security flaws | RFI-IRFOS Graz',
+    description: 'Agents we built hunt for vulnerabilities in apps and software, experts verify them and fix the code. For companies with limited capacity of their own.',
     // Was hardcoded English inside sectionMeta() before 2026-10-24 - the /de/
     // twin shipped the EN description verbatim (caught by check-dist-seo.mjs).
     dataSolutions: {
@@ -271,7 +272,7 @@ export const EN = {
       { title: 'Share access', text: 'Point us to your codebase: a GitHub or GitLab repository, an archive, a build, an API specification or a dev or staging environment. Read access is enough.' },
       { title: 'Investigate', text: 'Our in-house agents run thousands of parallel tests across code, dependencies, APIs and data flows. Our team steers them toward your product.' },
       { title: 'Verify & Engineer', text: 'Our specialists validate every finding and separate real risk from false positives. Then we engineer the fix down to the code, ready to apply where possible.' },
-      { title: 'Deliver', text: 'An evidence-backed report with every vulnerability, its severity, attack path and fix, plus an exportable knowledge graph for your own systems.' },
+      { title: 'Deliver', text: 'An evidence-backed report with every vulnerability, its severity, attack path and fix, plus an exportable knowledge graph and your dashboard in the customer portal.' },
     ],
     scopeLabel: 'What we examine',
       evidenceLabel: 'What you receive',
@@ -301,7 +302,7 @@ export const EN = {
     ],
     evidenceHeading: 'Our research is public. Our methodology is inspectable.',
     evidenceCta: 'Explore the Evidence Ledger →',
-    topics: { label: 'What we examine:', close: 'Close', startCheck: 'Start the Quick Check', fullPage: 'Open the full page' },
+    topics: { label: 'What we examine:', appAndGdpr: 'App Security & GDPR', close: 'Close', startCheck: 'Start the Quick Check', fullPage: 'Open the full page' },
     cta: 'Request an Initial Review',
   },
 
@@ -386,10 +387,10 @@ export const EN = {
       cta: 'Start the Quick Check',
     },
     managedSoc: {
-      eyebrow: 'Managed SOC · Enterprise',
+      eyebrow: 'Managed SOC · Startups to Enterprise',
       heading: 'Your outsourced security department',
-      text: 'For companies without in-house security capacity, we run your entire security operations center, with everything in Business. We monitor around the clock, respond to incidents within one hour and fix the finding ourselves within 24 hours, down to the code.',
-      points: ['Monitoring around the clock, 24/7', 'Incident response within 1 hour', 'Fix within 24 hours, down to the code', 'One dedicated team as your security department', 'Custom surfaces, MSP and multi-tenant', 'White-label and agreed SLAs'],
+      text: 'For startups and companies without in-house security capacity, we run your entire security operations center, with everything in Business. We monitor around the clock, respond to incidents within one hour and fix the finding ourselves within 24 hours, down to the code. Findings and evidence are mapped to the controls of NIS2, ISO 27001 and SOC 2: your auditor audits, we deliver the evidence.',
+      points: ['Monitoring around the clock, 24/7', 'Incident response within 1 hour', 'Fix within 24 hours, down to the code', 'One dedicated team as your security department', 'Custom surfaces, MSP and multi-tenant', 'White-label and agreed SLAs', 'Compliance automation'],
       price: 'Priced by scope, offered in writing.',
       cta: 'Request Managed SOC',
     },
@@ -1077,7 +1078,7 @@ export const EN = {
     howItConnects: {
       eyebrow: 'Integration',
       heading: 'How It Connects',
-      sub: 'Five steps from a raw signal in your systems to a verified action you can trust.',
+      sub: 'You give us access, our agents hunt for vulnerabilities, experts verify and fix them down to the code. The result lands with your team.',
       feedbackLabel: 'Feedback & updated context',
       zones: [
         { label: 'Your Systems', steps: [
@@ -1186,7 +1187,7 @@ export const EN = {
       },
       company: {
         heading: 'Company',
-        links: { freeCheck: 'Quick Check', pricing: 'Pricing', team: 'Team', careers: 'Careers', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube' },
+        links: { freeCheck: 'Quick Check', pricing: 'Pricing', team: 'Team', careers: 'Careers', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok' },
       },
       research: {
         heading: 'Research',
@@ -1195,9 +1196,10 @@ export const EN = {
       // Footer column linking the four search landing pages (2026-10-31) from every public view.
       services: {
         heading: 'Services',
-        links: { appSecurityAudit: 'App Security Audit', gdprAppAudit: 'GDPR App Audit', nis2: 'NIS2 for Software Vendors', trackerSdk: 'Tracker & SDK Check', aiApp: 'AI App Privacy Audit', dataSolutions: 'Data Solutions' },
+        links: { appSecurityAudit: 'App Security Audit', gdprAppAudit: 'GDPR App Audit', nis2: 'NIS2 for Software Vendors', trackerSdk: 'Tracker & SDK Check', aiApp: 'AI App Privacy Audit', managedSoc: 'Outsourced SOC', compliance: 'Compliance Automation', domainCheck: 'Domain Security Test', dataSolutions: 'Data Solutions' },
       },
     },
+    socialAria: 'Social media profiles',
     copyright: '© 2026 RFI-IRFOS  ·  Graz, Austria  ·  GISA 39261441  ·  UID ATU83405245',
   },
 

@@ -1079,7 +1079,10 @@ function Standards() {
 function StandardsEN() {
   return <>
     <h1 style={H1}>Standards &amp; Compliance</h1>
-    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>The frameworks we file every audit against &middot; Last updated: July 2026</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>The frameworks we file every audit against &middot; Last updated: November 2026</p>
+
+    {/* Core doctrine line, moved here from the footer (Simeon 2026-11-10). */}
+    <p style={{ ...P, color: 'var(--accent-text)', fontWeight: 700 }}>Human rights are not subject to negotiation.</p>
 
     <p style={P}>
       Every audit RFI-IRFOS runs is filed against current EU and Austrian law. We track new standards as they enter force and keep our methodology up to date. This page lists what that actually means in practice — the specific frameworks, not just a claim that we "follow best practice."
@@ -1128,7 +1131,10 @@ function StandardsEN() {
 function StandardsDE() {
   return <>
     <h1 style={H1}>Standards &amp; Compliance</h1>
-    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Die Rahmenwerke, gegen die wir jedes Audit führen &middot; Letzte Aktualisierung: Juli 2026</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Die Rahmenwerke, gegen die wir jedes Audit führen &middot; Letzte Aktualisierung: November 2026</p>
+
+    {/* Leitsatz, aus dem Footer hierher verschoben (Simeon 2026-11-10). */}
+    <p style={{ ...P, color: 'var(--accent-text)', fontWeight: 700 }}>Menschenrechte sind nicht verhandelbar.</p>
 
     <p style={P}>
       Jedes Audit, das RFI-IRFOS durchführt, wird gegen geltendes EU- und österreichisches Recht geführt. Wir verfolgen neue Standards, sobald sie in Kraft treten, und halten unsere Methodik aktuell. Diese Seite listet auf, was das in der Praxis tatsächlich bedeutet — die konkreten Rahmenwerke, nicht nur die Behauptung, wir würden „Best Practices" befolgen.

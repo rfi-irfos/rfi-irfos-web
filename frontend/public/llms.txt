@@ -22,6 +22,9 @@ The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Ja
 - [NIS2 for software vendors](https://rfi-irfos.com/nis2-software-vendors/): NIS2 / NISG 2026 supply-chain and risk-management duties as technical evidence about shipped software (German: /de/nis2-software-vendors/).
 - [App tracker and SDK check](https://rfi-irfos.com/app-tracker-sdk-check/): every tracker and SDK in an app build - version, start time, endpoints, data categories (German: /de/app-tracker-sdk-check/).
 - [AI app privacy audit](https://rfi-irfos.com/ai-app-privacy-audit/): privacy investigation of AI chatbots, assistants and AI companion apps - what the built app sends, to whom, before consent, and how minors are handled (German: /de/ai-app-privacy-audit/).
+- [Managed SOC](https://rfi-irfos.com/managed-soc/): outsourced security operations center for startups up to enterprise - monitoring around the clock, incident response within one hour, fix within 24 hours down to the code (German: /de/managed-soc/).
+- [Compliance automation](https://rfi-irfos.com/compliance-automation/): findings and evidence mapped to NIS2, ISO 27001 and SOC 2 controls, delivered to your auditor; no certificate issued by us (German: /de/compliance-automation/).
+- [Domain Security Test](https://rfi-irfos.com/domain-security-test/): external, read-only test of a domain - DNS, TLS, e-mail protection and security headers, reviewed by a person, written report (German: /de/domain-security-test/).
 
 ## How it works
 
