@@ -281,7 +281,7 @@ export const DE: Content = {
     ],
     evidenceHeading: 'Unsere Forschung ist öffentlich. Unsere Methodik ist nachprüfbar.',
     evidenceCta: 'Evidence Ledger ansehen →',
-    topics: { label: 'Was wir prüfen:', appAndGdpr: 'App-Sicherheit & DSGVO', close: 'Schließen', startCheck: 'Quick Check starten', fullPage: 'Ganze Seite öffnen' },
+    topics: { label: 'Was wir prüfen:', close: 'Schließen', startCheck: 'Quick Check starten', fullPage: 'Ganze Seite öffnen' },
     cta: 'Erstprüfung anfragen',
   },
 

@@ -35,11 +35,11 @@ const KEYS = {
   'cloud-security-assessment': 'cloud', 'secure-code-review': 'codeReview',
 } as const
 
-// Simeon 2026-11-10: five pills, not one per landing page. App security and the GDPR app audit
-// share one pill (its overlay links to the GDPR page); tracker/SDK and AI-app stay as pages in
-// the footer and the sitemap. Every pill keeps its real <a href>, so crawlers see all five pages.
-const PILLS: readonly LandingSlug[] = ['app-security-audit', 'nis2-software-vendors', 'managed-soc', 'compliance-automation', 'domain-security-test']
-const ALSO: Partial<Record<LandingSlug, LandingSlug>> = { 'app-security-audit': 'gdpr-app-audit' }
+// Simeon 2026-11-10: five pills, not one per landing page. Penetration testing leads (strongest
+// buyer term) and its overlay links on to the app security audit; GDPR, tracker/SDK and AI-app
+// stay as pages in the footer and the sitemap. Every pill keeps its real <a href>, so crawlers see all five pages.
+const PILLS: readonly LandingSlug[] = ['penetration-testing', 'nis2-software-vendors', 'managed-soc', 'compliance-automation', 'domain-security-test']
+const ALSO: Partial<Record<LandingSlug, LandingSlug>> = { 'penetration-testing': 'app-security-audit' }
 
 export function TopicLinks() {
   const { t, locale } = useLocale()
@@ -67,7 +67,7 @@ export function TopicLinks() {
               onClick={e => { if (e.metaKey || e.ctrlKey || e.shiftKey) return; e.preventDefault(); show(slug) }}
               style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--glass-bg-solid)', color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
               <Icon size={16} stroke={1.8} color="var(--icon-neutral)" aria-hidden />
-              {slug === 'app-security-audit' ? c.appAndGdpr : t.footer.groups.services.links[KEYS[slug]]}
+              {t.footer.groups.services.links[KEYS[slug]]}
             </a>
           )
         })}

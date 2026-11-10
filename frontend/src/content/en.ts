@@ -302,7 +302,7 @@ export const EN = {
     ],
     evidenceHeading: 'Our research is public. Our methodology is inspectable.',
     evidenceCta: 'Explore the Evidence Ledger →',
-    topics: { label: 'What we examine:', appAndGdpr: 'App Security & GDPR', close: 'Close', startCheck: 'Start the Quick Check', fullPage: 'Open the full page' },
+    topics: { label: 'What we examine:', close: 'Close', startCheck: 'Start the Quick Check', fullPage: 'Open the full page' },
     cta: 'Request an Initial Review',
   },
 
