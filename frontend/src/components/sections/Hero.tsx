@@ -276,7 +276,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
   preload(heroGrazSatelliteMobile, { as: 'image', fetchPriority: 'high', media: '(max-width: 767px)' })
   preload(heroGrazSatellite, { as: 'image', fetchPriority: 'high', media: '(min-width: 768px)' })
   return (
-    <section style={{
+    <section className="rfi-hero-font" style={{
       // Hero bleibt in Archivo (Simeon 10.11.2026), der Rest der Seite läuft in Plus Jakarta Sans
       fontFamily: "'Archivo', system-ui, sans-serif",
       display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden',

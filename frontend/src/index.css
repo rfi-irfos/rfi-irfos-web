@@ -29,6 +29,10 @@ html { scroll-padding-top: 72px; zoom: 0.9; }
 h1, h2, h3, .rfi-display {
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
 }
+/* Hero bleibt in Archivo (Simeon 10.11.2026), die Regel darüber setzt Überschriften sonst selbst */
+.rfi-hero-font h1, .rfi-hero-font h2, .rfi-hero-font h3, .rfi-hero-font .rfi-display {
+  font-family: 'Archivo', system-ui, sans-serif;
+}
 .rfi-display {
   -webkit-text-stroke: 1.25px rgba(0, 0, 0, .82);
   paint-order: stroke fill;
