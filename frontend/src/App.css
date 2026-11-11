@@ -593,8 +593,8 @@ button { cursor: pointer; font-family: inherit; }
    own 1fr/1.22fr hero split - live feedback: the panel needed to be
    physically bigger, "mehr reingehn", not just keep the 2:1 ratio in a
    small box. */
-.sq-hero-grid { display: grid; grid-template-columns: 0.85fr 1.35fr; gap: 48px; align-items: center; }
-.sq-heading { margin: 0 0 12px; }
+.sq-hero-grid { display: grid; grid-template-columns: 0.85fr 1.35fr; gap: 64px; align-items: center; }
+.sq-heading { margin: 0 0 20px; }
 /* --fs-lead since 2026-10-26, matching .wm-hero-copy p and the Evidence intro.
    Opens with the former .sq-subheading line as its first sentence. */
 .sq-intro { margin: 0 0 24px; max-width: 520px; color: var(--text); font-size: var(--fs-lead); line-height: var(--lh-body); }
@@ -646,7 +646,7 @@ button { cursor: pointer; font-family: inherit; }
 /* .sq-hero had no vertical padding of its own (unlike .wm-hero's padding-block:
    24px 10px) - live feedback: the overview section "clips" against the hero,
    too tight. */
-.sq-hero { padding-block: 40px 32px; }
+.sq-hero { padding-block: 80px 56px; }
 .sq-overview { padding-top: 40px; padding-bottom: 56px; }
 /* zoom (not transform: scale) so the reduced size actually reflows the
    layout - the card reserves 95% of the space it needs instead of shrinking
@@ -788,10 +788,16 @@ button { cursor: pointer; font-family: inherit; }
 /* Dark only: the DLT card keeps the plain card background with a teal edge, the scope panel gets a blue tint. The other themes keep their own card gradient. */
 [data-theme="dark"] .irf-dlt-band { border-color: rgba(0,245,196,.3); }
 [data-theme="dark"] .irf-dlt-title { color: #fff !important; }
-/* Soft tint for the evidence panel, dark only: it has to read apart from the blue scope panel and the teal DLT card. */
-[data-theme="dark"] .irf-evidence-band { --ev: #9cc8f5; --evidence-check: var(--ev); border-color: color-mix(in srgb, var(--ev) 30%, transparent); border-top-color: color-mix(in srgb, var(--ev) 50%, transparent); background: linear-gradient(180deg, color-mix(in srgb, var(--ev) 11%, #0c0e14) 0%, color-mix(in srgb, var(--ev) 18%, #0c0e14) 100%); box-shadow: 0 0 22px color-mix(in srgb, var(--ev) 14%, transparent), 0 24px 50px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18); }
-[data-theme="dark"] .irf-scope-band { background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0) 28%), linear-gradient(rgba(34,82,176,.12), rgba(34,82,176,.12)), rgba(11,13,18,.8); }
-[data-theme="dark"] .irf-scope-band .fx-row { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02) 60%), rgba(16,25,44,.9); }
+/* Evidence panel (Simeon 11.11.): milky glass, check marks green. Dark only. */
+[data-theme="dark"] .irf-evidence-band { --evidence-check: #3ddc84; border-color: rgba(255,255,255,.2); border-top-color: rgba(255,255,255,.34); background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.05)); -webkit-backdrop-filter: blur(22px) saturate(160%); backdrop-filter: blur(22px) saturate(160%); box-shadow: 0 24px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.28); }
+[data-theme="dark"] .irf-scope-band { border-color: rgba(242,80,31,.24); background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0) 28%), rgba(11,13,18,.9); }
+/* Login-screen world map behind the card, blurred and veiled so it reads as depth, not as picture (Simeon 11.11.).
+   The layer sits 14px outside the card so the blur has no soft edge, clip-path cuts it back to the card. */
+[data-theme="dark"] .irf-scope-band::before { content: ''; position: absolute; inset: -14px; z-index: -1; pointer-events: none; background: linear-gradient(rgba(9,10,14,.8), rgba(9,10,14,.88)), url('/login/bg.webp') center / cover no-repeat; filter: blur(10px); clip-path: inset(14px round 20px); }
+[data-theme="dark"] .irf-scope-band .fx-row { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02) 60%), rgba(22,16,15,.9); }
+/* "Check my domain" button in the customer portal's orange (#f2501f), same family as the portal's New task button. */
+.irf-card-glow .fx-cta { background: linear-gradient(180deg, #ff7a4d, #f2501f 55%, #d9420f); box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 8px 22px rgba(242,80,31,.36); }
+.irf-card-glow .fx-cta:not(:disabled):hover { box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 10px 28px rgba(242,80,31,.5); }
 .irf-badge-pulse { animation: irf-badge-pulse 2.6s ease-in-out infinite; }
 @keyframes irf-badge-pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(0,245,196,0.4); }
@@ -1462,3 +1468,24 @@ button { cursor: pointer; font-family: inherit; }
 .rfi-hover-card:hover .rfi-ri-box { box-shadow: 5px 6px 0 -1px rgba(255,255,255,.05), 5px 6px 0 0 color-mix(in srgb, var(--ib) 30%, transparent), inset 0 1px 0 rgba(255,255,255,.34), 0 14px 28px rgba(0,0,0,.5), 0 0 26px color-mix(in srgb, var(--ib) 22%, transparent); }
 .rfi-hover-card:hover .rfi-ri-box::after { opacity: 1; }
 .rfi-hover-card:hover .rfi-ri-box svg { color: color-mix(in srgb, var(--ib) 70%, #fff) !important; filter: drop-shadow(0 0 9px color-mix(in srgb, var(--ib) 65%, transparent)); }
+
+/* Own page scrollbar (Simeon 11.11.2026), see PageScrollbar.tsx. The native bar is hidden for mouse pointers,
+   so modals that lock the body scroll no longer shift the page sideways. Touch devices keep their own. */
+@media (hover: hover) and (pointer: fine) {
+  html { scrollbar-width: none; }
+  html::-webkit-scrollbar { display: none; }
+}
+.rfi-scrollbar { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .rfi-scrollbar { display: block; position: fixed; top: 0; right: 0; bottom: 0; width: 14px; z-index: 80; opacity: 0.35; transition: opacity 0.3s ease; }
+  .rfi-scrollbar.is-hidden { display: none; }
+  .rfi-scrollbar:hover, .rfi-scrollbar.is-active, .rfi-scrollbar.is-dragging { opacity: 1; }
+  .rfi-scrollbar-thumb { position: absolute; top: 0; right: 3px; width: 6px; border-radius: 6px; cursor: grab; touch-action: none;
+    background: linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,.3)); box-shadow: 0 0 0 1px rgba(0,0,0,.25);
+    transition: width 0.18s ease, right 0.18s ease, background 0.18s ease; will-change: transform; }
+  .rfi-scrollbar:hover .rfi-scrollbar-thumb, .rfi-scrollbar.is-dragging .rfi-scrollbar-thumb { width: 9px; right: 2px; background: linear-gradient(180deg, rgba(0,245,196,.85), rgba(0,245,196,.6)); }
+  .rfi-scrollbar.is-dragging .rfi-scrollbar-thumb { cursor: grabbing; }
+}
+
+/* Squad hero film without its own frame line (Simeon 11.11.: too many frames and colours at the top). */
+.sq-hero .sq-hub-panel { border-color: transparent; }

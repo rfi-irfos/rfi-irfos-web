@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { PublicSite } from './components/PublicSite'
+import { PageScrollbar } from './components/PageScrollbar'
 import { LocaleProvider } from './hooks/useLocale'
 import { EN } from './content/en'
 import { DE } from './content/de'
@@ -169,6 +170,6 @@ export default function App() {
   // except Team (2026-08-19: Security/Standards/Methodology closed the gap
   // Impressum/Datenschutz/AGB left open) - the DE/EN toggle reaches this
   // route the same way it reaches the homepage.
-  if (slug) return <LocaleProvider initialLocale={initialLocale}><Suspense fallback={null}><LegalPage slug={slug} /></Suspense></LocaleProvider>
-  return <LocaleProvider initialLocale={initialLocale}><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} />{SERVED_NOT_FOUND && <NotFoundNotice />}<CheckoutReturnNotice /></LocaleProvider>
+  if (slug) return <LocaleProvider initialLocale={initialLocale}><Suspense fallback={null}><LegalPage slug={slug} /></Suspense><PageScrollbar /></LocaleProvider>
+  return <LocaleProvider initialLocale={initialLocale}><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} />{SERVED_NOT_FOUND && <NotFoundNotice />}<CheckoutReturnNotice /><PageScrollbar /></LocaleProvider>
 }

@@ -86,7 +86,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
         {/* Thin violet frame around process card + Free Check widget so the two read as one unit. */}
         {/* Flagship block reads one type step up (Simeon 31.10.: "flagshippy", ca. 5 % größer): the scale
             tokens are re-declared here, so every card inside grows together without raw font sizes. */}
-        <div className="fx-frame" style={{ borderRadius: 26, padding: phone ? 8 : 12, maxWidth: 1320, margin: '0 auto 24px',
+        <div style={{ borderRadius: 26, padding: 0, maxWidth: 1320, margin: '0 auto 24px',
           '--fs-label': '12px', '--fs-small': '14px', '--fs-body': '16px' } as CSSProperties}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: stacked ? 28 : 8 }}>
           {/* Left: ONE framed card holding process, scope and evidence (frame static, cells reveal).
@@ -106,9 +106,25 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                         background: i <= active ? 'var(--accent-text)' : 'var(--bg2)', color: i <= active ? '#02110d' : 'var(--text2)',
                         border: '1px solid ' + (i <= active ? 'var(--accent-text)' : 'var(--border)'),
                         boxShadow: active === i ? '0 0 0 4px color-mix(in srgb, var(--accent-text) 12%, transparent), 0 0 26px color-mix(in srgb, var(--accent-text) 55%, transparent)' : i < active ? '0 0 12px color-mix(in srgb, var(--accent-text) 25%, transparent)' : 'inset 0 1px 0 rgba(255,255,255,0.08)' }}>{i + 1}</span>
-                      {i < c.steps.length - 1 && !phone && <span style={{ flex: 1, height: 2, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
-                        <span style={{ display: 'block', height: '100%', background: 'var(--accent-text)', transformOrigin: 'left', transform: i < active ? 'scaleX(1)' : 'scaleX(0)', transition: 'transform 0.6s ease' }} />
+                      {!phone && <span style={{ flex: i === c.steps.length - 1 ? 'none' : 1, width: i === c.steps.length - 1 ? 64 : undefined, height: 2, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
+                        <span style={{ display: 'block', height: '100%', background: 'var(--accent-text)', transformOrigin: 'left', transform: i < active || (i === c.steps.length - 1 && active === i) ? 'scaleX(1)' : 'scaleX(0)', transition: 'transform 0.6s ease', transitionDelay: i === c.steps.length - 1 ? '0.35s' : undefined }} />
                       </span>}
+                      {/* Finish flag after the last step (Simeon 11.11.): lights up when the last step is reached. */}
+                      {i === c.steps.length - 1 && !phone && (
+                        <span aria-hidden="true" style={{ width: 38, height: 38, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.5s ease 0.7s',
+                          background: active === i ? 'var(--accent-text)' : 'var(--bg2)', color: active === i ? '#02110d' : 'var(--text2)',
+                          border: '1px solid ' + (active === i ? 'var(--accent-text)' : 'var(--border)'),
+                          boxShadow: active === i ? '0 0 0 4px color-mix(in srgb, var(--accent-text) 12%, transparent), 0 0 26px color-mix(in srgb, var(--accent-text) 55%, transparent)' : 'none' }}>
+                          {/* checkered finish flag: pole plus a 4x3 chequer, drawn square by square */}
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M5 3v18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                            {[0, 1, 2].flatMap(r => [0, 1, 2, 3].map(c2 => (r + c2) % 2 === 0
+                              ? <rect key={`${r}-${c2}`} x={7 + c2 * 3.6} y={4 + r * 3.6} width="3.6" height="3.6" fill="currentColor" />
+                              : null))}
+                            <rect x="7" y="4" width="14.4" height="10.8" stroke="currentColor" strokeWidth="1.2" />
+                          </svg>
+                        </span>
+                      )}
                     </div>
                     <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', color: active === i ? 'var(--accent-text)' : 'var(--text)', marginBottom: 4, transition: 'color 0.4s' }}>{s.title}</div>
                     <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: active === i ? 'var(--text)' : 'var(--text2)' }}>{s.text}</div>
@@ -121,7 +137,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                 card still start and end on the same lines (Simeon 01.11. + 03.11.). On phones the DOM order
                 (label, rows, label, card) stacks each label over its own column. */}
             <div style={{ borderTop: '1px solid var(--border)', paddingTop: 28, display: 'grid', gridTemplateColumns: phone ? '1fr' : 'minmax(0, 1.15fr) minmax(0, 1fr)', gridTemplateRows: phone ? undefined : 'auto 1fr', columnGap: 24, rowGap: 12 }}>
-              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: 0, textAlign: 'center', gridColumn: phone ? undefined : 1, gridRow: phone ? undefined : 1 }}>{c.scopeLabel}</p>
+              <p style={{ fontSize: 'var(--fs-small)', fontWeight: 600, color: 'var(--text2)', margin: 0, textAlign: 'center', gridColumn: phone ? undefined : 1, gridRow: phone ? undefined : 1 }}>{c.scopeLabel}</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, gridColumn: phone ? undefined : 1, gridRow: phone ? undefined : 2 }}>
                 {c.scope.map((row, i) => (
                   <Reveal key={row.title} delay={i + 1} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -135,7 +151,7 @@ export function AppPrivacySection({ onNavigateEvidence }: { onNavigateEvidence: 
                   </Reveal>
                 ))}
               </div>
-              <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: phone ? '16px 0 0' : 0, textAlign: 'center', gridColumn: phone ? undefined : 2, gridRow: phone ? undefined : 1 }}>{c.evidenceLabel}</p>
+              <p style={{ fontSize: 'var(--fs-small)', fontWeight: 600, color: 'var(--text2)', margin: phone ? '16px 0 0' : 0, textAlign: 'center', gridColumn: phone ? undefined : 2, gridRow: phone ? undefined : 1 }}>{c.evidenceLabel}</p>
               <Reveal delay={2} style={{ height: '100%', gridColumn: phone ? undefined : 2, gridRow: phone ? undefined : 2 }}>
                 <div className="fx-evidence irf-evidence-band" style={{ borderRadius: 18, padding: 22, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box' }}>
                   <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 16 }}>

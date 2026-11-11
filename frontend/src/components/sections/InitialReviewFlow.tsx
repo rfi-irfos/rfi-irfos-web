@@ -166,13 +166,15 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
         )}
         <button type="submit" className={state === 'ok' ? undefined : 'fx-cta'} disabled={state === 'sending' || !consent} style={{
           background: state === 'ok' ? 'rgba(0,245,196,0.2)' : undefined,
-          color: state === 'ok' ? 'var(--accent-text)' : '#1a0f00',
+          color: state === 'ok' ? 'var(--accent-text)' : '#fff',
           border: state === 'ok' ? '1px solid var(--accent-text)' : 'none',
-          padding: wide ? '11px 18px' : '14px 20px', borderRadius: 12, fontWeight: 700, fontSize: wide ? 14 : 'var(--fs-body)',
+          padding: wide ? '11px 18px' : '14px 20px', borderRadius: 12, fontWeight: 700, fontSize: wide ? 15 : 'var(--fs-body)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
           cursor: state === 'sending' ? 'wait' : !consent ? 'not-allowed' : 'pointer',
           opacity: !consent && state === 'idle' ? 0.78 : 1,
         }}>
-          {state === 'sending' ? c.submitSending : state === 'ok' ? c.submitOk : c.submitCta}{wide && state === 'idle' && ' \u2192'}
+          {state === 'sending' ? c.submitSending : state === 'ok' ? c.submitOk : c.submitCta}{wide && state === 'idle' && (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          )}
         </button>
       </form>
     </div>

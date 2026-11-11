@@ -287,10 +287,10 @@ export const EN = {
     heading: 'Human-Powered Multi-Agent Security Investigations',
     paragraph: "Selected agents that we built and trained in-house execute thousands of parallel security tests, while our specialists investigate vulnerabilities, trace attack paths and engineer fixes down to the code for startups and companies with limited in-house capacity.",
     steps: [
-      { title: 'Share access', text: 'Point us to your codebase: a GitHub or GitLab repository, an archive, a build, an API specification or a dev or staging environment. Read access is enough.' },
-      { title: 'Investigate', text: 'Our in-house agents run thousands of parallel tests across code, dependencies, APIs and data flows. Our team steers them toward your product.' },
-      { title: 'Verify & Engineer', text: 'Our specialists validate every finding and separate real risk from false positives. Then we engineer the fix down to the code, ready to apply where possible.' },
-      { title: 'Deliver', text: 'An evidence-backed report with every vulnerability, its severity, attack path and fix, plus an exportable knowledge graph and your dashboard in the customer portal.' },
+      { title: 'You share access', text: 'Point us to your codebase: a GitHub or GitLab repository, an archive, a build, an API specification or a dev or staging environment. Read access is enough.' },
+      { title: 'We investigate', text: 'Our in-house agents run thousands of parallel tests across code, dependencies, APIs and data flows. Our team steers them toward your product.' },
+      { title: 'We verify and fix', text: 'Our specialists validate every finding and separate real risk from false positives. Then we engineer the fix down to the code, ready to apply where possible.' },
+      { title: 'You get the report', text: 'An evidence-backed report with every vulnerability, its severity, attack path and fix, plus an exportable knowledge graph and your dashboard in the customer portal.' },
     ],
     scopeLabel: 'What we examine',
       evidenceLabel: 'What you receive',
@@ -1007,7 +1007,8 @@ export const EN = {
   squad: {
     heading: 'The Squad',
     subheading: 'Specialized agents. For every kind of work.',
-    intro: 'Each of them is built around one clear responsibility: market intelligence, funding research, evidence verification, delivery checks, visibility, security. Run a single agent against one problem, or combine them into a pipeline for the whole question. The entire pipeline runs on our own server in Graz.',
+    heroHeading: 'Specialized agents for every kind of work',
+    intro: 'The Squad is a set of specialized agents, each built around one clear responsibility: market intelligence, funding research, evidence verification, delivery checks, visibility and security. Run a single agent against one problem, or combine them into a pipeline for the whole question. The entire pipeline runs on our own server in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'See which agent fits your problem →',
@@ -1167,6 +1168,7 @@ export const EN = {
       topicOptions: {
         general: 'General enquiry',
         managedSoc: 'Request Managed SOC',
+        earlyAccess: 'Customer portal early access',
         service: 'Request a review or project',
         securityDisclosure: 'Report a security finding',
         researchCollaboration: 'Research collaboration',

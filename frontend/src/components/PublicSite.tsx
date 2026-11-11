@@ -178,7 +178,7 @@ function LocaleIcon({ locale }: { locale: Locale }) {
   // Show the *target* language, not the current one — users expect the toggle
   // to say "click here to switch to Deutsch/English", not "you are already here".
   const target = LOCALES[(LOCALES.indexOf(locale) + 1) % LOCALES.length]
-  return <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700 }}>{target}</span>
+  return <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, letterSpacing: '0.02em' }}>{target.toUpperCase()}</span>
 }
 
 // Sun / Moon / Monitor glyphs for the theme toggle - icon-only reads at a glance and
@@ -1642,18 +1642,6 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 the same always-dark hero photo unscrolled, so var(--text2) (tuned for
                 a white light-theme background) went near-invisible there (live bug
                 report: "DE and theme button in whitemode have unreadable grey font"). */}
-            {/* Kundenportal-Login (Simeon 11.11.2026): nur ein Profil-Symbol im Stil der Schalter; öffnet den Login-Screen (gesperrte Felder, Early-Access-Anfrage, Demo-Vorschau). Das Portal selbst ist von hier aus nicht erreichbar. */}
-            <button type="button" onClick={() => setLoginOpen(true)} data-testid="nav-portal" title={t.login.navLabel} aria-label={t.login.navLabel} aria-haspopup="dialog" style={{
-              width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: theme === 'light' ? 'transparent' : 'var(--bg2)',
-              color: overDarkHero ? '#a0a0b8' : 'var(--text2)',
-              border: `1px solid ${overDarkHero ? 'rgba(255,255,255,0.18)' : 'var(--border)'}`, borderRadius: 8,
-              cursor: 'pointer', textDecoration: 'none', transition: 'background 0.15s, color 0.15s, border-color 0.15s',
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = overDarkHero ? '#e8e8f0' : 'var(--text)' }}
-              onMouseLeave={e => { e.currentTarget.style.background = theme === 'light' ? 'transparent' : 'var(--bg2)'; e.currentTarget.style.color = overDarkHero ? '#a0a0b8' : 'var(--text2)' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5" /></svg>
-            </button>
             <button onClick={toggleLocale} title={t.nav.localeTitle(LOCALE_LABEL[locale])} aria-label={t.nav.localeAria(LOCALE_LABEL[locale])} style={{
               width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
               background: theme === 'light' ? 'transparent' : 'var(--bg2)',
@@ -1675,6 +1663,18 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
               onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = overDarkHero ? '#e8e8f0' : 'var(--text)' }}
               onMouseLeave={e => { e.currentTarget.style.background = theme === 'light' ? 'transparent' : 'var(--bg2)'; e.currentTarget.style.color = overDarkHero ? '#a0a0b8' : 'var(--text2)' }}>
               <ThemeIcon t={theme} />
+            </button>
+            {/* Kundenportal-Login (Simeon 11.11.2026): nur ein Profil-Symbol im Stil der Schalter; öffnet den Login-Screen (gesperrte Felder, Early-Access-Anfrage, Demo-Vorschau). Das Portal selbst ist von hier aus nicht erreichbar. */}
+            <button type="button" onClick={() => setLoginOpen(true)} data-testid="nav-portal" title={t.login.navLabel} aria-label={t.login.navLabel} aria-haspopup="dialog" style={{
+              width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: theme === 'light' ? 'transparent' : 'var(--bg2)',
+              color: overDarkHero ? '#a0a0b8' : 'var(--text2)',
+              border: `1px solid ${overDarkHero ? 'rgba(255,255,255,0.18)' : 'var(--border)'}`, borderRadius: 8,
+              cursor: 'pointer', textDecoration: 'none', transition: 'background 0.15s, color 0.15s, border-color 0.15s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = overDarkHero ? '#e8e8f0' : 'var(--text)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = theme === 'light' ? 'transparent' : 'var(--bg2)'; e.currentTarget.style.color = overDarkHero ? '#a0a0b8' : 'var(--text2)' }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5" /></svg>
             </button>
             {/* Standalone nav mail-icon button removed entirely (live feedback) -
                 "Submit" is already in NAV_LINKS and points at the same consolidated
@@ -2107,7 +2107,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 </div>
       )}
 
-      {loginOpen && <LoginPreview t={t} onClose={() => setLoginOpen(false)} onRequestAccess={() => { setLoginOpen(false); navigateTo('#submit') }} />}
+      {loginOpen && <LoginPreview t={t} onClose={() => setLoginOpen(false)} onRequestAccess={() => { setLoginOpen(false); selectTier('Early Access') }} />}
     </div>
   )
 }

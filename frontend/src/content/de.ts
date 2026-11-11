@@ -264,10 +264,10 @@ export const DE: Content = {
     heading: 'Human-Powered Multi-Agent Security Investigations',
     paragraph: "Ausgewählte Agenten, die wir im eigenen Haus gebaut und trainiert haben, führen Tausende parallele Sicherheitstests aus, während unsere Fachleute Schwachstellen untersuchen, Angriffspfade nachverfolgen und Fixes bis in den Code entwickeln, für Startups und Unternehmen mit begrenzten eigenen Kapazitäten.",
     steps: [
-      { title: 'Zugang teilen', text: 'Zeigen Sie uns Ihre Codebasis: ein GitHub- oder GitLab-Repository, ein Archiv, einen Build, eine API-Spezifikation oder eine Dev- oder Staging-Umgebung. Lesezugriff reicht.' },
-      { title: 'Untersuchen', text: 'Unsere selbst gebauten Agenten führen Tausende parallele Tests über Code, Abhängigkeiten, APIs und Datenflüsse aus. Unser Team lenkt sie auf Ihr Produkt.' },
-      { title: 'Prüfen & Fixen', text: 'Unsere Fachleute prüfen jeden Fund und trennen echtes Risiko von Fehlalarmen. Dann entwickeln wir den Fix bis in den Code, wo möglich direkt anwendbar.' },
-      { title: 'Übergabe', text: 'Ein belegter Bericht mit jeder Schwachstelle, Schweregrad, Angriffspfad und Fix, dazu ein exportierbarer Knowledge Graph und Ihr Dashboard im Kundenportal.' },
+      { title: 'Sie geben Zugang', text: 'Zeigen Sie uns Ihre Codebasis: ein GitHub- oder GitLab-Repository, ein Archiv, einen Build, eine API-Spezifikation oder eine Dev- oder Staging-Umgebung. Lesezugriff reicht.' },
+      { title: 'Wir untersuchen', text: 'Unsere selbst gebauten Agenten führen Tausende parallele Tests über Code, Abhängigkeiten, APIs und Datenflüsse aus. Unser Team lenkt sie auf Ihr Produkt.' },
+      { title: 'Wir prüfen und beheben', text: 'Unsere Fachleute prüfen jeden Fund und trennen echtes Risiko von Fehlalarmen. Dann entwickeln wir den Fix bis in den Code, wo möglich direkt anwendbar.' },
+      { title: 'Sie erhalten den Bericht', text: 'Ein belegter Bericht mit jeder Schwachstelle, Schweregrad, Angriffspfad und Fix, dazu ein exportierbarer Knowledge Graph und Ihr Dashboard im Kundenportal.' },
     ],
     scopeLabel: 'Das prüfen wir',
       evidenceLabel: 'Das bekommen Sie',
@@ -976,7 +976,8 @@ export const DE: Content = {
   squad: {
     heading: 'The Squad',
     subheading: 'Spezialisierte Agenten. Für jede Art von Arbeit.',
-    intro: 'Jeder von ihnen ist auf eine klare Verantwortung zugeschnitten: Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit, Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Die komplette Pipeline läuft auf unserem eigenen Server in Graz.',
+    heroHeading: 'Spezialisierte Agenten für jede Art von Arbeit',
+    intro: 'The Squad besteht aus spezialisierten Agenten, jeder auf eine klare Verantwortung zugeschnitten: Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit und Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Die komplette Pipeline läuft auf unserem eigenen Server in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Finden Sie den passenden Agenten →',
@@ -1136,6 +1137,7 @@ export const DE: Content = {
       topicOptions: {
         general: 'Allgemeine Anfrage',
         managedSoc: 'Managed SOC anfragen',
+        earlyAccess: 'Early Access zum Kundenportal',
         service: 'Prüfung oder Projekt anfragen',
         securityDisclosure: 'Sicherheitsfund melden',
         researchCollaboration: 'Forschungskooperation',
