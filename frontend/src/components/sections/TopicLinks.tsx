@@ -129,7 +129,7 @@ function TopicModal({ slug, doc, href, onClose }: { slug: LandingSlug; doc: Land
         ))}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 20, paddingTop: 18, borderTop: '1px solid var(--border)' }}>
           <button type="button" onClick={startCheck}
-            style={{ background: '#f97316', color: '#1a0f00', border: 'none', padding: '12px 20px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', cursor: 'pointer' }}>{c.startCheck}</button>
+            style={{ background: 'var(--brand-orange)', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', cursor: 'pointer' }}>{c.startCheck}</button>
           <a href={href} style={{ border: '1px solid var(--border)', color: 'var(--text)', padding: '12px 20px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none' }}>{c.fullPage}</a>
           {also && <a href={alsoHref} style={{ border: '1px solid var(--border)', color: 'var(--accent-text)', padding: '12px 20px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none' }}>{t.footer.groups.services.links[KEYS[also]]}</a>}
         </div>

@@ -89,7 +89,7 @@ function TierCard({
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
         <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', margin: 0 }}>{tier.name}</p>
         {tier.popular && (
-          <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: '#f97316', whiteSpace: 'nowrap' }}>{t.pricing.mostPopular}</span>
+          <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: 'var(--brand-orange)', whiteSpace: 'nowrap' }}>{t.pricing.mostPopular}</span>
         )}
       </div>
       <div style={{ overflow: 'hidden' }}>
@@ -130,8 +130,8 @@ function TierCard({
         type="button"
         onClick={() => onCheckout(billing === 'monthly' ? tier.stripeKey : `${tier.stripeKey}_annual`)}
         style={{
-          background: tier.popular ? '#f97316' : 'transparent',
-          color: tier.popular ? '#1a0f00' : 'var(--text)',
+          background: tier.popular ? 'var(--brand-orange)' : 'transparent',
+          color: tier.popular ? '#fff' : 'var(--text)',
           border: tier.popular ? 'none' : '1px solid var(--border)',
           padding: '14px 18px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', marginTop: 6,
         }}>{tier.cta}</button>
@@ -172,18 +172,18 @@ function BillingToggle({ billing, onChange }: { billing: 'monthly' | 'annual'; o
     <button type="button" onClick={() => onChange(value)} style={{
       position: 'relative', zIndex: 1,
       background: 'transparent',
-      color: billing === value ? '#1a0f00' : 'var(--text2)',
+      color: billing === value ? '#fff' : 'var(--text2)',
       border: 'none', borderLeft: borderLeft ? '1px solid var(--border)' : 'none',
-      padding: '12px 24px', fontWeight: 700, fontSize: 'var(--fs-small)', cursor: 'pointer',
+      padding: '16px 38px', fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer',
       transition: 'color 0.2s ease',
     }}>{label}</button>
   )
   return (
-    <div style={{ position: 'relative', display: 'inline-flex', border: '1px solid var(--border)', borderRadius: 6, overflow: 'hidden' }}>
+    <div style={{ position: 'relative', display: 'inline-flex', border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
       <motion.div
         animate={{ left: billing === 'monthly' ? '0%' : '50%' }}
         transition={{ duration: 0.22, ease: 'easeOut' }}
-        style={{ position: 'absolute', top: 0, bottom: 0, width: '50%', background: '#f97316' }}
+        style={{ position: 'absolute', top: 0, bottom: 0, width: '50%', background: 'var(--brand-orange)' }}
       />
       {opt('monthly', b.monthly, false)}
       {opt('annual', b.annual, true)}
@@ -250,7 +250,7 @@ export function PricingSection({
 
         <div>
           <Reveal>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
               <BillingToggle billing={billing} onChange={setBilling} />
             </div>
           </Reveal>
@@ -281,7 +281,7 @@ export function PricingSection({
                       scrollMarginTop: 84,
                       borderRight: !tablet && !last ? '1px solid var(--tiers-line)' : undefined,
                       borderBottom: tablet && !last ? '1px solid var(--tiers-line)' : undefined,
-                      background: tier.popular ? 'rgba(249,115,22,0.07)' : undefined,
+                      background: tier.popular ? 'rgba(242,80,31,0.07)' : undefined,
                     }}>
                       <TierCard tier={tier} billing={billing} onCheckout={onCheckout} />
                     </div>

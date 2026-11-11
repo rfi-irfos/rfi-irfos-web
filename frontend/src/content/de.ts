@@ -78,7 +78,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    sub: 'Wir ermöglichen Startups und wachsenden Unternehmen den Zugang zu fortschrittlichen Sicherheitslösungen, indem unsere eigens entwickelten Agenten tausende potenzielle Angriffswege untersuchen und erfahrene Fachleute die Nachweise überprüfen und umsetzbare Lösungen entwickeln.',
+    sub: 'Wir ermöglichen Startups und wachsenden Unternehmen den Zugang zu fortschrittlichen Sicherheitslösungen, indem unsere eigens entwickelten Agenten tausende potenzielle Angriffswege untersuchen und erfahrene Fachleute umsetzbare Lösungen entwickeln.',
     stats: {
       researchAreas: 'Fachbereiche',
       researchAreasSub: 'kombiniert',
@@ -181,7 +181,7 @@ export const DE: Content = {
     showFullLedger: 'Gesamtes Ledger anzeigen',
     securityBridgeCta: 'Das umfasst ein Security-Auftrag →',
     kpis: {
-      appsAudited: 'Android/iOS Apps geprüft',
+      appsAudited: 'Mobile Apps geprüft',
       smaliClasses: 'Smali-Klassen gelesen',
       criticalFindings: 'Kritische Funde erfasst',
       trackersFound: 'Schwachstellen gefunden',

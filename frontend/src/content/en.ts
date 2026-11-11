@@ -95,7 +95,7 @@ export const EN = {
     subtitlePrefix: 'Interdisciplinary',
     subtitleSuffix: ' Research Facility for Open Sciences',
     // Short line under the headline (Simeon 11.11.): what we do, in two sentences. Moved here from the "What we do best" intro.
-    sub: 'We give startups and growing companies access to advanced security capabilities by deploying purpose-built agents across thousands of potential attack paths, with experienced specialists validating the evidence and engineering actionable solutions.',
+    sub: 'We give startups and growing companies access to advanced security capabilities by deploying purpose-built agents across thousands of potential attack paths, with experienced specialists engineering actionable solutions.',
     stats: {
       researchAreas: 'research domains',
       researchAreasSub: 'combined',
@@ -201,7 +201,7 @@ export const EN = {
     showFullLedger: 'Show the full ledger',
     securityBridgeCta: 'This is what a security engagement encompasses →',
     kpis: {
-      appsAudited: 'Android/iOS apps audited',
+      appsAudited: 'Mobile apps audited',
       smaliClasses: 'Smali classes read',
       criticalFindings: 'Critical findings recorded',
       trackersFound: 'Weak points found',
