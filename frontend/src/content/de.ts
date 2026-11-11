@@ -78,7 +78,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    identity: 'Wir formen, was unter Last hält, und legen offen, was zum Scheitern bestimmt war. Kein Theater, keine Warnwesten.',
+    sub: 'Wir ermöglichen Startups und wachsenden Unternehmen den Zugang zu fortschrittlichen Sicherheitslösungen, indem unsere eigens entwickelten Agenten tausende potenzielle Angriffswege untersuchen und erfahrene Fachleute die Nachweise überprüfen und umsetzbare Lösungen entwickeln.',
     stats: {
       researchAreas: 'Fachbereiche',
       researchAreasSub: 'kombiniert',
@@ -262,12 +262,13 @@ export const DE: Content = {
   appPrivacy: {
     eyebrow: 'Was wir am besten können',
     heading: 'Human-Powered Multi-Agent Security Investigations',
+    lead: 'Wir formen, was unter Last hält, und legen offen, was zum Scheitern bestimmt war.',
     paragraph: "Ausgewählte Agenten, die wir im eigenen Haus gebaut und trainiert haben, führen Tausende parallele Sicherheitstests aus, während unsere Fachleute Schwachstellen untersuchen, Angriffspfade nachverfolgen und Fixes bis in den Code entwickeln, für Startups und Unternehmen mit begrenzten eigenen Kapazitäten.",
     steps: [
       { title: 'Sie geben Zugang', text: 'Zeigen Sie uns Ihre Codebasis: ein GitHub- oder GitLab-Repository, ein Archiv, einen Build, eine API-Spezifikation oder eine Dev- oder Staging-Umgebung. Lesezugriff reicht.' },
       { title: 'Wir untersuchen', text: 'Unsere selbst gebauten Agenten führen Tausende parallele Tests über Code, Abhängigkeiten, APIs und Datenflüsse aus. Unser Team lenkt sie auf Ihr Produkt.' },
-      { title: 'Wir prüfen und beheben', text: 'Unsere Fachleute prüfen jeden Fund und trennen echtes Risiko von Fehlalarmen. Dann entwickeln wir den Fix bis in den Code, wo möglich direkt anwendbar.' },
-      { title: 'Sie erhalten den Bericht', text: 'Ein belegter Bericht mit jeder Schwachstelle, Schweregrad, Angriffspfad und Fix, dazu ein exportierbarer Knowledge Graph und Ihr Dashboard im Kundenportal.' },
+      { title: 'Wir prüfen', text: 'Unsere Fachleute validieren jeden Fund, trennen echtes Risiko von Fehlalarmen und dokumentieren den Angriffspfad mit Nachweis.' },
+      { title: 'Wir beheben', text: 'Wir entwickeln den Fix bis in den Code, wo möglich direkt anwendbar. Ihr Dashboard im Kundenportal und ein exportierbarer Knowledge Graph halten alles nachvollziehbar.' },
     ],
     scopeLabel: 'Das prüfen wir',
       evidenceLabel: 'Das bekommen Sie',
@@ -279,8 +280,8 @@ export const DE: Content = {
       { title: 'Fehlkonfigurationen und Bugs', text: 'Unsichere Voreinstellungen, zu weite Berechtigungen, Programmfehler.' },
     ],
     report: {
-      title: 'Der Nachweis',
-      sub: 'Unsere Arbeit, dokumentiert, umsetzbar und überprüfbar.',
+      title: 'Jede Schwachstelle kommt mit PoC und einem Fix auf Code-Ebene.',
+      sub: '',
       items: [
         { title: "Breite technische Abdeckung", text: "Code, Abhängigkeiten, APIs, Konfigurationen und Datenflüsse, gemeinsam untersucht." },
         { title: "Ausnutzbarkeitsanalyse", text: "Funde daran verifiziert, was ein Angreifer realistisch damit anfangen kann." },
@@ -296,7 +297,6 @@ export const DE: Content = {
       { title: "Normbasierte Methodik.", text: "Basierend auf OWASP ASVS, OWASP Top 10 und CWE, mit CVSS-Schweregrad, wo anwendbar." },
     ],
     evidenceHeading: 'Unsere Forschung ist öffentlich. Unsere Methodik ist nachprüfbar.',
-    evidenceCta: 'Evidence Ledger ansehen →',
     topics: { label: 'Was wir prüfen:', close: 'Schließen', startCheck: 'Quick Check starten', fullPage: 'Ganze Seite öffnen' },
     cta: 'Erstprüfung anfragen',
   },

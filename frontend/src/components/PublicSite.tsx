@@ -1690,7 +1690,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       <main id="main-content" tabIndex={-1} className={leftFirstView.current ? 'rfi-view-stage' : 'rfi-view-stage rfi-view-stage--first'} key={view}>
         {view === 'home' && <>
           <HeroSection mobile={mobile} theme={theme} />
-          <AppPrivacySection onNavigateEvidence={() => navigateTo('evidence')} />
+          <AppPrivacySection />
           <CoopPartnersSection mobile={mobile} />
           <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} />
         </>}

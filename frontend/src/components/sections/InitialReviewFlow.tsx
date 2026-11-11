@@ -67,8 +67,9 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
   }
 
   const cardStyle: React.CSSProperties = {
-    borderRadius: 18, padding: wide ? '20px 24px' : variant === 'embedded' ? '22px' : '24px', display: wide ? 'grid' : 'flex', flexDirection: 'column', gap: wide ? 28 : 14,
-    gridTemplateColumns: wide ? 'minmax(0, 1fr) minmax(0, 1fr)' : undefined,
+    borderRadius: 18, padding: wide ? '20px 24px' : variant === 'embedded' ? '22px' : '24px', display: wide ? 'grid' : 'flex', flexDirection: 'column', gap: wide ? '28px 24px' : 14,
+    // Same tracks and gap as the process card above (0.9fr / 1fr, 24 px), so the divider sits on the same vertical line (Simeon 11.11.)
+    gridTemplateColumns: wide ? 'minmax(0, 0.9fr) minmax(0, 1fr)' : undefined,
     maxWidth: variant === 'modal' ? 380 : undefined, height: variant === 'embedded' ? '100%' : undefined,
     boxSizing: 'border-box',
   }
@@ -79,9 +80,11 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
       {c.badge}
     </span>
   )
-  const labelStyle: React.CSSProperties = { fontSize: wide ? 13 : 'var(--fs-small)', fontWeight: wide ? 600 : undefined, color: wide ? 'var(--text)' : 'var(--text2)', display: wide ? 'flex' : 'block', alignItems: 'center', gap: 8, marginBottom: 6 }
+  const labelStyle: React.CSSProperties = { fontSize: wide ? 14 : 'var(--fs-small)', fontWeight: wide ? 600 : undefined, color: wide ? 'var(--text)' : 'var(--text2)', display: wide ? 'flex' : 'block', alignItems: 'center', gap: 8, marginBottom: wide ? 0 : 6, ...(wide ? { position: 'absolute' as const, left: 16, top: 0, bottom: 0, width: 18, overflow: 'hidden', whiteSpace: 'nowrap' as const, pointerEvents: 'none' as const, color: 'var(--text2)' } : {}) }
+  // Landing card (wide): only the icon sits inside the box, the label text is the placeholder and disappears while typing (Simeon 11.11.); the label stays in the DOM, clipped, for screen readers. Narrow card keeps them stacked above.
+  const fieldRow: React.CSSProperties = wide ? { position: 'relative' } : {}
   const labelIcon = (d: string) => wide && (
-    <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d={d} /></svg>
+    <svg width={18} height={18} style={{ flexShrink: 0 }} viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d={d} /></svg>
   )
 
   return (
@@ -124,17 +127,17 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
 
       <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1, ...(wide ? { padding: '14px 18px', borderRadius: 14, gap: 10, border: '1px solid color-mix(in srgb, var(--accent-text) 38%, transparent)', background: 'color-mix(in srgb, var(--accent-text) 6%, transparent)' } : {}) }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: wide ? 10 : 12 }}>
-        <div>
+        <div style={fieldRow}>
           <label htmlFor={`${fid}-domain`} style={labelStyle}>{labelIcon('M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c2.500 2.500 3.800 5.500 3.800 9s-1.300 6.500-3.800 9c-2.500-2.500-3.800-5.500-3.800-9S9.500 5.500 12 3z')}{c.domainLabel}</label>
-          <input id={`${fid}-domain`} name="domain" type="text" inputMode="url" autoComplete="url" autoCapitalize="none" autoCorrect="off" spellCheck={false} required placeholder={c.domainPlaceholder} value={domain}
+          <input id={`${fid}-domain`} name="domain" type="text" inputMode="url" autoComplete="url" autoCapitalize="none" autoCorrect="off" spellCheck={false} required placeholder={wide ? c.domainLabel : c.domainPlaceholder} value={domain}
             onChange={e => setDomain(e.target.value)}
-            className="fx-input" style={{ width: '100%', borderRadius: 12, padding: wide ? '9px 14px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 14 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+            className="fx-input" style={{ width: '100%', minWidth: 0, borderRadius: 12, padding: wide ? '13px 16px 13px 46px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 15 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
         </div>
-        <div>
+        <div style={fieldRow}>
           <label htmlFor={`${fid}-email`} style={labelStyle}>{labelIcon('M3 6h18v12H3zM3 7l9 6 9-6')}{c.emailLabel}</label>
-          <input id={`${fid}-email`} name="email" autoComplete="email" type="email" required placeholder={c.emailPlaceholder} value={email}
+          <input id={`${fid}-email`} name="email" autoComplete="email" type="email" required placeholder={wide ? c.emailLabel : c.emailPlaceholder} value={email}
             onChange={e => setEmail(e.target.value)}
-            className="fx-input" style={{ width: '100%', borderRadius: 12, padding: wide ? '9px 14px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 14 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+            className="fx-input" style={{ width: '100%', minWidth: 0, borderRadius: 12, padding: wide ? '13px 16px 13px 46px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 15 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
         </div>
         </div>
         <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>

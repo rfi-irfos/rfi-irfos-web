@@ -94,7 +94,8 @@ export const EN = {
     headlineEmphasisIndex: 2,
     subtitlePrefix: 'Interdisciplinary',
     subtitleSuffix: ' Research Facility for Open Sciences',
-    identity: 'We craft what holds under load and expose what was destined to fail. No theater, no high-visibility vests.',
+    // Short line under the headline (Simeon 11.11.): what we do, in two sentences. Moved here from the "What we do best" intro.
+    sub: 'We give startups and growing companies access to advanced security capabilities by deploying purpose-built agents across thousands of potential attack paths, with experienced specialists validating the evidence and engineering actionable solutions.',
     stats: {
       researchAreas: 'research domains',
       researchAreasSub: 'combined',
@@ -285,12 +286,13 @@ export const EN = {
   appPrivacy: {
     eyebrow: 'What we do best',
     heading: 'Human-Powered Multi-Agent Security Investigations',
+    lead: 'We craft what holds under load and expose what was destined to fail.',
     paragraph: "Selected agents that we built and trained in-house execute thousands of parallel security tests, while our specialists investigate vulnerabilities, trace attack paths and engineer fixes down to the code for startups and companies with limited in-house capacity.",
     steps: [
       { title: 'You share access', text: 'Point us to your codebase: a GitHub or GitLab repository, an archive, a build, an API specification or a dev or staging environment. Read access is enough.' },
       { title: 'We investigate', text: 'Our in-house agents run thousands of parallel tests across code, dependencies, APIs and data flows. Our team steers them toward your product.' },
-      { title: 'We verify and fix', text: 'Our specialists validate every finding and separate real risk from false positives. Then we engineer the fix down to the code, ready to apply where possible.' },
-      { title: 'You get the report', text: 'An evidence-backed report with every vulnerability, its severity, attack path and fix, plus an exportable knowledge graph and your dashboard in the customer portal.' },
+      { title: 'We verify', text: 'Our specialists validate every finding, separate real risk from false positives and document the attack path with evidence.' },
+      { title: 'We fix', text: 'We engineer the fix down to the code, ready to apply where possible. Your dashboard in the customer portal and an exportable knowledge graph keep everything traceable.' },
     ],
     scopeLabel: 'What we examine',
       evidenceLabel: 'What you receive',
@@ -302,8 +304,8 @@ export const EN = {
       { title: 'Misconfigurations and bugs', text: 'Insecure defaults, overly broad permissions, software defects.' },
     ],
     report: {
-      title: 'The evidence',
-      sub: 'Our work, documented, actionable and checkable.',
+      title: 'Every vulnerability comes with a PoC and a code-level fix.',
+      sub: '',
       items: [
         { title: "Broad technical coverage", text: "Code, dependencies, APIs, configurations and data flows, examined together." },
         { title: "Exploitability analysis", text: "Findings verified against what an attacker could realistically do." },
@@ -319,7 +321,6 @@ export const EN = {
       { title: "Standards-informed methodology.", text: "Based on OWASP ASVS, OWASP Top 10 and CWE, with CVSS severity where applicable." },
     ],
     evidenceHeading: 'Our research is public. Our methodology is inspectable.',
-    evidenceCta: 'Explore the Evidence Ledger →',
     topics: { label: 'What we examine:', close: 'Close', startCheck: 'Start the Quick Check', fullPage: 'Open the full page' },
     cta: 'Request an Initial Review',
   },

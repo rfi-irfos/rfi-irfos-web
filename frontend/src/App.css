@@ -789,7 +789,7 @@ button { cursor: pointer; font-family: inherit; }
 [data-theme="dark"] .irf-dlt-band { border-color: rgba(0,245,196,.3); }
 [data-theme="dark"] .irf-dlt-title { color: #fff !important; }
 /* Evidence panel (Simeon 11.11.): milky glass, check marks green. Dark only. */
-[data-theme="dark"] .irf-evidence-band { --evidence-check: #3ddc84; border-color: rgba(255,255,255,.2); border-top-color: rgba(255,255,255,.34); background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.05)); -webkit-backdrop-filter: blur(22px) saturate(160%); backdrop-filter: blur(22px) saturate(160%); box-shadow: 0 24px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.28); }
+[data-theme="dark"] .irf-evidence-band { --evidence-check: #3ddc84; border-color: rgba(255,255,255,.13); border-top-color: rgba(255,255,255,.2); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025)); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 20px 44px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.12); }
 [data-theme="dark"] .irf-scope-band { border-color: rgba(242,80,31,.24); background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0) 28%), rgba(11,13,18,.9); }
 /* Login-screen world map behind the card, blurred and veiled so it reads as depth, not as picture (Simeon 11.11.).
    The layer sits 14px outside the card so the blur has no soft edge, clip-path cuts it back to the card. */
@@ -1489,3 +1489,16 @@ button { cursor: pointer; font-family: inherit; }
 
 /* Squad hero film without its own frame line (Simeon 11.11.: too many frames and colours at the top). */
 .sq-hero .sq-hub-panel { border-color: transparent; }
+
+/* Hero headline, first line stays in one piece on wide screens (the flip word gets a fixed pixel width from script). */
+@media (min-width: 900px) { .rfi-hero-line { white-space: nowrap; } }
+
+/* Hero description (Simeon 11.11.): two short sentences under the headline, white over the dark photo tint. */
+.irf-hero-sub { max-width: min(1120px, 100%); text-wrap: balance; margin: 0; font-size: clamp(calc(1.1rem + 2px), calc(1.75vw + 2px), calc(1.5rem + 2px)); line-height: 1.5; font-weight: 500;
+  color: rgba(232,232,240,.9); text-shadow: 0 1px 14px rgba(0,0,0,.7); }
+
+/* Hero text (Simeon 11.11.): thick black outline, strong shadow. Picker values: outline .08em, shadow "stark". */
+.rfi-hero-font h1.rfi-display { -webkit-text-stroke: .08em rgba(0,0,0,.92); paint-order: stroke fill;
+  text-shadow: 0 .06em .12em rgba(0,0,0,.9), 0 .14em .45em rgba(0,0,0,.8), 0 .3em 1.1em rgba(0,0,0,.6); }
+.irf-hero-sub { -webkit-text-stroke: .036em rgba(0,0,0,.85); paint-order: stroke fill;
+  text-shadow: 0 1px 6px rgba(0,0,0,.9), 0 2px 16px rgba(0,0,0,.8), 0 4px 30px rgba(0,0,0,.6); }

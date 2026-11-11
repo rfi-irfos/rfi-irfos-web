@@ -299,7 +299,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       // teal/orange markers read brighter without losing headline legibility.
       background: theme === 'hc'
         ? 'rgba(0,0,0,0.45)'
-        : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.42) 0%, rgba(5,7,14,0.22) 52%, rgba(5,7,14,0.38) 100%)',
+        : 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.08) 0%, transparent 70%), linear-gradient(90deg, rgba(5,7,14,0.6) 0%, rgba(5,7,14,0.46) 52%, rgba(5,7,14,0.58) 100%)',
     }}>
       {/* Real screenshots of our own OSINT/monitoring software as the hero backdrop
           (reverted 2026-08-15, live feedback: back to a still image - the looping
@@ -332,9 +332,11 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           by measuring the live DOM - the UX audit had only flagged /evidence/ and
           /access/ and missed this one. Every size/weight/margin here is set
           inline, so the tag change is purely semantic. */}
-      <h1 className="rfi-display" style={{ fontSize: 'clamp(2.9rem, 6.8vw, 5.8rem)', fontWeight: 900, lineHeight: 'var(--lh-tight)', marginBottom: 6, letterSpacing: '-0.01em', marginTop: 32, color: '#e8e8f0' }}>
-        <HeroFlipWord word="Rethink" delay={0.2} />{' '}
-        <RevealWords text="the Obvious." delayStart={0.36} emphasizeIndices={[1]} />
+      <h1 className="rfi-display" style={{ fontSize: 'clamp(1.9rem, 3.2vw, 3.7rem)', fontWeight: 900, lineHeight: 'var(--lh-tight)', marginBottom: 22, letterSpacing: '-0.01em', marginTop: 32, color: '#e8e8f0', width: 'max-content', maxWidth: '100%' }}>
+        <span className="rfi-hero-line">
+          <HeroFlipWord word="Human-Powered" delay={0.2} />{' '}
+          <RevealWords text="Cybersecurity, Agent-Native by Design." delayStart={0.36} />
+        </span>
       </h1>
       {/* Mount-triggered fly-in, not the scroll-linked `Reveal` (used elsewhere below
           the fold) - Reveal drives its animation off scroll progress through the
@@ -350,21 +352,9 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           index.css). Desktop: one line in both languages, sitting closer to the
           headline, which also makes the hero shorter. Hero background is always the
           dark tint, so the text is white in every theme. */}
-      <div className="rfi-hero-identity" style={{ position: 'relative', display: 'inline-block', maxWidth: 1300, marginBottom: 40 }}>
-        {/* This paragraph is the page's LCP element (Lighthouse, 2026-08-16) - the old
-            0.65s delay + 0.8s fade added ~1.45s of pure animation on top of JS hydration
-            time, directly inflating the LCP score for purely cosmetic reveal polish.
-            Cut hard since this is the single largest lever on the performance score;
-            the bar sweep above is decorative and unaffected. */}
-        <motion.p
-          initial={prefersReducedMotion() || SKIP_FIRST_PAINT_ANIMATION ? false : { opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-          style={{ position: 'relative', zIndex: 1, fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)', fontWeight: 500, color: '#ffffff', lineHeight: 'var(--lh-body)', letterSpacing: '0.01em', margin: 0 }}
-        >
-          {t.hero.identity}
-        </motion.p>
-      </div>
+      {/* Short description under the headline (Simeon 11.11., n8n-style hero: title, two lines of what we do). It moved up
+          from the "What we do best" intro, so the process card now starts right below the hero. */}
+      <p className="irf-hero-sub">{t.hero.sub}</p>
 
       {/* KPI card row removed 2026-10-10 (breadth numbers, hand-typed literals, off-message
           next to the security-review widget below). Ledger figures now live in the
