@@ -121,7 +121,6 @@ const CANONICAL_ALIAS = {
   '/track-record': '/evidence',
   '/pricing': '/access',
   '/datasets': '/data-solutions',
-  '/research': '/',
   '/submit': '/',
 }
 const EN_ONLY_ROUTES = ['/research', '/datasets', '/submit', '/track-record', '/pricing', '/team']

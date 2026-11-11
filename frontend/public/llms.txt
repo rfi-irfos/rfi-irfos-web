@@ -45,4 +45,4 @@ The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Ja
 
 ## Optional
 
-- /track-record/, /pricing/, /datasets/, /research/, and /submit/ are older URLs kept live for existing bookmarks; each canonicalizes to the current page above that actually carries the content.
+- /track-record/, /pricing/, /datasets/, and /submit/ are older URLs kept live for existing bookmarks; each canonicalizes to the current page above that actually carries the content.

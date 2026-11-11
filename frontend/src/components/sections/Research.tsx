@@ -367,14 +367,15 @@ export const RESEARCH_AREAS = [
 // feedback was that those made the top of the page too dense/talky before
 // a visitor sees anything concrete). App Privacy now sits after Track
 // Record instead - proof first, then the "start here" pitch.
-export function ResearchSection() {
+export function ResearchSection({ page = false }: { page?: boolean } = {}) {
   const { t } = useLocale()
+  const Heading = page ? 'h1' : 'h2'
   return (
     <section id="research" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal>
           <p className="rfi-eyebrow" style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12, textAlign: 'center' }}>{t.research.eyebrow}</p>
-          <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center' }}>{t.research.heading}</h2>
+          <Heading className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center' }}>{t.research.heading}</Heading>
         </Reveal>
         <Reveal delay={1}>
           <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 56, maxWidth: 560, textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>

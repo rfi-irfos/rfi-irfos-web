@@ -187,8 +187,8 @@ async function restartBrowserIfDue() {
 // /datasets still resolve -- see App.tsx's SECTION_SLUGS comment and
 // PublicSite.tsx's viewForSection/sectionMeta, which already treat each pair
 // as one view/one meta) or a route with no distinct view of its own
-// (/research and /submit both fall through viewForSection's default and
-// render the same view='home' full homepage as / itself). Each of those must
+// (/submit falls through viewForSection's default and
+// renders the same view='home' full homepage as / itself). Each of those must
 // canonicalize to its one indexable counterpart instead of to itself, or
 // Google sees the same content split across several "equally valid" URLs
 // with no signal which one to rank. Found 2026-09-04 via a GSC/site-structure
@@ -198,7 +198,6 @@ const CANONICAL_ALIAS = {
   '/track-record': '/evidence',
   '/pricing': '/access',
   '/datasets': '/data-solutions',
-  '/research': '/',
   '/submit': '/',
 }
 

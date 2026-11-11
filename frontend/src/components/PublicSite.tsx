@@ -2,7 +2,7 @@ import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
-import { localeHref } from '../lib/localeHref'
+import { localeHref, DE_ROUTES } from '../lib/localeHref'
 import type { Content } from '../content/en'
 import { TEAL, useMobile, useFormAbandonment, beacon, attributionParams, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed, useModalExit } from './sections/shared'
 import { HeroSection } from './sections/Hero'
@@ -233,9 +233,10 @@ function SocialGlyph({ k }: { k: (typeof SOCIAL_PROFILES)[number]['key'] }) {
   }
 }
 
-type PublicView = 'home' | 'world-model' | 'squad' | 'evidence' | 'data-solutions' | 'access'
+type PublicView = 'home' | 'research' | 'world-model' | 'squad' | 'evidence' | 'data-solutions' | 'access'
 
 function viewForSection(section?: string | null): PublicView {
+  if (section === 'research') return 'research'
   if (section === 'world-model') return 'world-model'
   if (section === 'squad') return 'squad'
   if (section === 'evidence' || section === 'track-record') return 'evidence'
@@ -295,9 +296,10 @@ function sectionMeta(t: Content, section: string) {
 // (already the canonical/alias-collapsed value from viewForSection) rather than by
 // the raw initialSection slug, so /track-record, /datasets, /pricing land on the
 // exact same breadcrumb as /evidence, /data-solutions, /access respectively. No
-// entry for 'home': /research and /submit canonicalize to / (see prerender.mjs's
+// entry for 'home': /submit canonicalizes to / (see prerender.mjs's
 // CANONICAL_ALIAS), and a Home > Home breadcrumb has nothing to say.
 const BREADCRUMB_BY_VIEW: Partial<Record<PublicView, { navKey: keyof Content['nav']['links']; path: string }>> = {
+  'research': { navKey: 'research', path: '/research' },
   'world-model': { navKey: 'worldModel', path: '/world-model' },
   'squad': { navKey: 'squad', path: '/squad' },
   'evidence': { navKey: 'trackRecord', path: '/evidence' },
@@ -365,7 +367,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     }
     const crumb = BREADCRUMB_BY_VIEW[viewForSection(initialSection)]
     if (crumb) {
-      const prefix = locale === 'de' ? '/de' : ''
+      const prefix = locale === 'de' && DE_ROUTES.has(crumb.path) ? '/de' : ''
       upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(t.nav.links[crumb.navKey], `${prefix}${crumb.path}`))
     }
     if (meta && viewForSection(initialSection) === 'squad') {
@@ -383,6 +385,11 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     // Lighthouse round 58 (2026-10-31): the footer now links /#research instead of the
     // /research/ alias (canonical = home), so any in-page section id gets the same jump.
     const hashId = window.location.hash.slice(1)
+    // Old bookmarks and shared links to /#research: the section moved to its own page.
+    if (hashId === 'research' && viewForSection(initialSection) !== 'research') {
+      setView('research')
+      return
+    }
     if (/^[a-z][a-z-]*$/.test(hashId)) {
       const jump = () => document.getElementById(hashId)?.scrollIntoView({ block: 'start' })
       requestAnimationFrame(jump)
@@ -1670,10 +1677,15 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         {view === 'home' && <>
           <HeroSection mobile={mobile} theme={theme} />
           <AppPrivacySection onNavigateEvidence={() => navigateTo('evidence')} />
-          <ResearchSection />
           <CoopPartnersSection mobile={mobile} />
           <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} />
         </>}
+
+        {/* Research lives on its own page (Simeon 11.11.2026): the eight areas and their modals
+            made the landing page too dense. ResearchSection carries id="research" itself. */}
+        {view === 'research' && <div className="rfi-view-panel">
+          <ResearchSection page />
+        </div>}
 
         {view === 'world-model' && <section id="world-model" className="rfi-view-panel">
           <WorldModelSection />
@@ -1796,7 +1808,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 servicesGroup,
                 {
                   heading: t.footer.groups.research.heading, links: [
-                    { label: t.footer.groups.research.links.research, href: '/#research' },
+                    { label: t.footer.groups.research.links.research, href: '/research/' },
                     { label: t.footer.groups.research.links.trackRecord, href: '/evidence/' },
                     { label: t.footer.groups.research.links.methodology, href: '/methodology/' },
                     // Lighthouse round 56 (2026-10-31): /humanrights/ sat in the sitemap with
@@ -1840,21 +1852,18 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                       // it lives here in the footer and opens the same view as before.
                       // The free check is an in-page anchor on home: plain navigation, the
                       // mount-time #domain-check jump above handles the scroll.
-                      // Round 58: Research links /#research (a crawler follows it to home, where
-                      // the section lives) but a left-click keeps the in-app switch.
-                      if (l.href === '/#research') {
-                        e.preventDefault()
-                        navigateTo('research')
-                        requestAnimationFrame(() => document.getElementById('research')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
-                        return
-                      }
                       if (l.href.includes('#')) return
                       if (target === 'data-solutions' || target === 'access') {
                         e.preventDefault()
                         navigateTo(target)
                         return
                       }
-                      if (target === 'research' || target === 'track-record') {
+                      if (target === 'research') {
+                        e.preventDefault()
+                        navigateTo(target)
+                        return
+                      }
+                      if (target === 'track-record') {
                         e.preventDefault()
                         navigateTo(target)
                         requestAnimationFrame(() => document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
