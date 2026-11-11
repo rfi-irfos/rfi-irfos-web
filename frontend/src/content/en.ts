@@ -376,10 +376,10 @@ export const EN = {
         cta: 'Request an engineering review \u2192', delivery: 'Delivered depending on scope.' },
     ],
     tiers: [
-      { name: 'Starter', price: '\u20ac99', tagline: 'Find weaknesses. Get evidence. Know what to fix.', features: ['One focused vulnerability hunt per month on your web app, mobile app or API.', 'Verified weak spots with proof of concept.', 'Evidence-backed PDF report.', 'Severity and remediation guidance.', 'Free retest of fixed findings.'], cta: 'Choose Starter', stripeKey: 'review_starter' },
+      { name: 'Starter', price: '\u20ac99', tagline: 'Find weaknesses. Get evidence. Know what to fix.', features: ['One focused vulnerability hunt per month on your web app, mobile app or API.', 'Verified weak spots with proof of concept.', 'Every finding assessed by a person.', 'Evidence-backed PDF report.', 'Severity and remediation guidance.', 'Free retest of fixed findings.'], cta: 'Choose Starter', stripeKey: 'review_starter' },
       { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Regular vulnerability hunts on your application.', features: ['Regular penetration testing with scheduled re-examinations.', 'One application or API in scope.', 'Verified vulnerabilities with proof of concept.', 'Concrete fixes engineered down to the affected code.', 'Unlimited retesting within scope.', 'Ongoing findings and remediation history.'], cta: 'Choose Growth', stripeKey: 'review_growth' },
-      { name: 'Pro', price: '\u20ac799', tagline: 'Extend security coverage across your products.', features: ['Everything in Growth.', 'Up to three websites, applications or APIs.', 'Web and API penetration testing across every surface.', 'Priority review scheduling.', 'Consolidated findings and fix tracking.'], cta: 'Choose Pro', stripeKey: 'review_pro' },
-      { name: 'Business', price: '\u20ac1,999', tagline: 'Coordinate security across your application portfolio.', features: ['Everything in Pro.', 'Up to ten websites, applications or APIs.', 'Dedicated customer communication channel.', 'Coordinated remediation follow-up.', 'Portfolio-wide findings overview for management and auditors.'], cta: 'Choose Business', stripeKey: 'review_business' },
+      { name: 'Pro', price: '\u20ac799', tagline: 'Extend security coverage across your products.', features: ['Everything in Growth.', 'Up to three websites, applications or APIs.', 'Web and API penetration testing across every surface.', 'Consistent review rhythm across all surfaces.', 'Priority review scheduling.', 'Consolidated findings and fix tracking.'], cta: 'Choose Pro', stripeKey: 'review_pro' },
+      { name: 'Business', price: '\u20ac1,999', tagline: 'Coordinate security across your application portfolio.', features: ['Everything in Pro.', 'Up to ten websites, applications or APIs.', 'Dedicated customer communication channel.', 'Coordinated remediation follow-up.', 'Portfolio-wide findings overview.', 'Reports for management and auditors.'], cta: 'Choose Business', stripeKey: 'review_business' },
     ],
     freeCard: {
       label: 'Quick Check', price: '\u20ac0', tagline: 'See what is exposed from the outside.',
@@ -389,7 +389,7 @@ export const EN = {
     managedSoc: {
       eyebrow: 'Managed SOC · Startups to Enterprise',
       heading: 'Your outsourced security department',
-      text: 'For startups and companies without in-house security capacity, we run your entire security operations center, with everything in Business. We monitor around the clock, respond to incidents within one hour and fix the finding ourselves within 24 hours, down to the code. Findings and evidence are mapped to the controls of NIS2, ISO 27001 and SOC 2: your auditor audits, we deliver the evidence.',
+      text: 'For startups and companies without in-house security capacity, we run your entire security operations center. We monitor around the clock, respond to incidents within one hour and fix the finding ourselves within 24 hours, down to the code. Findings and evidence are mapped to the controls of NIS2, ISO 27001 and SOC 2: your auditor audits, we deliver the evidence.',
       points: ['Monitoring around the clock, 24/7', 'Incident response within 1 hour', 'Fix within 24 hours, down to the code', 'One dedicated team as your security department', 'Custom surfaces, MSP and multi-tenant', 'White-label and agreed SLAs', 'Compliance automation', 'Customer portal with your SOC dashboard'],
       price: 'Priced by scope, offered in writing.',
       cta: 'Request Managed SOC',
