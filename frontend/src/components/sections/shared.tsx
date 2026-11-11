@@ -285,11 +285,24 @@ export function RevealWords({ text, delayStart = 0.2, emphasizeIndices = [] }: {
 export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: number }) {
   const ref = useRef<HTMLSpanElement>(null)
   const reduced = prefersReducedMotion()
+  // The per-letter widths below are measured, so they are only right once the heading font is in.
+  // On a phone the font arrives after the first layout: letters were measured in the fallback face,
+  // sat in slots that were too narrow (squeezed together) and the ghost word wrapped at the hyphen
+  // (a whole empty line above the headline). Plain word first, animation set-up after the font loads.
+  const [fontReady, setFontReady] = useState(false)
 
   useLayoutEffect(() => {
     const el = ref.current
     if (!el) return
     if (reduced) { el.textContent = word; return }
+    if (!fontReady) {
+      el.textContent = word
+      const done = () => setFontReady(true)
+      if (document.fonts?.load) document.fonts.load(getComputedStyle(el).font, word).then(done, done)
+      else done()
+      return
+    }
+    el.style.whiteSpace = 'nowrap'
 
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     const randomChar = () => chars[Math.floor(Math.random() * chars.length)]
@@ -426,7 +439,7 @@ export function HeroFlipWord({ word, delay = 0.2 }: { word: string; delay?: numb
       if (leadTimer) clearTimeout(leadTimer)
       cancelAnimationFrame(raf)
     }
-  }, [word, reduced])
+  }, [word, reduced, fontReady])
 
   if (reduced) return <>{word}</>
 

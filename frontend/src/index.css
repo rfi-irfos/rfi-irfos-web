@@ -835,7 +835,7 @@ h1, h2, h3, .rfi-display {
    Wort - dadurch stand "Rethink" zweimal im DOM und die prerenderte h1 lautete "RethinkRethink the
    Obvious.". Jetzt kommt das Wort per ::before aus data-word (kein Textknoten, nicht in textContent,
    nicht fuer Suchmaschinen/Screenreader sichtbar). Die Zeilenbox fuer die Baseline bleibt identisch. */
-.flip-ghost { visibility: hidden; }
+.flip-ghost { visibility: hidden; white-space: nowrap; }
 .flip-ghost::before { content: attr(data-word); }
 
 
