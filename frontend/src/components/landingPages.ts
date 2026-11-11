@@ -720,7 +720,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'What the Managed SOC includes',
           p: [
-            'The Managed SOC covers everything in the Business plan and adds continuous operation. Agents we built ourselves watch your systems. Human specialists check every finding before it reaches you.',
+            'Agents we built ourselves watch your systems. Human specialists check every finding before it reaches you.',
           ],
           ul: [
             'Monitoring around the clock, 24/7.',
@@ -777,7 +777,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'Was das Managed SOC umfasst',
           p: [
-            'Das Managed SOC enthält alles aus dem Plan Business und ergänzt den laufenden Betrieb. Agenten, die wir selbst gebaut haben, beobachten Ihre Systeme. Fachleute aus unserem Team prüfen jeden Befund, bevor er bei Ihnen ankommt.',
+            'Agenten, die wir selbst gebaut haben, beobachten Ihre Systeme. Fachleute aus unserem Team prüfen jeden Befund, bevor er bei Ihnen ankommt.',
           ],
           ul: [
             'Überwachung rund um die Uhr, 24/7.',
