@@ -71,6 +71,24 @@ export const EN = {
     localeAria: (label: string) => `Current language ${label}, click to switch language`,
   },
 
+  // Login screen behind the nav profile icon (Simeon 11.11.2026): shows the customer portal's
+  // sign-in as a locked preview plus a demo dashboard; the portal itself is not reachable from here.
+  login: {
+    navLabel: 'Customer portal',
+    title: 'Customer portal',
+    lead: 'Your SOC dashboard, findings and reports in one place.',
+    emailLabel: 'Email',
+    emailPlaceholder: 'name@company.com',
+    passwordLabel: 'Password',
+    signIn: 'Sign in',
+    lockedNote: 'Sign-in opens with your onboarding.',
+    requestAccess: 'Request early access',
+    close: 'Close',
+    previewTitle: 'Dashboard preview',
+    previewZoom: 'Click to enlarge',
+    previewAlt: 'Demo dashboard of the customer portal with threat map, open findings and recent activity',
+  },
+
   hero: {
     headline: 'Rethink the Obvious.',
     headlineEmphasisIndex: 2,

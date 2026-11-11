@@ -57,6 +57,22 @@ export const DE: Content = {
     localeAria: (label: string) => `Aktuelle Sprache ${label}, klicken zum Wechseln`,
   },
 
+  login: {
+    navLabel: 'Kundenportal',
+    title: 'Kundenportal',
+    lead: 'Ihr SOC-Dashboard, Befunde und Berichte an einem Ort.',
+    emailLabel: 'E-Mail',
+    emailPlaceholder: 'name@unternehmen.at',
+    passwordLabel: 'Passwort',
+    signIn: 'Anmelden',
+    lockedNote: 'Die Anmeldung wird mit Ihrem Onboarding freigeschaltet.',
+    requestAccess: 'Early Access anfragen',
+    close: 'Schließen',
+    previewTitle: 'Vorschau des Dashboards',
+    previewZoom: 'Zum Vergrößern klicken',
+    previewAlt: 'Demo-Dashboard des Kundenportals mit Bedrohungskarte, offenen Befunden und letzter Aktivität',
+  },
+
   hero: {
     headline: 'Denken Sie das Offensichtliche neu.',
     headlineEmphasisIndex: 3,
