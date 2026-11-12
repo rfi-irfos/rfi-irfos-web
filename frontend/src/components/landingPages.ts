@@ -983,7 +983,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       ],
     },
     de: {
-      title: 'Domain Security Test: DNS, TLS, E-Mail · RFI-IRFOS',
+      title: 'Domain Security Test: DNS, TLS und E-Mail prüfen · RFI-IRFOS',
       description: 'Externer, lesender Test Ihrer Domain: DNS, Zertifikate, E-Mail-Schutz und Security-Header. Ein Mensch prüft jeden Befund. Schriftlicher Bericht.',
       label: 'Domain Security Test',
       h1: 'Domain Security Test für Ihre Domain',

@@ -11,7 +11,7 @@ mod worldmodel;
 
 use axum::{
     extract::{Request, State},
-    http::{header, HeaderName, HeaderValue, Method},
+    http::{header, HeaderName, HeaderValue, Method, StatusCode},
     middleware::{self, Next},
     response::{IntoResponse, Redirect, Response},
     routing::{get, post}, Router,
@@ -132,6 +132,14 @@ async fn set_cache_control(req: Request, next: Next) -> Response {
 
     res.headers_mut()
         .insert(header::CACHE_CONTROL, HeaderValue::from_static(cache_value));
+
+    // Unknown paths get the SPA shell with status 404, and that shell carries
+    // "index, follow" plus a canonical to the homepage. Lynx audit 2026-11-12
+    // (GSC listed /Das as 404): the header tells crawlers not to index it.
+    if res.status() == StatusCode::NOT_FOUND {
+        res.headers_mut()
+            .insert("x-robots-tag", HeaderValue::from_static("noindex"));
+    }
     res
 }
 
