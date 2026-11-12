@@ -817,7 +817,7 @@ function AGBEN() {
     <p style={P}>Reports, source code, and research output remain the property of RFI-IRFOS until payment is received in full. Upon receipt of payment, the client receives the agreed usage rights.</p>
 
     <h2 style={H2}>8. Communication</h2>
-    <p style={P}>All engagement-related communication is conducted in writing (email), for the audit trail this creates on both sides. We do not offer or conduct calls or in-person meetings as part of our research or disclosure process.</p>
+    <p style={P}>Research and disclosure work is conducted in writing (email), for the audit trail this creates on both sides. Every paying client has direct access to us through the customer portal. Clients of our Managed SOC also reach us around the clock by phone; incidents are answered within one hour.</p>
 
     <h2 style={H2}>9. Force Majeure</h2>
     <p style={P}>Neither party is liable for delay or failure to perform caused by circumstances beyond its reasonable control, provided the affected party notifies the other without undue delay.</p>
@@ -882,7 +882,7 @@ function AGBDE() {
     <p style={P}>Berichte, Quellcode und Forschungsergebnisse bleiben Eigentum von RFI-IRFOS, bis die Zahlung vollständig eingegangen ist. Nach Zahlungseingang erhält der Kunde die vereinbarten Nutzungsrechte.</p>
 
     <h2 style={H2}>8. Kommunikation</h2>
-    <p style={P}>Sämtliche auftragsbezogene Kommunikation erfolgt schriftlich (E-Mail), wegen des dadurch für beide Seiten entstehenden Nachweispfads. Wir bieten und führen keine Telefonate oder persönlichen Treffen im Rahmen unseres Forschungs- oder Offenlegungsprozesses durch.</p>
+    <p style={P}>Forschungs- und Offenlegungsarbeit erfolgt schriftlich (E-Mail), wegen des dadurch für beide Seiten entstehenden Nachweispfads. Jeder zahlende Kunde hat über das Kundenportal direkten Zugang zu uns. Kunden unseres Managed SOC erreichen uns zusätzlich rund um die Uhr telefonisch; Incidents beantworten wir binnen einer Stunde.</p>
 
     <h2 style={H2}>9. Höhere Gewalt</h2>
     <p style={P}>Keine der Parteien haftet für Verzögerungen oder Nichterfüllung, die durch Umstände außerhalb ihrer zumutbaren Kontrolle verursacht werden, sofern die betroffene Partei die andere Partei unverzüglich benachrichtigt.</p>
