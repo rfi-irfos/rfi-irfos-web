@@ -158,7 +158,7 @@ export function LoginPreview({ t, onClose, onRequestAccess }: { t: Content; onCl
 
         <div className="rfi-login-stage">
           <button type="button" className="rfi-login-shot" onClick={() => setZoom(true)} aria-label={`${c.previewTitle}: ${c.previewZoom}`} data-testid="login-preview">
-            <img src="/login/demo-dashboard.webp" alt={c.previewAlt} width={1918} height={926} />
+            <img src="/login/demo-dashboard-2026-11-12.webp" alt={c.previewAlt} width={1918} height={926} />
             <span className="rfi-login-hint"><ExpandIcon />{c.previewZoom}</span>
           </button>
         </div>
@@ -169,7 +169,7 @@ export function LoginPreview({ t, onClose, onRequestAccess }: { t: Content; onCl
           position: 'fixed', inset: 0, zIndex: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24,
           background: 'rgba(6,5,5,0.9)', cursor: 'zoom-out',
         }}>
-          <img src="/login/demo-dashboard.webp" alt={c.previewAlt} width={1918} height={926} style={{
+          <img src="/login/demo-dashboard-2026-11-12.webp" alt={c.previewAlt} width={1918} height={926} style={{
             display: 'block', maxWidth: '100%', maxHeight: '100%', width: 'auto', height: 'auto', borderRadius: 12,
             border: '1px solid rgba(255,255,255,0.18)', boxShadow: '0 30px 90px rgba(0,0,0,0.7)',
           }} />
