@@ -66,7 +66,6 @@ const ZONE_TOTAL_COLUMNS = ZONE_ORDER.reduce((n, z) => n + zoneCols(z), 0)
 
 export const FAQ_COPY = {
   en: {
-    eyebrow: 'Questions worth answering',
     title: 'Questions worth answering',
     items: [
       ['Who are we, and what do we do?', 'We are a research and engineering company backed by a not-for-profit foundation, founded in 2020. Seven people work here, alongside a large in-house fleet of software agents written in Rust.'],
@@ -78,7 +77,6 @@ export const FAQ_COPY = {
     ],
   },
   de: {
-    eyebrow: 'Fragen, die man beantworten sollte',
     title: 'Fragen, die man beantworten sollte',
     items: [
       ['Wer sind wir, und was machen wir?', 'Das Research Focus Institute — Interdisciplinary Research Facility for Open Sciences ist ein registriertes Unternehmen der automatisierten Datenverarbeitung, getragen von einer 2020 gegründeten gemeinnützigen Forschungsstiftung. Wir sind ein siebenköpfiges menschliches Team, unterstützt von einer großen, in Rust geschriebenen Inhouse-Agentenflotte.'],
@@ -95,7 +93,6 @@ export function FaqWidget({ locale }: { locale: Locale }) {
   const copy = FAQ_COPY[locale]
   return <section className="rfi-faq" aria-labelledby="rfi-faq-title">
     <div className="rfi-faq-inner">
-      <p className="data-eyebrow">{copy.eyebrow}</p>
       <h2 id="rfi-faq-title">{copy.title}</h2>
       <div className="rfi-faq-list">
         {copy.items.map(([question, answer]) => <details key={question} className="rfi-faq-item">

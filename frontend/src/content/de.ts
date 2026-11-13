@@ -93,7 +93,6 @@ export const DE: Content = {
   },
 
   research: {
-    eyebrow: 'Unter der Lupe',
     heading: 'Worauf unser Blick fällt',
     subheading: 'Wie vielschichtige Systeme sich verhalten: wie Evidenz zu Struktur wird, wie sich Beziehungen über die Zeit verändern und wo ein Schmetterling ein ganzes Netzwerk bewegen kann.',
     upNext: 'Als Nächstes',
@@ -110,7 +109,6 @@ export const DE: Content = {
   },
 
   projects: {
-    eyebrow: 'Systeme',
     heading: 'Was wir bauen',
     subheading: 'Jedes Projekt beantwortet eine konkrete Forschungsfrage. Alle laufen auf demselben Stack.',
     carouselPrevAria: 'vorherige Projekte',
@@ -171,7 +169,6 @@ export const DE: Content = {
   },
 
   trackRecord: {
-    eyebrow: 'Permanentes Offenlegungsledger',
     heading: 'Die Disziplin, bewiesen',
     seoTitle: 'App-Datenschutz- & Sicherheitsanalysen · RFI-IRFOS',
     seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsberichte zu Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel.',
@@ -250,7 +247,6 @@ export const DE: Content = {
   },
 
   proof: {
-    eyebrow: 'Das Ergebnis',
     heading: 'Das, was Sie tatsächlich in der Hand hätten',
     subheading: 'Jeder Bericht dokumentiert, was wir gefunden haben, wie wir es verifiziert haben und was die Evidenz über das Produkt aussagt. Verfolgen Sie die Untersuchung von einzelnen Beobachtungen bis zu verknüpften Befunden, mit den technischen Nachweisen hinter jeder Behauptung. Durchstöbern Sie unsere veröffentlichten Fälle und prüfen Sie die Ergebnisse selbst - jeder Bericht folgt demselben Evidenzstandard, unabhängig davon, ob die Organisation jemals unser Kunde wird.',
     viewReport: 'vollständigen Bericht lesen',
@@ -260,7 +256,6 @@ export const DE: Content = {
   },
 
   appPrivacy: {
-    eyebrow: 'Was wir am besten können',
     heading: 'Human-Powered Multi-Agent Security Investigations',
     lead: 'Wir formen, was unter Last hält, und legen offen, was zum Scheitern bestimmt war.',
     paragraph: "Ausgewählte Agenten, die wir im eigenen Haus gebaut und trainiert haben, führen Tausende parallele Sicherheitstests aus, während unsere Fachleute Schwachstellen untersuchen, Angriffspfade nachverfolgen und Fixes bis in den Code entwickeln, für Startups und Unternehmen mit begrenzten eigenen Kapazitäten.",
@@ -329,7 +324,6 @@ export const DE: Content = {
   },
 
   pricing: {
-    eyebrow: 'Kernangebot',
     heading: 'Klar kalkuliert',
     subheading: 'W\u00e4hlen Sie die Sicherheitsabdeckung, die heute zu Ihrem Bedarf und Budget passt, mit einem Plan, der mit Ihrem Produkt w\u00e4chst. Starten Sie mit einer fokussierten Pr\u00fcfung und erweitern Sie auf laufende Untersuchungen, wenn Ihre Anforderungen wachsen.',
     deliveryLabel: 'Lieferung',
@@ -382,7 +376,6 @@ export const DE: Content = {
       cta: 'Quick Check starten',
     },
     managedSoc: {
-      eyebrow: 'Managed SOC · Startups bis Enterprise',
       heading: 'Ihre ausgelagerte Sicherheitsabteilung',
       text: 'Für Startups und Unternehmen ohne eigene Sicherheitskapazität übernehmen wir Ihr komplettes Security Operations Center. Wir überwachen rund um die Uhr, reagieren im Ernstfall binnen einer Stunde und beheben den Fund innerhalb von 24 Stunden selbst, bis in den Code. Befunde und Nachweise sind den Kontrollen von NIS2, ISO 27001 und SOC 2 zugeordnet: Ihre Prüfstelle prüft, wir liefern die Belege.',
       points: ['Überwachung rund um die Uhr, 24/7', 'Incident Response binnen 1 Stunde', 'Fix binnen 24 Stunden, bis in den Code', 'Ein festes Team als Ihre Sicherheitsabteilung', 'Individuelle Oberflächen, MSP und Multi-Tenant', 'White-Label und vereinbarte SLAs', 'Compliance-Automatisierung', 'Kundenportal mit Ihrem SOC-Dashboard'],
@@ -434,7 +427,6 @@ export const DE: Content = {
   },
 
   journey: {
-    eyebrow: 'Wie Engagements ablaufen',
     heading: 'Was nach dem Start passiert',
     subheading: 'Fünf Schritte von der ersten Übergabe bis zur fertigen Untersuchung.',
     steps: [
@@ -447,7 +439,6 @@ export const DE: Content = {
   },
 
   coopPartners: {
-    eyebrow: 'Forschungskooperation',
     heading: 'Gemeinsam mit dem Emergent Interaction Lab',
     subheading: 'Das Emergent Interaction Lab ist unser Forschungspartner. Das Lab forscht, wir bauen und betreiben die Systeme. Seine Leiterin, Laura Serna Gaviria, gehört dem Board unserer Mitgründer:innen an. Wo wir zusammenarbeiten, weisen wir es aus.',
     onRequest: '(auf Anfrage)',
@@ -462,7 +453,6 @@ export const DE: Content = {
   },
 
   causalChains: {
-    eyebrow: 'Kausalitätsketten',
     heading: 'Einblicke in Dingirs Denkweise',
     subheading: 'Distantereignisse breiten sich über Infrastruktur, Märkte und Entscheidungen aus. Wir verfolgen diese Ketten vom ersten Signal bis zur Wirkung, die Sie tatsächlich erreicht.',
     readingAid: 'Kausalitätskette',
@@ -905,7 +895,6 @@ export const DE: Content = {
   },
 
   worldModel: {
-    eyebrow: 'DINGIR',
     heading: 'Ein kontinuierlich wachsendes Weltmodell',
     intro: 'DINGIR (Dynamic Interaction Network & Graph Intelligence Runtime) verbindet historische und Echtzeit-Beobachtungen aus über 20 Domänen zu einem lebendigen, kausal strukturierten Weltgraphen. Ein System, das verfolgt, wie Dinge zusammenhängen, erkennt, was sich verändert, und ableitet, was diese Veränderung als Nächstes berührt.',
     apiCta: 'API-Zugang anfragen →', squadLinkLabel: 'The Squad →',
@@ -926,7 +915,6 @@ export const DE: Content = {
       domains: { label: 'Domänen', value: '20+', sub: 'eigenständige Themenfelder, die DINGIR abdeckt, von Erdbeben bis Märkten' },
     },
     comparison: {
-      eyebrow: 'Der Unterschied',
       heading: 'Language Model vs. Agent vs. World Model',
       sub: 'Drei Begriffe, die ähnlich klingen und es nicht sind. Wissen Sie, mit welchem Sie gerade sprechen.',
       lm: { title: 'Language Model (LM)', body: 'Sagt aus Mustern in seinen Trainingstexten das nächste wahrscheinliche Wort voraus.', tag: 'Sprachlich gewandt, ohne eigenes Wissen darüber, was tatsächlich passiert ist.', verdict: 'Antwortet aus Mustern.' },
@@ -934,11 +922,11 @@ export const DE: Content = {
       wm: { title: 'World Model (DINGIR)', body: 'Ein Machine-Learning-Modell auf einem zeitlichen Wissensgraphen: Es verknüpft beobachtete Ereignisse aus vielen Quellen über Zeit und Raum.', tag: 'Lernt, welche Ursachen zu welchen Wirkungen führen, prüft diese Zusammenhänge am tatsächlichen Verlauf und schätzt ab, was folgen könnte.', verdict: 'Denkt in Ursache und Wirkung.' },
     },
     reasoningIntro: {
-      eyebrow: 'In der Praxis', heading: 'Wie DINGIR schlussfolgert',
+      heading: 'Wie DINGIR schlussfolgert',
       sub: 'Nachvollziehbare Kausalketten und die Live-Ereignisse, die sie speisen, nebeneinander.',
     },
     chainsPreview: {
-      eyebrow: 'Kausalitätsketten', heading: 'Einblicke in Dingirs Denkweise', sub: 'Fünf Beispiele, wie DINGIR Ereignisse verbindet',
+      heading: 'Einblicke in Dingirs Denkweise', sub: 'Fünf Beispiele, wie DINGIR Ereignisse verbindet',
       viewMore: 'Alle 20 Kausalketten ansehen',
     },
     liveFeed: {
@@ -951,7 +939,7 @@ export const DE: Content = {
       } as Record<string, string>,
     },
     useCases: {
-      eyebrow: 'Anwendungsbereiche', heading: 'Wofür das Modell genutzt werden kann', sub: 'Ein abfragbares Data Warehouse des Weltwissens.',
+      heading: 'Wofür das Modell genutzt werden kann', sub: 'Ein abfragbares Data Warehouse des Weltwissens.',
       viewAll: 'Alle Anwendungsbereiche entdecken',
       cards: [
         { title: 'Frühwarnung & Risiko', body: 'Frühzeitige Erkennung von Naturereignissen, Krisen und Kaskaden.', body2: 'Wetter-, Seismik-, Satelliten-, Infrastruktur- und Betriebssignale werden zusammengeführt, um sich verändernde Bedingungen zu erkennen, bevor sie kritisch werden.' },
@@ -984,7 +972,6 @@ export const DE: Content = {
     statusLine: 'Im Produktiveinsatz',
     trustBadges: ['EU-KI-Verordnung-konform', 'Nachvollziehbar durch Design', 'Jede Entscheidung rückverfolgbar', 'Von Menschen geprüft'],
     overview: {
-      eyebrow: 'The Squad',
       heading: 'Direkt aus unserer eigenen Produktion',
       sub: 'Acht spezialisierte Agenten, jeder auf eine klare Frage ausgerichtet. Wählen Sie den, den Sie brauchen, oder starten Sie mit dem ganzen Squad.',
       columns: { monitors: 'Überwacht', detects: 'Erkennt', output: 'Sie bekommen' },
@@ -1064,7 +1051,6 @@ export const DE: Content = {
       },
     },
     howItConnects: {
-      eyebrow: 'Integration',
       heading: 'So bindet sich The Squad ein',
       sub: 'Sie geben uns Zugriff, unsere Agenten suchen Schwachstellen, Fachleute prüfen und beheben sie bis in den Code. Das Ergebnis landet bei Ihrem Team.',
       feedbackLabel: 'Feedback & aktualisierter Kontext',
@@ -1090,7 +1076,6 @@ export const DE: Content = {
       ],
     },
     needToKnow: {
-      eyebrow: 'Häufige Fragen',
       heading: 'Was müssen Sie wissen?',
       sub: 'Sechs Fragen, die uns am häufigsten gestellt werden, und welcher Agent sie beantwortet.',
       cards: [
@@ -1116,7 +1101,6 @@ export const DE: Content = {
   },
 
   submit: {
-    eyebrow: 'Kontakt & Offenlegungen',
     heading: 'Direkter Draht',
     paragraph: 'Eine Frage, ein Projekt, eine Forschungskooperation oder ein Sicherheitsfund: Schreiben Sie uns. Ein Mensch aus unserem Team antwortet binnen 12 Stunden.',
     directHeading: 'Direkt per E-Mail',

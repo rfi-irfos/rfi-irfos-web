@@ -110,7 +110,6 @@ export const EN = {
   },
 
   research: {
-    eyebrow: 'Areas of Magnification',
     heading: 'Where our attention falls',
     subheading: 'How intricate systems behave: how evidence becomes structure, how relationships change over time, and where one butterfly can move an entire network.',
     upNext: 'Up next',
@@ -127,7 +126,6 @@ export const EN = {
   },
 
   projects: {
-    eyebrow: 'Systems',
     heading: 'What we build',
     subheading: 'Every project is a proof of concept for a specific research question. All built on the same stack.',
     carouselPrevAria: 'previous projects',
@@ -188,7 +186,6 @@ export const EN = {
   },
 
   trackRecord: {
-    eyebrow: 'Permanent Disclosure Ledger',
     heading: 'The discipline, demonstrated',
     // Dedicated SEO title/description for /evidence/ (4,760 impressions at position ~6.5 but
     // <1% CTR in GSC to 2026-10-24): the section heading makes a fine on-page H2 but tells a
@@ -274,7 +271,6 @@ export const EN = {
   },
 
   proof: {
-    eyebrow: 'The Deliverable',
     heading: "what you'd actually hold in your hands",
     subheading: 'Every report documents what we found, how we verified it, and what the evidence reveals about the product. Follow the investigation from individual observations to connected findings, with the technical evidence behind each claim. Browse our published cases and examine the results yourself - every report follows the same evidentiary standard, regardless of whether the organisation ever becomes our client.',
     viewReport: 'read the full report',
@@ -284,7 +280,6 @@ export const EN = {
   },
 
   appPrivacy: {
-    eyebrow: 'What we do best',
     heading: 'Human-Powered Multi-Agent Security Investigations',
     lead: 'We craft what holds under load and expose what was destined to fail.',
     paragraph: "Selected agents that we built and trained in-house execute thousands of parallel security tests, while our specialists investigate vulnerabilities, trace attack paths and engineer fixes down to the code for startups and companies with limited in-house capacity.",
@@ -353,7 +348,6 @@ export const EN = {
   },
 
   pricing: {
-    eyebrow: 'Core Offer',
     heading: 'Priced in plain terms',
     subheading: 'Choose the level of security coverage that fits your needs and budget today, with a plan that scales as your product grows. Start with a focused assessment and extend to continuous investigations as your requirements evolve.',
     deliveryLabel: 'Delivery',
@@ -406,7 +400,6 @@ export const EN = {
       cta: 'Start the Quick Check',
     },
     managedSoc: {
-      eyebrow: 'Managed SOC · Startups to Enterprise',
       heading: 'Your outsourced security department',
       text: 'For startups and companies without in-house security capacity, we run your entire security operations center. We monitor around the clock, respond to incidents within one hour and fix the finding ourselves within 24 hours, down to the code. Findings and evidence are mapped to the controls of NIS2, ISO 27001 and SOC 2: your auditor audits, we deliver the evidence.',
       points: ['Monitoring around the clock, 24/7', 'Incident response within 1 hour', 'Fix within 24 hours, down to the code', 'One dedicated team as your security department', 'Custom surfaces, MSP and multi-tenant', 'White-label and agreed SLAs', 'Compliance automation', 'Customer portal with your SOC dashboard'],
@@ -466,7 +459,6 @@ export const EN = {
   },
 
   journey: {
-    eyebrow: 'How Engagements Work',
     heading: 'What happens after you start',
     subheading: 'Five steps from your first handover to the final investigation.',
     steps: [
@@ -479,7 +471,6 @@ export const EN = {
   },
 
   coopPartners: {
-    eyebrow: 'Research Cooperation',
     heading: 'Together with the Emergent Interaction Lab',
     subheading: "The Emergent Interaction Lab is our research partner. The Lab does the research, we build and operate the systems. Its lead, Laura Serna Gaviria, sits on our board of co-founders. Where we work together, we say so.",
     onRequest: '(on request)',
@@ -494,7 +485,6 @@ export const EN = {
   },
 
   causalChains: {
-    eyebrow: 'Causality Chains',
     heading: "A look into Dingir's Mind",
     subheading: 'Distant events propagate through infrastructure, markets, and decisions. We trace those chains end to end, from the first signal to the effect that actually reaches you.',
     readingAid: 'Causality chain',
@@ -937,7 +927,6 @@ export const EN = {
   },
 
   worldModel: {
-    eyebrow: 'DINGIR',
     heading: 'A continuously growing world model',
     intro: 'DINGIR (Dynamic Interaction Network & Graph Intelligence Runtime) connects historical and real-time observations across more than 20 domains into one living, causally structured world graph. A system that tracks how things relate, notices what changes, and reasons about what that change touches next.',
     apiCta: 'Request API access →', squadLinkLabel: 'The Squad →',
@@ -958,7 +947,6 @@ export const EN = {
       domains: { label: 'Domains', value: '20+', sub: 'distinct subject areas DINGIR spans, from seismic activity to markets' },
     },
     comparison: {
-      eyebrow: 'How DINGIR Differs',
       heading: 'Language model vs. agent vs. world model',
       sub: 'Three things that sound similar and are not. Know which one you are actually talking to.',
       lm: { title: 'Language model (LM)', body: 'Predicts the next likely word from patterns in its training text.', tag: 'Fluent in language, with no own record of what actually happened.', verdict: 'Answers from patterns.' },
@@ -966,11 +954,11 @@ export const EN = {
       wm: { title: 'World model (DINGIR)', body: 'A machine-learning model on a temporal knowledge graph: it links observed events from many sources across time and place.', tag: 'Learns which causes lead to which effects, tests those links against what actually happened, and estimates what could follow.', verdict: 'Reasons in cause and effect.' },
     },
     reasoningIntro: {
-      eyebrow: 'In Practice', heading: 'How DINGIR reasons',
+      heading: 'How DINGIR reasons',
       sub: 'Traced causal chains, and the live events feeding them, side by side.',
     },
     chainsPreview: {
-      eyebrow: 'Causality Chains', heading: "A look into Dingir's Mind", sub: 'Five examples of how DINGIR connects events',
+      heading: "A look into Dingir's Mind", sub: 'Five examples of how DINGIR connects events',
       viewMore: 'View all 20 causality chains',
     },
     liveFeed: {
@@ -983,7 +971,7 @@ export const EN = {
       } as Record<string, string>,
     },
     useCases: {
-      eyebrow: 'Applications', heading: 'What the model can be used for', sub: 'A queryable data warehouse of world knowledge.',
+      heading: 'What the model can be used for', sub: 'A queryable data warehouse of world knowledge.',
       viewAll: 'Discover all applications',
       cards: [
         { title: 'Early Warning & Risk', body: 'Early detection of natural events, crises, and cascading failures.', body2: 'Bring together weather, seismic, satellite, infrastructure, and operational signals to spot changing conditions before they become critical.' },
@@ -1016,7 +1004,6 @@ export const EN = {
     statusLine: 'In production',
     trustBadges: ['EU AI Act Compliant', 'Explainable by Design', 'Every Decision Traceable', 'Human-Verified'],
     overview: {
-      eyebrow: 'The Lineup',
       heading: 'Selected From Our Own Production',
       sub: 'Eight specialized agents, each built around one clear question. Pick the one you need, or start with the whole squad.',
       columns: { monitors: 'Monitors', detects: 'Detects', output: 'You get' },
@@ -1096,7 +1083,6 @@ export const EN = {
       },
     },
     howItConnects: {
-      eyebrow: 'Integration',
       heading: 'How It Connects',
       sub: 'You give us access, our agents hunt for vulnerabilities, experts verify and fix them down to the code. The result lands with your team.',
       feedbackLabel: 'Feedback & updated context',
@@ -1122,7 +1108,6 @@ export const EN = {
       ],
     },
     needToKnow: {
-      eyebrow: 'Common Questions',
       heading: 'What do you need to know?',
       sub: 'Six questions we hear most often, and which agent answers each one.',
       cards: [
@@ -1148,7 +1133,6 @@ export const EN = {
   },
 
   submit: {
-    eyebrow: 'Contact & Disclosures',
     heading: 'Reach out',
     paragraph: 'A question, a project, a research collaboration or a security finding: write to us. A person from our team replies within 12 hours.',
     directHeading: 'Email us directly',

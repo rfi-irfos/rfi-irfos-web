@@ -17,7 +17,7 @@ const PIPELINE_ICONS = [IconClipboardCheck, IconSettingsAutomation, IconListChec
 
 const COPY = {
   en: {
-    eyebrow: 'Data Solutions', title: 'Production, data and agents that have to work',
+    title: 'Production, data and agents that have to work',
     intro: 'The same discipline behind our systems and public evidence, delivered as data and infrastructure: a data warehouse, reproducible environments, expert trajectories, and evaluations for difficult, long-horizon work. Our services connect to ternary-logic pipelines through a governed data layer. Your corpus stays private. Every delivered artefact stays traceable.',
     datasetsTitle: 'What we already hold',
     datasets: [
@@ -28,7 +28,7 @@ const COPY = {
       ['Stressed benchmark variants', 'Controlled, reproducible perturbations of open benchmarks for robustness testing beyond clean inputs.'],
       ['Agent runs & test environments', 'Recorded agent runs in realistic, resettable test environments, with outcomes and failures.'],
     ],
-    deliverEyebrow: 'What we deliver', deliverTitle: 'From environment to evaluation',
+    deliverTitle: 'From environment to evaluation',
     deliverIntro: 'We define success criteria with your team, then build the data operation around the way your models are actually trained and evaluated. No anonymous task stream and no benchmark theatre: the environment, trace, label, and decision remain connected.',
     products: [
       ['Data warehouse', 'A governed foundation for operational, training, and evaluation data, connected through a production data pipeline to our reasoning services.'],
@@ -38,14 +38,14 @@ const COPY = {
       ['Safety evaluation', 'Coding-agent safety, MCP injection assessment, computer-use injection red teaming, and adversarial trajectories with reproducible evidence.'],
       ['Coding data', 'Repository-scale generation, issue resolution, code review, testing, debugging, tool-use, data analysis, and visual frontend tasks.'],
     ],
-    agentsEyebrow: 'Built for', agentsTitle: 'Agents across the whole tool chain',
+    agentsTitle: 'Agents across the whole tool chain',
     agentsIntro: 'Task environments and data shaped around how each agent observes, reasons, uses tools, and recovers when the work stops going to plan.',
     agents: [
       ['Conversational agents', 'Natural-language dialogue grounded in evidence and policy.'], ['Corporate assistants', 'Internal tools, workflows, knowledge bases, and governed automation.'],
       ['Deep-research agents', 'Multi-source investigation, synthesis, and defensible conclusions.'], ['Computer-use agents', 'Browsers, applications, filesystems, and realistic interfaces.'],
       ['Coding copilots', 'Code writing, debugging, repository work, testing, and review.'], ['OS & device agents', 'Desktop, mobile, embedded, wearable, and on-device environments.'],
     ],
-    pipelineEyebrow: 'How it works', pipelineTitle: 'A managed pipeline, built by engineers for engineers',
+    pipelineTitle: 'A managed pipeline, built by engineers for engineers',
     pipelineKinds: ['Input', 'Execution', 'Validation', 'Review', 'Output'],
     pipeline: [
       ['01', 'Define', 'Objectives, constraints, rubrics, formats, and acceptance criteria become a testable specification.'],
@@ -56,20 +56,20 @@ const COPY = {
     ],
     qualityTitle: 'Privacy, security, reproducibility',
     quality: ['PII scrubbing and client-approved handling', 'Containerized environments and controlled test credentials', 'Versioned inputs, deterministic resets, and exact replay', 'Per-step safety, quality, and failure labels'],
-    startEyebrow: 'Three ways to start', startTitle: 'Data that meets you where the work is',
+    startTitle: 'Data that meets you where the work is',
     startIntro: 'Whatever stage your work is at, from a first experiment to a standing production pipeline, there is an entry point sized to match it.',
     starts: [
       ['01', 'Ready to deliver', 'Use an already produced and validated dataset. We align the format and delivery boundary with your stack.'],
       ['02', 'Pipeline-ready', 'Start a prepared collection or evaluation pipeline, adjusted to your volume, domain, and acceptance criteria.'],
       ['03', 'Expand or customize', 'Extend an existing corpus, adapt it to your domain, or commission a new environment and dataset from first principles.'],
     ],
-    expertsEyebrow: 'Expert depth', expertsTitle: 'Not crowd work. Technical work.',
+    expertsTitle: 'Not crowd work. Technical work.',
     expertsText: 'The work is produced and reviewed at the level where our own systems are built: Python, Rust, C/C++, JavaScript and TypeScript, Go, Java, Kotlin, SQL, Bash, mobile and ML stacks — across backend, frontend, systems, security, DevOps, data science, and model engineering.',
     cta: 'Start a data infrastructure project',
     accessCta: 'See scope, delivery and price on Access',
   },
   de: {
-    eyebrow: 'Data Solutions', title: 'Produktion, Daten und Agenten, die wirklich arbeiten müssen',
+    title: 'Produktion, Daten und Agenten, die wirklich arbeiten müssen',
     intro: 'Dieselbe Disziplin hinter unseren Systemen und öffentlichen Evidenzen, als Daten und Infrastruktur geliefert: ein Data Warehouse, reproduzierbare Umgebungen, Experten-Trajektorien und Evaluationen für schwierige, langfristige Arbeit. Unsere Services verbinden sich über eine kontrollierte Datenschicht mit ternären Logik-Pipelines. Ihr Korpus bleibt privat. Jedes ausgelieferte Artefakt bleibt nachvollziehbar.',
     datasetsTitle: 'Was wir bereits vorhalten',
     datasets: [
@@ -80,7 +80,7 @@ const COPY = {
       ['Gestresste Benchmark-Varianten', 'Kontrollierte, reproduzierbare Störungen offener Benchmarks für Robustheitstests jenseits sauberer Inputs.'],
       ['Agenten-Läufe & Testumgebungen', 'Aufgezeichnete Agenten-Läufe in realistischen, rücksetzbaren Testumgebungen, samt Ergebnissen und Fehlschlägen.'],
     ],
-    deliverEyebrow: 'Was wir liefern', deliverTitle: 'Von der Umgebung bis zur Evaluation',
+    deliverTitle: 'Von der Umgebung bis zur Evaluation',
     deliverIntro: 'Gemeinsam definieren wir belastbare Erfolgskriterien und bauen den Datenbetrieb passend zu Ihren realen Trainings- und Evaluationsabläufen. Kein anonymer Task-Stream und kein Benchmark-Theater: Umgebung, Trace, Label und Entscheidung bleiben verbunden.',
     products: [
       ['Data Warehouse', 'Eine kontrollierte Basis für Betriebs-, Trainings- und Evaluationsdaten, verbunden über eine produktive Datenpipeline mit unseren Reasoning-Services.'],
@@ -90,14 +90,14 @@ const COPY = {
       ['Safety-Evaluation', 'Sicherheit von Coding-Agenten, MCP-Injection-Assessments, Computer-Use-Red-Teaming und reproduzierbare adversariale Trajektorien.'],
       ['Coding-Daten', 'Repository-Erzeugung, Issue Resolution, Code Review, Tests, Debugging, Tool-Nutzung, Datenanalyse und visuelle Frontend-Aufgaben.'],
     ],
-    agentsEyebrow: 'Gebaut für', agentsTitle: 'Agenten entlang der gesamten Toolchain',
+    agentsTitle: 'Agenten entlang der gesamten Toolchain',
     agentsIntro: 'Aufgabenumgebungen und Daten, abgestimmt darauf, wie jeder Agent beobachtet, schlussfolgert, Werkzeuge nutzt und sich erholt, wenn die Arbeit vom Plan abweicht.',
     agents: [
       ['Conversational Agents', 'Natürlichsprachlicher Dialog, verankert in Evidenz und Richtlinien.'], ['Corporate Assistants', 'Interne Tools, Workflows, Wissensbasen und kontrollierte Automatisierung.'],
       ['Deep-Research-Agenten', 'Mehrquellen-Recherche, Synthese und belastbare Schlussfolgerungen.'], ['Computer-Use-Agenten', 'Browser, Anwendungen, Dateisysteme und realistische Oberflächen.'],
       ['Coding Copilots', 'Code, Debugging, Repository-Arbeit, Tests und Reviews.'], ['OS- & Device-Agenten', 'Desktop, Mobile, Embedded, Wearables und On-Device-Umgebungen.'],
     ],
-    pipelineEyebrow: 'So funktioniert es', pipelineTitle: 'Eine gemanagte Pipeline, von Engineers für Engineers',
+    pipelineTitle: 'Eine gemanagte Pipeline, von Engineers für Engineers',
     pipelineKinds: ['Eingabe', 'Ausführung', 'Validierung', 'Review', 'Ausgabe'],
     pipeline: [
       ['01', 'Definieren', 'Ziele, Grenzen, Rubrics, Formate und Akzeptanzkriterien werden zu einer testbaren Spezifikation.'],
@@ -108,14 +108,14 @@ const COPY = {
     ],
     qualityTitle: 'Datenschutz, Sicherheit, Reproduzierbarkeit',
     quality: ['PII-Bereinigung und freigegebene Datenverarbeitung', 'Containerisierte Umgebungen und kontrollierte Testzugänge', 'Versionierte Inputs, deterministische Resets und exakte Replays', 'Safety-, Qualitäts- und Fehlerlabels pro Schritt'],
-    startEyebrow: 'Drei Einstiege', startTitle: 'Daten passend zum Stand Ihres Vorhabens',
+    startTitle: 'Daten passend zum Stand Ihres Vorhabens',
     startIntro: 'Ganz gleich in welcher Phase Ihr Vorhaben steckt, vom ersten Experiment bis zur laufenden Produktionspipeline, es gibt einen passend dimensionierten Einstieg.',
     starts: [
       ['01', 'Sofort lieferbar', 'Nutzen Sie einen bereits produzierten und validierten Datensatz, abgestimmt auf Format und Liefergrenze Ihres Stacks.'],
       ['02', 'Pipeline-ready', 'Starten Sie eine vorbereitete Collection- oder Eval-Pipeline, angepasst an Volumen, Domäne und Kriterien.'],
       ['03', 'Erweitern oder anpassen', 'Erweitern Sie einen Korpus, adaptieren Sie ihn an Ihre Domäne oder beauftragen Sie Umgebung und Datensatz von Grund auf.'],
     ],
-    expertsEyebrow: 'Expertentiefe', expertsTitle: 'Keine Crowd-Arbeit. Technische Arbeit.',
+    expertsTitle: 'Keine Crowd-Arbeit. Technische Arbeit.',
     expertsText: 'Produktion und Review finden auf derselben Ebene statt, auf der wir unsere eigenen Systeme bauen: Python, Rust, C/C++, JavaScript und TypeScript, Go, Java, Kotlin, SQL, Bash, Mobile- und ML-Stacks — in Backend, Frontend, Systems, Security, DevOps, Data Science und Model Engineering.',
     cta: 'Starten Sie ein Daten-Infrastruktur-Projekt',
     accessCta: 'Umfang, Lieferzeit und Preis auf Access ansehen',
@@ -138,7 +138,7 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
   const c = COPY[locale]
   return <div className="data-solutions">
     <header className="data-hero data-wrap">
-      <Reveal><p className="data-eyebrow">{c.eyebrow}</p><h1>{c.title}</h1></Reveal>
+      <Reveal><h1>{c.title}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{c.intro}</p></Reveal>
     </header>
 
@@ -150,7 +150,7 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
     </div></section>
 
     <section id="data-deliver" className="data-section"><div className="data-wrap">
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.deliverEyebrow}</p><h2>{c.deliverTitle}</h2><p>{c.deliverIntro}</p></div></Reveal>
+      <Reveal><div className="data-section-head"><h2>{c.deliverTitle}</h2><p>{c.deliverIntro}</p></div></Reveal>
       <div className="data-product-grid" style={HUE_PRODUCTS}>{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_PRODUCTS}><div className="data-icon rfi-ri-box"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
     </div></section>
 
@@ -168,21 +168,21 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.agentsEyebrow}</p><h2>{c.agentsTitle}</h2><p>{c.agentsIntro}</p></div></Reveal>
+      <Reveal><div className="data-section-head"><h2>{c.agentsTitle}</h2><p>{c.agentsIntro}</p></div></Reveal>
       <div className="data-agent-grid" style={HUE_AGENTS}>{c.agents.map(([title, body], i) => { const Icon = AGENT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_AGENTS}><div className="data-icon data-icon--row rfi-ri-box"><Icon size={26} stroke={1.6} /></div><div><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
     </div></section>
 
     <section id="data-pipeline" className="data-section"><div className="data-wrap">
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.pipelineEyebrow}</p><h2>{c.pipelineTitle}</h2></div></Reveal>
+      <Reveal><div className="data-section-head"><h2>{c.pipelineTitle}</h2></div></Reveal>
       <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid rfi-hover-card" data-stage={i}><div className="data-pipeline-icon rfi-ri-box"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-stage"><span>{n}</span></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
       <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><div className="data-icon data-icon--row rfi-ri-box"><IconShieldCheck size={28} /></div><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
-      <Reveal><div className="data-section-head"><p className="data-eyebrow">{c.startEyebrow}</p><h2>{c.startTitle}</h2><p>{c.startIntro}</p></div></Reveal>
+      <Reveal><div className="data-section-head"><h2>{c.startTitle}</h2><p>{c.startIntro}</p></div></Reveal>
       <div className="data-start-grid" style={HUE_STARTS}>{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_STARTS}><span>{n}</span><div className="data-start-icons rfi-ri-box" aria-hidden="true">{i === 0 && <><IconDatabase size={27} stroke={1.5} /><IconCircleCheck size={24} stroke={1.8} /></>}{i === 1 && <><IconDatabase size={27} stroke={1.5} /><IconSettingsAutomation size={25} stroke={1.6} /><IconDatabase size={27} stroke={1.5} /></>}{i === 2 && <><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /></>}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
     </div></section>
 
-    <section className="data-experts data-wrap"><Reveal><p className="data-eyebrow">{c.expertsEyebrow}</p><h2>{c.expertsTitle}</h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>
+    <section className="data-experts data-wrap"><Reveal><h2>{c.expertsTitle}</h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>
   </div>
 }

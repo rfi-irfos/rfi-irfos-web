@@ -60,7 +60,6 @@ export function SubmitSection({
     <section id="submit" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Reveal>
-          <p className="rfi-eyebrow" style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12, textAlign: 'center' }}>{t.submit.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12, textAlign: 'center' }}>{t.submit.heading}</h2>
           <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 40, maxWidth: 680, lineHeight: 'var(--lh-body)', textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
             {t.submit.paragraph}

@@ -107,10 +107,10 @@ export interface SiteContent {
     minHeight?: number
   }
   trust: { items: TrustItem[] }
-  categories: { eyebrow?: string; title: string; items: CategoryItem[] }
+  categories: { title: string; items: CategoryItem[] }
   products: { title: string; tabs: string[]; items: ProductItem[] }
-  usp: { eyebrow?: string; title: string; items: FeatureItem[] }
-  news: { eyebrow?: string; title: string; items: NewsItem[] }
+  usp: { title: string; items: FeatureItem[] }
+  news: { title: string; items: NewsItem[] }
   contact: {
     title: string
     subtitle?: string
@@ -140,7 +140,6 @@ export interface SiteContent {
     button?: string
   }
   about?: {
-    eyebrow?: string
     headline: string
     bio: string
     photo?: string

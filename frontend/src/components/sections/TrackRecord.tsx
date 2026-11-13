@@ -2827,7 +2827,6 @@ export function TrackRecordSection({
             with it, rather than the old left-pixel-alignment offset (which
             assumed a left-aligned page). */}
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <p className="wm-eyebrow">{t.trackRecord.eyebrow}</p>
           {demoteHeading
             ? <h2 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.trackRecord.heading}</h2>
             : <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.trackRecord.heading}</h1>}

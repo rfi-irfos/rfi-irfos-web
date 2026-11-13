@@ -129,7 +129,7 @@ function SquadOverview({
   return (
     <section id="squad-overview" className="sq-overview wm-section">
       <div className="wm-wrap">
-        <Reveal><div className="wm-section-head"><p className="wm-eyebrow">{s.overview.eyebrow}</p><h2>{s.overview.heading}</h2><p>{s.overview.sub}</p></div></Reveal>
+        <Reveal><div className="wm-section-head"><h2>{s.overview.heading}</h2><p>{s.overview.sub}</p></div></Reveal>
         <div className={mobile ? 'sq-overview-mobile sq-overview-frame' : 'sq-overview-grid sq-overview-frame'}>
           {mobile ? (
             <div className="sq-chip-row">
@@ -309,7 +309,7 @@ function HowItConnects() {
   return (
     <section id="sq-connects" className="sq-connects wm-section">
       <div className="wm-wrap">
-        <Reveal><div className="wm-section-head"><p className="wm-eyebrow">{s.eyebrow}</p><h2>{s.heading}</h2><p>{s.sub}</p></div></Reveal>
+        <Reveal><div className="wm-section-head"><h2>{s.heading}</h2><p>{s.sub}</p></div></Reveal>
         <Reveal>
           <div className="hic-diagram">
             <div className="hic-canvas">
@@ -409,7 +409,7 @@ function SquadNeedToKnow({ onRequestAccess }: { onRequestAccess: (keys: AgentKey
   return (
     <section id="sq-need-to-know" className="sq-need-to-know wm-section">
       <div className="wm-wrap">
-        <Reveal><div className="wm-section-head"><p className="wm-eyebrow">{s.needToKnow.eyebrow}</p><h2>{s.needToKnow.heading}</h2><p>{s.needToKnow.sub}</p></div></Reveal>
+        <Reveal><div className="wm-section-head"><h2>{s.needToKnow.heading}</h2><p>{s.needToKnow.sub}</p></div></Reveal>
         <div className="sq-cards-grid">
           {s.needToKnow.cards.map((card, i) => {
             const Icon = NEED_TO_KNOW_ICONS[i % NEED_TO_KNOW_ICONS.length]

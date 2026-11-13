@@ -241,7 +241,6 @@ export function PricingSection({
             the hide motion reinforces the crossing instead of undoing it. */}
         <Reveal>
           <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <p className="wm-eyebrow">{t.pricing.eyebrow}</p>
             <h1 className="rfi-page-h1" style={{ marginBottom: 12 }}>{t.pricing.heading}</h1>
             {/* White at --fs-lead like the Evidence ledger intro (Simeon 2026-10-26). */}
             <p style={{ color: 'var(--text)', marginTop: 16, marginBottom: 40, maxWidth: 720, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)' }}>{t.pricing.subheading}</p>
@@ -297,7 +296,6 @@ export function PricingSection({
                   (custom surfaces, MSP, multi-tenant, white-label, SLAs) the same day. */}
               <div id="pricing-managed-soc" className="fx-soc" style={{ scrollMarginTop: 84, marginTop: 14, border: '1px solid var(--border)', borderRadius: 16, padding: tablet ? '28px 22px' : '36px 36px', display: 'grid', gridTemplateColumns: tablet ? '1fr' : 'minmax(0, 0.8fr) minmax(0, 1.2fr)', gap: tablet ? 22 : 40, alignItems: 'center' }}>
                 <div>
-                  <p style={{ fontSize: 'var(--fs-label)', color: 'var(--accent-text)', margin: '0 0 8px', letterSpacing: '0.04em' }}>{t.pricing.managedSoc.eyebrow}</p>
                   <h2 style={{ fontSize: 'clamp(1.5rem, 2.4vw, 2rem)', color: 'var(--text)', margin: '0 0 12px', lineHeight: 1.15 }}>{t.pricing.managedSoc.heading}</h2>
                   <p style={{ fontSize: 'var(--fs-body)', color: 'var(--text)', margin: '0 0 20px', lineHeight: 'var(--lh-body)', maxWidth: 560 }}>{t.pricing.managedSoc.text}</p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>

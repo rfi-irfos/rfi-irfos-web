@@ -100,7 +100,6 @@ export function JourneySection() {
     <section id="journey" style={{ padding: '48px var(--sec-pad-x) 72px' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>
         <Reveal>
-          <p className="rfi-eyebrow rfi-eyebrow--start" style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginBottom: 12 }}>{t.journey.eyebrow}</p>
           <h2 className="rfi-section-h2" style={{ marginBottom: 12 }}>{t.journey.heading}</h2>
         </Reveal>
         <Reveal delay={1}>
