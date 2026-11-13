@@ -144,7 +144,7 @@ function FreeTierCard({ onOpen }: { onOpen: () => void }) {
   const f = t.pricing.freeCard
   return (
     <div style={{ padding: '36px 28px', display: 'flex', flexDirection: 'column', gap: 13, height: '100%', boxSizing: 'border-box' }}>
-      <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', margin: 0 }}>{f.label}</p>
+      <p style={{ fontSize: 'var(--fs-small)', fontWeight: 700, color: 'var(--text)', margin: 0 }}>{f.label}</p>
       <div>
         <span style={{ fontSize: 'var(--fs-h2)', fontWeight: 700, color: 'var(--text)' }}>{f.price}</span>
       </div>

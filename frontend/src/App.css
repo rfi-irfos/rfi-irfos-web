@@ -1482,8 +1482,8 @@ button { cursor: pointer; font-family: inherit; }
 @media (min-width: 900px) { .rfi-hero-line { white-space: nowrap; } }
 
 /* Hero description (Simeon 11.11.): two short sentences under the headline, white over the dark photo tint. */
-.irf-hero-sub { max-width: min(1240px, 100%); text-wrap: balance; margin: 0; font-size: clamp(18px, calc(1.3vw + 2px), 24px); line-height: 1.5; font-weight: 500;
-  color: rgba(232,232,240,.9); text-shadow: 0 1px 14px rgba(0,0,0,.7); }
+.irf-hero-sub { max-width: min(1500px, 100%); text-wrap: balance; margin: 0; font-size: clamp(19px, calc(1.1vw + 4px), 24px); line-height: 1.45; font-weight: 500;
+  color: #fff; text-shadow: 0 1px 14px rgba(0,0,0,.7); }
 
 /* Hero text (Simeon 11.11.): thick black outline, strong shadow. Picker values: outline .08em, shadow "stark". */
 .rfi-hero-font h1.rfi-display { -webkit-text-stroke: .08em rgba(0,0,0,.92); paint-order: stroke fill;

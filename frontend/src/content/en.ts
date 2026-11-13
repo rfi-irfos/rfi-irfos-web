@@ -272,7 +272,7 @@ export const EN = {
 
   proof: {
     heading: 'What a finished report contains',
-    subheading: 'Every report documents what we found, how we verified it, and what the evidence reveals about the product. Follow the investigation from individual observations to connected findings, with the technical evidence behind each claim. Browse our published cases and examine the results yourself. Every report follows the same evidentiary standard, regardless of whether the organisation ever becomes our client.',
+    subheading: 'Every report documents what we found, how we verified it, and what the evidence reveals about the product. Follow the investigation from individual observations to connected findings, with the technical evidence behind each claim.',
     viewReport: 'read the full report',
     resolvedOn: (date: string) => `resolved ${date}`,
     carouselPrevAria: 'Previous report',
@@ -299,7 +299,7 @@ export const EN = {
       { title: 'Misconfigurations and bugs', text: 'Insecure defaults, overly broad permissions, software defects.' },
     ],
     report: {
-      title: 'Every vulnerability comes with a PoC and a code-level fix.',
+      title: 'From traceable findings to concrete code changes.',
       sub: '',
       items: [
         { title: "Broad technical coverage", text: "Code, dependencies, APIs, configurations and data flows, examined together." },
@@ -389,7 +389,7 @@ export const EN = {
         cta: 'Request an engineering review \u2192', delivery: 'Delivered depending on scope.' },
     ],
     tiers: [
-      { name: 'Starter', price: '\u20ac99', tagline: 'Find weaknesses. Get evidence. Know what to fix.', features: ['One focused vulnerability hunt per month on your web app, mobile app or API.', 'Access to the SOC portal: connect one product, run your monthly hunt and manage your workspace.', 'Every weak spot verified with a working proof of concept.', 'Every finding assessed by one of our security specialists.', 'Severity rating and clear guidance on how to fix it.', 'Retest of fixed findings included.'], cta: 'Choose Starter', stripeKey: 'review_starter' },
+      { name: 'Starter', price: '\u20ac99', tagline: 'Find weaknesses. Get evidence. Know what to fix.', features: ['One focused vulnerability hunt per month on your web app, mobile app or API.', 'Access to the SOC customer portal.', 'Every weak spot verified with a working proof of concept.', 'Every finding assessed by one of our security specialists.', 'Severity rating and clear guidance on how to fix it.', 'Retest of fixed findings included.'], cta: 'Choose Starter', stripeKey: 'review_starter' },
       { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Regular vulnerability hunts on your application.', features: ['Everything in Starter.', 'Regular penetration testing with scheduled re-examinations.', 'One application or API in scope.', 'Concrete fixes engineered down to the affected code.', 'Unlimited retesting within scope.', 'Ongoing findings and remediation history.'], cta: 'Choose Growth', stripeKey: 'review_growth' },
       { name: 'Pro', price: '\u20ac799', tagline: 'Extend security coverage across your products.', features: ['Everything in Growth.', 'Up to three websites, applications or APIs.', 'Web and API penetration testing across every surface.', 'Consistent review rhythm across all surfaces.', 'Priority review scheduling.', 'Consolidated findings and fix tracking.', 'Automated compliance checks in the SOC portal, matched to the regulations that apply to your product.'], cta: 'Choose Pro', stripeKey: 'review_pro' },
       { name: 'Business', price: '\u20ac1,999', tagline: 'Coordinate security across your application portfolio.', features: ['Everything in Pro.', 'Up to ten websites, applications or APIs.', 'Dedicated customer communication channel.', 'Coordinated remediation follow-up.', 'Portfolio-wide findings overview.', 'Reports for management and auditors.'], cta: 'Choose Business', stripeKey: 'review_business' },

@@ -43,6 +43,9 @@ export function AppPrivacySection() {
   const stacked = useMobile(900)
   const phone = useMobile(640)
   const [active, setActive] = useState(0)
+  const [completedSegments, setCompletedSegments] = useState(0)
+  const [flowPhase, setFlowPhase] = useState<'hold' | 'filling' | 'finished'>('hold')
+  const [finishReached, setFinishReached] = useState(false)
   // Autoplay walks through the four steps until the visitor clicks one; skipped for reduced motion.
   const [playing, setPlaying] = useState(
     () => typeof window === 'undefined' || !window.matchMedia('(prefers-reduced-motion: reduce)').matches,
@@ -58,10 +61,34 @@ export function AppPrivacySection() {
   }, [])
   useEffect(() => {
     if (!playing || !visible) return
-    const id = window.setInterval(() => setActive(a => (a + 1) % c.steps.length), 3200)
-    return () => window.clearInterval(id)
-  }, [playing, visible, c.steps.length])
-  const pick = (i: number) => { setPlaying(false); setActive(i) }
+    const delay = flowPhase === 'hold' ? 1500 : flowPhase === 'filling' ? 1200 : 2400
+    const id = window.setTimeout(() => {
+      if (flowPhase === 'hold') {
+        setFlowPhase('filling')
+      } else if (flowPhase === 'filling' && active < c.steps.length - 1) {
+        setCompletedSegments(active + 1)
+        setActive(active + 1)
+        setFlowPhase('hold')
+      } else if (flowPhase === 'filling') {
+        setCompletedSegments(c.steps.length)
+        setFinishReached(true)
+        setFlowPhase('finished')
+      } else {
+        setActive(0)
+        setCompletedSegments(0)
+        setFinishReached(false)
+        setFlowPhase('hold')
+      }
+    }, delay)
+    return () => window.clearTimeout(id)
+  }, [active, flowPhase, playing, visible, c.steps.length])
+  const pick = (i: number) => {
+    setPlaying(false)
+    setActive(i)
+    setCompletedSegments(i)
+    setFinishReached(false)
+    setFlowPhase('hold')
+  }
   const kpis = [
     { n: `${auditStats.appsAudited}+`, label: t.trackRecord.kpis.appsAudited, art: 'apps' as const },
     { n: `${corpusStats.trackerMentions}+`, label: t.trackRecord.kpis.trackersFound, art: 'bugs' as const },
@@ -90,32 +117,33 @@ export function AppPrivacySection() {
                     onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(i) } }}
                     style={{ cursor: 'pointer', textAlign: 'left' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                      <span style={{ width: 38, height: 38, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 'var(--fs-body)', flexShrink: 0, transition: 'all 0.4s', transform: active === i ? 'scale(1.12)' : 'scale(1)',
+                      <span style={{ position: 'relative', zIndex: 1, width: 38, height: 38, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 'var(--fs-body)', flexShrink: 0, transition: 'all 0.4s', transform: active === i ? 'scale(1.12)' : 'scale(1)',
                         background: i <= active ? 'var(--accent-text)' : 'var(--bg2)', color: i <= active ? '#02110d' : 'var(--text2)',
                         border: '1px solid ' + (i <= active ? 'var(--accent-text)' : 'var(--border)'),
                         boxShadow: active === i ? '0 0 0 4px color-mix(in srgb, var(--accent-text) 12%, transparent), 0 0 26px color-mix(in srgb, var(--accent-text) 55%, transparent)' : i < active ? '0 0 12px color-mix(in srgb, var(--accent-text) 25%, transparent)' : 'inset 0 1px 0 rgba(255,255,255,0.08)' }}>{i + 1}</span>
-                      {!phone && <span style={{ flex: i === c.steps.length - 1 ? 'none' : 1, width: i === c.steps.length - 1 ? 132 : undefined, height: 2, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
-                        <span style={{ display: 'block', height: '100%', background: 'var(--accent-text)', transformOrigin: 'left', transform: i < active || (i === c.steps.length - 1 && active === i) ? 'scaleX(1)' : 'scaleX(0)', transition: 'transform 0.6s ease', transitionDelay: i === c.steps.length - 1 ? '0.35s' : undefined }} />
+                      {!phone && <span style={{ position: 'relative', zIndex: 0, marginLeft: -8, marginRight: i === c.steps.length - 1 ? -8 : -18, flex: 1, height: 2, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
+                        <span style={{ display: 'block', height: '100%', background: 'var(--accent-text)', transformOrigin: 'left', transform: i < completedSegments || (flowPhase === 'filling' && i === active) ? 'scaleX(1)' : 'scaleX(0)', transition: 'transform 1.1s ease-in-out' }} />
                       </span>}
                       {/* Finish flag after the last step (Simeon 11.11.): lights up when the last step is reached. */}
                       {i === c.steps.length - 1 && !phone && (
-                        <span aria-hidden="true" style={{ width: 38, height: 38, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.5s ease 0.7s',
-                          background: active === i ? 'var(--accent-text)' : 'var(--bg2)', color: active === i ? '#02110d' : 'var(--text2)',
-                          border: '1px solid ' + (active === i ? 'var(--accent-text)' : 'var(--border)'),
-                          boxShadow: active === i ? '0 0 0 4px color-mix(in srgb, var(--accent-text) 12%, transparent), 0 0 26px color-mix(in srgb, var(--accent-text) 55%, transparent)' : 'none' }}>
+                        <span aria-hidden="true" style={{ position: 'relative', zIndex: 1, width: 38, height: 38, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.5s ease',
+                          background: finishReached ? 'var(--brand-orange)' : 'var(--bg2)', color: finishReached ? '#fff' : 'var(--text2)',
+                          border: '1px solid ' + (finishReached ? 'var(--brand-orange)' : 'var(--border)'),
+                          boxShadow: finishReached ? '0 0 0 4px color-mix(in srgb, var(--brand-orange) 14%, transparent), 0 0 24px color-mix(in srgb, var(--brand-orange) 48%, transparent)' : 'none' }}>
                           {/* checkered finish flag: pole plus a 4x3 chequer, drawn square by square */}
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M5 3v18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                            <path d="M5 3v18" stroke={finishReached ? '#fff' : 'var(--text2)'} strokeWidth="2" strokeLinecap="round" />
+                            <rect x="7" y="4" width="14.4" height="10.8" fill={finishReached ? '#fff' : '#8a8d98'} />
                             {[0, 1, 2].flatMap(r => [0, 1, 2, 3].map(c2 => (r + c2) % 2 === 0
-                              ? <rect key={`${r}-${c2}`} x={7 + c2 * 3.6} y={4 + r * 3.6} width="3.6" height="3.6" fill="currentColor" />
+                              ? <rect key={`${r}-${c2}`} x={7 + c2 * 3.6} y={4 + r * 3.6} width="3.6" height="3.6" fill="#151515" />
                               : null))}
-                            <rect x="7" y="4" width="14.4" height="10.8" stroke="currentColor" strokeWidth="1.2" />
+                            <rect x="7" y="4" width="14.4" height="10.8" fill="none" stroke={finishReached ? '#fff' : 'var(--text2)'} strokeWidth="1.2" />
                           </svg>
                         </span>
                       )}
                     </div>
                     <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', color: active === i ? 'var(--accent-text)' : 'var(--text)', marginBottom: 4, transition: 'color 0.4s' }}>{s.title}</div>
-                    <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: active === i ? 'var(--text)' : 'var(--text2)' }}>{s.text}</div>
+                    <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: '#e8e8f0', textShadow: '0 0 12px rgba(232,232,240,0.12)' }}>{s.text}</div>
                   </div>
                 </Reveal>
               ))}
@@ -143,8 +171,12 @@ export function AppPrivacySection() {
               <Reveal delay={2} style={{ height: '100%', gridColumn: phone ? undefined : 2, gridRow: phone ? undefined : 2 }}>
                 <div className="fx-evidence irf-evidence-band" style={{ borderRadius: 18, padding: 22, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box' }}>
                   <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 16 }}>
-                    <span className="rfi-glass-icon" style={{ ...tile, width: 48, height: 48, color: '#3d84f5', borderColor: 'rgba(61,132,245,.45)' }}>
-                      <Icon size={26}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" stroke="#fff" /><line x1="8" y1="17" x2="14" y2="17" stroke="#fff" /></Icon>
+                    <span className="rfi-glass-icon" style={{ ...tile, width: 48, height: 48, color: '#fff', borderColor: 'color-mix(in srgb, var(--brand-orange) 48%, transparent)', boxShadow: '0 0 14px color-mix(in srgb, var(--brand-orange) 20%, transparent)' }}>
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <rect x="3.25" y="3.25" width="7.5" height="7.5" rx="2" />
+                        <path d="M10.75 7h2.5a2.5 2.5 0 0 1 2.5 2.5v3a2.5 2.5 0 0 0 2.5 2.5h.5" />
+                        <rect x="16.25" y="15" width="5" height="5.5" rx="1.6" />
+                      </svg>
                     </span>
                     <div>
                       <div style={{ fontWeight: 700, fontSize: 'var(--fs-lead)', lineHeight: 1.3, color: 'var(--text)' }}>{c.report.title}</div>

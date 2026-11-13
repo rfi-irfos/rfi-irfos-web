@@ -78,7 +78,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    sub: 'Wir ermöglichen Startups und wachsenden Unternehmen den Zugang zu fortschrittlichen Sicherheitslösungen, indem unsere eigens entwickelten Agenten tausende potenzielle Angriffswege untersuchen und erfahrene Fachleute umsetzbare Lösungen entwickeln.',
+    sub: 'Wir machen fortschrittliche Cyber-Sicherheit für Startups und wachsende Unternehmen zugänglich, indem unsere eigens entwickelten Agenten tausende potenzielle Angriffswege untersuchen und erfahrene Spezialisten daraus gezielte technische Lösungen entwickeln.',
     stats: {
       researchAreas: 'Fachbereiche',
       researchAreasSub: 'kombiniert',
@@ -248,7 +248,7 @@ export const DE: Content = {
 
   proof: {
     heading: 'Was ein fertiger Bericht enthält',
-    subheading: 'Jeder Bericht dokumentiert, was wir gefunden haben, wie wir es verifiziert haben und was die Evidenz über das Produkt aussagt. Verfolgen Sie die Untersuchung von einzelnen Beobachtungen bis zu verknüpften Befunden, mit den technischen Nachweisen hinter jeder Behauptung. Durchstöbern Sie unsere veröffentlichten Fälle und prüfen Sie die Ergebnisse selbst. Jeder Bericht folgt demselben Evidenzstandard, unabhängig davon, ob die Organisation jemals unser Kunde wird.',
+    subheading: 'Jeder Bericht dokumentiert, was wir gefunden haben, wie wir es verifiziert haben und was die Evidenz über das Produkt aussagt. Verfolgen Sie die Untersuchung von einzelnen Beobachtungen bis zu verknüpften Befunden, mit den technischen Nachweisen hinter jeder Behauptung.',
     viewReport: 'vollständigen Bericht lesen',
     resolvedOn: (date: string) => `behoben am ${date}`,
     carouselPrevAria: 'Vorheriger Bericht',
@@ -275,7 +275,7 @@ export const DE: Content = {
       { title: 'Fehlkonfigurationen und Bugs', text: 'Unsichere Voreinstellungen, zu weite Berechtigungen, Programmfehler.' },
     ],
     report: {
-      title: 'Jede Schwachstelle kommt mit PoC und einem Fix auf Code-Ebene.',
+      title: 'Von nachvollziehbaren Befunden bis zu konkreten Codeänderungen.',
       sub: '',
       items: [
         { title: "Breite technische Abdeckung", text: "Code, Abhängigkeiten, APIs, Konfigurationen und Datenflüsse, gemeinsam untersucht." },
@@ -365,7 +365,7 @@ export const DE: Content = {
         cta: 'Fordern Sie ein Engineering-Review an \u2192', delivery: 'Lieferung je nach Umfang.' },
     ],
     tiers: [
-      { name: 'Starter', price: '\u20ac99', tagline: 'Schwachstellen finden. Beweise sichern. Wissen, was zu tun ist.', features: ['Eine fokussierte Schwachstellenjagd pro Monat für Web-App, mobile App oder API.', 'Zugang zum SOC-Portal: ein Produkt verbinden, die monatliche Schwachstellenjagd starten und den Workspace verwalten.', 'Jede Schwachstelle verifiziert, mit funktionierendem Proof of Concept.', 'Jeder Befund von unseren Sicherheitsspezialisten bewertet.', 'Schweregrad und klare Handlungsempfehlung zur Behebung.', 'Retest behobener Findings inklusive.'], cta: 'Starter w\u00e4hlen', stripeKey: 'review_starter' },
+      { name: 'Starter', price: '\u20ac99', tagline: 'Schwachstellen finden. Beweise sichern. Wissen, was zu tun ist.', features: ['Eine fokussierte Schwachstellenjagd pro Monat für Web-App, mobile App oder API.', 'Zugang zum SOC-Kundenportal.', 'Jede Schwachstelle verifiziert, mit funktionierendem Proof of Concept.', 'Jeder Befund von unseren Sicherheitsspezialisten bewertet.', 'Schweregrad und klare Handlungsempfehlung zur Behebung.', 'Retest behobener Findings inklusive.'], cta: 'Starter w\u00e4hlen', stripeKey: 'review_starter' },
       { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Regelm\u00e4\u00dfige Schwachstellenjagd auf Ihre Anwendung.', features: ['Alles aus Starter.', 'Regelmäßige Penetrationstests mit geplanten Neuprüfungen.', 'Eine Anwendung oder API im Scope.', 'Konkrete Fixes, entwickelt bis in den betroffenen Code.', 'Unbegrenzte Retests innerhalb des Scopes.', 'Laufende Findings- und Fix-Historie.'], cta: 'Growth w\u00e4hlen', stripeKey: 'review_growth' },
       { name: 'Pro', price: '\u20ac799', tagline: 'Sicherheitsabdeckung \u00fcber mehrere Produkte.', features: ['Alles aus Growth.', 'Bis zu drei Websites, Anwendungen oder APIs.', 'Penetrationstests für Web und API über alle Oberflächen.', 'Gleichmäßiger Prüfrhythmus über alle Oberflächen.', 'Priorisierte Terminierung.', 'Konsolidierte Findings- und Fix-\u00dcbersicht.', 'Automatisierte Compliance-Pr\u00fcfung im SOC-Portal, zugeschnitten auf die Vorschriften Ihres Produkts.'], cta: 'Pro w\u00e4hlen', stripeKey: 'review_pro' },
       { name: 'Business', price: '\u20ac1.999', tagline: 'Sicherheit \u00fcber Ihr gesamtes Anwendungsportfolio koordiniert.', features: ['Alles aus Pro.', 'Bis zu zehn Websites, Anwendungen oder APIs.', 'Dedizierter Kommunikationskanal.', 'Koordinierte Nachverfolgung der Behebung.', 'Portfolioweite Findings-Übersicht.', 'Berichte für Geschäftsführung und Prüfer.'], cta: 'Business w\u00e4hlen', stripeKey: 'review_business' },
