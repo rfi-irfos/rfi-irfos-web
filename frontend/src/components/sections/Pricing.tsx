@@ -87,7 +87,7 @@ function TierCard({
   return (
     <div style={{ padding: '36px 28px', display: 'flex', flexDirection: 'column', gap: 13, height: '100%', boxSizing: 'border-box' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-        <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)', margin: 0 }}>{tier.name}</p>
+        <p style={{ fontSize: 'var(--fs-small)', fontWeight: 700, color: 'var(--text)', margin: 0 }}>{tier.name}</p>
         {tier.popular && (
           <span style={{ fontSize: 'var(--fs-label)', fontWeight: 700, color: 'var(--brand-orange)', whiteSpace: 'nowrap' }}>{t.pricing.mostPopular}</span>
         )}
