@@ -602,10 +602,10 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn fourth_submission_from_same_ip_in_a_day_is_rate_limited() {
-        // Distinct domains per request so the domain-dedup check above isn't
-        // what's blocking the 4th one - this is specifically about one IP
-        // queuing up unlimited free checks via different domains/emails.
+    async fn colleagues_on_one_ip_pass_but_a_burst_is_rate_limited() {
+        // Distinct domains per request so the domain-dedup check above isn't what blocks.
+        // Since 14.11.2026 the daily cap is 10 (3 locked out colleagues behind one company
+        // IP); the per-minute cap of 5 still stops a burst.
         let state = test_state().await;
         let make_req = |domain: &str| Request::builder()
             .method("POST").uri("/api/initial-review")
@@ -615,11 +615,11 @@ mod tests {
                 "domain": domain, "email": "a@b.com", "consent": true, "botcheck": null
             }).to_string())).unwrap();
 
-        for domain in ["one.com", "two.com", "three.com"] {
+        for domain in ["one.com", "two.com", "three.com", "four.com", "five.com"] {
             let res = app(state.clone()).oneshot(make_req(domain)).await.unwrap();
             assert_eq!(res.status(), StatusCode::OK, "domain {domain} should be accepted");
         }
-        let res = app(state.clone()).oneshot(make_req("four.com")).await.unwrap();
+        let res = app(state.clone()).oneshot(make_req("six.com")).await.unwrap();
         assert_eq!(res.status(), StatusCode::TOO_MANY_REQUESTS);
     }
 
