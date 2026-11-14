@@ -325,6 +325,7 @@ async fn main() {
         .route("/api/content", get(content::get_content).put(content::update_content))
         .route("/api/upload", post(upload::upload_file))
         .route("/api/contact", post(contact::submit_contact))
+        .route("/api/health/leads", get(notify::lead_health))
         .route("/api/initial-review", get(review::list_reviews).post(review::submit_review))
         .route("/api/initial-review/:id/approve", post(review::approve_review))
         .route("/api/initial-review/:id/reject", post(review::reject_review))

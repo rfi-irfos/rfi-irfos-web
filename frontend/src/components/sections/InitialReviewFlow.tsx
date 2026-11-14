@@ -61,7 +61,8 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
         body: JSON.stringify({ domain, email, consent, botcheck, locale }),
       })
       if (res.status === 400) { setState('invalid'); beacon('free_check_error:400:' + variant); return }
-      if (res.status === 429) { setState('limited'); beacon('free_check_error:429:' + variant); return }
+      // Rate limit: the request still reaches our inbox through the browser path (14.11.2026).
+      if (res.status === 429) { await failed('429'); return }
       if (!res.ok) { await failed(String(res.status)); return }
       setState('ok')
       // Lighthouse round 22: the DLT free check is the top of the paid funnel, but it was

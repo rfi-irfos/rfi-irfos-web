@@ -81,6 +81,39 @@ async fn brevo_internal(key: &str, subject: &str, text: &str, reply_to: &str) ->
     if r.status().is_success() { Ok(()) } else { Err(format!("Brevo returned {}", r.status())) }
 }
 
+static HEALTH: std::sync::OnceLock<std::sync::Mutex<Option<(std::time::Instant, serde_json::Value)>>> = std::sync::OnceLock::new();
+
+/// GET /api/health/leads: can every lead path deliver right now? Only booleans, no secrets.
+/// The Colony asks hourly (lead-watch) and reports failures through the dead-man beat
+/// (14.11.2026, "es muss einfach klappen"). Cached 5 minutes so callers cannot drive Brevo calls.
+pub async fn lead_health(axum::extract::State(state): axum::extract::State<crate::AppState>) -> impl axum::response::IntoResponse {
+    let cell = HEALTH.get_or_init(|| std::sync::Mutex::new(None));
+    if let Some((t, v)) = cell.lock().unwrap_or_else(|e| e.into_inner()).as_ref() {
+        if t.elapsed() < std::time::Duration::from_secs(300) { return axum::Json(v.clone()); }
+    }
+    let client = reqwest::Client::builder().timeout(std::time::Duration::from_secs(8)).build().ok();
+    let mut brevo = false;
+    let mut lighthouse = false;
+    if let Some(c) = &client {
+        if !state.brevo_api_key.is_empty() {
+            brevo = c.get("https://api.brevo.com/v3/account").header("api-key", &state.brevo_api_key)
+                .send().await.is_ok_and(|r| r.status().is_success());
+        }
+        lighthouse = c.get(format!("{}/lighthouse/api/health", crate::lighthouse_base()))
+            .send().await.is_ok_and(|r| r.status().is_success());
+    }
+    let set = |k: &str| std::env::var(k).is_ok_and(|v| !v.trim().is_empty());
+    let v = serde_json::json!({
+        "brevo": brevo,
+        "lighthouse": lighthouse,
+        "internal_recipient": set("INTERNAL_NOTIFY_EMAIL"),
+        "crm_key": set("LIGHTHOUSE_SIGNUP_KEY") || set("LIGHTHOUSE_INBOX_KEY"),
+        "ntfy_topic": set("CONTACT_NTFY_TOPIC"),
+    });
+    *cell.lock().unwrap_or_else(|e| e.into_inner()) = Some((std::time::Instant::now(), v.clone()));
+    axum::Json(v)
+}
+
 fn html_escape(s: &str) -> String {
     s.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;").replace('"', "&quot;")
 }

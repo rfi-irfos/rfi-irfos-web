@@ -39,7 +39,7 @@ fn review_daily_limiter() -> &'static Mutex<HashMap<String, Vec<Instant>>> {
 }
 
 fn review_daily_limited(ip: &str) -> bool {
-    const MAX: usize = 3;
+    const MAX: usize = 10; // 3 locked out a company whose staff share one IP (14.11.2026); scans wait for approval anyway
     const WINDOW: std::time::Duration = std::time::Duration::from_secs(60 * 60 * 24);
     let now = Instant::now();
     let mut map = review_daily_limiter().lock().unwrap_or_else(|e| e.into_inner());
@@ -139,6 +139,11 @@ pub async fn submit_review(
         "SELECT id FROM initial_reviews WHERE domain = ? AND lower(email) = lower(?) AND status = 'pending_approval'"
     ).bind(&domain).bind(&email).fetch_optional(&state.db).await.unwrap_or(None);
     if existing.is_some() {
+        // A retry often means the visitor heard nothing back, so the first alert may have been
+        // lost (14.11.2026): notify again, at most once per 10 minutes, so a double click stays quiet.
+        if notify_due(&domain, &email) {
+            notify_new_request(&state.brevo_api_key, &domain, &email).await;
+        }
         return StatusCode::OK.into_response();
     }
 
@@ -149,6 +154,7 @@ pub async fn submit_review(
         return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     }
 
+    notify_due(&domain, &email);
     notify_new_request(&state.brevo_api_key, &domain, &email).await;
 
     // Every Quick Check is a lead in the Lighthouse CRM (Simeon 14.11.2026). Until then
@@ -180,6 +186,21 @@ pub async fn submit_review(
         });
     }
     StatusCode::OK.into_response()
+}
+
+static NOTIFY_SEEN: OnceLock<Mutex<HashMap<String, Instant>>> = OnceLock::new();
+
+/// True when this domain and address got no alert in the last 10 minutes; records the alert.
+fn notify_due(domain: &str, email: &str) -> bool {
+    const WINDOW: std::time::Duration = std::time::Duration::from_secs(600);
+    let now = Instant::now();
+    let mut map = NOTIFY_SEEN.get_or_init(|| Mutex::new(HashMap::new()))
+        .lock().unwrap_or_else(|e| e.into_inner());
+    map.retain(|_, t| now.duration_since(*t) < WINDOW);
+    let key = format!("{domain}|{}", email.trim().to_lowercase());
+    if map.contains_key(&key) { return false; }
+    map.insert(key, now);
+    true
 }
 
 static CONFIRMATION_LIMITER: OnceLock<Mutex<HashMap<String, Instant>>> = OnceLock::new();
