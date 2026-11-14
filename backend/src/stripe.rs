@@ -201,24 +201,8 @@ pub async fn webhook(
             // live in one table (web_visits) without touching PII or cookies.
             if !tier.is_empty() {
                 let section = format!("offer_paid:{}", tier);
-                // Lighthouse round 69: the site's own tracker is /api/track -> web_visits on
-                // this app; the external post below never reached it, so paid stayed invisible
-                // in /api/analytics top_events. Record locally first, keep the legacy mirror.
+                // record() mirrors the hit to Lighthouse, so click, attempt and paid land in one table.
                 crate::track::record(&state, "/access/", "", "", "", "", "", &crate::track::event_name(&section)).await;
-                let payload = serde_json::json!({
-                    "path": "/pricing",
-                    "referrer": "",
-                    "site": "rfi-irfos",
-                    "section": section,
-                });
-                if let Ok(client) = reqwest::Client::builder().timeout(std::time::Duration::from_secs(5)).build() {
-                    let _ = client
-                        .post("https://lighthouse-rfi-irfos.fly.dev/lighthouse/api/track")
-                        .header("Content-Type", "application/json")
-                        .json(&payload)
-                        .send()
-                        .await;
-                }
             }
         }
         "payment_intent.payment_failed" => {

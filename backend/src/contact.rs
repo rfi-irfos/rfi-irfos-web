@@ -212,8 +212,7 @@ async fn relay_to_crm(entry: &ContactEntry) -> Result<(), String> {
         return Err("neither LIGHTHOUSE_SIGNUP_KEY nor LIGHTHOUSE_INBOX_KEY set on this app".into());
     }
 
-    let base = std::env::var("LIGHTHOUSE_BASE_URL")
-        .unwrap_or_else(|_| "https://lighthouse-rfi-irfos.fly.dev".to_string());
+    let base = crate::lighthouse_base();
 
     // Everything the visitor typed goes into `org` and the message body, because the CRM
     // signup shape only carries email/name/org/tier. The full message is preserved in the

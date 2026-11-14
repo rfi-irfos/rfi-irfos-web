@@ -11,6 +11,8 @@ primary_region = "fra"
   # filesystem (not this mount), so it got silently wiped on every `fly
   # deploy` despite being documented as "durable". See backend/src/contact.rs.
   CONTACTS_PATH = "/data/contacts.jsonl"
+  # Lighthouse runs on the Colony since 2026-11; contact relay and visit mirror post here.
+  LIGHTHOUSE_BASE_URL = "https://lighthouse.rfi-irfos.com"
 
 [[mounts]]
   source = "rfi_data"

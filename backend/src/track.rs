@@ -5,8 +5,10 @@ use axum::{
     response::{IntoResponse, Response},
     Json,
 };
-use serde_json::Value;
+use serde_json::{json, Value};
 use std::collections::HashMap;
+use std::sync::OnceLock;
+use std::time::Duration;
 use crate::AppState;
 
 pub fn derive_source(utm_source: &str, referrer: &str) -> String {
@@ -61,7 +63,38 @@ pub fn event_name(section: &str) -> String {
     section.chars().filter(|c| !c.is_control()).take(80).collect::<String>().trim().to_string()
 }
 
+/// Lighthouse reads only its own web_visits (Postgres on the Colony). Since the pixel moved to
+/// this domain on 2026-08-21 nothing reached it any more: September 267 rows against 64k in August.
+/// Every recorded hit is therefore mirrored there in the background; the local row stays the
+/// fallback when Lighthouse is down. Same LIGHTHOUSE_BASE_URL as the contact relay.
+fn lighthouse_url() -> &'static str {
+    static URL: OnceLock<String> = OnceLock::new();
+    URL.get_or_init(|| format!("{}/lighthouse/api/track", crate::lighthouse_base()))
+}
+
+fn lighthouse_client() -> &'static reqwest::Client {
+    static CLIENT: OnceLock<reqwest::Client> = OnceLock::new();
+    CLIENT.get_or_init(|| reqwest::Client::builder().timeout(Duration::from_secs(5)).build().unwrap_or_default())
+}
+
+pub(crate) fn forward_payload(path: &str, referrer: &str, utm_source: &str, utm_medium: &str, utm_campaign: &str, visitor: &str, event: &str) -> Value {
+    json!({
+        "site": "rfi-irfos", "path": path, "referrer": referrer,
+        "utm_source": utm_source, "utm_medium": utm_medium, "utm_campaign": utm_campaign,
+        "visitor": visitor, "section": event,
+    })
+}
+
+fn forward(body: Value) {
+    tokio::spawn(async move {
+        if let Err(e) = lighthouse_client().post(lighthouse_url()).json(&body).send().await {
+            tracing::warn!("lighthouse track mirror failed: {e}");
+        }
+    });
+}
+
 pub(crate) async fn record(state: &AppState, path: &str, referrer: &str, utm_source: &str, utm_medium: &str, utm_campaign: &str, visitor: &str, event: &str) {
+    forward(forward_payload(path, referrer, utm_source, utm_medium, utm_campaign, visitor, event));
     let source = derive_source(utm_source, referrer);
     let _ = sqlx::query(
         "INSERT INTO web_visits (path,source,referrer,utm_source,utm_medium,utm_campaign,visitor,event) VALUES (?1,?2,?3,?4,?5,?6,?7,?8)"
@@ -102,7 +135,17 @@ pub async fn beacon(State(state): State<AppState>, headers: HeaderMap, Json(b): 
 
 #[cfg(test)]
 mod tests {
-    use super::{event_name, is_automated};
+    use super::{event_name, forward_payload, is_automated};
+
+    #[test]
+    fn mirror_payload_matches_the_lighthouse_beacon() {
+        let b = forward_payload("/pricing/", "https://www.google.com/", "li", "social", "k1", "", "offer_click:growth");
+        assert_eq!(b["site"], "rfi-irfos");
+        assert_eq!(b["path"], "/pricing/");
+        assert_eq!(b["referrer"], "https://www.google.com/");
+        assert_eq!(b["utm_source"], "li");
+        assert_eq!(b["section"], "offer_click:growth");
+    }
 
     #[test]
     fn automated_browsers_are_not_audience() {

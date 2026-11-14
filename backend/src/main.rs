@@ -9,6 +9,14 @@ mod trap;
 mod upload;
 mod worldmodel;
 
+/// Lighthouse moved from Fly to the Colony (lighthouse.rfi-irfos.com, 2026-11); the old
+/// fly.dev default pointed contact leads, early-access signups and visits at the retired instance.
+pub(crate) fn lighthouse_base() -> String {
+    std::env::var("LIGHTHOUSE_BASE_URL")
+        .map(|s| s.trim_end_matches('/').to_string())
+        .unwrap_or_else(|_| "https://lighthouse.rfi-irfos.com".to_string())
+}
+
 use axum::{
     extract::{Request, State},
     http::{header, HeaderName, HeaderValue, Method, StatusCode},
@@ -161,9 +169,8 @@ async fn set_cache_control(req: Request, next: Next) -> Response {
 //   - style-src/font-src fonts.googleapis.com/fonts.gstatic.com:
 //     index.html preconnects to and loads Inter/Space Grotesk/JetBrains
 //     Mono from Google Fonts.
-//   - img-src/connect-src lighthouse-rfi-irfos.fly.dev: the first-party
-//     tracking pixel (<img src=.../pixel.gif> in PublicSite.tsx/
-//     LegalPage.tsx) and the beacon (fetch POST to .../api/track).
+//   - No Lighthouse host: pixel and beacon are same-origin (/api/track) since
+//     2026-08-21, and the backend mirrors each hit to Lighthouse server-side.
 //   - api.github.com / raw.githubusercontent.com were removed 2026-10-31:
 //     the admin panel and the live content fetch that used them are gone,
 //     nothing in the built site requests either host.
@@ -181,8 +188,8 @@ const CSP_POLICY: &str = "default-src 'self'; \
     script-src 'self' 'unsafe-inline'; \
     style-src 'self' 'unsafe-inline'; \
     font-src 'self'; \
-    img-src 'self' data: https://lighthouse-rfi-irfos.fly.dev; \
-    connect-src 'self' https://lighthouse-rfi-irfos.fly.dev https://api.web3forms.com; \
+    img-src 'self' data:; \
+    connect-src 'self' https://api.web3forms.com; \
     frame-src 'self'; \
     frame-ancestors 'self'; \
     object-src 'none'; \

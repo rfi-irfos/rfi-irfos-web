@@ -196,8 +196,7 @@ async fn relay_to_crm(entry: &EarlyAccessEntry) -> Result<(), String> {
         return Err("LIGHTHOUSE_INBOX_KEY not set on this app".into());
     }
 
-    let base = std::env::var("LIGHTHOUSE_BASE_URL")
-        .unwrap_or_else(|_| "https://lighthouse-rfi-irfos.fly.dev".to_string());
+    let base = crate::lighthouse_base();
 
     let payload = serde_json::json!({
         "email": entry.email,
