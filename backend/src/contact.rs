@@ -47,7 +47,7 @@ struct ContactEntry {
 }
 
 pub async fn submit_contact(
-    State(_state): State<AppState>,
+    State(state): State<AppState>,
     headers: HeaderMap,
     Json(body): Json<ContactRequest>,
 ) -> impl IntoResponse {
@@ -156,6 +156,18 @@ pub async fn submit_contact(
                 .await;
         }
     }
+
+    // Inbox mail through Brevo, server side (14.11.2026), so the lead reaches us even when the
+    // browser blocks the client-side Web3Forms call.
+    crate::notify::lead_mail(
+        &state.brevo_api_key,
+        format!("Contact request: {}", entry.name),
+        format!("New contact request on rfi-irfos.com\n\nName: {}\nEmail: {}{}\n\n{}\n\nThe lead is in Lighthouse as an open ticket. Reply to this mail to reach the sender.",
+            entry.name, entry.email,
+            if entry.phone.is_empty() { String::new() } else { format!("\nPhone: {}", entry.phone) },
+            entry.message),
+        &entry.email,
+    );
 
     // Relay the lead into the Lighthouse CRM - best-effort, not on the
     // response path. Live decision 2026-10-24 (Zabih is actively bugfixing

@@ -31,6 +31,7 @@ import reportPackages from '../content/reportPackages.json'
 import { reportSeo } from '../lib/reportSeo'
 import { MobileTabBar } from './MobileTabBar'
 import { InstallPrompt } from './InstallPrompt'
+import { FailToast } from './FailToast'
 import { upsertJsonLd, breadcrumbJsonLd, reportBreadcrumbJsonLd, reportArticleJsonLd, squadServiceJsonLd, accessOfferCatalogJsonLd } from '../lib/structuredData'
 
 // Footer's overflow repo/crate directory (2026-08-15) is rendered as literal
@@ -535,6 +536,8 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   // The ONLY remaining `now` readers are MoonPhase (own 60 s timer, TrackRecord.tsx) and the
   // unrelated Web-Audio local in PublicSite. Before reintroducing `now` anywhere: grep both files.
   const [, setCheckoutLoading] = useState<string | null>(null)
+  // Failed checkout tier: shows the FailToast instead of a blocking browser alert (14.11.2026).
+  const [checkoutFail, setCheckoutFail] = useState<string | null>(null)
   // Cards now show only tier/price/CTA - the full breakdown (what this tier actually
   // is) moved into this confirmation modal, shown above the B2B/ToS checkboxes, so
   // nothing gets lost by trimming the card itself.
@@ -827,6 +830,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
     beacon('offer_attempt:' + tier)
     setCheckoutModal(null)
     setCheckoutLoading(tier)
+    setCheckoutFail(null)
     const apiBase = (import.meta.env.VITE_API_BASE as string) ?? ''
     try {
       const res = await fetch(`${apiBase}/api/stripe/checkout`, {
@@ -839,7 +843,8 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       if (!url) throw new Error('checkout response missing url')
       window.location.href = url
     } catch {
-      alert(t.alerts.checkoutUnavailable)
+      beacon('offer_error:' + tier)
+      setCheckoutFail(tier)
     } finally {
       setCheckoutLoading(null)
     }
@@ -2052,6 +2057,8 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
       {mobile && <div aria-hidden="true" style={{ height: 'calc(88px + env(safe-area-inset-bottom))' }} />}
       {mobile && <MobileTabBar view={view} locale={locale} links={NAV_LINKS} onNavigate={navigateTo} />}
       {mobile && <InstallPrompt locale={locale} blocked={cookieBannerOpen} />}
+      {checkoutFail && <FailToast message={t.alerts.checkoutUnavailable} mailSubject={`Checkout: ${checkoutFail}`}
+        mailBody={`Tier: ${checkoutFail}`} onClose={() => setCheckoutFail(null)} />}
       {cookieBannerOpen && (
         // background/border/box-shadow come from .rfi-glass-flat now, not hand-rolled per
         // theme - that inline duplication only ever branched dark-vs-not-dark, so it silently

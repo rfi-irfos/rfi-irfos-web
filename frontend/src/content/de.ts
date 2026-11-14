@@ -1183,6 +1183,10 @@ export const DE: Content = {
   },
 
   alerts: {
-    checkoutUnavailable: 'Checkout nicht verfügbar. Bitte kontaktieren Sie uns direkt.',
+    checkoutUnavailable: 'Der Checkout ist gerade nicht erreichbar. Nutzen Sie unser Kontaktformular oder schreiben Sie uns, dann schicken wir Ihnen den Zahlungslink direkt.',
+    sendFailed: 'Beim Senden ist auf unserer Seite etwas schiefgelaufen. Nutzen Sie bitte unser Kontaktformular oder schreiben Sie uns direkt. Wir antworten innerhalb eines Werktags.',
+    contactCta: 'Zum Kontaktformular',
+    mailCta: 'E-Mail schreiben',
+    close: 'Schließen',
   },
 }

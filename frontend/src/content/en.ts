@@ -1216,7 +1216,11 @@ export const EN = {
   },
 
   alerts: {
-    checkoutUnavailable: 'Checkout unavailable. Please contact us directly.',
+    checkoutUnavailable: 'The checkout is unavailable right now. Use our contact form or write to us, and we send you the payment link directly.',
+    sendFailed: 'Sending failed on our side. Please use our contact form or write to us directly. We answer within one working day.',
+    contactCta: 'Open contact form',
+    mailCta: 'Write an email',
+    close: 'Close',
   },
 }
 

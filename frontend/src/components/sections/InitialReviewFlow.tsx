@@ -1,6 +1,7 @@
 import { useId, useState } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { WEB3FORMS_KEY, beacon } from './shared'
+import { FailToast } from '../FailToast'
 
 type FormState = 'idle' | 'sending' | 'ok' | 'err' | 'invalid' | 'limited'
 
@@ -19,6 +20,7 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
   const [consent, setConsent] = useState(false)
   const [botcheck, setBotcheck] = useState('')
   const [state, setState] = useState<FormState>('idle')
+  const [toast, setToast] = useState(false)
   // Lighthouse round 33: labels tied to their inputs (screen readers, click-to-focus).
   const fid = useId()
 
@@ -30,39 +32,44 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
     // read it as our failure. Same check as normalize_domain in review.rs, caught here.
     if (!domain.replace(/^https?:\/\//, '').split('/')[0].includes('.')) { setState('invalid'); beacon('free_check_invalid:' + variant); return }
     setState('sending')
+    setToast(false)
+    // Browser-side Web3Forms: a second inbox path next to the server's Brevo mail.
+    const mailUs = () => WEB3FORMS_KEY ? fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: `[rfi-irfos.com] New initial review request — ${domain}`,
+        name: 'Initial review request',
+        email,
+        replyto: email,
+        message: `domain=${domain}\nemail=${email}`,
+      }),
+    }).then(r => r.ok, () => false) : Promise.resolve(false)
+    // Server down or network gone (14.11.2026, "das muss klappen"): the request still reaches
+    // our inbox through Web3Forms; only when that fails too the visitor sees the toast.
+    const failed = async (why: string) => {
+      beacon('free_check_error:' + why + ':' + variant)
+      if (await mailUs()) { setState('ok'); beacon('free_check_submitted_fallback:' + variant); return }
+      setState('err')
+      setToast(true)
+    }
     try {
       const res = await fetch('/api/initial-review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ domain, email, consent, botcheck, locale }),
       })
-      setState(res.ok ? 'ok' : res.status === 400 ? 'invalid' : res.status === 429 ? 'limited' : 'err')
+      if (res.status === 400) { setState('invalid'); beacon('free_check_error:400:' + variant); return }
+      if (res.status === 429) { setState('limited'); beacon('free_check_error:429:' + variant); return }
+      if (!res.ok) { await failed(String(res.status)); return }
+      setState('ok')
       // Lighthouse round 22: the DLT free check is the top of the paid funnel, but it was
       // the one conversion that never reached web_visits. No domain or email is sent.
-      beacon((res.ok ? 'free_check_submitted:' : 'free_check_error:' + res.status + ':') + variant)
-      // The backend already persists the request and pings ntfy regardless of this
-      // call, but Web3Forms' free tier rejects the equivalent server-to-server send
-      // outright ("Pro plan required" - see notify.rs) - this client-side call is the
-      // only path that actually reaches an inbox. Fire-and-forget: a failure here
-      // never blocks the visitor's already-saved submission (live feedback
-      // 2026-10-14: "ich hab ne ntfy bekommen, aber keine email").
-      if (res.ok && WEB3FORMS_KEY) {
-        fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            access_key: WEB3FORMS_KEY,
-            subject: `[rfi-irfos.com] New initial review request — ${domain}`,
-            name: 'Initial review request',
-            email,
-            replyto: email,
-            message: `domain=${domain}\nemail=${email}`,
-          }),
-        }).catch(() => {})
-      }
+      beacon('free_check_submitted:' + variant)
+      void mailUs()
     } catch {
-      setState('err')
-      beacon('free_check_error:network:' + variant)
+      await failed('network')
     }
   }
 
@@ -180,6 +187,8 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
           )}
         </button>
       </form>
+      {toast && <FailToast message={t.alerts.sendFailed} mailSubject={`Quick Check: ${domain}`}
+        mailBody={`Domain: ${domain}\nEmail: ${email}`} onClose={() => setToast(false)} />}
     </div>
   )
 }

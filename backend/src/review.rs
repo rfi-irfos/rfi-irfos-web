@@ -149,7 +149,7 @@ pub async fn submit_review(
         return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     }
 
-    notify_new_request(&domain, &email).await;
+    notify_new_request(&state.brevo_api_key, &domain, &email).await;
 
     // Every Quick Check is a lead in the Lighthouse CRM (Simeon 14.11.2026). Until then
     // requests only reached ntfy, so Lighthouse counted 0 leads. Spawned like the
@@ -196,7 +196,7 @@ fn confirmation_allowed(email: &str) -> bool {
     true
 }
 
-async fn notify_new_request(domain: &str, email: &str) {
+async fn notify_new_request(key: &str, domain: &str, email: &str) {
     // Tests dürfen nie echte Pushes oder Mails auslösen (2026-10-22: Testläufe füllten ntfy und die Anfrageliste mit foo.com / a@b.com)
     if cfg!(test) { return; }
     let Ok(client) = reqwest::Client::builder()
@@ -207,15 +207,14 @@ async fn notify_new_request(domain: &str, email: &str) {
         .body(format!("domain={domain} email={email} — approve via POST /api/initial-review/:id/approve"))
         .send().await;
 
-    // ntfy alone is a push notification, not an inbox record - live feedback
-    // 2026-10-14: "ich hab ne ntfy bekommen, aber keine email". Reply-To is the
-    // visitor's own address so replying to this mail reaches them directly.
-    crate::notify::web3forms_email(
-        &format!("[rfi-irfos.com] New initial review request — {domain}"),
-        "Initial review request",
+    // ntfy alone is a push, not an inbox record (2026-10-14: "ich hab ne ntfy bekommen, aber
+    // keine email"). Since 14.11.2026 the inbox mail goes out server side through Brevo.
+    crate::notify::lead_mail(
+        key,
+        format!("Quick Check request: {domain}"),
+        format!("New Quick Check request on rfi-irfos.com\n\nDomain: {domain}\nEmail: {email}\n\nThe lead is in Lighthouse as an open ticket. Reply to this mail to reach the requester."),
         email,
-        &format!("domain={domain}\nemail={email}\n\nApprove via POST /api/initial-review/:id/approve"),
-    ).await;
+    );
 }
 
 #[derive(Serialize)]

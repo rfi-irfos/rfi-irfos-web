@@ -1,26 +1,7 @@
-/// Shared Web3Forms email delivery, used by `review.rs`.
-///
-/// Verified broken 2026-10-24 by replaying this exact request shape directly
-/// against api.web3forms.com: it returns 403 "This method is not allowed...
-/// Pro plan is required" for ANY server-to-server POST, every time, key valid
-/// or not. The doc comment this replaces claimed the opposite - that reading
-/// `VITE_WEB3FORMS_KEY` as a runtime secret here (rather than a Vite build-time
-/// constant) was "the one path that has ever actually delivered mail for this
-/// codebase". It never delivered one; the 403 was only ever visible as a
-/// tracing::error! with no alerting, so the gap went unnoticed for six weeks
-/// (see review.rs's own 2026-10-14 bug report in `notify_new_request`, and
-/// contact.rs's near-identical one on 2026-10-24 - this function's call sites
-/// were never actually sending mail either time, CRM/local-write success
-/// masked it both times). contact.rs no longer calls this; it pings ntfy
-/// directly instead, which is the one delivery path actually proven to reach
-/// a human. review.rs still calls it below - harmless no-op, not yet removed.
-/// Real server-side email delivery needs a provider that allows it (Web3Forms
-/// Pro, or a transactional provider like Resend/Mailgun/SES) - unresolved.
-/// The frontend's OWN client-side Web3Forms fallback (PublicSite.tsx,
-/// Squad.tsx) is a different, real path - browser-origin calls are not
-/// rejected the way server-to-server ones are - gated on `VITE_WEB3FORMS_KEY`
-/// reaching the Vite build; see scripts/ship.sh for why that needed fixing
-/// separately (the frontend build runs outside Docker, build-args don't apply).
+/// Lead notifications for rfi-irfos.com: ntfy push, urgent alerts, the visitor's confirmation and
+/// the internal lead mail, all server side. The old server-side Web3Forms call is gone: the free
+/// tier answers 403 to every server-to-server POST (verified 2026-10-24), it never delivered a mail.
+/// The browser-side Web3Forms call in the frontend stays as an extra path.
 
 /// ntfy topic for contact and free-check alerts. ntfy.sh topics are open to anyone who knows the
 /// name, and the old hardcoded name sat in this public repo, so every alert (domain, email,
@@ -46,33 +27,58 @@ pub async fn alert_urgent(title: &str, message: &str) {
     }
 }
 
-pub async fn web3forms_email(subject: &str, name: &str, email: &str, message: &str) {
-    let Ok(key) = std::env::var("VITE_WEB3FORMS_KEY") else { return };
+/// Internal lead mail through Brevo (Simeon 14.11.2026: "das muss klappen"). Every Quick Check
+/// and every contact or Squad request lands in our inbox, server side, independent of the
+/// browser. Recipients come from INTERNAL_NOTIFY_EMAIL (comma separated, a Fly secret, so no
+/// private address sits in this public repo); fallback is the domain-check@ alias.
+/// Reply-To is the visitor, so answering the mail reaches them directly. Two tries; when both
+/// fail, an urgent ntfy alert names the lead, so a dead mail path is noticed within minutes.
+/// Runs in the background: a slow Brevo never delays the visitor's response.
+pub fn lead_mail(key: &str, subject: String, text: String, reply_to: &str) {
+    if cfg!(test) { return; }
+    let (key, reply_to) = (key.to_string(), reply_to.to_string());
+    tokio::spawn(async move { lead_mail_now(&key, &subject, &text, &reply_to).await });
+}
+
+async fn lead_mail_now(key: &str, subject: &str, text: &str, reply_to: &str) {
     if key.is_empty() {
-        tracing::warn!("web3forms_email skipped: VITE_WEB3FORMS_KEY not set on this app");
+        alert_urgent("Lead mail not sent", &format!("BREVO_API_KEY missing on the web app. {subject}\n\n{text}")).await;
         return;
     }
-    let Ok(client) = reqwest::Client::builder()
-        .timeout(std::time::Duration::from_secs(5))
-        .build()
-    else { return };
-    let res = client
-        .post("https://api.web3forms.com/submit")
-        .json(&serde_json::json!({
-            "access_key": key,
-            "subject": subject,
-            "name": name,
-            "email": email,
-            "replyto": email,
-            "message": message,
-        }))
-        .send()
-        .await;
-    match res {
-        Ok(r) if r.status().is_success() => {}
-        Ok(r) => tracing::error!("web3forms_email: non-success status {}", r.status()),
-        Err(e) => tracing::error!("web3forms_email request failed: {e}"),
+    let mut last = String::new();
+    for attempt in 0..2 {
+        if attempt > 0 { tokio::time::sleep(std::time::Duration::from_secs(3)).await; }
+        match brevo_internal(key, subject, text, reply_to).await {
+            Ok(()) => { tracing::info!("lead mail sent: {subject}"); return; }
+            Err(e) => { tracing::error!("lead mail attempt {} failed: {e}", attempt + 1); last = e; }
+        }
     }
+    alert_urgent("Lead mail failed", &format!("{subject}: {last}\n\n{text}")).await;
+}
+
+fn internal_recipients() -> Vec<serde_json::Value> {
+    let raw = std::env::var("INTERNAL_NOTIFY_EMAIL").unwrap_or_default();
+    let list: Vec<_> = raw.split(',').map(str::trim).filter(|a| a.contains('@'))
+        .map(|a| serde_json::json!({ "email": a })).collect();
+    if list.is_empty() { vec![serde_json::json!({ "email": "domain-check@rfi-irfos.com" })] } else { list }
+}
+
+async fn brevo_internal(key: &str, subject: &str, text: &str, reply_to: &str) -> Result<(), String> {
+    let client = reqwest::Client::builder().timeout(std::time::Duration::from_secs(10)).build()
+        .map_err(|e| e.to_string())?;
+    let html = format!("<pre style=\"font-family:Arial,sans-serif;font-size:14px;white-space:pre-wrap\">{}</pre>", html_escape(text));
+    let mut body = serde_json::json!({
+        "sender": { "name": "rfi-irfos.com Lead", "email": "domain-check@rfi-irfos.com" },
+        "to": internal_recipients(),
+        "subject": subject,
+        "htmlContent": html,
+        "textContent": text,
+        "tags": ["lead-internal"],
+    });
+    if reply_to.contains('@') { body["replyTo"] = serde_json::json!({ "email": reply_to }); }
+    let r = client.post("https://api.brevo.com/v3/smtp/email").header("api-key", key)
+        .json(&body).send().await.map_err(|e| e.to_string())?;
+    if r.status().is_success() { Ok(()) } else { Err(format!("Brevo returned {}", r.status())) }
 }
 
 fn html_escape(s: &str) -> String {
