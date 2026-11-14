@@ -83,7 +83,9 @@ pub async fn create_checkout(
     } else {
         "I am ordering as a business (B2B) and accept the [terms](https://rfi-irfos.com/agb/)."
     };
-    let success_url = format!("{}{}?checkout=success", origin, access);
+    // The security plans create a portal workspace and send an invitation mail; the return page says so (plan=portal).
+    let portal = if body.tier.starts_with("review_") { "&plan=portal" } else { "" };
+    let success_url = format!("{}{}?checkout=success{}", origin, access, portal);
     let cancel_url  = format!("{}{}?checkout=cancelled", origin, access);
 
     let mode = if info.recurring { "subscription" } else { "payment" };

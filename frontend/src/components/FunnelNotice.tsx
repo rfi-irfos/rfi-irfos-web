@@ -51,12 +51,16 @@ export function NotFoundNotice() {
 // Return from Stripe Checkout (?checkout=success|cancelled, set in backend/src/stripe.rs).
 // Read once at module load, then stripped from the URL so a reload or a shared link
 // does not show it again.
+// ?plan=portal is added for the monthly and annual security plans: their buyer gets a portal invitation by mail.
+let PORTAL_PLAN = false
 const CHECKOUT_RETURN = (() => {
   if (typeof window === 'undefined') return null
   const v = new URLSearchParams(window.location.search).get('checkout')
   if (v !== 'success' && v !== 'cancelled') return null
   const url = new URL(window.location.href)
+  PORTAL_PLAN = url.searchParams.get('plan') === 'portal'
   url.searchParams.delete('checkout')
+  url.searchParams.delete('plan')
   window.history.replaceState(null, '', url.pathname + url.search + url.hash)
   // Lighthouse round 22: a cancel on Stripe's own page was invisible (offer_cancel only
   // covers the on-site modal), so attempt -> paid had no middle step to explain the gap.
@@ -68,6 +72,11 @@ export function CheckoutReturnNotice() {
   const { locale } = useLocale()
   if (!CHECKOUT_RETURN) return null
   const de = locale === 'de'
+  if (CHECKOUT_RETURN === 'success' && PORTAL_PLAN) return <FunnelNotice
+    title={de
+      ? 'Zahlung erhalten, danke. Die Einladung zu Ihrem Portal-Zugang ist an die E-Mail-Adresse aus dem Checkout unterwegs und gilt sieben Tage. Die Quittung kommt von Stripe.'
+      : 'Payment received, thank you. The invitation to your portal access is on its way to the email address from checkout and is valid for seven days. Stripe emails your receipt.'}
+    links={[]} />
   if (CHECKOUT_RETURN === 'success') return <FunnelNotice
     title={de
       ? 'Zahlung erhalten, danke. Die Quittung kommt von Stripe per E-Mail. Wir melden uns an dieselbe Adresse, um den Start abzustimmen.'
