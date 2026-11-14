@@ -7,8 +7,6 @@ use axum::{
 };
 use serde_json::{json, Value};
 use std::collections::HashMap;
-use std::sync::OnceLock;
-use std::time::Duration;
 use crate::AppState;
 
 pub fn derive_source(utm_source: &str, referrer: &str) -> String {
@@ -64,37 +62,51 @@ pub fn event_name(section: &str) -> String {
 }
 
 /// Lighthouse reads only its own web_visits (Postgres on the Colony). Since the pixel moved to
-/// this domain on 2026-08-21 nothing reached it any more: September 267 rows against 64k in August.
-/// Every recorded hit is therefore mirrored there in the background; the local row stays the
-/// fallback when Lighthouse is down. Same LIGHTHOUSE_BASE_URL as the contact relay.
-fn lighthouse_url() -> &'static str {
-    static URL: OnceLock<String> = OnceLock::new();
-    URL.get_or_init(|| format!("{}/lighthouse/api/track", crate::lighthouse_base()))
+/// this domain on 2026-08-21 nothing reached it any more. A push mirror (14.11.2026, a few hours)
+/// lost hits whenever Lighthouse was down and stamped them with the arrival time, so Lighthouse now
+/// pulls instead: colony:~/bin/web-visits-sync reads GET /api/track/export every 5 minutes, keeps
+/// the original created_at and resumes after the last id it stored. This table stays the source.
+fn export_token() -> Option<String> {
+    std::env::var("TRACK_EXPORT_TOKEN").ok().filter(|t| t.len() >= 32)
 }
 
-fn lighthouse_client() -> &'static reqwest::Client {
-    static CLIENT: OnceLock<reqwest::Client> = OnceLock::new();
-    CLIENT.get_or_init(|| reqwest::Client::builder().timeout(Duration::from_secs(5)).build().unwrap_or_default())
+fn same(a: &[u8], b: &[u8]) -> bool {
+    a.len() == b.len() && a.iter().zip(b).fold(0u8, |acc, (x, y)| acc | (x ^ y)) == 0
 }
 
-pub(crate) fn forward_payload(path: &str, referrer: &str, utm_source: &str, utm_medium: &str, utm_campaign: &str, visitor: &str, event: &str) -> Value {
-    json!({
-        "site": "rfi-irfos", "path": path, "referrer": referrer,
-        "utm_source": utm_source, "utm_medium": utm_medium, "utm_campaign": utm_campaign,
-        "visitor": visitor, "section": event,
-    })
+pub(crate) fn authorized(headers: &HeaderMap, token: &str) -> bool {
+    headers.get(header::AUTHORIZATION).and_then(|h| h.to_str().ok())
+        .and_then(|h| h.strip_prefix("Bearer "))
+        .map_or(false, |t| same(t.trim().as_bytes(), token.as_bytes()))
 }
 
-fn forward(body: Value) {
-    tokio::spawn(async move {
-        if let Err(e) = lighthouse_client().post(lighthouse_url()).json(&body).send().await {
-            tracing::warn!("lighthouse track mirror failed: {e}");
+/// GET /api/track/export?after=<id>&limit=<n> — rows after `after` in id order, Bearer token.
+/// 404 when TRACK_EXPORT_TOKEN is unset, so the route does not exist for anyone else.
+pub async fn export(State(state): State<AppState>, headers: HeaderMap, Query(m): Query<HashMap<String, String>>) -> Response {
+    let Some(token) = export_token() else { return StatusCode::NOT_FOUND.into_response() };
+    if !authorized(&headers, &token) { return StatusCode::UNAUTHORIZED.into_response(); }
+    let after: i64 = q(&m, "after").parse().unwrap_or(0);
+    let limit: i64 = q(&m, "limit").parse().unwrap_or(2000).clamp(1, 5000);
+    let rows = sqlx::query_as::<_, (i64, String, String, String, String, String, String, String, String)>(
+        "SELECT id,path,source,referrer,utm_source,utm_medium,utm_campaign,event,created_at FROM web_visits WHERE id > ?1 ORDER BY id LIMIT ?2"
+    ).bind(after).bind(limit).fetch_all(&state.db).await;
+    match rows {
+        Ok(rows) => {
+            let max_id = rows.last().map(|r| r.0).unwrap_or(after);
+            let items: Vec<Value> = rows.into_iter().map(|r| json!({
+                "id": r.0, "path": r.1, "source": r.2, "referrer": r.3, "utm_source": r.4,
+                "utm_medium": r.5, "utm_campaign": r.6, "event": r.7, "created_at": r.8,
+            })).collect();
+            ([(header::CACHE_CONTROL, "no-store")], Json(json!({ "max_id": max_id, "rows": items }))).into_response()
         }
-    });
+        Err(e) => {
+            tracing::error!("track export failed: {e}");
+            StatusCode::INTERNAL_SERVER_ERROR.into_response()
+        }
+    }
 }
 
 pub(crate) async fn record(state: &AppState, path: &str, referrer: &str, utm_source: &str, utm_medium: &str, utm_campaign: &str, visitor: &str, event: &str) {
-    forward(forward_payload(path, referrer, utm_source, utm_medium, utm_campaign, visitor, event));
     let source = derive_source(utm_source, referrer);
     let _ = sqlx::query(
         "INSERT INTO web_visits (path,source,referrer,utm_source,utm_medium,utm_campaign,visitor,event) VALUES (?1,?2,?3,?4,?5,?6,?7,?8)"
@@ -135,16 +147,20 @@ pub async fn beacon(State(state): State<AppState>, headers: HeaderMap, Json(b): 
 
 #[cfg(test)]
 mod tests {
-    use super::{event_name, forward_payload, is_automated};
+    use super::{authorized, event_name, is_automated};
+    use axum::http::{header, HeaderMap, HeaderValue};
 
     #[test]
-    fn mirror_payload_matches_the_lighthouse_beacon() {
-        let b = forward_payload("/pricing/", "https://www.google.com/", "li", "social", "k1", "", "offer_click:growth");
-        assert_eq!(b["site"], "rfi-irfos");
-        assert_eq!(b["path"], "/pricing/");
-        assert_eq!(b["referrer"], "https://www.google.com/");
-        assert_eq!(b["utm_source"], "li");
-        assert_eq!(b["section"], "offer_click:growth");
+    fn export_needs_the_exact_bearer_token() {
+        let token = "t".repeat(40);
+        let mut h = HeaderMap::new();
+        assert!(!authorized(&h, &token));
+        h.insert(header::AUTHORIZATION, HeaderValue::from_str(&format!("Bearer {token}")).unwrap());
+        assert!(authorized(&h, &token));
+        h.insert(header::AUTHORIZATION, HeaderValue::from_static("Bearer tttt"));
+        assert!(!authorized(&h, &token));
+        h.insert(header::AUTHORIZATION, HeaderValue::from_str(&token).unwrap());
+        assert!(!authorized(&h, &token));
     }
 
     #[test]

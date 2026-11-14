@@ -201,7 +201,7 @@ pub async fn webhook(
             // live in one table (web_visits) without touching PII or cookies.
             if !tier.is_empty() {
                 let section = format!("offer_paid:{}", tier);
-                // record() mirrors the hit to Lighthouse, so click, attempt and paid land in one table.
+                // Lighthouse pulls web_visits (/api/track/export), so click, attempt and paid land in one table.
                 crate::track::record(&state, "/access/", "", "", "", "", "", &crate::track::event_name(&section)).await;
             }
         }

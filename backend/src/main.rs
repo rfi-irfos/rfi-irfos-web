@@ -170,7 +170,7 @@ async fn set_cache_control(req: Request, next: Next) -> Response {
 //     index.html preconnects to and loads Inter/Space Grotesk/JetBrains
 //     Mono from Google Fonts.
 //   - No Lighthouse host: pixel and beacon are same-origin (/api/track) since
-//     2026-08-21, and the backend mirrors each hit to Lighthouse server-side.
+//     2026-08-21; Lighthouse pulls the rows server-side (/api/track/export).
 //   - api.github.com / raw.githubusercontent.com were removed 2026-10-31:
 //     the admin panel and the live content fetch that used them are gone,
 //     nothing in the built site requests either host.
@@ -335,6 +335,7 @@ async fn main() {
         // Tracking pixel (public, no auth)
         .route("/api/track/pixel.gif", get(track::pixel))
         .route("/api/track", post(track::beacon))
+        .route("/api/track/export", get(track::export))
         // Uploads
         .nest_service("/uploads", ServeDir::new(&uploads_dir))
         // React SPA
