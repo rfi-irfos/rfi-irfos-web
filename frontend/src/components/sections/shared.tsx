@@ -1159,8 +1159,11 @@ export function beacon(section: string, extra?: Record<string, string>) {
 export function useFormAbandonment(name: string, values: Record<string, unknown>, state: string) {
   const touchedRef = useRef(false)
   const reportedRef = useRef(false)
+  // Preset values (credit: 'anonymous' in the contact form) are not typing: compare against
+  // the first render, otherwise every visit counted as an abandoned form (904 in Nov 2026).
+  const initialRef = useRef(values)
   useEffect(() => {
-    if (Object.entries(values).some(([k, v]) => k !== 'botcheck' && typeof v === 'string' && v.trim() !== '')) {
+    if (Object.entries(values).some(([k, v]) => k !== 'botcheck' && typeof v === 'string' && v.trim() !== '' && v !== initialRef.current[k])) {
       touchedRef.current = true
     }
   })
