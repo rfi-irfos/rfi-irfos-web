@@ -179,32 +179,22 @@ pub async fn submit_contact(
 }
 
 async fn notify_crm_failure(entry: &ContactEntry, err: &str) {
-    let Ok(client) = reqwest::Client::builder()
-        .timeout(std::time::Duration::from_secs(5))
-        .build()
-    else { return };
-    let body = format!(
-        "rfi-irfos.com contact form: CRM relay failed for {} <{}> ({err}). The visitor's \
-         browser still tries a direct Web3Forms send, but that lead won't show up in \
-         Lighthouse's count. Backup copy: contacts.jsonl on the web machine's local \
-         (unmounted) disk - check it before the machine restarts.",
+    crate::notify::alert_urgent("Contact form CRM relay failed", &format!(
+        "{} <{}>: {err}. The lead is missing from Lighthouse; the full message is in contacts.jsonl on the web machine.",
         entry.name, entry.email,
-    );
-    let _ = client
-        .post(crate::notify::contact_ntfy_url())
-        .header("Title", "Contact form CRM relay failed")
-        .header("Priority", "urgent")
-        .body(body)
-        .send()
-        .await;
+    )).await;
 }
 
 async fn relay_to_crm(entry: &ContactEntry) -> Result<(), String> {
-    // Lighthouse's own signup() checks LIGHTHOUSE_SIGNUP_KEY first, falling back to
-    // LIGHTHOUSE_INBOX_KEY - mirror that order here. A stale/mismatched
-    // LIGHTHOUSE_INBOX_KEY (401 as of 2026-09-11) is why this reads SIGNUP_KEY first:
-    // a dedicated key set on both sides can't collide with whatever INBOX_KEY is doing
-    // for the unrelated Gmail-push webhook.
+    let mut note = entry.message.chars().take(600).collect::<String>();
+    if !entry.phone.is_empty() { note = format!("{} · {note}", entry.phone); }
+    crm_lead(&entry.email, &entry.name, None, "rfi-irfos.com contact form", &note).await
+}
+
+/// One lead into the Lighthouse CRM, shared by the contact form and the Quick Check
+/// (14.11.2026: Quick Check requests never reached the CRM, so Lighthouse counted 0 leads).
+/// `channel` becomes the contact's source_detail, `note` its first note line.
+pub(crate) async fn crm_lead(email: &str, name: &str, org: Option<&str>, channel: &str, note: &str) -> Result<(), String> {
     let key = std::env::var("LIGHTHOUSE_SIGNUP_KEY")
         .or_else(|_| std::env::var("LIGHTHOUSE_INBOX_KEY"))
         .unwrap_or_default();
@@ -214,15 +204,15 @@ async fn relay_to_crm(entry: &ContactEntry) -> Result<(), String> {
 
     let base = crate::lighthouse_base();
 
-    // Everything the visitor typed goes into `org` and the message body, because the CRM
-    // signup shape only carries email/name/org/tier. The full message is preserved in the
-    // contacts.jsonl line written above, and `tier` marks where the lead came from so
-    // website leads are distinguishable from ternlang.com API signups in the CRM.
+    // `channel` and `note` label the lead in the CRM (Lighthouse signup() since 14.11.2026);
+    // `tier` repeats the channel for an older Lighthouse build that only knows tier.
     let payload = serde_json::json!({
-        "email": entry.email,
-        "name":  entry.name,
-        "org":   entry.phone,
-        "tier":  "rfi-irfos.com contact form",
+        "email":   email,
+        "name":    name,
+        "org":     org,
+        "tier":    channel,
+        "channel": channel,
+        "note":    note,
     });
 
     let client = reqwest::Client::builder()

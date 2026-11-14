@@ -32,6 +32,20 @@ pub fn contact_ntfy_url() -> String {
     format!("https://ntfy.sh/{topic}")
 }
 
+/// Urgent alert to the contact channel and the Lighthouse alarm channel (14.11.2026): a lead
+/// that misses the CRM must never be visible only in one channel someone may have just cleared.
+/// JSON publish, because ntfy headers cannot carry UTF-8.
+pub async fn alert_urgent(title: &str, message: &str) {
+    if cfg!(test) { return; }
+    let Ok(client) = reqwest::Client::builder().timeout(std::time::Duration::from_secs(5)).build() else { return };
+    let contact_topic = contact_ntfy_url().rsplit('/').next().unwrap_or_default().to_string();
+    for topic in [contact_topic.as_str(), "lighthouse-rfi-irfos"] {
+        let _ = client.post("https://ntfy.sh/")
+            .json(&serde_json::json!({ "topic": topic, "title": format!("⚠ {title}"), "message": message, "priority": 5 }))
+            .send().await;
+    }
+}
+
 pub async fn web3forms_email(subject: &str, name: &str, email: &str, message: &str) {
     let Ok(key) = std::env::var("VITE_WEB3FORMS_KEY") else { return };
     if key.is_empty() {

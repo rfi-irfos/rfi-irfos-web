@@ -151,6 +151,21 @@ pub async fn submit_review(
 
     notify_new_request(&domain, &email).await;
 
+    // Every Quick Check is a lead in the Lighthouse CRM (Simeon 14.11.2026). Until then
+    // requests only reached ntfy, so Lighthouse counted 0 leads. Spawned like the
+    // contact form relay: a slow CRM never touches the response, a failure pings ntfy.
+    if !cfg!(test) {
+        let (d, e) = (domain.clone(), email.clone());
+        tokio::spawn(async move {
+            let name = e.split('@').next().unwrap_or(&e).to_string();
+            if let Err(err) = crate::contact::crm_lead(&e, &name, Some(&d), "rfi-irfos.com Quick Check", &format!("Quick Check requested for {d}")).await {
+                tracing::error!("Quick Check relay to CRM failed for {e}: {err}");
+                crate::notify::alert_urgent("Quick Check CRM relay failed",
+                    &format!("{d} <{e}>: {err}. The request is saved in initial_reviews; enter it in Lighthouse by hand.")).await;
+            }
+        });
+    }
+
     // 2026-10-31 (Simeon): the visitor gets a confirmation mail right away, so the
     // warmest moment of the DLT funnel ends in their inbox, not only on our screen.
     // Spawned: Brevo being slow or down never touches the response. One per
