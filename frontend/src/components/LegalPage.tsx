@@ -1215,11 +1215,6 @@ const TEAM = [
   { name: 'Laura Serna Gaviria', gh: 'emergentinteractionlab', focus: 'Co-Founder & COO' },
 ]
 
-const PAST = [
-  { name: 'Nikoletta Csonka', gh: 'csonikoletta', focus: 'Past contributor' },
-  { name: 'Lisa Scharler',    gh: 'aiqueenofaustria',             focus: 'Past contributor' },
-]
-
 function TeamCard({ p }: { p: { name: string; gh: string; focus: string } }) {
   return (
     <a href={p.gh ? `https://github.com/${p.gh}` : undefined} target="_blank" rel="noopener"
@@ -1231,16 +1226,11 @@ function TeamCard({ p }: { p: { name: string; gh: string; focus: string } }) {
        }}
        onMouseEnter={e => { if (p.gh) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.4)' }}
        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)' }}>
-      {p.gh ? (
-        <img src={`/team/${p.gh}.png`} alt="" loading="lazy"
-             style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)', objectFit: 'cover' }} />
-      ) : (
-        <div style={{
-          width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 'var(--fs-h3)', fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
-        }}>{p.name[0]}</div>
-      )}
+      <div style={{
+        width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: 'var(--fs-h3)', fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
+      }}>{p.name.split(' ').filter((_, i, a) => i === 0 || i === a.length - 1).map(w => w[0]).join('')}</div>
       <div>
         <p style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: '#e8e8f0' }}>{p.name}</p>
         <p style={{ fontSize: 'var(--fs-label)', color: 'var(--accent-text)', marginTop: 4, fontWeight: 700 }}>{p.focus}</p>
@@ -1256,8 +1246,6 @@ function Team() {
     <h1 style={H1}>Team</h1>
     <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>One team, everything in-house</p>
     <div style={grid}>{TEAM.map(p => <TeamCard key={p.name} p={p} />)}</div>
-    <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', marginTop: 48 }}>Past contributors</p>
-    <div style={{ ...grid, marginTop: 16, opacity: 0.45, filter: 'grayscale(1)' }}>{PAST.map(p => <TeamCard key={p.name} p={p} />)}</div>
   </>
 }
 
