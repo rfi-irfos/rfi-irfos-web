@@ -1226,11 +1226,6 @@ function TeamCard({ p }: { p: { name: string; gh: string; focus: string } }) {
        }}
        onMouseEnter={e => { if (p.gh) e.currentTarget.style.borderColor = 'rgba(0,245,196,0.4)' }}
        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)' }}>
-      <div style={{
-        width: 56, height: 56, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.09)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: 'var(--fs-h3)', fontWeight: 900, color: 'var(--accent-text)', background: 'rgba(0,245,196,0.08)',
-      }}>{p.name.split(' ').filter((_, i, a) => i === 0 || i === a.length - 1).map(w => w[0]).join('')}</div>
       <div>
         <p style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: '#e8e8f0' }}>{p.name}</p>
         <p style={{ fontSize: 'var(--fs-label)', color: 'var(--accent-text)', marginTop: 4, fontWeight: 700 }}>{p.focus}</p>
