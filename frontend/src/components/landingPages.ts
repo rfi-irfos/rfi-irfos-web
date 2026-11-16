@@ -831,7 +831,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       description: 'We map findings and evidence to the controls of NIS2, ISO 27001 and SOC 2. Your auditor audits, we deliver the evidence. From RFI-IRFOS in Graz.',
       label: 'Compliance Automation',
       h1: 'Compliance Automation for NIS2, ISO 27001 and SOC 2',
-      lead: 'Audits ask for evidence. We map the findings and evidence from our reviews to the controls of NIS2, ISO 27001 and SOC 2, so your auditor receives them sorted by control. Your auditor audits, we deliver the evidence.',
+      lead: 'Audits ask for evidence. We map the findings and evidence from our reviews to the controls of NIS2, ISO 27001 and SOC 2, so your auditor receives them sorted by control. Seven more frameworks follow the same method, from DORA to the EU AI Act. Your auditor audits, we deliver the evidence.',
       sections: [
         {
           h2: 'What compliance automation means here',
@@ -842,11 +842,18 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'The frameworks',
-          p: ['We map to three frameworks:'],
+          p: ['We map to ten frameworks. For each one you see the share of controls that already carry evidence, in percent, across your whole organisation.'],
           ul: [
             'NIS2, in Austria the NISG 2026: risk management, cryptography, access control and supply-chain security.',
-            'ISO/IEC 27001: the standard for an information security management system.',
+            'ISO/IEC 27001:2022: the standard for an information security management system.',
             'SOC 2: an audit standard for service providers. It has no connection to the Managed SOC, which is a service we run for you.',
+            'EU Cyber Resilience Act (CRA): security requirements for products with digital elements, from vulnerability handling to updates.',
+            'DORA: the EU regulation on digital operational resilience for financial entities and their ICT providers.',
+            'EU AI Act: the EU regulation on artificial intelligence, with duties graded by risk class.',
+            'GDPR: the technical and organisational measures that protect personal data.',
+            'PCI DSS 4.0: the security standard for systems that process card payments.',
+            'NIST CSF 2.0: the cybersecurity framework of the US standards institute, organised in six functions.',
+            'CIS Controls v8: eighteen prioritised safeguards for IT systems and data.',
           ],
         },
         {
@@ -872,7 +879,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       faqH2: 'Questions about compliance automation',
       faq: [
         ['Do you certify us for ISO 27001 or SOC 2?', 'Your auditor certifies. We deliver the technical evidence that the auditor needs.'],
-        ['Which frameworks do you cover?', 'NIS2 (NISG 2026 in Austria), ISO/IEC 27001 and SOC 2.'],
+        ['Which frameworks do you cover?', 'ISO/IEC 27001:2022, SOC 2, NIS2 (NISG 2026 in Austria), the EU Cyber Resilience Act, NIST CSF 2.0, CIS Controls v8, GDPR, DORA, PCI DSS 4.0 and the EU AI Act.'],
         ['Is compliance automation a separate product?', 'It is part of the Managed SOC.'],
         ['Does NIS2 apply to our company?', 'That depends on sector, size and role in a supply chain. The national authority\'s information at nis.gv.at is the reference.'],
       ],
@@ -882,7 +889,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       description: 'Wir ordnen Befunde und Belege den Kontrollen von NIS2, ISO 27001 und SOC 2 zu. Ihre Prüfstelle prüft, wir liefern die Belege. Aus Graz.',
       label: 'Compliance-Automatisierung',
       h1: 'Compliance-Automatisierung für NIS2, ISO 27001 und SOC 2',
-      lead: 'Audits verlangen Belege. Wir ordnen die Befunde und Belege aus unseren Prüfungen den Kontrollen von NIS2, ISO 27001 und SOC 2 zu, damit Ihre Prüfstelle sie nach Kontrollen sortiert erhält. Ihre Prüfstelle prüft, wir liefern die Belege.',
+      lead: 'Audits verlangen Belege. Wir ordnen die Befunde und Belege aus unseren Prüfungen den Kontrollen von NIS2, ISO 27001 und SOC 2 zu, damit Ihre Prüfstelle sie nach Kontrollen sortiert erhält. Sieben weitere Rahmenwerke folgen derselben Methode, von DORA bis zum EU AI Act. Ihre Prüfstelle prüft, wir liefern die Belege.',
       sections: [
         {
           h2: 'Was Compliance-Automatisierung hier bedeutet',
@@ -893,11 +900,18 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'Die Rahmenwerke',
-          p: ['Wir ordnen drei Rahmenwerken zu:'],
+          p: ['Wir ordnen zehn Rahmenwerken zu. Für jedes sehen Sie in Prozent, wie viele Kontrollen in Ihrer gesamten Organisation schon einen Beleg tragen.'],
           ul: [
             'NIS2, in Österreich das NISG 2026: Risikomanagement, Kryptografie, Zugriffskontrolle und Sicherheit der Lieferkette.',
-            'ISO/IEC 27001: der Standard für ein Informationssicherheits-Managementsystem.',
+            'ISO/IEC 27001:2022: der Standard für ein Informationssicherheits-Managementsystem.',
             'SOC 2: ein Prüfstandard für Dienstleister. Mit dem Managed SOC, einem Dienst, den wir für Sie betreiben, hat er keine Verbindung.',
+            'EU Cyber Resilience Act (CRA): Sicherheitsanforderungen für Produkte mit digitalen Elementen, vom Umgang mit Schwachstellen bis zu Updates.',
+            'DORA: die EU-Verordnung über die digitale operationale Resilienz von Finanzunternehmen und ihren IT-Dienstleistern.',
+            'EU AI Act: die EU-Verordnung über künstliche Intelligenz, mit Pflichten je nach Risikoklasse.',
+            'DSGVO: die technischen und organisatorischen Maßnahmen zum Schutz personenbezogener Daten.',
+            'PCI DSS 4.0: der Sicherheitsstandard für Systeme, die Kartenzahlungen verarbeiten.',
+            'NIST CSF 2.0: das Cybersicherheits-Rahmenwerk der US-Normungsbehörde, gegliedert in sechs Funktionen.',
+            'CIS Controls v8: achtzehn priorisierte Schutzmaßnahmen für IT-Systeme und Daten.',
           ],
         },
         {
@@ -923,7 +937,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       faqH2: 'Fragen zur Compliance-Automatisierung',
       faq: [
         ['Zertifizieren Sie uns nach ISO 27001 oder SOC 2?', 'Ihre Prüfstelle zertifiziert. Wir liefern die technischen Belege, die sie braucht.'],
-        ['Welche Rahmenwerke decken Sie ab?', 'NIS2 (in Österreich NISG 2026), ISO/IEC 27001 und SOC 2.'],
+        ['Welche Rahmenwerke decken Sie ab?', 'ISO/IEC 27001:2022, SOC 2, NIS2 (in Österreich NISG 2026), EU Cyber Resilience Act, NIST CSF 2.0, CIS Controls v8, DSGVO, DORA, PCI DSS 4.0 und EU AI Act.'],
         ['Ist die Compliance-Automatisierung ein eigenes Produkt?', 'Sie gehört zum Managed SOC.'],
         ['Gilt NIS2 für unser Unternehmen?', 'Das hängt von Branche, Größe und Rolle in einer Lieferkette ab. Die Informationen der nationalen Behörde unter nis.gv.at sind die Referenz.'],
       ],
