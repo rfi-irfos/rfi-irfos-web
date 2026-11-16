@@ -10,6 +10,13 @@ import React from 'react'
 import { LANDING, LANDING_SLUGS, landingDoc, localePath, type LandingLocale, type LandingSlug } from './landingPages'
 import { InitialReviewFlow } from './sections/InitialReviewFlow'
 import auditStats from '../content/auditStats.json'
+import { IconDeviceMobile, IconLock, IconCertificate, IconRadar2, IconRobot, IconHeadset, IconListCheck, IconWorldSearch, IconBug, IconApi, IconCloudLock, IconCode, IconArrowRight } from '@tabler/icons-react'
+
+const ICONS: Record<LandingSlug, typeof IconLock> = {
+  'app-security-audit': IconDeviceMobile, 'gdpr-app-audit': IconLock, 'nis2-software-vendors': IconCertificate, 'app-tracker-sdk-check': IconRadar2,
+  'ai-app-privacy-audit': IconRobot, 'managed-soc': IconHeadset, 'compliance-automation': IconListCheck, 'domain-security-test': IconWorldSearch,
+  'penetration-testing': IconBug, 'api-security-testing': IconApi, 'cloud-security-assessment': IconCloudLock, 'secure-code-review': IconCode,
+}
 
 const H1: React.CSSProperties = { fontSize: 'var(--fs-h2)', fontWeight: 900, marginBottom: 14, color: '#e8e8f0', lineHeight: 'var(--lh-tight)' }
 const LEAD: React.CSSProperties = { color: '#eeeef8', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-body)', marginBottom: 16 }
@@ -88,13 +95,16 @@ export function LandingBody({ slug, locale, navigate }: {
 
     <section>
       <h2 style={H2}>{de ? 'Verwandte Seiten' : 'Related pages'}</h2>
-      <p style={BODY}>
-        {de ? 'Mehr dazu auf den Seiten ' : 'More on the pages '}
-        {others.map((s, i) => <React.Fragment key={s}>
-          {i > 0 && (i === others.length - 1 ? (de ? ' und ' : ' and ') : ', ')}
-          <a href={localePath(locale, `/${s}/`)} onClick={e => navigate(e, localePath(locale, `/${s}/`))} style={A} className="rfi-inline-link">{LANDING[s][locale].label}</a>
-        </React.Fragment>)}.
-      </p>
+      {/* Kacheln statt eines Satzes aus Links (Simeon 16.11.2026: der Link-Absatz sah unruhig aus). Jede Kachel bleibt ein echter <a href>. */}
+      <nav aria-label={de ? 'Verwandte Seiten' : 'Related pages'} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: 10, marginTop: 14 }}>
+        {others.map(s => { const Icon = ICONS[s]; return (
+          <a key={s} href={localePath(locale, `/${s}/`)} onClick={e => navigate(e, localePath(locale, `/${s}/`))} className="rfi-related-tile"
+            style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.09)', background: 'rgba(255,255,255,0.04)', color: '#e8e8f0', fontSize: 'var(--fs-small)', fontWeight: 600, lineHeight: 'var(--lh-tight)', textDecoration: 'none' }}>
+            <Icon size={18} stroke={1.8} color="var(--accent-text)" aria-hidden style={{ flexShrink: 0 }} />
+            <span style={{ flex: '1 1 auto' }}>{LANDING[s][locale].label}</span>
+            <IconArrowRight size={15} stroke={1.8} color="#8a8aa0" aria-hidden style={{ flexShrink: 0 }} />
+          </a>) })}
+      </nav>
     </section>
   </>
 }
