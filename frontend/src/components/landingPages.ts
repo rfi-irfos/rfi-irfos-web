@@ -45,8 +45,8 @@ export { LANDING_SLUGS, type LandingSlug } from './landingSlugs'
 export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
   'app-security-audit': {
     en: {
-      title: 'App Security Audit for Android & iOS · RFI-IRFOS',
-      description: 'App security audit by The Squad: human-powered, multi-agent. We read your shipped build, find hardcoded keys and network flaws, report with evidence.',
+      title: 'App Security Audit Graz · Android & iOS · RFI-IRFOS',
+      description: 'App security audit from Graz: human-powered, multi-agent. We read your shipped build, find hardcoded keys and network flaws, report with evidence.',
       label: 'App Security Audit',
       h1: 'App Security Audit for Android and iOS',
       lead: 'The Squad examines the shipped build of your Android or iOS app at source-code level: decompiled code, embedded keys, network configuration, third-party SDKs and every data flow that leaves the device. Human specialists re-verify each finding. You receive a written report with the evidence behind every result.',
@@ -114,8 +114,8 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       ],
     },
     de: {
-      title: 'App-Sicherheitsprüfung für Android & iOS · RFI-IRFOS',
-      description: 'App-Sicherheitsprüfung durch The Squad: menschlich geprüft, Multi-Agent. Wir lesen Ihren Build, finden Schlüssel und Netzwerkfehler. Bericht mit Belegen.',
+      title: 'App-Sicherheitsprüfung Graz · Android & iOS · RFI-IRFOS',
+      description: 'App-Sicherheitsprüfung aus Graz: menschlich geprüft, Multi-Agent. Wir lesen Ihren Build, finden Schlüssel und Netzwerkfehler. Bericht mit Belegen.',
       label: 'App-Sicherheitsprüfung',
       h1: 'App-Sicherheitsprüfung für Android und iOS',
       lead: 'The Squad untersucht den ausgelieferten Build Ihrer Android- oder iOS-App auf Quellcode-Ebene: dekompilierter Code, eingebettete Schlüssel, Netzwerkkonfiguration, Drittanbieter-SDKs und jeder Datenfluss, der das Gerät verlässt. Menschliche Fachleute prüfen jeden Befund erneut. Sie erhalten einen schriftlichen Bericht mit den Belegen hinter jedem Ergebnis.',
@@ -186,8 +186,8 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
 
   'gdpr-app-audit': {
     en: {
-      title: 'GDPR App Audit: Tracking Before Consent · RFI-IRFOS',
-      description: 'GDPR app audit: we decompile your Android or iOS app and show which SDKs run before consent, where data flows and which articles apply.',
+      title: 'GDPR App Audit Austria: Tracking Before Consent · RFI-IRFOS',
+      description: 'GDPR app audit from Graz, Austria: we decompile your Android or iOS app and show which SDKs run before consent, where data flows and which articles apply.',
       label: 'GDPR App Audit',
       h1: 'GDPR App Audit: Tracking, Consent and Data Flows',
       lead: 'A GDPR app audit establishes what your app does with personal data from the first moment after launch. The Squad decompiles the shipped build, lists every SDK and endpoint, and checks the findings against the articles that regulators ask about first: lawfulness, consent, transfers to third countries and special-category data.',
@@ -257,8 +257,8 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       ],
     },
     de: {
-      title: 'DSGVO-Prüfung für Apps: Tracking & Einwilligung · RFI-IRFOS',
-      description: 'DSGVO-Prüfung für Apps: Wir dekompilieren Ihre Android- oder iOS-App und zeigen, welche SDKs vor der Einwilligung laufen und wohin Daten fließen.',
+      title: 'DSGVO-Prüfung für Apps in Österreich · RFI-IRFOS',
+      description: 'DSGVO-Prüfung für Apps aus Graz: Wir dekompilieren Ihre Android- oder iOS-App und zeigen, welche SDKs vor der Einwilligung laufen und wohin Daten fließen.',
       label: 'DSGVO-Prüfung für Apps',
       h1: 'DSGVO-Prüfung für Apps: Tracking, Einwilligung und Datenflüsse',
       lead: 'Eine DSGVO-Prüfung für Apps stellt fest, was Ihre App ab dem ersten Moment nach dem Start mit personenbezogenen Daten tut. The Squad dekompiliert den ausgelieferten Build, listet jedes SDK und jeden Endpunkt auf und prüft die Befunde gegen die Artikel, nach denen Aufsichtsbehörden zuerst fragen: Rechtmäßigkeit, Einwilligung, Übermittlung in Drittländer und besondere Datenkategorien.',
@@ -331,8 +331,8 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
 
   'nis2-software-vendors': {
     en: {
-      title: 'NIS2 for Software Vendors: Technical Evidence · RFI-IRFOS',
-      description: 'NIS2 and NISG 2026 for software vendors: we turn supply-chain and risk-management duties into technical evidence about the code, keys and SDKs you ship.',
+      title: 'NIS2 for Software Vendors in Austria · RFI-IRFOS',
+      description: 'NIS2 and Austria’s NISG 2026 for software vendors: we turn supply-chain and risk duties into technical evidence about the code, keys and SDKs you ship.',
       label: 'NIS2 for Software Vendors',
       h1: 'NIS2 and NISG 2026 for Software Vendors',
       lead: 'NIS2, in Austria the NISG 2026, reaches software vendors through the supply chain. Roughly 4,000 essential and important entities in Austria are directly in scope, plus an estimated 50,000 supply-chain partners. The Squad turns the directive\'s obligations into technical evidence about the software you ship.',
@@ -392,7 +392,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       ],
     },
     de: {
-      title: 'NIS2 für Softwareanbieter: Technische Belege · RFI-IRFOS',
+      title: 'NIS2 für Softwareanbieter in Österreich · RFI-IRFOS',
       description: 'NIS2 und NISG 2026 für Softwareanbieter: Wir machen Lieferketten- und Risikomanagement-Pflichten zu technischen Belegen über Code, Schlüssel und SDKs.',
       label: 'NIS2 für Softwareanbieter',
       h1: 'NIS2 und NISG 2026 für Softwareanbieter',
@@ -711,7 +711,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
   },
   'managed-soc': {
     en: {
-      title: 'Managed SOC for Startups to Enterprise · RFI-IRFOS',
+      title: 'Managed SOC from Graz, Austria · RFI-IRFOS',
       description: 'Outsourced security operations center: 24/7 monitoring, incident response within one hour, fixes within 24 hours down to the code. From RFI-IRFOS in Graz.',
       label: 'Outsourced SOC',
       h1: 'Managed SOC: your outsourced security department',
@@ -768,7 +768,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       ],
     },
     de: {
-      title: 'Ausgelagertes SOC (Managed SOC) für Unternehmen · RFI-IRFOS',
+      title: 'Managed SOC aus Graz: ausgelagertes SOC · RFI-IRFOS',
       description: 'Ausgelagertes Security Operations Center: Überwachung rund um die Uhr, Incident Response binnen einer Stunde, Fix in 24 Stunden bis in den Code. Aus Graz.',
       label: 'Ausgelagertes SOC',
       h1: 'Managed SOC: Ihre ausgelagerte Sicherheitsabteilung',
@@ -1037,8 +1037,8 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
   },
   'penetration-testing': {
     en: {
-      title: 'Penetration Testing for Apps, APIs and Cloud · RFI-IRFOS',
-      description: 'Penetration testing for web apps, mobile apps, APIs, cloud and infrastructure. Agents test in parallel, specialists verify and fix down to the code.',
+      title: 'Penetration Testing Graz: Apps, APIs, Cloud · RFI-IRFOS',
+      description: 'Penetration testing from Graz for web apps, mobile apps, APIs and cloud. Agents test in parallel, specialists verify and fix down to the code.',
       label: 'Penetration Testing',
       h1: 'Penetration Testing for web apps, mobile apps, APIs and cloud',
       lead: 'We test your application like an attacker would. Agents we built run thousands of tests in parallel, our specialists verify every finding, trace the attack path and engineer the fix down to the code. Built for SaaS companies, startups and software vendors.',
@@ -1076,8 +1076,8 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       ],
     },
     de: {
-      title: 'Penetrationstest für Apps, APIs und Cloud · RFI-IRFOS',
-      description: 'Penetrationstest für Webanwendungen, mobile Apps, APIs, Cloud und Infrastruktur. Agenten testen parallel, Fachleute prüfen und beheben bis in den Code.',
+      title: 'Penetrationstest Graz: Apps, APIs und Cloud · RFI-IRFOS',
+      description: 'Penetrationstest aus Graz für Web, mobile Apps, APIs und Cloud. Agenten testen parallel, Fachleute prüfen und beheben bis in den Code.',
       label: 'Penetrationstest',
       h1: 'Penetrationstest für Webanwendungen, mobile Apps, APIs und Cloud',
       lead: 'Wir testen Ihre Anwendung so, wie ein Angreifer es täte. Agenten, die wir selbst gebaut haben, führen Tausende Tests parallel aus. Unsere Fachleute prüfen jeden Befund, verfolgen den Angriffspfad und entwickeln den Fix bis in den Code. Gebaut für SaaS-Unternehmen, Startups und Softwareanbieter.',

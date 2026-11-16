@@ -156,3 +156,28 @@ export function accessOfferCatalogJsonLd(tiers: readonly { name: string; price: 
     ],
   }
 }
+
+// Each search-facing landing page as its own Service node (2026-11-16): local queries such as
+// "app security audit graz" need the offer and the place in one entity. The organisation node
+// only carried the address. Provider is the institute node, the offer catalog lives on /access/.
+export function landingServiceJsonLd(slug: string, name: string, description: string, locale: 'en' | 'de') {
+  const url = `https://rfi-irfos.com${locale === 'de' ? '/de' : ''}/${slug}/`
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `https://rfi-irfos.com/${slug}/#service`,
+    name,
+    serviceType: name,
+    description,
+    url,
+    provider: { '@id': 'https://rfi-irfos.com/#organization' },
+    areaServed: [
+      { '@type': 'City', name: 'Graz' },
+      { '@type': 'State', name: locale === 'de' ? 'Steiermark' : 'Styria' },
+      { '@type': 'Country', name: locale === 'de' ? 'Österreich' : 'Austria' },
+    ],
+    availableLanguage: ['en', 'de'],
+    isRelatedTo: { '@id': 'https://rfi-irfos.com/squad/#service' },
+    hasOfferCatalog: { '@id': 'https://rfi-irfos.com/access/#plans' },
+  }
+}

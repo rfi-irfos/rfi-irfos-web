@@ -39,6 +39,15 @@ export function LandingBody({ slug, locale, navigate }: {
       {s.ul && <ul style={LIST}>{s.ul.map(li => <li key={li} style={{ marginBottom: 6 }}>{li}</li>)}</ul>}
     </section>)}
 
+    {/* Ort und Arbeitsweise (2026-11-16): Leistungsseiten trugen „Graz“ nur in der Fußzeile, lokale
+        Suchanfragen wie „app security audit graz“ fanden uns nicht. Belegt durch de.ts (eigener Server in Graz). */}
+    <section>
+      <h2 style={H2}>{de ? 'Ihr eingebettetes Security-Engineering-Team aus Graz' : 'Your embedded security engineering team, from Graz'}</h2>
+      <p style={BODY}>{de
+        ? 'Wir arbeiten in Graz, Österreich, auf unserem eigenen Server: Die komplette Pipeline läuft dort, vom ersten Scan bis zum Bericht. The Squad arbeitet in Ihrem Entwicklungszyklus mit. Agenten testen laufend, Fachleute prüfen jeden Fund, und die Behebung kommt als Änderung an Ihrem Code. So arbeitet ein eingebettetes Security-Engineering-Team.'
+        : 'We work from Graz, Austria, on our own server: the whole pipeline runs there, from the first scan to the report. The Squad works inside your delivery cycle. Agents test continuously, specialists verify every finding, and the fix arrives as a change to your code. That is how an embedded security engineering team works.'}</p>
+    </section>
+
     <section>
       <h2 style={H2}>{d.evidenceH2}</h2>
       <p style={BODY}>{fill(d.evidenceIntro)}</p>

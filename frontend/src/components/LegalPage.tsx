@@ -24,7 +24,7 @@ function NextSteps({ de, locale }: { de: boolean; locale: 'en' | 'de' }) {
 import React, { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLocale } from '../hooks/useLocale'
-import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd } from '../lib/structuredData'
+import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd, landingServiceJsonLd } from '../lib/structuredData'
 import { attributionParams } from './sections/shared'
 import auditStats from '../content/auditStats.json'
 import { LANDING_SLUGS, isLandingSlug, landingDoc, localePath } from './landingPages'
@@ -179,8 +179,10 @@ export function LegalPage({ slug }: { slug: string }) {
     if (landing) {
       upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(landing.label, localePath(locale, `/${slug}`)))
       upsertJsonLd('ld-faqpage', faqPageJsonLd(landing.faq))
+      upsertJsonLd('ld-landing-service', landingServiceJsonLd(slug, landing.label, landing.description, locale === 'de' ? 'de' : 'en'))
       return
     }
+    document.getElementById('ld-landing-service')?.remove()
     const quicklink = LEGAL_QUICKLINKS.find(q => q.slug === slug)
     if (quicklink) {
       upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(locale === 'de' ? quicklink.labelDe : quicklink.labelEn, `${locale === 'de' ? '/de' : ''}/${slug}`))
