@@ -44,8 +44,8 @@ export function LandingBody({ slug, locale, navigate }: {
     <section>
       <h2 style={H2}>{de ? 'Ihr eingebettetes Security-Engineering-Team aus Graz' : 'Your embedded security engineering team, from Graz'}</h2>
       <p style={BODY}>{de
-        ? 'Wir arbeiten in Graz, Österreich, auf unserem eigenen Server: Die komplette Pipeline läuft dort, vom ersten Scan bis zum Bericht. The Squad arbeitet in Ihrem Entwicklungszyklus mit. Agenten testen laufend, Fachleute prüfen jeden Fund, und die Behebung kommt als Änderung an Ihrem Code. So arbeitet ein eingebettetes Security-Engineering-Team.'
-        : 'We work from Graz, Austria, on our own server: the whole pipeline runs there, from the first scan to the report. The Squad works inside your delivery cycle. Agents test continuously, specialists verify every finding, and the fix arrives as a change to your code. That is how an embedded security engineering team works.'}</p>
+        ? 'Wir arbeiten in Graz, Österreich, auf unserem eigenen Server: Die komplette Pipeline läuft dort, vom ersten Scan bis zum Bericht. The Squad arbeitet in Ihrem Entwicklungszyklus mit. Agenten testen laufend, Fachleute prüfen jeden Fund, und die Behebung kommt als Änderung an Ihrem Code. So arbeitet ein eingebettetes Security-Engineering-Team. Wir arbeiten für Kleinst-, Klein- und Mittelunternehmen, wachsende Firmen und Konzerne aus allen Branchen, und unsere Pläne skalieren flexibel mit Ihrem Unternehmen.'
+        : 'We work from Graz, Austria, on our own server: the whole pipeline runs there, from the first scan to the report. The Squad works inside your delivery cycle. Agents test continuously, specialists verify every finding, and the fix arrives as a change to your code. That is how an embedded security engineering team works. We work for micro, small and medium-sized enterprises, growing companies and large enterprises across every industry, and our plans scale flexibly with your business.'}</p>
     </section>
 
     <section>
