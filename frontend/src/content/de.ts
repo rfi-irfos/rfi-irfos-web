@@ -78,7 +78,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    sub: 'Wir machen fortschrittliche Cyber-Sicherheit für Startups und wachsende Unternehmen zugänglich, indem unsere eigens entwickelten Agenten tausende potenzielle Angriffswege untersuchen und erfahrene Spezialisten daraus gezielte technische Lösungen entwickeln.',
+    sub: 'Wir machen fortschrittliche Cyber-Sicherheit für StartUps, SMEs und wachsende Unternehmen zugänglich, indem unsere eigens entwickelten Agenten tausende potenzielle Angriffswege untersuchen und erfahrene Spezialisten daraus gezielte technische Lösungen entwickeln.',
     stats: {
       researchAreas: 'Fachbereiche',
       researchAreasSub: 'kombiniert',
