@@ -505,14 +505,23 @@ export function FilmPanel({ src, className, video }: { src: string; className: s
     // leave the panel on the film's black first frame (Simeon 17.11.2026). Retry once the data is there and
     // whenever the tab comes back; the poster below covers the wait.
     const retry = () => { if (video.paused && !document.hidden && document.fullscreenElement !== video) video.play().catch(() => {}) }
+    // The Squad hero sits inside <Reveal>, which keeps it at opacity 0 until the observer fires; WebKit refuses
+    // autoplay for an invisible video and never asks again (Simeon 17.11.2026: DINGIR autoplays, Squad stays on
+    // the poster). So keep retrying until the first real 'playing' event, then stop.
+    let tries = 0
+    const poll = window.setInterval(() => { retry(); if (++tries >= 40) window.clearInterval(poll) }, 800)
+    const stopPoll = () => window.clearInterval(poll)
     document.addEventListener('fullscreenchange', toLoop)
     video.addEventListener('webkitendfullscreen', toLoop)
     video.addEventListener('canplay', retry)
+    video.addEventListener('playing', stopPoll)
     document.addEventListener('visibilitychange', retry)
     return () => {
+      window.clearInterval(poll)
       document.removeEventListener('fullscreenchange', toLoop)
       video.removeEventListener('webkitendfullscreen', toLoop)
       video.removeEventListener('canplay', retry)
+      video.removeEventListener('playing', stopPoll)
       document.removeEventListener('visibilitychange', retry)
     }
   }, [])
