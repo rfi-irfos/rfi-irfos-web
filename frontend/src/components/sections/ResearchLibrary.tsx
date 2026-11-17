@@ -141,7 +141,7 @@ export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) 
           <h2 className="rfi-section-h2" style={{ marginBottom: 12 }}>{TX.heading[locale]}</h2>
         </Reveal>
         <Reveal delay={1}>
-          <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 40, maxWidth: 620 }}>{TX.subheading[locale]}</p>
+          <p style={{ color: 'var(--text)', fontSize: 'var(--fs-lead)', marginBottom: 40, maxWidth: 760 }}>{TX.subheading[locale]}</p>
         </Reveal>
       </div>
       <Reveal delay={1}>

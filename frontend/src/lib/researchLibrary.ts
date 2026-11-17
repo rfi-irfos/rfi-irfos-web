@@ -20,11 +20,11 @@ export type ResearchDoc = {
 
 export const RESEARCH_DOCS: ResearchDoc[] = [
   {
-    slug: 'wirkungsbericht-2025-26', kind: 'report', date: '2026-11-16', pages: 50,
+    slug: 'wirkungsbericht-2025-26', kind: 'report', date: '2026-11-16', pages: 49,
     title: { en: 'Impact Report 2025/26', de: 'Wirkungsbericht 2025/26' },
     blurb: {
-      en: 'The association\'s first year in 50 pages: 387+ apps checked, 249 published reports, 11,269 commits and 41 open repositories. Every figure carries its source, and where we have no number we say so.',
-      de: 'Das erste Vereinsjahr auf 50 Seiten: 387+ geprüfte Apps, 249 veröffentlichte Berichte, 11.269 Commits und 41 offene Repositories. Jede Zahl nennt ihre Quelle, und wo wir keine Zahl haben, sagen wir es.',
+      en: 'The association\'s first year in 49 pages: a ternary language model with 331 million parameters, 292 specialised agents, six publications with DOI, 41 open repositories and 387+ public apps checked. Every figure carries its source.',
+      de: 'Das erste Vereinsjahr auf 49 Seiten: ein ternäres Sprachmodell mit 331 Mio. Parametern, 292 spezialisierte Agenten, sechs Veröffentlichungen mit DOI, 41 offene Repositories und 387+ geprüfte öffentliche Apps. Jede Zahl nennt ihre Quelle.',
     },
   },
   {
