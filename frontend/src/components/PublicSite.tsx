@@ -535,7 +535,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   // while a subscriber exists and the tab is visible); TrackRecordSection takes no `now` prop.
   // The ONLY remaining `now` readers are MoonPhase (own 60 s timer, TrackRecord.tsx) and the
   // unrelated Web-Audio local in PublicSite. Before reintroducing `now` anywhere: grep both files.
-  const [, setCheckoutLoading] = useState<string | null>(null)
+  const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
   // Failed checkout tier: shows the FailToast instead of a blocking browser alert (14.11.2026).
   const [checkoutFail, setCheckoutFail] = useState<string | null>(null)
   // Cards now show only tier/price/CTA - the full breakdown (what this tier actually
