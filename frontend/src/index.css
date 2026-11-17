@@ -904,6 +904,8 @@ h1, h2, h3, .rfi-display {
 .rfi-inline-link { color: var(--accent-text); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-repeat: no-repeat; background-position: 0 100%; background-size: 0% 1px; padding-bottom: 1px; transition: background-size .35s ease; }
 .rfi-inline-link:hover, .rfi-inline-link:focus-visible { background-size: 100% 1px; }
 @media (prefers-reduced-motion: reduce) { .rfi-inline-link { transition: none; } }
+/* The page card is 1120 px wide (widescreen); running text keeps a readable line length, grids and tiles use the full width. */
+.rfi-page-main p, .rfi-page-main li { max-width: 92ch; }
 .rfi-related-tile { transition: border-color .2s ease, background-color .2s ease; }
 .rfi-related-tile:hover, .rfi-related-tile:focus-visible { border-color: rgba(0,245,196,0.35) !important; background: rgba(0,245,196,0.07) !important; }
 

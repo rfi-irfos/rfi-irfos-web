@@ -9,8 +9,9 @@
 import React from 'react'
 import { LANDING, LANDING_SLUGS, landingDoc, localePath, type LandingLocale, type LandingSlug } from './landingPages'
 import { InitialReviewFlow } from './sections/InitialReviewFlow'
+import { RelatedTiles } from './RelatedTiles'
 import auditStats from '../content/auditStats.json'
-import { IconDeviceMobile, IconLock, IconCertificate, IconRadar2, IconRobot, IconHeadset, IconListCheck, IconWorldSearch, IconBug, IconApi, IconCloudLock, IconCode, IconArrowRight } from '@tabler/icons-react'
+import { IconDeviceMobile, IconLock, IconCertificate, IconRadar2, IconRobot, IconHeadset, IconListCheck, IconWorldSearch, IconBug, IconApi, IconCloudLock, IconCode } from '@tabler/icons-react'
 
 const ICONS: Record<LandingSlug, typeof IconLock> = {
   'app-security-audit': IconDeviceMobile, 'gdpr-app-audit': IconLock, 'nis2-software-vendors': IconCertificate, 'app-tracker-sdk-check': IconRadar2,
@@ -93,18 +94,7 @@ export function LandingBody({ slug, locale, navigate }: {
       </div>)}
     </section>
 
-    <section>
-      <h2 style={H2}>{de ? 'Verwandte Seiten' : 'Related pages'}</h2>
-      {/* Kacheln statt eines Satzes aus Links (Simeon 16.11.2026: der Link-Absatz sah unruhig aus). Jede Kachel bleibt ein echter <a href>. */}
-      <nav aria-label={de ? 'Verwandte Seiten' : 'Related pages'} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: 10, marginTop: 14 }}>
-        {others.map(s => { const Icon = ICONS[s]; return (
-          <a key={s} href={localePath(locale, `/${s}/`)} onClick={e => navigate(e, localePath(locale, `/${s}/`))} className="rfi-related-tile"
-            style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.09)', background: 'rgba(255,255,255,0.04)', color: '#e8e8f0', fontSize: 'var(--fs-small)', fontWeight: 600, lineHeight: 'var(--lh-tight)', textDecoration: 'none' }}>
-            <Icon size={18} stroke={1.8} color="var(--accent-text)" aria-hidden style={{ flexShrink: 0 }} />
-            <span style={{ flex: '1 1 auto' }}>{LANDING[s][locale].label}</span>
-            <IconArrowRight size={15} stroke={1.8} color="#8a8aa0" aria-hidden style={{ flexShrink: 0 }} />
-          </a>) })}
-      </nav>
-    </section>
+    <RelatedTiles title={de ? 'Verwandte Seiten' : 'Related pages'} navigate={navigate}
+      items={others.map(s => ({ href: localePath(locale, `/${s}/`), label: LANDING[s][locale].label, Icon: ICONS[s] }))} />
   </>
 }

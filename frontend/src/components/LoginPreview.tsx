@@ -118,18 +118,21 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
           <h2 id="login-title" style={{ fontSize: 32, fontWeight: 700, margin: '0 0 10px', lineHeight: 1.15 }}>{c.title}</h2>
           <p style={{ fontSize: 15, lineHeight: 1.55, color: 'rgba(255,255,255,0.74)', margin: '0 0 30px' }}>{c.lead}</p>
 
-          <a href={PORTAL_LOGIN_URL} data-testid="login-sign-in" style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', boxSizing: 'border-box', height: 50, fontFamily: FONT,
-            fontSize: 15, fontWeight: 700, color: '#fff', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.28)',
-            borderRadius: 10, textDecoration: 'none',
-          }}>{c.signIn}</a>
-          <p style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(255,255,255,0.72)', margin: '12px 0 30px' }}>{c.signInNote}</p>
-
-          <button type="button" disabled={busy} onClick={onRequestAccess} data-testid="login-request-access" style={{
-            width: '100%', height: 50, fontFamily: FONT, fontSize: 15, fontWeight: 700, color: '#fff', background: ACCENT,
-            border: 'none', borderRadius: 10, cursor: busy ? 'progress' : 'pointer', opacity: busy ? 0.7 : 1,
-          }}>{busy ? c.accessBusy : c.requestAccess}</button>
-          <p style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(255,255,255,0.72)', margin: '12px 0 0' }}>{c.accessNote}</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <a href={PORTAL_LOGIN_URL} data-testid="login-sign-in" style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', boxSizing: 'border-box', height: 50, fontFamily: FONT,
+              fontSize: 15, fontWeight: 700, color: '#fff', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.28)',
+              borderRadius: 10, textDecoration: 'none',
+            }}>{c.signIn}</a>
+            <button type="button" disabled={busy} onClick={onRequestAccess} data-testid="login-request-access" style={{
+              width: '100%', height: 50, fontFamily: FONT, fontSize: 15, fontWeight: 700, color: '#fff', background: ACCENT,
+              border: 'none', borderRadius: 10, cursor: busy ? 'progress' : 'pointer', opacity: busy ? 0.7 : 1,
+            }}>{busy ? c.accessBusy : c.requestAccess}</button>
+          </div>
+          <div style={{ marginTop: 22, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.12)', display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <p style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(255,255,255,0.72)', margin: 0 }}>{c.signInNote}</p>
+            <p style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(255,255,255,0.72)', margin: 0 }}>{c.accessNote}</p>
+          </div>
         </div>
 
         <div className="rfi-login-stage">

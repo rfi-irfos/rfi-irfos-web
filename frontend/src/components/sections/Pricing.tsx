@@ -175,11 +175,14 @@ function BillingToggle({ billing, onChange }: { billing: 'monthly' | 'annual'; o
       color: billing === value ? '#fff' : 'var(--text2)',
       border: 'none', borderLeft: borderLeft ? '1px solid var(--border)' : 'none',
       padding: '16px 38px', fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer',
-      transition: 'color 0.2s ease',
+      // Annual carries a soft orange outline while it is not selected, so the second option is easy to see (Simeon 17.11.2026).
+      boxShadow: value === 'annual' && billing !== 'annual' ? 'inset 0 0 0 1px rgba(242,80,31,0.55)' : 'inset 0 0 0 1px rgba(242,80,31,0)',
+      transition: 'color 0.2s ease, box-shadow 0.2s ease',
     }}>{label}</button>
   )
   return (
-    <div style={{ position: 'relative', display: 'inline-flex', border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+    // Sits on the price panel like a tab: rounded on top, the bottom edge almost touching the panel below (Simeon 17.11.2026).
+    <div style={{ position: 'relative', display: 'inline-flex', border: '1px solid var(--border)', borderBottom: 'none', borderRadius: '14px 14px 0 0', overflow: 'hidden' }}>
       <motion.div
         animate={{ left: billing === 'monthly' ? '0%' : '50%' }}
         transition={{ duration: 0.22, ease: 'easeOut' }}
@@ -249,7 +252,7 @@ export function PricingSection({
 
         <div>
           <Reveal>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 3 }}>
               <BillingToggle billing={billing} onChange={setBilling} />
             </div>
           </Reveal>

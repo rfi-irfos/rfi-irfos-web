@@ -1,5 +1,24 @@
-const BASE = { background: '#070711', color: '#e8e8f0', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", minHeight: '100vh', padding: '80px 2rem' }
-const PROSE = { maxWidth: 920, margin: '0 auto', lineHeight: 'var(--lh-body)' }
+// minHeight is 100vh / 0.9: index.css runs html at zoom 0.9, and 100vh under that zoom ends at 90% of the window,
+// which left a grey browser strip below the page (reported 17.11.2026).
+const BASE: React.CSSProperties = { position: 'relative', isolation: 'isolate', background: '#000', color: '#e8e8f0', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", minHeight: 'calc(100vh / 0.9)', padding: '80px 2rem' }
+
+// Same backdrop as the homepage (page-structure-dark photo under a black tint, plus grain), fixed to the window so short pages never show the browser canvas.
+const GRAIN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
+function PageBackdrop({ reduce }: { reduce: boolean | null }) {
+  return (
+    <motion.div aria-hidden="true" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+      style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(rgba(0,0,0,0.82), rgba(0,0,0,0.82)), url("/page-structure-dark.webp") center top / cover no-repeat' }} />
+      <div style={{ position: 'absolute', inset: 0, opacity: 0.07, backgroundImage: GRAIN, backgroundRepeat: 'repeat', backgroundSize: '180px 180px' }} />
+    </motion.div>
+  )
+}
+
+const TILE_ICONS: Record<string, typeof IconScale> = {
+  impressum: IconScale, datenschutz: IconShieldLock, agb: IconFileText, security: IconShieldCheck,
+  standards: IconCertificate, team: IconUsers, methodology: IconFlask, faq: IconHelpCircle,
+}
+const PROSE = { maxWidth: 1120, margin: '0 auto', lineHeight: 'var(--lh-body)' }
 const H1 = { fontSize: 'var(--fs-h2)', fontWeight: 900, marginBottom: 8, color: '#e8e8f0' }
 const H2: React.CSSProperties = { fontSize: 'var(--fs-small)', fontWeight: 700, marginTop: 32, marginBottom: 8, color: 'var(--accent-text)' }
 const P = { color: '#a0a0b8', fontSize: 'var(--fs-body)', marginBottom: 12 }
@@ -22,7 +41,9 @@ function NextSteps({ de, locale }: { de: boolean; locale: 'en' | 'de' }) {
 }
 
 import React, { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { IconScale, IconShieldLock, IconFileText, IconShieldCheck, IconCertificate, IconUsers, IconFlask, IconHelpCircle } from '@tabler/icons-react'
+import { RelatedTiles } from './RelatedTiles'
 import { useLocale } from '../hooks/useLocale'
 import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd, landingServiceJsonLd } from '../lib/structuredData'
 import { attributionParams } from './sections/shared'
@@ -224,8 +245,10 @@ export function LegalPage({ slug }: { slug: string }) {
   // the toggle still shows on /team too, for consistency and because it's
   // shared state with the homepage anyway, it just doesn't change anything
   // there.
+  const reduce = useReducedMotion()
   return (
     <div style={BASE}>
+      <PageBackdrop reduce={reduce} />
       <div style={PROSE}>
         {/* Glass card wrapping the whole page body (2026-08-18, live feedback:
             "wenigstens schaut sleek aus drunter si ne transparente glass box unter
@@ -235,7 +258,8 @@ export function LegalPage({ slug }: { slug: string }) {
             fine on a single static wrapper - the "never on repeating content"
             rule is about the 311-row ledger/filmstrip re-sampling every scroll
             frame, not a one-off page shell. */}
-        <div className="rfi-glass" style={{ borderRadius: 20, padding: '36px 40px' }}>
+        <motion.div className="rfi-glass" style={{ borderRadius: 20, padding: '36px 40px' }}
+          initial={reduce ? false : { opacity: 0, y: 22, scale: 0.985 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}>
         {/* Back button, quicklinks, and the DE/EN toggle all in ONE row now
             (2026-08-19, live feedback: "die pillen sollen zwischen dem back
             und dem DE button sitzen so alle auf einer reihe"). BUG FIXED same
@@ -314,6 +338,7 @@ export function LegalPage({ slug }: { slug: string }) {
               Screenreader, Reader-Modus und Text-Extraktoren fanden den Seiteninhalt nicht als Hauptteil. */}
           <motion.main
             key={slug}
+            className="rfi-page-main"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -332,12 +357,16 @@ export function LegalPage({ slug }: { slug: string }) {
             {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq'].includes(slug) && !isLandingSlug(slug) && (
               <p style={P}>Seite nicht gefunden.</p>
             )}
+            {!isLandingSlug(slug) && LEGAL_QUICKLINKS.some(q => q.slug === slug) && (
+              <RelatedTiles title={locale === 'de' ? 'Verwandte Seiten' : 'Related pages'} navigate={navigate}
+                items={LEGAL_QUICKLINKS.filter(q => q.slug !== slug).map(q => ({ href: localeHref(`/${q.slug}/`, locale), label: locale === 'de' ? q.labelDe : q.labelEn, Icon: TILE_ICONS[q.slug] }))} />
+            )}
           </motion.main>
         </AnimatePresence>
         <div ref={footerRef} style={{ marginTop: 60, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)', fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>
           RFI-IRFOS &nbsp;&middot;&nbsp; ZVR 1015608684 &nbsp;&middot;&nbsp; GISA 39261441 &nbsp;&middot;&nbsp; GLN 9110038490191 &nbsp;&middot;&nbsp; UID ATU83405245 &nbsp;&middot;&nbsp; Steuernummer 68 696/8736 &nbsp;&middot;&nbsp; Elisabethinergasse 25/10, 8020 Graz
         </div>
-        </div>
+        </motion.div>
         {/* Lighthouse monitoring pixel — page-view only, same mechanism disclosed in the privacy policy below.
             Carries the same first-touch gclid/utm_* attribution as the JSON beacon (see shared.tsx's
             attributionParams doc comment) - a visitor landing straight on a legal/FAQ page from a paid
