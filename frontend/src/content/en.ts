@@ -188,7 +188,7 @@ export const EN = {
   },
 
   trackRecord: {
-    heading: 'Our research, published',
+    heading: 'Our security research, published',
     // Dedicated SEO title/description for /evidence/ (4,760 impressions at position ~6.5 but
     // <1% CTR in GSC to 2026-10-24): the section heading makes a fine on-page H2 but tells a
     // searcher nothing about what the page IS. Search-facing copy only - visible page text unchanged.

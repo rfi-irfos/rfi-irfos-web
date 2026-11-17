@@ -5,7 +5,7 @@
 // for the same reason Proof.tsx documents: card shape and click behaviour differ.
 import { useState, useEffect, useRef } from 'react'
 import { IconShare } from '@tabler/icons-react'
-import { prefersReducedMotion, beacon, TEAL, Reveal, useMobile, useModalExit } from './shared'
+import { prefersReducedMotion, beacon, TEAL, Reveal, useMobile, useModalExit, useWideCarousel } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import {
   RESEARCH_DOCS, LIBRARY_TEXT as TX, getResearchDoc, docPdfUrl, docPageUrl, docDoiUrl,
@@ -18,16 +18,6 @@ function fmtDate(iso: string, locale: Locale) {
     ? ['Jan.', 'Feb.', 'März', 'Apr.', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sept.', 'Okt.', 'Nov.', 'Dez.']
     : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   return locale === 'de' ? `${d}. ${months[m - 1]} ${y}` : `${d} ${months[m - 1]} ${y}`
-}
-
-function useCarouselSize() {
-  const [n, setN] = useState(() => (typeof window === 'undefined' ? 3 : window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3))
-  useEffect(() => {
-    const onResize = () => setN(window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3)
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
-  return n
 }
 
 function DocCard({ doc, onOpen }: { doc: ResearchDoc; onOpen: (slug: string) => void }) {
@@ -54,12 +44,12 @@ function DocCard({ doc, onOpen }: { doc: ResearchDoc; onOpen: (slug: string) => 
           }}>PDF</span>
         </div>
         <div style={{
-          fontWeight: 900, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', display: '-webkit-box',
-          WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+          fontWeight: 900, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-tight)', display: '-webkit-box',
+          WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden',
         }}>{doc.title[locale]}</div>
         <p style={{
           color: 'var(--text2)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', flex: 1, margin: 0,
-          display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+          display: '-webkit-box', WebkitLineClamp: 8, WebkitBoxOrient: 'vertical', overflow: 'hidden',
         }}>{doc.blurb[locale]}</p>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--accent-text)', fontSize: 'var(--fs-small)', fontWeight: 700, marginTop: 4 }}>
           {TX.open[locale]} &rarr;
@@ -71,7 +61,7 @@ function DocCard({ doc, onOpen }: { doc: ResearchDoc; onOpen: (slug: string) => 
 
 export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) {
   const { locale } = useLocale()
-  const perView = useCarouselSize()
+  const { perView, phone, cardBasis, rowStyle } = useWideCarousel()
   const reduced = prefersReducedMotion()
   const docs = RESEARCH_DOCS
   const n = docs.length
@@ -125,7 +115,6 @@ export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced, n, perView, paused])
 
-  const phone = perView === 1
   const arrowSize = phone ? 36 : 44
   const arrowStyle: React.CSSProperties = {
     width: arrowSize, height: arrowSize, borderRadius: '50%', border: '1px solid rgba(0,245,196,0.3)',
@@ -145,7 +134,7 @@ export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) 
         </Reveal>
       </div>
       <Reveal delay={1}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: phone ? 0 : 16 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: phone ? 0 : 16, ...rowStyle }}>
           {showArrows && !phone && <button onClick={() => go(-1)} aria-label={TX.prev[locale]} style={arrowStyle}>&larr;</button>}
           <div
             style={{ overflowX: 'hidden', overflowY: 'visible', flex: 1, minWidth: 0 }}
@@ -159,7 +148,7 @@ export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) 
             >
               {docs.map((doc, i) => (
                 <div key={doc.slug} ref={el => { cardRefs.current[i] = el }} style={{
-                  flex: `0 0 ${phone ? '100%' : '340px'}`, minWidth: 0, boxSizing: 'border-box', display: 'flex', scrollSnapAlign: 'center',
+                  flex: `0 0 ${cardBasis}`, minWidth: 0, boxSizing: 'border-box', display: 'flex', scrollSnapAlign: 'center',
                   transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1)',
                 }}>
                   <DocCard doc={doc} onOpen={onOpen} />

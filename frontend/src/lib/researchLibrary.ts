@@ -20,11 +20,11 @@ export type ResearchDoc = {
 
 export const RESEARCH_DOCS: ResearchDoc[] = [
   {
-    slug: 'wirkungsbericht-2025-26', kind: 'report', date: '2026-11-16', pages: 49,
+    slug: 'wirkungsbericht-2025-26', kind: 'report', date: '2026-11-16', pages: 51,
     title: { en: 'Impact Report 2025/26', de: 'Wirkungsbericht 2025/26' },
     blurb: {
-      en: 'The association\'s 2025/26 year in 49 pages: a ternary language model with 331 million parameters, 292 specialised agents, six publications with DOI, 41 open repositories and 387+ public apps checked. Every figure carries its source.',
-      de: 'Das Vereinsjahr 2025/26 auf 49 Seiten: ein ternäres Sprachmodell mit 331 Mio. Parametern, 292 spezialisierte Agenten, sechs Veröffentlichungen mit DOI, 41 offene Repositories und 387+ geprüfte öffentliche Apps. Jede Zahl nennt ihre Quelle.',
+      en: 'The association\'s 2025/26 year in 51 pages: a ternary language model with 331 million parameters, 292 specialised agents, six publications with DOI, 41 open repositories and 387+ public apps checked. Every figure carries its source.',
+      de: 'Das Vereinsjahr 2025/26 auf 51 Seiten: ein ternäres Sprachmodell mit 331 Mio. Parametern, 292 spezialisierte Agenten, sechs Veröffentlichungen mit DOI, 41 offene Repositories und 387+ geprüfte öffentliche Apps. Jede Zahl nennt ihre Quelle.',
     },
   },
   {
@@ -106,10 +106,10 @@ export const docPageUrl = (d: ResearchDoc) => `https://rfi-irfos.com/research/${
 export const docDoiUrl = (d: ResearchDoc) => (d.doi ? `https://doi.org/${d.doi}` : undefined)
 
 export const LIBRARY_TEXT = {
-  heading: { en: 'Read it yourself', de: 'Selbst nachlesen' },
+  heading: { en: 'Institutional publications', de: 'Institutionelle Publikationen' },
   subheading: {
-    en: 'Our impact report and six papers, each as a PDF with its own link.',
-    de: 'Unser Wirkungsbericht und sechs Papers, jeweils als PDF mit eigenem Link.',
+    en: 'An impact report and six papers on ternary computing, human-AI co-evolution, physical AI and platform labour, all in full text with their sources.',
+    de: 'Ein Wirkungsbericht und sechs Papers zu ternärem Rechnen, Mensch-KI-Ko-Evolution, Physical AI und Plattformarbeit, alles im Volltext und mit Quellen.',
   },
   kind: {
     report: { en: 'Report', de: 'Bericht' },

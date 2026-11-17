@@ -1098,6 +1098,32 @@ export const OUTPUT_TAG_HUES = [
 
 
 
+// Wide showcase carousels (Simeon 2026-11-17): Research library and the ledger's Proof carousel
+// show up to six cards side by side on large screens. The row breaks out of the centred
+// content column, capped at WIDE_ROW_MAX, so the cards keep a readable width.
+export const WIDE_CARD = 270
+const WIDE_GAP = 20
+const WIDE_ROW_MAX = 1860
+const WIDE_ARROWS = 120 // two arrows plus their gaps
+const wideCarouselCount = (w: number) =>
+  w < 640 ? 1 : Math.max(2, Math.min(6, Math.floor((Math.min(WIDE_ROW_MAX, w - 48) - WIDE_ARROWS) / (WIDE_CARD + WIDE_GAP))))
+export function useWideCarousel() {
+  const [perView, setPerView] = useState(() => (typeof window === 'undefined' ? 4 : wideCarouselCount(window.innerWidth)))
+  useEffect(() => {
+    const onResize = () => setPerView(wideCarouselCount(window.innerWidth))
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+  const phone = perView === 1
+  const rowWidth = `min(${WIDE_ROW_MAX}px, calc(100vw - 48px))`
+  return {
+    perView,
+    phone,
+    cardBasis: phone ? '100%' : `${WIDE_CARD}px`,
+    rowStyle: (phone ? {} : { width: rowWidth, marginLeft: `calc(50% - ${rowWidth} / 2)` }) as React.CSSProperties,
+  }
+}
+
 export function useMobile(bp = 768) {
   const [m, setM] = useState(() => typeof window !== 'undefined' && window.innerWidth < bp)
   useEffect(() => {

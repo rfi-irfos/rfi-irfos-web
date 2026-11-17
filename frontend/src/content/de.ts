@@ -171,7 +171,7 @@ export const DE: Content = {
   },
 
   trackRecord: {
-    heading: 'Unsere Forschung, veröffentlicht',
+    heading: 'Unsere Security Research, veröffentlicht',
     seoTitle: 'App-Datenschutz- & Sicherheitsanalysen · RFI-IRFOS',
     seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsberichte zu Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel.',
     paragraph: 'Im Auftrag unserer Forschungspartner untersuchen wir öffentlich verbreitete Android- und iOS-Apps: Wir dekompilieren sie, verfolgen ihren Code und ihre Datenflüsse und jede Verbindung bis zu den Servern, die sie erreicht. Hunderte Agenten arbeiten jede App durch und fügen die technischen Belege zu einem Gesamtbild zusammen, das unsere Fachleute anschließend prüfen und verifizieren.',

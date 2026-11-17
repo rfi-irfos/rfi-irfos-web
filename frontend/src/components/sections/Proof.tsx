@@ -10,7 +10,7 @@
 // (i.e. a PDF gets uploaded to the ledger), it appears here automatically -
 // no separate data entry, per Simeon's explicit ask.
 import { useState, useEffect, useRef } from 'react'
-import { prefersReducedMotion, beacon, TEAL, Reveal } from './shared'
+import { prefersReducedMotion, beacon, TEAL, Reveal, useWideCarousel } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
 import { AUDIT_HIGHLIGHTS, AUDIT_META, reportSlug } from './TrackRecord'
@@ -80,15 +80,6 @@ function getProofEntries(locale: 'en' | 'de'): ProofEntry[] {
     .sort((a, b) => (b.resolvedDate ?? '').localeCompare(a.resolvedDate ?? ''))
 }
 
-function useCarouselSize() {
-  const [n, setN] = useState(() => (typeof window === 'undefined' ? 3 : window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3))
-  useEffect(() => {
-    const onResize = () => setN(window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3)
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
-  return n
-}
 
 function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string) => void }) {
   const { t } = useLocale()
@@ -148,7 +139,7 @@ function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string)
 // shared abstraction would need as many branches as it saves lines.
 function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (url: string) => void }) {
   const { t } = useLocale()
-  const perView = useCarouselSize()
+  const { perView, phone, cardBasis, rowStyle } = useWideCarousel()
   const reduced = prefersReducedMotion()
   const n = entries.length
 
@@ -227,13 +218,11 @@ function ProofCarousel({ entries, onOpen }: { entries: ProofEntry[]; onOpen: (ur
   // fix and same reasoning as ProjectsCarousel in Projects.tsx (2026-08-16).
   // 84% was the worst offender of the two: arrows + gaps + an 16% self-imposed
   // inset left the evidence card at barely half the viewport.
-  const phone = perView === 1
-  const cardBasis = phone ? '100%' : '340px'
   const showArrows = n > perView
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: phone ? 0 : 16 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: phone ? 0 : 16, ...rowStyle }}>
         {showArrows && !phone && <button onClick={() => go(-1)} aria-label={t.proof.carouselPrevAria} style={arrowStyle}>&larr;</button>}
         {/* overflowY visible (not hidden) - see identical note in Projects.tsx's
             ProjectsCarousel: the proximity glow needs room outside the card
