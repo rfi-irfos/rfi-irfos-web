@@ -121,7 +121,7 @@ function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string)
         <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>
           {entry.market}{entry.resolvedDate ? ` · ${t.proof.resolvedOn(entry.resolvedDate)}` : ''}
         </div>
-        <p style={{ color: 'var(--text2)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', flex: 1, margin: 0, display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        <p style={{ color: 'var(--text2)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', flex: 1, margin: 0, overflowWrap: 'anywhere', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {entry.finding}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--accent-text)', fontSize: 'var(--fs-small)', fontWeight: 700, marginTop: 4 }}>
