@@ -11,7 +11,7 @@ export function FailToast({ message, mailSubject, mailBody, onClose }: {
   const link: React.CSSProperties = { color: 'var(--accent-text)', fontWeight: 700, whiteSpace: 'nowrap' }
   return (
     <div role="alert" style={{
-      position: 'fixed', left: '50%', bottom: 24, transform: 'translateX(-50%)', zIndex: 1000,
+      position: 'fixed', left: '50%', bottom: 24, transform: 'translateX(-50%)', zIndex: 10000,
       width: 'min(520px, calc(100vw - 32px))', boxSizing: 'border-box', padding: '16px 44px 16px 18px', borderRadius: 14,
       background: 'var(--bg, #0b0b10)', color: 'var(--text)', border: '1px solid var(--sev-crit)',
       boxShadow: '0 12px 40px rgba(0,0,0,0.45)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)',

@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import type { Content } from '../content/en'
 
-// Login screen behind the nav profile icon (Simeon 11.11.2026). Shows what the customer portal's
-// sign-in looks like: locked fields, a request-early-access button and a demo dashboard preview.
-// The portal itself is not reachable from here, so nothing on this screen submits anywhere.
+// Login screen behind the nav profile icon (Simeon 11.11.2026, opened 17.11.2026). Left: link to the real
+// portal sign-in (email, password and MFA are typed there only, never on this page) and a Get access button
+// that opens the Starter checkout; the purchase webhook then creates the portal account and sends the invitation.
+// Right: demo dashboard preview.
 // Layout (Simeon, same day): portal on the left, preview as large as the window allows on the right,
 // click on the preview opens it enlarged. Always dark (background image and preview are dark),
 // independent of the site theme.
 
 const ACCENT = '#f2501f'
+const PORTAL_LOGIN_URL = 'https://portal.rfi-irfos.com/login'
 const FONT = "'Plus Jakarta Sans', system-ui, sans-serif"
 // demo-dashboard.webp is 1918x926: the preview is capped so the whole picture fits the window height.
 const PREVIEW_RATIO = 1918 / 926
@@ -49,14 +51,6 @@ const CSS = `
 }
 `
 
-function LockIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" />
-    </svg>
-  )
-}
-
 function ExpandIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -65,29 +59,13 @@ function ExpandIcon() {
   )
 }
 
-function LockedField({ id, label, placeholder, type }: { id: string; label: string; placeholder: string; type: string }) {
-  return (
-    <div style={{ marginBottom: 16 }}>
-      <label htmlFor={id} style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.78)', marginBottom: 7 }}>{label}</label>
-      <div style={{ position: 'relative' }}>
-        <input id={id} type={type} disabled placeholder={placeholder} autoComplete="off" style={{
-          width: '100%', boxSizing: 'border-box', height: 48, padding: '0 42px 0 15px', fontFamily: FONT, fontSize: 14,
-          color: 'rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.045)', border: '1px solid rgba(255,255,255,0.13)',
-          borderRadius: 10, cursor: 'not-allowed', outline: 'none',
-        }} />
-        <span style={{ position: 'absolute', right: 14, top: 0, height: 48, display: 'flex', alignItems: 'center', color: 'rgba(255,255,255,0.42)' }}><LockIcon /></span>
-      </div>
-    </div>
-  )
-}
-
-export function LoginPreview({ t, onClose, onRequestAccess }: { t: Content; onClose: () => void; onRequestAccess: () => void }) {
+export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content; onClose: () => void; onRequestAccess: () => void; busy: boolean }) {
   const c = t.login
   const closeRef = useRef<HTMLButtonElement>(null)
   const [zoom, setZoom] = useState(false)
   const [closing, setClosing] = useState(false)
 
-  // Every way out (X, Esc, early access) fades the screen out first, then runs the real callback.
+  // Every way out (X, Esc) fades the screen out first, then runs the real callback.
   const closingRef = useRef(false)
   const leave = (after: () => void) => {
     if (closingRef.current) return
@@ -140,20 +118,18 @@ export function LoginPreview({ t, onClose, onRequestAccess }: { t: Content; onCl
           <h2 id="login-title" style={{ fontSize: 32, fontWeight: 700, margin: '0 0 10px', lineHeight: 1.15 }}>{c.title}</h2>
           <p style={{ fontSize: 15, lineHeight: 1.55, color: 'rgba(255,255,255,0.74)', margin: '0 0 30px' }}>{c.lead}</p>
 
-          <form onSubmit={e => e.preventDefault()} aria-describedby="login-note">
-            <LockedField id="login-email" type="email" label={c.emailLabel} placeholder={c.emailPlaceholder} />
-            <LockedField id="login-password" type="password" label={c.passwordLabel} placeholder="••••••••••" />
-            <button type="submit" disabled style={{
-              width: '100%', height: 48, marginTop: 4, fontFamily: FONT, fontSize: 14, fontWeight: 600, borderRadius: 10,
-              color: 'rgba(255,255,255,0.45)', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.13)', cursor: 'not-allowed',
-            }}>{c.signIn}</button>
-          </form>
-          <p id="login-note" style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(255,255,255,0.62)', margin: '12px 0 26px' }}>{c.lockedNote}</p>
+          <a href={PORTAL_LOGIN_URL} data-testid="login-sign-in" style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', boxSizing: 'border-box', height: 50, fontFamily: FONT,
+            fontSize: 15, fontWeight: 700, color: '#fff', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.28)',
+            borderRadius: 10, textDecoration: 'none',
+          }}>{c.signIn}</a>
+          <p style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(255,255,255,0.72)', margin: '12px 0 30px' }}>{c.signInNote}</p>
 
-          <button type="button" onClick={() => leave(onRequestAccess)} data-testid="login-request-access" style={{
+          <button type="button" disabled={busy} onClick={onRequestAccess} data-testid="login-request-access" style={{
             width: '100%', height: 50, fontFamily: FONT, fontSize: 15, fontWeight: 700, color: '#fff', background: ACCENT,
-            border: 'none', borderRadius: 10, cursor: 'pointer',
-          }}>{c.requestAccess}</button>
+            border: 'none', borderRadius: 10, cursor: busy ? 'progress' : 'pointer', opacity: busy ? 0.7 : 1,
+          }}>{busy ? c.accessBusy : c.requestAccess}</button>
+          <p style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(255,255,255,0.72)', margin: '12px 0 0' }}>{c.accessNote}</p>
         </div>
 
         <div className="rfi-login-stage">

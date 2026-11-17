@@ -72,7 +72,7 @@ export const EN = {
   },
 
   // Login screen behind the nav profile icon (Simeon 11.11.2026): shows the customer portal's
-  // sign-in as a locked preview plus a demo dashboard; the portal itself is not reachable from here.
+  // sign-in link plus a demo dashboard; Get access opens the Starter checkout (Simeon 17.11.2026).
   login: {
     navLabel: 'Customer portal',
     title: 'Customer portal',
@@ -80,9 +80,11 @@ export const EN = {
     emailLabel: 'Email',
     emailPlaceholder: 'name@company.com',
     passwordLabel: 'Password',
-    signIn: 'Sign in',
-    lockedNote: 'Sign-in opens with your onboarding.',
-    requestAccess: 'Request early access',
+    signIn: 'Sign in to the portal',
+    signInNote: 'Already a customer? Use the account from your invitation email.',
+    requestAccess: 'Get access',
+    accessNote: 'Starter plan, \u20ac99 per month. Your invitation arrives by email right after payment.',
+    accessBusy: 'Opening checkout \u2026',
     close: 'Close',
     previewTitle: 'Dashboard preview',
     previewZoom: 'Click to enlarge',

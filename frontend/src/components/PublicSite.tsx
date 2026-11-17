@@ -2111,7 +2111,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
                 </div>
       )}
 
-      {loginOpen && <LoginPreview t={t} onClose={() => setLoginOpen(false)} onRequestAccess={() => { setLoginOpen(false); selectTier('Early Access') }} />}
+      {loginOpen && <LoginPreview t={t} onClose={() => setLoginOpen(false)} onRequestAccess={() => handleCheckout('review_starter')} busy={checkoutLoading === 'review_starter'} />}
     </div>
   )
 }
