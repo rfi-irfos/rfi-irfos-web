@@ -176,7 +176,7 @@ function BillingToggle({ billing, onChange }: { billing: 'monthly' | 'annual'; o
       border: 'none', borderLeft: borderLeft ? '1px solid var(--border)' : 'none',
       padding: '16px 38px', fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer',
       // Annual carries a soft orange outline while it is not selected, so the second option is easy to see (Simeon 17.11.2026).
-      boxShadow: value === 'annual' && billing !== 'annual' ? 'inset 0 0 0 1px rgba(242,80,31,0.55)' : 'inset 0 0 0 1px rgba(242,80,31,0)',
+      boxShadow: value === 'annual' && billing !== 'annual' ? 'inset 0 0 0 1.5px rgba(242,80,31,0.9)' : 'inset 0 0 0 1px rgba(242,80,31,0)',
       transition: 'color 0.2s ease, box-shadow 0.2s ease',
     }}>{label}</button>
   )
