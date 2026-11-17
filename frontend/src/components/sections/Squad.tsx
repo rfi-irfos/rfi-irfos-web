@@ -20,7 +20,8 @@ import { Reveal, useMobile, beacon, WEB3FORMS_KEY, OUTPUT_TAG_HUES, FilmPanel, l
 import { SQUAD_AGENTS, agentByKey, type AgentKey } from '../../content/squadAgents'
 // Stable URL (Lighthouse R88): the watch page /squad/film/ and the VideoObject need a
 // contentUrl that survives rebuilds, so the film lives in public/media/, not hashed /assets/.
-const squadHeroWorkflow = '/media/the-squad-film.mp4'
+// ?v= busts browser caches that hold a mixed old/new range of this file (Format error, 17.11.2026): bump it whenever the film is re-encoded.
+const squadHeroWorkflow = '/media/the-squad-film.mp4?v=20261117'
 
 const NEED_TO_KNOW_ICONS = [IconTrendingUp, IconCoin, IconGitCompare, IconCircleCheck, IconSearch, IconShieldLock]
 // One distinct icon per trust badge instead of the same checkmark four times

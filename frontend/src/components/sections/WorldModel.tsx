@@ -18,7 +18,8 @@ import { Reveal, OUTPUT_TAG_HUES, beacon, pageZoom, FilmPanel } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
 // Stable URL (Lighthouse R88), see Squad.tsx: the watch page /world-model/film/ links the same file.
-const wmHeroDingirFilm = '/media/dingir-world-model-film.mp4'
+// ?v= busts stale browser caches after a re-encode, see Squad.tsx.
+const wmHeroDingirFilm = '/media/dingir-world-model-film.mp4?v=20261117'
 
 const hue = (i: number) => OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
 const hueStyle = (i: number) => ({ '--hue-bg': hue(i).bg, '--hue-border': hue(i).border }) as CSSProperties

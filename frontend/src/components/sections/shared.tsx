@@ -547,7 +547,7 @@ export function FilmPanel({ src, className, video }: { src: string; className: s
           '@context': 'https://schema.org', '@type': 'VideoObject',
           name: video.name, description: video.description,
           thumbnailUrl: `https://rfi-irfos.com${video.thumbnail}`,
-          contentUrl: new URL(src, 'https://rfi-irfos.com').href,
+          contentUrl: new URL(src.split('?')[0], 'https://rfi-irfos.com').href,
           uploadDate: video.uploadDate, duration: video.duration, inLanguage: locale,
           publisher: { '@id': 'https://rfi-irfos.com/#organization' },
         }) }} />
