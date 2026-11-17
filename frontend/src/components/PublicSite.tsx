@@ -8,6 +8,8 @@ import type { Content } from '../content/en'
 import { TEAL, useMobile, useFormAbandonment, beacon, attributionParams, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed, useModalExit } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
+import { ResearchDocModal } from './sections/ResearchLibrary'
+import { getResearchDoc, docPageUrl, docPdfUrl, docDoiUrl } from '../lib/researchLibrary'
 // TrackRecord.tsx (the full AUDIT_META ledger, ~1.5MB of source) and Proof.tsx
 // (which statically imports it) are loaded on demand instead of statically:
 // they were the main bundle's single largest member, taxing every page view
@@ -306,7 +308,7 @@ const BREADCRUMB_BY_VIEW: Partial<Record<PublicView, { navKey: keyof Content['na
   'access': { navKey: 'pricing', path: '/access' },
 }
 
-export function PublicSite({ initialSection, initialReportSlug }: { initialSection?: string | null; initialReportSlug?: string | null } = {}) {
+export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }: { initialSection?: string | null; initialReportSlug?: string | null; initialDocSlug?: string | null } = {}) {
   const { locale, setLocale, t } = useLocale()
   const [loginOpen, setLoginOpen] = useState(false)
   const NAV_LINKS = NAV_HREFS.map(n => ({ key: n.key, label: t.nav.links[n.key], href: n.href }))
@@ -543,7 +545,43 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   // nothing gets lost by trimming the card itself.
   const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[]; bring?: string; mechanism?: string; receive?: string } | null>(null)
   const checkoutModalExit = useModalExit(checkoutModal)
+  const openDoc = (slug: string) => {
+    libReturnUrl.current = window.location.pathname.startsWith('/research/') && !window.location.pathname.replace(/^\/de/, '').startsWith('/research/') ? null : window.location.pathname + window.location.search + window.location.hash
+    window.history.pushState(null, '', `/research/${slug}/`)
+    setLibDoc(slug)
+  }
+  const closeDoc = () => {
+    setLibDoc(null)
+    window.history.replaceState(null, '', libReturnUrl.current ?? localeHref('/research/', locale))
+  }
+  // Landed on /research/<slug>/: per-document title, description and JSON-LD (same reason as the
+  // evidence report pages, one indexable page per document instead of the generic Research meta).
+  useEffect(() => {
+    const doc = getResearchDoc(initialDocSlug)
+    if (!doc) return
+    const title = `${doc.title[locale]} | RFI-IRFOS`
+    const description = doc.blurb[locale]
+    document.title = title
+    document.querySelector('meta[name="description"]')?.setAttribute('content', description)
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', title)
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', description)
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', title)
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description)
+    upsertJsonLd('ld-research-doc', {
+      '@context': 'https://schema.org',
+      '@type': doc.kind === 'paper' ? 'ScholarlyArticle' : 'Report',
+      headline: doc.title.en, description: doc.blurb.en, datePublished: doc.date, inLanguage: 'en',
+      url: docPageUrl(doc),
+      ...(doc.doi ? { identifier: { '@type': 'PropertyValue', propertyID: 'DOI', value: doc.doi }, sameAs: docDoiUrl(doc) } : {}),
+      author: { '@type': 'Organization', name: 'RFI-IRFOS', url: 'https://rfi-irfos.com' },
+      encoding: { '@type': 'MediaObject', contentUrl: `https://rfi-irfos.com${docPdfUrl(doc)}`, encodingFormat: 'application/pdf' },
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const [reportModal, setReportModal]         = useState<string | null>(null)
+  // Research library (slideshow under the Research areas): open document slug, null = closed.
+  const [libDoc, setLibDoc]                   = useState<string | null>(initialDocSlug ?? null)
+  const libReturnUrl                          = useRef<string | null>(null)
   // Delays each modal's actual unmount so its CSS exit animation can play -
   // see useModalExit (shared.tsx). Callers keep calling setXModal(null)
   // exactly as before; this only affects how long the closing modal stays
@@ -700,11 +738,11 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
   // Lock background scroll while a modal is open - without this the page behind a
   // fixed-position modal keeps scrolling under it, which reads as "scrolling is broken."
   useEffect(() => {
-    if (!checkoutModal && !reportModal && !intelModal) return
+    if (!checkoutModal && !reportModal && !intelModal && !libDoc) return
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = prevOverflow }
-  }, [checkoutModal, reportModal, intelModal])
+  }, [checkoutModal, reportModal, intelModal, libDoc])
 
   // A tiny, neutral confirmation pop for the confetti action. Synthesized locally so
   // the interaction needs no audio asset or request; deliberately brief and quiet.
@@ -1283,6 +1321,8 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
 
       <ScrollSpine theme={theme} />
 
+      <ResearchDocModal slug={libDoc} onClose={closeDoc} h1={!!initialDocSlug} />
+
       {/* REPORT PDF MODAL */}
       {reportModalExit.rendered && (
         // Blurred backdrop to match the checkout/proposal modals (live feedback
@@ -1700,7 +1740,7 @@ export function PublicSite({ initialSection, initialReportSlug }: { initialSecti
         {/* Research lives on its own page (Simeon 11.11.2026): the eight areas and their modals
             made the landing page too dense. ResearchSection carries id="research" itself. */}
         {view === 'research' && <div className="rfi-view-panel">
-          <ResearchSection page />
+          <ResearchSection page={!initialDocSlug} onOpenDoc={openDoc} />
         </div>}
 
         {view === 'world-model' && <section id="world-model" className="rfi-view-panel">

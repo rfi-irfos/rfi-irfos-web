@@ -51,6 +51,10 @@ const viteServer = await createViteServer({ root: ROOT, server: { middlewareMode
 const trackRecordModule = await viteServer.ssrLoadModule('/src/components/sections/TrackRecord.tsx')
 const REPORT_SLUGS = Object.keys(trackRecordModule.REPORT_URL_BY_SLUG)
 const REPORT_META_BY_SLUG = trackRecordModule.REPORT_META_BY_SLUG
+// Research library documents (impact report, papers): each gets /research/<slug>/.
+const researchLibModule = await viteServer.ssrLoadModule('/src/lib/researchLibrary.ts')
+const RESEARCH_DOCS = researchLibModule.RESEARCH_DOCS
+const RESEARCH_DOC_SLUGS = RESEARCH_DOCS.map(d => d.slug)
 await viteServer.close()
 console.log(`discovered ${REPORT_SLUGS.length} individual report routes from AUDIT_META`)
 
@@ -89,7 +93,7 @@ const enRouteOf = (route) => route.startsWith('/de') ? (route === '/de' ? '/' : 
 const onlyArg = process.argv.find(a => a.startsWith('--only='))
 const ONLY = onlyArg ? onlyArg.slice('--only='.length).split(',').map(r => r.trim().replace(/\/$/, '')).filter(Boolean) : null
 if (ONLY) {
-  const known = new Set([...ROUTES, ...LOCALIZED_ROUTES.map(deRoute), ...REPORT_SLUGS.map(slug => `/evidence/${slug}`)])
+  const known = new Set([...ROUTES, ...LOCALIZED_ROUTES.map(deRoute), ...REPORT_SLUGS.map(slug => `/evidence/${slug}`), ...RESEARCH_DOC_SLUGS.map(slug => `/research/${slug}`)])
   const unknown = ONLY.filter(r => !known.has(r))
   if (unknown.length) {
     console.error(`ERROR: unknown route(s) in --only: ${unknown.join(', ')}`)
@@ -338,6 +342,13 @@ for (const slug of REPORT_SLUGS) {
   await renderRoute(route, route, '.rfi-modal-backdrop')
 }
 
+// Research library pages: own title/description/JSON-LD per document (PublicSite initialDocSlug effect).
+for (const slug of RESEARCH_DOC_SLUGS) {
+  const route = `/research/${slug}`
+  if (ONLY && !ONLY.includes(route)) continue
+  await renderRoute(route, route, '.rfi-modal-backdrop')
+}
+
 await browser.close()
 server.close()
 
@@ -367,6 +378,14 @@ if (!ONLY) {
       '  </url>',
     ].join('\n')
   }).join('\n')
+  const researchUrls = RESEARCH_DOCS.map(d => [
+    '  <url>',
+    `    <loc>https://rfi-irfos.com/research/${d.slug}/</loc>`,
+    `    <lastmod>${d.date}</lastmod>`,
+    '    <changefreq>yearly</changefreq>',
+    '    <priority>0.5</priority>',
+    '  </url>',
+  ].join('\n')).join('\n')
   // /de/... twins, generated here (not hand-maintained in public/sitemap.xml)
   // so the DE set can never drift from LOCALIZED_ROUTES above.
   // lastmod of the static pages, EN and DE alike (Lighthouse round 40, 2026-10-31): the EN dates
@@ -398,7 +417,7 @@ if (!ONLY) {
     '    <priority>0.6</priority>',
     '  </url>',
   ].join('\n')).join('\n')
-  const combinedSitemap = staticWithDates.replace('</urlset>', `${deUrls}\n${reportUrls}\n</urlset>`)
+  const combinedSitemap = staticWithDates.replace('</urlset>', `${deUrls}\n${reportUrls}\n${researchUrls}\n</urlset>`)
   await writeFile(join(DIST, 'sitemap.xml'), combinedSitemap)
   console.log(`sitemap.xml: ${ROUTES.length} static routes + ${LOCALIZED_ROUTES.length} de routes + ${REPORT_SLUGS.length} report routes`)
 

@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import { motion } from 'framer-motion'
 import { prefersReducedMotion, Reveal, useModalExit } from './shared'
 import { useLocale } from '../../hooks/useLocale'
+import { ResearchLibrary } from './ResearchLibrary'
 
 // Live feedback 2026-08-14: cards used to show the full two-paragraph
 // description inline, which read as overwhelming across 8 tiles at once.
@@ -367,7 +368,7 @@ export const RESEARCH_AREAS = [
 // feedback was that those made the top of the page too dense/talky before
 // a visitor sees anything concrete). App Privacy now sits after Track
 // Record instead - proof first, then the "start here" pitch.
-export function ResearchSection({ page = false }: { page?: boolean } = {}) {
+export function ResearchSection({ page = false, onOpenDoc }: { page?: boolean; onOpenDoc?: (slug: string) => void } = {}) {
   const { t } = useLocale()
   const Heading = page ? 'h1' : 'h2'
   return (
@@ -382,6 +383,7 @@ export function ResearchSection({ page = false }: { page?: boolean } = {}) {
           </p>
         </Reveal>
         <ResearchAreasGrid />
+        {onOpenDoc && <div style={{ marginTop: 72 }}><ResearchLibrary onOpen={onOpenDoc} /></div>}
       </div>
     </section>
   )

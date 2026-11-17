@@ -7,6 +7,7 @@ import { DE } from './content/de'
 import { LANDING_SLUGS } from './components/landingSlugs'
 import { NotFoundNotice, CheckoutReturnNotice } from './components/FunnelNotice'
 import './App.css'
+import { RESEARCH_DOC_SLUGS } from './lib/researchLibrary'
 
 // Lazy-loaded: legal pages are a secondary route homepage visitors never hit, so there's
 // no reason to make them download this bundle too. PublicSite stays a direct import since
@@ -75,6 +76,14 @@ function getReportSlug() {
 // statically dragged the full 1.5MB ledger into the entry bundle). An
 // unknown/typo'd slug still falls through to the normal /evidence/ ledger
 // landing: the effect simply finds no URL and opens no modal.
+// /research/<slug>/: one document of the research library (impact report, papers). Same
+// landing as /research/ with that document's PDF modal already open.
+function getResearchDocSlug() {
+  const seg = appPathname().split('/').filter(Boolean)
+  if (seg.length === 2 && seg[0] === 'research' && RESEARCH_DOC_SLUGS.includes(seg[1])) return seg[1]
+  return null
+}
+
 function getEvidencePathReportSlug() {
   const seg = appPathname().split('/').filter(Boolean)
   if (seg.length === 2 && seg[0] === 'evidence' && /^[a-z0-9][a-z0-9.-]*$/.test(seg[1])) return seg[1]
@@ -99,7 +108,8 @@ export default function App() {
   // /pricing decides the initial scroll target and meta tags, the homepage's own
   // #hash nav clicks are unrelated native browser scrolling, not a slug change.
   const [reportSlug] = useState(() => getReportSlug() || getEvidencePathReportSlug())
-  const [sectionFocus] = useState(() => reportSlug ? 'track-record' : getSectionFocus())
+  const [docSlug] = useState(getResearchDocSlug)
+  const [sectionFocus] = useState(() => reportSlug ? 'track-record' : docSlug ? 'research' : getSectionFocus())
   // Landing on a /de/ URL wins over any saved locale preference - the URL names the
   // language the visitor (or crawler) explicitly asked for.
   const [initialLocale] = useState(() => isDePath() ? ('de' as const) : undefined)
@@ -171,5 +181,5 @@ export default function App() {
   // Impressum/Datenschutz/AGB left open) - the DE/EN toggle reaches this
   // route the same way it reaches the homepage.
   if (slug) return <LocaleProvider initialLocale={initialLocale}><Suspense fallback={null}><LegalPage slug={slug} /></Suspense><PageScrollbar /></LocaleProvider>
-  return <LocaleProvider initialLocale={initialLocale}><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} />{SERVED_NOT_FOUND && <NotFoundNotice />}<CheckoutReturnNotice /><PageScrollbar /></LocaleProvider>
+  return <LocaleProvider initialLocale={initialLocale}><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} initialDocSlug={docSlug} />{SERVED_NOT_FOUND && <NotFoundNotice />}<CheckoutReturnNotice /><PageScrollbar /></LocaleProvider>
 }
