@@ -501,11 +501,19 @@ export function FilmPanel({ src, className, video }: { src: string; className: s
       video.controls = false
       video.play().catch(() => {})
     }
+    // Some browsers (battery saver, data saver, strict autoplay settings) refuse the first muted autoplay and
+    // leave the panel on the film's black first frame (Simeon 17.11.2026). Retry once the data is there and
+    // whenever the tab comes back; the poster below covers the wait.
+    const retry = () => { if (video.paused && !document.hidden && document.fullscreenElement !== video) video.play().catch(() => {}) }
     document.addEventListener('fullscreenchange', toLoop)
     video.addEventListener('webkitendfullscreen', toLoop)
+    video.addEventListener('canplay', retry)
+    document.addEventListener('visibilitychange', retry)
     return () => {
       document.removeEventListener('fullscreenchange', toLoop)
       video.removeEventListener('webkitendfullscreen', toLoop)
+      video.removeEventListener('canplay', retry)
+      document.removeEventListener('visibilitychange', retry)
     }
   }, [])
   const openFullscreen = () => {
@@ -522,7 +530,8 @@ export function FilmPanel({ src, className, video }: { src: string; className: s
     <>
     <button type="button" className={`${className} film-panel`} onClick={openFullscreen}
       aria-label={locale === 'de' ? 'Film im Vollbild ansehen' : 'View film fullscreen'}>
-      <video ref={ref} className="film-panel-video" src={src} autoPlay muted loop playsInline title={video?.name} />
+      {/* The poster is the stable thumbnail from public/media. The film itself opens on pure black, so without it the panel looks empty until the first frame is painted. */}
+      <video ref={ref} className="film-panel-video" src={src} poster={video?.thumbnail} preload="auto" autoPlay muted loop playsInline title={video?.name} />
       <span className="wm-graph-expand-hint"><IconMaximize size={13} stroke={1.8} /> {locale === 'de' ? 'Vollbild' : 'view fullscreen'}</span>
       {video && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
