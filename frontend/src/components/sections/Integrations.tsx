@@ -4,7 +4,7 @@
 import { useLocale } from '../../hooks/useLocale'
 import { BRANDS } from './integrationBrandPaths'
 
-const LOGOS: { key: string; name: string }[] = [
+const LOGOS: { key: string; name: string; textOnly?: boolean }[] = [
   { key: 'github', name: 'GitHub' },
   { key: 'gitlab', name: 'GitLab' },
   { key: 'gcp', name: 'Google Cloud' },
@@ -13,7 +13,7 @@ const LOGOS: { key: string; name: string }[] = [
   { key: 'k8s', name: 'Kubernetes' },
   { key: 'sap', name: 'SAP' },
   { key: 'supabase', name: 'Supabase' },
-  { key: 'n8n', name: 'n8n' },
+  { key: 'n8n', name: 'n8n', textOnly: true },
   { key: 'mcp', name: 'MCP' },
   { key: 'opensearch', name: 'OpenSearch' },
   { key: 'falco', name: 'Falco' },
@@ -48,7 +48,7 @@ export function IntegrationsSection() {
       <style>{CSS}</style>
       <div className="rfi-int-wrap">
         <div className="rfi-int-track">
-          {[0, 1, 2].flatMap(copy => LOGOS.map(({ key, name }) => {
+          {[0, 1, 2].flatMap(copy => LOGOS.map(({ key, name, textOnly }) => {
             const b = BRANDS[key]
             const mark = (
               <svg role="img" fill="currentColor" aria-label={name} viewBox={b.vb} height={H} width={Math.round(H * b.w)}
@@ -57,8 +57,8 @@ export function IntegrationsSection() {
             // Marks without a wordmark of their own get the name beside them.
             return (
               <div key={`${copy}-${key}`} className="rfi-int-logo" aria-hidden={copy ? true : undefined} {...(copy ? { 'data-dup': '' } : {})}>
-                {mark}
-                {b.w <= 1.3 && <span>{name}</span>}
+                {!textOnly && mark}
+                {(textOnly || b.w <= 1.3) && <span>{name}</span>}
               </div>
             )
           }))}
