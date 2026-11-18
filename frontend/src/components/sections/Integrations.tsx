@@ -5,22 +5,27 @@
 import { useLocale } from '../../hooks/useLocale'
 import { BRANDS } from './integrationBrandPaths'
 
-const LOGOS: { key: string; name: string; textOnly?: boolean; pure?: boolean }[] = [
+const LOGOS: { key: string; name: string; textOnly?: boolean }[] = [
   { key: 'github', name: 'GitHub' },
-  { key: 'gitlab', name: 'GitLab' },
-  { key: 'anthropic', name: 'Anthropic', pure: true },
-  { key: 'gcp', name: 'Google Cloud', textOnly: true },
   { key: 'aws', name: 'AWS', textOnly: true },
+  { key: 'gitlab', name: 'GitLab' },
   { key: 'azure', name: 'Microsoft Azure', textOnly: true },
+  { key: 'anthropic', name: 'Anthropic' },
+  { key: 'gcp', name: 'Google Cloud', textOnly: true },
   { key: 'k8s', name: 'Kubernetes' },
   { key: 'sap', name: 'SAP', textOnly: true },
   { key: 'supabase', name: 'Supabase' },
   { key: 'n8n', name: 'n8n', textOnly: true },
   { key: 'mcp', name: 'MCP' },
+  { key: 'wazuh', name: 'Wazuh', textOnly: true },
   { key: 'opensearch', name: 'OpenSearch' },
-  { key: 'openai', name: 'OpenAI', pure: true },
+  { key: 'suricata', name: 'Suricata', textOnly: true },
+  { key: 'openai', name: 'OpenAI' },
+  { key: 'zeek', name: 'Zeek', textOnly: true },
   { key: 'falco', name: 'Falco' },
+  { key: 'crowdsec', name: 'CrowdSec', textOnly: true },
   { key: 'trivy', name: 'Trivy' },
+  { key: 'thehive', name: 'TheHive', textOnly: true },
   { key: 'owasp', name: 'OWASP' },
 ]
 
@@ -32,7 +37,7 @@ const CSS = `
 .rfi-int-wrap { -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
 .rfi-int-track { -webkit-mask-image: none; }
-.rfi-int-logo { flex: none; margin: 0 48px; color: var(--text); opacity: .8; display: flex; align-items: center; gap: 9px; pointer-events: none; user-select: none; }
+.rfi-int-logo { flex: none; margin: 0 48px; color: var(--text); display: flex; align-items: center; gap: 9px; pointer-events: none; user-select: none; }
 .rfi-int-logo span { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
 .rfi-int-line { text-align: center; margin: 26px 24px 0; font-size: var(--fs-small); font-weight: 600; color: var(--text); opacity: .8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
 @media (max-width: 760px) {
@@ -58,15 +63,15 @@ export function IntegrationsSection() {
       <style>{CSS}</style>
       <div className="rfi-int-wrap">
         <div className="rfi-int-track">
-          {[0, 1, 2].flatMap(copy => LOGOS.map(({ key, name, textOnly, pure }) => {
+          {[0, 1, 2].flatMap(copy => LOGOS.map(({ key, name, textOnly }) => {
             const b = BRANDS[key]
-            const mark = (
+            const mark = textOnly ? null : (
               <svg role="img" fill="currentColor" aria-label={name} viewBox={b.vb} height={b.w > 7 ? 15 : H} width={Math.round((b.w > 7 ? 15 : H) * b.w)} className={b.w > 7 ? 'rfi-int-wide' : undefined}
                 dangerouslySetInnerHTML={{ __html: `<title>${name}</title>${b.body}` }} />
             )
             // Marks without a wordmark of their own get the name beside them.
             return (
-              <div key={`${copy}-${key}`} className="rfi-int-logo" style={pure ? { opacity: 1 } : undefined} aria-hidden={copy ? true : undefined} {...(copy ? { 'data-dup': '' } : {})}>
+              <div key={`${copy}-${key}`} className="rfi-int-logo" aria-hidden={copy ? true : undefined} {...(copy ? { 'data-dup': '' } : {})}>
                 {!textOnly && mark}
                 {(textOnly || b.w <= 1.3) && <span>{name}</span>}
               </div>
