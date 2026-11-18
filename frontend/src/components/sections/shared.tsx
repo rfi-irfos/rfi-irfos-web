@@ -78,7 +78,7 @@ export function Select({
         onClick={() => setOpen(o => !o)} className="fx-input"
         style={{
           width: '100%', textAlign: 'left',
-          borderRadius: 12, padding: '12px 16px', color: selected ? 'var(--text)' : 'var(--text3)', fontSize: 'var(--fs-body)',
+          borderRadius: 12, padding: '12px 16px', color: selected ? 'var(--text)' : 'var(--input-ph)', fontSize: 'var(--fs-body)',
           fontFamily: 'inherit', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8,
         }}>
         <span>{selected ? selected.label : placeholder}</span>
@@ -661,7 +661,7 @@ export function Reveal({
         window.clearTimeout(debounce)
         debounce = window.setTimeout(() => setVisible(next), 80)
       },
-      { rootMargin: '-8% 0px -10% 0px', threshold: 0 },
+      { rootMargin: '-8% 0px -2% 0px', threshold: 0 },
     )
     observer.observe(el)
     // Anchor-nav jump (PublicSite.tsx dispatches this at the moment of the

@@ -25,7 +25,7 @@ export function Field({ label, hint, plain, children }: { label: string; hint?: 
   return (
     <Tag style={{ display: 'flex', flexDirection: 'column', gap: 7, minWidth: 0 }}>
       <span style={{ fontSize: 'var(--fs-label)', fontWeight: 600, color: 'var(--text)' }}>
-        {label}{hint && <span style={{ fontWeight: 400, color: 'var(--text2)' }}> · {hint}</span>}
+        {label}{hint && <span style={{ fontWeight: 400, color: 'var(--input-ph)' }}> · {hint}</span>}
       </span>
       {children}
     </Tag>

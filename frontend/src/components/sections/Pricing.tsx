@@ -353,7 +353,6 @@ export function PricingSection({
                     <button type="button" onClick={onOpenLogin} aria-haspopup="dialog" data-testid="managed-soc-sign-in" style={{ color: 'var(--text)', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.28)', padding: '12px 22px', borderRadius: 10, fontWeight: 700, fontSize: 'var(--fs-body)', textDecoration: 'none', whiteSpace: 'nowrap' }}>
                       {t.login.requestPortalAccess}
                     </button>
-                    <span style={{ fontSize: 'var(--fs-small)', color: 'var(--text)' }}>{t.pricing.managedSoc.price}</span>
                   </div>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: tablet ? '1fr' : '1fr 1fr', gap: 12 }}>
