@@ -5,7 +5,7 @@
 import { useLocale } from '../../hooks/useLocale'
 import { BRANDS } from './integrationBrandPaths'
 
-const LOGOS: { key: string; name: string; textOnly?: boolean }[] = [
+const LOGOS: { key: string; name: string; textOnly?: boolean; img?: [string, number] }[] = [
   { key: 'github', name: 'GitHub' },
   { key: 'aws', name: 'AWS', textOnly: true },
   { key: 'gitlab', name: 'GitLab' },
@@ -19,13 +19,26 @@ const LOGOS: { key: string; name: string; textOnly?: boolean }[] = [
   { key: 'mcp', name: 'MCP' },
   { key: 'wazuh', name: 'Wazuh', textOnly: true },
   { key: 'opensearch', name: 'OpenSearch' },
-  { key: 'suricata', name: 'Suricata', textOnly: true },
-  { key: 'openai', name: 'OpenAI' },
   { key: 'zeek', name: 'Zeek', textOnly: true },
+  { key: 'suricata', name: 'Suricata', img: ['/brands/suricata.png', 468] },
+  { key: 'xai', name: 'xAI', textOnly: true },
+  { key: 'elevenlabs', name: 'ElevenLabs' },
+  { key: 'greenbone', name: 'Greenbone', textOnly: true },
   { key: 'falco', name: 'Falco' },
-  { key: 'crowdsec', name: 'CrowdSec', textOnly: true },
+  { key: 'defectdojo', name: 'DefectDojo', textOnly: true },
+  { key: 'crowdsec', name: 'CrowdSec', img: ['/brands/crowdsec.png', 396] },
+  { key: 'dependencytrack', name: 'Dependency-Track', textOnly: true },
+  { key: 'openai', name: 'OpenAI' },
+  { key: 'grafana', name: 'Grafana', textOnly: true },
+  { key: 'thehive', name: 'TheHive' },
+  { key: 'nuclei', name: 'Nuclei', textOnly: true },
+  { key: 'perplexity', name: 'Perplexity' },
+  { key: 'zap', name: 'OWASP ZAP', textOnly: true },
   { key: 'trivy', name: 'Trivy' },
-  { key: 'thehive', name: 'TheHive', textOnly: true },
+  { key: 'entra', name: 'Microsoft Entra ID', textOnly: true },
+  { key: 'snowflake', name: 'Snowflake' },
+  { key: 'dependabot', name: 'Dependabot', textOnly: true },
+  { key: 'pinecone', name: 'Pinecone' },
   { key: 'owasp', name: 'OWASP' },
 ]
 
@@ -39,6 +52,8 @@ const CSS = `
 .rfi-int-track { -webkit-mask-image: none; }
 .rfi-int-logo { flex: none; margin: 0 48px; color: var(--text); display: flex; align-items: center; gap: 9px; pointer-events: none; user-select: none; }
 .rfi-int-logo span { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
+.rfi-int-logo img { display: block; width: auto; }
+.rfi-int-logo svg { fill: currentColor; }
 .rfi-int-line { text-align: center; margin: 26px 24px 0; font-size: var(--fs-small); font-weight: 600; color: var(--text); opacity: .8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
 @media (max-width: 760px) {
   .rfi-int { padding-top: 22px; }
@@ -63,17 +78,20 @@ export function IntegrationsSection() {
       <style>{CSS}</style>
       <div className="rfi-int-wrap">
         <div className="rfi-int-track">
-          {[0, 1, 2].flatMap(copy => LOGOS.map(({ key, name, textOnly }) => {
+          {[0, 1, 2].flatMap(copy => LOGOS.map(({ key, name, textOnly, img }) => {
             const b = BRANDS[key]
-            const mark = textOnly ? null : (
-              <svg role="img" fill="currentColor" aria-label={name} viewBox={b.vb} height={b.w > 7 ? 15 : H} width={Math.round((b.w > 7 ? 15 : H) * b.w)} className={b.w > 7 ? 'rfi-int-wide' : undefined}
+            const wide = !!b && b.w > 7
+            const mark = img ? (
+              <img src={img[0]} alt={name} height={img[1] > 420 ? 17 : 19} width={Math.round((img[1] > 420 ? 17 : 19) * img[1] / 64)} className="rfi-int-img" />
+            ) : textOnly ? null : (
+              <svg role="img" aria-label={name} viewBox={b.vb} height={wide ? 15 : H} width={Math.round((wide ? 15 : H) * b.w)} className={wide ? 'rfi-int-wide' : undefined}
                 dangerouslySetInnerHTML={{ __html: `<title>${name}</title>${b.body}` }} />
             )
             // Marks without a wordmark of their own get the name beside them.
             return (
               <div key={`${copy}-${key}`} className="rfi-int-logo" aria-hidden={copy ? true : undefined} {...(copy ? { 'data-dup': '' } : {})}>
-                {!textOnly && mark}
-                {(textOnly || b.w <= 1.3) && <span>{name}</span>}
+                {mark}
+                {(textOnly || (b && b.w <= 1.3)) && <span>{name}</span>}
               </div>
             )
           }))}

@@ -1092,7 +1092,7 @@ export const EN = {
     },
     howItConnects: {
       heading: 'How It Connects',
-      sub: 'What it looks like when agentic AI joins your workflow.',
+      sub: 'What it looks like when agentic AI joins your workflow. The connector catalog of The Squad already lists more than 100 apps you can plug in.',
       feedbackLabel: 'Feedback & updated context',
       zones: [
         { label: 'Your Systems', steps: [
@@ -1117,7 +1117,7 @@ export const EN = {
     },
     needToKnow: {
       heading: 'What do you need to know?',
-      sub: 'Six questions we hear most often, and which agent answers each one.',
+      sub: 'Six questions we hear most often. Each card names the agents that answer it, from tracking who is moving to scanning your attack surface.',
       cards: [
         { question: 'Who is moving?', body: 'Track markets, entities and attention in real time.', tags: ['argus', 'kopernikus', 'janus'] },
         { question: 'Is capital flowing?', body: 'Find grants, investors and funding opportunities.', tags: ['kopernikus', 'janus'] },

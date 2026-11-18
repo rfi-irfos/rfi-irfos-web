@@ -1060,7 +1060,7 @@ export const DE: Content = {
     },
     howItConnects: {
       heading: 'So bindet sich The Squad ein',
-      sub: 'So sieht es aus, wenn agentische KI in Ihren Arbeitsablauf einzieht.',
+      sub: 'So sieht es aus, wenn agentische KI in Ihren Arbeitsablauf einzieht. Der Connector-Katalog von The Squad führt bereits über 100 Apps, die sich einbinden lassen.',
       feedbackLabel: 'Feedback & aktualisierter Kontext',
       zones: [
         { label: 'Ihre Systeme', steps: [
@@ -1085,7 +1085,7 @@ export const DE: Content = {
     },
     needToKnow: {
       heading: 'Was müssen Sie wissen?',
-      sub: 'Sechs Fragen, die uns am häufigsten gestellt werden, und welcher Agent sie beantwortet.',
+      sub: 'Sechs Fragen, die uns am häufigsten gestellt werden. Jede Karte nennt die Agenten, die sie beantworten, von der Beobachtung bewegter Märkte bis zum Scan Ihrer Angriffsfläche.',
       cards: [
         { question: 'Wer bewegt sich?', body: 'Märkte, Entitäten und Aufmerksamkeit in Echtzeit verfolgen.', tags: ['argus', 'kopernikus', 'janus'] },
         { question: 'Fließt Kapital?', body: 'Förderungen, Investoren und Finanzierungsmöglichkeiten finden.', tags: ['kopernikus', 'janus'] },
