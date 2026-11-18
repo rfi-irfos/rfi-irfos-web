@@ -14,10 +14,9 @@ function GroupIcon({ kind, size = 20 }: { kind: 'software' | 'research' | 'repos
 }
 const GROUPS = [
   { title: 'Software', kind: 'software' as const, ic: 1, links: [
-    { label: 'lauras-core v0.2.0', href: 'https://crates.io/crates/lauras-core' },
-    { label: 'lauras-mcp v0.2.0', href: 'https://crates.io/crates/lauras-mcp' },
-    { label: 'lauras-api v0.2.0', href: 'https://crates.io/crates/lauras-api' },
-    { label: 'lauras-team v0.2.0', onRequest: true, href: 'https://crates.io/crates/lauras-team' },
+    { label: 'Core v0.2.0', href: 'https://crates.io/crates/lauras-core' },
+    { label: 'MCP v0.2.0', href: 'https://crates.io/crates/lauras-mcp' },
+    { label: 'API v0.2.0', href: 'https://crates.io/crates/lauras-api' },
   ] },
   { title: 'Research (OSF)', kind: 'research' as const, ic: 2, links: [
     { label: 'HC9ZB', href: 'https://doi.org/10.17605/OSF.IO/HC9ZB' },
@@ -25,8 +24,8 @@ const GROUPS = [
     { label: 'UXCJE', href: 'https://doi.org/10.17605/OSF.IO/UXCJE' },
   ] },
   { title: 'Repositories', kind: 'repos' as const, ic: 4, links: [
-    'call-laura', 'lauras-agents-public', 'coevolution-factory',
-  ].map(r => ({ label: r, href: GH + r })) },
+    ['call-laura', 'call-laura'], ['Agents Public', 'lauras-agents-public'], ['coevolution-factory', 'coevolution-factory'],
+  ].map(([label, repo]) => ({ label, href: GH + repo })) },
 ]
 
 function GithubMark({ size = 13 }: { size?: number }) {
@@ -87,25 +86,25 @@ export function CoopPartnersSection({
           </Reveal>
           <Reveal delay={3}>
             <div style={{
-              display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 10,
-              borderTop: '1px solid var(--border)', padding: '14px',
+              display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: mobile ? 6 : 10,
+              borderTop: '1px solid var(--border)', padding: mobile ? '10px' : '14px',
             }}>
               {GROUPS.map(g => (
                 <div key={g.title} className="fx-tile fx-tile--static" style={{
-                  padding: '26px 18px 22px', textAlign: 'center', borderRadius: 16, position: 'relative', overflow: 'hidden',
+                  padding: mobile ? '18px 6px 16px' : '26px 18px 22px', textAlign: 'center', borderRadius: mobile ? 12 : 16, position: 'relative', overflow: 'hidden',
                   ['--tile-hue' as string]: `var(--ib-${g.ic})`,
                 }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                    <span className="rfi-glass-icon rfi-icon-pop fx-icon3d" style={{ width: 44, height: 44, borderRadius: 13, ['--ib' as string]: `var(--ib-${g.ic})` }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: mobile ? 8 : 12, marginBottom: mobile ? 12 : 16 }}>
+                    <span className="rfi-glass-icon rfi-icon-pop fx-icon3d" style={{ width: mobile ? 36 : 44, height: mobile ? 36 : 44, borderRadius: mobile ? 11 : 13, ['--ib' as string]: `var(--ib-${g.ic})` }}>
                       <GroupIcon kind={g.kind} size={17} />
                     </span>
-                    <p style={{ fontSize: 'var(--fs-small)', fontWeight: 700, margin: 0, color: 'var(--text)' }}>{g.title}</p>
+                    <p style={{ fontSize: 'var(--fs-small)', fontWeight: 700, margin: 0, color: 'var(--text)', overflowWrap: 'anywhere' }}>{g.title}</p>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: mobile ? 6 : 7 }}>
                     {g.links.map(l => (
                       <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-                         style={{ fontSize: 'var(--fs-small)', color: 'var(--text)', textDecoration: 'none' }}>
-                        {l.label}{'onRequest' in l && l.onRequest ? ` ${t.coopPartners.onRequest}` : ''}
+                         style={{ fontSize: mobile ? 'var(--fs-label)' : 'var(--fs-small)', color: 'var(--text)', textDecoration: 'none', overflowWrap: 'anywhere' }}>
+                        {l.label}
                       </a>
                     ))}
                   </div>
