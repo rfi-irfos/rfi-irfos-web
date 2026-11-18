@@ -1114,6 +1114,7 @@ h1, h2, h3, .rfi-display {
             mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 28px), transparent 100%);
   }
   .rfi-topic-row::-webkit-scrollbar { display: none; }
+  .rfi-tier-track::-webkit-scrollbar { display: none; }
   .rfi-topic-row > a { scroll-snap-align: start; }
 }
 

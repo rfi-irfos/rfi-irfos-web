@@ -89,6 +89,10 @@ export const EN = {
     previewTitle: 'Dashboard preview',
     previewZoom: 'Click to enlarge',
     previewAlt: 'Demo dashboard of the customer portal with threat map, open findings and recent activity',
+    trustTitle: 'Trust Center',
+    trustLine: 'Your public security page for customers and auditors, included from Starter. Alpenshop is a fictional company.',
+    trustImage: '/login/trust-example-en.webp',
+    trustAlt: 'Example Trust Center of the fictional company Alpenshop with frameworks and confirmed controls',
   },
 
   hero: {

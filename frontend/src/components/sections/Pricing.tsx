@@ -41,7 +41,7 @@
 import { EngagementFlow, Reveal, useMobile } from './shared'
 import { useLocale, type Locale } from '../../hooks/useLocale'
 import { InitialReviewFlow } from './InitialReviewFlow'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { IconRadar, IconBolt, IconCode, IconUsers, IconStack2, IconCertificate, IconListCheck, IconLayoutDashboard } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { IconBulb, IconShieldLock, IconDatabase, IconTrendingUp, IconTerminal2 } from '@tabler/icons-react'
@@ -225,6 +225,27 @@ export function PricingSection({
   const tablet = useMobile(980)
   const [freeModalOpen, setFreeModalOpen] = useState(false)
   const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
+  // Small screens swipe through the plans instead of scrolling a six-card column (Simeon 2026-11-18):
+  // one scroll-snap track, the next card peeks in from the right, dots show the position.
+  const trackRef = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(0)
+  const cellCount = 1 + t.pricing.tiers.length
+  const syncActive = () => {
+    const track = trackRef.current
+    if (!track) return
+    const left = track.getBoundingClientRect().left
+    let best = 0, bestGap = Infinity
+    Array.from(track.children).forEach((cell, i) => {
+      const gap = Math.abs(cell.getBoundingClientRect().left - left)
+      if (gap < bestGap) { best = i; bestGap = gap }
+    })
+    setActive(best)
+  }
+  const goTo = (i: number) => {
+    const cell = trackRef.current?.children[i] as HTMLElement | undefined
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    cell?.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', inline: 'start', block: 'nearest' })
+  }
 
   return (
     <section id="pricing" style={{ padding: '56px var(--sec-pad-x) 120px' }}>
@@ -267,11 +288,22 @@ export function PricingSection({
             {/* fx-tiers (index.css, Simeon 2026-11-01): same depth as the Managed SOC card below,
                 solid lit edges instead of a border that faded into the dark. */}
             <div className="fx-tiers" style={{ borderRadius: 16, overflow: 'hidden' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: tablet ? '1fr' : 'repeat(5, 1fr)' }}>
+              <div
+                ref={trackRef}
+                className={tablet ? 'rfi-tier-track' : undefined}
+                onScroll={tablet ? syncActive : undefined}
+                tabIndex={tablet ? 0 : undefined}
+                role={tablet ? 'group' : undefined}
+                aria-roledescription={tablet ? 'carousel' : undefined}
+                aria-label={tablet ? t.pricing.heading : undefined}
+                style={tablet
+                  ? { display: 'flex', overflowX: 'auto', scrollSnapType: 'x mandatory', overscrollBehaviorX: 'contain', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }
+                  : { display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)' }}
+              >
                 <div style={{
                   scrollMarginTop: 84,
-                  borderRight: !tablet ? '1px solid var(--tiers-line)' : undefined,
-                  borderBottom: tablet ? '1px solid var(--tiers-line)' : undefined,
+                  borderRight: '1px solid var(--tiers-line)',
+                  ...(tablet ? { flex: '0 0 min(82%, 340px)', scrollSnapAlign: 'start' } : {}),
                 }}>
                   <FreeTierCard onOpen={() => setFreeModalOpen(true)} />
                 </div>
@@ -281,9 +313,9 @@ export function PricingSection({
                   return (
                     <div key={tier.name} id={`pricing-${slug}`} style={{
                       scrollMarginTop: 84,
-                      borderRight: !tablet && !last ? '1px solid var(--tiers-line)' : undefined,
-                      borderBottom: tablet && !last ? '1px solid var(--tiers-line)' : undefined,
+                      borderRight: !last ? '1px solid var(--tiers-line)' : undefined,
                       background: tier.popular ? 'rgba(242,80,31,0.07)' : undefined,
+                      ...(tablet ? { flex: '0 0 min(82%, 340px)', scrollSnapAlign: 'start' } : {}),
                     }}>
                       <TierCard tier={tier} billing={billing} onCheckout={onCheckout} />
                     </div>
@@ -292,6 +324,17 @@ export function PricingSection({
               </div>
 
             </div>
+
+              {tablet && (
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 4, marginTop: 6 }}>
+                  {Array.from({ length: cellCount }, (_, i) => (
+                    <button key={i} type="button" onClick={() => goTo(i)} aria-label={`${i + 1} / ${cellCount}`} aria-current={i === active ? 'true' : undefined}
+                      style={{ background: 'none', border: 'none', padding: 10, cursor: 'pointer', display: 'flex' }}>
+                      <span style={{ width: i === active ? 22 : 8, height: 8, borderRadius: 4, background: i === active ? 'var(--brand-orange)' : 'var(--text3)', transition: 'width 0.25s, background 0.25s' }} />
+                    </button>
+                  ))}
+                </div>
+              )}
 
               {/* Managed SOC band (Simeon 2026-11-01): the outsourced security department
                   for teams without in-house capacity, 24/7 monitoring, 1 h incident

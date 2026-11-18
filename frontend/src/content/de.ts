@@ -73,6 +73,10 @@ export const DE: Content = {
     previewTitle: 'Vorschau des Dashboards',
     previewZoom: 'Zum Vergrößern klicken',
     previewAlt: 'Demo-Dashboard des Kundenportals mit Bedrohungskarte, offenen Befunden und letzter Aktivität',
+    trustTitle: 'Trust Center',
+    trustLine: 'Ihre öffentliche Sicherheitsseite für Kunden und Prüfer, enthalten ab Starter. Alpenshop ist ein fiktives Unternehmen.',
+    trustImage: '/login/trust-example-de.webp',
+    trustAlt: 'Beispiel eines Trust Centers des fiktiven Unternehmens Alpenshop mit Standards und bestätigten Kontrollen',
   },
 
   hero: {

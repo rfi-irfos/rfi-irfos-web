@@ -32,9 +32,20 @@ const CSS = `
    wrapper because the button already uses transform for its hover lift. The Trust Center landing page turns its card the other way round. */
 @media (min-width: 960px) {
   .rfi-login-stage { perspective: 1800px; }
-  .rfi-login-tilt { width: min(100%, calc((100vh - 190px) * ${PREVIEW_RATIO.toFixed(3)})); transform-origin: 100% 50%; transform: rotateY(17deg) rotateX(5deg) rotateZ(1.5deg); }
+  .rfi-login-frame { position: relative; width: min(100%, calc((100vh - 190px) * ${PREVIEW_RATIO.toFixed(3)})); }
+  .rfi-login-tilt { width: 100%; transform-origin: 100% 50%; transform: rotateY(17deg) rotateX(5deg) rotateZ(1.5deg); }
   .rfi-login-tilt .rfi-login-shot { width: 100%; }
+  .rfi-login-trust { position: absolute; left: -3%; bottom: -7%; width: 25%; min-width: 220px; max-width: 300px; }
 }
+/* The Trust Center card (Simeon 18.11.): the one key feature hanging in front of the dashboard, not tilted, linked to the landing page. */
+.rfi-login-trust { display: block; overflow: hidden; color: #fff; text-decoration: none; background: rgba(16,13,13,0.9);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; box-shadow: 0 24px 60px rgba(0,0,0,0.65);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: border-color 0.2s ease, transform 0.2s ease; }
+.rfi-login-trust:hover, .rfi-login-trust:focus-visible { border-color: ${ACCENT}; transform: translateY(-2px); outline: none; }
+.rfi-login-trust img { display: block; width: 100%; height: auto; border-bottom: 1px solid rgba(255,255,255,0.12); }
+.rfi-login-trust-text { padding: 11px 14px 13px; }
+.rfi-login-trust-text b { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.rfi-login-trust-text span { display: block; font-size: 12px; line-height: 1.45; color: rgba(255,255,255,0.78); }
 .rfi-login-hint { position: absolute; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; padding: 6px 11px;
   font-size: 12px; font-weight: 600; color: #fff; background: rgba(12,10,10,0.78); border: 1px solid rgba(255,255,255,0.2);
   border-radius: 999px; backdrop-filter: blur(6px); }
@@ -55,7 +66,8 @@ const CSS = `
   .rfi-login-side > * { width: 100%; max-width: 420px; }
   .rfi-login-stage { padding: 28px 16px 40px; }
   .rfi-login-shot { width: 100%; }
-  .rfi-login-tilt { width: 100%; }
+  .rfi-login-frame { width: 100%; }
+  .rfi-login-trust { margin: 16px auto 0; max-width: 420px; }
 }
 `
 
@@ -63,6 +75,14 @@ function ExpandIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+    </svg>
+  )
+}
+
+function ShieldIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={ACCENT} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6l8-3z" /><path d="M9 12l2 2 4-4" />
     </svg>
   )
 }
@@ -144,11 +164,17 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
         </div>
 
         <div className="rfi-login-stage">
-          <div className="rfi-login-tilt">
-            <button type="button" className="rfi-login-shot" onClick={() => setZoom(true)} aria-label={`${c.previewTitle}: ${c.previewZoom}`} data-testid="login-preview">
-              <img src="/login/demo-dashboard-2026-11-13.webp" alt={c.previewAlt} width={1921} height={929} />
-              <span className="rfi-login-hint"><ExpandIcon />{c.previewZoom}</span>
-            </button>
+          <div className="rfi-login-frame">
+            <div className="rfi-login-tilt">
+              <button type="button" className="rfi-login-shot" onClick={() => setZoom(true)} aria-label={`${c.previewTitle}: ${c.previewZoom}`} data-testid="login-preview">
+                <img src="/login/demo-dashboard-2026-11-13.webp" alt={c.previewAlt} width={1921} height={929} />
+                <span className="rfi-login-hint"><ExpandIcon />{c.previewZoom}</span>
+              </button>
+            </div>
+            <a className="rfi-login-trust" href="https://trust.rfi-irfos.com/" target="_blank" rel="noopener" data-testid="login-trust-card">
+              <img src={c.trustImage} alt={c.trustAlt} width={1600} height={900} loading="lazy" />
+              <span className="rfi-login-trust-text"><b><ShieldIcon />{c.trustTitle}</b><span>{c.trustLine}</span></span>
+            </a>
           </div>
         </div>
       </div>
