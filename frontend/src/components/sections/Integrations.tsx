@@ -7,6 +7,7 @@ import { BRANDS } from './integrationBrandPaths'
 const LOGOS: { key: string; name: string; textOnly?: boolean }[] = [
   { key: 'github', name: 'GitHub' },
   { key: 'gitlab', name: 'GitLab' },
+  { key: 'anthropic', name: 'Anthropic' },
   { key: 'gcp', name: 'Google Cloud' },
   { key: 'aws', name: 'Amazon Web Services' },
   { key: 'azure', name: 'Microsoft Azure' },
@@ -15,9 +16,8 @@ const LOGOS: { key: string; name: string; textOnly?: boolean }[] = [
   { key: 'supabase', name: 'Supabase' },
   { key: 'n8n', name: 'n8n', textOnly: true },
   { key: 'mcp', name: 'MCP' },
-  { key: 'anthropic', name: 'Anthropic' },
-  { key: 'openai', name: 'OpenAI' },
   { key: 'opensearch', name: 'OpenSearch' },
+  { key: 'openai', name: 'OpenAI' },
   { key: 'falco', name: 'Falco' },
   { key: 'trivy', name: 'Trivy' },
   { key: 'owasp', name: 'OWASP' },

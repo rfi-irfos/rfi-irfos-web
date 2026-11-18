@@ -2165,7 +2165,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
                   opacity: bannerClosing ? 0 : 1,
                   transition: 'transform 0.24s ease-in, opacity 0.24s ease-in',
                   // Orange glow so the banner stands out until it is closed (Simeon 18.11.).
-                  boxShadow: '0 0 0 1px rgba(255,138,40,0.6), 0 0 26px 4px rgba(255,138,40,0.45), 0 0 90px 18px rgba(255,110,20,0.22)',
+                  boxShadow: '0 0 0 1px rgba(255,138,40,0.32), 0 0 18px 2px rgba(255,138,40,0.2), 0 0 64px 10px rgba(255,110,20,0.11)',
                 }}>
                   <p style={{ margin: 0, flex: '1 1 260px', fontSize: 'var(--fs-small)', color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 'var(--lh-body)' }}>
                     {t.cookieBanner.text}
