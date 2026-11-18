@@ -964,7 +964,7 @@ export const DE: Content = {
       emailPlaceholder: 'Ihre E-Mail-Adresse',
       submitIdle: 'Jetzt eintragen', submitSending: 'Wird gesendet...', submitOk: 'Eingetragen. Danke.',
       errorText: 'Auf unserer Seite ist etwas schiefgelaufen. Erreichen Sie uns stattdessen direkt:',
-      benefits: ['Zugang zu API & Data Feeds', 'Technische Dokumentation'],
+      benefits: ['Zugang zu API & Data Feeds', 'Technische Dokumentation', 'Persönliche Antwort von unserem Team'],
       formNote: 'Wir antworten per E-Mail. Kein Newsletter, keine Weitergabe.',
     },
   },

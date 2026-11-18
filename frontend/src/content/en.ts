@@ -996,7 +996,7 @@ export const EN = {
       emailPlaceholder: 'Your email address',
       submitIdle: 'Join the list', submitSending: 'Sending...', submitOk: 'Signed up. Thank you.',
       errorText: 'Something went wrong on our side. Reach us directly instead:',
-      benefits: ['API & data feed access', 'Technical documentation'],
+      benefits: ['API & data feed access', 'Technical documentation', 'Personal reply from our team'],
       formNote: 'We reply by email. No newsletter, no sharing.',
     },
   },
