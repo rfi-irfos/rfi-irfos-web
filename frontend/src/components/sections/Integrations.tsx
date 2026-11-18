@@ -1,0 +1,66 @@
+// "Integrates with" band under the hero (Simeon 18.11.): one slow row of logos, the line below. Each mark
+// is a tool the customer portal really connects (app/api/v1/integrations) and has a freely usable logo;
+// the others stay out until their owners' brand files are cleared. Marks are recoloured to the text colour.
+import { useLocale } from '../../hooks/useLocale'
+import { BRANDS } from './integrationBrandPaths'
+
+const LOGOS: { key: string; name: string }[] = [
+  { key: 'github', name: 'GitHub' },
+  { key: 'gitlab', name: 'GitLab' },
+  { key: 'gcp', name: 'Google Cloud' },
+  { key: 'aws', name: 'Amazon Web Services' },
+  { key: 'azure', name: 'Microsoft Azure' },
+  { key: 'k8s', name: 'Kubernetes' },
+  { key: 'opensearch', name: 'OpenSearch' },
+  { key: 'falco', name: 'Falco' },
+  { key: 'trivy', name: 'Trivy' },
+  { key: 'owasp', name: 'OWASP' },
+]
+
+const H = 26
+const CSS = `
+.rfi-int { padding: 30px 0 14px; overflow: hidden; position: relative; background: transparent; }
+.rfi-int-track { display: flex; width: max-content; align-items: center; animation: rfi-int-left 120s linear infinite;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+.rfi-int-wrap { -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+.rfi-int-track { -webkit-mask-image: none; }
+.rfi-int-logo { flex: none; margin: 0 48px; color: var(--text); opacity: .6; display: flex; align-items: center; gap: 9px; pointer-events: none; user-select: none; }
+.rfi-int-logo span { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
+.rfi-int-line { text-align: center; margin: 26px 24px 0; font-size: var(--fs-small); font-weight: 500; color: var(--text2); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+@keyframes rfi-int-left { to { transform: translateX(-33.3333%); } }
+@media (prefers-reduced-motion: reduce) {
+  .rfi-int-wrap { -webkit-mask-image: none; mask-image: none; }
+  .rfi-int-track { animation: none; width: auto; flex-wrap: wrap; justify-content: center; row-gap: 22px; }
+  .rfi-int-track [data-dup] { display: none; }
+}
+`
+
+export function IntegrationsSection() {
+  const { locale } = useLocale()
+  const line = locale === 'de' ? 'Integriert mit' : 'Integrates with'
+  return (
+    <section className="rfi-int" aria-label={line}>
+      <style>{CSS}</style>
+      <div className="rfi-int-wrap">
+        <div className="rfi-int-track">
+          {[0, 1, 2].flatMap(copy => LOGOS.map(({ key, name }) => {
+            const b = BRANDS[key]
+            const mark = (
+              <svg role="img" fill="currentColor" aria-label={name} viewBox={b.vb} height={H} width={Math.round(H * b.w)}
+                dangerouslySetInnerHTML={{ __html: `<title>${name}</title>${b.body}` }} />
+            )
+            // Marks without a wordmark of their own get the name beside them.
+            return (
+              <div key={`${copy}-${key}`} className="rfi-int-logo" aria-hidden={copy ? true : undefined} {...(copy ? { 'data-dup': '' } : {})}>
+                {mark}
+                {b.w <= 1.3 && <span>{name}</span>}
+              </div>
+            )
+          }))}
+        </div>
+      </div>
+      <p className="rfi-int-line">{line}</p>
+    </section>
+  )
+}

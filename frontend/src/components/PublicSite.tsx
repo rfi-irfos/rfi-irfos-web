@@ -21,6 +21,7 @@ type ProofModule = typeof import('./sections/Proof')
 import { NavMegaMenu, type MegaMenuKey } from './NavMegaMenu'
 import { ScrollSpine } from './sections/Spine'
 import { AppPrivacySection } from './sections/AppPrivacy'
+import { IntegrationsSection } from './sections/Integrations'
 import { WorldModelSection } from './sections/WorldModel'
 import { SquadSection } from './sections/Squad'
 import { PricingSection } from './sections/Pricing'
@@ -313,6 +314,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
   const { locale, setLocale, t } = useLocale()
   // /?login=open opens the customer portal window (not ?portal=: index.html reads any query starting with p as an encoded path) (link back from the Trust Center landing page, 2026-11-18). The parameter is removed on mount.
   const [socModalOpen, setSocModalOpen] = useState(false)
+  const [earlyModalOpen, setEarlyModalOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('login') === 'open')
   const NAV_LINKS = NAV_HREFS.map(n => ({ key: n.key, label: t.nav.links[n.key], href: n.href }))
   const [view, setView] = useState<PublicView>(() => viewForSection(initialSection))
@@ -1771,6 +1773,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
       <main id="main-content" tabIndex={-1} className={leftFirstView.current ? 'rfi-view-stage' : 'rfi-view-stage rfi-view-stage--first'} key={view}>
         {view === 'home' && <>
           <HeroSection mobile={mobile} theme={theme} />
+          <IntegrationsSection />
           <AppPrivacySection />
           <CoopPartnersSection mobile={mobile} />
           <SubmitSection mobile={mobile} tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} />
@@ -1783,7 +1786,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
         </div>}
 
         {view === 'world-model' && <section id="world-model" className="rfi-view-panel">
-          <WorldModelSection />
+          <WorldModelSection onRequestEarlyAccess={() => { beacon('world_model_early_access_open'); setTipForm(p => ({ ...p, topic: 'Early Access' })); setTipFormState(st => (st === 'sending' ? st : 'idle')); setEarlyModalOpen(true) }} />
         </section>}
 
         {view === 'squad' && <section id="squad" className="rfi-view-panel">
@@ -2194,6 +2197,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
       )}
 
       {socModalOpen && <ManagedSocModal tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} onClose={() => setSocModalOpen(false)} />}
+      {earlyModalOpen && <ManagedSocModal tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} onClose={() => setEarlyModalOpen(false)} title={t.worldModel.earlyAccess.cta} sub={t.worldModel.earlyAccess.formNote} testId="early-access-modal" />}
       {loginOpen && <LoginPreview t={t} onClose={() => setLoginOpen(false)} onRequestAccess={() => handleCheckout('review_starter')} busy={checkoutLoading === 'review_starter'} />}
     </div>
   )

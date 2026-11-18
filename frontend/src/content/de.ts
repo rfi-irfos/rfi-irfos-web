@@ -958,6 +958,7 @@ export const DE: Content = {
       ],
     },
     earlyAccess: {
+      cta: 'Early Access anfragen',
       heading: 'Early Access für API & Data Feeds',
       sub: 'Sie möchten DINGIR in Ihren Prozessen testen oder regelmäßig auf unsere Weltmodell-Daten zugreifen? Tragen Sie sich in die Early-Access-Liste ein.',
       emailPlaceholder: 'Ihre E-Mail-Adresse',

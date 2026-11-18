@@ -283,7 +283,8 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       // minHeight keeps the hero at its pre-2026-10-10 size (live: 551px at 2133x964) now that the KPI row is gone, then trimmed 64px (~1.7cm) off the bottom, and another ~36px on 2026-11-01.
       minHeight: 'clamp(300px, calc(57vh - 190px), 500px)',
       alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
-      padding: 'calc(36px + 6vh) var(--sec-pad-x) 34px',
+      // Top padding +24px (Simeon 18.11.): the text sits centred between the nav pill and the end of the hero.
+      padding: 'calc(47px + 6vh) var(--sec-pad-x) 10px',
       // Tint gradient only - the actual photo is the dedicated zoom layer below,
       // not this section's own background. Kept as a tint (not a full photo) for
       // text legibility over whatever's showing through it. Tried tuning a

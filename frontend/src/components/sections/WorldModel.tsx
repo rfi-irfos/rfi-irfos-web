@@ -14,7 +14,7 @@ import {
   IconMessage2, IconMountain, IconRobot, IconRoute, IconShieldLock, IconShip, IconSnowflake, IconTrain,
   IconWorld, IconX,
 } from '@tabler/icons-react'
-import { Reveal, OUTPUT_TAG_HUES, beacon, pageZoom, FilmPanel } from './shared'
+import { Reveal, OUTPUT_TAG_HUES, pageZoom, FilmPanel } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
 // Stable URL (Lighthouse R88), see Squad.tsx: the watch page /world-model/film/ links the same file.
@@ -406,40 +406,15 @@ function UseCasesGrid() {
   )
 }
 
-type EarlyAccessState = 'idle' | 'sending' | 'ok' | 'err'
-
-function EarlyAccessForm() {
+// Early access (Simeon 18.11.): a clean request card. The button opens the same pop-up as the Managed SOC
+// band (PublicSite.tsx), so the enquiry goes through the contact form's relay with the topic "Early Access".
+function EarlyAccessCard({ onRequest }: { onRequest: () => void }) {
   const { t } = useLocale()
   const e = t.worldModel.earlyAccess
-  const [email, setEmail] = useState('')
-  const [botcheck, setBotcheck] = useState('')
-  const [state, setState] = useState<EarlyAccessState>('idle')
-
-  async function submit(ev: React.FormEvent) {
-    ev.preventDefault()
-    if (botcheck) { setState('ok'); return } // honeypot: silently no-op, same convention as the contact form
-    setState('sending')
-    try {
-      const res = await fetch('/api/early-access', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, botcheck }),
-      })
-      if (!res.ok) throw new Error(String(res.status))
-      beacon('world_model_early_access_signup')
-      setState('ok')
-      setEmail('')
-    } catch {
-      setState('err')
-    }
-  }
-
   return (
     <div className="wm-wrap wm-early-narrow">
       <Reveal>
         <div className="wm-early wm-card">
-          {/* Simeon 02.11. ("schaut chaotisch aus"): icon and heading share one row, the copy stays
-              on the left, the form box on the right holds the field, the benefits under it and one note. */}
           <div className="wm-early-copy">
             <div className="wm-early-head">
               <div className="wm-compare-icon wm-early-icon"><IconMail size={20} stroke={1.7} /></div>
@@ -447,39 +422,19 @@ function EarlyAccessForm() {
             </div>
             <p>{e.sub}</p>
           </div>
-          <form className="wm-early-form" onSubmit={submit}>
-            <div className="wm-early-row">
-              <input
-                type="email" autoComplete="email" required placeholder={e.emailPlaceholder} value={email}
-                onChange={ev => setEmail(ev.target.value)} disabled={state === 'sending' || state === 'ok'}
-              />
-              <button type="submit" className="wm-btn-primary" disabled={state === 'sending' || state === 'ok'}>
-                {state === 'sending' ? e.submitSending : state === 'ok' ? <IconCircleCheck size={16} /> : e.submitIdle}
-              </button>
-            </div>
+          <div className="wm-early-form">
             <ul className="wm-early-benefits">
               {e.benefits.map(b => <li key={b}><IconCircleCheck size={16} />{b}</li>)}
             </ul>
-            <span className="wm-early-note">{e.formNote}</span>
-            {/* Honeypot, same pattern as SubmitSection: hidden from real visitors, only an
-                automated filler that submits every field populates it. */}
-            <input type="text" name="company" value={botcheck} onChange={ev => setBotcheck(ev.target.value)}
-              tabIndex={-1} autoComplete="off" aria-hidden="true"
-              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
-            {state === 'ok' && <span style={{ color: 'var(--accent-text)', fontSize: 'var(--fs-small)', fontWeight: 700 }}>{e.submitOk}</span>}
-            {state === 'err' && (
-              <span style={{ color: 'var(--text2)', fontSize: 'var(--fs-small)' }}>
-                {e.errorText} <a href="mailto:contact@rfi-irfos.com" style={{ color: 'var(--accent-text)' }}><IconMail size={12} style={{ verticalAlign: -1 }} /> contact@rfi-irfos.com</a>
-              </span>
-            )}
-          </form>
+            <button type="button" className="wm-btn-primary wm-early-cta" data-testid="early-access-request" onClick={onRequest}>{e.cta}</button>
+          </div>
         </div>
       </Reveal>
     </div>
   )
 }
 
-export function WorldModelSection() {
+export function WorldModelSection({ onRequestEarlyAccess }: { onRequestEarlyAccess: () => void }) {
   const { t } = useLocale()
   const w = t.worldModel
   const scrollToApi = () => document.querySelector('.wm-early')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -520,7 +475,7 @@ export function WorldModelSection() {
         </div>
       </section>
       <section className="wm-section"><UseCasesGrid /></section>
-      <section className="wm-section wm-section--last"><EarlyAccessForm /></section>
+      <section className="wm-section wm-section--last"><EarlyAccessCard onRequest={onRequestEarlyAccess} /></section>
     </div>
   )
 }

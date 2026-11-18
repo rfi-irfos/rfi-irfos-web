@@ -990,6 +990,7 @@ export const EN = {
       ],
     },
     earlyAccess: {
+      cta: 'Request early access',
       heading: 'Early access to the API & data feeds',
       sub: 'Want to run DINGIR against your own processes, or get regular access to our world-model data? Join the early-access list.',
       emailPlaceholder: 'Your email address',

@@ -6,7 +6,10 @@ import { useLocale } from '../../hooks/useLocale'
 import { FormStateIcon, TEAL } from './shared'
 import { Field, INPUT, type TipForm } from './Submit'
 
-export function ManagedSocModal({ tipForm, setTipForm, tipFormState, submitTip, onClose }: {
+export function ManagedSocModal({ tipForm, setTipForm, tipFormState, submitTip, onClose, title, sub, testId = 'managed-soc-modal' }: {
+  title?: string
+  sub?: string
+  testId?: string
   tipForm: TipForm
   setTipForm: (updater: (p: TipForm) => TipForm) => void
   tipFormState: 'idle' | 'sending' | 'ok' | 'err'
@@ -35,13 +38,13 @@ export function ManagedSocModal({ tipForm, setTipForm, tipFormState, submitTip, 
   }, [tipFormState, onClose])
 
   return (
-    <div className="rfi-req-overlay" onMouseDown={e => { if (e.target === e.currentTarget) onClose() }} data-testid="managed-soc-modal">
+    <div className="rfi-req-overlay" onMouseDown={e => { if (e.target === e.currentTarget) onClose() }} data-testid={testId}>
       <div className="rfi-req-panel fx-panel" role="dialog" aria-modal="true" aria-labelledby="managed-soc-modal-title">
         <button type="button" className="rfi-req-close" onClick={onClose} aria-label={t.login.close} title={t.login.close}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
         </button>
-        <h2 id="managed-soc-modal-title" style={{ fontSize: 'clamp(1.35rem, 2.2vw, 1.75rem)', margin: '0 0 6px', lineHeight: 1.15, color: 'var(--text)' }}>{m.cta}</h2>
-        <p style={{ margin: '0 0 22px', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text)' }}>{m.price}</p>
+        <h2 id="managed-soc-modal-title" style={{ fontSize: 'clamp(1.35rem, 2.2vw, 1.75rem)', margin: sub ? '0 0 6px' : '0 0 22px', lineHeight: 1.15, color: 'var(--text)' }}>{title ?? m.cta}</h2>
+        {sub && <p style={{ margin: '0 0 22px', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text2)' }}>{sub}</p>}
         <form onSubmit={submitTip} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
             value={tipForm.botcheck} onChange={e => setTipForm(p => ({ ...p, botcheck: e.target.value }))}
