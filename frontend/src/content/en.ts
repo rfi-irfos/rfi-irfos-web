@@ -1200,7 +1200,7 @@ export const EN = {
       },
       company: {
         heading: 'Company',
-        links: { freeCheck: 'Quick Check', pricing: 'Pricing', team: 'Team', careers: 'Careers', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok' },
+        links: { freeCheck: 'Quick Check', pricing: 'Pricing', team: 'Team', careers: 'Careers', docs: 'Docs', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok' },
       },
       research: {
         heading: 'Research',

@@ -1168,7 +1168,7 @@ export const DE: Content = {
       },
       company: {
         heading: 'Unternehmen',
-        links: { freeCheck: 'Quick Check', pricing: 'Preise', team: 'Team', careers: 'Karriere', ternlang: 'ternlang.com', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok' },
+        links: { freeCheck: 'Quick Check', pricing: 'Preise', team: 'Team', careers: 'Karriere', docs: 'Docs', github: 'github.com/rfi-irfos', linkedin: 'LinkedIn', youtube: 'YouTube', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok' },
       },
       research: {
         heading: 'Forschung',

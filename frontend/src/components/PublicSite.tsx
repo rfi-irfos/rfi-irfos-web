@@ -1867,7 +1867,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
                 Standards - the group this footer's own data already calls
                 `t.footer.groups.legal`) plus the WKO badge/tagline/copyright block
                 that was already living in this same column; Company (team/careers/
-                ternlang/github) and Research (anchors + methodology) collapse out,
+                docs/github) and Research (anchors + methodology) collapse out,
                 and the entire right-side Systems/Repositories/Crates directory
                 below is skipped outright (see `{!mobile && (...)}` further down) -
                 that whole grid is internal tooling/repo sprawl, not anything a
@@ -1896,7 +1896,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
                     { label: t.footer.groups.company.links.pricing, href: '/access/' },
                     { label: t.footer.groups.company.links.team, href: '/team/' },
                     { label: t.footer.groups.company.links.careers, href: 'mailto:career@rfi-irfos.com' },
-                    { label: t.footer.groups.company.links.ternlang, href: 'https://ternlang.com' },
+                    { label: t.footer.groups.company.links.docs, href: 'https://docs.rfi-irfos.com' },
                     // Social profiles (LinkedIn, YouTube, Instagram, Facebook, TikTok, GitHub) live in the
                     // icon row below (Simeon 2026-11-10: "brauchts ja diese extra links nicht"); the back-links
                     // Lighthouse R83 asked for are still there, as rel="me" anchors.
