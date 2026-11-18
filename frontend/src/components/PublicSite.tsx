@@ -310,7 +310,8 @@ const BREADCRUMB_BY_VIEW: Partial<Record<PublicView, { navKey: keyof Content['na
 
 export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }: { initialSection?: string | null; initialReportSlug?: string | null; initialDocSlug?: string | null } = {}) {
   const { locale, setLocale, t } = useLocale()
-  const [loginOpen, setLoginOpen] = useState(false)
+  // /?login=open opens the customer portal window (not ?portal=: index.html reads any query starting with p as an encoded path) (link back from the Trust Center landing page, 2026-11-18). The parameter is removed on mount.
+  const [loginOpen, setLoginOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('login') === 'open')
   const NAV_LINKS = NAV_HREFS.map(n => ({ key: n.key, label: t.nav.links[n.key], href: n.href }))
   const [view, setView] = useState<PublicView>(() => viewForSection(initialSection))
   // The chapter slide-in only plays on real view changes. On the first view it would fade
@@ -887,6 +888,14 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
       setCheckoutLoading(null)
     }
   }
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('login') !== 'open') return
+    params.delete('login')
+    const rest = params.toString()
+    window.history.replaceState(null, '', window.location.pathname + (rest ? `?${rest}` : '') + window.location.hash)
+  }, [])
 
   // Deep link from the Trust Center landing page (trust.rfi-irfos.com, 2026-11-18): /?checkout=starter starts the same Starter purchase as
   // "Get access" in the portal sign-in window. Only that one value is honoured. The parameter is removed first, so a reload or the back

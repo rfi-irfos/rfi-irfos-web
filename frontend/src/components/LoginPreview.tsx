@@ -36,7 +36,7 @@ const CSS = `
   .rfi-login-frame { position: relative; flex: none; width: min(100%, calc((100vh - 80px) * ${PREVIEW_RATIO.toFixed(3)})); }
   .rfi-login-tilt { width: 100%; }
   .rfi-login-tilt .rfi-login-shot { width: 100%; }
-  .rfi-login-trust { position: absolute; right: -18px; bottom: -22px; width: clamp(260px, 22vw, 380px); }
+  .rfi-login-trust { position: absolute; right: -18px; bottom: -38px; width: clamp(260px, 22vw, 380px); }
 }
 /* The Trust Center card (Simeon 18.11.): the one key feature hanging in front of the dashboard, linked to the landing page, green mark. */
 .rfi-login-trust { display: block; overflow: hidden; color: #fff; text-decoration: none; background: rgba(16,13,13,0.9);
@@ -45,22 +45,27 @@ const CSS = `
 .rfi-login-trust:hover, .rfi-login-trust:focus-visible { border-color: ${ACCENT}; transform: translateY(-2px); outline: none; }
 .rfi-login-trust img { display: block; width: 100%; height: auto; border-bottom: 1px solid rgba(255,255,255,0.12); }
 .rfi-login-trust-text { display: block; padding: 13px 16px 15px; }
-.rfi-login-trust-text b { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.rfi-login-trust-text b { display: flex; align-items: center; gap: 8px; position: relative; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.rfi-login-trust-arrow { margin-left: auto; flex: none; transition: transform 0.25s ease; }
+.rfi-login-trust:hover .rfi-login-trust-arrow, .rfi-login-trust:focus-visible .rfi-login-trust-arrow { transform: translateX(3px); }
 .rfi-login-trust-text span { display: block; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.78); }
 .rfi-login-hint { position: absolute; left: 12px; top: 10px; display: flex; align-items: center; gap: 6px; padding: 6px 11px;
   font-size: 12px; font-weight: 600; color: #fff; background: rgba(12,10,10,0.78); border: 1px solid rgba(255,255,255,0.2);
   border-radius: 999px; backdrop-filter: blur(6px); }
-/* Smooth switch (Simeon 11.11.): the screen fades in, the side panel slides in from the left and the
-   preview rises a little behind it; closing fades out before the screen is removed. */
-.rfi-login { animation: rfi-login-in 0.3s cubic-bezier(.4, 0, .2, 1) both; }
-.rfi-login.is-closing { animation: rfi-login-out 0.2s cubic-bezier(.4, 0, .2, 1) both; pointer-events: none; }
-.rfi-login-side { animation: rfi-login-side-in 0.45s cubic-bezier(.2, .7, .2, 1) both; }
-.rfi-login-stage { animation: rfi-login-stage-in 0.55s 0.08s cubic-bezier(.2, .7, .2, 1) both; }
+/* Smooth switch (Simeon 11.11., slower and staged 18.11.): first only the background picture, then the side panel slides in, the preview rises
+   behind it and last the Trust Center card settles on its corner; closing fades out before the screen is removed. The card keeps its fill mode
+   at "backwards" so the hover lift is not frozen by the finished animation. */
+.rfi-login { animation: rfi-login-in 0.6s cubic-bezier(.4, 0, .2, 1) both; }
+.rfi-login.is-closing { animation: rfi-login-out 0.25s cubic-bezier(.4, 0, .2, 1) both; pointer-events: none; }
+.rfi-login-side { animation: rfi-login-side-in 0.95s 0.5s cubic-bezier(.2, .7, .2, 1) both; }
+.rfi-login-stage { animation: rfi-login-stage-in 1s 0.8s cubic-bezier(.2, .7, .2, 1) both; }
+.rfi-login-trust { animation: rfi-login-card-in 0.9s 1.45s cubic-bezier(.2, .7, .2, 1) backwards; }
 @keyframes rfi-login-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes rfi-login-out { from { opacity: 1; } to { opacity: 0; } }
-@keyframes rfi-login-side-in { from { opacity: 0; transform: translateX(-26px); } to { opacity: 1; transform: none; } }
-@keyframes rfi-login-stage-in { from { opacity: 0; transform: translateY(16px) scale(0.985); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .rfi-login, .rfi-login.is-closing, .rfi-login-side, .rfi-login-stage { animation: none; } }
+@keyframes rfi-login-side-in { from { opacity: 0; transform: translateX(-44px); } to { opacity: 1; transform: none; } }
+@keyframes rfi-login-stage-in { from { opacity: 0; transform: translateY(22px) scale(0.985); } to { opacity: 1; transform: none; } }
+@keyframes rfi-login-card-in { from { opacity: 0; transform: translateY(26px) scale(0.95); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .rfi-login, .rfi-login.is-closing, .rfi-login-side, .rfi-login-stage, .rfi-login-trust { animation: none; } }
 @media (max-width: 959px) {
   .rfi-login-grid { grid-template-columns: minmax(0, 1fr); }
   .rfi-login-side { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 64px 24px 32px; align-items: center; }
@@ -76,6 +81,14 @@ function ExpandIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+    </svg>
+  )
+}
+
+function ArrowIcon() {
+  return (
+    <svg className="rfi-login-trust-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 12h14M13 6l6 6-6 6" />
     </svg>
   )
 }
@@ -173,7 +186,7 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
             </div>
             <a className="rfi-login-trust" href="https://trust.rfi-irfos.com/" target="_blank" rel="noopener" data-testid="login-trust-card">
               <img src={c.trustImage} alt={c.trustAlt} width={1600} height={900} loading="lazy" />
-              <span className="rfi-login-trust-text"><b><ShieldIcon />{c.trustTitle}</b><span>{c.trustLine}</span></span>
+              <span className="rfi-login-trust-text"><b><ShieldIcon />{c.trustTitle}<ArrowIcon /></b><span>{c.trustLine}</span></span>
             </a>
           </div>
         </div>
