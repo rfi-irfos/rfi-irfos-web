@@ -139,13 +139,13 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
           <label htmlFor={`${fid}-domain`} style={labelStyle}>{labelIcon('M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c2.500 2.500 3.800 5.500 3.800 9s-1.300 6.500-3.800 9c-2.500-2.500-3.800-5.500-3.800-9S9.500 5.500 12 3z')}{c.domainLabel}</label>
           <input id={`${fid}-domain`} name="domain" type="text" inputMode="url" autoComplete="url" autoCapitalize="none" autoCorrect="off" spellCheck={false} required placeholder={wide ? c.domainLabel : c.domainPlaceholder} value={domain}
             onChange={e => setDomain(e.target.value)}
-            className="fx-input" style={{ width: '100%', minWidth: 0, borderRadius: 12, padding: wide ? '13px 16px 13px 46px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 15 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+            className="fx-input irf-ph" style={{ width: '100%', minWidth: 0, borderRadius: 12, padding: wide ? '13px 16px 13px 46px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 15 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
         </div>
         <div style={fieldRow}>
           <label htmlFor={`${fid}-email`} style={labelStyle}>{labelIcon('M3 6h18v12H3zM3 7l9 6 9-6')}{c.emailLabel}</label>
           <input id={`${fid}-email`} name="email" autoComplete="email" type="email" required placeholder={wide ? c.emailLabel : c.emailPlaceholder} value={email}
             onChange={e => setEmail(e.target.value)}
-            className="fx-input" style={{ width: '100%', minWidth: 0, borderRadius: 12, padding: wide ? '13px 16px 13px 46px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 15 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+            className="fx-input irf-ph" style={{ width: '100%', minWidth: 0, borderRadius: 12, padding: wide ? '13px 16px 13px 46px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 15 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
         </div>
         </div>
         <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>

@@ -11,6 +11,8 @@ const LOGOS: { key: string; name: string }[] = [
   { key: 'aws', name: 'Amazon Web Services' },
   { key: 'azure', name: 'Microsoft Azure' },
   { key: 'k8s', name: 'Kubernetes' },
+  { key: 'sap', name: 'SAP' },
+  { key: 'mcp', name: 'MCP' },
   { key: 'opensearch', name: 'OpenSearch' },
   { key: 'falco', name: 'Falco' },
   { key: 'trivy', name: 'Trivy' },
@@ -25,7 +27,7 @@ const CSS = `
 .rfi-int-wrap { -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
 .rfi-int-track { -webkit-mask-image: none; }
-.rfi-int-logo { flex: none; margin: 0 48px; color: var(--text); opacity: .6; display: flex; align-items: center; gap: 9px; pointer-events: none; user-select: none; }
+.rfi-int-logo { flex: none; margin: 0 48px; color: var(--text); opacity: .8; display: flex; align-items: center; gap: 9px; pointer-events: none; user-select: none; }
 .rfi-int-logo span { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
 .rfi-int-line { text-align: center; margin: 26px 24px 0; font-size: var(--fs-small); font-weight: 600; color: var(--text); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
 @keyframes rfi-int-left { to { transform: translateX(-33.3333%); } }
