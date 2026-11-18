@@ -76,7 +76,7 @@ export const EN = {
   login: {
     navLabel: 'Customer portal',
     title: 'Customer portal',
-    lead: 'Your SOC dashboard, findings and reports in one place.',
+    lead: 'Your SOC dashboard, findings and reports in one place, from compliance to fixes engineered down to the code, plus a public Trust Center that shows your customers where you stand.',
     emailLabel: 'Email',
     emailPlaceholder: 'name@company.com',
     passwordLabel: 'Password',

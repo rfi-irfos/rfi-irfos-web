@@ -60,7 +60,7 @@ export const DE: Content = {
   login: {
     navLabel: 'Kundenportal',
     title: 'Kundenportal',
-    lead: 'Ihr SOC-Dashboard, Befunde und Berichte an einem Ort.',
+    lead: 'Ihr SOC-Dashboard, Befunde und Berichte an einem Ort, von der Compliance bis zu Fixes bis in den Code, dazu ein öffentliches Trust Center, das Ihren Kunden zeigt, wo Sie stehen.',
     emailLabel: 'E-Mail',
     emailPlaceholder: 'name@unternehmen.at',
     passwordLabel: 'Passwort',
