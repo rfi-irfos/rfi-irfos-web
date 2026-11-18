@@ -38,7 +38,7 @@ export const EN = {
     },
     access: {
       title: 'App Security Audit Pricing & Quick Check · RFI-IRFOS',
-      description: 'Security audit plans for your app or API: defined scope, written evidence report, retest of fixed findings included. Plus a read-only Quick Check of your domain.',
+      description: 'Security audit plans for apps and APIs: evidence report, retests, customer portal, Trust Center and compliance checks. Pay online, start within minutes.',
     },
     worldModel: {
       title: 'World Model: Evidence Graph Across 20+ Domains · RFI-IRFOS',

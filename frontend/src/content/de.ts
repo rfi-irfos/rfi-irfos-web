@@ -24,7 +24,7 @@ export const DE: Content = {
     },
     access: {
       title: 'Preise App-Sicherheitsprüfung & Quick Check · RFI-IRFOS',
-      description: 'Pläne für Sicherheitsaudits Ihrer App oder API: klarer Umfang, Bericht mit Belegen, Nachtest inklusive. Dazu ein Quick Check Ihrer Domain, ausschließlich lesend.',
+      description: 'Sicherheitsaudits für Apps und APIs: Bericht mit Belegen, Nachtests, Kundenportal, Trust Center und Compliance-Prüfungen. Online bezahlen, in Minuten starten.',
     },
     worldModel: {
       title: 'Weltmodell: Evidenzgraph über 20+ Domänen · RFI-IRFOS',

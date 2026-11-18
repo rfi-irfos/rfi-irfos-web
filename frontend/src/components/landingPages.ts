@@ -828,7 +828,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
   'compliance-automation': {
     en: {
       title: 'Compliance Automation: NIS2, ISO 27001, SOC 2 · RFI-IRFOS',
-      description: 'We map findings and evidence to the controls of NIS2, ISO 27001 and SOC 2. Your auditor audits, we deliver the evidence. From RFI-IRFOS in Graz.',
+      description: 'We map findings and evidence to the controls of NIS2, ISO 27001 and SOC 2 in the customer portal. Pay online, start within minutes. Your auditor audits.',
       label: 'Compliance Automation',
       h1: 'Compliance Automation for NIS2, ISO 27001 and SOC 2',
       lead: 'Audits ask for evidence. We map the findings and evidence from our reviews to the controls of NIS2, ISO 27001 and SOC 2, so your auditor receives them sorted by control. Seven more frameworks follow the same method, from DORA to the EU AI Act. Your auditor audits, we deliver the evidence.',
@@ -886,7 +886,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
     },
     de: {
       title: 'Compliance-Automatisierung: NIS2 und SOC 2 · RFI-IRFOS',
-      description: 'Wir ordnen Befunde und Belege den Kontrollen von NIS2, ISO 27001 und SOC 2 zu. Ihre Prüfstelle prüft, wir liefern die Belege. Aus Graz.',
+      description: 'Wir ordnen Befunde und Belege im Kundenportal den Kontrollen von NIS2, ISO 27001 und SOC 2 zu. Online bezahlen, in Minuten starten. Ihre Prüfstelle prüft.',
       label: 'Compliance-Automatisierung',
       h1: 'Compliance-Automatisierung für NIS2, ISO 27001 und SOC 2',
       lead: 'Audits verlangen Belege. Wir ordnen die Befunde und Belege aus unseren Prüfungen den Kontrollen von NIS2, ISO 27001 und SOC 2 zu, damit Ihre Prüfstelle sie nach Kontrollen sortiert erhält. Sieben weitere Rahmenwerke folgen derselben Methode, von DORA bis zum EU AI Act. Ihre Prüfstelle prüft, wir liefern die Belege.',
