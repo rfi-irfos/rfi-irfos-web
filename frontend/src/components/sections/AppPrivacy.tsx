@@ -111,28 +111,58 @@ export function AppPrivacySection() {
               its blur bleeds across the grid gap - without this, the later grid item wins paint
               order by default and the glow sits in front of this card's edge). */}
           <div className="fx-panel irf-scope-band" style={{ position: 'relative', zIndex: 1, minWidth: 0, borderRadius: 20, padding: phone ? 18 : 28 }}>
-            <div ref={stepsRef} style={{ display: 'grid', gridTemplateColumns: phone ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 18, marginBottom: 28, alignItems: 'start' }}>
-              {c.steps.map((s, i) => (
+            <div ref={stepsRef} style={{ display: 'grid', gridTemplateColumns: phone ? '1fr' : 'repeat(4, 1fr)', gap: phone ? 0 : 18, marginBottom: 28, alignItems: 'start' }}>
+              {c.steps.map((s, i) => {
+                const last = i === c.steps.length - 1
+                const filled = i < completedSegments || (flowPhase === 'filling' && i === active)
+                const circle = (
+                  <span style={{ position: 'relative', zIndex: 1, width: 38, height: 38, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 'var(--fs-body)', flexShrink: 0, transition: 'all 0.4s', transform: active === i ? 'scale(1.12)' : 'scale(1)',
+                        background: i <= active ? 'var(--accent-text)' : 'var(--bg2)', color: i <= active ? '#02110d' : 'var(--text2)',
+                        border: '1px solid ' + (i <= active ? 'var(--accent-text)' : 'var(--border)'),
+                        boxShadow: active === i ? '0 0 0 4px color-mix(in srgb, var(--accent-text) 12%, transparent), 0 0 26px color-mix(in srgb, var(--accent-text) 55%, transparent)' : i < active ? '0 0 12px color-mix(in srgb, var(--accent-text) 25%, transparent)' : 'inset 0 1px 0 rgba(255,255,255,0.08)' }}>{i + 1}</span>
+                )
+                const title = <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', color: active === i ? 'var(--accent-text)' : 'var(--text)', marginBottom: 4, transition: 'color 0.4s' }}>{s.title}</div>
+                const text = <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: '#e8e8f0', textShadow: '0 0 12px rgba(232,232,240,0.12)' }}>{s.text}</div>
+                return (
                 <Reveal key={s.title} delay={i}>
+                  {phone ? (
+                    // Phones (Simeon 18.11.): one column as a vertical timeline, a line runs from step to step and the lock sits beside the last title.
+                    <div role="button" tabIndex={0} onClick={() => pick(i)} aria-pressed={active === i}
+                      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(i) } }}
+                      style={{ cursor: 'pointer', textAlign: 'left', display: 'flex', gap: 14 }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+                        {circle}
+                        {!last && <span style={{ position: 'relative', width: 2, flex: 1, minHeight: 20, margin: '-2px 0', background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
+                          <span style={{ display: 'block', width: '100%', height: '100%', background: 'var(--accent-text)', transformOrigin: 'top', transform: filled ? 'scaleY(1)' : 'scaleY(0)', transition: 'transform 1.1s ease-in-out' }} />
+                        </span>}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0, paddingBottom: last ? 0 : 22 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, minHeight: 38 }}>
+                          {title}
+                          {last && <FinishLock reached={finishReached} />}
+                        </div>
+                        {text}
+                      </div>
+                    </div>
+                  ) : (
                   <div role="button" tabIndex={0} onClick={() => pick(i)} aria-pressed={active === i}
                     onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(i) } }}
                     style={{ cursor: 'pointer', textAlign: 'left' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                      <span style={{ position: 'relative', zIndex: 1, width: 38, height: 38, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 'var(--fs-body)', flexShrink: 0, transition: 'all 0.4s', transform: active === i ? 'scale(1.12)' : 'scale(1)',
-                        background: i <= active ? 'var(--accent-text)' : 'var(--bg2)', color: i <= active ? '#02110d' : 'var(--text2)',
-                        border: '1px solid ' + (i <= active ? 'var(--accent-text)' : 'var(--border)'),
-                        boxShadow: active === i ? '0 0 0 4px color-mix(in srgb, var(--accent-text) 12%, transparent), 0 0 26px color-mix(in srgb, var(--accent-text) 55%, transparent)' : i < active ? '0 0 12px color-mix(in srgb, var(--accent-text) 25%, transparent)' : 'inset 0 1px 0 rgba(255,255,255,0.08)' }}>{i + 1}</span>
-                      {!phone && <span style={{ position: 'relative', zIndex: 0, marginLeft: -8, marginRight: i === c.steps.length - 1 ? -8 : -18, flex: 1, height: 2, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
-                        <span style={{ display: 'block', height: '100%', background: 'var(--accent-text)', transformOrigin: 'left', transform: i < completedSegments || (flowPhase === 'filling' && i === active) ? 'scaleX(1)' : 'scaleX(0)', transition: 'transform 1.1s ease-in-out' }} />
-                      </span>}
+                      {circle}
+                      <span style={{ position: 'relative', zIndex: 0, marginLeft: -8, marginRight: last ? -8 : -18, flex: 1, height: 2, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
+                        <span style={{ display: 'block', height: '100%', background: 'var(--accent-text)', transformOrigin: 'left', transform: filled ? 'scaleX(1)' : 'scaleX(0)', transition: 'transform 1.1s ease-in-out' }} />
+                      </span>
                       {/* Finish lock after the last step (Simeon 18.11.): stands open while the steps fill up, closes and shows a green check at the end. */}
-                      {i === c.steps.length - 1 && !phone && <FinishLock reached={finishReached} />}
+                      {last && <FinishLock reached={finishReached} />}
                     </div>
-                    <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', color: active === i ? 'var(--accent-text)' : 'var(--text)', marginBottom: 4, transition: 'color 0.4s' }}>{s.title}</div>
-                    <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: '#e8e8f0', textShadow: '0 0 12px rgba(232,232,240,0.12)' }}>{s.text}</div>
+                    {title}
+                    {text}
                   </div>
+                  )}
                 </Reveal>
-              ))}
+                )
+              })}
             </div>
 
             {/* Each column gets its own centred label in the first row, so the scope rows and the evidence
