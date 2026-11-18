@@ -1958,10 +1958,13 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
                         navigateTo(target)
                         return
                       }
-                      if (target === 'track-record') {
+                      // The footer link is /evidence/ since the Evidence rename (the old 'track-record'
+                      // slug alone left this click on the generic pushState path below, which changed
+                      // the URL but never the view: Simeon 18.11.2026, "Ledger lädt nicht mehr").
+                      if (target === 'evidence' || target === 'track-record') {
                         e.preventDefault()
                         navigateTo(target)
-                        requestAnimationFrame(() => document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+                        requestAnimationFrame(() => document.getElementById('track-record')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
                         return
                       }
                       // Client-side into a legal page too now (2026-08-19, live
