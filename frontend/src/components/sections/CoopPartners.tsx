@@ -1,5 +1,6 @@
 // "Research Cooperation" / coop partner section (`#coop-partners`) - extracted
 // verbatim from PublicSite.tsx.
+import { useState } from 'react'
 import { Reveal } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 
@@ -18,7 +19,7 @@ const GROUPS = [
     { label: 'MCP v0.2.0', href: 'https://crates.io/crates/lauras-mcp' },
     { label: 'API v0.2.0', href: 'https://crates.io/crates/lauras-api' },
   ] },
-  { title: 'Research (OSF)', kind: 'research' as const, ic: 2, links: [
+  { title: 'Research', kind: 'research' as const, ic: 2, links: [
     { label: 'HC9ZB', href: 'https://doi.org/10.17605/OSF.IO/HC9ZB' },
     { label: 'QCVJB', href: 'https://doi.org/10.17605/OSF.IO/QCVJB' },
     { label: 'UXCJE', href: 'https://doi.org/10.17605/OSF.IO/UXCJE' },
@@ -27,6 +28,40 @@ const GROUPS = [
     ['call-laura', 'call-laura'], ['Agents Public', 'lauras-agents-public'], ['coevolution-factory', 'coevolution-factory'],
   ].map(([label, repo]) => ({ label, href: GH + repo })) },
 ]
+
+// Each tile is a small widget of its own (Simeon 18.11.): closed it shows the big icon with its title, a tap slides the whole
+// content up inside the same window and the link list takes its place, a second tap slides it back.
+function GroupCard({ g, mobile }: { g: (typeof GROUPS)[number]; mobile: boolean }) {
+  const [open, setOpen] = useState(false)
+  const ease = 'transform 0.6s cubic-bezier(.3,.7,.2,1)'
+  return (
+    <div className="fx-tile fx-tile--static" role="button" tabIndex={0} aria-expanded={open}
+      onClick={() => setOpen(o => !o)}
+      onKeyDown={e => { if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); setOpen(o => !o) } }}
+      style={{
+        position: 'relative', overflow: 'hidden', height: mobile ? 150 : 170, cursor: 'pointer', textAlign: 'center', borderRadius: mobile ? 12 : 16,
+        ['--tile-hue' as string]: `var(--ib-${g.ic})`,
+      }}>
+      <div style={{ height: '200%', transform: open ? 'translateY(-50%)' : 'none', transition: ease }}>
+        <div style={{ height: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: mobile ? 10 : 12 }}>
+          <span className="rfi-glass-icon rfi-icon-pop fx-icon3d" style={{ width: mobile ? 52 : 62, height: mobile ? 52 : 62, borderRadius: mobile ? 15 : 18, ['--ib' as string]: `var(--ib-${g.ic})` }}>
+            <GroupIcon kind={g.kind} size={mobile ? 22 : 26} />
+          </span>
+          <p style={{ fontSize: mobile ? 'var(--fs-small)' : 'var(--fs-body)', fontWeight: 700, margin: 0, color: 'var(--text)', whiteSpace: 'nowrap' }}>{g.title}</p>
+        </div>
+        <div aria-hidden={!open} style={{ height: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: mobile ? 9 : 10, padding: '0 6px' }}>
+          {g.links.map(l => (
+            <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" tabIndex={open ? 0 : -1}
+              onClick={e => e.stopPropagation()}
+              style={{ fontSize: mobile ? 'var(--fs-label)' : 'var(--fs-small)', color: 'var(--text)', textDecoration: 'none', overflowWrap: 'anywhere' }}>
+              {l.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function GithubMark({ size = 13 }: { size?: number }) {
   return (
@@ -89,27 +124,7 @@ export function CoopPartnersSection({
               display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: mobile ? 6 : 10,
               borderTop: '1px solid var(--border)', padding: mobile ? '10px' : '14px',
             }}>
-              {GROUPS.map(g => (
-                <div key={g.title} className="fx-tile fx-tile--static" style={{
-                  padding: mobile ? '18px 6px 16px' : '26px 18px 22px', textAlign: 'center', borderRadius: mobile ? 12 : 16, position: 'relative', overflow: 'hidden',
-                  ['--tile-hue' as string]: `var(--ib-${g.ic})`,
-                }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: mobile ? 8 : 12, marginBottom: mobile ? 12 : 16 }}>
-                    <span className="rfi-glass-icon rfi-icon-pop fx-icon3d" style={{ width: mobile ? 36 : 44, height: mobile ? 36 : 44, borderRadius: mobile ? 11 : 13, ['--ib' as string]: `var(--ib-${g.ic})` }}>
-                      <GroupIcon kind={g.kind} size={17} />
-                    </span>
-                    <p style={{ fontSize: 'var(--fs-small)', fontWeight: 700, margin: 0, color: 'var(--text)', overflowWrap: 'anywhere' }}>{g.title}</p>
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: mobile ? 6 : 7 }}>
-                    {g.links.map(l => (
-                      <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-                         style={{ fontSize: mobile ? 'var(--fs-label)' : 'var(--fs-small)', color: 'var(--text)', textDecoration: 'none', overflowWrap: 'anywhere' }}>
-                        {l.label}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              ))}
+              {GROUPS.map(g => <GroupCard key={g.title} g={g} mobile={mobile} />)}
             </div>
           </Reveal>
         </div>
