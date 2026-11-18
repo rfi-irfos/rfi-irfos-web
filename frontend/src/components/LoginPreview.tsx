@@ -14,7 +14,7 @@ const TRUST_GREEN = '#4fbf86'
 export const PORTAL_LOGIN_URL = 'https://portal.rfi-irfos.com/login'
 const FONT = "'Plus Jakarta Sans', system-ui, sans-serif"
 // demo-dashboard.webp is 1918x926: the preview is capped so the whole picture fits the window height.
-const PREVIEW_RATIO = 1918 / 926
+const PREVIEW_RATIO = 1920 / 929
 
 const CSS = `
 .rfi-login { position: fixed; inset: 0; z-index: 9999; overflow-y: auto; font-family: ${FONT}; color: #fff;
@@ -192,7 +192,7 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
           <div className="rfi-login-frame">
             <div className="rfi-login-tilt">
               <button type="button" className="rfi-login-shot" onClick={() => setZoom(true)} aria-label={`${c.previewTitle}: ${c.previewZoom}`} data-testid="login-preview">
-                <img src="/login/demo-dashboard-2026-11-13.webp" alt={c.previewAlt} width={1921} height={929} />
+                <img src="/login/demo-dashboard-2026-11-18.webp" alt={c.previewAlt} width={1920} height={929} />
                 <span className="rfi-login-hint"><ExpandIcon />{c.previewZoom}</span>
               </button>
             </div>
@@ -209,7 +209,7 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
           <button type="button" className="rfi-login-zoom-close" onClick={() => setZoom(false)} aria-label={c.close}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
           </button>
-          <img src="/login/demo-dashboard-2026-11-13.webp" alt={c.previewAlt} width={1921} height={929} />
+          <img src="/login/demo-dashboard-2026-11-18.webp" alt={c.previewAlt} width={1920} height={929} />
         </div>
       )}
     </div>

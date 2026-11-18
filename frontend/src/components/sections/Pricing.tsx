@@ -41,7 +41,6 @@
 import { EngagementFlow, Reveal, useMobile } from './shared'
 import { useLocale, type Locale } from '../../hooks/useLocale'
 import { InitialReviewFlow } from './InitialReviewFlow'
-import { PORTAL_LOGIN_URL } from '../LoginPreview'
 import { useRef, useState } from 'react'
 import { IconRadar, IconBolt, IconCode, IconUsers, IconStack2, IconCertificate, IconListCheck, IconLayoutDashboard } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -217,9 +216,10 @@ function NeedSomethingElseRow({ domains, onSelectTier }: { domains: PricingDomai
 }
 
 export function PricingSection({
-  onSelectTier, onCheckout,
+  onSelectTier, onCheckout, onOpenLogin,
 }: {
   onSelectTier: (tier: string) => void
+  onOpenLogin: () => void
   onCheckout: (stripeKey: string) => void
 }) {
   const { t } = useLocale()
@@ -349,10 +349,10 @@ export function PricingSection({
                     <button type="button" className="fx-cta-teal" onClick={() => onSelectTier('Managed SOC')} style={{ color: '#070711', border: 'none', padding: '12px 22px', borderRadius: 10, fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
                       {t.pricing.managedSoc.cta}
                     </button>
-                    {/* Simeon 18.11.: a visitor who looks for the customer portal finds the sign-in here as well. */}
-                    <a href={PORTAL_LOGIN_URL} data-testid="managed-soc-sign-in" style={{ color: 'var(--text)', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.28)', padding: '12px 22px', borderRadius: 10, fontWeight: 700, fontSize: 'var(--fs-body)', textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                      {t.login.signIn}
-                    </a>
+                    {/* Simeon 18.11.: a visitor who looks for the customer portal gets the window with sign-in and access here as well. */}
+                    <button type="button" onClick={onOpenLogin} aria-haspopup="dialog" data-testid="managed-soc-sign-in" style={{ color: 'var(--text)', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.28)', padding: '12px 22px', borderRadius: 10, fontWeight: 700, fontSize: 'var(--fs-body)', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                      {t.login.requestPortalAccess}
+                    </button>
                     <span style={{ fontSize: 'var(--fs-small)', color: 'var(--text)' }}>{t.pricing.managedSoc.price}</span>
                   </div>
                 </div>

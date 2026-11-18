@@ -1813,7 +1813,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
         </section>}
 
         {view === 'access' && <section id="access" className="rfi-view-panel">
-          <PricingSection onSelectTier={selectTier} onCheckout={handleCheckout} />
+          <PricingSection onSelectTier={selectTier} onCheckout={handleCheckout} onOpenLogin={() => setLoginOpen(true)} />
         </section>}
       </main>
 

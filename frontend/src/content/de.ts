@@ -65,6 +65,7 @@ export const DE: Content = {
     emailPlaceholder: 'name@unternehmen.at',
     passwordLabel: 'Passwort',
     signIn: 'Zum Portal anmelden',
+    requestPortalAccess: 'Zugang zum Portal anfragen',
     signInNote: 'Bereits Kunde? Nutzen Sie das Konto aus Ihrer Einladungsmail.',
     requestAccess: 'Zugang erhalten',
     accessNote: 'Starter-Tarif, 99 \u20ac pro Monat. Die Einladung kommt direkt nach der Zahlung per E-Mail.',
@@ -84,7 +85,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    sub: 'Wir machen fortschrittliche Cyber-Sicherheit für Startups, SMEs und wachsende Unternehmen zugänglich, indem unsere eigens entwickelten Agenten tausende potenzielle Angriffswege untersuchen und erfahrene Spezialisten daraus gezielte technische Lösungen entwickeln.',
+    sub: 'Wir machen fortschrittliche Cyber-Sicherheit für Startups, SMEs und wachsende Unternehmen zugänglich, indem unsere eigens entwickelten Agenten tausende potenzielle Angriffswege untersuchen und erfahrene Spezialisten daraus gezielte technische Lösungen bis in den Code entwickeln.',
     stats: {
       researchAreas: 'Fachbereiche',
       researchAreasSub: 'kombiniert',

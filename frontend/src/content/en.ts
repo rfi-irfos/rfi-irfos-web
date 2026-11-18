@@ -81,6 +81,7 @@ export const EN = {
     emailPlaceholder: 'name@company.com',
     passwordLabel: 'Password',
     signIn: 'Sign in to the portal',
+    requestPortalAccess: 'Request access to the portal',
     signInNote: 'Already a customer? Use the account from your invitation email.',
     requestAccess: 'Get access',
     accessNote: 'Starter plan, \u20ac99 per month. Your invitation arrives by email right after payment.',
@@ -101,7 +102,7 @@ export const EN = {
     subtitlePrefix: 'Interdisciplinary',
     subtitleSuffix: ' Research Facility for Open Sciences',
     // Short line under the headline (Simeon 11.11.): what we do, in two sentences. Moved here from the "What we do best" intro.
-    sub: 'We give startups, SMEs and growing enterprises access to advanced cybersecurity capabilities by deploying purpose-built agents across thousands of potential attack paths, with experienced specialists engineering actionable solutions.',
+    sub: 'We give startups, SMEs and growing enterprises access to advanced cybersecurity capabilities by deploying purpose-built agents across thousands of potential attack paths, with experienced specialists engineering actionable solutions down to the code.',
     stats: {
       researchAreas: 'research domains',
       researchAreasSub: 'combined',
