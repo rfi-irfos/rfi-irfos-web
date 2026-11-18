@@ -36,7 +36,7 @@ const CSS = `
   .rfi-login-frame { position: relative; flex: none; width: min(100%, calc((100vh - 80px) * ${PREVIEW_RATIO.toFixed(3)})); }
   .rfi-login-tilt { width: 100%; }
   .rfi-login-tilt .rfi-login-shot { width: 100%; }
-  .rfi-login-trust { position: absolute; right: 20px; bottom: 20px; width: clamp(260px, 22vw, 380px); }
+  .rfi-login-trust { position: absolute; right: 8px; bottom: 6px; width: clamp(260px, 22vw, 380px); }
 }
 /* The Trust Center card (Simeon 18.11.): the one key feature hanging in front of the dashboard, linked to the landing page, green mark. */
 .rfi-login-trust { display: block; overflow: hidden; color: #fff; text-decoration: none; background: rgba(16,13,13,0.9);
