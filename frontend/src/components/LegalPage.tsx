@@ -464,6 +464,11 @@ function ImpressumEN() {
       Editorial line: independent publication of research results on the privacy and security of software, including the public disclosure ledger, and information about the institute's work.
     </p>
 
+    <h2 style={H2}>Trademarks and Logos</h2>
+    <p style={P}>
+      All product names, company names and logos mentioned on this website are the property of their respective owners. They appear only to describe which systems our software works with. This does not imply a partnership, certification or endorsement by the owners. The logo drawings come from the public-domain collections simple-icons and Gil Barbara's logos (both CC0 1.0).
+    </p>
+
     <h2 style={H2}>Consumer Dispute Resolution</h2>
     <p style={P}>
       We are neither obligated nor willing to participate in dispute resolution proceedings before a consumer arbitration board, as we contract exclusively with businesses. This is not us dodging accountability, it is the accurate legal consequence of running a B2B-only operation (see our Terms).
@@ -549,6 +554,11 @@ function ImpressumDE() {
       Medieninhaber: Research Focus Institute — Interdisciplinary Research Facility for Open Sciences (RFI-IRFOS), Sitz Graz, Anschrift wie oben.<br />
       Vereinsvorstand: Simeon-Andreas Johann Manfred Kepp (Obmann) und Louis Ehrig (Kassier). Laut Statuten vertreten beide den Verein gemeinsam nach außen.<br />
       Grundlegende Richtung: unabhängige Veröffentlichung von Forschungsergebnissen zu Datenschutz und Sicherheit von Software, einschließlich des öffentlichen Offenlegungs-Ledgers, sowie Information über die Arbeit des Instituts.
+    </p>
+
+    <h2 style={H2}>Marken und Logos</h2>
+    <p style={P}>
+      Alle auf dieser Website genannten Produkt- und Firmennamen sowie Logos sind Eigentum ihrer jeweiligen Inhaber. Sie erscheinen ausschließlich, um zu beschreiben, mit welchen Systemen unsere Software zusammenarbeitet. Daraus folgt keine Partnerschaft, Zertifizierung oder Billigung durch die Inhaber. Die Logo-Zeichnungen stammen aus den gemeinfreien Sammlungen simple-icons und Gil Barbaras Logos (beide CC0 1.0).
     </p>
 
     <h2 style={H2}>Verbraucherschlichtung</h2>

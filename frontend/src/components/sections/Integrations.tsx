@@ -1,23 +1,24 @@
 // "Integrates with" band under the hero (Simeon 18.11.): one slow row of logos, the line below. Each mark
 // is a tool the customer portal really connects (app/api/v1/integrations) and has a freely usable logo;
-// the others stay out until their owners' brand files are cleared. Marks are recoloured to the text colour.
+// the others stay out until their owners' brand files are cleared. Marks are recoloured to the text colour; brands whose
+// guidelines forbid recolouring (AWS, Azure, Google Cloud, SAP) appear as plain text names (Simeon 18.11.).
 import { useLocale } from '../../hooks/useLocale'
 import { BRANDS } from './integrationBrandPaths'
 
-const LOGOS: { key: string; name: string; textOnly?: boolean }[] = [
+const LOGOS: { key: string; name: string; textOnly?: boolean; pure?: boolean }[] = [
   { key: 'github', name: 'GitHub' },
   { key: 'gitlab', name: 'GitLab' },
-  { key: 'anthropic', name: 'Anthropic' },
-  { key: 'gcp', name: 'Google Cloud' },
-  { key: 'aws', name: 'Amazon Web Services' },
-  { key: 'azure', name: 'Microsoft Azure' },
+  { key: 'anthropic', name: 'Anthropic', pure: true },
+  { key: 'gcp', name: 'Google Cloud', textOnly: true },
+  { key: 'aws', name: 'AWS', textOnly: true },
+  { key: 'azure', name: 'Microsoft Azure', textOnly: true },
   { key: 'k8s', name: 'Kubernetes' },
-  { key: 'sap', name: 'SAP' },
+  { key: 'sap', name: 'SAP', textOnly: true },
   { key: 'supabase', name: 'Supabase' },
   { key: 'n8n', name: 'n8n', textOnly: true },
   { key: 'mcp', name: 'MCP' },
   { key: 'opensearch', name: 'OpenSearch' },
-  { key: 'openai', name: 'OpenAI' },
+  { key: 'openai', name: 'OpenAI', pure: true },
   { key: 'falco', name: 'Falco' },
   { key: 'trivy', name: 'Trivy' },
   { key: 'owasp', name: 'OWASP' },
@@ -57,7 +58,7 @@ export function IntegrationsSection() {
       <style>{CSS}</style>
       <div className="rfi-int-wrap">
         <div className="rfi-int-track">
-          {[0, 1, 2].flatMap(copy => LOGOS.map(({ key, name, textOnly }) => {
+          {[0, 1, 2].flatMap(copy => LOGOS.map(({ key, name, textOnly, pure }) => {
             const b = BRANDS[key]
             const mark = (
               <svg role="img" fill="currentColor" aria-label={name} viewBox={b.vb} height={b.w > 7 ? 15 : H} width={Math.round((b.w > 7 ? 15 : H) * b.w)} className={b.w > 7 ? 'rfi-int-wide' : undefined}
@@ -65,7 +66,7 @@ export function IntegrationsSection() {
             )
             // Marks without a wordmark of their own get the name beside them.
             return (
-              <div key={`${copy}-${key}`} className="rfi-int-logo" aria-hidden={copy ? true : undefined} {...(copy ? { 'data-dup': '' } : {})}>
+              <div key={`${copy}-${key}`} className="rfi-int-logo" style={pure ? { opacity: 1 } : undefined} aria-hidden={copy ? true : undefined} {...(copy ? { 'data-dup': '' } : {})}>
                 {!textOnly && mark}
                 {(textOnly || b.w <= 1.3) && <span>{name}</span>}
               </div>
