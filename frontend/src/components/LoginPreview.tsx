@@ -10,6 +10,7 @@ import type { Content } from '../content/en'
 // independent of the site theme.
 
 const ACCENT = '#f2501f'
+const TRUST_GREEN = '#4fbf86'
 const PORTAL_LOGIN_URL = 'https://portal.rfi-irfos.com/login'
 const FONT = "'Plus Jakarta Sans', system-ui, sans-serif"
 // demo-dashboard.webp is 1918x926: the preview is capped so the whole picture fits the window height.
@@ -28,25 +29,24 @@ const CSS = `
   box-shadow: 0 30px 80px rgba(0,0,0,0.6); transition: transform 0.2s ease, border-color 0.2s ease; }
 .rfi-login-shot:hover, .rfi-login-shot:focus-visible { transform: translateY(-2px); border-color: ${ACCENT}; outline: none; }
 .rfi-login-shot img { display: block; width: 100%; height: auto; }
-/* Wide windows (Simeon 18.11.): the preview is turned in perspective, left edge toward the viewer, the right edge receding. The tilt sits on this
-   wrapper because the button already uses transform for its hover lift. The Trust Center landing page turns its card the other way round. */
+/* Wide windows (Simeon 18.11.): the preview stays straight and fills the stage; the Trust Center card hangs in its lower right corner.
+   The frame carries the card, so both keep their place at every window size. */
 @media (min-width: 960px) {
-  .rfi-login-stage { position: relative; perspective: 1800px; overflow: hidden; padding: 40px 0 40px 36px; justify-content: flex-start; }
-  /* The turned picture needs less room, so it is drawn larger than the stage and its receding right edge runs off the screen. */
-  .rfi-login-frame { flex: none; width: min(calc(100% + 150px), calc((100vh - 70px) * ${PREVIEW_RATIO.toFixed(3)} * 1.12)); }
-  .rfi-login-tilt { width: 100%; transform-origin: 100% 50%; transform: rotateY(8deg) rotateX(2.5deg) rotateZ(0.7deg); }
+  .rfi-login-stage { position: relative; overflow: hidden; padding: 40px 40px 40px 36px; }
+  .rfi-login-frame { position: relative; flex: none; width: min(100%, calc((100vh - 80px) * ${PREVIEW_RATIO.toFixed(3)})); }
+  .rfi-login-tilt { width: 100%; }
   .rfi-login-tilt .rfi-login-shot { width: 100%; }
-  .rfi-login-trust { position: absolute; right: 26px; bottom: 26px; width: clamp(210px, 15vw, 270px); }
+  .rfi-login-trust { position: absolute; right: 20px; bottom: 20px; width: clamp(260px, 22vw, 380px); }
 }
-/* The Trust Center card (Simeon 18.11.): the one key feature hanging in front of the dashboard, not tilted, linked to the landing page. */
+/* The Trust Center card (Simeon 18.11.): the one key feature hanging in front of the dashboard, linked to the landing page, green mark. */
 .rfi-login-trust { display: block; overflow: hidden; color: #fff; text-decoration: none; background: rgba(16,13,13,0.9);
   border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; box-shadow: 0 24px 60px rgba(0,0,0,0.65);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: border-color 0.2s ease, transform 0.2s ease; }
 .rfi-login-trust:hover, .rfi-login-trust:focus-visible { border-color: ${ACCENT}; transform: translateY(-2px); outline: none; }
 .rfi-login-trust img { display: block; width: 100%; height: auto; border-bottom: 1px solid rgba(255,255,255,0.12); }
-.rfi-login-trust-text { display: block; padding: 11px 14px 13px; }
-.rfi-login-trust-text b { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-.rfi-login-trust-text span { display: block; font-size: 12px; line-height: 1.45; color: rgba(255,255,255,0.78); }
+.rfi-login-trust-text { display: block; padding: 13px 16px 15px; }
+.rfi-login-trust-text b { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.rfi-login-trust-text span { display: block; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.78); }
 .rfi-login-hint { position: absolute; left: 12px; top: 10px; display: flex; align-items: center; gap: 6px; padding: 6px 11px;
   font-size: 12px; font-weight: 600; color: #fff; background: rgba(12,10,10,0.78); border: 1px solid rgba(255,255,255,0.2);
   border-radius: 999px; backdrop-filter: blur(6px); }
@@ -82,7 +82,7 @@ function ExpandIcon() {
 
 function ShieldIcon() {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={ACCENT} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={TRUST_GREEN} strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6l8-3z" /><path d="M9 12l2 2 4-4" />
     </svg>
   )
