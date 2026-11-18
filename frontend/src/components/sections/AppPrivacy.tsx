@@ -153,7 +153,7 @@ export function AppPrivacySection() {
                 card still start and end on the same lines (Simeon 01.11. + 03.11.). On phones the DOM order
                 (label, rows, label, card) stacks each label over its own column. */}
             <div style={{ borderTop: '1px solid var(--border)', paddingTop: 28, display: 'grid', gridTemplateColumns: phone ? '1fr' : 'minmax(0, 0.9fr) minmax(0, 1fr)', gridTemplateRows: phone ? undefined : 'auto 1fr', columnGap: 24, rowGap: 12 }}>
-              <p style={{ fontSize: 'var(--fs-small)', fontWeight: 600, color: 'var(--text2)', margin: 0, textAlign: 'center', gridColumn: phone ? undefined : 1, gridRow: phone ? undefined : 1 }}>{c.scopeLabel}</p>
+              <p style={{ fontSize: 'var(--fs-small)', fontWeight: 600, color: 'var(--text)', margin: 0, textAlign: 'center', gridColumn: phone ? undefined : 1, gridRow: phone ? undefined : 1 }}>{c.scopeLabel}</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, gridColumn: phone ? undefined : 1, gridRow: phone ? undefined : 2 }}>
                 {c.scope.map((row, i) => (
                   <Reveal key={row.title} delay={i + 1} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -161,13 +161,13 @@ export function AppPrivacySection() {
                       <span className="rfi-glass-icon" style={{ ...tile, color: `var(--ic-${i + 1})`, borderColor: `color-mix(in srgb, var(--ic-${i + 1}) 38%, transparent)` }}>{SCOPE_ICONS[i]}</span>
                       <div style={{ minWidth: 0 }}>
                         <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', color: 'var(--text)' }}>{row.title}</div>
-                        <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text2)', marginTop: 2 }}>{row.text}</div>
+                        <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text)', marginTop: 2 }}>{row.text}</div>
                       </div>
                     </div>
                   </Reveal>
                 ))}
               </div>
-              <p style={{ fontSize: 'var(--fs-small)', fontWeight: 600, color: 'var(--text2)', margin: phone ? '16px 0 0' : 0, textAlign: 'center', gridColumn: phone ? undefined : 2, gridRow: phone ? undefined : 1 }}>{c.evidenceLabel}</p>
+              <p style={{ fontSize: 'var(--fs-small)', fontWeight: 600, color: 'var(--text)', margin: phone ? '16px 0 0' : 0, textAlign: 'center', gridColumn: phone ? undefined : 2, gridRow: phone ? undefined : 1 }}>{c.evidenceLabel}</p>
               <Reveal delay={2} style={{ height: '100%', gridColumn: phone ? undefined : 2, gridRow: phone ? undefined : 2 }}>
                 <div className="fx-evidence irf-evidence-band" style={{ borderRadius: 18, padding: 22, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box' }}>
                   <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 16 }}>
@@ -180,7 +180,7 @@ export function AppPrivacySection() {
                     </span>
                     <div>
                       <div style={{ fontWeight: 700, fontSize: 'var(--fs-lead)', lineHeight: 1.3, color: 'var(--text)' }}>{c.report.title}</div>
-                      {c.report.sub && <div style={{ fontSize: 'var(--fs-small)', color: 'var(--text2)' }}>{c.report.sub}</div>}
+                      {c.report.sub && <div style={{ fontSize: 'var(--fs-small)', color: 'var(--text)' }}>{c.report.sub}</div>}
                     </div>
                   </div>
                   <ul style={{ listStyle: 'none', margin: 0, padding: '0 0 0 18px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
@@ -189,7 +189,7 @@ export function AppPrivacySection() {
                         <span aria-hidden style={{ color: 'var(--evidence-check, var(--accent-text))', fontWeight: 700, fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', flexShrink: 0, marginLeft: 6 }}>✓</span>
                         <div>
                           <div style={{ fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-tight)', fontWeight: 700, color: 'var(--text)' }}>{item.title}</div>
-                          <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text2)', marginTop: 3 }}>{item.text}</div>
+                          <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text)', marginTop: 3 }}>{item.text}</div>
                         </div>
                       </li>
                     ))}

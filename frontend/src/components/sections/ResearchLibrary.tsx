@@ -47,10 +47,7 @@ function DocCard({ doc, onOpen }: { doc: ResearchDoc; onOpen: (slug: string) => 
           fontWeight: 900, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-tight)', display: '-webkit-box',
           WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden',
         }}>{doc.title[locale]}</div>
-        <p style={{
-          color: 'var(--text2)', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', flex: 1, margin: 0,
-          display: '-webkit-box', WebkitLineClamp: 8, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-        }}>{doc.blurb[locale]}</p>
+        <div style={{ flex: 1 }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--accent-text)', fontSize: 'var(--fs-small)', fontWeight: 700, marginTop: 4 }}>
           {TX.open[locale]} &rarr;
         </div>
@@ -248,7 +245,8 @@ export function ResearchDocModal({ slug, onClose, h1 }: { slug: string | null; o
     <div className={`rfi-modal-backdrop${exit.closing ? ' rfi-modal-backdrop-out' : ''}`} onClick={onClose}
       style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
       <div className={`rfi-modal-panel${exit.closing ? ' rfi-modal-panel-out' : ''}`} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={doc.title[locale]} style={{
-        width: '100%', maxWidth: 900, height: '85vh', overflow: 'hidden', display: 'flex', flexDirection: 'column',
+        // Portrait like the A4 pages inside: the width follows the height (about 1 : 1.35 with the viewer toolbar), so the window stays upright on any screen; phones keep the full width.
+        width: 'min(100%, calc((92vh - 40px) * 0.76))', height: '92vh', overflow: 'hidden', display: 'flex', flexDirection: 'column',
         background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
         backgroundBlendMode: 'overlay',
         boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
