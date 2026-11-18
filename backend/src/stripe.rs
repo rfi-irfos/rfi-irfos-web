@@ -63,6 +63,76 @@ fn tier_info(tier: &str) -> Option<TierInfo> {
     }
 }
 
+// Checkout description (Simeon 18.11.2026): the checkmarks of the plan, word for word as on the website (content/en.ts and de.ts, tiers[].features),
+// so the buyer sees on Stripe's page what the card promised. Keep in sync when the site texts change.
+fn tier_features(tier: &str, de: bool) -> Option<String> {
+    let key = tier.strip_prefix("review_")?.trim_end_matches("_annual");
+    let list: &[&str] = match (key, de) {
+        ("starter", false) => &[
+        "Everything in Quick Check.",
+        "One focused vulnerability hunt per month on your web app, mobile app or API.",
+        "Every weak spot verified with a working proof of concept.",
+        "Every finding assessed by a specialist, rated, with clear fix guidance.",
+        "Retest of fixed findings included.",
+        "SOC portal with compliance workspace, read-only auditor access and your public Trust Center.",
+    ],
+        ("starter", true) => &[
+        "Alles aus Quick Check.",
+        "Eine fokussierte Schwachstellenjagd pro Monat für Ihre Web-App, mobile App oder API.",
+        "Jede Schwachstelle verifiziert, mit funktionierendem Proof of Concept.",
+        "Jeder Befund von unseren Sicherheitsspezialisten bewertet, eingestuft und mit klarer Handlungsempfehlung.",
+        "Retest behobener Findings inklusive.",
+        "SOC-Portal mit Compliance-Arbeitsbereich, Lesezugang für Ihre Prüfung und Ihr öffentliches Trust Center.",
+    ],
+        ("growth", false) => &[
+        "Everything in Starter.",
+        "Scheduled security testing on your cadence, up to every 15 minutes, with penetration-test re-examinations, so your product stays tested as your code changes.",
+        "Up to three web apps, mobile apps or APIs in scope.",
+        "Concrete fixes engineered down to the affected code.",
+        "Unlimited retesting within scope.",
+        "Ongoing findings and remediation history.",
+    ],
+        ("growth", true) => &[
+        "Alles aus Starter.",
+        "Geplante Sicherheitsprüfungen in Ihrem Takt, bis alle 15 Minuten, mit Pentest-Neuprüfungen, damit Ihr Produkt getestet bleibt, während sich Ihr Code ändert.",
+        "Bis zu drei Web-Apps, mobile Apps oder APIs im Scope.",
+        "Konkrete Fixes, entwickelt bis in den betroffenen Code.",
+        "Unbegrenzte Retests innerhalb des Scopes.",
+        "Laufende Findings- und Fix-Historie.",
+    ],
+        ("pro", false) => &[
+        "Everything in Growth.",
+        "Up to five web apps, mobile apps or APIs.",
+        "Automated compliance checks matched to your regulations, kept current on your Trust Center.",
+        "One consolidated view of findings and fixes across your products.",
+        "Findings assessed within one business day.",
+    ],
+        ("pro", true) => &[
+        "Alles aus Growth.",
+        "Bis zu fünf Web-Apps, mobile Apps oder APIs.",
+        "Automatisierte Compliance-Prüfungen passend zu Ihren Vorschriften, aktuell gehalten auf Ihrem Trust Center.",
+        "Eine zusammengeführte Sicht auf Funde und Fixes über alle Ihre Produkte.",
+        "Funde innerhalb eines Werktags bewertet.",
+    ],
+        ("business", false) => &[
+        "Everything in Pro.",
+        "Up to ten web apps, mobile apps or APIs.",
+        "Management reports across your portfolio.",
+        "Direct channel to our team.",
+        "Coordinated follow-up until every fix is closed.",
+    ],
+        ("business", true) => &[
+        "Alles aus Pro.",
+        "Bis zu zehn Web-Apps, mobile Apps oder APIs.",
+        "Management-Berichte über Ihr gesamtes Portfolio.",
+        "Direkter Draht zu unserem Team.",
+        "Abgestimmte Nachverfolgung, bis jeder Fix geschlossen ist.",
+    ],
+        _ => return None,
+    };
+    Some(list.iter().map(|f| format!("✓ {f}")).collect::<Vec<_>>().join("\n"))
+}
+
 pub async fn create_checkout(
     State(state): State<AppState>,
     Json(body): Json<CheckoutRequest>,
@@ -115,6 +185,9 @@ pub async fn create_checkout(
         ("tax_id_collection[required]".to_string(),                   "if_supported".to_string()),
     ];
 
+    if let Some(text) = tier_features(&body.tier, de) {
+        params.push(("line_items[0][price_data][product_data][description]".to_string(), text));
+    }
     if info.recurring {
         let interval = if info.yearly { "year" } else { "month" };
         params.push(("line_items[0][price_data][recurring][interval]".to_string(), interval.to_string()));
