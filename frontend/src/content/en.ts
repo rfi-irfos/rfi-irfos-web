@@ -84,7 +84,7 @@ export const EN = {
     requestPortalAccess: 'Request access to the portal',
     signInNote: 'Already a customer? Use the account from your invitation email.',
     requestAccess: 'Get access',
-    accessNote: 'Starter plan, \u20ac99 per month. Your invitation arrives by email right after payment.',
+    accessNote: 'Starter plan, \u20ac99 per month. Your access code arrives by email right after payment, and your setup is done within minutes.',
     accessBusy: 'Opening checkout \u2026',
     close: 'Close',
     previewTitle: 'Dashboard preview',

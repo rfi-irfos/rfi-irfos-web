@@ -831,7 +831,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       description: 'We map findings and evidence to the controls of NIS2, ISO 27001 and SOC 2 in the customer portal. Pay online, start within minutes. Your auditor audits.',
       label: 'Compliance Automation',
       h1: 'Compliance Automation for NIS2, ISO 27001 and SOC 2',
-      lead: 'Audits ask for evidence. We map the findings and evidence from our reviews to the controls of NIS2, ISO 27001 and SOC 2, so your auditor receives them sorted by control. Seven more frameworks follow the same method, from DORA to the EU AI Act. Your auditor audits, we deliver the evidence.',
+      lead: 'Audits ask for evidence. We map the findings and evidence from our reviews to the controls of NIS2, ISO 27001 and SOC 2, so your auditor receives them sorted by control. Ten more frameworks follow the same method, from DORA to HIPAA. Your auditor audits, we deliver the evidence.',
       sections: [
         {
           h2: 'What compliance automation means here',
@@ -879,7 +879,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       faqH2: 'Questions about compliance automation',
       faq: [
         ['Do you certify us for ISO 27001 or SOC 2?', 'Your auditor certifies. We deliver the technical evidence that the auditor needs.'],
-        ['Which frameworks do you cover?', 'ISO/IEC 27001:2022, SOC 2, NIS2 (NISG 2026 in Austria), the EU Cyber Resilience Act, NIST CSF 2.0, CIS Controls v8, GDPR, DORA, PCI DSS 4.0 and the EU AI Act.'],
+        ['Which frameworks do you cover?', 'ISO/IEC 27001:2022, SOC 2, NIS2 (NISG 2026 in Austria), the EU Cyber Resilience Act, NIST CSF 2.0, CIS Controls v8, GDPR, DORA, PCI DSS 4.0, the EU AI Act, COPPA, UK GDPR and HIPAA. The last four apply once you confirm that they concern your organisation.'],
         ['Is compliance automation a separate product?', 'It is part of the Managed SOC.'],
         ['Does NIS2 apply to our company?', 'That depends on sector, size and role in a supply chain. The national authority\'s information at nis.gv.at is the reference.'],
       ],
@@ -889,7 +889,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       description: 'Wir ordnen Befunde und Belege im Kundenportal den Kontrollen von NIS2, ISO 27001 und SOC 2 zu. Online bezahlen, in Minuten starten. Ihre Prüfstelle prüft.',
       label: 'Compliance-Automatisierung',
       h1: 'Compliance-Automatisierung für NIS2, ISO 27001 und SOC 2',
-      lead: 'Audits verlangen Belege. Wir ordnen die Befunde und Belege aus unseren Prüfungen den Kontrollen von NIS2, ISO 27001 und SOC 2 zu, damit Ihre Prüfstelle sie nach Kontrollen sortiert erhält. Sieben weitere Rahmenwerke folgen derselben Methode, von DORA bis zum EU AI Act. Ihre Prüfstelle prüft, wir liefern die Belege.',
+      lead: 'Audits verlangen Belege. Wir ordnen die Befunde und Belege aus unseren Prüfungen den Kontrollen von NIS2, ISO 27001 und SOC 2 zu, damit Ihre Prüfstelle sie nach Kontrollen sortiert erhält. Zehn weitere Rahmenwerke folgen derselben Methode, von DORA bis HIPAA. Ihre Prüfstelle prüft, wir liefern die Belege.',
       sections: [
         {
           h2: 'Was Compliance-Automatisierung hier bedeutet',
@@ -937,7 +937,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       faqH2: 'Fragen zur Compliance-Automatisierung',
       faq: [
         ['Zertifizieren Sie uns nach ISO 27001 oder SOC 2?', 'Ihre Prüfstelle zertifiziert. Wir liefern die technischen Belege, die sie braucht.'],
-        ['Welche Rahmenwerke decken Sie ab?', 'ISO/IEC 27001:2022, SOC 2, NIS2 (in Österreich NISG 2026), EU Cyber Resilience Act, NIST CSF 2.0, CIS Controls v8, DSGVO, DORA, PCI DSS 4.0 und EU AI Act.'],
+        ['Welche Rahmenwerke decken Sie ab?', 'ISO/IEC 27001:2022, SOC 2, NIS2 (in Österreich NISG 2026), EU Cyber Resilience Act, NIST CSF 2.0, CIS Controls v8, DSGVO, DORA, PCI DSS 4.0, EU AI Act, COPPA, UK GDPR und HIPAA. Die letzten vier gelten, sobald Sie bestätigen, dass sie Ihre Organisation betreffen.'],
         ['Ist die Compliance-Automatisierung ein eigenes Produkt?', 'Sie gehört zum Managed SOC.'],
         ['Gilt NIS2 für unser Unternehmen?', 'Das hängt von Branche, Größe und Rolle in einer Lieferkette ab. Die Informationen der nationalen Behörde unter nis.gv.at sind die Referenz.'],
       ],

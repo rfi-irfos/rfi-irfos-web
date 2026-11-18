@@ -68,7 +68,7 @@ export const DE: Content = {
     requestPortalAccess: 'Zugang zum Portal anfragen',
     signInNote: 'Bereits Kunde? Nutzen Sie das Konto aus Ihrer Einladungsmail.',
     requestAccess: 'Zugang erhalten',
-    accessNote: 'Starter-Tarif, 99 \u20ac pro Monat. Die Einladung kommt direkt nach der Zahlung per E-Mail.',
+    accessNote: 'Starter-Tarif, 99 \u20ac pro Monat. Der Zugangscode kommt direkt nach der Zahlung per E-Mail, und das Setup steht in Minuten.',
     accessBusy: 'Checkout wird ge\u00f6ffnet \u2026',
     close: 'Schließen',
     previewTitle: 'Vorschau des Dashboards',
