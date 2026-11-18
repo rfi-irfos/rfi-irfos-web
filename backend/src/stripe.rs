@@ -186,7 +186,8 @@ pub async fn create_checkout(
     ];
 
     if let Some(text) = tier_features(&body.tier, de) {
-        params.push(("line_items[0][price_data][product_data][description]".to_string(), text));
+        // Stripe shows product descriptions as one run-on paragraph, so the list goes into the custom text above the pay button (Simeon 18.11.).
+        params.push(("custom_text[submit][message]".to_string(), text));
     }
     if info.recurring {
         let interval = if info.yearly { "year" } else { "month" };
