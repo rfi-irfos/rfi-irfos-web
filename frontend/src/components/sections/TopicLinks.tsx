@@ -5,7 +5,7 @@
 // copy in an overlay and the visitor stays where they were.
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { IconShieldCheck, IconCertificate, IconHeadset, IconListCheck, IconWorldSearch, IconX } from '@tabler/icons-react'
+import { IconShieldCheck, IconShieldLock, IconCertificate, IconHeadset, IconListCheck, IconWorldSearch, IconX } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
 import { beacon } from './shared'
 import type { LandingSlug } from '../landingSlugs'
@@ -71,6 +71,13 @@ export function TopicLinks() {
             </a>
           )
         })}
+        {/* Trust Center (Simeon 2026-11-18): the customer-facing page of the portal lives on its own host, so this pill
+            is a plain external link and not an overlay. Same look as the pills around it. */}
+        <a href="https://trust.rfi-irfos.com/" onClick={() => beacon('trust_center_pill')}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--glass-bg-solid)', color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
+          <IconShieldLock size={16} stroke={1.8} color="var(--icon-neutral)" aria-hidden />
+          {t.footer.groups.services.links.trustCenter}
+        </a>
       </nav>
       {/* Portal to <body> (bug 2026-11-01, Zabih): the row sits inside an animated
           section whose transform turns position:fixed into "fixed to that section",

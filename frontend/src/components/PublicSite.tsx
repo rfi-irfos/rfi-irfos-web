@@ -888,6 +888,22 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
     }
   }
 
+  // Deep link from the Trust Center landing page (trust.rfi-irfos.com, 2026-11-18): /?checkout=starter starts the same Starter purchase as
+  // "Get access" in the portal sign-in window. Only that one value is honoured. The parameter is removed first, so a reload or the back
+  // button cannot start the purchase a second time; a failed checkout shows the usual FailToast.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('checkout') !== 'starter') return
+    params.delete('checkout')
+    const rest = params.toString()
+    window.history.replaceState(null, '', window.location.pathname + (rest ? `?${rest}` : '') + window.location.hash)
+    beacon('trust_center_checkout')
+    // Deferred out of the effect body (it sets state) and deliberately without a cleanup: the parameter is already gone, so a remount
+    // cannot start a second purchase, while clearing the timer would swallow the only one.
+    window.setTimeout(() => { void handleCheckout('review_starter') }, 0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Some tiers use a pre-made Stripe Payment Link (buy.stripe.com) instead of a
   // backend-generated checkout session - same B2B/ToS-gated modal either way, this
   // just decides where "Continue to Stripe" actually sends the browser.
@@ -911,6 +927,11 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
   const servicesPrefix = locale === 'de' ? '/de' : ''
   const servicesGroup = {
     heading: t.footer.groups.services.heading, links: [
+      // Trust Center first, then the two SOC products it belongs to (Simeon 2026-11-18). It lives on its own host
+      // (trust.rfi-irfos.com, the customer-facing page of the portal), so this link is absolute.
+      { label: t.footer.groups.services.links.trustCenter, href: 'https://trust.rfi-irfos.com/' },
+      { label: t.footer.groups.services.links.managedSoc, href: `${servicesPrefix}/managed-soc/` },
+      { label: t.footer.groups.services.links.compliance, href: `${servicesPrefix}/compliance-automation/` },
       { label: t.footer.groups.services.links.appSecurityAudit, href: `${servicesPrefix}/app-security-audit/` },
       { label: t.footer.groups.services.links.gdprAppAudit, href: `${servicesPrefix}/gdpr-app-audit/` },
       { label: t.footer.groups.services.links.nis2, href: `${servicesPrefix}/nis2-software-vendors/` },
@@ -920,8 +941,6 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
       { label: t.footer.groups.services.links.apiSecurity, href: `${servicesPrefix}/api-security-testing/` },
       { label: t.footer.groups.services.links.cloud, href: `${servicesPrefix}/cloud-security-assessment/` },
       { label: t.footer.groups.services.links.codeReview, href: `${servicesPrefix}/secure-code-review/` },
-      { label: t.footer.groups.services.links.managedSoc, href: `${servicesPrefix}/managed-soc/` },
-      { label: t.footer.groups.services.links.compliance, href: `${servicesPrefix}/compliance-automation/` },
       { label: t.footer.groups.services.links.domainCheck, href: `${servicesPrefix}/domain-security-test/` },
       { label: t.footer.groups.services.links.dataSolutions, href: '/data-solutions/' },
     ],

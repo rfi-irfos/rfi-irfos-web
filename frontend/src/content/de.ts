@@ -1170,7 +1170,7 @@ export const DE: Content = {
       },
       services: {
         heading: 'Leistungen',
-        links: { appSecurityAudit: 'App-Sicherheitsprüfung', gdprAppAudit: 'DSGVO-Prüfung für Apps', nis2: 'NIS2 für Softwareanbieter', trackerSdk: 'Tracker- & SDK-Check', aiApp: 'Datenschutz-Audit für KI-Apps', managedSoc: 'Ausgelagertes SOC', compliance: 'Compliance-Automatisierung', domainCheck: 'Domain Security Test', pentest: 'Penetrationstest', apiSecurity: 'API-Sicherheitstest', cloud: 'Cloud-Sicherheitsprüfung', codeReview: 'Secure Code Review', dataSolutions: 'Data Solutions' },
+        links: { trustCenter: 'Trust Center', appSecurityAudit: 'App-Sicherheitsprüfung', gdprAppAudit: 'DSGVO-Prüfung für Apps', nis2: 'NIS2 für Softwareanbieter', trackerSdk: 'Tracker- & SDK-Check', aiApp: 'Datenschutz-Audit für KI-Apps', managedSoc: 'Ausgelagertes SOC', compliance: 'Compliance-Automatisierung', domainCheck: 'Domain Security Test', pentest: 'Penetrationstest', apiSecurity: 'API-Sicherheitstest', cloud: 'Cloud-Sicherheitsprüfung', codeReview: 'Secure Code Review', dataSolutions: 'Data Solutions' },
       },
     },
     socialAria: 'Social-Media-Profile',
