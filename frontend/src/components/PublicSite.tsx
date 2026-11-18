@@ -1067,7 +1067,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
     return () => { document.removeEventListener('click', handler); window.removeEventListener('scrollend', release); clearTimeout(releaseTimer) }
   }, [])
 
-  // A note for whoever opened devtools looking for something to find. Runs once, and
+  // A welcome for whoever opened devtools (Simeon 18.11.: invitation instead of disclosure tone). Runs once, and
   // every claim in it is one we can actually back up (see the section-tracking effect
   // below - in-memory only, no cookie, no localStorage, nothing survives a reload).
   useEffect(() => {
@@ -1082,21 +1082,20 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
     const low = 'font-family:monospace;font-size:11px;font-weight:900;color:#6b7280'
 
     console.log('%crfi-irfos', big)
-    console.log('%cso. devtools open, poking through the source.', h)
-    console.log('%clet\'s just name what\'s actually happening here, since we spend our whole day naming exactly this for other people.', p)
-    console.log('%cyou\'re probably one of three people. one: you work at a company that just got an email from us with a severity table and a deadline attached, and someone asked you to go through the actual source before anyone drafts a reply. two: you\'re a security researcher who does the same work we do, and you want to see whether the people who roast companies for hardcoded firebase keys are leaving one lying around themselves. three: you\'re just curious, which is honestly the correct default state for anyone on the internet.', p)
-    console.log('%cwhichever one you are: good instinct. checking is exactly what we\'d tell you to do. we read binaries for a living - we\'d be hypocrites if we asked anyone to just take our word for it.', p)
+    console.log('%cwelcome. we expected you.', h)
+    console.log('%cthis tab has a regular audience: engineers, researchers, and the occasional person who just wanted to see what happens. all of them are welcome here, and all of them are the reason this message exists.', p)
+    console.log('%cwe read other people\'s source for a living, so reading ours is only fair. take your time, nothing moves while you look.', p)
     console.log('%cso here\'s the audit, root level, on ourselves:', h)
     console.log('%cC0%c - hardcoded secrets: none.\n%cH0%c - third-party analytics: none.\n%cH0%c - cookies for anything beyond a theme toggle: none.\n%cM0%c - fingerprinting: none.\n%cL0%c - third-party fonts, CDNs, or other silent third-party requests: none.',
       crit, mono, high, mono, high, mono, med, mono, low, mono)
-    console.log('%csection views live in this tab\'s memory only, and they\'re gone the moment you refresh. that\'s not a policy statement. that\'s the entire mechanism, and you are currently looking directly at all of it, because none of it is hidden anywhere.', p)
-    console.log('%cwe know this isn\'t a bug bounty program. there\'s no hall-of-fame page or branded stickers for finding this message, mostly because there\'s nothing here to find - and also because, as a few companies have learned this year slower than they\'d have liked, we don\'t really do bug bounties. we do disclosure. if you did find something real, actually real, we want to know. not for swag. because unlike some inboxes we\'ve written to this year, we actually read what gets sent to us.', p)
-    console.log('%ca lot more people have been ending up in this exact console tab lately than we expected. we noticed. we\'re not going to pretend we didn\'t, and we\'re not going to start tracking who - that would rather defeat the point of the five zeroes above.', p)
-    console.log('%ceither way: thanks for looking closely enough to end up here. that\'s rarer than you\'d think, and it\'s also, unfortunately for a lot of companies whose apps we\'ve opened this year, the entire job.', p)
-    console.log('%ccontact@rfi-irfos.com - write to us directly', link)
-    console.log('%crfi-irfos.com/#submit - if you want it in writing', link)
-    console.log('%cgithub.com/rfi-irfos - if you want the receipts', link)
-    console.log('%ca regulated austrian not-for-profit. everything built in-house. no bug bounty, no hackerone, no VDP portal - just people who read the source.', mono)
+    console.log('%cone thing we do count, on our own server: page loads, a few named clicks like request access, and yes, opening devtools. each of those is a number with no name attached, set without a cookie and without anything stored in your browser. you just made one go up by one, and we are glad you did.', p)
+    console.log('%cpeople who end up here tend to think the way our team does: curious, careful, and a little suspicious of anything that says trust me. that is why we publish a trust center and keep promises out of it.', p)
+    console.log('%cif that sounds like you, say hello.', h)
+    console.log('%ccareer@rfi-irfos.com: if opening devtools is a reflex for you, write to us', link)
+    console.log('%ccontact@rfi-irfos.com: or just say hi', link)
+    console.log('%ctrust.rfi-irfos.com: how a company shows its security without a questionnaire', link)
+    console.log('%cgithub.com/rfi-irfos: the code, if you want the receipts', link)
+    console.log('%ca regulated austrian not-for-profit. everything built in-house. human-powered, agent-native.', mono)
   }, [])
 
   // Who actually opens devtools, not just who we joke to about it. Window-size heuristic -
