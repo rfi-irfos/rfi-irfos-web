@@ -80,10 +80,12 @@ const CSS = `
   .rfi-login-grid { grid-template-columns: minmax(0, 1fr); }
   .rfi-login-side { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 64px 24px 32px; align-items: center; }
   .rfi-login-side > * { width: 100%; max-width: 420px; }
-  .rfi-login-stage { padding: 28px 16px 40px; }
+  .rfi-login-stage { padding: 28px 16px 64px; }
   .rfi-login-shot { width: 100%; }
-  .rfi-login-frame { width: 100%; }
-  .rfi-login-trust { margin: 16px auto 0; max-width: 420px; }
+  .rfi-login-frame { position: relative; width: 100%; }
+  .rfi-login-trust { position: absolute; right: -6px; bottom: -30px; width: 46%; max-width: 210px; margin: 0; }
+  .rfi-login-trust-text { padding: 8px 10px 9px; }
+  .rfi-login-trust-text b { font-size: 13px; gap: 6px; }
 }
 `
 
