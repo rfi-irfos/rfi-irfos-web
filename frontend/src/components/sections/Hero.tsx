@@ -335,7 +335,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       <h1 className="rfi-display" style={{ fontSize: 'clamp(1.9rem, 3.2vw, 3.7rem)', fontWeight: 900, lineHeight: 'var(--lh-tight)', marginBottom: 22, letterSpacing: '-0.01em', marginTop: 32, color: '#e8e8f0', width: 'max-content', maxWidth: '100%' }}>
         <span className="rfi-hero-line">
           <HeroFlipWord word="Human-Powered" delay={0.2} />{' '}
-          <RevealWords text="Cybersecurity, Agent-Native by Design." delayStart={0.36} />
+          <RevealWords text="Security, Agent-Native by Design." delayStart={0.36} />
         </span>
       </h1>
       {/* Mount-triggered fly-in, not the scroll-linked `Reveal` (used elsewhere below
