@@ -64,7 +64,7 @@ const CSS = `
 }
 @keyframes rfi-int-left { to { transform: translateX(-33.3333%); } }
 /* Installierte App (PWA): schneller als im Browser (Simeon 18.11.). */
-@media (display-mode: standalone), (display-mode: fullscreen) { .rfi-int-track { animation-duration: 80s; } }
+@media (display-mode: standalone), (display-mode: fullscreen) { .rfi-int-track { animation-duration: 120s; } }
 @media (prefers-reduced-motion: reduce) {
   .rfi-int-wrap { -webkit-mask-image: none; mask-image: none; }
   .rfi-int-track { animation: none; width: auto; flex-wrap: wrap; justify-content: center; row-gap: 22px; }
