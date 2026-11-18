@@ -126,7 +126,7 @@ export function AppPrivacySection() {
                 return (
                 <Reveal key={s.title} delay={i}>
                   {phone ? (
-                    // Phones (Simeon 18.11.): one column as a vertical timeline, a line runs from step to step and the lock sits beside the last title.
+                    // Phones (Simeon 18.11.): one column as a vertical timeline, a line runs from step to step and the lock hangs below the last circle on the same line.
                     <div role="button" tabIndex={0} onClick={() => pick(i)} aria-pressed={active === i}
                       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(i) } }}
                       style={{ cursor: 'pointer', textAlign: 'left', display: 'flex', gap: 14 }}>
@@ -135,12 +135,15 @@ export function AppPrivacySection() {
                         {!last && <span style={{ position: 'relative', width: 2, flex: 1, minHeight: 20, margin: '-2px 0', background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
                           <span style={{ display: 'block', width: '100%', height: '100%', background: 'var(--accent-text)', transformOrigin: 'top', transform: filled ? 'scaleY(1)' : 'scaleY(0)', transition: 'transform 1.1s ease-in-out' }} />
                         </span>}
+                        {last && <>
+                          <span style={{ position: 'relative', width: 2, height: 26, margin: '-2px 0 2px', background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
+                            <span style={{ display: 'block', width: '100%', height: '100%', background: 'var(--accent-text)', transformOrigin: 'top', transform: finishReached || active === i ? 'scaleY(1)' : 'scaleY(0)', transition: 'transform 1.1s ease-in-out' }} />
+                          </span>
+                          <FinishLock reached={finishReached} />
+                        </>}
                       </div>
                       <div style={{ flex: 1, minWidth: 0, paddingBottom: last ? 0 : 22 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, minHeight: 38 }}>
-                          {title}
-                          {last && <FinishLock reached={finishReached} />}
-                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', minHeight: 38 }}>{title}</div>
                         {text}
                       </div>
                     </div>
