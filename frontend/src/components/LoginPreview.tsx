@@ -31,12 +31,12 @@ const CSS = `
 /* Wide windows (Simeon 18.11.): the preview is turned in perspective, left edge toward the viewer, the right edge receding. The tilt sits on this
    wrapper because the button already uses transform for its hover lift. The Trust Center landing page turns its card the other way round. */
 @media (min-width: 960px) {
-  .rfi-login-stage { perspective: 1800px; overflow: hidden; padding: 40px 0 40px 36px; justify-content: flex-start; }
+  .rfi-login-stage { position: relative; perspective: 1800px; overflow: hidden; padding: 40px 0 40px 36px; justify-content: flex-start; }
   /* The turned picture needs less room, so it is drawn larger than the stage and its receding right edge runs off the screen. */
-  .rfi-login-frame { position: relative; flex: none; width: min(calc(100% + 150px), calc((100vh - 70px) * ${PREVIEW_RATIO.toFixed(3)} * 1.12)); }
+  .rfi-login-frame { flex: none; width: min(calc(100% + 150px), calc((100vh - 70px) * ${PREVIEW_RATIO.toFixed(3)} * 1.12)); }
   .rfi-login-tilt { width: 100%; transform-origin: 100% 50%; transform: rotateY(8deg) rotateX(2.5deg) rotateZ(0.7deg); }
   .rfi-login-tilt .rfi-login-shot { width: 100%; }
-  .rfi-login-trust { position: absolute; right: 190px; bottom: -15%; width: 21%; min-width: 210px; max-width: 280px; }
+  .rfi-login-trust { position: absolute; right: 26px; bottom: 26px; width: clamp(210px, 15vw, 270px); }
 }
 /* The Trust Center card (Simeon 18.11.): the one key feature hanging in front of the dashboard, not tilted, linked to the landing page. */
 .rfi-login-trust { display: block; overflow: hidden; color: #fff; text-decoration: none; background: rgba(16,13,13,0.9);
