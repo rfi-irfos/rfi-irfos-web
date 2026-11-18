@@ -459,6 +459,9 @@ function ImpressumEN() {
     <h2 style={H2}>Copyright</h2>
     <p style={P}>All content created by RFI-IRFOS is subject to Austrian copyright law. Reproduction or use beyond the limits of copyright law requires written consent. Quoting our disclosure findings with attribution, in the ordinary course of reporting on them, is fine, that is rather the point of publishing them.</p>
 
+    <h2 style={H2}>Example pictures</h2>
+    <p style={P}>The Trust Center example on this site shows a company called Alpenshop with demonstration data. Alpenshop is fictional, and any resemblance to a real company is coincidental.</p>
+
     <h2 style={H2}>Governing Law</h2>
     <p style={P}>The law of the Republic of Austria and the law of the European Union apply.</p>
 
@@ -542,6 +545,9 @@ function ImpressumDE() {
 
     <h2 style={H2}>Urheberrecht</h2>
     <p style={P}>Alle von RFI-IRFOS erstellten Inhalte unterliegen dem österreichischen Urheberrecht. Vervielfältigung oder Nutzung über die Grenzen des Urheberrechts hinaus bedarf unserer schriftlichen Zustimmung. Das Zitieren unserer Offenlegungsergebnisse mit Quellenangabe, im gewöhnlichen Rahmen der Berichterstattung darüber, ist ausdrücklich in Ordnung — das ist ja der Sinn der Veröffentlichung.</p>
+
+    <h2 style={H2}>Beispielbilder</h2>
+    <p style={P}>Das Trust-Center-Beispiel auf dieser Seite zeigt ein Unternehmen namens Alpenshop mit Demodaten. Alpenshop ist fiktiv, und Ähnlichkeiten mit tatsächlichen Unternehmen sind zufällig.</p>
 
     <h2 style={H2}>Anwendbares Recht</h2>
     <p style={P}>Es gilt das Recht der Republik Österreich sowie das Recht der Europäischen Union.</p>

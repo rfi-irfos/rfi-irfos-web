@@ -31,11 +31,12 @@ const CSS = `
 /* Wide windows (Simeon 18.11.): the preview is turned in perspective, left edge toward the viewer, the right edge receding. The tilt sits on this
    wrapper because the button already uses transform for its hover lift. The Trust Center landing page turns its card the other way round. */
 @media (min-width: 960px) {
-  .rfi-login-stage { perspective: 1800px; }
-  .rfi-login-frame { position: relative; width: min(100%, calc((100vh - 190px) * ${PREVIEW_RATIO.toFixed(3)})); }
+  .rfi-login-stage { perspective: 1800px; overflow: hidden; padding: 40px 0 40px 36px; justify-content: flex-start; }
+  /* The turned picture needs less room, so it is drawn larger than the stage and its receding right edge runs off the screen. */
+  .rfi-login-frame { position: relative; flex: none; width: min(calc(100% + 150px), calc((100vh - 70px) * ${PREVIEW_RATIO.toFixed(3)} * 1.12)); }
   .rfi-login-tilt { width: 100%; transform-origin: 100% 50%; transform: rotateY(17deg) rotateX(5deg) rotateZ(1.5deg); }
   .rfi-login-tilt .rfi-login-shot { width: 100%; }
-  .rfi-login-trust { position: absolute; left: -6%; bottom: -24%; width: 22%; min-width: 210px; max-width: 280px; }
+  .rfi-login-trust { position: absolute; right: 190px; bottom: -9%; width: 21%; min-width: 210px; max-width: 280px; }
 }
 /* The Trust Center card (Simeon 18.11.): the one key feature hanging in front of the dashboard, not tilted, linked to the landing page. */
 .rfi-login-trust { display: block; overflow: hidden; color: #fff; text-decoration: none; background: rgba(16,13,13,0.9);
@@ -46,7 +47,7 @@ const CSS = `
 .rfi-login-trust-text { display: block; padding: 11px 14px 13px; }
 .rfi-login-trust-text b { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; margin-bottom: 4px; }
 .rfi-login-trust-text span { display: block; font-size: 12px; line-height: 1.45; color: rgba(255,255,255,0.78); }
-.rfi-login-hint { position: absolute; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; padding: 6px 11px;
+.rfi-login-hint { position: absolute; left: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; padding: 6px 11px;
   font-size: 12px; font-weight: 600; color: #fff; background: rgba(12,10,10,0.78); border: 1px solid rgba(255,255,255,0.2);
   border-radius: 999px; backdrop-filter: blur(6px); }
 /* Smooth switch (Simeon 11.11.): the screen fades in, the side panel slides in from the left and the
@@ -157,9 +158,8 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
               border: 'none', borderRadius: 10, cursor: busy ? 'progress' : 'pointer', opacity: busy ? 0.7 : 1,
             }}>{busy ? c.accessBusy : c.requestAccess}</button>
           </div>
-          <div style={{ marginTop: 22, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.12)', display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <p style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(255,255,255,0.72)', margin: 0 }}>{c.signInNote}</p>
-            <p style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(255,255,255,0.72)', margin: 0 }}>{c.accessNote}</p>
+          <div style={{ marginTop: 22, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.12)' }}>
+            <p style={{ fontSize: 13, lineHeight: 1.55, color: 'rgba(255,255,255,0.72)', margin: 0 }}>{c.accessNote} {c.signInNote}</p>
           </div>
         </div>
 
