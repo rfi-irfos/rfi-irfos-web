@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { Content } from '../content/en'
+import { useLocale, LOCALES } from '../hooks/useLocale'
 
 // Login screen behind the nav profile icon (Simeon 11.11.2026, opened 17.11.2026). Left: link to the real
 // portal sign-in (email, password and MFA are typed there only, never on this page) and a Get access button
@@ -60,6 +61,11 @@ const CSS = `
 .rfi-login-zoom-close { position: absolute; top: 18px; right: 22px; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; padding: 0;
   color: #fff; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.28); border-radius: 50%; cursor: pointer; transition: background 0.2s ease; }
 .rfi-login-zoom-close:hover, .rfi-login-zoom-close:focus-visible { background: rgba(255,255,255,0.2); outline: none; }
+.rfi-login-lang { position: fixed; top: 18px; left: 22px; z-index: 2; display: inline-flex; padding: 3px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
+  background: rgba(14,12,12,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.rfi-login-lang button { padding: 7px 13px; font: 650 12px/1 ${FONT}; letter-spacing: 0.04em; color: rgba(255,255,255,0.7); background: transparent; border: none; border-radius: 7px; cursor: pointer; }
+.rfi-login-lang button[aria-pressed="true"] { color: #fff; background: ${ACCENT}33; }
+.rfi-login-lang button:hover { color: #fff; }
 @keyframes rfi-login-zoom-in { from { opacity: 0; transform: translateY(18px) scale(0.965); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .rfi-login-zoom, .rfi-login-zoom img { animation: none; } }
 /* Smooth switch (Simeon 11.11., slower and staged 18.11.): first only the background picture, then the side panel slides in, the preview rises
@@ -115,6 +121,7 @@ function ShieldIcon() {
 
 export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content; onClose: () => void; onRequestAccess: () => void; busy: boolean }) {
   const c = t.login
+  const { locale, setLocale } = useLocale()
   const closeRef = useRef<HTMLButtonElement>(null)
   const [zoom, setZoom] = useState(false)
   const [closing, setClosing] = useState(false)
@@ -161,6 +168,13 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
       }}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
       </button>
+
+      {/* Language switch top left (Simeon 18.11.), the same one as on the Trust Center page, so the window can be read in either language. */}
+      <div className="rfi-login-lang" role="group" aria-label="Language">
+        {LOCALES.map(l => (
+          <button key={l} type="button" onClick={() => setLocale(l)} aria-pressed={locale === l} lang={l}>{l.toUpperCase()}</button>
+        ))}
+      </div>
 
       <div className="rfi-login-grid">
         <div className="rfi-login-side">
