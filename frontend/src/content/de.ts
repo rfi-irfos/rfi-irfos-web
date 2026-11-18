@@ -12,7 +12,7 @@ export const DE: Content = {
   meta: {
     // 2026-11-10 (Simeon: Snippet muss auf den ersten Blick verständlich sein): Suchwort im Titel,
     // Agenten + Fachleute, Zielgruppensatz. Titel <= 60, Beschreibung 120-155 Zeichen.
-    title: 'Sicherheitslücken finden und beheben | RFI-IRFOS Graz',
+    title: 'Sicherheitslücken skalierbar finden und beheben | RFI-IRFOS Graz',
     description: 'Agenten suchen Schwachstellen in Apps und Software, Fachleute prüfen und beheben sie bis in den Code. Für Unternehmen mit begrenzten eigenen Kapazitäten.',
     dataSolutions: {
       title: 'Evaluationsdaten & Safety-Datensätze für Agenten · RFI-IRFOS',
