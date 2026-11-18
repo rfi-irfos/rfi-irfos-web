@@ -1148,7 +1148,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'What you receive',
-          p: ['A written report with the evidence behind each finding, a CVSS severity and fix guidance. From the Growth plan, which includes one application or API in scope, we engineer the fix down to the affected code and retest it.'],
+          p: ['A written report with the evidence behind each finding, a CVSS severity and fix guidance. From the Growth plan, which covers up to three web apps, mobile apps or APIs, we engineer the fix down to the affected code and retest it.'],
         },
       ],
       evidenceH2: 'Evidence from audited software',
@@ -1187,7 +1187,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'Was Sie erhalten',
-          p: ['Einen schriftlichen Bericht mit den Belegen zu jedem Befund, einer CVSS-Bewertung und Hinweisen zur Behebung. Ab dem Plan Growth, der eine Anwendung oder API im Scope enthält, entwickeln wir den Fix bis in den betroffenen Code und prüfen ihn erneut.'],
+          p: ['Einen schriftlichen Bericht mit den Belegen zu jedem Befund, einer CVSS-Bewertung und Hinweisen zur Behebung. Ab dem Plan Growth, der bis zu drei Web-Apps, mobile Apps oder APIs abdeckt, entwickeln wir den Fix bis in den betroffenen Code und prüfen ihn erneut.'],
         },
       ],
       evidenceH2: 'Belege aus geprüfter Software',
