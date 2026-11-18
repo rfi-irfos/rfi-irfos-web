@@ -12,6 +12,8 @@ const LOGOS: { key: string; name: string }[] = [
   { key: 'azure', name: 'Microsoft Azure' },
   { key: 'k8s', name: 'Kubernetes' },
   { key: 'sap', name: 'SAP' },
+  { key: 'supabase', name: 'Supabase' },
+  { key: 'n8n', name: 'n8n' },
   { key: 'mcp', name: 'MCP' },
   { key: 'opensearch', name: 'OpenSearch' },
   { key: 'falco', name: 'Falco' },
