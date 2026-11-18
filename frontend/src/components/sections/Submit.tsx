@@ -25,7 +25,7 @@ export function Field({ label, hint, plain, children }: { label: string; hint?: 
   return (
     <Tag style={{ display: 'flex', flexDirection: 'column', gap: 7, minWidth: 0 }}>
       <span style={{ fontSize: 'var(--fs-label)', fontWeight: 600, color: 'var(--text)' }}>
-        {label}{hint && <span style={{ fontWeight: 400, color: 'var(--input-ph)' }}> · {hint}</span>}
+        {label}{hint && <span style={{ fontWeight: 400, color: 'var(--text)' }}> · {hint}</span>}
       </span>
       {children}
     </Tag>
@@ -88,7 +88,7 @@ export function SubmitSection({
                 applied to the pricing tier body copy. */}
             {/* Simeon 01.11.: one quiet directory instead of five stacked cards, so the
                 left column reads as "or just email us" next to the form. */}
-            <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', margin: '0 0 10px' }}>{t.submit.directHeading}</p>
+            <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text)', margin: '0 0 10px' }}>{t.submit.directHeading}</p>
             <div className="fx-row" style={{ borderRadius: 16, padding: '4px 0', marginBottom: 18 }}>
               {CONTACT_CARDS.map((c, i) => (
                 <a key={c.key} href={c.href} className="fx-dir-row" style={{
@@ -96,7 +96,7 @@ export function SubmitSection({
                   borderTop: i ? '1px solid rgba(255,255,255,0.06)' : 'none',
                 }}>
                   <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text)', marginBottom: 3 }}>{t.submit.contactCards[c.key]}</div>
-                  <div style={{ color: 'var(--accent-text)', fontWeight: 700, fontSize: 'var(--fs-small)' }}>{c.value}</div>
+                  <div style={{ color: 'var(--text)', fontWeight: 700, fontSize: 'var(--fs-small)' }}>{c.value}</div>
                 </a>
               ))}
             </div>
@@ -118,7 +118,7 @@ export function SubmitSection({
                 e.preventDefault()
                 history.pushState(null, '', '/security/')
                 window.dispatchEvent(new PopStateEvent('popstate'))
-              }} style={{ color: 'var(--accent-text)' }}>{t.submit.disclosurePolicyLink}</a>{t.submit.disclosurePolicySuffix}
+              }} style={{ color: 'var(--text)', textDecoration: 'underline' }}>{t.submit.disclosurePolicyLink}</a>{t.submit.disclosurePolicySuffix}
             </p>
           </Reveal>
 

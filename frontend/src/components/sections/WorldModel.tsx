@@ -2,7 +2,7 @@
 // Solutions). DINGIR's own showcase: what it is, real corpus/graph numbers
 // (see content/en.ts+de.ts `worldModel.stats` for sourcing notes), the LM vs.
 // agent vs. world-model distinction, five causality-chain examples paired
-// with a live-events feed, business use cases, and an early-access signup.
+// with a live-events feed, business use cases, and an access request.
 // The full 20-chain carousel (CausalChainsSection, ex-homepage widget) was
 // tried on this page and pulled again (live feedback 2026-08-31:
 // "overstimulates ppl") - this compact five-chain view is the only
@@ -406,8 +406,8 @@ function UseCasesGrid() {
   )
 }
 
-// Early access (Simeon 18.11.): a clean request card. The button opens the same pop-up as the Managed SOC
-// band (PublicSite.tsx), so the enquiry goes through the contact form's relay with the topic "Early Access".
+// API access (Simeon 18.11.; DINGIR is no longer early access): a clean request card. The button opens the same pop-up as the Managed SOC
+// band (PublicSite.tsx), so the enquiry goes through the contact form's relay with the topic "DINGIR API access".
 function EarlyAccessCard({ onRequest }: { onRequest: () => void }) {
   const { t } = useLocale()
   const e = t.worldModel.earlyAccess
@@ -421,13 +421,11 @@ function EarlyAccessCard({ onRequest }: { onRequest: () => void }) {
               <h3>{e.heading}</h3>
             </div>
             <p>{e.sub}</p>
-          </div>
-          <div className="wm-early-form">
             <ul className="wm-early-benefits">
               {e.benefits.map(b => <li key={b}><IconCircleCheck size={16} />{b}</li>)}
             </ul>
-            <button type="button" className="wm-btn-primary wm-early-cta" data-testid="early-access-request" onClick={onRequest}>{e.cta}</button>
           </div>
+          <button type="button" className="wm-btn-primary wm-early-cta" data-testid="early-access-request" onClick={onRequest}>{e.cta}</button>
         </div>
       </Reveal>
     </div>

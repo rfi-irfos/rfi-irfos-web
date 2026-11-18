@@ -78,7 +78,7 @@ export function Select({
         onClick={() => setOpen(o => !o)} className="fx-input"
         style={{
           width: '100%', textAlign: 'left',
-          borderRadius: 12, padding: '12px 16px', color: selected ? 'var(--text)' : 'var(--input-ph)', fontSize: 'var(--fs-body)',
+          borderRadius: 12, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)',
           fontFamily: 'inherit', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8,
         }}>
         <span>{selected ? selected.label : placeholder}</span>

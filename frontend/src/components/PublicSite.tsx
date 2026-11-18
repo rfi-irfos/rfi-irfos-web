@@ -1786,7 +1786,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
         </div>}
 
         {view === 'world-model' && <section id="world-model" className="rfi-view-panel">
-          <WorldModelSection onRequestEarlyAccess={() => { beacon('world_model_early_access_open'); setTipForm(p => ({ ...p, topic: 'Early Access' })); setTipFormState(st => (st === 'sending' ? st : 'idle')); setEarlyModalOpen(true) }} />
+          <WorldModelSection onRequestEarlyAccess={() => { beacon('world_model_access_open'); setTipForm(p => ({ ...p, topic: 'DINGIR API access' })); setTipFormState(st => (st === 'sending' ? st : 'idle')); setEarlyModalOpen(true) }} />
         </section>}
 
         {view === 'squad' && <section id="squad" className="rfi-view-panel">

@@ -29,7 +29,7 @@ const CSS = `
 .rfi-int-track { -webkit-mask-image: none; }
 .rfi-int-logo { flex: none; margin: 0 48px; color: var(--text); opacity: .8; display: flex; align-items: center; gap: 9px; pointer-events: none; user-select: none; }
 .rfi-int-logo span { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
-.rfi-int-line { text-align: center; margin: 26px 24px 0; font-size: var(--fs-small); font-weight: 600; color: var(--text); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+.rfi-int-line { text-align: center; margin: 26px 24px 0; font-size: var(--fs-small); font-weight: 600; color: var(--text); opacity: .8; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
 @keyframes rfi-int-left { to { transform: translateX(-33.3333%); } }
 @media (prefers-reduced-motion: reduce) {
   .rfi-int-wrap { -webkit-mask-image: none; mask-image: none; }

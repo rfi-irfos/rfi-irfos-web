@@ -281,7 +281,9 @@ h1, h2, h3, .rfi-display {
   width: 100%;
   transition: border-color 0.2s;
 }
-.rfi-input::placeholder { color: var(--input-ph); }
+.rfi-input::placeholder, .fx-input::placeholder { color: color-mix(in srgb, var(--text) 62%, transparent); opacity: 1; }
+/* Mail addresses and mail links stay in the text colour, never teal (Simeon 18.11.). */
+a[href^="mailto:"] { color: var(--text) !important; }
 .irf-ph::placeholder { color: var(--text); opacity: 1; }
 .rfi-input:focus { border-color: var(--accent); }
 
