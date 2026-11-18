@@ -2,6 +2,7 @@ import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { LoginPreview } from './LoginPreview'
+import { ManagedSocModal } from './sections/ManagedSocModal'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
 import { localeHref, DE_ROUTES } from '../lib/localeHref'
 import type { Content } from '../content/en'
@@ -261,10 +262,10 @@ function viewForSection(section?: string | null): PublicView {
 // class the sweep found). The onClick below still calls preventDefault + does the
 // real client-side view switch, so this changes nothing about how a real click
 // behaves - it only changes what a non-JS crawler parses out of the raw href.
+// Evidence is no longer in the top bar (Simeon 18.11.2026); /evidence/ stays reachable from the footer's Research group and keeps its own page.
 const NAV_HREFS = [
   { key: 'squad' as const, href: '/squad/' },
   { key: 'worldModel' as const, href: '/world-model/' },
-  { key: 'trackRecord' as const, href: '/evidence/' },
   { key: 'pricing' as const, href: '/access/' },
 ]
 
@@ -311,6 +312,7 @@ const BREADCRUMB_BY_VIEW: Partial<Record<PublicView, { navKey: keyof Content['na
 export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }: { initialSection?: string | null; initialReportSlug?: string | null; initialDocSlug?: string | null } = {}) {
   const { locale, setLocale, t } = useLocale()
   // /?login=open opens the customer portal window (not ?portal=: index.html reads any query starting with p as an encoded path) (link back from the Trust Center landing page, 2026-11-18). The parameter is removed on mount.
+  const [socModalOpen, setSocModalOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('login') === 'open')
   const NAV_LINKS = NAV_HREFS.map(n => ({ key: n.key, label: t.nav.links[n.key], href: n.href }))
   const [view, setView] = useState<PublicView>(() => viewForSection(initialSection))
@@ -857,6 +859,12 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
   const selectTier = (tier: string) => {
     beacon('proposal_request:' + tier)
     setTipForm(p => ({ ...p, topic: tier }))
+    // Managed SOC (Simeon 18.11.): the enquiry opens as a pop-up on the spot; every other topic still leads to the contact form.
+    if (tier === 'Managed SOC') {
+      setTipFormState(st => (st === 'sending' ? st : 'idle'))
+      setSocModalOpen(true)
+      return
+    }
     navigateTo('#submit')
   }
 
@@ -1734,7 +1742,9 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
               onMouseLeave={e => { e.currentTarget.style.background = theme === 'light' ? 'transparent' : 'var(--bg2)'; e.currentTarget.style.color = overDarkHero ? '#a0a0b8' : 'var(--text2)' }}>
               <ThemeIcon t={theme} />
             </button>
-            {/* Kundenportal-Login (Simeon 11.11.2026): nur ein Profil-Symbol im Stil der Schalter; öffnet den Login-Screen (gesperrte Felder, Early-Access-Anfrage, Demo-Vorschau). Das Portal selbst ist von hier aus nicht erreichbar. */}
+            {/* Kundenportal-Login (Simeon 11.11.2026): nur ein Login-Symbol (Pfeil in Kasten, seit 18.11.2026 statt des Profil-Männchens) im Stil der Schalter; öffnet den Login-Screen (gesperrte Felder, Early-Access-Anfrage, Demo-Vorschau). Das Portal selbst ist von hier aus nicht erreichbar. */}
+            {/* On phones the login sits in the bottom tab bar, the top bar keeps only language and theme (Simeon 18.11.2026). */}
+            {!mobile && (
             <button type="button" onClick={() => setLoginOpen(true)} data-testid="nav-portal" title={t.login.navLabel} aria-label={t.login.navLabel} aria-haspopup="dialog" style={{
               width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
               background: theme === 'light' ? 'transparent' : 'var(--bg2)',
@@ -1744,8 +1754,9 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
             }}
               onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg3)'; e.currentTarget.style.color = overDarkHero ? '#e8e8f0' : 'var(--text)' }}
               onMouseLeave={e => { e.currentTarget.style.background = theme === 'light' ? 'transparent' : 'var(--bg2)'; e.currentTarget.style.color = overDarkHero ? '#a0a0b8' : 'var(--text2)' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5" /></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><path d="M10 17l5-5-5-5" /><path d="M15 12H3" /></svg>
             </button>
+            )}
             {/* Standalone nav mail-icon button removed entirely (live feedback) -
                 "Submit" is already in NAV_LINKS and points at the same consolidated
                 contact/disclosure section, so this was a second, visually louder
@@ -2123,7 +2134,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
           CTA, so mobile gets an app-style tab bar instead: the four views plus Home in the middle.
           The spacer keeps the footer's last line clear of the fixed bar. */}
       {mobile && <div aria-hidden="true" style={{ height: 'calc(88px + env(safe-area-inset-bottom))' }} />}
-      {mobile && <MobileTabBar view={view} locale={locale} links={NAV_LINKS} onNavigate={navigateTo} />}
+      {mobile && <MobileTabBar view={view} locale={locale} links={NAV_LINKS} onNavigate={navigateTo} onLogin={() => setLoginOpen(true)} />}
       {mobile && <InstallPrompt locale={locale} blocked={cookieBannerOpen} />}
       {checkoutFail && <FailToast message={t.alerts.checkoutUnavailable} mailSubject={`Checkout: ${checkoutFail}`}
         mailBody={`Tier: ${checkoutFail}`} onClose={() => setCheckoutFail(null)} />}
@@ -2179,6 +2190,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
                 </div>
       )}
 
+      {socModalOpen && <ManagedSocModal tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} onClose={() => setSocModalOpen(false)} />}
       {loginOpen && <LoginPreview t={t} onClose={() => setLoginOpen(false)} onRequestAccess={() => handleCheckout('review_starter')} busy={checkoutLoading === 'review_starter'} />}
     </div>
   )

@@ -11,7 +11,7 @@ import type { Content } from '../content/en'
 
 const ACCENT = '#f2501f'
 const TRUST_GREEN = '#4fbf86'
-const PORTAL_LOGIN_URL = 'https://portal.rfi-irfos.com/login'
+export const PORTAL_LOGIN_URL = 'https://portal.rfi-irfos.com/login'
 const FONT = "'Plus Jakarta Sans', system-ui, sans-serif"
 // demo-dashboard.webp is 1918x926: the preview is capped so the whole picture fits the window height.
 const PREVIEW_RATIO = 1918 / 926
@@ -36,22 +36,32 @@ const CSS = `
   .rfi-login-frame { position: relative; flex: none; width: min(100%, calc((100vh - 80px) * ${PREVIEW_RATIO.toFixed(3)})); }
   .rfi-login-tilt { width: 100%; }
   .rfi-login-tilt .rfi-login-shot { width: 100%; }
-  .rfi-login-trust { position: absolute; right: -18px; bottom: -38px; width: clamp(260px, 22vw, 380px); }
+  .rfi-login-trust { position: absolute; right: -30px; bottom: -60px; width: clamp(260px, 22vw, 380px); }
 }
 /* The Trust Center card (Simeon 18.11.): the one key feature hanging in front of the dashboard, linked to the landing page, green mark. */
 .rfi-login-trust { display: block; overflow: hidden; color: #fff; text-decoration: none; background: rgba(16,13,13,0.9);
-  border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 14px 52px -2px rgba(79,191,134,0.42);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; box-shadow: 0 30px 46px -8px rgba(38,41,46,0.95), 0 22px 70px -2px rgba(79,191,134,0.6), 0 0 0 1px rgba(79,191,134,0.12);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: border-color 0.2s ease, transform 0.2s ease; }
 .rfi-login-trust:hover, .rfi-login-trust:focus-visible { border-color: ${ACCENT}; transform: translateY(-2px); outline: none; }
 .rfi-login-trust img { display: block; width: 100%; height: auto; border-bottom: 1px solid rgba(255,255,255,0.12); }
-.rfi-login-trust-text { display: block; padding: 13px 16px 15px; }
-.rfi-login-trust-text b { display: flex; align-items: center; gap: 8px; position: relative; font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.rfi-login-trust-text { display: block; padding: 14px 16px 15px; }
+.rfi-login-trust-text b { display: flex; align-items: center; gap: 8px; position: relative; font-size: 15px; font-weight: 700; }
 .rfi-login-trust-arrow { margin-left: auto; flex: none; transition: transform 0.25s ease; }
 .rfi-login-trust:hover .rfi-login-trust-arrow, .rfi-login-trust:focus-visible .rfi-login-trust-arrow { transform: translateX(3px); }
-.rfi-login-trust-text span { display: block; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.78); }
 .rfi-login-hint { position: absolute; left: 12px; top: 10px; display: flex; align-items: center; gap: 6px; padding: 6px 11px;
   font-size: 12px; font-weight: 600; color: #fff; background: rgba(12,10,10,0.78); border: 1px solid rgba(255,255,255,0.2);
   border-radius: 999px; backdrop-filter: blur(6px); }
+/* Full-screen preview (Simeon 18.11.): soft backdrop blur, the picture rises in with an accent glow, its own close button. */
+.rfi-login-zoom { position: fixed; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center; padding: 4vh 3vw; cursor: zoom-out;
+  background: radial-gradient(ellipse at 50% 40%, rgba(40,18,10,0.82), rgba(5,4,4,0.94) 70%); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  animation: rfi-login-in 0.3s ease both; }
+.rfi-login-zoom img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: 14px; border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.75), 0 0 110px -10px ${ACCENT}66; animation: rfi-login-zoom-in 0.45s cubic-bezier(.2, .7, .2, 1) both; }
+.rfi-login-zoom-close { position: absolute; top: 18px; right: 22px; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; padding: 0;
+  color: #fff; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.28); border-radius: 50%; cursor: pointer; transition: background 0.2s ease; }
+.rfi-login-zoom-close:hover, .rfi-login-zoom-close:focus-visible { background: rgba(255,255,255,0.2); outline: none; }
+@keyframes rfi-login-zoom-in { from { opacity: 0; transform: translateY(18px) scale(0.965); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .rfi-login-zoom, .rfi-login-zoom img { animation: none; } }
 /* Smooth switch (Simeon 11.11., slower and staged 18.11.): first only the background picture, then the side panel slides in, the preview rises
    behind it and last the Trust Center card settles on its corner; closing fades out before the screen is removed. The card keeps its fill mode
    at "backwards" so the hover lift is not frozen by the finished animation. */
@@ -184,23 +194,20 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
                 <span className="rfi-login-hint"><ExpandIcon />{c.previewZoom}</span>
               </button>
             </div>
-            <a className="rfi-login-trust" href="https://trust.rfi-irfos.com/" target="_blank" rel="noopener" data-testid="login-trust-card">
+            <a className="rfi-login-trust" href="https://trust.rfi-irfos.com/" target="_blank" rel="noopener" aria-label={`${c.trustTitle}: ${c.trustLine}`} data-testid="login-trust-card">
               <img src={c.trustImage} alt={c.trustAlt} width={1600} height={900} loading="lazy" />
-              <span className="rfi-login-trust-text"><b><ShieldIcon />{c.trustTitle}<ArrowIcon /></b><span>{c.trustLine}</span></span>
+              <span className="rfi-login-trust-text"><b><ShieldIcon />{c.trustTitle}<ArrowIcon /></b></span>
             </a>
           </div>
         </div>
       </div>
 
       {zoom && (
-        <div onClick={() => setZoom(false)} data-testid="login-preview-zoom" style={{
-          position: 'fixed', inset: 0, zIndex: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24,
-          background: 'rgba(6,5,5,0.9)', cursor: 'zoom-out',
-        }}>
-          <img src="/login/demo-dashboard-2026-11-13.webp" alt={c.previewAlt} width={1921} height={929} style={{
-            display: 'block', maxWidth: '100%', maxHeight: '100%', width: 'auto', height: 'auto', borderRadius: 12,
-            border: '1px solid rgba(255,255,255,0.18)', boxShadow: '0 30px 90px rgba(0,0,0,0.7)',
-          }} />
+        <div className="rfi-login-zoom" onClick={() => setZoom(false)} data-testid="login-preview-zoom">
+          <button type="button" className="rfi-login-zoom-close" onClick={() => setZoom(false)} aria-label={c.close}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+          </button>
+          <img src="/login/demo-dashboard-2026-11-13.webp" alt={c.previewAlt} width={1921} height={929} />
         </div>
       )}
     </div>

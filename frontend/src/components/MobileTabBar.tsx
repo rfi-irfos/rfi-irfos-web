@@ -1,8 +1,8 @@
 // App-style bottom navigation for phones (Simeon 2026-11-01, replaces the hamburger drawer).
-// A floating glass bar: The Squad, World Model, Home in the middle, Evidence, Access. Real
+// A floating glass bar: The Squad, World Model, Home in the middle, Access, Login (Simeon 18.11.2026: Evidence left the bar, the login moved down here from the top). Real
 // <a href>s so the links work without JS and stay crawlable; clicks go through PublicSite's
 // view router. The active tab carries the accent: icon, label, a short bar and a soft glow.
-import { IconHome, IconTopologyStar3, IconPlanet, IconFileSearch, IconLockOpen } from '@tabler/icons-react'
+import { IconHome, IconTopologyStar3, IconPlanet, IconFileSearch, IconLockOpen, IconLogin } from '@tabler/icons-react'
 import type { ComponentType } from 'react'
 import { localeHref } from '../lib/localeHref'
 
@@ -11,11 +11,12 @@ type IconType = ComponentType<{ size?: number; stroke?: number; 'aria-hidden'?: 
 
 const ICONS: Record<string, IconType> = { home: IconHome, squad: IconTopologyStar3, worldModel: IconPlanet, trackRecord: IconFileSearch, pricing: IconLockOpen }
 
-export function MobileTabBar({ view, locale, links, onNavigate }: {
+export function MobileTabBar({ view, locale, links, onNavigate, onLogin }: {
   view: string
   locale: 'en' | 'de'
   links: NavLink[]
   onNavigate: (href: string) => void
+  onLogin: () => void
 }) {
   const home: NavLink = { key: 'home', label: locale === 'de' ? 'Start' : 'Home', href: '/' }
   const tabs = [links[0], links[1], home, ...links.slice(2)]
@@ -57,6 +58,15 @@ export function MobileTabBar({ view, locale, links, onNavigate }: {
           </a>
         )
       })}
+      {/* Login: opens the customer portal window, so it is a button and never the active tab. */}
+      <button type="button" onClick={onLogin} data-testid="tab-login" aria-haspopup="dialog" style={{
+        position: 'relative', flex: '1 1 0', minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        gap: 5, padding: 0, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'var(--fs-label)', fontWeight: 500,
+        whiteSpace: 'nowrap', color: 'var(--text2)',
+      }}>
+        <IconLogin size={26} stroke={1.5} aria-hidden />
+        <span>Login</span>
+      </button>
     </nav>
   )
 }

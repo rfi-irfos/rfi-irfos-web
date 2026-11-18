@@ -17,10 +17,10 @@ const CONTACT_CARDS = [
   { key: 'careers' as const, value: 'career@rfi-irfos.com', href: 'mailto:career@rfi-irfos.com' },
 ]
 
-const INPUT: React.CSSProperties = { width: '100%', boxSizing: 'border-box', borderRadius: 12, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit' }
+export const INPUT: React.CSSProperties = { width: '100%', boxSizing: 'border-box', borderRadius: 12, padding: '12px 16px', color: 'var(--text)', fontSize: 'var(--fs-body)', outline: 'none', fontFamily: 'inherit' }
 
 // `plain` renders a div: a <label> around the custom Select would forward option clicks to its button.
-function Field({ label, hint, plain, children }: { label: string; hint?: string; plain?: boolean; children: React.ReactNode }) {
+export function Field({ label, hint, plain, children }: { label: string; hint?: string; plain?: boolean; children: React.ReactNode }) {
   const Tag = plain ? 'div' : 'label'
   return (
     <Tag style={{ display: 'flex', flexDirection: 'column', gap: 7, minWidth: 0 }}>

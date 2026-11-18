@@ -1189,3 +1189,15 @@ svg .k3 { color: #5aa9ff; }
   .rfi-fl.is-closed .rfi-fl-body, .rfi-fl.is-closed .rfi-fl-key, .rfi-fl.is-closed .rfi-fl-check { animation: none; }
   .rfi-fl.is-closed .rfi-fl-key { opacity: 0; } .rfi-fl.is-closed .rfi-fl-check { stroke-dashoffset: 0; opacity: 1; }
 }
+
+/* Managed SOC request pop-up (Simeon 18.11.2026). */
+.rfi-req-overlay { position: fixed; inset: 0; z-index: 1200; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto;
+  background: rgba(4,5,8,0.72); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); animation: rfi-req-fade .25s ease both; }
+.rfi-req-panel { position: relative; width: 100%; max-width: 520px; margin: auto; box-sizing: border-box; padding: 34px 32px 30px; border-radius: 20px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 90px -20px rgba(0,245,196,0.25); animation: rfi-req-rise .4s cubic-bezier(.2,.7,.2,1) both; }
+.rfi-req-close { position: absolute; top: 14px; right: 14px; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0;
+  color: var(--text); background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; cursor: pointer; }
+.rfi-req-close:hover, .rfi-req-close:focus-visible { background: rgba(255,255,255,0.16); outline: none; }
+@keyframes rfi-req-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rfi-req-rise { from { opacity: 0; transform: translateY(20px) scale(.97); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .rfi-req-overlay, .rfi-req-panel { animation: none; } }
