@@ -432,7 +432,7 @@ export const EN = {
     we: 'We',
     youReceive: 'You receive',
     whatHappensNext: 'What happens next',
-    inTouchWithin12h: 'We\'re in touch within 12h of purchase',
+    inTouchWithin12h: 'Access code right after payment',
   },
 
   checkoutModal: {

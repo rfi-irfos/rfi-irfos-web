@@ -406,7 +406,7 @@ export const DE: Content = {
     we: 'Wir',
     youReceive: 'Sie erhalten',
     whatHappensNext: 'Was als Nächstes passiert',
-    inTouchWithin12h: 'Wir melden uns innerhalb von 12h nach dem Kauf',
+    inTouchWithin12h: 'Zugangscode direkt nach der Zahlung',
   },
 
   checkoutModal: {
