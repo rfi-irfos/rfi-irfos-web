@@ -15,6 +15,8 @@ const LOGOS: { key: string; name: string; textOnly?: boolean }[] = [
   { key: 'supabase', name: 'Supabase' },
   { key: 'n8n', name: 'n8n', textOnly: true },
   { key: 'mcp', name: 'MCP' },
+  { key: 'anthropic', name: 'Anthropic' },
+  { key: 'openai', name: 'OpenAI' },
   { key: 'opensearch', name: 'OpenSearch' },
   { key: 'falco', name: 'Falco' },
   { key: 'trivy', name: 'Trivy' },
@@ -36,6 +38,7 @@ const CSS = `
   .rfi-int { padding-top: 22px; }
   .rfi-int-logo { margin: 0 24px; gap: 7px; }
   .rfi-int-logo svg { height: 20px; width: auto; }
+  .rfi-int-logo svg.rfi-int-wide { height: 11px; }
   .rfi-int-logo span { font-size: 15px; }
 }
 @keyframes rfi-int-left { to { transform: translateX(-33.3333%); } }
@@ -57,7 +60,7 @@ export function IntegrationsSection() {
           {[0, 1, 2].flatMap(copy => LOGOS.map(({ key, name, textOnly }) => {
             const b = BRANDS[key]
             const mark = (
-              <svg role="img" fill="currentColor" aria-label={name} viewBox={b.vb} height={H} width={Math.round(H * b.w)}
+              <svg role="img" fill="currentColor" aria-label={name} viewBox={b.vb} height={b.w > 7 ? 15 : H} width={Math.round((b.w > 7 ? 15 : H) * b.w)} className={b.w > 7 ? 'rfi-int-wide' : undefined}
                 dangerouslySetInnerHTML={{ __html: `<title>${name}</title>${b.body}` }} />
             )
             // Marks without a wordmark of their own get the name beside them.
