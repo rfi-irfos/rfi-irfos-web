@@ -45,7 +45,7 @@ const LOGOS: { key: string; name: string; textOnly?: boolean; img?: [string, num
 const H = 26
 const CSS = `
 .rfi-int { padding: 30px 0 0; margin-bottom: -14px; overflow: hidden; position: relative; background: transparent; }
-.rfi-int-track { display: flex; width: max-content; align-items: center; animation: rfi-int-left 120s linear infinite;
+.rfi-int-track { display: flex; width: max-content; align-items: center; animation: rfi-int-left 170s linear infinite;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
 .rfi-int-wrap { -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
@@ -63,6 +63,8 @@ const CSS = `
   .rfi-int-logo span { font-size: 15px; }
 }
 @keyframes rfi-int-left { to { transform: translateX(-33.3333%); } }
+/* Installierte App (PWA): schneller als im Browser (Simeon 18.11.). */
+@media (display-mode: standalone), (display-mode: fullscreen) { .rfi-int-track { animation-duration: 80s; } }
 @media (prefers-reduced-motion: reduce) {
   .rfi-int-wrap { -webkit-mask-image: none; mask-image: none; }
   .rfi-int-track { animation: none; width: auto; flex-wrap: wrap; justify-content: center; row-gap: 22px; }
