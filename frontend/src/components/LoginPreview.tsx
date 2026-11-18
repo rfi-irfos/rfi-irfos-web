@@ -36,11 +36,11 @@ const CSS = `
   .rfi-login-frame { position: relative; flex: none; width: min(100%, calc((100vh - 80px) * ${PREVIEW_RATIO.toFixed(3)})); }
   .rfi-login-tilt { width: 100%; }
   .rfi-login-tilt .rfi-login-shot { width: 100%; }
-  .rfi-login-trust { position: absolute; right: 8px; bottom: 6px; width: clamp(260px, 22vw, 380px); }
+  .rfi-login-trust { position: absolute; right: -18px; bottom: -22px; width: clamp(260px, 22vw, 380px); }
 }
 /* The Trust Center card (Simeon 18.11.): the one key feature hanging in front of the dashboard, linked to the landing page, green mark. */
 .rfi-login-trust { display: block; overflow: hidden; color: #fff; text-decoration: none; background: rgba(16,13,13,0.9);
-  border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; box-shadow: 0 24px 60px rgba(0,0,0,0.65);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 14px 52px -2px rgba(79,191,134,0.42);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: border-color 0.2s ease, transform 0.2s ease; }
 .rfi-login-trust:hover, .rfi-login-trust:focus-visible { border-color: ${ACCENT}; transform: translateY(-2px); outline: none; }
 .rfi-login-trust img { display: block; width: 100%; height: auto; border-bottom: 1px solid rgba(255,255,255,0.12); }
