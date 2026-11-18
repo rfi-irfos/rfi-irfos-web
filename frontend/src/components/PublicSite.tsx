@@ -2165,10 +2165,12 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
                   transform: bannerClosing ? 'scale(0.85)' : 'scale(1)',
                   opacity: bannerClosing ? 0 : 1,
                   transition: 'transform 0.24s ease-in, opacity 0.24s ease-in',
+                  // Orange glow so the banner stands out until it is closed (Simeon 18.11.).
+                  boxShadow: '0 0 0 1px rgba(255,138,40,0.6), 0 0 26px 4px rgba(255,138,40,0.45), 0 0 90px 18px rgba(255,110,20,0.22)',
                 }}>
                   <p style={{ margin: 0, flex: '1 1 260px', fontSize: 'var(--fs-small)', color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 'var(--lh-body)' }}>
                     {t.cookieBanner.text}
-                    <span style={{ display: 'block', fontSize: 'var(--fs-label)', color: theme === 'light' ? '#555555' : '#999999', marginTop: 4, fontWeight: 'normal' }}>
+                    <span style={{ display: 'block', fontSize: 'var(--fs-label)', color: theme === 'light' ? '#000000' : '#ffffff', marginTop: 4, fontWeight: 'normal' }}>
                       {t.cookieBanner.subtext}
                     </span>
                   </p>
