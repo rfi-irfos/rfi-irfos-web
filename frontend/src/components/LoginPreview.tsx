@@ -28,6 +28,13 @@ const CSS = `
   box-shadow: 0 30px 80px rgba(0,0,0,0.6); transition: transform 0.2s ease, border-color 0.2s ease; }
 .rfi-login-shot:hover, .rfi-login-shot:focus-visible { transform: translateY(-2px); border-color: ${ACCENT}; outline: none; }
 .rfi-login-shot img { display: block; width: 100%; height: auto; }
+/* Wide windows (Simeon 18.11.): the preview is turned in perspective, left edge toward the viewer, the right edge receding. The tilt sits on this
+   wrapper because the button already uses transform for its hover lift. The Trust Center landing page turns its card the other way round. */
+@media (min-width: 960px) {
+  .rfi-login-stage { perspective: 1800px; }
+  .rfi-login-tilt { width: min(100%, calc((100vh - 190px) * ${PREVIEW_RATIO.toFixed(3)})); transform-origin: 100% 50%; transform: rotateY(17deg) rotateX(5deg) rotateZ(1.5deg); }
+  .rfi-login-tilt .rfi-login-shot { width: 100%; }
+}
 .rfi-login-hint { position: absolute; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 6px; padding: 6px 11px;
   font-size: 12px; font-weight: 600; color: #fff; background: rgba(12,10,10,0.78); border: 1px solid rgba(255,255,255,0.2);
   border-radius: 999px; backdrop-filter: blur(6px); }
@@ -48,6 +55,7 @@ const CSS = `
   .rfi-login-side > * { width: 100%; max-width: 420px; }
   .rfi-login-stage { padding: 28px 16px 40px; }
   .rfi-login-shot { width: 100%; }
+  .rfi-login-tilt { width: 100%; }
 }
 `
 
@@ -136,10 +144,12 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
         </div>
 
         <div className="rfi-login-stage">
-          <button type="button" className="rfi-login-shot" onClick={() => setZoom(true)} aria-label={`${c.previewTitle}: ${c.previewZoom}`} data-testid="login-preview">
-            <img src="/login/demo-dashboard-2026-11-13.webp" alt={c.previewAlt} width={1921} height={929} />
-            <span className="rfi-login-hint"><ExpandIcon />{c.previewZoom}</span>
-          </button>
+          <div className="rfi-login-tilt">
+            <button type="button" className="rfi-login-shot" onClick={() => setZoom(true)} aria-label={`${c.previewTitle}: ${c.previewZoom}`} data-testid="login-preview">
+              <img src="/login/demo-dashboard-2026-11-13.webp" alt={c.previewAlt} width={1921} height={929} />
+              <span className="rfi-login-hint"><ExpandIcon />{c.previewZoom}</span>
+            </button>
+          </div>
         </div>
       </div>
 
