@@ -85,7 +85,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    sub: 'Wir machen Frontier-Cybersicherheit für Startups, SMEs und wachsende Unternehmen zugänglich: Eigens entwickelte Agenten untersuchen tausende Angriffswege, erfahrene Spezialisten bauen daraus gezielte Lösungen bis in den Code.',
+    sub: 'Wir machen Frontier-Cybersicherheit für Startups, SMEs und wachsende Unternehmen zugänglich: Eigens entwickelte Agenten untersuchen tausende Angriffswege, erfahrene Ingenieure schreiben daraus gezielte Lösungen bis in den betroffenen Code.',
     stats: {
       researchAreas: 'Fachbereiche',
       researchAreasSub: 'kombiniert',

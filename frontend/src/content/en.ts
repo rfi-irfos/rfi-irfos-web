@@ -102,7 +102,7 @@ export const EN = {
     subtitlePrefix: 'Interdisciplinary',
     subtitleSuffix: ' Research Facility for Open Sciences',
     // Short line under the headline (Simeon 11.11.): what we do, in two sentences. Moved here from the "What we do best" intro.
-    sub: 'We give startups, SMEs and growing enterprises access to frontier cybersecurity capabilities by deploying purpose-built agents across thousands of potential attack paths, with experienced specialists engineering actionable solutions down to the code.',
+    sub: 'We give startups, SMEs and growing enterprises access to frontier cybersecurity capabilities by deploying purpose-built agents across thousands of potential attack paths, with experienced engineers writing actionable solutions down to the affected code.',
     stats: {
       researchAreas: 'research domains',
       researchAreasSub: 'combined',
