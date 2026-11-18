@@ -15,6 +15,7 @@ import { localeHref } from '../../lib/localeHref'
 // 1.5MB TrackRecord ledger into the entry bundle of every page.
 import corpusStats from '../../content/corpus-stats.json'
 import auditStats from '../../content/auditStats.json'
+import { FinishLock } from './FinishLock'
 
 
 function Icon({ children, size = 22 }: { children: React.ReactNode; size?: number }) {
@@ -61,7 +62,7 @@ export function AppPrivacySection() {
   }, [])
   useEffect(() => {
     if (!playing || !visible) return
-    const delay = flowPhase === 'hold' ? 1500 : flowPhase === 'filling' ? 1200 : 2400
+    const delay = flowPhase === 'hold' ? 1500 : flowPhase === 'filling' ? 1200 : 3400
     const id = window.setTimeout(() => {
       if (flowPhase === 'hold') {
         setFlowPhase('filling')
@@ -124,23 +125,8 @@ export function AppPrivacySection() {
                       {!phone && <span style={{ position: 'relative', zIndex: 0, marginLeft: -8, marginRight: i === c.steps.length - 1 ? -8 : -18, flex: 1, height: 2, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' }}>
                         <span style={{ display: 'block', height: '100%', background: 'var(--accent-text)', transformOrigin: 'left', transform: i < completedSegments || (flowPhase === 'filling' && i === active) ? 'scaleX(1)' : 'scaleX(0)', transition: 'transform 1.1s ease-in-out' }} />
                       </span>}
-                      {/* Finish flag after the last step (Simeon 11.11.): lights up when the last step is reached. */}
-                      {i === c.steps.length - 1 && !phone && (
-                        <span aria-hidden="true" style={{ position: 'relative', zIndex: 1, width: 38, height: 38, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.5s ease',
-                          background: finishReached ? 'var(--brand-orange)' : 'var(--bg2)', color: finishReached ? '#fff' : 'var(--text2)',
-                          border: '1px solid ' + (finishReached ? 'var(--brand-orange)' : 'var(--border)'),
-                          boxShadow: finishReached ? '0 0 0 4px color-mix(in srgb, var(--brand-orange) 14%, transparent), 0 0 24px color-mix(in srgb, var(--brand-orange) 48%, transparent)' : 'none' }}>
-                          {/* checkered finish flag: pole plus a 4x3 chequer, drawn square by square */}
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M5 3v18" stroke={finishReached ? '#fff' : 'var(--text2)'} strokeWidth="2" strokeLinecap="round" />
-                            <rect x="7" y="4" width="14.4" height="10.8" fill={finishReached ? '#fff' : '#8a8d98'} />
-                            {[0, 1, 2].flatMap(r => [0, 1, 2, 3].map(c2 => (r + c2) % 2 === 0
-                              ? <rect key={`${r}-${c2}`} x={7 + c2 * 3.6} y={4 + r * 3.6} width="3.6" height="3.6" fill="#151515" />
-                              : null))}
-                            <rect x="7" y="4" width="14.4" height="10.8" fill="none" stroke={finishReached ? '#fff' : 'var(--text2)'} strokeWidth="1.2" />
-                          </svg>
-                        </span>
-                      )}
+                      {/* Finish lock after the last step (Simeon 18.11.): stands open while the steps fill up, closes and shows a green check at the end. */}
+                      {i === c.steps.length - 1 && !phone && <FinishLock reached={finishReached} />}
                     </div>
                     <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', color: active === i ? 'var(--accent-text)' : 'var(--text)', marginBottom: 4, transition: 'color 0.4s' }}>{s.title}</div>
                     <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: '#e8e8f0', textShadow: '0 0 12px rgba(232,232,240,0.12)' }}>{s.text}</div>

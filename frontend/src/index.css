@@ -1169,3 +1169,23 @@ svg .k3 { color: #5aa9ff; }
 
 /* One orange for every button and highlight (Simeon 11.11.2026): login screen, domain check, pricing, access. Defined on :root so every theme gets it. */
 :root { --brand-orange: #f2501f; }
+
+/* Finish lock at the end of the four steps (FinishLock.tsx, Simeon 18.11.). Open = resting state, closed = the last step is reached. */
+.rfi-fl { color: #fff; border: 1px solid var(--border); background: var(--bg2); transition: background .5s ease, border-color .5s ease, box-shadow .5s ease; }
+.rfi-fl.is-closed { border-color: rgba(255,255,255,.22); background: linear-gradient(150deg, color-mix(in srgb, var(--fl-accent) 62%, rgba(255,255,255,.16)), color-mix(in srgb, var(--fl-accent) 26%, rgba(255,255,255,.02)) 52%, color-mix(in srgb, var(--fl-accent) 42%, rgba(255,255,255,.06)));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.36), 0 0 0 4px color-mix(in srgb, var(--fl-accent) 18%, transparent), 0 0 24px color-mix(in srgb, var(--fl-accent) 60%, transparent); }
+.rfi-fl-shackle { transform-box: view-box; transform-origin: 21px 14.4px; transform: translateY(-3.2px) scaleX(-.86); }
+.rfi-fl-check { stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; }
+.rfi-fl.is-closed .rfi-fl-shackle { animation: rfi-fl-shackle 1.15s cubic-bezier(.4,.1,.3,1) both; }
+.rfi-fl.is-closed .rfi-fl-body { animation: rfi-fl-press 1.15s ease-in-out both; transform-box: view-box; transform-origin: 16px 27px; }
+.rfi-fl.is-closed .rfi-fl-key { animation: rfi-fl-key .3s linear 1.15s both; }
+.rfi-fl.is-closed .rfi-fl-check { animation: rfi-fl-check .45s ease-out 1.2s both; }
+@keyframes rfi-fl-shackle { 0% { transform: translateY(-3.2px) scaleX(-.86); } 62% { transform: translateY(-3.2px) scaleX(1); } 86% { transform: translateY(.6px) scaleX(1); } 100% { transform: translateY(0) scaleX(1); } }
+@keyframes rfi-fl-press { 0%, 80% { transform: scaleY(1); } 88% { transform: scaleY(.95); } 100% { transform: scaleY(1); } }
+@keyframes rfi-fl-key { to { opacity: 0; } }
+@keyframes rfi-fl-check { from { stroke-dashoffset: 1; opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .rfi-fl.is-closed .rfi-fl-shackle { animation: none; transform: none; }
+  .rfi-fl.is-closed .rfi-fl-body, .rfi-fl.is-closed .rfi-fl-key, .rfi-fl.is-closed .rfi-fl-check { animation: none; }
+  .rfi-fl.is-closed .rfi-fl-key { opacity: 0; } .rfi-fl.is-closed .rfi-fl-check { stroke-dashoffset: 0; opacity: 1; }
+}
