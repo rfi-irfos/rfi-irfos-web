@@ -130,7 +130,7 @@ fn tier_features(tier: &str, de: bool) -> Option<String> {
     ],
         _ => return None,
     };
-    Some(list.iter().map(|f| format!("✓ {f}")).collect::<Vec<_>>().join("\n"))
+    Some(list.iter().map(|f| format!("✓ {f}")).collect::<Vec<_>>().join("\n\n"))
 }
 
 pub async fn create_checkout(
