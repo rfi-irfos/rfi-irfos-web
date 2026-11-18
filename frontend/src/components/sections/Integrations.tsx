@@ -45,7 +45,7 @@ const LOGOS: { key: string; name: string; textOnly?: boolean; img?: [string, num
 const H = 26
 const CSS = `
 .rfi-int { padding: 30px 0 0; margin-bottom: -14px; overflow: hidden; position: relative; background: transparent; }
-.rfi-int-track { display: flex; width: max-content; align-items: center; animation: rfi-int-left 170s linear infinite;
+.rfi-int-track { display: flex; width: max-content; align-items: center; animation: rfi-int-left 220s linear infinite;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
 .rfi-int-wrap { -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
