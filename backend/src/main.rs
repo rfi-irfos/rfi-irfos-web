@@ -3,6 +3,7 @@ mod contact;
 mod content;
 mod notify;
 mod review;
+mod checkcount;
 mod clientip;
 mod safety;
 mod stripe;
@@ -332,6 +333,7 @@ async fn main() {
         .route("/api/initial-review/:id/approve", post(review::approve_review))
         .route("/api/initial-review/:id/reject", post(review::reject_review))
         .route("/api/safety-check", post(safety::check))
+        .route("/api/stats/checks", get(checkcount::get_total))
         .route("/api/early-access", post(worldmodel::submit_early_access))
         .route("/api/worldmodel-feed", get(worldmodel::worldmodel_feed).post(worldmodel::ingest_worldmodel_feed))
         .route("/api/stripe/checkout", post(stripe::create_checkout))

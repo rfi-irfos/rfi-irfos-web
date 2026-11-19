@@ -149,6 +149,7 @@ pub async fn submit_review(
         return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     }
 
+    crate::checkcount::bump(&state.db).await;
     notify_due(&domain, &email);
     notify_new_request(&state.brevo_api_key, &domain, &email).await;
 
