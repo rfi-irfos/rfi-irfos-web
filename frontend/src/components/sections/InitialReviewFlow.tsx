@@ -2,6 +2,7 @@ import { useId, useState } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { WEB3FORMS_KEY, beacon } from './shared'
 import { FailToast } from '../FailToast'
+import { DomainSafetyPanel, useSafetyCopy } from './DomainSafetyCheck'
 
 type FormState = 'idle' | 'sending' | 'ok' | 'err' | 'invalid' | 'limited'
 
@@ -23,7 +24,8 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
   const [toast, setToast] = useState(false)
   // Lighthouse round 33: labels tied to their inputs (screen readers, click-to-focus).
   const fid = useId()
-
+  const [mode, setMode] = useState<'own' | 'any'>('own')
+  const sc = useSafetyCopy()
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!consent || state === 'sending') return
@@ -95,6 +97,33 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
     <svg width={18} height={18} style={{ flexShrink: 0 }} viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d={d} /></svg>
   )
 
+  // Both panes share one grid cell, so the box keeps one height while switching; the inactive pane fades and slides out.
+  const formBox: React.CSSProperties = { display: 'flex', flexDirection: 'column', gap: 12, flex: 1, ...(wide ? { padding: '14px 18px', borderRadius: 14, gap: 10, border: '1px solid color-mix(in srgb, var(--accent-text) 38%, transparent)', background: 'color-mix(in srgb, var(--accent-text) 6%, transparent)' } : {}) }
+  const ease = 'cubic-bezier(.4,0,.2,1)'
+  const tabBtn = (id: 'own' | 'any', label: string, sub: string, icon: React.ReactNode) => (
+    <button type="button" role="tab" aria-selected={mode === id} onClick={() => setMode(id)}
+      style={{ position: 'relative', zIndex: 1, flex: 1, padding: '7px 10px', borderRadius: 10, border: 'none', cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9, background: 'transparent', color: mode === id ? 'var(--text)' : 'var(--text2)', transition: `color .3s ${ease}` }}>
+      <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ flexShrink: 0, opacity: mode === id ? 1 : 0.7, color: mode === id ? 'var(--accent-text)' : undefined, transition: `all .3s ${ease}` }}>{icon}</svg>
+      <span style={{ textAlign: 'left' }}>
+        <span style={{ display: 'block', fontWeight: 700, fontSize: 14, lineHeight: 1.2 }}>{label}</span>
+        <span style={{ display: 'block', fontSize: 12, opacity: 0.8, lineHeight: 1.2 }}>{sub}</span>
+      </span>
+    </button>
+  )
+  const tabs = (
+    <div role="tablist" style={{ position: 'relative', display: 'flex', gap: 4, padding: 4, borderRadius: 14, background: 'color-mix(in srgb, var(--text) 6%, transparent)' }}>
+      <span aria-hidden style={{ position: 'absolute', top: 4, bottom: 4, left: 4, width: 'calc(50% - 6px)', borderRadius: 10, background: 'color-mix(in srgb, var(--accent-text) 16%, transparent)', boxShadow: 'inset 0 0 0 1px color-mix(in srgb, var(--accent-text) 45%, transparent)', transform: mode === 'own' ? 'translateX(0)' : 'translateX(calc(100% + 4px))', transition: `transform .35s ${ease}` }} />
+      {tabBtn('own', sc.tabOwn, sc.tabOwnSub, <><path d="M12 3l7 3v5c0 4.500-3 8-7 10-4-2-7-5.500-7-10V6z" /><path d="M9 12l2 2 4-4" /></>)}
+      {tabBtn('any', sc.tabAny, sc.tabAnySub, <><circle cx="11" cy="11" r="6.500" /><path d="M20 20l-4.200-4.200" /></>)}
+    </div>
+  )
+  const paneStyle = (active: boolean, dir: number): React.CSSProperties => ({
+    gridArea: '1 / 1', alignSelf: dir > 0 ? 'stretch' : 'start',
+    opacity: active ? 1 : 0, visibility: active ? 'visible' : 'hidden', pointerEvents: active ? 'auto' : 'none',
+    transform: active ? 'none' : `translateX(${dir * 14}px)`,
+    transition: `opacity .3s ${ease}, transform .35s ${ease}, visibility .3s`,
+  })
+
   return (
     <div className={wide ? 'irf-card-glow irf-dlt-band' : 'irf-card-glow'} style={cardStyle}>
       <input type="text" name="botcheck" tabIndex={-1} autoComplete="off" aria-hidden="true"
@@ -117,14 +146,14 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
           {badge}
         </div>
         {wide ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, flex: 1, marginTop: 14 }}>
-            <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', lineHeight: 1.35, margin: 0 }}>{c.introText[0]}</p>
-            <p style={{ fontSize: 14, fontWeight: 400, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{c.introText[2]}</p>
-            <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{c.introText[1]}</p>
+          <div key={mode} style={{ display: 'flex', flexDirection: 'column', gap: 10, flex: 1, marginTop: 14, animation: 'dsc-pop .4s ease' }}>
+            <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', lineHeight: 1.35, margin: 0 }}>{mode === 'any' ? sc.anyLead : c.introText[0]}</p>
+            <p style={{ fontSize: 16, fontWeight: 400, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{mode === 'any' ? sc.anyBody : c.introText[2]}</p>
+            {mode === 'any' && <p style={{ fontSize: 16, fontWeight: 400, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{sc.anyMore}</p>}
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {c.introText.slice(0, -1).map((para, i) => (
+            {c.introText.slice(0, -1).filter((_, i) => i !== 1).map((para, i) => (
               <p key={i} style={{ fontSize: 'var(--fs-small)', fontWeight: 400, color: 'var(--text)', lineHeight: 'var(--lh-body)', margin: 0 }}>{para}</p>
             ))}
           </div>
@@ -133,7 +162,11 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
       </div>
       {!wide && <div style={{ borderTop: '1px solid var(--border)' }} />}
 
-      <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1, ...(wide ? { padding: '14px 18px', borderRadius: 14, gap: 10, border: '1px solid color-mix(in srgb, var(--accent-text) 38%, transparent)', background: 'color-mix(in srgb, var(--accent-text) 6%, transparent)' } : {}) }}>
+      <div style={formBox}>
+        {tabs}
+        <div style={{ display: 'grid', gridTemplateRows: '1fr', flex: 1, margin: -4, padding: 4, overflow: 'hidden' }}>
+        <div style={paneStyle(mode === 'any', 1)}><DomainSafetyPanel onNext={() => setMode('own')} /></div>
+        <form onSubmit={submit} style={{ ...paneStyle(mode === 'own', -1), display: 'flex', flexDirection: 'column', gap: wide ? 10 : 12 }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: wide ? 10 : 12 }}>
         <div style={fieldRow}>
           <label htmlFor={`${fid}-domain`} style={labelStyle}>{labelIcon('M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c2.500 2.500 3.800 5.500 3.800 9s-1.300 6.500-3.800 9c-2.500-2.500-3.800-5.500-3.800-9S9.500 5.500 12 3z')}{c.domainLabel}</label>
@@ -151,8 +184,8 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
         <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>
           <input type="checkbox" required checked={consent} onChange={e => setConsent(e.target.checked)}
             style={{ marginTop: 3, accentColor: 'var(--accent)', width: 16, height: 16, flexShrink: 0 }} />
-          <span style={{ color: 'var(--text2)', fontSize: 'var(--fs-label)', lineHeight: 'var(--lh-body)' }}>
-            {c.consentLabel} {c.introText[c.introText.length - 1]}
+          <span style={{ color: consent ? 'var(--text)' : 'var(--text2)', transition: 'color .25s ease', fontSize: 'var(--fs-label)', lineHeight: 'var(--lh-body)' }}>
+            {c.consentLabel} {c.introText[1]} {c.introText[c.introText.length - 1]}
           </span>
         </label>
         {state === 'ok' && (
@@ -175,11 +208,12 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
             </a>
           </p>
         )}
+        <div style={{ display: 'flex', gap: 10, flexDirection: 'row' }}>
         <button type="submit" className={state === 'ok' ? undefined : 'fx-cta'} disabled={state === 'sending' || !consent} style={{
           background: state === 'ok' ? 'rgba(0,245,196,0.2)' : undefined,
           color: state === 'ok' ? 'var(--accent-text)' : '#fff',
           border: state === 'ok' ? '1px solid var(--accent-text)' : 'none',
-          padding: wide ? '11px 18px' : '14px 20px', borderRadius: 12, fontWeight: 700, fontSize: wide ? 15 : 'var(--fs-body)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+          flex: 1, padding: wide ? '9px 16px' : '12px 18px', borderRadius: 12, fontWeight: 700, fontSize: wide ? 15 : 'var(--fs-body)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
           cursor: state === 'sending' ? 'wait' : !consent ? 'not-allowed' : 'pointer',
           opacity: !consent && state === 'idle' ? 0.78 : 1,
         }}>
@@ -187,7 +221,10 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
           )}
         </button>
+        </div>
       </form>
+        </div>
+      </div>
       {toast && <FailToast message={t.alerts.sendFailed} mailSubject={`Quick Check: ${domain}`}
         mailBody={`Domain: ${domain}\nEmail: ${email}`} onClose={() => setToast(false)} />}
     </div>
