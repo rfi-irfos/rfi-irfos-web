@@ -514,30 +514,45 @@ fn add_score(ip: &str, points: u32) -> (u32, bool) {
     (total, false)
 }
 
-/// Standort und Provider über ipwho.is (HTTPS, ohne Schlüssel). Fehler ergeben nur „unbekannt“.
-async fn geo_lookup(ip: &str) -> String {
-    let Ok(client) = reqwest::Client::builder().timeout(Duration::from_secs(3)).build() else { return "unbekannt".into() };
-    let Ok(res) = client.get(format!("https://ipwho.is/{ip}")).send().await else { return "unbekannt".into() };
-    let Ok(v) = res.json::<serde_json::Value>().await else { return "unbekannt".into() };
-    if v.get("success").and_then(|x| x.as_bool()) != Some(true) {
-        return "unbekannt".into();
-    }
-    let g = |k: &str| v.get(k).and_then(|x| x.as_str()).unwrap_or("").to_string();
-    let conn = v.get("connection");
-    let c = |k: &str| conn.and_then(|c| c.get(k)).and_then(|x| x.as_str()).unwrap_or("").to_string();
-    let asn = conn.and_then(|c| c.get("asn")).and_then(|x| x.as_u64()).map(|n| format!("AS{n}")).unwrap_or_default();
-    let (city, country) = (g("city"), g("country"));
+/// Standort und Provider aus lokalen MaxMind-DB-Dateien (DB-IP Lite oder GeoLite2, Pfade in
+/// GEOIP_CITY_DB und GEOIP_ASN_DB). Es geht keine Adresse mehr an einen Fremddienst; fehlt die Datei,
+/// steht „unbekannt“ im Alarm.
+fn readers() -> &'static (Option<maxminddb::Reader<Vec<u8>>>, Option<maxminddb::Reader<Vec<u8>>>) {
+    static R: std::sync::OnceLock<(Option<maxminddb::Reader<Vec<u8>>>, Option<maxminddb::Reader<Vec<u8>>>)> = std::sync::OnceLock::new();
+    R.get_or_init(|| {
+        let open = |var: &str| std::env::var(var).ok().filter(|p| !p.trim().is_empty()).and_then(|p| maxminddb::Reader::open_readfile(p.trim()).ok());
+        (open("GEOIP_CITY_DB"), open("GEOIP_ASN_DB"))
+    })
+}
+
+/// Setzt Ort und Netz zu einer Zeile zusammen: „Graz, Austria · A1 Telekom Austria · AS8447“.
+fn format_geo(city: &str, country: &str, provider: &str, asn: Option<u32>) -> String {
     let place = [city, country].into_iter().filter(|p| !p.is_empty()).collect::<Vec<_>>().join(", ");
-    // isp und org sind oft identisch, dann nur einmal.
-    let (isp, org) = (c("isp"), c("org"));
-    let provider = if org.is_empty() || org == isp { isp } else { format!("{isp} / {org}") };
-    let net = [provider, asn].into_iter().filter(|p| !p.is_empty()).collect::<Vec<_>>().join(" · ");
+    let asn = asn.map(|n| format!("AS{n}")).unwrap_or_default();
+    let net = [provider.to_string(), asn].into_iter().filter(|p| !p.is_empty()).collect::<Vec<_>>().join(" · ");
     match (place.is_empty(), net.is_empty()) {
         (true, true) => "unbekannt".into(),
         (false, true) => place,
         (true, false) => net,
         (false, false) => format!("{place} · {net}"),
     }
+}
+
+async fn geo_lookup(ip: &str) -> String {
+    let Ok(addr) = ip.parse::<std::net::IpAddr>() else { return "unbekannt".into() };
+    let (city_db, asn_db) = readers();
+    let (mut city, mut country) = (String::new(), String::new());
+    if let Some(Ok(c)) = city_db.as_ref().map(|r| r.lookup::<maxminddb::geoip2::City>(addr)) {
+        let name = |n: &Option<std::collections::BTreeMap<&str, &str>>| n.as_ref().and_then(|m| m.get("en")).map(|s| s.to_string()).unwrap_or_default();
+        city = c.city.as_ref().map(|x| name(&x.names)).unwrap_or_default();
+        country = c.country.as_ref().map(|x| name(&x.names)).unwrap_or_default();
+    }
+    let (mut provider, mut asn) = (String::new(), None);
+    if let Some(Ok(a)) = asn_db.as_ref().map(|r| r.lookup::<maxminddb::geoip2::Asn>(addr)) {
+        provider = a.autonomous_system_organization.unwrap_or("").to_string();
+        asn = a.autonomous_system_number;
+    }
+    format_geo(&city, &country, &provider, asn)
 }
 
 /// Lesbare Überschrift zur internen Art („köder:.env“, „angriff:scanner:sqlmap“).
@@ -571,7 +586,7 @@ async fn ping_ntfy(title: String, body: String, tags: &'static str, priority: &'
     if topic.is_empty() { return; }
     let Ok(client) = reqwest::Client::builder().timeout(Duration::from_secs(5)).build() else { return };
     let _ = client
-        .post(format!("https://ntfy.sh/{topic}"))
+        .post(format!("{}/{topic}", crate::notify::ntfy_base()))
         .header("Title", title)
         .header("Tags", tags)
         .header("Priority", priority)
@@ -840,5 +855,22 @@ mod tests {
     fn rare_lines_exist() {
         assert!(URKUNDE.contains("Hartnäckigster") || URKUNDE.contains("HARTNÄCKIGSTER"));
         assert!(LINES.len() >= 40);
+    }
+}
+
+#[cfg(test)]
+mod geo_tests {
+    use super::format_geo;
+
+    #[test]
+    fn joins_place_and_network() {
+        assert_eq!(format_geo("Graz", "Austria", "A1 Telekom Austria", Some(8447)), "Graz, Austria · A1 Telekom Austria · AS8447");
+    }
+
+    #[test]
+    fn handles_partial_and_empty_data() {
+        assert_eq!(format_geo("", "Austria", "", None), "Austria");
+        assert_eq!(format_geo("", "", "Hetzner", Some(24940)), "Hetzner · AS24940");
+        assert_eq!(format_geo("", "", "", None), "unbekannt");
     }
 }

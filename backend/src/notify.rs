@@ -7,10 +7,20 @@
 /// name, and the old hardcoded name sat in this public repo, so every alert (domain, email,
 /// message) was readable by any subscriber (Lighthouse round 43, 2026-10-31). The name now comes
 /// from the CONTACT_NTFY_TOPIC secret; the old name stays only as a fallback until it is set.
+/// Base URL of the ntfy server. NTFY_BASE_URL points it at our own instance on the Colony in Graz;
+/// unset keeps ntfy.sh, so the Fly fallback behaves as before.
+pub fn ntfy_base_from(v: Option<&str>) -> String {
+    v.map(|s| s.trim().trim_end_matches('/')).filter(|s| s.starts_with("http")).unwrap_or("https://ntfy.sh").to_string()
+}
+
+pub fn ntfy_base() -> String {
+    ntfy_base_from(std::env::var("NTFY_BASE_URL").ok().as_deref())
+}
+
 pub fn contact_ntfy_url() -> String {
     let topic = std::env::var("CONTACT_NTFY_TOPIC").unwrap_or_default();
     let topic = if topic.trim().is_empty() { "rfi-irfos-web-contact".to_string() } else { topic.trim().to_string() };
-    format!("https://ntfy.sh/{topic}")
+    format!("{}/{topic}", ntfy_base())
 }
 
 /// Urgent alert to the contact channel and the Lighthouse alarm channel (14.11.2026): a lead
@@ -21,7 +31,7 @@ pub async fn alert_urgent(title: &str, message: &str) {
     let Ok(client) = reqwest::Client::builder().timeout(std::time::Duration::from_secs(5)).build() else { return };
     let contact_topic = contact_ntfy_url().rsplit('/').next().unwrap_or_default().to_string();
     for topic in [contact_topic.as_str(), "lighthouse-rfi-irfos"] {
-        let _ = client.post("https://ntfy.sh/")
+        let _ = client.post(format!("{}/", ntfy_base()))
             .json(&serde_json::json!({ "topic": topic, "title": format!("⚠ {title}"), "message": message, "priority": 5 }))
             .send().await;
     }
@@ -206,5 +216,22 @@ mod tests {
         let (s, html, _) = confirmation_mail("example.org", false);
         assert!(s.starts_with("Your Quick Check"));
         assert!(html.contains("https://rfi-irfos.com/access/"));
+    }
+}
+
+#[cfg(test)]
+mod ntfy_base_tests {
+    use super::ntfy_base_from;
+
+    #[test]
+    fn defaults_to_ntfy_sh() {
+        assert_eq!(ntfy_base_from(None), "https://ntfy.sh");
+        assert_eq!(ntfy_base_from(Some("")), "https://ntfy.sh");
+        assert_eq!(ntfy_base_from(Some("ftp://x")), "https://ntfy.sh");
+    }
+
+    #[test]
+    fn takes_own_instance_without_trailing_slash() {
+        assert_eq!(ntfy_base_from(Some(" http://127.0.0.1:3109/ ")), "http://127.0.0.1:3109");
     }
 }
