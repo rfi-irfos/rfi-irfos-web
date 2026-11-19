@@ -268,7 +268,7 @@ export function AppPrivacySection() {
         <div style={{ maxWidth: 1320, margin: '0 auto 40px', textAlign: 'center' }}>
           {/* Glass cards after Simeon's reference (01.11.): icon tile, hairline, figure and label left-aligned.
               Phone stacks them full width, the horizontal card reads better as a row than squeezed in pairs. */}
-          <div style={{ display: 'grid', maxWidth: 1000, margin: '0 auto', gridTemplateColumns: phone ? '1fr' : 'repeat(auto-fit, minmax(270px, 1fr))', gap: 14 }}>
+          <div className="kpi-grid" style={phone ? { gridTemplateColumns: '1fr' } : checkTotal === null ? { gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', maxWidth: 1000 } : undefined}>
             {kpis.map((k, i) => (
               <Reveal key={k.label} delay={i}>
                 <div className="kpi-cq"><div className={`kpi-card kpi-card--${i + 1}`}>
@@ -281,11 +281,9 @@ export function AppPrivacySection() {
                 </div></div>
               </Reveal>
             ))}
-          </div>
-          {/* Fourth figure (Simeon 19.11.): live total of domain checks, centred under the three. Icon W3 from the picker. */}
-          {checkTotal !== null && (
-            <div style={{ display: 'grid', maxWidth: 1000, margin: '14px auto 0', gridTemplateColumns: phone ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 14 }}>
-              <Reveal delay={3} style={{ gridColumn: phone ? undefined : 2 }}>
+            {/* Fourth figure (Simeon 19.11.): live total of domain checks, in the same row. Icon W3 from the picker. Hidden until the number has loaded. */}
+            {checkTotal !== null && (
+              <Reveal delay={3}>
                 <div className="kpi-cq"><div className="kpi-card kpi-card--2">
                   <KpiArt kind="globe" />
                   <div className="kpi-card__rule" aria-hidden="true" />
@@ -295,8 +293,8 @@ export function AppPrivacySection() {
                   </div>
                 </div></div>
               </Reveal>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
       </div>
