@@ -190,7 +190,7 @@ export function AppPrivacySection() {
               <Reveal delay={2} style={{ height: '100%', gridColumn: phone ? undefined : 2, gridRow: phone ? undefined : 2 }}>
                 <div className="fx-evidence irf-evidence-band" style={{ borderRadius: 18, padding: 22, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box' }}>
                   <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 16 }}>
-                    <span className="rfi-glass-icon" style={{ ...tile, width: 48, height: 48, color: '#fff', borderColor: 'color-mix(in srgb, var(--brand-orange) 48%, transparent)', boxShadow: '0 0 14px color-mix(in srgb, var(--brand-orange) 20%, transparent)' }}>
+                    <span className="rfi-glass-icon" style={{ ...tile, width: 48, height: 48, color: '#fff', borderColor: 'rgba(255,255,255,.2)', boxShadow: 'none' }}>
                       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <rect x="3.25" y="3.25" width="7.5" height="7.5" rx="2" />
                         <path d="M10.75 7h2.5a2.5 2.5 0 0 1 2.5 2.5v3a2.5 2.5 0 0 0 2.5 2.5h.5" />
