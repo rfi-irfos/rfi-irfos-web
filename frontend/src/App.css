@@ -493,7 +493,7 @@ button { cursor: pointer; font-family: inherit; }
 .wm-compare-head .wm-compare-icon { flex: 0 0 auto; }
 .wm-usecase-grid .wm-compare-icon { flex: 0 0 auto; }
 .wm-usecase-grid h3 { margin: 0; font-size: var(--fs-body); font-weight: 700; }
-.wm-usecase-grid p { margin: 0; font-size: var(--fs-body); color: var(--text2); line-height: var(--lh-body); }
+.wm-usecase-grid p { margin: 0; font-size: var(--fs-body); color: var(--text); line-height: var(--lh-body); }
 
 /* Live-feed detail modal - deliberately scoped to the .wm-panel card it
    opened from (position:relative there), not the viewport (live feedback
@@ -532,7 +532,7 @@ button { cursor: pointer; font-family: inherit; }
 .wm-early-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
 .wm-early-icon { flex: none; }
 .wm-early h3 { margin: 0; font-size: var(--fs-h3); font-weight: 700; }
-.wm-early p { margin: 0; color: var(--text2); font-size: var(--fs-body); line-height: var(--lh-body); }
+.wm-early p { margin: 0; color: var(--text); font-size: var(--fs-body); line-height: var(--lh-body); }
 .wm-early-form { display: flex; flex-direction: column; gap: 14px; width: 100%; }
 .wm-early-row { display: flex; gap: 10px; width: 100%; }
 .wm-early-row input { flex: 1; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--wm-border); background: color-mix(in srgb, var(--wm-surface) 70%, var(--bg)); color: var(--text); font-size: var(--fs-body); font-family: inherit; }
@@ -545,7 +545,7 @@ button { cursor: pointer; font-family: inherit; }
 .wm-early-cta { white-space: nowrap; padding: 13px 30px; justify-self: end; }
 .wm-early-row button { white-space: nowrap; }
 .wm-early-note { font-size: var(--fs-small); color: var(--text2); }
-.wm-early-benefits svg { color: var(--text); flex: 0 0 auto; }
+.wm-early-benefits svg { color: #3ddc84; flex: 0 0 auto; }
 
 @media (max-width: 980px) {
   .wm-hero { grid-template-columns: 1fr; }
