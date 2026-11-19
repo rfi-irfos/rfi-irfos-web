@@ -211,6 +211,7 @@ export const EN = {
       trackersFound: 'Weak points found',
       endpointsInvestigated: 'Endpoints investigated',
       sdkClasses: 'SDK instances mapped',
+      domainChecks: 'Domain checks processed',
     },
     kpisSub: {
       appsAudited: 'Every app is decompiled at source-code level, not just scanned from outside.',

@@ -191,6 +191,7 @@ export const DE: Content = {
       trackersFound: 'Schwachstellen gefunden',
       endpointsInvestigated: 'Endpunkte untersucht',
       sdkClasses: 'SDK-Instanzen kartiert',
+      domainChecks: 'Domain-Checks durchgeführt',
     },
     kpisSub: {
       appsAudited: 'Jede App wird auf Quellcode-Ebene dekompiliert, nicht nur von außen gescannt.',

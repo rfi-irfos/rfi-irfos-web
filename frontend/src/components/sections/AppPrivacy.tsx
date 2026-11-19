@@ -5,7 +5,7 @@
 // static and every cell reveals on its own (same converge-from-the-sides pattern
 // as the old table), because one Reveal around the whole panel is barely visible.
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { Reveal, useMobile } from './shared'
+import { Reveal, useMobile, prefersReducedMotion } from './shared'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { IconBrandAppleFilled, IconBugFilled } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
@@ -17,6 +17,32 @@ import corpusStats from '../../content/corpus-stats.json'
 import auditStats from '../../content/auditStats.json'
 import { FinishLock } from './FinishLock'
 
+
+// Running total of domain checks (GET /api/stats/checks): one number, nothing per check is stored.
+// The figure counts up once when it arrives; no figure at all when the request fails.
+function useCheckTotal(): number | null {
+  const [target, setTarget] = useState<number | null>(null)
+  const [shown, setShown] = useState<number | null>(null)
+  useEffect(() => {
+    let alive = true
+    fetch('/api/stats/checks').then(r => r.ok ? r.json() : null).then(j => { if (alive && j && Number.isFinite(j.total)) setTarget(j.total) }).catch(() => {})
+    return () => { alive = false }
+  }, [])
+  useEffect(() => {
+    if (target === null) return
+    if (prefersReducedMotion() || target < 2) { setShown(target); return }
+    const start = performance.now(), dur = 1400
+    let raf = 0
+    const tick = (now: number) => {
+      const k = Math.min(1, (now - start) / dur)
+      setShown(Math.round(target * (1 - Math.pow(1 - k, 3))))
+      if (k < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [target])
+  return shown
+}
 
 function Icon({ children, size = 22 }: { children: React.ReactNode; size?: number }) {
   return (
@@ -90,6 +116,7 @@ export function AppPrivacySection() {
     setFinishReached(false)
     setFlowPhase('hold')
   }
+  const checkTotal = useCheckTotal()
   const kpis = [
     { n: `${auditStats.appsAudited}+`, label: t.trackRecord.kpis.appsAudited, art: 'apps' as const },
     { n: `${corpusStats.trackerMentions}+`, label: t.trackRecord.kpis.trackersFound, art: 'bugs' as const },
@@ -255,6 +282,21 @@ export function AppPrivacySection() {
               </Reveal>
             ))}
           </div>
+          {/* Fourth figure (Simeon 19.11.): live total of domain checks, centred under the three. Icon W3 from the picker. */}
+          {checkTotal !== null && (
+            <div style={{ display: 'grid', maxWidth: 1000, margin: '14px auto 0', gridTemplateColumns: phone ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 14 }}>
+              <Reveal delay={3} style={{ gridColumn: phone ? undefined : 2 }}>
+                <div className="kpi-cq"><div className="kpi-card kpi-card--2">
+                  <KpiArt kind="globe" />
+                  <div className="kpi-card__rule" aria-hidden="true" />
+                  <div style={{ textAlign: 'left', minWidth: 0 }}>
+                    <div className="kpi-card__n">{checkTotal.toLocaleString(locale === 'de' ? 'de-AT' : 'en-GB')}</div>
+                    <div className="kpi-card__label">{t.trackRecord.kpis.domainChecks}</div>
+                  </div>
+                </div></div>
+              </Reveal>
+            </div>
+          )}
         </div>
 
       </div>
@@ -279,7 +321,20 @@ function AndroidGlyph() {
 function Brackets() {
   return <>{['tl', 'tr', 'bl', 'br'].map(c => <span key={c} className={`kpi-br kpi-br--${c}`} />)}</>
 }
-function KpiArt({ kind }: { kind: 'apps' | 'bugs' | 'shield' }) {
+function KpiArt({ kind }: { kind: 'apps' | 'bugs' | 'shield' | 'globe' }) {
+  if (kind === 'globe') return (
+    // Picker 19.11. (W3): globe and check tile, built like the apps card.
+    <div className="kpi-art kpi-art--tilt" aria-hidden="true">
+      <div className="kpi-floor" />
+      <Brackets />
+      <div className="kpi-glass" style={{ left: 16, top: 20, width: 80, height: 80 }}>
+        <svg className="kpi-glyph" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M3.6 9h16.8M3.6 15h16.8M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18" /></svg>
+      </div>
+      <div className="kpi-glass" style={{ left: 66, top: 50, width: 80, height: 80 }}>
+        <svg className="kpi-glyph" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+      </div>
+    </div>
+  )
   if (kind === 'apps') return (
     <div className="kpi-art kpi-art--tilt" aria-hidden="true">
       <div className="kpi-floor" />
