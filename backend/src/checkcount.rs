@@ -5,6 +5,10 @@ use crate::AppState;
 use axum::{extract::State, http::header, response::IntoResponse, Json};
 use sqlx::SqlitePool;
 
+/// Checks run before the counter existed (19.11.2026). Nobody logged them, so this is an estimate
+/// agreed by the team (Simeon: "+111"); the card shows a trailing "+". Real checks are added on top.
+const BASE: i64 = 111;
+
 async fn ensure(db: &SqlitePool) -> Result<(), sqlx::Error> {
     sqlx::query("CREATE TABLE IF NOT EXISTS check_counter (id INTEGER PRIMARY KEY CHECK (id = 1), n INTEGER NOT NULL)").execute(db).await?;
     sqlx::query("INSERT OR IGNORE INTO check_counter (id, n) VALUES (1, 0)").execute(db).await?;
@@ -21,8 +25,8 @@ pub async fn bump(db: &SqlitePool) {
 }
 
 pub async fn total(db: &SqlitePool) -> i64 {
-    if ensure(db).await.is_err() { return 0; }
-    sqlx::query_scalar::<_, i64>("SELECT n FROM check_counter WHERE id = 1").fetch_one(db).await.unwrap_or(0)
+    if ensure(db).await.is_err() { return BASE; }
+    BASE + sqlx::query_scalar::<_, i64>("SELECT n FROM check_counter WHERE id = 1").fetch_one(db).await.unwrap_or(0)
 }
 
 pub async fn get_total(State(state): State<AppState>) -> impl IntoResponse {
@@ -39,15 +43,15 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn starts_at_zero() {
-        assert_eq!(total(&pool().await).await, 0);
+    async fn starts_at_the_estimated_base() {
+        assert_eq!(total(&pool().await).await, BASE);
     }
 
     #[tokio::test]
     async fn counts_every_bump_once() {
         let db = pool().await;
         for _ in 0..3 { bump(&db).await; }
-        assert_eq!(total(&db).await, 3);
+        assert_eq!(total(&db).await, BASE + 3);
     }
 
     #[tokio::test]
@@ -55,6 +59,6 @@ mod tests {
         let db = pool().await;
         bump(&db).await; ensure(&db).await.unwrap(); bump(&db).await;
         let rows: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM check_counter").fetch_one(&db).await.unwrap();
-        assert_eq!((rows, total(&db).await), (1, 2));
+        assert_eq!((rows, total(&db).await), (1, BASE + 2));
     }
 }

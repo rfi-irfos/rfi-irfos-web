@@ -290,7 +290,7 @@ export function AppPrivacySection() {
                   <KpiArt kind="globe" />
                   <div className="kpi-card__rule" aria-hidden="true" />
                   <div style={{ textAlign: 'left', minWidth: 0 }}>
-                    <div className="kpi-card__n">{checkTotal.toLocaleString(locale === 'de' ? 'de-AT' : 'en-GB')}</div>
+                    <div className="kpi-card__n">{checkTotal.toLocaleString(locale === 'de' ? 'de-AT' : 'en-GB')}+</div>
                     <div className="kpi-card__label">{t.trackRecord.kpis.domainChecks}</div>
                   </div>
                 </div></div>
