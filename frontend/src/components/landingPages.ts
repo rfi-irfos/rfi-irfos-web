@@ -87,7 +87,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
           h2: 'How an audit runs',
           p: [
             'Four steps carry every review. Send: you hand over the material. Examine: our team and one, several or all of our agents work through source, configuration and data flows together. Re-verify: human specialists check every finding before it reaches the report. Evidence: we document the examination in writing, with the evidence for each finding.',
-            'The report checks exploitability, meaning what an attacker could realistically do with a finding, ranks severity with CVSS where applicable, and gives remediation guidance, with concrete fixes down to the affected code from the Growth plan. Testing follows OWASP ASVS, the OWASP Top 10 and CWE. Every report ships with a base knowledge graph that links the findings. The Security offer on the Access page states a delivery estimate of 5 business days.',
+            'The report checks exploitability, meaning what an attacker could realistically do with a finding, ranks severity with CVSS where applicable, and gives remediation guidance, with concrete fixes down to the affected code from the Growth plan. Testing follows OWASP ASVS, the OWASP Top 10 and CWE. Every report ships with a base knowledge graph that links the findings. Setup takes about five minutes, and the first scan can start right after it.',
           ],
         },
       ],
@@ -156,7 +156,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
           h2: 'So läuft eine Prüfung ab',
           p: [
             'Vier Schritte tragen jede Prüfung. Senden: Sie übergeben das Material. Untersuchen: unser Team und ein, mehrere oder alle unsere Agenten arbeiten gemeinsam durch Quellcode, Konfiguration und Datenflüsse. Erneut prüfen: menschliche Fachleute kontrollieren jeden Befund, bevor er in den Bericht kommt. Belegen: wir dokumentieren die Untersuchung schriftlich, mit dem Beleg zu jedem Befund.',
-            'Der Bericht prüft die Ausnutzbarkeit, also was ein Angreifer mit einem Befund realistisch anfangen kann, gewichtet den Schweregrad wo anwendbar mit CVSS und gibt Hinweise zur Behebung, ab dem Growth-Plan mit konkreten Fixes bis in den betroffenen Code. Die Tests folgen OWASP ASVS, den OWASP Top 10 und CWE. Jeder Bericht enthält einen Basis-Knowledge-Graph, der die Befunde verknüpft. Das Security-Angebot auf der Seite Zugang nennt eine Lieferzeit von 5 Werktagen.',
+            'Der Bericht prüft die Ausnutzbarkeit, also was ein Angreifer mit einem Befund realistisch anfangen kann, gewichtet den Schweregrad wo anwendbar mit CVSS und gibt Hinweise zur Behebung, ab dem Growth-Plan mit konkreten Fixes bis in den betroffenen Code. Die Tests folgen OWASP ASVS, den OWASP Top 10 und CWE. Jeder Bericht enthält einen Basis-Knowledge-Graph, der die Befunde verknüpft. Die Einrichtung dauert etwa fünf Minuten, und der erste Scan kann direkt danach starten.',
           ],
         },
       ],
@@ -360,7 +360,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
           h2: 'What you receive',
           p: [
             'A written report with the evidence behind each finding, severity ranked with CVSS where applicable, an analysis of what an attacker could realistically do, and remediation guidance, with concrete fixes down to the affected code from the Growth plan. Every report includes a base knowledge graph that links findings, SDKs, endpoints and weaknesses. Human specialists re-verify every finding.',
-            'The report is technical evidence for your risk-management documentation. It carries no certificate. The Security offer on the Access page states a delivery estimate of 5 business days.',
+            'The report is technical evidence for your risk-management documentation. It carries no certificate. Setup takes about five minutes, and the first scan can start right after it.',
           ],
         },
         {
@@ -387,7 +387,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       faq: [
         ['Does NIS2 apply to our company?', 'That depends on sector, size and role in a supply chain. The national authority\'s information at nis.gv.at is the reference. The audit supplies technical facts and leaves the applicability decision to you and your counsel.'],
         ['Do you certify NIS2 compliance?', 'No certificate is issued. The deliverable is a written technical report with evidence for your risk-management documentation.'],
-        ['How long does an audit take?', 'The Security offer on the Access page states a delivery estimate of 5 business days.'],
+        ['How long does an audit take?', 'Setup takes about five minutes, and the first scan can start right after it.'],
         ['Do you test our live systems?', 'No. You send the material you want examined, and the audit works on that material.'],
       ],
     },
@@ -421,7 +421,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
           h2: 'Was Sie erhalten',
           p: [
             'Einen schriftlichen Bericht mit dem Beleg zu jedem Befund, nach CVSS gewichtetem Schweregrad wo anwendbar, einer Analyse dessen, was ein Angreifer realistisch tun kann, und Hinweisen zur Behebung, ab dem Growth-Plan mit konkreten Fixes bis in den betroffenen Code. Jeder Bericht enthält einen Basis-Knowledge-Graph, der Befunde, SDKs, Endpunkte und Schwachstellen verknüpft. Menschliche Fachleute kontrollieren jeden Befund erneut.',
-            'Der Bericht ist ein technischer Beleg für Ihre Risikomanagement-Dokumentation. Er trägt kein Zertifikat. Das Security-Angebot auf der Seite Zugang nennt eine Lieferzeit von 5 Werktagen.',
+            'Der Bericht ist ein technischer Beleg für Ihre Risikomanagement-Dokumentation. Er trägt kein Zertifikat. Die Einrichtung dauert etwa fünf Minuten, und der erste Scan kann direkt danach starten.',
           ],
         },
         {
@@ -448,7 +448,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       faq: [
         ['Gilt NIS2 für unser Unternehmen?', 'Das hängt von Sektor, Größe und Rolle in einer Lieferkette ab. Die Informationen der nationalen Behörde unter nis.gv.at sind die Referenz. Die Prüfung liefert technische Tatsachen und überlässt die Entscheidung über die Anwendbarkeit Ihnen und Ihrer Rechtsvertretung.'],
         ['Zertifizieren Sie die NIS2-Konformität?', 'Es wird kein Zertifikat ausgestellt. Geliefert wird ein schriftlicher technischer Bericht mit Belegen für Ihre Risikomanagement-Dokumentation.'],
-        ['Wie lange dauert eine Prüfung?', 'Das Security-Angebot auf der Seite Zugang nennt eine Lieferzeit von 5 Werktagen.'],
+        ['Wie lange dauert eine Prüfung?', 'Die Einrichtung dauert etwa fünf Minuten, und der erste Scan kann direkt danach starten.'],
         ['Testen Sie unsere Live-Systeme?', 'Nein. Sie senden das Material, das untersucht werden soll, und die Prüfung arbeitet an diesem Material.'],
       ],
     },
