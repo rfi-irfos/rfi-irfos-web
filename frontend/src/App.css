@@ -782,11 +782,10 @@ button { cursor: pointer; font-family: inherit; }
 [data-theme="dark"] .irf-dlt-title { color: #fff !important; }
 /* Evidence panel (Simeon 11.11.): milky glass, check marks green. Dark only. */
 [data-theme="dark"] .irf-evidence-band { --evidence-check: #3ddc84; border-color: rgba(255,255,255,.13); border-top-color: rgba(255,255,255,.2); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025)); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 20px 44px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.12); }
-[data-theme="dark"] .irf-scope-band { border-color: rgba(242,80,31,.24); background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0) 28%), rgba(11,13,18,.9); }
-/* Login-screen world map behind the card, blurred and veiled so it reads as depth, not as picture (Simeon 11.11.).
-   The layer sits 14px outside the card so the blur has no soft edge, clip-path cuts it back to the card. */
-[data-theme="dark"] .irf-scope-band::before { content: ''; position: absolute; inset: -14px; z-index: -1; pointer-events: none; background: linear-gradient(rgba(9,10,14,.8), rgba(9,10,14,.88)), url('/login/bg.webp') center / cover no-repeat; filter: blur(10px); clip-path: inset(14px round 20px); }
-[data-theme="dark"] .irf-scope-band .fx-row { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02) 60%), rgba(22,16,15,.9); }
+[data-theme="dark"] .irf-scope-band { border-color: rgba(110,140,255,.26); background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0) 28%), var(--carbon-weave), rgba(10,15,32,.94); }
+/* Carbon plate in deep royal blue (Simeon 19.11.): the orange tint came from the warm rows and the login map behind the card. */
+[data-theme="dark"] .irf-scope-band::before { content: none; }
+[data-theme="dark"] .irf-scope-band .fx-row { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02) 60%), var(--carbon-weave), rgba(16,23,46,.92); border-color: rgba(120,150,255,.14); }
 .irf-badge-pulse { animation: irf-badge-pulse 2.6s ease-in-out infinite; }
 @keyframes irf-badge-pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(0,245,196,0.4); }
