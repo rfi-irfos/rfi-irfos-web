@@ -1086,7 +1086,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         ['How is this different from a vulnerability scan?', 'A scan lists possible weaknesses. We confirm each finding with a proof of concept and show what an attacker could do with it.'],
         ['Do you test APIs and cloud environments?', 'Yes. The scope covers web and mobile apps, REST and GraphQL APIs, AWS and Azure environments and infrastructure.'],
         ['Do you help fix what you find?', 'Yes. We engineer fixes down to the affected code and retest them.'],
-        ['How long does it take and what does it cost?', 'Duration and price of a penetration test are agreed per scope and offered in writing'],
+        ['How long does it take and what does it cost?', 'Duration and price of a penetration test are agreed per scope and offered in writing.'],
       ],
     },
     de: {
