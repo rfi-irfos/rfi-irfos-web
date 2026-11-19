@@ -782,10 +782,10 @@ button { cursor: pointer; font-family: inherit; }
 [data-theme="dark"] .irf-dlt-title { color: #fff !important; }
 /* Evidence panel (Simeon 11.11.): milky glass, check marks green. Dark only. */
 [data-theme="dark"] .irf-evidence-band { --evidence-check: #3ddc84; border-color: rgba(255,255,255,.13); border-top-color: rgba(255,255,255,.2); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025)); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 20px 44px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.12); }
-[data-theme="dark"] .irf-scope-band { border-color: rgba(255,255,255,.14); border-top-color: rgba(255,255,255,.26); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0) 30%), repeating-linear-gradient(90deg, rgba(255,255,255,.028) 0 1px, rgba(0,0,0,.05) 1px 3px), var(--carbon-weave), #121316; }
-/* Brushed carbon in anthracite and obsidian (Simeon 19.11.): neutral grey-black, fine horizontal brush grain over the 112deg weave, no colour cast. */
+[data-theme="dark"] .irf-scope-band { border-color: rgba(255,255,255,.1); border-top-color: rgba(255,255,255,.2); background: linear-gradient(135deg, rgba(255,255,255,.045), rgba(255,255,255,0) 38%, rgba(255,255,255,.02) 70%, rgba(255,255,255,0)), repeating-linear-gradient(112deg, rgba(255,255,255,.045) 0 1px, rgba(0,0,0,.18) 1px 2px, transparent 2px 4px), #08090b; }
+/* Brushed carbon in obsidian (Simeon 19.11.): near-black neutral base, fine diagonal grain at the page's 112deg weave angle plus a soft sheen, no vertical streaks, no colour cast. */
 [data-theme="dark"] .irf-scope-band::before { content: none; }
-[data-theme="dark"] .irf-scope-band .fx-row { background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.015) 60%), repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, rgba(0,0,0,.06) 1px 3px), var(--carbon-weave), #1b1c20; border-color: rgba(255,255,255,.1); border-top-color: rgba(255,255,255,.2); }
+[data-theme="dark"] .irf-scope-band .fx-row { background: linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,0) 60%), repeating-linear-gradient(112deg, rgba(255,255,255,.04) 0 1px, rgba(0,0,0,.2) 1px 2px, transparent 2px 4px), #101114; border-color: rgba(255,255,255,.08); border-top-color: rgba(255,255,255,.16); }
 .irf-badge-pulse { animation: irf-badge-pulse 2.6s ease-in-out infinite; }
 @keyframes irf-badge-pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(0,245,196,0.4); }
