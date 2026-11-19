@@ -73,10 +73,42 @@ fn internal_recipients() -> Vec<serde_json::Value> {
     if list.is_empty() { vec![serde_json::json!({ "email": "domain-check@rfi-irfos.com" })] } else { list }
 }
 
+/// Turns the plain lead text into a readable card: first line as heading, "Label: value" lines
+/// as a field table, other paragraphs as text, the closing line muted. The plain text part of
+/// the mail stays untouched for clients that prefer it.
+fn lead_html(text: &str) -> String {
+    let mut blocks = text.split("\n\n").map(str::trim).filter(|b| !b.is_empty()).peekable();
+    let mut out = String::from("<div style=\"font-family:Arial,sans-serif;font-size:15px;line-height:1.55;color:#1b1f27;max-width:560px\">");
+    let mut first = true;
+    while let Some(block) = blocks.next() {
+        let last = blocks.peek().is_none() && !first;
+        if first {
+            out.push_str(&format!("<p style=\"font-size:13px;letter-spacing:.04em;color:#5b6472;margin:0 0 14px\">{}</p>", html_escape(block)));
+            first = false;
+            continue;
+        }
+        let rows: Vec<(&str, &str)> = block.lines().filter_map(|l| l.split_once(": ")).filter(|(k, _)| !k.is_empty() && k.len() <= 24 && !k.contains(' ') || matches!(*k, "Credit preference")).collect();
+        let all_fields = !rows.is_empty() && rows.len() == block.lines().count();
+        if all_fields {
+            out.push_str("<table style=\"border-collapse:collapse;margin:0 0 14px\">");
+            for (k, v) in rows {
+                out.push_str(&format!("<tr><td style=\"padding:3px 16px 3px 0;color:#5b6472;vertical-align:top\">{}</td><td style=\"padding:3px 0;font-weight:600\">{}</td></tr>", html_escape(k), html_escape(v)));
+            }
+            out.push_str("</table>");
+        } else if last {
+            out.push_str(&format!("<p style=\"font-size:13px;color:#5b6472;margin:18px 0 0;border-top:1px solid #e3e6ea;padding-top:12px\">{}</p>", html_escape(block)));
+        } else {
+            out.push_str(&format!("<p style=\"margin:0 0 14px;padding:12px 14px;background:#f4f6f8;border-radius:8px;white-space:pre-wrap\">{}</p>", html_escape(block)));
+        }
+    }
+    out.push_str("</div>");
+    out
+}
+
 async fn brevo_internal(key: &str, subject: &str, text: &str, reply_to: &str) -> Result<(), String> {
     let client = reqwest::Client::builder().timeout(std::time::Duration::from_secs(10)).build()
         .map_err(|e| e.to_string())?;
-    let html = format!("<pre style=\"font-family:Arial,sans-serif;font-size:14px;white-space:pre-wrap\">{}</pre>", html_escape(text));
+    let html = lead_html(text);
     let mut body = serde_json::json!({
         "sender": { "name": "rfi-irfos.com Lead", "email": "domain-check@rfi-irfos.com" },
         "to": internal_recipients(),
@@ -233,5 +265,21 @@ mod ntfy_base_tests {
     #[test]
     fn takes_own_instance_without_trailing_slash() {
         assert_eq!(ntfy_base_from(Some(" http://127.0.0.1:3109/ ")), "http://127.0.0.1:3109");
+    }
+}
+
+#[cfg(test)]
+mod lead_html_tests {
+    use super::lead_html;
+
+    #[test]
+    fn contact_mail_becomes_card_with_field_table_and_message_block() {
+        let t = "New contact request on rfi-irfos.com\n\nName: johoy\nEmail: a@b.c\nTopic: DINGIR API access\nCredit preference: anonymous\n\nI want <b>to learn</b>\n\nThe lead is in Lighthouse as an open ticket.";
+        let h = lead_html(t);
+        assert!(h.contains("<table"), "{h}");
+        assert!(h.contains(">Credit preference</td>"), "{h}");
+        assert!(h.contains("&lt;b&gt;to learn&lt;/b&gt;"), "message must be escaped: {h}");
+        assert!(h.contains("border-top"), "closing line muted: {h}");
+        assert!(!h.contains("<pre"), "{h}");
     }
 }
