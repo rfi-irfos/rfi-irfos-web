@@ -1,0 +1,9 @@
+# Add to ~/lighthouse-colony/Caddyfile (keep a backup copy first), then restart the lighthouse-caddy container.
+# Cloudflare Tunnel ingress for rfi-irfos.com, www.rfi-irfos.com and the test host rfi-web.rfi-irfos.com points at 127.0.0.1:3110.
+# Only cloudflared reaches loopback, so Cf-Connecting-IP is the real visitor address; header_up replaces any value a client sent.
+:3110 {
+	bind 127.0.0.1
+	reverse_proxy 127.0.0.1:3108 {
+		header_up X-RFI-Client-IP {http.request.header.Cf-Connecting-IP}
+	}
+}

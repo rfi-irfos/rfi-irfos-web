@@ -6,7 +6,7 @@ import { ManagedSocModal } from './sections/ManagedSocModal'
 import { useLocale, type Locale, LOCALES } from '../hooks/useLocale'
 import { localeHref, DE_ROUTES } from '../lib/localeHref'
 import type { Content } from '../content/en'
-import { TEAL, useMobile, useFormAbandonment, beacon, attributionParams, LIGHTHOUSE_BEACON, WEB3FORMS_KEY, ModalTierBody, revealSuppressed, useModalExit } from './sections/shared'
+import { TEAL, useMobile, useFormAbandonment, beacon, attributionParams, LIGHTHOUSE_BEACON, ModalTierBody, revealSuppressed, useModalExit } from './sections/shared'
 import { HeroSection } from './sections/Hero'
 import { ResearchSection } from './sections/Research'
 import { ResearchDocModal } from './sections/ResearchLibrary'
@@ -1197,13 +1197,8 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
     if (tipForm.topic === 'Security Disclosure' && !tipForm.lawful) return
     if (tipForm.botcheck) { setTipFormState('ok'); return }
     setTipFormState('sending')
-    // Posts same-origin to our own backend, which relays into the Lighthouse CRM with
-    // the key held server side. If that fails, we fall back to a direct Web3Forms call
-    // from here in the browser - Web3Forms' free tier actively rejects server-to-server
-    // submissions ("Pro plan required"), so that leg can't be proxied through the
-    // backend; it needs VITE_WEB3FORMS_KEY inlined at build time via Vite. Pass it with
-    // `fly deploy --build-arg VITE_WEB3FORMS_KEY=<key>` - a `fly secrets set` alone
-    // never reaches the Docker build stage and silently no-ops this whole branch.
+    // Posts same-origin to our own backend, which relays into the Lighthouse CRM with the key held
+    // server side and mails us through Brevo. If that fails, the error state carries a mailto.
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -1230,37 +1225,9 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
       setTipFormState('ok')
       setTipForm({ topic: '', handle: '', email: '', target: '', credit: 'anonymous', finding: '', lawful: false, botcheck: '' })
     } catch {
-      // CRM relay failed. Fall back to Web3Forms, which is an email-forwarding
-      // service and is what actually delivered mail before this rewrite. Two
-      // independent paths to a lead, so one being down never loses it: CRM first
-      // because it is what the leads counter reads, email second because it
-      // reaches a human immediately, and the mailto in the error state third.
-      try {
-        if (!WEB3FORMS_KEY) throw new Error('no web3forms key in this build')
-        const res2 = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            access_key: WEB3FORMS_KEY,
-            subject: `[rfi-irfos.com] ${tipForm.topic || 'Enquiry'} - ${tipForm.target || 'unspecified'}`,
-            name: tipForm.handle || 'anonymous',
-            email: tipForm.email,
-            replyto: tipForm.email || undefined,
-            topic: tipForm.topic,
-            target: tipForm.target,
-            credit_preference: tipForm.credit,
-            message: tipForm.finding,
-          }),
-        })
-        if (!res2.ok) throw new Error(String(res2.status))
-        beacon('lead_submitted_email_fallback')
-        setTipFormState('ok')
-        setTipForm({ topic: '', handle: '', email: '', target: '', credit: 'anonymous', finding: '', lawful: false, botcheck: '' })
-      } catch {
-        // Both paths down. Never report success on a failed send: the error state
-        // carries a pre-filled mailto so the visitor can still reach us.
-        setTipFormState('err')
-      }
+      // Never report success on a failed send: the error state carries a pre-filled mailto so the
+      // visitor can still reach us.
+      setTipFormState('err')
     }
   }
 

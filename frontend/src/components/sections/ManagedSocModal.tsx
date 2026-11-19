@@ -1,6 +1,6 @@
 // Request pop-up for the Managed SOC band (Simeon 18.11.2026): the visitor fills in the enquiry on the spot instead of being
 // scrolled down to the contact form. It uses the page's own form state and submit handler (PublicSite.tsx), so the CRM relay,
-// the Web3Forms fallback, the honeypot and the lead beacon are the same as for the contact form below.
+// the honeypot and the lead beacon are the same as for the contact form below.
 import { useEffect, useRef } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { FormStateIcon, TEAL } from './shared'

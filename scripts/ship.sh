@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # rfi-irfos-web deploy chain: build on the Colony (heavy work never runs on
 # the ZBook - npm, Playwright prerender across ~200 routes, docker build all
-# need real CPU/RAM), ship the image to the ZBook, push to the Fly registry,
-# deploy. Run from the repo root: ./scripts/ship.sh [SHA]
+# need real CPU/RAM), then start it right there with docker compose (the site
+# runs on the Colony in Graz since the move off Fly.io; Fly stays untouched as a
+# fallback and is no longer deployed). Run from the repo root: ./scripts/ship.sh [SHA]
 # SHA defaults to the current HEAD short hash - pass one explicitly only to
 # re-deploy an older already-built image tag.
 set -e; set -o pipefail
@@ -37,26 +38,20 @@ rm -rf frontend/dist
 # keeps getting silently undone. Installing fresh inside the very colony-run
 # that's about to consume it means the revision is always present when
 # needed, regardless of what any other project's cache GC did in between.
-# VITE_WEB3FORMS_KEY: live bug report 2026-10-24 (both the main contact form
-# and the Squad "Request Access" form landed in the error state while the
-# Lighthouse CRM relay was down, with no safety net). Vite inlines
-# import.meta.env.VITE_* at build time from the build process's own env - the
-# frontend build runs here, on the Colony, not inside Docker (see Dockerfile's
-# own top comment), so the key has to reach THIS remote shell, not a
-# `--build-arg`. Read fresh from the gitignored, never-committed local file
-# at ship-time rather than hardcoding it into this committed script.
-WEB3FORMS_KEY="$(grep -m1 '^VITE_WEB3FORMS_KEY=' frontend/.env.production.local | cut -d= -f2-)"
-test -n "$WEB3FORMS_KEY" || { echo "missing VITE_WEB3FORMS_KEY in frontend/.env.production.local" >&2; exit 1; }
-colony-run -a frontend/dist -- "cd frontend && npm ci --no-audit --no-fund >/dev/null 2>&1; npx playwright install chromium >/dev/null 2>&1; set -o pipefail; VITE_WEB3FORMS_KEY='$WEB3FORMS_KEY' npm run build 2>&1 | tail -8"
+colony-run -a frontend/dist -- "cd frontend && npm ci --no-audit --no-fund >/dev/null 2>&1; npx playwright install chromium >/dev/null 2>&1; set -o pipefail; npm run build 2>&1 | tail -8"
 test -f frontend/dist/index.html
 ssh colony 'rm -rf ~/work/rfi-web-img && mkdir -p ~/work/rfi-web-img'
 git archive HEAD | ssh colony 'tar -x -C ~/work/rfi-web-img'
 tar -C frontend -c dist | ssh colony 'tar -x -C ~/work/rfi-web-img/frontend'
 ssh colony "cd ~/work/rfi-web-img && sudo -n nice -n 10 docker build -t rfi-web-img:$SHA . >/tmp/docker_build.log 2>&1; code=\$?; tail -5 /tmp/docker_build.log; exit \$code"
-ssh colony "sudo -n docker save rfi-web-img:$SHA" | docker load | tail -1
-docker tag rfi-web-img:$SHA registry.fly.io/rfi-irfos-web-2:$SHA
-fly auth whoami
-fly auth docker >/dev/null 2>&1
-for i in 1 2 3; do docker push registry.fly.io/rfi-irfos-web-2:$SHA >/tmp/push.log 2>&1 && break; fly auth docker >/dev/null 2>&1; sleep 5; done; tail -2 /tmp/push.log
-fly deploy -a rfi-irfos-web-2 --image registry.fly.io/rfi-irfos-web-2:$SHA 2>&1 | tail -6
-ssh colony 'rm -rf ~/work/rfi-web-img ~/work/rfi-irfos-web-*; sudo -n docker image prune -f >/dev/null'
+ssh colony 'mkdir -p ~/services/rfi-web'
+scp -q deploy/graz/docker-compose.yml colony:services/rfi-web/docker-compose.yml
+ssh colony "cd ~/services/rfi-web && RFI_WEB_TAG=$SHA sudo -n --preserve-env=RFI_WEB_TAG docker compose -p rfi-web up -d --remove-orphans"
+for i in $(seq 1 30); do
+  st=$(ssh colony "sudo -n docker inspect -f '{{.State.Health.Status}}' rfi-web-web-1 2>/dev/null" || true)
+  [ "$st" = healthy ] && break; sleep 5
+done
+echo "container health: ${st:-unknown}"
+[ "$st" = healthy ] || { echo "deploy failed: rfi-web-web-1 not healthy" >&2; ssh colony 'sudo -n docker logs --tail 20 rfi-web-web-1' >&2; exit 1; }
+# keep the last 5 image tags for ./scripts/ship.sh <old sha> rollbacks
+ssh colony 'sudo -n docker images rfi-web-img --format "{{.Tag}}" | tail -n +6 | xargs -r -I{} sudo -n docker rmi rfi-web-img:{} >/dev/null 2>&1; rm -rf ~/work/rfi-web-img ~/work/rfi-irfos-web-*; sudo -n docker image prune -f >/dev/null'

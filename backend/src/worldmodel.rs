@@ -117,16 +117,7 @@ pub async fn submit_early_access(
     headers: HeaderMap,
     Json(body): Json<EarlyAccessRequest>,
 ) -> impl IntoResponse {
-    let ip = headers
-        .get("fly-client-ip")
-        .or_else(|| headers.get("x-forwarded-for"))
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("unknown")
-        .split(',')
-        .next()
-        .unwrap_or("unknown")
-        .trim()
-        .to_string();
+    let ip = crate::clientip::client_ip(&headers);
 
     if rate_limited(&ip) {
         return (StatusCode::TOO_MANY_REQUESTS, "rate limit exceeded — 5 submissions per minute per IP\n").into_response();

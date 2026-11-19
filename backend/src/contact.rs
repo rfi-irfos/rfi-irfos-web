@@ -51,16 +51,7 @@ pub async fn submit_contact(
     headers: HeaderMap,
     Json(body): Json<ContactRequest>,
 ) -> impl IntoResponse {
-    let ip = headers
-        .get("fly-client-ip")
-        .or_else(|| headers.get("x-forwarded-for"))
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("unknown")
-        .split(',')
-        .next()
-        .unwrap_or("unknown")
-        .trim()
-        .to_string();
+    let ip = crate::clientip::client_ip(&headers);
 
     if contact_rate_limited(&ip) {
         return (StatusCode::TOO_MANY_REQUESTS, "rate limit exceeded — 5 submissions per minute per IP\n").into_response();

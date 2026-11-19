@@ -29,6 +29,7 @@ rustls = { version = "0.23", default-features = false, features = ["ring", "std"
 tokio-rustls = { version = "0.26", default-features = false, features = ["ring", "tls12"] }
 webpki-roots = "0.26"
 x509-parser = "0.16"
+maxminddb = "0.24"
 psl = "2"
 
 [dev-dependencies]

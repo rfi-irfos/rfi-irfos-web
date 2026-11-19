@@ -1,6 +1,6 @@
 import { useId, useState } from 'react'
 import { useLocale } from '../../hooks/useLocale'
-import { WEB3FORMS_KEY, beacon } from './shared'
+import { beacon } from './shared'
 import { FailToast } from '../FailToast'
 import { DomainSafetyPanel, useSafetyCopy } from './DomainSafetyCheck'
 
@@ -35,24 +35,9 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
     if (!domain.replace(/^https?:\/\//, '').split('/')[0].includes('.')) { setState('invalid'); beacon('free_check_invalid:' + variant); return }
     setState('sending')
     setToast(false)
-    // Browser-side Web3Forms: a second inbox path next to the server's Brevo mail.
-    const mailUs = () => WEB3FORMS_KEY ? fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_KEY,
-        subject: `[rfi-irfos.com] New initial review request — ${domain}`,
-        name: 'Initial review request',
-        email,
-        replyto: email,
-        message: `domain=${domain}\nemail=${email}`,
-      }),
-    }).then(r => r.ok, () => false) : Promise.resolve(false)
-    // Server down or network gone (14.11.2026, "das muss klappen"): the request still reaches
-    // our inbox through Web3Forms; only when that fails too the visitor sees the toast.
-    const failed = async (why: string) => {
+    // Server down or network gone: the visitor sees the toast with our mail address.
+    const failed = (why: string) => {
       beacon('free_check_error:' + why + ':' + variant)
-      if (await mailUs()) { setState('ok'); beacon('free_check_submitted_fallback:' + variant); return }
       setState('err')
       setToast(true)
     }
@@ -63,16 +48,15 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
         body: JSON.stringify({ domain, email, consent, botcheck, locale }),
       })
       if (res.status === 400) { setState('invalid'); beacon('free_check_error:400:' + variant); return }
-      // Rate limit: the request still reaches our inbox through the browser path (14.11.2026).
-      if (res.status === 429) { await failed('429'); return }
-      if (!res.ok) { await failed(String(res.status)); return }
+      // Rate limit: the visitor sees the toast with our mail address.
+      if (res.status === 429) { failed('429'); return }
+      if (!res.ok) { failed(String(res.status)); return }
       setState('ok')
       // Lighthouse round 22: the DLT free check is the top of the paid funnel, but it was
       // the one conversion that never reached web_visits. No domain or email is sent.
       beacon('free_check_submitted:' + variant)
-      void mailUs()
     } catch {
-      await failed('network')
+      failed('network')
     }
   }
 
