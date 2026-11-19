@@ -336,6 +336,7 @@ async fn main() {
         .route("/api/stats/checks", get(checkcount::get_total))
         .route("/api/early-access", post(worldmodel::submit_early_access))
         .route("/api/worldmodel-feed", get(worldmodel::worldmodel_feed).post(worldmodel::ingest_worldmodel_feed))
+        .route("/api/worldmodel-stats", get(worldmodel::worldmodel_stats).post(worldmodel::ingest_worldmodel_stats))
         .route("/api/stripe/checkout", post(stripe::create_checkout))
         .route("/api/stripe/webhook", post(stripe::webhook))
         // Tracking pixel (public, no auth)

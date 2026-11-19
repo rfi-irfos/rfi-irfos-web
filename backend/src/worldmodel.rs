@@ -40,8 +40,13 @@ fn live_feed_store() -> &'static Mutex<Vec<FeedEntry>> {
 }
 
 pub async fn worldmodel_feed() -> impl IntoResponse {
-    let entries = live_feed_store().lock().unwrap_or_else(|e| e.into_inner()).clone();
-    Json(entries)
+    let mut store = live_feed_store().lock().unwrap_or_else(|e| e.into_inner());
+    // A fresh container (every deploy) starts empty; restore the last batch from the data
+    // volume so the page is not blank until the relay's next run (19.11.2026).
+    if store.is_empty() {
+        if let Some(saved) = load_json::<Vec<FeedEntry>>(&data_file("worldmodel_feed.json")) { *store = saved; }
+    }
+    Json(store.clone())
 }
 
 // Same inbound-secret pattern as contact.rs/relay_to_crm use outbound: reuse
@@ -52,15 +57,7 @@ pub async fn worldmodel_feed() -> impl IntoResponse {
 const MAX_FEED_ENTRIES: usize = 100;
 
 pub async fn ingest_worldmodel_feed(headers: HeaderMap, Json(body): Json<Vec<FeedEntry>>) -> impl IntoResponse {
-    let expected = std::env::var("LIGHTHOUSE_INBOX_KEY").unwrap_or_default();
-    if expected.is_empty() {
-        tracing::error!("worldmodel-feed ingest rejected: LIGHTHOUSE_INBOX_KEY not set on this app");
-        return StatusCode::SERVICE_UNAVAILABLE.into_response();
-    }
-    let provided = headers.get("x-inbox-key").and_then(|v| v.to_str().ok()).unwrap_or_default();
-    if provided != expected {
-        return StatusCode::UNAUTHORIZED.into_response();
-    }
+    if let Err(code) = inbox_authorized(&headers) { return code.into_response(); }
     if body.len() > MAX_FEED_ENTRIES {
         return (StatusCode::BAD_REQUEST, format!("at most {MAX_FEED_ENTRIES} entries per batch")).into_response();
     }
@@ -68,9 +65,86 @@ pub async fn ingest_worldmodel_feed(headers: HeaderMap, Json(body): Json<Vec<Fee
     let mut store = live_feed_store().lock().unwrap_or_else(|e| e.into_inner());
     let count = body.len();
     *store = body;
+    let _ = save_json(&data_file("worldmodel_feed.json"), &*store);
     drop(store);
 
     tracing::info!("worldmodel-feed ingest: stored {count} live entries");
+    StatusCode::OK.into_response()
+}
+
+/// Shared-secret check for the two relay endpoints (feed and stats).
+fn inbox_authorized(headers: &HeaderMap) -> Result<(), StatusCode> {
+    let expected = std::env::var("LIGHTHOUSE_INBOX_KEY").unwrap_or_default();
+    if expected.is_empty() {
+        tracing::error!("worldmodel ingest rejected: LIGHTHOUSE_INBOX_KEY not set on this app");
+        return Err(StatusCode::SERVICE_UNAVAILABLE);
+    }
+    let provided = headers.get("x-inbox-key").and_then(|v| v.to_str().ok()).unwrap_or_default();
+    if provided != expected { return Err(StatusCode::UNAUTHORIZED); }
+    Ok(())
+}
+
+/// Files next to contacts.jsonl, i.e. on the persistent data volume (or the working directory in dev).
+fn data_file(name: &str) -> std::path::PathBuf {
+    let contacts = std::env::var("CONTACTS_PATH").unwrap_or_else(|_| "contacts.jsonl".into());
+    std::path::Path::new(&contacts).parent().map(|p| p.join(name)).unwrap_or_else(|| name.into())
+}
+
+fn save_json<T: Serialize>(path: &std::path::Path, value: &T) -> std::io::Result<()> {
+    let tmp = path.with_extension("json.tmp");
+    std::fs::write(&tmp, serde_json::to_vec(value).map_err(std::io::Error::other)?)?;
+    std::fs::rename(&tmp, path)
+}
+
+fn load_json<T: serde::de::DeserializeOwned>(path: &std::path::Path) -> Option<T> {
+    serde_json::from_slice(&std::fs::read(path).ok()?).ok()
+}
+
+// ── Headline numbers (19.11.2026) ───────────────────────────────────────
+//
+// The World Model page used to carry its counts as fixed text ("as of 2026-10-26"), so it went
+// stale after every bake. The relay now also reads the bake's consensus_snapshot.json and posts
+// these four numbers; the page shows them with their real date and falls back to the fixed text
+// only while none have arrived.
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+pub struct WorldStats {
+    pub nodes: u64,
+    pub edges: u64,
+    pub live_observations: u64,
+    pub live_streams: u32,
+    /// Day the bake measured these, YYYY-MM-DD.
+    pub as_of: String,
+}
+
+const MAX_COUNT: u64 = 1_000_000_000_000;
+
+fn validate_stats(s: &WorldStats) -> Result<(), &'static str> {
+    if s.nodes == 0 || s.edges == 0 || s.live_observations == 0 { return Err("counts must be positive"); }
+    if s.nodes > MAX_COUNT || s.edges > MAX_COUNT || s.live_observations > MAX_COUNT { return Err("count out of range"); }
+    if s.as_of.len() != 10 || chrono::NaiveDate::parse_from_str(&s.as_of, "%Y-%m-%d").is_err() { return Err("as_of must be YYYY-MM-DD"); }
+    Ok(())
+}
+
+fn save_stats(path: &std::path::Path, s: &WorldStats) -> std::io::Result<()> { save_json(path, s) }
+fn load_stats(path: &std::path::Path) -> Option<WorldStats> { load_json(path) }
+
+static WORLD_STATS: OnceLock<Mutex<Option<WorldStats>>> = OnceLock::new();
+
+fn stats_store() -> &'static Mutex<Option<WorldStats>> { WORLD_STATS.get_or_init(|| Mutex::new(None)) }
+
+/// GET /api/worldmodel-stats: the latest numbers, or null before the first relay run.
+pub async fn worldmodel_stats() -> impl IntoResponse {
+    let mut store = stats_store().lock().unwrap_or_else(|e| e.into_inner());
+    if store.is_none() { *store = load_stats(&data_file("worldmodel_stats.json")); }
+    Json(store.clone())
+}
+
+pub async fn ingest_worldmodel_stats(headers: HeaderMap, Json(body): Json<WorldStats>) -> impl IntoResponse {
+    if let Err(code) = inbox_authorized(&headers) { return code.into_response(); }
+    if let Err(why) = validate_stats(&body) { return (StatusCode::BAD_REQUEST, why).into_response(); }
+    let _ = save_stats(&data_file("worldmodel_stats.json"), &body);
+    tracing::info!("worldmodel-stats ingest: {} nodes, {} edges as of {}", body.nodes, body.edges, body.as_of);
+    *stats_store().lock().unwrap_or_else(|e| e.into_inner()) = Some(body);
     StatusCode::OK.into_response()
 }
 
