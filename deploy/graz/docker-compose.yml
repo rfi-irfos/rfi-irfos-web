@@ -32,7 +32,7 @@ services:
       start_period: 20s
 
   ntfy:
-    image: binwiederhall/ntfy:latest
+    image: binwiederhier/ntfy:latest
     command: serve
     restart: always
     mem_limit: 128m
@@ -41,7 +41,7 @@ services:
       NTFY_BASE_URL: https://ntfy.rfi-irfos.com
       NTFY_CACHE_FILE: /var/lib/ntfy/cache.db
       NTFY_AUTH_FILE: /var/lib/ntfy/user.db
-      NTFY_AUTH_DEFAULT_ACCESS: deny-all
+      NTFY_AUTH_DEFAULT_ACCESS: write-only
       NTFY_BEHIND_PROXY: "true"
       NTFY_UPSTREAM_BASE_URL: ""
     volumes:
