@@ -315,9 +315,9 @@ export function ProofSection({ setReportModal }: { setReportModal: (url: string)
         </p>
         <p style={{ color: 'var(--text2)', margin: '14px auto 0', maxWidth: 720, textAlign: 'center', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)' }}>
           {t.trackRecord.follow.servicesLabel}{' '}
-          <a href={localeHref('/app-security-audit', locale)} className="rfi-inline-link">{t.trackRecord.follow.audit}</a>{' · '}
-          <a href={localeHref('/secure-code-review', locale)} className="rfi-inline-link">{t.trackRecord.follow.review}</a>{' · '}
-          <a href={localeHref('/managed-soc', locale)} className="rfi-inline-link">{t.trackRecord.follow.soc}</a>
+          <a href={localeHref('/app-security-audit/', locale)} className="rfi-inline-link">{t.trackRecord.follow.audit}</a>{' · '}
+          <a href={localeHref('/secure-code-review/', locale)} className="rfi-inline-link">{t.trackRecord.follow.review}</a>{' · '}
+          <a href={localeHref('/managed-soc/', locale)} className="rfi-inline-link">{t.trackRecord.follow.soc}</a>
         </p>
       </div>
     </section>
