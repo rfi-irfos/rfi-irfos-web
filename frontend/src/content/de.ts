@@ -85,7 +85,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    sub: 'Wir machen Frontier-Cybersicherheit für Startups, SMEs und wachsende Unternehmen zugänglich: Eigens entwickelte Agenten untersuchen tausende Angriffswege, erfahrene Ingenieure schreiben daraus gezielte Lösungen bis in den betroffenen Code.',
+    sub: 'Wir machen Frontier-Cybersicherheit für Startups, KMU und wachsende Unternehmen zugänglich, indem unsere eigens entwickelten Agenten Tausende Angriffswege versuchen und erfahrene Ingenieure daraus gezielte Lösungen bis in den betroffenen Code schreiben.',
     stats: {
       researchAreas: 'Fachbereiche',
       researchAreasSub: 'kombiniert',
@@ -311,7 +311,8 @@ export const DE: Content = {
     introText: [
       'Stellen Sie Ihre Domain auf die Probe. Reichen Sie sie für eine erste externe Sicherheitsbewertung Ihrer öffentlich erreichbaren Angriffsfläche ein.',
       'Ohne Login, ohne Payloads und ohne Änderungen an Ihren Systemen.',
-      'Ein Researcher sieht Ihre Anfrage durch, bevor der Test beginnt, und meldet sich innerhalb eines Werktags. Sie erhalten einen kurzen schriftlichen Report mit unseren Funden, wahrscheinlichen Angriffsszenarien, möglichen finanziellen Auswirkungen und empfohlenen nächsten Schritten, dazu einen exportierbaren Security-Intelligence-Graphen, der die Funde verknüpft und sich in Ihre Process-Mining-Software hochladen lässt.',
+      'Ein Researcher sieht Ihre Anfrage durch, bevor der Test beginnt, und meldet sich innerhalb eines Werktags. Sie erhalten einen kurzen schriftlichen Report mit unseren Funden, wahrscheinlichen Angriffsszenarien, möglichen finanziellen Auswirkungen und empfohlenen nächsten Schritten.',
+      'Dazu liefern wir einen exportierbaren Security-Intelligence-Graphen, der die Funde verknüpft und sich in Ihre Process-Mining-Software hochladen lässt.',
       'Der Check liefert eine erste externe Einschätzung. Er umfasst keine Quellcode-Analyse und ist keine Garantie für die Sicherheit Ihrer Anwendung.',
     ],
     domainLabel: 'Ihre Domain',

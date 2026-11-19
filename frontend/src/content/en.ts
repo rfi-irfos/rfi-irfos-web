@@ -335,7 +335,8 @@ export const EN = {
     introText: [
       'Put your domain to the test. Submit it for an initial external security assessment of your publicly accessible attack surface.',
       'No login, no payloads and no changes to your systems.',
-      "A researcher reviews your request before testing begins and responds within one business day. You'll receive a short written report covering our findings, likely attack scenarios, potential financial impact and recommended next steps, alongside an exportable security intelligence graph that connects the findings and can be uploaded into your process mining software.",
+      "A researcher reviews your request before testing begins and responds within one business day. You'll receive a short written report covering our findings, likely attack scenarios, potential financial impact and recommended next steps.",
+      "Alongside this, we deliver an exportable security intelligence graph that connects the findings and can be uploaded into your process mining software.",
       'This is an initial external assessment, not a source-code review or a guarantee that your application is secure.',
     ],
     domainLabel: 'Your domain',
