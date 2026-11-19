@@ -21,7 +21,7 @@ export const EN = {
     // through the report pages. Brand first, then the flagship line from hero and LinkedIn.
     // Title <= 60 chars, description 120-155. index.html ships these same EN strings.
     // 2026-11-10: snippet rewrite (Simeon), independent of the DE text. Title <= 60, description 120-155.
-    title: 'Find and fix security flaws at scale | RFI-IRFOS Graz',
+    title: 'Cybersecurity Testing, Compliance & Managed SOC | RFI-IRFOS',
     description: 'Agents hunt vulnerabilities, experts verify and fix the code. Integrates with GitHub, GitLab, AWS, Azure, Google Cloud, Kubernetes, SAP and MCP.',
     // Was hardcoded English inside sectionMeta() before 2026-10-24 - the /de/
     // twin shipped the EN description verbatim (caught by check-dist-seo.mjs).
@@ -200,7 +200,7 @@ export const EN = {
     seoTitle: 'App Privacy & Security Audit Reports · RFI-IRFOS',
     seoDescription: 'Public ledger of evidence-based GDPR and security audit reports on Android apps: trackers, SDKs, permissions, hardcoded keys, pre-consent tracking.',
     paragraph: 'On behalf of our research partners, we investigate publicly distributed Android and iOS apps: we decompile them, follow their code and data flows, and trace every connection to the servers it reaches. Hundreds of agents work through each app and join the technical evidence into one picture, which our specialists then review and verify.',
-    follow: { freeCheck: 'Start the Quick Check for your own domain', label: ', or follow new investigations', feed: 'Atom feed' },
+    follow: { freeCheck: 'Start the Quick Check for your own domain', label: ', or follow new investigations', feed: 'Atom feed', servicesLabel: 'Want the same scrutiny for your own product?', audit: 'App Security Audit', review: 'Secure Code Review', soc: 'Managed SOC' },
     focusBanner: (names: string) => `Showing the report for ${names}.`,
     showFullLedger: 'Show the full ledger',
     securityBridgeCta: 'This is what a security engagement encompasses →',

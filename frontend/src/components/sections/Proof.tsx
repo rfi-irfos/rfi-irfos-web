@@ -39,18 +39,28 @@ function mergeSharedReports(rows: ProofEntry[]): ProofEntry[] {
       while (i < prefixLen && i < name.length && name[i] === names[0][i]) i++
       prefixLen = i
     }
-    const prefix = names[0].slice(0, prefixLen).trim()
+    let prefix = names[0].slice(0, prefixLen).trim()
     // Only strip parens when the whole remainder is wrapped in them (the
     // Foodora case: "Foodora (Rider)" -> "Rider"). Don't touch a trailing
     // paren that's part of the distinguishing text itself (the StoryToys
     // case: "LEGO Bluey (IE)" must keep its own closing paren, or ten of
     // these joined by ' / ' turn into one run-on string of dangling "(IE"s
     // with a single stray ")" tacked on at the very end).
-    const parts = names.map(n => {
+    let parts = names.map(n => {
       let s = n.slice(prefixLen).trim()
       if (s.startsWith('(') && s.endsWith(')')) s = s.slice(1, -1).trim()
       return s || 'Consumer'
     })
+    // ViCare / ViGuide / ViParts (Viessmann) share only "Vi" as a text prefix, which cut the names
+    // mid-word ("Vi (Care (Viessmann) / Guide (Viessmann) / ...)", Simeon 2026-11-19). When the
+    // prefix ends inside a word and every name carries the same "(Brand)" tail, the brand becomes
+    // the title and the app names stay whole: "Viessmann (ViCare / ViGuide / ViParts)".
+    const brandTail = /\s*\(([^()]+)\)$/.exec(names[0])
+    const cutMidWord = prefixLen > 0 && /\w/.test(names[0][prefixLen - 1]) && names.every(n => /\w/.test(n[prefixLen] ?? ''))
+    if (brandTail && cutMidWord && names.every(n => n.endsWith(brandTail[0]))) {
+      prefix = brandTail[1].trim()
+      parts = names.map(n => n.slice(0, n.length - brandTail[0].length).trim())
+    }
     const richest = group.reduce((a, b) => (b.finding.length > a.finding.length ? b : a))
     // A title listing every distinguishing part blows up past 3-4 members
     // (StoryToys: 10 apps, the Outfit7/Talking Tom franchise: 17) and forces
@@ -302,6 +312,12 @@ export function ProofSection({ setReportModal }: { setReportModal: (url: string)
           <a href="/evidence/feed.xml" className="rfi-inline-link">{t.trackRecord.follow.feed}</a>{' · '}
           <a href="https://www.linkedin.com/company/rfi-irfos" className="rfi-inline-link">LinkedIn</a>{' · '}
           <a href="https://www.youtube.com/@rfi-irfos-official" className="rfi-inline-link">YouTube</a>
+        </p>
+        <p style={{ color: 'var(--text2)', margin: '14px auto 0', maxWidth: 720, textAlign: 'center', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)' }}>
+          {t.trackRecord.follow.servicesLabel}{' '}
+          <a href={localeHref('/app-security-audit', locale)} className="rfi-inline-link">{t.trackRecord.follow.audit}</a>{' · '}
+          <a href={localeHref('/secure-code-review', locale)} className="rfi-inline-link">{t.trackRecord.follow.review}</a>{' · '}
+          <a href={localeHref('/managed-soc', locale)} className="rfi-inline-link">{t.trackRecord.follow.soc}</a>
         </p>
       </div>
     </section>
