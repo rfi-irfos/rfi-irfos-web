@@ -304,21 +304,18 @@ export function ProofSection({ setReportModal }: { setReportModal: (url: string)
         <Reveal delay={1}>
           <ProofCarousel entries={entries} onOpen={setReportModal} />
         </Reveal>
-        {/* Return channel (Lighthouse R108) + free check (R115), one sentence at the very end of
-            the page (Simeon 2026-10-31: under the report showcase, not under the ledger intro). */}
-        <p style={{ color: 'var(--text2)', margin: '48px auto 0', maxWidth: 720, textAlign: 'center', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)' }}>
-          <a href={`${localeHref('/', locale)}#domain-check`} className="rfi-inline-link">{t.trackRecord.follow.freeCheck}</a>
-          {t.trackRecord.follow.label}:{' '}
-          <a href="/evidence/feed.xml" className="rfi-inline-link">{t.trackRecord.follow.feed}</a>{' · '}
-          <a href="https://www.linkedin.com/company/rfi-irfos" className="rfi-inline-link">LinkedIn</a>{' · '}
-          <a href="https://www.youtube.com/@rfi-irfos-official" className="rfi-inline-link">YouTube</a>
-        </p>
         <p style={{ color: 'var(--text2)', margin: '14px auto 0', maxWidth: 720, textAlign: 'center', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)' }}>
           {t.trackRecord.follow.servicesLabel}{' '}
           <a href={localeHref('/app-security-audit/', locale)} className="rfi-inline-link">{t.trackRecord.follow.audit}</a>{' · '}
           <a href={localeHref('/secure-code-review/', locale)} className="rfi-inline-link">{t.trackRecord.follow.review}</a>{' · '}
           <a href={localeHref('/managed-soc/', locale)} className="rfi-inline-link">{t.trackRecord.follow.soc}</a>{' · '}
           <a href={localeHref('/faq/', locale)} className="rfi-inline-link">{t.trackRecord.follow.faq}</a>
+        </p>
+        {/* Follow channels (Simeon 19.11.): under the services line; the Quick Check sentence is gone, the check sits on the home page. */}
+        <p style={{ color: 'var(--text2)', margin: '10px auto 0', maxWidth: 720, textAlign: 'center', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)' }}>
+          <a href="/evidence/feed.xml" className="rfi-inline-link">{t.trackRecord.follow.feed}</a>{' · '}
+          <a href="https://www.linkedin.com/company/rfi-irfos" className="rfi-inline-link">LinkedIn</a>{' · '}
+          <a href="https://www.youtube.com/@rfi-irfos-official" className="rfi-inline-link">YouTube</a>
         </p>
       </div>
     </section>
