@@ -11,7 +11,7 @@
 //! rebinding has no window) and redirects are followed by hand, each hop
 //! re-validated.
 
-use axum::{http::{HeaderMap, StatusCode}, response::{IntoResponse, Response}, Json};
+use axum::{extract::State, http::{HeaderMap, StatusCode}, response::{IntoResponse, Response}, Json};
 use hickory_resolver::{
     config::{ResolverConfig, ResolverOpts},
     error::ResolveErrorKind,
@@ -671,7 +671,7 @@ fn err(status: StatusCode, code: &str) -> Response {
     (status, Json(serde_json::json!({ "error": code }))).into_response()
 }
 
-pub async fn check(headers: HeaderMap, Json(req): Json<SafetyRequest>) -> Response {
+pub async fn check(State(state): State<crate::AppState>, headers: HeaderMap, Json(req): Json<SafetyRequest>) -> Response {
     let ip = headers
         .get("fly-client-ip")
         .or_else(|| headers.get("x-forwarded-for"))
@@ -710,6 +710,8 @@ pub async fn check(headers: HeaderMap, Json(req): Json<SafetyRequest>) -> Respon
         Err(HostError::Blocked) => return err(StatusCode::BAD_REQUEST, "blocked"),
         Err(_) => return err(StatusCode::UNPROCESSABLE_ENTITY, "not_found"),
     };
+    // One website check = four area requests; the DNS one counts it once, and only after the target resolved.
+    if area == "dns" { crate::checkcount::bump(&state.db).await; }
     let work = async {
         match area {
             "tls" => area_tls(&host, &ips).await,
