@@ -211,3 +211,53 @@ async fn relay_to_crm(entry: &EarlyAccessEntry) -> Result<(), String> {
 
     if res.status().is_success() { Ok(()) } else { Err(format!("CRM returned {}", res.status())) }
 }
+
+#[cfg(test)]
+mod stats_tests {
+    use super::*;
+
+    fn good() -> WorldStats {
+        WorldStats { nodes: 216_041, edges: 837_311, live_observations: 70_546_851, live_streams: 27, as_of: "2026-11-19".into() }
+    }
+
+    #[test]
+    fn valid_stats_pass() {
+        assert!(validate_stats(&good()).is_ok());
+    }
+
+    #[test]
+    fn zero_counts_are_rejected() {
+        for f in [|s: &mut WorldStats| s.nodes = 0, |s: &mut WorldStats| s.edges = 0, |s: &mut WorldStats| s.live_observations = 0] {
+            let mut s = good();
+            f(&mut s);
+            assert!(validate_stats(&s).is_err());
+        }
+    }
+
+    #[test]
+    fn malformed_date_is_rejected() {
+        for d in ["", "19.11.2026", "2026-13-40", "2026-11-19T10:00:00Z", "<b>x</b>"] {
+            let mut s = good();
+            s.as_of = d.into();
+            assert!(validate_stats(&s).is_err(), "{d}");
+        }
+    }
+
+    #[test]
+    fn absurd_counts_are_rejected() {
+        let mut s = good();
+        s.live_observations = 10_000_000_000_000;
+        assert!(validate_stats(&s).is_err());
+    }
+
+    #[test]
+    fn stats_survive_a_restart_through_the_file() {
+        let dir = std::env::temp_dir().join(format!("wm-stats-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("worldmodel_stats.json");
+        save_stats(&path, &good()).unwrap();
+        assert_eq!(load_stats(&path), Some(good()));
+        assert_eq!(load_stats(&dir.join("missing.json")), None);
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+}
