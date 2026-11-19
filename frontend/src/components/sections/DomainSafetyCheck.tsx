@@ -226,8 +226,8 @@ export function DomainSafetyPanel({ onNext }: { onNext: () => void }) {
           return
         }
         const data: ApiArea = await r.json()
-        // keep the rows readable: no row flashes by faster than a short beat
-        const wait = 450 + i * 250 - (Date.now() - started)
+        // slow, staggered reveal so the rows can be read and the check feels like real work
+        const wait = 1200 + i * 700 - (Date.now() - started)
         if (wait > 0) await new Promise(res => window.setTimeout(res, wait))
         if (ac.signal.aborted) return
         setResults(p => { const n = { ...p, [area]: data }; if (AREAS.every(a => n[a])) setCheckedAt(new Date()); return n })
@@ -307,7 +307,7 @@ export function DomainSafetyPanel({ onNext }: { onNext: () => void }) {
                         <span style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text)' }}>
                           <strong>{c.words.areas[a]}</strong>
                           <br />
-                          {r ? <span className="dsc-anim" style={{ animation: 'dsc-pop .3s ease' }}>{areaNote(r)}</span> : <span style={{ color: 'var(--text2)' }}>{c.reading}</span>}
+                          {r ? <span className="dsc-anim" style={{ animation: 'dsc-pop .3s ease' }}>{areaNote(r)}</span> : <span style={{ color: 'var(--text2)' }}>{c.reading.replace('…', '')}: {c.items[AREAS.indexOf(a)][1]}…</span>}
                         </span>
                       </li>
                     )
