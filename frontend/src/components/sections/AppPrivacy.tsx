@@ -19,23 +19,34 @@ import { FinishLock } from './FinishLock'
 
 
 // Running total of domain checks (GET /api/stats/checks): one number, nothing per check is stored.
-// The figure counts up once when it arrives; no figure at all when the request fails.
+// The figure counts up when it first arrives and again whenever a poll (every 30 s while the tab is
+// visible, the server caches the answer for the same time) brings a higher total, so the card ticks
+// along without a reload. No figure at all when the first request fails.
 function useCheckTotal(): number | null {
   const [target, setTarget] = useState<number | null>(null)
   const [shown, setShown] = useState<number | null>(null)
+  const shownRef = useRef(0)
   useEffect(() => {
     let alive = true
-    fetch('/api/stats/checks').then(r => r.ok ? r.json() : null).then(j => { if (alive && j && Number.isFinite(j.total)) setTarget(j.total) }).catch(() => {})
-    return () => { alive = false }
+    const load = () => {
+      if (document.hidden) return
+      fetch('/api/stats/checks').then(r => r.ok ? r.json() : null).then(j => { if (alive && j && Number.isFinite(j.total)) setTarget(j.total) }).catch(() => {})
+    }
+    load()
+    const timer = window.setInterval(load, 30000)
+    document.addEventListener('visibilitychange', load)
+    return () => { alive = false; window.clearInterval(timer); document.removeEventListener('visibilitychange', load) }
   }, [])
   useEffect(() => {
     if (target === null) return
-    if (prefersReducedMotion() || target < 2) { setShown(target); return }
-    const start = performance.now(), dur = 1400
+    const from = shownRef.current
+    const done = (n: number) => { shownRef.current = n; setShown(n) }
+    if (prefersReducedMotion() || target < 2 || target <= from) { done(target); return }
+    const start = performance.now(), dur = from === 0 ? 1400 : 700
     let raf = 0
     const tick = (now: number) => {
       const k = Math.min(1, (now - start) / dur)
-      setShown(Math.round(target * (1 - Math.pow(1 - k, 3))))
+      done(Math.round(from + (target - from) * (1 - Math.pow(1 - k, 3))))
       if (k < 1) raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
