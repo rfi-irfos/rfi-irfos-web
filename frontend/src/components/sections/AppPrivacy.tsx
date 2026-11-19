@@ -332,10 +332,10 @@ function KpiArt({ kind }: { kind: 'apps' | 'bugs' | 'shield' | 'globe' }) {
     // Picker 19.11. (W3): globe and check tile, built like the apps card.
     <div className="kpi-art kpi-art--tilt" aria-hidden="true">
       <div className="kpi-floor" />
-      <div className="kpi-glass" style={{ left: 16, top: 20, width: 80, height: 80 }}>
+      <div className="kpi-glass kpi-c--apple" style={{ left: 16, top: 20, width: 80, height: 80 }}>
         <svg className="kpi-glyph" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M3.6 9h16.8M3.6 15h16.8M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18" /></svg>
       </div>
-      <div className="kpi-glass kpi-c--apple" style={{ left: 66, top: 50, width: 80, height: 80 }}>
+      <div className="kpi-glass kpi-c--android" style={{ left: 66, top: 50, width: 80, height: 80 }}>
         <svg className="kpi-glyph" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
       </div>
     </div>
