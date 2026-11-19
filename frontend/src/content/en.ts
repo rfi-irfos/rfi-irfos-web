@@ -21,7 +21,7 @@ export const EN = {
     // through the report pages. Brand first, then the flagship line from hero and LinkedIn.
     // Title <= 60 chars, description 120-155. index.html ships these same EN strings.
     // 2026-11-10: snippet rewrite (Simeon), independent of the DE text. Title <= 60, description 120-155.
-    title: 'Cybersecurity Testing, Compliance & Managed SOC | RFI-IRFOS',
+    title: 'Cybersecurity Testing, Compliance & 24/7 Managed SOC | RFI-IRFOS',
     description: 'Agents hunt vulnerabilities, experts verify and fix the code. Security testing, compliance and Managed SOC, data processed in Graz, Austria.',
     // Was hardcoded English inside sectionMeta() before 2026-10-24 - the /de/
     // twin shipped the EN description verbatim (caught by check-dist-seo.mjs).

@@ -12,7 +12,7 @@ export const DE: Content = {
   meta: {
     // 2026-11-10 (Simeon: Snippet muss auf den ersten Blick verständlich sein): Suchwort im Titel,
     // Agenten + Fachleute, Zielgruppensatz. Titel <= 60, Beschreibung 120-155 Zeichen.
-    title: 'Cybersecurity Testing, Compliance & Managed SOC | RFI-IRFOS',
+    title: 'Cybersecurity Testing, Compliance & 24/7 Managed SOC | RFI-IRFOS',
     description: 'Agenten finden Schwachstellen, Fachleute prüfen und beheben sie im Code. Sicherheitstests, Compliance und Managed SOC, Daten verarbeitet in Graz.',
     dataSolutions: {
       title: 'Evaluationsdaten & Safety-Datensätze für Agenten · RFI-IRFOS',
