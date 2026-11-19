@@ -315,9 +315,39 @@ function SparkConstellation() {
 // One soft colour per KPI visualizer (tokens --ic-N, index.css), so the six cards read as six different things.
 const STAT_IC = [1, 3, 2, 4, 5, 6]
 
+type LiveStats = { nodes: number; edges: number; live_observations: number; live_streams: number; as_of: string }
+
+// The bake's own numbers (relay -> /api/worldmodel-stats, 19.11.2026). The fixed texts in content/*.ts
+// stay as the fallback until the first numbers arrive, so the section never shows a blank card.
+function useLiveStats(): LiveStats | null {
+  const [stats, setStats] = useState<LiveStats | null>(null)
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/worldmodel-stats')
+      .then(res => (res.ok ? res.json() : null))
+      .then((d: LiveStats | null) => { if (!cancelled && d && typeof d.nodes === 'number' && /^\d{4}-\d{2}-\d{2}$/.test(d.as_of)) setStats(d) })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [])
+  return stats
+}
+
 function StatsRow() {
-  const { t } = useLocale()
-  const s = t.worldModel.stats
+  const { t, locale } = useLocale()
+  const live = useLiveStats()
+  const base = t.worldModel.stats
+  const s: typeof base = { ...base }
+  if (live) {
+    const nf = new Intl.NumberFormat(locale === 'de' ? 'de-DE' : 'en-US')
+    const [y, m, d] = live.as_of.split('-')
+    const day = locale === 'de' ? `${d}.${m}.${y}` : live.as_of
+    // Swap the fixed "· as of <date>" tail for the bake's own date; subs without a date stay as written.
+    const stamp = (sub: string) => sub.replace(/ · (as of|Stand) [\d.-]+$/, ` · ${t.worldModel.statsAsOf(day)}`)
+    s.live = { ...base.live, value: nf.format(live.live_observations), sub: stamp(base.live.sub) }
+    s.nodes = { ...base.nodes, value: nf.format(live.nodes), sub: stamp(base.nodes.sub) }
+    s.edges = { ...base.edges, value: nf.format(live.edges), sub: stamp(base.edges.sub) }
+    s.streams = { ...base.streams, value: nf.format(live.live_streams), sub: stamp(base.streams.sub) }
+  }
   const items: [keyof typeof s, () => React.ReactElement][] = [
     ['historical', SparkBars], ['live', SparkPulse], ['nodes', SparkNetwork],
     ['edges', SparkRidge], ['streams', SparkIconRow], ['domains', SparkConstellation],
