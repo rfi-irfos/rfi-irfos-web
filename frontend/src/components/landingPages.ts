@@ -1086,7 +1086,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         ['How is this different from a vulnerability scan?', 'A scan lists possible weaknesses. We confirm each finding with a proof of concept and show what an attacker could do with it.'],
         ['Do you test APIs and cloud environments?', 'Yes. The scope covers web and mobile apps, REST and GraphQL APIs, AWS and Azure environments and infrastructure.'],
         ['Do you help fix what you find?', 'Yes. We engineer fixes down to the affected code and retest them.'],
-        ['How long does it take and what does it cost?', 'The Security offer on the Access page states a delivery estimate of 5 business days. Plans and prices are on the Access page.'],
+        ['How long does it take and what does it cost?', 'Duration and price of a penetration test are agreed per scope and offered in writing'],
       ],
     },
     de: {
@@ -1125,7 +1125,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         ['Was unterscheidet das von einem Schwachstellenscan?', 'Ein Scan listet mögliche Schwächen auf. Wir bestätigen jeden Befund mit einem Proof of Concept und zeigen, was ein Angreifer damit erreicht.'],
         ['Testen Sie auch APIs und Cloud-Umgebungen?', 'Ja. Der Umfang reicht von Web- und Mobil-Apps über REST- und GraphQL-APIs bis zu AWS- und Azure-Umgebungen und Infrastruktur.'],
         ['Helfen Sie beim Beheben?', 'Ja. Wir entwickeln Fixes bis in den betroffenen Code und prüfen sie erneut.'],
-        ['Wie lange dauert es und was kostet es?', 'Das Angebot Security auf der Seite Zugang nennt eine Lieferung von 5 Werktagen. Pläne und Preise stehen auf der Seite Zugang.'],
+        ['Wie lange dauert es und was kostet es?', 'Dauer und Preis eines Penetrationstests legen wir je nach Umfang fest und bieten sie schriftlich an.'],
       ],
     },
   },
