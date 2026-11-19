@@ -39,7 +39,6 @@ The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Ja
 
 ## Reference
 
-- [FAQ](https://rfi-irfos.com/faq/): plain-language answers about scope, limits, and process.
 - [Standards](https://rfi-irfos.com/standards/): the frameworks and statutes cited in disclosures (GDPR, NIS2, ISO/IEC 29147, etc).
 - [Security](https://rfi-irfos.com/security/): how to report a finding about RFI-IRFOS itself.
 - [Team](https://rfi-irfos.com/team/): who is behind the institute.
