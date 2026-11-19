@@ -92,6 +92,11 @@ export function LandingBody({ slug, locale, navigate }: {
         <h3 style={H3}>{q}</h3>
         <p style={BODY}>{a}</p>
       </div>)}
+      <p style={BODY}>
+        <a href={localePath(locale, '/faq/')} onClick={e => navigate(e, localePath(locale, '/faq/'))} style={A}>
+          {de ? 'Weitere Antworten zu Leistungen, Portal, Connectors und Datenort in den FAQ' : 'More answers on services, the portal, connectors and data location in the FAQ'}
+        </a>
+      </p>
     </section>
 
     <RelatedTiles title={de ? 'Verwandte Seiten' : 'Related pages'} navigate={navigate}

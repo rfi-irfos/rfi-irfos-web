@@ -222,7 +222,7 @@ export function PricingSection({
   onOpenLogin: () => void
   onCheckout: (stripeKey: string) => void
 }) {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const tablet = useMobile(980)
   const [freeModalOpen, setFreeModalOpen] = useState(false)
   const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
@@ -372,6 +372,12 @@ export function PricingSection({
           <p style={{ margin: '20px 0 0', fontSize: 'var(--fs-small)', color: 'var(--text)', lineHeight: 1.6, textAlign: 'center' }}>
             {t.pricing.termsNote.text}{' '}
             <a href={t.pricing.termsNote.href} style={{ color: 'var(--accent-text)' }}>{t.pricing.termsNote.link}</a>
+          </p>
+
+          <p style={{ margin: '10px 0 0', fontSize: 'var(--fs-small)', color: 'var(--text)', lineHeight: 1.6, textAlign: 'center' }}>
+            <a href={locale === 'de' ? '/de/faq/' : '/faq/'} style={{ color: 'var(--accent-text)' }}>
+              {locale === 'de' ? 'Fragen zu Tarifen, Portal, Trust Center und Einrichtung in den FAQ' : 'Questions about plans, the portal, the Trust Center and setup in the FAQ'}
+            </a>
           </p>
 
           <NeedSomethingElseRow domains={t.pricing.domains} onSelectTier={onSelectTier} />

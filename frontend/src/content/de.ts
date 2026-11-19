@@ -13,7 +13,7 @@ export const DE: Content = {
     // 2026-11-10 (Simeon: Snippet muss auf den ersten Blick verständlich sein): Suchwort im Titel,
     // Agenten + Fachleute, Zielgruppensatz. Titel <= 60, Beschreibung 120-155 Zeichen.
     title: 'Cybersecurity Testing, Compliance & Managed SOC | RFI-IRFOS',
-    description: 'Agenten finden Schwachstellen, Fachleute prüfen und beheben sie im Code. Integriert mit GitHub, GitLab, AWS, Azure, Google Cloud, Kubernetes, SAP und MCP.',
+    description: 'Agenten finden Schwachstellen, Fachleute prüfen und beheben sie im Code. Sicherheitstests, Compliance und Managed SOC, Daten verarbeitet in Graz.',
     dataSolutions: {
       title: 'Evaluationsdaten & Safety-Datensätze für Agenten · RFI-IRFOS',
       description: 'Reproduzierbare Umgebungen, Experten-Trajektorien, Evaluationsdatensätze und Safety-Daten zum Trainieren und Testen von KI-Agenten.',
@@ -180,7 +180,7 @@ export const DE: Content = {
     seoTitle: 'App-Datenschutz- & Sicherheitsanalysen · RFI-IRFOS',
     seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsberichte zu Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel.',
     paragraph: 'Im Auftrag unserer Forschungspartner untersuchen wir öffentlich verbreitete Android- und iOS-Apps: Wir dekompilieren sie, verfolgen ihren Code und ihre Datenflüsse und jede Verbindung bis zu den Servern, die sie erreicht. Hunderte Agenten arbeiten jede App durch und fügen die technischen Belege zu einem Gesamtbild zusammen, das unsere Fachleute anschließend prüfen und verifizieren.',
-    follow: { freeCheck: 'Starten Sie den Quick Check für Ihre eigene Domain', label: ' oder verfolgen Sie neue Untersuchungen', feed: 'Atom-Feed', servicesLabel: 'Sie möchten dieselbe Prüfung für Ihr eigenes Produkt?', audit: 'App Security Audit', review: 'Secure Code Review', soc: 'Managed SOC' },
+    follow: { freeCheck: 'Starten Sie den Quick Check für Ihre eigene Domain', label: ' oder verfolgen Sie neue Untersuchungen', feed: 'Atom-Feed', servicesLabel: 'Sie möchten dieselbe Prüfung für Ihr eigenes Produkt?', audit: 'App Security Audit', review: 'Secure Code Review', soc: 'Managed SOC', faq: 'FAQ' },
     focusBanner: (names: string) => `Angezeigt wird der Report zu ${names}.`,
     showFullLedger: 'Gesamtes Ledger anzeigen',
     securityBridgeCta: 'Das umfasst ein Security-Auftrag →',
