@@ -957,7 +957,6 @@ a[href^="mailto:"]:not(footer a) { color: var(--text) !important; }
   .kpi-card__n { font-size: clamp(1.85rem, 14.2cqi, 4.3rem); }
   .kpi-card__label { font-size: clamp(.76rem, 4.25cqi, 1.35rem); white-space: nowrap; margin-top: 6px; }
 }
-}
 @media (max-width: 640px) {
   .kpi-card { gap: 18px; padding: 22px 20px; }
   .kpi-art { zoom: .72; }
