@@ -672,16 +672,7 @@ fn err(status: StatusCode, code: &str) -> Response {
 }
 
 pub async fn check(headers: HeaderMap, Json(req): Json<SafetyRequest>) -> Response {
-    let ip = headers
-        .get("fly-client-ip")
-        .or_else(|| headers.get("x-forwarded-for"))
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("unknown")
-        .split(',')
-        .next()
-        .unwrap_or("unknown")
-        .trim()
-        .to_string();
+    let ip = crate::clientip::client_ip(&headers);
     let minute = PER_IP_MINUTE.get_or_init(Windows::new);
     let day = PER_IP_DAY.get_or_init(Windows::new);
     if minute.limited(&ip, IP_MINUTE_MAX, Duration::from_secs(60)) || day.limited(&ip, IP_DAY_MAX, Duration::from_secs(86_400)) {

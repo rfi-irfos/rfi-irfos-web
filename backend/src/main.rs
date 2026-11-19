@@ -3,6 +3,7 @@ mod contact;
 mod content;
 mod notify;
 mod review;
+mod clientip;
 mod safety;
 mod stripe;
 mod track;

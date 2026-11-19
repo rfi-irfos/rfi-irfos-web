@@ -613,10 +613,9 @@ pub async fn guard(State(state): State<AppState>, req: Request, next: Next) -> R
     let path = req.uri().path().to_string();
     let query = req.uri().query().unwrap_or("").to_string();
     let ua = req.headers().get(header::USER_AGENT).and_then(|h| h.to_str().ok()).unwrap_or("").to_string();
-    // Nur der Header des Fly-Proxys zählt. X-Forwarded-For kann ein Angreifer fälschen und damit
-    // fremde Adressen sperren lassen.
-    let ip = req.headers().get("fly-client-ip").and_then(|h| h.to_str().ok()).unwrap_or("").trim().to_string();
-    let ip = if is_ip(&ip) { ip } else { String::new() };
+    // Nur der eine konfigurierte Proxy-Header zählt (CLIENT_IP_HEADER, Fly: fly-client-ip, Graz: der von Caddy
+    // gesetzte). X-Forwarded-For kann ein Angreifer fälschen und damit fremde Adressen sperren lassen.
+    let ip = crate::clientip::trusted_ip(req.headers());
 
     if !ip.is_empty() && !allowlisted(&ip) && is_banned(&ip) {
         let (tries, due) = note_repeat(&ip);
