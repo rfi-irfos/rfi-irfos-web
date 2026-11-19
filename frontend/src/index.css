@@ -951,9 +951,11 @@ a[href^="mailto:"]:not(footer a) { color: var(--text) !important; }
   .kpi-art { zoom: .6; }
 }
 @container (max-width: 340px) {
-  .kpi-card { gap: 12px; padding: 18px 16px; border-radius: 18px; }
-  .kpi-art { zoom: .52; }
+  .kpi-card { gap: 10px; padding: 10px 12px 10px 14px; border-radius: 18px; }
+  .kpi-art { zoom: .64; }
   .kpi-card__rule { margin: 4px 0; }
+  .kpi-card__n { font-size: clamp(1.85rem, 14.2cqi, 4.3rem); }
+  .kpi-card__label { font-size: clamp(.9rem, 4.9cqi, 1.35rem); white-space: normal; text-wrap: balance; }
 }
 @media (max-width: 640px) {
   .kpi-card { gap: 18px; padding: 22px 20px; }
