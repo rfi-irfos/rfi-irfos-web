@@ -327,19 +327,15 @@ function AndroidGlyph() {
     </svg>
   )
 }
-function Brackets() {
-  return <>{['tl', 'tr', 'bl', 'br'].map(c => <span key={c} className={`kpi-br kpi-br--${c}`} />)}</>
-}
 function KpiArt({ kind }: { kind: 'apps' | 'bugs' | 'shield' | 'globe' }) {
   if (kind === 'globe') return (
     // Picker 19.11. (W3): globe and check tile, built like the apps card.
     <div className="kpi-art kpi-art--tilt" aria-hidden="true">
       <div className="kpi-floor" />
-      <Brackets />
-      <div className="kpi-glass" style={{ left: 16, top: 20, width: 80, height: 80 }}>
+      <div className="kpi-glass kpi-c--apple" style={{ left: 16, top: 20, width: 80, height: 80 }}>
         <svg className="kpi-glyph" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M3.6 9h16.8M3.6 15h16.8M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18" /></svg>
       </div>
-      <div className="kpi-glass" style={{ left: 66, top: 50, width: 80, height: 80 }}>
+      <div className="kpi-glass kpi-c--android" style={{ left: 66, top: 50, width: 80, height: 80 }}>
         <svg className="kpi-glyph" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
       </div>
     </div>
@@ -347,51 +343,37 @@ function KpiArt({ kind }: { kind: 'apps' | 'bugs' | 'shield' | 'globe' }) {
   if (kind === 'apps') return (
     <div className="kpi-art kpi-art--tilt" aria-hidden="true">
       <div className="kpi-floor" />
-      <Brackets />
       <div className="kpi-glass kpi-c--android" style={{ left: 16, top: 20, width: 80, height: 80 }}><AndroidGlyph /></div>
       <div className="kpi-glass kpi-c--apple" style={{ left: 66, top: 50, width: 80, height: 80 }}><IconBrandAppleFilled size={42} className="kpi-glyph kpi-glyph--light" /></div>
     </div>
   )
   if (kind === 'bugs') return (
     <div className="kpi-art kpi-art--tilt" aria-hidden="true">
+      <div className="kpi-floor" />
       <div className="kpi-glass kpi-glass--window" style={{ left: 4, top: 12, width: 112, height: 96 }}>
         <div className="kpi-win__bar"><i /><i /><i /></div>
         <div className="kpi-win__code"><b>&lt;/&gt;</b><span style={{ width: '70%' }} /><span style={{ width: '50%' }} /><span style={{ width: '62%' }} /><span style={{ width: '40%' }} /></div>
       </div>
       <div className="kpi-glass kpi-c--bug" style={{ left: 68, top: 52, width: 82, height: 82 }}>
-        <Brackets />
-        <IconBugFilled size={40} className="kpi-glyph" />
+          <IconBugFilled size={40} className="kpi-glyph" />
       </div>
     </div>
   )
   return (
-    <div className="kpi-art kpi-art--tilt kpi-c--shield" aria-hidden="true">
-      {/* Picker 02.11. (S6): the shield floats in front of a round glass disc with a dot ring,
-          the disc tilted like the tiles of the other two cards (index.css .kpi-disc). */}
-      <div className="kpi-disc-tilt">
-        <div className="kpi-disc-dots" />
-        <div className="kpi-disc" />
+    // Picker 19.11. (K4): hazard tile with a striped bar behind, the shield tile in front with a dot ring
+    // around the shield itself and a green check. Same two-tile build and floor as the other three cards.
+    <div className="kpi-art kpi-art--tilt" aria-hidden="true">
+      <div className="kpi-floor" />
+      <div className="kpi-glass kpi-c--bug" style={{ left: 16, top: 20, width: 80, height: 80, flexDirection: 'column', gap: 8 }}>
+        <svg className="kpi-glyph" viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3.6 21.4 20H2.6Z" fill="rgba(255,93,82,.14)" /><path d="M12 9.5v5M12 17.4h.01" strokeWidth="2.2" /></svg>
+        <span style={{ display: 'block', width: 58, height: 9, borderRadius: 2, background: 'repeating-linear-gradient(-45deg, #f5b73a 0 6px, #1b1f27 6px 12px)', boxShadow: '0 0 6px rgba(245,183,58,.35)' }} />
       </div>
-      {/* Glass shield (Simeon 01.11.: stood "schlank" next to the other cards): tinted body, a light
-          sheen on the left half, a bright rim along the top and a lifted drop shadow (index.css .kpi-shield). */}
-      <svg className="kpi-shield" viewBox="0 0 64 72" width="66" height="74" style={{ position: 'absolute', left: 50, top: 36 }}>
-        <defs>
-          <linearGradient id="kpi-shield" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="var(--accent-text)" stopOpacity=".5" />
-            <stop offset="1" stopColor="var(--accent-text)" stopOpacity=".12" />
-          </linearGradient>
-          <linearGradient id="kpi-shield-sheen" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#fff" stopOpacity=".38" />
-            <stop offset=".55" stopColor="#fff" stopOpacity=".04" />
-          </linearGradient>
-        </defs>
-        <path d="M32 3 L58 13 V34 C58 52 46 63 32 69 C18 63 6 52 6 34 V13 Z" fill="url(#kpi-shield)" stroke="var(--accent-text)" strokeWidth="2.4" strokeLinejoin="round" />
-        <path d="M32 3 L6 13 V34 C6 52 18 63 32 69 Z" fill="url(#kpi-shield-sheen)" />
-        <path d="M7.5 14 L32 4.6 L56.5 14" fill="none" stroke="#fff" strokeOpacity=".55" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M32 9 L52 17 V34 C52 48 43 57 32 62 C21 57 12 48 12 34 V17 Z" fill="none" stroke="var(--accent-text)" strokeOpacity=".5" strokeWidth="1.2" />
-        <path d="M21 36 L29 44 L44 27" fill="none" stroke="#0b1424" strokeOpacity=".45" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" transform="translate(0 1.2)" />
-        <path d="M21 36 L29 44 L44 27" fill="none" style={{ stroke: 'color-mix(in srgb, var(--accent-text) 55%, #fff)' }} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
+      <div className="kpi-glass kpi-c--shield" style={{ left: 66, top: 50, width: 80, height: 80 }}>
+        <div style={{ position: 'relative', width: 70, height: 70, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg viewBox="-35 -35 70 70" width="70" height="70" style={{ position: 'absolute', inset: 0, fill: 'none', stroke: 'var(--accent-text)', strokeOpacity: 0.85, strokeWidth: 2.2, strokeLinecap: 'round' }}><circle r="30" strokeDasharray="0.1 5.2" /></svg>
+          <svg className="kpi-glyph" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3 20 6v6c0 4.5-3.2 7.6-8 9-4.8-1.4-8-4.5-8-9V6Z" /><path d="m8.5 12 2.5 2.5 4.5-5" stroke="#3ddc84" strokeWidth="2" /></svg>
+        </div>
+      </div>
     </div>
   )
 }
