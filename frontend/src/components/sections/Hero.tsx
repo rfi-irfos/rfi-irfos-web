@@ -223,6 +223,9 @@ export function HeroSlideshow({ images, zoomEffect = true, fit = 'cover', interv
   const reduced = prefersReducedMotion()
   // First slide over a prerendered snapshot: no fade-in, same reason as the hero line.
   const [skipFirstFade] = useState(SKIP_FIRST_PAINT_ANIMATION)
+  // Only the very first paint skips the fade. Without this flag the loop back to slide 0
+  // matched `current === 0` again and the opener popped in hard (Simeon 20.11.).
+  const [cycled, setCycled] = useState(false)
 
   useEffect(() => {
     if (images.length <= 1 || reduced) return
@@ -231,7 +234,7 @@ export function HeroSlideshow({ images, zoomEffect = true, fit = 'cover', interv
     const preload = new Image()
     preload.src = images[(current + 1) % images.length]
 
-    const id = setTimeout(() => setCurrent(c => (c + 1) % images.length), intervalMs)
+    const id = setTimeout(() => { setCycled(true); setCurrent(c => (c + 1) % images.length) }, intervalMs)
     return () => clearTimeout(id)
   }, [current, images, reduced, intervalMs])
 
@@ -241,7 +244,7 @@ export function HeroSlideshow({ images, zoomEffect = true, fit = 'cover', interv
         key={current}
         aria-hidden="true"
         className={[zoomEffect ? 'rfi-hero-zoom' : '', GRAZ_PHOTOS.has(images[current]) ? 'rfi-hero-graz' : ''].join(' ').trim() || undefined}
-        initial={reduced || (skipFirstFade && current === 0) ? false : { opacity: 0 }}
+        initial={reduced || (skipFirstFade && !cycled) ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={reduced ? undefined : { opacity: 0 }}
         transition={{ duration: reduced ? 0 : CROSSFADE_S, ease: 'easeInOut' }}
