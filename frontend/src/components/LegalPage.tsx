@@ -210,7 +210,7 @@ function FaqPage({ locale }: { locale: 'en' | 'de' }) {
           <button type="button" className="legal-faq-question" aria-expanded={open} onClick={() => setOpenIndex(open ? null : index)}>
             <span>{locale === 'de' ? qDe : q}</span><span aria-hidden="true">+</span>
           </button>
-          <div className="legal-faq-answer"><p style={P}>{locale === 'de' ? aDe : a}</p></div>
+          <div className="legal-faq-answer"><p style={{ ...P, color: 'var(--text)' }}>{locale === 'de' ? aDe : a}</p></div>
         </div>
       })}
     </div>

@@ -62,7 +62,7 @@ button { cursor: pointer; font-family: inherit; }
 .rfi-faq-item summary > span:last-child { color: var(--accent-text); font-size: var(--fs-h3); font-weight: 400; transition: transform .2s ease; }
 .rfi-faq-item[open] summary { color: var(--accent-text); }
 .rfi-faq-item[open] summary > span:last-child { transform: rotate(45deg); }
-.rfi-faq-item p { margin: 0 40px 20px 2px; color: var(--text2); font-size: var(--fs-body); line-height: var(--lh-body); }
+.rfi-faq-item p { margin: 0 40px 20px 2px; color: var(--text); font-size: var(--fs-body); line-height: var(--lh-body); }
 .legal-faq-list { margin-top: 34px; border-top: 1px solid rgba(255,255,255,.1); }
 .legal-faq-item { border-bottom: 1px solid rgba(255,255,255,.1); }
 .legal-faq-question { width: 100%; border: 0; background: none; text-align: left; cursor: pointer; display: flex; justify-content: space-between; gap: 20px; padding: 17px 2px; color: #e8e8f0; font-family: inherit; font-size: var(--fs-body); font-weight: 700; line-height: var(--lh-tight); }
@@ -71,7 +71,7 @@ button { cursor: pointer; font-family: inherit; }
 .legal-faq-item.is-open .legal-faq-question > span:last-child { transform: rotate(45deg); }
 .legal-faq-answer { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .42s cubic-bezier(.16,1,.3,1), opacity .25s ease; }
 .legal-faq-answer p { margin: 0 32px 0 2px; }
-.legal-faq-item.is-open .legal-faq-answer { max-height: 240px; opacity: 1; }
+.legal-faq-item.is-open .legal-faq-answer { max-height: 1200px; opacity: 1; }
 .legal-faq-item.is-open .legal-faq-answer p { margin-bottom: 19px; }
 @media (max-width: 640px) {
   .rfi-faq { padding-top: 64px; padding-bottom: 68px; }
