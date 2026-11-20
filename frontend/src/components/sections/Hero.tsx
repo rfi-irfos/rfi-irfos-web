@@ -377,8 +377,8 @@ export function HeroSection({ mobile, theme, onOpenPortal }: { mobile: boolean, 
           from the "What we do best" intro, so the process card now starts right below the hero. */}
       <p className="irf-hero-sub">{t.hero.sub}</p>
       <div className="irf-hero-ctas">
-        <button type="button" className="irf-hero-cta irf-hero-cta--primary" onClick={() => { beacon('hero_cta:soc'); onOpenPortal() }}>{t.hero.ctaSoc}</button>
         <a className="irf-hero-cta" href={`${locale === 'de' ? '/de' : ''}/compliance-automation/`} onClick={openCompliance}>{t.hero.ctaCompliance}</a>
+        <button type="button" className="irf-hero-cta irf-hero-cta--primary" onClick={() => { beacon('hero_cta:soc'); onOpenPortal() }}>{t.hero.ctaSoc}</button>
       </div>
       {compliance && createPortal(<TopicModal slug="compliance-automation" doc={compliance} href={`${locale === 'de' ? '/de' : ''}/compliance-automation/`} onClose={() => setCompliance(null)} />, document.body)}
 
