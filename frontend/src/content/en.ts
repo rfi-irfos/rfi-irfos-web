@@ -103,6 +103,9 @@ export const EN = {
     subtitleSuffix: ' Research Facility for Open Sciences',
     // Short line under the headline (Simeon 11.11.): what we do, in two sentences. Moved here from the "What we do best" intro.
     sub: 'We give startups, SMEs and growing enterprises access to frontier cybersecurity capabilities by deploying purpose-built agents across thousands of potential attack paths, with experienced engineers writing actionable solutions down to the affected code.',
+    // Two quick buttons under the description (Simeon 20.11.): SOC opens the customer portal mask, compliance leads to the plans.
+    ctaSoc: '24/7 Managed SOC',
+    ctaCompliance: 'Automated Compliance',
     stats: {
       researchAreas: 'research domains',
       researchAreasSub: 'combined',

@@ -87,7 +87,7 @@ export function TopicLinks() {
   )
 }
 
-function TopicModal({ slug, doc, href, onClose }: { slug: LandingSlug; doc: LandingDoc; href: string; onClose: () => void }) {
+export function TopicModal({ slug, doc, href, onClose }: { slug: LandingSlug; doc: LandingDoc; href: string; onClose: () => void }) {
   const { t } = useLocale()
   const c = t.appPrivacy.topics
   const closeRef = useRef<HTMLButtonElement>(null)

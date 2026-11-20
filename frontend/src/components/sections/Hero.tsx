@@ -1,10 +1,12 @@
 // Hero (no `<section id>` of its own - it's the first section on the page,
 // scrolled to via the bare "#" logo link) - extracted verbatim from PublicSite.tsx.
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, lazy, Suspense, type MouseEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { preload } from 'react-dom'
-import { prefersReducedMotion, SKIP_FIRST_PAINT_ANIMATION, RevealWords, CountUp, HeroFlipWord } from './shared'
+import { preload, createPortal } from 'react-dom'
+import { prefersReducedMotion, SKIP_FIRST_PAINT_ANIMATION, RevealWords, CountUp, HeroFlipWord, beacon } from './shared'
 import { RESEARCH_AREAS } from './Research'
+import { TopicModal } from './TopicLinks'
+import type { LandingDoc } from '../landingPages'
 import { useLocale } from '../../hooks/useLocale'
 import type { Theme } from '../../hooks/useTheme'
 // Imported (not a /public string path) so Vite content-hashes the built filename -
@@ -267,8 +269,17 @@ function HeroBackground({ theme }: { theme: Theme }) {
   )
 }
 
-export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }) {
-  const { t } = useLocale()
+export function HeroSection({ mobile, theme, onOpenPortal }: { mobile: boolean, theme: Theme, onOpenPortal: () => void }) {
+  const { t, locale } = useLocale()
+  // Second quick button (Simeon 20.11.): opens the same compliance overlay as the topic pill, the page copy loads on first click.
+  const [compliance, setCompliance] = useState<LandingDoc | null>(null)
+  const openCompliance = async (e: MouseEvent) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey) return
+    e.preventDefault()
+    beacon('hero_cta:compliance')
+    const m = await import('../landingPages')
+    setCompliance(m.landingDoc('compliance-automation', locale))
+  }
   // LCP (Lighthouse mobile 2026-11-01): with the slimmer hero the Graz photo is the
   // largest element, but as a CSS background it was only found after JS ran (4.7 s load
   // delay on mobile). React hoists these <link rel=preload> tags into <head>, the
@@ -281,10 +292,13 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       fontFamily: "'Archivo', system-ui, sans-serif",
       display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden',
       // minHeight keeps the hero at its pre-2026-10-10 size (live: 551px at 2133x964) now that the KPI row is gone, then trimmed 64px (~1.7cm) off the bottom, and another ~36px on 2026-11-01.
-      minHeight: 'clamp(300px, calc(57vh - 190px), 500px)',
-      alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center',
+      // Hero + Logo-Band füllen zusammen den ersten Bildschirm (Simeon 20.11.), das Widget folgt erst beim Scrollen.
+      // `/ 0.9` hebt `html { zoom: 0.9 }` auf, 80px = Logo-Streifen; „Integrates with“ liegt schon unter der Falz.
+      minHeight: 'max(420px, calc(100svh / 0.9 - 80px))',
+      alignItems: 'center', justifyContent: 'center', textAlign: 'center',
       // Top padding +24px (Simeon 18.11.): the text sits centred between the nav pill and the end of the hero.
-      padding: 'calc(47px + 6vh) var(--sec-pad-x) 10px',
+      // Unten mehr Luft als oben (Simeon 20.11.): der zentrierte Block sitzt dadurch über der Bildmitte.
+      padding: 'calc(47px + 6vh) var(--sec-pad-x) 14vh',
       // Tint gradient only - the actual photo is the dedicated zoom layer below,
       // not this section's own background. Kept as a tint (not a full photo) for
       // text legibility over whatever's showing through it. Tried tuning a
@@ -333,7 +347,7 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
           by measuring the live DOM - the UX audit had only flagged /evidence/ and
           /access/ and missed this one. Every size/weight/margin here is set
           inline, so the tag change is purely semantic. */}
-      <h1 className="rfi-display" style={{ fontSize: 'clamp(1.9rem, 3.2vw, 3.7rem)', fontWeight: 900, lineHeight: 'var(--lh-tight)', marginBottom: 22, letterSpacing: '-0.01em', marginTop: 32, color: '#e8e8f0', width: 'max-content', maxWidth: '100%' }}>
+      <h1 className="rfi-display" style={{ fontSize: 'clamp(1.9rem, 5vw, 5.6rem)', fontWeight: 900, lineHeight: 'var(--lh-tight)', marginBottom: 22, letterSpacing: '-0.01em', marginTop: 32, color: '#e8e8f0', width: 'max-content', maxWidth: '100%' }}>
         <span className="rfi-hero-line">
           <HeroFlipWord word="Human-Powered" delay={0.2} />{' '}
           <RevealWords text="Security, Agent-Native by Design." delayStart={0.36} />
@@ -356,6 +370,11 @@ export function HeroSection({ mobile, theme }: { mobile: boolean, theme: Theme }
       {/* Short description under the headline (Simeon 11.11., n8n-style hero: title, two lines of what we do). It moved up
           from the "What we do best" intro, so the process card now starts right below the hero. */}
       <p className="irf-hero-sub">{t.hero.sub}</p>
+      <div className="irf-hero-ctas">
+        <button type="button" className="irf-hero-cta irf-hero-cta--primary" onClick={() => { beacon('hero_cta:soc'); onOpenPortal() }}>{t.hero.ctaSoc}</button>
+        <a className="irf-hero-cta" href={`${locale === 'de' ? '/de' : ''}/compliance-automation/`} onClick={openCompliance}>{t.hero.ctaCompliance}</a>
+      </div>
+      {compliance && createPortal(<TopicModal slug="compliance-automation" doc={compliance} href={`${locale === 'de' ? '/de' : ''}/compliance-automation/`} onClose={() => setCompliance(null)} />, document.body)}
 
       {/* KPI card row removed 2026-10-10 (breadth numbers, hand-typed literals, off-message
           next to the security-review widget below). Ledger figures now live in the

@@ -1480,12 +1480,20 @@ button { cursor: pointer; font-family: inherit; }
 /* Squad hero film without its own frame line (Simeon 11.11.: too many frames and colours at the top). */
 .sq-hero .sq-hub-panel { border-color: transparent; }
 
-/* Hero headline, first line stays in one piece on wide screens (the flip word gets a fixed pixel width from script). */
-@media (min-width: 900px) { .rfi-hero-line { white-space: nowrap; } }
+/* Hero headline (Simeon 20.11.): bigger for the full-screen hero, so it breaks into two balanced lines. */
+.rfi-hero-font h1.rfi-display { text-wrap: balance; }
 
 /* Hero description (Simeon 11.11.): two short sentences under the headline, white over the dark photo tint. */
-.irf-hero-sub { max-width: min(1500px, 100%); text-wrap: balance; margin: 0; font-size: clamp(19px, calc(1.1vw + 4px), 24px); line-height: 1.45; font-weight: 500;
+.irf-hero-sub { max-width: min(1500px, 100%); text-wrap: balance; margin: 0; font-size: clamp(19px, calc(1.3vw + 5px), 30px); line-height: 1.45; font-weight: 500;
   color: #fff; text-shadow: 0 1px 14px rgba(0,0,0,.7); }
+
+/* Hero quick buttons (Simeon 20.11.): Managed SOC filled, compliance as outline. */
+.irf-hero-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 34px; }
+.irf-hero-cta { font: 700 17px/1 'Plus Jakarta Sans', system-ui, sans-serif; padding: 16px 26px; border-radius: 12px; cursor: pointer; text-decoration: none;
+  color: #fff; background: rgba(5,7,14,.45); border: 1px solid rgba(255,255,255,.35); backdrop-filter: blur(10px); transition: background .25s, border-color .25s, transform .25s; }
+.irf-hero-cta:hover { border-color: #00f5c4; transform: translateY(-1px); }
+.irf-hero-cta--primary { background: #00f5c4; border-color: #00f5c4; color: #05070e; box-shadow: 0 8px 30px rgba(0,245,196,.28); }
+.irf-hero-cta--primary:hover { background: #3dffd6; }
 
 /* Hero text (Simeon 11.11.): thick black outline, strong shadow. Picker values: outline .08em, shadow "stark". */
 .rfi-hero-font h1.rfi-display { -webkit-text-stroke: .08em rgba(0,0,0,.92); paint-order: stroke fill;

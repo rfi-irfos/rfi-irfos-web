@@ -86,6 +86,8 @@ export const DE: Content = {
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
     sub: 'Wir machen Frontier-Cybersicherheit für Startups, SMEs und wachsende Unternehmen zugänglich, indem unsere eigens entwickelten Agenten Tausende Angriffswege versuchen und erfahrene Ingenieure daraus gezielte Lösungen bis in den betroffenen Code schreiben.',
+    ctaSoc: '24/7 Managed SOC',
+    ctaCompliance: 'Automatisierte Compliance',
     stats: {
       researchAreas: 'Fachbereiche',
       researchAreasSub: 'kombiniert',

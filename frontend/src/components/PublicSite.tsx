@@ -1738,7 +1738,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
 
       <main id="main-content" tabIndex={-1} className={leftFirstView.current ? 'rfi-view-stage' : 'rfi-view-stage rfi-view-stage--first'} key={view}>
         {view === 'home' && <>
-          <HeroSection mobile={mobile} theme={theme} />
+          <HeroSection mobile={mobile} theme={theme} onOpenPortal={() => setLoginOpen(true)} />
           <IntegrationsSection />
           <AppPrivacySection />
           <CoopPartnersSection mobile={mobile} />
