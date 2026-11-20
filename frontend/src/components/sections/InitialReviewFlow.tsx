@@ -180,11 +180,12 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
             onFocus={() => setEmailFocus(true)} onBlur={() => { setEmailFocus(false); if (email.includes('@')) setEmailTouched(true) }}
             aria-describedby={`${fid}-email-hint`} aria-invalid={mismatch || undefined}
             className="fx-input irf-ph" style={{ width: '100%', minWidth: 0, borderRadius: 12, padding: wide ? '13px 16px 13px 46px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 15 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box', ...(mismatch ? { borderColor: 'var(--sev-crit)' } : {}) }} />
-          {/* Floating bubble below the field: the two panes share one fixed grid cell, an extra line would shift or clip the form */}
+          {/* Floating bubble above the field, over the already filled domain: the panes share one fixed grid cell (an extra line would
+              shift or clip the form), and below it would cover the consent checkbox. Clicks pass through, only the mail link takes them. */}
           {(emailFocus || mismatch) && (
-            <div id={`${fid}-email-hint`} role={mismatch ? 'alert' : 'status'} style={{ position: 'absolute', zIndex: 5, top: 'calc(100% + 6px)', left: 0, right: 0, padding: '8px 12px', borderRadius: 10, fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text)', background: 'var(--bg2)', border: `1px solid ${mismatch ? 'var(--sev-crit)' : 'color-mix(in srgb, var(--accent-text) 45%, transparent)'}`, boxShadow: '0 8px 24px rgba(0,0,0,0.35)', animation: 'dsc-pop .25s ease' }}>
+            <div id={`${fid}-email-hint`} role={mismatch ? 'alert' : 'status'} style={{ position: 'absolute', zIndex: 5, bottom: 'calc(100% + 6px)', left: 0, right: 0, pointerEvents: 'none', padding: '8px 12px', borderRadius: 10, fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text)', background: 'var(--bg)', border: `1px solid ${mismatch ? 'var(--sev-crit)' : 'color-mix(in srgb, var(--accent-text) 45%, transparent)'}`, boxShadow: '0 8px 24px rgba(0,0,0,0.35)', animation: 'dsc-pop .25s ease' }}>
               {(mismatch ? c.emailMismatch : c.emailHint).replace('{d}', bareHost(domain) || c.emailHintFallback)}
-              {mismatch && <>{' '}<a href={`mailto:contact@rfi-irfos.com?subject=${encodeURIComponent('Quick Check: ' + domain)}`} style={{ color: 'var(--accent-text)', fontWeight: 700 }}>{c.errorMailtoCta}</a></>}
+              {mismatch && <>{' '}<a href={`mailto:contact@rfi-irfos.com?subject=${encodeURIComponent('Quick Check: ' + domain)}`} style={{ color: 'var(--accent-text)', fontWeight: 700, pointerEvents: 'auto' }}>{c.errorMailtoCta}</a></>}
             </div>
           )}
         </div>
