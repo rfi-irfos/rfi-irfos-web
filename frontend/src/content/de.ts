@@ -12,7 +12,8 @@ export const DE: Content = {
   meta: {
     // 2026-11-10 (Simeon: Snippet muss auf den ersten Blick verständlich sein): Suchwort im Titel,
     // Agenten + Fachleute, Zielgruppensatz. Titel <= 60, Beschreibung 120-155 Zeichen.
-    title: 'Cybersecurity Testing, Compliance & 24/7 Managed SOC | RFI-IRFOS',
+    // Deutscher Titel für /de/ (Lynx 20.11.: EN und DE hatten denselben Titel).
+    title: 'Sicherheitstests, Compliance & 24/7 Managed SOC | RFI-IRFOS',
     description: 'Agenten finden Schwachstellen, Fachleute prüfen und beheben sie im Code. Sicherheitstests, Compliance und Managed SOC, Daten verarbeitet in Graz.',
     dataSolutions: {
       title: 'Evaluationsdaten & Safety-Datensätze für Agenten · RFI-IRFOS',
@@ -270,7 +271,7 @@ export const DE: Content = {
     lead: 'Wir formen, was unter Last hält, und legen offen, was zum Scheitern bestimmt war.',
     paragraph: "Ausgewählte Agenten, die wir im eigenen Haus gebaut und trainiert haben, führen Tausende parallele Sicherheitstests aus, während unsere Fachleute Schwachstellen untersuchen, Angriffspfade nachverfolgen und Fixes bis in den Code entwickeln, für Startups und Unternehmen mit begrenzten eigenen Kapazitäten.",
     steps: [
-      { title: 'Sie geben Zugang', text: 'Zeigen Sie uns Ihre Codebasis mit Lesezugriff auf ein GitHub- oder GitLab-Repository, ein Archiv, einen Build, eine API-Spezifikation oder eine Staging-Umgebung.' },
+      { title: 'Sie geben Zugang', text: 'Zeigen Sie uns Ihre Codebasis mit Lesezugriff: ein GitHub- oder GitLab-Repository, ein Archiv, einen Build, eine API-Spezifikation oder eine Staging-Umgebung.' },
       { title: 'Wir untersuchen', text: 'Unsere selbst gebauten Agenten führen Tausende parallele Tests über Code, Abhängigkeiten, APIs, Endpunkte, Zertifikate, Konfigurationen und Datenflüsse aus.' },
       { title: 'Wir prüfen', text: 'Unsere Fachleute prüfen jeden Fund von Hand, bewerten sein Risiko für Ihr Geschäft und dokumentieren den Angriffspfad mit Nachweis und PoC.' },
       { title: 'Wir beheben', text: 'Wir entwickeln den Fix bis in den Code, wo möglich direkt anwendbar, und Ihr Dashboard im Kundenportal hält jeden Schritt nachvollziehbar.' },

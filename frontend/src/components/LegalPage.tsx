@@ -111,7 +111,7 @@ const META: Record<string, { title: string; description: string; titleDe?: strin
   },
   faq: {
     title: 'FAQ: Security Testing, Compliance, Managed SOC · RFI-IRFOS', description: 'Plain-language answers on security testing, compliance automation, the Managed SOC, findings and disclosure, agents, data systems, and the boundaries RFI-IRFOS keeps.',
-    titleDe: 'FAQ: Security Testing, Compliance, Managed SOC · RFI-IRFOS', descriptionDe: 'Verständliche Antworten zu Security Testing, Compliance-Automatisierung, Managed SOC, Funden und Offenlegung, Agenten, Datensystemen und den Grenzen, die RFI-IRFOS einhält.',
+    titleDe: 'FAQ: Sicherheitstests, Compliance, Managed SOC · RFI-IRFOS', descriptionDe: 'Verständliche Antworten zu Security Testing, Compliance-Automatisierung, Managed SOC, Funden und Offenlegung, Agenten, Datensystemen und den Grenzen, die RFI-IRFOS einhält.',
   },
 }
 

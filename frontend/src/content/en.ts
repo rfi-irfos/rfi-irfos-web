@@ -295,7 +295,7 @@ export const EN = {
     lead: 'We craft what holds under load and expose what was destined to fail.',
     paragraph: "Selected agents that we built and trained in-house execute thousands of parallel security tests, while our specialists investigate vulnerabilities, trace attack paths and engineer fixes down to the code for startups and companies with limited in-house capacity.",
     steps: [
-      { title: 'You share access', text: 'Point us to your codebase with read access to a GitHub or GitLab repository, an archive, a build, an API specification or a staging environment.' },
+      { title: 'You share access', text: 'Point us to your codebase with read access: a GitHub or GitLab repository, an archive, a build, an API specification or a staging environment.' },
       { title: 'We investigate', text: 'Our in-house agents run thousands of parallel tests across code, dependencies, APIs, endpoints, certificates, configurations and data flows.' },
       { title: 'We verify', text: 'Our specialists review every finding by hand, rate its risk for your business and document the attack path with evidence and a PoC.' },
       { title: 'We fix', text: 'We engineer the fix down to the code, ready to apply where possible, while your dashboard in the customer portal keeps every step traceable.' },
