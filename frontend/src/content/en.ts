@@ -295,10 +295,10 @@ export const EN = {
     lead: 'We craft what holds under load and expose what was destined to fail.',
     paragraph: "Selected agents that we built and trained in-house execute thousands of parallel security tests, while our specialists investigate vulnerabilities, trace attack paths and engineer fixes down to the code for startups and companies with limited in-house capacity.",
     steps: [
-      { title: 'You share access', text: 'Point us to your codebase: a GitHub or GitLab repository, an archive, a build, an API specification or a dev or staging environment. Read access is enough.' },
-      { title: 'We investigate', text: 'Our in-house agents run thousands of parallel tests across code, dependencies, APIs and data flows. Our team steers them toward your product.' },
-      { title: 'We verify', text: 'Our specialists validate every finding, separate real risk from false positives and document the attack path with evidence.' },
-      { title: 'We fix', text: 'We engineer the fix down to the code, ready to apply where possible. Your dashboard in the customer portal and an exportable knowledge graph keep everything traceable.' },
+      { title: 'You share access', text: 'Point us to your codebase with read access to a GitHub or GitLab repository, an archive, a build, an API specification or a staging environment.' },
+      { title: 'We investigate', text: 'Our in-house agents run thousands of parallel tests across code, dependencies, APIs, endpoints, certificates, configurations and data flows.' },
+      { title: 'We verify', text: 'Our specialists review every finding by hand, rate its risk for your business and document the attack path with evidence and a PoC.' },
+      { title: 'We fix', text: 'We engineer the fix down to the code, ready to apply where possible, while your dashboard in the customer portal keeps every step traceable.' },
     ],
     scopeLabel: 'What we examine',
       evidenceLabel: 'What you receive',
@@ -313,7 +313,7 @@ export const EN = {
       title: 'From traceable findings to concrete code changes.',
       sub: '',
       items: [
-        { title: "Broad technical coverage", text: "Code, dependencies, APIs, configurations and data flows, examined together." },
+        { title: "Broad technical coverage", text: "Including code, dependencies, APIs, configurations and data flows, examined together." },
         { title: "Exploitability analysis", text: "Findings verified against what an attacker could realistically do." },
         { title: "Engineered remediation", text: "Concrete fixes developed down to the affected code, with ready-to-apply changes where possible. Included from the Growth plan." },
         { title: "Standards-informed methodology", text: "Testing grounded in recognized security frameworks." },

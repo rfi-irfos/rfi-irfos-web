@@ -160,7 +160,8 @@ export function AppPrivacySection() {
                         boxShadow: active === i ? '0 0 0 4px color-mix(in srgb, var(--accent-text) 12%, transparent), 0 0 26px color-mix(in srgb, var(--accent-text) 55%, transparent)' : i < active ? '0 0 12px color-mix(in srgb, var(--accent-text) 25%, transparent)' : 'inset 0 1px 0 rgba(255,255,255,0.08)' }}>{i + 1}</span>
                 )
                 const title = <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', color: active === i ? 'var(--accent-text)' : 'var(--text)', marginBottom: 4, transition: 'color 0.4s' }}>{s.title}</div>
-                const text = <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: '#e8e8f0', textShadow: '0 0 12px rgba(232,232,240,0.12)' }}>{s.text}</div>
+                // Active description grows a touch (Simeon 20.11.): transform only, so the neighbouring columns never move.
+                const text = <div style={{ fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: '#e8e8f0', textShadow: '0 0 12px rgba(232,232,240,0.12)', transformOrigin: 'left top', transform: active === i ? 'scale(1.03)' : 'scale(1)', transition: 'transform 0.6s cubic-bezier(.2,.7,.2,1)' }}>{s.text}</div>
                 return (
                 <Reveal key={s.title} delay={i}>
                   {phone ? (

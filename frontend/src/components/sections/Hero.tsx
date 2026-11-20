@@ -18,10 +18,8 @@ import heroSoftware from '../../assets/hero-software.jpeg'
 import heroDingir2 from '../../assets/hero-dingir-2.webp'
 import heroDingir3 from '../../assets/hero-dingir-3.webp'
 import heroDingir4 from '../../assets/hero-dingir-4.webp'
-import heroDingir5 from '../../assets/hero-dingir-5.webp'
 import heroDingir6 from '../../assets/hero-dingir-6.webp'
 import heroDingir7 from '../../assets/hero-dingir-7.webp'
-import heroDingir8 from '../../assets/hero-dingir-8.webp'
 import heroDingir10 from '../../assets/hero-dingir-10.webp'
 import heroDingir11 from '../../assets/hero-dingir-11.webp'
 import heroDingir12 from '../../assets/hero-dingir-12.webp'
@@ -49,7 +47,6 @@ import heroDingirGlobeAfricaThreats from '../../assets/hero-dingir-globe-africa-
 // zoomed-in node cluster - live feedback specifically wanted this visible
 // ("nich nur label, whitebox by design" - the wireframe IS the point, not
 // just a claim about it), so it leads this category in the sequence below.
-import heroDingirEmbedBuoy from '../../assets/hero-dingir-embed-buoy.webp'
 import heroDingirEmbedLanguage from '../../assets/hero-dingir-embed-language.webp'
 import heroDingirEmbedImpact from '../../assets/hero-dingir-embed-impact.webp'
 import heroDingirEmbedCoast from '../../assets/hero-dingir-embed-coast.webp'
@@ -71,6 +68,13 @@ import heroDingirEmbedDecidedGraph from '../../assets/hero-dingir-embed-decided-
 // the satellite shot of our own city now opens the homepage rotation.
 import heroGrazSatellite from '../../assets/hero-graz-satellite.webp'
 import heroGrazSatelliteMobile from '../../assets/hero-graz-satellite-mobile.webp'
+// Current DINGIR UI (Simeon 20.11.): Europe satellite, 3D London and Guangzhou, Taiwan Strait, markets. Rule from the same review: info cards may sit
+// at the edge of a shot, never in its centre where the hero text lands (dossier, analyst, dingir-5 and dingir-8 dropped for that).
+import heroDingirEuropeSat from '../../assets/hero-dingir-europe-sat.webp'
+import heroDingirMarkets from '../../assets/hero-dingir-markets.webp'
+import heroDingirTaiwanStrait from '../../assets/hero-dingir-taiwan-strait.webp'
+import heroDingir3dLondon from '../../assets/hero-dingir-3d-london.webp'
+import heroDingir3dGuangzhou from '../../assets/hero-dingir-3d-guangzhou.webp'
 // Append more `import heroX from '../../assets/hero-x.jpeg'` + entries here to
 // grow the slideshow - HeroSlideshow below already handles 1..N images. With
 // just one, it renders exactly like the old single static image (no interval,
@@ -105,9 +109,10 @@ import heroGrazSatelliteMobile from '../../assets/hero-graz-satellite-mobile.web
 // possible for 2 items in an 8-slot cycle) - so no round ever pairs two
 // globe shots, and no two globes sit closer than one other shot apart even
 // across the 8/10-round wrap.
-const HERO_SOFTWARE_SHOTS = [heroDingir7, heroDingir2, heroDingirGlobeAntarctica, heroDingirMapDc, heroDingirGlobeAfricaThreats, heroDingir3, heroDingir8, heroDingirMapGrazDossier]
-const HERO_SATELLITE_SHOTS = [heroDingir4, heroDingir12, heroDingir6, heroDingir5, heroDingir11, heroDingir13, heroDingir10, heroDingirVesselsNl]
-const HERO_NEURAL_SHOTS = [heroDingirEmbedStorm, heroDingirEmbedBuoy, heroDingirEmbedLanguage, heroDingirEmbedWater, heroDingirEmbedImpact, heroDingirEmbedHope, heroDingirEmbedCoast, heroDingirEmbedDecided, heroDingirEmbedIncident, heroDingirEmbedDecade]
+const HERO_SOFTWARE_SHOTS = [heroDingir7, heroDingir2, heroDingirGlobeAntarctica, heroDingirMapDc, heroDingirGlobeAfricaThreats, heroDingir3, heroDingirMapGrazDossier]
+const HERO_SATELLITE_SHOTS = [heroDingir4, heroDingir12, heroDingir6, heroDingir11, heroDingir13, heroDingir10, heroDingirVesselsNl]
+// Buoy removed (Simeon 20.11.): its lower half is a grey table panel that sits right under the hero text.
+const HERO_NEURAL_SHOTS = [heroDingirEmbedStorm, heroDingirEmbedLanguage, heroDingirEmbedWater, heroDingirEmbedImpact, heroDingirEmbedHope, heroDingirEmbedCoast, heroDingirEmbedDecided, heroDingirEmbedIncident, heroDingirEmbedDecade]
 // Exported for WorldModel.tsx's own hero panel (live feedback 2026-09-01:
 // "die slideshow zeigen von den screenshots die wir haben... wie draussen im
 // main hero") - same image pool and cross-fade mechanic reused inside a
@@ -130,7 +135,8 @@ export const HERO_IMAGES = [
 // image every phone downloads. Phones get a 1000 px copy; the hero is cover-cropped there.
 const GRAZ_PHOTOS = new Set([heroGrazSatellite, heroGrazSatelliteMobile])
 const SMALL_SCREEN = typeof window !== 'undefined' && window.innerWidth < 768
-const HOME_HERO_IMAGES = [SMALL_SCREEN ? heroGrazSatelliteMobile : heroGrazSatellite, heroDingirEmbedDecidedGraph, ...HERO_IMAGES.filter(src => src !== heroDingirEmbedDecided)]
+const HERO_CURRENT_UI = [heroDingirEuropeSat, heroDingir3dLondon, heroDingirTaiwanStrait, heroDingir3dGuangzhou, heroDingirMarkets]
+const HOME_HERO_IMAGES = [SMALL_SCREEN ? heroGrazSatelliteMobile : heroGrazSatellite, heroDingirEmbedDecidedGraph, ...HERO_CURRENT_UI, ...HERO_IMAGES.filter(src => src !== heroDingirEmbedDecided)]
 
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 
@@ -287,7 +293,7 @@ export function HeroSection({ mobile, theme, onOpenPortal }: { mobile: boolean, 
   preload(heroGrazSatelliteMobile, { as: 'image', fetchPriority: 'high', media: '(max-width: 767px)' })
   preload(heroGrazSatellite, { as: 'image', fetchPriority: 'high', media: '(min-width: 768px)' })
   return (
-    <section className="rfi-hero-font" style={{
+    <section className="rfi-hero-font irf-hero" style={{
       // Hero bleibt in Archivo (Simeon 10.11.2026), der Rest der Seite läuft in Plus Jakarta Sans
       fontFamily: "'Archivo', system-ui, sans-serif",
       display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden',

@@ -270,10 +270,10 @@ export const DE: Content = {
     lead: 'Wir formen, was unter Last hält, und legen offen, was zum Scheitern bestimmt war.',
     paragraph: "Ausgewählte Agenten, die wir im eigenen Haus gebaut und trainiert haben, führen Tausende parallele Sicherheitstests aus, während unsere Fachleute Schwachstellen untersuchen, Angriffspfade nachverfolgen und Fixes bis in den Code entwickeln, für Startups und Unternehmen mit begrenzten eigenen Kapazitäten.",
     steps: [
-      { title: 'Sie geben Zugang', text: 'Zeigen Sie uns Ihre Codebasis: ein GitHub- oder GitLab-Repository, ein Archiv, einen Build, eine API-Spezifikation oder eine Dev- oder Staging-Umgebung. Lesezugriff reicht.' },
-      { title: 'Wir untersuchen', text: 'Unsere selbst gebauten Agenten führen Tausende parallele Tests über Code, Abhängigkeiten, APIs und Datenflüsse aus. Unser Team lenkt sie auf Ihr Produkt.' },
-      { title: 'Wir prüfen', text: 'Unsere Fachleute validieren jeden Fund, trennen echtes Risiko von Fehlalarmen und dokumentieren den Angriffspfad mit Nachweis.' },
-      { title: 'Wir beheben', text: 'Wir entwickeln den Fix bis in den Code, wo möglich direkt anwendbar. Ihr Dashboard im Kundenportal und ein exportierbarer Knowledge Graph halten alles nachvollziehbar.' },
+      { title: 'Sie geben Zugang', text: 'Zeigen Sie uns Ihre Codebasis mit Lesezugriff auf ein GitHub- oder GitLab-Repository, ein Archiv, einen Build, eine API-Spezifikation oder eine Staging-Umgebung.' },
+      { title: 'Wir untersuchen', text: 'Unsere selbst gebauten Agenten führen Tausende parallele Tests über Code, Abhängigkeiten, APIs, Endpunkte, Zertifikate, Konfigurationen und Datenflüsse aus.' },
+      { title: 'Wir prüfen', text: 'Unsere Fachleute prüfen jeden Fund von Hand, bewerten sein Risiko für Ihr Geschäft und dokumentieren den Angriffspfad mit Nachweis und PoC.' },
+      { title: 'Wir beheben', text: 'Wir entwickeln den Fix bis in den Code, wo möglich direkt anwendbar, und Ihr Dashboard im Kundenportal hält jeden Schritt nachvollziehbar.' },
     ],
     scopeLabel: 'Das prüfen wir',
       evidenceLabel: 'Das bekommen Sie',
@@ -288,7 +288,7 @@ export const DE: Content = {
       title: 'Von nachvollziehbaren Befunden bis zu konkreten Codeänderungen.',
       sub: '',
       items: [
-        { title: "Breite technische Abdeckung", text: "Code, Abhängigkeiten, APIs, Konfigurationen und Datenflüsse, gemeinsam untersucht." },
+        { title: "Breite technische Abdeckung", text: "U. a. Code, Abhängigkeiten, APIs, Konfigurationen und Datenflüsse, gemeinsam untersucht." },
         { title: "Ausnutzbarkeitsanalyse", text: "Funde daran verifiziert, was ein Angreifer realistisch damit anfangen kann." },
         { title: "Fix bis in den Code", text: "Konkrete Fixes bis in den betroffenen Code, wo möglich als direkt anwendbare Änderungen. Ab dem Growth-Plan." },
         { title: "Normbasierte Methodik", text: "Prüfung auf Basis anerkannter Security-Frameworks." },

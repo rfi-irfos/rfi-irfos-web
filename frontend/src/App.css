@@ -1494,6 +1494,12 @@ button { cursor: pointer; font-family: inherit; }
 .irf-hero-cta:hover { border-color: #00f5c4; transform: translateY(-1px); }
 .irf-hero-cta--primary { background: #00f5c4; border-color: #00f5c4; color: #05070e; box-shadow: 0 8px 30px rgba(0,245,196,.28); }
 .irf-hero-cta--primary:hover { background: #3dffd6; }
+/* Phones (Simeon 20.11.): both buttons side by side, and the logo strip stays visible above the tab bar (68px bar + 10px gap + safe area). */
+@media (max-width: 767px) {
+  .irf-hero { min-height: max(420px, calc(100svh / 0.9 - 80px - 78px - env(safe-area-inset-bottom))) !important; }
+  .irf-hero-ctas { flex-wrap: nowrap; gap: 8px; margin-top: 26px; }
+  .irf-hero-cta { font-size: 14px; padding: 13px 14px; white-space: nowrap; }
+}
 
 /* Hero text (Simeon 11.11.): thick black outline, strong shadow. Picker values: outline .08em, shadow "stark". */
 .rfi-hero-font h1.rfi-display { -webkit-text-stroke: .08em rgba(0,0,0,.92); paint-order: stroke fill;
