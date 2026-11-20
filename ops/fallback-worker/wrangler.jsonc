@@ -1,0 +1,19 @@
+{
+  // Notbetrieb für rfi-irfos.com: leitet alles an Graz weiter und liefert
+  // das eingefrorene Abbild aus, wenn Graz nicht antwortet.
+  "name": "rfi-web-fallback",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./snapshot",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "single-page-application"
+  },
+  "vars": {
+    // Nur für workers.dev-Tests: Ziel, an das statt der echten Domain weitergeleitet wird.
+    "TEST_ORIGIN": "https://rfi-irfos.com"
+  }
+}
