@@ -1488,17 +1488,19 @@ button { cursor: pointer; font-family: inherit; }
   color: #fff; text-shadow: 0 1px 14px rgba(0,0,0,.7); }
 
 /* Hero quick buttons (Simeon 20.11.): Managed SOC filled, compliance as outline. */
-.irf-hero-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 34px; }
+/* Both buttons equally wide (Simeon 20.11.): two 1fr columns sized to the longer label. */
+.irf-hero-ctas { display: grid; grid-template-columns: 1fr 1fr; width: max-content; max-width: 100%; margin: 34px auto 0; gap: 14px; }
 .irf-hero-cta { font: 700 17px/1 'Plus Jakarta Sans', system-ui, sans-serif; padding: 16px 26px; border-radius: 12px; cursor: pointer; text-decoration: none;
-  color: #fff; background: rgba(5,7,14,.45); border: 1px solid rgba(255,255,255,.35); backdrop-filter: blur(10px); transition: background .25s, border-color .25s, transform .25s; }
+  color: #fff; background: rgba(5,7,14,.45); border: 1px solid rgba(255,255,255,.35); backdrop-filter: blur(10px); transition: background .25s, border-color .25s, transform .25s; display: inline-flex; align-items: center; justify-content: center; gap: 9px; }
 .irf-hero-cta:hover { border-color: #00f5c4; transform: translateY(-1px); }
 .irf-hero-cta--primary { background: #00f5c4; border-color: #00f5c4; color: #05070e; box-shadow: 0 8px 30px rgba(0,245,196,.28); }
 .irf-hero-cta--primary:hover { background: #3dffd6; }
 /* Phones (Simeon 20.11.): both buttons side by side, and the logo strip stays visible above the tab bar (68px bar + 10px gap + safe area). */
 @media (max-width: 767px) {
   .irf-hero { min-height: max(420px, calc(100svh / 0.9 - 80px - 78px - env(safe-area-inset-bottom))) !important; }
-  .irf-hero-ctas { flex-wrap: nowrap; gap: 8px; margin-top: 26px; }
-  .irf-hero-cta { font-size: 14px; padding: 13px 14px; white-space: nowrap; }
+  .irf-hero-ctas { gap: 8px; margin-top: 26px; }
+  .irf-hero-cta { font-size: 14px; padding: 13px 14px; white-space: nowrap; gap: 6px; }
+  .irf-hero-cta svg { width: 16px; height: 16px; }
 }
 
 /* Hero text (Simeon 11.11.): thick black outline, strong shadow. Picker values: outline .08em, shadow "stark". */
