@@ -164,6 +164,8 @@ const KEYFRAMES = `
 @keyframes dsc-sweep { 0% { transform: translateX(-100%) } 100% { transform: translateX(350%) } }
 @keyframes dsc-gauge { from { stroke-dashoffset: 214 } }
 @keyframes dsc-pop { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+@keyframes dsc-fade { from { opacity: 0 } }
+@keyframes dsc-rise { from { opacity: 0; transform: translateY(12px) scale(.98) } }
 @media (prefers-reduced-motion: reduce) { .dsc-anim { animation: none !important } }
 `
 
@@ -183,6 +185,9 @@ export function DomainSafetyPanel({ onNext }: { onNext: () => void }) {
   const [domain, setDomain] = useState('')
   const [hint, setHint] = useState('')
   const [open, setOpen] = useState(false)
+  // Closing fades backdrop and card out before the portal unmounts (Simeon 20.11.2026: "smooth, not instantly")
+  const [closing, setClosing] = useState(false)
+  const closeTimer = useRef<number | undefined>(undefined)
   const [results, setResults] = useState<Partial<Record<AreaId, ApiArea>>>({})
   const [failure, setFailure] = useState<string | null>(null)
   const [checkedAt, setCheckedAt] = useState<Date | null>(null)
@@ -192,8 +197,14 @@ export function DomainSafetyPanel({ onNext }: { onNext: () => void }) {
   const list = AREAS.map(a => results[a]).filter((r): r is ApiArea => !!r)
   const score = done ? overall(list) : null
 
-  const close = () => { ctl.current?.abort(); setOpen(false) }
-  useEffect(() => () => ctl.current?.abort(), [])
+  const close = () => {
+    ctl.current?.abort()
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setOpen(false); return }
+    setClosing(true)
+    window.clearTimeout(closeTimer.current)
+    closeTimer.current = window.setTimeout(() => { setOpen(false); setClosing(false) }, 260)
+  }
+  useEffect(() => () => { ctl.current?.abort(); window.clearTimeout(closeTimer.current) }, [])
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close() }
@@ -212,6 +223,8 @@ export function DomainSafetyPanel({ onNext }: { onNext: () => void }) {
     setResults({})
     setFailure(null)
     setCheckedAt(null)
+    window.clearTimeout(closeTimer.current)
+    setClosing(false)
     setOpen(true)
     const fail = (code: string) => { setFailure(f => f ?? code); ac.abort() }
     AREAS.forEach(async (area, i) => {
@@ -277,10 +290,10 @@ export function DomainSafetyPanel({ onNext }: { onNext: () => void }) {
       </button>
       </div>
       {open && createPortal(
-        <div onClick={close} style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,10,0.72)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, overflowY: 'auto' }}>
+        <div onClick={close} className="dsc-anim" style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,10,0.72)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, overflowY: 'auto', animation: 'dsc-fade .25s ease', opacity: closing ? 0 : 1, transition: 'opacity .26s ease', pointerEvents: closing ? 'none' : undefined }}>
           <style>{KEYFRAMES}</style>
-          <div role="dialog" aria-modal="true" aria-labelledby={`${fid}-t`} onClick={e => e.stopPropagation()} className="irf-card-glow"
-            style={{ width: '100%', maxWidth: done ? 980 : 520, transition: 'max-width .35s ease', borderRadius: 20, padding: done ? 34 : 26, display: 'flex', flexDirection: 'column', gap: done ? 22 : 16, boxSizing: 'border-box', background: 'var(--surface, #0e0e18)', border: '1px solid var(--border)' }}>
+          <div role="dialog" aria-modal="true" aria-labelledby={`${fid}-t`} onClick={e => e.stopPropagation()} className="irf-card-glow dsc-anim"
+            style={{ width: '100%', maxWidth: done ? 980 : 520, transition: 'max-width .35s ease, opacity .26s ease, transform .26s ease', animation: 'dsc-rise .3s cubic-bezier(.2,.8,.2,1)', opacity: closing ? 0 : 1, transform: closing ? 'translateY(10px) scale(.98)' : 'none', borderRadius: 20, padding: done ? 34 : 26, display: 'flex', flexDirection: 'column', gap: done ? 22 : 16, boxSizing: 'border-box', background: 'var(--surface, #0e0e18)', border: '1px solid var(--border)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
               <div id={`${fid}-t`} style={{ fontWeight: 700, fontSize: 'var(--fs-lead)', color: 'var(--text)', overflowWrap: 'anywhere' }}>{c.modalTitle} {host}</div>
               <button type="button" onClick={close} aria-label={c.close} style={{ background: 'none', border: 'none', color: 'var(--text2)', fontSize: 22, cursor: 'pointer', lineHeight: 1 }}>×</button>
