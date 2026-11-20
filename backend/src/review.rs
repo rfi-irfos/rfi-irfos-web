@@ -67,6 +67,18 @@ pub fn normalize_domain(input: &str) -> Option<String> {
     Some(host)
 }
 
+/// The report goes only to an address at the checked domain (Simeon 20.11.2026): a free-mail
+/// requester could otherwise order a security report about someone else's site. Same domain,
+/// a subdomain of it, or its parent (it@firma.at for shop.firma.at) all count; "www." is ignored.
+/// Mirrors `emailMatchesDomain` in InitialReviewFlow.tsx.
+pub fn email_matches_domain(email: &str, domain: &str) -> bool {
+    let d = domain.trim().to_lowercase();
+    let d = d.strip_prefix("www.").unwrap_or(&d);
+    let Some((local, m)) = email.trim().to_lowercase().rsplit_once('@').map(|(l, m)| (l.to_string(), m.to_string())) else { return false };
+    if local.is_empty() || !m.contains('.') || d.is_empty() { return false; }
+    m == d || m.ends_with(&format!(".{d}")) || d.ends_with(&format!(".{m}"))
+}
+
 #[derive(Deserialize)]
 pub struct SubmitReviewRequest {
     pub domain: String,
@@ -123,6 +135,10 @@ pub async fn submit_review(
     }
 
     let email = body.email.trim().to_string();
+    if !email_matches_domain(&email, &domain) {
+        tracing::info!("Initial review for {domain} refused: email outside the domain");
+        return (StatusCode::BAD_REQUEST, "The email must be an address at the checked domain.").into_response();
+    }
 
     // A visitor re-submitting the same still-pending domain (double click,
     // retried request) must not pile up duplicate rows that leave an admin
@@ -514,7 +530,7 @@ mod tests {
         let state = test_state().await;
         let db = state.db.clone();
         let body = serde_json::json!({
-            "domain": "https://foo.com/bar", "email": "a@b.com", "consent": true, "botcheck": null
+            "domain": "https://foo.com/bar", "email": "a@foo.com", "consent": true, "botcheck": null
         });
         let res = app(state)
             .oneshot(Request::builder()
@@ -525,7 +541,7 @@ mod tests {
             .await.unwrap();
         assert_eq!(res.status(), StatusCode::OK);
         let row: (String, String) = sqlx::query_as(
-            "SELECT domain, status FROM initial_reviews WHERE email = 'a@b.com'"
+            "SELECT domain, status FROM initial_reviews WHERE email = 'a@foo.com'"
         ).fetch_one(&db).await.unwrap();
         assert_eq!(row.0, "foo.com");
         assert_eq!(row.1, "pending_approval");
@@ -556,7 +572,7 @@ mod tests {
         let state = test_state().await;
         let db = state.db.clone();
         let body = serde_json::json!({
-            "domain": "foo.com", "email": "a@b.com", "consent": true, "botcheck": null
+            "domain": "foo.com", "email": "a@foo.com", "consent": true, "botcheck": null
         });
         let make_req = || Request::builder()
             .method("POST").uri("/api/initial-review")
@@ -576,6 +592,36 @@ mod tests {
             "SELECT COUNT(*) FROM initial_reviews WHERE domain = 'foo.com' AND status = 'pending_approval'"
         ).fetch_one(&db).await.unwrap();
         assert_eq!(count.0, 1);
+    }
+
+    #[test]
+    fn email_must_sit_at_the_checked_domain() {
+        assert!(email_matches_domain("info@nolapro.shop", "nolapro.shop"));
+        assert!(email_matches_domain("Info@NolaPro.shop ", "www.nolapro.shop"));
+        assert!(email_matches_domain("it@firma.at", "shop.firma.at"));
+        assert!(email_matches_domain("a@mail.firma.at", "firma.at"));
+        assert!(!email_matches_domain("jve110409@gmail.com", "nolapro.shop"));
+        assert!(!email_matches_domain("a@notfirma.at", "firma.at"));
+        assert!(!email_matches_domain("a@firma.at.evil.com", "firma.at"));
+        assert!(!email_matches_domain("@firma.at", "firma.at"));
+        assert!(!email_matches_domain("firma.at", "firma.at"));
+    }
+
+    #[tokio::test]
+    async fn freemail_for_a_foreign_domain_is_refused_with_400() {
+        let state = test_state().await;
+        let db = state.db.clone();
+        let body = serde_json::json!({ "domain": "nolapro.shop", "email": "jve110409@gmail.com", "consent": true, "botcheck": null });
+        let res = app(state)
+            .oneshot(Request::builder()
+                .method("POST").uri("/api/initial-review")
+                .header("content-type", "application/json")
+                .header("x-forwarded-for", "10.0.0.9")
+                .body(Body::from(body.to_string())).unwrap())
+            .await.unwrap();
+        assert_eq!(res.status(), StatusCode::BAD_REQUEST);
+        let count: (i64,) = sqlx::query_as("SELECT COUNT(*) FROM initial_reviews").fetch_one(&db).await.unwrap();
+        assert_eq!(count.0, 0);
     }
 
     #[tokio::test]
@@ -608,7 +654,7 @@ mod tests {
             .header("content-type", "application/json")
             .header("x-forwarded-for", "10.0.0.5")
             .body(Body::from(serde_json::json!({
-                "domain": domain, "email": "a@b.com", "consent": true, "botcheck": null
+                "domain": domain, "email": format!("a@{domain}"), "consent": true, "botcheck": null
             }).to_string())).unwrap();
 
         for domain in ["one.com", "two.com", "three.com", "four.com", "five.com"] {

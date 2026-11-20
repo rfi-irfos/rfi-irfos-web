@@ -4,7 +4,17 @@ import { beacon } from './shared'
 import { FailToast } from '../FailToast'
 import { DomainSafetyPanel, useSafetyCopy } from './DomainSafetyCheck'
 
-type FormState = 'idle' | 'sending' | 'ok' | 'err' | 'invalid' | 'limited'
+type FormState = 'idle' | 'sending' | 'ok' | 'err' | 'invalid' | 'limited' | 'mismatch'
+
+// The report goes only to an address at the checked domain (Simeon 20.11.2026). Same rule as
+// email_matches_domain in review.rs: same domain, a subdomain or its parent, "www." ignored.
+const bareHost = (d: string) => d.trim().toLowerCase().replace(/^https?:\/\//, '').split(/[/:]/)[0].replace(/^www\./, '')
+function emailMatchesDomain(email: string, domain: string): boolean {
+  const d = bareHost(domain)
+  const [local, m = ''] = email.trim().toLowerCase().split(/@(?=[^@]*$)/)
+  if (!local || !m.includes('.') || !d) return false
+  return m === d || m.endsWith('.' + d) || d.endsWith('.' + m)
+}
 
 // Single-step form (2026-10-14, live direction: "why make it a two step
 // process, lets make it as easy as possible") - site, work email and the
@@ -19,11 +29,14 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
   const [domain, setDomain] = useState('')
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
+  const [emailFocus, setEmailFocus] = useState(false)
+  const [emailTouched, setEmailTouched] = useState(false)
   const [botcheck, setBotcheck] = useState('')
   const [state, setState] = useState<FormState>('idle')
   const [toast, setToast] = useState(false)
   // Lighthouse round 33: labels tied to their inputs (screen readers, click-to-focus).
   const fid = useId()
+  const mismatch = state === 'mismatch' || (emailTouched && !emailFocus && email.includes('@') && bareHost(domain).includes('.') && !emailMatchesDomain(email, domain))
   const [mode, setMode] = useState<'own' | 'any'>('own')
   const sc = useSafetyCopy()
   const submit = async (e: React.FormEvent) => {
@@ -33,6 +46,7 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
     // backend 400 and was shown as "something went wrong" plus a mail link, so people
     // read it as our failure. Same check as normalize_domain in review.rs, caught here.
     if (!domain.replace(/^https?:\/\//, '').split('/')[0].includes('.')) { setState('invalid'); beacon('free_check_invalid:' + variant); return }
+    if (!emailMatchesDomain(email, domain)) { setState('mismatch'); setEmailTouched(true); beacon('free_check_mismatch:' + variant); return }
     setState('sending')
     setToast(false)
     // Server down or network gone: the visitor sees the toast with our mail address.
@@ -76,7 +90,7 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
   )
   const labelStyle: React.CSSProperties = { fontSize: wide ? 14 : 'var(--fs-small)', fontWeight: wide ? 600 : undefined, color: wide ? 'var(--text)' : 'var(--text2)', display: wide ? 'flex' : 'block', alignItems: 'center', gap: 8, marginBottom: wide ? 0 : 6, ...(wide ? { position: 'absolute' as const, left: 16, top: 0, bottom: 0, width: 18, overflow: 'hidden', whiteSpace: 'nowrap' as const, pointerEvents: 'none' as const, color: 'var(--text2)' } : {}) }
   // Landing card (wide): only the icon sits inside the box, the label text is the placeholder and disappears while typing (Simeon 11.11.); the label stays in the DOM, clipped, for screen readers. Narrow card keeps them stacked above.
-  const fieldRow: React.CSSProperties = wide ? { position: 'relative' } : {}
+  const fieldRow: React.CSSProperties = { position: 'relative' }
   const labelIcon = (d: string) => wide && (
     <svg width={18} height={18} style={{ flexShrink: 0 }} viewBox="0 0 24 24" fill="none" stroke="var(--text)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d={d} /></svg>
   )
@@ -156,14 +170,23 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
         <div style={fieldRow}>
           <label htmlFor={`${fid}-domain`} style={labelStyle}>{labelIcon('M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c2.500 2.500 3.800 5.500 3.800 9s-1.300 6.500-3.800 9c-2.500-2.500-3.800-5.500-3.800-9S9.500 5.500 12 3z')}{c.domainLabel}</label>
           <input id={`${fid}-domain`} name="domain" type="text" inputMode="url" autoComplete="url" autoCapitalize="none" autoCorrect="off" spellCheck={false} required placeholder={wide ? c.domainLabel : c.domainPlaceholder} value={domain}
-            onChange={e => setDomain(e.target.value)}
+            onChange={e => { setDomain(e.target.value); if (state === 'mismatch') setState('idle') }}
             className="fx-input irf-ph" style={{ width: '100%', minWidth: 0, borderRadius: 12, padding: wide ? '13px 16px 13px 46px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 15 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
         </div>
         <div style={fieldRow}>
           <label htmlFor={`${fid}-email`} style={labelStyle}>{labelIcon('M3 6h18v12H3zM3 7l9 6 9-6')}{c.emailLabel}</label>
           <input id={`${fid}-email`} name="email" autoComplete="email" type="email" required placeholder={wide ? c.emailLabel : c.emailPlaceholder} value={email}
-            onChange={e => setEmail(e.target.value)}
-            className="fx-input irf-ph" style={{ width: '100%', minWidth: 0, borderRadius: 12, padding: wide ? '13px 16px 13px 46px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 15 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+            onChange={e => { setEmail(e.target.value); if (state === 'mismatch') setState('idle') }}
+            onFocus={() => setEmailFocus(true)} onBlur={() => { setEmailFocus(false); if (email.includes('@')) setEmailTouched(true) }}
+            aria-describedby={`${fid}-email-hint`} aria-invalid={mismatch || undefined}
+            className="fx-input irf-ph" style={{ width: '100%', minWidth: 0, borderRadius: 12, padding: wide ? '13px 16px 13px 46px' : '12px 16px', color: 'var(--text)', fontSize: wide ? 15 : 'var(--fs-body)', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box', ...(mismatch ? { borderColor: 'var(--sev-crit)' } : {}) }} />
+          {/* Floating bubble below the field: the two panes share one fixed grid cell, an extra line would shift or clip the form */}
+          {(emailFocus || mismatch) && (
+            <div id={`${fid}-email-hint`} role={mismatch ? 'alert' : 'status'} style={{ position: 'absolute', zIndex: 5, top: 'calc(100% + 6px)', left: 0, right: 0, padding: '8px 12px', borderRadius: 10, fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', color: 'var(--text)', background: 'var(--bg2)', border: `1px solid ${mismatch ? 'var(--sev-crit)' : 'color-mix(in srgb, var(--accent-text) 45%, transparent)'}`, boxShadow: '0 8px 24px rgba(0,0,0,0.35)', animation: 'dsc-pop .25s ease' }}>
+              {(mismatch ? c.emailMismatch : c.emailHint).replace('{d}', bareHost(domain) || c.emailHintFallback)}
+              {mismatch && <>{' '}<a href={`mailto:contact@rfi-irfos.com?subject=${encodeURIComponent('Quick Check: ' + domain)}`} style={{ color: 'var(--accent-text)', fontWeight: 700 }}>{c.errorMailtoCta}</a></>}
+            </div>
+          )}
         </div>
         </div>
         <label style={{ display: 'flex', gap: 10, alignItems: 'flex-start', cursor: 'pointer' }}>

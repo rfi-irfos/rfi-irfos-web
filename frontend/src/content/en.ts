@@ -352,6 +352,10 @@ export const EN = {
     okReports: 'Published reports →',
     errorText: 'Something went wrong sending that.',
     errorInvalid: 'Please check the domain and email address, for example yourcompany.com.',
+    // {d} = the domain typed above; the backend refuses addresses outside it (20.11.2026)
+    emailHint: 'Use your address at {d}, so we can see the domain is yours.',
+    emailHintFallback: 'your domain',
+    emailMismatch: 'The report goes only to an address at {d}. Checking a client\'s site?',
     errorLimited: 'Many requests from this connection today. Please try again tomorrow.',
     errorMailtoCta: 'Email us directly instead →',
   },
