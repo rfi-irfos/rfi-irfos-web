@@ -960,6 +960,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
       { label: t.footer.groups.services.links.apiSecurity, href: `${servicesPrefix}/api-security-testing/` },
       { label: t.footer.groups.services.links.cloud, href: `${servicesPrefix}/cloud-security-assessment/` },
       { label: t.footer.groups.services.links.codeReview, href: `${servicesPrefix}/secure-code-review/` },
+      { label: t.footer.groups.services.links.remediation, href: `${servicesPrefix}/vulnerability-remediation/` },
       { label: t.footer.groups.services.links.domainCheck, href: `${servicesPrefix}/domain-security-test/` },
       { label: t.footer.groups.services.links.dataSolutions, href: '/data-solutions/' },
     ],

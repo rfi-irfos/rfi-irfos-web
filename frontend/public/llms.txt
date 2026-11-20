@@ -30,6 +30,7 @@ The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Ja
 - [API security testing](https://rfi-irfos.com/api-security-testing/): REST and GraphQL, authentication, authorization and attack surface, every finding verified (German: /de/api-security-testing/).
 - [Cloud security assessment](https://rfi-irfos.com/cloud-security-assessment/): AWS and Azure misconfigurations, vulnerabilities and external attack surface (German: /de/cloud-security-assessment/).
 - [Secure code review](https://rfi-irfos.com/secure-code-review/): source code and shipped-build vulnerability analysis with fixes engineered into the code (German: /de/secure-code-review/).
+- [Vulnerability remediation](https://rfi-irfos.com/vulnerability-remediation/): open findings from scanners, pentests and audits turned into verified fixes down to the code, tracked on the remediation board (German: /de/vulnerability-remediation/).
 
 ## How it works
 

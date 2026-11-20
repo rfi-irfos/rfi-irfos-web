@@ -1369,6 +1369,87 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       ],
     },
   },
+  // Remediation page (Simeon 20.11.): for buyers who already hold findings and lack the hands to fix them; the 43 days are the Verizon DBIR 2026.
+  'vulnerability-remediation': {
+    en: {
+      title: 'Vulnerability Remediation Service · Fix Faster · RFI-IRFOS',
+      description: 'Vulnerability remediation from Graz: we turn scanner, pentest and audit findings into verified fixes down to the code, tracked on your remediation board.',
+      label: 'Vulnerability Remediation',
+      h1: 'Vulnerability Remediation, from Open Finding to Verified Fix',
+      lead: 'Attackers now exploit critical flaws within hours of disclosure, while the median time to fully remediate known exploited vulnerabilities rose from 32 to 43 days according to the Verizon Data Breach Investigations Report 2026. We close that gap: our team takes on your open findings, engineers the fix down to the affected code and retests it until the weakness is gone.',
+      sections: [
+        {
+          h2: 'Which findings we take on',
+          p: ['You bring the backlog, whichever tool or team produced it:'],
+          ul: ['Findings from your own scanners, static analysis and dependency checks.', 'Reports from earlier penetration tests and external audits.', 'Third-party libraries and SDKs with known CVEs.', 'Misconfigurations in cloud environments, APIs and authentication.', 'Findings from our own investigations with The Squad.'],
+        },
+        {
+          h2: 'How a fix comes together',
+          p: ['Our agents reproduce each finding and trace where it sits in your code. Specialists then confirm whether it can be exploited, rate its risk for your business and write the change, ready to apply where possible. Your engineers review it before it ships, and once it is live we retest it.'],
+        },
+        {
+          h2: 'Every step stays traceable',
+          p: ['Each fix runs as a task on the remediation board in your customer portal, moving through Open, Triaged, In Progress, Resolved and Canceled. The history of findings and fixes stays there, ready for your next audit or customer questionnaire.'],
+        },
+      ],
+      evidenceH2: 'Evidence from audited software',
+      evidenceIntro: 'The public ledger lists {apps}+ audited apps and {critical}+ critical findings. These full reports show how we document what we find:',
+      evidence: [
+        { slug: 'sap', label: 'SAP', note: 'A Chinese push SDK in a field-service app, and Firebase keys hardcoded across five apps.' },
+        { slug: 'nike', label: 'Nike', note: 'Development and production push credentials hardcoded in the shipped build.' },
+        { slug: 'strava', label: 'Strava', note: 'A hardcoded key and a security configuration that protects nothing.' },
+        { slug: 'revolut', label: 'Revolut', note: 'The largest third-party SDK in the series and what it sends to a US company.' },
+      ],
+      startH2: 'Start with the Domain Security Test',
+      startText: ['The Domain Security Test examines one domain from the outside: read-only, from a European IP address, with no login and no payloads. A researcher reviews your request and replies within one business day.', 'Plans and prices are on the Access page, the agents behind every review on The Squad page.'],
+      faqH2: 'Questions about vulnerability remediation',
+      faq: [
+        ['Can you fix findings that another vendor reported?', 'Yes. Send us the report or the scanner export, and we verify each finding before we work on it.'],
+        ['Do you need access to our code?', 'Read access to the repository is enough for us to write the fix. Your team decides what gets merged.'],
+        ['How fast is a fix?', 'With the Managed SOC we fix findings within 24 hours, down to the code. In the other plans the pace follows the scope we agree with you.'],
+        ['What does it cost?', 'Engineered remediation is included from the Growth plan.'],
+      ],
+    },
+    de: {
+      title: 'Schwachstellen beheben · Remediation · RFI-IRFOS',
+      description: 'Schwachstellen beheben aus Graz: Wir machen aus Scanner-, Pentest- und Audit-Befunden geprüfte Fixes bis in den Code, verfolgt auf Ihrem Remediation-Board.',
+      label: 'Schwachstellen beheben',
+      h1: 'Schwachstellen beheben, vom offenen Befund zum geprüften Fix',
+      lead: 'Angreifer nutzen kritische Lücken heute schon Stunden nach ihrer Veröffentlichung aus, während die mittlere Zeit bis zur vollständigen Behebung bekannter, bereits ausgenutzter Schwachstellen laut Verizon Data Breach Investigations Report 2026 von 32 auf 43 Tage stieg. Diese Lücke schließen wir: Unser Team übernimmt Ihre offenen Befunde, entwickelt den Fix bis in den betroffenen Code und prüft ihn erneut, bis die Schwäche verschwunden ist.',
+      sections: [
+        {
+          h2: 'Welche Befunde wir übernehmen',
+          p: ['Sie bringen den Rückstand mit, egal welches Werkzeug oder Team ihn erzeugt hat:'],
+          ul: ['Befunde aus Ihren eigenen Scannern, statischer Analyse und Abhängigkeitsprüfungen.', 'Berichte aus früheren Penetrationstests und externen Audits.', 'Drittanbieter-Bibliotheken und SDKs mit bekannten CVEs.', 'Fehlkonfigurationen in Cloud-Umgebungen, APIs und Authentifizierung.', 'Befunde aus unseren eigenen Untersuchungen mit The Squad.'],
+        },
+        {
+          h2: 'Wie ein Fix entsteht',
+          p: ['Unsere Agenten reproduzieren jeden Befund und verfolgen, wo er in Ihrem Code sitzt. Fachleute bestätigen anschließend, ob er sich ausnutzen lässt, bewerten sein Risiko für Ihr Geschäft und schreiben die Änderung, wo möglich direkt anwendbar. Ihre Entwickler prüfen sie vor der Auslieferung, und sobald sie live ist, testen wir sie erneut.'],
+        },
+        {
+          h2: 'Jeder Schritt bleibt nachvollziehbar',
+          p: ['Jeder Fix läuft als Aufgabe auf dem Remediation-Board in Ihrem Kundenportal und durchläuft die Zustände Open, Triaged, In Progress, Resolved und Canceled. Die Geschichte von Befunden und Fixes bleibt dort erhalten, bereit für Ihr nächstes Audit oder den nächsten Kundenfragebogen.'],
+        },
+      ],
+      evidenceH2: 'Belege aus geprüfter Software',
+      evidenceIntro: 'Das öffentliche Verzeichnis führt {apps}+ geprüfte Apps und {critical}+ kritische Befunde. Diese vollständigen Berichte zeigen, wie wir unsere Funde dokumentieren:',
+      evidence: [
+        { slug: 'sap', label: 'SAP', note: 'Ein chinesisches Push-SDK in einer Außendienst-App und hartkodierte Firebase-Schlüssel in fünf Apps.' },
+        { slug: 'nike', label: 'Nike', note: 'Entwicklungs- und Produktiv-Push-Zugangsdaten hartkodiert im ausgelieferten Build.' },
+        { slug: 'strava', label: 'Strava', note: 'Ein hartkodierter Schlüssel und eine Sicherheitskonfiguration, die nichts schützt.' },
+        { slug: 'revolut', label: 'Revolut', note: 'Das größte Drittanbieter-SDK der Serie und was es an ein US-Unternehmen sendet.' },
+      ],
+      startH2: 'Starten Sie mit dem Domain Security Test',
+      startText: ['Der Domain Security Test untersucht eine Domain von außen: ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ein Researcher sieht Ihre Anfrage durch und meldet sich innerhalb eines Werktags.', 'Pläne und Preise stehen auf der Seite Zugang, die Agenten hinter jeder Prüfung auf der Seite The Squad.'],
+      faqH2: 'Fragen zur Behebung von Schwachstellen',
+      faq: [
+        ['Beheben Sie auch Befunde, die ein anderer Anbieter gemeldet hat?', 'Ja. Schicken Sie uns den Bericht oder den Scanner-Export, und wir bestätigen jeden Befund, bevor wir daran arbeiten.'],
+        ['Brauchen Sie Zugriff auf unseren Code?', 'Lesezugriff auf das Repository genügt, damit wir den Fix schreiben. Ihr Team entscheidet, was gemergt wird.'],
+        ['Wie schnell kommt ein Fix?', 'Mit dem Managed SOC beheben wir Befunde binnen 24 Stunden, bis in den Code. In den anderen Plänen richtet sich das Tempo nach dem Umfang, den wir mit Ihnen vereinbaren.'],
+        ['Was kostet es?', 'Die Entwicklung von Fixes ist ab dem Growth-Plan enthalten.'],
+      ],
+    },
+  },
 }
 
 export function isLandingSlug(slug: string): slug is LandingSlug {

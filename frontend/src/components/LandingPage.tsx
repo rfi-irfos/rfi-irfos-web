@@ -11,12 +11,12 @@ import { LANDING, LANDING_SLUGS, landingDoc, localePath, type LandingLocale, typ
 import { InitialReviewFlow } from './sections/InitialReviewFlow'
 import { RelatedTiles } from './RelatedTiles'
 import auditStats from '../content/auditStats.json'
-import { IconDeviceMobile, IconLock, IconCertificate, IconRadar2, IconRobot, IconHeadset, IconListCheck, IconWorldSearch, IconBug, IconApi, IconCloudLock, IconCode } from '@tabler/icons-react'
+import { IconDeviceMobile, IconLock, IconCertificate, IconRadar2, IconRobot, IconHeadset, IconListCheck, IconWorldSearch, IconBug, IconApi, IconCloudLock, IconCode, IconTool } from '@tabler/icons-react'
 
 const ICONS: Record<LandingSlug, typeof IconLock> = {
   'app-security-audit': IconDeviceMobile, 'gdpr-app-audit': IconLock, 'nis2-software-vendors': IconCertificate, 'app-tracker-sdk-check': IconRadar2,
   'ai-app-privacy-audit': IconRobot, 'managed-soc': IconHeadset, 'compliance-automation': IconListCheck, 'domain-security-test': IconWorldSearch,
-  'penetration-testing': IconBug, 'api-security-testing': IconApi, 'cloud-security-assessment': IconCloudLock, 'secure-code-review': IconCode,
+  'penetration-testing': IconBug, 'api-security-testing': IconApi, 'cloud-security-assessment': IconCloudLock, 'secure-code-review': IconCode, 'vulnerability-remediation': IconTool,
 }
 
 const H1: React.CSSProperties = { fontSize: 'var(--fs-h2)', fontWeight: 900, marginBottom: 14, color: '#e8e8f0', lineHeight: 'var(--lh-tight)' }

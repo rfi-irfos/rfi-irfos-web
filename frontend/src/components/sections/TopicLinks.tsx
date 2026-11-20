@@ -5,7 +5,7 @@
 // copy in an overlay and the visitor stays where they were.
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { IconShieldCheck, IconShieldLock, IconCertificate, IconHeadset, IconListCheck, IconWorldSearch, IconX } from '@tabler/icons-react'
+import { IconShieldCheck, IconShieldLock, IconCertificate, IconHeadset, IconListCheck, IconWorldSearch, IconTool, IconX } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
 import { beacon } from './shared'
 import type { LandingSlug } from '../landingSlugs'
@@ -24,6 +24,7 @@ const ICONS: Record<LandingSlug, typeof IconShieldCheck> = {
   'api-security-testing': IconShieldCheck,
   'cloud-security-assessment': IconShieldCheck,
   'secure-code-review': IconShieldCheck,
+  'vulnerability-remediation': IconTool,
 }
 
 const KEYS = {
@@ -32,7 +33,7 @@ const KEYS = {
   'ai-app-privacy-audit': 'aiApp', 'managed-soc': 'managedSoc',
   'compliance-automation': 'compliance', 'domain-security-test': 'domainCheck',
   'penetration-testing': 'pentest', 'api-security-testing': 'apiSecurity',
-  'cloud-security-assessment': 'cloud', 'secure-code-review': 'codeReview',
+  'cloud-security-assessment': 'cloud', 'secure-code-review': 'codeReview', 'vulnerability-remediation': 'remediation',
 } as const
 
 // Simeon 2026-11-10: five pills, not one per landing page. Penetration testing leads (strongest
