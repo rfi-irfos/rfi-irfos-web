@@ -315,6 +315,8 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
   // /?login=open opens the customer portal window (not ?portal=: index.html reads any query starting with p as an encoded path) (link back from the Trust Center landing page, 2026-11-18). The parameter is removed on mount.
   const [socModalOpen, setSocModalOpen] = useState(false)
   const [earlyModalOpen, setEarlyModalOpen] = useState(false)
+  // Hero Compliance button (Simeon 21.11.): the portal window in its compliance view.
+  const [complianceOpen, setComplianceOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('login') === 'open')
   const NAV_LINKS = NAV_HREFS.map(n => ({ key: n.key, label: t.nav.links[n.key], href: n.href }))
   const [view, setView] = useState<PublicView>(() => viewForSection(initialSection))
@@ -1739,7 +1741,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
 
       <main id="main-content" tabIndex={-1} className={leftFirstView.current ? 'rfi-view-stage' : 'rfi-view-stage rfi-view-stage--first'} key={view}>
         {view === 'home' && <>
-          <HeroSection mobile={mobile} theme={theme} onOpenPortal={() => setLoginOpen(true)} />
+          <HeroSection mobile={mobile} theme={theme} onOpenPortal={() => setLoginOpen(true)} onOpenCompliance={() => setComplianceOpen(true)} />
           <IntegrationsSection />
           <AppPrivacySection />
           <CoopPartnersSection mobile={mobile} />
@@ -2168,6 +2170,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
       {socModalOpen && <ManagedSocModal tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} onClose={() => setSocModalOpen(false)} />}
       {earlyModalOpen && <ManagedSocModal tipForm={tipForm} setTipForm={setTipForm} tipFormState={tipFormState} submitTip={submitTip} onClose={() => setEarlyModalOpen(false)} title={t.worldModel.earlyAccess.cta} sub={t.worldModel.earlyAccess.formNote} testId="early-access-modal" />}
       {loginOpen && <LoginPreview t={t} onClose={() => setLoginOpen(false)} onRequestAccess={() => handleCheckout('review_starter')} busy={checkoutLoading === 'review_starter'} />}
+      {complianceOpen && <LoginPreview view="compliance" t={t} onClose={() => setComplianceOpen(false)} onRequestAccess={() => handleCheckout('review_pro')} busy={checkoutLoading === 'review_pro'} />}
     </div>
   )
 }

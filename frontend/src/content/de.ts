@@ -79,6 +79,11 @@ export const DE: Content = {
     trustLine: 'Ihre öffentliche Sicherheitsseite für Kunden und Prüfer, enthalten ab Starter.',
     trustImage: '/login/trust-example-de.webp',
     trustAlt: 'Beispiel eines Trust Centers mit Standards und bestätigten Kontrollen',
+    complianceTitle: 'Automatisierte Compliance',
+    complianceLead: 'Zehn Frameworks von ISO 27001 und SOC 2 bis NIS2, DORA und EU AI Act, live gemessen an Ihren Scans, Anmeldungen, Audit-Trail und Inventar. Jede Kontrolle trägt ihren Nachweis, eine verantwortliche Person und den nächsten Prüftermin, und Ihre Audit-Dokumente liegen im Vault.',
+    complianceAccessNote: 'Pro-Tarif, 799 \u20ac pro Monat. Der Zugangscode kommt direkt nach der Zahlung per E-Mail, und das Portal erkennt, welche Frameworks für Ihr Produkt gelten.',
+    complianceMore: 'So funktioniert die automatisierte Compliance',
+    complianceAlt: 'Compliance-Ansicht des Kundenportals mit Frameworks, automatischen Prüfungen und Kontrollen',
   },
 
   hero: {

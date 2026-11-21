@@ -119,8 +119,13 @@ function ShieldIcon() {
   )
 }
 
-export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content; onClose: () => void; onRequestAccess: () => void; busy: boolean }) {
+// `view` 'compliance' (Simeon 21.11.): the same window for the hero's Compliance button, with the portal's
+// compliance page as the shot, its own copy, the Pro plan and a link on to the compliance landing page.
+export function LoginPreview({ t, onClose, onRequestAccess, busy, view = 'portal' }: { t: Content; onClose: () => void; onRequestAccess: () => void; busy: boolean; view?: 'portal' | 'compliance' }) {
   const c = t.login
+  const comp = view === 'compliance'
+  const shot = comp ? '/login/demo-compliance-2026-11-21.webp' : '/login/demo-dashboard-2026-11-18.webp'
+  const shotAlt = comp ? c.complianceAlt : c.previewAlt
   const { locale, setLocale } = useLocale()
   const closeRef = useRef<HTMLButtonElement>(null)
   const [zoom, setZoom] = useState(false)
@@ -183,8 +188,8 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
             <img src="/logo.webp" alt="" width={63} height={42} style={{ display: 'block', objectFit: 'contain' }} />
             <span style={{ fontSize: 15, fontWeight: 700, letterSpacing: '0.06em' }}>RFI-IRFOS</span>
           </div>
-          <h2 id="login-title" style={{ fontSize: 32, fontWeight: 700, margin: '0 0 10px', lineHeight: 1.15 }}>{c.title}</h2>
-          <p style={{ fontSize: 15, lineHeight: 1.55, color: 'rgba(255,255,255,0.74)', margin: '0 0 30px' }}>{c.lead}</p>
+          <h2 id="login-title" style={{ fontSize: 32, fontWeight: 700, margin: '0 0 10px', lineHeight: 1.15 }}>{comp ? c.complianceTitle : c.title}</h2>
+          <p style={{ fontSize: 15, lineHeight: 1.55, color: 'rgba(255,255,255,0.74)', margin: '0 0 30px' }}>{comp ? c.complianceLead : c.lead}</p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <a href={PORTAL_LOGIN_URL} data-testid="login-sign-in" style={{
@@ -198,7 +203,8 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
             }}>{busy ? c.accessBusy : c.requestAccess}</button>
           </div>
           <div style={{ marginTop: 22, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.12)' }}>
-            <p style={{ fontSize: 13, lineHeight: 1.55, color: 'rgba(255,255,255,0.72)', margin: 0 }}>{c.accessNote} {c.signInNote}</p>
+            <p style={{ fontSize: 13, lineHeight: 1.55, color: 'rgba(255,255,255,0.72)', margin: 0 }}>{comp ? c.complianceAccessNote : c.accessNote} {c.signInNote}</p>
+            {comp && <a href={locale === 'de' ? '/de/compliance-automation/' : '/compliance-automation/'} className="rfi-inline-link" style={{ display: 'inline-block', marginTop: 14, fontSize: 14, fontWeight: 700, color: '#fff' }}>{c.complianceMore} →</a>}
           </div>
         </div>
 
@@ -206,7 +212,7 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
           <div className="rfi-login-frame">
             <div className="rfi-login-tilt">
               <button type="button" className="rfi-login-shot" onClick={() => setZoom(true)} aria-label={`${c.previewTitle}: ${c.previewZoom}`} data-testid="login-preview">
-                <img src="/login/demo-dashboard-2026-11-18.webp" alt={c.previewAlt} width={1920} height={929} />
+                <img src={shot} alt={shotAlt} width={1920} height={929} />
                 <span className="rfi-login-hint"><ExpandIcon />{c.previewZoom}</span>
               </button>
             </div>
@@ -223,7 +229,7 @@ export function LoginPreview({ t, onClose, onRequestAccess, busy }: { t: Content
           <button type="button" className="rfi-login-zoom-close" onClick={() => setZoom(false)} aria-label={c.close}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
           </button>
-          <img src="/login/demo-dashboard-2026-11-18.webp" alt={c.previewAlt} width={1920} height={929} />
+          <img src={shot} alt={shotAlt} width={1920} height={929} />
         </div>
       )}
     </div>

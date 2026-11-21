@@ -2,12 +2,10 @@
 // scrolled to via the bare "#" logo link) - extracted verbatim from PublicSite.tsx.
 import { useState, useEffect, lazy, Suspense, type MouseEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { preload, createPortal } from 'react-dom'
+import { preload } from 'react-dom'
 import { prefersReducedMotion, SKIP_FIRST_PAINT_ANIMATION, RevealWords, CountUp, HeroFlipWord, beacon } from './shared'
 import { RESEARCH_AREAS } from './Research'
-import { TopicModal } from './TopicLinks'
 import { IconHeartRateMonitor, IconLicense } from '@tabler/icons-react'
-import type { LandingDoc } from '../landingPages'
 import { useLocale } from '../../hooks/useLocale'
 import type { Theme } from '../../hooks/useTheme'
 // Imported (not a /public string path) so Vite content-hashes the built filename -
@@ -279,16 +277,15 @@ function HeroBackground({ theme }: { theme: Theme }) {
   )
 }
 
-export function HeroSection({ mobile, theme, onOpenPortal }: { mobile: boolean, theme: Theme, onOpenPortal: () => void }) {
+export function HeroSection({ mobile, theme, onOpenPortal, onOpenCompliance }: { mobile: boolean, theme: Theme, onOpenPortal: () => void, onOpenCompliance: () => void }) {
   const { t, locale } = useLocale()
-  // Second quick button (Simeon 20.11.): opens the same compliance overlay as the topic pill, the page copy loads on first click.
-  const [compliance, setCompliance] = useState<LandingDoc | null>(null)
-  const openCompliance = async (e: MouseEvent) => {
+  // Second quick button: since 21.11. the portal window in its compliance view (LoginPreview view="compliance"),
+  // the same mask as the SOC button. The real href keeps the landing page linked for crawlers and new tabs.
+  const openCompliance = (e: MouseEvent) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey) return
     e.preventDefault()
     beacon('hero_cta:compliance')
-    const m = await import('../landingPages')
-    setCompliance(m.landingDoc('compliance-automation', locale))
+    onOpenCompliance()
   }
   // LCP (Lighthouse mobile 2026-11-01): with the slimmer hero the Graz photo is the
   // largest element, but as a CSS background it was only found after JS ran (4.7 s load
@@ -384,7 +381,6 @@ export function HeroSection({ mobile, theme, onOpenPortal }: { mobile: boolean, 
         <a className="irf-hero-cta" href={`${locale === 'de' ? '/de' : ''}/compliance-automation/`} onClick={openCompliance}><IconLicense size={20} stroke={2} aria-hidden />{t.hero.ctaCompliance}</a>
         <button type="button" className="irf-hero-cta irf-hero-cta--primary" onClick={() => { beacon('hero_cta:soc'); onOpenPortal() }}><IconHeartRateMonitor size={20} stroke={2} aria-hidden />{t.hero.ctaSoc}</button>
       </div>
-      {compliance && createPortal(<TopicModal slug="compliance-automation" doc={compliance} href={`${locale === 'de' ? '/de' : ''}/compliance-automation/`} onClose={() => setCompliance(null)} />, document.body)}
 
       {/* KPI card row removed 2026-10-10 (breadth numbers, hand-typed literals, off-message
           next to the security-review widget below). Ledger figures now live in the
