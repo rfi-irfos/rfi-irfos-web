@@ -81,7 +81,7 @@ export const EN = {
     emailPlaceholder: 'name@company.com',
     passwordLabel: 'Password',
     signIn: 'Sign in to the portal',
-    requestPortalAccess: 'Request access to the portal',
+    requestPortalAccess: 'Access the portal',
     signInNote: 'Already a customer? Use the account from your invitation email.',
     requestAccess: 'Get access',
     accessNote: 'Starter plan, \u20ac99 per month. Your access code arrives by email right after payment, and your setup is done within minutes.',
@@ -424,7 +424,7 @@ export const EN = {
     managedSoc: {
       heading: 'Your outsourced security department',
       text: 'Everything in Business, plus operation.',
-      points: ['Monitoring around the clock, 24/7', 'Incident response within 1 hour', 'Fix within 24 hours, down to the code', 'One dedicated team as your security department', 'Any number of systems, including agencies (MSP) and multi-tenant setups', 'White-label and agreed SLAs'],
+      points: ['Monitoring around the clock, 24/7', 'Incident response within 1 hour', 'Fix within 24 hours, down to the code', 'One dedicated team as your security department', 'MSP and multi-tenant setups', 'White-label and agreed SLAs'],
       price: 'Priced by scope, offered in writing.',
       cta: 'Request Managed SOC',
     },

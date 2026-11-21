@@ -67,7 +67,7 @@ export const DE: Content = {
     emailPlaceholder: 'name@unternehmen.at',
     passwordLabel: 'Passwort',
     signIn: 'Zum Portal anmelden',
-    requestPortalAccess: 'Zugang zum Portal anfragen',
+    requestPortalAccess: 'Zum Portal',
     signInNote: 'Bereits Kunde? Nutzen Sie das Konto aus Ihrer Einladungsmail.',
     requestAccess: 'Zugang erhalten',
     accessNote: 'Starter-Tarif, 99 \u20ac pro Monat. Der Zugangscode kommt direkt nach der Zahlung per E-Mail, und das Setup steht in Minuten.',
@@ -399,7 +399,7 @@ export const DE: Content = {
     managedSoc: {
       heading: 'Ihre ausgelagerte Sicherheitsabteilung',
       text: 'Alles aus Business, dazu der Betrieb.',
-      points: ['Überwachung rund um die Uhr, 24/7', 'Incident Response binnen 1 Stunde', 'Fix binnen 24 Stunden, bis in den Code', 'Ein festes Team als Ihre Sicherheitsabteilung', 'Beliebig viele Systeme, auch für Agenturen (MSP) und mehrere Mandanten', 'White-Label und vereinbarte SLAs'],
+      points: ['Überwachung rund um die Uhr, 24/7', 'Incident Response binnen 1 Stunde', 'Fix binnen 24 Stunden, bis in den Code', 'Ein festes Team als Ihre Sicherheitsabteilung', 'MSP und mehrere Mandanten', 'White-Label und vereinbarte SLAs'],
       price: 'Preis nach Umfang, schriftlich angeboten.',
       cta: 'Managed SOC anfragen',
     },
