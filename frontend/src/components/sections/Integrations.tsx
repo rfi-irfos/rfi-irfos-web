@@ -2,6 +2,7 @@
 // is a tool the customer portal really connects (app/api/v1/integrations) and has a freely usable logo;
 // the others stay out until their owners' brand files are cleared. Marks are recoloured to the text colour; brands whose
 // guidelines forbid recolouring (AWS, Azure, Google Cloud, SAP) appear as plain text names (Simeon 18.11.).
+import { useEffect, useRef } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { BRANDS } from './integrationBrandPaths'
 
@@ -65,6 +66,13 @@ const CSS = `
 @keyframes rfi-int-left { to { transform: translateX(-33.3333%); } }
 /* Installierte App (PWA): schneller als im Browser (Simeon 18.11.). */
 @media (display-mode: standalone), (display-mode: fullscreen) { .rfi-int-track { animation-duration: 120s; } }
+/* PWA mit Tab-Leiste (Simeon 21.11.): Das Band füllt den ersten Bildschirm bis ganz unten, die Logos sitzen
+   mittig zwischen Hero und Tab-Leiste, hinter der halbdurchsichtigen Leiste liegt nur Hintergrund. Die Höhen
+   setzt useFillToTabBar als --int-fill und --int-bar. */
+.rfi-int[data-fill] { min-height: var(--int-fill); padding-bottom: var(--int-bar); margin-bottom: 0; background: var(--bg);
+  display: flex; flex-direction: column; justify-content: center; box-sizing: border-box; }
+.rfi-int[data-fill] .rfi-int-line { margin-top: 16px; }
+.rfi-int[data-fill] { padding-top: 0; }
 @media (prefers-reduced-motion: reduce) {
   .rfi-int-wrap { -webkit-mask-image: none; mask-image: none; }
   .rfi-int-track { animation: none; width: auto; flex-wrap: wrap; justify-content: center; row-gap: 22px; }
@@ -72,11 +80,58 @@ const CSS = `
 }
 `
 
+// Nur in der installierten App (standalone/fullscreen) und nur, wenn die Tab-Leiste da ist: misst den Abstand
+// vom Bandanfang bis zum unteren Bildschirmrand und den Platz, den die Leiste belegt, bei jeder Größenänderung
+// von Fenster oder Hero neu. Im Browser bleibt das Band unverändert.
+function useFillToTabBar() {
+  const ref = useRef<HTMLElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    const pwa = window.matchMedia('(display-mode: standalone), (display-mode: fullscreen)')
+    if (!el) return
+    let raf = 0
+    const measure = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        const bar = document.querySelector<HTMLElement>('.rfi-tabbar')
+        if (!pwa.matches || !bar || bar.getClientRects().length === 0) {
+          el.removeAttribute('data-fill'); return
+        }
+        const top = el.getBoundingClientRect().top + window.scrollY
+        const vh = window.innerHeight
+        const barSpace = vh - bar.getBoundingClientRect().top
+        if (top >= vh - barSpace) { el.removeAttribute('data-fill'); return }
+        // html { zoom: 0.9 } (index.css): Messwerte sind Bildschirmpixel, CSS-Längen gelten vor dem Zoom.
+        const z = parseFloat(getComputedStyle(document.documentElement).zoom) || 1
+        el.style.setProperty('--int-fill', `${Math.ceil((vh - top) / z)}px`)
+        el.style.setProperty('--int-bar', `${Math.round(barSpace / z)}px`)
+        el.setAttribute('data-fill', '')
+      })
+    }
+    measure()
+    // Oberhalb ändert sich die Höhe noch nach dem ersten Bild (Schriften, Hero-Einflug): Seite beobachten,
+    // dazu nach load und einmal verzögert. Gleiche Werte setzen ändert nichts, daher keine Schleife.
+    const ro = new ResizeObserver(measure)
+    ro.observe(document.body)
+    if (el.previousElementSibling) ro.observe(el.previousElementSibling)
+    const late = window.setTimeout(measure, 1500)
+    window.addEventListener('load', measure)
+    window.addEventListener('resize', measure)
+    pwa.addEventListener('change', measure)
+    return () => {
+      cancelAnimationFrame(raf); clearTimeout(late); ro.disconnect()
+      window.removeEventListener('load', measure); window.removeEventListener('resize', measure); pwa.removeEventListener('change', measure)
+    }
+  }, [])
+  return ref
+}
+
 export function IntegrationsSection() {
   const { locale } = useLocale()
   const line = locale === 'de' ? 'Integriert mit' : 'Integrates with'
+  const ref = useFillToTabBar()
   return (
-    <section className="rfi-int" aria-label={line}>
+    <section ref={ref} className="rfi-int" aria-label={line}>
       <style>{CSS}</style>
       <div className="rfi-int-wrap">
         <div className="rfi-int-track">
