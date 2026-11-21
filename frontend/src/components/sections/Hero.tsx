@@ -37,6 +37,10 @@ import heroDingirMapDc from '../../assets/hero-dingir-map-dc.webp'
 import heroDingirMapGrazDossier from '../../assets/hero-dingir-map-graz-dossier.webp'
 import heroDingirGlobeAntarctica from '../../assets/hero-dingir-globe-antarctica.webp'
 import heroDingirGlobeAfricaThreats from '../../assets/hero-dingir-globe-africa-threats.webp'
+import heroDingirMapSuezRoutes from '../../assets/hero-dingir-map-suez-routes.webp'
+import heroDingirMapRioDeLaPlata from '../../assets/hero-dingir-map-rio-de-la-plata.webp'
+import heroDingirSingaporePortSat from '../../assets/hero-dingir-singapore-port-sat.webp'
+import heroDingirHimalayaSat from '../../assets/hero-dingir-himalaya-sat.webp'
 // The embedding-graph ("neural network") shots - DINGIR's UMAP/cosine-
 // similarity view of albert's own token embeddings, 3D-rendered inside a
 // wireframe cube. Added 2026-08-18 as a third slideshow category alongside
@@ -108,8 +112,29 @@ import heroDingir3dGuangzhou from '../../assets/hero-dingir-3d-guangzhou.webp'
 // possible for 2 items in an 8-slot cycle) - so no round ever pairs two
 // globe shots, and no two globes sit closer than one other shot apart even
 // across the 8/10-round wrap.
-const HERO_SOFTWARE_SHOTS = [heroDingir7, heroDingir2, heroDingirGlobeAntarctica, heroDingirMapDc, heroDingirGlobeAfricaThreats, heroDingir3, heroDingirMapGrazDossier]
-const HERO_SATELLITE_SHOTS = [heroDingir4, heroDingir12, heroDingir6, heroDingir11, heroDingir13, heroDingir10, heroDingirVesselsNl]
+// Re-balanced 2026-11-21 (live bug report again: "zweimal hintereinander globe").
+// Removing the buoy shot on 20.11. shrank two stacks from 8 to 7, which moved
+// every globe off its reserved slot (software opener -> hero-dingir-7, and
+// globe-africa-threats -> hero-dingir-13 ended up back to back) and made four
+// shots run twice. Four new non-globe shots bring software and satellite to 9
+// each, the same as the neural stack: no repeats, one image per round.
+// Globes now sit in rounds 1/4/7 (software) and 2/5 (satellite), so at least
+// three other slides separate any two. assertGlobesApart() below fails the
+// build if a later swap breaks that again.
+const HERO_SOFTWARE_SHOTS = [heroDingir2, heroDingir7, heroDingirMapDc, heroDingirMapSuezRoutes, heroDingirGlobeAntarctica, heroDingir3, heroDingirMapGrazDossier, heroDingirGlobeAfricaThreats, heroDingirMapRioDeLaPlata]
+const HERO_SATELLITE_SHOTS = [heroDingir4, heroDingir6, heroDingir12, heroDingir11, heroDingirSingaporePortSat, heroDingir13, heroDingir10, heroDingirVesselsNl, heroDingirHimalayaSat]
+// Every shot that shows the earth as a sphere. Keep this list current when a
+// screenshot is added or replaced.
+const HERO_GLOBE_SHOTS = new Set<string>([heroSoftware, heroDingir7, heroDingirGlobeAntarctica, heroDingirGlobeAfricaThreats, heroDingir12, heroDingir13])
+function assertGlobesApart(name: string, slides: string[], minGap = 2) {
+  const at = slides.flatMap((src, i) => (HERO_GLOBE_SHOTS.has(src) ? [i] : []))
+  at.forEach((i, k) => {
+    const next = at[(k + 1) % at.length]
+    const gap = (next - i + slides.length) % slides.length
+    if (at.length > 1 && gap <= minGap) throw new Error(`${name}: globe slides ${i + 1} and ${next + 1} are only ${gap} apart`)
+  })
+  if (new Set(slides).size !== slides.length) throw new Error(`${name}: a slide runs twice`)
+}
 // Buoy removed (Simeon 20.11.): its lower half is a grey table panel that sits right under the hero text.
 const HERO_NEURAL_SHOTS = [heroDingirEmbedStorm, heroDingirEmbedLanguage, heroDingirEmbedWater, heroDingirEmbedImpact, heroDingirEmbedHope, heroDingirEmbedCoast, heroDingirEmbedDecided, heroDingirEmbedIncident, heroDingirEmbedDecade]
 // Exported for WorldModel.tsx's own hero panel (live feedback 2026-09-01:
@@ -136,6 +161,8 @@ const GRAZ_PHOTOS = new Set([heroGrazSatellite, heroGrazSatelliteMobile])
 const SMALL_SCREEN = typeof window !== 'undefined' && window.innerWidth < 768
 const HERO_CURRENT_UI = [heroDingirEuropeSat, heroDingir3dLondon, heroDingirTaiwanStrait, heroDingir3dGuangzhou, heroDingirMarkets]
 const HOME_HERO_IMAGES = [SMALL_SCREEN ? heroGrazSatelliteMobile : heroGrazSatellite, heroDingirEmbedDecidedGraph, ...HERO_CURRENT_UI, ...HERO_IMAGES.filter(src => src !== heroDingirEmbedDecided)]
+assertGlobesApart('HERO_IMAGES', HERO_IMAGES)
+assertGlobesApart('HOME_HERO_IMAGES', HOME_HERO_IMAGES)
 
 const LazyHeroCanvas = lazy(() => import('../HeroCanvas'))
 
