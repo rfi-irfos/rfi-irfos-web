@@ -16,6 +16,9 @@ pub struct CheckoutRequest {
     /// "de" sends the buyer back to /de/access/ (2026-10-31, Lighthouse round 21).
     #[serde(default)]
     pub locale: Option<String>,
+    /// Google Ads click id, kept in browser memory only (see adclick.rs).
+    #[serde(default)]
+    pub gclid: Option<String>,
 }
 
 #[derive(Serialize)]
@@ -185,6 +188,10 @@ pub async fn create_checkout(
         ("tax_id_collection[required]".to_string(),                   "if_supported".to_string()),
     ];
 
+    // The click id rides on the session so the webhook can report the paid conversion.
+    if let Some(id) = crate::adclick::clean(body.gclid.as_deref()) {
+        params.push(("metadata[gclid]".to_string(), id));
+    }
     if let Some(text) = tier_features(&body.tier, de) {
         params.push(("line_items[0][price_data][product_data][description]".to_string(), text));
     }
@@ -269,6 +276,7 @@ pub async fn webhook(
             let email   = session["customer_details"]["email"].as_str().unwrap_or("");
             let tier    = session["metadata"]["tier"].as_str().unwrap_or("");
             tracing::info!("Payment completed: {} {} from {} (tier: {})", amount, currency, email, tier);
+            crate::adclick::record(session["metadata"]["gclid"].as_str(), crate::adclick::PURCHASE, Some(amount), Some(currency)).await;
             // Close the Lighthouse funnel loop: beam offer_paid:<tier> to the same
             // first-party tracker the public site uses, so click→attempt→paid all
             // live in one table (web_visits) without touching PII or cookies.

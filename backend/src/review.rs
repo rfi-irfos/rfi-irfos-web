@@ -88,6 +88,9 @@ pub struct SubmitReviewRequest {
     /// "de" picks the German confirmation mail.
     #[serde(default)]
     pub locale: Option<String>,
+    /// Google Ads click id, kept in browser memory only (see adclick.rs).
+    #[serde(default)]
+    pub gclid: Option<String>,
 }
 
 pub async fn create_tables(db: &sqlx::SqlitePool) {
@@ -166,6 +169,7 @@ pub async fn submit_review(
     }
 
     crate::checkcount::bump(&state.db).await;
+    crate::adclick::record(body.gclid.as_deref(), crate::adclick::LEAD_QUICK_CHECK, None, None).await;
     notify_due(&domain, &email);
     notify_new_request(&state.brevo_api_key, &domain, &email).await;
 

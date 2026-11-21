@@ -1,3 +1,4 @@
+mod adclick;
 mod auth;
 mod contact;
 mod content;

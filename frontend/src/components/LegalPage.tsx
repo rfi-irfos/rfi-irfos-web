@@ -85,8 +85,8 @@ const META: Record<string, { title: string; description: string; titleDe?: strin
     titleDe: 'Impressum · RFI-IRFOS', descriptionDe: 'Impressum von RFI-IRFOS, einem eingetragenen, nicht gewinnorientierten Forschungsinstitut in Graz: Registerdaten, Kontakt und Gewerbeinformationen.',
   },
   datenschutz: {
-    title: 'Privacy Policy · RFI-IRFOS', description: 'How RFI-IRFOS handles data under GDPR: what we collect, our processors, and your rights. No cookies, no tracking, no ad network.',
-    titleDe: 'Datenschutzerklärung · RFI-IRFOS', descriptionDe: 'Wie RFI-IRFOS mit Daten gemäß DSGVO umgeht: was wir erheben, unsere Auftragsverarbeiter und Ihre Rechte. Keine Cookies, kein Tracking, kein Werbenetzwerk.',
+    title: 'Privacy Policy · RFI-IRFOS', description: 'How RFI-IRFOS handles data under GDPR: what we collect, our processors, and your rights. No cookies, no profiles.',
+    titleDe: 'Datenschutzerklärung · RFI-IRFOS', descriptionDe: 'Wie RFI-IRFOS mit Daten gemäß DSGVO umgeht: was wir erheben, unsere Auftragsverarbeiter und Ihre Rechte. Keine Cookies, keine Profile.',
   },
   agb: {
     title: 'Terms and Conditions · RFI-IRFOS', description: 'General Terms and Conditions for RFI-IRFOS security audits, software development, and research services. Business customers (B2B) only.',
@@ -623,7 +623,7 @@ function Datenschutz() {
 function DatenschutzEN() {
   return <>
     <h1 style={H1}>Privacy Policy</h1>
-    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Pursuant to the GDPR (EU) 2016/679 &middot; Last updated: October 2026</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Pursuant to the GDPR (EU) 2016/679 &middot; Last updated: November 2026</p>
 
     <p style={P}>
       This page has every section a privacy policy is supposed to have. We just refuse to pad any of them with the vague language that usually fills them, because we spend our working hours pointing out exactly that vague language in other people's apps. So: full sections, plain claims, and where a claim is checkable, we tell you how to check it.
@@ -643,10 +643,11 @@ function DatenschutzEN() {
       <strong style={{ color: '#e8e8f0' }}>Quick Check (domain check):</strong> the domain and the work email you enter, plus the time of the request — stored in our own database on our server in Graz so we can run the check and send you the result. Your IP address is used only in memory to limit repeated submissions and is not stored. On submission we receive an internal push alert (on our own push server in Graz) and an email copy (via Brevo), and you receive one confirmation email, sent through Brevo. The email and the domain are also entered as a request in our customer management (Lighthouse, on our server in Graz), so that one person on our team owns the check and the follow-up.<br />
       <strong style={{ color: '#e8e8f0' }}>Website check:</strong> when you test a domain in the check on the homepage, our server in Graz queries that domain from its own address: DNS records (resolved through Quad9), the TLS certificate, the HTTP security headers and the public mail records. The result goes to your browser and is not stored. Your IP address is held in memory for a short time only, to limit repeated requests. No active attack test takes place.<br />
       <strong style={{ color: '#e8e8f0' }}>Payment data:</strong> for purchases made through the website, payment data (card details, email, name) is processed by <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> (354 Oyster Point Blvd, South San Francisco, CA 94080, USA). RFI-IRFOS never receives or stores your card data. Stripe's privacy policy: <a href="https://stripe.com/privacy" target="_blank" rel="noopener" style={A} className="rfi-inline-link">stripe.com/privacy</a>.<br />
+      <strong style={{ color: '#e8e8f0' }}>Google ad click:</strong> if you arrive through one of our search ads on Google, Google adds a click id (<code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>gclid</code>) to the address. The page keeps it only in your browser's working memory and passes it on in the address of the next page you open here, with no cookie, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>localStorage</code> or <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>sessionStorage</code>. If you then send the contact form or the Quick Check, or buy through Stripe, we store that click id with the name of the action (contact request, Quick Check, purchase), the time and, for a purchase, the amount, kept apart from your name and email. We upload these lines to our Google Ads account to see which ads lead to requests. Google receives neither your name nor your email address. Without an ad click no entry is created.<br />
       <strong style={{ color: '#e8e8f0' }}>Visit statistics:</strong> one first-party tracking pixel on this domain, evaluated in our own analytics system (Lighthouse, on our server in Graz), that logs a page view and a referrer, on every page including this one. On this legal/security page family specifically, we also log, in aggregate only, whether a visit scrolled all the way to the footer at the bottom of the page, the same in-memory, no-cookie mechanism as the section counters described in "Cookies" below, applied here to answer one question: are these pages actually being read to the end. On the homepage specifically, we also log, once per visit and in aggregate only, whether your browser's developer tools appear to be open (a passive window-size check, no timing tricks) — this exists purely because we left a message in the console for anyone who looks, and we're curious how often anyone actually does. No cookie, no device fingerprint, no cross-site identifier. See "Cookies" below for the unglamorous truth about what that pixel actually is.
     </p>
     <p style={P}>
-      <strong style={{ color: '#e8e8f0' }}>What we do not collect,</strong> for the avoidance of doubt: no location data of ordinary visitors (the only exception is the security log described above), no device fingerprinting, no advertising ID, no biometric data, no cross-site profile, nothing sold or shared with a data broker, nothing handed to an ad network, because there is no ad network on the other end of anything on this site.
+      <strong style={{ color: '#e8e8f0' }}>What we do not collect,</strong> for the avoidance of doubt: no location data of ordinary visitors (the only exception is the security log described above), no device fingerprinting, no advertising ID, no biometric data, no cross-site profile, nothing sold or shared with a data broker, and the only thing an ad network ever receives is the Google ad click id described above.
     </p>
 
     <h2 style={H2}>Security Log (Honeypot)</h2>
@@ -661,7 +662,7 @@ function DatenschutzEN() {
     <h2 style={H2}>Legal Basis</h2>
     <p style={P}>
       Performance of a contract (Art. 6(1)(b) GDPR): payment processing, contact inquiries.<br />
-      Legitimate interest (Art. 6(1)(f) GDPR): server logs for security and error analysis, the security log with IP address, location and automatic block described above (protection of our systems against attacks, Recital 49 GDPR), and the single anonymized page-view pixel described above.
+      Legitimate interest (Art. 6(1)(f) GDPR): server logs for security and error analysis, the security log with IP address, location and automatic block described above (protection of our systems against attacks, Recital 49 GDPR), the single anonymized page-view pixel described above, and the upload of the Google ad click id described above to measure which of our ads work. Object by email and we delete the entry.
     </p>
 
     <h2 style={H2}>Processors</h2>
@@ -669,7 +670,8 @@ function DatenschutzEN() {
       <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> — payment processing. Data Processing Agreement (DPA) concluded pursuant to Art. 28 GDPR. Data transferred to the USA on the basis of Standard Contractual Clauses (Art. 46(2)(c) GDPR).<br />
       <strong style={{ color: '#e8e8f0' }}>Cloudflare, Inc.</strong> — secure connection (Cloudflare Tunnel) between visitors and our server in Graz; the traffic passes through Cloudflare's network. Data processing on the basis of the EU-US Data Privacy Framework and Standard Contractual Clauses.<br />
       <strong style={{ color: '#e8e8f0' }}>Quad9 Foundation (Zürich, Switzerland)</strong> — public DNS resolver that answers the lookups of the website check; it receives the domain name you enter, together with the address of our server.<br />
-      <strong style={{ color: '#e8e8f0' }}>Brevo (Sendinblue SAS, Paris, France)</strong> — sends the confirmation email after a Quick Check request and the internal copy of every contact and Quick Check request to our inbox. Processing within the EU.
+      <strong style={{ color: '#e8e8f0' }}>Brevo (Sendinblue SAS, Paris, France)</strong> — sends the confirmation email after a Quick Check request and the internal copy of every contact and Quick Check request to our inbox. Processing within the EU.<br />
+      <strong style={{ color: '#e8e8f0' }}>Google Ireland Limited (Gordon House, Barrow Street, Dublin 4, Ireland)</strong> receives the uploaded ad click ids for ad measurement. Google acts as a separate controller under the Google Ads Controller-Controller Data Protection Terms; any transfer to Google LLC in the USA relies on the EU-US Data Privacy Framework.
     </p>
 
     <h2 style={H2}>International Transfers</h2>
@@ -706,7 +708,7 @@ function DatenschutzEN() {
     </p>
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>"Targeting / advertising cookies, used to build a profile of your interests."</strong><br />
-      We run no ads, have no ad account, and have nothing to target you with even if we wanted to. There is no third party on the other side of this site who would pay for that profile.
+      We have none. We run search ads on Google, and this site loads no Google code and no Google cookies for them. A visit that arrives through an ad is recognised only by the click id in the address, as described under "Google ad click" above, and we build no profile of your interests from it.
     </p>
     <p style={P}>
       We could have shipped a cookie banner with a satisfying "Accept All" button anyway, because everyone expects one. We didn't, because a consent banner implies a decision is being made on your behalf, and there isn't one here to make. If that ever changes, this section changes with it, publicly, in the same commit history as everything else on this site.
@@ -717,7 +719,7 @@ function DatenschutzEN() {
 
     <h2 style={H2}>Retention</h2>
     <p style={P}>
-      Contact inquiries are deleted once communication concludes, at the latest after 7 years per Austrian statutory retention rules. Payment receipts are retained for 7 years pursuant to § 132 BAO (Federal Fiscal Code). Server logs and pixel data are retained only as long as needed for security and traffic analysis, then rotated out.
+      Contact inquiries are deleted once communication concludes, at the latest after 7 years per Austrian statutory retention rules. Payment receipts are retained for 7 years pursuant to § 132 BAO (Federal Fiscal Code). Server logs and pixel data are retained only as long as needed for security and traffic analysis, then rotated out. Google ad click entries are deleted automatically after 90 days.
     </p>
 
     <h2 style={H2}>Children's Privacy</h2>
@@ -742,7 +744,7 @@ function DatenschutzEN() {
 function DatenschutzDE() {
   return <>
     <h1 style={H1}>Datenschutzerklärung</h1>
-    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Gemäß DSGVO (EU) 2016/679 &middot; Letzte Aktualisierung: Oktober 2026</p>
+    <p style={{ ...P, fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>Gemäß DSGVO (EU) 2016/679 &middot; Letzte Aktualisierung: November 2026</p>
 
     <p style={P}>
       Diese Seite hat jeden Abschnitt, den eine Datenschutzerklärung haben soll. Wir weigern uns nur, sie mit der vagen Formulierung aufzublähen, die sie normalerweise füllt, weil wir unsere Arbeitszeit damit verbringen, genau diese vage Formulierung in fremden Apps aufzuzeigen. Also: vollständige Abschnitte, klare Aussagen, und wo eine Aussage nachprüfbar ist, sagen wir Ihnen, wie.
@@ -762,10 +764,11 @@ function DatenschutzDE() {
       <strong style={{ color: '#e8e8f0' }}>Quick Check (Domain-Check):</strong> die eingegebene Domain und die geschäftliche E-Mail-Adresse sowie der Zeitpunkt der Anfrage — gespeichert in unserer eigenen Datenbank auf unserem Server in Graz, damit wir den Check durchführen und Ihnen das Ergebnis schicken können. Ihre IP-Adresse wird nur im Arbeitsspeicher genutzt, um wiederholte Absendungen zu begrenzen, und nicht gespeichert. Beim Absenden erhalten wir einen internen Push-Hinweis (auf unserem eigenen Push-Server in Graz) und eine E-Mail-Kopie (über Brevo), und Sie erhalten eine Bestätigungsmail, versendet über Brevo. E-Mail-Adresse und Domain tragen wir zusätzlich als Anfrage in unsere Kundenverwaltung ein (Lighthouse, auf unserem Server in Graz), damit eine Person in unserem Team den Check und die Rückmeldung übernimmt.<br />
       <strong style={{ color: '#e8e8f0' }}>Website-Check:</strong> Wenn Sie auf der Startseite eine Domain prüfen, fragt unser Server in Graz diese Domain von seiner eigenen Adresse aus ab: DNS-Einträge (aufgelöst über Quad9), TLS-Zertifikat, HTTP-Sicherheits-Header und öffentliche Mail-Einträge. Das Ergebnis geht an Ihren Browser und wird nicht gespeichert. Ihre IP-Adresse liegt nur kurz im Arbeitsspeicher, um wiederholte Anfragen zu begrenzen. Ein aktiver Angriffstest findet nicht statt.<br />
       <strong style={{ color: '#e8e8f0' }}>Zahlungsdaten:</strong> Für Käufe über die Website werden Zahlungsdaten (Kartendetails, E-Mail, Name) von <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> verarbeitet (354 Oyster Point Blvd, South San Francisco, CA 94080, USA). RFI-IRFOS erhält oder speichert Ihre Kartendaten nie. Datenschutzerklärung von Stripe: <a href="https://stripe.com/privacy" target="_blank" rel="noopener" style={A} className="rfi-inline-link">stripe.com/privacy</a>.<br />
+      <strong style={{ color: '#e8e8f0' }}>Google-Anzeigenklick:</strong> Kommen Sie über eine unserer Suchanzeigen bei Google, hängt Google eine Klick-Kennung (<code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>gclid</code>) an die Adresse. Die Seite hält sie nur im Arbeitsspeicher Ihres Browsers und gibt sie in der Adresse der nächsten Unterseite weiter, ohne Cookie, <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>localStorage</code> oder <code style={{ background: '#151520', padding: '1px 5px', borderRadius: 3, fontSize: 'var(--fs-small)' }}>sessionStorage</code>. Senden Sie danach das Kontaktformular oder den Quick Check ab oder kaufen Sie über Stripe, speichern wir diese Kennung zusammen mit der Art der Handlung (Kontaktanfrage, Quick Check, Kauf), dem Zeitpunkt und beim Kauf dem Betrag, getrennt von Name und E-Mail. Diese Zeilen laden wir in unser Google-Ads-Konto hoch, um zu sehen, welche Anzeigen zu Anfragen führen. Ihren Namen und Ihre E-Mail-Adresse erhält Google dabei nicht. Ohne Anzeigenklick entsteht kein Eintrag.<br />
       <strong style={{ color: '#e8e8f0' }}>Besuchsstatistik:</strong> ein Tracking-Pixel auf dieser Domain, ausgewertet in unserem eigenen Analysesystem (Lighthouse, auf unserem Server in Graz), der einen Seitenaufruf und einen Referrer protokolliert, auf jeder Seite einschließlich dieser. Speziell auf dieser Familie von Rechts-/Sicherheitsseiten protokollieren wir zusätzlich, nur aggregiert, ob ein Besuch bis zur Fußzeile am Ende der Seite gescrollt hat — derselbe speicherinterne, cookielose Mechanismus wie die im Abschnitt "Cookies" unten beschriebenen Abschnittszähler, hier angewendet, um eine Frage zu beantworten: Werden diese Seiten tatsächlich bis zum Ende gelesen? Speziell auf der Startseite protokollieren wir außerdem, einmal pro Besuch und nur aggregiert, ob die Entwicklertools Ihres Browsers offenbar geöffnet sind (eine passive Fenstergrößen-Prüfung, keine Timing-Tricks) — das existiert einzig, weil wir in der Konsole eine Nachricht für alle hinterlassen haben, die dort nachsehen, und uns interessiert, wie oft das tatsächlich jemand tut. Kein Cookie, kein Geräte-Fingerprint, kein websiteübergreifender Identifikator. Die unglamouröse Wahrheit darüber, was dieser Pixel tatsächlich ist, steht unter "Cookies" weiter unten.
     </p>
     <p style={P}>
-      <strong style={{ color: '#e8e8f0' }}>Was wir nicht erheben,</strong> zur Klarstellung: keine Standortdaten gewöhnlicher Besucher (einzige Ausnahme ist das oben beschriebene Sicherheitsprotokoll), kein Geräte-Fingerprinting, keine Werbe-ID, keine biometrischen Daten, kein websiteübergreifendes Profil, nichts wird an einen Datenhändler verkauft oder weitergegeben, nichts geht an ein Werbenetzwerk, weil es auf der anderen Seite dieser Website kein Werbenetzwerk gibt.
+      <strong style={{ color: '#e8e8f0' }}>Was wir nicht erheben,</strong> zur Klarstellung: keine Standortdaten gewöhnlicher Besucher (einzige Ausnahme ist das oben beschriebene Sicherheitsprotokoll), kein Geräte-Fingerprinting, keine Werbe-ID, keine biometrischen Daten, kein websiteübergreifendes Profil, nichts wird an einen Datenhändler verkauft oder weitergegeben, und an ein Werbenetzwerk geht einzig die oben beschriebene Klick-Kennung einer Google-Anzeige.
     </p>
 
     <h2 style={H2}>Sicherheitsprotokoll (Honeypot)</h2>
@@ -780,7 +783,7 @@ function DatenschutzDE() {
     <h2 style={H2}>Rechtsgrundlage</h2>
     <p style={P}>
       Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO): Zahlungsabwicklung, Kontaktanfragen.<br />
-      Berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO): Serverprotokolle zur Sicherheits- und Fehleranalyse, das oben beschriebene Sicherheitsprotokoll mit IP-Adresse, Standort und automatischer Sperre (Schutz unserer Systeme vor Angriffen, Erwägungsgrund 49 DSGVO) sowie der oben beschriebene einzelne, anonymisierte Seitenaufruf-Pixel.
+      Berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO): Serverprotokolle zur Sicherheits- und Fehleranalyse, das oben beschriebene Sicherheitsprotokoll mit IP-Adresse, Standort und automatischer Sperre (Schutz unserer Systeme vor Angriffen, Erwägungsgrund 49 DSGVO) der oben beschriebene einzelne, anonymisierte Seitenaufruf-Pixel sowie das Hochladen der oben beschriebenen Klick-Kennung an Google, um den Erfolg unserer Anzeigen zu messen. Widersprechen Sie per E-Mail, löschen wir den Eintrag.
     </p>
 
     <h2 style={H2}>Auftragsverarbeiter</h2>
@@ -788,7 +791,8 @@ function DatenschutzDE() {
       <strong style={{ color: '#e8e8f0' }}>Stripe, Inc.</strong> — Zahlungsabwicklung. Auftragsverarbeitungsvertrag (DPA) gemäß Art. 28 DSGVO abgeschlossen. Datenübermittlung in die USA auf Grundlage von Standardvertragsklauseln (Art. 46 Abs. 2 lit. c DSGVO).<br />
       <strong style={{ color: '#e8e8f0' }}>Cloudflare, Inc.</strong> — sichere Verbindung (Cloudflare Tunnel) zwischen Besuchern und unserem Server in Graz; der Datenverkehr läuft über das Netz von Cloudflare. Verarbeitung auf Grundlage des EU-US Data Privacy Framework und von Standardvertragsklauseln.<br />
       <strong style={{ color: '#e8e8f0' }}>Quad9 Foundation (Zürich, Schweiz)</strong> — öffentlicher DNS-Auflöser, der die Abfragen des Website-Checks beantwortet; er erhält den eingegebenen Domainnamen zusammen mit der Adresse unseres Servers.<br />
-      <strong style={{ color: '#e8e8f0' }}>Brevo (Sendinblue SAS, Paris, Frankreich)</strong> — versendet die Bestätigungsmail nach einer Quick-Check-Anfrage und die interne Kopie jeder Kontakt- und Quick-Check-Anfrage in unser Postfach. Verarbeitung innerhalb der EU.
+      <strong style={{ color: '#e8e8f0' }}>Brevo (Sendinblue SAS, Paris, Frankreich)</strong> — versendet die Bestätigungsmail nach einer Quick-Check-Anfrage und die interne Kopie jeder Kontakt- und Quick-Check-Anfrage in unser Postfach. Verarbeitung innerhalb der EU.<br />
+      <strong style={{ color: '#e8e8f0' }}>Google Ireland Limited (Gordon House, Barrow Street, Dublin 4, Irland)</strong> erhält die hochgeladenen Klick-Kennungen zur Anzeigenmessung. Google handelt dabei als eigener Verantwortlicher nach den Google Ads Controller-Controller Data Protection Terms; eine Übermittlung an Google LLC in den USA stützt sich auf das EU-US Data Privacy Framework.
     </p>
 
     <h2 style={H2}>Internationale Datenübermittlung</h2>
@@ -825,7 +829,7 @@ function DatenschutzDE() {
     </p>
     <p style={P}>
       <strong style={{ color: '#e8e8f0' }}>„Targeting-/Werbe-Cookies, zum Erstellen eines Profils Ihrer Interessen."</strong><br />
-      Wir schalten keine Werbung, haben kein Werbekonto und hätten nichts, womit wir Sie gezielt ansprechen könnten, selbst wenn wir wollten. Es gibt keinen Dritten auf der anderen Seite dieser Website, der für ein solches Profil bezahlen würde.
+      Wir haben keine. Wir schalten Suchanzeigen bei Google, und diese Seite lädt dafür weder Code noch Cookies von Google. Einen Besuch über eine Anzeige erkennen wir allein an der Klick-Kennung in der Adresse, wie oben unter „Google-Anzeigenklick“ beschrieben, und ein Profil Ihrer Interessen entsteht daraus bei uns nicht.
     </p>
     <p style={P}>
       Wir hätten trotzdem einen Cookie-Banner mit einem befriedigenden "Alle akzeptieren"-Knopf einbauen können, weil ihn jeder erwartet. Haben wir nicht, weil ein Einwilligungsbanner suggeriert, dass in Ihrem Namen eine Entscheidung getroffen wird, und hier gibt es keine zu treffen. Sollte sich das je ändern, ändert sich dieser Abschnitt mit — öffentlich, in derselben Commit-Historie wie alles andere auf dieser Website.
@@ -836,7 +840,7 @@ function DatenschutzDE() {
 
     <h2 style={H2}>Speicherdauer</h2>
     <p style={P}>
-      Kontaktanfragen werden nach Abschluss der Kommunikation gelöscht, spätestens nach 7 Jahren gemäß österreichischen gesetzlichen Aufbewahrungsvorschriften. Zahlungsbelege werden gemäß § 132 BAO (Bundesabgabenordnung) 7 Jahre aufbewahrt. Serverprotokolle und Pixel-Daten werden nur so lange aufbewahrt, wie es für Sicherheits- und Traffic-Analyse nötig ist, und danach rotiert.
+      Kontaktanfragen werden nach Abschluss der Kommunikation gelöscht, spätestens nach 7 Jahren gemäß österreichischen gesetzlichen Aufbewahrungsvorschriften. Zahlungsbelege werden gemäß § 132 BAO (Bundesabgabenordnung) 7 Jahre aufbewahrt. Serverprotokolle und Pixel-Daten werden nur so lange aufbewahrt, wie es für Sicherheits- und Traffic-Analyse nötig ist, und danach rotiert. Einträge zu Google-Anzeigenklicks werden nach 90 Tagen automatisch gelöscht.
     </p>
 
     <h2 style={H2}>Datenschutz für Minderjährige</h2>

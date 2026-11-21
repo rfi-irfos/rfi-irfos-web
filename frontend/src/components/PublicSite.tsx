@@ -37,6 +37,7 @@ import { MobileTabBar } from './MobileTabBar'
 import { InstallPrompt } from './InstallPrompt'
 import { FailToast } from './FailToast'
 import { upsertJsonLd, breadcrumbJsonLd, reportBreadcrumbJsonLd, reportArticleJsonLd, squadServiceJsonLd, accessOfferCatalogJsonLd } from '../lib/structuredData'
+import { adClickId } from '../lib/adClick'
 
 // Footer's overflow repo/crate directory (2026-08-15) is rendered as literal
 // grid-column chunks, not CSS column-count, so it lines up as flat siblings
@@ -887,7 +888,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
       const res = await fetch(`${apiBase}/api/stripe/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier, locale }),
+        body: JSON.stringify({ tier, locale, gclid: adClickId() }),
       })
       if (!res.ok) throw new Error(`checkout ${res.status}`)
       const { url } = await res.json()
@@ -1217,6 +1218,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
           // running this exact JS - anything posting straight to /api/contact skips it
           // entirely. Sending the honeypot value through lets the backend enforce it too.
           botcheck: tipForm.botcheck,
+          gclid: adClickId(),
           message: [
             tipForm.topic ? `Topic: ${tipForm.topic}` : null,
             tipForm.target ? `Target: ${tipForm.target}` : null,

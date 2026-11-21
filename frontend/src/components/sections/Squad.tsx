@@ -18,6 +18,7 @@ import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
 import { Reveal, useMobile, beacon, OUTPUT_TAG_HUES, FilmPanel, linkPhrase } from './shared'
 import { SQUAD_AGENTS, agentByKey, type AgentKey } from '../../content/squadAgents'
+import { adClickId } from '../../lib/adClick'
 // Stable URL (Lighthouse R88): the watch page /squad/film/ and the VideoObject need a
 // contentUrl that survives rebuilds, so the film lives in public/media/, not hashed /assets/.
 // ?v= busts browser caches that hold a mixed old/new range of this file (Format error, 17.11.2026): bump it whenever the film is re-encoded.
@@ -473,6 +474,7 @@ function SquadRequestForm({
           email: form.email,
           phone: null,
           botcheck: form.botcheck,
+          gclid: adClickId(),
           message,
         }),
       })

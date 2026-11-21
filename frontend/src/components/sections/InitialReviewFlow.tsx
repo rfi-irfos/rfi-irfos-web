@@ -3,6 +3,7 @@ import { useLocale } from '../../hooks/useLocale'
 import { beacon } from './shared'
 import { FailToast } from '../FailToast'
 import { DomainSafetyPanel, useSafetyCopy } from './DomainSafetyCheck'
+import { adClickId } from '../../lib/adClick'
 
 type FormState = 'idle' | 'sending' | 'ok' | 'err' | 'invalid' | 'limited' | 'mismatch'
 
@@ -59,7 +60,7 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
       const res = await fetch('/api/initial-review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ domain, email, consent, botcheck, locale }),
+        body: JSON.stringify({ domain, email, consent, botcheck, locale, gclid: adClickId() }),
       })
       if (res.status === 400) { setState('invalid'); beacon('free_check_error:400:' + variant); return }
       // Rate limit: the visitor sees the toast with our mail address.

@@ -35,6 +35,9 @@ pub struct ContactRequest {
     /// browser - a script posting directly to this endpoint skips it entirely, which is
     /// the gap this closes.
     pub botcheck: Option<String>,
+    /// Google Ads click id, kept in browser memory only (see adclick.rs).
+    #[serde(default)]
+    pub gclid: Option<String>,
 }
 
 #[derive(Serialize)]
@@ -78,6 +81,7 @@ pub async fn submit_contact(
         message: body.message.trim().to_string(),
         received_at: chrono::Utc::now().to_rfc3339(),
     };
+    let ad_click = body.gclid.clone();
 
     let line = match serde_json::to_string(&entry) {
         Ok(s) => format!("{s}\n"),
@@ -116,6 +120,8 @@ pub async fn submit_contact(
             return StatusCode::INTERNAL_SERVER_ERROR.into_response();
         }
     }
+    // Only after the lead is durably saved does it count as an ad conversion.
+    crate::adclick::record(ad_click.as_deref(), crate::adclick::LEAD_CONTACT, None, None).await;
 
     // ntfy ping on every submission, unconditionally - not just on CRM failure
     // (notify_crm_failure below). Live bug report 2026-10-24: a self-sent test
