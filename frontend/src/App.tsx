@@ -86,7 +86,7 @@ function getResearchDocSlug() {
 
 function getEvidencePathReportSlug() {
   const seg = appPathname().split('/').filter(Boolean)
-  if (seg.length === 2 && seg[0] === 'evidence' && /^[a-z0-9][a-z0-9.-]*$/.test(seg[1])) return seg[1]
+  if (seg.length === 2 && seg[0] === 'evidence' && /^[a-z0-9][a-z0-9._-]*$/.test(seg[1])) return seg[1]
   return null
 }
 
