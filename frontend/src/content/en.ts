@@ -76,7 +76,7 @@ export const EN = {
   login: {
     navLabel: 'Customer portal',
     title: 'Customer portal',
-    lead: 'Your SOC dashboard, findings and reports in one place, from compliance to fixes engineered down to the code, plus a public Trust Center that shows your customers where you stand.',
+    lead: 'The customer portal brings your SOC dashboard, findings and reports into one place. Every finding moves from triage to a fix engineered down to the code, and your remediation board keeps each step traceable. Incidents, compliance checks and the document Vault sit right beside it, so your team works from a single screen.',
     emailLabel: 'Email',
     emailPlaceholder: 'name@company.com',
     passwordLabel: 'Password',
@@ -96,8 +96,8 @@ export const EN = {
     trustAlt: 'Example Trust Center with frameworks and confirmed controls',
     // Compliance view of the same window (Simeon 21.11.), opened by the hero's Compliance button. Automated checks start with Pro.
     complianceTitle: 'Automated Compliance',
-    complianceLead: 'Ten frameworks from ISO 27001 and SOC 2 to NIS2, DORA and the EU AI Act, measured live from your scans, sign-ins, audit trail and inventory. Every control carries its evidence, an owner and the next review date, and your audit documents sit in the Vault.',
-    complianceAccessNote: 'Pro plan, \u20ac799 per month. Your access code arrives by email right after payment, and the portal works out which frameworks apply to your product.',
+    complianceLead: 'Automated compliance checks ten frameworks from ISO 27001 and SOC 2 to NIS2, DORA and the EU AI Act against live data from your scans, sign-ins, audit trail and inventory. Each control lists its evidence, owner and next review, so you walk into an audit with everything already in place. The portal works out which frameworks apply to your product, and your certificates and audit documents stay in the Vault.',
+    complianceAccessNote: 'Pro plan, \u20ac799 per month. Your access code arrives by email right after payment, and your setup is done within minutes.',
     complianceMore: 'How automated compliance works',
     complianceAlt: 'Compliance view of the customer portal with frameworks, automated checks and controls',
   },
