@@ -63,6 +63,11 @@ const CSS = `
   .rfi-int-logo svg.rfi-int-wide { height: 11px; }
   .rfi-int-logo span { font-size: 15px; }
 }
+/* Desktop-Browser (Simeon 21.11. abends): Logos größer und mittig in den 80px, die der Hero unten frei lässt (Hero.tsx). */
+@media (min-width: 761px) {
+  .rfi-int { padding-top: 22px; }
+  .rfi-int-wrap { zoom: 1.2; }
+}
 @keyframes rfi-int-left { to { transform: translateX(-33.3333%); } }
 /* Installierte App (PWA): schneller als im Browser (Simeon 18.11.). */
 @media (display-mode: standalone), (display-mode: fullscreen) { .rfi-int-track { animation-duration: 120s; } }
@@ -71,8 +76,11 @@ const CSS = `
    setzt useFillToTabBar als --int-fill und --int-bar. */
 .rfi-int[data-fill] { min-height: var(--int-fill); padding-bottom: var(--int-bar); margin-bottom: 0; background: var(--bg);
   display: flex; flex-direction: column; justify-content: center; box-sizing: border-box; }
-.rfi-int[data-fill] .rfi-int-line { margin-top: 16px; }
 .rfi-int[data-fill] { padding-top: 0; }
+/* Simeon 21.11. abends: in der App ohne die Zeile „Integriert mit“ (der Name steht im aria-label der Section),
+   dafür größere Logos direkt über der Tab-Leiste. zoom statt transform, damit Schrift und SVG scharf neu gesetzt werden. */
+.rfi-int[data-fill] .rfi-int-line { display: none; }
+.rfi-int[data-fill] .rfi-int-wrap { zoom: 1.3; }
 @media (prefers-reduced-motion: reduce) {
   .rfi-int-wrap { -webkit-mask-image: none; mask-image: none; }
   .rfi-int-track { animation: none; width: auto; flex-wrap: wrap; justify-content: center; row-gap: 22px; }

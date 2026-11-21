@@ -197,7 +197,7 @@ function BillingToggle({ billing, onChange }: { billing: 'monthly' | 'annual'; o
 function NeedSomethingElseRow({ domains, onSelectTier }: { domains: PricingDomain[]; onSelectTier: (t: string) => void }) {
   const { t } = useLocale()
   return (
-    <div style={{ borderBottom: '1px solid var(--border)', marginTop: 24, paddingBottom: 20, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '8px 18px' }}>
+    <div style={{ marginTop: 24, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '8px 18px' }}>
       <span style={{ fontSize: 'var(--fs-small)', fontWeight: 700, color: 'var(--text)' }}>{t.pricing.needSomethingElse}</span>
       {domains.map((d, i) => {
         const Icon = DOMAIN_ICONS[d.name]
@@ -346,7 +346,7 @@ export function PricingSection({
                   <h2 style={{ fontSize: 'clamp(1.5rem, 2.4vw, 2rem)', color: 'var(--text)', margin: '0 0 12px', lineHeight: 1.15 }}>{t.pricing.managedSoc.heading}</h2>
                   <p style={{ fontSize: 'var(--fs-body)', color: 'var(--text)', margin: '0 0 20px', lineHeight: 'var(--lh-body)', maxWidth: 560 }}>{t.pricing.managedSoc.text}</p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-                    <button type="button" className="fx-cta-teal" onClick={() => onSelectTier('Managed SOC')} style={{ color: '#070711', border: 'none', padding: '12px 22px', borderRadius: 10, fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                    <button type="button" className="fx-cta-glass" onClick={() => onSelectTier('Managed SOC')} style={{ padding: '12px 22px', borderRadius: 10, fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
                       {t.pricing.managedSoc.cta}
                     </button>
                     {/* Simeon 18.11.: a visitor who looks for the customer portal gets the window with sign-in and access here as well. */}
@@ -374,13 +374,14 @@ export function PricingSection({
             <a href={t.pricing.termsNote.href} style={{ color: 'var(--accent-text)' }}>{t.pricing.termsNote.link}</a>
           </p>
 
-          <p style={{ margin: '10px 0 0', fontSize: 'var(--fs-small)', color: 'var(--text)', lineHeight: 1.6, textAlign: 'center' }}>
+          <NeedSomethingElseRow domains={t.pricing.domains} onSelectTier={onSelectTier} />
+
+          {/* Simeon 21.11.: FAQ-Hinweis unter „Need something else?“, ohne Trennlinie darunter. */}
+          <p style={{ margin: '14px 0 0', fontSize: 'var(--fs-small)', color: 'var(--text)', lineHeight: 1.6, textAlign: 'center' }}>
             <a href={locale === 'de' ? '/de/faq/' : '/faq/'} style={{ color: 'var(--accent-text)' }}>
               {locale === 'de' ? 'Fragen zu Tarifen, Portal, Trust Center und Einrichtung in den FAQ' : 'Questions about plans, the portal, the Trust Center and setup in the FAQ'}
             </a>
           </p>
-
-          <NeedSomethingElseRow domains={t.pricing.domains} onSelectTier={onSelectTier} />
         </div>
       </div>
 

@@ -1007,6 +1007,11 @@ a[href^="mailto:"]:not(footer a) { color: var(--text) !important; }
 .fx-tile--static:hover { transform: none; }
 .fx-cta-teal { background: linear-gradient(180deg, #5cffe0, #00f5c4 50%, #00cfa6); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -1px 0 rgba(0,0,0,.15), 0 8px 22px rgba(0,245,196,.26); transition: transform .15s, box-shadow .2s; }
 .fx-cta-teal:not(:disabled):hover { transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.65), 0 10px 28px rgba(0,245,196,.38); }
+/* Glas-Variante wie der SOC-Button im Hero (Simeon 21.11.): türkiser Rand, weiches Leuchten, Text in Textfarbe (hell und dunkel lesbar). */
+.fx-cta-glass { color: var(--text); background: rgba(5,7,14,.35); border: 1px solid #00f5c4; backdrop-filter: blur(10px);
+  box-shadow: 0 0 22px rgba(0,245,196,.35), inset 0 0 12px rgba(0,245,196,.12); transition: background .25s, transform .25s, box-shadow .25s; }
+[data-theme="light"] .fx-cta-glass { background: rgba(255,255,255,.5); border-color: #00b894; }
+.fx-cta-glass:hover { background: rgba(0,245,196,.12); transform: translateY(-1px); box-shadow: 0 0 30px rgba(0,245,196,.5), inset 0 0 14px rgba(0,245,196,.18); }
 .fx-dir-row { transition: background .2s; }
 .fx-dir-row:hover { background: rgba(255,255,255,.035); }
 .fx-dir-row:first-child { border-radius: 16px 16px 0 0; }
