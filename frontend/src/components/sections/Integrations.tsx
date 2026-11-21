@@ -76,12 +76,15 @@ const CSS = `
 /* PWA mit Tab-Leiste (Simeon 21.11.): Das Band füllt den ersten Bildschirm bis ganz unten, die Logos sitzen
    mittig zwischen Hero und Tab-Leiste, hinter der halbdurchsichtigen Leiste liegt nur Hintergrund. Die Höhen
    setzt useFillToTabBar als --int-fill und --int-bar. */
-.rfi-int[data-fill] { min-height: var(--int-fill); padding-bottom: var(--int-bar); margin-bottom: 0; background: var(--bg);
-  display: flex; flex-direction: column; justify-content: center; box-sizing: border-box; }
-.rfi-int[data-fill] { padding-top: 0; }
-/* Simeon 21.11. abends: in der App ohne die Zeile „Integriert mit“ (der Name steht im aria-label der Section),
-   dafür größere Logos direkt über der Tab-Leiste. zoom statt transform, damit Schrift und SVG scharf neu gesetzt werden. */
-.rfi-int[data-fill] .rfi-int-line { display: none; }
+.rfi-int[data-fill] { min-height: var(--int-fill); padding: 0; margin-bottom: 0; background: var(--bg);
+  display: flex; flex-direction: column; box-sizing: border-box; }
+/* Simeon 21.11. abends: Logos größer direkt über der Tab-Leiste (zoom statt transform, damit Schrift und SVG scharf
+   neu gesetzt werden). Die Zeile „Integriert mit“ füllt genau den Platz hinter der Leiste: beim Start unsichtbar,
+   damit nichts durch die halbdurchsichtige Leiste scheint, beim Scrollen blendet sie ein und es bleibt kein leerer Block. */
+.rfi-int[data-fill] .rfi-int-wrap { flex: 1; display: flex; align-items: center; }
+.rfi-int[data-fill] .rfi-int-line { height: var(--int-bar); margin: 0 24px; display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .35s ease; }
+.rfi-int[data-fill][data-scrolled] .rfi-int-line { opacity: .8; }
 .rfi-int[data-fill] .rfi-int-wrap { zoom: 1.3; }
 .rfi-int[data-fill] .rfi-int-track { animation-duration: 156s; } /* 120s x 1,3, gleiches Tempo wie vorher */
 @media (prefers-reduced-motion: reduce) {
@@ -120,6 +123,10 @@ function useFillToTabBar() {
       })
     }
     measure()
+    // Zeile „Integriert mit“ erst nach dem ersten Scrollen zeigen (siehe CSS data-scrolled).
+    const onScroll = () => el.toggleAttribute('data-scrolled', window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
     // Oberhalb ändert sich die Höhe noch nach dem ersten Bild (Schriften, Hero-Einflug): Seite beobachten,
     // dazu nach load und einmal verzögert. Gleiche Werte setzen ändert nichts, daher keine Schleife.
     const ro = new ResizeObserver(measure)
@@ -131,7 +138,7 @@ function useFillToTabBar() {
     pwa.addEventListener('change', measure)
     return () => {
       cancelAnimationFrame(raf); clearTimeout(late); ro.disconnect()
-      window.removeEventListener('load', measure); window.removeEventListener('resize', measure); pwa.removeEventListener('change', measure)
+      window.removeEventListener('scroll', onScroll); window.removeEventListener('load', measure); window.removeEventListener('resize', measure); pwa.removeEventListener('change', measure)
     }
   }, [])
   return ref
