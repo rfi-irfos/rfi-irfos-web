@@ -67,6 +67,8 @@ const CSS = `
 @media (min-width: 761px) {
   .rfi-int { padding-top: 22px; }
   .rfi-int-wrap { zoom: 1.2; }
+  /* zoom macht die Spur 1,2-mal breiter: Dauer mitwachsen lassen, damit das Tempo bleibt (220s x 1,2). */
+  .rfi-int-track { animation-duration: 264s; }
 }
 @keyframes rfi-int-left { to { transform: translateX(-33.3333%); } }
 /* Installierte App (PWA): schneller als im Browser (Simeon 18.11.). */
@@ -81,6 +83,7 @@ const CSS = `
    dafür größere Logos direkt über der Tab-Leiste. zoom statt transform, damit Schrift und SVG scharf neu gesetzt werden. */
 .rfi-int[data-fill] .rfi-int-line { display: none; }
 .rfi-int[data-fill] .rfi-int-wrap { zoom: 1.3; }
+.rfi-int[data-fill] .rfi-int-track { animation-duration: 156s; } /* 120s x 1,3, gleiches Tempo wie vorher */
 @media (prefers-reduced-motion: reduce) {
   .rfi-int-wrap { -webkit-mask-image: none; mask-image: none; }
   .rfi-int-track { animation: none; width: auto; flex-wrap: wrap; justify-content: center; row-gap: 22px; }
