@@ -108,7 +108,7 @@ export const EN = {
     subtitlePrefix: 'Interdisciplinary',
     subtitleSuffix: ' Research Facility for Open Sciences',
     // Short line under the headline (Simeon 11.11.): what we do, in two sentences. Moved here from the "What we do best" intro.
-    sub: 'We give startups, SMEs and growing enterprises access to frontier cybersecurity capabilities by deploying purpose-built agents across thousands of potential attack paths, with experienced engineers writing actionable solutions down to the affected code.',
+    sub: 'We give startups, SMEs and growing enterprises access to frontier cybersecurity capabilities by deploying our purpose-built swarm of agents across thousands of potential attack paths, with experienced engineers writing actionable solutions down to the affected code.',
     // Two quick buttons under the description (Simeon 20.11.): SOC opens the customer portal mask, compliance leads to the plans.
     ctaSoc: '24/7 Managed SOC',
     ctaCompliance: 'Automated Compliance',
@@ -1020,7 +1020,7 @@ export const EN = {
     heading: 'The Squad',
     subheading: 'They research, monitor and act without waiting for a prompt.',
     heroHeading: 'Specialized agents for every kind of work',
-    intro: 'The Squad is a set of specialized agents, each taking on a whole area of work on its own: market intelligence, funding research, evidence verification, delivery checks, visibility and security. Run a single agent against one problem, or combine them into a pipeline for the whole question. The entire pipeline runs on our own server in Graz.',
+    intro: 'The Squad is a set of specialized agents, each taking on a whole area of work on its own: market intelligence, funding research, evidence verification, delivery checks, visibility and security. Run a single agent against one problem, or combine them into a pipeline for the whole question. Everything runs on our own server in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'See which agent fits your problem →',

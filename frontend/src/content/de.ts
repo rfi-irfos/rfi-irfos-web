@@ -91,7 +91,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    sub: 'Wir machen Frontier-Cybersicherheit für Startups, SMEs und wachsende Unternehmen zugänglich, indem unsere eigens entwickelten Agenten Tausende Angriffswege versuchen und erfahrene Ingenieure daraus gezielte Lösungen bis in den betroffenen Code schreiben.',
+    sub: 'Wir machen Frontier-Cybersicherheit für Startups, SMEs und wachsende Unternehmen zugänglich, indem unser eigens entwickelter Agentenschwarm Tausende Angriffswege versucht und erfahrene Ingenieure daraus gezielte Lösungen bis in den betroffenen Code schreiben.',
     ctaSoc: '24/7 Managed SOC',
     ctaCompliance: 'Automatisierte Compliance',
     stats: {
@@ -986,7 +986,7 @@ export const DE: Content = {
     heading: 'The Squad',
     subheading: 'Sie recherchieren, überwachen und handeln, ohne auf eine Eingabe zu warten.',
     heroHeading: 'Spezialisierte Agenten für jede Art von Arbeit',
-    intro: 'The Squad besteht aus spezialisierten Agenten, jeder auf eine klare Verantwortung zugeschnitten: Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit und Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Die komplette Pipeline läuft auf unserem eigenen Server in Graz.',
+    intro: 'The Squad besteht aus spezialisierten Agenten, jeder auf eine klare Verantwortung zugeschnitten: Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit und Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Alles läuft auf unserem eigenen Server in Graz.',
     worldModelLinkLabel: 'DINGIR →',
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Finden Sie den passenden Agenten →',

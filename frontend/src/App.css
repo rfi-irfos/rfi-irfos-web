@@ -306,9 +306,9 @@ button { cursor: pointer; font-family: inherit; }
    buttons is gone, so the buttons close the text block and it centres exactly
    against the film (.wm-hero align-items: center). */
 .wm-hero-ctas { display: flex; gap: 12px; margin-bottom: 0; flex-wrap: wrap; }
-.wm-btn-primary { padding: 12px 24px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent); color: var(--on-primary, #07110e); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: var(--fs-body); font-weight: 700; cursor: pointer; box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 18%, transparent); transition: transform .2s, box-shadow .2s; }
-.wm-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 34px color-mix(in srgb, var(--accent) 30%, transparent); }
-.wm-btn-secondary { padding: 12px 24px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: var(--fs-body); font-weight: 700; cursor: pointer; transition: border-color .2s, background .2s; }
+.wm-btn-primary { padding: 12px 24px; border: 1px solid var(--accent); border-radius: 12px; background: rgba(5,7,14,.45); backdrop-filter: blur(10px); color: #fff; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: var(--fs-body); font-weight: 700; cursor: pointer; box-shadow: 0 0 22px color-mix(in srgb, var(--accent) 35%, transparent), inset 0 0 12px color-mix(in srgb, var(--accent) 12%, transparent); transition: transform .2s, box-shadow .2s, background .2s; }
+.wm-btn-primary:hover { transform: translateY(-2px); background: color-mix(in srgb, var(--accent) 12%, transparent); box-shadow: 0 0 30px color-mix(in srgb, var(--accent) 50%, transparent), inset 0 0 14px color-mix(in srgb, var(--accent) 18%, transparent); }
+.wm-btn-secondary { padding: 12px 24px; border: 1px solid rgba(255,255,255,.35); border-radius: 12px; background: rgba(5,7,14,.45); backdrop-filter: blur(10px); color: var(--text); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: var(--fs-body); font-weight: 700; cursor: pointer; transition: border-color .2s, background .2s; }
 .wm-btn-secondary:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); }
 .wm-live-status { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; color: var(--text2); }
 .wm-live-dot { width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; animation: wm-pulse 2s infinite; }
