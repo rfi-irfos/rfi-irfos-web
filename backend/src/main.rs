@@ -61,6 +61,11 @@ fn dir_slash_target(path: &str, query: Option<&str>, is_dir_with_index: impl Fn(
 fn listing_target(path: &str) -> Option<&'static str> {
     match path {
         "/reports" | "/reports/" => Some("/evidence/"),
+        // Graz-Sichtbarkeit 21.11.2026: /nis2/ war ein 404, kurze Merk-URLs zeigen auf die Leistungsseiten.
+        "/nis2" | "/nis2/" => Some("/nis2-consulting/"),
+        "/de/nis2" | "/de/nis2/" => Some("/de/nis2-consulting/"),
+        "/pentest" | "/pentest/" => Some("/penetration-testing/"),
+        "/de/pentest" | "/de/pentest/" => Some("/de/penetration-testing/"),
         _ => None,
     }
 }
@@ -404,6 +409,10 @@ mod tests {
         assert_eq!(listing_target("/reports"), Some("/evidence/"));
         assert_eq!(listing_target("/reports/gemini-2026-report.pdf"), None);
         assert_eq!(listing_target("/evidence/"), None);
+        assert_eq!(listing_target("/nis2/"), Some("/nis2-consulting/"));
+        assert_eq!(listing_target("/de/nis2"), Some("/de/nis2-consulting/"));
+        assert_eq!(listing_target("/pentest/"), Some("/penetration-testing/"));
+        assert_eq!(listing_target("/nis2-consulting/"), None);
     }
 
     #[test]

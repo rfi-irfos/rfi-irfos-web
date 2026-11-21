@@ -31,6 +31,8 @@ The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Ja
 - [Cloud security assessment](https://rfi-irfos.com/cloud-security-assessment/): AWS and Azure misconfigurations, vulnerabilities and external attack surface (German: /de/cloud-security-assessment/).
 - [Secure code review](https://rfi-irfos.com/secure-code-review/): source code and shipped-build vulnerability analysis with fixes engineered into the code (German: /de/secure-code-review/).
 - [Vulnerability remediation](https://rfi-irfos.com/vulnerability-remediation/): open findings from scanners, pentests and audits turned into verified fixes down to the code, tracked on the remediation board (German: /de/vulnerability-remediation/).
+- [IT security Graz](https://rfi-irfos.com/it-security-graz/): penetration testing, NIS2 consulting and a managed SOC for companies in Graz and Styria, plans from €99 a month (German: /de/it-security-graz/).
+- [NIS2 consulting](https://rfi-irfos.com/nis2-consulting/): whether the NISG 2026 applies, registration within three months of 1 October 2026, and evidence for the required measures (German: /de/nis2-consulting/).
 
 ## How it works
 

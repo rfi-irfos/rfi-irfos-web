@@ -714,7 +714,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       title: 'Managed SOC from Graz, Austria · RFI-IRFOS',
       description: 'Outsourced security operations center: 24/7 monitoring, incident response within one hour, fixes within 24 hours down to the code. From RFI-IRFOS in Graz.',
       label: 'Outsourced SOC',
-      h1: 'Managed SOC: your outsourced security department',
+      h1: 'Managed SOC from Graz: your outsourced security department',
       lead: 'Startups and companies without in-house security capacity hand us their security operations center. We monitor around the clock, respond to incidents within one hour and fix the finding ourselves within 24 hours, down to the code. One dedicated team works as your security department.',
       sections: [
         {
@@ -771,7 +771,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       title: 'Managed SOC aus Graz: ausgelagertes SOC · RFI-IRFOS',
       description: 'Ausgelagertes Security Operations Center: Überwachung rund um die Uhr, Incident Response binnen einer Stunde, Fix in 24 Stunden bis in den Code. Aus Graz.',
       label: 'Ausgelagertes SOC',
-      h1: 'Managed SOC: Ihre ausgelagerte Sicherheitsabteilung',
+      h1: 'Managed SOC aus Graz: Ihre ausgelagerte Sicherheitsabteilung',
       lead: 'Startups und Unternehmen ohne eigene Sicherheitskapazität übergeben uns ihr Security Operations Center. Wir überwachen rund um die Uhr, reagieren im Ernstfall binnen einer Stunde und beheben den Fund innerhalb von 24 Stunden selbst, bis in den Code. Ein festes Team arbeitet als Ihre Sicherheitsabteilung.',
       sections: [
         {
@@ -1054,7 +1054,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       title: 'Penetration Testing Graz: Apps, APIs, Cloud · RFI-IRFOS',
       description: 'Penetration testing from Graz for web apps, mobile apps, APIs and cloud. Agents test in parallel, specialists verify and fix down to the code.',
       label: 'Penetration Testing',
-      h1: 'Penetration Testing for web apps, mobile apps, APIs and cloud',
+      h1: 'Penetration testing in Graz for web apps, mobile apps, APIs and cloud',
       lead: 'We test your application like an attacker would. Agents we built run thousands of tests in parallel, our specialists verify every finding, trace the attack path and engineer the fix down to the code. Built for SaaS companies, startups and software vendors.',
       sections: [
         {
@@ -1093,7 +1093,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       title: 'Penetrationstest Graz: Apps, APIs und Cloud · RFI-IRFOS',
       description: 'Penetrationstest aus Graz für Web, mobile Apps, APIs und Cloud. Agenten testen parallel, Fachleute prüfen und beheben bis in den Code.',
       label: 'Penetrationstest',
-      h1: 'Penetrationstest für Webanwendungen, mobile Apps, APIs und Cloud',
+      h1: 'Penetrationstest in Graz für Webanwendungen, mobile Apps, APIs und Cloud',
       lead: 'Wir testen Ihre Anwendung so, wie ein Angreifer es täte. Agenten, die wir selbst gebaut haben, führen Tausende Tests parallel aus. Unsere Fachleute prüfen jeden Befund, verfolgen den Angriffspfad und entwickeln den Fix bis in den Code. Gebaut für SaaS-Unternehmen, Startups und Softwareanbieter.',
       sections: [
         {
@@ -1447,6 +1447,192 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         ['Brauchen Sie Zugriff auf unseren Code?', 'Lesezugriff auf das Repository genügt, damit wir den Fix schreiben. Ihr Team entscheidet, was gemergt wird.'],
         ['Wie schnell kommt ein Fix?', 'Mit dem Managed SOC beheben wir Befunde binnen 24 Stunden, bis in den Code. In den anderen Plänen richtet sich das Tempo nach dem Umfang, den wir mit Ihnen vereinbaren.'],
         ['Was kostet es?', 'Die Entwicklung von Fixes ist ab dem Growth-Plan enthalten.'],
+      ],
+    },
+  },
+  // Graz-Sichtbarkeit (Simeon 21.11.2026): eigene Seiten für „IT-Sicherheit Graz“ und
+  // „NIS2-Beratung Steiermark“, Ziel der Google-Ads-Gruppen „Graz DE“. Ausnahme von der
+  // Preisregel oben: beide Seiten nennen den Starter-Preis (99 €), weil die Anzeigen ihn versprechen.
+  // Quelle Preis: de.ts/en.ts pricing; NISG-Daten: BGBl. I Nr. 94/2025 (in Kraft 1.10.2026, § 29 Registrierung binnen drei Monaten).
+  'it-security-graz': {
+    en: {
+      title: 'IT Security Graz: Pentest, NIS2, Managed SOC · RFI-IRFOS',
+      description: 'IT security from Graz for companies in Styria: penetration testing, NIS2 implementation and a managed SOC around the clock. Plans start at €99 a month.',
+      label: 'IT Security Graz',
+      h1: 'IT security from Graz for companies in Styria',
+      lead: 'Companies in Graz and across Styria bring us the security work they lack the time or the people for in house. It ranges from a single penetration test and preparation for Austria\'s NISG 2026 to a managed SOC that watches your systems day and night.',
+      sections: [
+        {
+          h2: 'Services for companies in the region',
+          p: ['Each service has its own page with scope, process and questions. An overview:'],
+          ul: [
+            'Penetration testing for web apps, mobile apps, APIs and cloud, every finding backed by a proof of concept.',
+            'NIS2 consulting: clarify whether the law applies, prepare the registration and evidence the Art. 21 measures on your systems.',
+            'Managed SOC with monitoring around the clock, response within one hour and a fix within 24 hours.',
+            'Compliance automation for NIS2, ISO 27001 and SOC 2.',
+            'Domain Security Test as a first outside look at DNS, TLS and email.',
+          ],
+        },
+        {
+          h2: 'Plans from €99 a month',
+          p: ['The Starter plan costs €99 a month. It covers one focused vulnerability hunt per month for a web app, mobile app or API, a working proof of concept for every finding and a retest of fixed findings, along with the customer portal including its compliance workspace and your public Trust Center. Growth, Pro and Business cover larger scopes.'],
+        },
+      ],
+      evidenceH2: 'Evidence from audited software',
+      evidenceIntro: 'The public ledger lists {apps}+ audited apps and {critical}+ critical findings. These full reports show how we document what we find:',
+      evidence: [
+        { slug: 'sap', label: 'SAP', note: 'A Chinese push SDK in a field-service app, and Firebase keys hardcoded across five apps.' },
+        { slug: 'nike', label: 'Nike', note: 'Development and production push credentials hardcoded in the shipped build.' },
+        { slug: 'strava', label: 'Strava', note: 'A hardcoded key and a security configuration that protects nothing.' },
+        { slug: 'revolut', label: 'Revolut', note: 'The largest third-party SDK in the series and what it sends to a US company.' },
+      ],
+      startH2: 'Start with the Domain Security Test',
+      startText: ['The Domain Security Test examines one domain from the outside: read-only, from a European IP address, with no login and no payloads. A researcher reviews your request and replies within one business day.'],
+      faqH2: 'Questions about IT security in Graz',
+      faq: [
+        ['Do you only work for companies in Graz?', 'Graz is our home, and we serve companies across Austria and the German-speaking region. Reviews run remotely, so distance makes no difference to the process.'],
+        ['We have no security staff of our own. Can you still help?', 'That is exactly what the offer is built for. We take over testing and remediation, and with the managed SOC a dedicated team acts as your security department.'],
+        ['What does it cost to start?', 'The Starter plan costs €99 a month. Larger penetration tests and the managed SOC are priced by scope and offered in writing.'],
+        ['Does NIS2 apply to us?', 'That depends on sector, size and your role in a supply chain. The NIS2 consulting page explains how we work that out with you.'],
+      ],
+    },
+    de: {
+      title: 'IT-Sicherheit Graz: Pentest, NIS2 und SOC · RFI-IRFOS',
+      description: 'IT-Sicherheit aus Graz für Unternehmen in der Steiermark: Penetrationstest, NIS2-Umsetzung und Managed SOC rund um die Uhr. Pläne ab 99 € im Monat.',
+      label: 'IT-Sicherheit Graz',
+      h1: 'IT-Sicherheit aus Graz für Unternehmen in der Steiermark',
+      lead: 'Unternehmen in Graz und der ganzen Steiermark holen sich bei uns die Sicherheitsarbeit, für die intern Zeit oder Fachleute fehlen. Das reicht vom einzelnen Penetrationstest über die Vorbereitung auf das NISG 2026 bis zum Managed SOC, das Ihre Systeme Tag und Nacht überwacht.',
+      sections: [
+        {
+          h2: 'Leistungen für Unternehmen in der Region',
+          p: ['Jede Leistung hat eine eigene Seite mit Umfang, Ablauf und Fragen. Im Überblick:'],
+          ul: [
+            'Penetrationstest für Webanwendungen, mobile Apps, APIs und Cloud, jeder Befund mit Proof of Concept belegt.',
+            'NIS2-Beratung: Betroffenheit klären, Registrierung vorbereiten und die Maßnahmen nach Art. 21 an Ihren Systemen belegen.',
+            'Managed SOC mit Überwachung rund um die Uhr, Reaktion binnen einer Stunde und Fix binnen 24 Stunden.',
+            'Compliance-Automatisierung für NIS2, ISO 27001 und SOC 2.',
+            'Domain Security Test als erster Blick von außen auf DNS, TLS und E-Mail.',
+          ],
+        },
+        {
+          h2: 'Pläne ab 99 € im Monat',
+          p: ['Der Plan Starter kostet 99 € im Monat. Er umfasst eine fokussierte Schwachstellenjagd pro Monat für eine Web-App, mobile App oder API, einen funktionierenden Proof of Concept zu jedem Befund und den Retest behobener Befunde, dazu das Kundenportal mit Compliance-Arbeitsbereich und Ihrem öffentlichen Trust Center. Größere Umfänge decken die Pläne Growth, Pro und Business ab.'],
+        },
+      ],
+      evidenceH2: 'Belege aus geprüfter Software',
+      evidenceIntro: 'Das öffentliche Verzeichnis führt {apps}+ geprüfte Apps und {critical}+ kritische Befunde. Diese vollständigen Berichte zeigen, wie wir unsere Funde dokumentieren:',
+      evidence: [
+        { slug: 'sap', label: 'SAP', note: 'Ein chinesisches Push-SDK in einer Außendienst-App und hartkodierte Firebase-Schlüssel in fünf Apps.' },
+        { slug: 'nike', label: 'Nike', note: 'Entwicklungs- und Produktiv-Push-Zugangsdaten hartkodiert im ausgelieferten Build.' },
+        { slug: 'strava', label: 'Strava', note: 'Ein hartkodierter Schlüssel und eine Sicherheitskonfiguration, die nichts schützt.' },
+        { slug: 'revolut', label: 'Revolut', note: 'Das größte Drittanbieter-SDK der Serie und was es an ein US-Unternehmen sendet.' },
+      ],
+      startH2: 'Starten Sie mit dem Domain Security Test',
+      startText: ['Der Domain Security Test untersucht eine Domain von außen: ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ein Researcher sieht Ihre Anfrage durch und meldet sich innerhalb eines Werktags.'],
+      faqH2: 'Fragen zur IT-Sicherheit in Graz',
+      faq: [
+        ['Arbeiten Sie nur für Unternehmen in Graz?', 'Graz ist unser Sitz, und wir betreuen Unternehmen in ganz Österreich und im deutschsprachigen Raum. Prüfungen laufen aus der Ferne, daher spielt die Entfernung für den Ablauf keine Rolle.'],
+        ['Wir haben keine eigenen Sicherheitsleute. Können Sie trotzdem helfen?', 'Genau dafür ist das Angebot gebaut. Wir übernehmen Prüfung und Behebung, und mit dem Managed SOC arbeitet ein festes Team als Ihre Sicherheitsabteilung.'],
+        ['Was kostet der Einstieg?', 'Der Plan Starter kostet 99 € im Monat. Größere Penetrationstests und das Managed SOC bieten wir nach Umfang schriftlich an.'],
+        ['Sind wir von NIS2 betroffen?', 'Das hängt von Sektor, Größe und Ihrer Rolle in einer Lieferkette ab. Die Seite NIS2-Beratung zeigt, wie wir das mit Ihnen klären.'],
+      ],
+    },
+  },
+  'nis2-consulting': {
+    en: {
+      title: 'NIS2 Consulting Austria: NISG 2026 in Practice · RFI-IRFOS',
+      description: 'NIS2 consulting from Graz: we clarify whether the NISG 2026 applies, prepare the registration and evidence the required measures on your systems.',
+      label: 'NIS2 Consulting',
+      h1: 'NIS2 consulting in Styria: putting the NISG 2026 into practice',
+      lead: 'Austria\'s NISG 2026 has applied since 1 October 2026. Entities in scope must register within three months, so by the end of 2026, demonstrate state-of-the-art risk management and report incidents on time. We guide companies from Graz and across Styria from the question of whether the law applies to them all the way to the evidence an inspection asks for.',
+      sections: [
+        {
+          h2: 'Does the law apply to you?',
+          p: [
+            'Sector, size and role in a supply chain decide whether an entity is in scope. Around 4,000 entities in Austria are directly affected, and an estimated 50,000 supply-chain partners feel the requirements through their customers.',
+            'The authority\'s information at nis.gv.at remains the reference, and you settle applicability together with your legal counsel. We supply the technical facts that decision rests on.',
+          ],
+        },
+        {
+          h2: 'From obligation to measure',
+          p: ['Under § 31 NISG 2026 management carries personal liability, which is why every measure needs evidence behind it. We map the obligations to your systems:'],
+          ul: [
+            'Inventory: which systems, applications and suppliers your operation depends on.',
+            'Risk management: find and prioritise vulnerabilities in applications, cloud and the external attack surface.',
+            'Cryptography and access control: keys, TLS configuration and permissions.',
+            'Supply chain: third-party dependencies and SDKs with their versions.',
+            'Incident reporting: monitoring and response set up so the Art. 23 deadlines stay achievable.',
+          ],
+        },
+        {
+          h2: 'What you receive',
+          p: ['A written report with evidence for your risk-management documentation and, from the Growth plan, concrete fixes engineered down to the affected code. The evidence sits in the compliance workspace of the customer portal, where your auditor can read it, and on request the managed SOC takes over continuous monitoring.'],
+        },
+      ],
+      evidenceH2: 'Evidence from audited software',
+      evidenceIntro: 'The public ledger lists {apps}+ audited apps and {critical}+ critical findings. These full reports show supply-chain and cryptography findings in software from established vendors:',
+      evidence: [
+        { slug: 'sap', label: 'SAP', note: 'A Chinese push SDK in a field-service app, and Firebase keys hardcoded across five apps.' },
+        { slug: 'nike', label: 'Nike', note: 'Development and production push credentials hardcoded in the shipped build.' },
+        { slug: 'strava', label: 'Strava', note: 'A hardcoded key and a security configuration that protects nothing.' },
+        { slug: 'revolut', label: 'Revolut', note: 'The largest third-party SDK in the series and what it sends to a US company.' },
+      ],
+      startH2: 'Start with the Domain Security Test',
+      startText: ['The Domain Security Test examines one domain from the outside: read-only, from a European IP address, with no login and no payloads. A researcher reviews your request and replies within one business day.'],
+      faqH2: 'Questions about NIS2 consulting',
+      faq: [
+        ['Does NIS2 affect suppliers too?', 'Often indirectly: entities in scope must manage the risk of their suppliers, so customers ask their IT and software partners for evidence. Software vendors have a page of their own.'],
+        ['Do you certify NIS2 compliance?', 'We deliver a technical report with evidence for your documentation. A certificate is not part of it.'],
+        ['What does it cost?', 'The Starter plan starts at €99 a month. Comprehensive support is priced by scope and offered in writing.'],
+        ['How fast can we start?', 'Setup takes about five minutes, and the first scan can start right after.'],
+      ],
+    },
+    de: {
+      title: 'NIS2-Beratung Steiermark: NISG 2026 umsetzen · RFI-IRFOS',
+      description: 'NIS2-Beratung aus Graz: Wir klären, ob das NISG 2026 Sie betrifft, bereiten die Registrierung vor und belegen die Pflichtmaßnahmen an Ihren Systemen.',
+      label: 'NIS2-Beratung',
+      h1: 'NIS2-Beratung in der Steiermark: das NISG 2026 umsetzen',
+      lead: 'Seit 1. Oktober 2026 gilt in Österreich das NISG 2026. Betroffene Einrichtungen müssen sich binnen drei Monaten registrieren, also bis Ende 2026, Risikomanagement nach dem Stand der Technik nachweisen und Vorfälle fristgerecht melden. Wir begleiten Unternehmen aus Graz und der Steiermark von der Frage, ob das Gesetz sie trifft, bis zu den Belegen, die eine Prüfung verlangt.',
+      sections: [
+        {
+          h2: 'Betrifft Sie das Gesetz?',
+          p: [
+            'Ob eine Einrichtung darunter fällt, entscheiden Sektor, Größe und Rolle in der Lieferkette. Rund 4.000 Einrichtungen in Österreich sind direkt betroffen, außerdem spüren geschätzt 50.000 Lieferkettenpartner die Anforderungen über ihre Kunden.',
+            'Die Informationen der Behörde unter nis.gv.at bleiben die Referenz, und über die Anwendbarkeit entscheiden Sie gemeinsam mit Ihrer Rechtsvertretung. Wir liefern die technischen Tatsachen, auf denen diese Entscheidung ruht.',
+          ],
+        },
+        {
+          h2: 'Von der Pflicht zur Maßnahme',
+          p: ['Nach § 31 NISG 2026 haftet die Geschäftsleitung persönlich, deshalb braucht jede Maßnahme einen Beleg. Wir ordnen die Pflichten Ihren Systemen zu:'],
+          ul: [
+            'Bestandsaufnahme: welche Systeme, Anwendungen und Lieferanten Ihren Betrieb tragen.',
+            'Risikomanagement: Schwachstellen in Anwendungen, Cloud und externer Angriffsfläche finden und priorisieren.',
+            'Kryptografie und Zugriffskontrolle: Schlüssel, TLS-Konfiguration und Berechtigungen.',
+            'Lieferkette: Drittanbieter-Abhängigkeiten und SDKs samt Versionen.',
+            'Vorfallsmeldung: Überwachung und Reaktion so aufgestellt, dass die Fristen nach Art. 23 einhaltbar bleiben.',
+          ],
+        },
+        {
+          h2: 'Was Sie erhalten',
+          p: ['Einen schriftlichen Bericht mit Belegen für Ihre Risikomanagement-Dokumentation und ab dem Plan Growth konkrete Fixes bis in den betroffenen Code. Die Nachweise liegen im Compliance-Arbeitsbereich des Kundenportals, wo Ihre Prüfstelle sie lesen kann, und auf Wunsch übernimmt das Managed SOC die laufende Überwachung.'],
+        },
+      ],
+      evidenceH2: 'Belege aus geprüfter Software',
+      evidenceIntro: 'Das öffentliche Verzeichnis führt {apps}+ geprüfte Apps und {critical}+ kritische Befunde. Diese vollständigen Berichte zeigen Lieferketten- und Kryptografie-Befunde in Software etablierter Anbieter:',
+      evidence: [
+        { slug: 'sap', label: 'SAP', note: 'Ein chinesisches Push-SDK in einer Außendienst-App und hartkodierte Firebase-Schlüssel in fünf Apps.' },
+        { slug: 'nike', label: 'Nike', note: 'Entwicklungs- und Produktiv-Push-Zugangsdaten hartkodiert im ausgelieferten Build.' },
+        { slug: 'strava', label: 'Strava', note: 'Ein hartkodierter Schlüssel und eine Sicherheitskonfiguration, die nichts schützt.' },
+        { slug: 'revolut', label: 'Revolut', note: 'Das größte Drittanbieter-SDK der Serie und was es an ein US-Unternehmen sendet.' },
+      ],
+      startH2: 'Starten Sie mit dem Domain Security Test',
+      startText: ['Der Domain Security Test untersucht eine Domain von außen: ausschließlich lesend, von einer europäischen IP-Adresse aus, ohne Login und ohne Payloads. Ein Researcher sieht Ihre Anfrage durch und meldet sich innerhalb eines Werktags.'],
+      faqH2: 'Fragen zur NIS2-Beratung',
+      faq: [
+        ['Betrifft NIS2 auch Zulieferer?', 'Oft indirekt: Betroffene Einrichtungen müssen das Risiko ihrer Lieferanten steuern, daher fragen Kunden ihre IT- und Softwarepartner nach Belegen. Für Softwareanbieter gibt es eine eigene Seite.'],
+        ['Zertifizieren Sie die NIS2-Konformität?', 'Wir liefern einen technischen Bericht mit Belegen für Ihre Dokumentation. Ein Zertifikat gehört nicht dazu.'],
+        ['Was kostet die Begleitung?', 'Der Plan Starter beginnt bei 99 € im Monat. Eine umfassende Begleitung bieten wir nach Umfang schriftlich an.'],
+        ['Wie schnell können wir starten?', 'Die Einrichtung dauert etwa fünf Minuten, und der erste Scan kann direkt danach starten.'],
       ],
     },
   },

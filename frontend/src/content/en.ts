@@ -21,7 +21,7 @@ export const EN = {
     // through the report pages. Brand first, then the flagship line from hero and LinkedIn.
     // Title <= 60 chars, description 120-155. index.html ships these same EN strings.
     // 2026-11-10: snippet rewrite (Simeon), independent of the DE text. Title <= 60, description 120-155.
-    title: 'Cybersecurity Testing, Compliance & 24/7 Managed SOC | RFI-IRFOS',
+    title: 'Cybersecurity Graz: Pentest, Compliance & 24/7 SOC | RFI-IRFOS',
     description: 'Agents hunt vulnerabilities, experts verify and fix the code. Security testing, compliance and Managed SOC, data processed in Graz, Austria.',
     // Was hardcoded English inside sectionMeta() before 2026-10-24 - the /de/
     // twin shipped the EN description verbatim (caught by check-dist-seo.mjs).
@@ -1224,7 +1224,7 @@ export const EN = {
       // Footer column linking the four search landing pages (2026-10-31) from every public view.
       services: {
         heading: 'Services',
-        links: { trustCenter: 'Trust Center', appSecurityAudit: 'App Security Audit', gdprAppAudit: 'GDPR App Audit', nis2: 'NIS2 for Software Vendors', trackerSdk: 'Tracker & SDK Check', aiApp: 'AI App Privacy Audit', managedSoc: 'Outsourced SOC', compliance: 'Compliance Automation', domainCheck: 'Domain Security Test', pentest: 'Penetration Testing', apiSecurity: 'API Security Testing', cloud: 'Cloud Security Assessment', codeReview: 'Secure Code Review', remediation: 'Vulnerability Remediation', dataSolutions: 'Data Solutions' },
+        links: { trustCenter: 'Trust Center', appSecurityAudit: 'App Security Audit', gdprAppAudit: 'GDPR App Audit', nis2: 'NIS2 for Software Vendors', trackerSdk: 'Tracker & SDK Check', aiApp: 'AI App Privacy Audit', managedSoc: 'Outsourced SOC', compliance: 'Compliance Automation', domainCheck: 'Domain Security Test', pentest: 'Penetration Testing', apiSecurity: 'API Security Testing', cloud: 'Cloud Security Assessment', codeReview: 'Secure Code Review', remediation: 'Vulnerability Remediation', itSecurityGraz: 'IT Security Graz', nis2Consulting: 'NIS2 Consulting', dataSolutions: 'Data Solutions' },
       },
     },
     socialAria: 'Social media profiles',

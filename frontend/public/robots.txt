@@ -39,7 +39,8 @@ Allow: /
 #   /app-tracker-sdk-check/, /managed-soc/, /compliance-automation/,
 #   /domain-security-test/, /penetration-testing/, /api-security-testing/,
 #   /cloud-security-assessment/, /secure-code-review/,
-#   /vulnerability-remediation/   what an audit or service
+#   /vulnerability-remediation/, /it-security-graz/,
+#   /nis2-consulting/   what an audit or service
 #   covers, by topic (also under /de/).
 # The homepage itself covers the 8 research domains this institute works
 # across and how to submit a finding or request an audit.

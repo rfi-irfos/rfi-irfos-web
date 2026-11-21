@@ -13,7 +13,8 @@ export const DE: Content = {
     // 2026-11-10 (Simeon: Snippet muss auf den ersten Blick verständlich sein): Suchwort im Titel,
     // Agenten + Fachleute, Zielgruppensatz. Titel <= 60, Beschreibung 120-155 Zeichen.
     // Deutscher Titel für /de/ (Lynx 20.11.: EN und DE hatten denselben Titel).
-    title: 'Sicherheitstests, Compliance & 24/7 Managed SOC | RFI-IRFOS',
+    // 21.11.2026 Graz-Sichtbarkeit: Stadt vorn, „cybersecurity graz“ ist der meistgesuchte Begriff.
+    title: 'Cybersecurity Graz: Sicherheitstests, NIS2 & SOC | RFI-IRFOS',
     description: 'Agenten finden Schwachstellen, Fachleute prüfen und beheben sie im Code. Sicherheitstests, Compliance und Managed SOC, Daten verarbeitet in Graz.',
     dataSolutions: {
       title: 'Evaluationsdaten & Safety-Datensätze für Agenten · RFI-IRFOS',
@@ -1189,7 +1190,7 @@ export const DE: Content = {
       },
       services: {
         heading: 'Leistungen',
-        links: { trustCenter: 'Trust Center', appSecurityAudit: 'App-Sicherheitsprüfung', gdprAppAudit: 'DSGVO-Prüfung für Apps', nis2: 'NIS2 für Softwareanbieter', trackerSdk: 'Tracker- & SDK-Check', aiApp: 'Datenschutz-Audit für KI-Apps', managedSoc: 'Ausgelagertes SOC', compliance: 'Compliance-Automatisierung', domainCheck: 'Domain Security Test', pentest: 'Penetrationstest', apiSecurity: 'API-Sicherheitstest', cloud: 'Cloud-Sicherheitsprüfung', codeReview: 'Secure Code Review', remediation: 'Schwachstellen beheben', dataSolutions: 'Data Solutions' },
+        links: { trustCenter: 'Trust Center', appSecurityAudit: 'App-Sicherheitsprüfung', gdprAppAudit: 'DSGVO-Prüfung für Apps', nis2: 'NIS2 für Softwareanbieter', trackerSdk: 'Tracker- & SDK-Check', aiApp: 'Datenschutz-Audit für KI-Apps', managedSoc: 'Ausgelagertes SOC', compliance: 'Compliance-Automatisierung', domainCheck: 'Domain Security Test', pentest: 'Penetrationstest', apiSecurity: 'API-Sicherheitstest', cloud: 'Cloud-Sicherheitsprüfung', codeReview: 'Secure Code Review', remediation: 'Schwachstellen beheben', itSecurityGraz: 'IT-Sicherheit Graz', nis2Consulting: 'NIS2-Beratung', dataSolutions: 'Data Solutions' },
       },
     },
     socialAria: 'Social-Media-Profile',

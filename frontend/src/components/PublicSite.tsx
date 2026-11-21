@@ -951,10 +951,13 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
       // Trust Center first, then the two SOC products it belongs to (Simeon 2026-11-18). It lives on its own host
       // (trust.rfi-irfos.com, the customer-facing page of the portal), so this link is absolute.
       { label: t.footer.groups.services.links.trustCenter, href: 'https://trust.rfi-irfos.com/' },
+      // Graz-Seiten direkt nach dem Trust Center (Graz-Sichtbarkeit, 21.11.2026).
+      { label: t.footer.groups.services.links.itSecurityGraz, href: `${servicesPrefix}/it-security-graz/` },
       { label: t.footer.groups.services.links.managedSoc, href: `${servicesPrefix}/managed-soc/` },
       { label: t.footer.groups.services.links.compliance, href: `${servicesPrefix}/compliance-automation/` },
       { label: t.footer.groups.services.links.appSecurityAudit, href: `${servicesPrefix}/app-security-audit/` },
       { label: t.footer.groups.services.links.gdprAppAudit, href: `${servicesPrefix}/gdpr-app-audit/` },
+      { label: t.footer.groups.services.links.nis2Consulting, href: `${servicesPrefix}/nis2-consulting/` },
       { label: t.footer.groups.services.links.nis2, href: `${servicesPrefix}/nis2-software-vendors/` },
       { label: t.footer.groups.services.links.trackerSdk, href: `${servicesPrefix}/app-tracker-sdk-check/` },
       { label: t.footer.groups.services.links.aiApp, href: `${servicesPrefix}/ai-app-privacy-audit/` },
