@@ -1377,6 +1377,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         ['Which languages do you cover?', 'Python, Rust, Go, Java, JavaScript, TypeScript and the mobile stacks for Android and iOS.'],
         ['What is ASPM, and do we need it?', 'Application security posture management (ASPM) collects the findings of every test, from code review to penetration test, in one place, removes duplicates and ranks them by risk. The customer portal does this for you: one remediation board per application, with the status of every finding and its fix.'],
         ['Do you write the fix as well?', 'Yes, from the Growth plan. Our engineers write the fix into the affected code, explain the change and confirm it with a retest, and your team reviews and merges it like any other change. Starter includes fix guidance for every finding, as the [Access page](/access/) shows.'],
+        ['How much work stays with our team?', 'Three steps: grant read access to the repository or send the build, review the patch and merge it. Triage, reproduction, attack-path analysis, the fix and the retest sit with us, and the remediation board shows at any time where each finding stands. AI fix suggestions such as Copilot Autofix leave review and testing with your developers, whereas our patches arrive together with the retest that proves them.'],
       ],
     },
     de: {
@@ -1426,6 +1427,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         ['Welche Programmiersprachen deckt die Prüfung ab?', 'Python, Rust, Go, Java, JavaScript, TypeScript sowie die Mobile-Stacks für Android und iOS.'],
         ['Was ist ASPM, und brauchen wir das?', 'Application Security Posture Management (ASPM) sammelt die Funde aller Prüfungen, von der Code Review bis zum Penetrationstest, an einem Ort, entfernt Doppelungen und ordnet sie nach Risiko. Das Kundenportal übernimmt das für Sie: ein Remediation-Board pro Anwendung mit dem Stand jedes Fundes und seiner Behebung.'],
         ['Wer schreibt die Behebung?', 'Ab dem Growth-Plan schreiben unsere Engineers die Behebung direkt in den betroffenen Code, erklären die Änderung und bestätigen sie mit einem Retest, und Ihr Team prüft und übernimmt sie wie jede andere Änderung. Im Starter-Plan erhalten Sie zu jedem Befund eine Anleitung zur Behebung, wie die [Seite Zugang](/de/access/) zeigt.'],
+        ['Wie viel Arbeit bleibt bei unserem Team?', 'Drei Schritte: Lesezugriff auf das Repository geben oder den Build schicken, den Patch ansehen und ihn übernehmen. Triage, Reproduktion, Angriffspfad-Analyse, Fix und Retest liegen bei uns, und das Remediation-Board zeigt jederzeit, wo jeder Befund steht. KI-Fixvorschläge wie Copilot Autofix überlassen Prüfung und Test Ihren Entwicklern, unsere Patches hingegen kommen gemeinsam mit dem Retest, der sie belegt.'],
       ],
     },
   },
