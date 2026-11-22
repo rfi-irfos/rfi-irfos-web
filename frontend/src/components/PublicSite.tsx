@@ -1843,9 +1843,9 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
               Services | Legal below (column flow: Company, Services, Research, Legal). */}
           {/* Simeon 22.11.2026: Company | Research | Legal side by side on top, the two service groups below,
               same on phone and desktop (six-column grid, top groups span 2, service groups span 3). Desktop block 422px
-              (Simeon 22.11.: divider a little further right so no label wraps): uneven tracks give Company 96, Research 172,
-              Legal 154, sized from the longest EN/DE label plus 12px right padding; Services spans all six, two equal columns. */}
-          <div style={{ flex: mobile ? '1 1 auto' : '0 0 auto', alignSelf: 'stretch', display: 'grid', gridTemplateColumns: mobile ? 'repeat(6, minmax(0, 1fr))' : '48px 48px 105px 67px 77px 77px', columnGap: mobile ? '0.9rem' : 0, rowGap: 26, alignContent: 'start' }}>
+              (Simeon 22.11.: divider a little further right so no label wraps): order Company, Legal, Research (Simeon 22.11.), uneven
+              tracks give Company 96, Legal 154, Research 172, sized from the longest EN/DE label plus 12px right padding; Services spans all six, two equal columns. */}
+          <div style={{ flex: mobile ? '1 1 auto' : '0 0 auto', alignSelf: 'stretch', display: 'grid', gridTemplateColumns: mobile ? 'repeat(6, minmax(0, 1fr))' : '48px 48px 105px 49px 86px 86px', columnGap: mobile ? '0.9rem' : 0, rowGap: 26, alignContent: 'start' }}>
             {/* FIXED (live bug report, mobile Chrome screenshot, 2026-08-16): this
                 footer is a dense, desktop-oriented link directory (Legal/Company/
                 Research column + a wide grid of Systems zones/Repositories/Crates
@@ -1880,6 +1880,16 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                   ],
                 },
                 {
+                  heading: t.footer.groups.legal.heading, span: 2, links: [
+                    { label: t.footer.groups.legal.links.impressum, href: '/impressum/' },
+                    { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz/' },
+                    { label: t.footer.groups.legal.links.agb, href: '/agb/' },
+                    { label: t.footer.groups.legal.links.security, href: '/security/' },
+                    // Standards left the footer (Simeon 22.11.2026, columns even): all 15 landing pages link it in their text.
+                    { label: 'FAQ', href: '/faq/' },
+                  ],
+                },
+                {
                   heading: t.footer.groups.research.heading, span: 2, links: [
                     { label: t.footer.groups.research.links.research, href: '/research/' },
                     { label: t.footer.groups.research.links.trackRecord, href: '/evidence/' },
@@ -1888,16 +1898,6 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                     // zero internal links pointing at it, the only orphan among 284 URLs.
                     { label: t.footer.groups.research.links.humanRights, href: '/humanrights/' },
                     { label: t.footer.groups.research.links.albert, href: 'https://albert.rfi-irfos.com/' },
-                  ],
-                },
-                {
-                  heading: t.footer.groups.legal.heading, span: 2, links: [
-                    { label: t.footer.groups.legal.links.impressum, href: '/impressum/' },
-                    { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz/' },
-                    { label: t.footer.groups.legal.links.agb, href: '/agb/' },
-                    { label: t.footer.groups.legal.links.security, href: '/security/' },
-                    // Standards left the footer (Simeon 22.11.2026, columns even): all 15 landing pages link it in their text.
-                    { label: 'FAQ', href: '/faq/' },
                   ],
                 },
                 servicesGroup,
