@@ -953,27 +953,31 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
   // German footer feeds link equity to German pages (the /de/ homepage was "crawled, not
   // indexed" in Search Console). Used by both the mobile and the desktop footer list below.
   const servicesPrefix = locale === 'de' ? '/de' : ''
-  const servicesGroup = {
-    heading: t.footer.groups.services.heading, links: [
-      // Trust Center first, then the two SOC products it belongs to (Simeon 2026-11-18). It lives on its own host
-      // (trust.rfi-irfos.com, the customer-facing page of the portal), so this link is absolute.
-      { label: t.footer.groups.services.links.trustCenter, href: 'https://trust.rfi-irfos.com/' },
-      // Graz-Seiten direkt nach dem Trust Center (Graz-Sichtbarkeit, 21.11.2026).
-      { label: t.footer.groups.services.links.itSecurityGraz, href: `${servicesPrefix}/it-security-graz/` },
-      { label: t.footer.groups.services.links.managedSoc, href: `${servicesPrefix}/managed-soc/` },
-      { label: t.footer.groups.services.links.compliance, href: `${servicesPrefix}/compliance-automation/` },
-      { label: t.footer.groups.services.links.appSecurityAudit, href: `${servicesPrefix}/app-security-audit/` },
-      { label: t.footer.groups.services.links.gdprAppAudit, href: `${servicesPrefix}/gdpr-app-audit/` },
-      { label: t.footer.groups.services.links.nis2Consulting, href: `${servicesPrefix}/nis2-consulting/` },
-      { label: t.footer.groups.services.links.nis2, href: `${servicesPrefix}/nis2-software-vendors/` },
-      { label: t.footer.groups.services.links.trackerSdk, href: `${servicesPrefix}/app-tracker-sdk-check/` },
-      { label: t.footer.groups.services.links.aiApp, href: `${servicesPrefix}/ai-app-privacy-audit/` },
+  // Services split in two groups (Simeon 22.11.2026): what you buy as a one-off test or audit, and what runs
+  // continuously (operations, compliance, the Graz page). New landing pages join the group they belong to.
+  const servicesTesting = {
+    heading: t.footer.groups.services.headingTesting, span: 3, links: [
       { label: t.footer.groups.services.links.pentest, href: `${servicesPrefix}/penetration-testing/` },
       { label: t.footer.groups.services.links.apiSecurity, href: `${servicesPrefix}/api-security-testing/` },
-      { label: t.footer.groups.services.links.cloud, href: `${servicesPrefix}/cloud-security-assessment/` },
+      { label: t.footer.groups.services.links.appSecurityAudit, href: `${servicesPrefix}/app-security-audit/` },
       { label: t.footer.groups.services.links.codeReview, href: `${servicesPrefix}/secure-code-review/` },
-      { label: t.footer.groups.services.links.remediation, href: `${servicesPrefix}/vulnerability-remediation/` },
+      { label: t.footer.groups.services.links.cloud, href: `${servicesPrefix}/cloud-security-assessment/` },
       { label: t.footer.groups.services.links.domainCheck, href: `${servicesPrefix}/domain-security-test/` },
+      { label: t.footer.groups.services.links.trackerSdk, href: `${servicesPrefix}/app-tracker-sdk-check/` },
+      { label: t.footer.groups.services.links.gdprAppAudit, href: `${servicesPrefix}/gdpr-app-audit/` },
+      { label: t.footer.groups.services.links.aiApp, href: `${servicesPrefix}/ai-app-privacy-audit/` },
+    ],
+  }
+  const servicesOps = {
+    heading: t.footer.groups.services.headingOps, span: 3, links: [
+      // Trust Center lives on its own host (trust.rfi-irfos.com), so this link is absolute.
+      { label: t.footer.groups.services.links.trustCenter, href: 'https://trust.rfi-irfos.com/' },
+      { label: t.footer.groups.services.links.itSecurityGraz, href: `${servicesPrefix}/it-security-graz/` },
+      { label: t.footer.groups.services.links.managedSoc, href: `${servicesPrefix}/managed-soc/` },
+      { label: t.footer.groups.services.links.remediation, href: `${servicesPrefix}/vulnerability-remediation/` },
+      { label: t.footer.groups.services.links.compliance, href: `${servicesPrefix}/compliance-automation/` },
+      { label: t.footer.groups.services.links.nis2Consulting, href: `${servicesPrefix}/nis2-consulting/` },
+      { label: t.footer.groups.services.links.nis2, href: `${servicesPrefix}/nis2-software-vendors/` },
       { label: t.footer.groups.services.links.dataSolutions, href: '/data-solutions/' },
     ],
   }
@@ -1840,9 +1844,9 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
               taller than the directory to its right (big empty band below it). Desktop now lays the
               groups out in two columns, tagline below both. Simeon 2026-11-10: Company | Research on top,
               Services | Legal below (column flow: Company, Services, Research, Legal). */}
-          <div style={mobile
-            ? { flex: '1 1 auto', display: 'flex', flexDirection: 'column', gap: 22 }
-            : { flex: '0 0 auto', alignSelf: 'stretch', display: 'grid', gridTemplateColumns: '170px 170px', gridTemplateRows: 'auto auto 1fr', gridAutoFlow: 'column', columnGap: '1.1rem', rowGap: 22, alignContent: 'start' }}>
+          {/* Simeon 22.11.2026: Company | Research | Legal side by side on top, the two service groups below,
+              same on phone and desktop (six-column grid, top groups span 2, service groups span 3). */}
+          <div style={{ flex: mobile ? '1 1 auto' : '0 0 auto', alignSelf: 'stretch', display: 'grid', gridTemplateColumns: mobile ? 'repeat(6, minmax(0, 1fr))' : 'repeat(6, 85px)', columnGap: mobile ? '0.9rem' : '1.1rem', rowGap: 26, alignContent: 'start' }}>
             {/* FIXED (live bug report, mobile Chrome screenshot, 2026-08-16): this
                 footer is a dense, desktop-oriented link directory (Legal/Company/
                 Research column + a wide grid of Systems zones/Repositories/Crates
@@ -1860,23 +1864,10 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                 that whole grid is internal tooling/repo sprawl, not anything a
                 mobile visitor came to the footer looking for. Desktop is
                 unchanged (full directory, same as before). */}
-            {(mobile
-              ? [
+            {(
+              [
                 {
-                  heading: t.footer.groups.legal.heading, links: [
-                    { label: t.footer.groups.legal.links.impressum, href: '/impressum/' },
-                    { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz/' },
-                    { label: t.footer.groups.legal.links.agb, href: '/agb/' },
-                    { label: t.footer.groups.legal.links.security, href: '/security/' },
-                    { label: t.footer.groups.legal.links.standards, href: '/standards/' },
-                    { label: 'FAQ', href: '/faq/' },
-                  ],
-                },
-                servicesGroup,
-              ]
-              : [
-                {
-                  heading: t.footer.groups.company.heading, links: [
+                  heading: t.footer.groups.company.heading, span: 2, links: [
                     // Lighthouse round 32 (2026-10-31): the footer, where people look for a
                     // way to get in touch, had no free check and no pricing link at all.
                     { label: t.footer.groups.company.links.freeCheck, href: '/#domain-check' },
@@ -1889,9 +1880,8 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                     // Lighthouse R83 asked for are still there, as rel="me" anchors.
                   ],
                 },
-                servicesGroup,
                 {
-                  heading: t.footer.groups.research.heading, links: [
+                  heading: t.footer.groups.research.heading, span: 2, links: [
                     { label: t.footer.groups.research.links.research, href: '/research/' },
                     { label: t.footer.groups.research.links.trackRecord, href: '/evidence/' },
                     { label: t.footer.groups.research.links.methodology, href: '/methodology/' },
@@ -1902,7 +1892,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                   ],
                 },
                 {
-                  heading: t.footer.groups.legal.heading, links: [
+                  heading: t.footer.groups.legal.heading, span: 2, links: [
                     { label: t.footer.groups.legal.links.impressum, href: '/impressum/' },
                     { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz/' },
                     { label: t.footer.groups.legal.links.agb, href: '/agb/' },
@@ -1911,9 +1901,11 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                     { label: 'FAQ', href: '/faq/' },
                   ],
                 },
+                servicesTesting,
+                servicesOps,
               ]
             ).map(group => (
-              <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+              <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9, gridColumn: `span ${group.span}`, minWidth: 0 }}>
                 <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', fontWeight: 700, margin: '0 0 2px' }}>{group.heading}</p>
                 {group.links.map(l => (
                   <a key={l.label} href={localeHref(l.href, locale)} style={{ color: 'var(--text3)', fontSize: 'var(--fs-small)', textDecoration: 'none' }}
@@ -1991,7 +1983,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                 entirely, not just relocated. */}
             {/* Simeon 01.11.: the copyright sits at the bottom of this left column, inside the divider,
                 level with the divider's lower end, instead of a separate full-width row below. */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8, ...(mobile ? {} : { gridColumn: '1 / -1', gridRow: 3, alignSelf: 'end' }) }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8, gridColumn: '1 / -1' }}>
               {/* Footer foot, top to bottom (Simeon 2026-11-10): social icons, copyright (the core doctrine line lives on /standards/). */}
               <nav aria-label={t.footer.socialAria} data-testid="footer-socials" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {SOCIAL_PROFILES.map(p => (
