@@ -227,7 +227,7 @@ function SquadOverview({
               })}
             </ul>
             <button type="button" className="wm-btn-primary" onClick={() => onRequestAccess([selectedKey])}>
-              {s.primaryCta}
+              <IconSearch size={18} stroke={2} aria-hidden />{s.primaryCta}
             </button>
           </div>
         </div>

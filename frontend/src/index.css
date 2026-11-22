@@ -1026,7 +1026,6 @@ a[href^="mailto:"]:not(footer a) { color: var(--text) !important; }
 [data-theme="dark"] .sq-agent-row--active { background: radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--row-color) 16%, transparent), transparent 60%), linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02)), #121620; box-shadow: 0 0 0 1px var(--row-color), 0 0 22px color-mix(in srgb, var(--row-color) 22%, transparent), 0 10px 22px rgba(0,0,0,.45); }
 [data-theme="dark"] .sq-spec-sheet { border: 1px solid rgba(255,255,255,.09); border-top-color: rgba(255,255,255,.22); background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0) 28%), #0d1016; box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 24px 50px rgba(0,0,0,.5); border-radius: 18px; }
 [data-theme="dark"] .sq-spec-panel { border: 1px solid rgba(255,255,255,.08); border-top-color: rgba(255,255,255,.18); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.015) 55%), #12151c; box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 10px 22px rgba(0,0,0,.4); border-radius: 14px; }
-[data-theme="dark"] .sq-spec-sheet .wm-btn-primary { background: linear-gradient(180deg, #5cffe0, #00f5c4 50%, #00cfa6); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 8px 22px rgba(0,245,196,.24); border-radius: 12px; }
 
 /* Simeon 01.11.: KPI cards on phones read too fat - compact strip, smaller art and figure. */
 @media (max-width: 640px) {

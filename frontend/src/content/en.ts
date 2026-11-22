@@ -1025,7 +1025,7 @@ export const EN = {
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'Find your agent',
     statusLine: 'In production',
-    trustBadges: ['EU AI Act Compliant', 'Explainable by Design', 'Every Decision Traceable', 'Human-Verified'],
+    trustBadges: ['EU AI Act Compliant', 'Explainable by Design', 'Every Decision Traceable'],
     overview: {
       heading: 'Selected From Our Own Production',
       sub: 'Each takes on a whole area of work autonomously, researching, monitoring and acting, the way a team member does after one onboarding. Pick one, or start with the whole squad.',

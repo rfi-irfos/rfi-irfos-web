@@ -992,7 +992,7 @@ export const DE: Content = {
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Agent finden',
     statusLine: 'Im Produktiveinsatz',
-    trustBadges: ['EU-KI-Verordnung-konform', 'Nachvollziehbar durch Design', 'Jede Entscheidung rückverfolgbar', 'Von Menschen geprüft'],
+    trustBadges: ['EU-KI-Verordnung-konform', 'Nachvollziehbar durch Design', 'Jede Entscheidung rückverfolgbar'],
     overview: {
       heading: 'Direkt aus unserer eigenen Produktion',
       sub: 'Jeder übernimmt ein ganzes Arbeitsfeld selbständig, mit Recherche, Überwachung und Handlung, so wie ein Teammitglied nach einer einzigen Einarbeitung. Wählen Sie einen aus oder starten Sie mit dem ganzen Squad.',
