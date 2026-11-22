@@ -67,7 +67,6 @@ export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) 
   const trackRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
   const used = useRef(false)
-  const [activeIdx, setActiveIdx] = useState(0)
   const [paused, setPaused] = useState(false)
 
   const markUsed = () => { if (!used.current) { used.current = true; beacon('research_carousel_used') } }
@@ -76,14 +75,11 @@ export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) 
     const track = trackRef.current
     if (!track) return
     const io = new IntersectionObserver(items => {
-      let bestRatio = -1, bestIdx = -1
       items.forEach(item => {
         const card = item.target as HTMLElement
         card.style.opacity = String(0.45 + item.intersectionRatio * 0.55)
         card.style.transform = `scale(${0.94 + item.intersectionRatio * 0.06})`
-        if (item.intersectionRatio > bestRatio) { bestRatio = item.intersectionRatio; bestIdx = cardRefs.current.indexOf(card as HTMLDivElement) }
       })
-      if (bestIdx >= 0) setActiveIdx(bestIdx % n)
     }, { root: track, threshold: Array.from({ length: 21 }, (_, i) => i / 20) })
     cardRefs.current.forEach(card => card && io.observe(card))
     const onScroll = () => markUsed()
@@ -117,11 +113,15 @@ export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) 
     const tick = (now: number) => {
       const dt = Math.min(now - last, 64) / 1000
       last = now
-      if (Math.abs(track.scrollLeft - written) > 1) pos = track.scrollLeft // visitor swiped or an arrow scrolled
+      // Only touch scrollLeft while the ribbon drifts on its own. Writing it every frame while paused swallowed
+      // small touchpad steps (< 1 px per frame), so the ribbon felt stuck under the pointer (Simeon 22.11.2026).
+      const drifting = !paused && !document.hidden && now > holdUntil.current
+      if (!drifting || Math.abs(track.scrollLeft - written) > 1) pos = track.scrollLeft // visitor swiped or an arrow scrolled
       const half = (cardRefs.current[n]?.offsetLeft ?? 0) - (cardRefs.current[0]?.offsetLeft ?? 0)
-      if (!paused && !document.hidden && now > holdUntil.current) pos += SPEED * dt
+      if (drifting) pos += SPEED * dt
       if (half > 0 && pos >= half) pos -= half
-      if (now > holdUntil.current) { track.scrollLeft = pos; written = track.scrollLeft }
+      if (half > 0 && pos < 0) pos += half
+      if (drifting || Math.abs(track.scrollLeft - pos) > 1) { track.scrollLeft = pos; written = track.scrollLeft }
       raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
@@ -171,13 +171,10 @@ export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) 
           </div>
           {showArrows && !phone && <button onClick={() => go(1)} aria-label={TX.next[locale]} style={arrowStyle}>&rarr;</button>}
         </div>
-        {showArrows && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: phone ? 12 : 28 }}>
-            {phone && <button onClick={() => go(-1)} aria-label={TX.prev[locale]} style={arrowStyle}>&larr;</button>}
-            <span style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)' }}>
-              {String(Math.min(activeIdx + 1, n)).padStart(2, '0')} / {n}
-            </span>
-            {phone && <button onClick={() => go(1)} aria-label={TX.next[locale]} style={arrowStyle}>&rarr;</button>}
+        {showArrows && phone && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: 12 }}>
+            <button onClick={() => go(-1)} aria-label={TX.prev[locale]} style={arrowStyle}>&larr;</button>
+            <button onClick={() => go(1)} aria-label={TX.next[locale]} style={arrowStyle}>&rarr;</button>
           </div>
         )}
       </Reveal>
@@ -209,8 +206,9 @@ export function ResearchDocModal({ slug, onClose, h1 }: { slug: string | null; o
     <div className={`rfi-modal-backdrop${exit.closing ? ' rfi-modal-backdrop-out' : ''}`} onClick={onClose}
       style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
       <div className={`rfi-modal-panel${exit.closing ? ' rfi-modal-panel-out' : ''}`} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={doc.title[locale]} style={{
-        // Portrait like the A4 pages inside: the width follows the height (about 1 : 1.35 with the viewer toolbar), so the window stays upright on any screen; phones keep the full width.
-        width: 'min(100%, calc((92vh - 40px) * 0.76))', height: '92vh', overflow: 'hidden', display: 'flex', flexDirection: 'column',
+        // Big reading window (Simeon 22.11.2026: reports looked tiny): up to 1280 px wide and almost the full screen height.
+        // html carries zoom 0.9, so vh resolves 10 % smaller here; dividing by 0.9 gives back the real screen height.
+        width: 'min(100%, 1280px)', height: 'calc(96vh / 0.9 - 2rem)', overflow: 'hidden', display: 'flex', flexDirection: 'column',
         background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
         backgroundBlendMode: 'overlay',
         boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
@@ -235,7 +233,7 @@ export function ResearchDocModal({ slug, onClose, h1 }: { slug: string | null; o
             </a>
           </div>
         ) : (
-          <iframe src={pdf} style={{ flex: 1, border: 'none', width: '100%' }} title={TX.iframeTitle[locale]} />
+          <iframe src={pdf + '#view=FitH'} style={{ flex: 1, border: 'none', width: '100%' }} title={TX.iframeTitle[locale]} />
         )}
       </div>
     </div>
