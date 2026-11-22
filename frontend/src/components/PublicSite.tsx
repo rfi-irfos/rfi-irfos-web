@@ -953,10 +953,10 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
   // German footer feeds link equity to German pages (the /de/ homepage was "crawled, not
   // indexed" in Search Console). Used by both the mobile and the desktop footer list below.
   const servicesPrefix = locale === 'de' ? '/de' : ''
-  // Services split in two groups (Simeon 22.11.2026): what you buy as a one-off test or audit, and what runs
-  // continuously (operations, compliance, the Graz page). New landing pages join the group they belong to.
-  const servicesTesting = {
-    heading: t.footer.groups.services.headingTesting, span: 3, links: [
+  // One Services heading, links in two columns (Simeon 22.11.2026): left one-off tests and audits, right what runs
+  // continuously (operations, compliance, Graz). New landing pages join the column they belong to.
+  const servicesGroup = {
+    heading: t.footer.groups.services.heading, span: 6, cols: 2, links: [
       { label: t.footer.groups.services.links.pentest, href: `${servicesPrefix}/penetration-testing/` },
       { label: t.footer.groups.services.links.apiSecurity, href: `${servicesPrefix}/api-security-testing/` },
       { label: t.footer.groups.services.links.appSecurityAudit, href: `${servicesPrefix}/app-security-audit/` },
@@ -966,10 +966,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
       { label: t.footer.groups.services.links.trackerSdk, href: `${servicesPrefix}/app-tracker-sdk-check/` },
       { label: t.footer.groups.services.links.gdprAppAudit, href: `${servicesPrefix}/gdpr-app-audit/` },
       { label: t.footer.groups.services.links.aiApp, href: `${servicesPrefix}/ai-app-privacy-audit/` },
-    ],
-  }
-  const servicesOps = {
-    heading: t.footer.groups.services.headingOps, span: 3, links: [
+      // second column: what runs continuously (operations, compliance, Graz)
       // Trust Center lives on its own host (trust.rfi-irfos.com), so this link is absolute.
       { label: t.footer.groups.services.links.trustCenter, href: 'https://trust.rfi-irfos.com/' },
       { label: t.footer.groups.services.links.itSecurityGraz, href: `${servicesPrefix}/it-security-graz/` },
@@ -1899,16 +1896,16 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                     { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz/' },
                     { label: t.footer.groups.legal.links.agb, href: '/agb/' },
                     { label: t.footer.groups.legal.links.security, href: '/security/' },
-                    { label: t.footer.groups.legal.links.standards, href: '/standards/' },
+                    // Standards left the footer (Simeon 22.11.2026, columns even): all 15 landing pages link it in their text.
                     { label: 'FAQ', href: '/faq/' },
                   ],
                 },
-                servicesTesting,
-                servicesOps,
+                servicesGroup,
               ]
             ).map(group => (
               <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9, gridColumn: `span ${group.span}`, minWidth: 0, paddingRight: mobile ? 0 : 12, hyphens: 'auto' }}>
                 <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', fontWeight: 700, margin: '0 0 2px' }}>{group.heading}</p>
+                <div style={'cols' in group ? { display: 'grid', gridTemplateColumns: '1fr 1fr', gridAutoFlow: 'column', gridTemplateRows: `repeat(${Math.ceil(group.links.length / 2)}, auto)`, columnGap: 12, rowGap: 9 } : { display: 'contents' }}>
                 {group.links.map(l => (
                   <a key={l.label} href={localeHref(l.href, locale)} style={{ color: 'var(--text3)', fontSize: 'var(--fs-small)', textDecoration: 'none' }}
                     onMouseEnter={e => (e.currentTarget.style.color = TEAL)}
@@ -1970,6 +1967,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                     {l.label}
                   </a>
                 ))}
+                </div>
               </div>
             ))}
             {/* Tagline + copyright live in the Legal column itself (live feedback

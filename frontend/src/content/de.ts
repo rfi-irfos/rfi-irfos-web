@@ -1189,7 +1189,7 @@ export const DE: Content = {
         links: { research: 'Forschung', trackRecord: 'Evidenz', methodology: 'Methodik', humanRights: 'Menschenrechts-Ledger', albert: 'albert. 3D-Explorer' },
       },
       services: {
-        heading: 'Leistungen', headingTesting: 'Prüfungen & Audits', headingOps: 'Betrieb & Compliance',
+        heading: 'Leistungen',
         links: { trustCenter: 'Trust Center', appSecurityAudit: 'App-Sicherheitsprüfung', gdprAppAudit: 'DSGVO-Prüfung für Apps', nis2: 'NIS2 für Softwareanbieter', trackerSdk: 'Tracker- & SDK-Check', aiApp: 'Datenschutz-Audit für KI-Apps', managedSoc: 'Ausgelagertes SOC', compliance: 'Compliance-Automatisierung', domainCheck: 'Domain Security Test', pentest: 'Penetrationstest', apiSecurity: 'API-Sicherheitstest', cloud: 'Cloud-Sicherheitsprüfung', codeReview: 'Secure Code Review', remediation: 'Schwachstellen beheben', itSecurityGraz: 'IT-Sicherheit Graz', nis2Consulting: 'NIS2-Beratung', dataSolutions: 'Data Solutions' },
       },
     },
