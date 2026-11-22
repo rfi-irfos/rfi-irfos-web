@@ -1704,3 +1704,11 @@ button { cursor: pointer; font-family: inherit; }
 .rfi-no-scrollbar::-webkit-scrollbar { display: none; }
 .doc-meta-link { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; font-size: var(--fs-label); font-weight: 600; color: #d8d8e8; text-decoration: none; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.16); transition: border-color .2s, color .2s, background .2s; }
 .doc-meta-link:hover { color: #fff; border-color: rgba(0,245,196,.6); background: rgba(0,245,196,.06); }
+
+/* Simeon 22.11.2026 (PWA): hero buttons side by side on phones, highlighted one on the right.
+   Two equal columns, same top offset, the long verb drops so both labels fit at 360 px. */
+@media (max-width: 560px) {
+  .svc-hero-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 420px; margin: 28px auto 0; }
+  .svc-hero-actions > a { margin-top: 0; width: 100%; padding: 13px 10px; font-size: 15px; white-space: nowrap; }
+  .svc-hero-actions .svc-long { display: none; }
+}

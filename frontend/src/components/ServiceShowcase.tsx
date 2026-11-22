@@ -48,7 +48,7 @@ export function ShowcaseTop({ doc, locale, slug }: { doc: ShowcaseDoc; locale: L
       <Reveal delay={1}><p className="data-lede">{doc.lede}</p></Reveal>
       <Reveal delay={2}><div className="svc-hero-actions">
         <a href={localePath(locale, '/access/')} className="svc-secondary"><IconTag size={18} stroke={2} aria-hidden />{de ? 'Pläne und Preise' : 'Plans and prices'}</a>
-        <a href={localePath(locale, '/#domain-check')} className="data-cta"><IconShieldSearch size={18} stroke={2} aria-hidden />{de ? 'Quick Check starten' : 'Start the Quick Check'}</a>
+        <a href={localePath(locale, '/#domain-check')} className="data-cta"><IconShieldSearch size={18} stroke={2} aria-hidden />{de ? <>Quick Check<span className="svc-long"> starten</span></> : <><span className="svc-long">Start the </span>Quick Check</>}</a>
       </div></Reveal>
     </header>
 
