@@ -115,7 +115,10 @@ export default function App() {
   // #hash nav clicks are unrelated native browser scrolling, not a slug change.
   const [reportSlug] = useState(() => getReportSlug() || getEvidencePathReportSlug())
   const [docSlug] = useState(getResearchDocSlug)
-  const [landingSlug] = useState(getLandingSlug)
+  // Reactive since 2026-11-22 (Simeon, "die sind alle tot"): footer service links navigate client-side
+  // (pushState + popstate), and a read-once slug left the URL on /penetration-testing/ while the page
+  // kept showing the previous service. onNav below now updates it like the legal-page slug.
+  const [landingSlug, setLandingSlug] = useState(getLandingSlug)
   const [sectionFocus] = useState(() => reportSlug ? 'track-record' : docSlug ? 'research' : getSectionFocus())
   // Landing on a /de/ URL wins over any saved locale preference - the URL names the
   // language the visitor (or crawler) explicitly asked for.
@@ -126,7 +129,7 @@ export default function App() {
     // on popstate, i.e. the real back/forward buttons) can't race the manual
     // restore below and snap the page to the wrong spot.
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
-    const onNav = () => setSlug(getSlug())
+    const onNav = () => { setSlug(getSlug()); setLandingSlug(getLandingSlug()) }
     window.addEventListener('hashchange', onNav)
     // popstate also covers the real back/forward buttons AND the manual
     // `history.pushState` + dispatched PopStateEvent that LegalPage's

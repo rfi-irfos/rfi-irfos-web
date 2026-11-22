@@ -918,7 +918,7 @@ export const DE: Content = {
   worldModel: {
     heading: 'Ein kontinuierlich wachsendes Weltmodell',
     intro: 'DINGIR (Dynamic Interaction Network & Graph Intelligence Runtime) verbindet historische und Echtzeit-Beobachtungen aus über 20 Domänen zu einem lebendigen, kausal strukturierten Weltgraphen. Ein System, das verfolgt, wie Dinge zusammenhängen, erkennt, was sich verändert, und ableitet, was diese Veränderung als Nächstes berührt.',
-    apiCta: 'API-Zugang anfragen →', squadLinkLabel: 'The Squad →',
+    apiCta: 'API-Zugang anfragen', squadLinkLabel: 'The Squad',
     liveStatus: 'Live-System aktiv',
     liveStatusFallback: 'Beispieldaten (Live-Feed nicht erreichbar)',
     statsAsOf: (date: string) => `Stand ${date}`,
@@ -988,9 +988,9 @@ export const DE: Content = {
     subheading: 'Sie recherchieren, überwachen und handeln, ohne auf eine Eingabe zu warten.',
     heroHeading: 'Spezialisierte Agenten für jede Art von Arbeit',
     intro: 'The Squad besteht aus spezialisierten Agenten, jeder auf eine klare Verantwortung zugeschnitten: Marktintelligenz, Förder-Recherche, Evidenzprüfung, Delivery-Checks, Sichtbarkeit und Security. Setzen Sie einen einzelnen Agenten auf ein Problem an, oder kombinieren Sie mehrere zu einer Pipeline für die gesamte Fragestellung. Alles läuft auf unserem eigenen Server in Graz.',
-    worldModelLinkLabel: 'DINGIR →',
+    worldModelLinkLabel: 'DINGIR',
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
-    primaryCta: 'Finden Sie den passenden Agenten →',
+    primaryCta: 'Agent finden',
     statusLine: 'Im Produktiveinsatz',
     trustBadges: ['EU-KI-Verordnung-konform', 'Nachvollziehbar durch Design', 'Jede Entscheidung rückverfolgbar', 'Von Menschen geprüft'],
     overview: {

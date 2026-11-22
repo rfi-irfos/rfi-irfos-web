@@ -61,6 +61,9 @@ function FaqItem({ q, a, id }: { q: string; a: string; id: string }) {
 
 export function LandingBody({ slug, locale, onAsk }: { slug: LandingSlug; locale: LandingLocale; onAsk?: (label: string) => void }) {
   const d = landingDoc(slug, locale)
+  // The lazy chunk can arrive after PublicSite's scroll-to-top on a client-side visit; start every
+  // service page at its top once it is actually mounted (unless the URL targets an anchor).
+  useEffect(() => { if (!window.location.hash) window.scrollTo(0, 0) }, [slug])
 
   // Head writes moved here from LegalPage (2026-11-22): title, description, og/twitter, plus the
   // BreadcrumbList, the FAQPage built from the visible Q&A below, and the Service node.

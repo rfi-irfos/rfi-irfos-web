@@ -3,8 +3,9 @@
 // Every card is a real link /research/<slug>/ (crawlable, shareable); a click opens the PDF
 // in the same carbon modal the Evidence reports use. Kept as its own copy of the carousel
 // for the same reason Proof.tsx documents: card shape and click behaviour differ.
+import { IconDatabase, IconExternalLink } from '@tabler/icons-react'
+import { ShareMenu } from '../ShareMenu'
 import { useState, useEffect, useRef } from 'react'
-import { IconShare } from '@tabler/icons-react'
 import { prefersReducedMotion, beacon, TEAL, Reveal, useMobile, useModalExit, useWideCarousel } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import {
@@ -26,10 +27,10 @@ function DocCard({ doc, onOpen }: { doc: ResearchDoc; onOpen: (slug: string) => 
     <a
       href={`/research/${doc.slug}/`}
       onClick={e => { e.preventDefault(); beacon('research_doc_card:' + doc.slug); onOpen(doc.slug) }}
-      className="rfi-hover-card rfi-glass-flat rfi-glass-solid"
+      className="rfi-card-quiet rfi-hover-card rfi-glass-flat rfi-glass-solid"
       style={{
         borderRadius: 16, padding: 0, display: 'flex', flexDirection: 'column', flex: '1 1 0', minWidth: 0,
-        textAlign: 'left', cursor: 'pointer', textDecoration: 'none', border: `1.5px solid ${TEAL}`,
+        textAlign: 'left', cursor: 'pointer', textDecoration: 'none', border: '1px solid var(--card-edge, rgba(255,255,255,0.12))',
         font: 'inherit', color: 'inherit', overflow: 'hidden',
       }}
     >
@@ -62,6 +63,7 @@ export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) 
   const reduced = prefersReducedMotion()
   const docs = RESEARCH_DOCS
   const n = docs.length
+  const loop = !reduced && n > perView
   const trackRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
   const used = useRef(false)
@@ -81,36 +83,50 @@ export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) 
         card.style.transform = `scale(${0.94 + item.intersectionRatio * 0.06})`
         if (item.intersectionRatio > bestRatio) { bestRatio = item.intersectionRatio; bestIdx = cardRefs.current.indexOf(card as HTMLDivElement) }
       })
-      if (bestIdx >= 0) setActiveIdx(bestIdx)
+      if (bestIdx >= 0) setActiveIdx(bestIdx % n)
     }, { root: track, threshold: Array.from({ length: 21 }, (_, i) => i / 20) })
     cardRefs.current.forEach(card => card && io.observe(card))
     const onScroll = () => markUsed()
     track.addEventListener('scroll', onScroll, { once: true, passive: true })
     return () => { io.disconnect(); track.removeEventListener('scroll', onScroll) }
-  }, [n])
+  }, [n, loop])
 
-  const go = (dir: number, silent = false) => {
-    if (!silent) markUsed()
+  // Endless ribbon (Simeon 22.11.: "von selbst durchspielen, langsam durchrollen, wiederholen", no scrollbar).
+  // The list is rendered twice; a rAF loop drifts scrollLeft and folds back by one list width, so the seam
+  // never shows. Hover, focus or an arrow click pauses the drift briefly; swipe on phones still works.
+  const holdUntil = useRef(0)
+  const go = (dir: number) => {
+    markUsed()
     const track = trackRef.current
     if (!track) return
-    const cardWidth = track.firstElementChild?.clientWidth ?? 300
-    const maxScroll = track.scrollWidth - track.clientWidth
-    const behavior = reduced ? 'auto' : 'smooth'
-    if (dir < 0 && track.scrollLeft <= 2) track.scrollTo({ left: maxScroll, behavior })
-    else if (dir > 0 && track.scrollLeft >= maxScroll - 2) track.scrollTo({ left: 0, behavior })
-    else track.scrollBy({ left: cardWidth * dir, behavior })
+    const step = (cardRefs.current[1]?.offsetLeft ?? 320) - (cardRefs.current[0]?.offsetLeft ?? 0)
+    holdUntil.current = performance.now() + 900
+    if (loop) {
+      const half = (cardRefs.current[n]?.offsetLeft ?? 0) - (cardRefs.current[0]?.offsetLeft ?? 0)
+      if (dir < 0 && track.scrollLeft < step) track.scrollLeft += half
+    }
+    track.scrollBy({ left: step * dir, behavior: reduced ? 'auto' : 'smooth' })
   }
 
-  // Slow showcase rotation, stops for good once a visitor steers (same rule as the Proof carousel).
   useEffect(() => {
-    if (reduced || n <= perView) return
-    const id = window.setInterval(() => {
-      if (paused || used.current || document.hidden) return
-      go(1, true)
-    }, 4500)
-    return () => window.clearInterval(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reduced, n, perView, paused])
+    if (!loop) return
+    const track = trackRef.current
+    if (!track) return
+    const SPEED = 28 // px per second
+    let pos = track.scrollLeft, written = -1, last = performance.now(), raf = 0
+    const tick = (now: number) => {
+      const dt = Math.min(now - last, 64) / 1000
+      last = now
+      if (Math.abs(track.scrollLeft - written) > 1) pos = track.scrollLeft // visitor swiped or an arrow scrolled
+      const half = (cardRefs.current[n]?.offsetLeft ?? 0) - (cardRefs.current[0]?.offsetLeft ?? 0)
+      if (!paused && !document.hidden && now > holdUntil.current) pos += SPEED * dt
+      if (half > 0 && pos >= half) pos -= half
+      if (now > holdUntil.current) { track.scrollLeft = pos; written = track.scrollLeft }
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [loop, n, paused])
 
   const arrowSize = phone ? 36 : 44
   const arrowStyle: React.CSSProperties = {
@@ -140,12 +156,12 @@ export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) 
           >
             <div
               ref={trackRef}
-              className="rfi-thin-scrollbar"
-              style={{ display: 'flex', gap: 20, overflowX: 'auto', overflowY: 'visible', scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch', padding: '8px 4px 4px' }}
+              className="rfi-no-scrollbar"
+              style={{ display: 'flex', gap: 20, overflowX: 'auto', overflowY: 'visible', WebkitOverflowScrolling: 'touch', padding: '8px 4px 4px' }}
             >
-              {docs.map((doc, i) => (
-                <div key={doc.slug} ref={el => { cardRefs.current[i] = el }} style={{
-                  flex: `0 0 ${cardBasis}`, minWidth: 0, boxSizing: 'border-box', display: 'flex', scrollSnapAlign: 'center',
+              {(loop ? [...docs, ...docs] : docs).map((doc, i) => (
+                <div key={`${doc.slug}-${i}`} ref={el => { cardRefs.current[i] = el; if (el) el.inert = i >= n }} aria-hidden={i >= n || undefined} style={{
+                  flex: `0 0 ${cardBasis}`, minWidth: 0, boxSizing: 'border-box', display: 'flex',
                   transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1)',
                 }}>
                   <DocCard doc={doc} onOpen={onOpen} />
@@ -170,60 +186,7 @@ export function ResearchLibrary({ onOpen }: { onOpen: (slug: string) => void }) 
 }
 
 function DocShare({ doc, locale }: { doc: ResearchDoc; locale: Locale }) {
-  const [open, setOpen] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const wrapRef = useRef<HTMLSpanElement>(null)
-  const btnRef = useRef<HTMLButtonElement>(null)
-  useEffect(() => {
-    if (!open) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return
-      e.stopPropagation(); e.preventDefault(); setOpen(false); btnRef.current?.focus()
-    }
-    const onDown = (e: MouseEvent) => { if (!wrapRef.current?.contains(e.target as Node)) setOpen(false) }
-    document.addEventListener('keydown', onKey, true)
-    document.addEventListener('mousedown', onDown)
-    return () => { document.removeEventListener('keydown', onKey, true); document.removeEventListener('mousedown', onDown) }
-  }, [open])
-  const url = docPageUrl(doc)
-  const title = `${doc.title[locale]} – RFI-IRFOS`
-  const label = TX.share[locale]
-  const u = encodeURIComponent(url), ti = encodeURIComponent(title), both = encodeURIComponent(`${title} ${url}`)
-  const links = [
-    { label: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}` },
-    { label: 'X', href: `https://x.com/intent/post?url=${u}&text=${ti}` },
-    { label: 'Bluesky', href: `https://bsky.app/intent/compose?text=${both}` },
-    { label: 'WhatsApp', href: `https://wa.me/?text=${both}` },
-    { label: 'Reddit', href: `https://www.reddit.com/submit?url=${u}&title=${ti}` },
-    { label: locale === 'de' ? 'E-Mail' : 'Email', href: `mailto:?subject=${ti}&body=${both}` },
-  ]
-  const onClick = async () => {
-    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
-      try { await navigator.share({ title, url }) } catch { /* user cancelled */ }
-      return
-    }
-    setOpen(o => !o)
-  }
-  const copy = async () => {
-    try { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 1800) } catch { window.prompt(label, url) }
-  }
-  const item: React.CSSProperties = { display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', color: '#d8d8e8', fontSize: 'var(--fs-small)', padding: '8px 12px', cursor: 'pointer', textDecoration: 'none' }
-  return (
-    <span ref={wrapRef} style={{ position: 'relative', display: 'inline-flex', marginLeft: 'auto', marginRight: 2 }}>
-      <button ref={btnRef} type="button" onClick={onClick} aria-label={label} title={label} aria-haspopup="menu" aria-expanded={open}
-        style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', lineHeight: 1, padding: '9px 11px', display: 'inline-flex', alignItems: 'center' }}>
-        <IconShare size={18} stroke={1.8} aria-hidden="true" />
-      </button>
-      {open && (
-        <div role="menu" aria-label={label} style={{ position: 'absolute', right: 0, top: '100%', zIndex: 5, minWidth: 170, background: '#14141b', border: '1px solid rgba(255,255,255,0.14)', borderRadius: 10, boxShadow: '0 12px 32px rgba(0,0,0,0.55)', padding: 4 }}>
-          <button role="menuitem" type="button" onClick={copy} style={item} autoFocus>{copied ? TX.copied[locale] : TX.copyLink[locale]}</button>
-          {links.map(l => (
-            <a key={l.label} role="menuitem" href={l.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} style={item}>{l.label}</a>
-          ))}
-        </div>
-      )}
-    </span>
-  )
+  return <ShareMenu url={docPageUrl(doc)} title={`${doc.title[locale]} – RFI-IRFOS`} label={TX.share[locale]} locale={locale} />
 }
 
 // Modal: same carbon chrome as the Evidence report modal. `slug` null = closed.
@@ -255,11 +218,11 @@ export function ResearchDocModal({ slug, onClose, h1 }: { slug: string | null; o
       }}>
         {h1 && <h1 style={{ position: 'absolute', width: 1, height: 1, margin: -1, padding: 0, overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap', border: 0 }}>{doc.title[locale]}</h1>}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)', gap: 8 }}>
-          <span style={{ fontSize: 'var(--fs-label)', color: TEAL }}>{TX.modalLabel[locale]}</span>
+          <span style={{ fontSize: 'var(--fs-label)', color: TEAL, marginRight: 4 }}>{TX.modalLabel[locale]}</span>
           {doi && <a href={doi} target="_blank" rel="noopener noreferrer" onClick={() => beacon('research_doc_doi:' + doc.slug)}
-            style={{ fontSize: 'var(--fs-label)', color: '#a0a0b8', textDecoration: 'underline' }}>{TX.doi[locale]}</a>}
+            className="doc-meta-link" title="DOI"><IconExternalLink size={13} stroke={2} aria-hidden="true" />{TX.doi[locale]}</a>}
           {data && <a href={data} target="_blank" rel="noopener noreferrer" onClick={() => beacon('research_doc_data:' + doc.slug)}
-            style={{ fontSize: 'var(--fs-label)', color: '#a0a0b8', textDecoration: 'underline' }}>{TX.data[locale]}</a>}
+            className="doc-meta-link" title="Zenodo"><IconDatabase size={13} stroke={2} aria-hidden="true" />{TX.data[locale]}</a>}
           <DocShare doc={doc} locale={locale} />
           <button onClick={onClose} aria-label={TX.close[locale]} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', padding: '9px 11px' }}>&#x2715;</button>
         </div>

@@ -10,7 +10,7 @@
 // (i.e. a PDF gets uploaded to the ledger), it appears here automatically -
 // no separate data entry, per Simeon's explicit ask.
 import { useState, useEffect, useRef } from 'react'
-import { prefersReducedMotion, beacon, TEAL, Reveal, useWideCarousel } from './shared'
+import { prefersReducedMotion, beacon, Reveal, useWideCarousel } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
 import { AUDIT_HIGHLIGHTS, AUDIT_META, reportSlug } from './TrackRecord'
@@ -107,11 +107,11 @@ function ProofCard({ entry, onOpen }: { entry: ProofEntry; onOpen: (url: string)
     <a
       href={`/evidence/${reportSlug(entry.reportUrl)}/`}
       onClick={e => { e.preventDefault(); beacon('proof_card_click:' + entry.target); onOpen(entry.reportUrl) }}
-      className="rfi-hover-card rfi-glass-flat rfi-glass-solid"
+      className="rfi-card-quiet rfi-hover-card rfi-glass-flat rfi-glass-solid"
       style={{
         borderRadius: 16, padding: 0, display: 'flex', flexDirection: 'column', gap: 0,
         flex: '1 1 0', minWidth: 0, textAlign: 'left', cursor: 'pointer', textDecoration: 'none',
-        border: `1.5px solid ${TEAL}`, font: 'inherit', color: 'inherit', overflow: 'hidden',
+        border: '1px solid var(--card-edge, rgba(255,255,255,0.12))', font: 'inherit', color: 'inherit', overflow: 'hidden',
       }}
     >
       <div style={{ padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>

@@ -43,6 +43,7 @@ import { useLocale, type Locale } from '../../hooks/useLocale'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { useRef, useState } from 'react'
 import { IconRadar, IconBolt, IconCode, IconUsers, IconStack2, IconCertificate, IconListCheck, IconLayoutDashboard } from '@tabler/icons-react'
+import { IconLogin, IconHeartRateMonitor } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { IconBulb, IconShieldLock, IconDatabase, IconTrendingUp, IconTerminal2 } from '@tabler/icons-react'
 
@@ -347,11 +348,11 @@ export function PricingSection({
                   <p style={{ fontSize: 'var(--fs-body)', color: 'var(--text)', margin: '0 0 20px', lineHeight: 'var(--lh-body)', maxWidth: 560 }}>{t.pricing.managedSoc.text}</p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
                     {/* Simeon 18.11.: a visitor who looks for the customer portal gets the window with sign-in and access here as well. */}
-                    <button type="button" onClick={onOpenLogin} aria-haspopup="dialog" data-testid="managed-soc-sign-in" style={{ color: 'var(--text)', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.28)', padding: '12px 22px', borderRadius: 10, fontWeight: 700, fontSize: 'var(--fs-body)', textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                      {t.login.requestPortalAccess}
+                    <button type="button" onClick={onOpenLogin} aria-haspopup="dialog" data-testid="managed-soc-sign-in" className="btn-frost" style={{ padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-body)', whiteSpace: 'nowrap', cursor: 'pointer' }}>
+                      <IconLogin size={18} stroke={2} aria-hidden />{t.login.requestPortalAccess}
                     </button>
                     <button type="button" className="fx-cta-glass" onClick={() => onSelectTier('Managed SOC')} style={{ padding: '12px 22px', borderRadius: 10, fontWeight: 700, fontSize: 'var(--fs-body)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
-                      {t.pricing.managedSoc.cta}
+                      <IconHeartRateMonitor size={18} stroke={2} aria-hidden />{t.pricing.managedSoc.cta}
                     </button>
                   </div>
                 </div>

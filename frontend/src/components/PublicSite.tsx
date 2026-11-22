@@ -1,4 +1,5 @@
 import { useState, useEffect, useLayoutEffect, useRef, lazy, Suspense } from 'react'
+import { IconMoodSmile, IconCheck } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { LoginPreview } from './LoginPreview'
@@ -326,6 +327,14 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
   const [loginOpen, setLoginOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('login') === 'open')
   const NAV_LINKS = NAV_HREFS.map(n => ({ key: n.key, label: t.nav.links[n.key], href: n.href }))
   const [view, setView] = useState<PublicView>(() => initialLanding ? 'service' : viewForSection(initialSection))
+  // A service page reached client-side (footer link, back/forward) switches the view and starts at the
+  // top of the new page; leaving every service page (back to /) returns to the homepage view.
+  // Adjusted during render (React's pattern for state that follows a prop); LandingBody scrolls to the top.
+  const [prevLanding, setPrevLanding] = useState(initialLanding)
+  if (prevLanding !== initialLanding) {
+    setPrevLanding(initialLanding)
+    setView(initialLanding ? 'service' : (view === 'service' ? viewForSection(null) : view))
+  }
   // The chapter slide-in only plays on real view changes. On the first view it would fade
   // in content the prerendered snapshot already showed (Lighthouse round 24, mobile LCP).
   const firstView = useRef(view)
@@ -2134,7 +2143,8 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
         // background while keeping the same theme-correct border/shadow/hc handling.
         <div ref={bannerRef} className="rfi-glass-flat rfi-glass-solid" style={{
                   position: 'fixed', left: 16, right: 16, bottom: mobile ? 'calc(92px + env(safe-area-inset-bottom))' : 16, zIndex: 200,
-                  maxWidth: 640, margin: '0 auto',
+                  // German text runs longer: wider plate instead of a taller one (Simeon 22.11.).
+                  maxWidth: locale === 'de' ? 860 : 640, margin: '0 auto',
                   borderRadius: 12,
                   padding: '20px 24px',
                   display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
@@ -2144,7 +2154,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                   // Orange glow so the banner stands out until it is closed (Simeon 18.11.).
                   boxShadow: '0 0 0 1px rgba(255,138,40,0.32), 0 0 18px 2px rgba(255,138,40,0.2), 0 0 64px 10px rgba(255,110,20,0.11)',
                 }}>
-                  <p style={{ margin: 0, flex: '1 1 260px', fontSize: 'var(--fs-small)', color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 'var(--lh-body)' }}>
+                  <p style={{ margin: 0, flex: '1 1 360px', fontSize: 'var(--fs-small)', color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 'var(--lh-body)' }}>
                     {t.cookieBanner.text}
                     <span style={{ display: 'block', fontSize: 'var(--fs-label)', color: theme === 'light' ? '#000000' : '#ffffff', marginTop: 4, fontWeight: 'normal' }}>
                       {t.cookieBanner.subtext}
@@ -2153,13 +2163,12 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                   <div style={{ display: 'flex', gap: 8, flex: 'none' }}>
                     <button
                       onClick={() => {}}
+                      className="btn-frost"
                       style={{
-                        background: 'transparent', color: theme === 'light' ? '#000000' : '#ffffff',
-                        border: theme === 'light' ? '1px solid var(--border)' : '2px solid #ffffff',
                         borderRadius: 8, padding: '9px 16px', fontSize: 'var(--fs-small)', fontWeight: 700, cursor: 'pointer',
                       }}
                     >
-                      {t.cookieBanner.doesNothing}
+                      <IconMoodSmile size={15} stroke={2} aria-hidden />{t.cookieBanner.doesNothing}
                     </button>
                     <button
                       onClick={dismissCookieBanner}
@@ -2168,7 +2177,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                         borderRadius: 8, padding: '9px 16px', fontSize: 'var(--fs-small)', fontWeight: 700, cursor: 'pointer',
                       }}
                     >
-                      {t.cookieBanner.close}
+                      <IconCheck size={15} stroke={2} aria-hidden />{t.cookieBanner.close}
                     </button>
                   </div>
                 </div>

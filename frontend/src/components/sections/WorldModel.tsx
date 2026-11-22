@@ -14,6 +14,7 @@ import {
   IconMessage2, IconMountain, IconRobot, IconRoute, IconShieldLock, IconShip, IconSnowflake, IconTrain,
   IconWorld, IconX,
 } from '@tabler/icons-react'
+import { IconUsersGroup, IconKey } from '@tabler/icons-react'
 import { Reveal, OUTPUT_TAG_HUES, pageZoom, FilmPanel } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
@@ -255,8 +256,8 @@ function HeroBlock({ onApiRequest }: { onApiRequest: () => void }) {
             {/* Same shape as Squad's hero (2026-10-26, Simeon): the page's own ask as
                 the primary button, the sibling product as the secondary link. Was
                 "Explore" (scroll to use cases) + "Request API access". */}
-            <a href={localeHref('/squad/', locale)} className="wm-btn-secondary">{w.squadLinkLabel}</a>
-            <button className="wm-btn-primary" onClick={onApiRequest}>{w.apiCta}</button>
+            <a href={localeHref('/squad/', locale)} className="wm-btn-secondary"><IconUsersGroup size={18} stroke={2} aria-hidden />{w.squadLinkLabel}</a>
+            <button className="wm-btn-primary" onClick={onApiRequest}><IconKey size={18} stroke={2} aria-hidden />{w.apiCta}</button>
           </div>
         </div>
       </Reveal>

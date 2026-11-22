@@ -131,7 +131,7 @@ export const LIBRARY_TEXT = {
   },
   open: { en: 'Read the PDF', de: 'PDF lesen' },
   doi: { en: 'Cite via DOI', de: 'Per DOI zitieren' },
-  data: { en: 'Data', de: 'Daten' },
+  data: { en: 'Dataset', de: 'Datensatz' },
   prev: { en: 'Previous document', de: 'Vorheriges Dokument' },
   next: { en: 'Next document', de: 'Nächstes Dokument' },
   modalLabel: { en: 'RESEARCH DOCUMENT', de: 'FORSCHUNGSDOKUMENT' },

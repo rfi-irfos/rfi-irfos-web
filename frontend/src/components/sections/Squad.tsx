@@ -87,14 +87,14 @@ function SquadHero({ onRequestAccess }: { onRequestAccess: () => void }) {
               instead of standing alone as a bold line above it. */}
           <p className="sq-intro">{linkPhrase(s.intro, locale === 'de' ? 'Evidenzprüfung, Delivery-Checks' : 'evidence verification, delivery checks', localeHref('/evidence/', locale))}</p>
           <div className="sq-hero-ctas">
-            <a href={localeHref('/world-model/', locale)} className="wm-btn-secondary">{s.worldModelLinkLabel}</a>
+            <a href={localeHref('/world-model/', locale)} className="wm-btn-secondary"><IconWorld size={18} stroke={2} aria-hidden />{s.worldModelLinkLabel}</a>
             {/* Was a plain text link above the buttons + a separate "Watch an
                 agent run" ghost button below them (live feedback 2026-09-13:
                 inconsistent with World Model's own hero, which pairs one
                 primary and one secondary button side by side - "Explore" +
                 "Request API access"). Reuses that same two-button shape here:
                 this real link-as-button replaces both. */}
-            <button type="button" className="wm-btn-primary" onClick={onRequestAccess}>{s.primaryCta}</button>
+            <button type="button" className="wm-btn-primary" onClick={onRequestAccess}><IconSearch size={18} stroke={2} aria-hidden />{s.primaryCta}</button>
           </div>
         </Reveal>
         <Reveal>

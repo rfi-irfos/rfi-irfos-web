@@ -6,6 +6,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { IconShieldCheck, IconShieldLock, IconCertificate, IconHeadset, IconListCheck, IconWorldSearch, IconTool, IconX } from '@tabler/icons-react'
+import { IconShieldSearch, IconFileText } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
 import { beacon } from './shared'
 import type { LandingSlug } from '../landingSlugs'
@@ -131,10 +132,10 @@ export function TopicModal({ slug, doc, href, onClose }: { slug: LandingSlug; do
         <h2 id="topic-modal-title" style={{ fontSize: 'var(--fs-h3, 1.4rem)', fontWeight: 800, color: 'var(--text)', margin: '0 0 12px', lineHeight: 'var(--lh-tight)' }}>{doc.h1}</h2>
         <p style={{ color: 'var(--text)', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: '0 auto 22px', maxWidth: 460 }}>{doc.lead}</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-          <button type="button" onClick={startCheck}
-            style={{ background: 'transparent', color: 'var(--accent-text)', border: 'none', padding: '12px 14px', fontWeight: 700, fontSize: 'var(--fs-small)', cursor: 'pointer' }}>{c.startCheck}</button>
+          <button type="button" onClick={startCheck} className="btn-frost"
+            style={{ padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', cursor: 'pointer' }}><IconShieldSearch size={18} stroke={2} aria-hidden />{c.startCheck}</button>
           <a href={href} onClick={() => beacon('topic_modal_page:' + slug)}
-            className="fx-cta-glass" style={{ padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none' }}>{c.fullPage} <span aria-hidden="true">→</span></a>
+            className="fx-cta-glass" style={{ padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none' }}><IconFileText size={18} stroke={2} aria-hidden />{c.fullPage}</a>
         </div>
         {also && <p style={{ margin: '16px 0 0', fontSize: 'var(--fs-small)' }}><a href={alsoHref} style={{ color: 'var(--text2)', textDecoration: 'underline' }}>{t.footer.groups.services.links[KEYS[also]]}</a></p>}
       </div>

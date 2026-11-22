@@ -12,6 +12,7 @@ import {
   IconShieldBolt, IconTool, IconFileCheck, IconRocket, IconMapPin, IconWorld, IconUserShield, IconLockCheck, IconTrendingUp, IconBuilding,
   IconAdjustmentsAlt, IconAntenna, IconApi, IconBolt, IconBook, IconBriefcase, IconBug, IconBuildingBank, IconCertificate, IconChartBar, IconChartDots3, IconClipboardCheck, IconClipboardList, IconClipboardText, IconClock, IconCloud, IconCloudComputing, IconDeviceMobile, IconDevices, IconFileCertificate, IconFileCode, IconFileImport, IconFileReport, IconFileSpreadsheet, IconFileText, IconFingerprint, IconGitCompare, IconHeartbeat, IconHelpCircle, IconInbox, IconKey, IconLayoutDashboard, IconListDetails, IconListSearch, IconLock, IconLockOpen, IconMail, IconMap2, IconMessageChatbot, IconMessages, IconMoodKid, IconNetwork, IconPackage, IconPackages, IconPencil, IconPercentage, IconRefresh, IconRobot, IconRoute, IconScale, IconSearch, IconSend, IconServer, IconSettings, IconShield, IconShieldCheck, IconShieldLock, IconSortDescending, IconStack2, IconSwords, IconTarget, IconTruck, IconUserCheck, IconUsers, IconVideo, IconWorldWww, IconZoomIn,
 } from '@tabler/icons-react'
+import { IconTag, IconShieldSearch } from '@tabler/icons-react'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
 
 const CONTROL_ICONS = [IconMapPin, IconWorld, IconUserShield, IconLockCheck]
@@ -46,8 +47,8 @@ export function ShowcaseTop({ doc, locale, slug }: { doc: ShowcaseDoc; locale: L
       <Reveal><h1>{doc.h1}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{doc.lede}</p></Reveal>
       <Reveal delay={2}><div className="svc-hero-actions">
-        <a href={localePath(locale, '/access/')} className="svc-secondary">{de ? 'Pläne und Preise' : 'Plans and prices'}</a>
-        <a href={localePath(locale, '/#domain-check')} className="data-cta">{de ? 'Quick Check starten' : 'Start the Quick Check'} <span aria-hidden="true">→</span></a>
+        <a href={localePath(locale, '/access/')} className="svc-secondary"><IconTag size={18} stroke={2} aria-hidden />{de ? 'Pläne und Preise' : 'Plans and prices'}</a>
+        <a href={localePath(locale, '/#domain-check')} className="data-cta"><IconShieldSearch size={18} stroke={2} aria-hidden />{de ? 'Quick Check starten' : 'Start the Quick Check'}</a>
       </div></Reveal>
     </header>
 

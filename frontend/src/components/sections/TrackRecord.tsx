@@ -3,8 +3,9 @@
 // the modal that opens PDF reports (`setReportModal`) lives at the page level in
 // PublicSite.tsx (shared with the checkout/proposal modals), so this section
 // receives it as props rather than owning its own copy.
-import { useState, useEffect, useRef, useMemo } from 'react'
-import { IconShare, IconFileCertificate } from '@tabler/icons-react'
+import { ShareMenu } from '../ShareMenu'
+import { useState, useEffect, useMemo } from 'react'
+import { IconFileCertificate } from '@tabler/icons-react'
 import type { Theme } from '../../hooks/useTheme'
 import { TEAL, CountUp, Reveal } from './shared'
 import { Countdown, Elapsed, DaysAgo, Battery } from './ledgerClock'
@@ -3370,62 +3371,9 @@ export function ReportFacts({ slug, locale, asH1 }: { slug: string; locale: 'en'
 // von Drittanbietern, die CSP (backend/src/main.rs) bleibt unveraendert.
 // ---------------------------------------------------------------------------------------------
 export function ReportShare({ slug, locale }: { slug: string; locale: 'en' | 'de' }) {
-  const [open, setOpen] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const wrapRef = useRef<HTMLSpanElement>(null)
-  const btnRef = useRef<HTMLButtonElement>(null)
   const f = getReportFacts(slug)
   const de = locale === 'de'
-  useEffect(() => {
-    if (!open) return
-    // Capture-Phase + stopPropagation: Escape schliesst nur das Popover, nicht zugleich das Modal.
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return
-      e.stopPropagation(); e.preventDefault(); setOpen(false); btnRef.current?.focus()
-    }
-    const onDown = (e: MouseEvent) => { if (!wrapRef.current?.contains(e.target as Node)) setOpen(false) }
-    document.addEventListener('keydown', onKey, true)
-    document.addEventListener('mousedown', onDown)
-    return () => { document.removeEventListener('keydown', onKey, true); document.removeEventListener('mousedown', onDown) }
-  }, [open])
   if (!f) return null
-  const url = `https://rfi-irfos.com/evidence/${slug}/`
   const title = de ? `${f.names}: Datenschutz- & Sicherheitsbefund – RFI-IRFOS` : `${f.names}: privacy & security findings – RFI-IRFOS`
-  const label = de ? 'Report teilen' : 'Share report'
-  const u = encodeURIComponent(url), ti = encodeURIComponent(title), both = encodeURIComponent(`${title} ${url}`)
-  const links: { label: string; href: string }[] = [
-    { label: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}` },
-    { label: 'X', href: `https://x.com/intent/post?url=${u}&text=${ti}` },
-    { label: 'Bluesky', href: `https://bsky.app/intent/compose?text=${both}` },
-    { label: 'WhatsApp', href: `https://wa.me/?text=${both}` },
-    { label: 'Reddit', href: `https://www.reddit.com/submit?url=${u}&title=${ti}` },
-    { label: de ? 'E-Mail' : 'Email', href: `mailto:?subject=${ti}&body=${both}` },
-  ]
-  const onClick = async () => {
-    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
-      try { await navigator.share({ title, url }) } catch { /* Abbruch durch Nutzer */ }
-      return
-    }
-    setOpen(o => !o)
-  }
-  const copy = async () => {
-    try { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 1800) } catch { window.prompt(label, url) }
-  }
-  const item = { display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', color: '#d8d8e8', fontSize: 'var(--fs-small)', padding: '8px 12px', cursor: 'pointer', textDecoration: 'none', fontFamily: 'inherit', whiteSpace: 'nowrap' } as const
-  return (
-    <span ref={wrapRef} style={{ position: 'relative', display: 'inline-flex', marginLeft: 'auto', marginRight: 2 }}>
-      <button ref={btnRef} type="button" onClick={onClick} aria-label={label} title={label} aria-haspopup="menu" aria-expanded={open}
-        style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', lineHeight: 1, padding: '9px 11px', display: 'inline-flex', alignItems: 'center' }}>
-        <IconShare size={18} stroke={1.8} aria-hidden="true" />
-      </button>
-      {open && (
-        <div role="menu" aria-label={label} style={{ position: 'absolute', right: 0, top: '100%', zIndex: 5, minWidth: 170, background: '#14141b', border: '1px solid rgba(255,255,255,0.14)', borderRadius: 10, boxShadow: '0 12px 32px rgba(0,0,0,0.6)', padding: '4px 0' }}>
-          <button role="menuitem" type="button" onClick={copy} style={item} autoFocus>{copied ? (de ? 'Kopiert' : 'Copied') : (de ? 'Link kopieren' : 'Copy link')}</button>
-          {links.map(l => (
-            <a key={l.label} role="menuitem" href={l.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} style={item}>{l.label}</a>
-          ))}
-        </div>
-      )}
-    </span>
-  )
+  return <ShareMenu url={`https://rfi-irfos.com/evidence/${slug}/`} title={title} label={de ? 'Report teilen' : 'Share report'} locale={locale} />
 }

@@ -1564,7 +1564,7 @@ button { cursor: pointer; font-family: inherit; }
 .rfi-landing .data-product p, .rfi-landing .data-pipeline p, .rfi-landing .data-start-grid p, .rfi-landing .data-quality li { color: var(--text); }
 .rfi-landing .data-product { min-height: 0; }
 .svc-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-.svc-hero-actions .data-cta, .svc-cta-row .data-cta { display: inline-block; text-decoration: none; }
+.svc-hero-actions .data-cta, .svc-cta-row .data-cta { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; }
 .svc-secondary { display: inline-block; margin-top: 28px; padding: 13px 21px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-weight: 700; text-decoration: none; }
 .svc-kpis { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; width: min(880px, 100%); margin: 44px auto 0; padding: 0; }
 .svc-kpis li { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px 10px; border-radius: 12px; background: var(--kpi-glass, rgba(255,255,255,.04)); border: 1px solid var(--border); }
@@ -1653,3 +1653,52 @@ button { cursor: pointer; font-family: inherit; }
 .svc-ask-copy p { margin: 0; color: var(--text); font-size: var(--fs-small); line-height: var(--lh-body); }
 .svc-ask-btn { flex: none; cursor: pointer; font: inherit; font-weight: 700; padding: 12px 22px; border-radius: 8px; text-decoration: none; }
 @media (max-width: 640px) { .svc-ask { flex-direction: column; align-items: flex-start; } }
+
+/* Service pages, "Pläne und Preise" (Simeon 2026-11-22: "nich so grau", "schönes Milchglas"): the frosted
+   glass of the homepage hero's Compliance button (.irf-hero-cta), next to the turquoise glass button. */
+.svc-secondary { margin-top: 28px; display: inline-flex; align-items: center; justify-content: center; color: #fff; background: rgba(5,7,14,.45); border: 1px solid rgba(255,255,255,.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: background .25s, border-color .25s, transform .25s; }
+.svc-secondary:hover { border-color: rgba(0,245,196,.8); background: rgba(5,7,14,.55); transform: translateY(-1px); }
+[data-theme="light"] .svc-secondary { color: var(--text); background: rgba(255,255,255,.55); border-color: rgba(10,20,30,.25); }
+@media (prefers-reduced-motion: reduce) { .svc-secondary { transition: none; } }
+
+/* Every button pair (Simeon 2026-11-22: "für alles wo zwei knöpfe sind", "ein icon davor und dieser stil"):
+   left = frosted glass like the hero's Compliance button, right = turquoise glass; both lead with an icon. */
+.btn-frost { color: #fff; background: rgba(5,7,14,.45); border: 1px solid rgba(255,255,255,.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); text-decoration: none; transition: background .25s, border-color .25s, transform .25s; }
+.btn-frost:hover { border-color: rgba(0,245,196,.8); background: rgba(5,7,14,.55); transform: translateY(-1px); }
+[data-theme="light"] .btn-frost { color: var(--text); background: rgba(255,255,255,.55); border-color: rgba(10,20,30,.25); }
+.btn-frost, .svc-secondary, .data-cta, .fx-cta-glass, .wm-btn-primary, .wm-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 9px; }
+.wm-btn-secondary { color: #fff; }
+[data-theme="light"] .wm-btn-secondary { color: var(--text); }
+@media (prefers-reduced-motion: reduce) { .btn-frost { transition: none; } }
+
+/* Research and report cards, ledger (Simeon 2026-11-22: "häßlich, dass das alles so highlightet ist"):
+   a quiet edge at rest, the turquoise edge fades in on hover; the ledger's deadline bar stays, thinner and softer. */
+.rfi-card-quiet { --card-edge: rgba(255,255,255,0.12); transition: border-color .3s ease, transform .25s, box-shadow .3s; }
+.rfi-card-quiet:hover, .rfi-card-quiet:focus-visible { --card-edge: rgba(0,245,196,0.6); }
+[data-theme="light"] .rfi-card-quiet { --card-edge: rgba(10,20,30,0.14); }
+[data-theme="light"] .rfi-card-quiet:hover { --card-edge: rgba(0,150,120,0.6); }
+.rfi-ledger-bat { height: 2px; opacity: .5; }
+
+/* Share menu (components/ShareMenu.tsx, Simeon 2026-11-22): icon per entry, green check on click, soft fade. */
+.share-menu-wrap { position: relative; display: inline-flex; margin-left: auto; margin-right: 2px; }
+.share-menu-btn { background: none; border: none; color: #8a8aa0; cursor: pointer; line-height: 1; padding: 9px 11px; display: inline-flex; align-items: center; transition: color .2s; }
+.share-menu-btn:hover { color: var(--text); }
+.share-menu { position: absolute; right: 0; top: 100%; z-index: 5; min-width: 200px; padding: 6px; background: #14141b; border: 1px solid rgba(255,255,255,0.14); border-radius: 10px; box-shadow: 0 12px 32px rgba(0,0,0,.45);
+  opacity: 0; transform: translateY(-4px) scale(.98); transform-origin: top right; transition: opacity .18s ease, transform .18s ease; }
+.share-menu.is-shown { opacity: 1; transform: none; }
+.share-menu-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border: none; border-radius: 7px; background: none; color: #d8d8e8; font: inherit; font-size: var(--fs-small); text-align: left; text-decoration: none; cursor: pointer; transition: background .18s, color .18s; }
+.share-menu-item:hover, .share-menu-item:focus-visible { background: rgba(255,255,255,.06); color: #fff; outline: none; }
+.share-menu-icon { flex: none; color: #9a9ab0; }
+.share-menu-label { flex: 1; }
+.share-menu-check { flex: none; display: grid; place-items: center; color: #22c55e; opacity: 0; transform: scale(.6); transition: opacity .2s ease, transform .25s cubic-bezier(.2,.9,.3,1.4); }
+.share-menu-check.is-on { opacity: 1; transform: none; }
+[data-theme="light"] .share-menu { background: #fff; border-color: rgba(10,20,30,.14); }
+[data-theme="light"] .share-menu-item { color: #1a1a24; }
+[data-theme="light"] .share-menu-item:hover { background: rgba(10,20,30,.05); color: #000; }
+@media (prefers-reduced-motion: reduce) { .share-menu, .share-menu-check { transition: none; } }
+
+/* Research ribbon: drifts by itself, so no scrollbar (Simeon 22.11.). */
+.rfi-no-scrollbar { scrollbar-width: none; }
+.rfi-no-scrollbar::-webkit-scrollbar { display: none; }
+.doc-meta-link { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; font-size: var(--fs-label); font-weight: 600; color: #d8d8e8; text-decoration: none; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.16); transition: border-color .2s, color .2s, background .2s; }
+.doc-meta-link:hover { color: #fff; border-color: rgba(0,245,196,.6); background: rgba(0,245,196,.06); }
