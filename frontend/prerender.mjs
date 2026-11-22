@@ -31,7 +31,7 @@ const PORT = 4173
 // Service pages (content in src/components/landingPages.ts), EN and /de twins. Since 2026-11-22 a view of
 // PublicSite with a lazy body, so the snapshot gate waits for the page's own h1 (see WAIT_SELECTOR).
 const LANDING_ROUTES = [
-  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check', '/ai-app-privacy-audit', '/managed-soc', '/compliance-automation', '/domain-security-test', '/penetration-testing', '/api-security-testing', '/cloud-security-assessment', '/secure-code-review', '/vulnerability-remediation', '/it-security-graz', '/nis2-consulting',
+  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check', '/ai-app-privacy-audit', '/managed-soc', '/compliance-automation', '/domain-security-test', '/penetration-testing', '/api-security-testing', '/cloud-security-assessment', '/secure-code-review', '/vulnerability-remediation', '/it-security-graz', '/nis2-consulting', '/ai-llm-security-testing', '/security-architecture-review', '/threat-intelligence', '/vendor-risk-management',
 ]
 
 const ROUTES = [

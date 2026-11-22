@@ -646,7 +646,7 @@ a[href^="mailto:"]:not(footer a) { color: var(--text) !important; }
    reintroduce the dark-vs-not-dark branching bug .rfi-glass-flat was built to fix. */
 .rfi-glass-solid { background-color: var(--glass-bg-solid); }
 /* Cookie banner (Zabih 22.11.): the carbon plate keeps a very faint see-through, 7 % plus a light blur so the text stays calm. High contrast stays opaque. */
-.rfi-cookie-plate { background-color: color-mix(in srgb, var(--glass-bg-solid) 93%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.rfi-cookie-plate { background-color: color-mix(in srgb, var(--glass-bg-solid) 80%, transparent); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2); }
 [data-theme="hc"] .rfi-cookie-plate { background-color: var(--glass-bg-solid); }
 /* Blur is a progressive enhancement, never load-bearing. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -1204,3 +1204,7 @@ svg .k3 { color: #5aa9ff; }
 @keyframes rfi-req-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes rfi-req-rise { from { opacity: 0; transform: translateY(20px) scale(.97); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .rfi-req-overlay, .rfi-req-panel { animation: none; } }
+
+/* Cookie plate (Simeon 22.11.2026): a tad more see-through in light and dark, the blur keeps the text readable.
+   Needs the extra .rfi-cookie-plate to beat the opaque raised-plate recipe for dark above. */
+[data-theme="dark"] .rfi-glass-flat.rfi-glass-solid.rfi-cookie-plate { background-color: rgba(16,19,26,.78); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2); }

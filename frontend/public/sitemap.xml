@@ -121,6 +121,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://rfi-irfos.com/ai-llm-security-testing/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rfi-irfos.com/security-architecture-review/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rfi-irfos.com/threat-intelligence/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rfi-irfos.com/vendor-risk-management/</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://rfi-irfos.com/access/</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>

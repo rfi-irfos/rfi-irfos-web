@@ -28,6 +28,10 @@ const ICONS: Record<LandingSlug, typeof IconShieldCheck> = {
   'vulnerability-remediation': IconTool,
   'it-security-graz': IconShieldCheck,
   'nis2-consulting': IconCertificate,
+  'ai-llm-security-testing': IconShieldCheck,
+  'security-architecture-review': IconShieldCheck,
+  'threat-intelligence': IconShieldSearch,
+  'vendor-risk-management': IconListCheck,
 }
 
 const KEYS = {
@@ -38,6 +42,8 @@ const KEYS = {
   'penetration-testing': 'pentest', 'api-security-testing': 'apiSecurity',
   'cloud-security-assessment': 'cloud', 'secure-code-review': 'codeReview', 'vulnerability-remediation': 'remediation',
   'it-security-graz': 'itSecurityGraz', 'nis2-consulting': 'nis2Consulting',
+  'ai-llm-security-testing': 'aiLlm', 'security-architecture-review': 'architecture',
+  'threat-intelligence': 'threatIntel', 'vendor-risk-management': 'vendorRisk',
 } as const
 
 // Simeon 2026-11-10: five pills, not one per landing page. Penetration testing leads (strongest

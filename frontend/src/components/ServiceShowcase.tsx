@@ -12,7 +12,7 @@ import {
   IconShieldBolt, IconTool, IconFileCheck, IconRocket, IconMapPin, IconWorld, IconUserShield, IconLockCheck, IconTrendingUp, IconBuilding,
   IconAdjustmentsAlt, IconAntenna, IconApi, IconBolt, IconBook, IconBriefcase, IconBug, IconBuildingBank, IconCertificate, IconChartBar, IconChartDots3, IconClipboardCheck, IconClipboardList, IconClipboardText, IconClock, IconCloud, IconCloudComputing, IconDeviceMobile, IconDevices, IconFileCertificate, IconFileCode, IconFileImport, IconFileReport, IconFileSpreadsheet, IconFileText, IconFingerprint, IconGitCompare, IconHeartbeat, IconHelpCircle, IconInbox, IconKey, IconLayoutDashboard, IconListDetails, IconListSearch, IconLock, IconLockOpen, IconMail, IconMap2, IconMessageChatbot, IconMessages, IconMoodKid, IconNetwork, IconPackage, IconPackages, IconPencil, IconPercentage, IconRefresh, IconRobot, IconRoute, IconScale, IconSearch, IconSend, IconServer, IconSettings, IconShield, IconShieldCheck, IconShieldLock, IconSortDescending, IconStack2, IconSwords, IconTarget, IconTruck, IconUserCheck, IconUsers, IconVideo, IconWorldWww, IconZoomIn,
 } from '@tabler/icons-react'
-import { IconTag, IconShieldSearch } from '@tabler/icons-react'
+import { IconTag, IconShieldSearch, IconSitemap } from '@tabler/icons-react'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
 
 const CONTROL_ICONS = [IconMapPin, IconWorld, IconUserShield, IconLockCheck]
@@ -23,6 +23,10 @@ const STEP_ICONS = [IconEye, IconFilter, IconShieldBolt, IconTool, IconFileCheck
 const AUD_ICONS = [IconRocket, IconTrendingUp, IconBuilding]
 // Per-page icon sets (Simeon 2026-11-22): each tile, step and audience card gets an icon that fits its title.
 const PAGE_ICONS: Record<string, [TablerIcon[], TablerIcon[], TablerIcon[]]> = {
+  'ai-llm-security-testing': [[IconMessages, IconStack2, IconRobot, IconShieldBolt, IconChartBar, IconFingerprint], [IconListDetails, IconSwords, IconFileCode, IconTool, IconRefresh], [IconMessageChatbot, IconRobot, IconScale]],
+  'security-architecture-review': [[IconSitemap, IconStack2, IconTarget, IconRefresh, IconBolt, IconNetwork], [IconBook, IconRoute, IconBolt, IconShieldLock, IconRefresh], [IconTrendingUp, IconScale, IconCloud]],
+  'threat-intelligence': [[IconAlarm, IconChartDots3, IconSwords, IconFingerprint, IconEye, IconServer], [IconInbox, IconGitCompare, IconAlarm, IconShieldCheck, IconFileReport], [IconUsersGroup, IconBuildingBank, IconUserShield]],
+  'vendor-risk-management': [[IconSearch, IconPercentage, IconSortDescending, IconEye, IconPackages, IconClipboardText], [IconListDetails, IconSortDescending, IconSearch, IconChartBar, IconEye], [IconCertificate, IconBriefcase, IconBuildingSkyscraper]],
   'penetration-testing': [[IconBolt, IconRoute, IconBug, IconCode, IconDevices, IconFileReport], [IconTarget, IconRadar2, IconBug, IconTool, IconRefresh], [IconRocket, IconPackage, IconClipboardCheck]],
   'api-security-testing': [[IconKey, IconLockOpen, IconMap2, IconApi, IconCode, IconFileReport], [IconListSearch, IconRadar2, IconSwords, IconTool, IconRefresh], [IconApi, IconDeviceMobile, IconClipboardCheck]],
   'cloud-security-assessment': [[IconAdjustmentsAlt, IconServer, IconWorld, IconRoute, IconCode, IconEye], [IconListDetails, IconSearch, IconRoute, IconTool, IconEye], [IconCloud, IconCloudComputing, IconClipboardList]],

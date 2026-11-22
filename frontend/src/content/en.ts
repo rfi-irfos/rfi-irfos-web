@@ -1224,7 +1224,7 @@ export const EN = {
       // Footer column linking the four search landing pages (2026-10-31) from every public view.
       services: {
         heading: 'Services',
-        links: { trustCenter: 'Trust Center', appSecurityAudit: 'App Security Audit', gdprAppAudit: 'GDPR App Audit', nis2: 'NIS2 for Software Vendors', trackerSdk: 'Tracker & SDK Check', aiApp: 'AI App Privacy Audit', managedSoc: 'Outsourced SOC', compliance: 'Compliance Automation', domainCheck: 'Domain Security Test', pentest: 'Penetration Testing', apiSecurity: 'API Security Testing', cloud: 'Cloud Security Assessment', codeReview: 'Secure Code Review', remediation: 'Vulnerability Remediation', itSecurityGraz: 'IT Security Graz', nis2Consulting: 'NIS2 Consulting', dataSolutions: 'Data Solutions' },
+        links: { trustCenter: 'Trust Center', appSecurityAudit: 'App Security Audit', gdprAppAudit: 'GDPR App Audit', nis2: 'NIS2 for Software Vendors', trackerSdk: 'Tracker & SDK Check', aiApp: 'AI App Privacy Audit', managedSoc: 'Outsourced SOC', compliance: 'Compliance Automation', domainCheck: 'Domain Security Test', pentest: 'Penetration Testing', apiSecurity: 'API Security Testing', cloud: 'Cloud Security Assessment', codeReview: 'Secure Code Review', remediation: 'Vulnerability Remediation', itSecurityGraz: 'IT Security Graz', nis2Consulting: 'NIS2 Consulting', aiLlm: 'AI & LLM Security Testing', architecture: 'Architecture & Resilience Review', threatIntel: 'Threat Intelligence', vendorRisk: 'Vendor Risk Management', dataSolutions: 'Data Solutions' },
       },
     },
     socialAria: 'Social media profiles',

@@ -22,13 +22,14 @@ import auditStats from '../content/auditStats.json'
 import {
   IconDeviceMobile, IconLock, IconCertificate, IconRadar2, IconRobot, IconHeadset, IconListCheck, IconWorldSearch, IconBug, IconApi,
   IconCloudLock, IconCode, IconTool, IconMapPin, IconShieldCheck, IconFileSearch, IconKey, IconServer, IconGitBranch, IconClock,
-  IconCircleCheck, IconBook, IconMessageQuestion, IconPlus,
+  IconCircleCheck, IconBook, IconMessageQuestion, IconPlus, IconBuildingFortress, IconTruckDelivery,
 } from '@tabler/icons-react'
 
 const ICONS: Record<LandingSlug, typeof IconLock> = {
   'app-security-audit': IconDeviceMobile, 'gdpr-app-audit': IconLock, 'nis2-software-vendors': IconCertificate, 'app-tracker-sdk-check': IconRadar2,
   'ai-app-privacy-audit': IconRobot, 'managed-soc': IconHeadset, 'compliance-automation': IconListCheck, 'domain-security-test': IconWorldSearch,
   'penetration-testing': IconBug, 'api-security-testing': IconApi, 'cloud-security-assessment': IconCloudLock, 'secure-code-review': IconCode, 'vulnerability-remediation': IconTool, 'it-security-graz': IconMapPin, 'nis2-consulting': IconCertificate,
+  'ai-llm-security-testing': IconRobot, 'security-architecture-review': IconBuildingFortress, 'threat-intelligence': IconRadar2, 'vendor-risk-management': IconTruckDelivery,
 }
 
 // One icon per bullet card, by position. The bullets are sentences from landingPages.ts

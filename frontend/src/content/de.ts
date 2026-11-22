@@ -1190,7 +1190,7 @@ export const DE: Content = {
       },
       services: {
         heading: 'Leistungen',
-        links: { trustCenter: 'Trust Center', appSecurityAudit: 'App-Sicherheitsprüfung', gdprAppAudit: 'DSGVO-Prüfung für Apps', nis2: 'NIS2 für Softwareanbieter', trackerSdk: 'Tracker- & SDK-Check', aiApp: 'Datenschutz-Audit für KI-Apps', managedSoc: 'Ausgelagertes SOC', compliance: 'Compliance-Automatisierung', domainCheck: 'Domain Security Test', pentest: 'Penetrationstest', apiSecurity: 'API-Sicherheitstest', cloud: 'Cloud-Sicherheitsprüfung', codeReview: 'Secure Code Review', remediation: 'Schwachstellen beheben', itSecurityGraz: 'IT-Sicherheit Graz', nis2Consulting: 'NIS2-Beratung', dataSolutions: 'Data Solutions' },
+        links: { trustCenter: 'Trust Center', appSecurityAudit: 'App-Sicherheitsprüfung', gdprAppAudit: 'DSGVO-Prüfung für Apps', nis2: 'NIS2 für Softwareanbieter', trackerSdk: 'Tracker- & SDK-Check', aiApp: 'Datenschutz-Audit für KI-Apps', managedSoc: 'Ausgelagertes SOC', compliance: 'Compliance-Automatisierung', domainCheck: 'Domain Security Test', pentest: 'Penetrationstest', apiSecurity: 'API-Sicherheitstest', cloud: 'Cloud-Sicherheitsprüfung', codeReview: 'Secure Code Review', remediation: 'Schwachstellen beheben', itSecurityGraz: 'IT-Sicherheit Graz', nis2Consulting: 'NIS2-Beratung', aiLlm: 'AI & LLM Security Testing', architecture: 'Architektur- & Resilienz-Review', threatIntel: 'Threat Intelligence', vendorRisk: 'Vendor Risk Management', dataSolutions: 'Data Solutions' },
       },
     },
     socialAria: 'Social-Media-Profile',

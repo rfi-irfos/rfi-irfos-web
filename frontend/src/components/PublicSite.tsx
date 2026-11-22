@@ -737,22 +737,18 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
-  // Cookie banner should never cover the footer: hide it the moment the footer
-  // enters the viewport. Uses IntersectionObserver on the footer element, so it
-  // works regardless of which element actually scrolls (window or an inner
-  // wrapper) — cross-device safe (desktop / tablet / mobile, any OS).
+  // Cookie banner never covers the footer: while the footer is in view the plate fades out,
+  // and it fades back in when the reader scrolls up again. Simeon 22.11.2026: the old
+  // version closed the banner for good once the footer appeared, so it looked like it
+  // vanished. Only the close button dismisses it now. IntersectionObserver on the footer,
+  // so it works whichever element scrolls.
+  const [footerInView, setFooterInView] = useState(false)
   useEffect(() => {
     if (!cookieBannerOpen) return
     const footer = document.querySelector('footer')
     if (!footer) return
     const io = new IntersectionObserver((entries) => {
-      for (const e of entries) {
-        if (e.isIntersecting) {
-          setCookieBannerOpen(false)
-          io.disconnect()
-          break
-        }
-      }
+      for (const e of entries) setFooterInView(e.isIntersecting)
     }, { rootMargin: '120px' })
     io.observe(footer)
     return () => io.disconnect()
@@ -966,6 +962,8 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
       { label: t.footer.groups.services.links.trackerSdk, href: `${servicesPrefix}/app-tracker-sdk-check/` },
       { label: t.footer.groups.services.links.gdprAppAudit, href: `${servicesPrefix}/gdpr-app-audit/` },
       { label: t.footer.groups.services.links.aiApp, href: `${servicesPrefix}/ai-app-privacy-audit/` },
+      { label: t.footer.groups.services.links.aiLlm, href: `${servicesPrefix}/ai-llm-security-testing/` },
+      { label: t.footer.groups.services.links.architecture, href: `${servicesPrefix}/security-architecture-review/` },
       // second column: what runs continuously (operations, compliance, Graz)
       // Trust Center lives on its own host (trust.rfi-irfos.com), so this link is absolute.
       { label: t.footer.groups.services.links.trustCenter, href: 'https://trust.rfi-irfos.com/' },
@@ -975,6 +973,8 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
       { label: t.footer.groups.services.links.compliance, href: `${servicesPrefix}/compliance-automation/` },
       { label: t.footer.groups.services.links.nis2Consulting, href: `${servicesPrefix}/nis2-consulting/` },
       { label: t.footer.groups.services.links.nis2, href: `${servicesPrefix}/nis2-software-vendors/` },
+      { label: t.footer.groups.services.links.threatIntel, href: `${servicesPrefix}/threat-intelligence/` },
+      { label: t.footer.groups.services.links.vendorRisk, href: `${servicesPrefix}/vendor-risk-management/` },
       { label: t.footer.groups.services.links.dataSolutions, href: '/data-solutions/' },
     ],
   }
@@ -2145,9 +2145,10 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                   borderRadius: 12,
                   padding: '20px 24px',
                   display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
-                  transform: bannerClosing ? 'scale(0.85)' : 'scale(1)',
-                  opacity: bannerClosing ? 0 : 1,
-                  transition: 'transform 0.24s ease-in, opacity 0.24s ease-in',
+                  transform: bannerClosing ? 'scale(0.85)' : footerInView ? 'translateY(14px)' : 'none',
+                  opacity: bannerClosing || footerInView ? 0 : 1,
+                  pointerEvents: footerInView ? 'none' : undefined,
+                  transition: bannerClosing ? 'transform 0.24s ease-in, opacity 0.24s ease-in' : 'transform 0.4s cubic-bezier(.2,.7,.2,1), opacity 0.4s ease',
                   // Orange glow so the banner stands out until it is closed (Simeon 18.11.).
                   boxShadow: '0 0 0 1px rgba(255,138,40,0.32), 0 0 18px 2px rgba(255,138,40,0.2), 0 0 64px 10px rgba(255,110,20,0.11)',
                 }}>

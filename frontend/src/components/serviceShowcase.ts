@@ -14,6 +14,7 @@ import { PART as PART_CODE } from './showcase/code'
 import { PART as PART_NIS2 } from './showcase/nis2'
 import { PART as PART_APPS } from './showcase/apps'
 import { PART as PART_TESTING } from './showcase/testing'
+import { PART as PART_EXPANSION } from './showcase/expansion'
 
 export type ShowcaseDoc = {
   h1: string
@@ -153,4 +154,5 @@ export const SHOWCASE: Partial<Record<LandingSlug, { en: ShowcaseDoc; de: Showca
   ...PART_APPS,
   ...PART_NIS2,
   ...PART_CODE,
+  ...PART_EXPANSION,
 }
