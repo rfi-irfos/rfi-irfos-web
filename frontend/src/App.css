@@ -1608,3 +1608,9 @@ button { cursor: pointer; font-family: inherit; }
   background: rgba(0,245,196,.12); transform: translateY(-1px);
   box-shadow: 0 0 30px rgba(0,245,196,.5), inset 0 0 14px rgba(0,245,196,.18);
 }
+
+/* Glass buttons, softer edge (Simeon 2026-11-22: "nicht ganz so harter grüner stroke, a tiny bit weniger"):
+   the turquoise edge drops to 60 % and the outer glow a touch, for every glass button at once. */
+.fx-cta-glass, .irf-hero-cta--primary, .data-cta, .fx-cta-teal, .wm-btn-primary { border-color: rgba(0,245,196,.6); box-shadow: 0 0 18px rgba(0,245,196,.28), inset 0 0 12px rgba(0,245,196,.1); }
+[data-theme="light"] .fx-cta-glass, [data-theme="light"] .data-cta, [data-theme="light"] .fx-cta-teal { border-color: rgba(0,184,148,.6); }
+.fx-cta-glass:hover, .irf-hero-cta--primary:hover, .data-cta:hover, .fx-cta-teal:not(:disabled):hover, .wm-btn-primary:hover { border-color: rgba(0,245,196,.8); }
