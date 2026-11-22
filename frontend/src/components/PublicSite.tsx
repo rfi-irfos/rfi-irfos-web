@@ -2142,7 +2142,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
         // translucent material the rest of the site uses - .rfi-glass-flat alone made it
         // 52% see-through (feedback 2026-08-06), so the opaque variant overrides just the
         // background while keeping the same theme-correct border/shadow/hc handling.
-        <div ref={bannerRef} className="rfi-glass-flat rfi-glass-solid" style={{
+        <div ref={bannerRef} className="rfi-glass-flat rfi-glass-solid rfi-cookie-plate" style={{
                   position: 'fixed', left: 16, right: 16, bottom: mobile ? 'calc(92px + env(safe-area-inset-bottom))' : 16, zIndex: 200,
                   // German text runs longer: wider plate instead of a taller one (Simeon 22.11.).
                   maxWidth: locale === 'de' ? 860 : 640, margin: '0 auto',

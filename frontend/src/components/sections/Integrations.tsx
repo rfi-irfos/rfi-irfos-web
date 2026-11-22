@@ -94,9 +94,9 @@ const CSS = `
 }
 `
 
-// Nur in der installierten App (standalone/fullscreen) und nur, wenn die Tab-Leiste da ist: misst den Abstand
+// In der installierten App und im Handy-Browser, sobald die Tab-Leiste da ist: misst den Abstand
 // vom Bandanfang bis zum unteren Bildschirmrand und den Platz, den die Leiste belegt, bei jeder Größenänderung
-// von Fenster oder Hero neu. Im Browser bleibt das Band unverändert.
+// von Fenster oder Hero neu. Auf dem Desktop fehlt die Leiste, dort bleibt das Band unverändert.
 function useFillToTabBar() {
   const ref = useRef<HTMLElement>(null)
   useEffect(() => {
@@ -104,11 +104,16 @@ function useFillToTabBar() {
     const pwa = window.matchMedia('(display-mode: standalone), (display-mode: fullscreen)')
     if (!el) return
     let raf = 0
-    const measure = () => {
+    let lastW = 0
+    const measure = (e?: Event) => {
+      if (e?.type === 'resize' && !pwa.matches && el.hasAttribute('data-fill') && window.innerWidth === lastW) return
+      lastW = window.innerWidth
       cancelAnimationFrame(raf)
       raf = requestAnimationFrame(() => {
         const bar = document.querySelector<HTMLElement>('.rfi-tabbar')
-        if (!pwa.matches || !bar || bar.getClientRects().length === 0) {
+        // Phone browser too (Zabih 22.11.: home-screen shortcut opens a Chrome tab). There the address bar changes the
+        // height while scrolling, so the fill is measured once per width and ignores those height-only resizes.
+        if (!bar || bar.getClientRects().length === 0) {
           el.removeAttribute('data-fill'); return
         }
         const top = el.getBoundingClientRect().top + window.scrollY
@@ -129,10 +134,10 @@ function useFillToTabBar() {
     window.addEventListener('scroll', onScroll, { passive: true })
     // Oberhalb ändert sich die Höhe noch nach dem ersten Bild (Schriften, Hero-Einflug): Seite beobachten,
     // dazu nach load und einmal verzögert. Gleiche Werte setzen ändert nichts, daher keine Schleife.
-    const ro = new ResizeObserver(measure)
+    const ro = new ResizeObserver(() => measure())
     ro.observe(document.body)
     if (el.previousElementSibling) ro.observe(el.previousElementSibling)
-    const late = window.setTimeout(measure, 1500)
+    const late = window.setTimeout(() => measure(), 1500)
     window.addEventListener('load', measure)
     window.addEventListener('resize', measure)
     pwa.addEventListener('change', measure)
