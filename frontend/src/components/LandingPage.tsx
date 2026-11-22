@@ -10,7 +10,8 @@
 // from App.css and are shared with DataSolutions.tsx on purpose: one look for every
 // product page. Body text stays at full contrast: these pages carry the offer itself, and
 // important information must not sit in grey text (binding style rule).
-import React from 'react'
+import React, { useEffect } from 'react'
+import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd, landingServiceJsonLd } from '../lib/structuredData'
 import { LANDING, LANDING_SLUGS, landingDoc, localePath, type LandingLocale, type LandingSlug } from './landingPages'
 import { InitialReviewFlow } from './sections/InitialReviewFlow'
 import { RelatedTiles } from './RelatedTiles'
@@ -36,19 +37,29 @@ const CARD_ICONS = [IconShieldCheck, IconKey, IconServer, IconGitBranch, IconClo
 const A: React.CSSProperties = { color: 'var(--accent-text)', textDecoration: 'none', fontWeight: 600 }
 const SECONDARY: React.CSSProperties = { display: 'inline-block', marginTop: 28, padding: '13px 21px', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text)', fontWeight: 700, textDecoration: 'none' }
 
-export function LandingBody({ slug, locale, navigate }: {
-  slug: LandingSlug
-  locale: LandingLocale
-  navigate: (e: React.MouseEvent, href: string) => void
-}) {
+export function LandingBody({ slug, locale }: { slug: LandingSlug; locale: LandingLocale }) {
   const d = landingDoc(slug, locale)
+
+  // Head writes moved here from LegalPage (2026-11-22): title, description, og/twitter, plus the
+  // BreadcrumbList, the FAQPage built from the visible Q&A below, and the Service node.
+  useEffect(() => {
+    document.title = d.title
+    document.querySelector('meta[name="description"]')?.setAttribute('content', d.description)
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', d.title)
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', d.description)
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', d.title)
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', d.description)
+    upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(d.label, localePath(locale, `/${slug}`)))
+    upsertJsonLd('ld-faqpage', faqPageJsonLd(d.faq))
+    upsertJsonLd('ld-landing-service', landingServiceJsonLd(slug, d.label, d.description, locale))
+  }, [slug, locale, d])
   const fill = (s: string) => s.replace('{apps}', String(auditStats.appsAudited)).replace('{critical}', String(auditStats.criticalFindings))
   const de = locale === 'de'
   const others = LANDING_SLUGS.filter(s => s !== slug)
   const Icon = ICONS[slug]
   const toCheck = (e: React.MouseEvent) => { e.preventDefault(); document.getElementById('domain-check')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
 
-  return <div className="data-solutions rfi-landing">
+  return <div className="data-solutions rfi-landing"><div className="data-wrap">
     <header className="data-hero">
       <Reveal><div className="data-icon rfi-ri-box"><Icon size={30} stroke={1.6} /></div></Reveal>
       <Reveal><h1>{d.h1}</h1></Reveal>
@@ -105,7 +116,7 @@ export function LandingBody({ slug, locale, navigate }: {
           {de ? ', die Agenten hinter jeder Prüfung unter ' : ', the agents behind every review on '}
           <a href={localePath(locale, '/squad/')} style={A} className="rfi-inline-link">The Squad</a>
           {de ? ' und die Rahmenwerke, an denen wir messen, unter ' : ' and the frameworks we measure against on '}
-          <a href={localePath(locale, '/standards/')} onClick={e => navigate(e, localePath(locale, '/standards/'))} style={A} className="rfi-inline-link">Standards</a>.
+          <a href={localePath(locale, '/standards/')} style={A} className="rfi-inline-link">Standards</a>.
         </p>
       </div></Reveal>
       {/* id="domain-check": target of the hero button and of the compact topic modal (same anchor the homepage uses). */}
@@ -125,13 +136,13 @@ export function LandingBody({ slug, locale, navigate }: {
         </Reveal>)}
       </div>
       <Reveal><p style={{ textAlign: 'center', marginTop: 28 }}>
-        <a href={localePath(locale, '/faq/')} onClick={e => navigate(e, localePath(locale, '/faq/'))} style={A}>
+        <a href={localePath(locale, '/faq/')} style={A}>
           {de ? 'Weitere Antworten zu Leistungen, Portal, Connectors und Datenort in den FAQ' : 'More answers on services, the portal, connectors and data location in the FAQ'}
         </a>
       </p></Reveal>
     </section>
 
-    <RelatedTiles title={de ? 'Verwandte Seiten' : 'Related pages'} navigate={navigate}
+    <RelatedTiles title={de ? 'Verwandte Seiten' : 'Related pages'}
       items={others.map(s => ({ href: localePath(locale, `/${s}/`), label: LANDING[s][locale].label, Icon: ICONS[s] }))} />
-  </div>
+  </div></div>
 }

@@ -1513,7 +1513,7 @@ button { cursor: pointer; font-family: inherit; }
 /* Service pages as showcase pages (Zabih + Simeon 2026-11-22): the data-* layout from Data
    Solutions, tightened for a page that sits inside LegalPage's glass card. Body text and
    section intros at full contrast, because these pages carry the offer. */
-.rfi-landing .data-hero { padding-block: 8px 36px; }
+.rfi-landing .data-hero { padding-block: 48px 40px; }
 .rfi-landing .data-hero h1 { font-size: var(--fs-h2); line-height: var(--lh-tight); max-width: 900px; }
 .rfi-landing .data-hero .data-icon { margin-bottom: 20px; }
 .rfi-landing .data-lede, .rfi-landing .data-section-head p { color: var(--text); }

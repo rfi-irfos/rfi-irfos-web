@@ -45,11 +45,10 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { IconScale, IconShieldLock, IconFileText, IconShieldCheck, IconCertificate, IconUsers, IconFlask, IconHelpCircle } from '@tabler/icons-react'
 import { RelatedTiles } from './RelatedTiles'
 import { useLocale } from '../hooks/useLocale'
-import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd, landingServiceJsonLd } from '../lib/structuredData'
+import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd } from '../lib/structuredData'
 import { attributionParams } from './sections/shared'
 import auditStats from '../content/auditStats.json'
-import { isLandingSlug, landingDoc, localePath } from './landingPages'
-import { LandingBody } from './LandingPage'
+import { localePath } from './landingPages'
 import { localeHref } from '../lib/localeHref'
 
 const LIGHTHOUSE_PIXEL = '/api/track/pixel.gif'
@@ -225,11 +224,10 @@ export function LegalPage({ slug }: { slug: string }) {
     // Landing pages (2026-10-31) carry their own per-locale title/description/FAQ in
     // landingPages.ts instead of a META entry; same head writes, plus a BreadcrumbList and a
     // FAQPage built from the page's visible Q&A (the exact text rendered below, not a sample).
-    const landing = isLandingSlug(slug) ? landingDoc(slug, locale) : null
-    const meta = landing ? { title: landing.title, description: landing.description } : META[slug]
+    const meta = META[slug]
     if (!meta) return
-    const title = (!landing && locale === 'de' && (meta as typeof META[string]).titleDe) ? (meta as typeof META[string]).titleDe! : meta.title
-    const description = (!landing && locale === 'de' && (meta as typeof META[string]).descriptionDe) ? (meta as typeof META[string]).descriptionDe! : meta.description
+    const title = (locale === 'de' && meta.titleDe) ? meta.titleDe : meta.title
+    const description = (locale === 'de' && meta.descriptionDe) ? meta.descriptionDe : meta.description
     document.title = title
     document.querySelector('meta[name="description"]')?.setAttribute('content', description)
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', title)
@@ -237,13 +235,6 @@ export function LegalPage({ slug }: { slug: string }) {
     document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', title)
     document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description)
 
-    if (landing) {
-      upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(landing.label, localePath(locale, `/${slug}`)))
-      upsertJsonLd('ld-faqpage', faqPageJsonLd(landing.faq))
-      upsertJsonLd('ld-landing-service', landingServiceJsonLd(slug, landing.label, landing.description, locale === 'de' ? 'de' : 'en'))
-      return
-    }
-    document.getElementById('ld-landing-service')?.remove()
     const quicklink = LEGAL_QUICKLINKS.find(q => q.slug === slug)
     if (quicklink) {
       upsertJsonLd('ld-breadcrumb', breadcrumbJsonLd(locale === 'de' ? quicklink.labelDe : quicklink.labelEn, `${locale === 'de' ? '/de' : ''}/${slug}`))
@@ -289,7 +280,7 @@ export function LegalPage({ slug }: { slug: string }) {
   return (
     <div style={BASE}>
       <PageBackdrop reduce={reduce} />
-      <div style={isLandingSlug(slug) ? { ...PROSE, maxWidth: 1320 } : PROSE}>
+      <div style={PROSE}>
         {/* Glass card wrapping the whole page body (2026-08-18, live feedback:
             "wenigstens schaut sleek aus drunter si ne transparente glass box unter
             die texte") - .rfi-glass resolves against :root's dark token set even
@@ -335,9 +326,7 @@ export function LegalPage({ slug }: { slug: string }) {
               (was a full-reload <a href> - "das ist nicht clean, das ist
               increment"), real href kept for middle-click/SEO/no-JS. */}
           <nav aria-label={locale === 'de' ? 'Verwandte Seiten' : 'Related pages'} style={{ display: 'flex', flexWrap: 'wrap', gap: 5, flex: '1 1 auto', justifyContent: 'center' }}>
-            {/* Service pages (2026-11-22, Zabih + Simeon): no row of fourteen pills above the h1 any more,
-                the other services sit in the Related tiles at the end of the page. */}
-            {(isLandingSlug(slug) ? [] : LEGAL_QUICKLINKS.filter(q => q.slug !== slug)).map(q => (
+            {LEGAL_QUICKLINKS.filter(q => q.slug !== slug).map(q => (
               // display: inline-flex + lineHeight: 1 (2026-08-19, live feedback:
               // "sollten die buttons net alle in einer reihe sauber sein?") -
               // plain inline <a> pills can render at subtly different heights
@@ -392,11 +381,10 @@ export function LegalPage({ slug }: { slug: string }) {
             {slug === 'methodology' && <Methodology />}
             {slug === 'faq'         && <FaqPage locale={locale} />}
             {(slug === 'faq' || slug === 'methodology' || slug === 'standards') && <NextSteps de={locale === 'de'} locale={locale} />}
-            {isLandingSlug(slug) && <LandingBody slug={slug} locale={locale} navigate={navigate} />}
-            {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq'].includes(slug) && !isLandingSlug(slug) && (
+            {!['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq'].includes(slug) && (
               <p style={P}>Seite nicht gefunden.</p>
             )}
-            {!isLandingSlug(slug) && LEGAL_QUICKLINKS.some(q => q.slug === slug) && (
+            {LEGAL_QUICKLINKS.some(q => q.slug === slug) && (
               <RelatedTiles title={locale === 'de' ? 'Verwandte Seiten' : 'Related pages'} navigate={navigate}
                 items={LEGAL_QUICKLINKS.filter(q => q.slug !== slug).map(q => ({ href: localeHref(`/${q.slug}/`, locale), label: locale === 'de' ? q.labelDe : q.labelEn, Icon: TILE_ICONS[q.slug] }))} />
             )}

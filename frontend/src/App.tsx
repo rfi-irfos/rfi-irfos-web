@@ -19,7 +19,13 @@ const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ defau
 // gdpr-app-audit, nis2-software-vendors, app-tracker-sdk-check - content in
 // components/landingPages.ts) ride the same standalone-route path as the legal pages:
 // LegalPage renders them inside its shell, prerender.mjs lists them in ROUTES + LOCALIZED_ROUTES.
-const LEGAL_SLUGS = ['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq', ...LANDING_SLUGS]
+const LEGAL_SLUGS = ['impressum', 'datenschutz', 'agb', 'security', 'standards', 'team', 'methodology', 'faq']
+// Service pages (2026-11-22, Zabih + Simeon): no longer inside LegalPage's glass card. They are a view of
+// PublicSite like Data Solutions, with the site's own nav and footer. Same prerendered routes as before.
+function getLandingSlug() {
+  const p = pathSlug()
+  return (LANDING_SLUGS as readonly string[]).includes(p) ? (p as typeof LANDING_SLUGS[number]) : null
+}
 // View ids that also get a real, crawlable URL in addition to their homepage hash.
 // The legacy section slugs remain accepted so existing links do not break while
 // the public shell is reorganised into Home / World Model / Data Solutions /
@@ -99,7 +105,7 @@ function getEvidencePathReportSlug() {
 // app itself and stay excluded.
 // navigator.webdriver: prerender.mjs (Playwright) also boots every route from the root
 // snapshot, the notice must never be baked into a prerendered page (gated in check-dist-seo).
-const SERVED_NOT_FOUND = import.meta.env.PROD && !navigator.webdriver && appPathname() !== '/' && !getSectionFocus()
+const SERVED_NOT_FOUND = import.meta.env.PROD && !navigator.webdriver && appPathname() !== '/' && !getSectionFocus() && !getLandingSlug()
   && document.querySelector('link[rel="canonical"]')?.getAttribute('href') === 'https://rfi-irfos.com'
 
 export default function App() {
@@ -109,6 +115,7 @@ export default function App() {
   // #hash nav clicks are unrelated native browser scrolling, not a slug change.
   const [reportSlug] = useState(() => getReportSlug() || getEvidencePathReportSlug())
   const [docSlug] = useState(getResearchDocSlug)
+  const [landingSlug] = useState(getLandingSlug)
   const [sectionFocus] = useState(() => reportSlug ? 'track-record' : docSlug ? 'research' : getSectionFocus())
   // Landing on a /de/ URL wins over any saved locale preference - the URL names the
   // language the visitor (or crawler) explicitly asked for.
@@ -181,5 +188,5 @@ export default function App() {
   // Impressum/Datenschutz/AGB left open) - the DE/EN toggle reaches this
   // route the same way it reaches the homepage.
   if (slug) return <LocaleProvider initialLocale={initialLocale}><Suspense fallback={null}><LegalPage slug={slug} /></Suspense><PageScrollbar /></LocaleProvider>
-  return <LocaleProvider initialLocale={initialLocale}><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} initialDocSlug={docSlug} />{SERVED_NOT_FOUND && <NotFoundNotice />}<CheckoutReturnNotice /><PageScrollbar /></LocaleProvider>
+  return <LocaleProvider initialLocale={initialLocale}><PublicSite initialSection={sectionFocus} initialReportSlug={reportSlug} initialDocSlug={docSlug} initialLanding={landingSlug} />{SERVED_NOT_FOUND && <NotFoundNotice />}<CheckoutReturnNotice /><PageScrollbar /></LocaleProvider>
 }

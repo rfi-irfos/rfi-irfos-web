@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { LoginPreview } from './LoginPreview'
@@ -26,6 +26,9 @@ import { WorldModelSection } from './sections/WorldModel'
 import { SquadSection } from './sections/Squad'
 import { PricingSection } from './sections/Pricing'
 import { DataSolutionsSection } from './sections/DataSolutions'
+import type { LandingSlug } from './landingSlugs'
+// Service pages (2026-11-22): the copy in landingPages.ts is ~140 KB, so the body loads with its own chunk.
+const LandingBody = lazy(() => import('./LandingPage').then(m => ({ default: m.LandingBody })))
 import { CoopPartnersSection } from './sections/CoopPartners'
 import { SubmitSection, type TipForm } from './sections/Submit'
 import { ZONE_ORDER, ZONE_LABELS, SYSTEMS } from '../content/systems'
@@ -237,7 +240,7 @@ function SocialGlyph({ k }: { k: (typeof SOCIAL_PROFILES)[number]['key'] }) {
   }
 }
 
-type PublicView = 'home' | 'research' | 'world-model' | 'squad' | 'evidence' | 'data-solutions' | 'access'
+type PublicView = 'home' | 'research' | 'world-model' | 'squad' | 'evidence' | 'data-solutions' | 'access' | 'service'
 
 function viewForSection(section?: string | null): PublicView {
   if (section === 'research') return 'research'
@@ -311,7 +314,7 @@ const BREADCRUMB_BY_VIEW: Partial<Record<PublicView, { navKey: keyof Content['na
   'access': { navKey: 'pricing', path: '/access' },
 }
 
-export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }: { initialSection?: string | null; initialReportSlug?: string | null; initialDocSlug?: string | null } = {}) {
+export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, initialLanding }: { initialSection?: string | null; initialReportSlug?: string | null; initialDocSlug?: string | null; initialLanding?: LandingSlug | null } = {}) {
   const { locale, setLocale, t } = useLocale()
   // /?login=open opens the customer portal window (not ?portal=: index.html reads any query starting with p as an encoded path) (link back from the Trust Center landing page, 2026-11-18). The parameter is removed on mount.
   const [socModalOpen, setSocModalOpen] = useState(false)
@@ -320,7 +323,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
   const [complianceOpen, setComplianceOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('login') === 'open')
   const NAV_LINKS = NAV_HREFS.map(n => ({ key: n.key, label: t.nav.links[n.key], href: n.href }))
-  const [view, setView] = useState<PublicView>(() => viewForSection(initialSection))
+  const [view, setView] = useState<PublicView>(() => initialLanding ? 'service' : viewForSection(initialSection))
   // The chapter slide-in only plays on real view changes. On the first view it would fade
   // in content the prerendered snapshot already showed (Lighthouse round 24, mobile LCP).
   const firstView = useRef(view)
@@ -413,7 +416,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
   // mount-once write from the active locale's own meta keeps snapshot and client
   // consistent; EN writes the same values index.html already carries.
   useEffect(() => {
-    if (initialSection || initialReportSlug) return
+    if (initialSection || initialReportSlug || initialLanding) return
     document.title = t.meta.title
     document.querySelector('meta[name="description"]')?.setAttribute('content', t.meta.description)
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', t.meta.title)
@@ -1774,6 +1777,10 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
             demoteHeading={!!initialReportSlug}
           />
           {!reportFocus && <evidenceMods.proof.ProofSection setReportModal={setReportModal} />}
+        </section>}
+
+        {view === 'service' && initialLanding && <section id="service" className="rfi-view-panel">
+          <Suspense fallback={null}><LandingBody slug={initialLanding} locale={locale === 'de' ? 'de' : 'en'} /></Suspense>
         </section>}
 
         {view === 'data-solutions' && <section id="data-solutions" className="rfi-view-panel">

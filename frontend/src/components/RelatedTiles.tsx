@@ -11,14 +11,15 @@ const H2: React.CSSProperties = { fontSize: 'var(--fs-small)', fontWeight: 700, 
 export function RelatedTiles({ items, title, navigate }: {
   items: RelatedItem[]
   title: string
-  navigate: (e: React.MouseEvent, href: string) => void
+  /** Client-side jump for the legal pages; the service pages leave it out and let the anchor load the page. */
+  navigate?: (e: React.MouseEvent, href: string) => void
 }) {
   return (
     <section>
       <h2 style={H2}>{title}</h2>
       <nav aria-label={title} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: 10, marginTop: 14 }}>
         {items.map(({ href, label, Icon }) => (
-          <a key={href} href={href} onClick={e => navigate(e, href)} className="rfi-related-tile"
+          <a key={href} href={href} onClick={navigate ? e => navigate(e, href) : undefined} className="rfi-related-tile"
             style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.09)', background: 'rgba(255,255,255,0.04)', color: '#e8e8f0', fontSize: 'var(--fs-small)', fontWeight: 600, lineHeight: 'var(--lh-tight)', textDecoration: 'none' }}>
             <Icon size={18} stroke={1.8} color="var(--accent-text)" aria-hidden style={{ flexShrink: 0 }} />
             <span style={{ flex: '1 1 auto' }}>{label}</span>

@@ -28,6 +28,12 @@ const PORT = 4173
 
 // Legal pages (own standalone content, App.tsx's LEGAL_SLUGS) + public views
 // (App.tsx's SECTION_SLUGS) - keep the crawlable routes in sync with those lists.
+// Service pages (content in src/components/landingPages.ts), EN and /de twins. Since 2026-11-22 a view of
+// PublicSite with a lazy body, so the snapshot gate waits for the page's own h1 (see WAIT_SELECTOR).
+const LANDING_ROUTES = [
+  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check', '/ai-app-privacy-audit', '/managed-soc', '/compliance-automation', '/domain-security-test', '/penetration-testing', '/api-security-testing', '/cloud-security-assessment', '/secure-code-review', '/vulnerability-remediation', '/it-security-graz', '/nis2-consulting',
+]
+
 const ROUTES = [
   '/',
   '/research', '/world-model', '/squad', '/evidence', '/data-solutions', '/datasets', '/access', '/submit',
@@ -35,7 +41,7 @@ const ROUTES = [
   '/track-record', '/pricing',
   '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/team', '/methodology', '/faq',
   // Search landing pages (2026-10-31, buyer-term sweep) - content in src/components/landingPages.ts.
-  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check', '/ai-app-privacy-audit', '/managed-soc', '/compliance-automation', '/domain-security-test', '/penetration-testing', '/api-security-testing', '/cloud-security-assessment', '/secure-code-review', '/vulnerability-remediation', '/it-security-graz', '/nis2-consulting',
+  ...LANDING_ROUTES,
 ]
 
 // Individual disclosure-report routes (2026-09-25 crawlability sweep) - every
@@ -79,7 +85,7 @@ const LOCALIZED_ROUTES = [
   // it from the wrong list here is exactly what 404'd /team/ on 2026-10-24.
   '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/methodology', '/faq',
   // DE twins of the four search landing pages (fully translated, 2026-10-31).
-  '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check', '/ai-app-privacy-audit', '/managed-soc', '/compliance-automation', '/domain-security-test', '/penetration-testing', '/api-security-testing', '/cloud-security-assessment', '/secure-code-review', '/vulnerability-remediation', '/it-security-graz', '/nis2-consulting',
+  ...LANDING_ROUTES,
 ]
 const absUrl = (route) => route === '/' ? 'https://rfi-irfos.com' : `https://rfi-irfos.com${route}/`
 const deRoute = (route) => route === '/' ? '/de' : `/de${route}`
@@ -315,7 +321,7 @@ async function renderRoute(route, canonicalRoute, waitSelector = '#root h1, #roo
 // 2026-10-24 performance sweep - the generic '#root h1, #root h2' gate can match
 // headings that render before that chunk arrives, so the evidence routes wait on
 // a heading INSIDE the ledger panel itself or the snapshot could miss the ledger.
-const WAIT_SELECTOR = { '/evidence': '#evidence h2' }
+const WAIT_SELECTOR = { '/evidence': '#evidence h2', ...Object.fromEntries(LANDING_ROUTES.map(r => [r, '.rfi-landing h1'])) }
 
 for (const route of ROUTES) {
   if (ONLY && route !== '/' && !ONLY.includes(route)) continue
