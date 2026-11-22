@@ -38,7 +38,7 @@
 // backend/src/stripe.rs's tier_info()). Since 2026-11-01 (Simeon) the annual
 // plans go straight to Stripe too (<key>_annual, billed yearly); only Managed
 // SOC still routes to the contact form.
-import { EngagementFlow, Reveal, useMobile } from './shared'
+import { Reveal, useMobile } from './shared'
 import { useLocale, type Locale } from '../../hooks/useLocale'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { useRef, useState } from 'react'

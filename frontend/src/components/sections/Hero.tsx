@@ -3,8 +3,7 @@
 import { useState, useEffect, lazy, Suspense, type MouseEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { preload } from 'react-dom'
-import { prefersReducedMotion, SKIP_FIRST_PAINT_ANIMATION, RevealWords, CountUp, HeroFlipWord, beacon } from './shared'
-import { RESEARCH_AREAS } from './Research'
+import { prefersReducedMotion, SKIP_FIRST_PAINT_ANIMATION, RevealWords, HeroFlipWord, beacon } from './shared'
 import { IconHeartRateMonitor, IconLicense } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
 import type { Theme } from '../../hooks/useTheme'
@@ -304,7 +303,7 @@ function HeroBackground({ theme }: { theme: Theme }) {
   )
 }
 
-export function HeroSection({ mobile, theme, onOpenPortal, onOpenCompliance }: { mobile: boolean, theme: Theme, onOpenPortal: () => void, onOpenCompliance: () => void }) {
+export function HeroSection({ theme, onOpenPortal, onOpenCompliance }: { mobile: boolean, theme: Theme, onOpenPortal: () => void, onOpenCompliance: () => void }) {
   const { t, locale } = useLocale()
   // Second quick button: since 21.11. the portal window in its compliance view (LoginPreview view="compliance"),
   // the same mask as the SOC button. The real href keeps the landing page linked for crawlers and new tabs.

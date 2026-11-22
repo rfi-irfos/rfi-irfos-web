@@ -443,7 +443,7 @@ const STATUS_META: Record<string, { label: string; bg: string; color: string }> 
 }
 
 
-export const AUDIT_META: Record<string, { notified?: string; disclosure: string; resolved?: boolean; resolvedDate?: string; reportUrl?: string }> = {
+export const AUDIT_META: Record<string, { notified?: string; disclosure: string; status?: string; resolved?: boolean; resolvedDate?: string; reportUrl?: string; replied?: string; replyFrom?: string; replyType?: string }> = {
   'Gemini (Google)':             { notified: '2026-06-26', disclosure: '2026-09-24', resolved: true, resolvedDate: '2026-09-25', reportUrl: '/reports/gemini-2026-report.pdf' },
   'Pokemon GO':                   { notified: '2026-06-20', disclosure: '2026-09-19' , resolved: true, resolvedDate: '2026-09-19', reportUrl: '/reports/pokemongo-2026.pdf'},
   'Perplexity':                   { notified: '2026-07-02', disclosure: '2026-09-30', resolved: true, resolvedDate: '2026-10-17', reportUrl: '/reports/perplexity-2026.pdf' },

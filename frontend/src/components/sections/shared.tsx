@@ -925,7 +925,7 @@ function JourneyPreview({ mobile }: { mobile: boolean }) {
 // feedback 2026-08-15 - the two together overflowed the card's capped height and read as
 // redundant/broken, showing one truncated bullet). Still exported for any future non-
 // pricing CarouselTier consumer that wants "who this is for" without the 3-part diagram.
-function TierBullets({ bullets }: { bullets?: readonly string[] }) {
+export function TierBullets({ bullets }: { bullets?: readonly string[] }) {
   if (!bullets || bullets.length === 0) return null
   return (
     <ul style={{ listStyle: 'none', margin: '0 0 14px', padding: 0, display: 'flex', flexDirection: 'column', gap: 7 }}>
@@ -995,7 +995,7 @@ export function ReceiveIcon({ size = 22 }: { size?: number }) {
 // the tier copy's closing sentence (always the strongest line - see the pricing rewrite)
 // pulled out as a distinct highlighted callout instead of blending into the paragraph
 // flow. Delivery line upgraded from floating text to an actual bordered pill.
-export function ModalTierBody({ tier, price, desc, delivery, mobile, bullets, bring, mechanism, receive }: {
+export function ModalTierBody({ tier, desc, mobile }: {
   tier: string; price: string; desc: string; delivery?: string; mobile: boolean; bullets?: readonly string[]
   bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[]
 }) {

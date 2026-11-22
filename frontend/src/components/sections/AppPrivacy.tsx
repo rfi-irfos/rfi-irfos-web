@@ -9,7 +9,6 @@ import { Reveal, useMobile, prefersReducedMotion } from './shared'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { IconBrandAppleFilled, IconBugFilled } from '@tabler/icons-react'
 import { useLocale } from '../../hooks/useLocale'
-import { localeHref } from '../../lib/localeHref'
 // KPI figures are extracted from AUDIT_HIGHLIGHTS at build time
 // (scripts/extract-audit-stats.mjs) - a direct import here dragged the whole
 // 1.5MB TrackRecord ledger into the entry bundle of every page.

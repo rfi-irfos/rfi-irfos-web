@@ -551,7 +551,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
   // Cards now show only tier/price/CTA - the full breakdown (what this tier actually
   // is) moved into this confirmation modal, shown above the B2B/ToS checkboxes, so
   // nothing gets lost by trimming the card itself.
-  const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[]; bring?: string; mechanism?: string; receive?: string } | null>(null)
+  const [checkoutModal, setCheckoutModal]     = useState<{ key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[]; bring?: readonly string[]; mechanism?: readonly string[]; receive?: readonly string[] } | null>(null)
   const checkoutModalExit = useModalExit(checkoutModal)
   const openDoc = (slug: string) => {
     libReturnUrl.current = window.location.pathname.startsWith('/research/') && !window.location.pathname.replace(/^\/de/, '').startsWith('/research/') ? null : window.location.pathname + window.location.search + window.location.hash
@@ -840,15 +840,6 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug }
     beacon('cookie_banner_close')
     setBannerClosing(true)
     setTimeout(() => { setCookieBannerOpen(false); setBannerClosing(false) }, 240)
-  }
-
-  const openCheckoutModal = (info: { key: string; tier: string; desc: string; price: string; delivery?: string; directUrl?: string; bullets?: readonly string[] }) => {
-    // Funnel step 1: user pressed the tier button → open the checkout modal AND
-    // beam offer_click:<tier> to Lighthouse (same first-party tracker as pageviews).
-    beacon('offer_click:' + info.key)
-    setAgbChecked(false)
-    setB2bChecked(false)
-    setCheckoutModal(info)
   }
 
   const cancelCheckout = (key: string) => {
