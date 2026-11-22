@@ -1593,3 +1593,18 @@ button { cursor: pointer; font-family: inherit; }
 @media (max-width: 900px) {
   .svc-kpis, .svc-board-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* One button look site-wide (Simeon 2026-11-22: "WEG mit dem stroke button dem vollen fill"): every filled
+   teal button takes the soft glass look of the "24/7 Managed SOC" button in the homepage hero
+   (.irf-hero-cta--primary / .fx-cta-glass, picker G3 of 20.11.): dark glass, turquoise edge, soft glow,
+   text in the text colour. Appended last so it wins over .data-cta and .fx-cta-teal. */
+.data-cta, .fx-cta-teal {
+  color: var(--text); background: rgba(5,7,14,.35); border: 1px solid #00f5c4; backdrop-filter: blur(10px);
+  box-shadow: 0 0 22px rgba(0,245,196,.35), inset 0 0 12px rgba(0,245,196,.12);
+  transition: background .25s, transform .25s, box-shadow .25s;
+}
+[data-theme="light"] .data-cta, [data-theme="light"] .fx-cta-teal { background: rgba(255,255,255,.5); border-color: #00b894; }
+.data-cta:hover, .fx-cta-teal:not(:disabled):hover {
+  background: rgba(0,245,196,.12); transform: translateY(-1px);
+  box-shadow: 0 0 30px rgba(0,245,196,.5), inset 0 0 14px rgba(0,245,196,.18);
+}

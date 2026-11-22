@@ -267,7 +267,7 @@ export function ResearchDocModal({ slug, onClose, h1 }: { slug: string | null; o
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 18, padding: '32px 24px', textAlign: 'center' }}>
             <p style={{ color: '#a0a0b8', fontSize: 'var(--fs-small)', lineHeight: 'var(--lh-body)', margin: 0, maxWidth: 320 }}>{TX.mobileHint[locale]}</p>
             <a href={pdf} target="_blank" rel="noopener noreferrer" onClick={() => beacon('research_doc_mobile_open:' + doc.slug)}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none', background: 'var(--accent)', color: 'var(--accent-fg)', fontWeight: 700, fontSize: 'var(--fs-small)', padding: '11px 20px', borderRadius: 8, letterSpacing: '0.02em' }}>
+              className="fx-cta-glass" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none', fontWeight: 700, fontSize: 'var(--fs-small)', padding: '11px 20px', borderRadius: 8, letterSpacing: '0.02em' }}>
               {TX.mobileOpen[locale]}
             </a>
           </div>

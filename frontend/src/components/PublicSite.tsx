@@ -1385,9 +1385,10 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => beacon('report_modal_mobile_open')}
+                  className="fx-cta-glass"
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none',
-                    background: 'var(--accent)', color: 'var(--accent-fg)', fontWeight: 700, fontSize: 'var(--fs-small)',
+                    fontWeight: 700, fontSize: 'var(--fs-small)',
                     padding: '11px 20px', borderRadius: 8, letterSpacing: '0.02em',
                   }}
                 >
@@ -2160,8 +2161,8 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                     </button>
                     <button
                       onClick={dismissCookieBanner}
+                      className="fx-cta-glass"
                       style={{
-                        background: 'var(--accent)', color: 'var(--bg)', border: 'none',
                         borderRadius: 8, padding: '9px 16px', fontSize: 'var(--fs-small)', fontWeight: 700, cursor: 'pointer',
                       }}
                     >

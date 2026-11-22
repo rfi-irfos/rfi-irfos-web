@@ -132,7 +132,7 @@ export function TopicModal({ slug, doc, href, onClose }: { slug: LandingSlug; do
         <p style={{ color: 'var(--text)', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: '0 auto 22px', maxWidth: 460 }}>{doc.lead}</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
           <a href={href} onClick={() => beacon('topic_modal_page:' + slug)}
-            style={{ background: 'var(--accent)', color: 'var(--on-primary, #07110e)', padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none' }}>{c.fullPage} <span aria-hidden="true">→</span></a>
+            className="fx-cta-glass" style={{ padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none' }}>{c.fullPage} <span aria-hidden="true">→</span></a>
           <button type="button" onClick={startCheck}
             style={{ background: 'transparent', color: 'var(--accent-text)', border: 'none', padding: '12px 14px', fontWeight: 700, fontSize: 'var(--fs-small)', cursor: 'pointer' }}>{c.startCheck}</button>
         </div>
