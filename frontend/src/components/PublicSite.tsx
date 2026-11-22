@@ -1843,9 +1843,10 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
               Services | Legal below (column flow: Company, Services, Research, Legal). */}
           {/* Simeon 22.11.2026: Company | Research | Legal side by side on top, the two service groups below,
               same on phone and desktop (six-column grid, top groups span 2, service groups span 3). Desktop block 422px
-              (Simeon 22.11.: divider a little further right so no label wraps): order Company, Legal, Research (Simeon 22.11.), uneven
-              tracks give Company 96, Legal 154, Research 172, sized from the longest EN/DE label plus 12px right padding; Services spans all six, two equal columns. */}
-          <div style={{ flex: mobile ? '1 1 auto' : '0 0 auto', alignSelf: 'stretch', display: 'grid', gridTemplateColumns: mobile ? 'repeat(6, minmax(0, 1fr))' : '48px 48px 105px 49px 86px 86px', columnGap: mobile ? '0.9rem' : 0, rowGap: 26, alignContent: 'start' }}>
+              (Simeon 22.11.: divider a little further right, order Company, Legal, Research):
+              desktop tracks are max-content columns with two equal 1fr gaps, so the space between the three groups is the
+              same in both languages (Legal sat closer to Company with fixed tracks); Services spans all five. */}
+          <div style={{ flex: mobile ? '1 1 auto' : '0 0 auto', alignSelf: 'stretch', display: 'grid', gridTemplateColumns: mobile ? 'repeat(6, minmax(0, 1fr))' : 'max-content 1fr max-content 1fr max-content', width: mobile ? undefined : 422, columnGap: mobile ? '0.9rem' : 0, rowGap: 26, alignContent: 'start' }}>
             {/* FIXED (live bug report, mobile Chrome screenshot, 2026-08-16): this
                 footer is a dense, desktop-oriented link directory (Legal/Company/
                 Research column + a wide grid of Systems zones/Repositories/Crates
@@ -1866,7 +1867,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
             {(
               [
                 {
-                  heading: t.footer.groups.company.heading, span: 2, links: [
+                  heading: t.footer.groups.company.heading, span: 2, col: 1, links: [
                     // Lighthouse round 32 (2026-10-31): the footer, where people look for a
                     // way to get in touch, had no free check and no pricing link at all.
                     { label: t.footer.groups.company.links.freeCheck, href: '/#domain-check' },
@@ -1880,7 +1881,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                   ],
                 },
                 {
-                  heading: t.footer.groups.legal.heading, span: 2, links: [
+                  heading: t.footer.groups.legal.heading, span: 2, col: 3, links: [
                     { label: t.footer.groups.legal.links.impressum, href: '/impressum/' },
                     { label: t.footer.groups.legal.links.datenschutz, href: '/datenschutz/' },
                     { label: t.footer.groups.legal.links.agb, href: '/agb/' },
@@ -1890,7 +1891,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                   ],
                 },
                 {
-                  heading: t.footer.groups.research.heading, span: 2, links: [
+                  heading: t.footer.groups.research.heading, span: 2, col: 5, links: [
                     { label: t.footer.groups.research.links.research, href: '/research/' },
                     { label: t.footer.groups.research.links.trackRecord, href: '/evidence/' },
                     { label: t.footer.groups.research.links.methodology, href: '/methodology/' },
@@ -1903,7 +1904,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                 servicesGroup,
               ]
             ).map(group => (
-              <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9, gridColumn: `span ${group.span}`, minWidth: 0, paddingRight: mobile ? 0 : 12, hyphens: 'auto' }}>
+              <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9, gridColumn: mobile ? `span ${group.span}` : ('col' in group ? String(group.col) : '1 / -1'), minWidth: 0, hyphens: 'auto' }}>
                 <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', fontWeight: 700, margin: '0 0 2px' }}>{group.heading}</p>
                 <div style={'cols' in group ? { display: 'grid', gridTemplateColumns: '1fr 1fr', gridAutoFlow: 'column', gridTemplateRows: `repeat(${Math.ceil(group.links.length / 2)}, auto)`, columnGap: 12, rowGap: 9 } : { display: 'contents' }}>
                 {group.links.map(l => (
@@ -1983,9 +1984,10 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                 entirely, not just relocated. */}
             {/* Simeon 01.11.: the copyright sits at the bottom of this left column, inside the divider,
                 level with the divider's lower end, instead of a separate full-width row below. */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8, gridColumn: '1 / -1' }}>
+            {/* Simeon 22.11.2026: grey rule above the foot, icons and copyright centred in the block. */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 14, marginTop: 4, paddingTop: 22, borderTop: '1px solid var(--border)', gridColumn: '1 / -1' }}>
               {/* Footer foot, top to bottom (Simeon 2026-11-10): social icons, copyright (the core doctrine line lives on /standards/). */}
-              <nav aria-label={t.footer.socialAria} data-testid="footer-socials" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              <nav aria-label={t.footer.socialAria} data-testid="footer-socials" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 8 }}>
                 {SOCIAL_PROFILES.map(p => (
                   <a key={p.key} href={p.href} target="_blank" rel="me noopener" aria-label={p.label} title={p.label}
                     style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 38, borderRadius: 8, border: '1px solid var(--border)', color: 'var(--text2)', textDecoration: 'none' }}>
