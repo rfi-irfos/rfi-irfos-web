@@ -91,8 +91,8 @@ export function LandingBody({ slug, locale }: { slug: LandingSlug; locale: Landi
       <Reveal><h1>{d.h1}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{d.lead}</p></Reveal>
       <Reveal delay={2}><div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-        <a href="#domain-check" onClick={toCheck} className="data-cta" style={{ textDecoration: 'none', display: 'inline-block' }}>{de ? 'Quick Check starten' : 'Start the Quick Check'} <span aria-hidden="true">→</span></a>
         <a href={localePath(locale, '/access/')} style={SECONDARY}>{de ? 'Pläne und Preise' : 'Plans and prices'}</a>
+        <a href="#domain-check" onClick={toCheck} className="data-cta" style={{ textDecoration: 'none', display: 'inline-block' }}>{de ? 'Quick Check starten' : 'Start the Quick Check'} <span aria-hidden="true">→</span></a>
       </div></Reveal>
     </header>
 

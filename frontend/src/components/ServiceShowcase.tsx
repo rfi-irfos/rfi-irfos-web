@@ -25,8 +25,8 @@ export function ShowcaseTop({ doc, locale }: { doc: ShowcaseDoc; locale: Landing
       <Reveal><h1>{doc.h1}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{doc.lede}</p></Reveal>
       <Reveal delay={2}><div className="svc-hero-actions">
-        <a href={localePath(locale, '/#domain-check')} className="data-cta">{de ? 'Quick Check starten' : 'Start the Quick Check'} <span aria-hidden="true">→</span></a>
         <a href={localePath(locale, '/access/')} className="svc-secondary">{de ? 'Pläne und Preise' : 'Plans and prices'}</a>
+        <a href={localePath(locale, '/#domain-check')} className="data-cta">{de ? 'Quick Check starten' : 'Start the Quick Check'} <span aria-hidden="true">→</span></a>
       </div></Reveal>
     </header>
 

@@ -255,8 +255,8 @@ function HeroBlock({ onApiRequest }: { onApiRequest: () => void }) {
             {/* Same shape as Squad's hero (2026-10-26, Simeon): the page's own ask as
                 the primary button, the sibling product as the secondary link. Was
                 "Explore" (scroll to use cases) + "Request API access". */}
-            <button className="wm-btn-primary" onClick={onApiRequest}>{w.apiCta}</button>
             <a href={localeHref('/squad/', locale)} className="wm-btn-secondary">{w.squadLinkLabel}</a>
+            <button className="wm-btn-primary" onClick={onApiRequest}>{w.apiCta}</button>
           </div>
         </div>
       </Reveal>
