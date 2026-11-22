@@ -8,7 +8,7 @@ import { IconShare } from '@tabler/icons-react'
 import { prefersReducedMotion, beacon, TEAL, Reveal, useMobile, useModalExit, useWideCarousel } from './shared'
 import { useLocale } from '../../hooks/useLocale'
 import {
-  RESEARCH_DOCS, LIBRARY_TEXT as TX, getResearchDoc, docPdfUrl, docPageUrl, docDoiUrl,
+  RESEARCH_DOCS, LIBRARY_TEXT as TX, getResearchDoc, docPdfUrl, docPageUrl, docDoiUrl, docDataUrl,
   type ResearchDoc, type Locale,
 } from '../../lib/researchLibrary'
 
@@ -241,6 +241,7 @@ export function ResearchDocModal({ slug, onClose, h1 }: { slug: string | null; o
   if (!exit.rendered || !doc) return null
   const pdf = docPdfUrl(doc)
   const doi = docDoiUrl(doc)
+  const data = docDataUrl(doc)
   return (
     <div className={`rfi-modal-backdrop${exit.closing ? ' rfi-modal-backdrop-out' : ''}`} onClick={onClose}
       style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(4,4,7,0.7)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
@@ -257,6 +258,8 @@ export function ResearchDocModal({ slug, onClose, h1 }: { slug: string | null; o
           <span style={{ fontSize: 'var(--fs-label)', color: TEAL }}>{TX.modalLabel[locale]}</span>
           {doi && <a href={doi} target="_blank" rel="noopener noreferrer" onClick={() => beacon('research_doc_doi:' + doc.slug)}
             style={{ fontSize: 'var(--fs-label)', color: '#a0a0b8', textDecoration: 'underline' }}>{TX.doi[locale]}</a>}
+          {data && <a href={data} target="_blank" rel="noopener noreferrer" onClick={() => beacon('research_doc_data:' + doc.slug)}
+            style={{ fontSize: 'var(--fs-label)', color: '#a0a0b8', textDecoration: 'underline' }}>{TX.data[locale]}</a>}
           <DocShare doc={doc} locale={locale} />
           <button onClick={onClose} aria-label={TX.close[locale]} style={{ background: 'none', border: 'none', color: '#8a8aa0', cursor: 'pointer', fontSize: 'var(--fs-lead)', lineHeight: 'var(--lh-tight)', padding: '9px 11px' }}>&#x2715;</button>
         </div>

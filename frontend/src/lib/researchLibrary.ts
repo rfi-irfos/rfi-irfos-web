@@ -15,12 +15,13 @@ export type ResearchDoc = {
   title: L
   blurb: L
   doi?: string // e.g. 10.17605/OSF.IO/UXCJE
+  dataDoi?: string // deposit with the data behind the document, e.g. 10.5281/zenodo.24440570
   pages?: number
 }
 
 export const RESEARCH_DOCS: ResearchDoc[] = [
   {
-    slug: 'european-cyberresilience-benchmark-2026', kind: 'paper', date: '2026-11-22', pages: 38,
+    slug: 'european-cyberresilience-benchmark-2026', kind: 'paper', date: '2026-11-22', pages: 38, dataDoi: '10.5281/zenodo.24440570',
     title: {
       en: 'European Cyberresilience Benchmark 2026. Weaknesses and Vendor Response in Android Apps on the EU Market: A Pre-CRA Baseline',
       de: 'European Cyberresilience Benchmark 2026. Weaknesses and Vendor Response in Android Apps on the EU Market: A Pre-CRA Baseline',
@@ -115,6 +116,7 @@ export function getResearchDoc(slug: string | null | undefined): ResearchDoc | u
 export const docPdfUrl = (d: ResearchDoc) => `/research/${d.slug}.pdf`
 export const docPageUrl = (d: ResearchDoc) => `https://rfi-irfos.com/research/${d.slug}/`
 export const docDoiUrl = (d: ResearchDoc) => (d.doi ? `https://doi.org/${d.doi}` : undefined)
+export const docDataUrl = (d: ResearchDoc) => (d.dataDoi ? `https://doi.org/${d.dataDoi}` : undefined)
 
 export const LIBRARY_TEXT = {
   heading: { en: 'Institutional publications', de: 'Institutionelle Publikationen' },
@@ -129,6 +131,7 @@ export const LIBRARY_TEXT = {
   },
   open: { en: 'Read the PDF', de: 'PDF lesen' },
   doi: { en: 'Cite via DOI', de: 'Per DOI zitieren' },
+  data: { en: 'Data', de: 'Daten' },
   prev: { en: 'Previous document', de: 'Vorheriges Dokument' },
   next: { en: 'Next document', de: 'Nächstes Dokument' },
   modalLabel: { en: 'RESEARCH DOCUMENT', de: 'FORSCHUNGSDOKUMENT' },

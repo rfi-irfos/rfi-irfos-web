@@ -584,6 +584,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
       headline: doc.title.en, description: doc.blurb.en, datePublished: doc.date, inLanguage: 'en',
       url: docPageUrl(doc),
       ...(doc.doi ? { identifier: { '@type': 'PropertyValue', propertyID: 'DOI', value: doc.doi }, sameAs: docDoiUrl(doc) } : {}),
+      ...(doc.dataDoi ? { isBasedOn: { '@type': 'Dataset', name: `${doc.title.en.split('.')[0]}: data`, identifier: `https://doi.org/${doc.dataDoi}`, url: `https://doi.org/${doc.dataDoi}` } } : {}),
       author: { '@type': 'Organization', name: 'RFI-IRFOS', url: 'https://rfi-irfos.com' },
       encoding: { '@type': 'MediaObject', contentUrl: `https://rfi-irfos.com${docPdfUrl(doc)}`, encodingFormat: 'application/pdf' },
     })
