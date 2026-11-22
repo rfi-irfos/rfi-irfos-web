@@ -16,6 +16,8 @@ import { LANDING, LANDING_SLUGS, landingDoc, localePath, type LandingLocale, typ
 import { InitialReviewFlow } from './sections/InitialReviewFlow'
 import { RelatedTiles } from './RelatedTiles'
 import { Reveal } from './sections/shared'
+import { SHOWCASE } from './serviceShowcase'
+import { ShowcaseTop } from './ServiceShowcase'
 import auditStats from '../content/auditStats.json'
 import {
   IconDeviceMobile, IconLock, IconCertificate, IconRadar2, IconRobot, IconHeadset, IconListCheck, IconWorldSearch, IconBug, IconApi,
@@ -33,6 +35,12 @@ const ICONS: Record<LandingSlug, typeof IconLock> = {
 // (surfaces, controls, deliverables), so the icons mark the card and carry no meaning of
 // their own; the sentence does.
 const CARD_ICONS = [IconShieldCheck, IconKey, IconServer, IconGitBranch, IconCloudLock, IconClock, IconFileSearch, IconCircleCheck]
+
+// Columns per card count so no row ends with a lonely card (5 = 3+2 centred, 7 = 4+3, 10 = 5+5).
+function colsFor(n: number) { return n <= 4 ? n : n === 7 || n === 8 ? 4 : n === 10 ? 5 : 3 }
+const gridVars = (n: number) => ({ ['--cols' as string]: String(colsFor(n)) }) as React.CSSProperties
+
+type Block = { kind: 'cards'; h2: string; p: readonly string[]; ul: readonly string[] } | { kind: 'text'; rows: { h2: string; p: readonly string[] }[] }
 
 const A: React.CSSProperties = { color: 'var(--accent-text)', textDecoration: 'none', fontWeight: 600 }
 const SECONDARY: React.CSSProperties = { display: 'inline-block', marginTop: 28, padding: '13px 21px', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text)', fontWeight: 700, textDecoration: 'none' }
@@ -57,9 +65,27 @@ export function LandingBody({ slug, locale }: { slug: LandingSlug; locale: Landi
   const de = locale === 'de'
   const others = LANDING_SLUGS.filter(s => s !== slug)
   const Icon = ICONS[slug]
+  // Consecutive text-only sections share one editorial band (heading left, text right) instead of
+  // stacking as centred paragraphs; the Graz section joins the band that ends the page body.
+  const graz = {
+    h2: de ? 'Ihr eingebettetes Security-Engineering-Team aus Graz' : 'Your embedded security engineering team, from Graz',
+    p: [de
+      ? 'Wir arbeiten in Graz, Österreich, auf unserem eigenen Server: Die komplette Pipeline läuft dort, vom ersten Scan bis zum Bericht. The Squad arbeitet in Ihrem Entwicklungszyklus mit. Agenten testen laufend, und die Behebung kommt von unseren Ingenieuren als Änderung an Ihrem Code, wo möglich als Patch zum direkten Einspielen. So arbeitet ein eingebettetes Security-Engineering-Team. Wir arbeiten für Kleinst-, Klein- und Mittelunternehmen, wachsende Firmen und Konzerne aus allen Branchen, und unsere Pläne skalieren mit Ihrem Unternehmen.'
+      : 'We work from Graz, Austria, on our own server: the whole pipeline runs there, from the first scan to the report. The Squad works inside your delivery cycle. Agents test continuously, and the fix arrives from our engineers as a change to your code, where possible as a ready-to-apply patch. That is how an embedded security engineering team works. We work for micro, small and medium-sized enterprises, growing companies and large enterprises across every industry, and our plans scale with your business.'],
+  }
+  const blocks: Block[] = []
+  for (const sec of [...d.sections, graz]) {
+    const ul = (sec as { ul?: readonly string[] }).ul
+    if (ul) { blocks.push({ kind: 'cards', h2: sec.h2, p: sec.p, ul }); continue }
+    const last = blocks[blocks.length - 1]
+    if (last?.kind === 'text') last.rows.push({ h2: sec.h2, p: sec.p })
+    else blocks.push({ kind: 'text', rows: [{ h2: sec.h2, p: sec.p }] })
+  }
+  const showcase = SHOWCASE[slug]?.[locale]
   const toCheck = (e: React.MouseEvent) => { e.preventDefault(); document.getElementById('domain-check')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
 
   return <div className="data-solutions rfi-landing"><div className="data-wrap">
+    {showcase ? <ShowcaseTop doc={showcase} locale={locale} onCheck={toCheck} /> : <>
     <header className="data-hero">
       <Reveal><div className="data-icon rfi-ri-box"><Icon size={30} stroke={1.6} /></div></Reveal>
       <Reveal><h1>{d.h1}</h1></Reveal>
@@ -70,29 +96,29 @@ export function LandingBody({ slug, locale }: { slug: LandingSlug; locale: Landi
       </div></Reveal>
     </header>
 
-    {d.sections.map(s => <section key={s.h2} className="data-section">
-      <Reveal><div className="data-section-head"><h2>{s.h2}</h2>{s.p.map((para, i) => <p key={i}>{para}</p>)}</div></Reveal>
-      {s.ul && <div className="data-dataset-grid rfi-landing-grid">
-        {s.ul.map((li, i) => { const Li = CARD_ICONS[i % CARD_ICONS.length]; return <Reveal key={li} delay={(i % 3) + 1}>
-          <article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><div className="data-icon rfi-ri-box"><Li size={28} stroke={1.6} /></div><p>{li}</p></article>
-        </Reveal> })}
-      </div>}
-    </section>)}
+    {blocks.map((b, bi) => b.kind === 'cards'
+      ? <section key={b.h2} className="data-section">
+          <Reveal><div className="data-section-head"><h2>{b.h2}</h2>{b.p.map((para, i) => <p key={i}>{para}</p>)}</div></Reveal>
+          <div className="rfi-landing-cards" style={gridVars(b.ul.length)}>
+            {b.ul.map((li, i) => { const Li = CARD_ICONS[i % CARD_ICONS.length]; return <Reveal key={li} delay={(i % 3) + 1}>
+              <article className="rfi-glass-flat rfi-glass-solid rfi-hover-card"><div className="data-icon data-icon--row rfi-ri-box"><Li size={24} stroke={1.6} /></div><p>{li}</p></article>
+            </Reveal> })}
+          </div>
+        </section>
+      : <section key={'t' + bi} className="data-section">
+          <div className="rfi-landing-band rfi-glass-flat rfi-glass-solid">
+            {b.rows.map(r => <Reveal key={r.h2}><div className="rfi-landing-row">
+              <h2>{r.h2}</h2>
+              <div>{r.p.map((para, i) => <p key={i}>{para}</p>)}</div>
+            </div></Reveal>)}
+          </div>
+        </section>)}
 
-    {/* Ort und Arbeitsweise (2026-11-16): Leistungsseiten trugen „Graz“ nur in der Fußzeile, lokale
-        Suchanfragen wie „app security audit graz“ fanden uns nicht. Belegt durch de.ts (eigener Server in Graz). */}
-    <section className="data-section">
-      <Reveal><div className="data-section-head">
-        <h2>{de ? 'Ihr eingebettetes Security-Engineering-Team aus Graz' : 'Your embedded security engineering team, from Graz'}</h2>
-        <p>{de
-          ? 'Wir arbeiten in Graz, Österreich, auf unserem eigenen Server: Die komplette Pipeline läuft dort, vom ersten Scan bis zum Bericht. The Squad arbeitet in Ihrem Entwicklungszyklus mit. Agenten testen laufend, und die Behebung kommt von unseren Ingenieuren als Änderung an Ihrem Code, wo möglich als Patch zum direkten Einspielen. So arbeitet ein eingebettetes Security-Engineering-Team. Wir arbeiten für Kleinst-, Klein- und Mittelunternehmen, wachsende Firmen und Konzerne aus allen Branchen, und unsere Pläne skalieren mit Ihrem Unternehmen.'
-          : 'We work from Graz, Austria, on our own server: the whole pipeline runs there, from the first scan to the report. The Squad works inside your delivery cycle. Agents test continuously, and the fix arrives from our engineers as a change to your code, where possible as a ready-to-apply patch. That is how an embedded security engineering team works. We work for micro, small and medium-sized enterprises, growing companies and large enterprises across every industry, and our plans scale with your business.'}</p>
-      </div></Reveal>
-    </section>
+    </>}
 
     <section className="data-section">
       <Reveal><div className="data-section-head"><h2>{d.evidenceH2}</h2><p>{fill(d.evidenceIntro)}</p></div></Reveal>
-      <div className="data-agent-grid rfi-landing-grid">
+      <div className="data-agent-grid rfi-landing-cards rfi-landing-cards--tall" style={gridVars(d.evidence.length)}>
         {d.evidence.map((e, i) => <Reveal key={e.slug} delay={(i % 3) + 1}>
           <article className="rfi-glass-flat rfi-glass-solid rfi-hover-card">
             <div className="data-icon data-icon--row rfi-ri-box"><IconBook size={26} stroke={1.6} /></div>
@@ -107,27 +133,29 @@ export function LandingBody({ slug, locale }: { slug: LandingSlug; locale: Landi
     </section>
 
     <section className="data-section">
-      <Reveal><div className="data-section-head">
-        <h2>{d.startH2}</h2>
-        {d.startText.map((para, i) => <p key={i}>{para}</p>)}
-        <p>
-          {de ? 'Pläne und Preise stehen unter ' : 'Plans and prices are on '}
-          <a href={localePath(locale, '/access/')} style={A} className="rfi-inline-link">Access</a>
-          {de ? ', die Agenten hinter jeder Prüfung unter ' : ', the agents behind every review on '}
-          <a href={localePath(locale, '/squad/')} style={A} className="rfi-inline-link">The Squad</a>
-          {de ? ' und die Rahmenwerke, an denen wir messen, unter ' : ' and the frameworks we measure against on '}
-          <a href={localePath(locale, '/standards/')} style={A} className="rfi-inline-link">Standards</a>.
-        </p>
-      </div></Reveal>
-      {/* id="domain-check": target of the hero button and of the compact topic modal (same anchor the homepage uses). */}
-      <div id="domain-check" style={{ display: 'flex', justifyContent: 'center', scrollMarginTop: 90 }}>
-        <InitialReviewFlow variant="embedded" />
+      <div className="rfi-landing-start">
+        <Reveal><div className="rfi-landing-start-copy">
+          <h2>{d.startH2}</h2>
+          {d.startText.map((para, i) => <p key={i}>{para}</p>)}
+          <p>
+            {de ? 'Pläne und Preise stehen unter ' : 'Plans and prices are on '}
+            <a href={localePath(locale, '/access/')} style={A} className="rfi-inline-link">Access</a>
+            {de ? ', die Agenten hinter jeder Prüfung unter ' : ', the agents behind every review on '}
+            <a href={localePath(locale, '/squad/')} style={A} className="rfi-inline-link">The Squad</a>
+            {de ? ' und die Rahmenwerke, an denen wir messen, unter ' : ' and the frameworks we measure against on '}
+            <a href={localePath(locale, '/standards/')} style={A} className="rfi-inline-link">Standards</a>.
+          </p>
+        </div></Reveal>
+        {/* id="domain-check": target of the hero button and of the compact topic modal (same anchor the homepage uses). */}
+        <div id="domain-check" className="rfi-landing-start-form">
+          <InitialReviewFlow variant="embedded" />
+        </div>
       </div>
     </section>
 
     <section className="data-section">
       <Reveal><div className="data-section-head"><h2>{d.faqH2}</h2></div></Reveal>
-      <div className="data-agent-grid rfi-landing-grid rfi-landing-faq">
+      <div className="data-agent-grid rfi-landing-faq">
         {d.faq.map(([q, a], i) => <Reveal key={q} delay={(i % 2) + 1}>
           <article className="rfi-glass-flat rfi-glass-solid rfi-hover-card">
             <div className="data-icon data-icon--row rfi-ri-box"><IconMessageQuestion size={26} stroke={1.6} /></div>
@@ -142,7 +170,9 @@ export function LandingBody({ slug, locale }: { slug: LandingSlug; locale: Landi
       </p></Reveal>
     </section>
 
-    <RelatedTiles title={de ? 'Verwandte Seiten' : 'Related pages'}
-      items={others.map(s => ({ href: localePath(locale, `/${s}/`), label: LANDING[s][locale].label, Icon: ICONS[s] }))} />
+    <section className="data-section rfi-landing-related">
+      <RelatedTiles title={de ? 'Weitere Leistungen' : 'More services'}
+        items={others.map(s => ({ href: localePath(locale, `/${s}/`), label: LANDING[s][locale].label, Icon: ICONS[s] }))} />
+    </section>
   </div></div>
 }
