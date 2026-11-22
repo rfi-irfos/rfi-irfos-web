@@ -79,6 +79,8 @@ export function AppPrivacySection() {
   const c = t.appPrivacy
   const stacked = useMobile(900)
   const phone = useMobile(640)
+  // Installed app (PWA): the domain-check figure leads the KPI row, right under the Check now button (Simeon 22.11.).
+  const [pwa] = useState(() => typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone), (display-mode: fullscreen)').matches)
   const [active, setActive] = useState(0)
   const [completedSegments, setCompletedSegments] = useState(0)
   const [flowPhase, setFlowPhase] = useState<'hold' | 'filling' | 'finished'>('hold')
@@ -294,7 +296,7 @@ export function AppPrivacySection() {
             ))}
             {/* Fourth figure (Simeon 19.11.): live total of domain checks, in the same row. Icon W3 from the picker. Hidden until the number has loaded. */}
             {checkTotal !== null && (
-              <Reveal delay={3}>
+              <Reveal delay={3} style={pwa ? { order: -1 } : undefined}>
                 <div className="kpi-cq"><div className="kpi-card kpi-card--2">
                   <KpiArt kind="globe" />
                   <div className="kpi-card__rule" aria-hidden="true" />

@@ -1,4 +1,4 @@
-import { useId, useState } from 'react'
+import { useId, useLayoutEffect, useRef, useState } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { beacon } from './shared'
 import { FailToast } from '../FailToast'
@@ -39,6 +39,18 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
   const fid = useId()
   const mismatch = state === 'mismatch' || (emailTouched && !emailFocus && email.includes('@') && bareHost(domain).includes('.') && !emailMatchesDomain(email, domain))
   const [mode, setMode] = useState<'own' | 'any'>('own')
+  // Stacked (phone): the box glides to the height of the active pane, so the short "any website" pane has no empty block under its button (Zabih 22.11.).
+  const anyRef = useRef<HTMLDivElement>(null)
+  const ownRef = useRef<HTMLFormElement>(null)
+  const [paneH, setPaneH] = useState<number | null>(null)
+  useLayoutEffect(() => {
+    if (wide) return
+    const el = mode === 'any' ? anyRef.current : ownRef.current
+    if (!el) return
+    const ro = new ResizeObserver(() => setPaneH(el.offsetHeight))
+    ro.observe(el) // fires once right away, then on every size change
+    return () => ro.disconnect()
+  }, [mode, wide])
   const sc = useSafetyCopy()
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -117,7 +129,7 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
     </div>
   )
   const paneStyle = (active: boolean, dir: number): React.CSSProperties => ({
-    gridArea: '1 / 1', alignSelf: dir > 0 ? 'stretch' : 'start',
+    gridArea: '1 / 1', alignSelf: dir > 0 && wide ? 'stretch' : 'start',
     opacity: active ? 1 : 0, visibility: active ? 'visible' : 'hidden', pointerEvents: active ? 'auto' : 'none',
     transform: active ? 'none' : `translateX(${dir * 14}px)`,
     transition: `opacity .3s ${ease}, transform .35s ${ease}, visibility .3s`,
@@ -164,9 +176,9 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
 
       <div style={formBox}>
         {tabs}
-        <div style={{ display: 'grid', gridTemplateRows: '1fr', flex: 1, margin: -4, padding: 4, overflow: 'hidden' }}>
-        <div style={paneStyle(mode === 'any', 1)}><DomainSafetyPanel onNext={() => setMode('own')} /></div>
-        <form onSubmit={submit} style={{ ...paneStyle(mode === 'own', -1), display: 'flex', flexDirection: 'column', gap: wide ? 10 : 12 }}>
+        <div style={{ display: 'grid', gridTemplateRows: '1fr', flex: wide ? 1 : undefined, margin: -4, padding: 4, overflow: 'hidden', ...(!wide && paneH !== null ? { height: paneH, transition: `height .35s ${ease}` } : {}) }}>
+        <div ref={anyRef} style={paneStyle(mode === 'any', 1)}><DomainSafetyPanel onNext={() => setMode('own')} /></div>
+        <form ref={ownRef} onSubmit={submit} style={{ ...paneStyle(mode === 'own', -1), display: 'flex', flexDirection: 'column', gap: wide ? 10 : 12 }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: wide ? 10 : 12 }}>
         <div style={fieldRow}>
           <label htmlFor={`${fid}-domain`} style={labelStyle}>{labelIcon('M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c2.500 2.500 3.800 5.500 3.800 9s-1.300 6.500-3.800 9c-2.500-2.500-3.800-5.500-3.800-9S9.500 5.500 12 3z')}{c.domainLabel}</label>
