@@ -1643,6 +1643,8 @@ button { cursor: pointer; font-family: inherit; }
 .svc-faq-q { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 20px 24px; background: none; border: 0; cursor: pointer; font: inherit; font-size: var(--fs-body); font-weight: 700; color: var(--text); text-align: left; }
 .svc-faq-toggle { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); transition: transform .38s cubic-bezier(.2,.7,.2,1), background .3s; }
 .svc-faq-item.is-open .svc-faq-toggle { transform: rotate(45deg); background: color-mix(in srgb, var(--accent) 18%, transparent); }
+/* Closed FAQ rows stay centred: the house .fx-expand pulls a closed panel up by 14px, which cut the bottom padding of the question (Simeon 22.11.). */
+.svc-faq-panel.fx-expand { margin-top: 0; }
 .svc-faq-panel p { margin: 0; padding: 0 24px 22px; color: var(--text); font-size: var(--fs-body); line-height: var(--lh-body); }
 @media (prefers-reduced-motion: reduce) { .svc-faq-toggle { transition: none; } }
 .svc-ask { position: relative; max-width: 860px; margin: 36px auto 0; display: flex; align-items: center; gap: 20px; padding: 24px 28px; border-radius: 16px; overflow: hidden; }
