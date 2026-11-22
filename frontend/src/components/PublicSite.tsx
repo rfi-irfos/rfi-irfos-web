@@ -1904,7 +1904,9 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                 servicesGroup,
               ]
             ).map(group => (
-              <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9, gridColumn: mobile ? `span ${group.span}` : ('col' in group ? String(group.col) : '1 / -1'), minWidth: 0, hyphens: 'auto' }}>
+              <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9, gridColumn: mobile ? `span ${group.span}` : ('col' in group ? String(group.col) : '1 / -1'), minWidth: 0, hyphens: 'auto',
+                // grey rule above Services, same as above the foot (Simeon 22.11.2026)
+                ...('cols' in group ? { borderTop: '1px solid var(--border)', paddingTop: 22, marginTop: -4 } : {}) }}>
                 <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', fontWeight: 700, margin: '0 0 2px' }}>{group.heading}</p>
                 <div style={'cols' in group ? { display: 'grid', gridTemplateColumns: '1fr 1fr', gridAutoFlow: 'column', gridTemplateRows: `repeat(${Math.ceil(group.links.length / 2)}, auto)`, columnGap: 12, rowGap: 9 } : { display: 'contents' }}>
                 {group.links.map(l => (
