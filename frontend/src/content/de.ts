@@ -92,7 +92,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    sub: 'IT-Sicherheit für KMU, Startups und wachsende Unternehmen in Graz, der Steiermark und im gesamten DACH-Raum. Unser eigens entwickelter Agentenschwarm prüft Tausende Angriffswege, während erfahrene Ingenieure aus seinen Funden Lösungen bis in den betroffenen Code schreiben.',
+    sub: 'Wir machen Frontier-Cybersicherheit für Startups, SMEs und wachsende Unternehmen zugänglich, indem unser eigens entwickelter Agentenschwarm Tausende Angriffswege versucht und erfahrene Ingenieure daraus gezielte Lösungen bis in den betroffenen Code schreiben.',
     ctaSoc: '24/7 Managed SOC',
     ctaCompliance: 'Automatisierte Compliance',
     stats: {

@@ -108,7 +108,7 @@ export const EN = {
     subtitlePrefix: 'Interdisciplinary',
     subtitleSuffix: ' Research Facility for Open Sciences',
     // Short line under the headline (Simeon 11.11.): what we do, in two sentences. Moved here from the "What we do best" intro.
-    sub: 'IT security for SMEs, startups and growing companies in Graz, Styria and across the DACH region. Our purpose-built swarm of agents probes thousands of attack paths while experienced engineers turn what it finds into fixes down to the affected code.',
+    sub: 'We give startups, SMEs and growing enterprises access to frontier cybersecurity capabilities by deploying our purpose-built swarm of agents across thousands of potential attack paths, with experienced engineers writing actionable solutions down to the affected code.',
     // Two quick buttons under the description (Simeon 20.11.): SOC opens the customer portal mask, compliance leads to the plans.
     ctaSoc: '24/7 Managed SOC',
     ctaCompliance: 'Automated Compliance',
