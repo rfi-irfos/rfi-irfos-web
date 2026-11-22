@@ -92,6 +92,9 @@ export function TopicLinks() {
 }
 
 export function TopicModal({ slug, doc, href, onClose }: { slug: LandingSlug; doc: LandingDoc; href: string; onClose: () => void }) {
+  // Compact on purpose (Simeon + Zabih 2026-11-22): the overlay names the service in a title and a
+  // lead, then sends the visitor to the page itself. No scrolling, no sections, no grey boxes. The
+  // page is the showcase; the overlay is the signpost.
   const { t } = useLocale()
   const c = t.appPrivacy.topics
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -117,33 +120,23 @@ export function TopicModal({ slug, doc, href, onClose }: { slug: LandingSlug; do
   return (
     <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(4,4,10,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
       <div role="dialog" aria-modal="true" aria-labelledby="topic-modal-title" onClick={e => e.stopPropagation()}
-        style={{ position: 'relative', width: '100%', maxWidth: 760, maxHeight: '86vh', overflowY: 'auto', border: '1px solid var(--border)', borderRadius: 16, background: 'var(--bg, #0a0b12)', boxShadow: '0 20px 60px rgba(0,0,0,0.55)', padding: '28px 28px 24px', textAlign: 'left' }}>
+        style={{ position: 'relative', width: '100%', maxWidth: 560, border: '1px solid var(--border)', borderRadius: 16, background: 'var(--bg, #0a0b12)', boxShadow: '0 20px 60px rgba(0,0,0,0.55)', padding: '32px 32px 28px', textAlign: 'center' }}>
         <button ref={closeRef} type="button" onClick={onClose} aria-label={c.close}
-          style={{ position: 'absolute', top: 14, right: 14, background: 'transparent', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text)', padding: 6, cursor: 'pointer', display: 'flex' }}>
+          style={{ position: 'absolute', top: 14, right: 14, background: 'transparent', border: 'none', color: 'var(--text2)', padding: 6, cursor: 'pointer', display: 'flex' }}>
           <IconX size={18} stroke={1.8} />
         </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, paddingRight: 44 }}>
-          <Icon size={22} stroke={1.8} color="var(--accent-text)" aria-hidden style={{ flexShrink: 0 }} />
-          <h2 id="topic-modal-title" style={{ fontSize: 'var(--fs-h3, 1.4rem)', fontWeight: 700, color: 'var(--text)', margin: 0, lineHeight: 'var(--lh-tight)' }}>{doc.h1}</h2>
+        <div className="rfi-ri-box" style={{ width: 52, height: 52, margin: '0 auto 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14 }}>
+          <Icon size={26} stroke={1.7} color="var(--accent-text)" aria-hidden />
         </div>
-        <p style={{ color: 'var(--text)', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: '0 0 18px' }}>{doc.lead}</p>
-        {doc.sections.map(s => (
-          <div key={s.h2} style={{ marginBottom: 16 }}>
-            <h3 style={{ fontSize: 'var(--fs-lead)', fontWeight: 700, color: 'var(--text)', margin: '0 0 8px' }}>{s.h2}</h3>
-            {s.p.map(p => <p key={p} style={{ color: 'var(--text)', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: '0 0 8px' }}>{p}</p>)}
-            {s.ul && (
-              <ul style={{ margin: '0 0 8px', paddingLeft: 20, color: 'var(--text)', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)' }}>
-                {s.ul.map(li => <li key={li}>{li}</li>)}
-              </ul>
-            )}
-          </div>
-        ))}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 20, paddingTop: 18, borderTop: '1px solid var(--border)' }}>
+        <h2 id="topic-modal-title" style={{ fontSize: 'var(--fs-h3, 1.4rem)', fontWeight: 800, color: 'var(--text)', margin: '0 0 12px', lineHeight: 'var(--lh-tight)' }}>{doc.h1}</h2>
+        <p style={{ color: 'var(--text)', fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-body)', margin: '0 auto 22px', maxWidth: 460 }}>{doc.lead}</p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
+          <a href={href} onClick={() => beacon('topic_modal_page:' + slug)}
+            style={{ background: 'var(--accent)', color: 'var(--on-primary, #07110e)', padding: '12px 22px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none' }}>{c.fullPage} <span aria-hidden="true">→</span></a>
           <button type="button" onClick={startCheck}
-            style={{ background: 'var(--brand-orange)', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', cursor: 'pointer' }}>{c.startCheck}</button>
-          <a href={href} style={{ border: '1px solid var(--border)', color: 'var(--text)', padding: '12px 20px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none' }}>{c.fullPage}</a>
-          {also && <a href={alsoHref} style={{ border: '1px solid var(--border)', color: 'var(--accent-text)', padding: '12px 20px', borderRadius: 8, fontWeight: 700, fontSize: 'var(--fs-small)', textDecoration: 'none' }}>{t.footer.groups.services.links[KEYS[also]]}</a>}
+            style={{ background: 'transparent', color: 'var(--accent-text)', border: 'none', padding: '12px 14px', fontWeight: 700, fontSize: 'var(--fs-small)', cursor: 'pointer' }}>{c.startCheck}</button>
         </div>
+        {also && <p style={{ margin: '16px 0 0', fontSize: 'var(--fs-small)' }}><a href={alsoHref} style={{ color: 'var(--text2)', textDecoration: 'underline' }}>{t.footer.groups.services.links[KEYS[also]]}</a></p>}
       </div>
     </div>
   )

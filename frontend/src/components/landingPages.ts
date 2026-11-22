@@ -49,7 +49,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       description: 'App security audit from Graz: human-powered, multi-agent. We read your shipped build, find hardcoded keys and network flaws, report with evidence.',
       label: 'App Security Audit',
       h1: 'App Security Audit for Android and iOS',
-      lead: 'The Squad examines the shipped build of your Android or iOS app at source-code level: decompiled code, embedded keys, network configuration, third-party SDKs and every data flow that leaves the device. Human specialists re-verify each finding. You receive a written report with the evidence behind every result.',
+      lead: 'The Squad examines the shipped build of your Android or iOS app at source-code level: decompiled code, embedded keys, network configuration, third-party SDKs and every data flow that leaves the device. Engineers in Graz turn each finding into a fix down to the code. You receive a written report with the evidence behind every result.',
       sections: [
         {
           h2: 'What the audit covers',
@@ -86,7 +86,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'How an audit runs',
           p: [
-            'Four steps carry every review. Send: you hand over the material. Examine: our team and one, several or all of our agents work through source, configuration and data flows together. Re-verify: human specialists check every finding before it reaches the report. Evidence: we document the examination in writing, with the evidence for each finding.',
+            'Four steps carry every review. Send: you hand over the material. Examine: our team and one, several or all of our agents work through source, configuration and data flows together. Remediate: engineers turn every finding into a ready-to-apply patch before the report goes out. Evidence: we document the examination in writing, with the evidence for each finding.',
             'The report checks exploitability, meaning what an attacker could realistically do with a finding, ranks severity with CVSS where applicable, and gives remediation guidance, with concrete fixes down to the affected code from the Growth plan. Testing follows OWASP ASVS, the OWASP Top 10 and CWE. Every report ships with a base knowledge graph that links the findings. Setup takes about five minutes and the first scan can start right after it. A report usually arrives within 72 hours, depending on the scope.',
           ],
         },
@@ -109,7 +109,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         ['What does an app security audit cost?', 'The Access page lists the plans from Starter to Business with their prices, plus Managed SOC, our outsourced security department with 24/7 monitoring, incident response within one hour and fixes within 24 hours. Each plan states its scope and what you receive.'],
         ['Which platforms do you cover?', 'Android and iOS apps, together with the APIs and backends they talk to, within the scope you agree.'],
         ['Do you need access to our production systems?', 'No. You choose what we examine and send us the material. We need no access to your live systems.'],
-        ['Who verifies the findings?', 'Human specialists re-verify every finding before it reaches the report. Agents do the broad testing, people decide what counts as a finding.'],
+        ['Who fixes the findings?', 'Our engineers in Graz turn every finding into a fix down to the code and retest it. Agents do the broad testing, people decide what counts as a finding.'],
         ['Does a client report become public?', 'A client\'s private data, environments and results stay private unless the client approves publication in writing.'],
       ],
     },
@@ -118,7 +118,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
       description: 'App-Sicherheitsprüfung aus Graz: menschlich geprüft, Multi-Agent. Wir lesen Ihren Build, finden Schlüssel und Netzwerkfehler. Bericht mit Belegen.',
       label: 'App-Sicherheitsprüfung',
       h1: 'App-Sicherheitsprüfung für Android und iOS',
-      lead: 'The Squad untersucht den ausgelieferten Build Ihrer Android- oder iOS-App auf Quellcode-Ebene: dekompilierter Code, eingebettete Schlüssel, Netzwerkkonfiguration, Drittanbieter-SDKs und jeder Datenfluss, der das Gerät verlässt. Menschliche Fachleute prüfen jeden Befund erneut. Sie erhalten einen schriftlichen Bericht mit den Belegen hinter jedem Ergebnis.',
+      lead: 'The Squad untersucht den ausgelieferten Build Ihrer Android- oder iOS-App auf Quellcode-Ebene: dekompilierter Code, eingebettete Schlüssel, Netzwerkkonfiguration, Drittanbieter-SDKs und jeder Datenfluss, der das Gerät verlässt. Ingenieure in Graz machen aus jedem Befund einen Fix bis in den Code. Sie erhalten einen schriftlichen Bericht mit den Belegen hinter jedem Ergebnis.',
       sections: [
         {
           h2: 'Was die Prüfung umfasst',
@@ -155,7 +155,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'So läuft eine Prüfung ab',
           p: [
-            'Vier Schritte tragen jede Prüfung. Senden: Sie übergeben das Material. Untersuchen: unser Team und ein, mehrere oder alle unsere Agenten arbeiten gemeinsam durch Quellcode, Konfiguration und Datenflüsse. Erneut prüfen: menschliche Fachleute kontrollieren jeden Befund, bevor er in den Bericht kommt. Belegen: wir dokumentieren die Untersuchung schriftlich, mit dem Beleg zu jedem Befund.',
+            'Vier Schritte tragen jede Prüfung. Senden: Sie übergeben das Material. Untersuchen: unser Team und ein, mehrere oder alle unsere Agenten arbeiten gemeinsam durch Quellcode, Konfiguration und Datenflüsse. Beheben: Ingenieure machen aus jedem Befund einen Patch zum direkten Einspielen, bevor der Bericht hinausgeht. Belegen: wir dokumentieren die Untersuchung schriftlich, mit dem Beleg zu jedem Befund.',
             'Der Bericht prüft die Ausnutzbarkeit, also was ein Angreifer mit einem Befund realistisch anfangen kann, gewichtet den Schweregrad wo anwendbar mit CVSS und gibt Hinweise zur Behebung, ab dem Growth-Plan mit konkreten Fixes bis in den betroffenen Code. Die Tests folgen OWASP ASVS, den OWASP Top 10 und CWE. Jeder Bericht enthält einen Basis-Knowledge-Graph, der die Befunde verknüpft. Die Einrichtung dauert etwa fünf Minuten, und der erste Scan kann direkt danach starten. Einen Bericht erhaltet ihr in der Regel innerhalb von 72 Stunden, je nach Umfang.',
           ],
         },
@@ -178,7 +178,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         ['Was kostet eine App-Sicherheitsprüfung?', 'Die Seite Zugang listet die Pläne von Starter bis Business mit ihren Preisen, dazu Managed SOC, unsere ausgelagerte Sicherheitsabteilung mit Überwachung rund um die Uhr, Incident Response binnen einer Stunde und Behebung innerhalb von 24 Stunden. Jeder Plan nennt seinen Umfang und das, was Sie erhalten.'],
         ['Welche Plattformen decken Sie ab?', 'Android- und iOS-Apps, zusammen mit den APIs und Backends, mit denen sie sprechen, im vereinbarten Umfang.'],
         ['Brauchen Sie Zugriff auf unsere Produktivsysteme?', 'Nein. Sie bestimmen, was wir untersuchen, und senden uns das Material. Wir brauchen keinen Zugriff auf Ihre Live-Systeme.'],
-        ['Wer prüft die Befunde?', 'Menschliche Fachleute prüfen jeden Befund erneut, bevor er in den Bericht kommt. Agenten übernehmen die breite Testarbeit, Menschen entscheiden, was als Befund zählt.'],
+        ['Wer behebt die Befunde?', 'Unsere Ingenieure in Graz machen aus jedem Befund einen Fix bis in den Code und prüfen ihn erneut. Agenten übernehmen die breite Testarbeit, Menschen entscheiden, was als Befund zählt.'],
         ['Wird ein Kundenbericht öffentlich?', 'Private Daten, Umgebungen und Ergebnisse einer Kundschaft bleiben privat, solange sie die Veröffentlichung nicht schriftlich freigibt.'],
       ],
     },
@@ -229,7 +229,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'Who does the work',
           p: [
-            'The Squad is human-powered multi-agent security investigation. Agents built and trained in house execute the broad testing across code, dependencies, APIs and configurations. Human specialists examine each result in its technical context and re-verify every finding before it reaches the report. The entire pipeline runs on our own server in Graz.',
+            'The Squad is human-powered multi-agent security investigation. Agents built and trained in house execute the broad testing across code, dependencies, APIs and configurations. Engineers examine each result in its technical context and turn every finding into a fix before the report goes out. The entire pipeline runs on our own server in Graz.',
           ],
         },
       ],
@@ -300,7 +300,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'Wer die Arbeit macht',
           p: [
-            'The Squad ist menschlich verantwortete Multi-Agenten-Sicherheitsuntersuchung. Selbst gebaute und trainierte Agenten führen die breite Testarbeit über Code, Abhängigkeiten, APIs und Konfigurationen aus. Menschliche Fachleute prüfen jedes Ergebnis in seinem technischen Kontext und kontrollieren jeden Befund erneut, bevor er in den Bericht kommt. Die komplette Pipeline läuft auf unserem eigenen Server in Graz.',
+            'The Squad ist menschlich verantwortete Multi-Agenten-Sicherheitsuntersuchung. Selbst gebaute und trainierte Agenten führen die breite Testarbeit über Code, Abhängigkeiten, APIs und Konfigurationen aus. Ingenieure ordnen jedes Ergebnis in seinen technischen Kontext ein und machen aus jedem Befund einen Fix, bevor der Bericht hinausgeht. Die komplette Pipeline läuft auf unserem eigenen Server in Graz.',
           ],
         },
       ],
@@ -359,7 +359,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'What you receive',
           p: [
-            'A written report with the evidence behind each finding, severity ranked with CVSS where applicable, an analysis of what an attacker could realistically do, and remediation guidance, with concrete fixes down to the affected code from the Growth plan. Every report includes a base knowledge graph that links findings, SDKs, endpoints and weaknesses. Human specialists re-verify every finding.',
+            'A written report with the evidence behind each finding, severity ranked with CVSS where applicable, an analysis of what an attacker could realistically do, and remediation guidance, with concrete fixes down to the affected code from the Growth plan. Every report includes a base knowledge graph that links findings, SDKs, endpoints and weaknesses. Engineers turn every finding into a fix down to the code.',
             'The report is technical evidence for your risk-management documentation. It carries no certificate. Setup takes about five minutes and the first scan can start right after it. A report usually arrives within 72 hours, depending on the scope.',
           ],
         },
@@ -420,7 +420,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'Was Sie erhalten',
           p: [
-            'Einen schriftlichen Bericht mit dem Beleg zu jedem Befund, nach CVSS gewichtetem Schweregrad wo anwendbar, einer Analyse dessen, was ein Angreifer realistisch tun kann, und Hinweisen zur Behebung, ab dem Growth-Plan mit konkreten Fixes bis in den betroffenen Code. Jeder Bericht enthält einen Basis-Knowledge-Graph, der Befunde, SDKs, Endpunkte und Schwachstellen verknüpft. Menschliche Fachleute kontrollieren jeden Befund erneut.',
+            'Einen schriftlichen Bericht mit dem Beleg zu jedem Befund, nach CVSS gewichtetem Schweregrad wo anwendbar, einer Analyse dessen, was ein Angreifer realistisch tun kann, und Hinweisen zur Behebung, ab dem Growth-Plan mit konkreten Fixes bis in den betroffenen Code. Jeder Bericht enthält einen Basis-Knowledge-Graph, der Befunde, SDKs, Endpunkte und Schwachstellen verknüpft. Ingenieure machen aus jedem Befund einen Fix bis in den Code.',
             'Der Bericht ist ein technischer Beleg für Ihre Risikomanagement-Dokumentation. Er trägt kein Zertifikat. Die Einrichtung dauert etwa fünf Minuten, und der erste Scan kann direkt danach starten. Einen Bericht erhaltet ihr in der Regel innerhalb von 72 Stunden, je nach Umfang.',
           ],
         },
@@ -496,7 +496,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'What you receive',
           p: [
-            'A written report with one entry per SDK: name, version, class count, trigger, endpoints and data categories, each with its evidence from the binary. Human specialists re-verify every finding. The base knowledge graph that ships with the report links SDKs, endpoints and findings. For teams that need the same view across many apps, the Data offer builds SDK and tracker graphs. See the Access page for scope and plans.',
+            'A written report with one entry per SDK: name, version, class count, trigger, endpoints and data categories, each with its evidence from the binary. Engineers turn every finding into a fix down to the code. The base knowledge graph that ships with the report links SDKs, endpoints and findings. For teams that need the same view across many apps, the Data offer builds SDK and tracker graphs. See the Access page for scope and plans.',
           ],
         },
       ],
@@ -563,7 +563,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'Was Sie erhalten',
           p: [
-            'Einen schriftlichen Bericht mit einem Eintrag je SDK: Name, Version, Klassenzahl, Auslöser, Endpunkte und Datenkategorien, jeweils mit dem Beleg aus dem Binary. Menschliche Fachleute kontrollieren jeden Befund erneut. Der Basis-Knowledge-Graph im Bericht verknüpft SDKs, Endpunkte und Befunde. Für Teams, die dieselbe Sicht über viele Apps brauchen, baut das Data-Angebot SDK- und Tracker-Graphen. Umfang und Pläne stehen auf der Seite Zugang.',
+            'Einen schriftlichen Bericht mit einem Eintrag je SDK: Name, Version, Klassenzahl, Auslöser, Endpunkte und Datenkategorien, jeweils mit dem Beleg aus dem Binary. Ingenieure machen aus jedem Befund einen Fix bis in den Code. Der Basis-Knowledge-Graph im Bericht verknüpft SDKs, Endpunkte und Befunde. Für Teams, die dieselbe Sicht über viele Apps brauchen, baut das Data-Angebot SDK- und Tracker-Graphen. Umfang und Pläne stehen auf der Seite Zugang.',
           ],
         },
       ],
@@ -624,7 +624,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'Who does the work',
           p: [
-            'The Squad is human-powered multi-agent security investigation. Agents built and trained in house decompile the build and test code, dependencies, endpoints and configuration in parallel. Human specialists examine every result in context and re-verify each finding before it reaches the report. The entire pipeline runs on our own server in Graz.',
+            'The Squad is human-powered multi-agent security investigation. Agents built and trained in house decompile the build and test code, dependencies, endpoints and configuration in parallel. Engineers examine every result in context and turn each finding into a fix before the report goes out. The entire pipeline runs on our own server in Graz.',
           ],
         },
       ],
@@ -681,7 +681,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'Wer die Arbeit macht',
           p: [
-            'The Squad ist human-powered multi-agent security investigation. Im Haus gebaute und trainierte Agenten dekompilieren den Build und testen Code, Abhängigkeiten, Endpunkte und Konfiguration parallel. Menschliche Fachleute prüfen jedes Ergebnis im Zusammenhang und verifizieren jeden Befund erneut, bevor er in den Bericht kommt. Die komplette Pipeline läuft auf unserem eigenen Server in Graz.',
+            'The Squad ist human-powered multi-agent security investigation. Im Haus gebaute und trainierte Agenten dekompilieren den Build und testen Code, Abhängigkeiten, Endpunkte und Konfiguration parallel. Ingenieure ordnen jedes Ergebnis in seinen Zusammenhang ein und machen aus jedem Befund einen Fix, bevor er in den Bericht kommt. Die komplette Pipeline läuft auf unserem eigenen Server in Graz.',
           ],
         },
       ],
@@ -720,7 +720,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'What the Managed SOC includes',
           p: [
-            'Agents we built ourselves watch your systems. Human specialists check every finding before it reaches you.',
+            'Agents we built ourselves watch your systems. Engineers turn every finding into a fix before it reaches you.',
           ],
           ul: [
             'Monitoring around the clock, 24/7.',
@@ -777,7 +777,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         {
           h2: 'Was das Managed SOC umfasst',
           p: [
-            'Agenten, die wir selbst gebaut haben, beobachten Ihre Systeme. Fachleute aus unserem Team prüfen jeden Befund, bevor er bei Ihnen ankommt.',
+            'Agenten, die wir selbst gebaut haben, beobachten Ihre Systeme. Ingenieure aus unserem Team machen aus jedem Befund einen Fix, bevor er bei Ihnen ankommt.',
           ],
           ul: [
             'Überwachung rund um die Uhr, 24/7.',
@@ -1052,10 +1052,10 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
   'penetration-testing': {
     en: {
       title: 'Penetration Testing Graz: Apps, APIs, Cloud · RFI-IRFOS',
-      description: 'Penetration testing from Graz for web apps, mobile apps, APIs and cloud. Agents test in parallel, specialists verify and fix down to the code.',
+      description: 'Penetration testing from Graz for web apps, mobile apps, APIs and cloud. Agents test in parallel, engineers fix down to the code.',
       label: 'Penetration Testing',
       h1: 'Penetration testing in Graz for web apps, mobile apps, APIs and cloud',
-      lead: 'We test your application like an attacker would. Agents we built run thousands of tests in parallel, our specialists verify every finding, trace the attack path and engineer the fix down to the code. Built for SaaS companies, startups and software vendors.',
+      lead: 'We test your application like an attacker would. Agents we built run thousands of tests in parallel, our engineers trace the attack path of every finding and build the fix down to the code. Built for SaaS companies, startups and software vendors.',
       sections: [
         {
           h2: 'What we test',
@@ -1064,7 +1064,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'How an engagement works',
-          p: ['Agents run the broad part: thousands of parallel tests across code, configuration and network behavior. Human specialists take over where context matters. They confirm each finding with a proof of concept, follow how an attacker would move through the system and rank the consequences. We test only systems you own or may test.'],
+          p: ['Agents run the broad part: thousands of parallel tests across code, configuration and network behavior. Engineers take over where context matters. They confirm each finding with a proof of concept, follow how an attacker would move through the system and rank the consequences. We test only systems you own or may test.'],
         },
         {
           h2: 'What you receive',
@@ -1091,10 +1091,10 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
     },
     de: {
       title: 'Penetrationstest Graz: Apps, APIs und Cloud · RFI-IRFOS',
-      description: 'Penetrationstest aus Graz für Web, mobile Apps, APIs und Cloud. Agenten testen parallel, Fachleute prüfen und beheben bis in den Code.',
+      description: 'Penetrationstest aus Graz für Web, mobile Apps, APIs und Cloud. Agenten testen parallel, Ingenieure beheben bis in den Code.',
       label: 'Penetrationstest',
       h1: 'Penetrationstest in Graz für Webanwendungen, mobile Apps, APIs und Cloud',
-      lead: 'Wir testen Ihre Anwendung so, wie ein Angreifer es täte. Agenten, die wir selbst gebaut haben, führen Tausende Tests parallel aus. Unsere Fachleute prüfen jeden Befund, verfolgen den Angriffspfad und entwickeln den Fix bis in den Code. Gebaut für SaaS-Unternehmen, Startups und Softwareanbieter.',
+      lead: 'Wir testen Ihre Anwendung so, wie ein Angreifer es täte. Agenten, die wir selbst gebaut haben, führen Tausende Tests parallel aus. Unsere Ingenieure verfolgen den Angriffspfad jedes Befunds und entwickeln den Fix bis in den Code. Gebaut für SaaS-Unternehmen, Startups und Softwareanbieter.',
       sections: [
         {
           h2: 'Was wir testen',
@@ -1103,7 +1103,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'So läuft ein Auftrag',
-          p: ['Agenten übernehmen den breiten Teil: Tausende parallele Tests über Code, Konfiguration und Netzwerkverhalten. Fachleute übernehmen, wo Zusammenhang zählt. Sie bestätigen jeden Befund mit einem Proof of Concept, verfolgen, wie sich ein Angreifer durch das System bewegen würde, und ordnen die Folgen ein. Wir testen nur Systeme, die Ihnen gehören oder die Sie testen dürfen.'],
+          p: ['Agenten übernehmen den breiten Teil: Tausende parallele Tests über Code, Konfiguration und Netzwerkverhalten. Ingenieure übernehmen, wo Zusammenhang zählt. Sie bestätigen jeden Befund mit einem Proof of Concept, verfolgen, wie sich ein Angreifer durch das System bewegen würde, und ordnen die Folgen ein. Wir testen nur Systeme, die Ihnen gehören oder die Sie testen dürfen.'],
         },
         {
           h2: 'Was Sie erhalten',
@@ -1144,7 +1144,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'Why a person checks the findings',
-          p: ['Scanners find patterns. Authorization flaws depend on context, for example which user may see which record. Our specialists test those cases by hand and confirm each one with a proof of concept.'],
+          p: ['Scanners find patterns. Authorization flaws depend on context, for example which user may see which record. Our engineers test those cases by hand and confirm each one with a proof of concept.'],
         },
         {
           h2: 'What you receive',
@@ -1183,7 +1183,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'Warum ein Mensch die Befunde prüft',
-          p: ['Scanner finden Muster. Fehler in der Autorisierung hängen vom Zusammenhang ab, etwa davon, welcher Nutzer welchen Datensatz sehen darf. Unsere Fachleute testen diese Fälle von Hand und bestätigen jeden mit einem Proof of Concept.'],
+          p: ['Scanner finden Muster. Fehler in der Autorisierung hängen vom Zusammenhang ab, etwa davon, welcher Nutzer welchen Datensatz sehen darf. Unsere Ingenieure testen diese Fälle von Hand und bestätigen jeden mit einem Proof of Concept.'],
         },
         {
           h2: 'Was Sie erhalten',
@@ -1224,7 +1224,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'How findings are rated',
-          p: ['Not every misconfiguration matters. Our specialists verify each finding, follow the path an attacker would take through your environment and rank the consequences, so your team starts with the findings that count.'],
+          p: ['Not every misconfiguration matters. Our engineers follow the path an attacker would take through your environment, rank the consequences and build the fix, so your team starts with the findings that count.'],
         },
         {
           h2: 'What you receive',
@@ -1263,7 +1263,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'Wie wir Befunde bewerten',
-          p: ['Nicht jede Fehlkonfiguration zählt. Unsere Fachleute bestätigen jeden Befund, verfolgen den Weg, den ein Angreifer durch Ihre Umgebung nähme, und ordnen die Folgen ein. Ihr Team beginnt so mit den Befunden, die wirklich zählen.'],
+          p: ['Nicht jede Fehlkonfiguration zählt. Unsere Ingenieure verfolgen den Weg, den ein Angreifer durch Ihre Umgebung nähme, und ordnen die Folgen ein. Ihr Team beginnt so mit den Befunden, die wirklich zählen.'],
         },
         {
           h2: 'Was Sie erhalten',
@@ -1292,7 +1292,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
   'secure-code-review': {
     en: {
       title: 'Secure Code Review and Source Code Analysis · RFI-IRFOS',
-      description: 'Secure code review and source code vulnerability analysis for web, mobile and backend software. Verified by specialists, fixes engineered into the code.',
+      description: 'Secure code review and source code vulnerability analysis for web, mobile and backend software. Fixes engineered into the code, ready to apply.',
       label: 'Secure Code Review',
       h1: 'Secure Code Review and Source Code Vulnerability Analysis',
       lead: 'Weaknesses sit in the code. We read your source code, or the shipped build when no source is available, find the vulnerabilities, verify each one and engineer the fix into the code.',
@@ -1331,7 +1331,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
     },
     de: {
       title: 'Secure Code Review und Quellcode-Analyse · RFI-IRFOS',
-      description: 'Secure Code Review und Quellcode-Schwachstellenanalyse für Web-, Mobil- und Backend-Software. Von Fachleuten geprüft, Fixes direkt im Code.',
+      description: 'Secure Code Review und Quellcode-Schwachstellenanalyse für Web-, Mobil- und Backend-Software. Fixes direkt im Code, bereit zum Einspielen.',
       label: 'Secure Code Review',
       h1: 'Secure Code Review und Quellcode-Schwachstellenanalyse',
       lead: 'Schwächen sitzen im Code. Wir lesen Ihren Quellcode, oder den ausgelieferten Build, wenn kein Quellcode vorliegt, finden die Schwachstellen, bestätigen jede einzelne und entwickeln den Fix direkt im Code.',
@@ -1343,7 +1343,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'Vom Befund zum Fix',
-          p: ['Agenten decken die Breite ab und markieren Kandidaten. Fachleute bestätigen jeden, erklären, wie er missbraucht werden könnte, und schreiben den Fix. Sie erhalten eine Änderung, die Ihre Entwickler prüfen können, statt einer Liste von Warnungen.'],
+          p: ['Agenten decken die Breite ab und markieren Kandidaten. Ingenieure bestätigen jeden, erklären, wie er missbraucht werden könnte, und schreiben den Fix. Sie erhalten eine Änderung, die Ihre Entwickler prüfen können, statt einer Liste von Warnungen.'],
         },
         {
           h2: 'Was Sie erhalten',
@@ -1424,7 +1424,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'Wie ein Fix entsteht',
-          p: ['Unsere Agenten reproduzieren jeden Befund und verfolgen, wo er in Ihrem Code sitzt. Fachleute bestätigen anschließend, ob er sich ausnutzen lässt, bewerten sein Risiko für Ihr Geschäft und schreiben die Änderung, wo möglich direkt anwendbar. Ihre Entwickler prüfen sie vor der Auslieferung, und sobald sie live ist, testen wir sie erneut.'],
+          p: ['Unsere Agenten reproduzieren jeden Befund und verfolgen, wo er in Ihrem Code sitzt. Ingenieure bestätigen anschließend, ob er sich ausnutzen lässt, bewerten sein Risiko für Ihr Geschäft und schreiben die Änderung, wo möglich direkt anwendbar. Ihre Entwickler prüfen sie vor der Auslieferung, und sobald sie live ist, testen wir sie erneut.'],
         },
         {
           h2: 'Jeder Schritt bleibt nachvollziehbar',

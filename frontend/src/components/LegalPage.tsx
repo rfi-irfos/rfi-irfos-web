@@ -48,7 +48,7 @@ import { useLocale } from '../hooks/useLocale'
 import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd, landingServiceJsonLd } from '../lib/structuredData'
 import { attributionParams } from './sections/shared'
 import auditStats from '../content/auditStats.json'
-import { LANDING_SLUGS, isLandingSlug, landingDoc, localePath } from './landingPages'
+import { isLandingSlug, landingDoc, localePath } from './landingPages'
 import { LandingBody } from './LandingPage'
 import { localeHref } from '../lib/localeHref'
 
@@ -289,7 +289,7 @@ export function LegalPage({ slug }: { slug: string }) {
   return (
     <div style={BASE}>
       <PageBackdrop reduce={reduce} />
-      <div style={PROSE}>
+      <div style={isLandingSlug(slug) ? { ...PROSE, maxWidth: 1320 } : PROSE}>
         {/* Glass card wrapping the whole page body (2026-08-18, live feedback:
             "wenigstens schaut sleek aus drunter si ne transparente glass box unter
             die texte") - .rfi-glass resolves against :root's dark token set even
@@ -335,10 +335,9 @@ export function LegalPage({ slug }: { slug: string }) {
               (was a full-reload <a href> - "das ist nicht clean, das ist
               increment"), real href kept for middle-click/SEO/no-JS. */}
           <nav aria-label={locale === 'de' ? 'Verwandte Seiten' : 'Related pages'} style={{ display: 'flex', flexWrap: 'wrap', gap: 5, flex: '1 1 auto', justifyContent: 'center' }}>
-            {(isLandingSlug(slug)
-              ? LANDING_SLUGS.filter(s => s !== slug).map(s => ({ slug: s, labelEn: landingDoc(s, 'en').label, labelDe: landingDoc(s, 'de').label }))
-              : LEGAL_QUICKLINKS.filter(q => q.slug !== slug)
-            ).map(q => (
+            {/* Service pages (2026-11-22, Zabih + Simeon): no row of fourteen pills above the h1 any more,
+                the other services sit in the Related tiles at the end of the page. */}
+            {(isLandingSlug(slug) ? [] : LEGAL_QUICKLINKS.filter(q => q.slug !== slug)).map(q => (
               // display: inline-flex + lineHeight: 1 (2026-08-19, live feedback:
               // "sollten die buttons net alle in einer reihe sauber sein?") -
               // plain inline <a> pills can render at subtly different heights
