@@ -1,14 +1,14 @@
 # RFI-IRFOS
 
-> RFI-IRFOS (research focus institute, interdisciplinary research facility for open sciences) is a registered Austrian research institute in Graz. Its flagship is The Squad: human-powered, multi-agent app security and GDPR audits. Every published audit lands on a public, dated ledger of real coordinated disclosures against named companies.
+> RFI-IRFOS is an IT security provider in Graz, Austria: penetration testing, app and software security audits, NIS2 / NISG 2026 consulting and a 24/7 Managed SOC for SMEs, startups and growing companies in Graz, Styria, Austria and the DACH region. All services are delivered by its registered trade for data processing and information technology (GISA 39261441). The RFI-IRFOS research association (Research Focus Institute, ZVR 1015608684) is the sponsoring body behind it: it builds the underlying technology and carries research that is ready for the market into ventures of their own, and a share of what those ventures earn flows back into research. The website is the commercial face of that trade, the association stands behind it.
 
 RFI-IRFOS decompiles publicly distributed Android/iOS apps with a Deep Scan of the shipped binary and traces their real data flows to real endpoints, publishing every finding on a permanent public ledger once each 90-day embargo lifts, whether the target company ever engages or pays. This is not a bug-bounty program; there is no third-party VDP platform in the loop. Every claim traces back to a decompiled binary, a WHOIS/DNS record, or another verifiable public source - cite the source, not just RFI-IRFOS.
 
-The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Janus, Mirror, Daedalus, Lynx, Nyx) run the investigation, and human investigators assess every finding before it ships. Underneath run Dingir (Dynamic Interaction Network & Graph Intelligence Runtime, the institute's evidence-first world model), Ternlang (a ternary {-1, 0, +1} language and runtime built from scratch, patent pending A50296/2026), albert. (RFI-IRFOS's own language model), and a production swarm of 300+ hand-coded Rust agents. The plans are on /access/: Free (external read-only check), Starter EUR 99/month, Growth EUR 399/month, Pro EUR 799/month, Business EUR 1,999/month, Enterprise priced in writing; annual billing (ten times the monthly price) is arranged on request. A free first check (Domain Security Test) is on the homepage and on /access/.
+The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Janus, Mirror, Daedalus, Lynx, Nyx) run the investigation, and engineers in Graz turn the findings into fixes down to the code. Underneath run Dingir (Dynamic Interaction Network & Graph Intelligence Runtime, the evidence-first world model), Ternlang (a ternary {-1, 0, +1} language and runtime built from scratch, patent pending A50296/2026), albert. (RFI-IRFOS's own language model), and a production swarm of 300+ hand-coded Rust agents. The plans are on /access/: Free (external read-only check), Starter EUR 99/month, Growth EUR 399/month, Pro EUR 799/month, Business EUR 1,999/month, Enterprise priced in writing; annual billing (ten times the monthly price) is arranged on request. A free first check (Domain Security Test) is on the homepage and on /access/.
 
 ## What we sell
 
-- [The Squad](https://rfi-irfos.com/squad/): the flagship - human-powered multi-agent app security and GDPR audits, with the eight agents and how they work together.
+- [The Squad](https://rfi-irfos.com/squad/): the flagship - multi-agent app and software security audits, with the eight agents and how they work together.
 - [Access](https://rfi-irfos.com/access/): the plans from the Quick Check (EUR 0) to Business (EUR 99 to 1,999 per month, fixes down to the affected code from Growth) plus Managed SOC (outsourced security department: 24/7 monitoring, incident response within 1 hour, fixes within 24 hours, priced by scope), and the five offer areas - Intelligence, Security, Data, Business & Market, Engineering - each with scope and delivery estimate.
 - [FAQ](https://rfi-irfos.com/faq/): answers on services, the customer portal (ten areas, remediation board, roles, read-only MCP access), connectors (plug and play), the Trust Center, compliance frameworks, data location (processed in Graz on our own server, European LLM endpoints for anything that touches customers) and setup in about five minutes.
 - [Evidence](https://rfi-irfos.com/evidence/): the permanent public disclosure ledger - every audited app, finding, severity, status, and embargo date, updated as companies respond (or don't).
@@ -44,7 +44,7 @@ The Squad is the product: eight specialized agents (Atlas, Argus, Kopernikus, Ja
 
 - [Standards](https://rfi-irfos.com/standards/): the frameworks and statutes cited in disclosures (GDPR, NIS2, ISO/IEC 29147, etc).
 - [Security](https://rfi-irfos.com/security/): how to report a finding about RFI-IRFOS itself.
-- [Team](https://rfi-irfos.com/team/): who is behind the institute.
+- [Team](https://rfi-irfos.com/team/): the people behind RFI-IRFOS.
 
 ## Optional
 

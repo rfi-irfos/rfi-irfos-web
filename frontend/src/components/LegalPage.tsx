@@ -81,8 +81,8 @@ function navigate(e: React.MouseEvent, href: string) {
 // regardless of locale.
 const META: Record<string, { title: string; description: string; titleDe?: string; descriptionDe?: string }> = {
   impressum: {
-    title: 'Legal Notice · RFI-IRFOS', description: 'Legal notice for RFI-IRFOS, a registered not-for-profit research institute in Graz, Austria — registry data, contact, and trade information.',
-    titleDe: 'Impressum · RFI-IRFOS', descriptionDe: 'Impressum von RFI-IRFOS, einem eingetragenen, nicht gewinnorientierten Forschungsinstitut in Graz: Registerdaten, Kontakt und Gewerbeinformationen.',
+    title: 'Legal Notice · RFI-IRFOS', description: 'Legal notice for RFI-IRFOS, IT security provider in Graz, Austria: trade and registry data, contact, and the research association behind it.',
+    titleDe: 'Impressum · RFI-IRFOS', descriptionDe: 'Impressum von RFI-IRFOS, IT-Sicherheitsdienstleister in Graz: Gewerbe- und Registerdaten, Kontakt und der Forschungsverein als Träger.',
   },
   datenschutz: {
     title: 'Privacy Policy · RFI-IRFOS', description: 'How RFI-IRFOS handles data under GDPR: what we collect, our processors, and your rights. No cookies, no profiles.',
@@ -176,7 +176,7 @@ const FAQ_ITEMS: [string, string, string, string][] = [
   ['Can I try something before I buy?', 'Kann ich etwas ausprobieren, bevor ich kaufe?', 'Yes, with the Quick Check at 0 euro. It examines one website or application from the outside and in read-only mode, covers domain, e-mail protection and certificates, is checked by a person and ends with a PDF report that names the next steps.', 'Ja, mit dem Quick Check für 0 Euro. Er untersucht eine Website oder Anwendung von außen und ausschließlich lesend, deckt Domain, E-Mail-Schutz und Zertifikate ab, wird von einer Person geprüft und endet in einem PDF-Bericht mit den nächsten Schritten.'],
   ['How often does the Trust Center update, and can search engines find it?', 'Wie oft aktualisiert sich das Trust Center, und finden Suchmaschinen es?', 'The page refreshes every hour and whenever you review a control. Search engines are kept out by default, and your page becomes searchable only after you switch on the setting that allows search engines to list it.', 'Die Seite aktualisiert sich jede Stunde und sobald ihr eine Kontrolle bewertet. Suchmaschinen bleiben standardmäßig außen vor, und eure Seite wird erst auffindbar, nachdem ihr die Einstellung einschaltet, die Suchmaschinen das Listen erlaubt.'],
   ['Do you examine compiled apps and binaries as well as source code?', 'Untersucht ihr kompilierte Apps und Binärdateien ebenso wie Quellcode?', 'Yes, examining binaries is the core of our research. Our agents decompile mobile apps, follow their code and data flows and trace every connection to the servers they reach. In reviews of your own product, agents also work through code, dependencies, APIs and configuration, and specialists verify what they find.', 'Ja, die Untersuchung von Binärdateien ist der Kern unserer Forschung. Unsere Agenten dekompilieren mobile Apps, verfolgen deren Code- und Datenflüsse und zeichnen jede Verbindung zu den erreichten Servern nach. Bei Prüfungen eures eigenen Produkts arbeiten sich die Agenten zusätzlich durch Code, Abhängigkeiten, APIs und Konfiguration, und Fachleute verifizieren, was sie finden.'],
-  ['Who are we and what do we do?', 'Wer sind wir und was machen wir?', 'RFI-IRFOS is a registered Austrian not-for-profit (ZVR 1015608684), tracing back to an interdisciplinary research collective founded 2020 in Vorarlberg. We work across ternary AI systems, world-model and evidence-graph research, and agent evaluation, with albert. and DINGIR as the two projects that tie the rest together, security research on behalf of our research partners is one strand of that work, not the whole of it. We stay interdisciplinary on purpose, the problems we care about rarely respect the line between one field and the next.', 'RFI-IRFOS ist ein eingetragenes österreichisches Not-for-Profit (ZVR 1015608684), entstanden 2020 aus einem interdisziplinären Forschungskollektiv in Vorarlberg. Wir arbeiten an ternären KI-Systemen, World-Model- und Evidenzgraph-Forschung sowie Agent-Evaluation, mit albert. und DINGIR als den zwei Projekten, die den Rest zusammenhalten, Sicherheitsforschung im Auftrag unserer Forschungspartner ist ein Strang dieser Arbeit, nicht die ganze. Wir bleiben absichtlich interdisziplinär, die Probleme, die uns interessieren, halten sich selten an die Grenze zwischen einem Feld und dem nächsten.'],
+  ['Who are we and what do we do?', 'Wer sind wir und was machen wir?', 'RFI-IRFOS is an IT security provider in Graz. We run penetration tests, app and software security audits, NIS2 consulting and a Managed SOC for companies in Styria, Austria and the DACH region, and every service is delivered by our registered trade for data processing and information technology (GISA 39261441). Behind it stands the RFI-IRFOS research association (ZVR 1015608684) as sponsoring body: it builds the technology we work with, from our own agent swarm to the DINGIR world model, and research that is ready for the market becomes a venture of its own. A share of what these ventures earn flows back into new research.', 'RFI-IRFOS ist ein IT-Sicherheitsdienstleister in Graz. Wir führen Penetrationstests, App- und Software-Audits, NIS2-Beratung und ein Managed SOC für Unternehmen in der Steiermark, in Österreich und im DACH-Raum durch, und sämtliche Leistungen erbringt unser Gewerbe für Dienstleistungen in der automatischen Datenverarbeitung und Informationstechnik (GISA 39261441). Dahinter steht der Forschungsverein RFI-IRFOS (ZVR 1015608684) als Träger: Er entwickelt die Technologie, mit der wir arbeiten, vom eigenen Agentenschwarm bis zum Weltmodell DINGIR, und marktreife Forschung wird zu einem eigenen Venture. Ein Anteil am Ertrag dieser Ventures fließt zurück in neue Forschung.'],
   ['What is an LLM?', 'Was ist ein LLM?', 'A large language model predicts and generates text from patterns in training data. It is one component we build with and around, not a complete system on its own, which is why we also train albert., our own ternary LLM, instead of treating an LLM as the whole product. A model that only predicts the next token cannot check what it just said against anything real, that check has to come from somewhere else in the system.', 'Ein Large Language Model sagt Text anhand gelernter Muster voraus und erzeugt ihn. Es ist eine Komponente, mit der und um die wir bauen, kein vollständiges System für sich, deshalb trainieren wir mit albert. auch unser eigenes ternäres LLM, statt ein LLM als das ganze Produkt zu behandeln. Ein Modell, das nur das nächste Token vorhersagt, kann nicht selbst prüfen, ob das eben Gesagte stimmt, diese Prüfung muss von woanders im System kommen.'],
   ['What is an agent?', 'Was ist ein Agent?', 'An agent combines a model, tools, and observations to pursue a goal and act on its own. We run agents across very different parts of our work: ingesting and validating claims into DINGIR, our world model, running task suites for client agent evaluations, and cross-checking evidence for the security research we publish, always with a human reviewing before anything ships. We keep that human gate because an agent that can act can also act on a wrong belief, and the cost of that mistake is real, not a retry.', 'Ein Agent verbindet ein Modell, Werkzeuge und Beobachtungen, um selbstständig ein Ziel zu verfolgen und zu handeln. Wir setzen Agenten in sehr unterschiedlichen Teilen unserer Arbeit ein: beim Einspeisen und Prüfen von Behauptungen in DINGIR, unser World Model, bei Aufgabensuiten für Kunden-Agent-Evaluationen, und beim Gegenprüfen von Evidenz für die Sicherheitsforschung, die wir veröffentlichen, immer mit einem Menschen, der prüft, bevor etwas rausgeht. Dieses menschliche Gate behalten wir, weil ein Agent, der handeln kann, auch auf einem falschen Befund handeln kann, und der Preis dafür ist real, kein einfacher Neuversuch.'],
   ['What is a world model?', 'Was ist ein World Model?', 'A world model keeps a structured, evolving picture of entities, relationships, and causes so a claim can be checked against reality instead of just sounding right. Ours is called DINGIR: a graph that learns its own topology with a neural network and stamps every claim with a ternary state, supported, unresolved, or refuted, never a flat yes. We refuse the flat yes on purpose, most systems that claim certainty are just hiding the cases where they were not sure.', 'Ein World Model hält ein strukturiertes, sich veränderndes Bild von Entitäten, Beziehungen und Ursachen bereit, damit eine Behauptung an der Realität geprüft werden kann, statt nur plausibel zu klingen. Unseres heißt DINGIR: ein Graph, der seine Topologie mit einem neuronalen Netz lernt und jede Behauptung mit einem ternären Zustand versieht, bestätigt, ungeklärt oder widerlegt, nie ein flaches Ja. Das flache Ja verweigern wir bewusst, die meisten Systeme, die Gewissheit behaupten, verstecken damit nur die Fälle, in denen sie sich nicht sicher waren.'],
@@ -449,14 +449,14 @@ function ImpressumEN() {
       Website: <a href="https://rfi-irfos.com" style={A} className="rfi-inline-link">rfi-irfos.com</a>
     </p>
 
-    <h2 style={H2}>What We Actually Do</h2>
+    <h2 style={H2}>Who Delivers the Services</h2>
     <p style={P}>
-      In case a legal notice page is the first page you ever land on: RFI-IRFOS is a regulated not-for-profit research institute working in security research, GDPR-focused root level code analysis of Android applications, and open-source AI/ternary-computing research. We are not a marketing agency, not a law firm, and not a bug-bounty platform, whatever a stray search result might have implied.
+      RFI-IRFOS is an IT security provider in Graz for penetration testing, app and software security audits, NIS2 consulting and Managed SOC. All services are provided by the registered trade for services in automatic data processing and information technology (GISA 39261441). The trade is held by the RFI-IRFOS research association, which acts as sponsoring body: it develops the underlying technology and carries research that is ready for the market into ventures of their own.
     </p>
 
     <h2 style={H2}>Register &amp; Trade Data</h2>
     <p style={P}>
-      Legal form: Registered association (regulated not-for-profit)<br />
+      Legal form of the trade holder: Registered association (regulated not-for-profit)<br />
       ZVR number (Austrian Central Register of Associations): 1015608684<br />
       GISA number (Trade Register): 39261441<br />
       GLN: 9110038490191<br />
@@ -541,14 +541,14 @@ function ImpressumDE() {
       Website: <a href="https://rfi-irfos.com" style={A} className="rfi-inline-link">rfi-irfos.com</a>
     </p>
 
-    <h2 style={H2}>Was wir tatsächlich tun</h2>
+    <h2 style={H2}>Wer die Leistungen erbringt</h2>
     <p style={P}>
-      Falls ein Impressum die erste Seite ist, auf der Sie je landen: RFI-IRFOS ist ein reguliertes, nicht gewinnorientiertes Forschungsinstitut im Bereich Sicherheitsforschung, DSGVO-fokussierter Root-Level-Codeanalyse von Android-Anwendungen und Open-Source-KI-/Ternärrechen-Forschung. Wir sind keine Marketingagentur, keine Anwaltskanzlei und keine Bug-Bounty-Plattform, was ein vereinzeltes Suchergebnis auch immer nahelegen mag.
+      RFI-IRFOS ist ein IT-Sicherheitsdienstleister in Graz für Penetrationstests, App- und Software-Audits, NIS2-Beratung und Managed SOC. Sämtliche Leistungen erbringt das Gewerbe für Dienstleistungen in der automatischen Datenverarbeitung und Informationstechnik (GISA 39261441). Inhaber des Gewerbes ist der Forschungsverein RFI-IRFOS als Träger, der die zugrunde liegende Technologie entwickelt und marktreife Forschung in eigene Ventures überführt.
     </p>
 
     <h2 style={H2}>Register- &amp; Gewerbedaten</h2>
     <p style={P}>
-      Rechtsform: Eingetragener Verein (reguliert, nicht gewinnorientiert)<br />
+      Rechtsform des Gewerbeinhabers: Eingetragener Verein (reguliert, nicht gewinnorientiert)<br />
       ZVR-Zahl (Zentrales Vereinsregister): 1015608684<br />
       GISA-Zahl (Gewerbeinformationssystem Austria): 39261441<br />
       GLN: 9110038490191<br />
@@ -927,7 +927,7 @@ function AGBEN() {
 
     <h2 style={H2}>14. Use of Revenue</h2>
     <p style={P}>
-      100% of surplus revenue is reinvested into open science, public research, and infrastructure. Zero goes to shareholders — we have none. RFI-IRFOS is a regulated not-for-profit (ZVR 1015608684). Every euro above operating costs funds the next audit, the next model training run, or the next research publication. That is not a marketing line. It is a legal obligation.
+      Services under these Terms are provided by the trade of the RFI-IRFOS research association (GISA 39261441, ZVR 1015608684). Surplus that remains with the association is used for its statutory purposes, in particular research, infrastructure and the development of new technologies.
     </p>
   </>
 }
@@ -992,7 +992,7 @@ function AGBDE() {
 
     <h2 style={H2}>14. Verwendung der Einnahmen</h2>
     <p style={P}>
-      100% des Überschusses werden in offene Wissenschaft, öffentliche Forschung und Infrastruktur reinvestiert. Null Prozent gehen an Anteilseigner — wir haben keine. RFI-IRFOS ist ein regulierter, nicht gewinnorientierter Verein (ZVR 1015608684). Jeder Euro über den Betriebskosten finanziert das nächste Audit, den nächsten Modelltrainingslauf oder die nächste Forschungspublikation. Das ist keine Marketingzeile. Das ist eine gesetzliche Verpflichtung.
+      Die Leistungen nach diesen Bedingungen erbringt das Gewerbe des Forschungsvereins RFI-IRFOS (GISA 39261441, ZVR 1015608684). Überschüsse, die beim Verein verbleiben, verwendet er für seine statutarischen Zwecke, insbesondere Forschung, Infrastruktur und die Entwicklung neuer Technologien.
     </p>
   </>
 }

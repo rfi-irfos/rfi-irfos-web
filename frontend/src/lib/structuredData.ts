@@ -74,7 +74,7 @@ export function reportArticleJsonLd(opts: { slug: string; targets: string[]; dis
   const { slug, targets, disclosure, resolved, resolvedDate, description } = opts
   const modified = [disclosure, resolved ? resolvedDate : undefined].filter(Boolean).sort().pop()
   const url = `https://rfi-irfos.com/evidence/${slug}/`
-  const org = { '@type': 'ResearchOrganization', '@id': 'https://rfi-irfos.com/#organization', name: 'RFI-IRFOS', url: 'https://rfi-irfos.com' }
+  const org = { '@type': 'ProfessionalService', '@id': 'https://rfi-irfos.com/#organization', name: 'RFI-IRFOS', url: 'https://rfi-irfos.com' }
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -121,7 +121,11 @@ export function squadServiceJsonLd(description: string, locale: 'en' | 'de') {
     description,
     url: page,
     provider: { '@id': 'https://rfi-irfos.com/#organization' },
-    areaServed: 'Worldwide',
+    areaServed: [
+      { '@type': 'City', name: 'Graz' },
+      { '@type': 'Country', name: locale === 'de' ? 'Österreich' : 'Austria' },
+      { '@type': 'Place', name: 'DACH' },
+    ],
     availableLanguage: ['en', 'de'],
     // Round 60: a bare Offer without price/currency is an incomplete offer for Google;
     // the priced plans already exist as the /access/ OfferCatalog, so reference that node.

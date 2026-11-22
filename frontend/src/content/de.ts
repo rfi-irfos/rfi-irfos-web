@@ -21,8 +21,8 @@ export const DE: Content = {
       description: 'Reproduzierbare Umgebungen, Experten-Trajektorien, Evaluationsdatensätze und Safety-Daten zum Trainieren und Testen von KI-Agenten.',
     },
     squad: {
-      title: 'The Squad: Menschlich geprüfte App-Audits · RFI-IRFOS',
-      description: 'The Squad: Agenten untersuchen Code, SDKs und Datenflüsse Ihrer App. Menschliche Fachleute prüfen jeden Befund erneut. Schriftlicher Bericht mit Belegen.',
+      title: 'The Squad: App- und Software-Audits aus Graz · RFI-IRFOS',
+      description: 'Spezialisierte Agenten untersuchen Code, SDKs und Datenflüsse Ihrer App, unsere Ingenieure beheben die Funde bis in den Code. Datenverarbeitung in Graz.',
     },
     access: {
       title: 'Preise App-Sicherheitsprüfung & Quick Check · RFI-IRFOS',
@@ -92,7 +92,7 @@ export const DE: Content = {
     headlineEmphasisIndex: 3,
     subtitlePrefix: 'Interdisziplinäre',
     subtitleSuffix: ' Forschungseinrichtung für offene Wissenschaft',
-    sub: 'Wir machen Frontier-Cybersicherheit für Startups, SMEs und wachsende Unternehmen zugänglich, indem unser eigens entwickelter Agentenschwarm Tausende Angriffswege versucht und erfahrene Ingenieure daraus gezielte Lösungen bis in den betroffenen Code schreiben.',
+    sub: 'IT-Sicherheit für KMU, Startups und wachsende Unternehmen in Graz, der Steiermark und im gesamten DACH-Raum. Unser eigens entwickelter Agentenschwarm prüft Tausende Angriffswege, während erfahrene Ingenieure aus seinen Funden Lösungen bis in den betroffenen Code schreiben, von der NIS2-Vorbereitung bis zum Managed SOC rund um die Uhr.',
     ctaSoc: '24/7 Managed SOC',
     ctaCompliance: 'Automatisierte Compliance',
     stats: {

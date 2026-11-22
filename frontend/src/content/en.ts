@@ -33,8 +33,8 @@ export const EN = {
     // put the brand-ish headings ("The Squad", "Priced in plain terms") and 450-char intros
     // into the SERP. Dedicated search-facing copy instead (2026-10-31).
     squad: {
-      title: 'The Squad: Human-Powered App Security Audits · RFI-IRFOS',
-      description: 'The Squad: specialised agents investigate your app\'s code, SDKs and data flows. Human specialists re-verify every finding. Written report with evidence.',
+      title: 'The Squad: App and Software Security Audits from Graz · RFI-IRFOS',
+      description: 'Specialised agents investigate your app\'s code, SDKs and data flows, and engineers fix what they find down to the code. Data processed in Graz, Austria.',
     },
     access: {
       title: 'App Security Audit Pricing & Quick Check · RFI-IRFOS',
@@ -108,7 +108,7 @@ export const EN = {
     subtitlePrefix: 'Interdisciplinary',
     subtitleSuffix: ' Research Facility for Open Sciences',
     // Short line under the headline (Simeon 11.11.): what we do, in two sentences. Moved here from the "What we do best" intro.
-    sub: 'We give startups, SMEs and growing enterprises access to frontier cybersecurity capabilities by deploying our purpose-built swarm of agents across thousands of potential attack paths, with experienced engineers writing actionable solutions down to the affected code.',
+    sub: 'IT security for SMEs, startups and growing companies in Graz, Styria and across the DACH region. Our purpose-built swarm of agents probes thousands of attack paths while experienced engineers turn what it finds into fixes down to the affected code, from NIS2 readiness to a Managed SOC around the clock.',
     // Two quick buttons under the description (Simeon 20.11.): SOC opens the customer portal mask, compliance leads to the plans.
     ctaSoc: '24/7 Managed SOC',
     ctaCompliance: 'Automated Compliance',

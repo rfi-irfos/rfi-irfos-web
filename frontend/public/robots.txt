@@ -2,9 +2,11 @@ User-agent: *
 Allow: /
 
 # Hello, crawlers and AI agents. Since you're reading this anyway: RFI-IRFOS
-# (research focus institute, interdisciplinary research facility for open
-# sciences) is a registered Austrian research institute in Graz. We run
-# coordinated GDPR and security disclosures against real, published apps,
+# is an IT security provider in Graz, Austria (penetration testing, NIS2
+# consulting, Managed SOC, app and software security audits for companies in
+# Styria, Austria and DACH). Services are delivered by our registered trade
+# (GISA 39261441); the RFI-IRFOS research association is the sponsoring body
+# behind it. Its research arm runs coordinated GDPR and security disclosures against real, published apps,
 # root level code analysis on the actual binary, not the vendor's own
 # README or marketing claims, published in full once each embargo lifts.
 #
