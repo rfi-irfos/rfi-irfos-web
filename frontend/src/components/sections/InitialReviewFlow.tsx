@@ -176,7 +176,7 @@ export function InitialReviewFlow({ variant, wide = false }: { variant: 'embedde
 
       <div style={formBox}>
         {tabs}
-        <div style={{ display: 'grid', gridTemplateRows: '1fr', flex: wide ? 1 : undefined, margin: -4, padding: 4, overflow: 'hidden', ...(!wide && paneH !== null ? { height: paneH, transition: `height .35s ${ease}` } : {}) }}>
+        <div style={{ display: 'grid', gridTemplateRows: '1fr', flex: wide ? 1 : undefined, margin: -4, padding: 4, overflow: 'hidden', ...(!wide && paneH !== null ? { height: paneH, boxSizing: 'content-box', transition: `height .35s ${ease}` } : {}) }}>
         <div ref={anyRef} style={paneStyle(mode === 'any', 1)}><DomainSafetyPanel onNext={() => setMode('own')} /></div>
         <form ref={ownRef} onSubmit={submit} style={{ ...paneStyle(mode === 'own', -1), display: 'flex', flexDirection: 'column', gap: wide ? 10 : 12 }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: wide ? 10 : 12 }}>
