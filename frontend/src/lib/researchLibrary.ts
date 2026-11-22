@@ -20,6 +20,17 @@ export type ResearchDoc = {
 
 export const RESEARCH_DOCS: ResearchDoc[] = [
   {
+    slug: 'european-cyberresilience-benchmark-2026', kind: 'paper', date: '2026-11-22', pages: 38,
+    title: {
+      en: 'European Cyberresilience Benchmark 2026. Weaknesses and Vendor Response in Android Apps on the EU Market: A Pre-CRA Baseline',
+      de: 'European Cyberresilience Benchmark 2026. Weaknesses and Vendor Response in Android Apps on the EU Market: A Pre-CRA Baseline',
+    },
+    blurb: {
+      en: '398 Android apps on the EU market, 1,735 findings and the reaction of their vendors to our direct reports, measured before the obligations of the Cyber Resilience Act apply. A responsible person replied for 29.2 % of the apps, and 78.5 % of the apps with findings carry one in a class the CWE catalogue does not cover.',
+      de: '398 Android-Apps auf dem EU-Markt, 1.735 Befunde und die Reaktion der Hersteller auf unsere direkten Meldungen, gemessen bevor die Pflichten des Cyber Resilience Act gelten. Bei 29,2 % der Apps antwortete eine zuständige Person, und 78,5 % der Apps mit Befunden tragen einen Fund in einer Klasse, die der CWE-Katalog nicht abbildet.',
+    },
+  },
+  {
     slug: 'wirkungsbericht-2025-26', kind: 'report', date: '2026-11-16', pages: 52,
     title: { en: 'Impact Report 2025/26', de: 'Wirkungsbericht 2025/26' },
     blurb: {
@@ -108,8 +119,8 @@ export const docDoiUrl = (d: ResearchDoc) => (d.doi ? `https://doi.org/${d.doi}`
 export const LIBRARY_TEXT = {
   heading: { en: 'Institutional publications', de: 'Institutionelle Publikationen' },
   subheading: {
-    en: 'An impact report and six papers on ternary computing, human-AI co-evolution, physical AI and platform labour, all in full text with their sources.',
-    de: 'Ein Wirkungsbericht und sechs Papers zu ternärem Rechnen, Mensch-KI-Ko-Evolution, Physical AI und Plattformarbeit, alles im Volltext und mit Quellen.',
+    en: 'An impact report and seven papers on app security, ternary computing, human-AI co-evolution, physical AI and platform labour, all in full text with their sources.',
+    de: 'Ein Wirkungsbericht und sieben Papers zu App-Sicherheit, ternärem Rechnen, Mensch-KI-Ko-Evolution, Physical AI und Plattformarbeit, alles im Volltext und mit Quellen.',
   },
   kind: {
     report: { en: 'Report', de: 'Bericht' },
