@@ -85,7 +85,7 @@ export function LandingBody({ slug, locale }: { slug: LandingSlug; locale: Landi
   const toCheck = (e: React.MouseEvent) => { e.preventDefault(); document.getElementById('domain-check')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
 
   return <div className="data-solutions rfi-landing"><div className="data-wrap">
-    {showcase ? <ShowcaseTop doc={showcase} locale={locale} onCheck={toCheck} /> : <>
+    {showcase ? <ShowcaseTop doc={showcase} locale={locale} /> : <>
     <header className="data-hero">
       <Reveal><div className="data-icon rfi-ri-box"><Icon size={30} stroke={1.6} /></div></Reveal>
       <Reveal><h1>{d.h1}</h1></Reveal>
@@ -116,6 +116,8 @@ export function LandingBody({ slug, locale }: { slug: LandingSlug; locale: Landi
 
     </>}
 
+    {/* Showcase pages (Simeon 2026-11-22): no evidence cards and no Quick Check form, the page ends with FAQ and more services. */}
+    {!showcase && <>
     <section className="data-section">
       <Reveal><div className="data-section-head"><h2>{d.evidenceH2}</h2><p>{fill(d.evidenceIntro)}</p></div></Reveal>
       <div className="data-agent-grid rfi-landing-cards rfi-landing-cards--tall" style={gridVars(d.evidence.length)}>
@@ -152,6 +154,8 @@ export function LandingBody({ slug, locale }: { slug: LandingSlug; locale: Landi
         </div>
       </div>
     </section>
+
+    </>}
 
     <section className="data-section">
       <Reveal><div className="data-section-head"><h2>{d.faqH2}</h2></div></Reveal>

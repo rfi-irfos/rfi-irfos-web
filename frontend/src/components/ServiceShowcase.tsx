@@ -18,23 +18,22 @@ const CAP_ICONS = [IconRadar2, IconAlarm, IconCode, IconListCheck, IconUsersGrou
 const STEP_ICONS = [IconEye, IconFilter, IconShieldBolt, IconTool, IconFileCheck]
 const AUD_ICONS = [IconRocket, IconTrendingUp, IconBuilding]
 
-export function ShowcaseTop({ doc, locale, onCheck }: { doc: ShowcaseDoc; locale: LandingLocale; onCheck: (e: React.MouseEvent) => void }) {
+export function ShowcaseTop({ doc, locale }: { doc: ShowcaseDoc; locale: LandingLocale }) {
   const de = locale === 'de'
   return <>
     <header className="data-hero">
       <Reveal><h1>{doc.h1}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{doc.lede}</p></Reveal>
       <Reveal delay={2}><div className="svc-hero-actions">
-        <a href="#domain-check" onClick={onCheck} className="data-cta">{de ? 'Quick Check starten' : 'Start the Quick Check'} <span aria-hidden="true">→</span></a>
+        <a href={localePath(locale, '/#domain-check')} className="data-cta">{de ? 'Quick Check starten' : 'Start the Quick Check'} <span aria-hidden="true">→</span></a>
         <a href={localePath(locale, '/access/')} className="svc-secondary">{de ? 'Pläne und Preise' : 'Plans and prices'}</a>
       </div></Reveal>
-      <Reveal delay={3}><ul className="svc-kpis" aria-label={de ? 'Kennzahlen' : 'Key figures'}>
-        {doc.kpis.map(([v, l]) => <li key={l}><strong>{v}</strong><span>{l}</span></li>)}
-      </ul></Reveal>
     </header>
 
     <section className="data-section">
-      <Reveal><div className="data-section-head"><h2>{doc.capabilitiesH2}</h2></div></Reveal>
+      {/* Simeon 2026-11-22: no visible title over the cards (same as the Data Solutions dataset grid);
+          the h2 stays for screen readers so the outline still reads h1 > h2 > h3. */}
+      <h2 className="data-sr-only">{doc.capabilitiesH2}</h2>
       <div className="data-product-grid">{doc.capabilities.map(([title, body], i) => { const Icon = CAP_ICONS[i % CAP_ICONS.length]; return <Reveal key={title} delay={(i % 3) + 1}>
         <article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card" style={hue(i)}><div className="data-icon rfi-ri-box"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article>
       </Reveal> })}</div>

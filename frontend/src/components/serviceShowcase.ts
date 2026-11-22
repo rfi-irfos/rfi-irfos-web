@@ -14,7 +14,6 @@ import type { LandingSlug } from './landingSlugs'
 export type ShowcaseDoc = {
   h1: string
   lede: string
-  kpis: [value: string, label: string][]
   capabilitiesH2: string
   capabilities: [title: string, body: string][]
   /** Action button under the capability cards (Data Solutions pattern), links to /access/. */
@@ -42,23 +41,22 @@ export const SHOWCASE: Partial<Record<LandingSlug, { en: ShowcaseDoc; de: Showca
     de: {
       h1: 'Managed SOC aus Graz: Ihre Sicherheitsabteilung rund um die Uhr',
       lede: 'Wir überwachen Ihre Systeme Tag und Nacht, reagieren binnen einer Stunde auf jeden Vorfall und liefern die Behebung innerhalb von 24 Stunden als Änderung an Ihrem Code.',
-      kpis: [['24/7', 'Überwachung'], ['< 1 h', 'bis zur ersten Reaktion'], ['< 24 h', 'bis zum Fix im Code'], ['Graz', 'Verarbeitung auf eigenem Server']],
-      capabilitiesH2: 'Was Ihr SOC übernimmt',
+      capabilitiesH2: 'Leistungen im Überblick',
       capabilities: [
         ['Überwachung rund um die Uhr', 'Sensoren für DNS, HTTP und TLS beobachten Ihre Domains und Dienste, Alarme und Assets laufen in einem Dashboard zusammen.'],
         ['Reaktion binnen einer Stunde', 'Jeder Alarm landet im Incidents-Board. Ein Ingenieur übernimmt, dämmt den Vorfall ein und hält Sie auf dem Laufenden.'],
         ['Fix bis in den Code', 'Die Behebung kommt als Patch-Datei, die sich mit git apply auf jedem Git-Host einspielen lässt, und ein Retest bestätigt sie.'],
         ['Compliance läuft mit', 'Kontrollen, Nachweise und Audit-Dokumente sammeln sich im Portal, sodass Ihr nächstes Audit auf vollständigen Belegen aufbaut.'],
         ['Ein festes Team', 'Dieselben Ingenieure betreuen Ihre Systeme, kennen Ihre Architektur und sprechen mit Ihnen Deutsch oder Englisch.'],
-        ['Für Managed Service Provider', 'Mandantenfähig, unter eigenem Namen und mit vereinbarten SLAs betreiben Sie das SOC für Ihre eigenen Kunden.'],
+        ['Für Managed Service Provider', 'Mandantenfähig, unter eigenem Namen und mit vereinbarten SLAs betreiben Sie den Dienst für Ihre eigenen Kunden.'],
       ],
       capabilitiesCta: 'Umfang und Preis auf Zugang ansehen',
       prose: {
         h2: 'Managed SOC und 24/7 Security Monitoring für Unternehmen in Österreich',
         p: [
-          'Ein Security Operations Center (SOC) erkennt Cyberangriffe, bewertet sie und leitet die Abwehr ein, bevor aus einem Sicherheitsvorfall ein Betriebsausfall wird. Weil ein eigenes SOC mit Schichtbetrieb das Budget vieler kleiner und mittlerer Unternehmen übersteigt, übernehmen wir diese Aufgabe als Managed SOC aus Graz: Wir betreiben Ihr Security Monitoring rund um die Uhr, führen die Incident Response und schließen jede Lücke dort, wo sie entsteht, im Quellcode.',
+          'Ein Security Operations Center (SOC) erkennt Cyberangriffe, bewertet sie und leitet die Abwehr ein, bevor aus einem Sicherheitsvorfall ein Betriebsausfall wird. Weil ein eigenes Sicherheitszentrum mit Schichtbetrieb das Budget vieler kleiner und mittlerer Unternehmen übersteigt, übernehmen wir diese Aufgabe von Graz aus: Wir betreiben Ihr Security Monitoring rund um die Uhr, führen die Incident Response und schließen jede Lücke dort, wo sie entsteht, im Quellcode.',
           'Damit verbindet unser SOC as a Service die Erkennung und Abwehr von Angriffen, wie sie Managed Detection and Response (MDR) beschreibt, mit der Behebung von Schwachstellen bis in Ihr Repository. Agenten werten Signale aus DNS, HTTP und TLS laufend aus, ordnen jeden Alarm nach Asset und Schweregrad ein und sortieren Fehlalarme früh aus. Anschließend übernimmt ein Ingenieur aus unserem Team, reagiert binnen einer Stunde und liefert den Fix innerhalb von 24 Stunden als Patch, den Ihre Entwickler direkt einspielen.',
-          'Zugleich stützt das ausgelagerte SOC Ihre NIS2-Vorbereitung, denn die Behandlung von Sicherheitsvorfällen und die Meldung erheblicher Vorfälle gehören zu den Pflichten der NIS2-Richtlinie. Sämtliche Nachweise liegen im Kundenportal, verarbeitet in Graz auf unserem eigenen Server. So erhalten Startups, KMU und Konzerne in Graz, der Steiermark, Wien und dem gesamten DACH-Raum eine Cybersecurity-Abteilung, die mit ihrem Unternehmen wächst.',
+          'Zugleich stützt der ausgelagerte Betrieb Ihre NIS2-Vorbereitung, denn die Behandlung von Sicherheitsvorfällen und die Meldung erheblicher Vorfälle gehören zu den Pflichten der NIS2-Richtlinie. Sämtliche Nachweise liegen im Kundenportal, verarbeitet in Graz auf unserem eigenen Server. So erhalten Startups, KMU und Konzerne in Graz, der Steiermark, Wien und dem gesamten DACH-Raum eine Cybersecurity-Abteilung, die mit ihrem Unternehmen wächst.',
         ],
       },
       pipelineH2: 'Vom Alarm zum Fix in fünf Schritten',
@@ -85,33 +83,32 @@ export const SHOWCASE: Partial<Record<LandingSlug, { en: ShowcaseDoc; de: Showca
         'Rollen für Admin, Engineer, Analyst und Auditor, Anmeldung mit 2FA',
         'KI-Assistenten lesen über MCP nur mit, Tokens widerrufen Sie selbst',
       ],
-      audienceH2: 'Für wen das SOC gedacht ist',
+      audienceH2: 'Für wen sich der Dienst lohnt',
       audience: [
         ['Startups im Enterprise-Vertrieb', 'Sicherheitsfragebögen großer Kunden beantworten Sie mit Belegen direkt aus dem Portal.'],
         ['Wachsende Unternehmen', 'Ihre Sicherheitsabteilung steht ab dem ersten Tag, und eigene Stellen planen Sie in Ruhe.'],
-        ['Konzerne und MSPs', 'Ein zusätzliches Team in Bereitschaft oder ein SOC unter eigenem Namen für Ihre Kunden.'],
+        ['Konzerne und MSPs', 'Ein zusätzliches Team in Bereitschaft oder ein Angebot unter eigenem Namen für Ihre Kunden.'],
       ],
     },
     en: {
       h1: 'Managed SOC from Graz: your security department, around the clock',
       lede: 'We monitor your systems day and night, respond to every incident within one hour and deliver the fix within 24 hours as a change to your code.',
-      kpis: [['24/7', 'monitoring'], ['< 1 h', 'to first response'], ['< 24 h', 'to the fix in code'], ['Graz', 'processing on our own server']],
-      capabilitiesH2: 'What your SOC takes on',
+      capabilitiesH2: 'Services at a glance',
       capabilities: [
         ['Monitoring around the clock', 'DNS, HTTP and TLS sensors watch your domains and services, with alerts and assets in one dashboard.'],
         ['Response within one hour', 'Every alert lands on the incidents board. An engineer takes it, contains the incident and keeps you informed.'],
         ['Fixes down to the code', 'The fix arrives as a patch file you apply with git apply on any Git host, and a retest confirms it.'],
         ['Compliance runs alongside', 'Controls, evidence and audit documents collect in the portal, so your next audit builds on complete records.'],
         ['One dedicated team', 'The same engineers look after your systems, know your architecture and work with you in English or German.'],
-        ['For managed service providers', 'Multi-tenant, under your own name and with agreed SLAs, you run the SOC for your own clients.'],
+        ['For managed service providers', 'Multi-tenant, under your own name and with agreed SLAs, you run the service for your own clients.'],
       ],
       capabilitiesCta: 'See scope and price on Access',
       prose: {
         h2: 'Managed SOC and 24/7 security monitoring for companies in Austria and the EU',
         p: [
-          'A security operations center (SOC) detects cyberattacks, assesses them and starts the defence before a security incident turns into downtime. Because an in-house SOC with shift coverage exceeds the budget of most small and mid-sized businesses, we take on that job as a managed SOC from Graz: we run your security monitoring around the clock, lead the incident response and close every gap where it starts, in the source code.',
+          'A security operations center (SOC) detects cyberattacks, assesses them and starts the defence before a security incident turns into downtime. Because an in-house security centre with shift coverage exceeds the budget of most small and mid-sized businesses, we take on that job from Graz: we run your security monitoring around the clock, lead the incident response and close every gap where it starts, in the source code.',
           'Our SOC as a service therefore combines the detection and response that managed detection and response (MDR) describes with vulnerability remediation down to your repository. Agents analyse DNS, HTTP and TLS signals continuously, triage every alert by asset and severity and filter false positives early. An engineer from our team then takes over, responds within one hour and delivers the fix within 24 hours as a patch your developers apply directly.',
-          'The outsourced SOC also supports your NIS2 readiness, since incident handling and the reporting of significant incidents are duties under the NIS2 Directive. All evidence sits in the customer portal, processed in Graz on our own server. Startups, SMEs and enterprises across Austria, Germany, Switzerland and the wider EU get a cybersecurity department that grows with their business.',
+          'Outsourced operations also support your NIS2 readiness, since incident handling and the reporting of significant incidents are duties under the NIS2 Directive. All evidence sits in the customer portal, processed in Graz on our own server. Startups, SMEs and enterprises across Austria, Germany, Switzerland and the wider EU get a cybersecurity department that grows with their business.',
         ],
       },
       pipelineH2: 'From alert to fix in five steps',
@@ -138,11 +135,11 @@ export const SHOWCASE: Partial<Record<LandingSlug, { en: ShowcaseDoc; de: Showca
         'Roles for admin, engineer, analyst and auditor, sign-in with 2FA',
         'AI assistants read along over MCP only, and you revoke tokens yourself',
       ],
-      audienceH2: 'Who the SOC is for',
+      audienceH2: 'Who the service is for',
       audience: [
         ['Startups selling to enterprises', 'Answer security questionnaires from large customers with evidence straight from the portal.'],
         ['Growing companies', 'Your security department is in place from day one, and you plan your own hires calmly.'],
-        ['Enterprises and MSPs', 'An extra team on standby, or a SOC under your own name for your clients.'],
+        ['Enterprises and MSPs', 'An extra team on standby, or an offer under your own name for your clients.'],
       ],
     },
   },
