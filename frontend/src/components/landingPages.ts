@@ -1341,7 +1341,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
           h2: 'Three layers, one investigation',
           p: ['Each layer builds on the output of the one before:'],
           ul: [
-            'Tools: Semgrep for static analysis, TruffleHog for secrets, dependency checks against the OSV database for known CVEs and, for shipped builds, APKTool, JADX, Ghidra and Frida. Their output is the raw material.',
+            'Tools: Semgrep with our own rule set for static analysis, Trivy for known CVEs and misconfigurations, Gitleaks for secrets and, for shipped builds, APKTool, JADX, Ghidra, Frida and TruffleHog. Their output is the raw material.',
             'Agents and the NYX knowledge graph: every candidate is mapped to CWE, CAPEC and MITRE ATT&CK, followed across components and tested for reachability until it becomes a concrete attack path with a proof of concept or drops out.',
             'Engineers: they rate the risk for your business, write the fix into the affected code and retest it once your team has applied it.',
           ],
@@ -1393,7 +1393,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
           h2: 'Drei Schichten, eine Untersuchung',
           p: ['Jede Schicht baut auf dem Ergebnis der vorherigen auf:'],
           ul: [
-            'Werkzeuge: Semgrep für die statische Analyse, TruffleHog für Geheimnisse im Code, Abhängigkeitsprüfungen gegen die OSV-Datenbank für bekannte CVEs und für ausgelieferte Builds APKTool, JADX, Ghidra und Frida. Ihre Ausgabe ist das Rohmaterial.',
+            'Werkzeuge: Semgrep mit unserem eigenen Regelwerk für die statische Analyse, Trivy für bekannte CVEs und Fehlkonfigurationen, Gitleaks für Geheimnisse im Code und für ausgelieferte Builds APKTool, JADX, Ghidra, Frida und TruffleHog. Ihre Ausgabe ist das Rohmaterial.',
             'Agenten und der Wissensgraph NYX: Jeder Kandidat wird CWE, CAPEC und MITRE ATT&CK zugeordnet, über Komponenten hinweg verfolgt und auf Erreichbarkeit getestet, bis daraus ein konkreter Angriffspfad mit Proof of Concept wird oder er ausscheidet.',
             'Engineers: Sie bewerten das Risiko für Ihr Geschäft, schreiben den Fix in den betroffenen Code und testen ihn erneut, sobald Ihr Team ihn eingespielt hat.',
           ],

@@ -7,7 +7,7 @@ export const PART: Partial<Record<LandingSlug, { en: ShowcaseDoc; de: ShowcaseDo
       lede: 'Was Scanner wie Semgrep melden, ist bei uns das Rohmaterial: Agenten verfolgen jeden Kandidaten durch Ihren Quellcode oder den ausgelieferten Build, machen daraus belegte Angriffspfade und schreiben den Fix direkt in den betroffenen Code.',
       capabilitiesH2: 'Leistungen im Überblick',
       capabilities: [
-        ['Werkzeuge als erste Schicht', 'Semgrep, TruffleHog und Abhängigkeitsprüfungen gegen die OSV-Datenbank laufen zuerst, und ihre Meldungen sind der Ausgangspunkt der Untersuchung.'],
+        ['Werkzeuge als erste Schicht', 'Semgrep, Trivy und Gitleaks laufen zuerst, und ihre Meldungen sind der Ausgangspunkt der Untersuchung.'],
         ['Angriffspfade aus Einzelmeldungen', 'Der Wissensgraph NYX ordnet jeden Kandidaten CWE, CAPEC und MITRE ATT&CK zu, Agenten verfolgen ihn über Komponenten hinweg und testen, ob ein Angreifer ihn erreicht.'],
         ['Ausgelieferte Builds', 'Fehlt der Quellcode, dekompilieren wir den ausgelieferten Build und suchen dort nach hartkodierten Schlüsseln und Zugangsdaten.'],
         ['Bibliotheken und SDKs', 'Drittanbieter-Bibliotheken und SDKs prüfen wir samt Version auf bekannte Schwachstellen und auf Daten, die sie nach außen senden.'],
@@ -19,14 +19,14 @@ export const PART: Partial<Record<LandingSlug, { en: ShowcaseDoc; de: ShowcaseDo
         h2: 'Secure Code Review und Source Code Analyse für Software aus Österreich',
         p: [
           'Eine Secure Code Review, auch Quellcode-Analyse genannt, sucht Schwachstellen dort, wo sie entstehen: in Authentifizierung, Autorisierung, Kryptografie und den Datenflüssen Ihrer Anwendung. Für Startups, KMU und Softwarehersteller in Graz, der Steiermark und ganz Österreich lesen wir Code in Python, Rust, Go, Java, JavaScript und TypeScript sowie mobile Stacks. Liegt nur der ausgelieferte Build vor, dekompilieren wir ihn und finden auch dort hartkodierte Schlüssel. Dadurch verbindet die Prüfung statische Code-Analyse (SAST) mit dem Blick auf das Laufzeitverhalten.',
-          'Die Untersuchung läuft in drei Schichten. Zuerst liefern etablierte Werkzeuge wie Semgrep, TruffleHog und die OSV-Abhängigkeitsprüfung, bei Builds zusätzlich APKTool, JADX, Ghidra und Frida, das Rohmaterial. Darauf aufbauend verknüpft der Wissensgraph NYX jeden Kandidaten mit CWE, CAPEC und MITRE ATT&CK, während Agenten ihn über Abhängigkeiten, Konfiguration und Zugriffskontrollen hinweg verfolgen, bis ein konkreter Angriffspfad mit Proof of Concept feststeht oder der Kandidat ausscheidet. Erst dann schreiben Engineers den Fix, der als Patch-Datei bei Ihnen ankommt, im gewohnten Code-Review sichtbar ist und sich auf jedem Git-Host einspielen lässt. Zum Schluss testen wir erneut, sodass die Lücke belegt geschlossen ist.',
+          'Die Untersuchung läuft in drei Schichten. Zuerst liefern etablierte Werkzeuge wie Semgrep, Trivy und Gitleaks, bei Builds zusätzlich APKTool, JADX, Ghidra, Frida und TruffleHog, das Rohmaterial. Darauf aufbauend verknüpft der Wissensgraph NYX jeden Kandidaten mit CWE, CAPEC und MITRE ATT&CK, während Agenten ihn über Abhängigkeiten, Konfiguration und Zugriffskontrollen hinweg verfolgen, bis ein konkreter Angriffspfad mit Proof of Concept feststeht oder der Kandidat ausscheidet. Erst dann schreiben Engineers den Fix, der als Patch-Datei bei Ihnen ankommt, im gewohnten Code-Review sichtbar ist und sich auf jedem Git-Host einspielen lässt. Zum Schluss testen wir erneut, sodass die Lücke belegt geschlossen ist.',
           'Der Bericht enthält je Befund Beleg, CVSS-Schweregrad und Fix und dient als technischer Nachweis für Kundenfragebögen und Audits. Zugleich stützt er die NIS2-Vorbereitung: Ob die Richtlinie für Ihr Unternehmen gilt, richtet sich nach Sektor und Größe, ihr Artikel 21 verlangt jedoch Risikomanagement-Maßnahmen, und ein dokumentierter Review ist dafür ein greifbarer Baustein. So erhalten Teams im DACH-Raum ein Ergebnis, das ihre Entwickler direkt umsetzen.',
         ],
       },
       pipelineH2: 'Vom Code zum geprüften Fix in fünf Schritten',
       pipeline: [
         ['Einlesen', 'Sie geben Lesezugriff auf das Repository oder senden den Build, und wir richten die Prüfung auf Ihren Code aus.'],
-        ['Durchsuchen', 'Semgrep, TruffleHog und die OSV-Prüfung laufen über Code, Abhängigkeiten und Konfiguration und liefern die Kandidaten.'],
+        ['Durchsuchen', 'Semgrep, Trivy und Gitleaks laufen über Code, Abhängigkeiten und Konfiguration und liefern die Kandidaten.'],
         ['Verfolgen', 'Agenten und NYX verknüpfen die Kandidaten zu Angriffspfaden, testen die Erreichbarkeit und vergeben den CVSS-Schweregrad.'],
         ['Beheben', 'Der Fix entsteht im betroffenen Code, und Ihr Team entscheidet, was gemergt wird.'],
         ['Retesten', 'Nach dem Einspielen prüfen wir die Stelle erneut und tragen das Ergebnis im Portal ein.'],
@@ -59,7 +59,7 @@ export const PART: Partial<Record<LandingSlug, { en: ShowcaseDoc; de: ShowcaseDo
       lede: 'What scanners such as Semgrep report is our raw material: agents follow every candidate through your source code or the shipped build, turn it into a proven attack path and write the fix straight into the affected code.',
       capabilitiesH2: 'Services at a glance',
       capabilities: [
-        ['Tools as the first layer', 'Semgrep, TruffleHog and dependency checks against the OSV database run first, and their alerts are where the investigation begins.'],
+        ['Tools as the first layer', 'Semgrep, Trivy and Gitleaks run first, and their alerts are where the investigation begins.'],
         ['Attack paths from single alerts', 'The NYX knowledge graph maps every candidate to CWE, CAPEC and MITRE ATT&CK, while agents follow it across components and test whether an attacker can reach it.'],
         ['Shipped builds', 'When the source is unavailable, we decompile the shipped build and look for hardcoded keys and credentials inside it.'],
         ['Libraries and SDKs', 'We check third-party libraries and SDKs with their versions for known vulnerabilities and for data they send to outside parties.'],
@@ -71,14 +71,14 @@ export const PART: Partial<Record<LandingSlug, { en: ShowcaseDoc; de: ShowcaseDo
         h2: 'Secure code review and source code analysis for software in Austria and the EU',
         p: [
           'A secure code review, also called source code analysis, looks for vulnerabilities where they originate: in authentication, authorization, cryptography and the data flows of your application. For startups, SMEs and software vendors in Graz, Styria and across Austria, we read code in Python, Rust, Go, Java, JavaScript and TypeScript as well as mobile stacks. If only the shipped build exists, we decompile it and find hardcoded keys there as well. The review therefore combines static application security testing (SAST) with a view of runtime behaviour.',
-          'The investigation runs in three layers. Established tools such as Semgrep, TruffleHog and the OSV dependency check, joined by APKTool, JADX, Ghidra and Frida for shipped builds, supply the raw material. Building on it, the NYX knowledge graph links every candidate to CWE, CAPEC and MITRE ATT&CK, while agents follow it through dependencies, configuration and access control until a concrete attack path with a proof of concept stands or the candidate drops out. Only then do engineers write the fix, which reaches you as a patch file, shows up in your usual code review and applies on any Git host. Finally, we retest, so the closed gap is backed by evidence.',
+          'The investigation runs in three layers. Established tools such as Semgrep, Trivy and Gitleaks, joined by APKTool, JADX, Ghidra, Frida and TruffleHog for shipped builds, supply the raw material. Building on it, the NYX knowledge graph links every candidate to CWE, CAPEC and MITRE ATT&CK, while agents follow it through dependencies, configuration and access control until a concrete attack path with a proof of concept stands or the candidate drops out. Only then do engineers write the fix, which reaches you as a patch file, shows up in your usual code review and applies on any Git host. Finally, we retest, so the closed gap is backed by evidence.',
           'The report holds evidence, CVSS severity and fix for every finding and serves as technical proof for customer questionnaires and audits. It also supports NIS2 preparation: whether the directive applies to your company depends on sector and size, yet its Article 21 calls for risk management measures, and a documented review is a tangible building block for them. Teams across the DACH region and the EU receive a result their developers can act on directly.',
         ],
       },
       pipelineH2: 'From code to a tested fix in five steps',
       pipeline: [
         ['Ingest', 'You grant read access to the repository or send the build, and we aim the review at your code.'],
-        ['Scan', 'Semgrep, TruffleHog and the OSV check run across code, dependencies and configuration and supply the candidates.'],
+        ['Scan', 'Semgrep, Trivy and Gitleaks run across code, dependencies and configuration and supply the candidates.'],
         ['Trace', 'Agents and NYX link the candidates into attack paths, test reachability and assign the CVSS severity.'],
         ['Fix', 'The fix takes shape in the affected code, and your team decides what gets merged.'],
         ['Retest', 'After you apply it, we check the spot again and record the result in the portal.'],
