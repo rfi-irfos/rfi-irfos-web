@@ -1527,5 +1527,5 @@ button { cursor: pointer; font-family: inherit; }
 .rfi-landing .data-agent-grid article { min-height: 0; padding: 22px; }
 .rfi-landing .data-agent-grid h3 { font-size: var(--fs-lead); margin: 0 0 6px; text-align: left; }
 .rfi-landing .data-agent-grid p { margin: 0; color: var(--text); font-size: var(--fs-body); line-height: var(--lh-body); }
-.rfi-landing .rfi-landing-faq { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+.rfi-landing .rfi-landing-faq { grid-template-columns: repeat(2, 1fr); }
 @media (max-width: 720px) { .rfi-landing .rfi-landing-faq { grid-template-columns: 1fr; } }
