@@ -190,8 +190,8 @@ export function SubmitSection({
               </div>
               <button type="submit" className={tipFormState === 'ok' ? undefined : 'fx-cta-teal'} disabled={tipFormState === 'sending' || blocked} style={{
                 background: tipFormState === 'ok' ? 'rgba(0,245,196,0.2)' : undefined,
-                color: tipFormState === 'ok' ? TEAL : '#070711',
-                border: tipFormState === 'ok' ? `1px solid ${TEAL}` : 'none',
+                color: tipFormState === 'ok' ? TEAL : 'var(--text)',
+                border: tipFormState === 'ok' ? `1px solid ${TEAL}` : undefined,
                 padding: '14px 24px', borderRadius: 12, fontWeight: 700, fontSize: 'var(--fs-body)',
                 cursor: tipFormState === 'sending' ? 'wait' : blocked ? 'not-allowed' : 'pointer',
                 opacity: blocked && tipFormState === 'idle' ? 0.78 : 1, fontFamily: 'inherit',

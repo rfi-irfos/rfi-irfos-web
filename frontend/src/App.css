@@ -1614,3 +1614,42 @@ button { cursor: pointer; font-family: inherit; }
 .fx-cta-glass, .irf-hero-cta--primary, .data-cta, .fx-cta-teal, .wm-btn-primary { border-color: rgba(0,245,196,.6); box-shadow: 0 0 18px rgba(0,245,196,.28), inset 0 0 12px rgba(0,245,196,.1); }
 [data-theme="light"] .fx-cta-glass, [data-theme="light"] .data-cta, [data-theme="light"] .fx-cta-teal { border-color: rgba(0,184,148,.6); }
 .fx-cta-glass:hover, .irf-hero-cta--primary:hover, .data-cta:hover, .fx-cta-teal:not(:disabled):hover, .wm-btn-primary:hover { border-color: rgba(0,245,196,.8); }
+
+/* Service pages, pipeline (Simeon 2026-11-22): the step number sits right before the step title, and the
+   cards are slimmer. Scoped to .rfi-landing so the Data Solutions pipeline stays as it is. */
+.rfi-landing .data-pipeline, .rfi-landing .data-quality { max-width: 860px; }
+.rfi-landing .data-pipeline-module { grid-template-columns: 64px 1fr; gap: 22px; min-height: 0; padding: 20px 24px; }
+.rfi-landing .data-pipeline-copy h3 { display: flex; align-items: baseline; gap: 12px; }
+.svc-step-no { color: var(--accent); font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+@media (max-width: 760px) {
+  .rfi-landing .data-pipeline-module { grid-template-columns: 52px 1fr; gap: 14px; padding: 18px 16px; }
+  .rfi-landing .data-pipeline-icon { grid-row: auto; }
+}
+
+/* Service pages, "Datenort und Kontrolle" as four tiles (Simeon 2026-11-22). */
+.svc-control-head { margin-top: 64px; }
+.svc-control { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.svc-control > * { display: flex; }
+.svc-control-tile { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 24px 18px; border-radius: 14px; text-align: center; border: 1px solid var(--hue-border); }
+.svc-control-tile .data-icon { width: 52px; height: 52px; }
+.svc-control-tile p { margin: 0; color: var(--text); font-size: var(--fs-small); line-height: var(--lh-body); }
+@media (max-width: 900px) { .svc-control { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .svc-control { grid-template-columns: 1fr; } }
+
+/* Service pages, FAQ as accordion + "Noch Fragen?" card (Simeon 2026-11-22). */
+.svc-faq { max-width: 860px; margin: 0 auto; display: grid; gap: 12px; }
+.svc-faq-item { border-radius: 14px; padding: 0; transition: border-color .3s, box-shadow .3s; }
+.svc-faq-item h3 { margin: 0; }
+.svc-faq-q { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 20px 24px; background: none; border: 0; cursor: pointer; font: inherit; font-size: var(--fs-body); font-weight: 700; color: var(--text); text-align: left; }
+.svc-faq-toggle { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); transition: transform .38s cubic-bezier(.2,.7,.2,1), background .3s; }
+.svc-faq-item.is-open .svc-faq-toggle { transform: rotate(45deg); background: color-mix(in srgb, var(--accent) 18%, transparent); }
+.svc-faq-panel p { margin: 0; padding: 0 24px 22px; color: var(--text); font-size: var(--fs-body); line-height: var(--lh-body); }
+@media (prefers-reduced-motion: reduce) { .svc-faq-toggle { transition: none; } }
+.svc-ask { position: relative; max-width: 860px; margin: 36px auto 0; display: flex; align-items: center; gap: 20px; padding: 24px 28px; border-radius: 16px; overflow: hidden; }
+.svc-ask::before { content: ''; position: absolute; inset: 14px auto 14px 0; width: 4px; border-radius: 0 4px 4px 0; background: var(--accent); box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 55%, transparent); }
+.svc-ask .data-icon { flex: none; width: 56px; height: 56px; }
+.svc-ask-copy { flex: 1; min-width: 0; }
+.svc-ask-copy h3 { margin: 0 0 6px; font-size: var(--fs-lead); font-weight: 700; color: var(--text); text-align: left; }
+.svc-ask-copy p { margin: 0; color: var(--text); font-size: var(--fs-small); line-height: var(--lh-body); }
+.svc-ask-btn { flex: none; cursor: pointer; font: inherit; font-weight: 700; padding: 12px 22px; border-radius: 8px; text-decoration: none; }
+@media (max-width: 640px) { .svc-ask { flex-direction: column; align-items: flex-start; } }

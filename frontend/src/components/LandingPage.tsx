@@ -10,7 +10,7 @@
 // from App.css and are shared with DataSolutions.tsx on purpose: one look for every
 // product page. Body text stays at full contrast: these pages carry the offer itself, and
 // important information must not sit in grey text (binding style rule).
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd, landingServiceJsonLd } from '../lib/structuredData'
 import { LANDING, LANDING_SLUGS, landingDoc, localePath, type LandingLocale, type LandingSlug } from './landingPages'
 import { InitialReviewFlow } from './sections/InitialReviewFlow'
@@ -22,7 +22,7 @@ import auditStats from '../content/auditStats.json'
 import {
   IconDeviceMobile, IconLock, IconCertificate, IconRadar2, IconRobot, IconHeadset, IconListCheck, IconWorldSearch, IconBug, IconApi,
   IconCloudLock, IconCode, IconTool, IconMapPin, IconShieldCheck, IconFileSearch, IconKey, IconServer, IconGitBranch, IconClock,
-  IconCircleCheck, IconBook, IconMessageQuestion,
+  IconCircleCheck, IconBook, IconMessageQuestion, IconPlus,
 } from '@tabler/icons-react'
 
 const ICONS: Record<LandingSlug, typeof IconLock> = {
@@ -45,7 +45,21 @@ type Block = { kind: 'cards'; h2: string; p: readonly string[]; ul: readonly str
 const A: React.CSSProperties = { color: 'var(--accent-text)', textDecoration: 'none', fontWeight: 600 }
 const SECONDARY: React.CSSProperties = { display: 'inline-block', marginTop: 28, padding: '13px 21px', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text)', fontWeight: 700, textDecoration: 'none' }
 
-export function LandingBody({ slug, locale }: { slug: LandingSlug; locale: LandingLocale }) {
+// One FAQ row (Simeon 2026-11-22: "ALLES ist immer smooth animiert"): opens and closes with the house
+// .fx-expand transition (grid rows 0fr -> 1fr plus fade). The answer stays in the DOM for search engines.
+function FaqItem({ q, a, id }: { q: string; a: string; id: string }) {
+  const [open, setOpen] = useState(false)
+  return <div className={`svc-faq-item rfi-glass-flat rfi-glass-solid${open ? ' is-open' : ''}`}>
+    <h3><button type="button" className="svc-faq-q" aria-expanded={open} aria-controls={id} onClick={() => setOpen(o => !o)}>
+      <span>{q}</span><span className="svc-faq-toggle" aria-hidden="true"><IconPlus size={16} stroke={2} /></span>
+    </button></h3>
+    <div id={id} className={`fx-expand svc-faq-panel${open ? ' is-open' : ''}`} aria-hidden={!open}>
+      <div style={{ overflow: 'hidden', minHeight: 0 }}><p>{a}</p></div>
+    </div>
+  </div>
+}
+
+export function LandingBody({ slug, locale, onAsk }: { slug: LandingSlug; locale: LandingLocale; onAsk?: (label: string) => void }) {
   const d = landingDoc(slug, locale)
 
   // Head writes moved here from LegalPage (2026-11-22): title, description, og/twitter, plus the
@@ -85,7 +99,7 @@ export function LandingBody({ slug, locale }: { slug: LandingSlug; locale: Landi
   const toCheck = (e: React.MouseEvent) => { e.preventDefault(); document.getElementById('domain-check')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
 
   return <div className="data-solutions rfi-landing"><div className="data-wrap">
-    {showcase ? <ShowcaseTop doc={showcase} locale={locale} /> : <>
+    {showcase ? <ShowcaseTop doc={showcase} locale={locale} slug={slug} /> : <>
     <header className="data-hero">
       <Reveal><div className="data-icon rfi-ri-box"><Icon size={30} stroke={1.6} /></div></Reveal>
       <Reveal><h1>{d.h1}</h1></Reveal>
@@ -159,19 +173,24 @@ export function LandingBody({ slug, locale }: { slug: LandingSlug; locale: Landi
 
     <section className="data-section">
       <Reveal><div className="data-section-head"><h2>{d.faqH2}</h2></div></Reveal>
-      <div className="data-agent-grid rfi-landing-faq">
+      {/* Simeon 2026-11-22: the FAQ is an accordion list, followed by a "still have questions" card that opens the
+          enquiry pop-up (one more lead point per service page). The answers stay in the DOM for search engines. */}
+      <div className="svc-faq">
         {d.faq.map(([q, a], i) => <Reveal key={q} delay={(i % 2) + 1}>
-          <article className="rfi-glass-flat rfi-glass-solid rfi-hover-card">
-            <div className="data-icon data-icon--row rfi-ri-box"><IconMessageQuestion size={26} stroke={1.6} /></div>
-            <div><h3>{q}</h3><p>{a}</p></div>
-          </article>
+          <FaqItem q={q} a={a} id={`faq-${i}`} />
         </Reveal>)}
       </div>
-      <Reveal><p style={{ textAlign: 'center', marginTop: 28 }}>
-        <a href={localePath(locale, '/faq/')} style={A}>
-          {de ? 'Weitere Antworten zu Leistungen, Portal, Connectors und Datenort in den FAQ' : 'More answers on services, the portal, connectors and data location in the FAQ'}
-        </a>
-      </p></Reveal>
+      <Reveal><div className="svc-ask rfi-glass-flat rfi-glass-solid">
+        <div className="data-icon rfi-ri-box"><IconMessageQuestion size={26} stroke={1.6} /></div>
+        <div className="svc-ask-copy">
+          <h3>{de ? 'Noch Fragen?' : 'Still have questions?'}</h3>
+          <p>{de ? 'Schreiben Sie uns kurz, worum es geht. ' : 'Tell us briefly what it is about. '}
+            <a href={localePath(locale, '/faq/')} style={A}>{de ? 'Weitere Antworten stehen in den FAQ' : 'More answers are in the FAQ'}</a>.</p>
+        </div>
+        {onAsk
+          ? <button type="button" className="data-cta svc-ask-btn" onClick={() => onAsk(d.label)}>{de ? 'Frage stellen' : 'Ask a question'}</button>
+          : <a className="data-cta svc-ask-btn" href={localePath(locale, '/#contact')}>{de ? 'Frage stellen' : 'Ask a question'}</a>}
+      </div></Reveal>
     </section>
 
     <section className="data-section rfi-landing-related">

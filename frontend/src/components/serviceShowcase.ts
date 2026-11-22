@@ -10,6 +10,10 @@
 // 19.11.2026); data location Graz and EU LLM endpoints confirmed by Simeon 19.11.2026; 1 h / 24 h
 // response and fix times from the existing managed-soc copy.
 import type { LandingSlug } from './landingSlugs'
+import { PART as PART_CODE } from './showcase/code'
+import { PART as PART_NIS2 } from './showcase/nis2'
+import { PART as PART_APPS } from './showcase/apps'
+import { PART as PART_TESTING } from './showcase/testing'
 
 export type ShowcaseDoc = {
   h1: string
@@ -143,4 +147,8 @@ export const SHOWCASE: Partial<Record<LandingSlug, { en: ShowcaseDoc; de: Showca
       ],
     },
   },
+  ...PART_TESTING,
+  ...PART_APPS,
+  ...PART_NIS2,
+  ...PART_CODE,
 }

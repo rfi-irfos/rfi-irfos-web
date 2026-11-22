@@ -63,8 +63,8 @@ export function ManagedSocModal({ tipForm, setTipForm, tipFormState, submitTip, 
           </Field>
           <button type="submit" className={tipFormState === 'ok' ? undefined : 'fx-cta-teal'} disabled={tipFormState === 'sending'} style={{
             background: tipFormState === 'ok' ? 'rgba(0,245,196,0.2)' : undefined,
-            color: tipFormState === 'ok' ? TEAL : '#070711',
-            border: tipFormState === 'ok' ? `1px solid ${TEAL}` : 'none',
+            color: tipFormState === 'ok' ? TEAL : 'var(--text)',
+            border: tipFormState === 'ok' ? `1px solid ${TEAL}` : undefined,
             padding: '14px 24px', borderRadius: 12, fontWeight: 700, fontSize: 'var(--fs-body)', fontFamily: 'inherit',
             cursor: tipFormState === 'sending' ? 'wait' : 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 9,
           }}>
