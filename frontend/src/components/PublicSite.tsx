@@ -1842,10 +1842,10 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
               groups out in two columns, tagline below both. Simeon 2026-11-10: Company | Research on top,
               Services | Legal below (column flow: Company, Services, Research, Legal). */}
           {/* Simeon 22.11.2026: Company | Research | Legal side by side on top, the two service groups below,
-              same on phone and desktop (six-column grid, top groups span 2, service groups span 3). Desktop keeps the old
-              357px block width (Simeon 22.11.: "gleich breit wie vorher"): uneven tracks give Company 100, Research 115,
-              Legal 142 and each service group 178.5px, the gap lives in each group's right padding. */}
-          <div style={{ flex: mobile ? '1 1 auto' : '0 0 auto', alignSelf: 'stretch', display: 'grid', gridTemplateColumns: mobile ? 'repeat(6, minmax(0, 1fr))' : '50px 50px 78.5px 36.5px 71px 71px', columnGap: mobile ? '0.9rem' : 0, rowGap: 26, alignContent: 'start' }}>
+              same on phone and desktop (six-column grid, top groups span 2, service groups span 3). Desktop block 422px
+              (Simeon 22.11.: divider a little further right so no label wraps): uneven tracks give Company 96, Research 172,
+              Legal 154, sized from the longest EN/DE label plus 12px right padding; Services spans all six, two equal columns. */}
+          <div style={{ flex: mobile ? '1 1 auto' : '0 0 auto', alignSelf: 'stretch', display: 'grid', gridTemplateColumns: mobile ? 'repeat(6, minmax(0, 1fr))' : '48px 48px 105px 67px 77px 77px', columnGap: mobile ? '0.9rem' : 0, rowGap: 26, alignContent: 'start' }}>
             {/* FIXED (live bug report, mobile Chrome screenshot, 2026-08-16): this
                 footer is a dense, desktop-oriented link directory (Legal/Company/
                 Research column + a wide grid of Systems zones/Repositories/Crates
