@@ -1845,8 +1845,10 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
               groups out in two columns, tagline below both. Simeon 2026-11-10: Company | Research on top,
               Services | Legal below (column flow: Company, Services, Research, Legal). */}
           {/* Simeon 22.11.2026: Company | Research | Legal side by side on top, the two service groups below,
-              same on phone and desktop (six-column grid, top groups span 2, service groups span 3). */}
-          <div style={{ flex: mobile ? '1 1 auto' : '0 0 auto', alignSelf: 'stretch', display: 'grid', gridTemplateColumns: mobile ? 'repeat(6, minmax(0, 1fr))' : 'repeat(6, 85px)', columnGap: mobile ? '0.9rem' : '1.1rem', rowGap: 26, alignContent: 'start' }}>
+              same on phone and desktop (six-column grid, top groups span 2, service groups span 3). Desktop keeps the old
+              357px block width (Simeon 22.11.: "gleich breit wie vorher"): uneven tracks give Company 100, Research 115,
+              Legal 142 and each service group 178.5px, the gap lives in each group's right padding. */}
+          <div style={{ flex: mobile ? '1 1 auto' : '0 0 auto', alignSelf: 'stretch', display: 'grid', gridTemplateColumns: mobile ? 'repeat(6, minmax(0, 1fr))' : '50px 50px 78.5px 36.5px 71px 71px', columnGap: mobile ? '0.9rem' : 0, rowGap: 26, alignContent: 'start' }}>
             {/* FIXED (live bug report, mobile Chrome screenshot, 2026-08-16): this
                 footer is a dense, desktop-oriented link directory (Legal/Company/
                 Research column + a wide grid of Systems zones/Repositories/Crates
@@ -1905,7 +1907,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                 servicesOps,
               ]
             ).map(group => (
-              <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9, gridColumn: `span ${group.span}`, minWidth: 0 }}>
+              <div key={group.heading} style={{ display: 'flex', flexDirection: 'column', gap: 9, gridColumn: `span ${group.span}`, minWidth: 0, paddingRight: mobile ? 0 : 12, hyphens: 'auto' }}>
                 <p style={{ fontSize: 'var(--fs-label)', color: 'var(--text2)', fontWeight: 700, margin: '0 0 2px' }}>{group.heading}</p>
                 {group.links.map(l => (
                   <a key={l.label} href={localeHref(l.href, locale)} style={{ color: 'var(--text3)', fontSize: 'var(--fs-small)', textDecoration: 'none' }}
