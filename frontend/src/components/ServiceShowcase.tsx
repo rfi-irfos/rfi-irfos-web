@@ -37,13 +37,14 @@ export function ShowcaseTop({ doc, locale }: { doc: ShowcaseDoc; locale: Landing
       <div className="data-product-grid">{doc.capabilities.map(([title, body], i) => { const Icon = CAP_ICONS[i % CAP_ICONS.length]; return <Reveal key={title} delay={(i % 3) + 1}>
         <article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card" style={hue(i)}><div className="data-icon rfi-ri-box"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article>
       </Reveal> })}</div>
-      <Reveal><div className="svc-cta-row"><a href={localePath(locale, '/access/')} className="data-cta">{doc.capabilitiesCta} <span aria-hidden="true">→</span></a></div></Reveal>
     </section>
 
     <section className="data-section">
       <div className="svc-prose">
         <Reveal><h2>{doc.prose.h2}</h2></Reveal>
         {doc.prose.p.map((para, i) => <Reveal key={i}><p>{para}</p></Reveal>)}
+        {/* Simeon 2026-11-22: the access button sits after the prose, before the pipeline. */}
+        <Reveal><div className="svc-cta-row"><a href={localePath(locale, '/access/')} className="data-cta">{doc.capabilitiesCta} <span aria-hidden="true">→</span></a></div></Reveal>
       </div>
     </section>
 
