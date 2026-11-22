@@ -1351,7 +1351,8 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
               feedback 2026-08-14) - fixed light hex text, not var(--text*)/var(--accent-text),
               which resolve dark in light mode and went illegible against this panel. */}
           <div className={`rfi-modal-panel${reportModalExit.closing ? ' rfi-modal-panel-out' : ''}`} onClick={e => e.stopPropagation()} style={{
-            width: '100%', maxWidth: 900, height: '85vh', overflow: 'hidden', display: 'flex', flexDirection: 'column',
+            // Same big reading window as the research library (Simeon 22.11.2026); vh / 0.9 undoes html zoom 0.9.
+            width: '100%', maxWidth: 1280, height: 'calc(96vh / 0.9 - 2rem)', overflow: 'hidden', display: 'flex', flexDirection: 'column',
             background: 'linear-gradient(155deg, #17171d 0%, #0a0a0c 28%, #050506 52%, #131319 76%, #08080a 100%), repeating-linear-gradient(112deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)',
             backgroundBlendMode: 'overlay',
             boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 50px rgba(0,0,0,0.55), 0 20px 60px rgba(0,0,0,0.65)',
@@ -1408,7 +1409,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                 </a>
               </div>
             ) : (
-              <iframe src={reportModalExit.rendered} style={{ flex: 1, border: 'none', width: '100%' }} title={t.reportModal.iframeTitle} />
+              <iframe src={reportModalExit.rendered + '#view=FitH'} style={{ flex: 1, border: 'none', width: '100%' }} title={t.reportModal.iframeTitle} />
             )}
           </div>
         </div>
