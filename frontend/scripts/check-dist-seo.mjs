@@ -17,6 +17,8 @@ import { fileURLToPath } from 'node:url'
 const LOCALIZED_ROUTES = [
   '/',
   '/world-model', '/squad', '/evidence', '/data-solutions', '/access',
+  // Services hub (23.11.2026): overview and six area pages, EN and /de twins.
+  '/services', '/services/monitoring', '/services/testing', '/services/code-and-apps', '/services/ai-security', '/services/compliance', '/services/fix-and-harden',
   // /team has no German translation (LegalPage META: no titleDe/body-DE) - a /de/team
   // page would claim an alternate that doesn't exist, same reasoning as the EN-only
   // evidence reports.

@@ -5,6 +5,7 @@ import type { Content } from '../content/en'
 import { pageZoom } from './sections/shared'
 import { localeHref } from '../lib/localeHref'
 import { useLocale } from '../hooks/useLocale'
+import { SERVICE_GROUPS, HUB_COPY } from './sections/ServicesHub'
 
 // Shared glass-panel mega menu that lives under the whole nav row (not one
 // panel per link) so switching between nav items while the mouse stays
@@ -14,7 +15,7 @@ import { useLocale } from '../hooks/useLocale'
 // a reference mega-menu (About Us/Jobs/Contact style card, icon + label
 // rows, one shared floating panel).
 
-export type MegaMenuKey = 'worldModel' | 'squad' | 'dataSolutions' | 'trackRecord' | 'pricing'
+export type MegaMenuKey = 'services' | 'worldModel' | 'squad' | 'dataSolutions' | 'trackRecord' | 'pricing'
 
 type MegaMenuItem = { icon: JSX.Element; label: string; href: string; external?: boolean }
 
@@ -33,9 +34,15 @@ const Icons = {
   key: <svg {...ICON_PROPS}><path d="M21 2l-9.6 9.6" /><circle cx="7.5" cy="16.5" r="5.5" /><path d="M15.5 7.5l3 3" /><path d="M19 4l1 1" /></svg>,
 }
 
-function buildItems(t: Content, key: MegaMenuKey): MegaMenuItem[] {
+function buildItems(t: Content, key: MegaMenuKey, locale: 'en' | 'de'): MegaMenuItem[] {
   const m = t.nav.megaMenu
   switch (key) {
+    case 'services':
+      // The five areas of the Services hub, then the overview itself (23.11.2026).
+      return [
+        ...SERVICE_GROUPS.map(g => ({ icon: <g.Icon size={18} stroke={1.8} />, label: HUB_COPY[locale].groups[g.id][0], href: `/services/${g.id}/` })),
+        { icon: Icons.grid, label: HUB_COPY[locale].all, href: '/services/' },
+      ]
     case 'worldModel':
       return [
         { icon: Icons.grid, label: m.worldModel.differs, href: '/world-model/#wm-comparison' },
@@ -80,7 +87,7 @@ export function NavMegaMenu({ activeKey, anchorX, t, onNavigate, mobile }: {
   // Access/pricing has no sub-sections worth a dropdown (confirmed by the user
   // 2026-10-02: "nur access braucht kein dropdown") - it stays a plain nav link.
   const openKey = activeKey === 'pricing' ? null : activeKey
-  const items = openKey ? buildItems(t, openKey) : []
+  const items = openKey ? buildItems(t, openKey, locale === 'de' ? 'de' : 'en') : []
 
   return createPortal(
     <AnimatePresence>

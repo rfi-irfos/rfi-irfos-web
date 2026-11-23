@@ -1,6 +1,5 @@
-import { useState, useEffect, useLayoutEffect, useRef, lazy, Suspense } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef, lazy, Suspense, type MouseEvent as ReactMouseEvent } from 'react'
 import { IconMoodSmile, IconCheck } from '@tabler/icons-react'
-import { motion } from 'framer-motion'
 import { useTheme, type Theme } from '../hooks/useTheme'
 import { LoginPreview } from './LoginPreview'
 import { ManagedSocModal } from './sections/ManagedSocModal'
@@ -20,6 +19,7 @@ import { getResearchDoc, docPageUrl, docPdfUrl, docDoiUrl } from '../lib/researc
 type TrackRecordModule = typeof import('./sections/TrackRecord')
 type ProofModule = typeof import('./sections/Proof')
 import { NavMegaMenu, type MegaMenuKey } from './NavMegaMenu'
+import { ServicesHubSection, HUB_COPY, serviceGroupFromSection, type ServiceGroupId } from './sections/ServicesHub'
 import { ScrollSpine } from './sections/Spine'
 import { AppPrivacySection } from './sections/AppPrivacy'
 import { IntegrationsSection } from './sections/Integrations'
@@ -241,9 +241,10 @@ function SocialGlyph({ k }: { k: (typeof SOCIAL_PROFILES)[number]['key'] }) {
   }
 }
 
-type PublicView = 'home' | 'research' | 'world-model' | 'squad' | 'evidence' | 'data-solutions' | 'access' | 'service'
+type PublicView = 'home' | 'services' | 'research' | 'world-model' | 'squad' | 'evidence' | 'data-solutions' | 'access' | 'service'
 
 function viewForSection(section?: string | null): PublicView {
+  if (section === 'services' || section?.startsWith('services/')) return 'services'
   if (section === 'research') return 'research'
   if (section === 'world-model') return 'world-model'
   if (section === 'squad') return 'squad'
@@ -269,9 +270,11 @@ function viewForSection(section?: string | null): PublicView {
 // real client-side view switch, so this changes nothing about how a real click
 // behaves - it only changes what a non-JS crawler parses out of the raw href.
 // Evidence is no longer in the top bar (Simeon 18.11.2026); /evidence/ stays reachable from the footer's Research group and keeps its own page.
+// Services between World Model and Access (Zabih + Simeon 23.11.2026).
 const NAV_HREFS = [
   { key: 'squad' as const, href: '/squad/' },
   { key: 'worldModel' as const, href: '/world-model/' },
+  { key: 'services' as const, href: '/services/' },
   { key: 'pricing' as const, href: '/access/' },
 ]
 
@@ -279,12 +282,13 @@ const NAV_HREFS = [
 // directly on a section's own URL (e.g. /pricing) instead of the homepage - pulled
 // straight from each section's existing heading/dek text so it stays bilingual for
 // free instead of needing a second, separately-maintained copy of the same copy.
-function sectionMeta(t: Content, section: string) {
+function sectionMeta(t: Content, section: string, locale: 'en' | 'de' = 'en') {
   switch (section) {
     case 'research': return { title: `${t.research.heading} · RFI-IRFOS`, description: t.research.subheading }
     // world-model/squad/access: dedicated search-facing meta (2026-10-31, buyer-term pass) - the
     // heading-derived titles ("The Squad", "Priced in plain terms") and 450-520-char intro
     // descriptions (truncated in the SERP) said nothing a buyer searches for.
+    case 'services': return t.meta.services
     case 'world-model': return t.meta.worldModel
     case 'squad': return t.meta.squad
     // Dedicated search-facing copy (see en.ts seoTitle comment): the heading-derived
@@ -296,7 +300,12 @@ function sectionMeta(t: Content, section: string) {
     case 'access':
     case 'pricing': return t.meta.access
     case 'submit': return { title: `${t.submit.heading} · RFI-IRFOS`, description: t.submit.paragraph }
-    default: return null
+    default: {
+      const g = serviceGroupFromSection(section)
+      if (!g) return null
+      const [title, description] = HUB_COPY[locale].groups[g]
+      return { title: `${title} · RFI-IRFOS`, description }
+    }
   }
 }
 
@@ -307,6 +316,7 @@ function sectionMeta(t: Content, section: string) {
 // entry for 'home': /submit canonicalizes to / (see prerender.mjs's
 // CANONICAL_ALIAS), and a Home > Home breadcrumb has nothing to say.
 const BREADCRUMB_BY_VIEW: Partial<Record<PublicView, { navKey: keyof Content['nav']['links']; path: string }>> = {
+  'services': { navKey: 'services', path: '/services' },
   'research': { navKey: 'research', path: '/research' },
   'world-model': { navKey: 'worldModel', path: '/world-model' },
   'squad': { navKey: 'squad', path: '/squad' },
@@ -327,6 +337,24 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
   const [loginOpen, setLoginOpen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('login') === 'open')
   const NAV_LINKS = NAV_HREFS.map(n => ({ key: n.key, label: t.nav.links[n.key], href: n.href }))
   const [view, setView] = useState<PublicView>(() => initialLanding ? 'service' : viewForSection(initialSection))
+  // Services hub: which area page is open (null = the overview). Follows the URL on back/forward.
+  const [serviceGroup, setServiceGroup] = useState<ServiceGroupId | null>(() => serviceGroupFromSection(initialSection))
+  useEffect(() => {
+    const onPop = () => {
+      const p = window.location.pathname.replace(/^\/de(?=\/|$)/, '').replace(/^\/|\/$/g, '')
+      if (p === 'services' || p.startsWith('services/')) { setView('services'); setServiceGroup(serviceGroupFromSection(p)) }
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
+  // Every link on the hub pages: real href for crawlers, client-side switch for visitors.
+  function openServicePath(e: ReactMouseEvent, path: string) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+    e.preventDefault()
+    history.pushState(null, '', localeHref(path, locale))
+    window.dispatchEvent(new PopStateEvent('popstate'))
+    window.scrollTo({ top: 0 })
+  }
   // A service page reached client-side (footer link, back/forward) switches the view and starts at the
   // top of the new page; leaving every service page (back to /) returns to the homepage view.
   // Adjusted during render (React's pattern for state that follows a prop); LandingBody scrolls to the top.
@@ -376,7 +404,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
   // click) - set that section's meta tags and scroll to it once on mount.
   useEffect(() => {
     if (!initialSection) return
-    const meta = sectionMeta(t, initialSection)
+    const meta = sectionMeta(t, initialSection, locale === 'de' ? 'de' : 'en')
     if (meta) {
       document.title = meta.title
       document.querySelector('meta[name="description"]')?.setAttribute('content', meta.description)
@@ -447,6 +475,12 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
       return
     }
     const next = viewForSection(target)
+    if (next === 'services') {
+      history.pushState(null, '', localeHref(`/${target}/`, locale))
+      window.dispatchEvent(new PopStateEvent('popstate'))
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
     setView(next)
     window.history.replaceState(null, '', `#${target}`)
     // Access used to jump straight to the offer card, skipping the heading
@@ -747,11 +781,20 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
     if (!cookieBannerOpen) return
     const footer = document.querySelector('footer')
     if (!footer) return
+    // Simeon 23.11.2026: opening an FAQ on a short page pushed the footer out of view and the banner
+    // popped in without any scrolling. Hiding stays immediate; showing again needs a real scroll
+    // within the last second, so a layout shift alone (accordion, lazy content) never brings it back.
+    let lastScroll = 0
+    const onScroll = () => { lastScroll = performance.now() }
+    document.addEventListener('scroll', onScroll, { capture: true, passive: true })
     const io = new IntersectionObserver((entries) => {
-      for (const e of entries) setFooterInView(e.isIntersecting)
+      for (const e of entries) {
+        if (e.isIntersecting) setFooterInView(true)
+        else if (performance.now() - lastScroll < 1000) setFooterInView(false)
+      }
     }, { rootMargin: '120px' })
     io.observe(footer)
-    return () => io.disconnect()
+    return () => { io.disconnect(); document.removeEventListener('scroll', onScroll, { capture: true }) }
   }, [cookieBannerOpen])
 
   // Lock background scroll while a modal is open - without this the page behind a
@@ -1633,7 +1676,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
             // else - fixed by stripping both slashes.
             const isActive = viewForSection(n.href.slice(1, -1)) === view
             return (
-            <a key={n.href} href={localeHref(n.href, locale)} style={{
+            <a key={n.href} href={localeHref(n.href, locale)} className="nav-link-u" style={{
               position: 'relative',
               color: isActive ? (overDarkHero ? '#e8e8f0' : 'var(--text)') : (overDarkHero ? '#a0a0b8' : 'var(--text2)'),
               fontSize: 'var(--fs-lead)', fontWeight: 700,
@@ -1658,18 +1701,10 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                   befindet"). Shared layoutId means framer-motion animates it
                   sliding to the new position instead of popping in fresh each
                   time. var(--accent) so it's theme-aware, works in light mode too. */}
-              {isActive && (
-                <motion.span
-                  layoutId="nav-active-underline"
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  style={{
-                    position: 'absolute', left: 0, right: 0, bottom: 0, height: 2,
-                    borderRadius: 999, background: 'var(--accent)', transformOrigin: 'left',
-                  }}
-                  transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-                />
-              )}
+              {/* Simeon 23.11.2026: the framer layoutId slide had stopped animating (the span unmounted and
+                  remounted, so the switch looked instant). Now every link keeps its own underline in the DOM,
+                  and it grows from the middle to both sides: half strength on hover, full accent when active. */}
+              <span className={`nav-underline${isActive ? ' is-active' : ''}`} aria-hidden="true" />
             </a>
             )
           })}
@@ -1796,6 +1831,10 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
 
         {view === 'service' && initialLanding && <section id="service" className="rfi-view-panel">
           <Suspense fallback={null}><LandingBody slug={initialLanding} locale={locale === 'de' ? 'de' : 'en'} onAsk={label => { beacon('landing_ask_open:' + initialLanding); setTipForm(p => ({ ...p, topic: `Frage zu ${label}` })); setTipFormState(st => (st === 'sending' ? st : 'idle')); setAskLabel(label) }} /></Suspense>
+        </section>}
+
+        {view === 'services' && <section id="services" className="rfi-view-panel">
+          <ServicesHubSection t={t} group={serviceGroup} onOpen={openServicePath} />
         </section>}
 
         {view === 'data-solutions' && <section id="data-solutions" className="rfi-view-panel">

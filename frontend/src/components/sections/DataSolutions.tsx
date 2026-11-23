@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
 import { Reveal, OUTPUT_TAG_HUES } from './shared'
-import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport, IconArrowRight, IconPlayerPlay } from '@tabler/icons-react'
+import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDatabase, IconFlask, IconGitBranch, IconDeviceDesktop, IconSearch, IconShieldCheck, IconTerminal2, IconRoute, IconClipboardCheck, IconSettingsAutomation, IconListCheck, IconEyeCheck, IconPackageExport, IconArrowRight, IconTimeline } from '@tabler/icons-react'
 
 // One fixed hue per section (see HUE_* below), reusing the same calibrated hue set
 // OutputTags uses elsewhere on the site so this isn't a new, uncalibrated palette.
@@ -146,7 +146,7 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
       {/* Simeon 2026-11-10: eyebrow and title are gone from the page. The h2 stays as a visually hidden heading, so the outline
           still goes h1 > h2 > h3 (it was a measured defect 2026-09-07 when this section had no heading at all). */}
       <h2 className="data-sr-only">{c.datasetsTitle}</h2>
-      <div className="data-dataset-grid">{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask, IconPlayerPlay][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={DATASET_HUES[i]}><div className="data-icon rfi-ri-box"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article> })}</div>
+      <div className="data-dataset-grid">{c.datasets.map(([title, body], i) => { const Icon = [IconDeviceDesktop, IconGitBranch, IconShieldCheck, IconRoute, IconFlask, IconTimeline][i]; return <article key={title} className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={DATASET_HUES[i]}><div className="data-icon rfi-ri-box"><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article> })}</div>
     </div></section>
 
     <section id="data-deliver" className="data-section"><div className="data-wrap">
@@ -174,7 +174,7 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
 
     <section id="data-pipeline" className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><h2>{c.pipelineTitle}</h2></div></Reveal>
-      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid rfi-hover-card" data-stage={i}><div className="data-pipeline-icon rfi-ri-box"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-stage"><span>{n}</span></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
+      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid rfi-hover-card" data-stage={i}><div className="data-pipeline-icon rfi-ri-box"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-copy"><h3><span className="svc-step-no">{n}</span>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
       <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><div className="data-icon data-icon--row rfi-ri-box"><IconShieldCheck size={28} /></div><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
     </div></section>
 

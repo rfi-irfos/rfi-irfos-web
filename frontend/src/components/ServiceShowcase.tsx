@@ -8,42 +8,42 @@ import { Reveal } from './sections/shared'
 import { localePath, type LandingLocale } from './landingPages'
 import { severityLabel, type ShowcaseDoc } from './serviceShowcase'
 import {
-  IconRadar2, IconAlarm, IconCode, IconListCheck, IconUsersGroup, IconBuildingSkyscraper, IconEye, IconFilter,
-  IconShieldBolt, IconTool, IconFileCheck, IconRocket, IconMapPin, IconWorld, IconUserShield, IconLockCheck, IconTrendingUp, IconBuilding,
-  IconAdjustmentsAlt, IconAntenna, IconApi, IconBolt, IconBook, IconBriefcase, IconBug, IconBuildingBank, IconCertificate, IconChartBar, IconChartDots3, IconClipboardCheck, IconClipboardList, IconClipboardText, IconClock, IconCloud, IconCloudComputing, IconDeviceMobile, IconDevices, IconFileCertificate, IconFileCode, IconFileImport, IconFileReport, IconFileSpreadsheet, IconFileText, IconFingerprint, IconGitCompare, IconHeartbeat, IconHelpCircle, IconInbox, IconKey, IconLayoutDashboard, IconListDetails, IconListSearch, IconLock, IconLockOpen, IconMail, IconMap2, IconMessageChatbot, IconMessages, IconMoodKid, IconNetwork, IconPackage, IconPackages, IconPencil, IconPercentage, IconRefresh, IconRobot, IconRoute, IconScale, IconSearch, IconSend, IconServer, IconSettings, IconShield, IconShieldCheck, IconShieldLock, IconSortDescending, IconStack2, IconSwords, IconTarget, IconTruck, IconUserCheck, IconUsers, IconVideo, IconWorldWww, IconZoomIn,
+  IconRadar2, IconAlarm, IconCode, IconListCheck, IconUsersGroup, IconBuildingSkyscraper, IconEye, IconFilterSearch,
+  IconShieldBolt, IconTools, IconFileCheck, IconRocket, IconMapPin, IconWorld, IconUserShield, IconLockCheck, IconTrendingUp, IconBuilding,
+  IconAdjustmentsAlt, IconAntenna, IconApi, IconTargetArrow, IconBook, IconBriefcase, IconBug, IconBuildingBank, IconCertificate, IconChartBar, IconChartDots3, IconClipboardCheck, IconClipboardList, IconClipboardText, IconClock, IconCloudLock, IconCloudComputing, IconDeviceMobile, IconDevices, IconFileCertificate, IconFileCode, IconFileImport, IconFileReport, IconFileSpreadsheet, IconFileText, IconFingerprint, IconGitCompare, IconHeartbeat, IconHelpCircle, IconInbox, IconKey, IconLayoutDashboard, IconListDetails, IconListSearch, IconLock, IconLockOpen, IconMail, IconMap2, IconMessageChatbot, IconMessages, IconMoodKid, IconNetwork, IconPackage, IconPackages, IconPencil, IconPercentage, IconRefresh, IconRobot, IconRoute, IconScale, IconSearch, IconSend, IconServer, IconSettings, IconShieldHalf, IconShieldCheck, IconShieldLock, IconSortDescending, IconStack2, IconSwords, IconTarget, IconTruck, IconUserCheck, IconUsers, IconVideo, IconWorldWww, IconZoomIn,
 } from '@tabler/icons-react'
-import { IconTag, IconShieldSearch, IconSitemap } from '@tabler/icons-react'
+import { IconTag, IconMessageCircle, IconSitemap } from '@tabler/icons-react'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
 
 const CONTROL_ICONS = [IconMapPin, IconWorld, IconUserShield, IconLockCheck]
 const HUES = ['#36cdb2', '#4f8cf0', '#8f76f2', '#ee6a98', '#f0ad3c', '#f27a54']
 const hue = (i: number) => { const ib = HUES[i % HUES.length]; return { '--ib': ib, '--hue-bg': `color-mix(in srgb, ${ib} 11%, transparent)`, '--hue-border': `color-mix(in srgb, ${ib} 40%, transparent)` } as CSSProperties }
 const CAP_ICONS = [IconRadar2, IconAlarm, IconCode, IconListCheck, IconUsersGroup, IconBuildingSkyscraper]
-const STEP_ICONS = [IconEye, IconFilter, IconShieldBolt, IconTool, IconFileCheck]
+const STEP_ICONS = [IconEye, IconFilterSearch, IconShieldBolt, IconTools, IconFileCheck]
 const AUD_ICONS = [IconRocket, IconTrendingUp, IconBuilding]
 // Per-page icon sets (Simeon 2026-11-22): each tile, step and audience card gets an icon that fits its title.
 const PAGE_ICONS: Record<string, [TablerIcon[], TablerIcon[], TablerIcon[]]> = {
-  'ai-llm-security-testing': [[IconMessages, IconStack2, IconRobot, IconShieldBolt, IconChartBar, IconFingerprint], [IconListDetails, IconSwords, IconFileCode, IconTool, IconRefresh], [IconMessageChatbot, IconRobot, IconScale]],
-  'security-architecture-review': [[IconSitemap, IconStack2, IconTarget, IconRefresh, IconBolt, IconNetwork], [IconBook, IconRoute, IconBolt, IconShieldLock, IconRefresh], [IconTrendingUp, IconScale, IconCloud]],
+  'ai-llm-security-testing': [[IconMessages, IconStack2, IconRobot, IconShieldBolt, IconChartBar, IconFingerprint], [IconListDetails, IconSwords, IconFileCode, IconTools, IconRefresh], [IconMessageChatbot, IconRobot, IconScale]],
+  'security-architecture-review': [[IconSitemap, IconStack2, IconTarget, IconRefresh, IconTargetArrow, IconNetwork], [IconBook, IconRoute, IconTargetArrow, IconShieldLock, IconRefresh], [IconTrendingUp, IconScale, IconCloudLock]],
   'threat-intelligence': [[IconAlarm, IconChartDots3, IconSwords, IconFingerprint, IconEye, IconServer], [IconInbox, IconGitCompare, IconAlarm, IconShieldCheck, IconFileReport], [IconUsersGroup, IconBuildingBank, IconUserShield]],
   'vendor-risk-management': [[IconSearch, IconPercentage, IconSortDescending, IconEye, IconPackages, IconClipboardText], [IconListDetails, IconSortDescending, IconSearch, IconChartBar, IconEye], [IconCertificate, IconBriefcase, IconBuildingSkyscraper]],
-  'penetration-testing': [[IconBolt, IconRoute, IconBug, IconCode, IconDevices, IconFileReport], [IconTarget, IconRadar2, IconBug, IconTool, IconRefresh], [IconRocket, IconPackage, IconClipboardCheck]],
-  'api-security-testing': [[IconKey, IconLockOpen, IconMap2, IconApi, IconCode, IconFileReport], [IconListSearch, IconRadar2, IconSwords, IconTool, IconRefresh], [IconApi, IconDeviceMobile, IconClipboardCheck]],
-  'cloud-security-assessment': [[IconAdjustmentsAlt, IconServer, IconWorld, IconRoute, IconCode, IconEye], [IconListDetails, IconSearch, IconRoute, IconTool, IconEye], [IconCloud, IconCloudComputing, IconClipboardList]],
-  'app-security-audit': [[IconFileCode, IconKey, IconNetwork, IconPackages, IconCode, IconFileReport], [IconSend, IconFileCode, IconSearch, IconTool, IconFileCheck], [IconRocket, IconBriefcase, IconLock]],
-  'gdpr-app-audit': [[IconClock, IconScale, IconWorld, IconHeartbeat, IconFileText, IconCode], [IconFileCode, IconClock, IconRoute, IconScale, IconTool], [IconShieldLock, IconWorld, IconHeartbeat]],
-  'app-tracker-sdk-check': [[IconPackages, IconClock, IconNetwork, IconAntenna, IconGitCompare, IconCode], [IconFileCode, IconListDetails, IconClock, IconScale, IconTool], [IconUsersGroup, IconScale, IconBriefcase]],
-  'ai-app-privacy-audit': [[IconPackages, IconMessages, IconLock, IconVideo, IconFingerprint, IconRobot], [IconFileCode, IconClock, IconMessages, IconScale, IconTool], [IconMessageChatbot, IconRobot, IconMoodKid]],
-  'nis2-software-vendors': [[IconPackages, IconKey, IconLock, IconNetwork, IconChartDots3, IconCode], [IconSettings, IconBook, IconListCheck, IconFileReport, IconTool], [IconPackage, IconRocket, IconBriefcase]],
-  'nis2-consulting': [[IconHelpCircle, IconClipboardText, IconListDetails, IconSortDescending, IconKey, IconFileCertificate], [IconHelpCircle, IconListDetails, IconSearch, IconFileCheck, IconTool], [IconBriefcase, IconServer, IconTruck]],
+  'penetration-testing': [[IconTargetArrow, IconRoute, IconBug, IconCode, IconDevices, IconFileReport], [IconTarget, IconRadar2, IconBug, IconTools, IconRefresh], [IconRocket, IconPackage, IconClipboardCheck]],
+  'api-security-testing': [[IconKey, IconLockOpen, IconMap2, IconApi, IconCode, IconFileReport], [IconListSearch, IconRadar2, IconSwords, IconTools, IconRefresh], [IconApi, IconDeviceMobile, IconClipboardCheck]],
+  'cloud-security-assessment': [[IconAdjustmentsAlt, IconServer, IconWorld, IconRoute, IconCode, IconEye], [IconListDetails, IconSearch, IconRoute, IconTools, IconEye], [IconCloudLock, IconCloudComputing, IconClipboardList]],
+  'app-security-audit': [[IconFileCode, IconKey, IconNetwork, IconPackages, IconCode, IconFileReport], [IconSend, IconFileCode, IconSearch, IconTools, IconFileCheck], [IconRocket, IconBriefcase, IconLock]],
+  'gdpr-app-audit': [[IconClock, IconScale, IconWorld, IconHeartbeat, IconFileText, IconCode], [IconFileCode, IconClock, IconRoute, IconScale, IconTools], [IconShieldLock, IconWorld, IconHeartbeat]],
+  'app-tracker-sdk-check': [[IconPackages, IconClock, IconNetwork, IconAntenna, IconGitCompare, IconCode], [IconFileCode, IconListDetails, IconClock, IconScale, IconTools], [IconUsersGroup, IconScale, IconBriefcase]],
+  'ai-app-privacy-audit': [[IconPackages, IconMessages, IconLock, IconVideo, IconFingerprint, IconRobot], [IconFileCode, IconClock, IconMessages, IconScale, IconTools], [IconMessageChatbot, IconRobot, IconMoodKid]],
+  'nis2-software-vendors': [[IconPackages, IconKey, IconLock, IconNetwork, IconChartDots3, IconCode], [IconSettings, IconBook, IconListCheck, IconFileReport, IconTools], [IconPackage, IconRocket, IconBriefcase]],
+  'nis2-consulting': [[IconHelpCircle, IconClipboardText, IconListDetails, IconSortDescending, IconKey, IconFileCertificate], [IconHelpCircle, IconListDetails, IconSearch, IconFileCheck, IconTools], [IconBriefcase, IconServer, IconTruck]],
   'compliance-automation': [[IconListCheck, IconStack2, IconPercentage, IconUserCheck, IconFileSpreadsheet, IconShieldCheck], [IconSearch, IconListCheck, IconPercentage, IconUserCheck, IconSend], [IconCertificate, IconRocket, IconBuildingBank]],
-  'it-security-graz': [[IconBug, IconScale, IconRadar2, IconFileCheck, IconWorld, IconLayoutDashboard], [IconMessages, IconSearch, IconFileCheck, IconTool, IconRefresh], [IconBuilding, IconMapPin, IconHelpCircle]],
-  'secure-code-review': [[IconCode, IconPackage, IconPackages, IconKey, IconRoute, IconFileCode], [IconFileImport, IconSearch, IconScale, IconTool, IconRefresh], [IconPackage, IconRocket, IconClock]],
-  'vulnerability-remediation': [[IconInbox, IconBug, IconChartBar, IconFileCode, IconRefresh, IconClock], [IconInbox, IconBug, IconScale, IconTool, IconRefresh], [IconStack2, IconBug, IconClipboardList]],
-  'domain-security-test': [[IconWorldWww, IconCertificate, IconMail, IconShield, IconEye, IconFileText], [IconPencil, IconUserCheck, IconRadar2, IconFileText, IconZoomIn], [IconRocket, IconUsers, IconSearch]],
+  'it-security-graz': [[IconBug, IconScale, IconRadar2, IconFileCheck, IconWorld, IconLayoutDashboard], [IconMessages, IconSearch, IconFileCheck, IconTools, IconRefresh], [IconBuilding, IconMapPin, IconHelpCircle]],
+  'secure-code-review': [[IconCode, IconPackage, IconPackages, IconKey, IconRoute, IconFileCode], [IconFileImport, IconSearch, IconScale, IconTools, IconRefresh], [IconPackage, IconRocket, IconClock]],
+  'vulnerability-remediation': [[IconInbox, IconBug, IconChartBar, IconFileCode, IconRefresh, IconClock], [IconInbox, IconBug, IconScale, IconTools, IconRefresh], [IconStack2, IconBug, IconClipboardList]],
+  'domain-security-test': [[IconWorldWww, IconCertificate, IconMail, IconShieldHalf, IconEye, IconFileText], [IconPencil, IconUserCheck, IconRadar2, IconFileText, IconZoomIn], [IconRocket, IconUsers, IconSearch]],
 }
 
-export function ShowcaseTop({ doc, locale, slug }: { doc: ShowcaseDoc; locale: LandingLocale; slug: string }) {
+export function ShowcaseTop({ doc, locale, slug, onTalk }: { doc: ShowcaseDoc; locale: LandingLocale; slug: string; onTalk?: () => void }) {
   const de = locale === 'de'
   const [capIcons, stepIcons, audIcons] = PAGE_ICONS[slug] ?? [CAP_ICONS, STEP_ICONS, AUD_ICONS]
   return <>
@@ -52,7 +52,10 @@ export function ShowcaseTop({ doc, locale, slug }: { doc: ShowcaseDoc; locale: L
       <Reveal delay={1}><p className="data-lede">{doc.lede}</p></Reveal>
       <Reveal delay={2}><div className="svc-hero-actions">
         <a href={localePath(locale, '/access/')} className="svc-secondary"><IconTag size={18} stroke={2} aria-hidden />{de ? 'Pläne und Preise' : 'Plans and prices'}</a>
-        <a href={localePath(locale, '/#domain-check')} className="data-cta"><IconShieldSearch size={18} stroke={2} aria-hidden />{de ? <>Quick Check<span className="svc-long"> starten</span></> : <><span className="svc-long">Start the </span>Quick Check</>}</a>
+        {/* Simeon 23.11.2026: "Talk to us" opens the enquiry pop-up for this service (was "Start the Quick Check"). */}
+        {onTalk
+          ? <button type="button" onClick={onTalk} className="data-cta"><IconMessageCircle size={18} stroke={2} aria-hidden />{de ? 'Sprechen Sie mit uns' : 'Talk to us'}</button>
+          : <a href={localePath(locale, '/#contact')} className="data-cta"><IconMessageCircle size={18} stroke={2} aria-hidden />{de ? 'Sprechen Sie mit uns' : 'Talk to us'}</a>}
       </div></Reveal>
     </header>
 

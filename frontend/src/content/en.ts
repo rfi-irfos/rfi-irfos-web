@@ -25,6 +25,10 @@ export const EN = {
     description: 'Agents hunt vulnerabilities, experts verify and fix the code. Security testing, compliance and Managed SOC, data processed in Graz, Austria.',
     // Was hardcoded English inside sectionMeta() before 2026-10-24 - the /de/
     // twin shipped the EN description verbatim (caught by check-dist-seo.mjs).
+    services: {
+      title: 'IT Security Services in Austria · RFI-IRFOS',
+      description: 'Managed SOC, penetration testing, code and app audits, NIS2 compliance and remediation from Graz, grouped into six areas.',
+    },
     dataSolutions: {
       title: 'Agent Evaluation Data & Safety Datasets · RFI-IRFOS',
       description: 'Reproducible environments, expert trajectories, evaluation datasets and safety data to train and test AI agents, built from our own audit research.',
@@ -51,6 +55,7 @@ export const EN = {
       projects: 'Systems',
       worldModel: 'World Model',
       squad: 'The Squad',
+      services: 'Services',
       trackRecord: 'Evidence',
       dataSolutions: 'Data Solutions',
       pricing: 'Access',

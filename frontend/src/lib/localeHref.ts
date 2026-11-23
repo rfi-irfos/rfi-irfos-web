@@ -6,6 +6,7 @@ import type { Locale } from '../hooks/useLocale'
 export const DE_ROUTES = new Set([
   '/',
   '/world-model', '/squad', '/evidence', '/data-solutions', '/access',
+  '/services', '/services/monitoring', '/services/testing', '/services/code-and-apps', '/services/ai-security', '/services/compliance', '/services/fix-and-harden',
   '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/methodology', '/faq',
   '/app-security-audit', '/gdpr-app-audit', '/nis2-software-vendors', '/app-tracker-sdk-check', '/ai-app-privacy-audit', '/managed-soc', '/compliance-automation', '/domain-security-test', '/penetration-testing', '/api-security-testing', '/cloud-security-assessment', '/secure-code-review', '/vulnerability-remediation', '/it-security-graz', '/nis2-consulting', '/ai-llm-security-testing', '/security-architecture-review', '/threat-intelligence', '/vendor-risk-management',
 ])

@@ -1153,6 +1153,10 @@ a[href^="mailto:"]:not(footer a) { color: var(--text) !important; }
 .rfi-icon-tile:hover .rfi-ri-box svg { color: color-mix(in srgb, var(--ib) 70%, #fff) !important; filter: drop-shadow(0 0 9px color-mix(in srgb, var(--ib) 65%, transparent)); }
 /* two-tone: .k2 near-white with a hint of the symbol colour, .k3 the blue accent (world model points) */
 svg .k2 { color: color-mix(in srgb, currentColor 22%, #f4f6f8); transition: color 1.3s ease; }
+/* Tabler icons in the glass box: lib/twoToneIcons.ts tags the largest shape .k2 (light base form), the rest keeps
+   the area colour as the accent (Simeon 23.11.2026). */
+.rfi-ri-box svg.tabler-icon .k2 { color: color-mix(in srgb, var(--ib) 22%, #f4f6f8); transition: color 1.3s ease; }
+:root:not([data-theme="dark"]):not([data-theme="hc"]) .rfi-ri-box svg.tabler-icon .k2 { color: color-mix(in srgb, var(--ib) 30%, #2a2f38); }
 svg .k3 { color: #5aa9ff; }
 :root:not([data-theme="dark"]):not([data-theme="hc"]) .rfi-ri-box { border-color: rgba(0,0,0,.08); border-left-color: color-mix(in srgb, var(--ib) 40%, rgba(0,0,0,.08)); background: linear-gradient(150deg, #fff, #f1f3f6); box-shadow: 5px 6px 0 -1px rgba(0,0,0,.03), 5px 6px 0 0 color-mix(in srgb, var(--ib) 18%, transparent), inset 0 1px 0 #fff, 0 10px 22px rgba(0,0,0,.1); }
 :root:not([data-theme="dark"]):not([data-theme="hc"]) .rfi-ri-box svg { color: color-mix(in srgb, var(--ib) 85%, #000) !important; filter: none; }

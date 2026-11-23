@@ -40,6 +40,8 @@ const ROUTES = [
   // Legacy section URLs remain valid and should keep receiving static output.
   '/track-record', '/pricing',
   '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/team', '/methodology', '/faq',
+  // Services hub (23.11.2026): overview and six area pages, EN and /de twins.
+  '/services', '/services/monitoring', '/services/testing', '/services/code-and-apps', '/services/ai-security', '/services/compliance', '/services/fix-and-harden',
   // Search landing pages (2026-10-31, buyer-term sweep) - content in src/components/landingPages.ts.
   ...LANDING_ROUTES,
 ]
@@ -84,6 +86,8 @@ const LOCALIZED_ROUTES = [
   // evidence reports. It stays in ROUTES above (the EN page must render) - removing
   // it from the wrong list here is exactly what 404'd /team/ on 2026-10-24.
   '/impressum', '/datenschutz', '/agb', '/security', '/standards', '/methodology', '/faq',
+  // Services hub (23.11.2026): overview and six area pages, EN and /de twins.
+  '/services', '/services/monitoring', '/services/testing', '/services/code-and-apps', '/services/ai-security', '/services/compliance', '/services/fix-and-harden',
   // DE twins of the four search landing pages (fully translated, 2026-10-31).
   ...LANDING_ROUTES,
 ]

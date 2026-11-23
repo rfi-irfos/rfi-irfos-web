@@ -16,6 +16,10 @@ export const DE: Content = {
     // 21.11.2026 Graz-Sichtbarkeit: Stadt vorn, „cybersecurity graz“ ist der meistgesuchte Begriff.
     title: 'Cybersecurity Graz: Sicherheitstests, NIS2 & SOC | RFI-IRFOS',
     description: 'Agenten finden Schwachstellen, Fachleute prüfen und beheben sie im Code. Sicherheitstests, Compliance und Managed SOC, Daten verarbeitet in Graz.',
+    services: {
+      title: 'IT-Security-Leistungen in Österreich · RFI-IRFOS',
+      description: 'Managed SOC, Penetrationstests, Code- und App-Audits, NIS2-Compliance und Behebung aus Graz, geordnet in sechs Bereiche.',
+    },
     dataSolutions: {
       title: 'Evaluationsdaten & Safety-Datensätze für Agenten · RFI-IRFOS',
       description: 'Reproduzierbare Umgebungen, Experten-Trajektorien, Evaluationsdatensätze und Safety-Daten zum Trainieren und Testen von KI-Agenten.',
@@ -39,6 +43,7 @@ export const DE: Content = {
       projects: 'Systeme',
       worldModel: 'World Model',
       squad: 'The Squad',
+      services: 'Leistungen',
       trackRecord: 'Evidenz',
       dataSolutions: 'Data Solutions',
       pricing: 'Zugang',

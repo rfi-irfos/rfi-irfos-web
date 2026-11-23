@@ -1615,15 +1615,15 @@ button { cursor: pointer; font-family: inherit; }
 [data-theme="light"] .fx-cta-glass, [data-theme="light"] .data-cta, [data-theme="light"] .fx-cta-teal { border-color: rgba(0,184,148,.6); }
 .fx-cta-glass:hover, .irf-hero-cta--primary:hover, .data-cta:hover, .fx-cta-teal:not(:disabled):hover, .wm-btn-primary:hover { border-color: rgba(0,245,196,.8); }
 
-/* Service pages, pipeline (Simeon 2026-11-22): the step number sits right before the step title, and the
-   cards are slimmer. Scoped to .rfi-landing so the Data Solutions pipeline stays as it is. */
-.rfi-landing .data-pipeline, .rfi-landing .data-quality { max-width: 860px; }
-.rfi-landing .data-pipeline-module { grid-template-columns: 64px 1fr; gap: 22px; min-height: 0; padding: 20px 24px; }
-.rfi-landing .data-pipeline-copy h3 { display: flex; align-items: baseline; gap: 12px; }
+/* Pipelines (Simeon 22.11.2026 service pages, 23.11.2026 also Data Solutions): the step number sits right
+   before the step title, and the cards are slimmer. */
+.data-pipeline, .rfi-landing .data-quality { max-width: 860px; }
+.data-pipeline-module { grid-template-columns: 64px 1fr; gap: 22px; min-height: 0; padding: 20px 24px; }
+.data-pipeline-copy h3 { display: flex; align-items: baseline; gap: 12px; }
 .svc-step-no { color: var(--accent); font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
 @media (max-width: 760px) {
-  .rfi-landing .data-pipeline-module { grid-template-columns: 52px 1fr; gap: 14px; padding: 18px 16px; }
-  .rfi-landing .data-pipeline-icon { grid-row: auto; }
+  .data-pipeline-module { grid-template-columns: 52px 1fr; gap: 14px; padding: 18px 16px; }
+  .data-pipeline-icon { grid-row: auto; }
 }
 
 /* Service pages, "Datenort und Kontrolle" as four tiles (Simeon 2026-11-22). */
@@ -1712,3 +1712,43 @@ button { cursor: pointer; font-family: inherit; }
   .svc-hero-actions > a { margin-top: 0; width: 100%; padding: 13px 10px; font-size: 15px; white-space: nowrap; }
   .svc-hero-actions .svc-long { display: none; }
 }
+
+/* Services hub (23.11.2026): overview of six areas, then one page per area. Tiles carry icon + title only,
+   large, with a soft wash in the area's colour that grows on hover (Simeon: "a bit lifeless ... only icon and text, bigger"). */
+.svc-section { padding-top: 0; }
+.svc-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; }
+.svc-grid > * { flex: 0 1 calc((100% - 44px) / 3); min-width: 260px; }
+.svc-tile { position: relative; isolation: isolate; overflow: hidden; height: 100%; min-height: 250px; padding: 36px 28px; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; text-align: center; color: var(--text); text-decoration: none; transition: transform .5s cubic-bezier(.22,1,.36,1); }
+.svc-tile::before { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(140% 110% at 50% 0%, color-mix(in srgb, var(--ib) 15%, transparent), color-mix(in srgb, var(--ib) 6%, transparent) 70%, color-mix(in srgb, var(--ib) 4%, transparent)); opacity: .75; transition: opacity .5s ease; }
+.svc-tile:hover { transform: translateY(-4px); }
+.svc-tile:hover::before { opacity: 1; }
+.svc-tile .data-icon { width: 88px; height: 88px; margin: 0; border-radius: 22px; }
+.svc-tile .data-icon.rfi-ri-box svg { width: 44px; height: 44px; }
+.svc-tile h2 { margin: 0; font-size: clamp(18px, 1.3vw, 21px); font-weight: 700; line-height: var(--lh-tight); letter-spacing: -0.01em; }
+.svc-tile--area { min-height: 290px; }
+.svc-tail { white-space: nowrap; }
+.svc-arrow { display: inline-block; vertical-align: -0.12em; margin-left: 7px; color: var(--text2); transition: transform .4s ease, color .4s ease; }
+.svc-tile:hover .svc-arrow { transform: translateX(3px); color: var(--accent-text); }
+.svc-area-head { position: relative; }
+/* Back to all services: glass button on the right, level with the title (Simeon 23.11.2026). */
+.svc-title-row { position: relative; width: 100%; display: flex; justify-content: center; align-items: center; }
+.svc-back.svc-secondary { position: absolute; right: 0; top: 50%; transform: translateY(-50%); margin: 0; width: 46px; height: 46px; padding: 0; border-radius: 50%; text-decoration: none; }
+.svc-grid--4 > * { flex-basis: calc((100% - 66px) / 4); min-width: 220px; }
+.svc-grid--4 .svc-tile { min-height: 230px; }
+.svc-back.svc-secondary:hover { transform: translateY(calc(-50% - 1px)); }
+@media (max-width: 1100px) { .svc-title-row { flex-direction: column-reverse; gap: 14px; } .svc-back.svc-secondary { position: static; transform: none; align-self: flex-end; } .svc-back.svc-secondary:hover { transform: translateY(-1px); } }
+.svc-others { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; max-width: 880px; margin: 72px auto 24px; padding-top: 56px; border-top: 1px solid rgba(255,255,255,.08); }
+[data-theme="light"] .svc-others { border-top-color: rgba(15,23,42,.1); }
+.svc-others > span { width: 100%; text-align: center; color: var(--text2); font-size: var(--fs-small); font-weight: 600; margin-bottom: 8px; }
+.svc-others a { display: inline-flex; align-items: center; gap: 7px; padding: 9px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); color: var(--text); font-size: var(--fs-small); font-weight: 600; text-decoration: none; transition: background .3s ease, border-color .3s ease; }
+.svc-others a:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.18); }
+@media (max-width: 760px) { .svc-grid > * { flex-basis: 100%; } .svc-tile, .svc-tile--area { min-height: 200px; } }
+
+.svc-area-faq { max-width: 880px; margin: 48px auto 0; }
+.svc-area-faq > h2 { margin: 0 0 22px; text-align: center; }
+
+/* Top-nav underline (Simeon 23.11.2026): grows from the middle to both sides, never switches instantly. */
+.nav-underline { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 999px; background: var(--accent); transform: scaleX(0); transform-origin: center; opacity: 0; transition: transform .42s cubic-bezier(.2,.7,.2,1), opacity .3s ease; pointer-events: none; }
+.nav-link-u:hover .nav-underline { transform: scaleX(1); opacity: .45; }
+.nav-underline.is-active, .nav-link-u:hover .nav-underline.is-active { transform: scaleX(1); opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .nav-underline { transition: opacity .2s ease; } }

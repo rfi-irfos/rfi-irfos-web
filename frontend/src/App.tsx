@@ -32,7 +32,7 @@ function getLandingSlug() {
 // Evidence / Access views. 'systems'/'projects' dropped from primary nav
 // (live feedback 2026-08-31: redundant with the footer's own repo directory) -
 // old bookmarks to those URLs still resolve gracefully, just to the homepage.
-const SECTION_SLUGS = ['world-model', 'squad', 'evidence', 'data-solutions', 'datasets', 'access', 'submit', 'research', 'track-record', 'pricing']
+const SECTION_SLUGS = ['services', 'world-model', 'squad', 'evidence', 'data-solutions', 'datasets', 'access', 'submit', 'research', 'track-record', 'pricing']
 
 // /de/<route> is the same app route in German (real crawlable German URLs,
 // 2026-10-24 language-architecture work): the prefix only decides the initial
@@ -58,7 +58,8 @@ function getSlug() {
 
 function getSectionFocus() {
   const p = pathSlug()
-  return SECTION_SLUGS.includes(p) ? p : null
+  // /services/<area>/ (Services hub, 23.11.2026) carries its area as a second path segment.
+  return SECTION_SLUGS.includes(p) || /^services\/[a-z-]+$/.test(p) ? p : null
 }
 
 // rfi-irfos.com/?report=<slug> (e.g. a link out of a closure email) always means "take me

@@ -13,6 +13,7 @@
 import React, { useEffect, useState } from 'react'
 import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd, landingServiceJsonLd } from '../lib/structuredData'
 import { LANDING, LANDING_SLUGS, landingDoc, localePath, type LandingLocale, type LandingSlug } from './landingPages'
+import { AREA_FAQ, type AreaFaqId } from './areaFaq'
 import { InitialReviewFlow } from './sections/InitialReviewFlow'
 import { RelatedTiles } from './RelatedTiles'
 import { Reveal } from './sections/shared'
@@ -115,7 +116,7 @@ export function LandingBody({ slug, locale, onAsk }: { slug: LandingSlug; locale
   const toCheck = (e: React.MouseEvent) => { e.preventDefault(); document.getElementById('domain-check')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
 
   return <div className="data-solutions rfi-landing"><div className="data-wrap">
-    {showcase ? <ShowcaseTop doc={showcase} locale={locale} slug={slug} /> : <>
+    {showcase ? <ShowcaseTop doc={showcase} locale={locale} slug={slug} onTalk={onAsk ? () => onAsk(d.label) : undefined} /> : <>
     <header className="data-hero">
       <Reveal><div className="data-icon rfi-ri-box"><Icon size={30} stroke={1.6} /></div></Reveal>
       <Reveal><h1>{d.h1}</h1></Reveal>
@@ -214,4 +215,12 @@ export function LandingBody({ slug, locale, onAsk }: { slug: LandingSlug; locale
         items={others.map(s => ({ href: localePath(locale, `/${s}/`), label: LANDING[s][locale].label, Icon: ICONS[s] }))} />
     </section>
   </div></div>
+}
+
+// Services hub area pages (Simeon 23.11.2026): six FAQ rows per area, written for the area (components/areaFaq.ts):
+// buyer search questions, sharp comparisons and effort, each answer linking to its service page.
+export function AreaFaq({ area, locale }: { area: AreaFaqId; locale: LandingLocale }) {
+  return <div className="svc-faq">
+    {AREA_FAQ[area][locale].map(([q, a], i) => <FaqItem key={q} q={q} a={locale === 'de' ? a.replace(/\]\(\/(?!de\/)/g, '](/de/') : a} id={`area-faq-${i}`} />)}
+  </div>
 }
