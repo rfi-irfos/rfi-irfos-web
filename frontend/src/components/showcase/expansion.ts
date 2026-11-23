@@ -22,28 +22,28 @@ export const PART: Partial<Record<LandingSlug, { en: ShowcaseDoc; de: ShowcaseDo
   'ai-llm-security-testing': {
     de: {
       h1: 'AI und LLM Security Testing für Anwendungen und Agenten',
-      lede: 'Wir greifen Ihre KI-Anwendung so an, wie es ein Angreifer täte, von der Prompt Injection bis zum Agenten mit zu weiten Rechten, und liefern zu jedem Befund die Behebung.',
+      lede: 'Unser eigenes, öffentliches AI-Security-Toolkit bündelt zwanzig Angriffswerkzeuge von Garak bis AgentDojo, und unsere Agenten setzen sie gegen Ihre KI-Anwendung so ein, wie es ein Angreifer täte, von der Prompt Injection bis zum Agenten mit zu weiten Rechten, mit der Behebung zu jedem Befund.',
       capabilitiesH2: 'Leistungen im Überblick',
       capabilities: [
         ['Prompt Injection, direkt und indirekt', 'Wir platzieren Anweisungen in Chats, Webseiten, Dokumenten und E-Mails, die Ihr Modell liest, und zeigen, welchen es folgt.'],
         ['RAG und Datenquellen', 'Abrufquellen prüfen wir auf vergiftete Inhalte und auf Dokumente, die bei den falschen Nutzern landen.'],
         ['Agenten und MCP-Server', 'Jedes Werkzeug, das ein Agent aufrufen darf, wird erfasst, und wir testen, was eine eingeschleuste Anweisung damit anrichtet.'],
         ['Guardrails und Jailbreaks', 'Filter und Systemprompts belasten wir, bis sie nachgeben, und dokumentieren die genaue Eingabe, die sie bricht.'],
-        ['Modellverhalten', 'Hallucination Evaluation und Model Evaluation an Ihren eigenen Aufgaben zeigen, wo Antworten von den Fakten abweichen.'],
+        ['Zwanzig Werkzeuge, ein Angriff', 'Garak, Spikee, PromptMap, FuzzyAI, AgentDojo, LLM Guard, Rebuff und weitere laufen gebündelt aus unserem Toolkit, und Agenten verketten ihre Treffer zu vollständigen Angriffen.'],
         ['Trainingsdaten und Datenschutz', 'Wir testen auf Model Inversion und Training Data Poisoning und verfolgen, wo Gespräche gespeichert werden.'],
       ],
       capabilitiesCta: 'Umfang und Preis auf Zugang ansehen',
       prose: {
         h2: 'AI Security Testing für LLM-Anwendungen, RAG und KI-Agenten',
         p: [
-          'Anwendungen auf Basis großer Sprachmodelle öffnen eine Angriffsfläche eigener Art, denn das Modell folgt Text, und jede E-Mail, jede Webseite und jedes Dokument, das es liest, kann eine Anweisung tragen. Deshalb umfasst unser AI Security Testing direkte und indirekte Prompt Injection, RAG Security, Training Data Poisoning und Model Inversion, und jeder Befund wird den OWASP Top 10 für LLM-Anwendungen sowie MITRE ATLAS zugeordnet.',
+          'Anwendungen auf Basis großer Sprachmodelle öffnen eine Angriffsfläche eigener Art, denn das Modell folgt Text, und jede E-Mail, jede Webseite und jedes Dokument, das es liest, kann eine Anweisung tragen. Deshalb umfasst unser AI Security Testing direkte und indirekte Prompt Injection, RAG Security, Training Data Poisoning und Model Inversion, und jeder Befund wird den OWASP Top 10 für LLM-Anwendungen sowie MITRE ATLAS zugeordnet. Die Breite liefert unser öffentliches Toolkit, das zwanzig Open-Source-Werkzeuge für Red Teaming, Fuzzing und Guardrail-Tests bündelt, während unsere Agenten aus deren Einzeltreffern zusammenhängende Angriffe auf Ihren konkreten Aufbau formen.',
           'Agenten erhöhen den Einsatz, weil sie handeln. Wir prüfen Agent Access Control, MCP Security und Multi-Agent-Setups, erfassen, welche Werkzeuge jeder Agent erreicht und wo eine Person eine Aktion freigeben muss, und testen Guardrails, bis sie nachgeben. Hallucination Evaluation und Model Evaluation an Ihren eigenen Aufgaben runden das Bild ab, und die Nachweise stützen die Anforderungen des EU AI Act ebenso wie Managementsysteme nach ISO/IEC 42001 und das Risikomanagement nach ISO/IEC 23894.',
         ],
       },
       pipelineH2: 'Vom Modell zur Behebung in fünf Schritten',
       pipeline: [
         ['Erfassen', 'Modelle, Datenquellen, Werkzeuge und Berechtigungen landen in einer Übersicht.'],
-        ['Angreifen', 'Injection, vergiftete Quellen und Werkzeugmissbrauch laufen gegen eine Kopie Ihres Aufbaus.'],
+        ['Angreifen', 'Die Werkzeuge des Toolkits und unsere Agenten setzen Injection, vergiftete Quellen und Werkzeugmissbrauch gegen eine Kopie Ihres Aufbaus ein.'],
         ['Belegen', 'Jeder Befund kommt mit der genauen Eingabe und einem Proof of Concept.'],
         ['Beheben', 'Systemprompts, Rechte und Filter werden bis in den Code angepasst.'],
         ['Nachprüfen', 'Ein Retest führt jeden Angriff erneut aus, bis er scheitert.'],
@@ -68,28 +68,28 @@ export const PART: Partial<Record<LandingSlug, { en: ShowcaseDoc; de: ShowcaseDo
     },
     en: {
       h1: 'AI and LLM Security Testing for Applications and Agents',
-      lede: 'We attack your AI application the way an adversary would, from prompt injection to agents with too many rights, and deliver the fix with every finding.',
+      lede: 'Our own public AI security toolkit bundles twenty attack tools from Garak to AgentDojo, and our agents turn them on your AI application the way an adversary would, from prompt injection to agents with too many rights, with the fix for every finding.',
       capabilitiesH2: 'Services at a glance',
       capabilities: [
         ['Prompt injection, direct and indirect', 'We plant instructions in chats, web pages, documents and e-mails your model reads and show which ones it follows.'],
         ['RAG and data sources', 'Retrieval sources are checked for poisoned content and for documents that reach the wrong users.'],
         ['Agents and MCP servers', 'Every tool an agent may call is mapped, and we test what an injected instruction could do with it.'],
         ['Guardrails and jailbreaks', 'Filters and system prompts are pushed until they give way, documented with the exact input that breaks them.'],
-        ['Model behaviour', 'Hallucination evaluation and model evaluation on your own tasks show where answers drift from the facts.'],
+        ['Twenty tools, one attack', 'Garak, Spikee, PromptMap, FuzzyAI, AgentDojo, LLM Guard, Rebuff and more run together from our toolkit, while agents chain their hits into complete attacks.'],
         ['Training data and privacy', 'We test for model inversion and training data poisoning and trace where conversations are stored.'],
       ],
       capabilitiesCta: 'See scope and price on Access',
       prose: {
         h2: 'AI security testing for LLM applications, RAG and AI agents',
         p: [
-          'Applications built on large language models open an attack surface of their own: the model follows text, and every e-mail, web page or document it reads can carry an instruction. Our AI security testing therefore covers direct and indirect prompt injection, RAG security, training data poisoning and model inversion, and maps each finding to the OWASP Top 10 for LLM Applications and to MITRE ATLAS.',
+          'Applications built on large language models open an attack surface of their own: the model follows text, and every e-mail, web page or document it reads can carry an instruction. Our AI security testing therefore covers direct and indirect prompt injection, RAG security, training data poisoning and model inversion, and maps each finding to the OWASP Top 10 for LLM Applications and to MITRE ATLAS. The breadth comes from our public toolkit, which bundles twenty open-source tools for red teaming, fuzzing and guardrail testing, while our agents shape their individual hits into connected attacks on your specific setup.',
           'Agents raise the stakes because they act. We review agent access control, MCP security and multi-agent setups, map which tools each agent reaches and where a person has to approve an action, and test guardrails until they give way. Hallucination evaluation and model evaluation on your own tasks complete the picture, and the evidence supports the requirements of the EU AI Act as well as management systems under ISO/IEC 42001 and risk management under ISO/IEC 23894.',
         ],
       },
       pipelineH2: 'From model to fix in five steps',
       pipeline: [
         ['Map', 'Models, data sources, tools and permissions end up in one overview.'],
-        ['Attack', 'Injection, poisoned sources and tool abuse run against a copy of your setup.'],
+        ['Attack', 'The toolkit and our agents run injection, poisoned sources and tool abuse against a copy of your setup.'],
         ['Prove', 'Every finding comes with the exact input and a proof of concept.'],
         ['Fix', 'System prompts, permissions and filters are changed down to the code.'],
         ['Retest', 'A retest runs every attack again until it fails.'],
