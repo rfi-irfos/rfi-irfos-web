@@ -1164,7 +1164,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
   'api-security-testing': {
     en: {
       title: 'API Security Testing: REST and GraphQL · RFI-IRFOS',
-      description: 'API security testing for REST and GraphQL: authentication, authorization and attack surface. Every finding verified by a person, fixes down to the code.',
+      description: 'API security testing for REST and GraphQL: authentication, authorization and attack surface. Agents chain findings into attack paths with a proof of concept, fixes down to the code.',
       label: 'API Security Testing',
       h1: 'API Security Testing for REST and GraphQL',
       lead: 'APIs expose your data and your logic to anyone who can reach them. We test authentication, authorization and the attack surface of your APIs, verify every finding with a proof of concept and engineer the fix down to the code.',
@@ -1176,7 +1176,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'Why a person checks the findings',
-          p: ['Scanners find patterns. Authorization flaws depend on context, for example which user may see which record. Our engineers test those cases by hand and confirm each one with a proof of concept.'],
+          p: ['Scanners find patterns. Authorization flaws depend on context, for example which user may see which record. Our agents therefore replay every request with the identities of different users and roles, and each authorization gap they find comes with a proof of concept.'],
         },
         {
           h2: 'What you receive',
@@ -1205,7 +1205,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
     },
     de: {
       title: 'API-Sicherheitstest: REST und GraphQL · RFI-IRFOS',
-      description: 'API-Sicherheitstest für REST und GraphQL: Authentifizierung, Autorisierung und Angriffsfläche. Jeder Befund von Menschen geprüft, Fix bis in den Code.',
+      description: 'API-Sicherheitstest für REST und GraphQL: Authentifizierung, Autorisierung und Angriffsfläche. Agenten verketten Befunde zu Angriffspfaden mit Proof of Concept, Fix bis in den Code.',
       label: 'API-Sicherheitstest',
       h1: 'API-Sicherheitstest für REST und GraphQL',
       lead: 'APIs machen Ihre Daten und Ihre Logik für jeden erreichbar, der sie ansprechen kann. Wir testen Authentifizierung, Autorisierung und Angriffsfläche Ihrer APIs, bestätigen jeden Befund mit einem Proof of Concept und entwickeln den Fix bis in den Code.',
@@ -1217,7 +1217,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
         },
         {
           h2: 'Warum ein Mensch die Befunde prüft',
-          p: ['Scanner finden Muster. Fehler in der Autorisierung hängen vom Zusammenhang ab, etwa davon, welcher Nutzer welchen Datensatz sehen darf. Unsere Ingenieure testen diese Fälle von Hand und bestätigen jeden mit einem Proof of Concept.'],
+          p: ['Scanner finden Muster. Fehler in der Autorisierung hängen vom Zusammenhang ab, etwa davon, welcher Nutzer welchen Datensatz sehen darf. Deshalb spielen unsere Agenten jede Anfrage mit den Identitäten verschiedener Nutzer und Rollen erneut ab, und jede gefundene Autorisierungslücke kommt mit einem Proof of Concept.'],
         },
         {
           h2: 'Was Sie erhalten',
