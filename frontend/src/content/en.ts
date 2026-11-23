@@ -1232,7 +1232,7 @@ export const EN = {
   },
 
   cookieBanner: {
-    text: "this is a useless cookie banner. it's just here to look like one * we don't use cookies, so there's nothing to consent to. don't let anyone tell you otherwise.",
+    text: "this is a useless cookie banner. it's just here to look like one.\nwe don't use cookies, so there's nothing to consent to.",
     subtext: 'two buttons, one closes this and throws some confetti. the other literally does nothing.',
     doesNothing: 'does nothing',
     close: 'close',
