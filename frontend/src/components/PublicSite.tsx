@@ -2139,9 +2139,9 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
         // 52% see-through (feedback 2026-08-06), so the opaque variant overrides just the
         // background while keeping the same theme-correct border/shadow/hc handling.
         <div ref={bannerRef} className="rfi-glass-flat rfi-glass-solid rfi-cookie-plate" style={{
-                  position: 'fixed', left: 16, right: 16, bottom: mobile ? 'calc(92px + env(safe-area-inset-bottom))' : 16, zIndex: 200,
-                  // German text runs longer: wider plate instead of a taller one (Simeon 22.11.).
-                  maxWidth: locale === 'de' ? 860 : 640, margin: '0 auto',
+                  position: 'fixed', left: 16, right: 16, bottom: mobile ? 'calc(92px + env(safe-area-inset-bottom))' : 36, zIndex: 200,
+                  // Wide plate in both languages, the German width looked right (Simeon 22.11. and 23.11.).
+                  maxWidth: 860, margin: '0 auto',
                   borderRadius: 12,
                   padding: '20px 24px',
                   display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
@@ -2152,7 +2152,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                   // Orange glow so the banner stands out until it is closed (Simeon 18.11.).
                   boxShadow: '0 0 0 1px rgba(255,138,40,0.32), 0 0 18px 2px rgba(255,138,40,0.2), 0 0 64px 10px rgba(255,110,20,0.11)',
                 }}>
-                  <p style={{ margin: 0, flex: locale === 'de' ? '1 1 360px' : '1 1 260px', fontSize: 'var(--fs-small)', color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 'var(--lh-body)' }}>
+                  <p style={{ margin: 0, flex: '1 1 360px', fontSize: 'var(--fs-small)', color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 'var(--lh-body)' }}>
                     {t.cookieBanner.text}
                     <span style={{ display: 'block', fontSize: 'var(--fs-label)', color: theme === 'light' ? '#000000' : '#ffffff', marginTop: 4, fontWeight: 'normal' }}>
                       {t.cookieBanner.subtext}
