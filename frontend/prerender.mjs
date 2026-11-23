@@ -24,7 +24,8 @@ const ROOT = fileURLToPath(new URL('./', import.meta.url))
 const DIST = process.env.PRERENDER_DIST
   ? (process.env.PRERENDER_DIST.endsWith('/') ? process.env.PRERENDER_DIST : process.env.PRERENDER_DIST + '/')
   : fileURLToPath(new URL('./dist/', import.meta.url))
-const PORT = 4173
+// PRERENDER_PORT: colony-ci renders on its own port so a CI build never collides with a running ship (4173).
+const PORT = Number(process.env.PRERENDER_PORT) || 4173
 
 // Legal pages (own standalone content, App.tsx's LEGAL_SLUGS) + public views
 // (App.tsx's SECTION_SLUGS) - keep the crawlable routes in sync with those lists.
