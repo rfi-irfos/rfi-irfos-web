@@ -1044,7 +1044,7 @@ a[href^="mailto:"]:not(footer a) { color: var(--text) !important; }
    lit top edge, soft top sheen over an opaque base, a shaded underside and a grounded drop shadow.
    Cards that already carry an fx- surface are left alone. */
 [data-theme="dark"] .wm-card:not(.sq-spec-sheet):not(.wm-modal),
-[data-theme="dark"] .rfi-glass-flat.rfi-glass-solid:not(.fx-panel):not(.fx-row):not(.fx-tile) {
+[data-theme="dark"] .rfi-glass-flat.rfi-glass-solid:not(.fx-panel):not(.fx-row):not(.fx-tile):not(.rfi-cookie-plate) {
   background-color: #10131a;
   background-image: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.015) 55%, rgba(255,255,255,0));
   border: 1px solid rgba(255,255,255,.08);
@@ -1207,4 +1207,4 @@ svg .k3 { color: #5aa9ff; }
 
 /* Cookie plate (Simeon 22.11.2026): a tad more see-through in light and dark, the blur keeps the text readable.
    Needs the extra .rfi-cookie-plate to beat the opaque raised-plate recipe for dark above. */
-[data-theme="dark"] .rfi-glass-flat.rfi-glass-solid.rfi-cookie-plate { background-color: rgba(16,19,26,.72); -webkit-backdrop-filter: blur(6px) saturate(1.2); backdrop-filter: blur(6px) saturate(1.2); }
+[data-theme="dark"] .rfi-glass-flat.rfi-glass-solid.rfi-cookie-plate { background-image: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.015) 55%, rgba(255,255,255,0)); border: 1px solid rgba(255,255,255,.08); border-top-color: rgba(255,255,255,.18); background-color: rgba(16,19,26,.72); -webkit-backdrop-filter: blur(6px) saturate(1.2); backdrop-filter: blur(6px) saturate(1.2); }
