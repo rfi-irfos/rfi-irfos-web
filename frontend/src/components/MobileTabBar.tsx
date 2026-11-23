@@ -1,22 +1,22 @@
 // App-style bottom navigation for phones (Simeon 2026-11-01, replaces the hamburger drawer).
-// A floating glass bar: The Squad, World Model, Home in the middle, Access, Login (Simeon 18.11.2026: Evidence left the bar, the login moved down here from the top). Real
+// A floating glass bar: The Squad, World Model, Home in the middle, Services, Access (Simeon 23.11.2026: Services took the login's slot,
+// the login went back to the top bar). Real
 // <a href>s so the links work without JS and stay crawlable; clicks go through PublicSite's
 // view router. The active tab carries the accent: icon, label, a short bar and a soft glow.
-import { IconHome, IconTopologyStar3, IconPlanet, IconFileSearch, IconLockOpen, IconLogin } from '@tabler/icons-react'
+import { IconHome, IconTopologyStar3, IconPlanet, IconFileSearch, IconLockOpen, IconLayoutGrid } from '@tabler/icons-react'
 import type { ComponentType } from 'react'
 import { localeHref } from '../lib/localeHref'
 
 type NavLink = { key: string; label: string; href: string }
 type IconType = ComponentType<{ size?: number; stroke?: number; 'aria-hidden'?: boolean }>
 
-const ICONS: Record<string, IconType> = { home: IconHome, squad: IconTopologyStar3, worldModel: IconPlanet, trackRecord: IconFileSearch, pricing: IconLockOpen }
+const ICONS: Record<string, IconType> = { home: IconHome, squad: IconTopologyStar3, worldModel: IconPlanet, trackRecord: IconFileSearch, pricing: IconLockOpen, services: IconLayoutGrid }
 
-export function MobileTabBar({ view, locale, links, onNavigate, onLogin }: {
+export function MobileTabBar({ view, locale, links, onNavigate }: {
   view: string
   locale: 'en' | 'de'
   links: NavLink[]
   onNavigate: (href: string) => void
-  onLogin: () => void
 }) {
   const home: NavLink = { key: 'home', label: locale === 'de' ? 'Start' : 'Home', href: '/' }
   const tabs = [links[0], links[1], home, ...links.slice(2)]
@@ -30,8 +30,10 @@ export function MobileTabBar({ view, locale, links, onNavigate, onLogin }: {
       boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 10px 32px rgba(0, 0, 0, 0.5)',
     }}>
       {tabs.map(n => {
-        const Icon = ICONS[n.key]
-        const active = n.key === 'home' ? view === 'home' : view === n.href.slice(1, -1)
+        // 23.11.2026: a nav key without an icon here rendered `undefined` and blanked the whole app on phones
+        // (React #130). Unknown keys now fall back to a generic icon so a new nav entry can never take the site down.
+        const Icon = ICONS[n.key] ?? IconLayoutGrid
+        const active = n.key === 'home' ? view === 'home' : view === n.href.slice(1, -1).split('/')[0]
         return (
           <a key={n.key} href={localeHref(n.href, locale)} aria-current={active ? 'page' : undefined}
             onClick={e => { e.preventDefault(); onNavigate(n.href) }}
@@ -58,15 +60,6 @@ export function MobileTabBar({ view, locale, links, onNavigate, onLogin }: {
           </a>
         )
       })}
-      {/* Login: opens the customer portal window, so it is a button and never the active tab. */}
-      <button type="button" onClick={onLogin} data-testid="tab-login" aria-haspopup="dialog" style={{
-        position: 'relative', flex: '1 1 0', minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        gap: 5, padding: 0, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'var(--fs-label)', fontWeight: 500,
-        whiteSpace: 'nowrap', color: 'var(--text2)',
-      }}>
-        <IconLogin size={26} stroke={1.5} aria-hidden />
-        <span>Login</span>
-      </button>
     </nav>
   )
 }

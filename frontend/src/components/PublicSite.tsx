@@ -1763,8 +1763,8 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
               <ThemeIcon t={theme} />
             </button>
             {/* Kundenportal-Login (Simeon 11.11.2026): nur ein Login-Symbol (Pfeil in Kasten, seit 18.11.2026 statt des Profil-Männchens) im Stil der Schalter; öffnet den Login-Screen (gesperrte Felder, Early-Access-Anfrage, Demo-Vorschau). Das Portal selbst ist von hier aus nicht erreichbar. */}
-            {/* On phones the login sits in the bottom tab bar, the top bar keeps only language and theme (Simeon 18.11.2026). */}
-            {!mobile && (
+            {/* Back in the top bar on phones too (Simeon 23.11.2026): the tab bar slot went to Services. */}
+            {(
             <button type="button" onClick={() => setLoginOpen(true)} data-testid="nav-portal" title={t.login.navLabel} aria-label={t.login.navLabel} aria-haspopup="dialog" style={{
               width: 38, height: 38, display: 'flex', alignItems: 'center', justifyContent: 'center',
               background: theme === 'light' ? 'transparent' : 'var(--bg2)',
@@ -2161,7 +2161,7 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
           CTA, so mobile gets an app-style tab bar instead: the four views plus Home in the middle.
           The spacer keeps the footer's last line clear of the fixed bar. */}
       {mobile && <div aria-hidden="true" style={{ height: 'calc(88px + env(safe-area-inset-bottom))' }} />}
-      {mobile && <MobileTabBar view={view} locale={locale} links={NAV_LINKS} onNavigate={navigateTo} onLogin={() => setLoginOpen(true)} />}
+      {mobile && <MobileTabBar view={view} locale={locale} links={NAV_LINKS} onNavigate={navigateTo} />}
       {mobile && <InstallPrompt locale={locale} blocked={cookieBannerOpen} />}
       {checkoutFail && <FailToast message={t.alerts.checkoutUnavailable} mailSubject={`Checkout: ${checkoutFail}`}
         mailBody={`Tier: ${checkoutFail}`} onClose={() => setCheckoutFail(null)} />}
