@@ -19,15 +19,18 @@
 export type RepoLink = { n: string; u: string; key: string }
 
 export const RFI_REPOS: RepoLink[] = [
-  { n: '.github', u: 'https://github.com/rfi-irfos/.github', key: 'rfi-github-profile' },
   { n: '13', u: 'https://github.com/rfi-irfos/13', key: 'rfi-13' },
+  { n: 'ai-security', u: 'https://github.com/rfi-irfos/ai-security', key: 'rfi-ai-security' },
   { n: 'auto-bayesian', u: 'https://github.com/rfi-irfos/auto-bayesian', key: 'rfi-auto-bayesian' },
   { n: 'autoguardrails', u: 'https://github.com/rfi-irfos/autoguardrails', key: 'rfi-autoguardrails' },
   { n: 'causal-perception-implementation', u: 'https://github.com/rfi-irfos/causal-perception-implementation', key: 'rfi-causal-perception-implementation' },
+  { n: 'claude-cache-idiocracy', u: 'https://github.com/rfi-irfos/claude-cache-idiocracy', key: 'rfi-claude-cache-idiocracy' },
   { n: 'e-techbike-at', u: 'https://github.com/rfi-irfos/e-techbike-at', key: 'rfi-e-techbike-at' },
   { n: 'gen-fraud-graph', u: 'https://github.com/rfi-irfos/gen-fraud-graph', key: 'rfi-gen-fraud-graph' },
   { n: 'genesis', u: 'https://github.com/rfi-irfos/genesis', key: 'rfi-genesis' },
   { n: 'genetic-algorithm', u: 'https://github.com/rfi-irfos/genetic-algorithm', key: 'rfi-genetic-algorithm' },
+  { n: '.github', u: 'https://github.com/rfi-irfos/.github', key: 'rfi-github-profile' },
+  { n: 'gut-check', u: 'https://github.com/rfi-irfos/gut-check', key: 'rfi-gut-check' },
   { n: 'linear-adapter-trainer', u: 'https://github.com/rfi-irfos/linear-adapter-trainer', key: 'rfi-linear-adapter-trainer' },
   { n: 'llm_bridge', u: 'https://github.com/rfi-irfos/llm_bridge', key: 'rfi-llm-bridge' },
   { n: 'mech-gov-framework', u: 'https://github.com/rfi-irfos/mech-gov-framework', key: 'rfi-mech-gov-framework' },
@@ -35,6 +38,7 @@ export const RFI_REPOS: RepoLink[] = [
   { n: 'nikoletta-tutor', u: 'https://github.com/rfi-irfos/nikoletta-tutor', key: 'rfi-nikoletta-tutor' },
   { n: 'ntpsec', u: 'https://github.com/rfi-irfos/ntpsec', key: 'rfi-ntpsec' },
   { n: 'p2p-repository', u: 'https://github.com/rfi-irfos/p2p-repository', key: 'rfi-p2p-repository' },
+  { n: 'pass-the-bot', u: 'https://github.com/rfi-irfos/pass-the-bot', key: 'rfi-pass-the-bot' },
   { n: 'ralph', u: 'https://github.com/rfi-irfos/ralph', key: 'rfi-ralph' },
   { n: 'ralph-vault-skill', u: 'https://github.com/rfi-irfos/ralph-vault-skill', key: 'rfi-ralph-vault-skill' },
   { n: 'rfi-irfos-web', u: 'https://github.com/rfi-irfos/rfi-irfos-web', key: 'rfi-irfos-web' },
