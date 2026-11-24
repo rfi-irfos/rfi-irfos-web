@@ -1203,7 +1203,8 @@ export const DE: Content = {
   },
 
   cookieBanner: {
-    text: 'das ist ein nutzloser Cookie-Banner. er ist nur hier, damit es wie einer aussieht. wir verwenden keine Cookies, es gibt also nichts, dem zuzustimmen wäre.',
+    text: 'das ist ein nutzloser Cookie-Banner. er ist nur hier, damit es wie einer aussieht.',
+    noCookies: 'wir verwenden keine Cookies, es gibt also nichts, dem zuzustimmen wäre.',
     subtext: 'zwei Buttons, einer schließt das hier und wirft Konfetti. der andere macht buchstäblich nichts.',
     doesNothing: 'macht nichts',
     close: 'schließen',

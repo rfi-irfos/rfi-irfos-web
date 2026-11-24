@@ -2179,11 +2179,11 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
         // background while keeping the same theme-correct border/shadow/hc handling.
         <div ref={bannerRef} className="rfi-glass-flat rfi-glass-solid rfi-cookie-plate" style={{
                   position: 'fixed', left: 16, right: 16, bottom: mobile ? 'calc(92px + env(safe-area-inset-bottom))' : 36, zIndex: 200,
-                  // Wide plate in both languages, the German width looked right (Simeon 22.11. and 23.11.).
-                  maxWidth: 860, margin: '0 auto',
+                  // Narrow column: headline, the no-cookies line under it, the small line, then the buttons (Simeon 24.11.).
+                  maxWidth: 560, margin: '0 auto',
                   borderRadius: 12,
                   padding: '20px 24px',
-                  display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+                  display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 14,
                   transform: bannerClosing ? 'scale(0.85)' : footerInView ? 'translateY(14px)' : 'none',
                   opacity: bannerClosing || footerInView ? 0 : 1,
                   pointerEvents: footerInView ? 'none' : undefined,
@@ -2191,8 +2191,9 @@ export function PublicSite({ initialSection, initialReportSlug, initialDocSlug, 
                   // Orange glow so the banner stands out until it is closed (Simeon 18.11.).
                   boxShadow: '0 0 0 1px rgba(255,138,40,0.32), 0 0 18px 2px rgba(255,138,40,0.2), 0 0 64px 10px rgba(255,110,20,0.11)',
                 }}>
-                  <p style={{ margin: 0, flex: '1 1 360px', fontSize: 'var(--fs-small)', color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 'var(--lh-body)' }}>
+                  <p style={{ margin: 0, fontSize: 'var(--fs-small)', color: theme === 'light' ? '#000000' : '#ffffff', fontWeight: 'bold', lineHeight: 'var(--lh-body)' }}>
                     {t.cookieBanner.text}
+                    <span style={{ display: 'block' }}>{t.cookieBanner.noCookies}</span>
                     <span style={{ display: 'block', fontSize: 'var(--fs-label)', color: theme === 'light' ? '#000000' : '#ffffff', marginTop: 4, fontWeight: 'normal' }}>
                       {t.cookieBanner.subtext}
                     </span>
