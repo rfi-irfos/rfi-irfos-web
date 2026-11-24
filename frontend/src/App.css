@@ -1499,9 +1499,15 @@ button { cursor: pointer; font-family: inherit; }
 /* Phones (Simeon 20.11.): both buttons side by side, and the logo strip stays visible above the tab bar (68px bar + 10px gap + safe area). */
 @media (max-width: 767px) {
   .irf-hero { min-height: max(420px, calc(100svh / 0.9 - 80px - 78px - env(safe-area-inset-bottom))) !important; }
-  .irf-hero-ctas { gap: 8px; margin-top: 26px; }
-  .irf-hero-cta { font-size: 14px; padding: 13px 14px; white-space: nowrap; gap: 6px; }
+  /* Equal columns made both buttons as wide as "Automatisierte Compliance" (2 x 216 px) and pushed the SOC button
+     off a 390 px screen (measured 24.11.). On phones each button takes its own width. */
+  .irf-hero-ctas { gap: 8px; margin-top: 26px; grid-template-columns: auto auto; }
+  .irf-hero-cta { font-size: 13.5px; padding: 12px 11px; white-space: nowrap; gap: 6px; }
   .irf-hero-cta svg { width: 16px; height: 16px; }
+}
+/* Too narrow for both labels in one row: stack, highlighted one below. */
+@media (max-width: 379px) {
+  .irf-hero-ctas { grid-template-columns: 1fr; width: 100%; max-width: 300px; }
 }
 
 /* Hero text (Simeon 11.11.): thick black outline, strong shadow. Picker values: outline .08em, shadow "stark". */
