@@ -10,7 +10,7 @@ import { useLocale } from '../../hooks/useLocale'
 const CONTACT_CARDS = [
   { key: 'general' as const, value: 'contact@rfi-irfos.com', href: 'mailto:contact@rfi-irfos.com' },
   { key: 'security' as const, value: 'security@rfi-irfos.com', href: 'mailto:security@rfi-irfos.com' },
-  { key: 'publicDisclosures' as const, value: 'rfi.irfos@gmail.com', href: 'mailto:rfi.irfos@gmail.com' },
+  { key: 'publicDisclosures' as const, value: 'disclosure@rfi-irfos.com', href: 'mailto:disclosure@rfi-irfos.com' },
   { key: 'research' as const, value: 'research@rfi-irfos.com', href: 'mailto:research@rfi-irfos.com' },
   { key: 'careers' as const, value: 'career@rfi-irfos.com', href: 'mailto:career@rfi-irfos.com' },
 ]
