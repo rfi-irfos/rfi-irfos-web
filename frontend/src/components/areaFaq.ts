@@ -5,7 +5,7 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
     en: [
       [
         "How do I know if someone is already inside our network?",
-        "Intruders rarely trigger one loud alarm. They leave faint traces in several places: a login from an unusual country, a new process on a server, an outbound connection a few minutes later. Our SOC runs on a SIEM we operate ourselves in Graz, Wazuh with OpenSearch, and our agents correlate your sources around the clock into one incident with a timeline. Anything critical reaches you within one hour. See [Managed SOC](/managed-soc/).",
+        "Intruders rarely trigger one loud alarm. They leave faint traces in several places: a login from an unusual country, a new process on a server, an outbound connection a few minutes later. Our SOC runs on a SIEM we operate ourselves in Graz, Wazuh with OpenSearch, and our agents work through your sources around the clock without waiting for a ticket, correlating them into one incident with a timeline. Anything critical reaches you within one hour. See [Managed SOC](/managed-soc/).",
       ],
       [
         "Who watches our systems at night, on weekends and on public holidays?",
@@ -16,12 +16,12 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
         "Every report is matched against the assets, versions and sector recorded in your portal. You receive an early warning only when a vulnerability or a campaign meets a system you run, and it names the system at risk, the campaign behind it, how likely an attack is and the step that protects you. The same vulnerability lands on your remediation board as a task. See [Threat Intelligence](/threat-intelligence/).",
       ],
       [
-        "We use CrowdStrike, Sentinel or Arctic Wolf. What does your SOC do that they do not?",
-        "Those services build on one vendor's agents or cloud. Ours takes in events from the tools you already use, including Suricata, Zeek, Falco, CrowdSec and TheHive, and correlates them on a SIEM in Graz where every customer has an instance of their own. When an incident needs a code change, we write the fix within 24 hours. A detection service ends at the alert, whereas our work ends at the fix. See [Managed SOC](/managed-soc/).",
+        "We already pay for a vendor-run detection service. What does your SOC do that it does not?",
+        "Such services build on one vendor's agents or cloud. Ours takes in events from the tools you already use, including Suricata, Zeek, Falco, CrowdSec and TheHive, and correlates them on a SIEM in Graz where every customer has an instance of their own. When an incident needs a code change, we write the fix within 24 hours. A detection service ends at the alert, whereas our work ends at the fix. See [Managed SOC](/managed-soc/).",
       ],
       [
         "Our local IT provider already looks after our systems. Why add a security specialist?",
-        "A local IT provider keeps your systems running, and security is one task among many. We work on security alone, with our own scanners and SIEM, more than forty open-source and specialised tools across code, apps, cloud and AI, and agents that connect their results into attack paths with fixes. A first meeting in Graz or at your premises in Styria is easy to arrange, and the reviews themselves run remotely. See [IT security from Graz](/it-security-graz/).",
+        "A local IT provider keeps your systems running, and security is one task among many. We work on security alone, with our own scanners and SIEM, more than forty open-source and specialised tools across code, apps, cloud and AI, and agents that connect their results into attack paths with fixes. We meet you in Graz or at your premises in Styria for the first conversation, and from there the work runs remotely. See [IT security from Graz](/it-security-graz/).",
       ],
       [
         "What do we have to do to get a managed SOC running?",
@@ -31,7 +31,7 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
     de: [
       [
         "Woran erkenne ich, ob jemand bereits in unserem Netzwerk ist?",
-        "Eindringlinge lösen selten einen lauten Alarm aus. Sie hinterlassen schwache Spuren an mehreren Stellen: eine Anmeldung aus einem ungewöhnlichen Land, einen neuen Prozess auf einem Server, wenige Minuten später eine ausgehende Verbindung. Unser SOC läuft auf einem SIEM, das wir selbst in Graz betreiben, Wazuh mit OpenSearch, und unsere Agenten führen Ihre Quellen rund um die Uhr zu einem Vorfall mit Zeitverlauf zusammen. Alles Kritische erreicht Sie innerhalb einer Stunde. Mehr unter [Managed SOC](/managed-soc/).",
+        "Eindringlinge lösen selten einen lauten Alarm aus. Sie hinterlassen schwache Spuren an mehreren Stellen: eine Anmeldung aus einem ungewöhnlichen Land, einen neuen Prozess auf einem Server, wenige Minuten später eine ausgehende Verbindung. Unser SOC läuft auf einem SIEM, das wir selbst in Graz betreiben, Wazuh mit OpenSearch, und unsere Agenten arbeiten Ihre Quellen rund um die Uhr selbstständig ab und führen sie zu einem Vorfall mit Zeitverlauf zusammen. Alles Kritische erreicht Sie innerhalb einer Stunde. Mehr unter [Managed SOC](/managed-soc/).",
       ],
       [
         "Wer überwacht unsere Systeme nachts, am Wochenende und an Feiertagen?",
@@ -42,12 +42,12 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
         "Jede Meldung wird mit den Assets, Versionen und der Branche abgeglichen, die in Ihrem Portal hinterlegt sind. Eine Frühwarnung erhalten Sie nur, wenn eine Schwachstelle oder Kampagne auf ein System trifft, das Sie einsetzen. Sie nennt das gefährdete System, die Kampagne dahinter, die Wahrscheinlichkeit eines Angriffs und den Schritt, der Sie schützt. Dieselbe Schwachstelle erscheint zugleich als Aufgabe auf Ihrem Remediation-Board. Mehr unter [Threat Intelligence](/threat-intelligence/).",
       ],
       [
-        "Wir nutzen CrowdStrike, Sentinel oder Arctic Wolf. Was leistet Ihr SOC, was diese Dienste nicht leisten?",
-        "Diese Dienste bauen auf die Agenten oder die Cloud eines einzelnen Herstellers. Unser SOC übernimmt Ereignisse aus den Werkzeugen, die Sie bereits einsetzen, darunter Suricata, Zeek, Falco, CrowdSec und TheHive, und korreliert sie auf einem SIEM in Graz, in dem jeder Kunde eine eigene Instanz hat. Erfordert ein Vorfall eine Code-Änderung, schreiben wir den Fix innerhalb von 24 Stunden. Ein Erkennungsdienst endet beim Alarm, unsere Arbeit endet beim Fix. Mehr unter [Managed SOC](/managed-soc/).",
+        "Wir nutzen bereits einen Erkennungsdienst eines Herstellers. Was leistet Ihr SOC darüber hinaus?",
+        "Solche Dienste bauen auf die Agenten oder die Cloud eines einzelnen Herstellers. Unser SOC übernimmt Ereignisse aus den Werkzeugen, die Sie bereits einsetzen, darunter Suricata, Zeek, Falco, CrowdSec und TheHive, und korreliert sie auf einem SIEM in Graz, in dem jeder Kunde eine eigene Instanz hat. Erfordert ein Vorfall eine Code-Änderung, schreiben wir den Fix innerhalb von 24 Stunden. Ein Erkennungsdienst endet beim Alarm, unsere Arbeit endet beim Fix. Mehr unter [Managed SOC](/managed-soc/).",
       ],
       [
         "Unser lokaler IT-Dienstleister betreut bereits unsere Systeme. Wozu noch ein Sicherheitsspezialist?",
-        "Ein lokaler IT-Dienstleister hält Ihre Systeme am Laufen, Sicherheit ist dabei eine Aufgabe unter vielen. Wir arbeiten ausschließlich an Sicherheit, mit eigenen Scannern und eigenem SIEM, mehr als vierzig Open-Source- und Spezialwerkzeugen für Code, Apps, Cloud und KI sowie Agenten, die deren Ergebnisse zu Angriffspfaden mit Fixes verbinden. Ein erstes Treffen in Graz oder bei Ihnen in der Steiermark lässt sich leicht vereinbaren, die Prüfungen selbst laufen aus der Ferne. Mehr unter [IT-Sicherheit aus Graz](/it-security-graz/).",
+        "Ein lokaler IT-Dienstleister hält Ihre Systeme am Laufen, Sicherheit ist dabei eine Aufgabe unter vielen. Wir arbeiten ausschließlich an Sicherheit, mit eigenen Scannern und eigenem SIEM, mehr als vierzig Open-Source- und Spezialwerkzeugen für Code, Apps, Cloud und KI sowie Agenten, die deren Ergebnisse zu Angriffspfaden mit Fixes verbinden. Das erste Gespräch führen wir in Graz oder bei Ihnen in der Steiermark, danach läuft die Arbeit aus der Ferne. Mehr unter [IT-Sicherheit aus Graz](/it-security-graz/).",
       ],
       [
         "Was müssen wir tun, damit ein Managed SOC läuft?",
@@ -71,11 +71,11 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
       ],
       [
         "We already run Nessus or Qualys. What does a penetration test find that a scanner does not?",
-        "A scanner checks hosts against a catalogue and reports every weakness on its own. We take that material as the starting point, and our agents combine a forgotten test subdomain, a role with one admin function too many and a medium flaw that opens the way to a critical one into the path that matters. Every successful path is documented with a proof of concept and its fix. See [Penetration Testing](/penetration-testing/).",
+        "A scanner checks hosts against a catalogue and reports every weakness on its own. We take that material as the starting point, and our agents combine a forgotten test subdomain, a role with one admin function too many and a medium flaw that opens the way to a critical one into the path that matters. Your team receives one ranked route to close instead of a long list of single findings. See [Penetration Testing](/penetration-testing/).",
       ],
       [
         "My security rating or SSL Labs grade is poor. What exactly do I change?",
-        "A rating tells you that something is wrong, our Domain Security Test names the setting. Our own scanner covers HTTP, TLS, DNS, SPF, DKIM, DMARC, security headers and embedded trackers, rates each finding with CVSS 3.1 and states in plain language what an attacker could do with it: which subdomain accepts outdated TLS, which DMARC setting lets others send mail in your name. See [Domain Security Test](/domain-security-test/).",
+        "A rating tells you that something is wrong, whereas our Domain Security Test names the setting. Our own scanner covers HTTP, TLS, DNS, SPF, DKIM, DMARC, security headers and embedded trackers, rates each finding with CVSS 3.1 and states in plain language what an attacker could do with it: which subdomain accepts outdated TLS, which DMARC setting lets others send mail in your name. See [Domain Security Test](/domain-security-test/).",
       ],
       [
         "How much effort is a first test, and what do we receive?",
@@ -97,11 +97,11 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
       ],
       [
         "Wir setzen schon Nessus oder Qualys ein. Was findet ein Penetrationstest, das ein Scanner übersieht?",
-        "Ein Scanner gleicht Hosts mit einem Katalog ab und meldet jede Schwachstelle einzeln. Dieses Material nehmen wir als Ausgangspunkt, und unsere Agenten verbinden eine vergessene Test-Subdomain, eine Rolle mit einer Admin-Funktion zu viel und einen mittleren Fund, der den Weg zu einem kritischen öffnet, zu dem Pfad, der für Sie zählt. Jeder gelungene Pfad ist mit Proof of Concept und Fix dokumentiert. Mehr unter [Penetrationstest](/penetration-testing/).",
+        "Ein Scanner gleicht Hosts mit einem Katalog ab und meldet jede Schwachstelle einzeln. Dieses Material nehmen wir als Ausgangspunkt, und unsere Agenten verbinden eine vergessene Test-Subdomain, eine Rolle mit einer Admin-Funktion zu viel und einen mittleren Fund, der den Weg zu einem kritischen öffnet, zu dem Pfad, der für Sie zählt. Ihr Team erhält einen geordneten Weg, den es schließen kann, statt einer langen Liste einzelner Funde. Mehr unter [Penetrationstest](/penetration-testing/).",
       ],
       [
         "Mein Security-Rating oder meine SSL-Labs-Note ist schlecht. Was genau muss ich ändern?",
-        "Ein Rating sagt Ihnen, dass etwas nicht stimmt, unser Domain Security Test nennt die Einstellung. Unser eigener Scanner prüft HTTP, TLS, DNS, SPF, DKIM, DMARC, Security-Header und eingebettete Tracker, bewertet jeden Fund nach CVSS 3.1 und erklärt in einfachen Worten, was ein Angreifer damit anfangen kann: welche Subdomain veraltetes TLS akzeptiert, welche DMARC-Einstellung anderen erlaubt, in Ihrem Namen Mails zu senden. Mehr unter [Domain Security Test](/domain-security-test/).",
+        "Ein Rating sagt Ihnen, dass etwas nicht stimmt, während unser Domain Security Test die Einstellung nennt. Unser eigener Scanner prüft HTTP, TLS, DNS, SPF, DKIM, DMARC, Security-Header und eingebettete Tracker, bewertet jeden Fund nach CVSS 3.1 und erklärt in einfachen Worten, was ein Angreifer damit anfangen kann: welche Subdomain veraltetes TLS akzeptiert, welche DMARC-Einstellung anderen erlaubt, in Ihrem Namen Mails zu senden. Mehr unter [Domain Security Test](/domain-security-test/).",
       ],
       [
         "Wie aufwendig ist ein erster Test, und was erhalten wir?",
@@ -179,7 +179,7 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
       ],
       [
         "We looked at Garak, Promptfoo and Lakera. What does your testing do beyond that?",
-        "Garak runs inside our own public AI security toolkit with nineteen further open-source tools such as Spikee, PromptMap, FuzzyAI, AgentDojo, LLM Guard and Rebuff. Each probes one class of weakness, and our agents combine the hits with your architecture: which data sources the model reads, which tools an agent may call, where a person approves an action. A runtime filter such as Lakera shields inputs, whereas our test shows which attacks get through your whole setup, filter included, and delivers the fix. See [AI and LLM Security Testing](/ai-llm-security-testing/).",
+        "Our agents run Garak and nineteen further open-source tools such as Spikee, PromptMap, FuzzyAI, AgentDojo, LLM Guard and Rebuff, all from our own public AI security toolkit. Each probes one class of weakness, and the agents combine the hits with your architecture: which data sources the model reads, which tools an agent may call, where a person approves an action. A runtime filter such as Lakera shields inputs, whereas our test shows which attacks get through your whole setup, filter included, and delivers the fix. See [AI and LLM Security Testing](/ai-llm-security-testing/).",
       ],
       [
         "The app store privacy label says our AI app is safe. Why audit it anyway?",
@@ -187,7 +187,7 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
       ],
       [
         "What do you need from us, and do you attack our live system?",
-        "Provide a staging copy or a test endpoint, describe the intended behaviour of the assistant or agent and review the changes we propose. Attacks run against that copy, so production data and customers stay untouched. Mapping, attacks, evidence, the fix and the retest sit with us. See [AI and LLM Security Testing](/ai-llm-security-testing/).",
+        "No, your live system stays out of reach. Attacks run against a staging copy or a test endpoint, so production data and customers stay untouched. From you we need that copy and a description of the intended behaviour of the assistant or agent, and you approve the changes we propose. Mapping, attacks, evidence, the fix and the retest sit with us. See [AI and LLM Security Testing](/ai-llm-security-testing/).",
       ],
     ],
     de: [
@@ -205,7 +205,7 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
       ],
       [
         "Wir haben uns Garak, Promptfoo und Lakera angesehen. Was leisten Ihre Tests darüber hinaus?",
-        "Garak läuft in unserem eigenen öffentlichen KI-Sicherheits-Toolkit zusammen mit neunzehn weiteren Open-Source-Werkzeugen wie Spikee, PromptMap, FuzzyAI, AgentDojo, LLM Guard und Rebuff. Jedes prüft eine Klasse von Schwächen, und unsere Agenten verbinden die Treffer mit Ihrer Architektur: welche Datenquellen das Modell liest, welche Werkzeuge ein Agent aufrufen darf, wo ein Mensch eine Aktion freigibt. Ein Laufzeitfilter wie Lakera schirmt Eingaben ab, unser Test zeigt dagegen, welche Angriffe durch Ihren gesamten Aufbau samt Filter gelangen, und liefert den Fix. Mehr unter [KI- und LLM-Sicherheitstests](/ai-llm-security-testing/).",
+        "Unsere Agenten setzen Garak und neunzehn weitere Open-Source-Werkzeuge wie Spikee, PromptMap, FuzzyAI, AgentDojo, LLM Guard und Rebuff ein, alle aus unserem eigenen öffentlichen KI-Sicherheits-Toolkit. Jedes prüft eine Klasse von Schwächen, und die Agenten verbinden die Treffer mit Ihrer Architektur: welche Datenquellen das Modell liest, welche Werkzeuge ein Agent aufrufen darf, wo ein Mensch eine Aktion freigibt. Ein Laufzeitfilter wie Lakera schirmt Eingaben ab, unser Test zeigt dagegen, welche Angriffe durch Ihren gesamten Aufbau samt Filter gelangen, und liefert den Fix. Mehr unter [KI- und LLM-Sicherheitstests](/ai-llm-security-testing/).",
       ],
       [
         "Das Datenschutzlabel im App-Store sagt, unsere KI-App sei sicher. Wozu dann ein Audit?",
@@ -213,7 +213,7 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
       ],
       [
         "Was brauchen Sie von uns, und greifen Sie unser Livesystem an?",
-        "Stellen Sie eine Staging-Kopie oder einen Test-Endpunkt bereit, beschreiben Sie das beabsichtigte Verhalten des Assistenten oder Agenten und sehen Sie die vorgeschlagenen Änderungen durch. Die Angriffe laufen gegen diese Kopie, Produktivdaten und Kunden bleiben unberührt. Erfassung, Angriffe, Belege, Fix und Retest übernehmen wir. Mehr unter [KI- und LLM-Sicherheitstests](/ai-llm-security-testing/).",
+        "Nein, Ihr Livesystem bleibt außer Reichweite. Die Angriffe laufen gegen eine Staging-Kopie oder einen Test-Endpunkt, Produktivdaten und Kunden bleiben unberührt. Von Ihnen brauchen wir diese Kopie und eine Beschreibung des beabsichtigten Verhaltens des Assistenten oder Agenten, die vorgeschlagenen Änderungen geben Sie frei. Erfassung, Angriffe, Belege, Fix und Retest übernehmen wir. Mehr unter [KI- und LLM-Sicherheitstests](/ai-llm-security-testing/).",
       ],
     ],
   },
@@ -232,12 +232,16 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
         "We examine each vendor's public attack surface read-only, read its certificates, policies and questionnaire answers and compare what it claims with what its systems show. Where the vendor ships software or an app into your environment, our code and app audit tools look inside it. Suppliers are ranked by impact, so critical ones receive deeper reviews and continuous monitoring. See [Vendor Risk Management](/vendor-risk-management/).",
       ],
       [
-        "We looked at Vanta and Drata. What does your compliance automation do that they do not?",
-        "Vanta and Drata collect evidence that controls exist, mostly from configuration and policy documents. We add technical proof that the controls hold: Semgrep, Gitleaks, Trivy and ClamAV scan your code and artefacts continuously, and every finding passes through analysis, fix and retest before it becomes evidence in the portal. Your auditor sees control, finding, fix and retest in one place, sorted by framework. See [Compliance Automation](/compliance-automation/).",
+        "We are comparing compliance platforms. What does your compliance automation do that others do not?",
+        "Other platforms collect evidence that controls exist, mostly from configuration and policy documents. We add technical proof that the controls hold: Semgrep, Gitleaks, Trivy and ClamAV scan your code and artefacts continuously, and every finding passes through analysis, fix and retest before it becomes evidence in the portal. Your auditor sees control, finding, fix and retest in one place, sorted by framework, while manual work drops for up to 90% of your compliance tasks. See [Compliance Automation](/compliance-automation/).",
       ],
       [
         "How is your NIS2 work different from a classic consultancy?",
         "A consultancy usually delivers a gap analysis and a set of policies. We add the operational side that Article 21 asks for: our domain scanner, code and cloud checks and the Managed SOC measure where your technical measures stand, findings are fixed and retested, and the portal keeps the evidence for the authority and your management in one place. That exposes measures that exist on paper and fail in practice, such as a multi-factor login that leaves one admin account out. See [NIS2 Consulting](/nis2-consulting/).",
+      ],
+      [
+        "How do we stop answering the same security questionnaire for every deal?",
+        "Publish your security posture in a branded Trust Center. Buyers get self-service access to your security documentation and live controls, access approvals and NDAs are automated, and the evidence stays current because continuous scans feed it. Security reviews stop stalling your deals, and your team gets that time back. See [Compliance Automation](/compliance-automation/).",
       ],
       [
         "How fast can we start, and do you certify us?",
@@ -258,12 +262,16 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
         "Wir untersuchen die öffentliche Angriffsfläche jedes Anbieters rein lesend, lesen seine Zertifikate, Richtlinien und Fragebogenantworten und stellen dem, was er behauptet, gegenüber, was seine Systeme zeigen. Liefert der Anbieter Software oder eine App in Ihre Umgebung, prüfen unsere Code- und App-Audit-Werkzeuge ihr Inneres. Lieferanten werden nach Auswirkung eingestuft, kritische erhalten tiefere Prüfungen und laufende Überwachung. Mehr unter [Lieferantenrisikomanagement](/vendor-risk-management/).",
       ],
       [
-        "Wir haben uns Vanta und Drata angesehen. Was leistet Ihre Compliance-Automatisierung, was diese nicht leisten?",
-        "Vanta und Drata sammeln Belege dafür, dass Kontrollen existieren, meist aus Konfigurationen und Richtliniendokumenten. Wir liefern den technischen Beweis, dass die Kontrollen greifen: Semgrep, Gitleaks, Trivy und ClamAV scannen Ihren Code und Ihre Artefakte laufend, und jeder Fund durchläuft Analyse, Fix und Retest, bevor er im Portal zum Nachweis wird. Ihre Prüferin oder Ihr Prüfer sieht Kontrolle, Fund, Fix und Retest an einem Ort, nach Regelwerk sortiert. Mehr unter [Compliance-Automatisierung](/compliance-automation/).",
+        "Wir vergleichen Compliance-Plattformen. Was leistet Ihre Compliance-Automatisierung, was andere nicht leisten?",
+        "Andere Plattformen sammeln Belege dafür, dass Kontrollen existieren, meist aus Konfigurationen und Richtliniendokumenten. Wir liefern den technischen Beweis, dass die Kontrollen greifen: Semgrep, Gitleaks, Trivy und ClamAV scannen Ihren Code und Ihre Artefakte laufend, und jeder Fund durchläuft Analyse, Fix und Retest, bevor er im Portal zum Nachweis wird. Ihre Prüferin oder Ihr Prüfer sieht Kontrolle, Fund, Fix und Retest an einem Ort, nach Regelwerk sortiert, und die manuelle Arbeit sinkt bei bis zu 90 % Ihrer Compliance-Aufgaben. Mehr unter [Compliance-Automatisierung](/compliance-automation/).",
       ],
       [
         "Wie unterscheidet sich Ihre NIS2-Arbeit von einer klassischen Beratung?",
         "Eine Beratung liefert meist eine Lückenanalyse und ein Set an Richtlinien. Wir ergänzen die operative Seite, die Artikel 21 verlangt: Unser Domain-Scanner, die Code- und Cloud-Prüfungen und das Managed SOC messen, wo Ihre technischen Maßnahmen stehen, Funde werden behoben und erneut getestet, und das Portal hält die Nachweise für Behörde und Geschäftsleitung an einem Ort. So fallen Maßnahmen auf, die auf dem Papier bestehen und in der Praxis versagen, etwa eine Mehrfaktor-Anmeldung, die ein Admin-Konto auslässt. Mehr unter [NIS2-Beratung](/nis2-consulting/).",
+      ],
+      [
+        "Wie hören wir auf, bei jedem Abschluss dieselben Sicherheitsfragen zu beantworten?",
+        "Veröffentlichen Sie Ihre Sicherheitslage in einem Trust Center im eigenen Auftritt. Käufer erhalten Selbstbedienungszugang zu Ihrer Sicherheitsdokumentation und zu den laufenden Kontrollen, Zugriffsfreigaben und NDAs laufen automatisch, und die Nachweise bleiben aktuell, weil laufende Scans sie speisen. Sicherheitsprüfungen bremsen Ihre Abschlüsse nicht mehr, und Ihr Team bekommt die Zeit zurück. Mehr unter [Compliance-Automatisierung](/compliance-automation/).",
       ],
       [
         "Wie schnell können wir starten, und zertifizieren Sie uns?",
@@ -275,7 +283,7 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
     en: [
       [
         "We have hundreds of open findings from scanners and audits. How do we get them fixed?",
-        "Send the report or scanner export and grant read access to the repository. Our agents reproduce each finding in your code, group them by root cause, which often turns one problem reported twenty times into a single fix, and set aside alerts in code that never runs. Engineers write the fix, and your team reviews and merges each change. See [Vulnerability Remediation](/vulnerability-remediation/).",
+        "Send the report or scanner export and grant read access to the repository. Our agents reproduce each finding in your code, group them by root cause, which often turns one problem reported twenty times into a single fix, and set aside alerts in code that never runs. Our engineers write the fix down to the affected code, and your team reviews and merges each change. See [Vulnerability Remediation](/vulnerability-remediation/).",
       ],
       [
         "Which vulnerabilities should we patch first?",
@@ -301,7 +309,7 @@ export const AREA_FAQ: Record<AreaFaqId, { en: [string, string][]; de: [string, 
     de: [
       [
         "Wir haben Hunderte offene Funde aus Scannern und Audits. Wie bekommen wir sie behoben?",
-        "Senden Sie uns den Bericht oder den Scanner-Export und gewähren Sie Lesezugriff auf das Repository. Unsere Agenten stellen jeden Fund in Ihrem Code nach, gruppieren sie nach Ursache, wodurch aus einem zwanzigfach gemeldeten Problem oft ein einziger Fix wird, und legen Alarme in Code beiseite, der nie ausgeführt wird. Ingenieure schreiben den Fix, Ihr Team prüft und übernimmt jede Änderung. Mehr unter [Schwachstellen-Behebung](/vulnerability-remediation/).",
+        "Senden Sie uns den Bericht oder den Scanner-Export und gewähren Sie Lesezugriff auf das Repository. Unsere Agenten stellen jeden Fund in Ihrem Code nach, gruppieren sie nach Ursache, wodurch aus einem zwanzigfach gemeldeten Problem oft ein einziger Fix wird, und legen Alarme in Code beiseite, der nie ausgeführt wird. Unsere Ingenieure schreiben den Fix bis in den betroffenen Code, Ihr Team prüft und übernimmt jede Änderung. Mehr unter [Schwachstellen-Behebung](/vulnerability-remediation/).",
       ],
       [
         "Welche Schwachstellen sollen wir zuerst patchen?",
