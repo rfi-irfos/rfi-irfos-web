@@ -151,7 +151,7 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
 
     <section id="data-deliver" className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><h2>{c.deliverTitle}</h2><p>{c.deliverIntro}</p></div></Reveal>
-      <div className="data-product-grid" style={HUE_PRODUCTS}>{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_PRODUCTS}><div className="data-icon rfi-ri-box"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
+      <div className="data-product-grid" style={HUE_PRODUCTS}>{c.products.map(([title, body], i) => { const Icon = PRODUCT_ICONS[i]; return <Reveal key={title} delay={(i % 3) + 1}><article className="data-product svc-card rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_PRODUCTS}><div className="data-icon rfi-ri-box"><Icon size={26} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article></Reveal> })}</div>
     </div></section>
 
     {/* Cross-link to the Data offer card on Access (Simeon, 2026-09-13, moved
@@ -174,13 +174,13 @@ export function DataSolutionsSection({ onContact, onNavigateAccessData }: { onCo
 
     <section id="data-pipeline" className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><h2>{c.pipelineTitle}</h2></div></Reveal>
-      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid rfi-hover-card" data-stage={i}><div className="data-pipeline-icon rfi-ri-box"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-copy"><h3><span className="svc-step-no">{n}</span>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
+      <div className="data-pipeline">{c.pipeline.map(([n, title, body], i) => { const Icon = PIPELINE_ICONS[i]; return <Reveal key={n} delay={(i % 3) + 1}><article className="data-pipeline-module rfi-glass-flat rfi-glass-solid rfi-hover-card" data-stage={i}><div className="data-pipeline-icon rfi-ri-box"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div></article></Reveal> })}</div>
       <Reveal><aside className="data-quality rfi-glass-flat rfi-glass-solid"><div className="data-quality-title"><div className="data-icon data-icon--row rfi-ri-box"><IconShieldCheck size={28} /></div><h3>{c.qualityTitle}</h3></div><ul>{c.quality.map(item => <li key={item}><IconCircleCheck size={17} />{item}</li>)}</ul></aside></Reveal>
     </div></section>
 
     <section className="data-section"><div className="data-wrap">
       <Reveal><div className="data-section-head"><h2>{c.startTitle}</h2><p>{c.startIntro}</p></div></Reveal>
-      <div className="data-start-grid" style={HUE_STARTS}>{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_STARTS}><span>{n}</span><div className="data-start-icons rfi-ri-box" aria-hidden="true">{i === 0 && <><IconDatabase size={27} stroke={1.5} /><IconCircleCheck size={24} stroke={1.8} /></>}{i === 1 && <><IconDatabase size={27} stroke={1.5} /><IconSettingsAutomation size={25} stroke={1.6} /><IconDatabase size={27} stroke={1.5} /></>}{i === 2 && <><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /></>}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
+      <div className="data-start-grid" style={HUE_STARTS}>{c.starts.map(([n, title, body], i) => <Reveal key={n} delay={i + 1}><article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={HUE_STARTS}><div className="data-start-icons rfi-ri-box" aria-hidden="true">{i === 0 && <><IconDatabase size={27} stroke={1.5} /><IconCircleCheck size={24} stroke={1.8} /></>}{i === 1 && <><IconDatabase size={27} stroke={1.5} /><IconSettingsAutomation size={25} stroke={1.6} /><IconDatabase size={27} stroke={1.5} /></>}{i === 2 && <><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /><IconArrowRight size={20} stroke={1.6} /><IconDatabase size={25} stroke={1.5} /></>}</div><h3>{title}</h3><p>{body}</p></article></Reveal>)}</div>
     </div></section>
 
     <section className="data-experts data-wrap"><Reveal><h2>{c.expertsTitle}</h2><p>{c.expertsText}</p><button className="data-cta" onClick={onContact}>{c.cta} <span aria-hidden="true">→</span></button></Reveal></section>

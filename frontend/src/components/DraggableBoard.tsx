@@ -29,7 +29,10 @@ export function DraggableBoard({ board, locale, tag }: { board: { column: string
       const old = before.current.get(id); if (!old) return
       const now = el.getBoundingClientRect(), dx = old.left - now.left, dy = old.top - now.top
       if (!dx && !dy) return
+      // the CSS transform transition would outrank the animation, so it pauses while the card glides home
+      el.style.transition = 'box-shadow .25s ease'
       el.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }], { duration: 320, easing: 'cubic-bezier(.2,.8,.2,1)' })
+        .finished.finally(() => { el.style.transition = '' })
     })
     before.current.clear()
   }, [cols, reduced])
@@ -67,8 +70,10 @@ export function DraggableBoard({ board, locale, tag }: { board: { column: string
     setDrag(null)
     if (Math.abs(dx) + Math.abs(dy) < 4) return
     snapshot()
-    // the dragged card starts its glide from where it was dropped, not from its old slot
-    const el = cardRefs.current.get(id); if (el) { const r = el.getBoundingClientRect(); before.current.set(id, new DOMRect(r.left + dx, r.top + dy, r.width, r.height)) }
+    // The dragged card glides from where it was let go. Its rect still carries the drag transform, and rotate
+    // and scale keep the centre in place, so the centre gives the drop point without counting the offset twice.
+    const el = cardRefs.current.get(id)
+    if (el) { const r = el.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight; before.current.set(id, new DOMRect(r.left + r.width / 2 - w / 2, r.top + r.height / 2 - h / 2, w, h)) }
     move(id, target, index)
   }
   const onKey = (e: KeyboardEvent<HTMLDivElement>, id: string, from: number) => {

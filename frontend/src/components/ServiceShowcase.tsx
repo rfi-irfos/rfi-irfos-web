@@ -65,7 +65,7 @@ export function ShowcaseTop({ doc, locale, slug, onTalk }: { doc: ShowcaseDoc; l
           the h2 stays for screen readers so the outline still reads h1 > h2 > h3. */}
       <h2 className="data-sr-only">{doc.capabilitiesH2}</h2>
       <div className="data-product-grid">{doc.capabilities.map(([title, body], i) => { const Icon = capIcons[i % capIcons.length]; return <Reveal key={title} delay={(i % 3) + 1}>
-        <article className="data-product rfi-glass-flat rfi-glass-solid rfi-hover-card" style={hue(i)}><div className="data-icon rfi-ri-box"><Icon size={30} stroke={1.6} /></div><span>0{i + 1}</span><h3>{title}</h3><p>{body}</p></article>
+        <article className="data-product svc-card rfi-glass-flat rfi-glass-solid rfi-hover-card" style={hue(i)}><div className="data-icon rfi-ri-box"><Icon size={26} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article>
       </Reveal> })}</div>
     </section>
 
@@ -81,7 +81,7 @@ export function ShowcaseTop({ doc, locale, slug, onTalk }: { doc: ShowcaseDoc; l
     <section className="data-section">
       <Reveal><div className="data-section-head"><h2>{doc.pipelineH2}</h2></div></Reveal>
       <div className="data-pipeline">{doc.pipeline.map(([title, body], i) => { const Icon = stepIcons[i % stepIcons.length]; return <Reveal key={title} delay={(i % 3) + 1}>
-        <article className="data-pipeline-module rfi-glass-flat rfi-glass-solid rfi-hover-card" data-stage={i}><div className="data-pipeline-icon rfi-ri-box"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-copy"><h3><span className="svc-step-no">0{i + 1}</span>{title}</h3><p>{body}</p></div></article>
+        <article className="data-pipeline-module rfi-glass-flat rfi-glass-solid rfi-hover-card" data-stage={i}><div className="data-pipeline-icon rfi-ri-box"><Icon size={30} stroke={1.5} /></div><div className="data-pipeline-copy"><h3>{title}</h3><p>{body}</p></div></article>
       </Reveal> })}</div>
       {/* Simeon 2026-11-22: the data-location box became four small tiles, one icon each, under its own heading. */}
       <Reveal><div className="data-section-head svc-control-head"><h2>{doc.controlH2}</h2></div></Reveal>
@@ -98,7 +98,7 @@ export function ShowcaseTop({ doc, locale, slug, onTalk }: { doc: ShowcaseDoc; l
     <section className="data-section">
       <Reveal><div className="data-section-head"><h2>{doc.audienceH2}</h2></div></Reveal>
       <div className="data-start-grid">{doc.audience.map(([title, body], i) => { const Icon = audIcons[i % audIcons.length]; return <Reveal key={title} delay={i + 1}>
-        <article className="rfi-glass-flat rfi-glass-solid rfi-hover-card" style={hue(i + 2)}><span>0{i + 1}</span><div className="data-icon rfi-ri-box" style={{ margin: '12px auto 0' }}><Icon size={28} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article>
+        <article className="svc-card rfi-glass-flat rfi-glass-solid rfi-hover-card" style={hue(i + 2)}><div className="data-icon rfi-ri-box"><Icon size={26} stroke={1.6} /></div><h3>{title}</h3><p>{body}</p></article>
       </Reveal> })}</div>
     </section>
   </>
