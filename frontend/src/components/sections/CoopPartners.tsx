@@ -15,9 +15,9 @@ function GroupIcon({ kind, size = 20 }: { kind: 'software' | 'research' | 'repos
 }
 const GROUPS = [
   { title: 'Software', kind: 'software' as const, ic: 1, links: [
-    { label: 'Core v0.2.0', href: 'https://crates.io/crates/lauras-core' },
-    { label: 'MCP v0.2.0', href: 'https://crates.io/crates/lauras-mcp' },
-    { label: 'API v0.2.0', href: 'https://crates.io/crates/lauras-api' },
+    { label: 'Core', href: 'https://crates.io/crates/lauras-core' },
+    { label: 'MCP', href: 'https://crates.io/crates/lauras-mcp' },
+    { label: 'API', href: 'https://crates.io/crates/lauras-api' },
   ] },
   { title: 'Research', kind: 'research' as const, ic: 2, links: [
     { label: 'HC9ZB', href: 'https://doi.org/10.17605/OSF.IO/HC9ZB' },

@@ -37,8 +37,8 @@ export const EN = {
     // put the brand-ish headings ("The Squad", "Priced in plain terms") and 450-char intros
     // into the SERP. Dedicated search-facing copy instead (2026-10-31).
     squad: {
-      title: 'The Squad: App and Software Security Audits from Graz · RFI-IRFOS',
-      description: 'Specialised agents investigate your app\'s code, SDKs and data flows, and engineers fix what they find down to the code. Data processed in Graz, Austria.',
+      title: 'The Squad: Specialized AI Agents from Graz · RFI-IRFOS',
+      description: 'Specialized agents take on whole areas of work on their own: security investigations, market intelligence, funding research and evidence verification. Data processed in Graz, Austria.',
     },
     access: {
       title: 'App Security Audit Pricing & Quick Check · RFI-IRFOS',
@@ -101,7 +101,7 @@ export const EN = {
     trustAlt: 'Example Trust Center with frameworks and confirmed controls',
     // Compliance view of the same window (Simeon 21.11.), opened by the hero's Compliance button. Automated checks start with Pro.
     complianceTitle: 'Automated Compliance',
-    complianceLead: 'Automated compliance checks ten frameworks from ISO 27001 and SOC 2 to NIS2, DORA and the EU AI Act against live data from your scans, sign-ins, audit trail and inventory. Each control lists its evidence, owner and next review, so you walk into an audit with everything already in place. The portal works out which frameworks apply to your product, and your certificates and audit documents stay in the Vault.',
+    complianceLead: 'Automated compliance checks thirteen frameworks from ISO 27001 and SOC 2 to NIS2, DORA and the EU AI Act against live data from your scans, sign-ins, audit trail and inventory. Each control lists its evidence, owner and next review, so you walk into an audit with everything already in place. The portal works out which frameworks apply to your product, and your certificates and audit documents stay in the Vault.',
     complianceAccessNote: 'Pro plan, \u20ac799 per month. Your access code arrives by email right after payment, and your setup is done within minutes.',
     complianceMore: 'How automated compliance works',
     complianceAlt: 'Compliance view of the customer portal with frameworks, automated checks and controls',
@@ -213,7 +213,7 @@ export const EN = {
     // searcher nothing about what the page IS. Search-facing copy only - visible page text unchanged.
     seoTitle: 'App Privacy & Security Audit Reports · RFI-IRFOS',
     seoDescription: 'Public ledger of evidence-based GDPR and security audit reports on Android apps: trackers, SDKs, permissions, hardcoded keys, pre-consent tracking.',
-    paragraph: 'On behalf of our research partners, we investigate publicly distributed Android and iOS apps: we decompile them, follow their code and data flows, and trace every connection to the servers it reaches. Hundreds of agents work through each app and join the technical evidence into one picture, which our specialists then review and verify.',
+    paragraph: 'This is our own research: we investigate publicly distributed Android and iOS apps, decompile them, follow their code and data flows, and trace every connection to the servers they reach. Hundreds of agents work through each app and join the technical evidence into one picture. We publish the results independently, while the results for paying clients stay private unless they approve.',
     follow: { feed: 'Atom feed', servicesLabel: 'Want the same scrutiny for your own product?', audit: 'App Security Audit', review: 'Secure Code Review', soc: 'Managed SOC', faq: 'FAQ' },
     focusBanner: (names: string) => `Showing the report for ${names}.`,
     showFullLedger: 'Show the full ledger',
@@ -222,7 +222,7 @@ export const EN = {
       appsAudited: 'Mobile apps audited',
       smaliClasses: 'Smali classes read',
       criticalFindings: 'Critical findings discovered',
-      trackersFound: 'Vulnerabilities found',
+      trackersFound: 'Tracking references documented',
       endpointsInvestigated: 'Endpoints investigated',
       sdkClasses: 'SDK instances mapped',
       domainChecks: 'Domain checks processed',
@@ -231,7 +231,7 @@ export const EN = {
       appsAudited: 'Every app is decompiled at source-code level, not just scanned from outside.',
       smaliClasses: 'The full shipped code we have actually read, not an estimate.',
       criticalFindings: 'Confirmed findings copied to regulators, not theoretical risks.',
-      trackersFound: 'Third-party tracking we have provably found inside the binary.',
+      trackersFound: 'Mentions of trackers and tracking across our published audit reports.',
       endpointsInvestigated: 'Real servers and countries where data actually flows.',
       sdkClasses: 'Reusable libraries correlated across the entire corpus.',
     },
@@ -302,9 +302,6 @@ export const EN = {
   },
 
   appPrivacy: {
-    heading: 'Human-Powered Multi-Agent Security Investigations',
-    lead: 'We craft what holds under load and expose what was destined to fail.',
-    paragraph: "Selected agents that we built and trained in-house execute thousands of parallel security tests, while our specialists investigate vulnerabilities, trace attack paths and engineer fixes down to the code for startups and companies with limited in-house capacity.",
     steps: [
       { title: 'You share access', text: 'Point us to your codebase with read access: a GitHub or GitLab repository, an archive, a build, an API specification or a staging environment.' },
       { title: 'We investigate', text: 'Our in-house agents run thousands of parallel tests across code, dependencies, APIs, endpoints, certificates, configurations and data flows.' },
@@ -312,7 +309,7 @@ export const EN = {
       { title: 'We fix', text: 'We engineer the fix down to the code, ready to apply where possible, while your dashboard in the customer portal keeps every step traceable.' },
     ],
     scopeLabel: 'What we examine',
-      evidenceLabel: 'What you receive',
+    evidenceLabel: 'What you receive',
     scope: [
       { title: 'Source and dependencies', text: 'Code, third-party libraries and their versions.' },
       { title: 'Authorization and actions', text: 'Permissions, data access and abuse paths.' },
@@ -327,19 +324,11 @@ export const EN = {
         { title: "Broad technical coverage", text: "Including code, dependencies, APIs, configurations and data flows, examined together." },
         { title: "Exploitability analysis", text: "Findings verified against what an attacker could realistically do." },
         { title: "Engineered remediation", text: "Concrete fixes developed down to the affected code, with ready-to-apply changes where possible. Included from the Growth plan." },
-        { title: "Standards-informed methodology", text: "Testing grounded in recognized security frameworks." },
-        { title: "Graz-based processing", text: "Your investigation is handled by our team in Graz, Austria, with data processing kept within defined European infrastructure boundaries." },
+        { title: "Standards-informed methodology", text: "Testing based on OWASP ASVS, OWASP Top 10 and CWE, with CVSS severity ratings." },
+        { title: "Graz-based processing", text: "Your investigation is handled by our team in Graz, Austria, and all data is processed on our own server in Graz." },
       ],
     },
-    trust: [
-      { title: "Your material. Your scope.", text: "You choose what we examine. No access to your live systems." },
-      { title: "Purpose-built. Multi-agent.", text: "Specialized agents probe your software and connect findings, with evidence behind each one." },
-      { title: "Our own server in Graz.", text: "Our entire pipeline runs on our own server in Graz, from the quick scan to the report." },
-      { title: "Standards-informed methodology.", text: "Based on OWASP ASVS, OWASP Top 10 and CWE, with CVSS severity where applicable." },
-    ],
-    evidenceHeading: 'Our research is public. Our methodology is inspectable.',
     topics: { label: 'What we examine:', close: 'Close', startCheck: 'Start the Quick Check', fullPage: 'Open the full page' },
-    cta: 'Request an Initial Review',
   },
 
   initialReview: {
@@ -416,9 +405,9 @@ export const EN = {
         cta: 'Request an engineering review \u2192', delivery: 'Delivered depending on scope.' },
     ],
     tiers: [
-      { name: 'Starter', price: '\u20ac99', tagline: 'Find weaknesses. Get evidence. Know what to fix.', features: ['Everything in Quick Check.', 'One focused vulnerability hunt per month on your web app, mobile app or API.', 'Every weak spot verified with a working proof of concept.', 'Every finding assessed by a specialist, rated, with clear fix guidance.', 'Retest of fixed findings included.', 'SOC portal with compliance workspace, read-only auditor access and your public Trust Center.'], cta: 'Choose Starter', stripeKey: 'review_starter' },
-      { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Regular vulnerability hunts on your applications.', features: ['Everything in Starter.', 'Scheduled security testing on your cadence, up to every 15 minutes, with penetration-test re-examinations, so your product stays tested as your code changes.', 'Up to three web apps, mobile apps or APIs in scope.', 'Concrete fixes engineered down to the affected code.', 'Unlimited retesting within scope.', 'Ongoing findings and remediation history.'], cta: 'Choose Growth', stripeKey: 'review_growth' },
-      { name: 'Pro', price: '\u20ac799', tagline: 'Extend security coverage across your products.', features: ['Everything in Growth.', 'Up to five web apps, mobile apps or APIs.', 'Automated compliance checks matched to your regulations, kept current on your Trust Center.', 'One consolidated view of findings and fixes across your products.', 'Findings assessed within one business day.'], cta: 'Choose Pro', stripeKey: 'review_pro' },
+      { name: 'Starter', price: '\u20ac99', tagline: 'Find weaknesses. Get evidence. Know what to fix.', features: ['SOC portal with compliance workspace, read-only auditor access and your public Trust Center.', 'Everything in Quick Check.', 'One focused vulnerability hunt per month on your web app, mobile app or API.', 'Every weak spot verified with a working proof of concept.', 'Every finding assessed by a specialist, rated, with clear fix guidance.', 'Retest of fixed findings included.'], cta: 'Choose Starter', stripeKey: 'review_starter' },
+      { name: 'Growth', price: '\u20ac399', popular: true, tagline: "We fix it in your code, then retest until it's closed.", features: ['Everything in Starter.', 'Scheduled security testing on your cadence, up to every 15 minutes, with penetration-test re-examinations, so your product stays tested as your code changes.', 'Up to three web apps, mobile apps or APIs in scope.', 'Unlimited retesting within scope.', 'Ongoing findings and remediation history.'], cta: 'Choose Growth', stripeKey: 'review_growth' },
+      { name: 'Pro', price: '\u20ac799', tagline: 'Automated compliance checks, kept current on your Trust Center.', features: ['Everything in Growth.', 'Up to five web apps, mobile apps or APIs.', 'One consolidated view of findings and fixes across your products.', 'Findings assessed within one business day.'], cta: 'Choose Pro', stripeKey: 'review_pro' },
       { name: 'Business', price: '\u20ac1,999', tagline: 'Coordinate security across your application portfolio.', features: ['Everything in Pro.', 'Up to ten web apps, mobile apps or APIs.', 'Management reports across your portfolio.', 'Direct channel to our team.', 'Coordinated follow-up until every fix is closed.'], cta: 'Choose Business', stripeKey: 'review_business' },
     ],
     freeCard: {
@@ -452,7 +441,7 @@ export const EN = {
       monthly: 'Monthly',
       annual: 'Annual',
       perMonth: '/mo',
-      annualNote: 'Billed yearly, about 2 months free.',
+      annualNote: 'Billed yearly: you pay for ten months.',
     },
   },
 
@@ -1040,7 +1029,7 @@ export const EN = {
     customSolutionsLinkLabel: 'Need something custom? We also build bespoke agents →',
     primaryCta: 'Find your agent',
     statusLine: 'In production',
-    trustBadges: ['EU AI Act Compliant', 'Explainable by Design', 'Every Decision Traceable'],
+    trustBadges: ['Explainable by Design', 'Every Decision Traceable'],
     overview: {
       heading: 'Selected From Our Own Production',
       sub: 'Each takes on a whole area of work autonomously, researching, monitoring and acting, the way a team member does after one onboarding. Pick one, or start with the whole squad.',

@@ -1779,6 +1779,7 @@ button { cursor: pointer; font-family: inherit; }
 
 /* FAQ under the price list on Access (Simeon 28.11.2026) */
 .pricing-faq { margin: 56px auto 0; max-width: 860px; }
+.pricing-need-row { margin-top: 48px; }
 .pricing-faq-head { margin: 0 0 20px; text-align: center; font-size: var(--fs-h3, 1.5rem); }
 /* "Outsourced AI integration" line under the six area tiles on the services hub (Simeon 28.11.2026) */
 .svc-ai-line { max-width: 760px; margin: 64px auto 0; text-align: center; }

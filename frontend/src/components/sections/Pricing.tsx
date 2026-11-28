@@ -199,7 +199,7 @@ function BillingToggle({ billing, onChange }: { billing: 'monthly' | 'annual'; o
 function NeedSomethingElseRow({ domains, onSelectTier }: { domains: PricingDomain[]; onSelectTier: (t: string) => void }) {
   const { t } = useLocale()
   return (
-    <div style={{ marginTop: 24, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '8px 18px' }}>
+    <div className="pricing-need-row" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '8px 18px' }}>
       <span style={{ fontSize: 'var(--fs-small)', fontWeight: 700, color: 'var(--text)' }}>{t.pricing.needSomethingElse}</span>
       {domains.map((d, i) => {
         const Icon = DOMAIN_ICONS[d.name]
@@ -376,12 +376,12 @@ export function PricingSection({
             <a href={t.pricing.termsNote.href} style={{ color: 'var(--accent-text)' }}>{t.pricing.termsNote.link}</a>
           </p>
 
-          <NeedSomethingElseRow domains={t.pricing.domains} onSelectTier={onSelectTier} />
-
           <div className="pricing-faq">
             <h3 className="pricing-faq-head">{t.pricing.faq.heading}</h3>
             <div className="svc-faq">{t.pricing.faq.items.map(([q, a], i) => <FaqItem key={q} q={q} a={a} id={`pricing-faq-${i}`} />)}</div>
           </div>
+
+          <NeedSomethingElseRow domains={t.pricing.domains} onSelectTier={onSelectTier} />
         </div>
       </div>
 

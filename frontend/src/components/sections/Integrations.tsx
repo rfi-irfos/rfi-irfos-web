@@ -1,7 +1,7 @@
 // "Integrates with" band under the hero (Simeon 18.11.): one slow row of logos, the line below. Each mark
 // is a tool the customer portal really connects (app/api/v1/integrations) and has a freely usable logo;
 // the others stay out until their owners' brand files are cleared. Marks are recoloured to the text colour; brands whose
-// guidelines forbid recolouring (AWS, Azure, Google Cloud, SAP) appear as plain text names (Simeon 18.11.).
+// guidelines forbid recolouring (AWS, Azure, Google Cloud) appear as plain text names (Simeon 18.11.).
 import { useEffect, useRef } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { BRANDS } from './integrationBrandPaths'
@@ -14,7 +14,6 @@ const LOGOS: { key: string; name: string; textOnly?: boolean; img?: [string, num
   { key: 'anthropic', name: 'Anthropic' },
   { key: 'gcp', name: 'Google Cloud', textOnly: true },
   { key: 'k8s', name: 'Kubernetes' },
-  { key: 'sap', name: 'SAP', textOnly: true },
   { key: 'supabase', name: 'Supabase' },
   { key: 'n8n', name: 'n8n', textOnly: true },
   { key: 'mcp', name: 'MCP' },
@@ -30,7 +29,6 @@ const LOGOS: { key: string; name: string; textOnly?: boolean; img?: [string, num
   { key: 'crowdsec', name: 'CrowdSec', img: ['/brands/crowdsec.png', 396] },
   { key: 'dependencytrack', name: 'Dependency-Track', textOnly: true },
   { key: 'openai', name: 'OpenAI' },
-  { key: 'grafana', name: 'Grafana', textOnly: true },
   { key: 'thehive', name: 'TheHive' },
   { key: 'nuclei', name: 'Nuclei', textOnly: true },
   { key: 'perplexity', name: 'Perplexity' },
@@ -40,7 +38,6 @@ const LOGOS: { key: string; name: string; textOnly?: boolean; img?: [string, num
   { key: 'snowflake', name: 'Snowflake' },
   { key: 'dependabot', name: 'Dependabot', textOnly: true },
   { key: 'pinecone', name: 'Pinecone' },
-  { key: 'owasp', name: 'OWASP' },
 ]
 
 const H = 26

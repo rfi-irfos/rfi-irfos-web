@@ -216,10 +216,9 @@ function SquadOverview({
                   </div>
                 </div>
               </motion.div>
-            {/* Fixed trust badges, same three regardless of which agent is selected
-                (not per-agent content like the three columns above) - live feedback:
-                three green checkmarks right above the CTA, separate from the "You
-                get" list. */}
+            {/* Fixed trust badges, the same regardless of which agent is selected
+                (not per-agent content like the three columns above), right above
+                the CTA and separate from the "You get" list. */}
             <ul className="sq-trust-badges">
               {s.trustBadges.map((badge, i) => {
                 const Icon = TRUST_BADGE_ICONS[i % TRUST_BADGE_ICONS.length]

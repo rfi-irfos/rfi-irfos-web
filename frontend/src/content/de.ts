@@ -25,8 +25,8 @@ export const DE: Content = {
       description: 'Reproduzierbare Umgebungen, Experten-Trajektorien, Evaluationsdatensätze und Safety-Daten zum Trainieren und Testen von KI-Agenten.',
     },
     squad: {
-      title: 'The Squad: App- und Software-Audits aus Graz · RFI-IRFOS',
-      description: 'Spezialisierte Agenten untersuchen Code, SDKs und Datenflüsse Ihrer App, unsere Ingenieure beheben die Funde bis in den Code. Datenverarbeitung in Graz.',
+      title: 'The Squad: Spezialisierte KI-Agenten aus Graz · RFI-IRFOS',
+      description: 'Spezialisierte Agenten übernehmen ganze Arbeitsbereiche selbstständig: Sicherheitsuntersuchungen, Marktbeobachtung, Förderrecherche und Belegprüfung. Datenverarbeitung in Graz, Österreich.',
     },
     access: {
       title: 'Preise App-Sicherheitsprüfung & Quick Check · RFI-IRFOS',
@@ -86,7 +86,7 @@ export const DE: Content = {
     trustImage: '/login/trust-example-de.webp',
     trustAlt: 'Beispiel eines Trust Centers mit Standards und bestätigten Kontrollen',
     complianceTitle: 'Automatisierte Compliance',
-    complianceLead: 'Die automatisierte Compliance prüft zehn Frameworks von ISO 27001 und SOC 2 bis NIS2, DORA und EU AI Act laufend an echten Daten aus Ihren Scans, Anmeldungen, Audit-Trail und Inventar. Jede Kontrolle führt ihren Nachweis, ihre Verantwortlichen und den nächsten Prüftermin, deshalb gehen Sie mit allem Nötigen in ein Audit. Welche Frameworks für Ihr Produkt gelten, ermittelt das Portal selbst, und Zertifikate wie Prüfdokumente bleiben im Vault.',
+    complianceLead: 'Die automatisierte Compliance prüft dreizehn Frameworks von ISO 27001 und SOC 2 bis NIS2, DORA und EU AI Act laufend an echten Daten aus Ihren Scans, Anmeldungen, Audit-Trail und Inventar. Jede Kontrolle führt ihren Nachweis, ihre Verantwortlichen und den nächsten Prüftermin, deshalb gehen Sie mit allem Nötigen in ein Audit. Welche Frameworks für Ihr Produkt gelten, ermittelt das Portal selbst, und Zertifikate wie Prüfdokumente bleiben im Vault.',
     complianceAccessNote: 'Pro-Tarif, 799 \u20ac pro Monat. Der Zugangscode kommt direkt nach der Zahlung per E-Mail, und das Setup steht in Minuten.',
     complianceMore: 'So funktioniert die automatisierte Compliance',
     complianceAlt: 'Compliance-Ansicht des Kundenportals mit Frameworks, automatischen Prüfungen und Kontrollen',
@@ -193,7 +193,7 @@ export const DE: Content = {
     heading: 'Unsere Security Research, veröffentlicht',
     seoTitle: 'App-Datenschutz- & Sicherheitsanalysen · RFI-IRFOS',
     seoDescription: 'Öffentliches Verzeichnis evidenzbasierter DSGVO- und Sicherheitsberichte zu Android-Apps: Tracker, SDKs, Berechtigungen, hartkodierte Schlüssel.',
-    paragraph: 'Im Auftrag unserer Forschungspartner untersuchen wir öffentlich verbreitete Android- und iOS-Apps: Wir dekompilieren sie, verfolgen ihren Code und ihre Datenflüsse und jede Verbindung bis zu den Servern, die sie erreicht. Hunderte Agenten arbeiten jede App durch und fügen die technischen Belege zu einem Gesamtbild zusammen, das unsere Fachleute anschließend prüfen und verifizieren.',
+    paragraph: 'Das ist unsere eigene Forschung: Wir untersuchen öffentlich verbreitete Android- und iOS-Apps, dekompilieren sie, verfolgen ihren Code und ihre Datenflüsse und jede Verbindung bis zu den Servern, die sie erreichen. Hunderte Agenten arbeiten jede App durch und fügen die technischen Belege zu einem Gesamtbild zusammen. Wir veröffentlichen die Ergebnisse unabhängig, und die Ergebnisse zahlender Kunden bleiben privat, sofern diese nicht zustimmen.',
     follow: { feed: 'Atom-Feed', servicesLabel: 'Sie möchten dieselbe Prüfung für Ihr eigenes Produkt?', audit: 'App Security Audit', review: 'Secure Code Review', soc: 'Managed SOC', faq: 'FAQ' },
     focusBanner: (names: string) => `Angezeigt wird der Report zu ${names}.`,
     showFullLedger: 'Gesamtes Ledger anzeigen',
@@ -202,7 +202,7 @@ export const DE: Content = {
       appsAudited: 'Mobile Apps geprüft',
       smaliClasses: 'Smali-Klassen gelesen',
       criticalFindings: 'Kritische Funde entdeckt',
-      trackersFound: 'Schwachstellen gefunden',
+      trackersFound: 'Tracking-Verweise dokumentiert',
       endpointsInvestigated: 'Endpunkte untersucht',
       sdkClasses: 'SDK-Instanzen kartiert',
       domainChecks: 'Domain-Checks gesamt',
@@ -211,7 +211,7 @@ export const DE: Content = {
       appsAudited: 'Jede App wird auf Quellcode-Ebene dekompiliert, nicht nur von außen gescannt.',
       smaliClasses: 'Der gesamte ausgelieferte Code, den wir tatsächlich gelesen haben, keine Schätzung.',
       criticalFindings: 'Bestätigte Befunde mit Behörden-Copy, keine theoretischen Risiken.',
-      trackersFound: 'Drittanbieter-Tracking, das wir nachweislich im Binary gefunden haben.',
+      trackersFound: 'Erwähnungen von Trackern und Tracking in unseren veröffentlichten Prüfberichten.',
       endpointsInvestigated: 'Reale Server und Länder, wohin Daten tatsächlich fließen.',
       sdkClasses: 'Wiederverwendbare Bibliotheken, über den gesamten Korpus korreliert.',
     },
@@ -278,9 +278,6 @@ export const DE: Content = {
   },
 
   appPrivacy: {
-    heading: 'Human-Powered Multi-Agent Security Investigations',
-    lead: 'Wir formen, was unter Last hält, und legen offen, was zum Scheitern bestimmt war.',
-    paragraph: "Ausgewählte Agenten, die wir im eigenen Haus gebaut und trainiert haben, führen Tausende parallele Sicherheitstests aus, während unsere Fachleute Schwachstellen untersuchen, Angriffspfade nachverfolgen und Fixes bis in den Code entwickeln, für Startups und Unternehmen mit begrenzten eigenen Kapazitäten.",
     steps: [
       { title: 'Sie geben Zugang', text: 'Zeigen Sie uns Ihre Codebasis mit Lesezugriff: ein GitHub- oder GitLab-Repository, ein Archiv, einen Build, eine API-Spezifikation oder eine Staging-Umgebung.' },
       { title: 'Wir untersuchen', text: 'Unsere selbst gebauten Agenten führen Tausende parallele Tests über Code, Abhängigkeiten, APIs, Endpunkte, Zertifikate, Konfigurationen und Datenflüsse aus.' },
@@ -303,19 +300,11 @@ export const DE: Content = {
         { title: "Breite technische Abdeckung", text: "U. a. Code, Abhängigkeiten, APIs, Konfigurationen und Datenflüsse, gemeinsam untersucht." },
         { title: "Ausnutzbarkeitsanalyse", text: "Funde daran verifiziert, was ein Angreifer realistisch damit anfangen kann." },
         { title: "Fix bis in den Code", text: "Konkrete Fixes bis in den betroffenen Code, wo möglich als direkt anwendbare Änderungen. Ab dem Growth-Plan." },
-        { title: "Normbasierte Methodik", text: "Prüfung auf Basis anerkannter Security-Frameworks." },
-        { title: "Verarbeitung in Graz", text: "Ihre Untersuchung liegt bei unserem Team in Graz, Österreich. Die Datenverarbeitung bleibt innerhalb festgelegter europäischer Infrastrukturgrenzen." },
+        { title: "Normbasierte Methodik", text: "Prüfung auf Basis von OWASP ASVS, OWASP Top 10 und CWE, mit Schweregraden nach CVSS." },
+        { title: "Verarbeitung in Graz", text: "Ihre Untersuchung liegt bei unserem Team in Graz, Österreich. Alle Daten verarbeiten wir auf unserem eigenen Server in Graz." },
       ],
     },
-    trust: [
-      { title: "Ihr Material. Ihr Umfang.", text: "Sie bestimmen, was wir prüfen. Kein Zugriff auf Ihre Live-Systeme." },
-      { title: "Eigens entwickelt. Multi-Agent.", text: "Spezialisierte Agenten durchleuchten Ihre Software und verbinden Befunde, mit Belegen zu jedem einzelnen." },
-      { title: "Eigener Server in Graz.", text: "Unsere komplette Pipeline läuft auf unserem eigenen Server in Graz, vom Quickscan bis zum Bericht." },
-      { title: "Normbasierte Methodik.", text: "Basierend auf OWASP ASVS, OWASP Top 10 und CWE, mit CVSS-Schweregrad, wo anwendbar." },
-    ],
-    evidenceHeading: 'Unsere Forschung ist öffentlich. Unsere Methodik ist nachprüfbar.',
     topics: { label: 'Was wir prüfen:', close: 'Schließen', startCheck: 'Quick Check starten', fullPage: 'Ganze Seite öffnen' },
-    cta: 'Erstprüfung anfragen',
   },
 
   initialReview: {
@@ -391,9 +380,9 @@ export const DE: Content = {
         cta: 'Fordern Sie ein Engineering-Review an \u2192', delivery: 'Lieferung je nach Umfang.' },
     ],
     tiers: [
-      { name: 'Starter', price: '\u20ac99', tagline: 'Schwachstellen finden. Beweise sichern. Wissen, was zu tun ist.', features: ['Alles aus Quick Check.', 'Eine fokussierte Schwachstellenjagd pro Monat für Ihre Web-App, mobile App oder API.', 'Jede Schwachstelle verifiziert, mit funktionierendem Proof of Concept.', 'Jeder Befund von unseren Sicherheitsspezialisten bewertet, eingestuft und mit klarer Handlungsempfehlung.', 'Retest behobener Findings inklusive.', 'SOC-Portal mit Compliance-Arbeitsbereich, Lesezugang für Ihre Prüfung und Ihr öffentliches Trust Center.'], cta: 'Starter w\u00e4hlen', stripeKey: 'review_starter' },
-      { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Regelm\u00e4\u00dfige Schwachstellenjagd auf Ihre Anwendungen.', features: ['Alles aus Starter.', 'Geplante Sicherheitsprüfungen in Ihrem Takt, bis alle 15 Minuten, mit Pentest-Neuprüfungen, damit Ihr Produkt getestet bleibt, während sich Ihr Code ändert.', 'Bis zu drei Web-Apps, mobile Apps oder APIs im Scope.', 'Konkrete Fixes, entwickelt bis in den betroffenen Code.', 'Unbegrenzte Retests innerhalb des Scopes.', 'Laufende Findings- und Fix-Historie.'], cta: 'Growth w\u00e4hlen', stripeKey: 'review_growth' },
-      { name: 'Pro', price: '\u20ac799', tagline: 'Sicherheitsabdeckung \u00fcber mehrere Produkte.', features: ['Alles aus Growth.', 'Bis zu fünf Web-Apps, mobile Apps oder APIs.', 'Automatisierte Compliance-Prüfungen passend zu Ihren Vorschriften, aktuell gehalten auf Ihrem Trust Center.', 'Eine zusammengeführte Sicht auf Funde und Fixes über alle Ihre Produkte.', 'Funde innerhalb eines Werktags bewertet.'], cta: 'Pro w\u00e4hlen', stripeKey: 'review_pro' },
+      { name: 'Starter', price: '\u20ac99', tagline: 'Schwachstellen finden. Beweise sichern. Wissen, was zu tun ist.', features: ['SOC-Portal mit Compliance-Arbeitsbereich, Lesezugang für Ihre Prüfung und Ihr öffentliches Trust Center.', 'Alles aus Quick Check.', 'Eine fokussierte Schwachstellenjagd pro Monat für Ihre Web-App, mobile App oder API.', 'Jede Schwachstelle verifiziert, mit funktionierendem Proof of Concept.', 'Jeder Befund von unseren Sicherheitsspezialisten bewertet, eingestuft und mit klarer Handlungsempfehlung.', 'Retest behobener Findings inklusive.'], cta: 'Starter w\u00e4hlen', stripeKey: 'review_starter' },
+      { name: 'Growth', price: '\u20ac399', popular: true, tagline: 'Wir beheben es in Ihrem Code und testen erneut, bis es geschlossen ist.', features: ['Alles aus Starter.', 'Geplante Sicherheitsprüfungen in Ihrem Takt, bis alle 15 Minuten, mit Pentest-Neuprüfungen, damit Ihr Produkt getestet bleibt, während sich Ihr Code ändert.', 'Bis zu drei Web-Apps, mobile Apps oder APIs im Scope.', 'Unbegrenzte Retests innerhalb des Scopes.', 'Laufende Findings- und Fix-Historie.'], cta: 'Growth w\u00e4hlen', stripeKey: 'review_growth' },
+      { name: 'Pro', price: '\u20ac799', tagline: 'Automatisierte Compliance-Prüfungen, aktuell gehalten auf Ihrem Trust Center.', features: ['Alles aus Growth.', 'Bis zu fünf Web-Apps, mobile Apps oder APIs.', 'Eine zusammengeführte Sicht auf Funde und Fixes über alle Ihre Produkte.', 'Funde innerhalb eines Werktags bewertet.'], cta: 'Pro w\u00e4hlen', stripeKey: 'review_pro' },
       { name: 'Business', price: '\u20ac1.999', tagline: 'Sicherheit \u00fcber Ihr gesamtes Anwendungsportfolio koordiniert.', features: ['Alles aus Pro.', 'Bis zu zehn Web-Apps, mobile Apps oder APIs.', 'Management-Berichte über Ihr gesamtes Portfolio.', 'Direkter Draht zu unserem Team.', 'Abgestimmte Nachverfolgung, bis jeder Fix geschlossen ist.'], cta: 'Business w\u00e4hlen', stripeKey: 'review_business' },
     ],
     freeCard: {
@@ -425,7 +414,7 @@ export const DE: Content = {
       monthly: 'Monatlich',
       annual: 'J\u00e4hrlich',
       perMonth: '/Monat',
-      annualNote: 'J\u00e4hrliche Abrechnung, rund 2 Monate gespart.',
+      annualNote: 'Jährliche Abrechnung: Sie zahlen zehn Monate.',
     },
   },
 
@@ -1007,7 +996,7 @@ export const DE: Content = {
     customSolutionsLinkLabel: 'Brauchen Sie etwas Individuelles? Wir bauen auch maßgeschneiderte Agenten →',
     primaryCta: 'Agent finden',
     statusLine: 'Im Produktiveinsatz',
-    trustBadges: ['EU-KI-Verordnung-konform', 'Nachvollziehbar durch Design', 'Jede Entscheidung rückverfolgbar'],
+    trustBadges: ['Nachvollziehbar durch Design', 'Jede Entscheidung rückverfolgbar'],
     overview: {
       heading: 'Direkt aus unserer eigenen Produktion',
       sub: 'Jeder übernimmt ein ganzes Arbeitsfeld selbständig, mit Recherche, Überwachung und Handlung, so wie ein Teammitglied nach einer einzigen Einarbeitung. Wählen Sie einen aus oder starten Sie mit dem ganzen Squad.',
