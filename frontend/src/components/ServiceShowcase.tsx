@@ -96,7 +96,7 @@ export function ShowcaseTop({ doc, locale, slug, onTalk }: { doc: ShowcaseDoc; l
       <Reveal><div className="data-section-head"><h2>{doc.boardH2}</h2><p>{doc.boardIntro}</p></div></Reveal>
       <Reveal><DraggableBoard board={doc.board} locale={locale} tag={doc.boardTag} /></Reveal>
       {/* Simeon 28.11.2026: under the board widget a second way into the demo instance, where the real board runs. */}
-      <Reveal><div className="svc-cta-row"><a href={DEMO_START_URL} className="data-cta"><IconFlask size={18} stroke={2} aria-hidden />{de ? 'Auf die Probe stellen' : 'Put it to the test'}</a></div></Reveal>
+      <Reveal><div className="svc-cta-row"><a href={DEMO_START_URL} className="data-cta">{de ? 'Einen ersten Blick werfen' : 'Get a first look'} <span aria-hidden="true">→</span></a></div></Reveal>
     </section>
 
     <section className="data-section">
