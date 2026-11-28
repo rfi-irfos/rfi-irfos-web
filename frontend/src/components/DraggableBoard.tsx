@@ -9,7 +9,9 @@ import type { LandingLocale } from './landingPages'
 type Severity = 'critical' | 'high' | 'medium' | 'low'
 type Card = { id: string; sev: Severity; title: string; where: string }
 type Column = { column: string; cards: Card[] }
-type Drag = { id: string; from: number; dx: number; dy: number; ox: number; oy: number; target: number; index: number }
+// k: on-screen size / layout size of a card. An ancestor can be scaled (the page measured 0.9), and a translate
+// inside it is scaled too, so pointer distances are divided by k to keep the card under the pointer.
+type Drag = { id: string; from: number; dx: number; dy: number; ox: number; oy: number; target: number; index: number; k: number }
 
 const fromDoc = (board: { column: string; cards: [Severity, string, string][] }[]): Column[] =>
   board.map((col, c) => ({ column: col.column, cards: col.cards.map(([sev, title, where], i) => ({ id: `${c}-${i}-${title}`, sev, title, where })) }))
@@ -27,7 +29,7 @@ export function DraggableBoard({ board, locale, tag }: { board: { column: string
     if (!before.current.size || reduced) { before.current.clear(); return }
     cardRefs.current.forEach((el, id) => {
       const old = before.current.get(id); if (!old) return
-      const now = el.getBoundingClientRect(), dx = old.left - now.left, dy = old.top - now.top
+      const now = el.getBoundingClientRect(), k = now.width / el.offsetWidth || 1, dx = (old.left - now.left) / k, dy = (old.top - now.top) / k
       if (!dx && !dy) return
       // the CSS transform transition would outrank the animation, so it pauses while the card glides home
       el.style.transition = 'box-shadow .25s ease'
@@ -57,23 +59,24 @@ export function DraggableBoard({ board, locale, tag }: { board: { column: string
   const onDown = (e: ReactPointerEvent<HTMLDivElement>, id: string, from: number) => {
     if (e.button !== 0) return
     e.currentTarget.setPointerCapture(e.pointerId)
-    setDrag({ id, from, dx: 0, dy: 0, ox: e.clientX, oy: e.clientY, target: from, index: cols[from].cards.findIndex(c => c.id === id) })
+    const k = e.currentTarget.getBoundingClientRect().width / e.currentTarget.offsetWidth || 1
+    setDrag({ id, from, dx: 0, dy: 0, ox: e.clientX, oy: e.clientY, target: from, index: cols[from].cards.findIndex(c => c.id === id), k })
   }
   const onMove = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (!drag) return
     const [target, index] = targetAt(e.clientX, e.clientY, drag.id, drag.target)
-    setDrag({ ...drag, dx: e.clientX - drag.ox, dy: e.clientY - drag.oy, target, index })
+    setDrag({ ...drag, dx: (e.clientX - drag.ox) / drag.k, dy: (e.clientY - drag.oy) / drag.k, target, index })
   }
   const onUp = () => {
     if (!drag) return
-    const { id, target, index, dx, dy } = drag
+    const { id, target, index, dx, dy, k } = drag
     setDrag(null)
     if (Math.abs(dx) + Math.abs(dy) < 4) return
     snapshot()
     // The dragged card glides from where it was let go. Its rect still carries the drag transform, and rotate
     // and scale keep the centre in place, so the centre gives the drop point without counting the offset twice.
     const el = cardRefs.current.get(id)
-    if (el) { const r = el.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight; before.current.set(id, new DOMRect(r.left + r.width / 2 - w / 2, r.top + r.height / 2 - h / 2, w, h)) }
+    if (el) { const r = el.getBoundingClientRect(), w = el.offsetWidth * k, h = el.offsetHeight * k; before.current.set(id, new DOMRect(r.left + r.width / 2 - w / 2, r.top + r.height / 2 - h / 2, w, h)) }
     move(id, target, index)
   }
   const onKey = (e: KeyboardEvent<HTMLDivElement>, id: string, from: number) => {

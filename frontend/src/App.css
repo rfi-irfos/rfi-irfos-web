@@ -1789,3 +1789,10 @@ button { cursor: pointer; font-family: inherit; }
 .svc-card .data-icon.rfi-ri-box svg { width: 26px; height: 26px; }
 .svc-card h3 { margin: 0; }
 .svc-card p { grid-column: 1 / -1; margin-top: 14px; }
+
+/* Tile titles on one line (Simeon 28.11.2026: "ohne newline, nicht so umbruchig"). The size follows the tile's
+   own width, so every tile in a row gets the same size and the longest title (measured: "Architecture &
+   Resilience Review", DE "Architektur- & Resilienz-Review") still fits. */
+.svc-tile { container-type: inline-size; padding-left: 18px; padding-right: 18px; }
+.svc-tile h2 { white-space: nowrap; font-size: min(clamp(18px, 1.3vw, 21px), 6.1cqi); }
+@media (max-width: 1180px) and (min-width: 761px) { .svc-grid--4 > * { flex-basis: calc((100% - 22px) / 2); } }
