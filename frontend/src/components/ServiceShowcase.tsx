@@ -13,8 +13,9 @@ import {
   IconShieldBolt, IconTools, IconFileCheck, IconRocket, IconMapPin, IconWorld, IconUserShield, IconLockCheck, IconTrendingUp, IconBuilding,
   IconAdjustmentsAlt, IconAntenna, IconApi, IconTargetArrow, IconBook, IconBriefcase, IconBug, IconBuildingBank, IconCertificate, IconChartBar, IconChartDots3, IconClipboardCheck, IconClipboardList, IconClipboardText, IconClock, IconCloudLock, IconCloudComputing, IconDeviceMobile, IconDevices, IconFileCertificate, IconFileCode, IconFileImport, IconFileReport, IconFileSpreadsheet, IconFileText, IconFingerprint, IconGitCompare, IconHeartbeat, IconHelpCircle, IconInbox, IconKey, IconLayoutDashboard, IconListDetails, IconListSearch, IconLock, IconLockOpen, IconMail, IconMap2, IconMessageChatbot, IconMessages, IconMoodKid, IconNetwork, IconPackage, IconPackages, IconPencil, IconPercentage, IconRefresh, IconRobot, IconRoute, IconScale, IconSearch, IconSend, IconServer, IconSettings, IconShieldHalf, IconShieldCheck, IconShieldLock, IconSortDescending, IconStack2, IconSwords, IconTarget, IconTruck, IconUserCheck, IconUsers, IconVideo, IconWorldWww, IconZoomIn,
 } from '@tabler/icons-react'
-import { IconTag, IconMessageCircle, IconSitemap } from '@tabler/icons-react'
+import { IconFlask, IconMessageCircle, IconSitemap } from '@tabler/icons-react'
 import type { Icon as TablerIcon } from '@tabler/icons-react'
+import { DEMO_START_URL } from '../lib/demoInstance'
 
 const CONTROL_ICONS = [IconMapPin, IconWorld, IconUserShield, IconLockCheck]
 const HUES = ['#36cdb2', '#4f8cf0', '#8f76f2', '#ee6a98', '#f0ad3c', '#f27a54']
@@ -52,7 +53,8 @@ export function ShowcaseTop({ doc, locale, slug, onTalk }: { doc: ShowcaseDoc; l
       <Reveal><h1>{doc.h1}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{doc.lede}</p></Reveal>
       <Reveal delay={2}><div className="svc-hero-actions">
-        <a href={localePath(locale, '/access/')} className="svc-secondary"><IconTag size={18} stroke={2} aria-hidden />{de ? 'Pläne und Preise' : 'Plans and prices'}</a>
+        {/* Simeon 28.11.2026: the left hero button opens the demo instance (was "Plans and prices"). */}
+        <a href={DEMO_START_URL} className="svc-secondary"><IconFlask size={18} stroke={2} aria-hidden />{de ? 'Auf die Probe stellen' : 'Put it to the test'}</a>
         {/* Simeon 23.11.2026: "Talk to us" opens the enquiry pop-up for this service (was "Start the Quick Check"). */}
         {onTalk
           ? <button type="button" onClick={onTalk} className="data-cta"><IconMessageCircle size={18} stroke={2} aria-hidden />{de ? 'Sprechen Sie mit uns' : 'Talk to us'}</button>
@@ -93,6 +95,8 @@ export function ShowcaseTop({ doc, locale, slug, onTalk }: { doc: ShowcaseDoc; l
     <section className="data-section">
       <Reveal><div className="data-section-head"><h2>{doc.boardH2}</h2><p>{doc.boardIntro}</p></div></Reveal>
       <Reveal><DraggableBoard board={doc.board} locale={locale} tag={doc.boardTag} /></Reveal>
+      {/* Simeon 28.11.2026: under the board widget a second way into the demo instance, where the real board runs. */}
+      <Reveal><div className="svc-cta-row"><a href={DEMO_START_URL} className="data-cta"><IconFlask size={18} stroke={2} aria-hidden />{de ? 'Auf die Probe stellen' : 'Put it to the test'}</a></div></Reveal>
     </section>
 
     <section className="data-section">

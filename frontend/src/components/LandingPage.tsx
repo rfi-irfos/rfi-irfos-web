@@ -22,6 +22,7 @@ import { Reveal } from './sections/shared'
 import { SHOWCASE } from './serviceShowcase'
 import { ShowcaseTop } from './ServiceShowcase'
 import auditStats from '../content/auditStats.json'
+import { DEMO_START_URL } from '../lib/demoInstance'
 import {
   IconDeviceMobile, IconLock, IconCertificate, IconRadar2, IconRobot, IconHeadset, IconListCheck, IconWorldSearch, IconBug, IconApi,
   IconCloudLock, IconCode, IconTool, IconMapPin, IconShieldCheck, IconFileSearch, IconKey, IconServer, IconGitBranch, IconClock,
@@ -100,7 +101,7 @@ export function LandingBody({ slug, locale, onAsk }: { slug: LandingSlug; locale
       <Reveal><h1>{d.h1}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{d.lead}</p></Reveal>
       <Reveal delay={2}><div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-        <a href={localePath(locale, '/access/')} style={SECONDARY}>{de ? 'Pläne und Preise' : 'Plans and prices'}</a>
+        <a href={DEMO_START_URL} style={SECONDARY}>{de ? 'Auf die Probe stellen' : 'Put it to the test'}</a>
         <a href="#domain-check" onClick={toCheck} className="data-cta" style={{ textDecoration: 'none', display: 'inline-block' }}>{de ? 'Quick Check starten' : 'Start the Quick Check'} <span aria-hidden="true">→</span></a>
       </div></Reveal>
     </header>
