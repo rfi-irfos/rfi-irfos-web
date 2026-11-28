@@ -1784,12 +1784,12 @@ button { cursor: pointer; font-family: inherit; }
 .svc-ai-card h2 { margin: 0 0 6px; font-size: var(--fs-lead); font-weight: 700; color: var(--text); text-align: left; }
 .svc-ai-card .svc-ask-copy p { font-size: var(--fs-body, 16px); }
 
-/* Service cards (Simeon 28.11.2026): icon left, title beside it at the same height, text underneath, no step numbers. */
-.data-product.svc-card, .data-start-grid article.svc-card { display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 16px; align-content: start; text-align: left; min-height: 0; }
-.svc-card .data-icon { width: 52px; height: 52px; margin: 0; }
+/* Service cards (Simeon 28.11.2026, second pass): icon, title and text centred in the card, no step numbers. */
+.data-product.svc-card, .data-start-grid article.svc-card { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; min-height: 0; }
+.svc-card .data-icon { width: 52px; height: 52px; margin: 0 0 16px; }
 .svc-card .data-icon.rfi-ri-box svg { width: 26px; height: 26px; }
-.svc-card h3 { margin: 0; }
-.svc-card p { grid-column: 1 / -1; margin-top: 14px; }
+.svc-card h3 { margin: 0; text-align: center; }
+.svc-card p { margin: 10px 0 0; text-align: center; }
 
 /* Tile titles on one line (Simeon 28.11.2026: "ohne newline, nicht so umbruchig"). The size follows the tile's
    own width, so every tile in a row gets the same size and the longest title (measured: "Architecture &
