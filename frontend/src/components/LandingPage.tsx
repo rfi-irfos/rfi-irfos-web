@@ -10,7 +10,9 @@
 // from App.css and are shared with DataSolutions.tsx on purpose: one look for every
 // product page. Body text stays at full contrast: these pages carry the offer itself, and
 // important information must not sit in grey text (binding style rule).
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { FaqItem } from './FaqItem'
+import { faqPlain } from '../lib/faqText'
 import { upsertJsonLd, breadcrumbJsonLd, faqPageJsonLd, landingServiceJsonLd } from '../lib/structuredData'
 import { LANDING, LANDING_SLUGS, landingDoc, localePath, type LandingLocale, type LandingSlug } from './landingPages'
 import { AREA_FAQ, type AreaFaqId } from './areaFaq'
@@ -23,7 +25,7 @@ import auditStats from '../content/auditStats.json'
 import {
   IconDeviceMobile, IconLock, IconCertificate, IconRadar2, IconRobot, IconHeadset, IconListCheck, IconWorldSearch, IconBug, IconApi,
   IconCloudLock, IconCode, IconTool, IconMapPin, IconShieldCheck, IconFileSearch, IconKey, IconServer, IconGitBranch, IconClock,
-  IconCircleCheck, IconBook, IconMessageQuestion, IconPlus, IconBuildingFortress, IconTruckDelivery,
+  IconCircleCheck, IconBook, IconMessageQuestion, IconBuildingFortress, IconTruckDelivery,
 } from '@tabler/icons-react'
 
 const ICONS: Record<LandingSlug, typeof IconLock> = {
@@ -47,31 +49,7 @@ type Block = { kind: 'cards'; h2: string; p: readonly string[]; ul: readonly str
 const A: React.CSSProperties = { color: 'var(--accent-text)', textDecoration: 'none', fontWeight: 600 }
 const SECONDARY: React.CSSProperties = { display: 'inline-block', marginTop: 28, padding: '13px 21px', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text)', fontWeight: 700, textDecoration: 'none' }
 
-// FAQ answers may carry internal links as [text](/path/). The page renders them as links, the
-// FAQPage JSON-LD gets the same sentence as plain text, so markup and visible text stay identical.
-const FAQ_LINK = /\[([^\]]+)\]\((\/[^)\s]*)\)/g
-const faqPlain = (a: string) => a.replace(FAQ_LINK, '$1')
-function faqRich(a: string): React.ReactNode[] {
-  const out: React.ReactNode[] = []; let last = 0
-  for (const m of a.matchAll(FAQ_LINK)) {
-    out.push(a.slice(last, m.index)); out.push(<a key={m.index} href={m[2]} style={A}>{m[1]}</a>); last = m.index! + m[0].length
-  }
-  out.push(a.slice(last)); return out
-}
 
-// One FAQ row (Simeon 2026-11-22: "ALLES ist immer smooth animiert"): opens and closes with the house
-// .fx-expand transition (grid rows 0fr -> 1fr plus fade). The answer stays in the DOM for search engines.
-function FaqItem({ q, a, id }: { q: string; a: string; id: string }) {
-  const [open, setOpen] = useState(false)
-  return <div className={`svc-faq-item rfi-glass-flat rfi-glass-solid${open ? ' is-open' : ''}`}>
-    <h3><button type="button" className="svc-faq-q" aria-expanded={open} aria-controls={id} onClick={() => setOpen(o => !o)}>
-      <span>{q}</span><span className="svc-faq-toggle" aria-hidden="true"><IconPlus size={16} stroke={2} /></span>
-    </button></h3>
-    <div id={id} className={`fx-expand svc-faq-panel${open ? ' is-open' : ''}`} aria-hidden={!open}>
-      <div style={{ overflow: 'hidden', minHeight: 0 }}><p>{faqRich(a)}</p></div>
-    </div>
-  </div>
-}
 
 export function LandingBody({ slug, locale, onAsk }: { slug: LandingSlug; locale: LandingLocale; onAsk?: (label: string) => void }) {
   const d = landingDoc(slug, locale)

@@ -409,6 +409,16 @@ export const DE: Content = {
       cta: 'Managed SOC anfragen',
     },
     termsNote: { text: 'Preise in Euro, zuzüglich gesetzlicher USt. Für Unternehmen (B2B). Abrechnung vorab über Stripe, die UID wird im Checkout abgefragt.', link: 'AGB', href: '/de/agb/' },
+    faq: {
+      heading: 'Fragen zu Plänen und Abrechnung',
+      items: [
+        ['Kann ich meinen Plan kündigen?', 'Ja, jederzeit per E-Mail an contact@rfi-irfos.com. Die Kündigung wirkt zum Ende des bezahlten Monats oder Jahres, bis dahin bleibt Ihr Zugang aktiv.'],
+        ['Was passiert direkt nach der Zahlung?', 'Ihr Zugangscode kommt umgehend per E-Mail, und die Einrichtung des Portals dauert wenige Minuten: Zwei-Faktor-Anmeldung, danach verbinden Sie Ihr Produkt. Weil die Arbeit mit dem Zahlungseingang beginnt, ist jede Zahlung endgültig ([AGB](/de/agb/), Punkt 3).'],
+        ['Kann ich später auf einen größeren oder kleineren Plan wechseln?', 'Ja. Schreiben Sie uns, und wir stufen Sie sofort hoch, verrechnet wird nur die Differenz für den Rest der Laufzeit. Ein kleinerer Plan gilt ab der nächsten Abrechnungsperiode.'],
+        ['Wo werden meine Daten verarbeitet?', 'Auf unserem eigenen Server in Graz. Scans, Funde, Berichte und die Dokumente in Ihrem Vault liegen und laufen dort.'],
+        ['Kann ich Ergebnisse sehen, bevor ich kaufe?', 'Ja. Der Quick Check prüft eine Website oder Anwendung von außen, nur lesend, und endet mit einem belegten PDF-Bericht für \u20ac0.'],
+      ] as [string, string][],
+    },
     needSomethingElse: 'Etwas anderes gesucht?',
     mostPopular: 'Beliebteste Wahl',
     billing: {

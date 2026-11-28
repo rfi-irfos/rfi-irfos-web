@@ -436,6 +436,16 @@ export const EN = {
     // Lighthouse round 72: these conditions only appeared on Stripe's page (B2B consent, VAT ID,
     // subscription), a surprise at the last step. Same facts as AGB §3 and the checkout session.
     termsNote: { text: 'Prices in euro, plus statutory VAT. For businesses (B2B). Billed upfront via Stripe, your VAT ID is requested at checkout.', link: 'Terms', href: '/agb/' },
+    faq: {
+      heading: 'Questions about plans and billing',
+      items: [
+        ['Can I cancel my plan?', 'Yes, at any time with an e-mail to contact@rfi-irfos.com. The cancellation takes effect at the end of the month or year you have paid for, and your access runs until that day.'],
+        ['What happens right after payment?', 'Your access code arrives by e-mail within moments. Setting up the portal takes a few minutes: two-factor sign-in, then connect your product. Work begins as soon as the payment arrives, which makes every payment final ([Terms](/agb/), section 3).'],
+        ['Can I move to a larger or smaller plan later?', 'Yes. Write to us and we move you up straight away, billing only the difference for the rest of the period. A smaller plan applies from your next billing period.'],
+        ['Where is my data processed?', 'On our own server in Graz, Austria. Scans, findings, reports and the documents in your Vault are stored and processed there.'],
+        ['Can I see results before I buy?', 'Yes. The Quick Check examines one website or application from the outside, read-only, and closes with an evidence-backed PDF report for \u20ac0.'],
+      ] as [string, string][],
+    },
     needSomethingElse: 'Need something else?',
     mostPopular: 'Most popular',
     billing: {

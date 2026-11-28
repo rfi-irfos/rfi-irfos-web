@@ -6,7 +6,8 @@
 import type { CSSProperties } from 'react'
 import { Reveal } from './sections/shared'
 import { localePath, type LandingLocale } from './landingPages'
-import { severityLabel, type ShowcaseDoc } from './serviceShowcase'
+import { type ShowcaseDoc } from './serviceShowcase'
+import { DraggableBoard } from './DraggableBoard'
 import {
   IconRadar2, IconAlarm, IconCode, IconListCheck, IconUsersGroup, IconBuildingSkyscraper, IconEye, IconFilterSearch,
   IconShieldBolt, IconTools, IconFileCheck, IconRocket, IconMapPin, IconWorld, IconUserShield, IconLockCheck, IconTrendingUp, IconBuilding,
@@ -91,17 +92,7 @@ export function ShowcaseTop({ doc, locale, slug, onTalk }: { doc: ShowcaseDoc; l
 
     <section className="data-section">
       <Reveal><div className="data-section-head"><h2>{doc.boardH2}</h2><p>{doc.boardIntro}</p></div></Reveal>
-      <Reveal><div className="svc-board rfi-glass-flat rfi-glass-solid">
-        <div className="svc-board-bar"><strong>Remediation</strong><span>{doc.boardTag}</span></div>
-        <div className="svc-board-cols">{doc.board.map(col => <div key={col.column} className="svc-board-col">
-          <div className="svc-board-colhead">{col.column}<em>{col.cards.length}</em></div>
-          {col.cards.map(([sev, title, where]) => <div key={title} className="svc-board-card">
-            <span className={`svc-sev svc-sev--${sev}`}>{severityLabel(locale, sev)}</span>
-            <strong>{title}</strong>
-            <code>{where}</code>
-          </div>)}
-        </div>)}</div>
-      </div></Reveal>
+      <Reveal><DraggableBoard board={doc.board} locale={locale} tag={doc.boardTag} /></Reveal>
     </section>
 
     <section className="data-section">

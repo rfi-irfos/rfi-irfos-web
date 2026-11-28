@@ -39,6 +39,7 @@
 // plans go straight to Stripe too (<key>_annual, billed yearly); only Managed
 // SOC still routes to the contact form.
 import { Reveal, useMobile } from './shared'
+import { FaqItem } from '../FaqItem'
 import { useLocale, type Locale } from '../../hooks/useLocale'
 import { InitialReviewFlow } from './InitialReviewFlow'
 import { useRef, useState } from 'react'
@@ -376,6 +377,11 @@ export function PricingSection({
           </p>
 
           <NeedSomethingElseRow domains={t.pricing.domains} onSelectTier={onSelectTier} />
+
+          <div className="pricing-faq">
+            <h3 className="pricing-faq-head">{t.pricing.faq.heading}</h3>
+            <div className="svc-faq">{t.pricing.faq.items.map(([q, a], i) => <FaqItem key={q} q={q} a={a} id={`pricing-faq-${i}`} />)}</div>
+          </div>
         </div>
       </div>
 
