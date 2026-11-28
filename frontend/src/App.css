@@ -1780,7 +1780,7 @@ button { cursor: pointer; font-family: inherit; }
 .pricing-need-row { margin-top: 48px; }
 .pricing-faq-head { margin: 0 0 20px; text-align: center; font-size: var(--fs-h3, 1.5rem); }
 /* "Outsourced AI integration" line under the six area tiles on the services hub (Simeon 28.11.2026) */
-.svc-ai-card { margin-top: 48px; }
+.svc-ai-card { margin-top: 40px; }
 .svc-ai-card h2 { margin: 0 0 6px; font-size: var(--fs-lead); font-weight: 700; color: var(--text); text-align: left; }
 .svc-ai-card .svc-ask-copy p { font-size: var(--fs-body, 16px); }
 

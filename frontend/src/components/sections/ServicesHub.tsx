@@ -210,6 +210,10 @@ function HubPage({ t, group, onOpen }: {
           <h2><TitleArrow text={links[s.key]} /></h2>
         </a>
       </Reveal>)}</div>
+      <div className="svc-area-faq">
+        <h2 className="data-sr-only">{c.faq}</h2>
+        <Suspense fallback={null}><AreaFaq area={g.id} locale={locale} /></Suspense>
+      </div>
       <Reveal><div className="svc-ask svc-ai-card rfi-glass-flat rfi-glass-solid">
         <div className="data-icon rfi-ri-box"><IconPlugConnected size={26} stroke={1.6} aria-hidden /></div>
         <div className="svc-ask-copy">
@@ -217,10 +221,6 @@ function HubPage({ t, group, onOpen }: {
           <p>{c.ai[g.id]}</p>
         </div>
       </div></Reveal>
-      <div className="svc-area-faq">
-        <h2 className="data-sr-only">{c.faq}</h2>
-        <Suspense fallback={null}><AreaFaq area={g.id} locale={locale} /></Suspense>
-      </div>
       <nav className="svc-others" aria-label={c.others}>
         <span>{c.others}</span>
         {SERVICE_GROUPS.filter(x => x.id !== g.id).map(x => <a key={x.id} href={href(`/services/${x.id}/`)} onClick={e => onOpen(e, `/services/${x.id}/`)}><x.Icon size={16} stroke={1.8} aria-hidden />{c.groups[x.id][0]}</a>)}
