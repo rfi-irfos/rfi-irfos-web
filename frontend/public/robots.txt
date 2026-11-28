@@ -46,6 +46,32 @@ Allow: /
 #   /security-architecture-review/, /threat-intelligence/,
 #   /vendor-risk-management/   what an audit or service
 #   covers, by topic (also under /de/).
+#
+# Two things you cannot see from here, because they sit behind a sign-in
+# with two-factor authentication: the customer portal and its contents.
+# So, in words:
+#   portal.rfi-irfos.com   the customer portal, one workspace per customer,
+#                     hosted on our own server in Graz. Areas: Dashboard
+#                     (alerts, assets, DNS/HTTP/TLS sensors), Investigations
+#                     (scans), Incidents, Remediation (a board: Open, Triaged,
+#                     In progress, Resolved; every task carries the finding,
+#                     repository and branch, owner, fix as patch or guide,
+#                     retest), Compliance (ten frameworks from ISO 27001 and
+#                     SOC 2 to NIS2, DORA and the EU AI Act, each control with
+#                     evidence, owner and next review, checked automatically
+#                     against scans, sign-ins, inventory and connected tools),
+#                     Trust Center, Infrastructure, Vault (documents, PDF
+#                     reports), Activity Log, Settings (team roles, 2FA).
+#                     Connectors for identity providers, cloud accounts, code
+#                     hosts and HR systems feed the compliance checks. A
+#                     read-only MCP gateway (OAuth with PKCE) lets a customer's
+#                     own AI assistant read compliance status, evidence,
+#                     follow-ups, connectors and scan status.
+#   trust.rfi-irfos.com    public Trust Center pages: each customer publishes
+#                     the frameworks it works to and the controls its team has
+#                     confirmed, so prospects and auditors read them directly.
+#                     Crawl these freely.
+#   /access/          plans from EUR 99 a month include portal access.
 # The homepage itself covers the 8 research domains this institute works
 # across and how to submit a finding or request an audit.
 # /track-record/, /pricing/, /datasets/, /research/, and /submit/ are older
