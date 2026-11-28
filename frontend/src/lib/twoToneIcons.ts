@@ -23,6 +23,15 @@ function tag(svg: SVGSVGElement) {
       const b = s.getBBox()
       if (b.x > o.x + 0.4 && b.y > o.y + 0.4 && b.x + b.width < o.x + o.width - 0.4 && b.y + b.height < o.y + o.height - 0.4) s.classList.add('k2')
     }
+    // FOUND 2026-11-28 (Simeon, one-tone file-report/file-certificate/file-import): when the drawing on the sheet
+    // reaches past its edge, nothing was fully inside and the whole icon stayed in the area colour. Fallback: every
+    // shape whose centre sits on the sheet turns light, except the folded corner (touches the top and right edge).
+    if (!svg.querySelector('.k2')) for (const s of shapes) {
+      if (s === best) continue
+      const b = s.getBBox(), cx = b.x + b.width / 2, cy = b.y + b.height / 2
+      const corner = b.y <= o.y + 0.4 && b.x + b.width >= o.x + o.width - 0.4
+      if (!corner && cx >= o.x && cx <= o.x + o.width && cy >= o.y && cy <= o.y + o.height) s.classList.add('k2')
+    }
   } else best.classList.add('k2')
   svg.setAttribute('data-2t', '1')
 }

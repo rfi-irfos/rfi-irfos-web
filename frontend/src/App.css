@@ -1454,9 +1454,9 @@ button { cursor: pointer; font-family: inherit; }
 }
 
 /* Glass icon boxes inside the shared hover cards take the same slow hover as the Research tiles (Simeon 2026-11-10). */
-.rfi-hover-card:hover .rfi-ri-box { box-shadow: 5px 6px 0 -1px rgba(255,255,255,.05), 5px 6px 0 0 color-mix(in srgb, var(--ib) 30%, transparent), inset 0 1px 0 rgba(255,255,255,.34), 0 14px 28px rgba(0,0,0,.5), 0 0 26px color-mix(in srgb, var(--ib) 22%, transparent); }
-.rfi-hover-card:hover .rfi-ri-box::after { opacity: 1; }
-.rfi-hover-card:hover .rfi-ri-box svg { color: color-mix(in srgb, var(--ib) 70%, #fff) !important; filter: drop-shadow(0 0 9px color-mix(in srgb, var(--ib) 65%, transparent)); }
+@media (hover: hover) { .rfi-hover-card:hover .rfi-ri-box { box-shadow: 5px 6px 0 -1px rgba(255,255,255,.05), 5px 6px 0 0 color-mix(in srgb, var(--ib) 30%, transparent), inset 0 1px 0 rgba(255,255,255,.34), 0 14px 28px rgba(0,0,0,.5), 0 0 26px color-mix(in srgb, var(--ib) 22%, transparent); } }
+@media (hover: hover) { .rfi-hover-card:hover .rfi-ri-box::after { opacity: 1; } }
+@media (hover: hover) { .rfi-hover-card:hover .rfi-ri-box svg { color: color-mix(in srgb, var(--ib) 70%, #fff) !important; filter: drop-shadow(0 0 9px color-mix(in srgb, var(--ib) 65%, transparent)); } }
 
 /* Own page scrollbar (Simeon 11.11.2026), see PageScrollbar.tsx. The native bar is hidden for mouse pointers,
    so modals that lock the body scroll no longer shift the page sideways. Touch devices keep their own. */
@@ -1745,7 +1745,7 @@ button { cursor: pointer; font-family: inherit; }
 .svc-tile .data-icon.rfi-ri-box { background: linear-gradient(150deg, rgba(255,255,255,.22), color-mix(in srgb, var(--ib) 16%, rgba(255,255,255,.04)) 48%, color-mix(in srgb, var(--ib) 22%, rgba(255,255,255,.05))); border-color: color-mix(in srgb, var(--ib) 50%, rgba(255,255,255,.3)); border-top-color: rgba(255,255,255,.55); box-shadow: 5px 6px 0 -1px rgba(255,255,255,.06), 5px 6px 0 0 color-mix(in srgb, var(--ib) 26%, transparent), inset 0 1.5px 0 rgba(255,255,255,.5), inset 0 -8px 16px color-mix(in srgb, var(--ib) 14%, transparent), 0 14px 28px rgba(0,0,0,.5), 0 0 30px color-mix(in srgb, var(--ib) 28%, transparent); }
 .svc-tile .data-icon.rfi-ri-box svg { stroke-width: 2; filter: drop-shadow(0 0 7px color-mix(in srgb, var(--ib) 70%, transparent)) drop-shadow(0 0 2px color-mix(in srgb, var(--ib) 50%, transparent)); }
 .svc-tile .data-icon.rfi-ri-box svg .k2 { color: #fff; }
-.svc-tile:hover .data-icon.rfi-ri-box { box-shadow: 5px 6px 0 -1px rgba(255,255,255,.06), 5px 6px 0 0 color-mix(in srgb, var(--ib) 40%, transparent), inset 0 1.5px 0 rgba(255,255,255,.6), inset 0 -8px 16px color-mix(in srgb, var(--ib) 20%, transparent), 0 14px 28px rgba(0,0,0,.5), 0 0 40px color-mix(in srgb, var(--ib) 42%, transparent); }
+@media (hover: hover) { .svc-tile:hover .data-icon.rfi-ri-box { box-shadow: 5px 6px 0 -1px rgba(255,255,255,.06), 5px 6px 0 0 color-mix(in srgb, var(--ib) 40%, transparent), inset 0 1.5px 0 rgba(255,255,255,.6), inset 0 -8px 16px color-mix(in srgb, var(--ib) 20%, transparent), 0 14px 28px rgba(0,0,0,.5), 0 0 40px color-mix(in srgb, var(--ib) 42%, transparent); } }
 .svc-tile h2 { margin: 0; font-size: clamp(18px, 1.3vw, 21px); font-weight: 700; line-height: var(--lh-tight); letter-spacing: -0.01em; }
 .svc-tile--area { min-height: 0; padding: 30px 24px 28px; }
 .svc-tail { white-space: nowrap; }

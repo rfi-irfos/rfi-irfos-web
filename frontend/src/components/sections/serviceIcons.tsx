@@ -23,7 +23,7 @@ export const SVC_ICONS = {
   // ---- services
   'managed-soc': <I><K><rect x="4.5" y="6" width="23" height="15.5" rx="2" /><path d="M12 26.5h8M16 21.5v5" /></K><path d="M8 14h3.5l2-4 3 8 2-4H24" /></I>,
   'threat-intelligence': <I><K><circle cx="16" cy="16" r="11" /><path d="M5 16h22M16 5c-3 3-4.5 6.8-4.5 11s1.5 8 4.5 11c3-3 4.5-6.8 4.5-11S19 8 16 5" opacity=".8" /></K><circle cx="22" cy="10" r="3.2" />{dot(22, 10, 1.2)}</I>,
-  'it-security-graz': <I><K><ellipse cx="16" cy="26" rx="8" ry="2.2" /></K><path d="M16 25s-7.5-7.2-7.5-12.7a7.5 7.5 0 0 1 15 0C23.5 17.8 16 25 16 25Z" /><circle cx="16" cy="12.3" r="2.6" /></I>,
+  'it-security-graz': <I><ellipse cx="16" cy="26" rx="8" ry="2.2" /><K><path d="M16 25s-7.5-7.2-7.5-12.7a7.5 7.5 0 0 1 15 0C23.5 17.8 16 25 16 25Z" /></K><circle cx="16" cy="12.3" r="2.6" /></I>,
   'penetration-testing': <I><K><path d="M11 9.5 8 6.5M21 9.5l3-3M9.5 16H5M27 16h-4.5M10 22l-3.5 3M22 22l3.5 3" /></K><path d="M12 11.5a4 4 0 0 1 8 0" /><rect x="10" y="11.5" width="12" height="14" rx="6" /><path d="M16 15v7" /></I>,
   'api-security-testing': <I><K><path d="M10 5.5c-2.5 0-3.5 1-3.5 3.5v3.5c0 2-1 3.5-2.5 3.5 1.5 0 2.5 1.5 2.5 3.5V23c0 2.5 1 3.5 3.5 3.5M22 5.5c2.5 0 3.5 1 3.5 3.5v3.5c0 2 1 3.5 2.5 3.5-1.5 0-2.5 1.5-2.5 3.5V23c0 2.5-1 3.5-3.5 3.5" /></K><path d="M12.5 16h7" />{dot(12, 16, 1.7)}{dot(20, 16, 1.7)}</I>,
   'cloud-security-assessment': <I><K><path d="M9.5 24.5a5.5 5.5 0 0 1-.6-11A7.5 7.5 0 0 1 23.3 12a6.3 6.3 0 0 1-.8 12.5Z" /></K><rect x="12.5" y="16.5" width="7" height="5.5" rx="1" /><path d="M14 16.5v-1.5a2 2 0 0 1 4 0v1.5" /></I>,
