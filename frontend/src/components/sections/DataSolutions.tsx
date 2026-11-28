@@ -1,3 +1,4 @@
+import { ib2 } from '../../lib/iconTone'
 import type { CSSProperties } from 'react'
 import { useLocale } from '../../hooks/useLocale'
 import { localeHref } from '../../lib/localeHref'
@@ -9,7 +10,7 @@ import { IconBuilding, IconRobot, IconBraces, IconCircleCheck, IconCode, IconDat
 const hue = (i: number) => OUTPUT_TAG_HUES[i % OUTPUT_TAG_HUES.length]
 // --ib is the solid area colour the glass icon box (.rfi-ri-box in index.css) takes, same set as the hues above.
 const IB = ['#36cdb2', '#f0ad3c', '#4f8cf0', '#8f76f2']
-const hueStyle = (i: number) => ({ '--hue-bg': hue(i).bg, '--hue-border': hue(i).border, '--ib': IB[i % IB.length] }) as CSSProperties
+const hueStyle = (i: number) => ({ '--hue-bg': hue(i).bg, '--hue-border': hue(i).border, '--ib': IB[i % IB.length], '--ib2': ib2(IB[i % IB.length]) }) as CSSProperties
 
 const PRODUCT_ICONS = [IconDatabase, IconBuilding, IconFlask, IconGitBranch, IconShieldCheck, IconCode]
 const AGENT_ICONS = [IconRobot, IconBuilding, IconSearch, IconDeviceDesktop, IconBraces, IconTerminal2]
@@ -128,7 +129,7 @@ const COPY = {
 // each other than another) read as random confetti rather than a signal, live
 // feedback 2026-08-26 ("looks like a pinjata"). Section identity, not card identity.
 // The five datasets are five different things, so each card takes its own colour (Simeon 2026-11-10); the wash follows --ib.
-const DATASET_HUES = ['#36cdb2', '#4f8cf0', '#8f76f2', '#ee6a98', '#f0ad3c', '#f27a54'].map(ib => ({ '--ib': ib, '--hue-bg': `color-mix(in srgb, ${ib} 11%, transparent)`, '--hue-border': `color-mix(in srgb, ${ib} 40%, transparent)` }) as CSSProperties)
+const DATASET_HUES = ['#36cdb2', '#4f8cf0', '#8f76f2', '#ee6a98', '#f0ad3c', '#f27a54'].map(ib => ({ '--ib': ib, '--ib2': ib2(ib), '--hue-bg': `color-mix(in srgb, ${ib} 11%, transparent)`, '--hue-border': `color-mix(in srgb, ${ib} 40%, transparent)` }) as CSSProperties)
 const HUE_PRODUCTS = hueStyle(2)  // blue
 const HUE_AGENTS = hueStyle(1)    // amber
 const HUE_STARTS = hueStyle(3)    // violet

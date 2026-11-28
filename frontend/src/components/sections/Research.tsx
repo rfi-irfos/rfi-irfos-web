@@ -1,3 +1,4 @@
+import { ib2 } from '../../lib/iconTone'
 // "Research Areas" section (`#research`) - extracted verbatim from PublicSite.tsx.
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -41,7 +42,7 @@ function BentoTile({ icon, ic, title, onOpen, delay, alt }: {
       >
         {/* Glass box with the KPI glass values (Simeon 01.11., icon picker): the box and the icon
             take the colour on hover, eased in slowly, the card itself stays neutral. index.css .rfi-ri-box */}
-        <div className="rfi-ri-box" style={{ width: 74, height: 74, ['--ib' as string]: `var(--ib-${ic})` }}>
+        <div className="rfi-ri-box" style={{ width: 74, height: 74, ['--ib' as string]: `var(--ib-${ic})`, ['--ib2' as string]: ib2(`var(--ib-${ic})`) }}>
           {icon}
         </div>
         <div style={{ fontWeight: 700, fontSize: 'var(--fs-body)', lineHeight: 'var(--lh-tight)', whiteSpace: 'pre-line' }}>{title}</div>

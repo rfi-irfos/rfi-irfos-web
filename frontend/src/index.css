@@ -1155,12 +1155,13 @@ a[href^="mailto:"]:not(footer a) { color: var(--text) !important; }
 svg .k2 { color: color-mix(in srgb, currentColor 22%, #f4f6f8); transition: color 1.3s ease; }
 /* Tabler icons in the glass box: lib/twoToneIcons.ts tags the largest shape .k2 (light base form), the rest keeps
    the area colour as the accent (Simeon 23.11.2026). */
-.rfi-ri-box svg.tabler-icon .k2 { color: color-mix(in srgb, var(--ib) 22%, #f4f6f8); transition: color 1.3s ease; }
-:root:not([data-theme="dark"]):not([data-theme="hc"]) .rfi-ri-box svg.tabler-icon .k2 { color: color-mix(in srgb, var(--ib) 30%, #2a2f38); }
+/* A5 (Simeon 28.11.2026): the second tone in every glass box is amber (teal on warm boxes, lib/iconTone.ts). */
+.rfi-ri-box svg .k2, .rfi-ri-box svg.tabler-icon .k2 { color: var(--ib2, #f0ad3c); transition: color 1.3s ease; }
+:root:not([data-theme="dark"]):not([data-theme="hc"]) .rfi-ri-box svg.tabler-icon .k2 { color: color-mix(in srgb, var(--ib2, #f0ad3c) 82%, #000); }
 svg .k3 { color: #5aa9ff; }
 :root:not([data-theme="dark"]):not([data-theme="hc"]) .rfi-ri-box { border-color: rgba(0,0,0,.08); border-left-color: color-mix(in srgb, var(--ib) 40%, rgba(0,0,0,.08)); background: linear-gradient(150deg, #fff, #f1f3f6); box-shadow: 5px 6px 0 -1px rgba(0,0,0,.03), 5px 6px 0 0 color-mix(in srgb, var(--ib) 18%, transparent), inset 0 1px 0 #fff, 0 10px 22px rgba(0,0,0,.1); }
 :root:not([data-theme="dark"]):not([data-theme="hc"]) .rfi-ri-box svg { color: color-mix(in srgb, var(--ib) 85%, #000) !important; filter: none; }
-:root:not([data-theme="dark"]):not([data-theme="hc"]) .rfi-ri-box .k2 { color: color-mix(in srgb, var(--ib) 30%, #2a2f38); }
+:root:not([data-theme="dark"]):not([data-theme="hc"]) .rfi-ri-box .k2 { color: color-mix(in srgb, var(--ib2, #f0ad3c) 82%, #000); }
 /* the research cards themselves stay neutral, at rest and on hover */
 .fx-tile.rfi-icon-tile { background: linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.015) 55%, rgba(255,255,255,0)), #10131a; }
 .fx-tile.rfi-icon-tile:hover { border-color: rgba(255,255,255,.14); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 18px 34px rgba(0,0,0,.52); }

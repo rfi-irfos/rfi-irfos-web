@@ -1,3 +1,4 @@
+import { ib2 } from '../lib/iconTone'
 // Showcase layout for the service pages (2026-11-22). Built on the Data Solutions vocabulary on
 // purpose (data-* classes from App.css): section head, numbered icon cards with their own hue, an
 // action button, the five-stage pipeline with its control aside, the numbered start cards.
@@ -19,7 +20,7 @@ import { DEMO_START_URL } from '../lib/demoInstance'
 
 const CONTROL_ICONS = [IconMapPin, IconWorld, IconUserShield, IconLockCheck]
 const HUES = ['#36cdb2', '#4f8cf0', '#8f76f2', '#ee6a98', '#f0ad3c', '#f27a54']
-const hue = (i: number) => { const ib = HUES[i % HUES.length]; return { '--ib': ib, '--hue-bg': `color-mix(in srgb, ${ib} 11%, transparent)`, '--hue-border': `color-mix(in srgb, ${ib} 40%, transparent)` } as CSSProperties }
+const hue = (i: number) => { const ib = HUES[i % HUES.length]; return { '--ib': ib, '--ib2': ib2(ib), '--hue-bg': `color-mix(in srgb, ${ib} 11%, transparent)`, '--hue-border': `color-mix(in srgb, ${ib} 40%, transparent)` } as CSSProperties }
 const CAP_ICONS = [IconRadar2, IconAlarm, IconCode, IconListCheck, IconUsersGroup, IconBuildingSkyscraper]
 const STEP_ICONS = [IconEye, IconFilterSearch, IconShieldBolt, IconTools, IconFileCheck]
 const AUD_ICONS = [IconRocket, IconTrendingUp, IconBuilding]

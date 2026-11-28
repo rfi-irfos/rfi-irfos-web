@@ -1,3 +1,4 @@
+import { ib2 } from '../../lib/iconTone'
 import { lazy, Suspense, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { useLocale } from '../../hooks/useLocale'
@@ -125,7 +126,7 @@ function TitleArrow({ text }: { text: string }) {
   return <>{i > 0 ? text.slice(0, i + 1) : ''}<span className="svc-tail">{text.slice(i + 1)}<IconArrowRight className="svc-arrow" size={17} stroke={2} aria-hidden /></span></>
 }
 
-const tileStyle = (ib: string) => ({ '--ib': ib }) as CSSProperties
+const tileStyle = (ib: string) => ({ '--ib': ib, '--ib2': ib2(ib) }) as CSSProperties
 
 // Dive (Simeon 23.11.2026, "click on it and it dives into this area"): going deeper, the current page
 // zooms toward the clicked tile and blurs away while the next one rises out of the depth; going back

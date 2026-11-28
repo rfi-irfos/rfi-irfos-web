@@ -1,3 +1,4 @@
+import { ib2 } from '../../lib/iconTone'
 // "Research Cooperation" / coop partner section (`#coop-partners`) - extracted
 // verbatim from PublicSite.tsx.
 import { useState } from 'react'
@@ -44,7 +45,7 @@ function GroupCard({ g, mobile }: { g: (typeof GROUPS)[number]; mobile: boolean 
       }}>
       <div style={{ height: '200%', transform: open ? 'translateY(-50%)' : 'none', transition: ease }}>
         <div style={{ height: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: mobile ? 10 : 12 }}>
-          <span className="rfi-glass-icon rfi-icon-pop fx-icon3d" style={{ width: mobile ? 52 : 62, height: mobile ? 52 : 62, borderRadius: mobile ? 15 : 18, ['--ib' as string]: `var(--ib-${g.ic})` }}>
+          <span className="rfi-glass-icon rfi-icon-pop fx-icon3d" style={{ width: mobile ? 52 : 62, height: mobile ? 52 : 62, borderRadius: mobile ? 15 : 18, ['--ib' as string]: `var(--ib-${g.ic})`, ['--ib2' as string]: ib2(`var(--ib-${g.ic})`) }}>
             <GroupIcon kind={g.kind} size={mobile ? 22 : 26} />
           </span>
           <p style={{ fontSize: mobile ? 'var(--fs-small)' : 'var(--fs-body)', fontWeight: 700, margin: 0, color: 'var(--text)', whiteSpace: 'nowrap' }}>{g.title}</p>
