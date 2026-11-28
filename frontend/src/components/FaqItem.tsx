@@ -16,6 +16,9 @@ function faqRich(a: string): React.ReactNode[] {
   out.push(a.slice(last)); return out
 }
 
+/** Answer text with [label](/path/) links rendered, for pages that build their own list. */
+export function FaqRichText({ a }: { a: string }) { return <>{faqRich(a)}</> }
+
 // One FAQ row (Simeon 2026-11-22: "ALLES ist immer smooth animiert"): opens and closes with the house
 // .fx-expand transition (grid rows 0fr -> 1fr plus fade). The answer stays in the DOM for search engines.
 export function FaqItem({ q, a, id }: { q: string; a: string; id: string }) {

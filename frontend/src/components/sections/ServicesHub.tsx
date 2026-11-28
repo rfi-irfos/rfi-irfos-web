@@ -61,6 +61,7 @@ export const HUB_COPY = {
   en: {
     title: 'Services',
     intro: 'Six areas, from round-the-clock monitoring to the evidence an auditor asks for. Pick the area that matches your question and go one level deeper.',
+    ai: ['Outsourced AI integration', 'AI agents work on our side, and your team works with people and files: findings, patch files you merge, and reports.'],
     all: 'All services',
     others: 'Need something else?',
     faq: 'Common questions',
@@ -76,6 +77,7 @@ export const HUB_COPY = {
   de: {
     title: 'Leistungen',
     intro: 'Sechs Bereiche, von der Überwachung rund um die Uhr bis zu den Nachweisen, die Prüfer verlangen. Wählen Sie den Bereich, der zu Ihrer Frage passt, und gehen Sie eine Ebene tiefer.',
+    ai: ['Outsourced AI Integration', 'KI-Agenten arbeiten auf unserer Seite, und Ihr Team arbeitet mit Menschen und Dateien: Befunde, Patch-Dateien, die Sie übernehmen, und Berichte.'],
     all: 'Alle Leistungen',
     others: 'Sie suchen etwas anderes?',
     faq: 'Häufige Fragen',
@@ -172,6 +174,10 @@ function HubPage({ t, group, onOpen }: {
           <h2>{c.groups[x.id][0]}</h2>
         </a>
       </Reveal>)}</div>
+      <Reveal><div className="svc-ai-line">
+        <h2 className="data-lede" style={{ fontWeight: 700, marginBottom: 6 }}>{c.ai[0]}</h2>
+        <p className="data-lede">{c.ai[1]}</p>
+      </div></Reveal>
     </div></section>
   </div>
 
