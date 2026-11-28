@@ -9,7 +9,7 @@ import {
   IconRadar, IconTargetArrow, IconCode, IconScale, IconTool, IconArrowRight, IconArrowLeft,
   IconShieldCheck, IconWorldSearch, IconMapPin, IconBug, IconApi, IconCloud, IconWorldWww, IconBrain,
   IconFileCode, IconDeviceMobile, IconRadio, IconLock, IconRobot, IconCertificate, IconBuildingFactory,
-  IconChecklist, IconTruckDelivery, IconWand, IconSitemap,
+  IconChecklist, IconTruckDelivery, IconWand, IconSitemap, IconPlugConnected,
 } from '@tabler/icons-react'
 
 // Services hub (Zabih + Simeon 23.11.2026): the top bar gets "Services", which opens an overview of
@@ -61,7 +61,16 @@ export const HUB_COPY = {
   en: {
     title: 'Services',
     intro: 'Six areas, from round-the-clock monitoring to the evidence an auditor asks for. Pick the area that matches your question and go one level deeper.',
-    ai: ['Outsourced AI integration', 'AI agents work on our side, and your team works with people and files: findings, patch files you merge, and reports.'],
+    // Simeon 28.11.2026: the AI stays on our side, written into every area page (no stand-alone block on the hub).
+    aiTitle: 'Add us to your workflow, the AI stays with us',
+    ai: {
+      'monitoring': 'Our agents keep watch on our side while your team keeps its own tools, and you hear from us when an alert needs a decision.',
+      'testing': 'Reconnaissance and attack paths run through our agents on our side, so your team keeps working as it does today and receives proven findings in the portal.',
+      'code-and-apps': 'Our agents read your code and apps on our side. What reaches your team are the findings, a pull request or patch file, and the report.',
+      'ai-security': 'We attack your models and AI apps with our own agents, so your team needs nothing extra to run the test and receives the findings together with the fixes.',
+      'compliance': 'Checks and evidence run through our agents. Your auditor works in the portal or the evidence lands in Vanta or Drata, and your team keeps its process.',
+      'fix-and-harden': 'Our agents and engineers write the fix on our side, and you review it as a pull request or patch file and merge it the way you always do.',
+    },
     all: 'All services',
     others: 'Need something else?',
     faq: 'Common questions',
@@ -77,7 +86,15 @@ export const HUB_COPY = {
   de: {
     title: 'Leistungen',
     intro: 'Sechs Bereiche, von der Überwachung rund um die Uhr bis zu den Nachweisen, die Prüfer verlangen. Wählen Sie den Bereich, der zu Ihrer Frage passt, und gehen Sie eine Ebene tiefer.',
-    ai: ['Outsourced AI Integration', 'KI-Agenten arbeiten auf unserer Seite, und Ihr Team arbeitet mit Menschen und Dateien: Befunde, Patch-Dateien, die Sie übernehmen, und Berichte.'],
+    aiTitle: 'Holen Sie uns in Ihren Ablauf, die KI bleibt bei uns',
+    ai: {
+      'monitoring': 'Unsere Agenten halten auf unserer Seite Wache, während Ihr Team bei seinen Werkzeugen bleibt, und Sie hören von uns, sobald ein Alarm eine Entscheidung braucht.',
+      'testing': 'Aufklärung und Angriffspfade laufen über unsere Agenten bei uns, daher arbeitet Ihr Team weiter wie bisher und erhält belegte Befunde im Portal.',
+      'code-and-apps': 'Unsere Agenten lesen Ihren Code und Ihre Apps auf unserer Seite. Bei Ihrem Team kommen die Befunde, ein Pull Request oder eine Patch-Datei und der Bericht an.',
+      'ai-security': 'Wir greifen Ihre Modelle und KI-Apps mit unseren eigenen Agenten an, sodass Ihr Team für den Test nichts zusätzlich aufbauen muss und Befunde samt Korrekturen erhält.',
+      'compliance': 'Prüfungen und Nachweise laufen über unsere Agenten. Ihr Prüfer arbeitet im Portal oder die Nachweise landen in Vanta oder Drata, und Ihr Team behält seinen Prozess.',
+      'fix-and-harden': 'Unsere Agenten und Ingenieure schreiben die Korrektur bei uns, und Sie sehen sie als Pull Request oder Patch-Datei durch und übernehmen sie wie gewohnt.',
+    },
     all: 'Alle Leistungen',
     others: 'Sie suchen etwas anderes?',
     faq: 'Häufige Fragen',
@@ -174,10 +191,6 @@ function HubPage({ t, group, onOpen }: {
           <h2>{c.groups[x.id][0]}</h2>
         </a>
       </Reveal>)}</div>
-      <Reveal><div className="svc-ai-line">
-        <h2 className="data-lede" style={{ fontWeight: 700, marginBottom: 6 }}>{c.ai[0]}</h2>
-        <p className="data-lede">{c.ai[1]}</p>
-      </div></Reveal>
     </div></section>
   </div>
 
@@ -197,6 +210,13 @@ function HubPage({ t, group, onOpen }: {
           <h2><TitleArrow text={links[s.key]} /></h2>
         </a>
       </Reveal>)}</div>
+      <Reveal><div className="svc-ask svc-ai-card rfi-glass-flat rfi-glass-solid">
+        <div className="data-icon rfi-ri-box"><IconPlugConnected size={26} stroke={1.6} aria-hidden /></div>
+        <div className="svc-ask-copy">
+          <h2>{c.aiTitle}</h2>
+          <p>{c.ai[g.id]}</p>
+        </div>
+      </div></Reveal>
       <div className="svc-area-faq">
         <h2 className="data-sr-only">{c.faq}</h2>
         <Suspense fallback={null}><AreaFaq area={g.id} locale={locale} /></Suspense>
