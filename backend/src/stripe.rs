@@ -19,6 +19,17 @@ pub struct CheckoutRequest {
     /// Google Ads click id, kept in browser memory only (see adclick.rs).
     #[serde(default)]
     pub gclid: Option<String>,
+    /// Anonymous code of the "Put it to the test" demo the visitor came from (D-7K3Q), if any.
+    #[serde(default)]
+    pub demo: Option<String>,
+}
+
+/// The demo code is passed to Stripe as client_reference_id so the portal can tell which demo led to a purchase.
+/// Anything that is not exactly D- plus four characters of A-Z/0-9 is dropped.
+fn demo_code(code: Option<&str>) -> Option<String> {
+    let code = code?.strip_prefix("D-")?;
+    let ok = code.len() == 4 && code.bytes().all(|b| b.is_ascii_uppercase() || b.is_ascii_digit());
+    ok.then(|| format!("D-{code}"))
 }
 
 #[derive(Serialize)]
@@ -192,6 +203,9 @@ pub async fn create_checkout(
     if let Some(id) = crate::adclick::clean(body.gclid.as_deref()) {
         params.push(("metadata[gclid]".to_string(), id));
     }
+    if let Some(code) = demo_code(body.demo.as_deref()) {
+        params.push(("client_reference_id".to_string(), code));
+    }
     if let Some(text) = tier_features(&body.tier, de) {
         params.push(("line_items[0][price_data][product_data][description]".to_string(), text));
     }
@@ -300,6 +314,15 @@ pub async fn webhook(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn demo_code_accepts_only_the_exact_shape() {
+        assert_eq!(demo_code(Some("D-7K3Q")).as_deref(), Some("D-7K3Q"));
+        for bad in ["d-7k3q", "D-7K3", "D-7K3QX", "X-7K3Q", "D-7K 3", "D-7K3\u{e4}", "", "cus_123"] {
+            assert_eq!(demo_code(Some(bad)), None, "{bad}");
+        }
+        assert_eq!(demo_code(None), None);
+    }
 
     #[test]
     fn review_tiers_have_correct_amounts() {
