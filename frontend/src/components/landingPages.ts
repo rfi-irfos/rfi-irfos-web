@@ -919,7 +919,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
           h2: 'Two ways to run your compliance program',
           p: [
             'Run the whole program with us. It starts with the framework and its controls and continues through penetration test, fix and retest to proof. In the portal every control carries its checks and its evidence, the evidence queue hands what is still missing to an owner with a due date and reminders, your Trust Center publishes what you confirm, and your auditor gets read-only access to the same picture.',
-            'Already on Vanta, Drata, Kertos or Scytale? Keep it. We test, fix and retest, and for each framework the portal exports the audit workpaper with the evidence files and a SHA-256 checksum, so you can upload the package into your platform.',
+            'Already on Vanta, Drata, Kertos or Scytale? Keep it. We test, fix and retest, and the evidence reaches your platform on its own: Vanta and Drata receive every retest proof directly, a signed webhook reports each fixed and retested finding to any other system, and a read-only evidence token lets Kertos, Scytale or your own scripts pull the audit workpaper with the evidence files and a SHA-256 checksum.',
           ],
         },
         {
@@ -998,7 +998,7 @@ export const LANDING: Record<LandingSlug, Record<LandingLocale, LandingDoc>> = {
           h2: 'Zwei Wege zu Ihrem Compliance-Programm',
           p: [
             'Führen Sie das ganze Programm bei uns. Es beginnt mit dem Rahmenwerk und seinen Kontrollen und reicht über Penetrationstest, Fix und Retest bis zum Nachweis. Im Portal trägt jede Kontrolle ihre Prüfungen und ihre Belege, die Nachweis-Queue übergibt, was noch fehlt, mit Fälligkeit und Erinnerungen an eine verantwortliche Person, Ihr Trust Center veröffentlicht, was Sie bestätigen, und Ihre Prüfstelle erhält Lesezugriff auf dasselbe Bild.',
-            'Schon auf Vanta, Drata, Kertos oder Scytale? Behalten Sie es. Wir testen, beheben und testen erneut, und für jedes Rahmenwerk exportiert das Portal das Audit-Workpaper mit den Nachweisdateien und einer SHA-256-Prüfsumme, sodass Sie das Paket in Ihre Plattform hochladen können.',
+            'Schon auf Vanta, Drata, Kertos oder Scytale? Behalten Sie es. Wir testen, beheben und testen erneut, und die Nachweise erreichen Ihre Plattform von selbst: Vanta und Drata erhalten jeden Retest-Beleg direkt, ein signierter Webhook meldet jeden behobenen und erneut geprüften Fund an beliebige weitere Systeme, und mit einem lesenden Evidence-Token holen Kertos, Scytale oder Ihre eigenen Skripte das Audit-Workpaper mit den Nachweisdateien und einer SHA-256-Prüfsumme ab.',
           ],
         },
         {
