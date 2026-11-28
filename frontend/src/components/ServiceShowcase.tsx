@@ -54,7 +54,7 @@ export function ShowcaseTop({ doc, locale, slug, onTalk }: { doc: ShowcaseDoc; l
       <Reveal delay={1}><p className="data-lede">{doc.lede}</p></Reveal>
       <Reveal delay={2}><div className="svc-hero-actions">
         {/* Simeon 28.11.2026: the left hero button opens the demo instance (was "Plans and prices"). */}
-        <a href={DEMO_START_URL} className="svc-secondary"><IconFlask size={18} stroke={2} aria-hidden />{de ? 'Auf die Probe stellen' : 'Put it to the test'}</a>
+        <a href={DEMO_START_URL} className="svc-secondary"><IconFlask size={18} stroke={2} aria-hidden />{de ? 'Hier ausprobieren' : 'Put it to the test'}</a>
         {/* Simeon 23.11.2026: "Talk to us" opens the enquiry pop-up for this service (was "Start the Quick Check"). */}
         {onTalk
           ? <button type="button" onClick={onTalk} className="data-cta"><IconMessageCircle size={18} stroke={2} aria-hidden />{de ? 'Sprechen Sie mit uns' : 'Talk to us'}</button>

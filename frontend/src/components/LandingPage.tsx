@@ -101,7 +101,7 @@ export function LandingBody({ slug, locale, onAsk }: { slug: LandingSlug; locale
       <Reveal><h1>{d.h1}</h1></Reveal>
       <Reveal delay={1}><p className="data-lede">{d.lead}</p></Reveal>
       <Reveal delay={2}><div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-        <a href={DEMO_START_URL} style={SECONDARY}>{de ? 'Auf die Probe stellen' : 'Put it to the test'}</a>
+        <a href={DEMO_START_URL} style={SECONDARY}>{de ? 'Hier ausprobieren' : 'Put it to the test'}</a>
         <a href="#domain-check" onClick={toCheck} className="data-cta" style={{ textDecoration: 'none', display: 'inline-block' }}>{de ? 'Quick Check starten' : 'Start the Quick Check'} <span aria-hidden="true">→</span></a>
       </div></Reveal>
     </header>
