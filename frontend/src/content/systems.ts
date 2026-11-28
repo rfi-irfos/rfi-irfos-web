@@ -199,17 +199,6 @@ export const SYSTEMS: SystemCard[] = [
     links: { github: 'https://github.com/rfi-irfos/coevolution-factory', live: 'https://coevolution-factory-sparkling-mountain-1802.fly.dev' },
   },
   {
-    key: 'aladdin-mini', name: 'aladdin-mini', zone: 'applications', status: 'OPERATIONAL',
-    problem: { de: 'Wenn ein Sicherheitsfund öffentlich wird, reagiert der Markt oft messbar - aber niemand außerhalb großer Fonds modelliert das systematisch.', en: "When a security finding goes public, the market often reacts measurably - but nobody outside large funds models that systematically." },
-    why: { de: 'BlackRocks Version davon heißt Aladdin und verwaltet 21 Billionen Dollar. Wir wollten zeigen, dass dasselbe Prinzip auch offen und kostenlos geht.', en: "BlackRock's version of this is called Aladdin and manages $21 trillion. We wanted to show the same principle works open and free too." },
-    different: { de: 'Trading-Signal-Engine, direkt an unseren eigenen Disclosure-Rhythmus gekoppelt - inklusive unserer eigenen Funde, erst nach Ablauf der 90-Tage-Sperrfrist.', en: 'A trading-signal engine directly coupled to our own disclosure rhythm - including our own findings, only after the 90-day embargo lifts.' },
-    fit: { de: 'Applications-Schicht, weitgehend eigenständig.', en: 'Applications layer, largely standalone.' },
-    proof: { de: '3.488 Zeilen Python, Architektur deckt sich 1:1 mit der eigenen Dokumentation.', en: '3,488 lines of Python, architecture matches its own documentation 1:1.' },
-    technical: { de: 'Python, MetaTrader5, Bayes\'sche Netze.', en: 'Python, MetaTrader5, Bayesian networks.' },
-    connects: [],
-    links: { github: 'https://github.com/rfi-irfos/aladdin-mini' },
-  },
-  {
     key: 'lighthouse', name: 'Lighthouse', zone: 'applications', status: 'OPERATIONAL',
     problem: { de: 'Die meisten Institute kaufen ihren SaaS-Stack (E-Mail, CRM, Buchhaltung) stückweise von Drittanbietern ein - und geben damit die Kontrolle über die eigenen Daten ab.', en: "Most institutes buy their SaaS stack (email, CRM, accounting) piecemeal from third parties - handing away control of their own data." },
     why: { de: 'Wir wollten, dass niemand außer uns unsere eigenen Betriebsdaten sieht, ohne auf ein funktionierendes Workplace-OS zu verzichten.', en: 'We wanted nobody but us to see our own operational data, without giving up a working workplace OS.' },

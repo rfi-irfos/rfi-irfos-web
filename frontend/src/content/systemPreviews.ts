@@ -72,7 +72,6 @@ const PREVIEWS: Record<string, PreviewSpec> = {
   'veo-framework': d({ kind: 'doc', title: 'VEO.md', cap: 'A METHOD, NOT CODE — PURE PROMPTING' }),
   dingir: d({ kind: 'graph', stamps: true, cap: '1,026 NODES — EVERY CLAIM STAMPED' }),
   'coevolution-factory': d({ kind: 'hub', center: 'FACTORY', spokes: ['LAURAS-AGENTS', 'CALL-LAURA GATE', 'LIGHTHOUSE', '50 CENTERS'], cap: 'ONE CONSTITUTION, 50 LIVE CENTERS' }),
-  'aladdin-mini': d({ kind: 'market', cap: 'DISCLOSURES MOVE MARKETS — MEASURED' }),
   lighthouse: img('/systems/lighthouse-dashboard.png', 'Lighthouse governance dashboard'),
   laura: img('/systems/laura-canary-kit.png', 'LAURA canary kit interface'),
   'invisible-layer': img('/systems/invisible-layer.png', 'invisible-layer sensor probe interface'),
