@@ -225,12 +225,19 @@ const CANONICAL_ALIAS = {
 // modal), so that alone can't distinguish "loaded" from "loaded but the
 // modal never opened" - waiting on the modal backdrop is the real
 // correctness gate for those routes specifically.
-async function renderRoute(route, canonicalRoute, waitSelector = '#root h1, #root h2') {
+// FOUND 2026-11-28 (three failed ships: /datenschutz/, /de/methodology/, /faq/ snapshotted as the empty shell
+// with the homepage title): under load (a portal CI build on the same colony) the page's lazy chunk arrived
+// after networkidle gave up, and the old default gate '#root h1, #root h2' already matched a heading outside
+// the page body. Every route carries exactly one h1 (check-dist-seo enforces it), so the gate waits for the h1,
+// and any route other than / additionally waits until the page has set its own title.
+const TEMPLATE_TITLE = (await readFile(join(DIST, 'index.html'), 'utf8')).match(/<title>([^<]*)<\/title>/)?.[1]?.replace(/&amp;/g, '&') ?? ''
+async function renderRoute(route, canonicalRoute, waitSelector = '#root h1') {
   // See the original inline comment (still applies): 'networkidle' hangs
   // intermittently because of the Hero route's looping <video>; swallow just
   // its timeout and fall back to the waitForSelector gate below.
   await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'networkidle', timeout: 12000 }).catch(() => {})
   await page.waitForSelector(waitSelector, { state: 'visible', timeout: 60000 })
+  if (route !== '/' && TEMPLATE_TITLE) await page.waitForFunction(t => document.title && document.title !== t, TEMPLATE_TITLE, { timeout: 20000 }).catch(() => {})
   let html = await page.content() // already includes the doctype
   // FOUND 2026-10-31 (Simeon, console easter egg opened with three red errors): Vite's
   // dynamic-import helper adds <link rel="modulepreload"> tags at runtime with absolute
